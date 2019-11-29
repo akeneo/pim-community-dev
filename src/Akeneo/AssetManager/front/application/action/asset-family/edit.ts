@@ -6,6 +6,7 @@ import {
   assetFamilyEditionErrorOccured,
   assetFamilyEditionSucceeded,
   assetFamilyAssetCountUpdated,
+  assetFamilyEditionAttributeAsMainMediaUpdated,
 } from 'akeneoassetmanager/domain/event/asset-family/edit';
 import {
   notifyAssetFamilyWellSaved,
@@ -18,6 +19,7 @@ import {File} from 'akeneoassetmanager/domain/model/file';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {assetFamilyPermissionChanged} from 'akeneoassetmanager/domain/event/user';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 export const saveAssetFamily = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const assetFamily = getState().form.data;
@@ -66,5 +68,13 @@ export const assetFamilyLabelUpdated = (value: string, locale: string) => (
 
 export const assetFamilyImageUpdated = (image: File) => (dispatch: any, getState: () => EditState) => {
   dispatch(assetFamilyEditionImageUpdated(image));
+  dispatch(assetFamilyEditionUpdated(getState().form.data));
+};
+
+export const attributeAsMainMediaUpdated = (attributeAsMainMedia: AttributeIdentifier) => (
+  dispatch: any,
+  getState: () => EditState
+) => {
+  dispatch(assetFamilyEditionAttributeAsMainMediaUpdated(attributeAsMainMedia));
   dispatch(assetFamilyEditionUpdated(getState().form.data));
 };

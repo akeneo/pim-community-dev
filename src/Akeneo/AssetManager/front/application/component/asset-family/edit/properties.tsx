@@ -6,6 +6,7 @@ import {
   assetFamilyImageUpdated,
   assetFamilyLabelUpdated,
   saveAssetFamily,
+  attributeAsMainMediaUpdated,
 } from 'akeneoassetmanager/application/action/asset-family/edit';
 import {deleteAssetFamily} from 'akeneoassetmanager/application/action/asset-family/delete';
 import __ from 'akeneoassetmanager/tools/translator';
@@ -18,9 +19,12 @@ const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 interface StateProps {
   form: EditionFormState;
+  attributes: NormalizedAttribute[] | null;
   context: {
     locale: string;
   };
@@ -44,6 +48,7 @@ interface DispatchProps {
       onLabelUpdated: (value: string, locale: string) => void;
       onSubmit: () => void;
       onImageUpdated: (image: File) => void;
+      onAttributeAsMainMediaUpdated: (attributeAsMainMedia: AttributeIdentifier) => void;
     };
     onDelete: (assetFamily: AssetFamily) => void;
     onOpenDeleteModal: () => void;
@@ -110,8 +115,10 @@ class Properties extends React.Component<StateProps & DispatchProps> {
           </header>
           <div className="AknFormContainer AknFormContainer--withPadding">
             <Form
+              attributes={this.props.attributes}
               onLabelUpdated={this.props.events.form.onLabelUpdated}
               onImageUpdated={this.props.events.form.onImageUpdated}
+              onAttributeAsMainMediaUpdated={this.props.events.form.onAttributeAsMainMediaUpdated}
               onSubmit={this.props.events.form.onSubmit}
               locale={this.props.context.locale}
               data={this.props.form.data}
@@ -140,6 +147,7 @@ export default connect(
     const locale = state.user.catalogLocale;
 
     return {
+      attributes: state.attributes.attributes,
       form: state.form,
       context: {
         locale: locale,
@@ -173,6 +181,9 @@ export default connect(
           },
           onImageUpdated: (image: File) => {
             dispatch(assetFamilyImageUpdated(image));
+          },
+          onAttributeAsMainMediaUpdated: (attributeAsMainMedia: AttributeIdentifier) => {
+            dispatch(attributeAsMainMediaUpdated(attributeAsMainMedia));
           },
         },
         onDelete: (assetFamily: AssetFamily) => {

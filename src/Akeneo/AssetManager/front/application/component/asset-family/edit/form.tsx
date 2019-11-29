@@ -9,11 +9,18 @@ import {File} from 'akeneoassetmanager/domain/model/file';
 import Image from 'akeneoassetmanager/application/component/app/image';
 import Key from 'akeneoassetmanager/tools/key';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import Select2 from 'akeneoassetmanager/application/component/app/select2';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {getLabel} from 'pimui/js/i18n';
+import {IMAGE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/image';
+import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
 interface FormProps {
   locale: string;
   data: AssetFamily;
   errors: ValidationError[];
+  attributes: NormalizedAttribute[] | null;
   rights: {
     locale: {
       edit: boolean;
@@ -25,6 +32,7 @@ interface FormProps {
   };
   onLabelUpdated: (value: string, locale: string) => void;
   onImageUpdated: (image: File) => void;
+  onAttributeAsMainMediaUpdated: (attributeAsMainMedia: AttributeIdentifier) => void;
   onSubmit: () => void;
 }
 
@@ -55,6 +63,7 @@ export default class EditForm extends React.Component<FormProps> {
     const assetFamily = this.props.data;
     const canEditLabel = this.props.rights.assetFamily.edit && this.props.rights.locale.edit;
     const canEditImage = this.props.rights.assetFamily.edit;
+    const canEditAttributeAsMainMedia = this.props.rights.assetFamily.edit;
 
     return (
       <div>
@@ -134,6 +143,42 @@ export default class EditForm extends React.Component<FormProps> {
             />
           </div>
           {getErrorsView(this.props.errors, 'image')}
+        </div>
+        <div className="AknFieldContainer" data-code="attributeAsMainMedia">
+          <div className="AknFieldContainer-header AknFieldContainer-header--light">
+            <label
+              title={__('pim_asset_manager.asset_family.properties.attribute_as_main_media')}
+              className="AknFieldContainer-label"
+              htmlFor="pim_asset_manager.asset_family.properties.attribute_as_main_media"
+            >
+              {__('pim_asset_manager.asset_family.properties.attribute_as_main_media')}
+            </label>
+          </div>
+          <div className="AknFieldContainer-inputContainer">
+            {null !== this.props.attributes && (
+              <Select2
+                id="pim_asset_manager.attribute.edit.input.allowed_extensions"
+                name="allowed_extensions"
+                data={this.props.attributes
+                  .filter((attribute: NormalizedAttribute) =>
+                    [MEDIA_LINK_ATTRIBUTE_TYPE, IMAGE_ATTRIBUTE_TYPE].includes(attribute.type)
+                  )
+                  .reduce((result: {[key: string]: string}, current: NormalizedAttribute) => {
+                    return {...result, [current.identifier]: getLabel(current.labels, this.props.locale, current.code)};
+                  }, {})}
+                value={assetFamily.attributeAsMainMedia}
+                multiple={false}
+                readOnly={!canEditAttributeAsMainMedia}
+                configuration={{
+                  allowClear: false,
+                }}
+                onChange={(attributeAsMainMedia: string) => {
+                  this.props.onAttributeAsMainMediaUpdated(attributeAsMainMedia);
+                }}
+              />
+            )}
+          </div>
+          {getErrorsView(this.props.errors, 'attributeAsMainMedia')}
         </div>
       </div>
     );

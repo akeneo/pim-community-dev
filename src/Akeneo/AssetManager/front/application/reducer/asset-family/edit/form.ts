@@ -3,6 +3,7 @@ import formState, {FormState} from 'akeneoassetmanager/application/reducer/state
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {combineReducers} from 'redux';
 import {File} from 'akeneoassetmanager/domain/model/file';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 export interface EditionFormState {
   state: FormState;
@@ -20,7 +21,15 @@ const dataReducer = (
     value,
     locale,
     image,
-  }: {type: string; assetFamily: AssetFamily; value: string; locale: string; image: File}
+    attributeAsMainMedia,
+  }: {
+    type: string;
+    assetFamily: AssetFamily;
+    value: string;
+    locale: string;
+    image: File;
+    attributeAsMainMedia: AttributeIdentifier;
+  }
 ) => {
   switch (type) {
     case 'ASSET_FAMILY_EDITION_RECEIVED':
@@ -31,6 +40,9 @@ const dataReducer = (
       break;
     case 'ASSET_FAMILY_EDITION_IMAGE_UPDATED':
       state = {...state, image};
+      break;
+    case 'ASSET_FAMILY_EDITION_ATTRIBUTE_AS_MAIN_MEDIA_UPDATED':
+      state = {...state, attributeAsMainMedia};
       break;
     default:
       break;

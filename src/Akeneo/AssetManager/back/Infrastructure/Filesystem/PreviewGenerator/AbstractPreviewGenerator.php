@@ -53,6 +53,10 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
      */
     public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
+        if (empty($data)) {
+            return $this->getDefaultImageUrl($type);
+        }
+
         if (!$this->isBase64Encoded($data)) {
             $this->logger->error(
                 'The preview generator for type requires a base64 encoded input.',
@@ -109,7 +113,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
     {
         $decoded = base64_decode($data, true);
 
-        return $decoded && base64_encode($decoded) === $data;
+        return false !== $decoded && base64_encode($decoded) === $data;
     }
 
     /**

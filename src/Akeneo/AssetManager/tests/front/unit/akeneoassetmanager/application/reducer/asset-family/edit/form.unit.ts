@@ -156,6 +156,39 @@ describe('akeneo > asset family > application > reducer > asset-family --- edit'
     });
   });
 
+  test('I can update the attribute as main media of the asset family', () => {
+    const previousState = {
+      data: {
+        identifier: '',
+        labels: {
+          en_US: 'Designer',
+        },
+        attributeAsMainMedia: 'old',
+      },
+      errors: [],
+      state: {
+        isDirty: false,
+        originalData: '',
+      },
+    };
+    const newState = reducer(previousState, {
+      type: 'ASSET_FAMILY_EDITION_ATTRIBUTE_AS_MAIN_MEDIA_UPDATED',
+      attributeAsMainMedia: 'new',
+    });
+
+    expect(newState).toEqual({
+      errors: [],
+      data: {
+        identifier: '',
+        labels: {
+          en_US: 'Designer',
+        },
+        attributeAsMainMedia: 'new',
+      },
+      state: {isDirty: false, originalData: ''},
+    });
+  });
+
   test('I can successfully save the asset family', () => {
     const previousState = {
       data: {

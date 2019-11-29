@@ -89,6 +89,7 @@ pim_asset_manager:
       identifier: Code
       label: Label
       image: Image
+      attribute_as_main_media: Attribute as main media
     attribute:
       title: Asset attributes
       attribute:
@@ -262,6 +263,7 @@ pim_asset_manager:
       option: Single option
       option_collection: Multiple options
       number: Number
+      media_link: Media link
     is_required: required for completeness
     media_type_preview: Preview of media type
     no_data:
@@ -322,6 +324,9 @@ pim_asset_manager:
             regular_expression: Regular expression
             url: URL
         decimals_allowed: Decimal values allowed
+        prefix: Prefix
+        suffix: Suffix
+        media_type: Media type
     delete:
       message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
       title: Attribute

@@ -21,7 +21,6 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyDetailsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
-use Akeneo\AssetManager\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
@@ -83,17 +82,17 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
     {
         $query = <<<SQL
         SELECT
-            re.identifier,
-            re.labels,
-            re.attribute_as_label,
-            re.attribute_as_main_media,
+            am.identifier,
+            am.labels,
+            am.attribute_as_label,
+            am.attribute_as_main_media,
             fi.file_key,
             fi.original_filename, (
                 SELECT count(*) FROM akeneo_asset_manager_asset WHERE asset_family_identifier = :identifier
             ) as asset_count
-        FROM akeneo_asset_manager_asset_family as re
-        LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = re.image
-        WHERE re.identifier = :identifier;
+        FROM akeneo_asset_manager_asset_family as am
+        LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = am.image
+        WHERE am.identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'identifier' => (string) $identifier,

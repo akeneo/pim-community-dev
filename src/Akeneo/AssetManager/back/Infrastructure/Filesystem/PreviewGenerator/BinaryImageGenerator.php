@@ -15,47 +15,19 @@ namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Liip\ImagineBundle\Imagine\Data\DataManager;
-use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class BinaryImageGenerator implements PreviewGeneratorInterface
+class BinaryImageGenerator extends AbstractPreviewGenerator
 {
     private const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image';
     public const SUPPORTED_TYPES = [
-        PreviewGeneratorRegistry::THUMBNAIL_TYPE => 'am_binary_image_thumbnail',
-        PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE => 'am_binary_image_thumbnail',
-        PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_binary_image_preview'
+        PreviewGeneratorRegistry::THUMBNAIL_TYPE        => 'am_binary_image_thumbnail',
+        PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE  => 'am_binary_image_thumbnail',
+        PreviewGeneratorRegistry::PREVIEW_TYPE          => 'am_binary_image_preview'
     ];
-
-    /** @var DataManager  */
-    private $dataManager;
-
-    /** @var CacheManager  */
-    private $cacheManager;
-
-    /** @var FilterManager  */
-    private $filterManager;
-
-    /** @var DefaultImageProviderInterface  */
-    private $defaultImageProvider;
-
-    public function __construct(
-        DataManager $dataManager,
-        CacheManager $cacheManager,
-        FilterManager $filterManager,
-        DefaultImageProviderInterface $defaultImageProvider
-    ) {
-        $this->dataManager = $dataManager;
-        $this->cacheManager = $cacheManager;
-        $this->filterManager = $filterManager;
-        $this->defaultImageProvider = $defaultImageProvider;
-    }
 
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
@@ -63,23 +35,18 @@ class BinaryImageGenerator implements PreviewGeneratorInterface
             && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 
-    public function generate(string $data, AbstractAttribute $attribute, string $type): string
+    protected function generateUrl(string $data, AbstractAttribute $attribute): string
     {
-        $previewType = self::SUPPORTED_TYPES[$type];
-        if (!$this->cacheManager->isStored($data, $previewType)) {
-            try {
-                $binary = $this->dataManager->find($previewType, $data);
-            } catch (NotLoadableException $e) {
-                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
-            }
+        return $data;
+    }
 
-            $this->cacheManager->store(
-                $this->filterManager->applyFilter($binary, $previewType),
-                $data,
-                $previewType
-            );
-        }
+    protected function getPreviewType(string $type): string
+    {
+        return self::SUPPORTED_TYPES[$type];
+    }
 
-        return $this->cacheManager->resolve($data, $previewType);
+    protected function defaultImage(): string
+    {
+        return self::DEFAULT_IMAGE;
     }
 }
