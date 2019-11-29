@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Application\Service;
 
-use Akeneo\Apps\Domain\Model\ValueObject\UserId;
+use Akeneo\Apps\Domain\Model\Read\User;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -15,8 +15,6 @@ interface CreateUserInterface
     public function execute(
         string $username,
         string $firstname,
-        string $lastname,
-        string $password,
-        string $email
-    ): UserId;
+        string $lastname
+    ): User;
 }

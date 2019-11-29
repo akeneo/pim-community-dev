@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Infrastructure\User\Fake;
 
 use Akeneo\Apps\Application\Service\CreateUserInterface;
-use Akeneo\Apps\Domain\Model\ValueObject\UserId;
+use Akeneo\Apps\Domain\Model\Read\User;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -13,8 +13,8 @@ use Akeneo\Apps\Domain\Model\ValueObject\UserId;
  */
 class CreateUser implements CreateUserInterface
 {
-    public function execute(string $username, string $firstname, string $lastname, string $password, string $email): UserId
+    public function execute(string $username, string $firstname, string $lastname): User
     {
-        return new UserId(42);
+        return new User(42, 'magento_app', 'pwd_app');
     }
 }
