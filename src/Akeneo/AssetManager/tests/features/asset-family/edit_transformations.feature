@@ -4,7 +4,7 @@ Feature: Edit the transformations of an asset family
   I want to be able to define transformations for an asset family
 
   @acceptance-back
-  Scenario: Add assets transformations to an asset family
+  Scenario: Add asset transformations to an asset family
     Given an asset family "packshot" with no transformation
     When the user edits the "packshot" family to add a valid transformation
     Then the "packshot" family should have 1 transformation
@@ -22,7 +22,7 @@ Feature: Edit the transformations of an asset family
     Then the "packshot" family should have 1 transformation
 
   @acceptance-back
-  Scenario: Add assets transformations to an asset family
+  Scenario: Add asset transformations to an asset family
     Given an asset family "packshot" with no transformation
     When the user edits the "packshot" family to add valid complex transformations
     Then the "packshot" family should have the complex transformations
@@ -54,7 +54,7 @@ Feature: Edit the transformations of an asset family
   @acceptance-back @error
   Scenario: Can not update transformations when limit is reached
     Given an asset family "packshot" with no transformation
-    When the user edits the "packshot" family to add too much transformations
+    When the user edits the "packshot" family to add too many transformations
     Then there should be a validation error stating that the transformation limit is reached
 
   @acceptance-back @error
@@ -67,4 +67,4 @@ Feature: Edit the transformations of an asset family
   Scenario: Can not update transformations when operation provided with bad parameters
     Given an asset family "packshot" with no transformation
     When the user edits the "packshot" family to add a transformation with wrong parameters for operation
-    Then there should be a validation error stating that operation is not instanciable
+    Then there should be a validation error stating that operation is not instantiable

@@ -83,9 +83,7 @@ class CreateAction
 
         $command = new CreateAssetFamilyCommand(
             $normalizedCommand['code'],
-            $normalizedCommand['labels'],
-            [],
-            []
+            $normalizedCommand['labels']
         );
 
         return $command;

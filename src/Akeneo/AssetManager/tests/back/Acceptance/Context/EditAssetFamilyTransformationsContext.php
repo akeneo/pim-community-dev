@@ -244,7 +244,7 @@ class EditAssetFamilyTransformationsContext implements Context
     }
 
     /**
-     * @When the user edits the :familyIdentifier family to add too much transformations
+     * @When the user edits the :familyIdentifier family to add too many transformations
      */
     public function theUserEditsTheFamilyToAddToMuchTransformations(string $familyIdentifier)
     {
@@ -393,9 +393,9 @@ class EditAssetFamilyTransformationsContext implements Context
     }
 
     /**
-     * @Then there should be a validation error stating that operation is not instanciable
+     * @Then there should be a validation error stating that operation is not instantiable
      */
-    public function thereShouldBeAValidationErrorStatingThatOperationIsNotInstanciable()
+    public function thereShouldBeAValidationErrorStatingThatOperationIsNotInstantiable()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
             "Key 'colorspace' must exist in parameters."

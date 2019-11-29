@@ -136,6 +136,8 @@ class AssetFamilyValidator
                                         'type' => ['string', 'null'],
                                     ],
                                 ],
+                                'required' => ['attribute', 'channel', 'locale'],
+                                'additionalProperties' => false,
                             ],
                             'operations' => [
                                 'type' => 'array',
