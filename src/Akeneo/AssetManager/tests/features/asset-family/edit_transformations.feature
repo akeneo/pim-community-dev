@@ -74,3 +74,15 @@ Feature: Edit the transformations of an asset family
     Given an asset family "packshot" with no transformation
     When the user edits the "packshot" family to add transformations with same source and filename
     Then there should be a validation error stating that filename is not unique
+
+  @acceptance-back @error
+  Scenario: Can not update transformations when filename prefix is not valid
+    Given an asset family "packshot" with no transformation
+    When the user edits the "packshot" family to add transformations with invalid filename prefix
+    Then there should be a validation error stating that filename prefix is not valid
+
+  @acceptance-back @error
+  Scenario: Can not update transformations when filename prefix is not valid
+    Given an asset family "packshot" with no transformation
+    When the user edits the "packshot" family to add transformations with invalid filename suffix
+    Then there should be a validation error stating that filename suffix is not valid

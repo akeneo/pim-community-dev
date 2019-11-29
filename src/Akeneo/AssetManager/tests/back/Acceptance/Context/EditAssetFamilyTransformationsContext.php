@@ -361,6 +361,38 @@ class EditAssetFamilyTransformationsContext implements Context
     }
 
     /**
+     * @When the user edits the :familyIdentifier family to add transformations with invalid filename prefix
+     */
+    public function theUserEditsTheFamilyToAddTransformationsWithInvalidFilenamePrefix(string $familyIdentifier)
+    {
+        $this->editTransformationForAssetFamily($familyIdentifier, [
+            [
+                'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
+                'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
+                'operations' => [],
+                'filename_prefix' => ' % 1_',
+                'filename_suffix' => '_2  '
+            ],
+        ]);
+    }
+
+    /**
+     * @When the user edits the :familyIdentifier family to add transformations with invalid filename suffix
+     */
+    public function theUserEditsTheFamilyToAddTransformationsWithInvalidFilenameSuffix(string $familyIdentifier)
+    {
+        $this->editTransformationForAssetFamily($familyIdentifier, [
+            [
+                'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
+                'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
+                'operations' => [],
+                'filename_prefix' => ' 1_',
+                'filename_suffix' => '_%2  '
+            ],
+        ]);
+    }
+
+    /**
      * @Then the :familyIdentifier family should have :count transformation
      */
     public function theFamilyShouldHaveATransformation(string $familyIdentifier, int $count): void
@@ -462,6 +494,26 @@ class EditAssetFamilyTransformationsContext implements Context
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
             'A transformation with filename\'s prefix "1_" and suffix "_2" already exists for attribute source "main_image"'
+        );
+    }
+
+    /**
+     * @Then there should be a validation error stating that filename prefix is not valid
+     */
+    public function thereShouldBeAValidationErrorStatingThatFilenamePrefixIsNotValid()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            'Filename prefix contains illegal character'
+        );
+    }
+
+    /**
+     * @Then there should be a validation error stating that filename suffix is not valid
+     */
+    public function thereShouldBeAValidationErrorStatingThatFilenameSuffixIsNotValid()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            'Filename suffix contains illegal character'
         );
     }
 

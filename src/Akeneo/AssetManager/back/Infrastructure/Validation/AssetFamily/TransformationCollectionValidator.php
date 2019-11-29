@@ -30,6 +30,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TransformationCollectionValidator extends ConstraintValidator
 {
+    private const FILENAME_REGEX = '/^[\w,-\. ]*$/';
+
     /** @var ValidatorInterface */
     private $validator;
 
@@ -79,8 +81,20 @@ class TransformationCollectionValidator extends ConstraintValidator
                         ]),
                         new TransformationCanNotHaveSameOperationTwice($assetFamilyIdentifier),
                     ],
-                    'filename_prefix' => new Assert\Type('string'),
-                    'filename_suffix' => new Assert\Type('string'),
+                    'filename_prefix' => [
+                        new Assert\Type('string'),
+                        new Assert\Regex([
+                            'pattern' => self::FILENAME_REGEX,
+                            'message' => 'Filename prefix contains illegal character',
+                        ]),
+                    ],
+                    'filename_suffix' => [
+                        new Assert\Type('string'),
+                        new Assert\Regex([
+                            'pattern' => self::FILENAME_REGEX,
+                            'message' => 'Filename suffix contains illegal character',
+                        ]),
+                    ],
                 ]),
             ]),
         ];
