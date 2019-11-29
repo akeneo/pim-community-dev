@@ -39,9 +39,8 @@ $rules = [
 
     $builder->only(
         [
-            'Akeneo\Apps\Application\Service\CreateUserInterface',
-            'Akeneo\Apps\Application\Service\DeleteUserInterface',
-            'Akeneo\Apps\Domain\Model\ValueObject\UserId',
+            'Akeneo\Apps\Application',
+            'Akeneo\Apps\Domain',
             'Akeneo\Tool\Component\StorageUtils',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
