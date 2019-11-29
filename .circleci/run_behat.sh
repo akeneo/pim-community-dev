@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+
+set -eo pipefail
 
 TEST_SUITE=$1
 
@@ -12,10 +14,12 @@ for TEST_FILE in $TEST_FILES; do
     echo "$TEST_FILE ($counter/$total):"
     output=$(basename $TEST_FILE)_$(uuidgen)
 
+    set +e
     docker-compose exec -u www-data -T fpm ./vendor/bin/behat --format pim --out var/tests/behat/${output} --format pretty --out std --colors -p legacy -s $TEST_SUITE $TEST_FILE ||
     docker-compose exec -u www-data -T fpm ./vendor/bin/behat --format pim --out var/tests/behat/${output} --format pretty --out std --colors -p legacy -s $TEST_SUITE $TEST_FILE
     fail=$(($fail + $?))
     counter=$(($counter + 1))
+    set -eo pipefail
 done
 
-return $fail
+exit $fail
