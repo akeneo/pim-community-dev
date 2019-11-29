@@ -51,14 +51,14 @@ class CreateAppHandler
 
         $client = $this->createClient->execute($command->label());
 
-        $username = $command->code();
-        $password = $command->code();
+        $username = sprintf('%s_%d', $command->code(), rand(1, 9999));
+        $password = $this->generatePassword();
         $userId = $this->createUser->execute(
             $username,
             $command->label(),
-            'APP',
+            ' ',
             $password,
-            uniqid() . '@akeneo.com'
+            sprintf('%s@example.com', uniqid())
         );
 
         $app = new App(
@@ -79,5 +79,13 @@ class CreateAppHandler
             $username,
             $password
         );
+    }
+
+    /**
+     * TODO: Extract in a PasswordGenerator dedicated class
+     */
+    private function generatePassword(): string
+    {
+        return str_shuffle(ucfirst(substr(uniqid(), 0, 9)));
     }
 }
