@@ -83,7 +83,7 @@ class TransformationSpec extends ObjectBehavior
             $target,
             OperationCollection::create([]),
             'prefix',
-            '   ',
+            '',
         ]);
         $this->getWrappedObject();
     }
@@ -96,7 +96,7 @@ class TransformationSpec extends ObjectBehavior
             $source,
             $target,
             OperationCollection::create([]),
-            '   ',
+            '',
             'suffix',
         ]);
         $this->getWrappedObject();

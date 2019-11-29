@@ -461,7 +461,7 @@ class EditAssetFamilyTransformationsContext implements Context
     public function thereShouldBeAValidationErrorStatingThatFilenameIsNotUnique()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'The filename with prefix "1_" and suffix "_2" already exists for attribute source "main_image"'
+            'A transformation with filename\'s prefix "1_" and suffix "_2" already exists for attribute source "main_image"'
         );
     }
 

@@ -54,7 +54,7 @@ class TransformationFilenameIsUniqueValidator extends ConstraintValidator
     private function thereIsATransformationWithSameTargetFilename(array $transformation, array $transformations): bool
     {
         foreach ($transformations as $oneTransformation) {
-            if ($this->sourceAreEqual($transformation['source'], $oneTransformation['source'])
+            if ($this->sourcesAreEqual($transformation['source'], $oneTransformation['source'])
                 && trim($transformation['filename_prefix']) === trim($oneTransformation['filename_prefix'])
                 && trim($transformation['filename_suffix']) === trim($oneTransformation['filename_suffix'])
             ) {
@@ -65,7 +65,7 @@ class TransformationFilenameIsUniqueValidator extends ConstraintValidator
         return false;
     }
 
-    private function sourceAreEqual(array $source1, array $source2): bool
+    private function sourcesAreEqual(array $source1, array $source2): bool
     {
         return $source1['attribute'] === $source2['attribute']
             && $source1['channel'] === $source2['channel']
