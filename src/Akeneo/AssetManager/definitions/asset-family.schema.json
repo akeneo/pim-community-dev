@@ -49,51 +49,27 @@
                     "source": {
                         "type": "object",
                         "properties": {
-                            "attribute": {
-                                "type": "string"
-                            },
-                            "channel": {
-                                "type": ["string", "null"]
-                            },
-                            "locale": {
-                                "type": ["string", "null"]
-                            }
+                            "attribute": { "type": "string" },
+                            "channel": { "type": ["string", "null"] },
+                            "locale": { "type": ["string", "null"] }
                         }
                     },
                     "target": {
                         "type": "object",
                         "properties": {
-                            "attribute": {
-                                "type": "string"
-                            },
-                            "channel": {
-                                "type": ["string", "null"]
-                            },
-                            "locale": {
-                                "type": ["string", "null"]
-                            }
+                            "attribute": { "type": "string" },
+                            "channel": { "type": ["string", "null"] },
+                            "locale": { "type": ["string", "null"] }
                         }
                     },
                     "operations": {
                         "type": "array",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "type": {
-                                    "type": "type"
-                                },
-                                "parameters": {
-                                    "type": "object"
-                                }
-                            }
+                            "type": "object"
                         }
                     },
-                    "filename_prefix": {
-                        "type": "string"
-                    },
-                    "filename_suffix": {
-                        "type": "string"
-                    }
+                    "filename_prefix": { "type": "string" },
+                    "filename_suffix": { "type": "string" }
                 }
             }
         }
