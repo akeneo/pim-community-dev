@@ -31,11 +31,21 @@ if [ -d "vendor/akeneo/pim-community-dev" ]; then
     popd
 fi
 
+echo "Copy CE migrations into EE if to install master branch..."
+if [ -d "vendor/akeneo/pim-community-dev" ]; then
+    cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
+fi
+
 echo "Clean cache..."
 APP_ENV=test make cache
 
 echo "Install master database and indexes..."
 APP_ENV=test make database
+
+echo "Restore Git repository..."
+if [ -d "vendor/akeneo/pim-community-dev" ]; then
+    git checkout -- .
+fi
 
 echo "Checkout PR branch..."
 git checkout $PR_BRANCH
@@ -45,7 +55,7 @@ if [ -d "vendor/akeneo/pim-community-dev" ]; then
     popd
 fi
 
-echo "Copy CE migrations into EE if necessary..."
+echo "Copy CE migrations into EE to launch branch migrations..."
 if [ -d "vendor/akeneo/pim-community-dev" ]; then
     cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
 fi
