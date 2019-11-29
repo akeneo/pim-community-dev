@@ -63,6 +63,15 @@ akeneo_apps:
         credentials:
             title: Credentials
             helper: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+            password_placeholder: ••••••••
+            password_helper:
+                message: If you forgot your password, you can generate a new one here.
+                link: More info…
+                link_url: https://www.akeneo.com/
+            clear_password_helper:
+                message: Make sure to save this password somewhere as we won’t show it to you twice.
+                link: More info…
+                link_url: https://www.akeneo.com/
             action:
                 copy: Copy to clipboard
                 regenerate: Regenerate

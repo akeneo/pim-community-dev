@@ -10,9 +10,10 @@ interface Props {
     label: string;
     children: string;
     actions?: ReactNode;
+    helper?: ReactNode;
 }
 
-export const CopiableCredential: FC<Props> = ({label, children: value, actions}: Props) => {
+export const CopiableCredential: FC<Props> = ({label, children: value, actions, helper}: Props) => {
     const notify = useNotify();
     const translate = useContext(TranslateContext);
 
@@ -38,6 +39,7 @@ export const CopiableCredential: FC<Props> = ({label, children: value, actions}:
                     {actions}
                 </>
             }
+            helper={helper}
         >
             <span ref={ref}>{value}</span>
         </Credential>
