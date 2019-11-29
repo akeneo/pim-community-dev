@@ -77,5 +77,5 @@ ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_behat.sh $(SUITE)
 	vendor/akeneo/pim-community-dev/.circleci/run_behat.sh critical
 else
-	$(PHP_RUN) vendor/bin/behat -p legacy -s all ${0}
+	$(PHP_RUN) vendor/bin/behat --strict -p legacy -s all ${O}
 endif
