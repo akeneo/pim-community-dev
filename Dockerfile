@@ -125,6 +125,7 @@ WORKDIR /srv/pim/
 COPY bin bin
 COPY config config
 COPY public public
+COPY frontend/build frontend/build
 COPY src src
 COPY upgrades upgrades
 COPY composer.json package.json yarn.lock .env tsconfig.json .
