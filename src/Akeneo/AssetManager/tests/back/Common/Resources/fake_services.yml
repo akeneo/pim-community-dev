@@ -73,6 +73,9 @@ services:
     akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_options:
         class: Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAttributeOptions
 
+    akeneo_assetmanager.infrastructure.persistence.query.find_transformation_assets_by_identifiers:
+        class: Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindTransformationAssetsByIdentifiers
+
     akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists:
         class: Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyExists
         arguments:

@@ -67,10 +67,6 @@
         "root":{
           "assetFamilyIdentifier":"designer",
           "code":"starck",
-          "labels":[
-
-          ],
-          "image":null,
           "editAssetValueCommands":[
             {
               "text":"Philippe Starck",

@@ -44,8 +44,6 @@ class EditAssetCommandFactory
         $command = new EditAssetCommand(
             $normalizedCommand['asset_family_identifier'],
             $normalizedCommand['code'],
-            [],
-            null,
             []
         );
 

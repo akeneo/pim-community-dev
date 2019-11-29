@@ -43,10 +43,6 @@
         "root":{
           "assetFamilyIdentifier":"designer",
           "code":"starck",
-          "labels":[
-
-          ],
-          "image":null,
           "editAssetValueCommands":[
             {
               "filePath":"\/a\/b\/c\/philou.gif",

@@ -77,6 +77,18 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
         return $attribute;
     }
 
+    public function getByCodeAndAssetFamilyIdentifier(AttributeCode $code, AssetFamilyIdentifier $assetFamilyIdentifier): AbstractAttribute
+    {
+        foreach ($this->attributes as $attribute) {
+            if ($attribute->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier) &&
+                $attribute->getCode()->equals($code)) {
+                return $attribute;
+            }
+        }
+
+        throw AttributeNotFoundException::withAssetFamilyAndAttributeCode($assetFamilyIdentifier, $code);
+    }
+
     /**
      * {@inheritdoc}
      */

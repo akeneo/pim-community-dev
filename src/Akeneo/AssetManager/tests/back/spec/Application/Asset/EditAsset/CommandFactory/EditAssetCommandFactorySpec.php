@@ -51,9 +51,6 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
         $normalizedCommand = [
             'asset_family_identifier' => 'designer',
             'code' => 'philippe_starck',
-            'labels' => [
-                'en_us' => 'Philippe Starck'
-            ],
             'values' => [
                 [
                     'attribute' => 'desginer_description_fingerprint',
@@ -87,7 +84,6 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
         $command->shouldBeAnInstanceOf(EditAssetCommand::class);
         $command->assetFamilyIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('philippe_starck');
-        $command->labels->shouldBeEqualTo([]);
         $command->editAssetValueCommands[0]->shouldBeAnInstanceOf(EditTextValueCommand::class);
     }
 
@@ -103,9 +99,6 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
         $normalizedCommand = [
             'asset_family_identifier' => 'designer',
             'code' => 'philippe_starck',
-            'labels' => [
-                'en_us' => 'Philippe Starck'
-            ],
             'values' => [ [ 'malformed data']]
         ];
 
@@ -122,9 +115,6 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
         $normalizedCommand = [
             'asset_family_identifier' => 'designer',
             'code' => 'philippe_starck',
-            'labels' => [
-                'en_us' => 'Philippe Starck'
-            ],
             'values' => [
                 [
                     'attribute' => 'unknown_attribute_type',
