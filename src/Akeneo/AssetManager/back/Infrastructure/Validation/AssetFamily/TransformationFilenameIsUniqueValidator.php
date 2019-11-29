@@ -20,10 +20,10 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * A transformation filename is unique if:
- *  - source is the same (attribute, channel and locale)
- *  - prefix is the same
- *  - suffix is the same
+ * A transformation filename is not unique if there is another transformation with:
+ *  - the same source (attribute, channel and locale),
+ *  - the same filename prefix
+ *  - the same filename suffix
  *
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
