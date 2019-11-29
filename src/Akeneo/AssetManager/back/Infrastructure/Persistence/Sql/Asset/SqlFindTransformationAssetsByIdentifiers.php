@@ -15,7 +15,6 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationAsset;
 use Akeneo\AssetManager\Domain\Query\Asset\FindTransformationAssetsByIdentifiersInterface;
