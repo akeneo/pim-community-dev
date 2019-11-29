@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyC
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Webmozart\Assert\Assert;
 
 class ThereShouldBeLessTransformationThanLimitValidator extends ConstraintValidator
 {
@@ -31,18 +32,22 @@ class ThereShouldBeLessTransformationThanLimitValidator extends ConstraintValida
 
     public function validate($command, Constraint $constraint): void
     {
-        $this->checkConstraintType($constraint);
         $this->checkCommandType($command);
-        $this->validateCommand($command);
-    }
-
-    /**
-     * @throws UnexpectedTypeException
-     */
-    private function checkConstraintType(Constraint $constraint): void
-    {
         if (!$constraint instanceof ThereShouldBeLessTransformationThanLimit) {
-            throw new UnexpectedTypeException($constraint, self::class);
+            throw new UnexpectedTypeException($constraint, ThereShouldBeLessTransformationThanLimit::class);
+        }
+
+        if (null === $command->transformations) {
+            return;
+        }
+
+        $total = count($command->transformations);
+
+        if ($total > $this->maxTransformationByAssetFamilyLimit) {
+            $this->context->buildViolation(ThereShouldBeLessTransformationThanLimit::ERROR_MESSAGE)
+                ->setParameter('%asset_family_identifier%', $command->identifier)
+                ->setParameter('%limit%', $this->maxTransformationByAssetFamilyLimit)
+                ->addViolation();
         }
     }
 
@@ -60,19 +65,6 @@ class ThereShouldBeLessTransformationThanLimitValidator extends ConstraintValida
                     get_class($command)
                 )
             );
-        }
-    }
-
-    private function validateCommand($command): void
-    {
-        $total = count($command->transformations);
-
-        if ($total > $this->maxTransformationByAssetFamilyLimit) {
-            $this->context->buildViolation(ThereShouldBeLessTransformationThanLimit::ERROR_MESSAGE)
-                ->setParameter('%asset_family_identifier%', $command->identifier)
-                ->setParameter('%limit%', $this->maxTransformationByAssetFamilyLimit)
-                ->atPath('transformations')
-                ->addViolation();
         }
     }
 }

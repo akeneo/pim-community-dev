@@ -21,9 +21,7 @@ use Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -157,6 +155,7 @@ final class DeleteAllAssetsContext implements Context
     {
         $createCommand = new CreateAssetFamilyCommand(
             $identifier,
+            [],
             [],
             []
         );

@@ -31,9 +31,11 @@ pim_asset_manager:
             attribute_as_main_media:
                 not_found: 'The attribute "%attribute_as_main_media%" set as main media for the asset family does not exist'
                 invalid_type: 'The attribute set as main media for the asset family should be of type: %valid_attribute_as_main_media_types%'
-        transformation:
-            limit_reached: 'You cannot create or update the asset family "%asset_family_identifier%" because you have reached the limit of %limit% transformations'
-            same_operation_twice: 'You cannot create or update the asset family "%asset_family_identifier%" because the operation "operation_type" is specified twice in a single transformation'
+            transformation:
+                limit_reached: 'You cannot update the asset family "%asset_family_identifier%" because you have reached the limit of %limit% transformations'
+                same_operation_twice: 'You cannot update the asset family "%asset_family_identifier%" because the operation "operation_type" is specified twice in a single transformation'
+                source_can_not_be_a_target: 'The attribute source "%attribute_code%" can not be an attribute target of a transformation.'
+                attribute_reference_should_exist: 'The attribute "%attribute_code%" does not exist for this asset family'
     asset:
         validation:
             code:

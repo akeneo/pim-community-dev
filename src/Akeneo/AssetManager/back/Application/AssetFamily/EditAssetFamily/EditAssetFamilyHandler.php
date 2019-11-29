@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -43,16 +44,21 @@ class EditAssetFamilyHandler
     /** @var GetAttributeIdentifierInterface */
     private $getAttributeIdentifier;
 
+    /** @var TransformationCollectionFactory */
+    private $transformationCollectionFactory;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         GetAttributeIdentifierInterface $getAttributeIdentifier,
         FileStorerInterface $storer,
-        FileExistsInterface $fileExists
+        FileExistsInterface $fileExists,
+        TransformationCollectionFactory $transformationCollectionFactory
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->storer = $storer;
         $this->fileExists = $fileExists;
+        $this->transformationCollectionFactory = $transformationCollectionFactory;
     }
 
     public function __invoke(EditAssetFamilyCommand $editAssetFamilyCommand): void
@@ -87,6 +93,12 @@ class EditAssetFamilyHandler
             );
             $assetFamily->updateAttributeAsMainMediaReference(
                 AttributeAsMainMediaReference::fromAttributeIdentifier($attributeAsMainMediaIdentifier)
+            );
+        }
+
+        if (null !== $editAssetFamilyCommand->transformations) {
+            $assetFamily = $assetFamily->withTransformationCollection(
+                $this->transformationCollectionFactory->fromNormalized($editAssetFamilyCommand->transformations)
             );
         }
 

@@ -16,7 +16,6 @@ namespace spec\Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimit;
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimitValidator;
-use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCanNotHaveSameOperationTwice;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

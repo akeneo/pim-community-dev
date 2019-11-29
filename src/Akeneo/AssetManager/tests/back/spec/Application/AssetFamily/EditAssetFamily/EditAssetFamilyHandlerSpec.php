@@ -10,6 +10,8 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
@@ -26,9 +28,10 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         AssetFamilyRepositoryInterface $repository,
         GetAttributeIdentifierInterface $getAttributeIdentifier,
         FileStorerInterface $storer,
-        FileExistsInterface $fileExists
+        FileExistsInterface $fileExists,
+        TransformationCollectionFactory $transformationCollectionFactory
     ) {
-        $this->beConstructedWith($repository, $getAttributeIdentifier, $storer, $fileExists);
+        $this->beConstructedWith($repository, $getAttributeIdentifier, $storer, $fileExists, $transformationCollectionFactory);
     }
 
     function it_is_initializable()
@@ -234,7 +237,6 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $assetFamily->updateAttributeAsMainMediaReference(
             AttributeAsMainMediaReference::fromAttributeIdentifier($attributeAsMainMediaIdentifier->getWrappedObject())
         )->shouldBeCalled();
-
         $repository->update($assetFamily)->shouldBeCalled();
 
         $this->__invoke($editAssetFamilyCommand);
@@ -267,6 +269,114 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
 
         $assetFamily->updateAttributeAsMainMediaReference(Argument::type(AttributeAsMainMediaReference::class))
             ->shouldNotBeCalled();
+
+        $repository->update($assetFamily)->shouldBeCalled();
+
+        $this->__invoke($editAssetFamilyCommand);
+    }
+
+    function it_edits_an_asset_family_with_transformations(
+        AssetFamilyRepositoryInterface $repository,
+        TransformationCollectionFactory $transformationCollectionFactory,
+        AssetFamily $assetFamily,
+        Image $image,
+        TransformationCollection $transformations
+    ) {
+        $normalizedTransformations = [
+            [
+                'source' => [
+                    'attribute' => 'main',
+                    'locale' => null,
+                    'channel' => null,
+                ],
+                'target' => [
+                    'attribute' => 'target',
+                    'locale' => null,
+                    'channel' => null,
+                ],
+                [
+                    'operations' => [
+                        [
+                            'type' => 'scale',
+                            'parameters' => [
+                                'ratio' => 50,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $editAssetFamilyCommand = new EditAssetFamilyCommand(
+            'packshot',
+            ['en_US' => 'Packshots'],
+            null,
+            null,
+            [],
+            $normalizedTransformations
+        );
+
+        $repository->getByIdentifier(Argument::type(AssetFamilyIdentifier::class))
+            ->willReturn($assetFamily);
+
+        $assetFamily->getImage()->willReturn($image);
+        $image->isEmpty()->willReturn(true);
+
+        $assetFamily->updateLabels(Argument::type(LabelCollection::class))
+            ->shouldBeCalled();
+
+        $assetFamily->updateImage(
+            Argument::that(function ($image) {
+                return $image instanceof Image && $image->isEmpty();
+            })
+        )->shouldBeCalled();
+
+        $assetFamily->updateRuleTemplateCollection(Argument::type(RuleTemplateCollection::class))
+            ->shouldBeCalled();
+        $transformationCollectionFactory->fromNormalized($normalizedTransformations)->willReturn($transformations);
+        $assetFamily->withTransformationCollection($transformations)->willReturn($assetFamily);
+
+        $repository->update($assetFamily)->shouldBeCalled();
+
+        $this->__invoke($editAssetFamilyCommand);
+    }
+
+    function it_does_not_edit_transformations_if_they_are_not_provided(
+        AssetFamilyRepositoryInterface $repository,
+        TransformationCollectionFactory $transformationCollectionFactory,
+        AssetFamily $assetFamily,
+        Image $image,
+        TransformationCollection $transformations
+    ) {
+        $editAssetFamilyCommand = new EditAssetFamilyCommand(
+            'packshot',
+            ['en_US' => 'Packshots'],
+            null,
+            null,
+            [],
+            null
+        );
+
+        $repository->getByIdentifier(Argument::type(AssetFamilyIdentifier::class))
+                   ->willReturn($assetFamily);
+
+        $assetFamily->getImage()->willReturn($image);
+        $image->isEmpty()->willReturn(true);
+
+        $assetFamily->updateLabels(Argument::type(LabelCollection::class))
+                    ->shouldBeCalled();
+
+        $assetFamily->updateImage(
+            Argument::that(
+                function ($image) {
+                    return $image instanceof Image && $image->isEmpty();
+                }
+            )
+        )->shouldBeCalled();
+
+        $assetFamily->updateRuleTemplateCollection(Argument::type(RuleTemplateCollection::class))
+                    ->shouldBeCalled();
+        $transformationCollectionFactory->fromNormalized(Argument::any())->shouldNotBeCalled();
+        $assetFamily->withTransformationCollection(Argument::any())->shouldNotBeCalled();
 
         $repository->update($assetFamily)->shouldBeCalled();
 

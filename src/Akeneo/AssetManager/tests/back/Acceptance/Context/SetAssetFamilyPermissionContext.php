@@ -10,9 +10,7 @@ use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetAsse
 use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetAssetFamilyPermissionsHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetUserGroupPermissionCommand;
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyPermissionRepository;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
 use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterface;
@@ -70,7 +68,7 @@ final class SetAssetFamilyPermissionContext implements Context
      */
     public function aAssetFamilyWithoutPermissions()
     {
-        $createCommand = new CreateAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], []);
+        $createCommand = new CreateAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], [], []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
@@ -98,7 +96,7 @@ final class SetAssetFamilyPermissionContext implements Context
             self::ASSET_FAMILY_IDENTIFIER,
             $permissionsByUserGroupCommands
         );
-        
+
         try {
             ($this->setAssetFamilyPermissionsHandler)($setPermissionsCommand);
         } catch (\Exception $e) {

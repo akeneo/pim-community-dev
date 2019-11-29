@@ -104,7 +104,8 @@ class CreateOrUpdateAssetFamilyAction
             $createAssetFamilyCommand = new CreateAssetFamilyCommand(
                 $normalizedAssetFamily['code'],
                 $normalizedAssetFamily['labels'] ?? [],
-                $normalizedAssetFamily['product_link_rules'] ?? []
+                $normalizedAssetFamily['product_link_rules'] ?? [],
+                $normalizedAssetFamily['transformations'] ?? []
             );
 
             $violations = $this->validator->validate($createAssetFamilyCommand);
@@ -118,7 +119,8 @@ class CreateOrUpdateAssetFamilyAction
             $normalizedAssetFamily['labels'] ?? [],
             null,
             $normalizedAssetFamily['attribute_as_main_media'] ?? null,
-            $normalizedAssetFamily['product_link_rules'] ?? []
+            $normalizedAssetFamily['product_link_rules'] ?? [],
+            $normalizedAssetFamily['transformations'] ?? null
         );
 
         if (array_key_exists('image', $normalizedAssetFamily)) {

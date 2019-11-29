@@ -7,6 +7,7 @@ services:
             - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
+            - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory'
 
     akeneo_assetmanager.application.asset_family.create_asset_family_handler:
         class: Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler

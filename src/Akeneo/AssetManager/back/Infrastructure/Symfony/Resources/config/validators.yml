@@ -280,6 +280,13 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
 
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCollectionValidator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCollectionValidator
+        arguments:
+            - '@validator'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCollectionValidator' }
+
     Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimitValidator:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimitValidator
         arguments:
@@ -287,7 +294,37 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimitValidator' }
 
-    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCanNotHaveSameOperationTwiceValidator:
-        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCanNotHaveSameOperationTwiceValidator
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\OperationShouldBeInstantiableValidator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\OperationShouldBeInstantiableValidator
+        arguments:
+            - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory'
         tags:
-            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCanNotHaveSameOperationTwiceValidator' }
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\OperationShouldBeInstantiableValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawSourceExistValidator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawSourceExistValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\RawSourceExistValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawTargetExistValidator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawTargetExistValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\RawTargetExistValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\Locale\RawLocaleShouldBeActivatedValidator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Locale\RawLocaleShouldBeActivatedValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\Locale\RawLocaleShouldBeActivatedValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\Channel\RawChannelShouldExistValidator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Channel\RawChannelShouldExistValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\Channel\RawChannelShouldExistValidator' }

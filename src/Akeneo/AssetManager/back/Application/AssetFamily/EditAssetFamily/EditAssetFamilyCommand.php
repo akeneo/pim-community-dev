@@ -33,7 +33,7 @@ class EditAssetFamilyCommand
     /** @var array */
     public $productLinkRules;
 
-    /** @var array */
+    /** @var array|null */
     public $transformations;
 
     public function __construct(
@@ -42,8 +42,7 @@ class EditAssetFamilyCommand
         ?array $image,
         ?string $attributeAsMainMedia,
         array $productLinkRules,
-        // @TODO in ATR-29: remove default value
-        array $transformations = []
+        ?array $transformations
     ) {
         $this->identifier = $identifier;
         $this->labels = $labels;
