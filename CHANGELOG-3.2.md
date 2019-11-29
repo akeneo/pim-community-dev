@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-8984: Fix css on records dropdowns
+
 # 3.2.21 (2019-11-22)
 
 - PIM-8995: Fix the completeness widget (dashboard) for channels having no translations
