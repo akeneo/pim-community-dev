@@ -5,13 +5,6 @@ exports[`Page should render 1`] = `
   className="AknDefault-contentWithColumn"
 >
   <div
-    className="AknDefault-thirdColumnContainer"
-  >
-    <div
-      className="AknDefault-thirdColumn"
-    />
-  </div>
-  <div
     className="AknDefault-contentWithBottom"
   >
     <div

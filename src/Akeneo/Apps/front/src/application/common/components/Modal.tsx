@@ -27,7 +27,7 @@ export const Modal = ({subTitle, title, description, children, onCancel}: PropsW
                         <div className='AknFullPage-titleContainer'>
                             <div className='AknFullPage-subTitle'>{subTitle}</div>
                             <div className='AknFullPage-title'>{title}</div>
-                            <div className='AknFullPage-description AknFullPage-description--bottom'>{description}</div>
+                            {description}
                         </div>
 
                         {children}

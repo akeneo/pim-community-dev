@@ -1,4 +1,5 @@
 import React, {PropsWithChildren, ReactElement, ReactNode, Fragment} from 'react';
+import styled from 'styled-components';
 
 type Props = PropsWithChildren<{
     breadcrumb?: ReactElement;
@@ -9,7 +10,7 @@ type Props = PropsWithChildren<{
 }>;
 
 export const PageHeader = ({children: title, breadcrumb, buttons, userButtons, state, imageSrc}: Props) => (
-    <header className='AknTitleContainer'>
+    <Header>
         <div className='AknTitleContainer-line'>
             {imageSrc && (
                 <div className='AknImage AknImage--readOnly'>
@@ -37,23 +38,15 @@ export const PageHeader = ({children: title, breadcrumb, buttons, userButtons, s
                         <div className='AknTitleContainer-state'>{state}</div>
                     </div>
                 </div>
-
-                {/* <div className='AknTitleContainer-line'>
-                    <div className='AknTitleContainer-context AknButtonList' />
-                </div>
-
-                <div className='AknTitleContainer-line'>
-                    <div className='AknTitleContainer-meta AknButtonList' />
-                </div> */}
             </div>
         </div>
-
-        {/* <div className='AknTitleContainer-line'>
-            <div className='AknTitleContainer-navigation' />
-        </div>
-
-        <div className='AknTitleContainer-line'>
-            <div className='AknTitleContainer-search' />
-        </div> */}
-    </header>
+    </Header>
 );
+
+const Header = styled.header`
+    position: sticky;
+    top: 0;
+    padding: 40px 40px 20px;
+    background: white;
+    z-index: 10;
+`;

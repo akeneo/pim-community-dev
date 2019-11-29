@@ -2,10 +2,10 @@
 
 exports[`Section should render 1`] = `
 <header
-  className="sc-EHOje cfzsAe"
+  className="sc-gzVnrw gGrLow"
 >
   <div
-    className="sc-bZQynM iirico"
+    className="sc-htoDjs jrHPzG"
   >
     title
   </div>
@@ -14,10 +14,10 @@ exports[`Section should render 1`] = `
 
 exports[`Section should render content 1`] = `
 <header
-  className="sc-EHOje cfzsAe"
+  className="sc-gzVnrw gGrLow"
 >
   <div
-    className="sc-bZQynM iirico"
+    className="sc-htoDjs jrHPzG"
   >
     title
   </div>

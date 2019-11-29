@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {create} from 'react-test-renderer';
-import {Page} from '../../../../src/application/common';
+import {PageContent} from '../../../../src/application/common';
 
 describe('Page', () => {
     it('should render', () => {
-        const component = create(<Page>content</Page>);
+        const component = create(<PageContent>content</PageContent>);
 
         expect(component.toJSON()).toMatchSnapshot();
     });

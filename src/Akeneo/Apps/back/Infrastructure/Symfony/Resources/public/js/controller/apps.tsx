@@ -1,7 +1,7 @@
 import {Apps} from '@akeneo-pim-ce/apps';
 import $ from 'jquery';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {mountReactElement, unmoundReactElement} from '../react-element-helper';
 
 const BaseController = require('pim/controller/base');
 
@@ -18,18 +18,32 @@ const dependencies = {
   notify: messenger.notify.bind(messenger),
 };
 
+/**
+ * Only unmount React if we are leaving the Apps context.
+ * Avoid mount/unmount between route changes (legacy > react-router).
+ */
+const handleRouteChange = (routeName: string) => false === /^akeneo_apps_/.test(routeName) && unmoundReactElement();
+
 class AppsController extends BaseController {
+  initialize() {
+    this.$el.addClass('AknApps-view');
+
+    mediator.on('route_start', handleRouteChange);
+  }
+
   renderRoute() {
     mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-system'});
     mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-system-apps'});
 
-    ReactDOM.render(<Apps {...dependencies} />, this.el);
+    this.el.append(mountReactElement(<Apps {...dependencies} />));
 
     return $.Deferred().resolve();
   }
 
   remove() {
-    ReactDOM.unmountComponentAtNode(this.el);
+    mediator.off('route_start', handleRouteChange);
+
+    this.el.remove();
 
     return super.remove();
   }
