@@ -123,6 +123,9 @@ JSON;
 
     public function testListOfMeasureFamiliesWithCount()
     {
+        $measureFamiliesConfig = $this->getParameter('akeneo_measure.measures_config');
+        $measureFamiliesCount = count($measureFamiliesConfig['measures_config']);
+
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/measure-families?with_count=true&limit=1');
@@ -142,7 +145,7 @@ JSON;
     }
   },
   "current_page": 1,
-  "items_count": 18,
+  "items_count": {$measureFamiliesCount},
   "_embedded": {
     "items": [
       {$measureFamilies['Area']}
