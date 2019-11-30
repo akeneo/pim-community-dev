@@ -14,7 +14,7 @@ final class RotateLogCommandIntegration extends TestCase
     public function testItRotatesOldEntries(): void
     {
         $connection = $this->get('database_connection');
-        $command = new RotateLogCommand($connection);
+        $command = $this->get('Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\RotateLogCommand');
 
         $connection->insert(
             'pimee_sso_log',
