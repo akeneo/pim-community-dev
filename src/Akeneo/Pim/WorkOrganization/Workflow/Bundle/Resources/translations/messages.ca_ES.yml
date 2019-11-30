@@ -1,6 +1,7 @@
 pimee_workflow:
   product_draft:
     author: Autor/a
+    source: Font
     created: Proposat a
     changes: Canvis
     locale: Context de configuració regional
