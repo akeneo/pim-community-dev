@@ -178,7 +178,7 @@ pim_reference_entity:
         title_no_required: Kein Attribut erforderlich
         title_non_complete: 0 von {{notwendigen }}} Attributen sind vollständig ausgefüllt
         title_ongoing: '{{ complete }}} aus {{ required }} Attributen vollständig'
-        title_complete: Alle {{{ erforderlichen }}} Attribute sind vollständig
+        title_complete: Alle {{ required }} Attribute sind vollständig
     tab:
       enrich: Anreichern
       product: Produkte
