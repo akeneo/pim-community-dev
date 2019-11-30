@@ -68,7 +68,7 @@ Feature: Validate number attributes of a product
   Scenario: Validate the number min constraint of number attribute
     Given I change the Rating to "0"
     And I save the product
-    Then I should see validation tooltip "This value should be 1 or more."
+    Then I should see validation tooltip "This value should be between 1 and 5."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number min constraint of scopable number attribute
