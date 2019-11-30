@@ -120,8 +120,8 @@ pim_import_export:
             title: Ryhmäsarake
             help: Ryhmäsarakkeen nimi
           enabled:
-            title: Enabloi tuote
-            help: Pitääkö tuodun tuotteen olla enabloitu
+            title: Ota tuote käyttöön
+            help: Pitääkö tuodun tuotteen olla käytössä
           enabled_comparison:
             title: Vertaa arvoja
             help: Ota päälle alkuperäisten ja tuotujen arvojen vertailu. Voi nopeuttaa tuonti, ja tuodut arvot ovat hyvin samanlaisia kuin alkuperäiset arvot
