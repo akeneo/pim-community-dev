@@ -203,6 +203,8 @@ define(
                                 })
                             );
 
+                            this.toggleRemoveButtons();
+
                             if (0 !== attributes.length) {
                                 this.attributeListPage++;
                                 this.isFetching = false;
@@ -224,6 +226,8 @@ define(
                         this.setSelected(_.map(this.$('.selected-attributes li'), function (element) {
                             return element.dataset.attributeCode;
                         }));
+
+                        this.toggleRemoveButtons();
                     }.bind(this)
                 }).disableSelection();
             },
@@ -242,6 +246,21 @@ define(
                 this.setSelected(selectedAttributes);
 
                 this.$('.attributes > div ul').append(element);
+                this.toggleRemoveButtons();
+            },
+
+            /**
+             * Toggle all "remove" buttons depending on whether the attribute is in the
+             * selected or available column (we need to display "remove" buttons only in the selected column)
+             */
+            toggleRemoveButtons: function () {
+                _.map(this.$('.selected-attributes li'), function (element) {
+                    $(element).find('.remove').removeClass('AknIconButton--hide');
+                });
+
+                _.map(this.$('.attributes li'), function (element) {
+                    $(element).find('.remove').addClass('AknIconButton--hide');
+                });
             }
         });
     }
