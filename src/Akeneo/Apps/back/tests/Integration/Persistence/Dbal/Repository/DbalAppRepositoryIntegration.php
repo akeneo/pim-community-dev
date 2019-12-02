@@ -33,42 +33,23 @@ class DbalAppRepositoryIntegration extends TestCase
         $this->appLoader = $this->get('akeneo_app.fixtures.app_loader');
     }
 
-    public function test_it_saves_a_new_app()
-    {
-        $client = $this->appLoader->createClient('magento');
-        $userId = $this->appLoader->createUser('magento', 'Magento connector');
-        $app = new App('magento', 'Magento connector', FlowType::DATA_DESTINATION, $client->id(), $userId);
-
-        $this->repository->create($app);
-
-        $result = $this->selectAppFromDb('magento');
-
-        Assert::assertSame('magento', $result['code']);
-        Assert::assertSame('Magento connector', $result['label']);
-        Assert::assertSame(FlowType::DATA_DESTINATION, $result['flow_type']);
-        Assert::assertNotNull($result['client_id']);
-        Assert::assertIsInt((int) $result['client_id']);
-        Assert::assertNotNull($result['user_id']);
-        Assert::assertIsInt((int) $result['user_id']);
-    }
-
-    public function it_finds_one_app_by_code()
+    public function test_it_finds_one_app_by_code()
     {
         $this->appLoader->createApp('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
 
         $app = $this->repository->findOneByCode('magento');
 
         Assert::assertInstanceOf(App::class, $app);
-        Assert::assertSame('magento', $app->code());
-        Assert::assertSame('Magento connector', $app->label());
-        Assert::assertSame(FlowType::DATA_DESTINATION, $app->flowType());
-        Assert::assertIsInt($app->clientId());
-        Assert::assertGreaterThan(0, $app->clientId());
-        Assert::assertIsInt($app->userId());
-        Assert::assertGreaterThan(0, $app->userId());
+        Assert::assertSame('magento', (string) $app->code());
+        Assert::assertSame('Magento Connector', (string) $app->label());
+        Assert::assertSame(FlowType::DATA_DESTINATION, (string) $app->flowType());
+        Assert::assertIsInt($app->clientId()->id());
+        Assert::assertGreaterThan(0, $app->clientId()->id());
+        Assert::assertIsInt($app->userId()->id());
+        Assert::assertGreaterThan(0, $app->userId()->id());
     }
 
-    public function it_updates_an_app_from_its_code()
+    public function test_it_updates_an_app_from_its_code()
     {
         $this->appLoader->createApp('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
 
