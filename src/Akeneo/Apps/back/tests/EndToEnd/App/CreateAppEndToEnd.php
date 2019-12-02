@@ -34,22 +34,17 @@ class CreateAppEndToEnd extends TestCase
         Assert::assertEquals(1, $this->countApp('magento'));
         Assert::assertEquals(1, $this->countClient($appWithCredentials->secret()));
 
-        // TODO: Assert User
         $user = $this->selectUser($appWithCredentials->username());
-        var_dump($user);
-
         $regex = sprintf('/^%s_[0-9]{4}$/', $appWithCredentials->code());
         Assert::assertSame(1, preg_match($regex, $user['username']));
         Assert::assertSame(1, preg_match('/@example.com$/', $user['email']));
         Assert::assertSame($appWithCredentials->label(), $user['first_name']);
         Assert::assertSame(' ', $user['last_name']);
         Assert::assertSame(1, (int) $user['enabled']);
+        Assert::assertSame(0, (int) $user['emailNotifications']);
 
         Assert::assertSame('ROLE_USER', $user['role']);
         Assert::assertSame('All', $user['group_name']);
-
-        // TODO: Email notification disabled
-
     }
 
     /**
@@ -83,7 +78,7 @@ SQL;
     private function selectUser(string $username): array
     {
         $selectSql = <<<SQL
-SELECT u.id, u.username, u.first_name, u.last_name, u.email, u.enabled, r.role, g.name as group_name
+SELECT u.id, u.username, u.first_name, u.last_name, u.email, u.enabled, u.emailNotifications, r.role, g.name as group_name
 FROM oro_user u
 INNER JOIN oro_user_access_role ur ON ur.user_id = u.id
 INNER JOIN oro_access_role r ON r.id = ur.role_id
