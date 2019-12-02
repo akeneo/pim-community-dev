@@ -92,12 +92,14 @@ class RangeValidatorSpec extends ObjectBehavior
         $constraint->max = 100;
 
         $context
-            ->buildViolation($constraint->maxMessage)
+            ->buildViolation($constraint->notInRangeMessage)
             ->shouldBeCalled()
             ->willReturn($violation);
 
         $violation->setParameter('{{ value }}', 150)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ limit }}', 100)->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ min }}', 0)->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ max }}', 100)->shouldBeCalled()->willReturn($violation);
+
         $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
@@ -113,12 +115,14 @@ class RangeValidatorSpec extends ObjectBehavior
         $constraint->max = 100;
 
         $context
-            ->buildViolation($constraint->minMessage)
+            ->buildViolation($constraint->notInRangeMessage)
             ->shouldBeCalled()
             ->willReturn($violation);
 
         $violation->setParameter('{{ value }}', 9.99999)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ limit }}', 10)->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ max }}', 100)->shouldBeCalled()->willReturn($violation);
+
         $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
@@ -134,12 +138,13 @@ class RangeValidatorSpec extends ObjectBehavior
         $constraint->max = 100;
 
         $context
-            ->buildViolation($constraint->minMessage)
+            ->buildViolation($constraint->notInRangeMessage)
             ->shouldBeCalled()
             ->willReturn($violation);
 
         $violation->setParameter('{{ value }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ limit }}', 10)->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ max }}', 100)->shouldBeCalled()->willReturn($violation);
         $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
@@ -155,12 +160,13 @@ class RangeValidatorSpec extends ObjectBehavior
         $constraint->max = 100;
 
         $context
-            ->buildViolation($constraint->maxMessage)
+            ->buildViolation($constraint->notInRangeMessage)
             ->shouldBeCalled()
             ->willReturn($violation);
 
         $violation->setParameter('{{ value }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ limit }}', 100)->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ max }}', 100)->shouldBeCalled()->willReturn($violation);
         $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
@@ -176,12 +182,13 @@ class RangeValidatorSpec extends ObjectBehavior
         $constraint->max = 100;
 
         $context
-            ->buildViolation($constraint->maxMessage)
+            ->buildViolation($constraint->notInRangeMessage)
             ->shouldBeCalled()
             ->willReturn($violation);
 
         $violation->setParameter('{{ value }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ limit }}', 100)->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ max }}', 100)->shouldBeCalled()->willReturn($violation);
         $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
@@ -355,50 +362,6 @@ class RangeValidatorSpec extends ObjectBehavior
         $this->validate($metric, $constraint);
     }
 
-    function it_sets_specific_min_message(
-        $context,
-        Range $constraint,
-        ConstraintViolationBuilderInterface $violation
-    ) {
-        $constraint->min = 10;
-        $constraint->max = 20;
-        $constraint->minMessage = 'myMessage';
-
-        $context
-            ->buildViolation('myMessage')
-            ->shouldBeCalled()
-            ->willReturn($violation);
-
-        $violation->setParameter('{{ value }}', 5)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ limit }}', 10)->shouldBeCalled()->willReturn($violation);
-        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->addViolation()->shouldBeCalled();
-
-        $this->validate(5, $constraint);
-    }
-
-    function it_sets_specific_max_message(
-        $context,
-        Range $constraint,
-        ConstraintViolationBuilderInterface $violation
-    ) {
-        $constraint->min = 10;
-        $constraint->max = 20;
-        $constraint->maxMessage = 'myMessage';
-
-        $context
-            ->buildViolation('myMessage')
-            ->shouldBeCalled()
-            ->willReturn($violation);
-
-        $violation->setParameter('{{ value }}', 21)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ limit }}', 20)->shouldBeCalled()->willReturn($violation);
-        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->addViolation()->shouldBeCalled();
-
-        $this->validate(21, $constraint);
-    }
-
     function it_validates_nullable_value($context, Range $constraint)
     {
         $constraint->min = 10;
@@ -409,5 +372,52 @@ class RangeValidatorSpec extends ObjectBehavior
             ->shouldNotBeCalled();
 
         $this->validate(null, $constraint);
+    }
+
+    /**
+     * This allows to have a proper message "This value should be between 1 and 9.22E18.", but only if the value have no maximum value but is superior to integer php limit (as we can't store it).
+     * If it's inferior to php limit value, the desired message is just "This value should be 1 or more." (for example).
+     */
+    function it_forces_max_values_at_php_integer_limit_when_value_is_not_bound_by_a_maximum_value_but_is_superior_to_integer_php_limit(
+        ExecutionContextInterface $context,
+        Range $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $constraint->min = 10;
+
+        $context
+            ->buildViolation($constraint->notInRangeMessage)
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->setParameter('{{ value }}', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ max }}', PHP_INT_MAX)->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $this->validate('6666666666666666666666666666666666666', $constraint);
+    }
+
+    function it_forces_max_values_at_integer_php_limit_when_the_maximum_limit_is_superior_to_integer_php_limit(
+        ExecutionContextInterface $context,
+        Range $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $constraint->min = 10;
+        $constraint->max = '6666666666666666666666666666666666666';
+
+        $context
+            ->buildViolation($constraint->notInRangeMessage)
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->setParameter('{{ value }}', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ max }}', PHP_INT_MAX)->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $this->validate('6666666666666666666666666666666666666', $constraint);
     }
 }
