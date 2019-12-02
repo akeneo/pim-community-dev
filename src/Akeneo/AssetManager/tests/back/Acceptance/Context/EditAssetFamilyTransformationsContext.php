@@ -52,7 +52,7 @@ class EditAssetFamilyTransformationsContext implements Context
             'operations' => [
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
             ],
-            'filename_suffix' => '_4'
+            'filename_suffix' => '_4',
         ],
         [
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
@@ -69,7 +69,7 @@ class EditAssetFamilyTransformationsContext implements Context
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
                 ['type' => 'thumbnail', 'parameters' => ['width' => 100, 'height' => 80]],
             ],
-            'filename_prefix' => '',
+            'filename_prefix' => null,
             'filename_suffix' => '   '
         ],
     ];
@@ -407,7 +407,13 @@ class EditAssetFamilyTransformationsContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $assetFamily = $this->getAssetFamily($familyIdentifier);
 
-        $value = self::COMPLEX_TRANSFORMATIONS;
+        $value = array_map(
+            function (array $transformation) {
+                return array_filter($transformation);
+            },
+            self::COMPLEX_TRANSFORMATIONS
+        );
+
         Assert::same(
             json_encode($assetFamily->getTransformationCollection()->normalize(), JSON_PRETTY_PRINT),
             json_encode($value, JSON_PRETTY_PRINT)
