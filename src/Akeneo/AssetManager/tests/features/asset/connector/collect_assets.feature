@@ -9,6 +9,7 @@ Feature: Connection to DAM systems
     When the connector collects this asset from the ERP to synchronize it with the PIM
     Then the asset is created in the PIM with the information from the ERP
     And a job runs to automatically link it to products according to the rule template
+    And a job runs to automatically compute the transformation on the asset
 
   @integration-back
   Scenario: Collect some assets that exist in the ERP but not in the PIM

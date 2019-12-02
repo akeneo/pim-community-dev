@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 
+use Akeneo\AssetManager\Common\Fake\ComputeTransformationLauncherSpy;
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
@@ -113,6 +114,9 @@ class CreateOrUpdateAssetContext implements Context
     /** @var ProductLinkRuleLauncherSpy */
     private $productLinkRuleLauncherSpy;
 
+    /** @var ComputeTransformationLauncherSpy */
+    private $computeTransformationLauncherSpy;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -125,7 +129,8 @@ class CreateOrUpdateAssetContext implements Context
         InMemoryFindFileDataByFileKey $findFileData,
         InMemoryFileExists $fileExists,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
-        ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy
+        ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy,
+        ComputeTransformationLauncherSpy $computeTransformationLauncherSpy
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -139,6 +144,7 @@ class CreateOrUpdateAssetContext implements Context
         $this->fileExists = $fileExists;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->productLinkRuleLauncherSpy = $productLinkRuleLauncherSpy;
+        $this->computeTransformationLauncherSpy = $computeTransformationLauncherSpy;
     }
 
     /**
@@ -817,6 +823,19 @@ class CreateOrUpdateAssetContext implements Context
     public function aJobRunsToAutomaticallyLinkItToProductsAccordingToTheRuleTemplate()
     {
         $this->productLinkRuleLauncherSpy->assertHasRunForAsset(self::ASSET_FAMILY_IDENTIFIER, self::HOUSE_ASSET_CODE);
+    }
+
+    /**
+     * @Given /^a job runs to automatically compute the transformation on the asset$/
+     */
+    public function aJobRunsToAutomaticallyComputeTheTransformationOnTheAsset()
+    {
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::HOUSE_ASSET_CODE)
+        );
+
+        $this->computeTransformationLauncherSpy->assertAJobIsLaunchedWithAssetIdentifier($asset->getIdentifier());
     }
 
     /**

@@ -74,6 +74,13 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\AssetManager\Application\Asset\Subscribers\ComputeAssetTransformationSubscriber:
+        class: Akeneo\AssetManager\Application\Asset\Subscribers\ComputeAssetTransformationSubscriber
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.job.compute_transformations_launcher'
+        tags:
+            - { name: kernel.event_subscriber }
+
     akeneo_assetmanager.common.helper.fixtures_loader:
         class: Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader
         arguments:
