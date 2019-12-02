@@ -146,7 +146,12 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
             $qb->setParameter('limit_date', $options['limit_date'], Type::DATETIME);
         }
 
-        return $this->cursorFactory->createCursor($qb);
+        $cursorOptions = [];
+        if (isset($options['batch_size'])) {
+            $cursorOptions['page_size'] = $options['batch_size'];
+        }
+
+        return $this->cursorFactory->createCursor($qb, $cursorOptions);
     }
 
     /**
