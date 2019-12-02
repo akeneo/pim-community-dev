@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyC
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Webmozart\Assert\Assert;
 
 /**
  * A transformation filename is not unique if there is another transformation with:
@@ -33,7 +34,7 @@ class TransformationFilenameIsUniqueValidator extends ConstraintValidator
     public function validate($command, Constraint $constraint)
     {
         $this->checkConstraintType($constraint);
-        $this->checkCommandType($command);
+        Assert::isInstanceOfAny($command, [CreateAssetFamilyCommand::class, EditAssetFamilyCommand::class]);
 
         if ($command->transformations === null) {
             return;
@@ -80,23 +81,6 @@ class TransformationFilenameIsUniqueValidator extends ConstraintValidator
     {
         if (!$constraint instanceof TransformationFilenameIsUnique) {
             throw new UnexpectedTypeException($constraint, TransformationFilenameIsUnique::class);
-        }
-    }
-
-    /**
-     * @throws \InvalidArgumentException
-     */
-    private function checkCommandType($command): void
-    {
-        if (!$command instanceof CreateAssetFamilyCommand && !$command instanceof EditAssetFamilyCommand) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expected argument to be of class "%s" or "%s", "%s" given',
-                    CreateAssetFamilyCommand::class,
-                    EditAssetFamilyCommand::class,
-                    get_class($command)
-                )
-            );
         }
     }
 }
