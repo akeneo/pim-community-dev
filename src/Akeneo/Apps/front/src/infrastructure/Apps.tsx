@@ -1,4 +1,4 @@
-import React, {useReducer} from 'react';
+import {default as React, StrictMode, useReducer} from 'react';
 import {AppsStateContext} from '../application/apps/app-state-context';
 import {Index} from '../application/apps/pages/Index';
 import {reducer} from '../application/apps/reducers/apps-reducer';
@@ -8,8 +8,10 @@ export const Apps = withContexts(() => {
     const [app, dispatch] = useReducer(reducer, {});
 
     return (
-        <AppsStateContext.Provider value={[app, dispatch]}>
-            <Index />
-        </AppsStateContext.Provider>
+        <StrictMode>
+            <AppsStateContext.Provider value={[app, dispatch]}>
+                <Index />
+            </AppsStateContext.Provider>
+        </StrictMode>
     );
 });

@@ -4,17 +4,25 @@ import {useHistory, useParams} from 'react-router';
 import styled from 'styled-components';
 import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {PimView} from '../../../infrastructure/pim-view/PimView';
-import {ApplyButton, Breadcrumb, BreadcrumbItem, PageContent, PageHeader} from '../../common';
+import {
+    ApplyButton,
+    Breadcrumb,
+    BreadcrumbItem,
+    DropdownLink,
+    PageContent,
+    PageHeader,
+    SecondaryActionsDropdownButton,
+} from '../../common';
 import imgUrl from '../../common/assets/illustrations/api.svg';
 import {fetchResult} from '../../shared/fetch-result';
 import {isOk} from '../../shared/fetch-result/result';
 import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {appUpdated, appWithCredentialsFetched} from '../actions/apps-actions';
+import {useUpdateApp} from '../api-hooks/use-update-app';
 import {useAppsState} from '../app-state-context';
 import {AppCredentials} from '../components/AppCredentials';
 import {AppEditForm} from '../components/AppEditForm';
-import {useUpdateApp} from '../api-hooks/use-update-app';
 
 interface FetchAppData {
     code: string;
@@ -116,7 +124,14 @@ export const AppEdit = () => {
                             </BreadcrumbItem>
                         </Breadcrumb>
                     }
-                    buttons={[<SaveButton key={0} />]}
+                    buttons={[
+                        <SecondaryActionsDropdownButton key={0}>
+                            <DropdownLink onClick={() => history.push(`/apps/${app.code}/delete`)}>
+                                <Translate id='pim_common.delete' />
+                            </DropdownLink>
+                        </SecondaryActionsDropdownButton>,
+                        <SaveButton key={1} />,
+                    ]}
                     userButtons={
                         <PimView
                             className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
