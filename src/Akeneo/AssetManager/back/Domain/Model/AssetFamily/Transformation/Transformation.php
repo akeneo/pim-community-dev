@@ -26,25 +26,23 @@ class Transformation
     /** @var OperationCollection */
     private $operations;
 
-    /** @var string */
+    /** @var ?string */
     private $filenamePrefix;
 
-    /** @var string */
+    /** @var ?string */
     private $filenameSuffix;
 
     private function __construct(
         Source $source,
         Target $target,
         OperationCollection $operations,
-        string $filenamePrefix,
-        string $filenameSuffix
+        ?string $filenamePrefix,
+        ?string $filenameSuffix
     ) {
         Assert::false($source->equals($target), 'A transformation can not have the same source and target');
 
-        $filenamePrefix = trim($filenamePrefix);
-        $filenameSuffix = trim($filenameSuffix);
         Assert::stringNotEmpty(
-            $filenamePrefix . $filenameSuffix,
+            sprintf('%s%s', $filenamePrefix ?? '', $filenameSuffix ?? ''),
             'A transformation must have at least a filename prefix or a filename suffix'
         );
 
@@ -59,8 +57,8 @@ class Transformation
         Source $source,
         Target $target,
         OperationCollection $operations,
-        string $filenamePrefix,
-        string $filenameSuffix
+        ?string $filenamePrefix,
+        ?string $filenameSuffix
     ): self {
         return new self($source, $target, $operations, $filenamePrefix, $filenameSuffix);
     }
@@ -82,12 +80,17 @@ class Transformation
 
     public function normalize(): array
     {
-        return [
-            'source' => $this->source->normalize(),
-            'target' => $this->target->normalize(),
-            'operations' => $this->operations->normalize(),
-            'filename_prefix' => $this->filenamePrefix,
-            'filename_suffix' => $this->filenameSuffix,
-        ];
+        return array_filter(
+            [
+                'source' => $this->source->normalize(),
+                'target' => $this->target->normalize(),
+                'operations' => $this->operations->normalize(),
+                'filename_prefix' => $this->filenamePrefix,
+                'filename_suffix' => $this->filenameSuffix,
+            ],
+            function ($value) {
+                return null !== $value;
+            }
+        );
     }
 }

@@ -52,7 +52,6 @@ class EditAssetFamilyTransformationsContext implements Context
             'operations' => [
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
             ],
-            'filename_prefix' => '1_',
             'filename_suffix' => '_4'
         ],
         [
@@ -61,8 +60,7 @@ class EditAssetFamilyTransformationsContext implements Context
             'operations' => [
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
             ],
-            'filename_prefix' => '1_',
-            'filename_suffix' => '_5'
+            'filename_prefix' => '   ',
         ],
         [
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
@@ -71,8 +69,8 @@ class EditAssetFamilyTransformationsContext implements Context
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
                 ['type' => 'thumbnail', 'parameters' => ['width' => 100, 'height' => 80]],
             ],
-            'filename_prefix' => '1_',
-            'filename_suffix' => '_6'
+            'filename_prefix' => '',
+            'filename_suffix' => '   '
         ],
     ];
 
@@ -347,15 +345,14 @@ class EditAssetFamilyTransformationsContext implements Context
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [],
-                'filename_prefix' => '  1_',
-                'filename_suffix' => '_2  '
+                'filename_prefix' => '1_',
             ],
             [
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target2', 'channel' => null, 'locale' => null],
                 'operations' => [],
                 'filename_prefix' => '1_',
-                'filename_suffix' => '_2'
+                'filename_suffix' => ''
             ],
         ]);
     }
@@ -493,7 +490,7 @@ class EditAssetFamilyTransformationsContext implements Context
     public function thereShouldBeAValidationErrorStatingThatFilenameIsNotUnique()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'A transformation with filename\'s prefix "1_" and suffix "_2" already exists for attribute source "main_image"'
+            'A transformation with filename\'s prefix "1_" and suffix "" already exists for attribute source "main_image"'
         );
     }
 
@@ -513,7 +510,7 @@ class EditAssetFamilyTransformationsContext implements Context
     public function thereShouldBeAValidationErrorStatingThatFilenameSuffixIsNotValid()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'Filename suffix contains illegal character'
+            "Filename prefix contains illegal character. Allowed characters are alphanumerics, '_', '-', '.', and space."
         );
     }
 

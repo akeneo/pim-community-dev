@@ -44,9 +44,9 @@ class TransformationFilenameIsUniqueValidator extends ConstraintValidator
             $subTransformations = array_slice($command->transformations, $index + 1);
             if ($this->thereIsATransformationWithSameTargetFilename($transformation, $subTransformations)) {
                 $this->context->buildViolation(TransformationFilenameIsUnique::ERROR_MESSAGE)
-                    ->setParameter('%filename_prefix%', trim($transformation['filename_prefix']))
-                    ->setParameter('%filename_suffix%', trim($transformation['filename_suffix']))
-                    ->setParameter('%attribute_code%', trim($transformation['source']['attribute']))
+                    ->setParameter('%filename_prefix%', $transformation['filename_prefix'] ?? '')
+                    ->setParameter('%filename_suffix%', $transformation['filename_suffix'] ?? '')
+                    ->setParameter('%attribute_code%', $transformation['source']['attribute'])
                     ->addViolation();
             }
         }
@@ -56,8 +56,8 @@ class TransformationFilenameIsUniqueValidator extends ConstraintValidator
     {
         foreach ($transformations as $otherTransformation) {
             if ($this->sourcesAreEqual($transformation['source'], $otherTransformation['source'])
-                && trim($transformation['filename_prefix']) === trim($otherTransformation['filename_prefix'])
-                && trim($transformation['filename_suffix']) === trim($otherTransformation['filename_suffix'])
+                && ($transformation['filename_prefix'] ?? '') === ($otherTransformation['filename_prefix'] ?? '')
+                && ($transformation['filename_suffix'] ?? '') === ($otherTransformation['filename_suffix'] ?? '')
             ) {
                 return true;
             }

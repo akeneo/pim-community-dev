@@ -74,6 +74,37 @@ class TransformationSpec extends ObjectBehavior
         ]);
     }
 
+    function it_does_not_return_null_values_in_normalization(Source $source, Target $target)
+    {
+        $operation1 = ThumbnailOperation::create(['width' => 100, 'height' => 80]);
+        $operation2 = ResizeOperation::create(['width' => 100, 'height' => 80]);
+
+        $source->equals($target)->willReturn(false);
+
+        $this->beConstructedThrough('create', [
+            $source,
+            $target,
+            OperationCollection::create([$operation1, $operation2]),
+            null,
+            ' ',
+        ]);
+        $normalizedSource = ['key' => 'normalized source'];
+        $normalizedTarget = ['key' => 'normalized target'];
+
+        $source->normalize()->willReturn($normalizedSource);
+        $target->normalize()->willReturn($normalizedTarget);
+
+        $this->normalize()->shouldReturn([
+            'source' => $normalizedSource,
+            'target' => $normalizedTarget,
+            'operations' => [
+                $operation1->normalize(),
+                $operation2->normalize()
+            ],
+            'filename_suffix' => ' ',
+        ]);
+    }
+
     function it_can_construct_transformation_with_only_prefix(Source $source, Target $target)
     {
         $source->equals($target)->willReturn(false);
@@ -83,7 +114,7 @@ class TransformationSpec extends ObjectBehavior
             $target,
             OperationCollection::create([]),
             'prefix',
-            '',
+            null
         ]);
         $this->getWrappedObject();
     }
@@ -96,8 +127,22 @@ class TransformationSpec extends ObjectBehavior
             $source,
             $target,
             OperationCollection::create([]),
-            '',
+            null,
             'suffix',
+        ]);
+        $this->getWrappedObject();
+    }
+
+    function it_can_construct_transformation_with_spaces_in_prefix_and_suffix(Source $source, Target $target)
+    {
+        $source->equals($target)->willReturn(false);
+
+        $this->beConstructedThrough('create', [
+            $source,
+            $target,
+            OperationCollection::create([]),
+            '   ',
+            '   ',
         ]);
         $this->getWrappedObject();
     }
@@ -110,8 +155,23 @@ class TransformationSpec extends ObjectBehavior
             $source,
             $target,
             OperationCollection::create([]),
-            '   ',
-            '   ',
+            null,
+            null,
+        ]);
+        $this->shouldThrow(new \InvalidArgumentException('A transformation must have at least a filename prefix or a filename suffix'))
+            ->duringInstantiation();
+    }
+
+    function it_can_not_construct_transformation_with_empty_prefix_and_suffix(Source $source, Target $target)
+    {
+        $source->equals($target)->willReturn(false);
+
+        $this->beConstructedThrough('create', [
+            $source,
+            $target,
+            OperationCollection::create([]),
+            '',
+            '',
         ]);
         $this->shouldThrow(new \InvalidArgumentException('A transformation must have at least a filename prefix or a filename suffix'))
             ->duringInstantiation();
