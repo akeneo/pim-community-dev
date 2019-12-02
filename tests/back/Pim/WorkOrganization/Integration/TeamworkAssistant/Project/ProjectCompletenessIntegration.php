@@ -510,5 +510,6 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         $constraints = $this->get('pim_catalog.validator.product')->validate($product);
         Assert::assertCount(0, $constraints);
         $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 }

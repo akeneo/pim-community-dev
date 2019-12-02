@@ -57,25 +57,25 @@ Feature: Validate number attributes of a draft
   Scenario: Validate the number min constraint of number attribute
     Given I change the Rating to "0"
     And I save the product
-    Then I should see validation error "This value should be 1 or more."
+    Then I should see validation error "This value should be between 1 and 5."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the number min constraint of scopable number attribute
     Given I change the Popularity for scope mobile to "0"
     And I save the product
-    Then I should see validation error "This value should be 1 or more."
+    Then I should see validation error "This value should be between 1 and 10."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the number max constraint of number attribute
     Given I change the Rating to "6"
     And I save the product
-    Then I should see validation error "This value should be 5 or less."
+    Then I should see validation error "This value should be between 1 and 5."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the number max constraint of scopable number attribute
     Given I change the Popularity for scope mobile to "11"
     And I save the product
-    Then I should see validation error "This value should be 10 or less."
+    Then I should see validation error "This value should be between 1 and 10."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the type constraint of decimal attribute

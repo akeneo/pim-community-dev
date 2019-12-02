@@ -51,7 +51,6 @@
         "phpspec/php-diff": "1.0.2",
         "phpseclib/phpseclib": "~2.0",
         "superbalist/flysystem-google-storage": "7.2.1",
-        "symfony/proxy-manager-bridge": "^4.3",
         "grpc/grpc": "1.19.0"
     },
     "require-dev": {
