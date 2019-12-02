@@ -28,14 +28,3 @@ Feature: Create a category
       | Code | flipflap |
     And I save the category
     Then I should be on the category "flipflap" edit page
-
-  @skip @critical
-  Scenario: Go to category creation page from the category tree right click menu
-    Given the following category:
-      | code | label-en_US | parent  |
-      | shoe | Shoe        | default |
-    And I am on the categories page
-    When I right click on the "shoe" category
-    And I click on "Create" in the right click menu
-    And I blur the category node
-    Then I should be on the category "shoe" node creation page
