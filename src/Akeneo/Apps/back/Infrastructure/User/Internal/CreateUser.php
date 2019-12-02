@@ -47,6 +47,7 @@ class CreateUser implements CreateUserInterface
         string $lastname
     ): User {
         $password = $this->generatePassword();
+        $username = $this->generateUsername($username);
 
         $user = $this->userFactory->create();
         $this->userUpdater->update(
@@ -56,7 +57,7 @@ class CreateUser implements CreateUserInterface
                 'password' => $password,
                 'first_name' => $firstname,
                 'last_name' => $lastname,
-                'email' => sprintf('%s@example.com', uniqid()),
+                'email' => sprintf('%s@example.com', $username),
             ]
         );
 
@@ -78,5 +79,12 @@ class CreateUser implements CreateUserInterface
     private function generatePassword(): string
     {
         return str_shuffle(ucfirst(substr(uniqid(), 0, 9)));
+    }
+
+    private function generateUsername(string $username): string
+    {
+        $randomNumberString = str_pad((string) rand(1, 9999), 4, "0", STR_PAD_LEFT);
+
+        return sprintf('%s_%s', $username, $randomNumberString);
     }
 }

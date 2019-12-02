@@ -45,7 +45,7 @@ class CreateUserSpec extends ObjectBehavior
         $user = $this->execute('foo', 'bar', 'baz');
         $user->shouldBeAnInstanceOf(ReadUser::class);
         $user->id()->shouldReturn(1);
-        $user->username()->shouldReturn('foo');
+        $user->username()->shouldBeString();
         $user->password()->shouldBeString();
     }
 
