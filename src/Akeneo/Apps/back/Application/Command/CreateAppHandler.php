@@ -52,7 +52,8 @@ class CreateAppHandler
 
         $client = $this->createClient->execute($command->label());
 
-        $username = sprintf('%s_%d', $command->code(), rand(1, 9999));
+        $randomNumberString = str_pad((string) rand(1, 9999), 4, "0");
+        $username = sprintf('%s_%d', $command->code(), $randomNumberString);
         $user = $this->createUser->execute(
             $username,
             $command->label(),
