@@ -8,7 +8,7 @@ Then explain the expected behavior, the encountered behavior and the steps to re
 
 **I'm asking a Question**
 
-Please submit your question via the forum https://www.akeneo.com/forums/forum/programming-questions/
+Please submit your question via the Akeneo Slack user group https://akeneopim-ug.herokuapp.com/
 
 **I'm submitting a Feature Request**
 
