@@ -13,6 +13,11 @@ use PhpSpec\ObjectBehavior;
  */
 class OptionDataSpec extends ObjectBehavior
 {
+    public function let()
+    {
+        $this->beConstructedThrough('createFromNormalize', ['Hello!']);
+    }
+
     public function it_is_initializable()
     {
         $this->shouldHaveType(OptionData::class);

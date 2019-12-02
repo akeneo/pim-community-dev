@@ -13,7 +13,7 @@ class ProjectStatusRepositorySpec extends ObjectBehavior
 {
     function let(EntityManager $entityManager, ClassMetadata $classMetadata)
     {
-        $entityManager->getClassMetadata()->willReturn($classMetadata);
+        $entityManager->getClassMetadata(ProjectStatus::class)->willReturn($classMetadata);
 
         $this->beConstructedWith($entityManager, ProjectStatus::class);
     }

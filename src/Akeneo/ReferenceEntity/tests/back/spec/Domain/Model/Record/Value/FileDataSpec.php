@@ -70,6 +70,9 @@ class FileDataSpec extends ObjectBehavior
     {
         $fileInfo->getKey()->willReturn('A9E87F76A6F87A87E68F768A7E6F');
         $fileInfo->getOriginalFilename()->willReturn('file.ext');
+        $fileInfo->getSize()->willReturn(1024);
+        $fileInfo->getMimeType()->willReturn('image/ext');
+        $fileInfo->getExtension()->willReturn('ext');
 
         $this->beConstructedThrough('createFromFileinfo', [$fileInfo]);
         $this->shouldBeAnInstanceOf(FileData::class);

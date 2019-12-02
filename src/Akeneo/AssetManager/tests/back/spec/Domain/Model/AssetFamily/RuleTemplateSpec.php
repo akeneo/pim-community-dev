@@ -15,6 +15,27 @@ use Prophecy\Argument;
  */
 class RuleTemplateSpec extends ObjectBehavior
 {
+    public function let()
+    {
+        $this->beConstructedThrough('createFromProductLinkRule', [
+            [
+                'product_selections' => [
+                    [
+                        'field' => 'sku',
+                        'operator' => '=',
+                        'value' => '{{product_sku}}'
+                    ]
+                ],
+                'assign_assets_to' => [
+                    [
+                        'mode' => 'add',
+                        'attribute' => '{{attribute}}'
+                    ]
+                ]
+            ]
+        ]);
+    }
+
     public function it_is_initializable()
     {
         $this->shouldHaveType(RuleTemplate::class);
