@@ -29,7 +29,7 @@
     "less": "node $npm_package_config_styles",
     "less-watch": "SHELL=/bin/bash chokidar --verbose \"{$npm_package_config_source/src,src,public/bundles}/**/*.{less,css}\" -c \"yarn run less\"",
     "update-extensions": "node vendor/akeneo/pim-community-dev/frontend/build/update-extensions.js",
-    "generate-asset-manager-models": "node frontend/build/json-schema-to-typescript.js src/Akeneo/AssetManager/definitions/ src/Akeneo/AssetManager/front/infrastructure/model/"
+    "generate-asset-manager-models": "node frontend/build/json-schema-to-typescript.js src/Akeneo/AssetManager/definitions/ public/bundles/akeneoassetmanager/infrastructure/model/"
   },
   "devDependencies": {
     "@types/draft-js": "^0.10.25",
