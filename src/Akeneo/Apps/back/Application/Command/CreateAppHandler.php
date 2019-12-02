@@ -7,6 +7,7 @@ use Akeneo\Apps\Application\Service\CreateClientInterface;
 use Akeneo\Apps\Application\Service\CreateUserInterface;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\Read\AppWithCredentials;
+use Akeneo\Apps\Domain\Model\ValueObject\UserId;
 use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -52,13 +53,10 @@ class CreateAppHandler
         $client = $this->createClient->execute($command->label());
 
         $username = sprintf('%s_%d', $command->code(), rand(1, 9999));
-        $password = $this->generatePassword();
-        $userId = $this->createUser->execute(
+        $user = $this->createUser->execute(
             $username,
             $command->label(),
-            ' ',
-            $password,
-            sprintf('%s@example.com', uniqid())
+            ' '
         );
 
         $app = new App(
@@ -66,7 +64,7 @@ class CreateAppHandler
             $command->label(),
             $command->flowType(),
             $client->id(),
-            $userId
+            new UserId($user->id())
         );
         $this->repository->create($app);
 
@@ -76,16 +74,8 @@ class CreateAppHandler
             $command->flowType(),
             $client->clientId(),
             $client->secret(),
-            $username,
-            $password
+            $user->username(),
+            $user->password()
         );
-    }
-
-    /**
-     * TODO: Extract in a PasswordGenerator dedicated class
-     */
-    private function generatePassword(): string
-    {
-        return str_shuffle(ucfirst(substr(uniqid(), 0, 9)));
     }
 }
