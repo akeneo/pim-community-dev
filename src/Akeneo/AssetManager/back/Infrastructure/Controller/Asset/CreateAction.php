@@ -15,6 +15,9 @@ namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
@@ -39,6 +42,9 @@ class CreateAction
     /** @var CreateAssetHandler */
     private $createAssetHandler;
 
+    /** @var EditAssetHandler */
+    private $editAssetHandler;
+
     /** @var AssetIndexerInterface */
     private $assetIndexer;
 
@@ -57,22 +63,29 @@ class CreateAction
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
+    /** @var EditAssetCommandFactory */
+    private $editAssetCommandFactory;
+
     public function __construct(
         CreateAssetHandler $createAssetHandler,
+        EditAssetHandler $editAssetHandler,
         AssetIndexerInterface $assetIndexer,
         CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        EditAssetCommandFactory $editAssetCommandFactory
     ) {
         $this->createAssetHandler = $createAssetHandler;
-        $this->validator = $validator;
+        $this->editAssetHandler = $editAssetHandler;
+        $this->assetIndexer = $assetIndexer;
         $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
+        $this->validator = $validator;
         $this->securityFacade = $securityFacade;
-        $this->assetIndexer = $assetIndexer;
+        $this->editAssetCommandFactory = $editAssetCommandFactory;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response
@@ -90,17 +103,29 @@ class CreateAction
             );
         }
 
-        $command = $this->getCreateCommand($request);
-        $violations = $this->validator->validate($command);
+        $createCommand = $this->getCreateCommand($request);
+        $creationViolations = $this->validator->validate($createCommand);
 
-        if ($violations->count() > 0) {
+        if ($creationViolations->count() > 0) {
             return new JsonResponse(
-                $this->normalizer->normalize($violations, 'internal_api'),
+                $this->normalizer->normalize($creationViolations, 'internal_api'),
                 Response::HTTP_BAD_REQUEST
             );
         }
 
-        $this->createAsset($command);
+        $this->createAsset($createCommand);
+
+        $editCommand = $this->getEditCommand($request);
+        $editionViolations = $this->validator->validate($editCommand);
+
+        if ($editionViolations->count() > 0) {
+            return new JsonResponse(
+                $this->normalizer->normalize($editionViolations, 'internal_api'),
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $this->editAsset($editCommand);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
@@ -139,6 +164,14 @@ class CreateAction
         return $command;
     }
 
+    private function getEditCommand(Request $request): EditAssetCommand
+    {
+        $normalizedCommand = json_decode($request->getContent(), true);
+        $command = $this->editAssetCommandFactory->create($normalizedCommand);
+
+        return $command;
+    }
+
     /**
      * When creating multiple assets in a row using the UI "Create another",
      * we force refresh of the index so that the grid is up to date when the users dismisses the creation modal.
@@ -146,6 +179,16 @@ class CreateAction
     private function createAsset(CreateAssetCommand $command): void
     {
         ($this->createAssetHandler)($command);
+        $this->assetIndexer->refresh();
+    }
+
+    /**
+     * When creating multiple assets in a row using the UI "Create another",
+     * we force refresh of the index so that the grid is up to date when the users dismisses the creation modal.
+     */
+    private function editAsset(EditAssetCommand $command): void
+    {
+        ($this->editAssetHandler)($command);
         $this->assetIndexer->refresh();
     }
 }
