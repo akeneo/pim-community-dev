@@ -13,12 +13,24 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClient;
+use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateActionTest extends ControllerIntegrationTestCase
@@ -27,6 +39,12 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
     /** @var FixturesLoader */
     private $fixturesLoader;
+
+    /** @var InMemoryFileExists */
+    private $fileExists;
+
+    /** @var InMemoryFindFileDataByFileKey */
+    private $findFileData;
 
     /** @var WebClientHelper */
     private $webClientHelper;
@@ -38,6 +56,9 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
         $this->fixturesLoader = $this->get('akeneo_assetmanager.common.helper.fixtures_loader');
+        $this->fileExists = $this->get('akeneo_assetmanager.infrastructure.persistence.query.file_exists');
+        $this->findFileData = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key');
+
         $this->loadFixtures();
     }
 
@@ -65,6 +86,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                     'fr_FR' => 'Intel',
                     'en_US' => 'Intel',
                 ],
+                'values' => [],
             ]
         );
 
@@ -92,11 +114,117 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'identifier' => 'brand_intel_a1677570-a278-444b-ab46-baa1db199392',
                 'code' => 'intel',
                 'asset_family_identifier' => 'brand',
+                'values' => [],
             ]
         );
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
         $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_an_asset_with_values(): void
+    {
+        $this->fileExists->save('/a/b/c/philou.png');
+        $fileData = [
+            'originalFilename' => 'philou.png',
+            'filePath' => '/a/b/c/philou.png',
+            'size' => 1000,
+            'mimeType' => 'image/png',
+            'extension' => 'png',
+            'updatedAt' => '2019-11-22T15:16:21+0000',
+        ];
+        $this->findFileData->save($fileData);
+
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_ASSET_ROUTE,
+            [
+                'assetFamilyIdentifier' => 'brand',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            [
+                'identifier' => 'brand_intel_a1677570-a278-444b-ab46-baa1db199392',
+                'asset_family_identifier' => 'brand',
+                'code' => 'intel',
+                'labels' => [
+                    'fr_FR' => 'Intel',
+                    'en_US' => 'Intel',
+                ],
+                'values' => [
+                    [
+                        "attribute" => "logo_brand_fingerprint",
+                        "channel" => null,
+                        "locale" => null,
+                        "data" => [
+                          "filePath" => "/a/b/c/philou.png",
+                          "originalFilename" => "philou.png",
+                          "size" => 5396,
+                          "mimeType" => "image/png",
+                          "extension" => "png"
+                        ]
+                    ]
+                ],
+            ]
+        );
+
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
+        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_an_asset_with_invalid_values(): void
+    {
+        $this->fileExists->save('/a/b/c/philou.png');
+
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_ASSET_ROUTE,
+            [
+                'assetFamilyIdentifier' => 'brand',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            [
+                'identifier' => 'brand_intel_a1677570-a278-444b-ab46-baa1db199392',
+                'asset_family_identifier' => 'brand',
+                'code' => 'intel',
+                'labels' => [
+                    'fr_FR' => 'Intel',
+                    'en_US' => 'Intel',
+                ],
+                'values' => [
+                    [
+                        "attribute" => "logo_brand_fingerprint",
+                        "channel" => null,
+                        "locale" => null,
+                        "data" => [
+                          "filePath" => "INVALID_FILE_PATH",
+                          "originalFilename" => "INVALID_FILE_NAME",
+                          "size" => 5396,
+                          "mimeType" => "image/png",
+                          "extension" => "png"
+                        ]
+                    ]
+                ],
+            ]
+        );
+
+        $response = $this->client->getResponse();
+        Assert::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $errorMessage = json_decode($response->getContent(), true)[0]['messageTemplate'];
+        Assert::assertEquals('The file "INVALID_FILE_PATH" was not found.', $errorMessage);
     }
 
     /**
@@ -128,7 +256,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'identifier' => 'brand_intel_a1677570-a278-444b-ab46-baa1db199392',
                 'asset_family_identifier' => $assetFamilyIdentifier,
                 'code' => $assetCode,
-                'labels' => []
+                'labels' => [],
+                'values' => [],
             ]
         );
 
@@ -187,6 +316,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                     'fr_FR' => 'Intel',
                     'en_US' => 'Intel',
                 ],
+                'values' => [],
             ]
         );
 
@@ -218,6 +348,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                     'fr_FR' => 'Intel',
                     'en_US' => 'Intel',
                 ],
+                'values' => [],
             ]
         );
         $this->webClientHelper->assert403Forbidden($this->client->getResponse());
@@ -238,6 +369,21 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $activatedLocales = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers');
         $activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
+        $logoAttribute = ImageAttribute::create(
+            AttributeIdentifier::create('brand', 'logo', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('brand'),
+            AttributeCode::fromString('logo'),
+            LabelCollection::fromArray(['fr_FR' => 'Logo', 'en_US' => 'Logo']),
+            AttributeOrder::fromInteger(6),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::noLimit(),
+            AttributeAllowedExtensions::fromList(['png'])
+        );
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->create($logoAttribute);
     }
 
     private function revokeCreationRights(): void
