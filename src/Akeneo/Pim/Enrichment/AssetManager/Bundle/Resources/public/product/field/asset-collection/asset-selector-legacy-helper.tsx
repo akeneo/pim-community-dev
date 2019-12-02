@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import IconInfoIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/icon/info';
-import {Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
+import {Separator} from 'akeneoassetmanager/application/component/app/separator';
 import {
   NotificationSection,
   NotificationText,

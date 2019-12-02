@@ -8,6 +8,7 @@ import CreateAssetModal from 'akeneoassetmanager/application/component/asset/cre
 import __ from 'akeneoassetmanager/tools/translator';
 import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
 import Key from 'akeneoassetmanager/tools/key';
+import {createAsset} from 'akeneoassetmanager/application/action/asset/create';
 
 interface StateProps {
   sidebar: {
@@ -22,6 +23,7 @@ interface StateProps {
 interface DispatchProps {
   events: {
     backToAssetFamilyList: () => void;
+    onCreateDone: () => void;
   };
 }
 
@@ -70,7 +72,9 @@ class AssetFamilyEditView extends React.Component<EditProps> {
           </div>
         </div>
         <Sidebar backButton={this.backToAssetFamilyList} />
-        {this.props.createAsset.active ? <CreateAssetModal /> : null}
+        {this.props.createAsset.active ? (
+          <CreateAssetModal onCancel={this.props.events.onCreateDone} onAssetCreated={this.props.events.onCreateDone} />
+        ) : null}
       </div>
     );
   }
@@ -96,6 +100,9 @@ export default connect(
       events: {
         backToAssetFamilyList: () => {
           dispatch(redirectToAssetFamilyListItem());
+        },
+        onCreateDone: () => {
+          dispatch(createAsset(false));
         },
       },
     };

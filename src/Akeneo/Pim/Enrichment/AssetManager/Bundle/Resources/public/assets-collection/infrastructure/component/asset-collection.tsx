@@ -13,7 +13,7 @@ import {
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {AssetCode, ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import styled from 'styled-components';
-import {Pill} from 'akeneopimenrichmentassetmanager/platform/component/common';
+import {Pill} from 'akeneoassetmanager/application/component/app/pill';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
 import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';

@@ -211,15 +211,11 @@ pim_asset_manager:
       label: Label
     title: Assets
     create:
-      header:
-        title: Create
-      subtitle: Asset Families
-      title: Add new {{ entityLabel }}
-      input:
-        label: Label
-        code: Code (required)
-        create_another: Create another asset
-      confirm: Save
+      asset_count: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
+      title: Upload assets
+      add_new: Add new
+      remove_all: Remove all
+      confirm: Create
     delete:
       message: Are you sure you want to delete the asset "{{ assetLabel }}"? If it's linked to products or assets, the links will be removed.
       title: Asset

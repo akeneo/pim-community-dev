@@ -6,8 +6,11 @@ import {AttributeCode} from 'akeneopimenrichmentassetmanager/platform/model/stru
 import {RuleRelation} from 'akeneopimenrichmentassetmanager/platform/model/structure/rule-relation';
 import {getRulesForAttribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/rule-relation';
 import IconInfoIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/icon/info';
-import {NotificationSection, NotificationText} from 'akeneopimenrichmentassetmanager/platform/component/common/notification';
-import {Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
+import {
+  NotificationSection,
+  NotificationText,
+} from 'akeneopimenrichmentassetmanager/platform/component/common/notification';
+import {Separator} from 'akeneoassetmanager/application/component/app/separator';
 
 const Rule = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.blue80};
@@ -15,8 +18,8 @@ const Rule = styled.div`
 `;
 
 type RuleNotificationProps = {
-  attributeCode: AttributeCode,
-  ruleRelations: RuleRelation[]
+  attributeCode: AttributeCode;
+  ruleRelations: RuleRelation[];
 };
 
 export const RuleNotification = ({attributeCode, ruleRelations}: RuleNotificationProps) => {
@@ -30,7 +33,9 @@ export const RuleNotification = ({attributeCode, ruleRelations}: RuleNotificatio
     <NotificationSection>
       <IconInfoIllustration />
       <Separator />
-      <NotificationText>{__('pim_asset_manager.asset_collection.notification.product_rule')} <Rule>{ruleCodes.join(', ')}</Rule></NotificationText>
+      <NotificationText>
+        {__('pim_asset_manager.asset_collection.notification.product_rule')} <Rule>{ruleCodes.join(', ')}</Rule>
+      </NotificationText>
     </NotificationSection>
   );
-}
+};

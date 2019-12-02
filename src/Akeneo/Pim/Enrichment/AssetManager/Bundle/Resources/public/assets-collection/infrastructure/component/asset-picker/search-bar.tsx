@@ -6,7 +6,7 @@ import Locale, {localeExists, LocaleCode} from 'akeneoassetmanager/domain/model/
 import Channel, {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import SearchField from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar/search-field';
 import {ResultCounter} from 'akeneopimenrichmentassetmanager/platform/component/common/result-counter';
-import {Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
+import {Separator} from 'akeneoassetmanager/application/component/app/separator';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
