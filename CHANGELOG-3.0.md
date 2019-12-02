@@ -1,5 +1,8 @@
 # 3.0.x
 
+## Enhancements
+- PIM-9002: Allow command `pim:product:clean-removed-attributes` to work with --no-interaction parameter
+
 # 3.0.56 (2019-11-27)
 
 ## Bug fixes
