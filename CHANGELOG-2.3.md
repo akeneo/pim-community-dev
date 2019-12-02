@@ -1,5 +1,10 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-9003: Fix product variant navigation when there is no completeness for a given channel
+- PIM-6437: Remove empty or already added attribute groups from family edit screen
+
 # 2.3.72 (2019-12-02)
 
 ## Bug fixes
