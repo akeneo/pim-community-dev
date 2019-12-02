@@ -335,6 +335,11 @@ define(
 
                 if ('product' === entity.model_type) {
                     const channelCompletenesses = _.findWhere(entity.completeness, {channel: catalogScope});
+                    if (channelCompletenesses === undefined) {
+                        return {
+                            ratio: 0
+                        };
+                    }
                     const localeCompleteness = channelCompletenesses.locales[catalogLocale].completeness;
 
                     return {
