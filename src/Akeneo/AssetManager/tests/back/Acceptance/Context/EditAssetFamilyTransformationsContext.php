@@ -503,7 +503,7 @@ class EditAssetFamilyTransformationsContext implements Context
     public function thereShouldBeAValidationErrorStatingThatFilenamePrefixIsNotValid()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'Filename prefix contains illegal character'
+            "Filename prefix contains illegal character. Allowed characters are alphanumerics, '_', '-', '.', and space."
         );
     }
 

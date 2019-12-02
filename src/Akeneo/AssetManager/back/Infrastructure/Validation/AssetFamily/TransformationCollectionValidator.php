@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TransformationCollectionValidator extends ConstraintValidator
 {
-    private const FILENAME_REGEX = '/^[\w,-\. ]*$/';
+    private const FILENAME_REGEX = '/^[\w-\. ]*$/';
 
     /** @var ValidatorInterface */
     private $validator;
@@ -85,14 +85,14 @@ class TransformationCollectionValidator extends ConstraintValidator
                         new Assert\Type('string'),
                         new Assert\Regex([
                             'pattern' => self::FILENAME_REGEX,
-                            'message' => 'Filename prefix contains illegal character',
+                            'message' => "Filename prefix contains illegal character. Allowed characters are alphanumerics, '_', '-', '.', and space.",
                         ]),
                     ],
                     'filename_suffix' => [
                         new Assert\Type('string'),
                         new Assert\Regex([
                             'pattern' => self::FILENAME_REGEX,
-                            'message' => 'Filename suffix contains illegal character',
+                            'message' => "Filename prefix contains illegal character. Allowed characters are alphanumerics, '_', '-', '.', and space.",
                         ]),
                     ],
                 ]),
