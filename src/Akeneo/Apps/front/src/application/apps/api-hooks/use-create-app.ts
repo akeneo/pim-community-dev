@@ -1,11 +1,11 @@
 import {useContext} from 'react';
 import {useHistory} from 'react-router';
-import {FlowType} from '../../domain/apps/flow-type.enum';
-import {fetch} from '../shared/fetch';
-import {isErr} from '../shared/fetch/result';
-import {NotificationLevel, useNotify} from '../shared/notify';
-import {useRoute} from '../shared/router';
-import {TranslateContext} from '../shared/translate';
+import {FlowType} from '../../../domain/apps/flow-type.enum';
+import {fetchResult} from '../../shared/fetch-result';
+import {isErr} from '../../shared/fetch-result/result';
+import {NotificationLevel, useNotify} from '../../shared/notify';
+import {useRoute} from '../../shared/router';
+import {TranslateContext} from '../../shared/translate';
 
 export interface CreateAppData {
     code: string;
@@ -13,7 +13,7 @@ export interface CreateAppData {
     flow_type: FlowType;
 }
 
-interface ResultData {
+interface ResultValue {
     code: string;
     label: string;
     flow_type: FlowType;
@@ -38,7 +38,7 @@ export const useCreateApp = () => {
     const history = useHistory();
 
     return async (data: CreateAppData) => {
-        const result = await fetch<ResultData, ResultError>(url, {
+        const result = await fetchResult<ResultValue, ResultError>(url, {
             method: 'POST',
             headers: [['Content-type', 'application/json']],
             body: JSON.stringify(data),

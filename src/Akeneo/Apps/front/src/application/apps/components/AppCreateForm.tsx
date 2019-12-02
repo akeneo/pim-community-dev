@@ -1,7 +1,7 @@
 import React, {ChangeEvent, Dispatch, RefObject, useEffect, useReducer, useRef} from 'react';
 import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {ApplyButton, Form, FormGroup, FormInput} from '../../common';
-import {isErr, isOk} from '../../shared/fetch/result';
+import {isErr, isOk} from '../../shared/fetch-result/result';
 import {sanitize} from '../../shared/sanitize';
 import {Translate} from '../../shared/translate';
 import {appWithCredentialsFetched} from '../actions/apps-actions';
@@ -15,7 +15,7 @@ import {
 } from '../actions/create-form-actions';
 import {useAppsState} from '../app-state-context';
 import {appFormReducer, CreateFormState} from '../reducers/app-form-reducer';
-import {CreateAppData, useCreateApp} from '../use-create-app';
+import {CreateAppData, useCreateApp} from '../api-hooks/use-create-app';
 import {FlowTypeHelper} from './FlowTypeHelper';
 import {FlowTypeSelect} from './FlowTypeSelect';
 
@@ -113,13 +113,9 @@ export const AppCreateForm = () => {
         if (isOk(result)) {
             appsDispatch(
                 appWithCredentialsFetched({
-                    code: result.data.code,
-                    label: result.data.label,
-                    flowType: result.data.flow_type,
-                    clientId: result.data.client_id,
-                    secret: result.data.secret,
-                    username: result.data.username,
-                    password: result.data.password,
+                    ...result.value,
+                    flowType: result.value.flow_type,
+                    clientId: result.value.client_id,
                 })
             );
         }

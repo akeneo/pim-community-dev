@@ -1,6 +1,6 @@
 export interface AppCredentials {
-    secret: string;
     clientId: string;
+    secret: string;
     username: string;
     password: string | null;
 }
