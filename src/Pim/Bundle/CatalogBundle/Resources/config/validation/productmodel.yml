@@ -11,6 +11,7 @@ Pim\Component\Catalog\Model\ProductModel:
         - Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes: ~
         - Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductModelEntity:
             message: pim_catalog.constraint.pim_immutable_product_model_validator
+        - Pim\Component\Catalog\Validator\Constraints\Product\ProductCategories: ~
     properties:
         code:
             - NotBlank:

@@ -472,3 +472,8 @@ services:
             - '@pim_catalog.repository.cached_locale'
         tags:
             - { name: validator.constraint_validator, alias: pim_activated_locale_validator }
+
+    pim_catalog.validator.constraints.product_categories:
+        class: 'Pim\Component\Catalog\Validator\Constraints\Product\ProductCategoriesValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_product_categories_validator }

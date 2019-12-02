@@ -82,4 +82,4 @@ pim_catalog:
         303: This field expects a valid association format.
         pim_immutable_product_validator: The same identifier is already set on another product
         pim_immutable_product_model_validator: The same code is already set on another product model.
-
+        product_cannot_be_classified_in_root_category: A product cannot be classified in a root category

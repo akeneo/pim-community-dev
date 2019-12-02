@@ -17,6 +17,7 @@ Pim\Component\Catalog\Model\Product:
             groups: [UniqueAxis]
         - Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues: ~
         - Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributes: ~
+        - Pim\Component\Catalog\Validator\Constraints\Product\ProductCategories: ~
 
     properties:
         identifier:
