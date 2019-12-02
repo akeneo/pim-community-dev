@@ -22,6 +22,7 @@ Feature: Connection to DAM systems
     Given an asset of the Brand asset family existing in the ERP and the PIM with different information
     When the connector collects this asset from the ERP to synchronize it with the PIM
     Then the asset is correctly synchronized in the PIM with the information from the ERP
+    And a job runs to automatically compute the transformation on the asset
 
   @integration-back
   Scenario: Notify an error when collecting a asset that has an invalid format
