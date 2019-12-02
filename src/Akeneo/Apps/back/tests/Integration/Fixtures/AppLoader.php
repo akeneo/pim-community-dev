@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\back\tests\Integration\Fixtures;
 
-use Akeneo\Apps\Domain\Model\Read\Client;
-use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
-use Akeneo\Apps\Domain\Model\ValueObject\UserId;
-use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
-use Akeneo\Apps\Infrastructure\Client\Fos\CreateClient;
-use Akeneo\Apps\Infrastructure\User\Internal\CreateUser;
-use Doctrine\DBAL\Connection;
+use Akeneo\Apps\Application\Command\CreateAppCommand;
+use Akeneo\Apps\Application\Command\CreateAppHandler;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -19,51 +14,17 @@ use Doctrine\DBAL\Connection;
  */
 class AppLoader
 {
-    /** @var Connection */
-    private $dbalConnection;
-    /** @var CreateClient */
-    private $createClient;
-    /** @var CreateUser */
-    private $createUser;
+    /** @var CreateAppHandler*/
+    private $createAppHandler;
 
-    public function __construct(Connection $dbalConnection, CreateClient $createClient, CreateUser $createUser, AppRepository $repository)
+    public function __construct(CreateAppHandler $createAppHandler)
     {
-        $this->dbalConnection = $dbalConnection;
-        $this->createClient = $createClient;
-        $this->createUser = $createUser;
+        $this->createAppHandler = $createAppHandler;
     }
 
     public function createApp(string $code, string $label, string $flowType)
     {
-        $client = $this->createClient($label);
-        $userId = $this->createUser($code, $label);
-
-        $insertSql = <<<SQL
-    INSERT INTO akeneo_app (client_id, user_id, code, label, flow_type)
-    VALUES (:client_id, :user_id, :code, :label, :flow_type)
-SQL;
-
-        $this->dbalConnection->executeQuery(
-            $insertSql,
-            [
-                'client_id' => $client->id(),
-                'user_id' => $userId->id(),
-                'code' => $code,
-                'label' => $label,
-                'flow_type' => $flowType
-            ]
-        );
-    }
-
-    public function createClient(string $label): Client
-    {
-        return $this->createClient->execute($label);
-    }
-
-    public function createUser(string $username, string $firstname): UserId
-    {
-        return $this
-            ->createUser
-            ->execute($username, $firstname, 'APP', $username, sprintf('%s@email.com', $username));
+        $command = new CreateAppCommand($code, $label, $flowType);
+        $this->createAppHandler->handle($command);
     }
 }
