@@ -15,7 +15,3 @@ Feature: Edit a product group
     When I fill in the product group property "English (United States)" with "My similar boots"
     And I press the "Save" button
     Then I should see the text "My similar boots"
-
-  Scenario: Successfully display a message when there are unsaved changes
-    When I fill in the product group property "English (United States)" with "My similar boots"
-    Then I should see the text "There are unsaved changes."

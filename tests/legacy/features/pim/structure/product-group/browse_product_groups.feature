@@ -21,20 +21,7 @@ Feature: Browse product groups
     And I should see the columns Label and Type
     And I should see groups Cross Sell and Relational
     And the rows should be sorted ascending by Label
-
-  Scenario: Successfully sort product groups
-    And I should be able to sort the rows by Label and Type
-
-  Scenario Outline: Successfully filter product groups
-    When I show the filter "<filter>"
-    And I filter by "<filter>" with operator "<operator>" and value "<value>"
-    Then the grid should contain <count> elements
-    Then I should see entities <result>
-
-    Examples:
-      | filter | operator | value      | result                    | count |
-      | type   |          | Cross sell | Cross Sell and Relational | 2     |
-
+    
   Scenario: Successfully search on label
     When I search "Cross"
     Then the grid should contain 1 element

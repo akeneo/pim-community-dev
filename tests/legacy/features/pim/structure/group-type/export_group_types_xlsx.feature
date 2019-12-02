@@ -16,16 +16,3 @@ Feature: Export group types
      | code    | label-en_US |
      | RELATED | [RELATED]   |
      | XSELL   | [XSELL]     |
-
-  Scenario: Successfully export group types in xlsx without headers:
-    Given an "footwear" catalog configuration
-    And the following job "xlsx_footwear_group_type_export" configuration:
-      | filePath   | %tmp%/xlsx_footwear_group_type_export/xlsx_footwear_group_type_export.xlsx |
-      | withHeader | no                                                                         |
-    And I am logged in as "Julia"
-    When I am on the "xlsx_footwear_group_type_export" export job page
-    And I launch the export job
-    And I wait for the "xlsx_footwear_group_type_export" job to finish
-    Then exported xlsx file of "xlsx_footwear_group_type_export" should contain:
-      | RELATED | [RELATED] |
-      | XSELL   | [XSELL]   |
