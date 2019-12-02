@@ -101,7 +101,7 @@ define([
                     var message = xhr.responseJSON && xhr.responseJSON.message ?
                         xhr.responseJSON.message :
                         _.__('pim_enrich.entity.product.flash.update.file_upload');
-                    messenger.enqueueMessage('error', message);
+                    messenger.notify('error', message);
                 })
                 .always(function () {
                     this.$('> .akeneo-media-uploader-field .progress').css({opacity: 0});
