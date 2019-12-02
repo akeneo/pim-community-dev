@@ -163,9 +163,9 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromNormalized', [$transformationCollection]);
     }
 
-    function it_throws_an_exception_if_filename_prefix_is_missing()
+    function it_can_return_a_collection_even_if_filename_prefix_is_missing()
     {
-        $transformationCollection = [
+        $transformationCollection = $this->fromNormalized([
             [
                 'source' => [
                     'attribute' => 'source',
@@ -177,15 +177,38 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                     'channel' => null,
                     'locale' => null,
                 ],
+                'operations' => [],
                 'filename_suffix' => '_2',
             ],
-        ];
+        ]);
 
-        $this->shouldThrow(\InvalidArgumentException::class)->during('fromNormalized', [$transformationCollection]);
+        $transformationCollection->shouldBeAnInstanceOf(TransformationCollection::class);
     }
 
+    function it_can_return_a_collection_even_if_filename_suffix_is_null()
+    {
+        $transformationCollection = $this->fromNormalized([
+            [
+                'source' => [
+                    'attribute' => 'source',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'target' => [
+                    'attribute' => 'target',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'operations' => [],
+                'filename_prefix' => 'prefix_',
+                'filename_suffix' => null,
+            ],
+        ]);
 
-    function it_throws_an_exception_if_filename_suffix_is_missing()
+        $transformationCollection->shouldBeAnInstanceOf(TransformationCollection::class);
+    }
+
+    function it_throws_an_exception_if_filename_prefix_is_not_a_string()
     {
         $transformationCollection = [
             [
@@ -200,11 +223,32 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                     'locale' => null,
                 ],
                 'operations' => [],
-                'filename_prefix' => 'prefix_',
+                'filename_prefix' => [],
             ],
         ];
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromNormalized', [$transformationCollection]);
     }
 
+    function it_throws_an_exception_if_filename_suffix_is_not_a_string()
+    {
+        $transformationCollection = [
+            [
+                'source' => [
+                    'attribute' => 'source',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'target' => [
+                    'attribute' => 'target',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'operations' => [],
+                'filename_suffix' => new \stdClass(),
+            ],
+        ];
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fromNormalized', [$transformationCollection]);
+    }
 }
