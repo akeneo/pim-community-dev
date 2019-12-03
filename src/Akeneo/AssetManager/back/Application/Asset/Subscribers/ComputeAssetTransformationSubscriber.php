@@ -81,9 +81,6 @@ class ComputeAssetTransformationSubscriber implements EventSubscriberInterface
             $asset = $this->assetRepository->getByIdentifier($assetIdentifier);
             $assetFamily = $this->assetFamilyRepository->getByIdentifier($asset->getAssetFamilyIdentifier());
             $transformationCollection = $assetFamily->getTransformationCollection();
-            if (0 === $transformationCollection->count()) {
-                return;
-            }
 
             $valueCollection = $this->getOutdatedValues->fromAsset($asset, $transformationCollection);
             if (0 === $valueCollection->count()) {
