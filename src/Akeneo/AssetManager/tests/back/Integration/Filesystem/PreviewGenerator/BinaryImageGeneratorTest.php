@@ -87,7 +87,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     }
 
     /**
-     * @ test
+     * @test
      */
     public function it_get_a_default_preview_for_an_unknown_image_media_link()
     {
