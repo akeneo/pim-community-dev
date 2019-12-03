@@ -194,7 +194,7 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
         $this->whenAssetCreated($assetCreatedEvent);
     }
 
-    protected function getAsset(AssetIdentifier $assetIdentifier, AssetFamilyIdentifier $assetFamilyIdentifier): Asset
+    private function getAsset(AssetIdentifier $assetIdentifier, AssetFamilyIdentifier $assetFamilyIdentifier): Asset
     {
         $assetCode = AssetCode::fromString('code');
 
