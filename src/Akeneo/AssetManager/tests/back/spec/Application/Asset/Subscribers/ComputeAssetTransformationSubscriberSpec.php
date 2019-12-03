@@ -17,9 +17,16 @@ use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTr
 use Akeneo\AssetManager\Application\Asset\Subscribers\ComputeAssetTransformationSubscriber;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetOutdatedValues;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -29,9 +36,18 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
 {
-    function let(ComputeTransformationLauncherInterface $computeTransformationLauncher)
-    {
-        $this->beConstructedWith($computeTransformationLauncher);
+    function let(
+        ComputeTransformationLauncherInterface $computeTransformationLauncher,
+        AssetRepositoryInterface $assetRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        GetOutdatedValues $getOutdatedValues
+    ) {
+        $this->beConstructedWith(
+            $computeTransformationLauncher,
+            $assetRepository,
+            $assetFamilyRepository,
+            $getOutdatedValues
+        );
     }
 
     function it_is_initializable()
@@ -55,7 +71,13 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
     }
 
     function it_launches_a_compute_transformation_job_on_asset_update(
-        ComputeTransformationLauncherInterface $computeTransformationLauncher
+        ComputeTransformationLauncherInterface $computeTransformationLauncher,
+        GetOutdatedValues $getOutdatedValues,
+        AssetRepositoryInterface $assetRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        AssetFamily $assetFamily,
+        TransformationCollection $transformationCollection,
+        ValueCollection $valueCollection
     ) {
         $assetIdentifier = AssetIdentifier::fromString('id');
         $assetUpdatedEvent = new AssetUpdatedEvent(
@@ -64,13 +86,91 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
             AssetFamilyIdentifier::fromString('family')
         );
 
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('family');
+        $asset = $this->getAsset($assetIdentifier, $assetFamilyIdentifier);
+        $assetRepository->getByIdentifier($assetIdentifier)->willReturn($asset);
+
+        $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
+        $assetFamily->getTransformationCollection()->willReturn($transformationCollection);
+        $transformationCollection->count()->willReturn(2);
+
+        $getOutdatedValues->fromAsset($asset, $transformationCollection)->willReturn($valueCollection);
+        $valueCollection->count()->willReturn(1);
+
         $computeTransformationLauncher->launch([$assetIdentifier])->shouldBeCalled();
 
         $this->whenAssetUpdated($assetUpdatedEvent);
     }
 
+    function it_does_not_launch_job_at_update_if_no_transformation_is_defined_on_the_family(
+        ComputeTransformationLauncherInterface $computeTransformationLauncher,
+        GetOutdatedValues $getOutdatedValues,
+        AssetRepositoryInterface $assetRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        AssetFamily $assetFamily,
+        TransformationCollection $transformationCollection,
+        ValueCollection $valueCollection
+    ) {
+        $assetIdentifier = AssetIdentifier::fromString('id');
+        $assetUpdatedEvent = new AssetUpdatedEvent(
+            $assetIdentifier,
+            AssetCode::fromString('code'),
+            AssetFamilyIdentifier::fromString('family')
+        );
+
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('family');
+        $asset = $this->getAsset($assetIdentifier, $assetFamilyIdentifier);
+        $assetRepository->getByIdentifier($assetIdentifier)->willReturn($asset);
+
+        $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
+        $assetFamily->getTransformationCollection()->willReturn($transformationCollection);
+        $transformationCollection->count()->willReturn(0);
+
+        $computeTransformationLauncher->launch([$assetIdentifier])->shouldNotBeCalled();
+
+        $this->whenAssetUpdated($assetUpdatedEvent);
+    }
+
+    function it_does_not_launch_job_at_update_if_no_asset_values_are_up_to_date(
+        ComputeTransformationLauncherInterface $computeTransformationLauncher,
+        GetOutdatedValues $getOutdatedValues,
+        AssetRepositoryInterface $assetRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        AssetFamily $assetFamily,
+        TransformationCollection $transformationCollection,
+        ValueCollection $valueCollection
+    ) {
+        $assetIdentifier = AssetIdentifier::fromString('id');
+        $assetUpdatedEvent = new AssetUpdatedEvent(
+            $assetIdentifier,
+            AssetCode::fromString('code'),
+            AssetFamilyIdentifier::fromString('family')
+        );
+
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('family');
+        $asset = $this->getAsset($assetIdentifier, $assetFamilyIdentifier);
+        $assetRepository->getByIdentifier($assetIdentifier)->willReturn($asset);
+
+        $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
+        $assetFamily->getTransformationCollection()->willReturn($transformationCollection);
+        $transformationCollection->count()->willReturn(2);
+
+        $getOutdatedValues->fromAsset($asset, $transformationCollection)->willReturn($valueCollection);
+        $valueCollection->count()->willReturn(0);
+
+        $computeTransformationLauncher->launch([$assetIdentifier])->shouldNotBeCalled();
+
+        $this->whenAssetUpdated($assetUpdatedEvent);
+    }
+
     function it_launches_a_compute_transformation_job_on_asset_creation(
-        ComputeTransformationLauncherInterface $computeTransformationLauncher
+        ComputeTransformationLauncherInterface $computeTransformationLauncher,
+        GetOutdatedValues $getOutdatedValues,
+        AssetRepositoryInterface $assetRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        AssetFamily $assetFamily,
+        TransformationCollection $transformationCollection,
+        ValueCollection $valueCollection
     ) {
         $assetIdentifier = AssetIdentifier::fromString('id');
         $assetCreatedEvent = new AssetCreatedEvent(
@@ -79,8 +179,88 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
             AssetFamilyIdentifier::fromString('family')
         );
 
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('family');
+        $asset = $this->getAsset($assetIdentifier, $assetFamilyIdentifier);
+        $assetRepository->getByIdentifier($assetIdentifier)->willReturn($asset);
+
+        $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
+        $assetFamily->getTransformationCollection()->willReturn($transformationCollection);
+        $transformationCollection->count()->willReturn(2);
+
+        $getOutdatedValues->fromAsset($asset, $transformationCollection)->willReturn($valueCollection);
+        $valueCollection->count()->willReturn(1);
+
+        $computeTransformationLauncher->launch([$assetIdentifier])->shouldBeCalled();
         $computeTransformationLauncher->launch([$assetIdentifier])->shouldBeCalled();
 
         $this->whenAssetCreated($assetCreatedEvent);
+    }
+
+    function it_does_not_launch_job_at_creation_if_no_transformation_is_defined_on_the_family(
+        ComputeTransformationLauncherInterface $computeTransformationLauncher,
+        GetOutdatedValues $getOutdatedValues,
+        AssetRepositoryInterface $assetRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        AssetFamily $assetFamily,
+        TransformationCollection $transformationCollection,
+        ValueCollection $valueCollection
+    ) {
+        $assetIdentifier = AssetIdentifier::fromString('id');
+        $assetCreatedEvent = new AssetCreatedEvent(
+            $assetIdentifier,
+            AssetCode::fromString('code'),
+            AssetFamilyIdentifier::fromString('family')
+        );
+
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('family');
+        $asset = $this->getAsset($assetIdentifier, $assetFamilyIdentifier);
+        $assetRepository->getByIdentifier($assetIdentifier)->willReturn($asset);
+
+        $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
+        $assetFamily->getTransformationCollection()->willReturn($transformationCollection);
+        $transformationCollection->count()->willReturn(0);
+
+        $computeTransformationLauncher->launch([$assetIdentifier])->shouldNotBeCalled();
+
+        $this->whenAssetCreated($assetCreatedEvent);
+    }
+
+    function it_does_not_launch_job_at_creation_if_no_asset_values_are_up_to_date(
+        ComputeTransformationLauncherInterface $computeTransformationLauncher,
+        GetOutdatedValues $getOutdatedValues,
+        AssetRepositoryInterface $assetRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        AssetFamily $assetFamily,
+        TransformationCollection $transformationCollection,
+        ValueCollection $valueCollection
+    ) {
+        $assetIdentifier = AssetIdentifier::fromString('id');
+        $assetCreatedEvent = new AssetCreatedEvent(
+            $assetIdentifier,
+            AssetCode::fromString('code'),
+            AssetFamilyIdentifier::fromString('family')
+        );
+
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('family');
+        $asset = $this->getAsset($assetIdentifier, $assetFamilyIdentifier);
+        $assetRepository->getByIdentifier($assetIdentifier)->willReturn($asset);
+
+        $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
+        $assetFamily->getTransformationCollection()->willReturn($transformationCollection);
+        $transformationCollection->count()->willReturn(2);
+
+        $getOutdatedValues->fromAsset($asset, $transformationCollection)->willReturn($valueCollection);
+        $valueCollection->count()->willReturn(0);
+
+        $computeTransformationLauncher->launch([$assetIdentifier])->shouldNotBeCalled();
+
+        $this->whenAssetCreated($assetCreatedEvent);
+    }
+
+    protected function getAsset(AssetIdentifier $assetIdentifier, AssetFamilyIdentifier $assetFamilyIdentifier): Asset
+    {
+        $assetCode = AssetCode::fromString('code');
+
+        return Asset::create($assetIdentifier, $assetFamilyIdentifier, $assetCode, ValueCollection::fromValues([]));
     }
 }

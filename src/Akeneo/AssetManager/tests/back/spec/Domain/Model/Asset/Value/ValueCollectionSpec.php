@@ -186,4 +186,9 @@ class ValueCollectionSpec extends ObjectBehavior
         })->findValue(ValueKey::createFromNormalized('image_designer_fingerprint_mobile_fr_FR'))
             ->shouldNotBeNull();
     }
+
+    function it_returns_the_count_of_values()
+    {
+        $this->count()->shouldReturn(2);
+    }
 }

@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  */
-class ValueCollection implements \IteratorAggregate
+class ValueCollection implements \IteratorAggregate, \Countable
 {
     /** @var array */
     private $values;
@@ -77,5 +77,10 @@ class ValueCollection implements \IteratorAggregate
     public function filter(\Closure $closure): self
     {
         return new self(array_filter($this->values, $closure));
+    }
+
+    public function count(): int
+    {
+        return count($this->values);
     }
 }

@@ -9,7 +9,13 @@ Feature: Connection to DAM systems
     When the connector collects this asset from the ERP to synchronize it with the PIM
     Then the asset is created in the PIM with the information from the ERP
     And a job runs to automatically link it to products according to the rule template
-    And a job runs to automatically compute the transformation on the asset
+
+  @integration-back
+  Scenario: Collect an asset for a given asset family that exist in the ERP but not in the PIM and automatically compute transformations
+    Given an asset of the PresentationView asset family existing in the ERP but not in the PIM
+    When the connector collects this asset from the ERP to synchronize it with the PIM
+    Then the asset is created in the PIM from the request "successful_building_asset_creation.json"
+    And a job runs to automatically compute the transformation on the asset code "building" in asset family "PresentationView"
 
   @integration-back
   Scenario: Collect some assets that exist in the ERP but not in the PIM
@@ -22,7 +28,7 @@ Feature: Connection to DAM systems
     Given an asset of the Brand asset family existing in the ERP and the PIM with different information
     When the connector collects this asset from the ERP to synchronize it with the PIM
     Then the asset is correctly synchronized in the PIM with the information from the ERP
-    And a job runs to automatically compute the transformation on the asset
+    And a job runs to automatically compute the transformation on the asset code "house" in asset family "frontview"
 
   @integration-back
   Scenario: Notify an error when collecting a asset that has an invalid format

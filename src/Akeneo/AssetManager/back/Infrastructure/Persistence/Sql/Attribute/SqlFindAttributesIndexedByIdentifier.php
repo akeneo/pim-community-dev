@@ -40,6 +40,11 @@ class SqlFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIde
         $this->attributeHydratorRegistry = $attributeHydratorRegistry;
     }
 
+    public function clearCache(): void
+    {
+        $this->cachedResults = [];
+    }
+
     /**
      * List of attributes indexed by their identifier
      *

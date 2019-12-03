@@ -16,6 +16,12 @@ namespace Akeneo\AssetManager\Application\Asset\Subscribers;
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationLauncherInterface;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetOutdatedValues;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -27,9 +33,25 @@ class ComputeAssetTransformationSubscriber implements EventSubscriberInterface
     /** @var ComputeTransformationLauncherInterface */
     private $computeTransformationLauncher;
 
-    public function __construct(ComputeTransformationLauncherInterface $computeTransformationLauncher)
-    {
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
+
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
+
+    /** @var GetOutdatedValues */
+    private $getOutdatedValues;
+
+    public function __construct(
+        ComputeTransformationLauncherInterface $computeTransformationLauncher,
+        AssetRepositoryInterface $assetRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        GetOutdatedValues $getOutdatedValues
+    ) {
         $this->computeTransformationLauncher = $computeTransformationLauncher;
+        $this->getOutdatedValues = $getOutdatedValues;
+        $this->assetRepository = $assetRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
     }
 
     /**
@@ -45,11 +67,34 @@ class ComputeAssetTransformationSubscriber implements EventSubscriberInterface
 
     public function whenAssetUpdated(AssetUpdatedEvent $assetUpdatedEvent): void
     {
-        $this->computeTransformationLauncher->launch([$assetUpdatedEvent->getAssetIdentifier()]);
+        $this->launchJobIfNeeded($assetUpdatedEvent->getAssetIdentifier());
     }
 
     public function whenAssetCreated(AssetCreatedEvent $assetCreatedEvent): void
     {
-        $this->computeTransformationLauncher->launch([$assetCreatedEvent->getAssetIdentifier()]);
+        $this->launchJobIfNeeded($assetCreatedEvent->getAssetIdentifier());
+    }
+
+    protected function launchJobIfNeeded(AssetIdentifier $assetIdentifier): void
+    {
+        try {
+            $asset = $this->assetRepository->getByIdentifier($assetIdentifier);
+            $assetFamily = $this->assetFamilyRepository->getByIdentifier($asset->getAssetFamilyIdentifier());
+            $transformationCollection = $assetFamily->getTransformationCollection();
+            if (0 === $transformationCollection->count()) {
+                return;
+            }
+
+            $valueCollection = $this->getOutdatedValues->fromAsset($asset, $transformationCollection);
+            if (0 === $valueCollection->count()) {
+                return;
+            }
+        } catch (AssetNotFoundException | AssetFamilyNotFoundException | \LogicException $e) {
+            // Here we catch all errors if an error occurred: asset not found, asset family not found or
+            // attribute in transformation not found.
+            return;
+        }
+
+        $this->computeTransformationLauncher->launch([$assetIdentifier]);
     }
 }

@@ -35,6 +35,12 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -165,6 +171,23 @@ class CreateOrUpdateAssetContext implements Context
     }
 
     /**
+     * @Given an asset of the PresentationView asset family existing in the ERP but not in the PIM
+     */
+    public function aAssetOfTheBrandAssetFamilyPresentationViewExistingInTheErpButNotInThePim()
+    {
+        $this->requestContract = 'successful_building_asset_creation.json';
+
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
+        $this->loadMediaFileAttribute('PresentationView', 'main_image', 'Main Image', 1, '2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_house.jpg');
+        $this->loadMediaFileAttribute('PresentationView', 'thumbnail', 'Thumbnail', 2);
+        $this->loadPresentationViewAssetFamily('PresentationView');
+    }
+
+    /**
      * @When the connector collects this asset from the ERP to synchronize it with the PIM
      */
     public function theConnectorCollectsThisAssetFromTheErpToSynchronizeItWithThePim()
@@ -235,16 +258,28 @@ class CreateOrUpdateAssetContext implements Context
     }
 
     /**
+     * @Then the asset is created in the PIM from the request :arg1
+     */
+    public function theAssetIsCreatedInThePimFromTheRequest(string $filename)
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . $filename
+        );
+    }
+
+    /**
      * @Given an asset of the Brand asset family existing in the ERP and the PIM with different information
      */
     public function aAssetOfTheBrandAssetFamilyExistingInTheErpAndThePimWithDifferentInformation()
     {
         $this->requestContract = 'successful_house_asset_update.json';
 
-        $this->loadFrontViewAssetFamily();
+        $this->loadFrontViewAssetFamily(true);
         $this->loadDescriptionAttribute();
         $this->loadNameAttribute();
         $this->loadCoverMediaFileAttribute();
+        $this->loadMediaFileAttribute('frontview', 'thumbnail', 'Thumbnail', 6);
         $this->loadFrontViewHouseAsset();
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
@@ -651,13 +686,53 @@ class CreateOrUpdateAssetContext implements Context
         );
     }
 
-    private function loadFrontViewAssetFamily(): void
+    private function loadFrontViewAssetFamily(bool $withTransformation = false): void
     {
         $assetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             ['en_US' => 'Front view'],
             Image::createEmpty(),
             RuleTemplateCollection::empty()
+        );
+        if ($withTransformation) {
+            $assetFamily = $assetFamily->withTransformationCollection(
+                TransformationCollection::create([
+                    Transformation::create(
+                        Source::createFromNormalized(['attribute' => 'cover_image', 'channel'=> null, 'locale' => null]),
+                        Target::createFromNormalized(['attribute' => 'thumbnail', 'channel'=> null, 'locale' => null]),
+                        OperationCollection::create([
+                            ThumbnailOperation::create(['width' => 100, 'height' => 80]),
+                        ]),
+                        'pre',
+                        null
+                    ),
+                ])
+            );
+        }
+
+        $this->assetFamilyRepository->create($assetFamily);
+    }
+
+    private function loadPresentationViewAssetFamily(string $assetFamilyIdentifier): void
+    {
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            ['en_US' => 'Presentation view'],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
+        $assetFamily = $assetFamily->withTransformationCollection(
+            TransformationCollection::create([
+                Transformation::create(
+                    Source::createFromNormalized(['attribute' => 'main_image', 'channel'=> null, 'locale' => null]),
+                    Target::createFromNormalized(['attribute' => 'thumbnail', 'channel'=> null, 'locale' => null]),
+                    OperationCollection::create([
+                        ThumbnailOperation::create(['width' => 100, 'height' => 80]),
+                    ]),
+                    'pre',
+                    null
+                ),
+            ])
         );
 
         $this->assetFamilyRepository->create($assetFamily);
@@ -678,6 +753,36 @@ class CreateOrUpdateAssetContext implements Context
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
         );
+
+        $this->attributeRepository->create($name);
+    }
+
+    private function loadMediaFileAttribute(string $assetFamilyIdentifier, string $code, string $label, int $order, string $filePath = null): void
+    {
+        $name = MediaFileAttribute::create(
+            AttributeIdentifier::create($assetFamilyIdentifier, $code, 'fingerprint'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($code),
+            LabelCollection::fromArray(['en_US' => $label]),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('120'),
+            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::VALID_EXTENSIONS)
+        );
+
+        if (null !== $filePath) {
+            $this->findFileData->save([
+                'filePath' => $filePath,
+                'originalFilename' => 'image.jpg',
+                'size' => 128,
+                'mimeType' => 'image/jpeg',
+                'extension' => 'jpg',
+                'updatedAt' => '2019-11-22T15:16:21+0000',
+            ]);
+            $this->fileExists->save($filePath);
+        }
 
         $this->attributeRepository->create($name);
     }
@@ -818,7 +923,7 @@ class CreateOrUpdateAssetContext implements Context
     }
 
     /**
-     * @Given /^a job runs to automatically link it to products according to the rule template$/
+     * @Then /^a job runs to automatically link it to products according to the rule template$/
      */
     public function aJobRunsToAutomaticallyLinkItToProductsAccordingToTheRuleTemplate()
     {
@@ -826,13 +931,15 @@ class CreateOrUpdateAssetContext implements Context
     }
 
     /**
-     * @Given /^a job runs to automatically compute the transformation on the asset$/
+     * @Then a job runs to automatically compute the transformation on the asset code :arg1 in asset family :arg2
      */
-    public function aJobRunsToAutomaticallyComputeTheTransformationOnTheAsset()
-    {
+    public function aJobRunsToAutomaticallyComputeTheTransformationOnTheAsset(
+        string $assetcode,
+        string $assetFamilyIdentifier
+    ) {
         $asset = $this->assetRepository->getByAssetFamilyAndCode(
-            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
-            AssetCode::fromString(self::HOUSE_ASSET_CODE)
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AssetCode::fromString($assetcode)
         );
 
         $this->computeTransformationLauncherSpy->assertAJobIsLaunchedWithAssetIdentifier($asset->getIdentifier());
