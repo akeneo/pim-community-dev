@@ -102,6 +102,7 @@ Akeneo\UserManagement\Component\Model\User:
         type:
             type: string
             nullable: false
+            column: user_type
             length: 20
             options:
                 default: user
