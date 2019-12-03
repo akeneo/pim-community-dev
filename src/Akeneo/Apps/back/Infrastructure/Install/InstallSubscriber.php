@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Install;
 
+use Akeneo\Apps\Infrastructure\Install\Query\CreateAppAuditTableQuery;
 use Akeneo\Apps\Infrastructure\Install\Query\CreateAppsTableQuery;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\DBAL\Driver\Connection;
@@ -42,5 +43,6 @@ class InstallSubscriber implements EventSubscriberInterface
     public function createAppsTable(GenericEvent $event): void
     {
         $this->dbalConnection->exec(CreateAppsTableQuery::QUERY);
+        $this->dbalConnection->exec(CreateAppAuditTableQuery::QUERY);
     }
 }
