@@ -25,7 +25,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
@@ -370,7 +370,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
-        $logoAttribute = ImageAttribute::create(
+        $logoAttribute = MediaFileAttribute::create(
             AttributeIdentifier::create('brand', 'logo', 'fingerprint'),
             AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('logo'),
