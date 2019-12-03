@@ -18,4 +18,15 @@ class UserSpec extends ObjectBehavior
         $this->getProperty('propertyName')->shouldReturn('value');
         $this->getProperty('property_name')->shouldReturn('value');
     }
+
+    function it_initializes_the_user_as_a_non_app()
+    {
+        $this->isAUserApp()->shouldReturn(false);
+    }
+
+    function it_defines_the_user_as_a_user_app()
+    {
+        $this->defineAsUserApp();
+        $this->isAUserApp()->shouldReturn(true);
+    }
 }

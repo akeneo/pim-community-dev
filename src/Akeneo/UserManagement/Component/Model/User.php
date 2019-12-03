@@ -149,6 +149,11 @@ class User implements UserInterface
     /** @var array $property bag for properties extension */
     private $properties = [];
 
+    protected $type = self::TYPE_USER;
+
+    const TYPE_USER = 'user';
+    const TYPE_APP = 'app';
+
     public function __construct()
     {
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
@@ -1084,6 +1089,18 @@ class User implements UserInterface
     public function setTimezone(string $timezone): UserInterface
     {
         $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    public function isAUserApp(): bool
+    {
+        return self::TYPE_APP === $this->type;
+    }
+
+    public function defineAsUserApp(): string
+    {
+        $this->type = self::TYPE_APP;
 
         return $this;
     }
