@@ -58,3 +58,12 @@ services:
         class: 'Akeneo\Platform\Bundle\UIBundle\Twig\ObjectClassExtension'
         tags:
             - { name: twig.extension }
+
+    pim_enrich.twig.content_security_policy_extension:
+        class: Akeneo\Platform\Bundle\UIBundle\Twig\ContentSecurityPolicyExtension
+        arguments:
+            - '@security.script_nonce_generator'
+        tags:
+            - { name: twig.extension }
+
+
