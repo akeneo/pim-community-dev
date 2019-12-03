@@ -18,7 +18,11 @@ for TEST_FILE in $TEST_FILES; do
 
     set +e
     docker-compose exec -u www-data -T fpm ./vendor/bin/phpunit -c $CONFIG_DIRECTORY --log-junit var/tests/phpunit/phpunit_$(uuidgen).xml $TEST_FILE
-    fail=$(($fail + $?))
+    TEST_RESULT=$?
+    if [ $TEST_RESULT -ne 0 ]; then
+        echo "Test has failed (with code $TEST_RESULT): $TEST_FILE"
+    fi
+    fail=$(($fail + $TEST_RESULT))
     set -eo pipefail
 done
 
