@@ -53,6 +53,13 @@ class PurgeCommand extends ContainerAwareCommand
                 'Purges the versions that are younger than the number of days'
             )
             ->addOption(
+                'batch-size',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Purges the versions by batch',
+                100
+            )
+            ->addOption(
                 'force',
                 null,
                 InputOption::VALUE_NONE,
@@ -130,6 +137,9 @@ class PurgeCommand extends ContainerAwareCommand
         if (null === $moreThanDays && null === $lessThanDays) {
             $moreThanDays = self::DEFAULT_MORE_THAN_DAYS;
         }
+
+        $purgeOptions = [];
+        $purgeOptions['batch_size'] = (int) $input->getOption('batch-size');
 
         $resourceName = $input->hasArgument('entity') ? $input->getArgument('entity') : null;
         $resourceNameLabel = '';

@@ -1,8 +1,8 @@
 parameters:
     pim_versioning.repository.version.class:                  Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
-    pim_versioning.doctrine.query.cursor.class:               Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor
+    pim_versioning.doctrine.query.cursor.class:               Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\SearchVersionAfterCursor
     pim_versioning.doctrine.cursor_factory.version.class:     Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory
-    pim_versioning.factory.version_cursor.page_size:          1000
+    pim_versioning.factory.version_cursor.page_size:          100
 
 services:
     pim_versioning.repository.version:

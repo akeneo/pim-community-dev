@@ -26,14 +26,10 @@ class PagerExtension extends AbstractExtension
     const PER_PAGE_PARAM = '_per_page';
     const TOTAL_PARAM = 'totalRecords';
 
-    /** @var PagerResolver */
+    /** @var PagerResolverInterface */
     protected $pagerResolver;
 
-    /**
-     * @param PagerResolver     $resolver
-     * @param RequestParameters $requestParams
-     */
-    public function __construct(PagerResolver $resolver, RequestParameters $requestParams)
+    public function __construct(PagerResolverInterface $resolver, RequestParameters $requestParams)
     {
         $this->pagerResolver = $resolver;
         parent::__construct($requestParams);
