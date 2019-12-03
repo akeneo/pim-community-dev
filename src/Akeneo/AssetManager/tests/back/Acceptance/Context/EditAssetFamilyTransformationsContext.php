@@ -43,6 +43,8 @@ class EditAssetFamilyTransformationsContext implements Context
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
                 ['type' => 'colorspace', 'parameters' => ['colorspace' => 'grey']],
             ],
+            'filename_prefix' => '1_',
+            'filename_suffix' => '_3'
         ],
         [
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
@@ -50,6 +52,7 @@ class EditAssetFamilyTransformationsContext implements Context
             'operations' => [
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
             ],
+            'filename_suffix' => '_4',
         ],
         [
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
@@ -57,6 +60,7 @@ class EditAssetFamilyTransformationsContext implements Context
             'operations' => [
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
             ],
+            'filename_prefix' => '   ',
         ],
         [
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
@@ -65,6 +69,8 @@ class EditAssetFamilyTransformationsContext implements Context
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
                 ['type' => 'thumbnail', 'parameters' => ['width' => 100, 'height' => 80]],
             ],
+            'filename_prefix' => null,
+            'filename_suffix' => '   '
         ],
     ];
 
@@ -150,6 +156,8 @@ class EditAssetFamilyTransformationsContext implements Context
                         'parameters' => ['ratio' => 75],
                     ],
                 ],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
         ]);
     }
@@ -188,6 +196,8 @@ class EditAssetFamilyTransformationsContext implements Context
                 'source' => ['attribute' => 'unknown', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
         ]);
     }
@@ -202,6 +212,8 @@ class EditAssetFamilyTransformationsContext implements Context
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'unknown', 'channel' => null, 'locale' => null],
                 'operations' => [],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
         ]);
     }
@@ -216,11 +228,15 @@ class EditAssetFamilyTransformationsContext implements Context
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
             [
                 'source' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target2', 'channel' => null, 'locale' => null],
                 'operations' => [],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
         ]);
     }
@@ -239,6 +255,8 @@ class EditAssetFamilyTransformationsContext implements Context
                     ['type' => 'colorspace', 'parameters' => ['colorspace' => 'rgb']],
                     ['type' => 'scale', 'parameters' => ['ratio' => 80]],
                 ],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
         ]);
     }
@@ -257,17 +275,23 @@ class EditAssetFamilyTransformationsContext implements Context
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target_scopable', 'channel' => $scope, 'locale' => null],
                 'operations' => [],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ];
             foreach (['fr_FR', 'en_US', 'en_GB'] as $locale) {
                 $transformations[] = [
                     'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                     'target' => ['attribute' => 'target_localizable', 'channel' => null, 'locale' => $locale],
                     'operations' => [],
+                    'filename_prefix' => '1_',
+                    'filename_suffix' => '_2'
                 ];
                 $transformations[] = [
                     'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                     'target' => ['attribute' => 'target_scopable_localizable', 'channel' => $scope, 'locale' => $locale],
                     'operations' => [],
+                    'filename_prefix' => '1_',
+                    'filename_suffix' => '_2'
                 ];
             }
         }
@@ -287,6 +311,8 @@ class EditAssetFamilyTransformationsContext implements Context
                 'operations' => [
                     ['type' => 'unknown', 'parameters' => ['foo' => 'bar']],
                 ],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
         ]);
     }
@@ -303,6 +329,62 @@ class EditAssetFamilyTransformationsContext implements Context
                 'operations' => [
                     ['type' => 'colorspace', 'parameters' => ['foo' => 'bar']],
                 ],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
+            ],
+        ]);
+    }
+
+    /**
+     * @When the user edits the :familyIdentifier family to add transformations with same source and filename
+     */
+    public function theUserEditsTheFamilyToAddTransformationsWithSameSourceAndFilename(string $familyIdentifier)
+    {
+        $this->editTransformationForAssetFamily($familyIdentifier, [
+            [
+                'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
+                'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
+                'operations' => [],
+                'filename_prefix' => '1_',
+            ],
+            [
+                'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
+                'target' => ['attribute' => 'target2', 'channel' => null, 'locale' => null],
+                'operations' => [],
+                'filename_prefix' => '1_',
+                'filename_suffix' => ''
+            ],
+        ]);
+    }
+
+    /**
+     * @When the user edits the :familyIdentifier family to add transformations with invalid filename prefix
+     */
+    public function theUserEditsTheFamilyToAddTransformationsWithInvalidFilenamePrefix(string $familyIdentifier)
+    {
+        $this->editTransformationForAssetFamily($familyIdentifier, [
+            [
+                'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
+                'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
+                'operations' => [],
+                'filename_prefix' => ' % 1_',
+                'filename_suffix' => '_2  '
+            ],
+        ]);
+    }
+
+    /**
+     * @When the user edits the :familyIdentifier family to add transformations with invalid filename suffix
+     */
+    public function theUserEditsTheFamilyToAddTransformationsWithInvalidFilenameSuffix(string $familyIdentifier)
+    {
+        $this->editTransformationForAssetFamily($familyIdentifier, [
+            [
+                'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
+                'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
+                'operations' => [],
+                'filename_prefix' => ' 1_',
+                'filename_suffix' => '_%2  '
             ],
         ]);
     }
@@ -325,7 +407,13 @@ class EditAssetFamilyTransformationsContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $assetFamily = $this->getAssetFamily($familyIdentifier);
 
-        $value = self::COMPLEX_TRANSFORMATIONS;
+        $value = array_map(
+            function (array $transformation) {
+                return array_filter($transformation);
+            },
+            self::COMPLEX_TRANSFORMATIONS
+        );
+
         Assert::same(
             json_encode($assetFamily->getTransformationCollection()->normalize(), JSON_PRETTY_PRINT),
             json_encode($value, JSON_PRETTY_PRINT)
@@ -399,6 +487,36 @@ class EditAssetFamilyTransformationsContext implements Context
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
             "Key 'colorspace' must exist in parameters."
+        );
+    }
+
+    /**
+     * @Then there should be a validation error stating that filename is not unique
+     */
+    public function thereShouldBeAValidationErrorStatingThatFilenameIsNotUnique()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            'A transformation with filename\'s prefix "1_" and suffix "" already exists for attribute source "main_image"'
+        );
+    }
+
+    /**
+     * @Then there should be a validation error stating that filename prefix is not valid
+     */
+    public function thereShouldBeAValidationErrorStatingThatFilenamePrefixIsNotValid()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            "Filename prefix contains illegal character. Allowed characters are alphanumerics, '_', '-', '.', and space."
+        );
+    }
+
+    /**
+     * @Then there should be a validation error stating that filename suffix is not valid
+     */
+    public function thereShouldBeAValidationErrorStatingThatFilenameSuffixIsNotValid()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            "Filename prefix contains illegal character. Allowed characters are alphanumerics, '_', '-', '.', and space."
         );
     }
 

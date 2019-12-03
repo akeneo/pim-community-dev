@@ -306,14 +306,21 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
         tags:
-            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\RawSourceExistValidator' }
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawSourceExistValidator' }
 
     Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawTargetExistValidator:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawTargetExistValidator
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
         tags:
-            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\RawTargetExistValidator' }
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawTargetExistValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationFilenameIsUniqueValidator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationFilenameIsUniqueValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationFilenameIsUniqueValidator' }
 
     Akeneo\AssetManager\Infrastructure\Validation\Locale\RawLocaleShouldBeActivatedValidator:
         class: Akeneo\AssetManager\Infrastructure\Validation\Locale\RawLocaleShouldBeActivatedValidator

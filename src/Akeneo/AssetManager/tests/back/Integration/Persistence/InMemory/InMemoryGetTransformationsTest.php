@@ -88,7 +88,9 @@ class InMemoryGetTransformationsTest extends TestCase
             OperationCollection::create([
                 ThumbnailOperation::create(['width' => 100, 'height' => 80]),
                 ColorspaceOperation::create(['colorspace' => 'grey']),
-            ])
+            ]),
+            '1_',
+            '_2'
         );
         $transformationCollection2 = TransformationCollection::create([$transformation]);
         $this->createAssetFamily($assetFamilyIdentifier2, $transformationCollection2);

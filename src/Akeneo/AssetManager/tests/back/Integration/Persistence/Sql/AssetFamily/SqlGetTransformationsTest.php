@@ -65,7 +65,9 @@ class SqlGetTransformationsTest extends SqlIntegrationTestCase
                 OperationCollection::create([
                     ThumbnailOperation::create(['width' => 100, 'height' => 80]),
                     ColorspaceOperation::create(['colorspace' => 'grey']),
-                ])
+                ]),
+                '1_',
+                '_2'
             ),
         ]);
         $this->createAssetFamily('family1', $transformationCollectionForAssetFamily1);
@@ -79,7 +81,9 @@ class SqlGetTransformationsTest extends SqlIntegrationTestCase
                 Target::createFromNormalized(['attribute' => 'attr3', 'channel'=> null, 'locale' => null]),
                 OperationCollection::create([
                     ScaleOperation::create(['ratio' => 80]),
-                ])
+                ]),
+                '1_',
+                '_2'
             ),
         ]);
         $this->createAssetFamily('family2', $transformationCollectionForAssetFamily2);
