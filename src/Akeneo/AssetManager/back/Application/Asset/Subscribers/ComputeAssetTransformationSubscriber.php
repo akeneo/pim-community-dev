@@ -90,8 +90,8 @@ class ComputeAssetTransformationSubscriber implements EventSubscriberInterface
                 return;
             }
         } catch (AssetNotFoundException | AssetFamilyNotFoundException | \LogicException $e) {
-            // Here we catch all errors if an error occurred: asset not found, asset family not found or
-            // attribute in transformation not found.
+            // Here we catch all errors if the asset is not found, the asset family is not found or
+            // one attribute in transformation is not found.
             return;
         }
 
