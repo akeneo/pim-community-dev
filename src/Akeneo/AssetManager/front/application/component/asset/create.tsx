@@ -1,4 +1,6 @@
 import * as React from 'react';
+import {connect} from 'react-redux';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import __ from 'akeneoassetmanager/tools/translator';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import Flag from 'akeneoassetmanager/tools/component/flag';
