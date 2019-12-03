@@ -12,7 +12,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PagerResolver
+class PagerResolver implements PagerResolverInterface
 {
     /** @var PagerInterface */
     protected $ormPager;
@@ -42,7 +42,7 @@ class PagerResolver
      *
      * @return PagerInterface
      */
-    public function getPager($datagridName)
+    public function getPager($datagridName): PagerInterface
     {
         if (in_array($datagridName, $this->gridsWithDummyPager)) {
             return $this->dummyPager;

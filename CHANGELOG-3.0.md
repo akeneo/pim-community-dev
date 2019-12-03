@@ -1,5 +1,24 @@
 # 3.0.x
 
+# 3.0.57 (2019-12-02)
+
+## Enhancements
+- PIM-9002: Allow command `pim:product:clean-removed-attributes` to work with --no-interaction parameter
+
+# 3.0.56 (2019-11-27)
+
+## Bug fixes
+
+- PIM-8990: Create only the attributes requirements of the identifier attribute when a channel is created
+- PIM-8997: Fix incorrect empty value stored for wysiwyg editor
+
+# 3.0.55 (2019-11-22)
+
+## Bug fixes
+
+- PIM-8992: Do not allow to import attribute code with line-feed characters
+- PIM-8991: Forbid user without "list users" permission to access other user data
+
 # 3.0.54 (2019-11-18)
 
 ## Bug fixes

@@ -2,9 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
-use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
@@ -20,26 +20,12 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
         AttributeRequirementFactory $requirementFactory,
         LifecycleEventArgs $eventArgs,
         ChannelInterface $channel,
-        EntityManagerInterface $entityManager,
-        EntityRepository $repository,
-        FamilyInterface $family
+        EntityManagerInterface $entityManager
     ) {
         $this->beConstructedWith($requirementFactory);
 
-        $eventArgs->getEntity()
-            ->willReturn($channel);
-
-        $eventArgs->getEntityManager()
-            ->willReturn($entityManager);
-
-        $entityManager->getRepository(Argument::exact(Family::class))
-            ->willReturn($repository);
-
-        $repository->findAll()
-            ->willReturn([$family]);
-
-        $family->getAttributes()
-            ->willReturn([]);
+        $eventArgs->getEntity()->willReturn($channel);
+        $eventArgs->getEntityManager()->willReturn($entityManager);
     }
 
     public function it_is_an_event_subscriber()
@@ -49,106 +35,48 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
 
     public function it_subscribes_to_prePersist()
     {
-        $this->getSubscribedEvents()
-            ->shouldReturn(['prePersist']);
+        $this->getSubscribedEvents()->shouldReturn(['prePersist']);
     }
 
     public function it_ignores_non_ChannelInterface_entity(
         $eventArgs,
         $entityManager
     ) {
-        $eventArgs->getEntity()
-            ->willReturn(null)
-            ->shouldBeCalled();
+        $eventArgs->getEntity()->willReturn(null);
+        $entityManager->persist(Argument::any())->shouldNotBeCalled();
 
-        $eventArgs->getEntityManager()
-            ->shouldNotBeCalled();
-
-        $entityManager->persist(Argument::any())
-            ->shouldNotBeCalled();
-
-        $this->prePersist($eventArgs)
-            ->shouldReturn(null);
+        $this->prePersist($eventArgs)->shouldReturn(null);
     }
 
-    public function it_does_not_create_requirement_without_family(
-        $eventArgs,
-        $entityManager,
-        $repository,
-        $family
-    ) {
-        $eventArgs->getEntityManager()
-            ->shouldBeCalled();
-
-        $entityManager->getRepository(Argument::exact(Family::class))
-            ->shouldBeCalled();
-
-        $repository->findAll()
-            ->willReturn([])
-            ->shouldBeCalled();
-
-        $family->getAttributes()
-            ->shouldNotBeCalled();
-
-        $entityManager->persist(Argument::any())
-            ->shouldNotBeCalled();
-
-        $entityManager->persist(Argument::any())
-            ->shouldNotBeCalled();
-
-        $this->prePersist($eventArgs)
-            ->shouldReturn(null);
-    }
-
-    public function it_does_not_create_requirements_for_family_without_attributes(
-        $eventArgs,
-        $entityManager,
-        $repository,
-        $family
-    ) {
-        $repository->findAll()
-            ->willReturn([$family])
-            ->shouldBeCalled();
-
-        $family->getAttributes()
-            ->willReturn([])
-            ->shouldBeCalled();
-
-        $entityManager->persist(Argument::any())
-            ->shouldNotBeCalled();
-
-        $this->prePersist($eventArgs)
-            ->shouldReturn(null);
-    }
-
-    public function it_creates_requirements(
+    public function it_creates_requirements_for_the_attribute_defined_as_identifier(
         $requirementFactory,
         $eventArgs,
         $channel,
         $entityManager,
-        $family,
-        AttributeInterface $attribute,
-        AttributeRequirementInterface $attributeRequirement
+        FamilyRepositoryInterface $familyRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        FamilyInterface $familyA,
+        FamilyInterface $familyB,
+        AttributeInterface $identifierAttribute,
+        AttributeRequirementInterface $attributeRequirementA,
+        AttributeRequirementInterface $attributeRequirementB
     ) {
-        $family->getAttributes()
-            ->willReturn([$attribute])
-            ->shouldBeCalled();
+        $entityManager->getRepository(FamilyInterface::class)->willReturn($familyRepository);
+        $entityManager->getRepository(AttributeInterface::class)->willReturn($attributeRepository);
 
-        $requirementFactory->createAttributeRequirement(
-            $attribute,
-            $channel,
-            Argument::type('bool')
-        )
-            ->willReturn($attributeRequirement)
-            ->shouldBeCalled();
+        $familyRepository->findAll()->willReturn([$familyA, $familyB]);
+        $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
 
-        $attributeRequirement->setFamily($family)
-            ->shouldBeCalled();
+        $requirementFactory
+            ->createAttributeRequirement($identifierAttribute, $channel, true)
+            ->willReturn($attributeRequirementA, $attributeRequirementB);
 
-        $entityManager->persist(Argument::any())
-            ->shouldBeCalled();
+        $attributeRequirementA->setFamily($familyA)->shouldBeCalled();
+        $attributeRequirementB->setFamily($familyB)->shouldBeCalled();
 
-        $this->prePersist($eventArgs)
-            ->shouldReturn(null);
+        $entityManager->persist($attributeRequirementA)->shouldBeCalled();
+        $entityManager->persist($attributeRequirementB)->shouldBeCalled();
+
+        $this->prePersist($eventArgs)->shouldReturn(null);
     }
 }
