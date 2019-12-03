@@ -26,7 +26,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
@@ -186,9 +186,9 @@ class FixturesLoader
         return $this;
     }
 
-    public function withAttributeOfTypeImage(string $assetFamilyIdentifier, string $attributeCode): self
+    public function withAttributeOfTypeMediaFile(string $assetFamilyIdentifier, string $attributeCode): self
     {
-        $this->customLoadedAttributes[] = ImageAttribute::create(
+        $this->customLoadedAttributes[] = MediaFileAttribute::create(
             $this->attributeRepository->nextIdentifier(
                 AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
                 AttributeCode::fromString($attributeCode)
@@ -389,7 +389,7 @@ class FixturesLoader
 
         // MAIN IMAGE
         if (in_array('main_image', $this->loadedAttributes)) {
-            $attributes['main_image'] = ImageAttribute::create(
+            $attributes['main_image'] = MediaFileAttribute::create(
                 $this->attributeRepository->nextIdentifier(
                     $assetFamilyIdentifier,
                     AttributeCode::fromString('main_image')
@@ -702,7 +702,7 @@ class FixturesLoader
     private function getOrderForAttribute(string $code): AttributeOrder
     {
         $index = array_search($code, $this->loadedAttributes);
-        $realIndex = $index + 2; // Because there are always label+image attributes first.
+        $realIndex = $index + 2; // Because there are always label+media file attributes first.
 
         return AttributeOrder::fromInteger($realIndex);
     }

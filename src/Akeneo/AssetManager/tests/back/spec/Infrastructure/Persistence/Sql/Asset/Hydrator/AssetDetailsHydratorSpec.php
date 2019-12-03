@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\AssetManager\Domain\Query\Asset\FindCodesByIdentifiersInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetDetailsHydratorInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydratorInterface;
 use Doctrine\DBAL\Connection;
@@ -39,7 +38,7 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
         FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
         ValueHydratorInterface $valueHydrator,
         TextAttribute $labelAttribute,
-        ImageAttribute $imageAttribute,
+        MediaFileAttribute $mediaFileAttribute,
         Value $labelfrFR,
         Value $labelenUS
     ) {
@@ -53,10 +52,10 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
             ValueKey::createFromNormalized('label_game_fingerprint_fr_FR'),
             ValueKey::createFromNormalized('main_image_game_fingerprint'),
         ]);
-        $imageAttribute->getIdentifier()->willReturn(AttributeIdentifier::fromString('main_image_game_fingerprint'));
+        $mediaFileAttribute->getIdentifier()->willReturn(AttributeIdentifier::fromString('main_image_game_fingerprint'));
         $indexedAttributes = [
             'label_game_fingerprint' => $labelAttribute,
-            'main_image_game_fingerprint' => $imageAttribute,
+            'main_image_game_fingerprint' => $mediaFileAttribute,
         ];
 
         $labelFrFrNormalized = [
@@ -143,7 +142,7 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
         FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
         ValueHydratorInterface $valueHydrator,
         TextAttribute $descriptionAttribute,
-        ImageAttribute $imageAttribute,
+        MediaFileAttribute $mediaFileAttribute,
         Value $descriptionfrFR,
         Value $image
     ) {
@@ -156,11 +155,11 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
             ValueKey::createFromNormalized('description_game_fingerprint-fr_FR'),
             ValueKey::createFromNormalized('description_game_fingerprint-en_US'),
         ]);
-        $imageAttribute->getIdentifier()->willReturn(AttributeIdentifier::fromString('image_game_fingerprint'));
-        $imageAttribute->getType()->willReturn(ImageAttribute::ATTRIBUTE_TYPE);
+        $mediaFileAttribute->getIdentifier()->willReturn(AttributeIdentifier::fromString('image_game_fingerprint'));
+        $mediaFileAttribute->getType()->willReturn(MediaFileAttribute::ATTRIBUTE_TYPE);
         $indexedAttributes = [
             'description_game_fingerprint' => $descriptionAttribute,
-            'image_game_fingerprint' => $imageAttribute,
+            'image_game_fingerprint' => $mediaFileAttribute,
         ];
 
         $descriptionFrFrNormalized = [
@@ -179,7 +178,7 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
         $descriptionfrFR->isEmpty()->willReturn(false);
         $image->isEmpty()->willReturn(true);
         $valueHydrator->hydrate($descriptionFrFrNormalized, $descriptionAttribute)->willReturn($descriptionfrFR);
-        $valueHydrator->hydrate($imageNormalized, $imageAttribute)->willReturn($image);
+        $valueHydrator->hydrate($imageNormalized, $mediaFileAttribute)->willReturn($image);
         $descriptionfrFR->normalize()->willReturn($descriptionFrFrNormalized);
         $image->normalize()->willReturn($imageNormalized);
 

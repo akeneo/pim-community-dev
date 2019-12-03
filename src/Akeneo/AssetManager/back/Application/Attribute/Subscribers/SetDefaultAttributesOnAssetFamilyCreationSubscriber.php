@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Attribute\Subscribers;
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
-use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\AssetManager\Domain\Event\AssetFamilyCreatedEvent;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
@@ -65,7 +65,7 @@ class SetDefaultAttributesOnAssetFamilyCreationSubscriber implements EventSubscr
         $assetFamilyIdentifier = $assetFamilyCreatedEvent->getAssetFamilyIdentifier();
         $this->createAttributeAsLabel($assetFamilyIdentifier);
         $this->createAttributeAsMainMedia($assetFamilyIdentifier);
-        $this->updateAssetFamilyWithAttributeAsLabelAndImage($assetFamilyIdentifier);
+        $this->updateAssetFamilyWithAttributeAsLabelAndMainMedia($assetFamilyIdentifier);
     }
 
     private function createAttributeAsLabel(AssetFamilyIdentifier $assetFamilyIdentifier): void
@@ -89,7 +89,7 @@ class SetDefaultAttributesOnAssetFamilyCreationSubscriber implements EventSubscr
 
     private function createAttributeAsMainMedia(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
-        $createImageAttributeCommand = new CreateImageAttributeCommand(
+        $createMediaFileAttributeCommand = new CreateMediaFileAttributeCommand(
             $assetFamilyIdentifier->normalize(),
             AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE,
             [],
@@ -100,10 +100,10 @@ class SetDefaultAttributesOnAssetFamilyCreationSubscriber implements EventSubscr
             []
         );
 
-        ($this->createAttributeHandler)($createImageAttributeCommand);
+        ($this->createAttributeHandler)($createMediaFileAttributeCommand);
     }
 
-    private function updateAssetFamilyWithAttributeAsLabelAndImage(AssetFamilyIdentifier $assetFamilyIdentifier): void
+    private function updateAssetFamilyWithAttributeAsLabelAndMainMedia(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
 

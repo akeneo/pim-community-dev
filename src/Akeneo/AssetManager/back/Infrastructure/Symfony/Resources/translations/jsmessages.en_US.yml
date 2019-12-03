@@ -47,7 +47,7 @@ pim_asset_manager:
   asset_preview:
     previous: Previous asset
     next: Next asset
-    empty_main_image: This asset has no image.
+    empty_main_media: This asset has no media.
     edit_asset: Edit asset
     download: Download
     copy_url: Copy URL
@@ -78,7 +78,7 @@ pim_asset_manager:
       title: Asset family permissions
     title: Assets
     breadcrumb: Asset families
-    img: The main image of the asset family named "{{ label }}"
+    img: The main media of the asset family named "{{ label }}"
     tab:
       assets: Assets
       attribute: Attributes
@@ -88,7 +88,7 @@ pim_asset_manager:
       title: Asset family properties
       identifier: Code
       label: Label
-      image: Image
+      media_file: Media file
       attribute_as_main_media: Attribute as main media
     attribute:
       title: Asset attributes
@@ -254,12 +254,12 @@ pim_asset_manager:
     default:
       code: Code
       label: Label
-      image: Image
+      media_file: Media file
     type:
       text: Text
-      image: Image
+      media_file: Media file
       asset: Asset single link
-      asset_collection: Asset multiple links
+      asset_collection: Asset collection
       option: Single option
       option_collection: Multiple options
       number: Number
@@ -366,7 +366,7 @@ pim_enrich:
     attribute:
       property:
         type:
-          pim_catalog_asset_collection: Asset multiple links
+          pim_catalog_asset_collection: Asset collection
         section:
           type_specific: Type specific parameters
         asset_family:

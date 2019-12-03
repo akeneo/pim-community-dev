@@ -6,7 +6,7 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\Max
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
@@ -19,13 +19,13 @@ class MaxLengthUpdaterSpec extends ObjectBehavior
 
     function it_only_supports_edit_max_length_command_for_text_attributes(
         TextAttribute $textAttribute,
-        ImageAttribute $imageAttribute
+        MediaFileAttribute $mediaFileAttribute
     ) {
         $maxLengthEditCommand = new EditMaxLengthCommand('name', 200);
         $labelEditCommand = new EditLabelsCommand('name', []);
 
         $this->supports($textAttribute, $maxLengthEditCommand)->shouldReturn(true);
-        $this->supports($imageAttribute, $maxLengthEditCommand)->shouldReturn(false);
+        $this->supports($mediaFileAttribute, $maxLengthEditCommand)->shouldReturn(false);
         $this->supports($textAttribute, $labelEditCommand)->shouldReturn(false);
     }
 
@@ -43,7 +43,7 @@ class MaxLengthUpdaterSpec extends ObjectBehavior
         $this->__invoke($textAttribute, $editMaxLength)->shouldReturn($textAttribute);
     }
 
-    function it_throws_if_it_cannot_update_the_attribute(TextAttribute $rightAttribute, ImageAttribute $wrongAttribute)
+    function it_throws_if_it_cannot_update_the_attribute(TextAttribute $rightAttribute, MediaFileAttribute $wrongAttribute)
     {
         $wrongCommand = new EditLabelsCommand('name', []);
         $rightCommand = new EditMaxLengthCommand('name', null);

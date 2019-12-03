@@ -146,7 +146,7 @@ return await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
     return await listenRequest(this.page, requestContract);
   });
 
-  Given('a valid asset with an asset family multiple link attribute', async function() {
+  Given('a valid asset with an asset collection attribute', async function() {
     await answerLocaleList.apply(this);
     const requestContract = getRequestContract('Asset/AssetDetails/ok/asset_collection.json');
     currentRequestContract = requestContract;

@@ -18,7 +18,7 @@ class CreateAssetAttributeCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_type_asset()
     {
         $this->supports(['type' => 'asset'])->shouldReturn(true);
-        $this->supports(['type' => 'image'])->shouldReturn(false);
+        $this->supports(['type' => 'media_file'])->shouldReturn(false);
     }
 
     function it_creates_a_command_to_create_an_asset_attribute()
@@ -73,7 +73,7 @@ class CreateAssetAttributeCommandFactorySpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('create', [$command]);
     }
-    
+
     public function it_builds_the_command_with_some_default_values()
     {
         $command = $this->create([

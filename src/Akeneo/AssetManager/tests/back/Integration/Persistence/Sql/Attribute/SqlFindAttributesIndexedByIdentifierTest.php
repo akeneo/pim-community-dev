@@ -29,7 +29,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -54,7 +54,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
     private $longDescription;
 
     /** @var AbstractAttribute */
-    private $imageAttribute;
+    private $mediaFileAttribute;
 
     /** @var AbstractAttribute */
     private $attributeAsLabel;
@@ -83,7 +83,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             'email_designer_test'            => $this->email,
             'long_description_designer_test' => $this->longDescription,
             'regex_designer_test'            => $this->customRegex,
-            'image_designer_test'            => $this->imageAttribute,
+            'image_designer_test'            => $this->mediaFileAttribute,
             $this->attributeAsLabel->getIdentifier()->normalize() => $this->attributeAsLabel,
             $this->attributeAsMainMedia->getIdentifier()->normalize() => $this->attributeAsMainMedia,
         ];
@@ -187,7 +187,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             AttributeMaxLength::fromInteger(155),
             AttributeIsRichTextEditor::fromBoolean(true)
         );
-        $this->imageAttribute = ImageAttribute::create(
+        $this->mediaFileAttribute = MediaFileAttribute::create(
             AttributeIdentifier::create('designer', 'image', 'test'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('main_image'),
@@ -203,7 +203,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
         $attributesRepository->create($this->email);
         $attributesRepository->create($this->customRegex);
         $attributesRepository->create($this->longDescription);
-        $attributesRepository->create($this->imageAttribute);
+        $attributesRepository->create($this->mediaFileAttribute);
 
         $attributesRepository->deleteByIdentifier($assetFamilyWithoutAttributes->getAttributeAsLabelReference()->getIdentifier());
         $attributesRepository->deleteByIdentifier($assetFamilyWithoutAttributes->getAttributeAsMainMediaReference()->getIdentifier());

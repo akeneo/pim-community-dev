@@ -5,7 +5,7 @@ namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommandFactory;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
@@ -17,7 +17,7 @@ class EditTextValueCommandFactorySpec extends ObjectBehavior
     }
 
     function it_only_supports_create_value_of_text_attribute(
-        ImageAttribute $image,
+        MediaFileAttribute $image,
         TextAttribute $text
     ) {
         $normalizedValue = [

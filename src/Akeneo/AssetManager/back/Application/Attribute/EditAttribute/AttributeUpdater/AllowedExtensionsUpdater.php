@@ -8,7 +8,7 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Abstr
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -18,7 +18,7 @@ class AllowedExtensionsUpdater implements AttributeUpdaterInterface
 {
     public function supports(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): bool
     {
-        return $attribute instanceof ImageAttribute && $command instanceof EditAllowedExtensionsCommand;
+        return $attribute instanceof MediaFileAttribute && $command instanceof EditAllowedExtensionsCommand;
     }
 
     public function __invoke(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): AbstractAttribute

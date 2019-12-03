@@ -5,7 +5,7 @@ namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaLinkValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaLinkValueCommandFactory;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use PhpSpec\ObjectBehavior;
 
@@ -17,7 +17,7 @@ class EditMediaLinkValueCommandFactorySpec extends ObjectBehavior
     }
 
     function it_only_supports_create_value_of_mediaLink_attribute(
-        ImageAttribute $image,
+        MediaFileAttribute $image,
         MediaLinkAttribute $mediaLink
     ) {
         $normalizedValue = [

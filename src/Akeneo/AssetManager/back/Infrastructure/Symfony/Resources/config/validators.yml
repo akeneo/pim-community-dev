@@ -214,12 +214,12 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.attribute_option_should_not_exist' }
 
-    akeneo_assetmanager.infrastructure.validation.asset.edit_stored_file_value_command_validator:
-        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditStoredFileValueCommandValidator
+    akeneo_assetmanager.infrastructure.validation.asset.edit_media_file_value_command_validator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaFileValueCommandValidator
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
         tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_stored_file_value_command' }
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_media_file_value_command' }
 
     akeneo_assetmanager.infrastructure.validation.attribute.attribute_option_should_exist:
         class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeOptionShouldExistValidator

@@ -123,7 +123,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
                 maxFileSize: '200.10',
                 order: 3,
                 assetFamilyIdentifier: 'designer',
-                type: 'image',
+                type: 'media_file',
                 valuePerChannel: false,
                 valuePerLocale: false,
               },

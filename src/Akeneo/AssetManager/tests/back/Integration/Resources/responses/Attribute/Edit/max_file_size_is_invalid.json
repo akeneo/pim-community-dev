@@ -14,7 +14,7 @@
         "fr_FR": "Uknown"
       },
       "order": 1,
-      "type": "image",
+      "type": "media_file",
       "is_required": false,
       "value_per_channel": false,
       "value_per_locale": false,

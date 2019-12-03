@@ -24,7 +24,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
@@ -92,7 +92,7 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
 
     private function createConnectorAttribute(string $assetFamilyIdentifier)
     {
-        $imageAttribute = ImageAttribute::create(
+        $mediaFileAttribute = MediaFileAttribute::create(
             AttributeIdentifier::create($assetFamilyIdentifier, 'main_image', 'test'),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('main_image'),
@@ -105,14 +105,14 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
             AttributeAllowedExtensions::fromList(['jpg'])
         );
 
-        $this->attributeRepository->create($imageAttribute);
+        $this->attributeRepository->create($mediaFileAttribute);
 
         return new ConnectorAttribute(
-                $imageAttribute->getCode(),
+                $mediaFileAttribute->getCode(),
                 LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
-                'image',
-                AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),
-                AttributeValuePerChannel::fromBoolean($imageAttribute->hasValuePerChannel()),
+                'media_file',
+                AttributeValuePerLocale::fromBoolean($mediaFileAttribute->hasValuePerLocale()),
+                AttributeValuePerChannel::fromBoolean($mediaFileAttribute->hasValuePerChannel()),
                 AttributeIsRequired::fromBoolean(true),
                 [
                     'max_file_size' => '10',

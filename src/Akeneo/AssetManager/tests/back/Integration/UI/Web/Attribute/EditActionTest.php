@@ -22,7 +22,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
@@ -178,7 +178,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
         );
-        $portrait = ImageAttribute::create(
+        $portrait = MediaFileAttribute::create(
             AttributeIdentifier::create('designer', 'portrait', md5('fingerprint')),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),

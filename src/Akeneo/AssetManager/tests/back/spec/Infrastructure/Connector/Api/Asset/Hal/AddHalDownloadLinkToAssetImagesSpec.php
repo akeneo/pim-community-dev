@@ -15,7 +15,7 @@ namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\Hal;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
-use Akeneo\AssetManager\Domain\Query\Attribute\FindImageAttributeCodesInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindMediaFileAttributeCodesInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\Hal\AddHalDownloadLinkToAssetImages;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -26,9 +26,9 @@ class AddHalDownloadLinkToAssetImagesSpec extends ObjectBehavior
 {
     function let(
         Router $router,
-        FindImageAttributeCodesInterface $findImageAttributeCodes
+        FindMediaFileAttributeCodesInterface $findMediaFileAttributeCodes
     ) {
-        $this->beConstructedWith($router, $findImageAttributeCodes);
+        $this->beConstructedWith($router, $findMediaFileAttributeCodes);
     }
 
     function it_is_initializable()
@@ -38,7 +38,7 @@ class AddHalDownloadLinkToAssetImagesSpec extends ObjectBehavior
 
     function it_adds_hal_download_links_to_images(
         Router $router,
-        FindImageAttributeCodesInterface $findImageAttributeCodes
+        FindMediaFileAttributeCodesInterface $findMediaFileAttributeCodes
     ) {
         $normalizedAsset = [
             'code'       => 'starck',
@@ -83,7 +83,7 @@ class AddHalDownloadLinkToAssetImagesSpec extends ObjectBehavior
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $findImageAttributeCodes->find($assetFamilyIdentifier)->willReturn([
+        $findMediaFileAttributeCodes->find($assetFamilyIdentifier)->willReturn([
             AttributeCode::fromString('coverphoto')
         ]);
 
@@ -131,7 +131,7 @@ class AddHalDownloadLinkToAssetImagesSpec extends ObjectBehavior
 
     function it_does_not_add_hal_download_links_if_there_are_no_images(
         Router $router,
-        FindImageAttributeCodesInterface $findImageAttributeCodes
+        FindMediaFileAttributeCodesInterface $findMediaFileAttributeCodes
     ) {
         $normalizedAsset = [
             'code'       => 'starck',
@@ -155,7 +155,7 @@ class AddHalDownloadLinkToAssetImagesSpec extends ObjectBehavior
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $findImageAttributeCodes->find($assetFamilyIdentifier)->willReturn([
+        $findMediaFileAttributeCodes->find($assetFamilyIdentifier)->willReturn([
             AttributeCode::fromString('coverphoto')
         ]);
 
@@ -165,7 +165,7 @@ class AddHalDownloadLinkToAssetImagesSpec extends ObjectBehavior
     }
 
     function it_does_not_add_hal_links_if_values_is_an_empty_object(
-        FindImageAttributeCodesInterface $findImageAttributeCodes
+        FindMediaFileAttributeCodesInterface $findMediaFileAttributeCodes
     ) {
         $normalizedAsset = [
             'code'       => 'starck',
@@ -174,7 +174,7 @@ class AddHalDownloadLinkToAssetImagesSpec extends ObjectBehavior
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
-        $findImageAttributeCodes->find($assetFamilyIdentifier)->willReturn([
+        $findMediaFileAttributeCodes->find($assetFamilyIdentifier)->willReturn([
             AttributeCode::fromString('coverphoto')
         ]);
 

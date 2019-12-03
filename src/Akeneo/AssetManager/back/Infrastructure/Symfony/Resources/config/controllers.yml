@@ -179,7 +179,7 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\Hal\AddHalDownloadLinkToAssetImages
         arguments:
             - '@router'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_image_attribute_codes'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_media_file_attribute_codes'
 
     akeneo_assetmanager.infrasctucture.connector.add_hal_download_link_to_asset_family_image:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\Hal\AddHalDownloadLinkToAssetFamilyImage

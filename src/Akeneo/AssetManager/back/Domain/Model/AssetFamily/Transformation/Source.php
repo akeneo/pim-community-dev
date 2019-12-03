@@ -17,7 +17,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Webmozart\Assert\Assert;
 
 class Source implements TransformationReference
@@ -46,7 +46,7 @@ class Source implements TransformationReference
         ChannelReference $channelReference,
         LocaleReference $localeReference
     ): self {
-        Assert::isInstanceOf($attribute, ImageAttribute::class);
+        Assert::isInstanceOf($attribute, MediaFileAttribute::class);
 
         $attribute->hasValuePerChannel() ?
             Assert::false(

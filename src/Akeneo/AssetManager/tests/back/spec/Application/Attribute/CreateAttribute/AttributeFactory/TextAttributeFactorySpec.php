@@ -3,7 +3,7 @@
 namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory;
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\TextAttributeFactory;
-use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
@@ -37,7 +37,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             )
         )->shouldReturn(true);
         $this->supports(
-            new CreateImageAttributeCommand(
+            new CreateMediaFileAttributeCommand(
                 'designer',
                 'image',
                 [

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaLinkValueCommand;
-use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\MediaLinkUpdater;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
@@ -37,10 +37,10 @@ class MediaLinkUpdaterSpec extends ObjectBehavior
     }
 
     function it_only_supports_edit_media_link_value_command(
-        EditStoredFileValueCommand $editStoredFileValueCommand,
+        EditMediaFileValueCommand $editMediaFileValueCommand,
         EditMediaLinkValueCommand $editTextValueCommand
     ) {
-        $this->supports($editStoredFileValueCommand)->shouldReturn(false);
+        $this->supports($editMediaFileValueCommand)->shouldReturn(false);
         $this->supports($editTextValueCommand)->shouldReturn(true);
     }
 
@@ -66,10 +66,10 @@ class MediaLinkUpdaterSpec extends ObjectBehavior
 
     function it_throws_if_it_does_not_support_the_command(
         Asset $asset,
-        EditStoredFileValueCommand $editStoredFileValueCommand
+        EditMediaFileValueCommand $editMediaFileValueCommand
     ) {
-        $this->supports($editStoredFileValueCommand)->shouldReturn(false);
-        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$asset, $editStoredFileValueCommand]);
+        $this->supports($editMediaFileValueCommand)->shouldReturn(false);
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$asset, $editMediaFileValueCommand]);
     }
 
     private function mediaLinkAttribute(): MediaLinkAttribute

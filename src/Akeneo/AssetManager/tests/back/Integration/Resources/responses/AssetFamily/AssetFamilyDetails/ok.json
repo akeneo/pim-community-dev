@@ -59,7 +59,7 @@
                     "regular_expression": null
                 },
                 {
-                    "type": "image",
+                    "type": "media_file",
                     "identifier": "designer_portrait_123456",
                     "asset_family_identifier": "designer",
                     "code": "portrait",

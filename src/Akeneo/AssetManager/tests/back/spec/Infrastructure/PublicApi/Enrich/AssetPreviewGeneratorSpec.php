@@ -37,7 +37,7 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
         );
     }
 
-    public function it_gets_the_url_of_an_asset_with_image_attribute(
+    public function it_gets_the_url_of_an_asset_with_media_file_attribute(
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,

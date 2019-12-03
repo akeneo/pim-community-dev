@@ -155,7 +155,7 @@ class GetConnectorAssetFamiliesContext implements Context
     }
 
     /**
-     * @Then /^the PIM returns the label and image properties of the 7 asset families of the PIM$/
+     * @Then /^the PIM returns the label and media_file properties of the 7 asset families of the PIM$/
      */
     public function thePIMReturnsTheAssetFamiliesOfThePIM()
     {

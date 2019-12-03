@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -28,7 +28,7 @@ use PhpSpec\ObjectBehavior;
 
 class TargetSpec extends ObjectBehavior
 {
-    function it_only_accepts_image_attributes(NumberAttribute $attribute)
+    function it_only_accepts_media_file_attributes(NumberAttribute $attribute)
     {
         $attribute = NumberAttribute::create(
             AttributeIdentifier::fromString('a_number'),
@@ -53,7 +53,7 @@ class TargetSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'create',
             [
-                $this->createImageAttribute(false, false),
+                $this->createMediaFileAttribute(false, false),
                 ChannelReference::noReference(),
                 LocaleReference::noReference()
             ]
@@ -66,7 +66,7 @@ class TargetSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'create',
             [
-                $this->createImageAttribute(false, true),
+                $this->createMediaFileAttribute(false, true),
                 ChannelReference::noReference(),
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US'))
             ]
@@ -79,7 +79,7 @@ class TargetSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'create',
             [
-                $this->createImageAttribute(true, false),
+                $this->createMediaFileAttribute(true, false),
                 ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
                 LocaleReference::noReference()
             ]
@@ -92,7 +92,7 @@ class TargetSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'create',
             [
-                $this->createImageAttribute(true, true),
+                $this->createMediaFileAttribute(true, true),
                 ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('tablet')),
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR'))
             ]
@@ -105,7 +105,7 @@ class TargetSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'create',
             [
-                $this->createImageAttribute(false, false),
+                $this->createMediaFileAttribute(false, false),
                 ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
                 LocaleReference::noReference()
             ]
@@ -118,7 +118,7 @@ class TargetSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'create',
             [
-                $this->createImageAttribute(true, false),
+                $this->createMediaFileAttribute(true, false),
                 ChannelReference::noReference(),
                 LocaleReference::noReference()
             ]
@@ -131,7 +131,7 @@ class TargetSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'create',
             [
-                $this->createImageAttribute(false, false),
+                $this->createMediaFileAttribute(false, false),
                 ChannelReference::noReference(),
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             ]
@@ -144,7 +144,7 @@ class TargetSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'create',
             [
-                $this->createImageAttribute(false, true),
+                $this->createMediaFileAttribute(false, true),
                 ChannelReference::noReference(),
                 LocaleReference::noReference(),
             ]
@@ -157,7 +157,7 @@ class TargetSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'create',
             [
-                $this->createImageAttribute(true, true),
+                $this->createMediaFileAttribute(true, true),
                 ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             ]
@@ -175,7 +175,7 @@ class TargetSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'create',
             [
-                $this->createImageAttribute(true, true),
+                $this->createMediaFileAttribute(true, true),
                 ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             ]
@@ -193,7 +193,7 @@ class TargetSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'create',
             [
-                $this->createImageAttribute(true, true),
+                $this->createMediaFileAttribute(true, true),
                 ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             ]
@@ -216,7 +216,7 @@ class TargetSpec extends ObjectBehavior
         $this->beConstructedThrough('createFromNormalized', [$normalizedSource]);
 
         $comparedTarget = Target::create(
-            $this->createImageAttribute(true, true),
+            $this->createMediaFileAttribute(true, true),
             ChannelReference::createfromNormalized('ecommerce'),
             LocaleReference::createFromNormalized('en_US')
         );
@@ -224,9 +224,9 @@ class TargetSpec extends ObjectBehavior
         $this->shouldBeLike($comparedTarget);
     }
 
-    private function createImageAttribute(bool $scopable, bool $localizable): ImageAttribute
+    private function createMediaFileAttribute(bool $scopable, bool $localizable): MediaFileAttribute
     {
-        return ImageAttribute::create(
+        return MediaFileAttribute::create(
             AttributeIdentifier::fromString('image_identifier'),
             AssetFamilyIdentifier::fromString('my_asset_family'),
             AttributeCode::fromString('my_target'),

@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory;
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\NumberAttributeFactory;
-use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateNumberAttributeCommand;
-use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -37,7 +36,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
             '150',
             '200'
         );
-        $unsupportedCommand = new CreateImageAttributeCommand(
+        $unsupportedCommand = new CreateMediaFileAttributeCommand(
             'designer',
             'image',
             [

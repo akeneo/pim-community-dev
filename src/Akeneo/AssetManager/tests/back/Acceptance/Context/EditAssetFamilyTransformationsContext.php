@@ -18,18 +18,16 @@ use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFam
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
-use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand;
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
-use spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationSpec;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
@@ -124,12 +122,12 @@ class EditAssetFamilyTransformationsContext implements Context
     public function anAssetFamilyWithNoTransformation(string $familyIdentifier): void
     {
         $this->createAssetFamily($familyIdentifier);
-        $this->createImageAttribute($familyIdentifier, 'main_image', false, false);
-        $this->createImageAttribute($familyIdentifier, 'target', false, false);
-        $this->createImageAttribute($familyIdentifier, 'target2', false, false);
-        $this->createImageAttribute($familyIdentifier, 'target_scopable', true, false);
-        $this->createImageAttribute($familyIdentifier, 'target_localizable', false, true);
-        $this->createImageAttribute($familyIdentifier, 'target_scopable_localizable', true, true);
+        $this->createMediaFileAttribute($familyIdentifier, 'main_image', false, false);
+        $this->createMediaFileAttribute($familyIdentifier, 'target', false, false);
+        $this->createMediaFileAttribute($familyIdentifier, 'target2', false, false);
+        $this->createMediaFileAttribute($familyIdentifier, 'target_scopable', true, false);
+        $this->createMediaFileAttribute($familyIdentifier, 'target_localizable', false, true);
+        $this->createMediaFileAttribute($familyIdentifier, 'target_scopable_localizable', true, true);
     }
 
     /**
@@ -559,9 +557,9 @@ class EditAssetFamilyTransformationsContext implements Context
         $this->editAssetFamily($command);
     }
 
-    private function createImageAttribute(string $familyIdentifier, string $attributeCode, bool $scopable, bool $localizable): void
+    private function createMediaFileAttribute(string $familyIdentifier, string $attributeCode, bool $scopable, bool $localizable): void
     {
-        $createCommand = new CreateImageAttributeCommand(
+        $createCommand = new CreateMediaFileAttributeCommand(
             $familyIdentifier,
             $attributeCode,
             [

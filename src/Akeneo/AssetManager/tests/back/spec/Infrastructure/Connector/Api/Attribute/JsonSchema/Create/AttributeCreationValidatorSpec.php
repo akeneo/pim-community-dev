@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeCreationValidator;
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\ImageAttributeValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\MediaFileAttributeValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\OptionAttributeValidator;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -23,7 +23,7 @@ class AttributeCreationValidatorSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith([new ImageAttributeValidator(), new OptionAttributeValidator()]);
+        $this->beConstructedWith([new MediaFileAttributeValidator(), new OptionAttributeValidator()]);
     }
 
     function it_is_initializable()
@@ -31,9 +31,9 @@ class AttributeCreationValidatorSpec extends ObjectBehavior
         $this->shouldHaveType(AttributeCreationValidator::class);
     }
 
-    function it_validates_an_image_attribute()
+    function it_validates_a_media_file_attribute()
     {
-        $this->validate(['type' => 'image'])->shouldBeArray();
+        $this->validate(['type' => 'media_file'])->shouldBeArray();
     }
 
     function it_validates_an_option_attribute()

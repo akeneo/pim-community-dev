@@ -50,7 +50,7 @@ module.exports = async function(cucumber) {
           validation_rule: 'none',
           regular_expression: null,
         };
-      } else if ('image' === normalizedAttribute.type) {
+      } else if ('media_file' === normalizedAttribute.type) {
         return {
           identifier: `${assetFamilyIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
           asset_family_identifier: assetFamilyIdentifier,
@@ -59,7 +59,7 @@ module.exports = async function(cucumber) {
           order: 1,
           value_per_locale: true,
           value_per_channel: false,
-          type: 'image',
+          type: 'media_file',
           labels: JSON.parse(normalizedAttribute.labels),
           max_file_size: '124.12',
           allowed_extensions: ['png', 'jpg'],

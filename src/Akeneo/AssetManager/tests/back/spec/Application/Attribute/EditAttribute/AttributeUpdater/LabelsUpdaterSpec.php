@@ -5,7 +5,7 @@ namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\Attribute
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\LabelsUpdater;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
@@ -19,13 +19,13 @@ class LabelsUpdaterSpec extends ObjectBehavior
 
     function it_only_supports_edit_labels_command_for_all_attributes(
         TextAttribute $textAttribute,
-        ImageAttribute $imageAttribute
+        MediaFileAttribute $mediaFileAttribute
     ) {
         $labelEditCommand = new EditLabelsCommand('name', []);
         $isRequiredEditCommand = new EditIsRequiredCommand('name', true);
 
         $this->supports($textAttribute, $labelEditCommand)->shouldReturn(true);
-        $this->supports($imageAttribute, $labelEditCommand)->shouldReturn(true);
+        $this->supports($mediaFileAttribute, $labelEditCommand)->shouldReturn(true);
         $this->supports($textAttribute, $isRequiredEditCommand)->shouldReturn(false);
     }
 

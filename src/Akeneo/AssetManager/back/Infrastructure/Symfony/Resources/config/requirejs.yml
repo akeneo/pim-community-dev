@@ -10,7 +10,7 @@ config:
                     module: pim/controller/asset/edit
 
         akeneoassetmanager/application/configuration/value:
-            image:
+            media_file:
                 denormalize: '@akeneoassetmanager/domain/model/asset/data/file'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/file.tsx'
                 cell: '@akeneoassetmanager/application/component/asset/index/cell/image.tsx'
@@ -48,11 +48,11 @@ config:
                 filter: '@akeneoassetmanager/application/component/asset/index/filter/option.tsx'
 
         akeneoassetmanager/application/configuration/attribute:
-            image:
-                icon: bundles/pimui/images/attribute/icon-image.svg
-                denormalize: '@akeneoassetmanager/domain/model/attribute/type/image'
-                reducer: '@akeneoassetmanager/application/reducer/attribute/type/image'
-                view: '@akeneoassetmanager/application/component/attribute/edit/image.tsx'
+            media_file:
+                icon: bundles/pimui/images/attribute/icon-mediafile.svg
+                denormalize: '@akeneoassetmanager/domain/model/attribute/type/media-file'
+                reducer: '@akeneoassetmanager/application/reducer/attribute/type/media-file'
+                view: '@akeneoassetmanager/application/component/attribute/edit/media-file.tsx'
             text:
                 icon: bundles/pimui/images/attribute/icon-text.svg
                 denormalize: '@akeneoassetmanager/domain/model/attribute/type/text'

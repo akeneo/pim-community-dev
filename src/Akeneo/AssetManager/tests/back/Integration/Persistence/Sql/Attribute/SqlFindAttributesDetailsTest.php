@@ -50,7 +50,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $this->assertEmailAttribute($attributeDetails);
         $this->assertCustomRegex($attributeDetails);
         $this->assertLongDescriptionAttribute($attributeDetails);
-        $this->assertImageAttribute($attributeDetails);
+        $this->assertMediaFileAttribute($attributeDetails);
     }
 
     private function resetDB(): void
@@ -178,12 +178,12 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
      * @param $attributeDetails
      *
      */
-    private function assertImageAttribute($attributeDetails): void
+    private function assertMediaFileAttribute($attributeDetails): void
     {
         $actualImage = $this->getAttributeWithCode($attributeDetails, 'main_image');
 
         $expectedImage = new AttributeDetails();
-        $expectedImage->type = 'image';
+        $expectedImage->type = 'media_file';
         $expectedImage->identifier = (string) $this->fixturesDesigner['attributes']['main_image']->getIdentifier();
         $expectedImage->assetFamilyIdentifier = 'designer';
         $expectedImage->code = 'main_image';

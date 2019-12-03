@@ -141,7 +141,7 @@ class GetConnectorAssetFamilyContext implements Context
     }
 
     /**
-     * @Then /^the PIM returns the label, image properties and rule templates of Brand asset family$/
+     * @Then /^the PIM returns the label, media_file properties and rule templates of Brand asset family$/
      */
     public function thePIMReturnsTheBrandAssetFamily(): void
     {

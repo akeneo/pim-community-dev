@@ -116,19 +116,19 @@ module.exports = async function(cucumber) {
     await modal.save();
   });
 
-  When('the user creates a valid image attribute', async function() {
+  When('the user creates a valid media-file attribute', async function() {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
     const modal = await await getElement(this.page, 'Modal');
     await modal.fillField('pim_asset_manager.attribute.create.input.code', 'niceattribute');
     await modal.fillField('pim_asset_manager.attribute.create.input.label', 'Nice attribute');
-    await modal.select('.AknFieldContainer[data-code="type"]', 'image');
+    await modal.select('.AknFieldContainer[data-code="type"]', 'media_file');
     await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
-  Then('the user saves the valid image attribute', async function() {
-    const requestContract = getRequestContract('Attribute/Create/attribute_image_ok.json');
+  Then('the user saves the valid media-file attribute', async function() {
+    const requestContract = getRequestContract('Attribute/Create/attribute_media_file_ok.json');
 
     await listenRequest(this.page, requestContract);
 

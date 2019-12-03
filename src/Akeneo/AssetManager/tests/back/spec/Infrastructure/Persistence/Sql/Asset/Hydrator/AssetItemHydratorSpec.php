@@ -6,7 +6,7 @@ namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetItem;
@@ -51,7 +51,7 @@ class AssetItemHydratorSpec extends ObjectBehavior
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         ValueKeyCollection $valueKeyCollection,
         AbstractAttribute $labelAttribute,
-        ImageAttribute $imageAttribute,
+        MediaFileAttribute $mediaFileAttribute,
         AbstractAttribute $textilesAttribute,
         ValueHydratorInterface $valueHydrator,
         ImagePreviewUrlGenerator $imagePreviewUrlGenerator
@@ -84,7 +84,7 @@ class AssetItemHydratorSpec extends ObjectBehavior
             ->willReturn(
                 [
                     'label'    => $labelAttribute,
-                    'image'    => $imageAttribute,
+                    'image'    => $mediaFileAttribute,
                     'textiles' => $textilesAttribute,
                 ]
             );
@@ -116,7 +116,7 @@ class AssetItemHydratorSpec extends ObjectBehavior
 
         $valueHydrator->hydrate($labelFrValue, $labelAttribute, [])->willReturn($labelFrValue);
         $valueHydrator->hydrate($labelEnValue, $labelAttribute, [])->willReturn($labelEnValue);
-        $valueHydrator->hydrate($imageValue, $imageAttribute, [])->willReturn(
+        $valueHydrator->hydrate($imageValue, $mediaFileAttribute, [])->willReturn(
             [
                 'attribute' => 'image',
                 'channel'   => null,

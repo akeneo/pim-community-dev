@@ -26,7 +26,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -113,9 +113,9 @@ class SqlFindConnectorAttributeOptionsTest extends SqlIntegrationTestCase
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function createImageAttribute(string $assetFamilyIdentifier)
+    private function createMediaFileAttribute(string $assetFamilyIdentifier)
     {
-        $imageAttribute = ImageAttribute::create(
+        $mediaFileAttribute = MediaFileAttribute::create(
             AttributeIdentifier::create($assetFamilyIdentifier, 'portrait', 'fingerprint'),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('portrait'),
@@ -128,7 +128,7 @@ class SqlFindConnectorAttributeOptionsTest extends SqlIntegrationTestCase
             AttributeAllowedExtensions::fromList(['png'])
         );
 
-        $this->attributeRepository->create($imageAttribute);
+        $this->attributeRepository->create($mediaFileAttribute);
     }
 
     private function createAttribute(string $assetFamilyIdentifier)

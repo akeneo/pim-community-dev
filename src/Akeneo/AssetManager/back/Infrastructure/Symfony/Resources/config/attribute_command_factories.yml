@@ -8,8 +8,8 @@ services:
         tags:
             - { name: akeneo_assetmanager.create_attribute_command_factory }
 
-    akeneo_assetmanager.application.factory.create_image_attribute_command_factory:
-        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateImageAttributeCommandFactory
+    akeneo_assetmanager.application.factory.create_media_file_attribute_command_factory:
+        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateMediaFileAttributeCommandFactory
         tags:
             - { name: akeneo_assetmanager.create_attribute_command_factory }
 

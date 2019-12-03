@@ -123,7 +123,7 @@
             "is_required": false,
             "value_per_channel": false,
             "value_per_locale": false,
-            "type": "image",
+            "type": "media_file",
             "max_file_size": "200.10",
             "allowed_extensions": [
               "png"

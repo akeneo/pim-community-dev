@@ -791,21 +791,21 @@ final class EditAssetFamilyContext implements Context
     /**
      * @Given /^an asset family with no product link rules and an attribute with a type unsupported for extrapolation$/
      */
-    public function anAssetFamilyWithNoProductLinkRulesAndAnImageAttribute()
+    public function anAssetFamilyWithNoProductLinkRulesAndAMediaFileAttribute()
     {
         $this->fixturesLoader
             ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
-            ->withAttributeOfTypeImage(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
+            ->withAttributeOfTypeMediaFile(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
             ->load();
     }
 
     /**
      * @Then /^there should be a validation error stating that the product selection field does not support this attribute for extrapolation$/
      */
-    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionFieldDoesNotSupportExtrapolatedImageAttribute()
+    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionFieldDoesNotSupportExtrapolatedMediaFileAttribute()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "media_file" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -841,10 +841,10 @@ final class EditAssetFamilyContext implements Context
     /**
      * @When /^there should be a validation error stating that the product selection value does not support this attribute for extrapolation/
      */
-    public function there_should_be_a_validation_error_stating_that_the_product_selection_value_does_not_support_extrapolated_image_attribute()
+    public function there_should_be_a_validation_error_stating_that_the_product_selection_value_does_not_support_extrapolated_media_file_attribute()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text, option, option_collection', self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "media_file" is not supported, only the following attribute types are supported for this field: text, option, option_collection', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -880,10 +880,10 @@ final class EditAssetFamilyContext implements Context
     /**
      * @Then /^there should be a validation error stating that the product selection channel does not support this attribute for extrapolation$/
      */
-    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionChannelDoesNotSupportExtrapolatedImageAttribute()
+    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionChannelDoesNotSupportExtrapolatedMediaFileAttribute()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "media_file" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -951,7 +951,7 @@ final class EditAssetFamilyContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheAssignmentAttributeDoesNotSupportThisExtrapolatedAttributeType()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "media_file" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -990,7 +990,7 @@ final class EditAssetFamilyContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheProductAssignmentChannelDoesNotSupportThisAttributeForExtrapolation()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "media_file" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -1029,7 +1029,7 @@ final class EditAssetFamilyContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheProductAssignmentLocaleDoesNotSupportThisAttributeForExtrapolation()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "media_file" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -1595,13 +1595,13 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @Given /^an asset family with an image attribute "([^"]*)"$/
+     * @Given /^an asset family with a media file attribute "([^"]*)"$/
      */
-    public function theAssetFamilyWithAnImageAttribute($imageAttributeCode)
+    public function theAssetFamilyWithAMediaFileAttribute($mediaFileAttributeCode)
     {
         $this->fixturesLoader
             ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
-            ->withAttributeOfTypeImage(self::ASSET_FAMILY_IDENTIFIER, $imageAttributeCode)
+            ->withAttributeOfTypeMediaFile(self::ASSET_FAMILY_IDENTIFIER, $mediaFileAttributeCode)
             ->load();
     }
 

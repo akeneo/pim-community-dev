@@ -27,7 +27,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -113,7 +113,7 @@ class SqlFindConnectorAttributesByAssetFamilyIdentifierTest extends SqlIntegrati
             AttributeRegularExpression::fromString('/\w+/')
         );
 
-        $imageAttribute = ImageAttribute::create(
+        $mediaFileAttribute = MediaFileAttribute::create(
             AttributeIdentifier::create($assetFamilyIdentifier, 'main_image', 'test'),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('main_image'),
@@ -127,7 +127,7 @@ class SqlFindConnectorAttributesByAssetFamilyIdentifierTest extends SqlIntegrati
         );
 
         $this->attributeRepository->create($textAttribute);
-        $this->attributeRepository->create($imageAttribute);
+        $this->attributeRepository->create($mediaFileAttribute);
 
         $assetFamily = $this->assetFamilyRepository
             ->getByIdentifier(AssetFamilyIdentifier::fromString($assetFamilyIdentifier));
@@ -156,7 +156,7 @@ class SqlFindConnectorAttributesByAssetFamilyIdentifierTest extends SqlIntegrati
             new ConnectorAttribute(
                 $attributeAsMainMedia->getCode(),
                 LabelCollection::fromArray([]),
-                'image',
+                'media_file',
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeIsRequired::fromBoolean(false),
@@ -181,11 +181,11 @@ class SqlFindConnectorAttributesByAssetFamilyIdentifierTest extends SqlIntegrati
                 ]
             ),
             new ConnectorAttribute(
-                $imageAttribute->getCode(),
+                $mediaFileAttribute->getCode(),
                 LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
-                'image',
-                AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),
-                AttributeValuePerChannel::fromBoolean($imageAttribute->hasValuePerChannel()),
+                'media_file',
+                AttributeValuePerLocale::fromBoolean($mediaFileAttribute->hasValuePerLocale()),
+                AttributeValuePerChannel::fromBoolean($mediaFileAttribute->hasValuePerChannel()),
                 AttributeIsRequired::fromBoolean(true),
                 [
                     'max_file_size' => '10',

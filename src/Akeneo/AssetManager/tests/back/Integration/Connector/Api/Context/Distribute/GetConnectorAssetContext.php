@@ -32,7 +32,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -155,7 +155,7 @@ class GetConnectorAssetContext implements Context
         $this->assetFamilyRepository->create($assetFamily);
 
         $this->loadNameAttribute();
-        $this->loadCoverImageAttribute();
+        $this->loadCoverMediaFileAttribute();
     }
 
     /**
@@ -260,15 +260,15 @@ class GetConnectorAssetContext implements Context
      */
     public function theKartellAssetOfTheBrandAssetFamilyWithAMediaFileInAnAttributeValue()
     {
-        $imageFile = new FileInfo();
-        $imageFile->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
-        $imageFile->setMimeType('image/jpeg');
-        $imageFile->setOriginalFilename('kartell.jpg');
+        $mediaFile = new FileInfo();
+        $mediaFile->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
+        $mediaFile->setMimeType('image/jpeg');
+        $mediaFile->setOriginalFilename('kartell.jpg');
 
-        $this->mediaFileRepository->save($imageFile);
+        $this->mediaFileRepository->save($mediaFile);
 
         $fileSystem = $this->filesystemProvider->getFileSystem(Storage::FILE_STORAGE_ALIAS);
-        $fileSystem->write('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg', 'This represents the binary of an image');
+        $fileSystem->write('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg', 'This represents the binary of a media file');
     }
 
     /**
@@ -342,9 +342,9 @@ class GetConnectorAssetContext implements Context
         $this->attributeRepository->create($name);
     }
 
-    private function loadCoverImageAttribute(): void
+    private function loadCoverMediaFileAttribute(): void
     {
-        $image = ImageAttribute::create(
+        $image = MediaFileAttribute::create(
             AttributeIdentifier::create('designer', 'cover_image', 'fingerprint'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('cover_image'),

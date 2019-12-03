@@ -13,7 +13,7 @@ import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/ident
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getLabel} from 'pimui/js/i18n';
-import {IMAGE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/image';
+import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
 interface FormProps {
@@ -121,14 +121,14 @@ export default class EditForm extends React.Component<FormProps> {
           </div>
           {getErrorsView(this.props.errors, 'labels')}
         </div>
-        <div className="AknFieldContainer" data-code="image">
+        <div className="AknFieldContainer" data-code="mediaFile">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label
-              title={__('pim_asset_manager.asset_family.properties.image')}
+              title={__('pim_asset_manager.asset_family.properties.media_file')}
               className="AknFieldContainer-label"
-              htmlFor="pim_asset_manager.asset_family.properties.image"
+              htmlFor="pim_asset_manager.asset_family.properties.media_file"
             >
-              {__('pim_asset_manager.asset_family.properties.image')}
+              {__('pim_asset_manager.asset_family.properties.media_file')}
             </label>
           </div>
           <div className="AknFieldContainer-inputContainer">
@@ -142,7 +142,7 @@ export default class EditForm extends React.Component<FormProps> {
               readOnly={!canEditImage}
             />
           </div>
-          {getErrorsView(this.props.errors, 'image')}
+          {getErrorsView(this.props.errors, 'mediaFile')}
         </div>
         <div className="AknFieldContainer" data-code="attributeAsMainMedia">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
@@ -161,7 +161,7 @@ export default class EditForm extends React.Component<FormProps> {
                 name="allowed_extensions"
                 data={this.props.attributes
                   .filter((attribute: NormalizedAttribute) =>
-                    [MEDIA_LINK_ATTRIBUTE_TYPE, IMAGE_ATTRIBUTE_TYPE].includes(attribute.type)
+                    [MEDIA_LINK_ATTRIBUTE_TYPE, MEDIA_FILE_ATTRIBUTE_TYPE].includes(attribute.type)
                   )
                   .reduce((result: {[key: string]: string}, current: NormalizedAttribute) => {
                     return {...result, [current.identifier]: getLabel(current.labels, this.props.locale, current.code)};

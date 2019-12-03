@@ -5,7 +5,7 @@ namespace spec\Akeneo\AssetManager\Application\Attribute\EditAttribute\Attribute
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\OptionsUpdater;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommand;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use PhpSpec\ObjectBehavior;
@@ -21,7 +21,7 @@ class OptionsUpdaterSpec extends ObjectBehavior
     function it_only_supports_edit_options_for_option_collection_attribute_and_option_attribute(
         OptionCollectionAttribute $optionCollectionAttribute,
         OptionAttribute $optionAttribute,
-        ImageAttribute $imageAttribute
+        MediaFileAttribute $mediaFileAttribute
     ) {
         $optionsEditCommand = new EditOptionsCommand(
             'color',
@@ -34,7 +34,7 @@ class OptionsUpdaterSpec extends ObjectBehavior
 
         $this->supports($optionCollectionAttribute, $optionsEditCommand)->shouldReturn(true);
         $this->supports($optionAttribute, $optionsEditCommand)->shouldReturn(true);
-        $this->supports($imageAttribute, $optionsEditCommand)->shouldReturn(false);
+        $this->supports($mediaFileAttribute, $optionsEditCommand)->shouldReturn(false);
         $this->supports($optionCollectionAttribute, $labelEditCommand)->shouldReturn(false);
     }
 
@@ -79,7 +79,7 @@ class OptionsUpdaterSpec extends ObjectBehavior
     function it_throws_if_it_cannot_update_the_attribute(
         OptionAttribute $rightAttribute1,
         OptionCollectionAttribute $rightAttribute2,
-        ImageAttribute $wrongAttribute
+        MediaFileAttribute $wrongAttribute
     ) {
         $rightCommand = new EditOptionsCommand('color', []);
         $wrongCommand = new EditLabelsCommand(

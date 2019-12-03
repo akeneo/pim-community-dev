@@ -24,7 +24,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetOutdatedValues;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
@@ -234,12 +234,12 @@ class GetOutdatedValuesSpec extends ObjectBehavior
         $transformationCollection = TransformationCollection::create([
             Transformation::create(
                 Source::create(
-                    $this->createImageAttribute(self::SOURCE_ATTRIBUTE_CODE),
+                    $this->createMediaFileAttribute(self::SOURCE_ATTRIBUTE_CODE),
                     ChannelReference::noReference(),
                     LocaleReference::noReference()
                 ),
                 Target::create(
-                    $this->createImageAttribute('target'),
+                    $this->createMediaFileAttribute('target'),
                     ChannelReference::noReference(),
                     LocaleReference::noReference()
                 ),
@@ -252,9 +252,9 @@ class GetOutdatedValuesSpec extends ObjectBehavior
         return $transformationCollection;
     }
 
-    private function createImageAttribute(string $attributeCode): ImageAttribute
+    private function createMediaFileAttribute(string $attributeCode): MediaFileAttribute
     {
-        return ImageAttribute::create(
+        return MediaFileAttribute::create(
             AttributeIdentifier::fromString($attributeCode . '_' . self::ASSET_FAMILY_CODE . '_'. self::FINGERPRINT),
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_CODE),
             AttributeCode::fromString($attributeCode),

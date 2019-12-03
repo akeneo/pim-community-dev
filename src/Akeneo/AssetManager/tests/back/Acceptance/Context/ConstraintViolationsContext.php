@@ -45,7 +45,7 @@ final class ConstraintViolationsContext implements Context
 
     /**
      * @Then /^there should be a validation error with message \'([^\']*)\'$/
-     * @Then /^there should be a validation error on the property image attribute with message \'([^\']*)\'$/
+     * @Then /^there should be a validation error on the property media file attribute with message \'([^\']*)\'$/
      */
     public function thereShouldBeAValidationErrorWithMessage(string $message): void
     {

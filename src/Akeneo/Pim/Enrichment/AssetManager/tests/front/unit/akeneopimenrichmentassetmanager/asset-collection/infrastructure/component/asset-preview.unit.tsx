@@ -7,7 +7,7 @@ import {AssetPreview} from 'akeneopimenrichmentassetmanager/assets-collection/in
 import {getAssetByCode} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
-import {IMAGE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/image';
+import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 
 const context = {locale: 'en_US', channel: 'ecommerce'};
 const mediaLinkImageAttribute = {
@@ -32,7 +32,7 @@ const mediaLinkUnknownAttribute = {
 };
 const imageAttribute = {
   identifier: 'image_attribute_identifier',
-  type: IMAGE_ATTRIBUTE_TYPE,
+  type: MEDIA_FILE_ATTRIBUTE_TYPE,
 };
 const unknownAttribute = {
   identifier: 'unknown_attribute_identifier',

@@ -32,7 +32,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
@@ -120,7 +120,7 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Given /^the image attribute Portrait that is only part of the structure of the Designer asset family in the ERP but not in the PIM$/
+     * @Given /^the media file attribute Portrait that is only part of the structure of the Designer asset family in the ERP but not in the PIM$/
      */
     public function thePortraitAttributeThatIsOnlyPartOfTheStructureOfTheDesignerAssetFamilyInTheERPButNotInThePIM()
     {
@@ -191,7 +191,7 @@ class CreateOrUpdateAttributeContext implements Context
         $attributeIdentifier = AttributeIdentifier::create('designer', 'portrait', md5('designer_portrait'));
 
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
-        $expectedAttribute = ImageAttribute::create(
+        $expectedAttribute = MediaFileAttribute::create(
             $attributeIdentifier,
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
@@ -398,7 +398,7 @@ class CreateOrUpdateAttributeContext implements Context
      */
     public function thePortraitAttributeThatIsBothPartOfTheStructureOfTheDesignerAssetFamilyInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
     {
-        $attribute = ImageAttribute::create(
+        $attribute = MediaFileAttribute::create(
             AttributeIdentifier::create('designer', 'image', 'fingerprint'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
@@ -415,7 +415,7 @@ class CreateOrUpdateAttributeContext implements Context
         $connectorAttribute = new ConnectorAttribute(
             $attribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
-            'image',
+            'media_file',
             AttributeValuePerLocale::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(true),
@@ -442,7 +442,7 @@ class CreateOrUpdateAttributeContext implements Context
         $assetFamilyIdentifier = 'designer';
         $attributeIdentifier = AttributeIdentifier::create('designer', 'image', 'fingerprint');
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
-        $expectedAttribute = ImageAttribute::create(
+        $expectedAttribute = MediaFileAttribute::create(
             $attributeIdentifier,
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('portrait'),

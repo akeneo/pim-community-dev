@@ -15,7 +15,7 @@
         "en_US": "Name"
       },
       "order": 1,
-      "type": "image",
+      "type": "media_file",
       "is_required": true,
       "value_per_channel": false,
       "value_per_locale": false,

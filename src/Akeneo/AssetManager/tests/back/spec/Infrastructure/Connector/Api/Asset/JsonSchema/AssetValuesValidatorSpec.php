@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -24,11 +26,9 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValuesValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValueValidatorInterface;
@@ -179,7 +179,7 @@ class AssetValuesValidatorSpec extends ObjectBehavior
             $this->getNameAttribute(),
             $this->getDescriptionAttribute(),
             $this->getCountryAttribute(),
-            $this->getImageAttribute(),
+            $this->getMediaFileAttribute(),
         ]);
 
         $assetValueValidatorRegistry->getValidator(TextAttribute::class)->willReturn($textTypeValidator);
@@ -268,9 +268,9 @@ class AssetValuesValidatorSpec extends ObjectBehavior
         );
     }
 
-    private function getImageAttribute(): ImageAttribute
+    private function getMediaFileAttribute(): MediaFileAttribute
     {
-        return ImageAttribute::create(
+        return MediaFileAttribute::create(
             AttributeIdentifier::create('brand', 'cover_image', 'fingerprint'),
             AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('cover_image'),

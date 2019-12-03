@@ -266,8 +266,8 @@ services:
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer:
         class: Akeneo\AssetManager\Common\Fake\AssetIndexerSpy
 
-    akeneo_assetmanager.infrastructure.persistence.query.find_image_attribute_codes:
-        class: Akeneo\AssetManager\Common\Fake\InMemoryFindImageAttributeCodes
+    akeneo_assetmanager.infrastructure.persistence.query.find_media_file_attribute_codes:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryFindMediaFileAttributeCodes
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 

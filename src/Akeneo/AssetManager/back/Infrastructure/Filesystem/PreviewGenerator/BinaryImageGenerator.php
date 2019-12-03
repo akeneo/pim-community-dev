@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -31,7 +31,7 @@ class BinaryImageGenerator extends AbstractPreviewGenerator
 
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
-        return ImageAttribute::ATTRIBUTE_TYPE === $attribute->getType()
+        return MediaFileAttribute::ATTRIBUTE_TYPE === $attribute->getType()
             && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 

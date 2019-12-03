@@ -54,7 +54,7 @@
               "updatedAt":"2019-11-22T15:16:21+0000",
               "attribute":{
                 "maxFileSizeLimit":false,
-                "type":"image",
+                "type": "media_file",
                 "maxFileSize":{
                   "limit":false
                 },
@@ -95,7 +95,7 @@
           "updatedAt":"2019-11-22T15:16:21+0000",
           "attribute":{
             "maxFileSizeLimit":false,
-            "type":"image",
+            "type": "media_file",
             "maxFileSize":{
               "limit":false
             },

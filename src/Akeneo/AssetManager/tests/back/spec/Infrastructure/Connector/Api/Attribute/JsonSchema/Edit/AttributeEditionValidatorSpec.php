@@ -24,7 +24,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -32,7 +32,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeEditionValidator;
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\ImageAttributeValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\MediaFileAttributeValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\OptionAttributeValidator;
 use PhpSpec\ObjectBehavior;
 
@@ -53,7 +53,7 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(false)
         );
 
-        $imageAttribute = ImageAttribute::create(
+        $mediaFileAttribute = MediaFileAttribute::create(
             AttributeIdentifier::fromString('photo'),
             AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('photo'),
@@ -86,7 +86,7 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
 
         $attributeRepository
             ->getByIdentifier(AttributeIdentifier::fromString('photo'))
-            ->willReturn($imageAttribute);
+            ->willReturn($mediaFileAttribute);
 
         $attributeRepository
             ->getByIdentifier(AttributeIdentifier::fromString('text'))
@@ -110,7 +110,7 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
         $this->beConstructedWith(
             $attributeRepository,
             $getAttributeIdentifier,
-            [new ImageAttributeValidator(), new OptionAttributeValidator()]
+            [new MediaFileAttributeValidator(), new OptionAttributeValidator()]
         );
     }
 
@@ -119,7 +119,7 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
         $this->shouldHaveType(AttributeEditionValidator::class);
     }
 
-    function it_validates_an_image_attribute()
+    function it_validates_a_media_file_attribute()
     {
         $this->validate(
             AssetFamilyIdentifier::fromString('brand'),

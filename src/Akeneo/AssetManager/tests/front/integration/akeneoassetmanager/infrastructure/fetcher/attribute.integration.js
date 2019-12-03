@@ -42,7 +42,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
               order: 1,
               value_per_locale: true,
               value_per_channel: false,
-              type: 'image',
+              type: 'media_file',
               labels: {
                 en_US: 'Side view',
               },
@@ -87,7 +87,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
         },
         order: 1,
         isRequired: false,
-        type: 'image',
+        type: 'media_file',
         valuePerChannel: false,
         valuePerLocale: true,
         allowedExtensions: ['jpg', 'png'],

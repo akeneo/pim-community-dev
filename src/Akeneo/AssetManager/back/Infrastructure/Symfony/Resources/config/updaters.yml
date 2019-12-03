@@ -87,8 +87,8 @@ services:
         tags:
             - { name: akeneo_assetmanager.asset_value_updater }
 
-    akeneo_assetmanager.application.edit_asset.asset_value_updater.stored_file_updater:
-        class: Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\StoredFileUpdater
+    akeneo_assetmanager.application.edit_asset.asset_value_updater.media_file_updater:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\MediaFileUpdater
         tags:
             - { name: akeneo_assetmanager.asset_value_updater }
 

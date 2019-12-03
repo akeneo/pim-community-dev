@@ -6,7 +6,7 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\IsR
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
@@ -19,7 +19,7 @@ class IsRequiredUpdaterSpec extends ObjectBehavior
 
     function it_only_supports_edit_required_command_for_all_attributes(
         TextAttribute $textAttribute,
-        ImageAttribute $imageAttribute
+        MediaFileAttribute $mediaFileAttribute
     ) {
         $labelEditCommand = new EditLabelsCommand(
             'name',
@@ -31,7 +31,7 @@ class IsRequiredUpdaterSpec extends ObjectBehavior
         );
 
         $this->supports($textAttribute, $isRequiredEditCommand)->shouldReturn(true);
-        $this->supports($imageAttribute, $isRequiredEditCommand)->shouldReturn(true);
+        $this->supports($mediaFileAttribute, $isRequiredEditCommand)->shouldReturn(true);
         $this->supports($textAttribute, $labelEditCommand)->shouldReturn(false);
     }
 

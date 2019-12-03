@@ -126,7 +126,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $portrait->order = 2;
         $portrait->valuePerChannel = false;
         $portrait->valuePerLocale = true;
-        $portrait->type = 'image';
+        $portrait->type = 'media_file';
         $portrait->labels = ['en_US' => 'Portrait', 'fr_FR' => 'Image'];
         $portrait->additionalProperties = [
             'max_file_size'      => '124.12',

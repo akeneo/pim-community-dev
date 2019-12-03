@@ -104,7 +104,7 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
         $labelAttribute = $this->attributeRepository->getByIdentifier(
             $assetFamily->getAttributeAsLabelReference()->getIdentifier()
         );
-        $imageAttribute = $this->attributeRepository->getByIdentifier(
+        $mediaFileAttribute = $this->attributeRepository->getByIdentifier(
             $assetFamily->getAttributeAsMainMediaReference()->getIdentifier()
         );
 
@@ -162,7 +162,7 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
                 ],
                 'locale' => null,
                 'channel' => null,
-                'attribute' => $imageAttribute->normalize(),
+                'attribute' => $mediaFileAttribute->normalize(),
             ],
         ];
 

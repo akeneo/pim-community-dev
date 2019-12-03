@@ -13,17 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\Attribute;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClient;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateActionTest extends ControllerIntegrationTestCase
@@ -53,14 +50,13 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_an_image_attribute(): void
+    public function it_creates_a_media_file_attribute(): void
     {
-        $this->webClientHelper->assertRequest($this->client, 'Attribute/Create/attribute_image_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/Create/attribute_media_file_ok.json');
     }
 
     /**
      * TODO: enable back when we will enable it again on reference entity
-     * @ test
      */
     public function it_creates_a_asset_attribute(): void
     {
@@ -69,7 +65,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
     /**
      * TODO: enable back when we will enable it again on reference entity
-     * @ test
      */
     public function it_creates_a_asset_collection_attribute(): void
     {

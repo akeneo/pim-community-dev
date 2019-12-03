@@ -82,9 +82,9 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueComm
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditTextValueCommand: ~
 
-Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommand:
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand:
     constraints:
-        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditStoredFileValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaFileValueCommand: ~
 
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetValueCommand:
     constraints:
@@ -158,9 +158,9 @@ Akeneo\AssetManager\Domain\Query\Asset\AssetQuery:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\FilterAssetsByCompleteness: ~
 
 # Attributes
-Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
+Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand:
     group_sequence:
-        - CreateImageAttributeCommand
+        - CreateMediaFileAttributeCommand
         - other_constraints
     properties:
         assetFamilyIdentifier:

@@ -272,16 +272,16 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @When /^the user creates an image attribute "([^"]*)" linked to the asset family "([^"]*)" with:$/
+     * @When /^the user creates a media file attribute "([^"]*)" linked to the asset family "([^"]*)" with:$/
      */
-    public function theUserCreatesAnImageAttributeLinkedToTheAssetFamilyWith(
+    public function theUserCreatesAMediaFileAttributeLinkedToTheAssetFamilyWith(
         $attributeCode,
         $assetFamilyIdentifier,
         TableNode $attributeData
     ) {
         $attributeData = current($attributeData->getHash());
 
-        $attributeData['type'] = 'image';
+        $attributeData['type'] = 'media_file';
         $attributeData['code'] = $attributeCode;
         $attributeData['asset_family_identifier'] = $assetFamilyIdentifier;
         $attributeData['order'] = (int) $attributeData['order'];
@@ -302,7 +302,7 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is an image attribute "([^"]*)" in the asset family "([^"]*)" with:$/
+     * @Then /^there is a media file attribute "([^"]*)" in the asset family "([^"]*)" with:$/
      */
     public function thereIsAnAttributeWith(
         string $attributeCode,

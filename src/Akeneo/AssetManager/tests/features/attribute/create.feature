@@ -7,13 +7,13 @@ Feature: Create an attribute linked to an asset family
     Given a valid asset family
 
   @acceptance-back
-  Scenario: Create an image attribute linked to an asset family
-    When the user creates an image attribute "another_image" linked to the asset family "designer" with:
+  Scenario: Create a media file attribute linked to an asset family
+    When the user creates a media file attribute "another_image" linked to the asset family "designer" with:
       | code          | labels                                    | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions |
       | another_image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 250.0         | ["png", "jpg"]     |
-    Then there is an image attribute "another_image" in the asset family "designer" with:
+    Then there is a media file attribute "another_image" in the asset family "designer" with:
       | code          | labels                                    | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions | type  |
-      | another_image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 250.0         | ["png", "jpg"]     | image |
+      | another_image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 250.0         | ["png", "jpg"]     | media_file |
 
   @acceptance-back
   Scenario: Create a text attribute linked to an asset family
@@ -82,9 +82,9 @@ Feature: Create an attribute linked to an asset family
     Then there should be a validation error with message 'You cannot create the attribute "Stylist" because you have reached the limit of 100 attributes for this asset family'
 
   @acceptance-back
-  Scenario: Cannot create more image attributes than the limit
+  Scenario: Cannot create more media file attributes than the limit
     Given 100 random attributes for an asset family
-    When the user creates an image attribute "stylist" linked to the asset family "designer" with:
+    When the user creates a media file attribute "stylist" linked to the asset family "designer" with:
       | labels                                         | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions |
       | {"en_US": "Stylist view", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 250.0         | ["png", "jpg"]     |
     Then there should be a validation error with message 'You cannot create the attribute "Stylist view" because you have reached the limit of 100 attributes for this asset family'
@@ -222,11 +222,11 @@ Feature: Create an attribute linked to an asset family
     Then the user should not see any validation error
 
   @acceptance-front
-  Scenario: Create a simple valid image attribute
+  Scenario: Create a simple valid media file attribute
     Given the user has the following rights:
       | akeneo_assetmanager_attribute_create | true |
-    When the user creates a valid image attribute
-    And the user saves the valid image attribute
+    When the user creates a valid media file attribute
+    And the user saves the valid media file attribute
     Then the user should not see any validation error
 
   @acceptance-front

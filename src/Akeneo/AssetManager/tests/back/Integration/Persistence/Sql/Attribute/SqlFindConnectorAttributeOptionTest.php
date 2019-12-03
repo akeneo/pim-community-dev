@@ -126,7 +126,7 @@ class SqlFindConnectorAttributeOptionTest extends SqlIntegrationTestCase
         return new ConnectorAttribute(
             $optionCollectionAttribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
-            'image',
+            'media_file',
             AttributeValuePerLocale::fromBoolean($optionCollectionAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($optionCollectionAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(true),

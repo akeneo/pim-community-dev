@@ -18,7 +18,7 @@ class CreateAssetCollectionAttributeCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_type_asset_collection()
     {
         $this->supports(['type' => 'asset_collection'])->shouldReturn(true);
-        $this->supports(['type' => 'image'])->shouldReturn(false);
+        $this->supports(['type' => 'media_file'])->shouldReturn(false);
     }
 
     function it_creates_a_command_to_create_a_asset_collection_attribute()

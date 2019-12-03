@@ -45,7 +45,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
@@ -237,7 +237,7 @@ class CreateOrUpdateAssetContext implements Context
         $this->loadFrontViewAssetFamily();
         $this->loadDescriptionAttribute();
         $this->loadNameAttribute();
-        $this->loadCoverImageAttribute();
+        $this->loadCoverMediaFileAttribute();
         $this->loadFrontViewHouseAsset();
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
@@ -616,7 +616,7 @@ class CreateOrUpdateAssetContext implements Context
     public function theKartellAssetOfTheBrandAssetFamilyWithoutAnyMediaFile()
     {
         $this->loadFrontViewAssetFamily();
-        $this->loadCoverImageAttribute();
+        $this->loadCoverMediaFileAttribute();
         $this->loadFrontViewHouseAsset();
     }
 
@@ -694,9 +694,9 @@ class CreateOrUpdateAssetContext implements Context
         $this->attributeRepository->create($name);
     }
 
-    private function loadCoverImageAttribute(): void
+    private function loadCoverMediaFileAttribute(): void
     {
-        $image = ImageAttribute::create(
+        $image = MediaFileAttribute::create(
             AttributeIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, 'cover_image', 'fingerprint'),
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AttributeCode::fromString('cover_image'),

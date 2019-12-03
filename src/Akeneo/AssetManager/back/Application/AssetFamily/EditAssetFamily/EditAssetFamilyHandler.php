@@ -110,15 +110,15 @@ class EditAssetFamilyHandler
         $fileExists = $this->fileExists->exists($imageData['filePath']);
 
         if (true === $fileExists) {
-            $storedFile = (new FileInfo())
+            $mediaFile = (new FileInfo())
                 ->setKey($imageData['filePath'])
                 ->setOriginalFilename($imageData['originalFilename']);
         } else {
             $rawFile = new \SplFileInfo($imageData['filePath']);
-            $storedFile = $this->storer->store($rawFile, Storage::FILE_STORAGE_ALIAS);
+            $mediaFile = $this->storer->store($rawFile, Storage::FILE_STORAGE_ALIAS);
         }
 
-        $storedImage = Image::fromFileInfo($storedFile);
+        $storedImage = Image::fromFileInfo($mediaFile);
 
         return $storedImage;
     }

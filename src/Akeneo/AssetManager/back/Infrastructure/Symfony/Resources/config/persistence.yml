@@ -255,8 +255,8 @@ services:
             - '@database_connection'
             - '@akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
 
-    akeneo_assetmanager.infrastructure.persistence.query.find_image_attribute_codes:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindImageAttributeCodes
+    akeneo_assetmanager.infrastructure.persistence.query.find_media_file_attribute_codes:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindMediaFileAttributeCodes
         arguments:
              - '@database_connection'
 
@@ -281,8 +281,8 @@ services:
         tags:
             - { name: akeneo_assetmanager.attribute_hydrator }
 
-    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.image_attribute_hydrator:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\ImageAttributeHydrator
+    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.media_file_attribute_hydrator:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\MediaFileAttributeHydrator
         arguments:
             - '@database_connection'
         tags:
@@ -418,7 +418,7 @@ services:
             - { name: akeneo_assetmanager.data_hydrator }
 
     akeneo_assetmanager.infrastructure.persistence.asset.hydrator.file_data:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\FileDataHydrator
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\MediaFileDataHydrator
         tags:
             - { name: akeneo_assetmanager.data_hydrator }
 
@@ -471,7 +471,7 @@ services:
             - { name: akeneo_assetmanager.connector_value_transformer }
 
     akeneo_assetmanager.infrastructure.persistence.asset.transformer.image_connector_value:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ImageConnectorValueTransformer
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\MediaFileConnectorValueTransformer
         tags:
             - { name: akeneo_assetmanager.connector_value_transformer }
 

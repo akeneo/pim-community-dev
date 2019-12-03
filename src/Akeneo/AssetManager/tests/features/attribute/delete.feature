@@ -33,13 +33,13 @@ Feature: Delete an attribute linked to an asset family
       | code     | type  |
       | name     | text  |
       | bio      | text  |
-      | portrait | image |
+      | portrait | media_file |
     When the user deletes the attribute "bio" linked to the asset family "designer"
     And the user should see the deleted notification
     Then there should be the following attributes:
       | code     | type  |
       | name     | text  |
-      | portrait | image |
+      | portrait | media_file |
 
 #  @acceptance-front
   Scenario: Cannot delete a text attribute linked to an asset family
@@ -52,14 +52,14 @@ Feature: Delete an attribute linked to an asset family
       | code     | type  |
       | name     | text  |
       | bio     | text  |
-      | portrait | image |
+      | portrait | media_file |
     When the user cannot delete the attribute "bio" linked to the asset family "designer"
     Then the user should see the delete notification error
     And there should be the following attributes:
       | code     | type  |
       | name     | text  |
       | bio     | text  |
-      | portrait | image |
+      | portrait | media_file |
 
 #  @acceptance-front
   Scenario: User doesn't have the right to delete a text attribute linked to an asset family
@@ -71,7 +71,7 @@ Feature: Delete an attribute linked to an asset family
     Then there should be the following attributes:
       | code     | type  |
       | name     | text  |
-      | portrait | image |
+      | portrait | media_file |
     Then the user cannot delete the attribute "name"
 
   @acceptance-front
@@ -85,11 +85,11 @@ Feature: Delete an attribute linked to an asset family
       | code     | type  |
       | name     | text  |
       | bio     | text  |
-      | portrait | image |
+      | portrait | media_file |
     When the user cancel the deletion of attribute "bio"
     Then the user should not see the delete notification
     And there should be the following attributes:
       | code     | type  |
       | name     | text  |
       | bio     | text  |
-      | portrait | image |
+      | portrait | media_file |

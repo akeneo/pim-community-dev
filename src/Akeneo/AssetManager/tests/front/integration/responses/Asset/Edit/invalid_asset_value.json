@@ -212,7 +212,7 @@
             {
               "attribute":{
                 "maxFileSizeLimit":false,
-                "type":"image",
+                "type": "media_file",
                 "maxFileSize":{
                   "limit":false
                 },

@@ -21,7 +21,7 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
         $this->shouldHaveType(NumberAttributeHydrator::class);
     }
 
-    function it_only_supports_the_hydration_of_image_attributes()
+    function it_only_supports_the_hydration_of_media_file_attributes()
     {
         $this->supports(['attribute_type' => 'number'])->shouldReturn(true);
         $this->supports(['attribute_type' => 'text'])->shouldReturn(false);

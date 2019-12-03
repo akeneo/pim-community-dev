@@ -16,7 +16,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_type_text()
     {
         $this->supports(['type' => 'text'])->shouldReturn(true);
-        $this->supports(['type' => 'image'])->shouldReturn(false);
+        $this->supports(['type' => 'media_file'])->shouldReturn(false);
     }
 
     function it_creates_a_command_to_create_a_text_attribute()

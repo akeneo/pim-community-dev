@@ -54,9 +54,9 @@ Feature: Create an asset family
     When the user creates an asset family "designer" with:
       | labels                                     |
       | {"en_US": "Designer", "fr_FR": "Designer"} |
-    Then there is an image attribute "image" in the asset family "designer" with:
+    Then there is a media file attribute "image" in the asset family "designer" with:
       | code  | labels | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions | type  |
-      | image | {}     | false       | 1     | false             | false            | null          | []                 | image |
+      | image | {}     | false       | 1     | false             | false            | null          | []                 | media_file |
     And the asset family "designer" should be:
       | identifier | labels                                     | attribute_as_main_media |
       | designer   | {"en_US": "Designer", "fr_FR": "Designer"} | image                   |

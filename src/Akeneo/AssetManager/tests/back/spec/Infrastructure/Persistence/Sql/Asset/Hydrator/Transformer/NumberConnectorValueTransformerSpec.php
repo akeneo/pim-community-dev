@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerInterface;
 use PhpSpec\ObjectBehavior;
@@ -16,10 +16,10 @@ class NumberConnectorValueTransformerSpec extends ObjectBehavior
         $this->shouldImplement(ConnectorValueTransformerInterface::class);
     }
 
-    function it_only_supports_a_value_of_a_number_attribute(NumberAttribute $numberAttribute, ImageAttribute $imageAttribute)
+    function it_only_supports_a_value_of_a_number_attribute(NumberAttribute $numberAttribute, MediaFileAttribute $mediaFileAttribute)
     {
         $this->supports($numberAttribute)->shouldReturn(true);
-        $this->supports($imageAttribute)->shouldReturn(false);
+        $this->supports($mediaFileAttribute)->shouldReturn(false);
     }
 
     function it_transforms_a_normalized_to_a_normalized_connector_value(NumberAttribute $numberAttribute)

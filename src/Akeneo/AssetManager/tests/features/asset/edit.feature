@@ -212,17 +212,17 @@ Feature: Edit an asset
   # Image
   @acceptance-back
   Scenario: Updating the image value of a asset by uploading a new one
-    Given an asset family with an image attribute
-    And an asset belonging to this asset family with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the asset with a valid uploaded file
+    Given an asset family with a media file attribute
+    And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
+    When the user updates the media file attribute of the asset with a valid uploaded file
     Then there is no exception thrown
     And there is no violations errors
     And the asset should have the valid image for this attribute
 
   @acceptance-back
   Scenario: Emptying the file value of a asset
-    Given an asset family with an image attribute
-    And an asset belonging to this asset family with the file "picture.jpeg" for the image attribute
+    Given an asset family with a media file attribute
+    And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
     When the user removes an image from the asset for this attribute
     Then there is no exception thrown
     And there is no violations errors
@@ -230,60 +230,60 @@ Feature: Edit an asset
 
   @acceptance-back
   Scenario: Updating the image value of a asset with an image that does not exist
-    Given an asset family with an image attribute
-    And an asset belonging to this asset family with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the asset to an image that does not exist
-    Then there should be a validation error on the property image attribute with message "The file "/files/not_found.png" was not found."
+    Given an asset family with a media file attribute
+    And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
+    When the user updates the media file attribute of the asset to an image that does not exist
+    Then there should be a validation error on the property media file attribute with message "The file "/files/not_found.png" was not found."
 
   @acceptance-back
   Scenario: Updating the image value of a asset with an uploaded file having an extension not allowed
-    Given an asset family with an image attribute allowing only files with extension png
-    And an asset belonging to this asset family with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the asset with an uploaded gif file which is a denied extension
-    Then there should be a validation error on the property image attribute with message '".gif" files are not allowed for this attribute. Allowed extensions are: png'
+    Given an asset family with a media file attribute allowing only files with extension png
+    And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
+    When the user updates the media file attribute of the asset with an uploaded gif file which is a denied extension
+    Then there should be a validation error on the property media file attribute with message '".gif" files are not allowed for this attribute. Allowed extensions are: png'
 
   @acceptance-back
   Scenario: Updating the image value of a asset with an stored file having an extension not allowed
-    Given an asset family with an image attribute allowing only files with extension png
-    And an asset belonging to this asset family with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the asset with a stored gif file which is a denied extension
-    Then there should be a validation error on the property image attribute with message '".gif" files are not allowed for this attribute. Allowed extensions are: png'
+    Given an asset family with a media file attribute allowing only files with extension png
+    And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
+    When the user updates the media file attribute of the asset with a stored gif file which is a denied extension
+    Then there should be a validation error on the property media file attribute with message '".gif" files are not allowed for this attribute. Allowed extensions are: png'
 
   @acceptance-back
   Scenario: Updating the image value of a asset with a file having an extension not allowed
-    Given an asset family with an image attribute allowing only files with extension png
-    And an asset belonging to this asset family with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the asset with an uploaded png file
+    Given an asset family with a media file attribute allowing only files with extension png
+    And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
+    When the user updates the media file attribute of the asset with an uploaded png file
     Then there is no exception thrown
     And there is no violations errors
     And the asset should have the valid image for this attribute
 
   @acceptance-back
   Scenario: Updating the image value of a asset with an uploaded file bigger than the limit
-    Given an asset family with an image attribute having a max file size of 15ko
-    And an asset belonging to this asset family with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the asset with a bigger uploaded file than the limit
-    Then there should be a validation error on the property image attribute with message "The file exceeds the max file size set for the attribute."
+    Given an asset family with a media file attribute having a max file size of 15ko
+    And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
+    When the user updates the media file attribute of the asset with a bigger uploaded file than the limit
+    Then there should be a validation error on the property media file attribute with message "The file exceeds the max file size set for the attribute."
 
   @acceptance-back
   Scenario: Updating the image value of a asset with a stored file bigger than the limit
-    Given an asset family with an image attribute having a max file size of 15ko
-    And an asset belonging to this asset family with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the asset with a bigger stored file than the limit
-    Then there should be a validation error on the property image attribute with message "The file exceeds the max file size set for the attribute."
+    Given an asset family with a media file attribute having a max file size of 15ko
+    And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
+    When the user updates the media file attribute of the asset with a bigger stored file than the limit
+    Then there should be a validation error on the property media file attribute with message "The file exceeds the max file size set for the attribute."
 
   @acceptance-back
   Scenario: Updating the image value of a asset with an invalid mime type
-    Given an asset family with an image attribute allowing only files with extension png
-    And an asset belonging to this asset family with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the asset with a stored gif file which is a denied extension
-    Then there should be a validation error on the property image attribute with message '".gif" files are not allowed for this attribute. Allowed extensions are: png'
+    Given an asset family with a media file attribute allowing only files with extension png
+    And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
+    When the user updates the media file attribute of the asset with a stored gif file which is a denied extension
+    Then there should be a validation error on the property media file attribute with message '".gif" files are not allowed for this attribute. Allowed extensions are: png'
 
   @acceptance-back
   Scenario: Updating the image value of a asset with a file smaller than the limit
-    Given an asset family with an image attribute having a max file size of 15ko
-    And an asset belonging to this asset family with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the asset with a smaller file than the limit
+    Given an asset family with a media file attribute having a max file size of 15ko
+    And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
+    When the user updates the media file attribute of the asset with a smaller file than the limit
     Then there is no exception thrown
     And there is no violations errors
     And the asset should have the valid image for this attribute
@@ -609,7 +609,7 @@ Feature: Edit an asset
 
 #  @acceptance-front
   Scenario: Updating a asset with a multiple asset linked
-    Given a valid asset with an asset family multiple link attribute
+    Given a valid asset with an asset collection attribute
     And the user has the locale permission to edit the asset
     And the user has the following rights:
       | akeneo_assetmanager_asset_edit | true |
@@ -618,7 +618,7 @@ Feature: Edit an asset
 
   @acceptance-front
   Scenario: User can't update a multiple asset linked value without the edit rights
-    Given a valid asset with an asset family multiple link attribute
+    Given a valid asset with an asset collection attribute
     And the user has the locale permission to edit the asset
     And the user has the following rights:
       | akeneo_assetmanager_asset_edit | false |

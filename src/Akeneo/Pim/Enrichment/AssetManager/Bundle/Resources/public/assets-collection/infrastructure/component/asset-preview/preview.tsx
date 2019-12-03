@@ -26,7 +26,7 @@ import {
   MEDIA_LINK_ATTRIBUTE_TYPE,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {MediaTypes, YOUTUBE_EMBED_URL} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
-import {IMAGE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/image';
+import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 
 const Container = styled.div`
   display: flex;
@@ -186,7 +186,7 @@ const getPreviewView = (asset: Asset, context: Context) => {
   switch (attributeAsMainMedia.type) {
     case MEDIA_LINK_ATTRIBUTE_TYPE:
       return getMediaLinkPreviewView(asset, context);
-    case IMAGE_ATTRIBUTE_TYPE:
+    case MEDIA_FILE_ATTRIBUTE_TYPE:
     default:
       return getBinaryPreviewView(asset, context);
   }

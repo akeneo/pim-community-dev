@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\Attribute;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClient;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -21,7 +20,6 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
@@ -149,7 +147,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $portraitAttribute = new AttributeDetails();
         $portraitAttribute->identifier = sprintf('portrait_designer_%s', md5('fingerprint'));
         $portraitAttribute->assetFamilyIdentifier = 'designer';
-        $portraitAttribute->type = 'image';
+        $portraitAttribute->type = 'media_file';
         $portraitAttribute->code = 'portrait';
         $portraitAttribute->labels = ['en_US' => 'Portrait'];
         $portraitAttribute->order = 1;

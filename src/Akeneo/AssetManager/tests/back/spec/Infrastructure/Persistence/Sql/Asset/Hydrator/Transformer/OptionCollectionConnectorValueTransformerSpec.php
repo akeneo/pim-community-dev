@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerInterface;
 use PhpSpec\ObjectBehavior;
@@ -29,10 +28,10 @@ class OptionCollectionConnectorValueTransformerSpec extends ObjectBehavior
 
     function it_only_supports_a_value_of_an_option_attribute(
         OptionCollectionAttribute $optionCollectionAttribute,
-        ImageAttribute $imageAttribute
+        MediaFileAttribute $mediaFileAttribute
     ) {
         $this->supports($optionCollectionAttribute)->shouldReturn(true);
-        $this->supports($imageAttribute)->shouldReturn(false);
+        $this->supports($mediaFileAttribute)->shouldReturn(false);
     }
 
     function it_transforms_a_normalized_value_to_a_normalized_connector_value(

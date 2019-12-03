@@ -45,21 +45,21 @@ Feature: Edit an asset family
 
   @acceptance-back
   Scenario: Updating an asset family to change its attribute as main media
-    Given an asset family with an image attribute "main_picture"
+    Given an asset family with a media file attribute "main_picture"
     When the user updates the attribute as main media to be "main_picture"
     Then the attribute as main media should be "main_picture"
 
   @acceptance-back @error
   Scenario: Cannot update an asset family if the provided attribute as main media does not exist
-    Given an asset family with an image attribute "main_picture"
+    Given an asset family with a media file attribute "main_picture"
     When the user updates the attribute as main media to be "toto_picture"
     Then there should be a validation error with message 'The attribute "toto_picture" set as main media for the asset family does not exist'
 
   @acceptance-back @error
   Scenario: Cannot update an asset family if the provided attribute type is invalid
-    Given an asset family with an image attribute "main_picture"
+    Given an asset family with a media file attribute "main_picture"
     When the user updates the attribute as main media to be "label"
-    Then there should be a validation error with message 'The attribute set as main media for the asset family should be of type: media_link, image'
+    Then there should be a validation error with message 'The attribute set as main media for the asset family should be of type: media_link, media_file'
 
   # Product link rules
   @acceptance-back

@@ -16,7 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeTypeInterface;
@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AttributeAsMainMediaValidator extends ConstraintValidator
 {
-    private const VALID_ATTRIBUTE_TYPES = [MediaLinkAttribute::ATTRIBUTE_TYPE, ImageAttribute::ATTRIBUTE_TYPE];
+    private const VALID_ATTRIBUTE_TYPES = [MediaLinkAttribute::ATTRIBUTE_TYPE, MediaFileAttribute::ATTRIBUTE_TYPE];
 
     /** @var AttributeExistsInterface */
     private $attributeExists;

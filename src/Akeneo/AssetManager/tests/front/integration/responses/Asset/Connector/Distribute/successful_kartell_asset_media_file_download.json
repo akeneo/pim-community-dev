@@ -8,7 +8,7 @@
     },
     "response": {
         "status": 200,
-        "body": "This represents the binary of an image",
+        "body": "This represents the binary of a media file",
         "headers": {
             "Content-Type": "image/jpeg",
             "Content-Disposition": "attachment; filename=\"kartell.jpg\""

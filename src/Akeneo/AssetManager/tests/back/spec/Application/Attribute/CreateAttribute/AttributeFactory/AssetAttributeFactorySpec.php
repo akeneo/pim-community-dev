@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory;
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\AssetAttributeFactory;
-use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAssetAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use PhpSpec\ObjectBehavior;
@@ -32,7 +32,7 @@ class AssetAttributeFactorySpec extends ObjectBehavior
             )
         )->shouldReturn(true);
         $this->supports(
-            new CreateImageAttributeCommand(
+            new CreateMediaFileAttributeCommand(
                 'designer',
                 'name',
                 [

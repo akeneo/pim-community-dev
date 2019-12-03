@@ -8,7 +8,7 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Abstr
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -20,7 +20,7 @@ class MaxFileSizeUpdater implements AttributeUpdaterInterface
 
     public function supports(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): bool
     {
-        return $attribute instanceof ImageAttribute && $command instanceof EditMaxFileSizeCommand;
+        return $attribute instanceof MediaFileAttribute && $command instanceof EditMaxFileSizeCommand;
     }
 
     public function __invoke(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): AbstractAttribute

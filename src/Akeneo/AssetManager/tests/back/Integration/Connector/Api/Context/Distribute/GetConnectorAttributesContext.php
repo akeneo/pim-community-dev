@@ -30,7 +30,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
@@ -40,7 +40,6 @@ use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetConnectorAttributesContext implements Context
@@ -87,7 +86,7 @@ class GetConnectorAttributesContext implements Context
         $assetFamilyIdentifier = 'brand';
 
         $this->createTextAttribute($assetFamilyIdentifier);
-        $this->createImageAttribute($assetFamilyIdentifier);
+        $this->createMediaFileAttribute($assetFamilyIdentifier);
         $this->createOptionAttribute($assetFamilyIdentifier);
         $this->createMultiOptionAttribute($assetFamilyIdentifier);
         $this->createSingleLinkAttribute($assetFamilyIdentifier);
@@ -147,7 +146,7 @@ class GetConnectorAttributesContext implements Context
 
         $secondIdentifier = 'whatever_2';
 
-        $this->createImageAttribute($secondIdentifier);
+        $this->createMediaFileAttribute($secondIdentifier);
 
         $secondAssetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString($secondIdentifier),
@@ -201,11 +200,11 @@ class GetConnectorAttributesContext implements Context
         );
     }
 
-    private function createImageAttribute(string $assetFamilyIdentifier)
+    private function createMediaFileAttribute(string $assetFamilyIdentifier)
     {
         $attributeIdentifier = 'photo';
 
-        $imageAttribute = ImageAttribute::create(
+        $mediaFileAttribute = MediaFileAttribute::create(
             AttributeIdentifier::create($assetFamilyIdentifier, $attributeIdentifier, 'test'),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('image'),
@@ -218,14 +217,14 @@ class GetConnectorAttributesContext implements Context
             AttributeAllowedExtensions::fromList(['jpg'])
         );
 
-        $this->attributeRepository->create($imageAttribute);
+        $this->attributeRepository->create($mediaFileAttribute);
 
-        $imageAttribute = new ConnectorAttribute(
-            $imageAttribute->getCode(),
+        $mediaFileAttribute = new ConnectorAttribute(
+            $mediaFileAttribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
-            'image',
-            AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),
-            AttributeValuePerChannel::fromBoolean($imageAttribute->hasValuePerChannel()),
+            'media_file',
+            AttributeValuePerLocale::fromBoolean($mediaFileAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($mediaFileAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(true),
             [
                 'allowed_extensions' => ['jpg'],
@@ -235,7 +234,7 @@ class GetConnectorAttributesContext implements Context
 
         $this->findConnectorAssetFamilyAttributes->save(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
-            $imageAttribute
+            $mediaFileAttribute
         );
     }
 

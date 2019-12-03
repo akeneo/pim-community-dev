@@ -26,7 +26,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
@@ -263,9 +263,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an asset family with an image attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     * @Given /^an asset family with a media file attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function anAssetFamilyWithAImageAttributeAndTheLabelEqualTo(
+    public function anAssetFamilyWithAMediaFileAttributeAndTheLabelEqualTo(
         string $attributeCode,
         string $localeCode,
         string $label
@@ -276,7 +276,7 @@ class EditAttributeContext implements Context
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(
-            ImageAttribute::create(
+            MediaFileAttribute::create(
                 $identifier,
                 AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
@@ -348,7 +348,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an asset family with an image attribute \'([^\']*)\' with max file size \'([^\']*)\'$/
+     * @Given /^an asset family with a media file attribute \'([^\']*)\' with max file size \'([^\']*)\'$/
      */
     public function anAssetFamilyWithATextAttributeAndMaxFileSize(string $attributeCode, string $maxFileSize): void
     {
@@ -356,7 +356,7 @@ class EditAttributeContext implements Context
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(
-            ImageAttribute::create(
+            MediaFileAttribute::create(
                 $identifier,
                 AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
@@ -402,7 +402,7 @@ class EditAttributeContext implements Context
      */
     public function anAssetFamilyWithATextAttributeAndNoAllowedExtensions(string $attributeCode)
     {
-        $this->anAssetFamilyWithAnImageAttributeWithAllowedExtensions($attributeCode, '[]');
+        $this->anAssetFamilyWithAnMediaFileAttributeWithAllowedExtensions($attributeCode, '[]');
     }
 
     /**
@@ -510,15 +510,15 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an asset family with an image attribute \'([^\']*)\' non required$/
+     * @Given /^an asset family with a media file attribute \'([^\']*)\' non required$/
      */
-    public function anAssetFamilyWithAnImageAttributeNonRequired(string $attributeCode)
+    public function anAssetFamilyWithAnMediaFileAttributeNonRequired(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(
-            ImageAttribute::create(
+            MediaFileAttribute::create(
                 $identifier,
                 AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
@@ -534,9 +534,9 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an asset family with an image attribute \'([^\']*)\' with allowed extensions: \'([^\']*)\'$/
+     * @Given /^an asset family with a media file attribute \'([^\']*)\' with allowed extensions: \'([^\']*)\'$/
      */
-    public function anAssetFamilyWithAnImageAttributeWithAllowedExtensions(
+    public function anAssetFamilyWithAnMediaFileAttributeWithAllowedExtensions(
         string $attributeCode,
         string $normalizedExtensions
     ): void {
@@ -545,7 +545,7 @@ class EditAttributeContext implements Context
 
         $extensions = json_decode($normalizedExtensions);
         $this->attributeRepository->create(
-            ImageAttribute::create(
+            MediaFileAttribute::create(
                 $identifier,
                 AssetFamilyIdentifier::fromString('dummy_identifier'),
                 AttributeCode::fromString($attributeCode),
