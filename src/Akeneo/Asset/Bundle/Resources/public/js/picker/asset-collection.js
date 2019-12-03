@@ -229,6 +229,7 @@ define(
             openPreviewModal(currentAssetCode) {
                 const deferred = $.Deferred();
                 const editMode = this.context.editMode;
+                const locale = this.context.locale;
                 const aclGranted = SecurityContext.isGranted('pimee_product_asset_remove_from_collection');
 
                 FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.data).then(function (assets) {
@@ -257,6 +258,28 @@ define(
                     });
                     modal.open();
 
+                    const canDownloadAsset = function(assetCode) {
+                        const asset = assets.reduce(function(result, asset) {
+                            return asset.code === assetCode ? asset : result;
+                        }, null);
+
+                        if (null === asset) {
+                            return false;
+                        }
+
+                        const reference = false === asset.localizable
+                          ? asset.references[0]
+                          : asset.references.reduce(function(result, reference) {
+                                return reference.locale === locale;
+                            }, null);
+
+                        if (null === reference) {
+                            return false;
+                        }
+
+                        return reference.has_variations;
+                    };
+
                     const navigateToItem = function (assetThumbnail) {
                         modal.$('.asset-thumbnail-item').addClass('AknAssetCollectionField-listItem--transparent');
                         assetThumbnail.removeClass('AknAssetCollectionField-listItem--transparent');
@@ -267,7 +290,15 @@ define(
                             - (modal.$('.buttons').width() - 140) / 2
                         }, 400);
                         modal.$('.description').html(assetThumbnail.data('description'));
-                        modal.$('.download').attr('href', assetThumbnail.data('download-url'));
+
+                        const $download = modal.$('.download');
+                        $download.attr('href', assetThumbnail.data('download-url'));
+
+                        if (canDownloadAsset(assetThumbnail.data('asset'))) {
+                            $download.show();
+                        } else {
+                            $download.hide();
+                        }
                     };
                     const navigateToNeighbor = function (side, isCurrentElementDestroyed) {
                         let thumbnails = modal.$('.asset-thumbnail-item');
