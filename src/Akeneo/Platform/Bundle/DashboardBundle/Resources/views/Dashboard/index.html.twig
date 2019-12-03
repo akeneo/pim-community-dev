@@ -17,7 +17,7 @@
             {% embed 'PimAnalyticsBundle:Update:last_patch.html.twig' %}{% endembed %}
         </div>
     </div>
-    <script>
+    <script nonce="{{ js_nonce() }}">
         require(
             [
                 'pim/common/breadcrumbs',

@@ -3,7 +3,7 @@
 {% import 'PimUIBundle::macros.html.twig' as UI %}
 
 {% block head_script %}
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
         require(
             ['jquery', 'pim/security-context'],
             function ($, securityContext) {
@@ -230,7 +230,7 @@
 
     {{ form_end(form) }}
 
-    <script>
+    <script nonce="{{ js_nonce() }}">
         require(
             [
                 'pim/common/breadcrumbs',
