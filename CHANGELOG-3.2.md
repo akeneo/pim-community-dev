@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.22 (2019-12-03)
+
 ## Bug fixes:
 
 - PIM-8996: Display an error when a file upload failed
