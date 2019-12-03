@@ -20,7 +20,21 @@ final class Version_4_0_20191014111427_create_apps_table extends AbstractMigrati
 
     public function up(Schema $schema) : void
     {
-        $this->addSql(CreateAppsTableQuery::QUERY);
+        $createTableQuery = <<<SQL
+CREATE TABLE IF NOT EXISTS akeneo_app(
+    client_id INT NOT NULL UNIQUE,
+    user_id INT NOT NULL,
+    code VARCHAR(100) NOT NULL,
+    label VARCHAR(100) NOT NULL,
+    flow_type ENUM('data_destination', 'data_source', 'other') NOT NULL DEFAULT 'other',
+    created DATETIME NOT NULL COMMENT '(DC2Type:datetime)' DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_APP_pim_api_client_app_client_id FOREIGN KEY (client_id) REFERENCES pim_api_client (id),
+    CONSTRAINT FK_APP_oro_user_app_user_id FOREIGN KEY (user_id) REFERENCES oro_user (id),
+    INDEX IDX_APP_code (code)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
+SQL;
+
+        $this->addSql($createTableQuery);
     }
 
     public function down(Schema $schema) : void
