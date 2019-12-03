@@ -52,6 +52,31 @@
             }
           ]
         }
+      ],
+      "transformations": [
+        {
+          "source": {
+            "attribute": "main_image",
+            "channel": null,
+            "locale": null
+          },
+          "target": {
+            "attribute": "thumbnail",
+            "channel": null,
+            "locale": null
+          },
+          "operations": [
+            {
+              "type": "thumbnail",
+              "parameters": {
+                "width": 100,
+                "height": 80
+              }
+            }
+          ],
+          "filename_prefix": "1_",
+          "filename_suffix": "_2"
+        }
       ]
     }
   },

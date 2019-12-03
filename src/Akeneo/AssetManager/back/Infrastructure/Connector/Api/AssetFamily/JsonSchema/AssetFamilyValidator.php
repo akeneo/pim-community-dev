@@ -155,6 +155,12 @@ class AssetFamilyValidator
                                     ],
                                 ],
                             ],
+                            'filename_prefix' => [
+                                'type' => ['string', 'null'],
+                            ],
+                            'filename_suffix' => [
+                                'type' => ['string', 'null'],
+                            ],
                         ],
                         'required' => ['source', 'target', 'operations'],
                         'additionalProperties' => false,

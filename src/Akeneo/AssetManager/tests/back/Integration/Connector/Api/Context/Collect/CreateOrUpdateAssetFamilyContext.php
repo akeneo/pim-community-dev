@@ -25,11 +25,27 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,6 +84,9 @@ class CreateOrUpdateAssetFamilyContext implements Context
     /** @var InMemoryGetAssetCollectionTypeAdapter */
     private $findAssetCollectionTypeACL;
 
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -76,7 +95,8 @@ class CreateOrUpdateAssetFamilyContext implements Context
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
-        InMemoryGetAssetCollectionTypeAdapter $findAssetCollectionTypeACL
+        InMemoryGetAssetCollectionTypeAdapter $findAssetCollectionTypeACL,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -86,6 +106,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $this->activatedLocalesPerChannels = $activatedLocalesPerChannels;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->findAssetCollectionTypeACL = $findAssetCollectionTypeACL;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -173,6 +194,9 @@ class CreateOrUpdateAssetFamilyContext implements Context
             RuleTemplateCollection::empty()
         );
 
+        $this->loadImageAttribute('brand', 'main_image', 'Main image', 1);
+        $this->loadImageAttribute('brand', 'thumbnail', 'Thumbnail image', 2);
+
         $this->assetFamilyRepository->create($assetFamily);
     }
 
@@ -223,6 +247,17 @@ class CreateOrUpdateAssetFamilyContext implements Context
             AttributeAsMainMediaReference::fromAttributeIdentifier($attributeAsMainMediaIdentifier),
             RuleTemplateCollection::createFromProductLinkRules([$ruleTemplate])
         );
+        $expectedBrand = $expectedBrand->withTransformationCollection(TransformationCollection::create([
+            Transformation::create(
+                Source::createFromNormalized(['attribute' => 'main_image', 'channel'=> null, 'locale' => null]),
+                Target::createFromNormalized(['attribute' => 'thumbnail', 'channel'=> null, 'locale' => null]),
+                OperationCollection::create([
+                    ThumbnailOperation::create(['width' => 100, 'height' => 80]),
+                ]),
+                '1_',
+                '_2'
+            ),
+        ]));
 
         Assert::assertEquals($brand, $expectedBrand);
     }
@@ -339,5 +374,23 @@ class CreateOrUpdateAssetFamilyContext implements Context
                 ]
             ]
         ];
+    }
+
+    private function loadImageAttribute(string $assetFamilyIdentifier, string $code, string $label, int $order): void
+    {
+        $name = ImageAttribute::create(
+            AttributeIdentifier::create($assetFamilyIdentifier, $code, 'fingerprint'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($code),
+            LabelCollection::fromArray(['en_US' => $label]),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('120'),
+            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::VALID_EXTENSIONS)
+        );
+
+        $this->attributeRepository->create($name);
     }
 }
