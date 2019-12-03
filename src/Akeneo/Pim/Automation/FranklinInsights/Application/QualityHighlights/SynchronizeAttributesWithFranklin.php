@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighlightsProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Model\Write\AsyncRequest;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectAttributesToApplyQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\BatchSize;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 
@@ -24,57 +27,61 @@ class SynchronizeAttributesWithFranklin
     /** @var SelectPendingItemIdentifiersQueryInterface */
     private $pendingItemIdentifiersQuery;
 
-    /** @var ApplyAttributeStructure */
-    private $applyAttributeStructure;
-
     /** @var QualityHighlightsProviderInterface */
     private $qualityHighlightsProvider;
 
     /** @var PendingItemsRepositoryInterface */
     private $pendingItemsRepository;
 
+    /** @var SelectAttributesToApplyQueryInterface */
+    private $selectAttributesToApplyQuery;
+
     public function __construct(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
-        ApplyAttributeStructure $applyAttributeStructure,
+        SelectAttributesToApplyQueryInterface $selectAttributesToApplyQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
         PendingItemsRepositoryInterface $pendingItemsRepository
     ) {
         $this->pendingItemIdentifiersQuery = $pendingItemIdentifiersQuery;
-        $this->applyAttributeStructure = $applyAttributeStructure;
         $this->qualityHighlightsProvider = $qualityHighlightsProvider;
         $this->pendingItemsRepository = $pendingItemsRepository;
+        $this->selectAttributesToApplyQuery = $selectAttributesToApplyQuery;
     }
 
-    public function synchronize(Lock $lock, int $batchSize): void
+    public function synchronizeUpdatedAttributes(Lock $lock, BatchSize $attributesPerRequest, BatchSize $concurrency): void
     {
-        $this->synchronizeUpdatedAttributes($lock, $batchSize);
-        $this->synchronizeDeletedAttributes($lock, $batchSize);
-    }
+        $poolSize = $attributesPerRequest->toInt() * $concurrency->toInt();
 
-    private function synchronizeUpdatedAttributes(Lock $lock, int $batchSize): void
-    {
         do {
-            $attributeCodes = $this->pendingItemIdentifiersQuery->getUpdatedAttributeCodes($lock, $batchSize);
-            if (! empty($attributeCodes)) {
-                try {
-                    $this->applyAttributeStructure->apply(array_values($attributeCodes));
-                } catch (BadRequestException $exception) {
-                    //The error is logged by the api client
-                } catch (\Exception $exception) {
-                    //Remove the lock, we will process those entities next time
-                    $this->pendingItemsRepository->releaseUpdatedAttributesLock($attributeCodes, $lock);
-                    continue;
-                }
+            $updatedAttributeCodes = $this->pendingItemIdentifiersQuery->getUpdatedAttributeCodes($lock, $poolSize);
 
-                $this->pendingItemsRepository->removeUpdatedAttributes($attributeCodes, $lock);
+            if (empty($updatedAttributeCodes)) {
+                continue;
             }
-        } while (count($attributeCodes) >= $batchSize);
+
+            $chunkedAttributeCodes = array_chunk($updatedAttributeCodes, $attributesPerRequest->toInt());
+            $asyncRequests = [];
+
+            foreach ($chunkedAttributeCodes as $attributeCodes) {
+                $attributes = $this->selectAttributesToApplyQuery->execute($attributeCodes);
+                $asyncRequests[] = new AsyncRequest(
+                    $attributes,
+                    function () use ($attributeCodes, $lock) {
+                        $this->pendingItemsRepository->removeUpdatedAttributes($attributeCodes, $lock);
+                    },
+                    function () use ($attributeCodes, $lock) {
+                        $this->pendingItemsRepository->releaseUpdatedAttributesLock($attributeCodes, $lock);
+                    }
+                );
+            }
+            $this->qualityHighlightsProvider->applyAsyncAttributeStructure($asyncRequests);
+        } while (count($updatedAttributeCodes) >= $poolSize);
     }
 
-    private function synchronizeDeletedAttributes(Lock $lock, int $batchSize): void
+    public function synchronizeDeletedAttributes(Lock $lock, BatchSize $batchSize): void
     {
         do {
-            $attributeCodes = $this->pendingItemIdentifiersQuery->getDeletedAttributeCodes($lock, $batchSize);
+            $attributeCodes = $this->pendingItemIdentifiersQuery->getDeletedAttributeCodes($lock, $batchSize->toInt());
             if (! empty($attributeCodes)) {
                 try {
                     foreach ($attributeCodes as $attributeCode) {
@@ -90,6 +97,6 @@ class SynchronizeAttributesWithFranklin
 
                 $this->pendingItemsRepository->removeDeletedAttributes($attributeCodes, $lock);
             }
-        } while (count($attributeCodes) >= $batchSize);
+        } while (count($attributeCodes) >= $batchSize->toInt());
     }
 }

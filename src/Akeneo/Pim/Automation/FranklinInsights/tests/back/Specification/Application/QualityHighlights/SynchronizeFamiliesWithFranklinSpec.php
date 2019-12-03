@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Quali
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighlightsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\BatchSize;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use PhpSpec\ObjectBehavior;
@@ -40,7 +41,7 @@ class SynchronizeFamiliesWithFranklinSpec extends ObjectBehavior
         $qualityHighlightsProvider->deleteFamily('camcorders')->shouldBeCalled();
         $pendingItemsRepository->removeDeletedFamilies(['accessories', 'camcorders'], $lock)->shouldBeCalled();
 
-        $this->synchronize($lock, 100);
+        $this->synchronize($lock, new BatchSize(100));
     }
 
     public function it_releases_the_lock_on_exception(
@@ -63,7 +64,7 @@ class SynchronizeFamiliesWithFranklinSpec extends ObjectBehavior
         $pendingItemsRepository->releaseDeletedFamiliesLock(['accessories', 'camcorders'], $lock)->shouldBeCalled();
         $pendingItemsRepository->removeDeletedFamilies(['accessories', 'camcorders'], $lock)->shouldNotBeCalled();
 
-        $this->synchronize($lock, 100);
+        $this->synchronize($lock, new BatchSize(100));
     }
 
     public function it_ignores_bad_request_exception(
@@ -86,6 +87,6 @@ class SynchronizeFamiliesWithFranklinSpec extends ObjectBehavior
         $pendingItemsRepository->releaseDeletedFamiliesLock(['accessories', 'camcorders'], $lock)->shouldNotBeCalled();
         $pendingItemsRepository->removeDeletedFamilies(['accessories', 'camcorders'], $lock)->shouldBeCalled();
 
-        $this->synchronize($lock, 100);
+        $this->synchronize($lock, new BatchSize(100));
     }
 }

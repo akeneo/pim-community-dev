@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Model\Read\P
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectProductsToApplyQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\BatchSize;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use PhpSpec\ObjectBehavior;
@@ -101,7 +102,7 @@ class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
         $qualityHighlightsProvider->deleteProduct(321)->shouldBeCalled();
         $pendingItemsRepository->removeDeletedProducts([43, 321], $lock)->shouldBeCalled();
 
-        $this->synchronize($lock, 100);
+        $this->synchronize($lock, new BatchSize(100));
     }
 
     function it_releases_the_lock_on_exception(
@@ -145,7 +146,7 @@ class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
         $pendingItemsRepository->releaseDeletedProductsLock([43], $lock)->shouldBeCalled();
         $pendingItemsRepository->removeDeletedProducts([43], $lock)->shouldNotBeCalled();
 
-        $this->synchronize($lock, 100);
+        $this->synchronize($lock, new BatchSize(100));
     }
 
     function it_ignores_bad_request_exception(
@@ -189,6 +190,6 @@ class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
         $pendingItemsRepository->releaseDeletedProductsLock([43], $lock)->shouldNotBeCalled();
         $pendingItemsRepository->removeDeletedProducts([43], $lock)->shouldBeCalled();
 
-        $this->synchronize($lock, 100);
+        $this->synchronize($lock, new BatchSize(100));
     }
 }

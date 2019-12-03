@@ -80,4 +80,11 @@ class QualityHighlightsProvider extends AbstractProvider implements QualityHighl
 
         $this->api->deleteProduct($productId);
     }
+
+    public function applyAsyncAttributeStructure(array $requests): void
+    {
+        $this->api->setToken($this->getToken());
+
+        $this->api->applyAsyncAttributes($requests);
+    }
 }

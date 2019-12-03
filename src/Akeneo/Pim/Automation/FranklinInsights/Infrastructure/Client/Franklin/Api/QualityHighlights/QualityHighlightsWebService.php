@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\QualityHighlights;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Model\Write\AsyncRequest;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AbstractApi;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
@@ -21,6 +22,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Except
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\QualityHighlightsMetrics;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Promise;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -50,6 +52,32 @@ class QualityHighlightsWebService extends AbstractApi implements AuthenticatedAp
 
             throw new BadRequestException(sprintf(
                 'Something went wrong when sending attributes (bad request) : %s',
+                $e->getMessage()
+            ));
+        }
+    }
+
+    /**
+     * @param AsyncRequest[] $requests
+     */
+    public function applyAsyncAttributes(array $requests): void
+    {
+        $uri = $this->uriGenerator->generate('/api/quality-highlights/structure/attributes');
+
+        $promises = [];
+        foreach ($requests as $request) {
+            $promise = $this->httpClient->requestAsync('POST', $uri, [
+                'json' => ['attributes' => $request->getData()],
+            ]);
+            $promise->then($request->getOnFulfilled(), $request->getOnRejected());
+            $promises[] = $promise;
+        }
+
+        try {
+            Promise\settle($promises)->wait();
+        } catch (\Exception $e) {
+            $this->logger->error(sprintf(
+                'Something went wrong on Ask Franklin side when sending attributes : %s',
                 $e->getMessage()
             ));
         }

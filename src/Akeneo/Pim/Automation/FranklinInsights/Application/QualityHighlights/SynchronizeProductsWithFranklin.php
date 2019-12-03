@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\Normali
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectProductsToApplyQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\BatchSize;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 
@@ -52,16 +53,16 @@ class SynchronizeProductsWithFranklin
         $this->productNormalizer = $productNormalizer;
     }
 
-    public function synchronize(Lock $lock, int $batchSize): void
+    public function synchronize(Lock $lock, BatchSize $batchSize): void
     {
         $this->synchronizeUpdatedProducts($lock, $batchSize);
         $this->synchronizeDeletedProducts($lock, $batchSize);
     }
 
-    private function synchronizeUpdatedProducts(Lock $lock, int $batchSize): void
+    private function synchronizeUpdatedProducts(Lock $lock, BatchSize $batchSize): void
     {
         do {
-            $productIds = $this->pendingItemIdentifiersQuery->getUpdatedProductIds($lock, $batchSize);
+            $productIds = $this->pendingItemIdentifiersQuery->getUpdatedProductIds($lock, $batchSize->toInt());
             if (! empty($productIds)) {
                 $products = array_map(function ($product) {
                     return $this->productNormalizer->normalize($product);
@@ -79,13 +80,13 @@ class SynchronizeProductsWithFranklin
 
                 $this->pendingItemsRepository->removeUpdatedProducts($productIds, $lock);
             }
-        } while (count($productIds) >= $batchSize);
+        } while (count($productIds) >= $batchSize->toInt());
     }
 
-    private function synchronizeDeletedProducts(Lock $lock, int $batchSize): void
+    private function synchronizeDeletedProducts(Lock $lock, BatchSize $batchSize): void
     {
         do {
-            $productIds = $this->pendingItemIdentifiersQuery->getDeletedProductIds($lock, $batchSize);
+            $productIds = $this->pendingItemIdentifiersQuery->getDeletedProductIds($lock, $batchSize->toInt());
             if (! empty($productIds)) {
                 try {
                     foreach ($productIds as $productId) {
@@ -101,6 +102,6 @@ class SynchronizeProductsWithFranklin
 
                 $this->pendingItemsRepository->removeDeletedProducts($productIds, $lock);
             }
-        } while (count($productIds) >= $batchSize);
+        } while (count($productIds) >= $batchSize->toInt());
     }
 }

@@ -31,6 +31,7 @@ $rules = [
 
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
             'Psr\Log\LoggerInterface',
+            'Ramsey\Uuid\Uuid',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Application'),
 

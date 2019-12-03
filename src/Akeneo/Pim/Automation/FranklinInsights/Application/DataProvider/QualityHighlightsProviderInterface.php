@@ -13,9 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Model\Write\AsyncRequest;
+
 interface QualityHighlightsProviderInterface
 {
-    public function applyAttributeStructure(array $attributes): void;
+    /**
+     * @param AsyncRequest[] $requests
+     */
+    public function applyAsyncAttributeStructure(array $requests): void;
 
     public function deleteAttribute(string $attributeCode): void;
 

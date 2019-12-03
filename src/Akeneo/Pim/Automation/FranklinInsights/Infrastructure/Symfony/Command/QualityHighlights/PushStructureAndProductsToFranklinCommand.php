@@ -5,12 +5,12 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command\
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\PushStructureAndProductsToFranklin;
 use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeAttributesWithFranklin;
 use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeFamiliesWithFranklin;
 use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeProductsWithFranklin;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
-use Ramsey\Uuid\Uuid;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\BatchSize;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -40,12 +40,16 @@ class PushStructureAndProductsToFranklinCommand extends Command
     /** @var GetConnectionStatusHandler */
     private $connectionStatusHandler;
 
+    /** @var PushStructureAndProductsToFranklin */
+    private $pushStructureAndProductsToFranklin;
+
     public function __construct(
         PendingItemsRepositoryInterface $pendingItemsRepository,
         SynchronizeFamiliesWithFranklin $synchronizeFamilies,
         SynchronizeAttributesWithFranklin $synchronizeAttributes,
         SynchronizeProductsWithFranklin $synchronizeProductsWithFranklin,
-        GetConnectionStatusHandler $connectionStatusHandler
+        GetConnectionStatusHandler $connectionStatusHandler,
+        PushStructureAndProductsToFranklin $pushStructureAndProductsToFranklin
     ) {
         parent::__construct(self::NAME);
 
@@ -54,6 +58,7 @@ class PushStructureAndProductsToFranklinCommand extends Command
         $this->synchronizeAttributes = $synchronizeAttributes;
         $this->synchronizeProductsWithFranklin = $synchronizeProductsWithFranklin;
         $this->connectionStatusHandler = $connectionStatusHandler;
+        $this->pushStructureAndProductsToFranklin = $pushStructureAndProductsToFranklin;
     }
 
     protected function configure()
@@ -85,16 +90,11 @@ class PushStructureAndProductsToFranklinCommand extends Command
 
         $io->title('Push catalog structure and products to Franklin API');
 
-        $lock = new Lock((Uuid::uuid4())->toString());
-        $this->pendingItemsRepository->acquireLock($lock);
-
-        //The following order is important and must not be changed Attributes, then Families, then products.
-        $io->section('Synchronize Attributes');
-        $this->synchronizeAttributes->synchronize($lock, $batchAttributesSize);
-        $io->section('Synchronize Families');
-        $this->synchronizeFamilies->synchronize($lock, $batchFamiliesSize);
-        $io->section('Synchronize Products');
-        $this->synchronizeProductsWithFranklin->synchronize($lock, $batchProductsSize);
+        $this->pushStructureAndProductsToFranklin->push(
+            new BatchSize($batchAttributesSize),
+            new BatchSize($batchFamiliesSize),
+            new BatchSize($batchProductsSize)
+        );
     }
 
     private function isFranklinInsightsActivated(): bool

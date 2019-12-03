@@ -18,6 +18,7 @@ services:
             - '@akeneo.pim.automation.franklin_insights.application.quality_highlights.synchronize_attributes_with_franklin'
             - '@akeneo.pim.automation.franklin_insights.application.quality_highlights.synchronize_products_with_franklin'
             - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
+            - '@Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\PushStructureAndProductsToFranklin'
         tags:
             - { name: 'console.command' }
 

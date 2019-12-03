@@ -13,10 +13,13 @@ declare (strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Query\Doctrine\QualityHighlights;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectAttributesToApplyQueryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Test\Common\EntityBuilder;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -67,7 +70,7 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
         $expectedResult = [
             [
                 'code' => 'weight',
-                'type' => AttributeTypes::TEXT,
+                'type' => AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[AttributeTypes::TEXT],
                 'labels' => [
                     [
                         'locale' => 'en_US',
@@ -81,7 +84,7 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
             ],
             [
                 'code' => 'color',
-                'type' => AttributeTypes::OPTION_SIMPLE_SELECT,
+                'type' => AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[AttributeTypes::OPTION_SIMPLE_SELECT],
                 'labels' => [
                     [
                         'locale' => 'en_US',
@@ -92,10 +95,21 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
                         'label' => 'Color!',
                     ],
                 ],
+                'options' => [
+                    [
+                        'code' => 'red',
+                        'labels' => [
+                            [
+                                'locale' => 'en_US',
+                                'label' => 'Red',
+                            ],
+                        ]
+                    ],
+                ],
             ],
             [
                 'code' => 'size',
-                'type' => AttributeTypes::METRIC,
+                'type' => AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[AttributeTypes::METRIC],
                 'metric_family' => 'Length',
                 'unit' => 'INCHES',
                 'labels' => [
@@ -107,7 +121,7 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
             ],
             [
                 'code' => 'attr_without_label',
-                'type' => AttributeTypes::TEXT,
+                'type' => AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[AttributeTypes::TEXT],
                 'labels' => [],
             ],
         ];
@@ -143,8 +157,31 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
         );
         $this->validator->validate($attribute);
         $this->attributeSaver->save($attribute);
+        $this->createColorAttributeOptions($attribute);
 
         return $attribute;
+    }
+
+    private function createColorAttributeOptions(AttributeInterface $attribute)
+    {
+        $red = (new AttributeOption())
+            ->setCode('red')
+            ->setAttribute($attribute);
+
+        $redUs = (new AttributeOptionValue())
+            ->setOption($red)
+            ->setLocale('en_US')
+            ->setValue('Red');
+
+        $redFr = (new AttributeOptionValue())
+            ->setOption($red)
+            ->setLocale('fr_FR')
+            ->setValue('Red');
+
+        $red->addOptionValue($redUs)
+            ->addOptionValue($redFr);
+
+        $this->attributeOptionSaver->save($red);
     }
 
     private function createMetricAttribute(string $attributeCode): AttributeInterface

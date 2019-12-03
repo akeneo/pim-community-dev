@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectAttributeOptionsByAttributeCodeQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectAttributesToApplyQueryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Doctrine\DBAL\Connection;
@@ -22,9 +24,13 @@ class SelectAttributesToApplyQuery implements SelectAttributesToApplyQueryInterf
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    /** @var SelectAttributeOptionsByAttributeCodeQueryInterface */
+    private $selectAttributeOptions;
+
+    public function __construct(Connection $connection, SelectAttributeOptionsByAttributeCodeQueryInterface $selectAttributeOptions)
     {
         $this->connection = $connection;
+        $this->selectAttributeOptions = $selectAttributeOptions;
     }
 
     public function execute(array $attributeCodes): array
@@ -79,6 +85,15 @@ SQL;
             unset($attribute['metric_family']);
             unset($attribute['unit']);
         }
+
+        if ($attribute['type'] === AttributeTypes::OPTION_SIMPLE_SELECT || $attribute['type'] === AttributeTypes::OPTION_MULTI_SELECT) {
+            $attributeOptions = $this->selectAttributeOptions->execute($attribute['code']);
+            if (! empty($attributeOptions)) {
+                $attribute['options'] = $attributeOptions;
+            }
+        }
+
+        $attribute['type'] = AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[$attribute['type']] ?? $attribute['type'];
 
         return $attribute;
     }
