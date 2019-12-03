@@ -9,7 +9,7 @@ use Doctrine\Migrations\AbstractMigration;
  * In symfony 4.4, there is a BC break: the type of the lifetime session is an UNSIGNED INT now,
  * @see https://github.com/symfony/symfony/issues/34491
  */
-final class Version_4_0_20191031_modify_session_lifetime_type extends AbstractMigration
+final class Version_4_0_20191031000000_modify_session_lifetime_type extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
