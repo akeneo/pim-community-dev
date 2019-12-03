@@ -1098,11 +1098,9 @@ class User implements UserInterface
         return self::TYPE_APP === $this->type;
     }
 
-    public function defineAsUserApp(): string
+    public function defineAsUserApp(): void
     {
         $this->type = self::TYPE_APP;
-
-        return $this;
     }
 
     /**
