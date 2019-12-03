@@ -39,7 +39,8 @@ class PimRequirements
         'xml',
         'zip',
         'exif',
-        'imagick'
+        'imagick',
+        'mbstring',
     ];
 
     /** @var string[] */
