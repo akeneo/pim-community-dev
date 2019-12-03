@@ -160,6 +160,9 @@ define(
                                 callback(_.compact(choices));
                             }.bind(this));
                         }.bind(this),
+                        formatSelection: function(data, container) {
+                            container.attr('title', data.text).text(data.text);
+                        },
                         multiple: true
                     };
 

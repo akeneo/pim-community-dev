@@ -3,6 +3,7 @@
 ## Bug fixes:
 
 - PIM-9008: Fix product models API when the filter "completenes" was used with a sub-filter "locale"
+- PIM-9005: Fix display of long option labels in the Product Edit Form
 
 # 3.2.22 (2019-12-03)
 
