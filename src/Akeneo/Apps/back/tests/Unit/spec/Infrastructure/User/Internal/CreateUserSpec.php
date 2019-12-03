@@ -41,12 +41,13 @@ class CreateUserSpec extends ObjectBehavior
         $validator->validate($user)->willReturn($violations);
         $userSaver->save($user)->shouldBeCalled();
         $user->getId()->willReturn(1);
+        $user->defineAsUserApp()->shouldBeCalled();
 
-        $user = $this->execute('foo', 'bar', 'baz');
-        $user->shouldBeAnInstanceOf(ReadUser::class);
-        $user->id()->shouldReturn(1);
-        $user->username()->shouldBeString();
-        $user->password()->shouldBeString();
+        $readUser = $this->execute('foo', 'bar', 'baz');
+        $readUser->shouldBeAnInstanceOf(ReadUser::class);
+        $readUser->id()->shouldReturn(1);
+        $readUser->username()->shouldBeString();
+        $readUser->password()->shouldBeString();
     }
 
     public function it_prevents_to_create_a_not_valid_user($userFactory, $userUpdater, $validator, $userSaver, User $user): void
