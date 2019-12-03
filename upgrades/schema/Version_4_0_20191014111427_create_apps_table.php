@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Apps\Infrastructure\Install\Query\CreateAppsTableQuery;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -17,7 +16,6 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version_4_0_20191014111427_create_apps_table extends AbstractMigration
 {
-
     public function up(Schema $schema) : void
     {
         $createTableQuery = <<<SQL
@@ -26,8 +24,8 @@ CREATE TABLE IF NOT EXISTS akeneo_app(
     user_id INT NOT NULL,
     code VARCHAR(100) NOT NULL,
     label VARCHAR(100) NOT NULL,
-    flow_type ENUM('data_destination', 'data_source', 'other') NOT NULL DEFAULT 'other',
-    created DATETIME NOT NULL COMMENT '(DC2Type:datetime)' DEFAULT CURRENT_TIMESTAMP,
+    flow_type VARCHAR(50) NOT NULL DEFAULT 'other',
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT FK_APP_pim_api_client_app_client_id FOREIGN KEY (client_id) REFERENCES pim_api_client (id),
     CONSTRAINT FK_APP_oro_user_app_user_id FOREIGN KEY (user_id) REFERENCES oro_user (id),
     INDEX IDX_APP_code (code)
@@ -39,9 +37,6 @@ SQL;
 
     public function down(Schema $schema) : void
     {
-        $dropTableQuery = <<<SQL
-DROP TABLE akeneo_app
-SQL;
-        $this->addSql($dropTableQuery);
+        $this->throwIrreversibleMigrationException();
     }
 }
