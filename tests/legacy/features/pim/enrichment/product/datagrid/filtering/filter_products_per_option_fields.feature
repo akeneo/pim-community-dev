@@ -38,30 +38,3 @@ Feature: Filter products per option
       | color  | in list      | Black | Shoes  |
       | color  | is empty     |       |        |
       | color  | is not empty |       | Shoes  |
-
-  @jira https://akeneo.atlassian.net/browse/PIM-5802
-  Scenario: Successfully keep data previously filled on a simple option
-    Given I am on the products grid
-    And the grid should contain 3 elements
-    When I show the filter "size"
-    And I filter by "size" with operator "in list" and value "M"
-    And I should see entities Sweat
-    Then I should see option "[M]" in filter "size"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-5802
-  Scenario: Successfully keep data previously filled on a multi option
-    Given I am on the products grid
-    And the grid should contain 3 elements
-    When I show the filter "color"
-    And I filter by "color" with operator "in list" and value "Black, White"
-    And I should see entities Shoes
-    Then I should see options "[Black], [White]" in filter "color"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6150
-  Scenario: Successfully keep the option filter on page reload
-    Given I am on the products grid
-    And the grid should contain 3 elements
-    When I show the filter "color"
-    And I filter by "color" with operator "in list" and value "Black, White"
-    And I reload the page
-    Then the criteria of "color" filter should be ""[Black], [White]""

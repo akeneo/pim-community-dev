@@ -39,21 +39,3 @@ Feature: Filter products with multiples multiselect filters
       | color  | in list      | Green | MUG-2, MUG-3 and MUG-4 |
       | color  | is empty     |       | POST-1 and POST-2      |
       | color  | is not empty |       | MUG-2, MUG-3 and MUG-4 |
-
-  Scenario: Successfully filter products without common attribute
-    Given I show the filter "color"
-    And I filter by "color" with operator "in list" and value "Green"
-    Then I should be able to use the following filters:
-      | filter  | operator     | value     | result                     |
-      | company | in list      | Canonical | MUG-1                      |
-      | company | is empty     |           | MUG-5                      |
-      | company | is not empty |           | MUG-1, MUG-2, MUG-3, MUG-4 |
-
-  Scenario: Successfully filter only one product
-    Given I am on the products grid
-    When I show the filter "company"
-    And I filter by "company" with operator "in list" and value "Canonical"
-    And I show the filter "color"
-    And I filter by "color" with operator "in list" and value "Green"
-    Then the grid should contain 1 elements
-    And I should see entities "MUG-1"

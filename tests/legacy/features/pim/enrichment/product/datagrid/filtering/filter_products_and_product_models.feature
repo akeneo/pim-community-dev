@@ -30,19 +30,6 @@ Feature: Filter product and product models
       | Status           | Enabled                       |
       | complete         | 62%                           |
 
-  Scenario: View products and product models with the same ID in the grid
-    Given there is no "product" in the catalog
-    And there is no "product model" in the catalog
-    And the following root product models:
-      | code                | parent | family_variant      | categories | price          | color | description-en_US-ecommerce |
-      | tshirt-unique-color |        | clothing_color_size | master_men | 10 USD, 15 EUR | blue  | A unique color t-shirt      |
-    And the following products:
-      | sku                  | family   | name-en_US           | categories | size | description-en_US-ecommerce |
-      | tshirt-kurt-cobain-s | clothing | Tshirt Kurt Cobain S | Tshirts    | s    | A Kurt Cobain t-shirt       |
-    When I am on the products grid
-    Then I should see products tshirt-unique-color
-    And I should see the product models tshirt-kurt-cobain-s
-
   Scenario: Successfully filters on the parent field with codes
     Given I am on the products grid
     When I filter by "parent" with operator "in list" and value "model-braided-hat,diana"

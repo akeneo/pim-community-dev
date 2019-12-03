@@ -85,16 +85,6 @@ Feature: Display the completeness of a product
      | column   | value |
      | complete | 50%   |
 
-  Scenario: Don't display the completeness if the family is not defined
-    Given I am on the "sneakers" product page
-    When I visit the "Completeness" column tab
-    Then I change the family of the product to ""
-    And I should see the text "No family defined. Please define a family to calculate the completeness of this product."
-    When I change the family of the product to "Sneakers"
-    Then I should not see the text "No family defined. Please define a family to calculate the completeness of this product."
-    When I change the family of the product to "Boots"
-    Then I should see the text "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
-
   Scenario: Display the completeness badge for the scope and locale
     Given I am on the "sneakers" product page
     When I visit the "Completeness" column tab
