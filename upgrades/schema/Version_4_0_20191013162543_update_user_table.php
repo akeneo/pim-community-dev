@@ -25,7 +25,7 @@ final class Version_4_0_20191013162543_update_user_table
     public function up(Schema $schema) : void
     {
         $this->addSql(<<<SQL
-ALTER TABLE oro_user ADD COLUMN type varchar(20) NOT NULL DEFAULT 'user'
+ALTER TABLE oro_user ADD COLUMN user_type varchar(20) NOT NULL DEFAULT 'user'
 SQL);
     }
 
