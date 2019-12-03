@@ -41,15 +41,13 @@ class CreateUser implements CreateUserInterface
         $this->userSaver = $userSaver;
     }
 
-    public function execute(
-        string $username,
-        string $firstname,
-        string $lastname
-    ): User {
+    public function execute(string $username, string $firstname, string $lastname): User
+    {
         $password = $this->generatePassword();
         $username = $this->generateUsername($username);
 
         $user = $this->userFactory->create();
+        $user->defineAsUserApp();
         $this->userUpdater->update(
             $user,
             [

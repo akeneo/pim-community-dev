@@ -50,11 +50,7 @@ class CreateAppHandler
             throw new ConstraintViolationListException($violations);
         }
 
-        $user = $this->createUser->execute(
-            $command->code(),
-            $command->label(),
-            ' '
-        );
+        $user = $this->createUser->execute($command->code(), $command->label(), ' ');
         $client = $this->createClient->execute($command->label());
 
         $app = new App(

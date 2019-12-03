@@ -12,9 +12,5 @@ use Akeneo\Apps\Domain\Model\Read\User;
  */
 interface CreateUserInterface
 {
-    public function execute(
-        string $username,
-        string $firstname,
-        string $lastname
-    ): User;
+    public function execute(string $username, string $firstname, string $lastname): User;
 }
