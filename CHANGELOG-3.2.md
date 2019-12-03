@@ -4,6 +4,7 @@
 
 - PIM-8996: Display an error when a file upload failed
 - PIM-8984: Fix css on records dropdowns
+- PIM-8988: Remove useless "Remove" button when editing exported attributes (in export profile)
 
 # 3.2.21 (2019-11-22)
 
