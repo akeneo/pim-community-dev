@@ -34,7 +34,7 @@ acceptance:
 # integration-back: var/tests/phpspec bounded-context-integration-back
 .PHONY: phpunit
 phpunit:
-	${PHP_RUN} vendor/bin/phpunit -c phpunit.xml.dist ${F}
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c phpunit.xml.dist ${F}
 
 # Please use the target `end-to-end-legacy` instead
 .PHONY: behat-legacy
