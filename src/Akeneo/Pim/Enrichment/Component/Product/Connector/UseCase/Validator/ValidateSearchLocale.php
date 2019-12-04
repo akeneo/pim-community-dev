@@ -60,12 +60,6 @@ final class ValidateSearchLocale
         foreach ($search as $propertyCode => $filters) {
             foreach ($filters as $filter) {
                 if ($propertyCode === self::COMPLETENESS_PROPERTY) {
-                    if (isset($filter['locale'])) {
-                        throw new InvalidQueryException(
-                            sprintf('Property "completeness" expects an array with the key "locales".')
-                        );
-                    }
-
                     if (isset($filter['locales'])) {
                         if (!is_array($filter['locales'])) {
                             throw new InvalidQueryException(
