@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Driver\ResultStatement;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountUsers;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
@@ -29,9 +29,9 @@ class CountUsersSpec extends ObjectBehavior
         $this->shouldImplement(CountQuery::class);
     }
 
-    function it_gets_count_volume($connection, Statement $statement)
+    function it_gets_count_volume($connection, ResultStatement $statement)
     {
-        $connection->query(Argument::type('string'))->willReturn($statement);
+        $connection->executeQuery(Argument::type('string'), Argument::type('array'))->willReturn($statement);
         $statement->fetch()->willReturn(['count' => '25']);
         $this->fetch()->shouldBeLike(new CountVolume(25, -1, 'count_users'));
     }
