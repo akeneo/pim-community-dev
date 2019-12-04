@@ -6,6 +6,7 @@ namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query
 
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
+use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -39,10 +40,12 @@ class CountUsers implements CountQuery
     public function fetch(): CountVolume
     {
         $sql = <<<SQL
-            SELECT COUNT(*) as count
-            FROM oro_user;
+SELECT COUNT(*) as count
+FROM oro_user
+WHERE oro_user.user_type = :type
 SQL;
-        $result = $this->connection->query($sql)->fetch();
+
+        $result = $this->connection->executeQuery($sql, ['type' => User::TYPE_USER])->fetch();
         $volume = new CountVolume((int) $result['count'], $this->limit, self::VOLUME_NAME);
 
         return $volume;
