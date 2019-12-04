@@ -17,7 +17,6 @@
         <ini name="intl.error_level" value="0"/>
         <ini name="memory_limit" value="-1"/>
         <ini name="zend.enable_gc" value="1"/>
-        <server name="APP_ENV" value="test" force="true" />
         <server name="KERNEL_CLASS" value="Kernel" force="true" />
     </php>
 

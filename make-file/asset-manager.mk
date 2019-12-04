@@ -88,5 +88,5 @@ asset-manager-integration-back: var/tests/phpunit
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh src/Akeneo/AssetManager/tests/back vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php AssetFamily_Integration_Test
 else
-	${PHP_RUN} vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back --testsuite AssetFamily_Integration_Test $(O)
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back --testsuite AssetFamily_Integration_Test $(O)
 endif
