@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 
 final class MysqlChecker
 {
@@ -27,10 +28,12 @@ final class MysqlChecker
 
     public function status(): ServiceStatus
     {
-        if ($this->connection->ping()) {
+        try {
+            $this->connection->executeQuery("SELECT 'ok' FROM pim_catalog_product_unique_data")->fetchAll();
+
             return new ServiceStatus(true, "OK");
-        } else {
-            return new ServiceStatus(false, "Unable to ping the database.");
+        } catch (DBALException $e) {
+            return new ServiceStatus(false, sprintf('Unable to request the databse: "%s".', $e->getMessage()));
         }
     }
 }
