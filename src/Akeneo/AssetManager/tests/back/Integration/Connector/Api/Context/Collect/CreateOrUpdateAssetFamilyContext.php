@@ -39,7 +39,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -194,8 +194,8 @@ class CreateOrUpdateAssetFamilyContext implements Context
             RuleTemplateCollection::empty()
         );
 
-        $this->loadImageAttribute('brand', 'main_image', 'Main image', 1);
-        $this->loadImageAttribute('brand', 'thumbnail', 'Thumbnail image', 2);
+        $this->loadMediaFileAttribute('brand', 'main_image', 'Main image', 1);
+        $this->loadMediaFileAttribute('brand', 'thumbnail', 'Thumbnail image', 2);
 
         $this->assetFamilyRepository->create($assetFamily);
     }
@@ -376,9 +376,9 @@ class CreateOrUpdateAssetFamilyContext implements Context
         ];
     }
 
-    private function loadImageAttribute(string $assetFamilyIdentifier, string $code, string $label, int $order): void
+    private function loadMediaFileAttribute(string $assetFamilyIdentifier, string $code, string $label, int $order): void
     {
-        $name = ImageAttribute::create(
+        $name = MediaFileAttribute::create(
             AttributeIdentifier::create($assetFamilyIdentifier, $code, 'fingerprint'),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($code),
