@@ -57,7 +57,9 @@ class CountUsersIntegration extends QueryTestCase
         $user = $this->get('pim_user.factory.user')->create();
         $this->get('pim_user.updater.user')->update($user, $data, []);
 
-        ($type === User::TYPE_APP) ? $user->defineAsUserApp() : null;
+        if ($type === User::TYPE_APP) {
+            $user->defineAsUserApp();
+        }
 
         $validation = $this->get('validator')->validate($user);
         Assert::assertEquals(0, $validation->count());
