@@ -53,6 +53,7 @@
     "@types/react-test-renderer": "^16.8.0",
     "@types/styled-components": "^4.1.18",
     "@types/underscore": "^1.9.3",
+    "@types/victory": "^33.0.1",
     "@typescript-eslint/eslint-plugin": "^2.3.3",
     "@typescript-eslint/parser": "^2.3.3",
     "babel-eslint": "^10.0.1",
@@ -111,7 +112,8 @@
     "react-router-dom": "^5.1.0",
     "styled-components": "^4.3.2",
     "summernote": "0.6.16",
-    "underscore": "1.8.3"
+    "underscore": "1.8.3",
+    "victory": "^33.1.6"
   },
   "resolutions": {
     "jest/**/ip-regex": "2.1.0"
