@@ -21,23 +21,3 @@ Feature: Product group creation
     And I should see the text "[Cross]"
     Then I am on the product groups page
     And I should see groups Cross
-
-  Scenario: Fail to create a group with an empty or invalid code
-    Given I fill in the following information in the popin:
-      | Type | Cross sell |
-    And I press the "Save" button
-    Then I should see validation error "This value should not be blank."
-    When I fill in the following information in the popin:
-      | Code | =( |
-    And I press the "Save" button
-    Then I should see validation error "Group code may contain only letters, numbers and underscores."
-
-  Scenario: Fail to create a group with an already used code
-    Given the following product group:
-      | code   | label-en_US    | type   |
-      | TSHIRT | T-Shirt Akeneo | X_SELL |
-    When I fill in the following information in the popin:
-      | Code | TSHIRT |
-      | Type | Cross sell |
-    And I press the "Save" button
-    Then I should see validation error "This value is already used."
