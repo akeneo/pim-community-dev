@@ -662,6 +662,26 @@ class FixturesLoader
             );
         }
 
+        // TARGET IMAGE
+        if (in_array('target_image', $this->loadedAttributes)) {
+            $attributes['target_image'] = MediaFileAttribute::create(
+                $this->attributeRepository->nextIdentifier(
+                    $assetFamilyIdentifier,
+                    AttributeCode::fromString('target_image')
+                ),
+                $assetFamilyIdentifier,
+                AttributeCode::fromString('target_image'),
+                LabelCollection::fromArray([]),
+                $this->getOrderForAttribute('target_image'),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxFileSize::noLimit(),
+                AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED),
+                MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
+            );
+        }
+
         foreach ($attributes as $attribute) {
             $this->attributeRepository->create($attribute);
         }
