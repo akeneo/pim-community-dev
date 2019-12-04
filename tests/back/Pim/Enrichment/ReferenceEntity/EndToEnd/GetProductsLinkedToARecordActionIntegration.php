@@ -105,13 +105,11 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
             ->withReferenceEntity(self::REFERENCE_ENTITY)
             ->withRecords(self::RECORD)
             // Products
-            ->withAttributeLinkToRecord(
-                [
+            ->withAttributeLinkToRecord([
                     'code'             => self::ATTRIBUTE_LINK,
                     'type'             => ReferenceEntityType::REFERENCE_ENTITY,
                     'reference_entity' => self::REFERENCE_ENTITY
-                ]
-            )
+                ])
             ->withProductFamily('accessories')
             ->withLinkedProductModel('model-braided-hat')
             ->withLinkedProduct('1111111304');
