@@ -22,6 +22,8 @@ class User implements UserInterface
     const GROUP_DEFAULT = 'All';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
     const DEFAULT_TIMEZONE = 'UTC';
+    const TYPE_USER = 'user';
+    const TYPE_APP = 'app';
 
     /** @var int|string */
     protected $id;
@@ -150,9 +152,6 @@ class User implements UserInterface
     private $properties = [];
 
     protected $type = self::TYPE_USER;
-
-    const TYPE_USER = 'user';
-    const TYPE_APP = 'app';
 
     public function __construct()
     {
