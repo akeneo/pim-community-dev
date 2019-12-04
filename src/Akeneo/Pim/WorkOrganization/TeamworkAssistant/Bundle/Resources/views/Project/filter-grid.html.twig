@@ -1,7 +1,7 @@
 {% block content %}
 <div id="loading-project-filtered-grid"></div>
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="{{ js_nonce() }}">
     require(
         ['jquery', 'pim/datagrid/state', 'pim/router', 'oro/loading-mask'],
         function ($, DatagridState, router, LoadingMask)

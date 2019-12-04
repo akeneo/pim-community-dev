@@ -31,7 +31,7 @@
     </div>
 {% endblock %}
 
-<script>
+<script nonce="{{ js_nonce() }}">
     window.flashMessages = JSON.parse(`{{ app.session.flashbag.all|json_encode()|raw }}`);
 
     require(

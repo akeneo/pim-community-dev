@@ -1,5 +1,5 @@
 {% block content %}
-    <script>
+    <script nonce="{{ js_nonce() }}">
         require(['pimee/productasset/mass-upload'], function (massUpload) {
             var myDropzone = new massUpload();
             myDropzone.setElement('.view');

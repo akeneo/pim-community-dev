@@ -1,6 +1,6 @@
 {% block content %}
     {% placeholder content_before %}
-    <script>
+    <script nonce="{{ js_nonce() }}">
         require(
             ['jquery', 'underscore', 'pim/fetcher-registry', 'pim/form-builder', 'pimee/published-product-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error'],
             function($, _, FetcherRegistry, FormBuilder, PublishedProductManager, UserContext, Dialog, mediator, Error) {

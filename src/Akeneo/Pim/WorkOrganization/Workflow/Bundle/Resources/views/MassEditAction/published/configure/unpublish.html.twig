@@ -3,7 +3,7 @@
 {% block head_script %}
     {{ parent() }}
     {% if itemsCount == 0 %}
-        <script type="text/javascript">
+        <script type="text/javascript" nonce="{{ js_nonce() }}">
             require(
                 ['jquery'],
                 function($){

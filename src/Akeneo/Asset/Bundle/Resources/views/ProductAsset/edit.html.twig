@@ -60,7 +60,7 @@
     </div>
     {{ form_end(form) }}
 
-    <script>
+    <script nonce="{{ js_nonce() }}">
         require(
             ['pimee/productasset/variations'],
             function (AssetVariationsForm) {
@@ -70,7 +70,7 @@
         );
     </script>
 
-    <script>
+    <script nonce="{{ js_nonce() }}">
         require(
             [
                 'pim/common/breadcrumbs',
@@ -110,6 +110,6 @@
 </div>
 {% endblock %}
 
-<script>
+<script nonce="{{ js_nonce() }}">
     window.flashMessages = JSON.parse(`{{ app.session.flashbag.all|json_encode()|raw }}`);
 </script>

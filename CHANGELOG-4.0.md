@@ -6,6 +6,7 @@
 - DAPI-46: As a contributor, I would like to see my teammate progress on a project dashboard
 - PIM-8665: The SAML diagnostic logs are now stored in a dedicated table instead of a local file. This removes the burden of sharing the log directory in a multi-front setup.
 - PIM-6459: Users don't receive product draft notification if they don't have permission to validate the changes on its locale.
+- PIM-8950: Add Content Security Policy
 
 # Technical Improvements
 

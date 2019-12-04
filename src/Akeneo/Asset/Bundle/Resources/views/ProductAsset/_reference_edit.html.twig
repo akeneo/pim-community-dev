@@ -10,7 +10,7 @@
             } only %}
         </div>
     </div>
-    <script>
+    <script nonce="{{ js_nonce() }}">
         require(['pim/user-context'], function(UserContext) {
             UserContext.set('catalogLocale', "{{currentLocale.code}}")
         });
