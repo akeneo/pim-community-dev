@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
-use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatus;
-use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 
-final class ElasticsearchChecker implements ServiceStatusChecker
+final class ElasticsearchChecker
 {
     /** @var ClientRegistry */
     private $clientRegistry;

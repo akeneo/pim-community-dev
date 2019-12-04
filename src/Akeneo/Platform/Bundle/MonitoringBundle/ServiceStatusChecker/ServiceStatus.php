@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\Bundle\MonitoringBundle;
+namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
 /**
  * Value object to hold service status information

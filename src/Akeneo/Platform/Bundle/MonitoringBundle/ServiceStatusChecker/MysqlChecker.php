@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
-use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatus;
-use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 use Doctrine\DBAL\Connection;
 
-final class MysqlChecker implements ServiceStatusChecker
+final class MysqlChecker
 {
     /** @var Connection */
     private $connection;

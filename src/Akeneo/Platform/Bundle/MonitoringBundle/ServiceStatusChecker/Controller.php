@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatus;
+namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Benoit Jacquemont <benoit@akeneo.com>
  */
-// TODO: Check responder, cf PHP Bulgaria
 final class Controller
 {
     /** @var MysqlChecker */
@@ -30,12 +29,12 @@ final class Controller
     /** @var ElasticsearchChecker */
     private $esChecker;
 
-    /** @var FileStorageChecker */
+    /** @var FileStorageStatusChecker */
     private $fileStorageChecker;
 
     public function __construct(
-        MysqlStatusChecker $mysqlChecker,
-        ElasticsearchStatusChecker $esChecker,
+        MysqlChecker $mysqlChecker,
+        ElasticsearchChecker $esChecker,
         FileStorageStatusChecker $fileStorageChecker
     ) {
         $this->mysqlChecker = $mysqlChecker;
