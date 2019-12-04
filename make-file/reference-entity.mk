@@ -82,5 +82,5 @@ reference-entity-integration-back: var/tests/phpunit
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh src/Akeneo/ReferenceEntity/tests/back vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php ReferenceEntity_Integration_Test
 else
-	${PHP_RUN} vendor/bin/phpunit -c src/Akeneo/ReferenceEntity/tests/back --testsuite ReferenceEntity_Integration_Test $(O)
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c src/Akeneo/ReferenceEntity/tests/back --testsuite ReferenceEntity_Integration_Test $(O)
 endif

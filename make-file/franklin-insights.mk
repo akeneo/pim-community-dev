@@ -91,7 +91,7 @@ franklin-insights-integration-back:
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Franklin_Insights
 else
-	${PHP_RUN} vendor/bin/phpunit -c . --testsuite Franklin_Insights --testdox $(O)
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Franklin_Insights --testdox $(O)
 endif
 
 .PHONY: franklin-insights-end-to-end
