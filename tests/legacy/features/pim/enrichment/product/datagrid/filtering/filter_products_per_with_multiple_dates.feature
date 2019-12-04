@@ -38,24 +38,3 @@ Feature: Filter products
     And I should see entities "MUG-2" and "MUG-3" and "MUG-4"
     And I hide the filter "supply"
     And I hide the filter "delivery"
-
-  Scenario: Successfully filter product without commons attributes
-    Given I am on the products grid
-    And I show the filter "supply"
-    And I filter by "supply" with operator "between" and value "09/01/2014 and 10/01/2014"
-    And I show the filter "delivery"
-    And I filter by "delivery" with operator "more than" and value "01/04/2014"
-    Then the grid should contain 0 elements
-    And I hide the filter "supply"
-    And I hide the filter "delivery"
-
-  Scenario: Successfully filter only one product
-    Given I am on the products grid
-    And I show the filter "supply"
-    And I filter by "supply" with operator "less than" and value "02/01/2014"
-    And I show the filter "delivery"
-    And I filter by "delivery" with operator "between" and value "01/01/2014 and 06/01/2014"
-    Then the grid should contain 1 elements
-    And I should see entities "MUG-1"
-    And I hide the filter "supply"
-    And I hide the filter "delivery"

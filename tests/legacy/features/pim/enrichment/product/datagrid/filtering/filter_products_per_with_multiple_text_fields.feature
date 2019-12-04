@@ -53,19 +53,3 @@ Feature: Filter products with multiples text fields filters
       | name   | is equal to      | pink  | MUG-4                  |
     And I hide the filter "description"
     And I hide the filter "name"
-
-  Scenario: Successfully filter product without commons attributes
-    Given I filter by "name" with operator "contains" and value "indigo"
-    And I should be able to use the following filters:
-      | filter      | operator         | value      | result                         |
-      | description | is empty         |            | MUG-5                          |
-      | description | is not empty     |            | MUG-1, MUG-2, MUG-3 and POST-3 |
-      | description | contains         | color      | POST-3                         |
-      | description | contains         | red        | MUG-2 and MUG-3                |
-      | description | starts with      | color      |                                |
-      | description | starts with      | b          | POST-3                         |
-      | description | does not contain | bl         | MUG-2 and MUG-3                |
-      | description | is equal to      | red        |                                |
-      | description | is equal to      | red handle | MUG-2 and MUG-3                |
-    And I hide the filter "description"
-    And I hide the filter "name"

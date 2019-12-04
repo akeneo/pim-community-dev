@@ -49,27 +49,3 @@ Feature: Filter products with multiples metrics filters
       | weight | <            | 201 Gram | MUG-2, MUG-3 and MUG-4 |
       | weight | is empty     |          | POST-1 and POST-2      |
       | weight | is not empty |          | MUG-2, MUG-3 and MUG-4 |
-
-  Scenario: Successfully filter product without commons attributes
-    Given I show the filter "weight"
-    And I filter by "weight" with operator ">" and value "100 Gram"
-    Then I should be able to use the following filters:
-      | filter    | operator     | value   | result                        |
-      | packaging | =            | 10 Gram | MUG-1                         |
-      | packaging | >=           | 10 Gram | MUG-1, MUG-2, MUG-3 and MUG-4 |
-      | packaging | >            | 9 Gram  | MUG-1, MUG-2, MUG-3 and MUG-4 |
-      | packaging | <            | 10 Gram |                               |
-      | packaging | <=           | 10 Gram | MUG-1                         |
-      | packaging | <            | 11 Gram | MUG-1                         |
-      | packaging | is empty     |         | MUG-5                         |
-      | packaging | is not empty |         | MUG-1, MUG-2, MUG-3 and MUG-4 |
-
-  Scenario: Successfully filter only one product
-    Given I show the filter "packaging"
-    And I show the filter "weight"
-    And I filter by "packaging" with operator "=" and value "10 Gram"
-    And I filter by "weight" with operator "=" and value "200 Gram"
-    Then the grid should contain 1 elements
-    And I should see entities "MUG-1"
-    And I hide the filter "packaging"
-    And I hide the filter "weight"

@@ -56,21 +56,3 @@ Feature: Filter products with multiples number fields filters
       | component | >            | 0     | MUG-2, MUG-3 and MUG-4 |
     And I hide the filter "supplier"
     And I hide the filter "component"
-
-  Scenario: Successfully filter product without commons attributes
-    Given I filter by "component" with operator "=" and value "16"
-    And I should be able to use the following filters:
-      | filter   | operator     | value | result                        |
-      | supplier | is empty     |       | MUG-5                         |
-      | supplier | is not empty |       | MUG-1, MUG-2, MUG-3 and MUG-4 |
-      | supplier | >            | 12    |                               |
-      | supplier | <            | 12    | MUG-2, MUG-3 and MUG-4        |
-      | supplier | >            | 11    | MUG-1                         |
-      | supplier | <            | 13    | MUG-1, MUG-2, MUG-3 and MUG-4 |
-      | supplier | >=           | 12    | MUG-1                         |
-      | supplier | <=           | 12    | MUG-1, MUG-2, MUG-3 and MUG-4 |
-      | supplier | =            | 12    | MUG-1                         |
-      | supplier | =            | 0     |                               |
-      | supplier | >            | 0     | MUG-1, MUG-2, MUG-3 and MUG-4 |
-    And I hide the filter "supplier"
-    And I hide the filter "component"
