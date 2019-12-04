@@ -6,6 +6,8 @@ pim_menu:
 pim_title:
     akeneo_apps_index: Apps
     akeneo_apps_any: Apps
+    akeneo_apps_dashboard_index: App dashboard
+    akeneo_apps_dashboard_any: App dashboard
 
 pim_apps:
     apps: Apps
