@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-9007: Fix cancelling category selection in export profile
+
 # 3.0.57 (2019-12-02)
 
 ## Enhancements
