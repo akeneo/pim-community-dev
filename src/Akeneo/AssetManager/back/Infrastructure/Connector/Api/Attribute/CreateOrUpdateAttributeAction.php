@@ -198,7 +198,6 @@ class CreateOrUpdateAttributeAction
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $normalizedAttribute = $this->adaptMediaFileAttributeToImageAttribute($normalizedAttribute);
         $normalizedAttribute = $this->getNormalizedAttribute($normalizedAttribute, $assetFamilyIdentifier);
 
         $createAttributeCommand = $this->createAttributeCommandFactoryRegistry->getFactory($normalizedAttribute)->create($normalizedAttribute);
@@ -253,7 +252,6 @@ class CreateOrUpdateAttributeAction
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $normalizedAttribute = $this->adaptMediaFileAttributeToImageAttribute($normalizedAttribute);
         $normalizedAttribute = $this->getNormalizedAttribute($normalizedAttribute, $assetFamilyIdentifier);
         $normalizedAttribute['identifier'] = (string) $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
@@ -276,20 +274,5 @@ class CreateOrUpdateAttributeAction
         ];
 
         return Response::create('', Response::HTTP_NO_CONTENT, $headers);
-    }
-
-    /**
-     * AST-158: If a media_type is specified, it is the 'type' of the attribute.
-     * Ideally, this kind of plumbing work should have been done on the CommandFactories,
-     * BUT, since they are common with all the adapters it's less dangerous to make the change here.
-     */
-    private function adaptMediaFileAttributeToImageAttribute(array $normalizedAttribute): array
-    {
-        if (self::MEDIA_FILE_ATTRIBUTE_TYPE === $normalizedAttribute['type']) {
-            $normalizedAttribute['type'] = self::IMAGE_ATTRIBUTE_TYPE;
-            unset($normalizedAttribute['media_type']);
-        }
-
-        return $normalizedAttribute;
     }
 }
