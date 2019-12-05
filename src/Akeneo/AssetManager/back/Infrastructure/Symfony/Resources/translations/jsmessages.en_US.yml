@@ -226,6 +226,18 @@ pim_asset_manager:
       add_new: Add new
       remove_all: Remove all
       confirm: Create
+      list:
+        asset: Asset
+        filename: Filename
+        code: Code (required)
+        status: Status
+      status:
+        waiting_for_upload: not uploaded
+        upload_in_progress: in progress
+        uploaded: uploaded
+        ready: ready to create
+        invalid: error
+        incomplete: incomplete
     delete:
       message: Are you sure you want to delete the asset "{{ assetLabel }}"? If it's linked to products or assets, the links will be removed.
       title: Asset
