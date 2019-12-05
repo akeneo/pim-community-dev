@@ -151,12 +151,13 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->beConstructedWith([
             'from' => [
                 'id' => 'product_weight',
+                'type' => 'metric',
+
                 'label' => [
                     'en_us' => 'Product Weight',
                 ],
             ],
             'to' => ['id' => 'color'],
-            'type' => 'metric',
             'summary' => ['23kg',  '12kg'],
             'status' => 'pending',
             'suggestions' => 'weight'
@@ -170,12 +171,12 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->beConstructedWith([
             'from' => [
                 'id' => 'product_weight',
+                'type' => 'metric',
                 'label' => [
                     'en_us' => 'Product Weight',
                 ],
             ],
             'to' => ['id' => 'color'],
-            'type' => 'metric',
             'summary' => ['23kg',  '12kg'],
             'status' => 'pending',
             'suggestions' => [

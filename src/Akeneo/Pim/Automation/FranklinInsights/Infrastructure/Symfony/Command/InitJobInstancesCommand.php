@@ -91,6 +91,10 @@ class InitJobInstancesCommand extends ContainerAwareCommand
         if (!$this->isJobInstanceAlreadyCreated(JobInstanceNames::SYNCHRONIZE)) {
             $this->createJobInstance(JobInstanceNames::SYNCHRONIZE, 'franklin_insights', $output);
         }
+
+        if (!$this->isJobInstanceAlreadyCreated(JobInstanceNames::PUSH_STRUCTURE_AND_PRODUCTS)) {
+            $this->createJobInstance(JobInstanceNames::PUSH_STRUCTURE_AND_PRODUCTS, 'franklin_insights', $output);
+        }
     }
 
     /**

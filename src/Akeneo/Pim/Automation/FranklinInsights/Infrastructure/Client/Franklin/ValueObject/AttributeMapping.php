@@ -111,8 +111,9 @@ class AttributeMapping
     {
         $this->checkMandatoryKeys($attribute);
 
-        $this->validateAttributeType((string) $attribute['from']['type']);
-        $this->validateStatus($attribute['status']);
+        if (!isset($attribute['from']['type'])) {
+            throw new \InvalidArgumentException('Missing "type" key in target attribute code data');
+        }
 
         if (!isset($attribute['from']['id'])) {
             throw new \InvalidArgumentException('Missing "id" key in target attribute code data');
@@ -121,6 +122,9 @@ class AttributeMapping
         if (!empty($attribute['to']) && !isset($attribute['to']['id'])) {
             throw new \InvalidArgumentException('Missing "id" key in pim attribute code data');
         }
+
+        $this->validateAttributeType((string) $attribute['from']['type']);
+        $this->validateStatus($attribute['status']);
 
         if (isset($attribute['suggestions'])) {
             $this->validateSuggestions($attribute['suggestions']);

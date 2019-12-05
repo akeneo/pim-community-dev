@@ -20,6 +20,10 @@ use Ramsey\Uuid\Uuid;
 
 class PushStructureAndProductsToFranklin
 {
+    const DEFAULT_ATTRIBUTES_BATCH_SIZE = 10;
+    const DEFAULT_FAMILIES_BATCH_SIZE = 10;
+    const DEFAULT_PRODUCTS_BATCH_SIZE = 500;
+
     const CONCURRENCY = 5;
 
     /** @var BatchSize */
@@ -50,16 +54,16 @@ class PushStructureAndProductsToFranklin
         $this->pendingItemsRepository = $pendingItemsRepository;
     }
 
-    public function push(BatchSize $batchAttributesSize, BatchSize $batchFamiliesSize, BatchSize $batchProductsSize): void
+    public function push(BatchSize $attributesBatchSize, BatchSize $familiesBatchSize, BatchSize $productsBatchSize): void
     {
         $lock = new Lock((Uuid::uuid4())->toString());
         $this->pendingItemsRepository->acquireLock($lock);
 
         //The following order is important and must not be changed Attributes, then Families, then products.
-        $this->synchronizeAttributes->synchronizeUpdatedAttributes($lock, $batchAttributesSize, $this->concurrency);
-        $this->synchronizeAttributes->synchronizeDeletedAttributes($lock, $batchAttributesSize);
-        $this->synchronizeFamilies->synchronize($lock, $batchFamiliesSize);
-        $this->synchronizeProductsWithFranklin->synchronize($lock, $batchProductsSize);
+        $this->synchronizeAttributes->synchronizeUpdatedAttributes($lock, $attributesBatchSize, $this->concurrency);
+        $this->synchronizeAttributes->synchronizeDeletedAttributes($lock, $attributesBatchSize);
+        $this->synchronizeFamilies->synchronize($lock, $familiesBatchSize);
+        $this->synchronizeProductsWithFranklin->synchronize($lock, $productsBatchSize);
 
         // TODO: release lock for possible remaining locks (products with family to synchronize)
     }

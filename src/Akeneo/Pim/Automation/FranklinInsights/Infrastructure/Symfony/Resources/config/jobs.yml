@@ -100,6 +100,17 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'franklin_insights' }
 
+    akeneo.pim.automation.franklin_insights.job.push_structure_and_products:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'franklin_insights_push_structure_and_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.pim.automation.franklin_insights.connector.step.push_structure_and_products'
+        tags:
+            - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'franklin_insights' }
+
     # constraint collection providers
     akeneo.pim.automation.franklin_insights.connector.job_parameters.constraint_collection_provider.product_mass_edit:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductMassEdit'
@@ -186,6 +197,11 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
+    Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobParameters\PushStructureAndProductsToFranklinParameters:
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
     # job launchers
     akeneo.pim.automation.franklin_insights.connector.job_launcher.schedule_fetch_products:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher\ScheduleFetchProductsJob'
@@ -194,3 +210,9 @@ services:
             - '@akeneo_batch.job.job_instance_repository'
             - '@pim_user.repository.user'
             - '@akeneo_batch_queue.queue.job_execution_message_repository'
+
+    Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher\SchedulePushStructureAndProductsToFranklin:
+        arguments:
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@pim_user.repository.user'
