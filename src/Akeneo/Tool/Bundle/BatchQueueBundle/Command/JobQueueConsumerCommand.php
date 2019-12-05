@@ -50,7 +50,8 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
             ->setName(self::COMMAND_NAME)
             ->setDescription('Launch a daemon that will consume job execution messages and launch the associated job execution in backgrounds')
             ->addOption('run-once', null, InputOption::VALUE_NONE, 'Launch only one job execution and stop the daemon once the job execution is finished')
-            ->addOption('job', 'j', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Job instance codes that should be consumed')
+            ->addOption('whitelisted-job', 'w', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Job instance codes that should be consumed')
+            ->addOption('blacklisted-job', 'b', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Job instance codes that should not be consumed')
         ;
     }
 
@@ -59,7 +60,8 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $jobInstanceCodes = $input->getOption('job');
+        $whitelistedJobInstanceCodes = $input->getOption('whitelisted-job');
+        $blacklistedJobInstanceCodes = $input->getOption('blacklisted-job');
 
         $errOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
 
@@ -71,7 +73,8 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
 
         do {
             try {
-                $jobExecutionMessage = $this->getQueue()->consume($consumerName->toString(), $jobInstanceCodes);
+
+                $jobExecutionMessage = $this->getQueue()->consume($consumerName->toString(), $whitelistedJobInstanceCodes, $blacklistedJobInstanceCodes);
 
                 $arguments = array_merge([$pathFinder->find(), $console, 'akeneo:batch:job' ], $this->getArguments($jobExecutionMessage));
                 $process = new Process($arguments);
@@ -174,3 +177,5 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
         return $this->getContainer()->get('akeneo_batch_queue.manager.job_execution_manager');
     }
 }
+
+

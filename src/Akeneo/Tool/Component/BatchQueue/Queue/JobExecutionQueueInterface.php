@@ -27,7 +27,8 @@ interface JobExecutionQueueInterface
      * @param string $consumer name of the consumer
      * @param string[] $jobInstanceCodes name of the job instances
      *
+     * @param array $blacklistedJobInstanceCodes
      * @return JobExecutionMessage
      */
-    public function consume(string $consumer, array $jobInstanceCodes = []): JobExecutionMessage;
+    public function consume(string $consumer, array $jobInstanceCodes = [], array $blacklistedJobInstanceCodes = []): JobExecutionMessage;
 }

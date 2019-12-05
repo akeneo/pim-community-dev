@@ -7,6 +7,7 @@ namespace Akeneo\Tool\Bundle\BatchQueueBundle\Queue;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator\JobExecutionMessageHydrator;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -41,6 +42,7 @@ class JobExecutionMessageRepository
 
     /**
      * @param JobExecutionMessage $jobExecutionMessage
+     * @throws DBALException
      */
     public function createJobExecutionMessage(JobExecutionMessage $jobExecutionMessage)
     {
@@ -66,6 +68,7 @@ SQL;
      * @param JobExecutionMessage $jobExecutionMessage
      *
      * @return bool return whether the job has been updated or not
+     * @throws DBALException
      */
     public function updateJobExecutionMessage(JobExecutionMessage $jobExecutionMessage): bool
     {
@@ -100,6 +103,7 @@ SQL;
      * If there is no job execution available, it returns null.
      *
      * @return JobExecutionMessage|null
+     * @throws DBALException
      */
     public function getAvailableJobExecutionMessage(): ?JobExecutionMessage
     {
@@ -129,8 +133,9 @@ SQL;
      * @param string[] $jobInstanceCodes
      *
      * @return JobExecutionMessage|null
+     * @throws DBALException
      */
-    public function getAvailableJobExecutionMessageFilteredByCodes(array $jobInstanceCodes): ?JobExecutionMessage
+    public function getAvailableJobWhitelistedExecutionMessageFilteredByCodes(array $jobInstanceCodes): ?JobExecutionMessage
     {
         $sql = <<<SQL
 SELECT 
@@ -143,8 +148,7 @@ WHERE
     q.consumer IS NULL
 AND ji.code IN (:job_instance_codes)
 ORDER BY
-    q.create_time, id
-LIMIT 1;
+    q.create_time, id;
 SQL;
 
         $stmt = $this->entityManager->getConnection()->executeQuery(
@@ -158,11 +162,46 @@ SQL;
     }
 
     /**
+     * Gets a job execution message which is not blacklisted and that has not been consumed yet
+     * If there is no job execution available, it returns null.
+     *
+     * @param array $blacklistedJobInstanceCodes
+     * @return JobExecutionMessage|null
+     * @throws DBALException
+     */
+    public function getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes(array $blacklistedJobInstanceCodes): ?JobExecutionMessage
+    {
+        $sql = <<<SQL
+SELECT 
+    q.id, q.job_execution_id, q.create_time, q.updated_time, q.options, q.consumer
+FROM
+    akeneo_batch_job_execution_queue q
+INNER JOIN akeneo_batch_job_execution je ON je.id = q.job_execution_id
+INNER JOIN akeneo_batch_job_instance ji ON ji.id = je.job_instance_id
+WHERE
+    q.consumer IS NULL
+AND ji.code NOT IN (:blacklisted_job_instance_codes)
+ORDER BY
+    q.create_time, id;
+SQL;
+
+        $stmt = $this->entityManager->getConnection()->executeQuery(
+            $sql,
+            ['blacklisted_job_instance_codes' => $blacklistedJobInstanceCodes],
+            ['blacklisted_job_instance_codes' => Connection::PARAM_STR_ARRAY]
+        );
+        $row = $stmt->fetch();
+
+        return false !== $row ? $this->jobExecutionHydrator->hydrate($row) : null;
+    }
+
+    /**
      * Gets the job instance code associated to a job execution message.
      *
      * @param JobExecutionMessage $jobExecutionMessage
      *
      * @return string|null
+     * @throws DBALException
      */
     public function getJobInstanceCode(JobExecutionMessage $jobExecutionMessage): ?string
     {
