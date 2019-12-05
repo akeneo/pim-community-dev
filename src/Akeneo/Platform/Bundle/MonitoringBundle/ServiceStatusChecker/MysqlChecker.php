@@ -29,7 +29,7 @@ final class MysqlChecker
     public function status(): ServiceStatus
     {
         try {
-            $this->connection->executeQuery("SELECT 'ok' FROM pim_catalog_product_unique_data")->fetchAll();
+            $this->connection->executeQuery("SELECT 'ok' FROM pim_catalog_product_unique_data LIMIT 1")->fetchAll();
 
             return new ServiceStatus(true, "OK");
         } catch (DBALException $e) {

@@ -27,25 +27,25 @@ final class Controller
     private $mysqlChecker;
 
     /** @var ElasticsearchChecker */
-    private $esChecker;
+    private $elasticsearchChecker;
 
     /** @var FileStorageChecker */
     private $fileStorageChecker;
 
     public function __construct(
         MysqlChecker $mysqlChecker,
-        ElasticsearchChecker $esChecker,
+        ElasticsearchChecker $elasticsearchChecker,
         FileStorageChecker $fileStorageChecker
     ) {
         $this->mysqlChecker = $mysqlChecker;
-        $this->esChecker = $esChecker;
+        $this->elasticsearchChecker = $elasticsearchChecker;
         $this->fileStorageChecker = $fileStorageChecker;
     }
 
     public function getAction(): JsonResponse
     {
         $mysqlStatus = $this->mysqlChecker->status();
-        $esStatus = $this->esChecker->status();
+        $esStatus = $this->elasticsearchChecker->status();
         $fileStorageStatus = $this->fileStorageChecker->status();
 
         $responseStatus = Response::HTTP_OK;
