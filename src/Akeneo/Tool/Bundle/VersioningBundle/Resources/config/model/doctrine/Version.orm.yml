@@ -3,6 +3,9 @@ Akeneo\Tool\Component\Versioning\Model\Version:
     table: pim_versioning_version
     repositoryClass: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
     indexes:
+        author_idx:
+            columns:
+                - author
         resource_name_resource_id_idx:
             columns:
                 - resource_name
