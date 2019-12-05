@@ -2,77 +2,102 @@
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ScaleOperation;
+use Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplier;
 use Akeneo\AssetManager\Infrastructure\Transformation\Operation\ScaleOperationApplier;
-use Akeneo\AssetManager\Infrastructure\Transformation\Operation\TemporaryFileFactory;
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Model\FileBinary;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 
 class ScaleOperationApplierSpec extends ObjectBehavior
 {
-    function let(FilterManager $filterManager, TemporaryFileFactory $temporaryFileFactory)
+    function let(FilterManager $filterManager, Filesystem $filesystem)
     {
-        $this->beConstructedWith($filterManager, $temporaryFileFactory);
+        $this->beConstructedWith($filterManager, $filesystem);
+    }
+
+    function it_is_an_operation_applier()
+    {
+        $this->shouldImplement(OperationApplier::class);
+    }
+
+    function it_is_a_scale_operation_applier()
+    {
         $this->shouldHaveType(ScaleOperationApplier::class);
     }
 
-    function it_supports_only_scale_operation(
+    function it_only_supports_scale_operations(
         ScaleOperation $operation,
-        ColorspaceOperation $wrongOperation
+        ResizeOperation $wrongOperation
     ) {
         $this->supports($operation)->shouldReturn(true);
         $this->supports($wrongOperation)->shouldReturn(false);
     }
 
-    function it_apply_scale_by_ratio(
+    function it_applies_a_scale_operation_with_ratio(
         FilterManager $filterManager,
-        TemporaryFileFactory $temporaryFileFactory,
+        Filesystem $filesystem,
         ScaleOperation $operation,
-        BinaryInterface $computedImage
+        BinaryInterface $computedImage,
+        File $file
     ) {
-        $file = new File(__DIR__ . '/akeneo.png');
-        $operation->getRatioPercent()->willReturn(50);
-        $operation->getWidth()->willReturn(800);
-        $operation->getHeight()->willReturn(600);
-        $image = new FileBinary($file->getPath(), $file->getMimeType());
-        $filterManager->applyFilters($image, [
-            'filters' => [
-                'scale' => [
-                    'to' => 0.5
-                ]
-            ]
-        ])->shouldBeCalledOnce()->willReturn($computedImage);
-        $computedImage->getContent()->willReturn('imageContent');
-        $temporaryFileFactory->createFromContent('imageContent')->shouldBeCalled()->willReturn($file);
+        $file->beConstructedWith(['/path/to/my/file.png', false]);
+        $file->getRealPath()->willReturn('/path/to/my/file.png');
+        $file->getMimeType()->willReturn('image/png');
 
-        $this->apply($file, $operation);
+        $computedImage->getContent()->willReturn('imageContent');
+        $operation->getRatioPercent()->willReturn(75);
+
+        $filterManager->applyFilters(
+            Argument::type(FileBinary::class),
+            [
+                'filters' => [
+                    'scale' => [
+                        'to' => 0.75,
+                    ],
+                ],
+                'quality' => 100,
+            ]
+        )->shouldBeCalledOnce()->willReturn($computedImage);
+        $filesystem->dumpFile('/path/to/my/file.png', 'imageContent')->shouldBeCalled();
+
+        $this->apply($file, $operation)->shouldReturn($file);
     }
 
-    function it_apply_scale_by_size(
+    function it_applies_a_scale_operation_with_dimensions(
         FilterManager $filterManager,
-        TemporaryFileFactory $temporaryFileFactory,
+        Filesystem $filesystem,
         ScaleOperation $operation,
-        BinaryInterface $computedImage
+        BinaryInterface $computedImage,
+        File $file
     ) {
-        $file = new File(__DIR__ . '/akeneo.png');
+        $file->beConstructedWith(['/path/to/my/file.png', false]);
+        $file->getRealPath()->willReturn('/path/to/my/file.png');
+        $file->getMimeType()->willReturn('image/png');
+
+        $computedImage->getContent()->willReturn('imageContent');
         $operation->getRatioPercent()->willReturn(null);
         $operation->getWidth()->willReturn(800);
         $operation->getHeight()->willReturn(600);
-        $image = new FileBinary($file->getPath(), $file->getMimeType());
-        $filterManager->applyFilters($image, [
-            'filters' => [
-                'scale' => [
-                    'dim' => [800, 600]
-                ]
-            ]
-        ])->shouldBeCalledOnce()->willReturn($computedImage);
-        $computedImage->getContent()->willReturn('imageContent');
-        $temporaryFileFactory->createFromContent('imageContent')->shouldBeCalled()->willReturn($file);
 
-        $this->apply($file, $operation);
+        $filterManager->applyFilters(
+            Argument::type(FileBinary::class),
+            [
+                'filters' => [
+                    'scale' => [
+                        'dim' => [800, 600],
+                    ],
+                ],
+                'quality' => 100,
+            ]
+        )->shouldBeCalledOnce()->willReturn($computedImage);
+        $filesystem->dumpFile('/path/to/my/file.png', 'imageContent')->shouldBeCalled();
+
+        $this->apply($file, $operation)->shouldReturn($file);
     }
 }
