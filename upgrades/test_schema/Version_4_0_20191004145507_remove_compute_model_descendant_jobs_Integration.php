@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\Upgrade;
+namespace Pim\Upgrade\Schema\Tests;
 
 use AkeneoTest\Pim\Enrichment\Integration\Elasticsearch\IndexConfiguration\AbstractPimCatalogTestCase;
 use Doctrine\DBAL\Connection;
@@ -16,7 +16,7 @@ use PHPUnit\Framework\Assert;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @group ce
  */
-class RemoveComputeProductModelDescendantJobsIntegration extends AbstractPimCatalogTestCase
+class Version_4_0_20191004145507_remove_compute_model_descendant_jobs_Integration extends AbstractPimCatalogTestCase
 {
     use ExecuteMigrationTrait;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\Upgrade;
+namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use PHPUnit\Framework\Assert;

@@ -18,6 +18,6 @@ final class Version_4_0_20190822090606_update_empty_raw_values extends AbstractM
 
     public function down(Schema $schema) : void
     {
-        throw new IrreversibleMigrationException();
+        $this->throwIrreversibleMigrationException();
     }
 }

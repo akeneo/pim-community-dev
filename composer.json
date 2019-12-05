@@ -27,7 +27,8 @@
             "Akeneo\\Apps\\Tests\\Acceptance\\": "src/Akeneo/Apps/back/tests/Acceptance",
             "AkeneoTest\\": "tests/back",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
-            "Akeneo\\Test\\": "tests/back/"
+            "Akeneo\\Test\\": "tests/back/",
+            "Pim\\Upgrade\\Schema\\Tests\\": "upgrades/test_schema/"
         }
     },
     "require": {
@@ -127,7 +128,7 @@
         "behat/mink-extension": "2.3.1",
         "behat/mink-selenium2-driver": "1.3.x-dev",
         "behat/symfony2-extension": "2.1.5",
-        "phpspec/phpspec": "^6.0",
+        "phpspec/phpspec": "~6.0.0",
         "phpunit/phpunit": "^8.0",
         "sebastian/exporter": "~3.1.0",
         "sensiolabs/behat-page-object-extension": "2.1.0",
