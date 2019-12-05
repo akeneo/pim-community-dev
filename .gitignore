@@ -34,3 +34,4 @@ coverage/*
 .env.local.php
 config/gcp_credentials.json
 deployments/pim/charts/*
+src/file_storage/*

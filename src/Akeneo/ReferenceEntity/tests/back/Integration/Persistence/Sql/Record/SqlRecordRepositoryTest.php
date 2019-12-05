@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
-use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
@@ -35,6 +34,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherMock;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\Assert;
 

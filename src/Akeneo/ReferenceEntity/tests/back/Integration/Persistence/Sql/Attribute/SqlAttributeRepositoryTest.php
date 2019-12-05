@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
@@ -46,6 +45,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherMock;
 use Doctrine\DBAL\DBALException;
 
 class SqlAttributeRepositoryTest extends SqlIntegrationTestCase

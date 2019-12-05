@@ -107,7 +107,7 @@ services:
             - '@validator'
 
     akeneo_integration_tests.event_dispatcher:
-        class: 'Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock'
+        class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherMock'
         decorates: event_dispatcher
         arguments:
             - '@akeneo_integration_tests.event_dispatcher.inner'

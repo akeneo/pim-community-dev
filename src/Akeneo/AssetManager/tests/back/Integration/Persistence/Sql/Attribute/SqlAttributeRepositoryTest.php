@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\AssetManager\Common\Fake\EventDispatcherMock;
 use Akeneo\AssetManager\Domain\Event\AttributeDeletedEvent;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -51,6 +50,7 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
+use AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherMock;
 use Doctrine\DBAL\DBALException;
 
 class SqlAttributeRepositoryTest extends SqlIntegrationTestCase

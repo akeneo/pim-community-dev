@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
-use Akeneo\AssetManager\Common\Fake\EventDispatcherMock;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
@@ -37,6 +36,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherMock;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\Assert;
 

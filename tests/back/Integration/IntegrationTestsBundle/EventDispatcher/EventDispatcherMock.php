@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Common\Fake;
+namespace AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher;
 
 use PHPUnit\Framework\Assert;
 use Symfony\Component\EventDispatcher\Event;
@@ -30,10 +30,24 @@ class EventDispatcherMock implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function dispatch($eventName, Event $event = null)
+    public function dispatch($eventName)
     {
+        /**
+         * With SF 4.3, eventName is deleted (but still work for BC.
+         * If this method is called with 2 parameters (event, string), it implies than we try to dispatch an
+         * event with the old way. So we have to switch the arguments to be dispatched correctly.
+         * The right way to fix this should be to use Symfony\Contracts\EventDispatcher\EventDispatcherInterface
+         * and switch every dispatch calls arguments.
+         * @see https://symfony.com/blog/new-in-symfony-4-3-simpler-event-dispatching
+         */
+        if (func_get_arg(1) && is_string(func_get_arg(1))) {
+            $event = func_get_arg(0);
+            $eventName = func_get_arg(1);
+        } else {
+            $event = func_get_arg(1);
+        }
         $this->dispatchedEvents[$eventName] = $event;
-        return $this->eventDispatcher->dispatch($eventName, $event);
+        return $this->eventDispatcher->dispatch($event, $eventName);
     }
 
     public function assertEventDispatched(string $expectedEventClass): void
