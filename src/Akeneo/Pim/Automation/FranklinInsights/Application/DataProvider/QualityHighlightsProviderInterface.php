@@ -28,7 +28,10 @@ interface QualityHighlightsProviderInterface
 
     public function deleteFamily(string $familyCode): void;
 
-    public function applyProducts(array $products): void;
+    /**
+     * @param AsyncRequest[] $asyncRequests
+     */
+    public function applyAsyncProducts(array $asyncRequests): void;
 
     public function deleteProduct(int $productId): void;
 }

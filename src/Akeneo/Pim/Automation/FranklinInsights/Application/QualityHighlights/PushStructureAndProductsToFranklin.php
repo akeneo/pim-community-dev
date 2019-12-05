@@ -24,10 +24,10 @@ class PushStructureAndProductsToFranklin
     const DEFAULT_FAMILIES_BATCH_SIZE = 10;
     const DEFAULT_PRODUCTS_BATCH_SIZE = 500;
 
-    const CONCURRENCY = 5;
+    const CONCURRENCY_BATCH_SIZE = 5;
 
     /** @var BatchSize */
-    private $concurrency;
+    private $concurrencyBatchSize;
 
     /** @var SynchronizeFamiliesWithFranklin */
     private $synchronizeFamilies;
@@ -47,7 +47,7 @@ class PushStructureAndProductsToFranklin
         SynchronizeAttributesWithFranklin $synchronizeAttributes,
         SynchronizeProductsWithFranklin $synchronizeProductsWithFranklin
     ) {
-        $this->concurrency = new BatchSize(self::CONCURRENCY);
+        $this->concurrencyBatchSize = new BatchSize(self::CONCURRENCY_BATCH_SIZE);
         $this->synchronizeFamilies = $synchronizeFamilies;
         $this->synchronizeAttributes = $synchronizeAttributes;
         $this->synchronizeProductsWithFranklin = $synchronizeProductsWithFranklin;
@@ -60,10 +60,11 @@ class PushStructureAndProductsToFranklin
         $this->pendingItemsRepository->acquireLock($lock);
 
         //The following order is important and must not be changed Attributes, then Families, then products.
-        $this->synchronizeAttributes->synchronizeUpdatedAttributes($lock, $attributesBatchSize, $this->concurrency);
+        $this->synchronizeAttributes->synchronizeUpdatedAttributes($lock, $attributesBatchSize, $this->concurrencyBatchSize);
         $this->synchronizeAttributes->synchronizeDeletedAttributes($lock, $attributesBatchSize);
         $this->synchronizeFamilies->synchronize($lock, $familiesBatchSize);
-        $this->synchronizeProductsWithFranklin->synchronize($lock, $productsBatchSize);
+        $this->synchronizeProductsWithFranklin->synchronizeUpdatedProducts($lock, $productsBatchSize, $this->concurrencyBatchSize);
+        $this->synchronizeProductsWithFranklin->synchronizeDeletedProducts($lock, $productsBatchSize);
 
         // TODO: release lock for possible remaining locks (products with family to synchronize)
     }

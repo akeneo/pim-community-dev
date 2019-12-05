@@ -48,9 +48,9 @@ class SynchronizeAttributesWithFranklin
         $this->selectAttributesToApplyQuery = $selectAttributesToApplyQuery;
     }
 
-    public function synchronizeUpdatedAttributes(Lock $lock, BatchSize $attributesPerRequest, BatchSize $concurrency): void
+    public function synchronizeUpdatedAttributes(Lock $lock, BatchSize $attributesPerRequest, BatchSize $requestsPerPool): void
     {
-        $poolSize = $attributesPerRequest->toInt() * $concurrency->toInt();
+        $poolSize = $attributesPerRequest->toInt() * $requestsPerPool->toInt();
 
         do {
             $updatedAttributeCodes = $this->pendingItemIdentifiersQuery->getUpdatedAttributeCodes($lock, $poolSize);

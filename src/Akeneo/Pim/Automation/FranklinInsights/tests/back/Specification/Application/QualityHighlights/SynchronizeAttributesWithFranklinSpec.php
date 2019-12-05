@@ -40,8 +40,8 @@ class SynchronizeAttributesWithFranklinSpec extends ObjectBehavior
         QualityHighlightsProviderInterface $qualityHighlightsProvider
     ) {
         $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
-        $batchSize = new BatchSize(3);
-        $concurrency = new BatchSize(2);
+        $attributesPerRequest = new BatchSize(3);
+        $requestsPerPool = new BatchSize(2);
 
         $pendingItemIdentifiersQuery->getUpdatedAttributeCodes($lock, 6)->willReturn(
             ['sku', 'name', 'description', 'brand', 'width', 'height'],
@@ -51,7 +51,7 @@ class SynchronizeAttributesWithFranklinSpec extends ObjectBehavior
         $selectAttributesToApplyQuery->execute(Argument::any())->willReturn([])->shouldBeCalledTimes(3);
         $qualityHighlightsProvider->applyAsyncAttributeStructure(Argument::any())->shouldBeCalledTimes(2);
 
-        $this->synchronizeUpdatedAttributes($lock, $batchSize, $concurrency);
+        $this->synchronizeUpdatedAttributes($lock, $attributesPerRequest, $requestsPerPool);
     }
 
     public function it_does_nothing_if_there_is_no_updated_attributes(

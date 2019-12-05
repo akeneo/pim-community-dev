@@ -114,7 +114,7 @@ class QualityHighlightsWebService extends AbstractApi implements AuthenticatedAp
 
         try {
             $this->httpClient->request('POST', $route, [
-                'json' => $families,
+                'json' => ['families' => $families],
             ]);
         } catch (ServerException $e) {
             throw new FranklinServerException(
@@ -160,28 +160,27 @@ class QualityHighlightsWebService extends AbstractApi implements AuthenticatedAp
         }
     }
 
-    public function applyProducts(array $products): void
+    /**
+     * @param AsyncRequest[] $asyncRequests
+     */
+    public function applyAsyncProducts(array $asyncRequests): void
     {
-        $route = $this->uriGenerator->generate('/api/quality-highlights/data/products');
+        $uri = $this->uriGenerator->generate('/api/quality-highlights/data/products');
+
+        $promises = [];
+        foreach ($asyncRequests as $request) {
+            $promise = $this->httpClient->requestAsync('POST', $uri, [
+                'json' => ['products' => $request->getData()],
+            ]);
+            $promise->then($request->getOnFulfilled(), $request->getOnRejected());
+            $promises[] = $promise;
+        }
 
         try {
-            $this->httpClient->request('POST', $route, [
-                'json' => $products,
-            ]);
-        } catch (ServerException $e) {
-            throw new FranklinServerException(
-                sprintf(
-                    'Something went wrong on Ask Franklin side when sending products : %s',
-                    $e->getMessage()
-                )
-            );
-        } catch (ClientException $e) {
-            if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
-                throw new InvalidTokenException();
-            }
-
-            throw new BadRequestException(sprintf(
-                'Something went wrong when sending products (bad request) : %s',
+            Promise\settle($promises)->wait();
+        } catch (\Exception $e) {
+            $this->logger->error(sprintf(
+                'Something went wrong on Ask Franklin side when sending products : %s',
                 $e->getMessage()
             ));
         }

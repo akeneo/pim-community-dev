@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighlightsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\Normalizer\ProductNormalizerInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Model\Write\AsyncRequest;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectProductsToApplyQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
@@ -53,37 +54,42 @@ class SynchronizeProductsWithFranklin
         $this->productNormalizer = $productNormalizer;
     }
 
-    public function synchronize(Lock $lock, BatchSize $batchSize): void
+    public function synchronizeUpdatedProducts(Lock $lock, BatchSize $productsPerRequest, BatchSize $requestsPerPool): void
     {
-        $this->synchronizeUpdatedProducts($lock, $batchSize);
-        $this->synchronizeDeletedProducts($lock, $batchSize);
-    }
+        $poolSize = $productsPerRequest->toInt() * $requestsPerPool->toInt();
 
-    private function synchronizeUpdatedProducts(Lock $lock, BatchSize $batchSize): void
-    {
         do {
-            $productIds = $this->pendingItemIdentifiersQuery->getUpdatedProductIds($lock, $batchSize->toInt());
-            if (! empty($productIds)) {
+            $updatedProductIds = $this->pendingItemIdentifiersQuery->getUpdatedProductIds($lock, $poolSize);
+
+            if (empty($updatedProductIds)) {
+                continue;
+            }
+
+            $chunkedProductIds = array_chunk($updatedProductIds, $productsPerRequest->toInt());
+            $asyncRequests = [];
+
+            foreach ($chunkedProductIds as $productIds) {
                 $products = array_map(function ($product) {
                     return $this->productNormalizer->normalize($product);
                 }, $this->selectProductsToApplyQuery->execute($productIds));
 
-                try {
-                    $this->qualityHighlightsProvider->applyProducts($products);
-                } catch (BadRequestException $exception) {
-                    //The error is logged by the api client
-                } catch (\Exception $exception) {
-                    //Remove the lock, we will process those entities next time
-                    $this->pendingItemsRepository->releaseUpdatedProductsLock($productIds, $lock);
-                    continue;
-                }
-
-                $this->pendingItemsRepository->removeUpdatedProducts($productIds, $lock);
+                $asyncRequests[] = new AsyncRequest(
+                    $products,
+                    function () use ($productIds, $lock) {
+                        $this->pendingItemsRepository->removeUpdatedProducts($productIds, $lock);
+                    },
+                    function () use ($productIds, $lock) {
+                        //Remove the lock, we will process those products next time
+                        $this->pendingItemsRepository->releaseUpdatedProductsLock($productIds, $lock);
+                    }
+                );
             }
-        } while (count($productIds) >= $batchSize->toInt());
+
+            $this->qualityHighlightsProvider->applyAsyncProducts($asyncRequests);
+        } while (count($updatedProductIds) >= $poolSize);
     }
 
-    private function synchronizeDeletedProducts(Lock $lock, BatchSize $batchSize): void
+    public function synchronizeDeletedProducts(Lock $lock, BatchSize $batchSize): void
     {
         do {
             $productIds = $this->pendingItemIdentifiersQuery->getDeletedProductIds($lock, $batchSize->toInt());

@@ -31,11 +31,11 @@ class QualityHighlightsProvider extends AbstractProvider implements QualityHighl
         $this->api = $api;
     }
 
-    public function applyAttributeStructure(array $attributes): void
+    public function applyAsyncAttributeStructure(array $asyncRequests): void
     {
         $this->api->setToken($this->getToken());
 
-        $this->api->applyAttributes($attributes);
+        $this->api->applyAsyncAttributes($asyncRequests);
     }
 
     public function deleteAttribute(string $attributeCode): void
@@ -49,7 +49,7 @@ class QualityHighlightsProvider extends AbstractProvider implements QualityHighl
     {
         $this->api->setToken($this->getToken());
 
-        $this->api->applyFamilies(['families' => $families]);
+        $this->api->applyFamilies($families);
     }
 
     public function deleteFamily(string $familyCode): void
@@ -59,11 +59,11 @@ class QualityHighlightsProvider extends AbstractProvider implements QualityHighl
         $this->api->deleteFamily($familyCode);
     }
 
-    public function applyProducts(array $products): void
+    public function applyAsyncProducts(array $products): void
     {
         $this->api->setToken($this->getToken());
 
-        $this->api->applyProducts(['products' => $products]);
+        $this->api->applyAsyncProducts($products);
     }
 
     public function deleteProduct(int $productId): void
@@ -71,12 +71,5 @@ class QualityHighlightsProvider extends AbstractProvider implements QualityHighl
         $this->api->setToken($this->getToken());
 
         $this->api->deleteProduct($productId);
-    }
-
-    public function applyAsyncAttributeStructure(array $asyncRequests): void
-    {
-        $this->api->setToken($this->getToken());
-
-        $this->api->applyAsyncAttributes($asyncRequests);
     }
 }
