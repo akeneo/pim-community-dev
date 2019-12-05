@@ -351,7 +351,7 @@ jobs:
               name: make release
               command: make release
 
-  test_migrations:
+  test_back_missing_structure_migrations:
       machine:
         image: ubuntu-1604:201903-01
       steps:
@@ -367,11 +367,44 @@ jobs:
                 name: Restore permissions on files
                 command: git checkout -- .
         -   run:
+                name: Restore permissions on vendor files
+                command: |
+                    cd vendor/akeneo/pim-community-dev
+                    git checkout -- .
+        -   run:
                 name: Change owner on project dir after restoring cache
                 command: sudo chown -R 1000:1000 ../project/var
         -   run:
-                name: Test missing database and index migrations
-                command: .circleci/run_migration_tests.sh $CIRCLE_BRANCH
+                name: Test missing database and index structure migrations
+                command: vendor/akeneo/pim-community-dev/.circleci/detect_structure_changes.sh $CIRCLE_BRANCH
+
+  test_back_data_migrations:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
+                    vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+          - run:
+                name: Install database
+                command: APP_ENV=test make database
+          - run:
+                name: PhpUnit Migration
+                command: make migration-back
+          - store_test_results:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/logs
 
 workflows:
   version: 2
@@ -395,7 +428,11 @@ workflows:
           - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
-          - test_migrations:
+          - test_back_missing_structure_migrations:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
+          - test_back_data_migrations:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
@@ -405,11 +442,13 @@ workflows:
                     - test_front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
-                    - test_migrations
+                    - test_back_data_migrations
+                    - test_back_missing_structure_migrations
                     - test_back_phpunit
           - back_performance:
                 requires:
-                    - test_migrations
+                    - test_back_data_migrations
+                    - test_back_missing_structure_migrations
                     - test_back_phpunit
 
   nightly:

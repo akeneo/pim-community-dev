@@ -34,6 +34,12 @@
             <directory suffix="Integration.php">vendor/akeneo/pim-community-dev/src</directory>
             <directory suffix="Integration.php">vendor/akeneo/pim-community-dev/tests/back</directory>
         </testsuite>
+
+        <testsuite name="PIM_Migration_Test">
+            <directory suffix="Integration.php">upgrades/test_schema</directory>
+            <directory suffix="Integration.php">vendor/akeneo/pim-community-dev/upgrades/test_schema</directory>
+        </testsuite>
+
         <testsuite name="Franklin_Insights">
             <directory suffix="Integration.php">src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Integration</directory>
         </testsuite>

@@ -57,6 +57,11 @@ else
 	@echo Run integration test locally is too long, please use the target defined for your bounded context \(ex: bounded-context-integration-back\)
 endif
 
+### Migration tests
+.PHONY: migration-back
+migration-back: var/tests/phpunit
+	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Migration_Test
+
 ### End to end tests
 .PHONY: end-to-end-back
 end-to-end-back: var/tests/phpunit
