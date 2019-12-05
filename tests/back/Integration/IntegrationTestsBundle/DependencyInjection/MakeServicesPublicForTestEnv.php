@@ -19,7 +19,7 @@ class MakeServicesPublicForTestEnv implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         foreach ($container->getDefinitions() as $id => $definition) {
-            if (0 === strpos($id, 'pim') || 0 === strpos($id, 'akeneo') || 0 === strpos($id, 'oro')) {
+            if (0 === stripos($id, 'pim') || 0 === stripos($id, 'akeneo') || 0 === stripos($id, 'oro')) {
                 $definition->setPublic(true);
             }
         }
