@@ -149,7 +149,6 @@ const uploadFile = async (
     try {
       imageUploader
         .upload(file, (ratio: number) => {
-          debugger;
           updateProgress(line, ratio);
         })
         .then(resolve);
