@@ -72,5 +72,5 @@ services:
     akeneo_assetmanager.tasklet.compute_transformations:
         class: 'Akeneo\AssetManager\Infrastructure\Job\ComputeTransformations'
         arguments:
-            - '@akeneo_assetmanager.application.asset.compute_transformations.executor'
+            - '@akeneo_assetmanager.infrastructure.transformation.compute_transformations.executor'
         public: false
