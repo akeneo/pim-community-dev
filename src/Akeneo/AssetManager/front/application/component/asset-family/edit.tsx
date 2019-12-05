@@ -8,8 +8,11 @@ import CreateAssetModal from 'akeneoassetmanager/application/component/asset/cre
 import __ from 'akeneoassetmanager/tools/translator';
 import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
 import Key from 'akeneoassetmanager/tools/key';
+import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
 interface StateProps {
+  assetFamily: AssetFamily;
   sidebar: {
     tabs: Tab[];
     currentTab: string;
@@ -71,6 +74,7 @@ class AssetFamilyEditView extends React.Component<EditProps> {
         </div>
         <Sidebar backButton={this.backToAssetFamilyList} />
         {this.props.createAsset.active ? <CreateAssetModal /> : null}
+        <UploadModal assetFamily={this.props.assetFamily} onCancel={() => {}} onAssetCreated={() => {}} />
       </div>
     );
   }
@@ -82,6 +86,7 @@ export default connect(
     const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
 
     return {
+      assetFamily: state.form.data,
       sidebar: {
         tabs,
         currentTab,
