@@ -12,7 +12,7 @@ Feature: Add attributes by attribute groups to a family
   Scenario: Successfully list available attribute groups
     Given I am on the "Sandals" family page
     And I visit the "Attributes" tab
-    Then I should see available attribute group "Product information, Marketing, Sizes, Colors, Media and Other"
+    Then I should see available attribute group "Product information, Marketing, Colors, Media and Other"
 
   @info https://akeneo.atlassian.net/browse/PIM-6095
   Scenario: Successfully add attributes by attribute groups to a family
