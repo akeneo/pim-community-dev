@@ -15,15 +15,12 @@ use League\Flysystem\FilesystemInterface;
  */
 class FileFetcher implements FileFetcherInterface
 {
-    /** @var FilesystemInterface */
-    protected $tmpFilesystem;
+    /** @var string */
+    protected $tmpDir;
 
-    /**
-     * @param FilesystemInterface $tmpFilesystem
-     */
-    public function __construct(FilesystemInterface $tmpFilesystem)
+    public function __construct(string $tmpDir)
     {
-        $this->tmpFilesystem = $tmpFilesystem;
+        $this->tmpDir = $tmpDir;
     }
 
     /**
@@ -47,7 +44,7 @@ class FileFetcher implements FileFetcherInterface
 
         // TODO: we should not get the path prefix like that
         // TODO: it should be injected in the constructor
-        $localPathname = $this->tmpFilesystem->getAdapter()->getPathPrefix() . $fileKey;
+        $localPathname = $this->tmpDir . $fileKey;
 
         if (false === file_put_contents($localPathname, $stream)) {
             throw new FileTransferException(
