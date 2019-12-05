@@ -4,11 +4,7 @@ const Ajv = require('ajv');
 const ajv = new Ajv();
 
 export const isValidAgainstSchema = <T>(data: any, schema: object): data is T => {
-  try {
-    return ajv.validate(schema, data);
-  } catch (e) {
-    throw Error(e.message);
-  }
+  return ajv.validate(schema, data);
 };
 
 export const validateAgainstSchema = <T>(data: any, schema: object): T => {

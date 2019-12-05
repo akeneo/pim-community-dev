@@ -36,21 +36,20 @@
     "@types/react-redux": "^7.1.0",
     "babel-plugin-styled-components": "^1.10.6",
     "redux-devtools-extension": "^2.13.2",
-    "tslint": "^5.12.1",
-    "tslint-react": "^4.0.0"
+    "tslint-react": "^4.0.0",
+    "tslint": "^5.12.1"
   },
   "dependencies": {
-    "ajv": "^6.10.2",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
     "html-to-draftjs": "^1.4.0",
-    "json-schema-ref-parser": "^7.1.2",
+    "ajv": "^6.10.2",
     "json-schema-to-typescript": "^7.1.0",
     "jsoneditor-react": "^2.0.0",
     "react-draft-wysiwyg": "^1.12.13",
     "react-redux": "^7.1.0",
-    "redux": "^4.0.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "redux": "^4.0.0"
   },
   "resolutions": {
     "jest/**/ip-regex": "2.1.0"
