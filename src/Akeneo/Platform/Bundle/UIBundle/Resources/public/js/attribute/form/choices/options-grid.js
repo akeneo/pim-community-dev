@@ -11,7 +11,8 @@ define([
     'pim/form',
     'pim/fetcher-registry',
     'pim/attributeoptionview',
-    'pim/template/attribute/tab/choices/options-grid'
+    'pim/initselect2',
+    'pim/template/attribute/tab/choices/options-grid',
 ],
 function (
     $,
@@ -19,11 +20,13 @@ function (
     BaseForm,
     fetcherRegistry,
     AttributeOptionGrid,
+    initSelect2,
     template
 ) {
     return BaseForm.extend({
         template: _.template(template),
         locales: [],
+        selectedLocales: [],
 
         /**
          * {@inheritdoc}
@@ -45,8 +48,22 @@ function (
             this.$el.html(this.template({
                 attributeId: this.getFormData().meta.id,
                 sortable: !this.getFormData().auto_option_sorting,
-                localeCodes: _.pluck(this.locales, 'code')
+                locales: this.locales,
+                localeCodes: this.selectedLocales.length > 0 ? this.selectedLocales : _.pluck(this.locales, 'code')
             }));
+
+            var $select = this.$('#test');
+            var opts = {
+                placeholder: 'All locales',
+                allowClear: true,
+            };
+
+            $select = initSelect2.init($select, opts);
+            $select.select2('val', this.selectedLocales);
+            $select.on('change', e => {
+                this.selectedLocales = e.val;
+                this.render();
+            });
 
             AttributeOptionGrid(this.$('.attribute-option-grid'));
 

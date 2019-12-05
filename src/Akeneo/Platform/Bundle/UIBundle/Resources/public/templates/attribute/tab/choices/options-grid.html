@@ -1,3 +1,11 @@
+<div>
+    <select name="" id="test" multiple="multiple" class="select-field">
+        <% _.each(locales, function (locale) { %>
+            <option value="<%- locale.code %>"><%- locale.label %></option>
+        <% }); %>
+    </select>
+</div>
+
 <div
     class="AknGridContainer attribute-option-grid"
     data-attribute-id="<%- attributeId %>"
