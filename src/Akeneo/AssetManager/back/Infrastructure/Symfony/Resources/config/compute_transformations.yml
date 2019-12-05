@@ -54,3 +54,8 @@ services:
             - '@filesystem'
         tags:
             - { name: akeneo_assetmanager.transformation.operation_applier }
+
+    # executor
+    Akeneo\AssetManager\Infrastructure\Transformation\FileTransformer:
+        arguments:
+            - '@Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplierRegistry'
