@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-8998: Fix error 500 on asset list & product list when a user has no permission on categories & asset categories
+
 # 3.2.23 (2019-12-05)
 
 ## Bug fixes:
