@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\FileStorage\File;
 
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Fetch the raw file of a file stored in a virtual filesystem
@@ -38,13 +39,13 @@ class FileFetcher implements FileFetcherInterface
             );
         }
 
-        if (!$this->tmpFilesystem->has(dirname($fileKey))) {
-            $this->tmpFilesystem->createDir(dirname($fileKey));
+        $fsTools = new Filesystem();
+
+        if (!$fsTools->exists($this->tmpDir . DIRECTORY_SEPARATOR. dirname($fileKey))) {
+            $fsTools->mkdir($this->tmpDir . DIRECTORY_SEPARATOR . dirname($fileKey));
         }
 
-        // TODO: we should not get the path prefix like that
-        // TODO: it should be injected in the constructor
-        $localPathname = $this->tmpDir . $fileKey;
+        $localPathname = $this->tmpDir . DIRECTORY_SEPARATOR . $fileKey;
 
         if (false === file_put_contents($localPathname, $stream)) {
             throw new FileTransferException(
