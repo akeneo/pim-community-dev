@@ -75,6 +75,7 @@ define(
              */
             updateModel: function () {
                 var data = this.$('.field-input:first textarea:first').code();
+                data = '<p><br></p>' === data ? this.attribute.empty_value : data;
                 data = '' === data ? this.attribute.empty_value : data;
 
                 this.setCurrentValue(data);

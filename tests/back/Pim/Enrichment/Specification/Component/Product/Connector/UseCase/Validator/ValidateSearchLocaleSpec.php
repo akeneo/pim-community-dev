@@ -51,16 +51,7 @@ class ValidateSearchLocaleSpec extends ObjectBehavior
             'completeness' => [['locales' => ['en_US']]]
         ], null]);
     }
-
-    function it_throws_an_exception_when_locale_key_is_provided_for_completeness_filter_instead_of_locales(
-        IdentifiableObjectRepositoryInterface $localeRepository
-    ) {
-        $localeRepository->findOneByIdentifier(Argument::cetera())->shouldNotBeCalled();
-        $this->shouldThrow(InvalidQueryException::class)->during('validate', [[
-            'completeness' => [['locale' => ['en_US']]]
-        ], 'en_US']);
-    }
-
+    
     function it_throws_an_exception_when_locales_key_is_provided_for_any_filter_except_completeness_filter(
         IdentifiableObjectRepositoryInterface $localeRepository
     ) {

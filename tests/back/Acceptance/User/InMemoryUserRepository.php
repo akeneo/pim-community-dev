@@ -10,6 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -31,6 +32,10 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
         if (!$user instanceof UserInterface) {
             throw new \InvalidArgumentException('Only user objects are supported.');
         }
+        if (null === $user->getId()) {
+            $user->setId(Uuid::uuid4()->toString());
+        }
+
         $this->users->set($user->getUsername(), $user);
     }
 
@@ -63,7 +68,11 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
      */
     public function find($id)
     {
-        throw new NotImplementedException(__METHOD__);
+        foreach ($this->users as $user) {
+            if ($user->getId() === $id) {
+                return $user;
+            }
+        }
     }
 
     /**

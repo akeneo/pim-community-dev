@@ -3,9 +3,9 @@
 namespace Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
-use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
@@ -54,18 +54,19 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
         }
 
         $entityManager = $event->getEntityManager();
-        $families = $entityManager->getRepository(Family::class)->findAll();
+        $families = $entityManager->getRepository(FamilyInterface::class)->findAll();
+
+        $attributeRepository = $entityManager->getRepository(AttributeInterface::class);
+        $identifierAttribute = $attributeRepository->getIdentifier();
 
         foreach ($families as $family) {
-            foreach ($family->getAttributes() as $attribute) {
-                $requirement = $this->requirementFactory->createAttributeRequirement(
-                    $attribute,
-                    $entity,
-                    AttributeTypes::IDENTIFIER === $attribute->getType()
-                );
-                $requirement->setFamily($family);
-                $entityManager->persist($requirement);
-            }
+            $requirement = $this->requirementFactory->createAttributeRequirement(
+                $identifierAttribute,
+                $entity,
+                true
+            );
+            $requirement->setFamily($family);
+            $entityManager->persist($requirement);
         }
     }
 }
