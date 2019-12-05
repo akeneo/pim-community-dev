@@ -29,13 +29,13 @@ final class Controller
     /** @var ElasticsearchChecker */
     private $esChecker;
 
-    /** @var FileStorageStatusChecker */
+    /** @var FileStorageChecker */
     private $fileStorageChecker;
 
     public function __construct(
         MysqlChecker $mysqlChecker,
         ElasticsearchChecker $esChecker,
-        FileStorageStatusChecker $fileStorageChecker
+        FileStorageChecker $fileStorageChecker
     ) {
         $this->mysqlChecker = $mysqlChecker;
         $this->esChecker = $esChecker;

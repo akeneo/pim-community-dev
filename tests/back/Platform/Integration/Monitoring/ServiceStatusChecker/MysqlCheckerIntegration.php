@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AkeneoTestEnterprise\Platform\Integration\Authentication\Sso\Log;
+namespace AkeneoTestEnterprise\Platform\Integration\Monitoring\ServiceStatusChecker;
 
 use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\MysqlChecker;
 use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ServiceStatus;
@@ -22,10 +22,12 @@ final class MysqlCheckerIntegration extends TestCase
         Assert::assertEquals(new ServiceStatus(true, 'OK'), $this->getMysqlChecker()->status());
     }
 
-    public function test_mysql_is_ok_when_you_cant_request_a_pim_table_without_error(): void
+    public function test_mysql_is_ko_when_you_cant_request_a_pim_table_without_error(): void
     {
         $this->getDatabaseConnection()->exec('RENAME TABLE pim_catalog_product_unique_data TO backup_pim_catalog_product_unique_data');
-        Assert::assertNotEquals(new ServiceStatus(true, 'OK'), $this->getMysqlChecker()->status());
+        $status = $this->getMysqlChecker()->status();
+        Assert::assertStringContainsString('Unable to request the database', $status->getMessage());
+        Assert::assertFalse($status->isOk());
     }
 
     protected function getConfiguration()

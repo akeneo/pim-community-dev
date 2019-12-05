@@ -33,7 +33,7 @@ final class MysqlChecker
 
             return new ServiceStatus(true, "OK");
         } catch (DBALException $e) {
-            return new ServiceStatus(false, sprintf('Unable to request the databse: "%s".', $e->getMessage()));
+            return new ServiceStatus(false, sprintf('Unable to request the database: "%s".', $e->getMessage()));
         }
     }
 }

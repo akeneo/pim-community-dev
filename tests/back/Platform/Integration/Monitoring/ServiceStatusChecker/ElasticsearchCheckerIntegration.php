@@ -26,7 +26,6 @@ final class ElasticsearchCheckerIntegration extends TestCase
             new ServiceStatus(false, 'Elasticsearch failing indexes: '. $indexName),
             $this->getElasticsearchChecker()->status()
         );
-
     }
 
     protected function tearDown(): void

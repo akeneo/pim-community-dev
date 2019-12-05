@@ -9,5 +9,7 @@ services:
         arguments:
             - '@akeneo_elasticsearch.registry.clients'
 
-    Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageStatusChecker:
-        class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageStatusChecker'
+    Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageChecker:
+        class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageChecker'
+        arguments:
+            - '@oneup_flysystem.mount_manager'
