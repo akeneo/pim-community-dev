@@ -78,6 +78,9 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             - Regex:
                 pattern: /^(?!(id|iD|Id|ID|associationTypes|categories|categoryId|completeness|enabled|(?i)\bfamily\b|groups|associations|products|scope|treeId|values|category|parent|label|(.)*_(products|groups)|entity_type|attributes)$)/
                 message: This code is not available
+            - Regex:
+                pattern: /^[^\n]+$/D
+                message: Attribute code may not contain line-feed characters
         localizable:
             - Type: bool
             - NotNull: ~

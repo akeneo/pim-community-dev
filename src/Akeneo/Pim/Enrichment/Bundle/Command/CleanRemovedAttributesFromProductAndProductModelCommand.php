@@ -73,7 +73,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $io->title('Clean removed attributes values');
         $answer = $io->confirm(
             'This command with removes all values of deleted attributes on all products and product models' . "\n" .
-            'Do you want to proceed?', false);
+            'Do you want to proceed?', true);
 
         if (!$answer) {
             $io->text('That\'s ok, see you!');

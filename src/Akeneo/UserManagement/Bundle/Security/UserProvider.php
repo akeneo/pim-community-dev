@@ -52,7 +52,10 @@ class UserProvider implements UserProviderInterface
             throw new UnsupportedUserException(sprintf('User object of class "%s" is not supported.', $userClass));
         }
 
-        $reloadedUser = $this->loadUserByUsername($user->getUsername());
+        $reloadedUser = $this->userRepository->find($user->getId());
+        if (null === $reloadedUser) {
+            throw new UsernameNotFoundException(sprintf('User with id %d not found', $user->getId()));
+        }
 
         return $reloadedUser;
     }
@@ -62,6 +65,6 @@ class UserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return is_subclass_of($class, 'Symfony\Component\Security\Core\User\UserInterface');
+        return is_subclass_of($class, 'Akeneo\UserManagement\Component\Model\UserInterface');
     }
 }
