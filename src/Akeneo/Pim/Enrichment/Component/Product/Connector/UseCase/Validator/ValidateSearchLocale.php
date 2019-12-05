@@ -60,6 +60,11 @@ final class ValidateSearchLocale
         foreach ($search as $propertyCode => $filters) {
             foreach ($filters as $filter) {
                 if ($propertyCode === self::COMPLETENESS_PROPERTY) {
+                    // locale is only supported officially for product model completeness filter.
+                    // This part of the code add the support for product  completeness filter also,
+                    // but it is actually not officially supported as it not in the API documentation.
+                    // Removing the support of locale for the completeness filter for the products
+                    // would not be considered as a BC break.
                     if (isset($filter['locales'])) {
                         if (!is_array($filter['locales'])) {
                             throw new InvalidQueryException(
