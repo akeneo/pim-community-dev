@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Send back services status in JSON format.
@@ -32,18 +34,28 @@ final class Controller
     /** @var FileStorageChecker */
     private $fileStorageChecker;
 
+    /** @var string */
+    private $authenticationToken;
+
     public function __construct(
         MysqlChecker $mysqlChecker,
         ElasticsearchChecker $elasticsearchChecker,
-        FileStorageChecker $fileStorageChecker
+        FileStorageChecker $fileStorageChecker,
+        string $authenticationToken
     ) {
         $this->mysqlChecker = $mysqlChecker;
         $this->elasticsearchChecker = $elasticsearchChecker;
         $this->fileStorageChecker = $fileStorageChecker;
+        $this->authenticationToken = $authenticationToken;
     }
 
-    public function getAction(): JsonResponse
+    public function getAction(Request $request): JsonResponse
     {
+        $authenticationToken = $request->headers->get('X-AUTH-TOKEN', null);
+        if (null === $authenticationToken || $authenticationToken !== $this->authenticationToken) {
+            throw new AccessDeniedHttpException();
+        }
+
         $mysqlStatus = $this->mysqlChecker->status();
         $esStatus = $this->elasticsearchChecker->status();
         $fileStorageStatus = $this->fileStorageChecker->status();
