@@ -110,17 +110,15 @@ class ComputeTransformationsExecutorSpec extends ObjectBehavior
         $getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation)->willReturn($sourceFileData);
 
         $sourceFileData->getKey()->willReturn('stored_file_key');
-        $sourceFileData->normalize()->willReturn(
-            [
-                'key' => 'stored_file_key',
-                'originalFilename' => 'jambon.png'
-            ]
-        );
+        $sourceFileData->getOriginalFilename()->willreturn('jambon.png');
 
         $sourceFile->beConstructedWith(['/my/local/path/to/jambon.png', false]);
-        $sourceFile->getPath()->willReturn('/my/local/path/to/');
+        $sourceFile->getPath()->willReturn('/my/local/path/to');
         $fileDownloader->get('stored_file_key')->willReturn($sourceFile);
         $fileTransformer->transform($sourceFile, Argument::type(OperationCollection::class))->willReturn($sourceFile);
+
+        $transformation->getTargetFilename('jambon.png')->willReturn('jambon_thumbnail.png');
+        $sourceFile->move('/my/local/path/to', 'jambon_thumbnail.png')->shouldBeCalled()->willReturn($sourceFile);
 
         $storedFileInfo->getKey()->willReturn('transformed_file_key');
         $storedFileInfo->getOriginalFilename()->willReturn('jambon_thumbnail.png');

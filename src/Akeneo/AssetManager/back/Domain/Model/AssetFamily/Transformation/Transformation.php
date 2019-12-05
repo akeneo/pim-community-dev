@@ -78,6 +78,17 @@ class Transformation
         return $this->operations;
     }
 
+    public function getTargetFilename(string $originalFilename): string
+    {
+        return join('', [
+            $this->filenamePrefix ?? '',
+            pathinfo($originalFilename, PATHINFO_FILENAME),
+            $this->filenameSuffix ?? '',
+            pathinfo($originalFilename, PATHINFO_EXTENSION) === '' ? '' : '.',
+            pathinfo($originalFilename, PATHINFO_EXTENSION)
+        ]);
+    }
+
     public function normalize(): array
     {
         return array_filter(

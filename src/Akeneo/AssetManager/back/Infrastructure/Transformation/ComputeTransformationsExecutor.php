@@ -130,7 +130,8 @@ class ComputeTransformationsExecutor
     ): EditMediaFileValueCommand {
         $file = $this->fileDownloader->get($sourceFile->getKey());
         $transformedFile = $this->fileTransformer->transform($file, $transformation->getOperationCollection());
-        $storedFile = $this->fileStorer->store($transformedFile, Storage::FILE_STORAGE_ALIAS);
+        $renamedFile = $this->rename($transformedFile, $sourceFile->getOriginalFilename(), $transformation);
+        $storedFile = $this->fileStorer->store($renamedFile, Storage::FILE_STORAGE_ALIAS);
 
         $target = $transformation->getTarget();
         $targetAttribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(

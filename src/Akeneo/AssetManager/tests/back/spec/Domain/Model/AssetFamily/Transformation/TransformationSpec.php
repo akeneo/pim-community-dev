@@ -176,4 +176,32 @@ class TransformationSpec extends ObjectBehavior
         $this->shouldThrow(new \InvalidArgumentException('A transformation must have at least a filename prefix or a filename suffix'))
             ->duringInstantiation();
     }
+
+    function it_returns_target_with_prefix_and_suffix(Source $source, Target $target)
+    {
+        $source->equals($target)->willReturn(false);
+        $this->beConstructedThrough('create', [$source, $target, OperationCollection::create([]), 'prefix', 'suffix']);
+        $this->getTargetFilename('jambon.png')->shouldReturn('prefixjambonsuffix.png');
+    }
+
+    function it_returns_target_with_prefix(Source $source, Target $target)
+    {
+        $source->equals($target)->willReturn(false);
+        $this->beConstructedThrough('create', [$source, $target, OperationCollection::create([]), 'prefix', null]);
+        $this->getTargetFilename('jambon.png')->shouldReturn('prefixjambon.png');
+    }
+
+    function it_returns_target_with_suffix(Source $source, Target $target)
+    {
+        $source->equals($target)->willReturn(false);
+        $this->beConstructedThrough('create', [$source, $target, OperationCollection::create([]), null, 'suffix']);
+        $this->getTargetFilename('jambon.png')->shouldReturn('jambonsuffix.png');
+    }
+
+    function it_returns_target_without_extension(Source $source, Target $target)
+    {
+        $source->equals($target)->willReturn(false);
+        $this->beConstructedThrough('create', [$source, $target, OperationCollection::create([]), 'prefix', 'suffix']);
+        $this->getTargetFilename('jambon')->shouldReturn('prefixjambonsuffix');
+    }
 }
