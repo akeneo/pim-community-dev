@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
@@ -23,19 +23,15 @@ class ProductToVariantProductSubscriber implements EventSubscriberInterface
     /** @var UnsubscribeProductHandler */
     private $unsubscribeProductHandler;
 
-    /** @var GetConnectionStatusHandler */
-    private $connectionStatusHandler;
+    /** @var GetConnectionIsActiveHandler */
+    private $connectionIsActiveHandler;
 
-    /**
-     * @param UnsubscribeProductHandler $unsubscribeProductHandler
-     * @param GetConnectionStatusHandler $connectionStatusHandler
-     */
     public function __construct(
         UnsubscribeProductHandler $unsubscribeProductHandler,
-        GetConnectionStatusHandler $connectionStatusHandler
+        GetConnectionIsActiveHandler $connectionIsActiveHandler
     ) {
         $this->unsubscribeProductHandler = $unsubscribeProductHandler;
-        $this->connectionStatusHandler = $connectionStatusHandler;
+        $this->connectionIsActiveHandler = $connectionIsActiveHandler;
     }
 
     /**
@@ -89,8 +85,6 @@ class ProductToVariantProductSubscriber implements EventSubscriberInterface
      */
     private function isFranklinInsightsActivated(): bool
     {
-        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
-
-        return $connectionStatus->isActive();
+        return $this->connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery());
     }
 }

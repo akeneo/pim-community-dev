@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Datagrid;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Datagrid\ConfigureProductGridListener;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
@@ -25,9 +24,9 @@ use Prophecy\Argument;
 
 class ConfigureProductGridListenerSpec extends ObjectBehavior
 {
-    public function let(GetConnectionStatusHandler $connectionStatusHandler): void
+    public function let(GetConnectionIsActiveHandler $connectionIsActiveHandler): void
     {
-        $this->beConstructedWith($connectionStatusHandler);
+        $this->beConstructedWith($connectionIsActiveHandler);
     }
 
     public function it_is_initializable(): void
@@ -36,16 +35,16 @@ class ConfigureProductGridListenerSpec extends ObjectBehavior
     }
 
     public function it_configures_the_product_grid_before_it_is_built_if_the_franklin_connection_is_active(
-        GetConnectionStatusHandler $connectionStatusHandler,
+        GetConnectionIsActiveHandler $connectionIsActiveHandler,
         BuildBefore $event,
         DatagridConfiguration $datagridConfiguration
     ): void {
         $event->getConfig()->willReturn($datagridConfiguration);
         $datagridConfiguration->getName()->willReturn('product-grid');
 
-        $connectionStatusHandler
-            ->handle(Argument::type(GetConnectionStatusQuery::class))
-            ->willReturn(new ConnectionStatus(true, false, false, 0));
+        $connectionIsActiveHandler
+            ->handle(Argument::type(GetConnectionIsActiveQuery::class))
+            ->willReturn(true);
 
         $datagridConfiguration->offsetGet(Configuration::FILTERS_KEY)->willReturn([
             'columns' => [
@@ -85,31 +84,31 @@ class ConfigureProductGridListenerSpec extends ObjectBehavior
     }
 
     public function it_does_nothing_if_it_is_not_the_product_datagrid(
-        GetConnectionStatusHandler $connectionStatusHandler,
+        GetConnectionIsActiveHandler $connectionIsActiveHandler,
         BuildBefore $event,
         DatagridConfiguration $datagridConfiguration
     ): void {
         $event->getConfig()->willReturn($datagridConfiguration);
         $datagridConfiguration->getName()->willReturn('attribute-grid');
 
-        $connectionStatusHandler->handle(Argument::any())->shouldNotBeCalled();
+        $connectionIsActiveHandler->handle(Argument::any())->shouldNotBeCalled();
         $datagridConfiguration->offsetAddToArray(Argument::any())->shouldNotBeCalled();
 
         $this->buildBefore($event);
     }
 
     public function it_does_nothing_if_the_franklin_connection_is_not_active(
-        GetConnectionStatusHandler $connectionStatusHandler,
+        GetConnectionIsActiveHandler $connectionIsActiveHandler,
         BuildBefore $event,
         DatagridConfiguration $datagridConfiguration
     ): void {
         $event->getConfig()->willReturn($datagridConfiguration);
         $datagridConfiguration->getName()->willReturn('product-grid');
 
-        $connectionStatusHandler
-            ->handle(Argument::type(GetConnectionStatusQuery::class))
+        $connectionIsActiveHandler
+            ->handle(Argument::type(GetConnectionIsActiveQuery::class))
             ->shouldBeCalled()
-            ->willReturn(new ConnectionStatus(false, false, false, 0));
+            ->willReturn(false);
 
         $datagridConfiguration->offsetAddToArray(Argument::any())->shouldNotBeCalled();
 

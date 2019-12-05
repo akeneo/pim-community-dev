@@ -17,7 +17,7 @@ Feature: Connection to MDM or ERP systems
     When the connector collects this attribute from the ERP to synchronize it with the PIM
     Then the Portrait attribute is added to the structure of the Designer asset family in the PIM with the properties coming from the ERP
 
-  # @integration-back
+  @integration-back
   Scenario: Collect a new asset attribute for an asset family from the ERP
     Given the Designer asset family existing both in the ERP and in the PIM
     And the asset attribute Country that is only part of the structure of the Designer asset family in the ERP but not in the PIM
@@ -32,7 +32,7 @@ Feature: Connection to MDM or ERP systems
     Then the Birth Date attribute is added to the structure of the Designer asset family in the PIM with the properties coming from the ERP
 
   @integration-back
-  Scenario: Collect a new mediaLink attribute for an asset family from the ERP
+  Scenario: Collect a new media link attribute for an asset family from the ERP
     Given the Designer asset family existing both in the ERP and in the PIM
     And the mediaLink attribute Preview that is only part of the structure of the Designer asset family in the ERP but not in the PIM
     When the connector collects this attribute from the ERP to synchronize it with the PIM
@@ -46,13 +46,13 @@ Feature: Connection to MDM or ERP systems
     Then the properties of the Main Color attribute are updated in the PIM with the properties coming from the ERP
 
   @integration-back
-  Scenario: Collect an existing media_file type attribute for an asset family from the ERP
+  Scenario: Collect an existing media file attribute for an asset family from the ERP
     Given the Designer asset family existing both in the ERP and in the PIM
     And the Portrait attribute that is both part of the structure of the Designer asset family in the ERP and in the PIM but with some unsynchronized properties
     When the connector collects this attribute from the ERP to synchronize it with the PIM
     Then the properties of the Portrait attribute are updated in the PIM with the properties coming from the ERP
 
-  # @integration-back
+  @integration-back
   Scenario: Collect an existing asset type attribute for an asset family from the ERP
     Given the Designer asset family existing both in the ERP and in the PIM
     And the Country attribute that is both part of the structure of the Designer asset family in the ERP and in the PIM but with some unsynchronized properties

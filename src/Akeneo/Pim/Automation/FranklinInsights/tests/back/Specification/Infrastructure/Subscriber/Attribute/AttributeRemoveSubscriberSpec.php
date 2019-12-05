@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Attribute;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Attribute\AttributeRemoveSubscriber;
@@ -39,17 +38,16 @@ class AttributeRemoveSubscriberSpec extends ObjectBehavior
     public function let(
         SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery,
         RemoveAttributesFromMappingInterface $removeAttributesFromMapping,
-        GetConnectionStatusHandler $connectionStatusHandler,
+        GetConnectionIsActiveHandler $connectionIsActiveHandler,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
     ): void {
-        $connectionStatus = new ConnectionStatus(true, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(true);
 
         $this->beConstructedWith(
             $familyCodesByAttributeQuery,
             $removeAttributesFromMapping,
-            $connectionStatusHandler,
+            $connectionIsActiveHandler,
             $identifiersMappingRepository,
             $saveIdentifiersMappingHandler
         );
@@ -74,13 +72,12 @@ class AttributeRemoveSubscriberSpec extends ObjectBehavior
     public function it_is_only_applied_when_franklin_insights_is_activated(
         GenericEvent $event,
         AttributeInterface $attribute,
-        $connectionStatusHandler,
+        $connectionIsActiveHandler,
         $familyCodesByAttributeQuery
     ): void {
         $event->getSubject()->willReturn($attribute);
 
-        $connectionStatus = new ConnectionStatus(false, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(false);
 
         $familyCodesByAttributeQuery->execute(Argument::any())->shouldNotBeCalled();
         $this->onPreRemove($event);

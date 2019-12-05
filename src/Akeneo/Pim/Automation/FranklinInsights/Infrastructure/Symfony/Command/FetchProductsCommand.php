@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ScheduleFetchProductsInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,17 +29,17 @@ class FetchProductsCommand extends Command
     /** @var ScheduleFetchProductsInterface */
     private $scheduleFetchProducts;
 
-    /** @var GetConnectionStatusHandler */
-    private $getConnectionStatusHandler;
+    /** @var GetConnectionIsActiveHandler */
+    private $getConnectionIsActiveHandler;
 
     public function __construct(
         ScheduleFetchProductsInterface $scheduleFetchProducts,
-        GetConnectionStatusHandler $getConnectionStatusHandler
+        GetConnectionIsActiveHandler $getConnectionIsActiveHandler
     ) {
         parent::__construct();
 
         $this->scheduleFetchProducts = $scheduleFetchProducts;
-        $this->getConnectionStatusHandler = $getConnectionStatusHandler;
+        $this->getConnectionIsActiveHandler = $getConnectionIsActiveHandler;
     }
 
     protected function configure(): void
@@ -50,8 +50,8 @@ class FetchProductsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery(false));
-        if (false === $connectionStatus->isActive()) {
+        $connectionIsActive = $this->getConnectionIsActiveHandler->handle(new GetConnectionIsActiveQuery());
+        if (false === $connectionIsActive) {
             return;
         }
 

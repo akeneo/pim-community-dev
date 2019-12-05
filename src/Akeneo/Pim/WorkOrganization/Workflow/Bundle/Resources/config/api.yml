@@ -34,7 +34,7 @@ services:
         arguments:
             - '@pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory_with_permissions'
             - '@pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory_with_permissions'
-            - '@pimee_api.checker.query_parameters_product_model'
+            - '@pimee_api.checker.query_parameters_product'
             - '@pim_external_api_serializer'
             - '@pim_api.repository.channel'
             - '@pim_catalog.repository.cached_locale'

@@ -3,9 +3,14 @@ pim_title:
   akeneo_asset_manager_asset_family_edit: Edit an asset family
   akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: Suspicious embedded link
+        message: Sorry, we do not display this embed item but it will be correctly saved
   result_counter: '{0} No result|{1} {{ count }} result|]1,Inf] {{ count }} results'
   asset_collection:
-    asset_counter: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
+    asset_count: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
     add_asset: 'Add asset'
     add_asset_title: 'Open the asset picker to add assets to the collection'
     no_asset_in_collection: 'Sorry, there is no asset in this collection.'
@@ -54,6 +59,7 @@ pim_asset_manager:
   close: Close the modal
   breadcrumb:
     products: Products
+
   app:
     image:
       wide:
@@ -64,6 +70,9 @@ pim_asset_manager:
         remove: Remove
         download: Download
         upload: Drag and drop to upload
+  grid:
+    counter: '{{ resultCount }} results'
+    counter_empty: '0 result'
   asset_family:
     validation:
       code:
