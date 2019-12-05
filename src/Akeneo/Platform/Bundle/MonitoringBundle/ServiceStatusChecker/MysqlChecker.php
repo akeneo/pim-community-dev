@@ -31,9 +31,9 @@ final class MysqlChecker
         try {
             $this->connection->executeQuery("SELECT 'ok' FROM pim_catalog_product_unique_data LIMIT 1")->fetchAll();
 
-            return new ServiceStatus(true, "OK");
+            return ServiceStatus::ok();
         } catch (DBALException $e) {
-            return new ServiceStatus(false, sprintf('Unable to request the database: "%s".', $e->getMessage()));
+            return ServiceStatus::notOk(sprintf('Unable to request the database: "%s".', $e->getMessage()));
         }
     }
 }

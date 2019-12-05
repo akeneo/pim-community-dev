@@ -19,7 +19,7 @@ final class MysqlCheckerIntegration extends TestCase
 
     public function test_mysql_is_ok_when_you_can_request_a_pim_table_without_error(): void
     {
-        Assert::assertEquals(new ServiceStatus(true, 'OK'), $this->getMysqlChecker()->status());
+        Assert::assertEquals(ServiceStatus::ok(), $this->getMysqlChecker()->status());
     }
 
     public function test_mysql_is_ko_when_you_cant_request_a_pim_table_without_error(): void

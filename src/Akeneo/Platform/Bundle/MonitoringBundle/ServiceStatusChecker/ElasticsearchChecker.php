@@ -27,22 +27,16 @@ final class ElasticsearchChecker
 
     public function status(): ServiceStatus
     {
-        $statusOk = true;
         $failingIndexNames = [];
 
         foreach ($this->clientRegistry->getClients() as $client) {
             if (!$client->hasIndex()) {
-                $statusOk = false;
                 $failingIndexNames[] = $client->getIndexName();
             }
         }
 
-        if ($statusOk) {
-            $message = 'OK';
-        } else {
-            $message = 'Elasticsearch failing indexes: '.implode(',', $failingIndexNames);
-        }
-
-        return new ServiceStatus($statusOk, $message);
+        return empty($failingIndexNames) ?
+            ServiceStatus::ok() :
+            ServiceStatus::notOk('Elasticsearch failing indexes: '.implode(',', $failingIndexNames));
     }
 }

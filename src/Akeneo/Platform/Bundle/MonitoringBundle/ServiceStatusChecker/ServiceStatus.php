@@ -26,12 +26,22 @@ final class ServiceStatus
     /** @var string */
     private $message;
 
-    public function __construct(
+    private function __construct(
         bool $ok,
         string $message
     ) {
         $this->ok = $ok;
         $this->message = $message;
+    }
+
+    public static function ok()
+    {
+        return new self(true, 'OK');
+    }
+
+    public static function notOk(string $message)
+    {
+        return new self(false, $message);
     }
 
     public function isOk(): bool

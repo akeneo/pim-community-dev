@@ -19,16 +19,16 @@ use PHPUnit\Framework\Assert;
 
 final class FileStorageCheckerIntegration extends TestCase
 {
-    public function test_filestorage_is_ok_when_when_you_can_write_a_file_in_each_filestorage(): void
+    public function test_filestorage_is_ok_when_when_you_can_create_a_directory_in_each_filestorage(): void
     {
-        Assert::assertEquals(new ServiceStatus(true, 'OK'), $this->getFilestorageChecker()->status());
+        Assert::assertEquals(ServiceStatus::ok(), $this->getFilestorageChecker()->status());
     }
 
-    public function test_filestorage_is_ko_when_when_you_cant_write_a_file_in_at_least_one_of_the_filestorage(): void
+    public function test_filestorage_is_ko_when_when_you_cant_create_a_directory_in_at_least_one_of_the_filestorage(): void
     {
         $this->getMountManager()->mountFilesystem('catalogStorage', new Filesystem(new NullAdapter()));
 
-        Assert::assertEquals(new ServiceStatus(false, 'Failing file storages: catalogStorage'), $this->getFilestorageChecker()->status());
+        Assert::assertEquals(ServiceStatus::notOk('Failing file storages: catalogStorage'), $this->getFilestorageChecker()->status());
     }
 
     protected function getConfiguration()

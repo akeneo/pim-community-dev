@@ -51,11 +51,9 @@ class FileStorageChecker
             }
         }
 
-        if (!empty($failingFileStorages)) {
-            return new ServiceStatus(false, 'Failing file storages: ' . implode(',', $failingFileStorages));
-        }
-
-        return new ServiceStatus(true, 'OK');
+        return empty($failingFileStorages) ?
+            ServiceStatus::ok() :
+            ServiceStatus::notOk('Failing file storages: ' . implode(',', $failingFileStorages));
     }
 
     private function isFileStorageAvailable(string $prefix): bool
