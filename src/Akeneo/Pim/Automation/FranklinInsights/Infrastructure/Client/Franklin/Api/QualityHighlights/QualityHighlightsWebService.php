@@ -58,14 +58,14 @@ class QualityHighlightsWebService extends AbstractApi implements AuthenticatedAp
     }
 
     /**
-     * @param AsyncRequest[] $requests
+     * @param AsyncRequest[] $asyncRequests
      */
-    public function applyAsyncAttributes(array $requests): void
+    public function applyAsyncAttributes(array $asyncRequests): void
     {
         $uri = $this->uriGenerator->generate('/api/quality-highlights/structure/attributes');
 
         $promises = [];
-        foreach ($requests as $request) {
+        foreach ($asyncRequests as $request) {
             $promise = $this->httpClient->requestAsync('POST', $uri, [
                 'json' => ['attributes' => $request->getData()],
             ]);

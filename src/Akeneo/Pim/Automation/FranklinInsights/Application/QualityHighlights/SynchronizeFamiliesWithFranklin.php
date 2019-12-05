@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighlightsProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectFamiliesToApplyQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\BatchSize;
@@ -31,14 +32,19 @@ class SynchronizeFamiliesWithFranklin
     /** @var PendingItemsRepositoryInterface */
     private $pendingItemsRepository;
 
+    /** @var SelectFamiliesToApplyQueryInterface */
+    private $selectFamiliesToApplyQuery;
+
     public function __construct(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
-        PendingItemsRepositoryInterface $pendingItemsRepository
+        PendingItemsRepositoryInterface $pendingItemsRepository,
+        SelectFamiliesToApplyQueryInterface $selectFamiliesToApplyQuery
     ) {
         $this->pendingItemIdentifiersQuery = $pendingItemIdentifiersQuery;
         $this->qualityHighlightsProvider = $qualityHighlightsProvider;
         $this->pendingItemsRepository = $pendingItemsRepository;
+        $this->selectFamiliesToApplyQuery = $selectFamiliesToApplyQuery;
     }
 
     public function synchronize(Lock $lock, BatchSize $batchSize): void
@@ -53,7 +59,8 @@ class SynchronizeFamiliesWithFranklin
             $familyCodes = $this->pendingItemIdentifiersQuery->getUpdatedFamilyCodes($lock, $batchSize->toInt());
             if (! empty($familyCodes)) {
                 try {
-                    $this->qualityHighlightsProvider->applyFamilies(array_values($familyCodes));
+                    $families = $this->selectFamiliesToApplyQuery->execute($familyCodes);
+                    $this->qualityHighlightsProvider->applyFamilies($families);
                 } catch (BadRequestException $exception) {
                     //The error is logged by the api client
                 } catch (\Exception $exception) {

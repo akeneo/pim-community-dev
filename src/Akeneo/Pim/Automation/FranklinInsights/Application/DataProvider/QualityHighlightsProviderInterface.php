@@ -18,13 +18,13 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Model\Write\
 interface QualityHighlightsProviderInterface
 {
     /**
-     * @param AsyncRequest[] $requests
+     * @param AsyncRequest[] $asyncRequests
      */
-    public function applyAsyncAttributeStructure(array $requests): void;
+    public function applyAsyncAttributeStructure(array $asyncRequests): void;
 
     public function deleteAttribute(string $attributeCode): void;
 
-    public function applyFamilies(array $familyCodes): void;
+    public function applyFamilies(array $families): void;
 
     public function deleteFamily(string $familyCode): void;
 
