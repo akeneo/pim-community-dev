@@ -120,7 +120,7 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Given /^the image attribute Portrait that is only part of the structure of the Designer asset family in the ERP but not in the PIM$/
+     * @Given /^the media file attribute Portrait that is only part of the structure of the Designer asset family in the ERP but not in the PIM$/
      */
     public function thePortraitAttributeThatIsOnlyPartOfTheStructureOfTheDesignerAssetFamilyInTheERPButNotInThePIM()
     {
@@ -415,7 +415,7 @@ class CreateOrUpdateAttributeContext implements Context
         $connectorAttribute = new ConnectorAttribute(
             $attribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
-            'image',
+            'media_file',
             AttributeValuePerLocale::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(true),
