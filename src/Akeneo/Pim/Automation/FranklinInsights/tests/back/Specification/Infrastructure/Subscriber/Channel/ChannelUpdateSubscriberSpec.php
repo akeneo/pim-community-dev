@@ -17,7 +17,8 @@ use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Command\DeactivateConnectionCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Command\DeactivateConnectionHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Channel\ChannelUpdateSubscriber;
@@ -35,12 +36,11 @@ class ChannelUpdateSubscriberSpec extends ObjectBehavior
     public function let(
         LocaleRepositoryInterface $localeRepository,
         DeactivateConnectionHandler $deactivateConnectionHandler,
-        GetConnectionStatusHandler $connectionStatusHandler
+        GetConnectionIsActiveHandler $connectionIsActiveHandler
     ): void {
-        $connectionStatus = new ConnectionStatus(true, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(true);
 
-        $this->beConstructedWith($localeRepository, $deactivateConnectionHandler, $connectionStatusHandler);
+        $this->beConstructedWith($localeRepository, $deactivateConnectionHandler, $connectionIsActiveHandler);
     }
 
     public function it_is_channel_update_subscriber(): void
@@ -91,10 +91,9 @@ class ChannelUpdateSubscriberSpec extends ObjectBehavior
     public function it_does_nothing_if_franklin_insights_is_not_activated(
         $localeRepository,
         $deactivateConnectionHandler,
-        $connectionStatusHandler
+        $connectionIsActiveHandler
     ): void {
-        $connectionStatus = new ConnectionStatus(false, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(false);
 
         $localeRepository->getActivatedLocaleCodes()->shouldNotBeCalled();
         $deactivateConnectionHandler->handle(Argument::any())->shouldNotBeCalled();

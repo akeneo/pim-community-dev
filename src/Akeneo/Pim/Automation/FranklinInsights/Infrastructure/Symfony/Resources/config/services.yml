@@ -98,7 +98,7 @@ services:
     Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command\FetchProductsCommand:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.connector.job_launcher.schedule_fetch_products'
-            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_is_active_handler'
         tags:
             - { name: console.command }
 

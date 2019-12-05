@@ -30,13 +30,15 @@ class ConnectorAttribute
         'asset' => 'asset_family_single_link',
         'asset_collection' => 'asset_family_multiple_links',
         'option' => 'single_option',
-        'option_collection' => 'multiple_options'
+        'option_collection' => 'multiple_options',
+        'image' => 'media_file',
     ];
 
     private const ATTRIBUTE_NAMES = [
         'max_length' => 'max_characters',
         'regular_expression' => 'validation_regexp',
-        'asset_type' => 'asset_family_code'
+        'asset_type' => 'asset_family_code',
+        'media_type' => 'image'
     ];
 
     /** @var AttributeIdentifier */
@@ -105,6 +107,10 @@ class ConnectorAttribute
 
         foreach ($this->additionalProperties as $key => $value) {
             $additionalProperties[$this->mapAttributeName($key)] = $value;
+        }
+
+        if ('image' === $this->type) {
+            $additionalProperties['media_type'] = $this->type;
         }
 
         return array_merge($commonProperties, $additionalProperties);

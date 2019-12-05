@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\AttributeOption;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\RemoveAttributeOptionFromMappingInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\AttributeOption\AttributeOptionRemoveSubscriber;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -33,12 +32,11 @@ class AttributeOptionRemoveSubscriberSpec extends ObjectBehavior
 {
     public function let(
         RemoveAttributeOptionFromMappingInterface $removeAttributeOptionFromMapping,
-        GetConnectionStatusHandler $connectionStatusHandler
+        GetConnectionIsActiveHandler $connectionIsActiveHandler
     ): void {
-        $connectionStatus = new ConnectionStatus(true, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(true);
 
-        $this->beConstructedWith($removeAttributeOptionFromMapping, $connectionStatusHandler);
+        $this->beConstructedWith($removeAttributeOptionFromMapping, $connectionIsActiveHandler);
     }
 
     public function it_is_a_product_family_removal_subscriber(): void
@@ -77,12 +75,11 @@ class AttributeOptionRemoveSubscriberSpec extends ObjectBehavior
         GenericEvent $event,
         AttributeOptionInterface $attributeOption,
         $removeAttributeOptionFromMapping,
-        $connectionStatusHandler
+        $connectionIsActiveHandler
     ): void {
         $event->getSubject()->willReturn($attributeOption);
 
-        $connectionStatus = new ConnectionStatus(false, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(false);
 
         $removeAttributeOptionFromMapping->process(Argument::any())->shouldNotBeCalled();
 

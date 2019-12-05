@@ -11,11 +11,13 @@
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use JsonSchema\Validator;
 
 class MediaFileAttributeValidator implements AttributeValidatorInterface
 {
-    private const API_MEDIA_FILE_ATTRIBUTE_TYPE = 'media_file';
+    private const API_IMAGE_ATTRIBUTE_TYPE_OLD = 'image';
+    private const API_IMAGE_ATTRIBUTE_TYPE_NEW = 'media_file';
 
     public function validate(array $normalizedAttribute): array
     {
@@ -29,7 +31,7 @@ class MediaFileAttributeValidator implements AttributeValidatorInterface
 
     public function forAttributeTypes(): array
     {
-        return [self::API_MEDIA_FILE_ATTRIBUTE_TYPE];
+        return [self::API_IMAGE_ATTRIBUTE_TYPE_OLD, self::API_IMAGE_ATTRIBUTE_TYPE_NEW];
     }
 
     private function getJsonSchema(): array
@@ -43,6 +45,10 @@ class MediaFileAttributeValidator implements AttributeValidatorInterface
                 ],
                 'type' => [
                     'type' => ['string'],
+                ],
+                'media_type' => [
+                    'type' => ['string'],
+                    'enum' => ['image'],
                 ],
                 'labels' => [
                     'type' => 'object',

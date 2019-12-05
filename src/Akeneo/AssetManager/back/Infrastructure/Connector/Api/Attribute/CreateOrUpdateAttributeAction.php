@@ -30,6 +30,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeAction
 {
+    private const MEDIA_FILE_ATTRIBUTE_TYPE = 'media_file';
+    private const IMAGE_ATTRIBUTE_TYPE = 'image';
+
     /** @var CreateAttributeCommandFactoryRegistry */
     private $createAttributeCommandFactoryRegistry;
 
@@ -116,7 +119,6 @@ class CreateOrUpdateAttributeAction
         if (null === $normalizedAttribute) {
             throw new BadRequestHttpException('Invalid json message received');
         }
-
         $inBodyAttributeCode = $normalizedAttribute['code'] ?? null;
         if ((string) $attributeCode !== $inBodyAttributeCode) {
             throw new UnprocessableEntityHttpException('The code of the asset family provided in the URI must be the same as the one provided in the request body.');
