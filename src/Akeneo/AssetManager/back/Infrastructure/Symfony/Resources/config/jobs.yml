@@ -15,6 +15,12 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
+    akeneo_assetmanager.infrastructure.job.provider.compute_transformations:
+        class: 'Akeneo\AssetManager\Infrastructure\Job\Provider\ComputeTransformations'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
     # JOBS
     akeneo_assetmanager.job.link_assets_to_products:
         class: '%pim_connector.job.simple_job.class%'
@@ -66,5 +72,5 @@ services:
     akeneo_assetmanager.tasklet.compute_transformations:
         class: 'Akeneo\AssetManager\Infrastructure\Job\ComputeTransformations'
         arguments:
-            - '@akeneo_assetmanager.application.asset.compute_transformations.executor'
+            - '@akeneo_assetmanager.infrastructure.transformation.compute_transformations.executor'
         public: false
