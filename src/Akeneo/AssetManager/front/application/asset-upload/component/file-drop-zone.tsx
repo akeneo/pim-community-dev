@@ -36,13 +36,15 @@ const Uploader = styled.div`
   display: flex;
   flex-direction: column;
   height: 140px;
-  justify-content: flex-start;
+  justify-content: start;
   width: 100%;
   padding: 30px 0 0;
 
   svg {
     overflow: visible;
+    height: 60px;
     width: 80px;
+
 
     .arrow {
       transform-origin: 51.2% 26%;
