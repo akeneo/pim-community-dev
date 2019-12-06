@@ -45,16 +45,22 @@ const Row = ({line, onLineRemove, onLineChange, localizable = true, scopable = t
       <Cell>{null !== line.thumbnail && <Thumbnail src={line.thumbnail} />}</Cell>
       <Cell>{line.filename}</Cell>
       <Cell>
-        <Input type="text" value={line.code} />
+        <Input
+          type="text"
+          value={line.code}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            onLineChange({...line, code: event.target.value});
+          }}
+        />
       </Cell>
       {localizable && (
         <Cell>
-          <Input type="text" value={line.locale} />
+          <Input type="text" value={null === line.locale ? '' : line.locale} />
         </Cell>
       )}
       {scopable && (
         <Cell>
-          <Input type="text" value={line.channel} />
+          <Input type="text" value={null === line.channel ? '' : line.channel} />
         </Cell>
       )}
       <Cell>

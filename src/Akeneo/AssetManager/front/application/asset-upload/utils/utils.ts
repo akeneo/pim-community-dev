@@ -135,7 +135,7 @@ export const removeLine = (lines: Line[], lineToRemove: Line): Line[] =>
 
 export const editLine = (lines: Line[], lineToEdit: Line): Line[] =>
   lines.map((line: Line) =>
-    line.id !== lineToEdit.id
+    line.id === lineToEdit.id
       ? {...line, code: lineToEdit.code, locale: lineToEdit.locale, channel: lineToEdit.channel}
       : line
   );
