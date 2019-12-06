@@ -13,12 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration;
 
-use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
-use Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy;
 use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\DependencyInjection\ResettableContainerInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * This class is used for running integration tests testing the SQL implementation of query functions and repositories.
