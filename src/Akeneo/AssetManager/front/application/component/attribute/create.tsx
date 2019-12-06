@@ -24,6 +24,7 @@ import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {isAssetAttributeType} from 'akeneoassetmanager/domain/model/attribute/minimal';
 import Key from 'akeneoassetmanager/tools/key';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
+import {Asset} from 'akeneoassetmanager/application/component/app/illustration/asset';
 
 interface StateProps {
   context: {
@@ -170,7 +171,7 @@ class Create extends React.Component<CreateProps> {
           <div className="AknFullPage">
             <div className="AknFullPage-content AknFullPage-content--withIllustration" style={{overflowX: 'visible'}}>
               <div>
-                <img src="bundles/pimui/images/illustrations/Reference-entities.svg" className="AknFullPage-image" />
+                <Asset className="AknFullPage-image" />
               </div>
               <div>
                 <div className="AknFullPage-titleContainer">

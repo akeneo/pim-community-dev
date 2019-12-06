@@ -15,6 +15,7 @@ import {connect} from 'react-redux';
 import Key from 'akeneoassetmanager/tools/key';
 import {AssetFamilyCreation, getAssetFamilyCreationLabel} from 'akeneoassetmanager/domain/model/asset-family/creation';
 import {codeStringValue} from 'akeneoassetmanager/domain/model/code';
+import {AssetFamily} from 'akeneoassetmanager/application/component/app/illustration/asset-family';
 
 interface StateProps {
   context: {
@@ -64,7 +65,7 @@ class Create extends React.Component<CreateProps> {
           <div className="AknFullPage">
             <div className="AknFullPage-content AknFullPage-content--withIllustration">
               <div>
-                <img src="bundles/pimui/images/illustrations/Reference-entities.svg" className="AknFullPage-image" />
+                <AssetFamily className="AknFullPage-image" />
               </div>
               <div>
                 <div className="AknFullPage-titleContainer">

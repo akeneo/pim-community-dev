@@ -10,7 +10,7 @@ pim_asset_manager:
         message: Sorry, we do not display this embed item but it will be correctly saved
   result_counter: '{0} No result|{1} {{ count }} result|]1,Inf] {{ count }} results'
   asset_collection:
-    asset_count: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
+    asset_counter: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
     add_asset: 'Add asset'
     add_asset_title: 'Open the asset picker to add assets to the collection'
     no_asset_in_collection: 'Sorry, there is no asset in this collection.'

@@ -394,7 +394,7 @@ test('It should display the default image with a message when the asset has no m
     </ThemeProvider>
   );
 
-  expect(getByText('pim_asset_manager.asset_preview.empty_main_image')).toBeInTheDocument();
+  expect(getByText('pim_asset_manager.asset_preview.empty_main_media')).toBeInTheDocument();
 });
 
 test('It should display the YouTube player when the product attribute is a YouTube media link', () => {

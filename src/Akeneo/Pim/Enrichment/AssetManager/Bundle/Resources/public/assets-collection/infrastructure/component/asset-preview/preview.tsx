@@ -6,7 +6,7 @@ import {
   getAssetMainMediaDownloadLink,
   getAssetMainMediaOriginalFilename,
   assetHasMainMedia,
-  getAttributeAsMainMedia as getAttributeAsMainMedia,
+  getAttributeAsMainMedia,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
@@ -174,7 +174,7 @@ const getPreviewView = (asset: Asset, context: Context) => {
     return (
       <>
         <PreviewImage asset={asset} context={context} />
-        <Message>{__('pim_asset_manager.asset_preview.empty_main_image')}</Message>
+        <Message>{__('pim_asset_manager.asset_preview.empty_main_media')}</Message>
         <Actions>
           <EditAction asset={asset} context={context} />
         </Actions>

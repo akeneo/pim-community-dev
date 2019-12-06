@@ -82,12 +82,16 @@ class AssetPreviewGenerator
         );
 
         $value = $asset->findValue($valueKey);
-        $data = $value->getData()->normalize();
 
-        if (is_array($data)) {
-            $rawData = $data['filePath'];
+        if (null === $value) {
+            $rawData = '';
         } else {
-            $rawData = $data;
+            $data = $value->getData()->normalize();
+            if (is_array($data)) {
+                $rawData = $data['filePath'];
+            } else {
+                $rawData = $data;
+            }
         }
 
         return $this->imagePreviewUrlGenerator->generate(

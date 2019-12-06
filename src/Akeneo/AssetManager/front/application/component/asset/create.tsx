@@ -15,6 +15,7 @@ import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import Key from 'akeneoassetmanager/tools/key';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
+import {Asset} from 'akeneoassetmanager/application/component/app/illustration/asset';
 
 interface StateProps {
   context: {
@@ -77,7 +78,7 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
           <div className="AknFullPage">
             <div className="AknFullPage-content AknFullPage-content--withIllustration">
               <div>
-                <img src="bundles/pimui/images/illustrations/Assets.svg" className="AknFullPage-image" />
+                <Asset className="AknFullPage-image" />
               </div>
               <div>
                 <div className="AknFormContainer">
