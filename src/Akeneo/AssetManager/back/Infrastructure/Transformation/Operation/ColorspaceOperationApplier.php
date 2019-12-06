@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Model\FileBinary;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Webmozart\Assert\Assert;
 
@@ -25,40 +26,44 @@ class ColorspaceOperationApplier implements OperationApplier
     /** @var FilterManager */
     private $filterManager;
 
-    /** @var TemporaryFileFactory */
-    private $temporaryFileFactory;
+    /** @var Filesystem */
+    private $filesystem;
 
-    public function __construct(
-        FilterManager $filterManager,
-        TemporaryFileFactory $temporaryFileFactory
-    ) {
+    public function __construct(FilterManager $filterManager, Filesystem $filesystem)
+    {
         $this->filterManager = $filterManager;
-        $this->temporaryFileFactory = $temporaryFileFactory;
+        $this->filesystem = $filesystem;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(Operation $operation): bool
     {
         return $operation instanceof ColorspaceOperation;
     }
 
     /**
-     * @param File $file
-     * @param ColorspaceOperation $colorspaceOperation
-     * @return File
+     * {@inheritdoc}
      */
     public function apply(File $file, Operation $colorspaceOperation): File
     {
         Assert::isInstanceOf($colorspaceOperation, ColorspaceOperation::class);
 
-        $image = new FileBinary($file->getPath(), $file->getMimeType());
-        $computedImage = $this->filterManager->applyFilters($image, [
-            'filters' => [
-                'colorspace' => [
-                    'colorspace' => $colorspaceOperation->getColorspace()
-                ]
+        $image = new FileBinary($file->getRealPath(), $file->getMimeType());
+        $computedImage = $this->filterManager->applyFilters(
+            $image,
+            [
+                'filters' => [
+                    'colorspace' => [
+                        'colorspace' => $colorspaceOperation->getColorspace(),
+                    ],
+                ],
+                'quality' => 100,
             ]
-        ]);
+        );
+        $this->filesystem->dumpFile($file->getRealPath(), $computedImage->getContent());
 
-        return $this->temporaryFileFactory->createFromContent($computedImage->getContent());
+        return $file;
     }
 }

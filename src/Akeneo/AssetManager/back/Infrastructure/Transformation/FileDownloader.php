@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Transformation;
 
-use Akeneo\AssetManager\Domain\Repository\MediaFileNotFoundException;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
-use Akeneo\AssetManager\Infrastructure\Transformation\Operation\TemporaryFileFactory;
+use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -27,29 +26,20 @@ class FileDownloader
     /** @var FilesystemProvider */
     private $filesystemProvider;
 
-    /** @var TemporaryFileFactory */
-    private $temporaryFileFactory;
+    /** @var FileFetcherInterface */
+    private $fileFetcher;
 
-    public function __construct(
-        FilesystemProvider $filesystemProvider,
-        TemporaryFileFactory $temporaryFileFactory
-    ) {
+    public function __construct(FilesystemProvider $filesystemProvider, FileFetcherInterface $fileFetcher)
+    {
         $this->filesystemProvider = $filesystemProvider;
-        $this->temporaryFileFactory = $temporaryFileFactory;
+        $this->fileFetcher = $fileFetcher;
     }
 
-    public function get(string $path): File
+    public function get(string $key): File
     {
         $filesystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
-        if (!$filesystem->has($path)) {
-            throw new MediaFileNotFoundException(sprintf('The file "%s" can not be found.', $path));
-        }
+        $file = $this->fileFetcher->fetch($filesystem, $key);
 
-        $fileContent = $filesystem->read($path);
-        if (false === $fileContent) {
-            throw new MediaFileNotFoundException(sprintf('The file "%s" can not be downloaded.', $path));
-        }
-
-        return $this->temporaryFileFactory->createFromContent($fileContent);
+        return new File($file->getPathname(), false);
     }
 }

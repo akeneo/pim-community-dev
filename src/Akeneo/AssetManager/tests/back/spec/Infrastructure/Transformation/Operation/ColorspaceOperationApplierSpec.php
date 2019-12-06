@@ -5,22 +5,33 @@ namespace spec\Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Infrastructure\Transformation\Operation\ColorspaceOperationApplier;
-use Akeneo\AssetManager\Infrastructure\Transformation\Operation\TemporaryFileFactory;
+use Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplier;
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Model\FileBinary;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 
 class ColorspaceOperationApplierSpec extends ObjectBehavior
 {
-    function let(FilterManager $filterManager, TemporaryFileFactory $temporaryFileFactory)
+    function let(FilterManager $filterManager, Filesystem $filesystem)
     {
-        $this->beConstructedWith($filterManager, $temporaryFileFactory);
+        $this->beConstructedWith($filterManager, $filesystem);
+    }
+
+    function it_is_an_operation_applier()
+    {
+        $this->shouldImplement(OperationApplier::class);
+    }
+
+    function it_is_a_colorspace_operation_applier()
+    {
         $this->shouldHaveType(ColorspaceOperationApplier::class);
     }
 
-    function it_supports_only_colorspace_operation(
+    function it_only_supports_colorspace_operations(
         ColorspaceOperation $operation,
         ResizeOperation $wrongOperation
     ) {
@@ -28,25 +39,33 @@ class ColorspaceOperationApplierSpec extends ObjectBehavior
         $this->supports($wrongOperation)->shouldReturn(false);
     }
 
-    function it_apply_colorspace(
+    function it_applies_a_colorspace_operation(
         FilterManager $filterManager,
-        TemporaryFileFactory $temporaryFileFactory,
+        Filesystem $filesystem,
         ColorspaceOperation $operation,
-        BinaryInterface $computedImage
+        BinaryInterface $computedImage,
+        File $file
     ) {
-        $file = new File(__DIR__ . '/akeneo.png');
-        $operation->getColorspace()->willReturn('cmyk');
-        $image = new FileBinary($file->getPath(), $file->getMimeType());
-        $filterManager->applyFilters($image, [
-            'filters' => [
-                'colorspace' => [
-                    'colorspace' => 'cmyk'
-                ]
-            ]
-        ])->shouldBeCalledOnce()->willReturn($computedImage);
-        $computedImage->getContent()->willReturn('imageContent');
-        $temporaryFileFactory->createFromContent('imageContent')->shouldBeCalled()->willReturn($file);
+        $file->beConstructedWith(['/path/to/my/file.png', false]);
+        $file->getRealPath()->willReturn('/path/to/my/file.png');
+        $file->getMimeType()->willReturn('image/png');
 
-        $this->apply($file, $operation);
+        $computedImage->getContent()->willReturn('imageContent');
+        $operation->getColorspace()->willReturn('cmyk');
+
+        $filterManager->applyFilters(
+            Argument::type(FileBinary::class),
+            [
+                'filters' => [
+                    'colorspace' => [
+                        'colorspace' => 'cmyk',
+                    ],
+                ],
+                'quality' => 100,
+            ]
+        )->shouldBeCalledOnce()->willReturn($computedImage);
+        $filesystem->dumpFile('/path/to/my/file.png', 'imageContent')->shouldBeCalled();
+
+        $this->apply($file, $operation)->shouldReturn($file);
     }
 }

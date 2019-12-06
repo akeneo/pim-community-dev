@@ -32,5 +32,7 @@ class ColorspaceFilter implements LoaderInterface
             case 'rgb':
             default: $image->usePalette(new RGB());
         }
+
+        return $image;
     }
 }

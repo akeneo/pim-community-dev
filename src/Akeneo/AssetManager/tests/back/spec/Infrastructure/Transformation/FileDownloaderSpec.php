@@ -2,9 +2,9 @@
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Transformation;
 
-use Akeneo\AssetManager\Domain\Repository\MediaFileNotFoundException;
+use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader;
-use Akeneo\AssetManager\Infrastructure\Transformation\Operation\TemporaryFileFactory;
+use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
@@ -14,50 +14,30 @@ class FileDownloaderSpec extends ObjectBehavior
 {
     function let(
         FilesystemProvider $filesystemProvider,
-        TemporaryFileFactory $temporaryFileFactory
+        FileFetcherInterface $fileFetcher,
+        FilesystemInterface $tmpFilesystem
     ) {
-        $this->beConstructedWith($filesystemProvider, $temporaryFileFactory);
+        $filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS)->willReturn($tmpFilesystem);
+        $this->beConstructedWith($filesystemProvider, $fileFetcher);
+
+    }
+
+    function it_is_a_file_downloader()
+    {
         $this->shouldHaveType(FileDownloader::class);
     }
 
-    function it_downloads_the_file(
-        FilesystemProvider $filesystemProvider,
-        TemporaryFileFactory $temporaryFileFactory,
-        FilesystemInterface $filesystem
+    function it_downloads_a_file(
+        FileFetcherInterface $fileFetcher,
+        FilesystemInterface $tmpFilesystem,
+        \SplFileInfo $fileInfo
     ) {
-        $file = new File(__DIR__ . '/Operation/akeneo.png');
-        $filesystemProvider->getFilesystem('assetManagerStorage')->willReturn($filesystem);
-        $filesystem->has('/path/to/file')->willReturn(true);
-        $filesystem->read('/path/to/file')->willReturn('fileContent');
-        $temporaryFileFactory->createFromContent('fileContent')->shouldBeCalledOnce()->willReturn($file);
+        $fileInfo->getPathname()->willReturn('/some/path/myfile.png');
+        $fileFetcher->fetch($tmpFilesystem, 'key_for_the_wanted_file')->willReturn($fileInfo);
 
-        $this->get('/path/to/file')->shouldReturn($file);
-    }
+        $downloadedFile = $this->get('key_for_the_wanted_file');
 
-    function it_throws_an_exception_when_file_does_not_exist(
-        FilesystemProvider $filesystemProvider,
-        TemporaryFileFactory $temporaryFileFactory,
-        FilesystemInterface $filesystem
-    ) {
-        $filesystemProvider->getFilesystem('assetManagerStorage')->willReturn($filesystem);
-        $filesystem->has('/path/to/file')->willReturn(false);
-
-        $this
-            ->shouldThrow(new MediaFileNotFoundException('The file "/path/to/file" can not be found.'))
-            ->during('get', ['/path/to/file']);
-    }
-
-    function it_throws_an_exception_when_file_can_not_be_downloaded(
-        FilesystemProvider $filesystemProvider,
-        TemporaryFileFactory $temporaryFileFactory,
-        FilesystemInterface $filesystem
-    ) {
-        $filesystemProvider->getFilesystem('assetManagerStorage')->willReturn($filesystem);
-        $filesystem->has('/path/to/file')->willReturn(true);
-        $filesystem->read('/path/to/file')->willReturn(false);
-
-        $this
-            ->shouldThrow(new MediaFileNotFoundException('The file "/path/to/file" can not be downloaded.'))
-            ->during('get', ['/path/to/file']);
+        $downloadedFile->shouldBeAnInstanceOf(File::class);
+        $downloadedFile->getPathname()->shouldReturn('/some/path/myfile.png');
     }
 }

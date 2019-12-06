@@ -8,3 +8,54 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Filesystem\Filter\ColorspaceFilter
         tags:
             - { name: 'liip_imagine.filter.loader', loader: colorspace }
+
+    # file utils:
+    Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader:
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.file_storage.file.file_fetcher'
+
+    # operation appliers:
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplierRegistry:
+        arguments:
+            - !tagged akeneo_assetmanager.transformation.operation_applier
+
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\ColorspaceOperationApplier:
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@filesystem'
+        tags:
+            - { name: akeneo_assetmanager.transformation.operation_applier }
+
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\ResizeOperationApplier:
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@filesystem'
+        tags:
+            - { name: akeneo_assetmanager.transformation.operation_applier }
+
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\ResolutionOperationApplier:
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@filesystem'
+        tags:
+            - { name: akeneo_assetmanager.transformation.operation_applier }
+
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\ScaleOperationApplier:
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@filesystem'
+        tags:
+            - { name: akeneo_assetmanager.transformation.operation_applier }
+
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\ThumbnailOperationApplier:
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@filesystem'
+        tags:
+            - { name: akeneo_assetmanager.transformation.operation_applier }
+
+    # executor
+    Akeneo\AssetManager\Infrastructure\Transformation\FileTransformer:
+        arguments:
+            - '@Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplierRegistry'

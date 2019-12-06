@@ -2,52 +2,73 @@
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
-use Akeneo\AssetManager\Infrastructure\Transformation\Operation\TemporaryFileFactory;
+use Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplier;
 use Akeneo\AssetManager\Infrastructure\Transformation\Operation\ThumbnailOperationApplier;
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Model\FileBinary;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 
 class ThumbnailOperationApplierSpec extends ObjectBehavior
 {
-    function let(FilterManager $filterManager, TemporaryFileFactory $temporaryFileFactory)
+    function let(FilterManager $filterManager, Filesystem $filesystem)
     {
-        $this->beConstructedWith($filterManager, $temporaryFileFactory);
+        $this->beConstructedWith($filterManager, $filesystem);
+    }
+
+    function it_is_an_operation_applier()
+    {
+        $this->shouldImplement(OperationApplier::class);
+    }
+
+    function it_is_a_thumbnail_operation_applier()
+    {
         $this->shouldHaveType(ThumbnailOperationApplier::class);
     }
 
-    function it_supports_only_thumbnail_operation(
+    function it_only_supports_thumbnail_operations(
         ThumbnailOperation $operation,
-        ColorspaceOperation $wrongOperation
+        ResizeOperation $wrongOperation
     ) {
         $this->supports($operation)->shouldReturn(true);
         $this->supports($wrongOperation)->shouldReturn(false);
     }
 
-    function it_apply_thumbnail(
+    function it_applies_a_colorspace_operation(
         FilterManager $filterManager,
+        Filesystem $filesystem,
         ThumbnailOperation $operation,
-        TemporaryFileFactory $temporaryFileFactory,
-        BinaryInterface $computedImage
+        BinaryInterface $computedImage,
+        File $file
     ) {
-        $file = new File(__DIR__ . '/akeneo.png');
-        $operation->getWidth()->willReturn(800);
-        $operation->getHeight()->willReturn(600);
-        $image = new FileBinary($file->getPath(), $file->getMimeType());
-        $filterManager->applyFilters($image, [
-            'filters' => [
-                'thumbnail' => [
-                    'size' => [800, 600]
-                ]
-            ]
-        ])->shouldBeCalledOnce()->willReturn($computedImage);
-        $computedImage->getContent()->willReturn('imageContent');
-        $temporaryFileFactory->createFromContent('imageContent')->shouldBeCalled()->willReturn($file);
+        $file->beConstructedWith(['/path/to/my/file.png', false]);
+        $file->getRealPath()->willReturn('/path/to/my/file.png');
+        $file->getMimeType()->willReturn('image/png');
 
-        $this->apply($file, $operation);
+
+        $computedImage->getContent()->willReturn('imageContent');
+        $operation->getWidth()->willReturn(100);
+        $operation->getHeight()->willReturn(100);
+
+
+        $filterManager->applyFilters(
+            Argument::type(FileBinary::class),
+            [
+                'filters' => [
+                    'thumbnail' => [
+                        'size' => [100, 100],
+                    ]
+                ],
+                'quality' => 100,
+            ]
+        )->shouldBeCalledOnce()->willReturn($computedImage);
+        $filesystem->dumpFile('/path/to/my/file.png', 'imageContent')->shouldBeCalled();
+
+        $this->apply($file, $operation)->shouldReturn($file);
     }
 }
