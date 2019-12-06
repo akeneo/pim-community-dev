@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Usecase;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -73,7 +73,7 @@ class ListRootCategoriesWithCountHandlerSpec extends ObjectBehavior
         $listNotIncludingSubCategories,
         CategoryInterface $treeToExpand
     ) {
-        $userContext->getUserProductCategoryTree()->willReturn($treeToExpand);
+        $userContext->getAccessibleUserTree()->willReturn($treeToExpand);
         $treeToExpand->getRoot()->willReturn(1);
 
         $listNotIncludingSubCategories->list('en_US', 1, 1, null)->willReturn([
@@ -84,5 +84,13 @@ class ListRootCategoriesWithCountHandlerSpec extends ObjectBehavior
         $this->handle($query)->shouldBeLike([
             new RootCategory(1, 'code', 'label', 10, true)
         ]);
+    }
+
+    function it_handles_query_for_users_that_have_no_access_to_any_category($userContext)
+    {
+        $userContext->getAccessibleUserTree()->willReturn(null);
+
+        $query = new ListRootCategoriesWithCount(-1, false, 1, 'en_US');
+        $this->handle($query)->shouldBeLike([]);
     }
 }
