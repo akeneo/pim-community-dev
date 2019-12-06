@@ -21,10 +21,7 @@ final class Version_4_0_20190911121924_proposal_add_source_to_product_drafts ext
 
     public function down(Schema $schema) : void
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('ALTER TABLE pimee_workflow_product_draft DROP source, DROP source_label, DROP author_label');
-        $this->addSql('ALTER TABLE pimee_workflow_product_model_draft DROP source, DROP source_label, DROP author_label');
+        $this->throwIrreversibleMigrationException();
     }
 
     private function populateNewColumns(): void

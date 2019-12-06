@@ -29,16 +29,6 @@ SQL;
 
     public function down(Schema $schema) : void
     {
-        $alterTable = <<<SQL
-ALTER TABLE `akeneo_asset_manager_asset_family`
-    DROP FOREIGN KEY `akeneoasset_manager_attribute_as_main_media_foreign_key`,
-    CHANGE `attribute_as_main_media` `attribute_as_image` VARCHAR(255),
-    ADD CONSTRAINT `akeneoasset_manager_attribute_as_image_foreign_key`
-        FOREIGN KEY (`attribute_as_image`)
-        REFERENCES `akeneo_asset_manager_attribute` (`identifier`)
-        ON DELETE SET NULL
-SQL;
-
-        $this->addSql($alterTable);
+        $this->throwIrreversibleMigrationException();
     }
 }
