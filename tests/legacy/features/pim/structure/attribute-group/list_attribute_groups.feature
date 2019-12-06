@@ -84,7 +84,7 @@ Feature: List attribute groups
     And I press the "Save" button in the popin
     And I wait to be on the "big_family" family page
     And I visit the "Attributes" tab
-    And I add attributes by group "attribute_group_1, attribute_group_2, attribute_group_3, attribute_group_4, attribute_group_5, attribute_group_6, attribute_group_7, attribute_group_8, attribute_group_9, attribute_group_10"
+    And I add attributes by group "attribute_group_2, attribute_group_3, attribute_group_4, attribute_group_5, attribute_group_6, attribute_group_7, attribute_group_8, attribute_group_9, attribute_group_10"
     And I add attributes by group "attribute_group_11, attribute_group_12, attribute_group_13, attribute_group_14, attribute_group_15, attribute_group_16, attribute_group_17, attribute_group_18, attribute_group_19, attribute_group_20"
     And I add attributes by group "attribute_group_21, attribute_group_22"
     And I should see the text "attribute_group_1"
