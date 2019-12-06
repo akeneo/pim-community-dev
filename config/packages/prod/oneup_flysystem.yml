@@ -20,8 +20,3 @@ oneup_flysystem:
                 client: 'Google\Cloud\Storage\StorageClient'
                 bucket: 'Google\Cloud\Storage\Bucket'
                 prefix: 'archivist'
-        logs_adapter:
-            googlecloudstorage:
-                client: 'Google\Cloud\Storage\StorageClient'
-                bucket: 'Google\Cloud\Storage\Bucket'
-                prefix: 'log'
