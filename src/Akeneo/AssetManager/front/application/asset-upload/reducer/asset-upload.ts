@@ -9,6 +9,7 @@ import {
   lineCreationStart,
   assetCreationSucceeded,
   assetCreationFailed,
+  editLine,
 } from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
@@ -77,6 +78,18 @@ export const removeLineAction = (line: Line): OnRemoveLineAction => ({
   },
 });
 
+export const EDIT_LINE = 'asset-upload/EDIT_LINE';
+export type OnEditLineAction = {
+  type: typeof EDIT_LINE;
+  payload: {line: Line};
+};
+export const editLineAction = (line: Line): OnEditLineAction => ({
+  type: EDIT_LINE,
+  payload: {
+    line,
+  },
+});
+
 export const FILE_UPLOAD_SUCCESS = 'asset-upload/FILE_UPLOAD_SUCCESS';
 export type OnFileUploadSuccessAction = {
   type: typeof FILE_UPLOAD_SUCCESS;
@@ -134,6 +147,7 @@ export const reducer = (
     | OnLineCreationStartAction
     | OnAssetCreationSuccessAction
     | OnAssetCreationFailAction
+    | OnEditLineAction
 ) => {
   console.log(state, action);
 
@@ -144,6 +158,8 @@ export const reducer = (
       return {...state, lines: addThumbnail(state.lines, action.payload.line, action.payload.thumbnail)};
     case REMOVE_LINE:
       return {...state, lines: removeLine(state.lines, action.payload.line)};
+    case EDIT_LINE:
+      return {...state, lines: editLine(state.lines, action.payload.line)};
     case FILE_UPLOAD_SUCCESS:
       return {...state, lines: addUploadedFileToLine(state.lines, action.payload.line, action.payload.file)};
     case FILE_UPLOAD_PROGRESS:

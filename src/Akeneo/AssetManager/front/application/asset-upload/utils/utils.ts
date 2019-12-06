@@ -133,6 +133,13 @@ export const addThumbnail = (lines: Line[], lineToUpdate: Line, thumbnail: Thumb
 export const removeLine = (lines: Line[], lineToRemove: Line): Line[] =>
   lines.filter((line: Line) => line.id !== lineToRemove.id);
 
+export const editLine = (lines: Line[], lineToEdit: Line): Line[] =>
+  lines.map((line: Line) =>
+    line.id !== lineToEdit.id
+      ? {...line, code: lineToEdit.code, locale: lineToEdit.locale, channel: lineToEdit.channel}
+      : line
+  );
+
 export const addUploadedFileToLine = (lines: Line[], lineToUpdate: Line, file: FileModel): Line[] => {
   return lines.map((line: Line) => (line.id === lineToUpdate.id ? {...line, file} : line));
 };

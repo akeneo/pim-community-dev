@@ -25,6 +25,11 @@ import {
   reducer,
   assetCreationFailAction,
   assetCreationSuccessAction,
+  OnFileThumbnailGenerationAction,
+  OnFileUploadSuccessAction,
+  OnFileUploadProgressAction,
+  OnAddLineAction,
+  editLineAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/asset-upload';
 import FileDropZone from 'akeneoassetmanager/application/asset-upload/component/file-drop-zone';
 
@@ -72,6 +77,66 @@ const uploadFile = async (
   });
 };
 
+const onCreateAllAssetAction = (assetFamily: AssetFamily, lines: Line[], dispatch: (action: any) => void) => {
+  const linesToSend = selectLinesToSend(lines);
+  const assetsToSend = createAssetsFromLines(linesToSend, assetFamily);
+
+  linesToSend.forEach((line: Line) => dispatch(lineCreationStartAction(line)));
+
+  assetsToSend.forEach(async (asset: CreationAsset) => {
+    try {
+      const result = await create(asset);
+
+      if (null !== result) {
+        dispatch(assetCreationFailAction(asset, result));
+      } else {
+        dispatch(assetCreationSuccessAction(asset));
+      }
+    } catch (e) {
+      dispatch(
+        assetCreationFailAction(asset, [
+          {
+            messageTemplate: 'pim_asset_manager.asset.validation.server_error',
+            parameters: {},
+            message: 'Internal server error',
+            propertyPath: '',
+            invalidValue: asset,
+          },
+        ])
+      );
+    }
+  });
+};
+
+const onFileDrop = (
+  files: FileList | null,
+  assetFamily: AssetFamily,
+  dispatch: (
+    action: OnFileThumbnailGenerationAction | OnFileUploadProgressAction | OnFileUploadSuccessAction | OnAddLineAction
+  ) => void
+) => {
+  if (null === files) {
+    return;
+  }
+  const lines = Object.values(files).map((file: File) => {
+    const filename = file.name;
+
+    const line = createLineFromFilename(filename, assetFamily);
+    getThumbnailFromFile(file, line).then(({thumbnail, line}) =>
+      dispatch(fileThumbnailGenerationAction(thumbnail, line))
+    );
+
+    uploadFile(file, line, (line: Line, progress: number) => {
+      dispatch(fileUploadProgressAction(line, progress));
+    }).then((file: FileModel) => {
+      dispatch(fileUploadSuccessAction(line, file));
+    });
+
+    return line;
+  });
+  dispatch(linesAddedAction(lines));
+};
+
 const UploadModal = ({assetFamily, onCancel}: UploadModalProps) => {
   const [state, dispatch] = React.useReducer(reducer, {lines: []});
 
@@ -84,34 +149,7 @@ const UploadModal = ({assetFamily, onCancel}: UploadModalProps) => {
           title={__('pim_asset_manager.asset.upload.confirm')}
           color="green"
           onClick={() => {
-            const linesToSend = selectLinesToSend(state.lines);
-            const assetsToSend = createAssetsFromLines(linesToSend, assetFamily);
-
-            linesToSend.forEach((line: Line) => dispatch(lineCreationStartAction(line)));
-
-            assetsToSend.forEach(async (asset: CreationAsset) => {
-              try {
-                const result = await create(asset);
-
-                if (null !== result) {
-                  dispatch(assetCreationFailAction(asset, result));
-                } else {
-                  dispatch(assetCreationSuccessAction(asset));
-                }
-              } catch (e) {
-                dispatch(
-                  assetCreationFailAction(asset, [
-                    {
-                      messageTemplate: 'pim_asset_manager.asset.validation.server_error',
-                      parameters: {},
-                      message: 'Internal server error',
-                      propertyPath: '',
-                      invalidValue: asset,
-                    },
-                  ])
-                );
-              }
-            });
+            onCreateAllAssetAction(assetFamily, state.lines, dispatch);
           }}
         >
           {__('pim_asset_manager.asset.upload.confirm')}
@@ -123,31 +161,14 @@ const UploadModal = ({assetFamily, onCancel}: UploadModalProps) => {
           event.stopPropagation();
 
           const files = event.target.files;
-          if (null === files) {
-            return;
-          }
-          const lines = Object.values(files).map((file: File) => {
-            const filename = file.name;
-
-            const line = createLineFromFilename(filename, assetFamily);
-            getThumbnailFromFile(file, line).then(({thumbnail, line}) =>
-              dispatch(fileThumbnailGenerationAction(thumbnail, line))
-            );
-
-            uploadFile(file, line, (line: Line, progress: number) => {
-              dispatch(fileUploadProgressAction(line, progress));
-            }).then((file: FileModel) => {
-              dispatch(fileUploadSuccessAction(line, file));
-            });
-
-            return line;
-          });
-          dispatch(linesAddedAction(lines));
+          onFileDrop(files, assetFamily, dispatch);
         }}
       />
       <LineList
         lines={state.lines}
-        onLineChange={() => {}}
+        onLineChange={(line: Line) => {
+          dispatch(editLineAction(line));
+        }}
         onLineRemove={(line: Line) => {
           dispatch(removeLineAction(line));
         }}
