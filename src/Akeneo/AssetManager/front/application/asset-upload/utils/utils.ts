@@ -182,6 +182,38 @@ export const selectLinesCreated = (lines: Line[]): Line[] => lines.filter((line:
 //
 // };
 
+export const getStatusFromLine = (line: Line, assetFamily: AssetFamily): LineStatus => {
+  const errorsCount = Object.values(line.errors).reduce((count: number, errors: ValidationError[]) => {
+    return count + errors.length;
+  }, 0);
+  const attribute = getAssetFamilyMainMedia(assetFamily) as NormalizedAttribute;
+  const localizable = attribute.value_per_locale;
+  const scopable = attribute.value_per_channel;
+  const isComplete: boolean =
+    (!localizable || (localizable && line.locale !== null)) && (!scopable || (scopable && line.channel !== null));
+
+  if (errorsCount > 0) {
+    return LineStatus.Invalid;
+  }
+  if (!line.created && !line.isSending && line.file === null) {
+    return LineStatus.WaitingForUpload;
+  }
+  if (line.isSending) {
+    return LineStatus.UploadInProgress;
+  }
+  if (line.file !== null && !isComplete) {
+    return LineStatus.Uploaded;
+  }
+  if (line.file !== null && isComplete) {
+    return LineStatus.Valid;
+  }
+  if (line.created) {
+    return LineStatus.Created;
+  }
+
+  throw Error('Unsupported state for upload line');
+};
+
 /**
  * Misc
  */

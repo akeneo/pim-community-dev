@@ -237,9 +237,9 @@ pim_asset_manager:
         waiting_for_upload: not uploaded
         upload_in_progress: in progress
         uploaded: uploaded
-        ready: ready to create
+        valid: ready to create
         invalid: error
-        incomplete: incomplete
+        created: created
     delete:
       message: Are you sure you want to delete the asset "{{ assetLabel }}"? If it's linked to products or assets, the links will be removed.
       title: Asset

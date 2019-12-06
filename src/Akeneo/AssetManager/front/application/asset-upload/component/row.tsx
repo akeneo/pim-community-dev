@@ -4,6 +4,7 @@ import CrossIcon from 'akeneoassetmanager/application/component/app/icon/close';
 import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import RowStatus from 'akeneoassetmanager/application/asset-upload/component/row-status';
+import {getStatusFromLine} from 'src/Akeneo/AssetManager/front/application/asset-upload/utils/utils';
 
 const Container = styled.tr`
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};

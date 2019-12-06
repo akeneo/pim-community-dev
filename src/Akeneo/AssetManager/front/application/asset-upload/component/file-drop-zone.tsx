@@ -45,7 +45,6 @@ const Uploader = styled.div`
     height: 60px;
     width: 80px;
 
-
     .arrow {
       transform-origin: 51.2% 26%;
       transition: transform 0.3s ease-in-out;

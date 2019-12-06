@@ -1,10 +1,12 @@
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
+import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {
   addLines,
   createAssetsFromLines,
   createLineFromFilename,
+  getStatusFromLine,
 } from 'akeneoassetmanager/application/asset-upload/utils/utils';
+import {NormalizedValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 
 const createAssetFamilyWithMainMedia = (localizable: boolean, scopable: boolean): AssetFamily => {
   return {
@@ -384,5 +386,256 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createAs
         ],
       },
     ]);
+  });
+});
+
+describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatusFromLine', () => {
+  const defaultLine: Line = {
+    id: '68529cb2-4016-427c-b6a2-cda6b118562e',
+    thumbnail: null,
+    created: false,
+    isSending: false,
+    file: null,
+    filename: 'foo.jpg',
+    code: 'foo',
+    locale: null,
+    channel: null,
+    uploadProgress: null,
+    errors: {
+      back: [],
+    },
+  };
+
+  const defaultError: NormalizedValidationError = {
+    messageTemplate: '',
+    parameters: {},
+    message: 'error',
+    propertyPath: '',
+    invalidValue: null,
+  };
+
+  test('I can calculate the status of a line localizable and scopable', () => {
+    const assetFamily = createAssetFamilyWithMainMedia(true, true);
+
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.WaitingForUpload);
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          isSending: true,
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.UploadInProgress);
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          file: {
+            filePath: 'foo.jpg',
+            originalFilename: 'foo.jpg',
+          },
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Uploaded);
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          file: {
+            filePath: 'foo.jpg',
+            originalFilename: 'foo.jpg',
+          },
+          locale: 'en_US',
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Uploaded);
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          file: {
+            filePath: 'foo.jpg',
+            originalFilename: 'foo.jpg',
+          },
+          channel: 'ecommerce',
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Uploaded);
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          file: {
+            filePath: 'foo.jpg',
+            originalFilename: 'foo.jpg',
+          },
+          locale: 'en_US',
+          channel: 'ecommerce',
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Valid);
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          created: true,
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Created);
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          errors: {
+            back: [defaultError],
+          },
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Invalid);
+  });
+
+  test('I can calculate the status of a line localizable and not scopable', () => {
+    const assetFamily = createAssetFamilyWithMainMedia(true, false);
+
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          file: {
+            filePath: 'foo.jpg',
+            originalFilename: 'foo.jpg',
+          },
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Uploaded);
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          file: {
+            filePath: 'foo.jpg',
+            originalFilename: 'foo.jpg',
+          },
+          locale: 'en_US',
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Valid);
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          file: {
+            filePath: 'foo.jpg',
+            originalFilename: 'foo.jpg',
+          },
+          channel: 'ecommerce',
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Uploaded);
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          file: {
+            filePath: 'foo.jpg',
+            originalFilename: 'foo.jpg',
+          },
+          locale: 'en_US',
+          channel: 'ecommerce',
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Valid);
+  });
+
+  test('I can calculate the status of a line not localizable and scopable', () => {
+    const assetFamily = createAssetFamilyWithMainMedia(false, true);
+
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          file: {
+            filePath: 'foo.jpg',
+            originalFilename: 'foo.jpg',
+          },
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Uploaded);
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          file: {
+            filePath: 'foo.jpg',
+            originalFilename: 'foo.jpg',
+          },
+          locale: 'en_US',
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Uploaded);
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          file: {
+            filePath: 'foo.jpg',
+            originalFilename: 'foo.jpg',
+          },
+          channel: 'ecommerce',
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Valid);
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          file: {
+            filePath: 'foo.jpg',
+            originalFilename: 'foo.jpg',
+          },
+          locale: 'en_US',
+          channel: 'ecommerce',
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Valid);
+  });
+
+  test('I can calculate the status of a line not localizable and not scopable', () => {
+    const assetFamily = createAssetFamilyWithMainMedia(false, false);
+
+    expect(
+      getStatusFromLine(
+        {
+          ...defaultLine,
+          file: {
+            filePath: 'foo.jpg',
+            originalFilename: 'foo.jpg',
+          },
+        },
+        assetFamily
+      )
+    ).toEqual(LineStatus.Valid);
   });
 });

@@ -7,9 +7,9 @@ export enum LineStatus {
   WaitingForUpload = 'waiting_for_upload',
   UploadInProgress = 'upload_in_progress',
   Uploaded = 'uploaded',
-  Ready = 'ready',
+  Valid = 'valid',
   Invalid = 'invalid',
-  Incomplete = 'incomplete',
+  Created = 'created',
 }
 
 export type Thumbnail = string | null;

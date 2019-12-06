@@ -36,13 +36,13 @@ type LineStatusProps = {
 const RowStatus = ({status, progress}: LineStatusProps) => {
   switch (status) {
     case LineStatus.WaitingForUpload:
-    case LineStatus.Incomplete:
       return (
         <StatusLabel color={akeneoTheme.color.grey100}>
           {__('pim_asset_manager.asset.upload.status.' + status)}
         </StatusLabel>
       );
-    case LineStatus.Ready:
+    case LineStatus.Valid:
+    case LineStatus.Created:
       return (
         <StatusLabel color={akeneoTheme.color.green100}>
           {__('pim_asset_manager.asset.upload.status.' + status)}
