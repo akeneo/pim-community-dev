@@ -26,6 +26,7 @@ import {
   assetCreationFailAction,
   assetCreationSuccessAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/asset-upload';
+import FileDropZone from 'akeneoassetmanager/application/asset-upload/component/file-drop-zone';
 
 type UploadModalProps = {
   assetFamily: AssetFamily;
@@ -116,10 +117,8 @@ const UploadModal = ({assetFamily, onCancel}: UploadModalProps) => {
           {__('pim_asset_manager.asset.upload.confirm')}
         </ConfirmButton>
       </Header>
-      <input
-        type="file"
-        multiple
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+      <FileDropZone
+        onDrop={(event: React.ChangeEvent<HTMLInputElement>) => {
           event.preventDefault();
           event.stopPropagation();
 

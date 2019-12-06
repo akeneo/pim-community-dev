@@ -3,26 +3,21 @@ import {Button} from 'akeneoassetmanager/application/component/app/button';
 import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
 import __ from 'akeneoassetmanager/tools/translator';
 import styled from 'styled-components';
-import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
-import CrossIcon from 'akeneoassetmanager/application/component/app/icon/close';
-
-type LineListProps = {
-  lines: Line[];
-  onLineRemove: (line: Line) => void;
-};
+import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import Line from 'akeneoassetmanager/application/asset-upload/model/line';
+import Row from 'akeneoassetmanager/application/asset-upload/component/row';
 
 const Header = styled.div`
-  display: flex;
-  border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey140};
-  padding-bottom: 7px;
   align-items: center;
+  border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey140};
+  display: flex;
+  padding-bottom: 7px;
 `;
-const AssetCount = styled.div`
-  text-transform: uppercase;
+const LineCount = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.big};
   font-weight: normal;
+  text-transform: uppercase;
 `;
 const ActionButton = styled(Button)`
   margin-left: 10px;
@@ -36,87 +31,27 @@ const ListHeader = styled.thead`
   margin-top: 10px;
 `;
 const ListColumnHeader = styled.th<{width?: number}>`
-  line-height: 44px;
-  height: 44px;
   color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
-  width: ${(props: ThemedProps<{width?: number}>) => (props.width ? props.width : 'auto')};
+  height: 44px;
+  line-height: 44px;
   padding-left: 15px;
   text-align: left;
-`;
-const ListLine = styled.tr`
-  border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
-`;
-const ListCell = styled.td`
-  padding: 15px;
-`;
-const Thumbnail = styled.img`
-  height: 48px;
-  object-fit: cover;
-  width: 48px;
-  border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
-`;
-const RemoveLineButton = styled.button`
-  border: none;
-  background: none;
-  cursor: pointer;
-`;
-const StatusLabel = styled.span`
-  color: 1px solid ${(props: ThemedProps<{color: string}>) => props.color};
-  border: 1px solid ${(props: ThemedProps<{color: string}>) => props.color};
-  text-transform: uppercase;
-  border-radius: 2px;
-  padding: 0 4px;
-  font-size: 11px;
-`;
-const Input = styled.input`
-  border-radius: 2px;
-  border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
-  height: 40px;
-  line-height: 40px;
-  padding: 0 0 0 15px;
+  width: ${(props: ThemedProps<{width?: number}>) => (props.width ? props.width : 'auto')};
 `;
 
-const renderStatus = (status: LineStatus, progress: number | null) => {
-  switch (status) {
-    case LineStatus.WaitingForUpload:
-    case LineStatus.Incomplete:
-      return (
-        <StatusLabel color={akeneoTheme.color.grey100}>
-          {__('pim_asset_manager.asset.upload.status.' + status)}
-        </StatusLabel>
-      );
-    case LineStatus.Ready:
-      return (
-        <StatusLabel color={akeneoTheme.color.green100}>
-          {__('pim_asset_manager.asset.upload.status.' + status)}
-        </StatusLabel>
-      );
-    case LineStatus.Invalid:
-      return (
-        <StatusLabel color={akeneoTheme.color.red100}>
-          {__('pim_asset_manager.asset.upload.status.' + status)}
-        </StatusLabel>
-      );
-    case LineStatus.Uploaded:
-      return (
-        <StatusLabel color={akeneoTheme.color.blue100}>
-          {__('pim_asset_manager.asset.upload.status.' + status)}
-        </StatusLabel>
-      );
-    case LineStatus.UploadInProgress:
-      return <span>{progress}%</span>;
-    default:
-      throw Error('unsupported line status');
-  }
+type LineListProps = {
+  lines: Line[];
+  onLineRemove: (line: Line) => void;
+  localizable?: boolean;
+  scopable?: boolean;
 };
 
-const LineList = ({lines, onLineRemove}: LineListProps) => {
+const LineList = ({lines, onLineRemove, localizable = true, scopable = true}: LineListProps) => {
   return (
     <>
       <Header>
-        <AssetCount>{__('pim_asset_manager.asset.upload.asset_count', {count: lines.length}, lines.length)}</AssetCount>
+        <LineCount>{__('pim_asset_manager.asset.upload.line_count', {count: lines.length}, lines.length)}</LineCount>
         <Spacer />
-        <ActionButton color="outline">{__('pim_asset_manager.asset.upload.add_new')}</ActionButton>
         <ActionButton color="outline">{__('pim_asset_manager.asset.upload.remove_all')}</ActionButton>
       </Header>
       <List>
@@ -125,25 +60,15 @@ const LineList = ({lines, onLineRemove}: LineListProps) => {
             <ListColumnHeader width={78}>{__('pim_asset_manager.asset.upload.list.asset')}</ListColumnHeader>
             <ListColumnHeader>{__('pim_asset_manager.asset.upload.list.filename')}</ListColumnHeader>
             <ListColumnHeader>{__('pim_asset_manager.asset.upload.list.code')}</ListColumnHeader>
-            <ListColumnHeader>{__('pim_asset_manager.asset.upload.list.status')}</ListColumnHeader>
-            <ListColumnHeader />
+            {localizable && <ListColumnHeader>{__('pim_asset_manager.asset.upload.list.locale')}</ListColumnHeader>}
+            {scopable && <ListColumnHeader>{__('pim_asset_manager.asset.upload.list.channel')}</ListColumnHeader>}
+            <ListColumnHeader width={0}>{__('pim_asset_manager.asset.upload.list.status')}</ListColumnHeader>
+            <ListColumnHeader width={0} />
           </tr>
         </ListHeader>
         <tbody>
           {lines.map((line: Line) => (
-            <ListLine key={line.id}>
-              <ListCell>{null !== line.thumbnail && <Thumbnail src={line.thumbnail} />}</ListCell>
-              <ListCell>{line.filename}</ListCell>
-              <ListCell>
-                <Input type="text" value={line.code} />
-              </ListCell>
-              <ListCell>{renderStatus(line.status, line.uploadProgress)}</ListCell>
-              <ListCell>
-                <RemoveLineButton onClick={() => onLineRemove(line)}>
-                  <CrossIcon />
-                </RemoveLineButton>
-              </ListCell>
-            </ListLine>
+            <Row key={line.id} line={line} onLineRemove={onLineRemove} localizable={localizable} scopable={scopable} />
           ))}
         </tbody>
       </List>
