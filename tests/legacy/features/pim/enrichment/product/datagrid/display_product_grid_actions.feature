@@ -13,25 +13,14 @@ Feature: Display product datagrid row actions
 
   Scenario: Display row actions for product models
     When I am on the products grid
-    Then I should be able to view the "Edit attributes of the product" action of the row which contains "tshirt"
-    And I should be able to view the "Classify the product" action of the row which contains "tshirt"
-    And I should not be able to view the "Delete the product" action of the row which contains "tshirt"
-    And I should not be able to view the "Toggle status" action of the row which contains "tshirt"
 
-  Scenario: Display row actions for products
+  Scenario: Display row actions for products and product models
     When I am on the products grid
     Then I should be able to view the "Edit attributes of the product" action of the row which contains "watch"
     And I should be able to view the "Classify the product" action of the row which contains "watch"
     And I should be able to view the "Delete the product" action of the row which contains "watch"
     And I should be able to view the "Toggle status" action of the row which contains "watch"
-
-  Scenario: Edit a product from the grid
-    When I am on the products grid
-    And I click on the "Edit attributes of the product" action of the row which contains "watch"
-    Then I should be on the product "watch" edit page
-
-  Scenario: Edit a product model from the grid
-    When I am on the products grid
-    And I collapse the column
-    And I click on the "Edit attributes of the product" action of the row which contains "tshirt"
-    Then I should be on the product model "tshirt" edit page
+    Then I should be able to view the "Edit attributes of the product" action of the row which contains "tshirt"
+    And I should be able to view the "Classify the product" action of the row which contains "tshirt"
+    And I should not be able to view the "Delete the product" action of the row which contains "tshirt"
+    And I should not be able to view the "Toggle status" action of the row which contains "tshirt"

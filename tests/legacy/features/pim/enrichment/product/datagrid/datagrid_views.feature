@@ -16,17 +16,7 @@ Feature: Datagrid views
   Scenario: Successfully display the default view
     Given I am on the products grid
     Then I should see the text "Default view"
-
-  Scenario: Successfully create a new view
-    Given I am on the products grid
-    And I filter by "family" with operator "in list" and value "Sneakers"
-    And I create the view:
-      | new-view-label | Sneakers only |
-    Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
-    And I should see the text "Sneakers only"
-    And I should see products purple-sneakers and black-sneakers
-    But I should not see product black-boots
+    Then I should see the columns ID, Image, Label, Family, Status, Complete, Created At, Updated At, Variant products
 
   Scenario: Successfully apply a view
     Given I am on the products grid
@@ -37,7 +27,7 @@ Feature: Datagrid views
     Then I should be on the products page
     And I should see products black-boots, purple-sneakers and black-sneakers
 
-  Scenario: Successfully update a view
+  Scenario: Successfully create and then update the filters of a view
     Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Boots"
     And I create the view:
@@ -57,7 +47,7 @@ Feature: Datagrid views
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
 
-  Scenario: Successfully update columns of a view
+  Scenario: Successfully create and then update columns of a view
     Given I am on the products grid
     When I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
@@ -66,6 +56,7 @@ Feature: Datagrid views
     And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Some shoes"
     When I display the columns SKU, Name, Family and Manufacturer
+    Then I should see the columns Family, Sku, Manufacturer, Name
     Then I should see the text "Nike"
     When I update the view
     And I apply the "Some shoes" view
@@ -73,24 +64,6 @@ Feature: Datagrid views
     And I should see the text "Some shoes"
     And I should see products purple-sneakers and black-sneakers
     And I should see the text "Nike"
-
-  Scenario: Successfully delete a view
-    Given I am on the products grid
-    And I filter by "family" with operator "in list" and value "Boots"
-    And I create the view:
-      | new-view-label | Boots only |
-    Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
-    And I should see the text "Boots only"
-    And I should see product black-boots
-    But I should not see products purple-sneakers and black-sneakers
-    When I delete the view
-    And I confirm the deletion
-    Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully removed"
-    And I should see the text "Default view"
-    But I should not see the text "Boots only"
-    And I should see products black-boots, purple-sneakers and black-sneakers
 
   Scenario: Can not delete nor save a view that is not mine
     Given I am on the products grid
@@ -110,43 +83,6 @@ Feature: Datagrid views
     And I should not be able to remove the view
     When I filter by "family" with operator "in list" and value "Sneakers"
     Then I should not be able to save the view
-
-  Scenario: Successfully choose my default view
-    Given I am on the products grid
-    And I filter by "family" with operator "in list" and value "Sneakers"
-    And I create the view:
-      | new-view-label | Sneakers only |
-    Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
-    When I edit the "Mary" user
-    Then I should see the text "Mary"
-    And I should see the text "Save"
-    When I visit the "Additional" tab
-    Then I should see the text "Default product grid view"
-    And I fill in the following information:
-      | Default product grid view | Sneakers only |
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes."
-    When I logout
-    And I am logged in as "Julia"
-    And I am on the products grid
-    Then I should see products black-boots, purple-sneakers and black-sneakers
-    When I edit the "Julia" user
-    When I visit the "Additional" tab
-    Then I should see the text "Default product grid view"
-    And I fill in the following information:
-      | Default product grid view | Sneakers only |
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes."
-    When I am on the products grid
-    Then I should see the text "Sneakers only"
-    And the grid should contain 2 elements
-    When I logout
-    And I am logged in as "Mary"
-    And I am on the products grid
-    Then I should see the text "Sneakers only"
-    And I should see products purple-sneakers and black-sneakers
-    But I should not see product black-boots
 
   Scenario: Successfully remove my default view
     Given I am on the products grid
@@ -206,17 +142,6 @@ Feature: Datagrid views
       | Name   | Black boots |
       | Family | Boots       |
 
-  Scenario: Successfully change grid channel
-    Given I am on the products grid
-    Then I should see the text "Tablet"
-    When I switch the scope to "Mobile"
-    And I create the view:
-      | new-view-label | Mobile only |
-    Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
-    And I should see the text "Mobile only"
-    And I should see the text "Mobile"
-
   @critical
   Scenario: Successfully display the default view if my custom default view has been deleted
     Given I am on the products grid
@@ -249,20 +174,3 @@ Feature: Datagrid views
     And I am on the products grid
     And I should see the text "Default view"
     But I should not see the text "Boots only"
-
-  @ce
-  Scenario: Don't display view type switcher if there is only one view type
-    Given I am on the products page
-    Then I should not see the text "Views"
-
-  Scenario: Successfully display filter values when refreshing a saved view
-    Given I am on the products grid
-    And I filter by "family" with operator "is empty" and value ""
-    And I create the view:
-      | new-view-label | Empty family |
-    Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
-    And I refresh current page
-    And I apply the "Empty family" view
-    Then I should see the text "Family is empty"
-    And I should see the text "Empty family"
