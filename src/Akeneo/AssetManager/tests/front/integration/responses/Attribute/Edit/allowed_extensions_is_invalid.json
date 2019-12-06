@@ -23,7 +23,8 @@
       "allowed_extensions": [
         150,
         122
-      ]
+      ],
+      "media_type": "image"
     }
   },
   "response": {

@@ -9,6 +9,7 @@ import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain
 import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/media-file/max-file-size';
 import {AllowedExtensions} from 'akeneoassetmanager/domain/model/attribute/type/media-file/allowed-extensions';
+import {MediaType} from 'akeneoassetmanager/domain/model/attribute/type/media-file/media-type';
 
 export const MEDIA_FILE_ATTRIBUTE_TYPE = 'media_file';
 
@@ -16,15 +17,17 @@ export interface NormalizedMediaFileAttribute extends NormalizedAttribute {
   type: 'media_file';
   allowed_extensions: AllowedExtensions;
   max_file_size: MaxFileSize;
+  media_type: MediaType;
 }
 
-export type NormalizedMediaFileAdditionalProperty = MaxFileSize | AllowedExtensions;
+export type NormalizedMediaFileAdditionalProperty = MaxFileSize | AllowedExtensions | MediaType;
 
-export type MediaFileAdditionalProperty = MaxFileSize | AllowedExtensions;
+export type MediaFileAdditionalProperty = MaxFileSize | AllowedExtensions | MediaType;
 
 export interface MediaFileAttribute extends Attribute {
   maxFileSize: MaxFileSize;
   allowedExtensions: AllowedExtensions;
+  mediaType: MediaType;
   normalize(): NormalizedMediaFileAttribute;
 }
 
@@ -41,7 +44,8 @@ export class ConcreteMediaFileAttribute extends ConcreteAttribute implements Med
     order: number,
     is_required: boolean,
     readonly maxFileSize: MaxFileSize,
-    readonly allowedExtensions: AllowedExtensions
+    readonly allowedExtensions: AllowedExtensions,
+    readonly mediaType: MediaType
   ) {
     super(
       identifier,
@@ -69,7 +73,8 @@ export class ConcreteMediaFileAttribute extends ConcreteAttribute implements Med
       normalizedMediaFileAttribute.order,
       normalizedMediaFileAttribute.is_required,
       normalizedMediaFileAttribute.max_file_size,
-      normalizedMediaFileAttribute.allowed_extensions
+      normalizedMediaFileAttribute.allowed_extensions,
+      normalizedMediaFileAttribute.media_type
     );
   }
 
@@ -79,6 +84,7 @@ export class ConcreteMediaFileAttribute extends ConcreteAttribute implements Med
       type: 'media_file',
       max_file_size: this.maxFileSize,
       allowed_extensions: this.allowedExtensions,
+      media_type: this.mediaType,
     };
   }
 }

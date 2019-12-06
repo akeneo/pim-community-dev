@@ -36,8 +36,9 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType as MediaFileMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType as MediaLinkMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
@@ -122,7 +123,8 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('250.12'),
-            AttributeAllowedExtensions::fromList(['pdf', 'png'])
+            AttributeAllowedExtensions::fromList(['pdf', 'png']),
+            MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
         );
 
         $this->attributeRepository->create($expectedAttribute);
@@ -296,7 +298,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::fromString('http://google.com/'),
             Suffix::empty(),
-            MediaType::fromString('image')
+            MediaLinkMediaType::fromString('image')
         );
 
         $this->attributeRepository->create($expectedMediaLink);

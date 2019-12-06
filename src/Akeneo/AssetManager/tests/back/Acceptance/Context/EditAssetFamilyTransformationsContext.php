@@ -24,6 +24,7 @@ use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
@@ -569,7 +570,8 @@ class EditAssetFamilyTransformationsContext implements Context
             $scopable,
             $localizable,
             null,
-            []
+            [],
+            MediaType::IMAGE
         );
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {

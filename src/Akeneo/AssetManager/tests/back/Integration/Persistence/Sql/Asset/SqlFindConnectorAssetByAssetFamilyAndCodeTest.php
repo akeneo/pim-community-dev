@@ -45,8 +45,9 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType as MediaFileMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType as MediaLinkMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
@@ -297,7 +298,8 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('250.2'),
-            AttributeAllowedExtensions::fromList(['png'])
+            AttributeAllowedExtensions::fromList(['png']),
+            MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
         );
 
         $country = AssetAttribute::create(
@@ -368,7 +370,7 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::fromString(''),
             Suffix::fromString(''),
-            MediaType::fromString(MediaType::IMAGE)
+            MediaLinkMediaType::fromString(MediaLinkMediaType::IMAGE)
         );
 
         $frontViewDam = MediaLinkAttribute::create(
@@ -382,7 +384,7 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::fromString('https://my-dam.com/'),
             Suffix::fromString('/500x500/thumbnail'),
-            MediaType::fromString(MediaType::IMAGE)
+            MediaLinkMediaType::fromString(MediaLinkMediaType::IMAGE)
         );
 
         $attributesRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');

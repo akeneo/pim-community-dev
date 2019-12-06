@@ -10,6 +10,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use PhpSpec\ObjectBehavior;
 
 class TextAttributeFactorySpec extends ObjectBehavior
@@ -47,7 +48,8 @@ class TextAttributeFactorySpec extends ObjectBehavior
                 false,
                 false,
                 null,
-                []
+                [],
+                MediaType::IMAGE
             )
         )->shouldReturn(false);
     }

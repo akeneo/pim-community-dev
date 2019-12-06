@@ -24,6 +24,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetOutdatedValues;
@@ -264,7 +265,8 @@ class GetOutdatedValuesSpec extends ObjectBehavior
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::noLimit(),
-            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED)
+            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED),
+            MediaType::fromString(MediaType::IMAGE)
         );
     }
 }

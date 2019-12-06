@@ -127,7 +127,8 @@
             "max_file_size": "200.10",
             "allowed_extensions": [
               "png"
-            ]
+            ],
+            "media_type": "image"
           },
           "channel": null,
           "locale": null,

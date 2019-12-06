@@ -24,6 +24,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -102,7 +103,8 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('10'),
-            AttributeAllowedExtensions::fromList(['jpg'])
+            AttributeAllowedExtensions::fromList(['jpg']),
+            MediaType::fromString(MediaType::IMAGE)
         );
 
         $this->attributeRepository->create($mediaFileAttribute);
@@ -116,7 +118,8 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
                 AttributeIsRequired::fromBoolean(true),
                 [
                     'max_file_size' => '10',
-                    'allowed_extensions' => ['jpg']
+                    'allowed_extensions' => ['jpg'],
+                    'media_type' => MediaType::IMAGE
                 ]
             );
     }

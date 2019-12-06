@@ -17,7 +17,8 @@
             "value_per_channel": false,
             "is_required_for_completeness": false,
             "max_file_size": null,
-            "allowed_extensions": ["gif", "png"]
+            "allowed_extensions": ["gif", "png"],
+            "media_type": "image"
         }
     },
     "response": {

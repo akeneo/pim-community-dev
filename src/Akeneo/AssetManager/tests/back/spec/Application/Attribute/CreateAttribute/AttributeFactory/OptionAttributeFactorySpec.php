@@ -10,6 +10,7 @@ use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateOptionAttrib
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -46,7 +47,8 @@ class OptionAttributeFactorySpec extends ObjectBehavior
                 false,
                 false,
                 null,
-                []
+                [],
+                MediaType::IMAGE
             )
         )->shouldReturn(false);
     }

@@ -6,6 +6,7 @@ use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\A
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistry;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use PhpSpec\ObjectBehavior;
 
 class AttributeFactoryRegistrySpec extends ObjectBehavior
@@ -49,7 +50,8 @@ class AttributeFactoryRegistrySpec extends ObjectBehavior
                 false,
                 false,
                 null,
-                []
+                [],
+                MediaType::IMAGE
             )
         ]);
     }

@@ -42,6 +42,7 @@
         "value_per_channel": false,
         "is_required_for_completeness": true,
         "allowed_extensions": ["jpg"],
+        "media_type": "image",
         "max_file_size": "10",
         "_links": {
           "self": {

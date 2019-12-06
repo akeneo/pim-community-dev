@@ -22,8 +22,9 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType as MediaFileMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType as MediaLinkMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
@@ -480,7 +481,7 @@ SQL;
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
             Suffix::empty(),
-            MediaType::fromString(MediaType::IMAGE)
+            MediaLinkMediaType::fromString(MediaLinkMediaType::IMAGE)
         );
         $order++;
 
@@ -601,7 +602,7 @@ SQL;
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
             Suffix::empty(),
-            MediaType::fromString(MediaType::PDF)
+            MediaLinkMediaType::fromString(MediaLinkMediaType::PDF)
         );
         $order++;
 
@@ -713,7 +714,7 @@ SQL;
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
             Suffix::empty(),
-            MediaType::fromString(MediaType::YOUTUBE)
+            MediaLinkMediaType::fromString(MediaLinkMediaType::YOUTUBE)
         );
         $this->attributeRepository->create($youtube);
 
@@ -759,7 +760,8 @@ SQL;
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::noLimit(),
-            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED)
+            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED),
+            MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
         );
         $this->attributeRepository->create($zoomImage);
 

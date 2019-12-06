@@ -18,6 +18,11 @@ import {
   createMaxFileSizeFromString,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-file/max-file-size';
 import Key from 'akeneoassetmanager/tools/key';
+import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-file/media-type';
+import {
+  normalizeMediaType,
+  createMediaTypeFromNormalized,
+} from 'akeneoassetmanager/domain/model/attribute/type/media-file/media-type';
 
 const MediaFileView = ({
   attribute,
@@ -74,6 +79,29 @@ const MediaFileView = ({
           />
         </div>
         {getErrorsView(errors, 'maxFileSize')}
+      </div>
+      <div className="AknFieldContainer" data-code="mediaType">
+        <div className="AknFieldContainer-header AknFieldContainer-header--light">
+          <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.media_type">
+            {__('pim_asset_manager.attribute.edit.input.media_type')}
+          </label>
+        </div>
+        <div className="AknFieldContainer-inputContainer">
+          <Select2
+            id="pim_asset_manager.attribute.edit.input.media_type"
+            name="media_type"
+            data={(MediaTypes as any) as {[choiceValue: string]: string}}
+            value={normalizeMediaType(attribute.mediaType)}
+            readOnly={!rights.attribute.edit}
+            configuration={{
+              allowClear: true,
+            }}
+            onChange={(mediaType: string) => {
+              onAdditionalPropertyUpdated('media_type', createMediaTypeFromNormalized(mediaType));
+            }}
+          />
+        </div>
+        {getErrorsView(errors, 'mediaType')}
       </div>
       <div className="AknFieldContainer" data-code="allowedExtensions">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">

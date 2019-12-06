@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFacto
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 
 /**
@@ -39,6 +40,8 @@ class CreateMediaFileAttributeCommandFactory extends AbstractCreateAttributeComm
             (string)$normalizedCommand['max_file_size'] : self::NO_LIMIT;
         $allowedExtensions = isset($normalizedCommand['allowed_extensions']) ?
             $normalizedCommand['allowed_extensions'] : AttributeAllowedExtensions::ALL_ALLOWED;
+        $mediaType = isset($normalizedCommand['media_type']) ?
+            (string) $normalizedCommand['media_type'] : MediaType::IMAGE;
         $command = new CreateMediaFileAttributeCommand(
             $normalizedCommand['asset_family_identifier'],
             $normalizedCommand['code'],
@@ -47,7 +50,8 @@ class CreateMediaFileAttributeCommandFactory extends AbstractCreateAttributeComm
             $normalizedCommand['value_per_channel'] ?? false,
             $normalizedCommand['value_per_locale'] ?? false,
             $maxFileSize,
-            $allowedExtensions
+            $allowedExtensions,
+            $mediaType
         );
 
         return $command;

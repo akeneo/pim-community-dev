@@ -30,6 +30,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
@@ -214,7 +215,8 @@ class GetConnectorAttributesContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('10'),
-            AttributeAllowedExtensions::fromList(['jpg'])
+            AttributeAllowedExtensions::fromList(['jpg']),
+            MediaType::fromString(MediaType::IMAGE)
         );
 
         $this->attributeRepository->create($mediaFileAttribute);
@@ -228,7 +230,8 @@ class GetConnectorAttributesContext implements Context
             AttributeIsRequired::fromBoolean(true),
             [
                 'allowed_extensions' => ['jpg'],
-                'max_file_size' => '10'
+                'max_file_size' => '10',
+                'media_type' => MediaType::IMAGE
             ]
         );
 

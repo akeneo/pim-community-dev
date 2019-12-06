@@ -9,6 +9,7 @@ use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAssetAttribu
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use PhpSpec\ObjectBehavior;
 
 class AssetAttributeFactorySpec extends ObjectBehavior
@@ -42,7 +43,8 @@ class AssetAttributeFactorySpec extends ObjectBehavior
                 false,
                 false,
                 null,
-                []
+                [],
+                MediaType::IMAGE
             )
         )->shouldReturn(false);
     }

@@ -60,7 +60,8 @@
         "max_file_size": "1000",
         "allowed_extensions": [
           "pdf"
-        ]
+        ],
+        "media_type": "image"
       },
       {
         "type": "option",

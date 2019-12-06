@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -97,7 +98,8 @@ class SetDefaultAttributesOnAssetFamilyCreationSubscriber implements EventSubscr
             false,
             false,
             null,
-            []
+            [],
+            MediaType::IMAGE
         );
 
         ($this->createAttributeHandler)($createMediaFileAttributeCommand);

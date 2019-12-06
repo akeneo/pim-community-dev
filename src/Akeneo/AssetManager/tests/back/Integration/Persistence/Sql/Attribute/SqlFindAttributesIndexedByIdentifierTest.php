@@ -29,6 +29,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
@@ -197,7 +198,8 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::fromString('1000'),
-            AttributeAllowedExtensions::fromList(['pdf'])
+            AttributeAllowedExtensions::fromList(['pdf']),
+            MediaType::fromString(MediaType::PDF)
         );
         $attributesRepository->create($this->name);
         $attributesRepository->create($this->email);

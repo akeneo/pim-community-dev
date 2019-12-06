@@ -21,6 +21,16 @@ describe('akeneo > asset family > application > reducer > attribute --- edit', (
     });
   });
 
+  test('I can update the media type property of the attribute', () => {
+    const state = {type: 'media_file'};
+    const newState = reducer(state, 'media_type', ['pdf']);
+
+    expect(newState).toEqual({
+      type: 'media_file',
+      media_type: ['pdf'],
+    });
+  });
+
   test('It ignores invalid additional_property', () => {
     const state = {type: 'media_file'};
     const newState = reducer(state, 'michel', ['gif', 'png']);

@@ -39,6 +39,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
@@ -388,7 +389,8 @@ class CreateOrUpdateAssetFamilyContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('120'),
-            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::VALID_EXTENSIONS)
+            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::VALID_EXTENSIONS),
+            MediaType::fromString(MediaType::IMAGE)
         );
 
         $this->attributeRepository->create($name);

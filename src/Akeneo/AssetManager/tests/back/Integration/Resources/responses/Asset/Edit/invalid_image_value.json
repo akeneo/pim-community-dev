@@ -61,6 +61,7 @@
                 "allowedExtensions":{
                   "allAllowed":false
                 },
+                "mediaType": [],
                 "identifier":[
 
                 ],
@@ -102,6 +103,7 @@
             "allowedExtensions":{
               "allAllowed":false
             },
+            "mediaType": [],
             "identifier":[
 
             ],

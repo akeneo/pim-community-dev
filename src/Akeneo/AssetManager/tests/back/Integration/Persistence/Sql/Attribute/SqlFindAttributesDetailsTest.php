@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
@@ -195,6 +196,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedImage->additionalProperties = [
             'max_file_size' => '1000',
             'allowed_extensions' => ['png'],
+            'media_type' => MediaType::IMAGE
         ];
 
         $this->assertEquals($expectedImage, $actualImage);

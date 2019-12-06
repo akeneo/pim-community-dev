@@ -59,6 +59,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
@@ -324,7 +325,8 @@ final class EditAssetContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::noLimit(),
-                AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED)
+                AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED),
+                MediaType::fromString(MediaType::IMAGE)
             )
         );
     }
@@ -1600,7 +1602,8 @@ final class EditAssetContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('0.015'),
-                AttributeAllowedExtensions::fromList([])
+                AttributeAllowedExtensions::fromList([]),
+                MediaType::fromString(MediaType::IMAGE)
             )
         );
     }
@@ -1705,7 +1708,8 @@ final class EditAssetContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('150.110'),
-                AttributeAllowedExtensions::fromList(['png'])
+                AttributeAllowedExtensions::fromList(['png']),
+                MediaType::fromString(MediaType::IMAGE)
             )
         );
     }

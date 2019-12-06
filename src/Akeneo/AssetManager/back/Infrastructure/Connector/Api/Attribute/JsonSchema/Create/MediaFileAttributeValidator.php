@@ -46,10 +46,6 @@ class MediaFileAttributeValidator implements AttributeValidatorInterface
                 'type' => [
                     'type' => ['string'],
                 ],
-                'media_type' => [
-                    'type' => ['string'],
-                    'enum' => ['image'],
-                ],
                 'labels' => [
                     'type' => 'object',
                     'patternProperties' => [
@@ -74,6 +70,9 @@ class MediaFileAttributeValidator implements AttributeValidatorInterface
                 'max_file_size' => [
                     'type' => [ 'string', 'null'],
                 ],
+                'media_type' => [
+                    'type' => ['string']
+                ]
             ],
             'additionalProperties' => false,
         ];

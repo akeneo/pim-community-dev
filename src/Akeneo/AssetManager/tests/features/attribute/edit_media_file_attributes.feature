@@ -89,5 +89,14 @@ Feature: Edit an attribute of an asset family
       | invalid_allowed_extensions | message                                     |
       | ["not_a_valid_extension"]  | One or more of the given values is invalid. |
 
-  # TODO: imports
-  # Scenario: Updating the allowed extensions of an attribute that is not image fails
+  @acceptance-back
+  Scenario: Updating media type
+    Given an asset family with a media file attribute image with media type image
+    When the user changes the media type to pdf
+    Then the media type should be pdf
+
+  @acceptance-back
+  Scenario: Updating with an invalid media type
+    Given an asset family with a media file attribute image with media type image
+    When the user changes the media type to an unknown media type
+    Then there should be a validation error on the property 'mediaType' with message 'The media type given is not corresponding to the expected ones (image, pdf, other).'

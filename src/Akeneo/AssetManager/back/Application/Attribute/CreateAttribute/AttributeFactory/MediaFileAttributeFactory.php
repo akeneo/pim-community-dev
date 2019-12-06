@@ -25,6 +25,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Doctrine\Common\Util\ClassUtils;
@@ -67,7 +68,8 @@ class MediaFileAttributeFactory implements AttributeFactoryInterface
             AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
             AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
             self::NO_LIMIT === $command->maxFileSize ? AttributeMaxFileSize::noLimit() : AttributeMaxFileSize::fromString($command->maxFileSize),
-            AttributeAllowedExtensions::fromList($command->allowedExtensions)
+            AttributeAllowedExtensions::fromList($command->allowedExtensions),
+            MediaType::fromString($command->mediaType)
         );
     }
 }

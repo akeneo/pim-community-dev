@@ -11,6 +11,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
@@ -29,7 +30,8 @@ class MediaFileAttributeSpec extends ObjectBehavior
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::fromString('300'),
-            AttributeAllowedExtensions::fromList(['pdf'])
+            AttributeAllowedExtensions::fromList(['png']),
+            MediaType::fromString(MediaType::IMAGE)
         ]);
     }
 
@@ -48,16 +50,17 @@ class MediaFileAttributeSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
                 'identifier'                 => 'image_designer_test',
-                'asset_family_identifier' => 'designer',
+                'asset_family_identifier'    => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
                 'order'                      => 0,
-                'is_required'                   => true,
+                'is_required'                => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'media_file',
                 'max_file_size'              => '300',
-                'allowed_extensions'         => ['pdf'],
+                'allowed_extensions'         => ['png'],
+                'media_type'                 => MediaType::IMAGE
             ]
         );
     }
@@ -67,16 +70,17 @@ class MediaFileAttributeSpec extends ObjectBehavior
         $this->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Portrait', 'de_DE' => 'Porträt']));
         $this->normalize()->shouldBe([
                 'identifier'                 => 'image_designer_test',
-                'asset_family_identifier' => 'designer',
+                'asset_family_identifier'    => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait', 'de_DE' => 'Porträt'],
                 'order'                      => 0,
-                'is_required'                   => true,
+                'is_required'                => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'media_file',
                 'max_file_size'              => '300',
-                'allowed_extensions'         => ['pdf'],
+                'allowed_extensions'         => ['png'],
+                'media_type'                 => MediaType::IMAGE
             ]
         );
     }
@@ -86,16 +90,17 @@ class MediaFileAttributeSpec extends ObjectBehavior
         $this->setAllowedExtensions(AttributeAllowedExtensions::fromList(['jpeg']));
         $this->normalize()->shouldBe([
                 'identifier'                 => 'image_designer_test',
-                'asset_family_identifier' => 'designer',
+                'asset_family_identifier'    => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
                 'order'                      => 0,
-                'is_required'                   => true,
+                'is_required'                => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'media_file',
                 'max_file_size'              => '300',
                 'allowed_extensions'         => ['jpeg'],
+                'media_type'                 => MediaType::IMAGE
             ]
         );
     }
@@ -105,16 +110,17 @@ class MediaFileAttributeSpec extends ObjectBehavior
         $this->setMaxFileSize(AttributeMaxFileSize::fromString('1000'));
         $this->normalize()->shouldBe([
                 'identifier'                 => 'image_designer_test',
-                'asset_family_identifier' => 'designer',
+                'asset_family_identifier'    => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
                 'order'                      => 0,
-                'is_required'                   => true,
+                'is_required'                => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'media_file',
                 'max_file_size'              => '1000',
-                'allowed_extensions'         => ['pdf'],
+                'allowed_extensions'         => ['png'],
+                'media_type'                 => MediaType::IMAGE
             ]
         );
     }
@@ -124,16 +130,17 @@ class MediaFileAttributeSpec extends ObjectBehavior
         $this->setIsRequired(AttributeIsRequired::fromBoolean(false));
         $this->normalize()->shouldBe([
                 'identifier'                 => 'image_designer_test',
-                'asset_family_identifier' => 'designer',
+                'asset_family_identifier'    => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
                 'order'                      => 0,
-                'is_required'                   => false,
+                'is_required'                => false,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'media_file',
                 'max_file_size'              => '300',
-                'allowed_extensions'         => ['pdf'],
+                'allowed_extensions'         => ['png'],
+                'media_type'                 => MediaType::IMAGE
             ]
         );
     }

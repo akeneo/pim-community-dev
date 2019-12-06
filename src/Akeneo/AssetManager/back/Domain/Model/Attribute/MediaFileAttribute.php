@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Domain\Model\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 
 /**
@@ -31,6 +32,9 @@ class MediaFileAttribute extends AbstractAttribute
     /** @var AttributeAllowedExtensions */
     private $allowedExtensions;
 
+    /** @var MediaType */
+    private $mediaType;
+
     protected function __construct(
         AttributeIdentifier $identifier,
         AssetFamilyIdentifier $assetFamilyIdentifier,
@@ -41,13 +45,15 @@ class MediaFileAttribute extends AbstractAttribute
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxFileSize $maxFileSize,
-        AttributeAllowedExtensions $extensions
+        AttributeAllowedExtensions $extensions,
+        MediaType $mediaType
     ) {
         parent::__construct($identifier, $assetFamilyIdentifier, $code, $labelCollection, $order, $isRequired,
             $valuePerChannel, $valuePerLocale);
 
         $this->maxFileSize = $maxFileSize;
         $this->allowedExtensions = $extensions;
+        $this->mediaType = $mediaType;
     }
 
     public static function create(
@@ -60,7 +66,8 @@ class MediaFileAttribute extends AbstractAttribute
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxFileSize $maxFileSize,
-        AttributeAllowedExtensions $extensions
+        AttributeAllowedExtensions $extensions,
+        MediaType $mediaType
     ): self {
         return new self(
             $identifier,
@@ -72,7 +79,8 @@ class MediaFileAttribute extends AbstractAttribute
             $valuePerChannel,
             $valuePerLocale,
             $maxFileSize,
-            $extensions
+            $extensions,
+            $mediaType
         );
     }
 
@@ -82,7 +90,8 @@ class MediaFileAttribute extends AbstractAttribute
             parent::normalize(),
             [
                 'max_file_size' => $this->maxFileSize->normalize(),
-                'allowed_extensions' => $this->allowedExtensions->normalize()
+                'allowed_extensions' => $this->allowedExtensions->normalize(),
+                'media_type' => $this->mediaType->normalize()
             ]
         );
     }
@@ -107,6 +116,11 @@ class MediaFileAttribute extends AbstractAttribute
         $this->allowedExtensions = $newAllowedExtensions;
     }
 
+    public function setMediaType(MediaType $mediaType): void
+    {
+        $this->mediaType = $mediaType;
+    }
+
     public function getMaxFileSize(): AttributeMaxFileSize
     {
         return $this->maxFileSize;
@@ -115,5 +129,10 @@ class MediaFileAttribute extends AbstractAttribute
     public function getAllowedExtensions(): AttributeAllowedExtensions
     {
         return $this->allowedExtensions;
+    }
+
+    public function getMediaType(): MediaType
+    {
+        return $this->mediaType;
     }
 }

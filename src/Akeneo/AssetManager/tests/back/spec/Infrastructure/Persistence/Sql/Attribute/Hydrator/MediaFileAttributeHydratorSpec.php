@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator;
 
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\MediaFileAttributeHydrator;
 use Doctrine\DBAL\Connection;
@@ -49,6 +50,7 @@ class MediaFileAttributeHydratorSpec extends ObjectBehavior
             'additional_properties'      => json_encode([
                 'max_file_size'      => null,
                 'allowed_extensions' => [],
+                'media_type'         => MediaType::IMAGE
             ]),
         ]);
         $textArea->shouldBeAnInstanceOf(MediaFileAttribute::class);
@@ -64,6 +66,7 @@ class MediaFileAttributeHydratorSpec extends ObjectBehavior
             'type'                       => 'media_file',
             'max_file_size'              => null,
             'allowed_extensions'         => [],
+            'media_type'                 => MediaType::IMAGE
         ]);
     }
 
@@ -83,6 +86,7 @@ class MediaFileAttributeHydratorSpec extends ObjectBehavior
             'additional_properties'      => json_encode([
                 'max_file_size'      => '252.12',
                 'allowed_extensions' => ['png', 'jpeg'],
+                'media_type'         => MediaType::IMAGE
             ]),
         ]);
         $textArea->shouldBeAnInstanceOf(MediaFileAttribute::class);
@@ -98,6 +102,7 @@ class MediaFileAttributeHydratorSpec extends ObjectBehavior
             'type'                       => 'media_file',
             'max_file_size'              => '252.12',
             'allowed_extensions'         => ['png', 'jpeg'],
+            'media_type'                 => MediaType::IMAGE
         ]);
     }
 }

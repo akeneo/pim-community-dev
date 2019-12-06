@@ -26,8 +26,9 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType as MediaFileMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType as MediaLinkMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
@@ -286,7 +287,8 @@ class EditAttributeContext implements Context
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxFileSize::fromString('210'),
-                AttributeAllowedExtensions::fromList(['png'])
+                AttributeAllowedExtensions::fromList(['png']),
+                MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
             )
         );
     }
@@ -366,7 +368,8 @@ class EditAttributeContext implements Context
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxFileSize::fromString($maxFileSize),
-                AttributeAllowedExtensions::fromList(['png'])
+                AttributeAllowedExtensions::fromList(['png']),
+                MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
             )
         );
     }
@@ -528,7 +531,8 @@ class EditAttributeContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('200'),
-                AttributeAllowedExtensions::fromList(['png'])
+                AttributeAllowedExtensions::fromList(['png']),
+                MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
             )
         );
     }
@@ -555,7 +559,8 @@ class EditAttributeContext implements Context
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxFileSize::fromString('200'),
-                AttributeAllowedExtensions::fromList($extensions)
+                AttributeAllowedExtensions::fromList($extensions),
+                MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
             )
         );
     }
@@ -1728,7 +1733,7 @@ class EditAttributeContext implements Context
                 AttributeValuePerLocale::fromBoolean(true),
                 Prefix::fromString(null),
                 Suffix::fromString(null),
-                MediaType::fromString('image')
+                MediaLinkMediaType::fromString('image')
             )
         );
     }
@@ -1753,7 +1758,7 @@ class EditAttributeContext implements Context
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString(null),
                 Suffix::fromString(null),
-                MediaType::fromString('image')
+                MediaLinkMediaType::fromString('image')
             )
         );
     }
@@ -1825,6 +1830,7 @@ class EditAttributeContext implements Context
         $updateMediaType = [
             'identifier' => (string)$identifier,
             'media_type' => $mediaType,
+            'type'       => MediaLinkAttribute::ATTRIBUTE_TYPE
         ];
         $this->updateAttribute($updateMediaType);
     }
@@ -1840,5 +1846,72 @@ class EditAttributeContext implements Context
 
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
         Assert::assertEquals($expectedMediaType, $attribute->normalize()['media_type']);
+    }
+
+    /**
+     * @Given /^an asset family with a media file attribute image with media type image$/
+     */
+    public function anAssetFamilyWithAMediaFileAttributeImageWithMediaTypeImage()
+    {
+        $identifier = AttributeIdentifier::create('dummy_identifier', 'image', md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier']['image'] = $identifier;
+
+        $this->attributeRepository->create(
+            MediaFileAttribute::create(
+                $identifier,
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString('image'),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeMaxFileSize::fromString('200'),
+                AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED),
+                MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
+            )
+        );
+    }
+
+    /**
+     * @When /^the user changes the media type to pdf$/
+     */
+    public function theUserChangesTheMediaTypeToPdf()
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier']['image'];
+
+        $updateMediaType = [
+            'identifier' => (string)$identifier,
+            'media_type' => MediaFileMediaType::PDF,
+            'type'       => MediaFileAttribute::ATTRIBUTE_TYPE
+        ];
+        $this->updateAttribute($updateMediaType);
+    }
+
+    /**
+     * @Then /^the media type should be pdf$/
+     */
+    public function theMediaTypeShouldBePdf()
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier']['image'];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertEquals(MediaFileMediaType::PDF, $attribute->normalize()['media_type']);
+    }
+
+    /**
+     * @When /^the user changes the media type to an unknown media type$/
+     */
+    public function theUserChangesTheMediaTypeToAnUnknownMediaType()
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier']['image'];
+
+        $updateMediaType = [
+            'identifier' => (string)$identifier,
+            'media_type' => 'Unknown_And_Invalid',
+            'type'       => MediaFileAttribute::ATTRIBUTE_TYPE
+        ];
+        $this->updateAttribute($updateMediaType);
     }
 }

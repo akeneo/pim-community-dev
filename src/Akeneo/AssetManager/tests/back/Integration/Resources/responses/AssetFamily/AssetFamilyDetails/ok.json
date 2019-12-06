@@ -72,7 +72,8 @@
                     "value_per_locale": true,
                     "value_per_channel": false,
                     "max_file_size": "124.12",
-                    "allowed_extensions": ["png", "jpg"]
+                    "allowed_extensions": ["png", "jpg"],
+                    "media_type": "image"
                 },
                 {
                     "type": "option",

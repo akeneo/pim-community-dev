@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
@@ -236,7 +237,8 @@ class TargetSpec extends ObjectBehavior
             AttributeValuePerChannel::fromBoolean($scopable),
             AttributeValuePerLocale::fromBoolean($localizable),
             AttributeMaxFileSize::noLimit(),
-            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED)
+            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED),
+            MediaType::fromString(MediaType::IMAGE)
         );
     }
 }

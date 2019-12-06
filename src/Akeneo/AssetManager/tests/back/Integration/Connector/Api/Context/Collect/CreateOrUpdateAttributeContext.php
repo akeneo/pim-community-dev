@@ -32,8 +32,9 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType as MediaFileMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType as MediaLinkMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
@@ -201,7 +202,8 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('200.10'),
-            AttributeAllowedExtensions::fromList(['png'])
+            AttributeAllowedExtensions::fromList(['png']),
+            MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
@@ -315,7 +317,7 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
             Suffix::empty(),
-            MediaType::fromString('image')
+            MediaLinkMediaType::fromString('image')
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
@@ -408,7 +410,8 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('200.10'),
-            AttributeAllowedExtensions::fromList(['gif'])
+            AttributeAllowedExtensions::fromList(['gif']),
+            MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
         );
         $this->attributeRepository->create($attribute);
 
@@ -452,7 +455,8 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::noLimit(),
-            AttributeAllowedExtensions::fromList(['gif', 'png'])
+            AttributeAllowedExtensions::fromList(['gif', 'png']),
+            MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
@@ -591,7 +595,7 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
             Suffix::empty(),
-            MediaType::fromString('image')
+            MediaLinkMediaType::fromString('image')
         );
         $this->attributeRepository->create($attribute);
 
@@ -633,7 +637,7 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
             Suffix::empty(),
-            MediaType::fromString('image')
+            MediaLinkMediaType::fromString('image')
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);

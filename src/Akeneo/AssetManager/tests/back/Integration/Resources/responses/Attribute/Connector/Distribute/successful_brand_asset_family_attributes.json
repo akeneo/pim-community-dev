@@ -42,6 +42,7 @@
         "is_required_for_completeness": true,
         "allowed_extensions": ["jpg"],
         "max_file_size": "10",
+        "media_type": "image",
         "_links": {
           "self": {
             "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/image"

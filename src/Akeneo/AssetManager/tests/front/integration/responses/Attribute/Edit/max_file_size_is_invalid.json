@@ -21,7 +21,8 @@
       "max_file_size": "-1",
       "allowed_extensions": [
         "jpeg"
-      ]
+      ],
+      "media_type": "image"
     }
   },
   "response": {

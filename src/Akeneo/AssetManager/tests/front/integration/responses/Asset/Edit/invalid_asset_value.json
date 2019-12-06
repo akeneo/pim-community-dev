@@ -219,6 +219,7 @@
                 "allowedExtensions":{
                   "allAllowed":false
                 },
+                "mediaType": [],
                 "identifier":[
 
                 ],

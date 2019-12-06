@@ -9,11 +9,11 @@ Feature: Create an attribute linked to an asset family
   @acceptance-back
   Scenario: Create a media file attribute linked to an asset family
     When the user creates a media file attribute "another_image" linked to the asset family "designer" with:
-      | code          | labels                                    | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions |
-      | another_image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 250.0         | ["png", "jpg"]     |
+      | code          | labels                                    | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions | media_type |
+      | another_image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 250.0         | ["png", "jpg"]     | image      |
     Then there is a media file attribute "another_image" in the asset family "designer" with:
-      | code          | labels                                    | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions | type  |
-      | another_image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 250.0         | ["png", "jpg"]     | media_file |
+      | code          | labels                                    | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions | media_type | type       |
+      | another_image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 250.0         | ["png", "jpg"]     | image      | media_file |
 
   @acceptance-back
   Scenario: Create a text attribute linked to an asset family

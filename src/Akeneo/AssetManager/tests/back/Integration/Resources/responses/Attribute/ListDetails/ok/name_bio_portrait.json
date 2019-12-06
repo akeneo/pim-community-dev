@@ -64,7 +64,8 @@
                 "allowed_extensions": [
                     "png",
                     "jpg"
-                ]
+                ],
+                "media_type": "image"
             }
         ]
     }

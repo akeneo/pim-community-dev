@@ -9,6 +9,7 @@
       "asset_family_identifier": "designer",
       "code": "picture",
       "type": "media_file",
+      "media_type": "image",
       "labels": {
         "fr_FR": "Image",
         "en_US": "Picture"

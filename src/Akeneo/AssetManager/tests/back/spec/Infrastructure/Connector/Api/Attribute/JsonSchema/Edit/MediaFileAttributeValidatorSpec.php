@@ -22,6 +22,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
@@ -52,7 +53,8 @@ class MediaFileAttributeValidatorSpec extends ObjectBehavior
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('250.2'),
-            AttributeAllowedExtensions::fromList(['jpg'])
+            AttributeAllowedExtensions::fromList(['jpg']),
+            MediaType::fromString(MediaType::IMAGE)
         );
         $this->support($attribute)->shouldReturn(true);
     }
@@ -70,6 +72,7 @@ class MediaFileAttributeValidatorSpec extends ObjectBehavior
             'is_required_for_completeness' => false,
             'allowed_extensions' => ['jpg'],
             'max_file_size' => '10',
+            'media_type' => MediaType::IMAGE,
             '_links' => [
                 'self' => [
                     'href' => 'http://localhost/api/rest/v1/asset-families/designer/attributes/photo'
@@ -91,6 +94,7 @@ class MediaFileAttributeValidatorSpec extends ObjectBehavior
             'is_required_for_completeness' => false,
             'allowed_extensions' => ['jpg'],
             'max_file_size' => '10',
+            'media_type' => MediaType::IMAGE,
             '_links' => [
                 'self' => [
                     'href' => 'http://localhost/api/rest/v1/asset-families/designer/attributes/photo'

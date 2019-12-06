@@ -200,6 +200,7 @@
                 "allowedExtensions": {
                   "allAllowed": false
                 },
+                "mediaType": [],
                 "identifier": [],
                 "assetFamilyIdentifier": [],
                 "code": [],

@@ -26,8 +26,9 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType as MediaFileMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType as MediaLinkMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
@@ -201,7 +202,8 @@ class FixturesLoader
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('1000'),
-            AttributeAllowedExtensions::fromList(['png'])
+            AttributeAllowedExtensions::fromList(['png']),
+            MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
         );
 
         return $this;
@@ -404,7 +406,8 @@ class FixturesLoader
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('1000'),
-                AttributeAllowedExtensions::fromList(['png'])
+                AttributeAllowedExtensions::fromList(['png']),
+                MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
             );
         }
 
@@ -589,7 +592,7 @@ class FixturesLoader
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString('https://www.akeneo.com/wp-content/uploads/'),
                 Suffix::empty(),
-                MediaType::fromString(MediaType::IMAGE)
+                MediaLinkMediaType::fromString(MediaLinkMediaType::IMAGE)
             );
         }
 
@@ -611,7 +614,7 @@ class FixturesLoader
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString('https://www.akeneo.com/wp-content/uploads/'),
                 Suffix::empty(),
-                MediaType::fromString(MediaType::PDF)
+                MediaLinkMediaType::fromString(MediaLinkMediaType::PDF)
             );
         }
 
@@ -633,7 +636,7 @@ class FixturesLoader
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString('https://my-stream.com'),
                 Suffix::empty(),
-                MediaType::fromString(MediaType::OTHER)
+                MediaLinkMediaType::fromString(MediaLinkMediaType::OTHER)
             );
         }
 
@@ -655,7 +658,7 @@ class FixturesLoader
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::empty(),
                 Suffix::empty(),
-                MediaType::fromString(MediaType::YOUTUBE)
+                MediaLinkMediaType::fromString(MediaLinkMediaType::YOUTUBE)
             );
         }
 

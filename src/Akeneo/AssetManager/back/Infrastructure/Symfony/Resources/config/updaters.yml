@@ -73,8 +73,13 @@ services:
         tags:
             - { name: akeneo_assetmanager.attribute_updater, priority: 120 }
 
-    akeneo_assetmanager.application.edit_attribute.attribute_updater.media_type:
+    akeneo_assetmanager.application.edit_attribute.attribute_updater.media_link.media_type:
         class: Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\MediaLink\MediaTypeUpdater
+        tags:
+            - { name: akeneo_assetmanager.attribute_updater, priority: 120 }
+
+    akeneo_assetmanager.application.edit_attribute.attribute_updater.media_file.media_type:
+        class: Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\MediaFile\MediaTypeUpdater
         tags:
             - { name: akeneo_assetmanager.attribute_updater, priority: 120 }
 

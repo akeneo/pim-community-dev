@@ -127,3 +127,8 @@ services:
         class: Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\MediaLink\EditMediaTypeCommandFactory
         tags:
             - { name: akeneo_assetmanager.edit_attribute_command_factory, priority: 120 }
+
+    akeneo_assetmanager.application.factory.edit_media_file_media_type_command_factory:
+        class: Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\MediaFile\EditMediaTypeCommandFactory
+        tags:
+            - { name: akeneo_assetmanager.edit_attribute_command_factory, priority: 120 }

@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
@@ -131,6 +132,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $portrait->additionalProperties = [
             'max_file_size'      => '124.12',
             'allowed_extensions' => ['png', 'jpg'],
+            'media_type' => MediaType::IMAGE
         ];
 
         $favoriteColor = new AttributeDetails();

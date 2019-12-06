@@ -14,6 +14,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -34,6 +35,7 @@ class MediaFileAttributeHydrator extends AbstractAttributeHydrator
     {
         $row['allowed_extensions'] = $row['additional_properties']['allowed_extensions'];
         $row['max_file_size'] = Type::getType(Type::STRING)->convertToPHPValue($row['additional_properties']['max_file_size'], $platform);
+        $row['media_type'] = $row['additional_properties']['media_type'];
 
         return $row;
     }
@@ -54,7 +56,8 @@ class MediaFileAttributeHydrator extends AbstractAttributeHydrator
             AttributeValuePerChannel::fromBoolean($row['value_per_channel']),
             AttributeValuePerLocale::fromBoolean($row['value_per_locale']),
             $maxFileSize,
-            AttributeAllowedExtensions::fromList($row['allowed_extensions'])
+            AttributeAllowedExtensions::fromList($row['allowed_extensions']),
+            MediaType::fromString($row['media_type'])
         );
     }
 
@@ -72,6 +75,7 @@ class MediaFileAttributeHydrator extends AbstractAttributeHydrator
             'attribute_type',
             'max_file_size',
             'allowed_extensions',
+            'media_type'
         ];
     }
 }

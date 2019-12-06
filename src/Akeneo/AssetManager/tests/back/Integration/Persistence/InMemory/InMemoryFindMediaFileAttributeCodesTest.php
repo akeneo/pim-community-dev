@@ -28,6 +28,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -90,7 +91,8 @@ class InMemoryFindMediaFileAttributeCodesTest extends TestCase
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::fromString('1000'),
-            AttributeAllowedExtensions::fromList(['pdf'])
+            AttributeAllowedExtensions::fromList(['pdf']),
+            MediaType::fromString(MediaType::PDF)
         );
 
         $secondMediaFileAttribute = MediaFileAttribute::create(
@@ -103,7 +105,8 @@ class InMemoryFindMediaFileAttributeCodesTest extends TestCase
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::fromString('1000'),
-            AttributeAllowedExtensions::fromList(['pdf'])
+            AttributeAllowedExtensions::fromList(['pdf']),
+            MediaType::fromString(MediaType::PDF)
         );
 
         $this->attributeRepository->create($mediaFileAttribute);

@@ -414,6 +414,11 @@ Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\MediaLink
         mediaType:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MediaLink\MediaType: ~
 
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\MediaFile\EditMediaTypeCommand:
+  properties:
+      mediaType:
+          - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MediaFile\MediaType: ~
+
 Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommand:
     properties:
         options:

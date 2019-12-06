@@ -25,6 +25,9 @@ class CreateMediaFileAttributeCommand extends AbstractCreateAttributeCommand
     /** @var array */
     public $allowedExtensions;
 
+    /** @var string */
+    public $mediaType;
+
     public function __construct(
         string $assetFamilyIdentifier,
         string $code,
@@ -33,7 +36,8 @@ class CreateMediaFileAttributeCommand extends AbstractCreateAttributeCommand
         bool $valuePerChannel,
         bool $valuePerLocale,
         ?string $maxFileSize,
-        array $allowedExtensions
+        array $allowedExtensions,
+        string $mediaType
     ) {
         parent::__construct(
             $assetFamilyIdentifier,
@@ -46,5 +50,6 @@ class CreateMediaFileAttributeCommand extends AbstractCreateAttributeCommand
 
         $this->maxFileSize = $maxFileSize;
         $this->allowedExtensions = $allowedExtensions;
+        $this->mediaType = $mediaType;
     }
 }
