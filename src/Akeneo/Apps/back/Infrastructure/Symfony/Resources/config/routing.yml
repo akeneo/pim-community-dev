@@ -1,4 +1,15 @@
 ## Frontend
+
+# Apps Dashboard
+akeneo_apps_dashboard_index:
+    path: '/apps/dashboard'
+
+akeneo_apps_dashboard_any:
+    path: '/apps/dashboard/{any}'
+    requirements:
+        any: .*
+
+# Apps
 akeneo_apps_index:
    path: '/apps'
 
@@ -6,3 +17,4 @@ akeneo_apps_any:
     path: '/apps/{any}'
     requirements:
         any: .*
+

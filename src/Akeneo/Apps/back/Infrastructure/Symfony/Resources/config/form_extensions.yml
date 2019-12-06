@@ -13,3 +13,11 @@ extensions:
         config:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
+
+    pim-menu-activity-apps-dashboard:
+        module: pim/menu/item
+        parent: pim-menu-activity-navigation-block
+        position: 105
+        config:
+            title: pim_menu.item.apps_dashboard
+            to: akeneo_apps_dashboard_index
