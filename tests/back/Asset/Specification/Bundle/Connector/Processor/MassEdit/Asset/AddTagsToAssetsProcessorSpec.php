@@ -3,16 +3,17 @@
 namespace Specification\Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset;
 
 use Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset\AddTagsToAssetsProcessor;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\Tag;
+use Akeneo\Asset\Component\Model\TagInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Classification\Repository\TagRepositoryInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Asset\Component\Model\AssetInterface;
-use Akeneo\Asset\Component\Model\TagInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -24,9 +25,10 @@ class AddTagsToAssetsProcessorSpec extends ObjectBehavior
         TagRepositoryInterface $repository,
         ValidatorInterface $validator,
         StepExecution $stepExecution,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        ObjectManager $objectManager
     ) {
-        $this->beConstructedWith($repository, $validator, $authorizationChecker);
+        $this->beConstructedWith($repository, $validator, $authorizationChecker, $objectManager);
         $this->setStepExecution($stepExecution);
     }
 
@@ -79,7 +81,9 @@ class AddTagsToAssetsProcessorSpec extends ObjectBehavior
         $repository,
         $validator,
         $authorizationChecker,
-        AssetInterface $asset,
+        $objectManager,
+        AssetInterface $asset1,
+        AssetInterface $asset2,
         JobParameters $jobParameters
     ) {
         $actions = [
@@ -89,21 +93,24 @@ class AddTagsToAssetsProcessorSpec extends ObjectBehavior
             ],
         ];
 
-        $authorizationChecker->isGranted(Attributes::EDIT, $asset)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT, $asset1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT, $asset2)->willReturn(true);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('actions')->willReturn($actions);
-        $repository->findOneByIdentifier('foo')->willReturn(null);
+        $repository->findOneByIdentifier('foo')->shouldBeCalledOnce()->willReturn(null);
 
-        $asset->addTag()->shouldNotBeCalled();
-        $stepExecution->addWarning(
-            'pim_enrich.mass_edit_action.add-tags-to-assets.message.error',
-            [],
-            Argument::type(InvalidItemInterface::class)
-        )->shouldBeCalled();
-        $validator->validate($asset)->willReturn(new ConstraintViolationList([]));
+        $tag = new Tag();
+        $tag->setCode('foo');
+        $asset1->addTag($tag)->shouldBeCalled();
+        $asset2->addTag($tag)->shouldBeCalled();
+        $validator->validate($asset1)->willReturn(new ConstraintViolationList([]));
+        $validator->validate($asset2)->willReturn(new ConstraintViolationList([]));
 
-        $this->process($asset);
+        $objectManager->persist($tag)->shouldBeCalledOnce();
+
+        $this->process($asset1);
+        $this->process($asset2);
     }
 
     function it_does_not_add_tags_to_an_asset_non_editable_by_the_user(
