@@ -2,15 +2,15 @@
 
 In the Asset Manager, you can apply a transformation, defined by a set of operations, from a source file to automatically generate a target file.
 For example, you can generate a thumbnail in a specific attribute to export it to your e-commerce tool.
-Akeneo PIM is delivered with a set of default operations, but you can add yours for your needs. 
+Akeneo PIM is delivered with a set of default operations, but you can add yours to match your own needs. 
 
 In this example, we will present you how to create a new operation and use it in a transformation configuration. 
 
 ## Create the operation description
 
 In this example, we will implement a new operation to rotate an image.
-This operation only needs an angle as parameter. 
-Note than it already exists a liip/imagine filter to do this operation. 
+This operation only needs an angle as a parameter. 
+Note that a liip/imagine filter already exists for this operation. 
 
 An operation description inherits from `Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation`.
 First, create your operation:
@@ -65,7 +65,7 @@ class RotateOperation implements Operation
 }
 ```
 
-Then add it to the DI to be able to be constructed through its Factory:
+Then add it to the DI for it to be constructed through its Factory:
 
 ```yaml 
     # src/Akeneo/AssetManager/back/Infrastructure/Symfony/Resources/config/parameters.yml
@@ -76,12 +76,12 @@ Then add it to the DI to be able to be constructed through its Factory:
 
 ## Create the operation applier
 
-The OperationApplier will update a file, by applying this transformation in it.
-In our use case, the `RotateOperationApplier` will update a file by rotating it with n degrees.
+The OperationApplier will update a file, by applying this transformation on it.
+In our use case, the `RotateOperationApplier` will update a file by rotating it by n degrees.
 
 Declare a new php class inheriting from OperationApplier.
-You can do any operation in an applier (call a library, call directly a bash command, etc).
-As it already exists a liip/imagine filter rotating an image, we use the built-in filter with the imagine FilterManager.
+You can run any operation in an applier (call a library, call directly a bash command, etc).
+As there is already a liip/imagine filter to rotate an image, we use the built-in filter with the imagine FilterManager.
 
 ```php
 <?php // src/Akeneo/AssetManager/back/Infrastructure/Transformation/Operation/RotateOperationApplier.php
@@ -136,7 +136,7 @@ class RotateOperationApplier implements OperationApplier
 }
 ```
 
-Then, declare with the DI with a tag `akeneo_assetmanager.transformation.operation_applier`, to be applicable.
+Then, declare with the DI with a tag `akeneo_assetmanager.transformation.operation_applier`, for it to be applicable.
 
 ```yaml
     # src/Akeneo/AssetManager/back/Infrastructure/Symfony/Resources/config/compute_transformations.yml
