@@ -7,7 +7,7 @@ oneup_flysystem:
         asset_manager_storage_adapter:
             awss3v3:
                 client: 'Aws\S3\S3Client'
-                bucket: 'asset_manager'
+                bucket: 'assetmanager'
         catalog_storage_adapter:
             awss3v3:
                 client: 'Aws\S3\S3Client'
