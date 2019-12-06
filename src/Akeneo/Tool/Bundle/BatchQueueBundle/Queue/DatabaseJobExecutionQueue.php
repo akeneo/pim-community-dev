@@ -45,11 +45,15 @@ class DatabaseJobExecutionQueue implements JobExecutionQueueInterface
         $hasBeenUpdated = false;
         $jobExecutionMessage = null;
 
+        if (!empty($whitelistedJobInstanceCodes) && !empty($blacklistedJobInstanceCodes)) {
+            throw new \InvalidArgumentException('You can not use a whitelist filter and a blacklist filter at the same time');
+        }
+
         do {
             if (empty($whitelistedJobInstanceCodes) && empty($blacklistedJobInstanceCodes)) {
                 $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessage();
             } elseif ($whitelistedJobInstanceCodes){
-                $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobWhitelistedExecutionMessageFilteredByCodes($whitelistedJobInstanceCodes);
+                $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableWhitelistedJobExecutionMessageFilteredByCodes($whitelistedJobInstanceCodes);
             } elseif ($blacklistedJobInstanceCodes) {
                 $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes($blacklistedJobInstanceCodes);
             }

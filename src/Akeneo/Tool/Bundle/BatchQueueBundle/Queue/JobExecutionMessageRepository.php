@@ -131,7 +131,7 @@ SQL;
      *
      * @return JobExecutionMessage|null
      */
-    public function getAvailableJobWhitelistedExecutionMessageFilteredByCodes(array $jobInstanceCodes): ?JobExecutionMessage
+    public function getAvailableWhitelistedJobExecutionMessageFilteredByCodes(array $jobInstanceCodes): ?JobExecutionMessage
     {
         $sql = <<<SQL
 SELECT 

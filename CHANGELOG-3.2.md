@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Technical improvement
+
+- DAPI-691: Add a blacklist option to the CE job queue daemon command
+
 # 3.2.22 (2019-12-03)
 
 ## Bug fixes:
