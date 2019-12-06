@@ -6,15 +6,15 @@ import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {PimView} from '../../../infrastructure/pim-view/PimView';
 import {ApplyButton, Breadcrumb, BreadcrumbItem, PageContent, PageHeader} from '../../common';
 import imgUrl from '../../common/assets/illustrations/api.svg';
-import {fetch} from '../../shared/fetch';
-import {isOk} from '../../shared/fetch/result';
+import {fetchResult} from '../../shared/fetch-result';
+import {isOk} from '../../shared/fetch-result/result';
 import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {appUpdated, appWithCredentialsFetched} from '../actions/apps-actions';
 import {useAppsState} from '../app-state-context';
 import {AppCredentials} from '../components/AppCredentials';
 import {AppEditForm} from '../components/AppEditForm';
-import {useUpdateApp} from '../use-update-app';
+import {useUpdateApp} from '../api-hooks/use-update-app';
 
 interface FetchAppData {
     code: string;
@@ -54,17 +54,13 @@ export const AppEdit = () => {
 
     const fetchAppUrl = useRoute('akeneo_apps_get_rest', {code});
     useEffect(() => {
-        fetch<FetchAppData, unknown>(fetchAppUrl).then(result => {
+        fetchResult<FetchAppData, unknown>(fetchAppUrl).then(result => {
             if (isOk(result)) {
                 dispatch(
                     appWithCredentialsFetched({
-                        code: result.data.code,
-                        label: result.data.label,
-                        flowType: result.data.flow_type,
-                        clientId: result.data.client_id,
-                        secret: result.data.secret,
-                        username: result.data.username,
-                        password: result.data.password,
+                        ...result.value,
+                        flowType: result.value.flow_type,
+                        clientId: result.value.client_id,
                     })
                 );
             } else {

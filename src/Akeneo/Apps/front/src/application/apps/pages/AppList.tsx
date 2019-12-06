@@ -1,6 +1,5 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {useHistory} from 'react-router';
-import {App as AppInterface} from '../../../domain/apps/app.interface';
 import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {PimView} from '../../../infrastructure/pim-view/PimView';
 import {NoApp} from '../../apps/components/NoApp';
@@ -14,20 +13,28 @@ import {
     PageContent,
     PageHeader,
 } from '../../common';
-import {isOk} from '../../shared/fetch/result';
+import {fetchResult} from '../../shared/fetch-result';
+import {isOk} from '../../shared/fetch-result/result';
 import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
 import {Translate, TranslateContext} from '../../shared/translate';
+import {appsFetched} from '../actions/apps-actions';
+import {useAppsState} from '../app-state-context';
 import {AppGrid} from '../components/AppGrid';
-import {useFetch} from '../../shared/fetch';
 
 const MAXIMUM_NUMBER_OF_ALLOWED_APPS = 50;
+
+type ResultValue = Array<{code: string; label: string; flowType: FlowType}>;
 
 export const AppList = () => {
     const history = useHistory();
     const translate = useContext(TranslateContext);
 
-    const result = useFetch<AppInterface[], Error>(useRoute('akeneo_apps_list_rest'));
-    const apps = isOk(result) ? result.data : [];
+    const [apps, dispatch] = useAppsState();
+
+    const route = useRoute('akeneo_apps_list_rest');
+    useEffect(() => {
+        fetchResult<ResultValue, never>(route).then(result => isOk(result) && dispatch(appsFetched(result.value)));
+    }, [route]);
 
     const handleCreate = () => history.push('/apps/create');
 
@@ -52,16 +59,16 @@ export const AppList = () => {
     const createButton = (
         <ApplyButton
             onClick={handleCreate}
-            disabled={!apps || apps.length >= MAXIMUM_NUMBER_OF_ALLOWED_APPS}
+            disabled={Object.keys(apps).length >= MAXIMUM_NUMBER_OF_ALLOWED_APPS}
             classNames={['AknButtonList-item']}
         >
             <Translate id='pim_common.create' />
         </ApplyButton>
     );
 
-    const dataSourceApps = apps && apps.filter(app => FlowType.DATA_SOURCE === app.flowType);
-    const dataDestinationApps = apps && apps.filter(app => FlowType.DATA_DESTINATION === app.flowType);
-    const otherApps = apps && apps.filter(app => FlowType.OTHER === app.flowType);
+    const dataSourceApps = Object.values(apps).filter(app => FlowType.DATA_SOURCE === app.flowType);
+    const dataDestinationApps = Object.values(apps).filter(app => FlowType.DATA_DESTINATION === app.flowType);
+    const otherApps = Object.values(apps).filter(app => FlowType.OTHER === app.flowType);
 
     return (
         <>
@@ -82,28 +89,35 @@ export const AppList = () => {
                     </HelperLink>
                 </Helper>
 
-                {dataSourceApps && dataSourceApps.length > 0 && (
-                    <AppGrid
-                        apps={dataSourceApps}
-                        title={<Translate id='pim_apps.flow_type.data_source' count={dataSourceApps.length} />}
-                    />
+                {Object.keys(apps).length === 0 ? (
+                    <NoApp onCreate={handleCreate} />
+                ) : (
+                    <>
+                        {dataSourceApps && dataSourceApps.length > 0 && (
+                            <AppGrid
+                                apps={dataSourceApps}
+                                title={<Translate id='pim_apps.flow_type.data_source' count={dataSourceApps.length} />}
+                            />
+                        )}
+                        {dataDestinationApps && dataDestinationApps.length > 0 && (
+                            <AppGrid
+                                apps={dataDestinationApps}
+                                title={
+                                    <Translate
+                                        id='pim_apps.flow_type.data_destination'
+                                        count={dataDestinationApps.length}
+                                    />
+                                }
+                            />
+                        )}
+                        {otherApps && otherApps.length > 0 && (
+                            <AppGrid
+                                apps={otherApps}
+                                title={<Translate id='pim_apps.flow_type.other' count={otherApps.length} />}
+                            />
+                        )}
+                    </>
                 )}
-                {dataDestinationApps && dataDestinationApps.length > 0 && (
-                    <AppGrid
-                        apps={dataDestinationApps}
-                        title={
-                            <Translate id='pim_apps.flow_type.data_destination' count={dataDestinationApps.length} />
-                        }
-                    />
-                )}
-                {otherApps && otherApps.length > 0 && (
-                    <AppGrid
-                        apps={otherApps}
-                        title={<Translate id='pim_apps.flow_type.other' count={otherApps.length} />}
-                    />
-                )}
-
-                {apps && apps.length === 0 && <NoApp onCreate={handleCreate} />}
             </PageContent>
         </>
     );

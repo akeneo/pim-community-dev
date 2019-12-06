@@ -1,10 +1,10 @@
 import {useContext} from 'react';
-import {App} from '../../domain/apps/app.interface';
-import {fetch} from '../shared/fetch';
-import {isErr} from '../shared/fetch/result';
-import {NotificationLevel, useNotify} from '../shared/notify';
-import {useRoute} from '../shared/router';
-import {TranslateContext} from '../shared/translate';
+import {App} from '../../../domain/apps/app.interface';
+import {fetchResult} from '../../shared/fetch-result';
+import {isErr} from '../../shared/fetch-result/result';
+import {NotificationLevel, useNotify} from '../../shared/notify';
+import {useRoute} from '../../shared/router';
+import {TranslateContext} from '../../shared/translate';
 
 interface ResultError {
     message: string;
@@ -20,7 +20,7 @@ export const useUpdateApp = (code: string) => {
     const translate = useContext(TranslateContext);
 
     return async (app: App) => {
-        const result = await fetch<undefined, ResultError>(url, {
+        const result = await fetchResult<never, ResultError>(url, {
             method: 'POST',
             headers: [['Content-type', 'application/json']],
             body: JSON.stringify({

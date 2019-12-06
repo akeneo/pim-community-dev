@@ -9,6 +9,7 @@ import {Form} from './form/Form';
 import {FormGroup} from './form/FormGroup';
 import {FormInput} from './form/FormInput';
 import {Helper, HelperLink, HelperTitle} from './Helper';
+import {InlineHelper} from './InlineHelper';
 import {Modal} from './Modal';
 import {PageContent} from './PageContent';
 import {PageHeader} from './PageHeader';
@@ -32,6 +33,7 @@ export {
     HelperTitle,
     IconButton,
     ImportantButton,
+    InlineHelper,
     Modal,
     PageContent,
     PageHeader,

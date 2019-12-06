@@ -1,6 +1,16 @@
 import {AppCredentials} from '../../../domain/apps/app-credentials.interface';
 import {App} from '../../../domain/apps/app.interface';
 
+export const APPS_FETCHED = 'APPS_FETCHED';
+interface AppsFetchedAction {
+    type: typeof APPS_FETCHED;
+    payload: App[];
+}
+export const appsFetched = (payload: App[]): AppsFetchedAction => ({
+    type: APPS_FETCHED,
+    payload,
+});
+
 export const APP_WITH_CREDENTIALS_FETCHED = 'APP_WITH_CREDENTIALS_FETCHED';
 interface AppWithCredentialsFetchedAction {
     type: typeof APP_WITH_CREDENTIALS_FETCHED;
@@ -21,4 +31,4 @@ export const appUpdated = (payload: App): AppUpdatedAction => ({
     payload,
 });
 
-export type Actions = AppWithCredentialsFetchedAction | AppUpdatedAction;
+export type Actions = AppsFetchedAction | AppWithCredentialsFetchedAction | AppUpdatedAction;

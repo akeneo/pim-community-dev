@@ -1,13 +1,13 @@
 import React, {useContext} from 'react';
 import {useHistory, useParams} from 'react-router';
-import {Modal, ImportantButton, GreyButton} from '../../common';
-import {fetch} from '../../shared/fetch';
-import {isErr} from '../../shared/fetch/result';
+import styled from 'styled-components';
+import {GreyButton, ImportantButton, Modal} from '../../common';
+import {PropsWithTheme} from '../../common/theme';
+import {fetchResult} from '../../shared/fetch-result';
+import {isErr} from '../../shared/fetch-result/result';
+import {NotificationLevel, useNotify} from '../../shared/notify';
 import {useRoute} from '../../shared/router';
 import {Translate, TranslateContext} from '../../shared/translate';
-import {useNotify, NotificationLevel} from '../../shared/notify';
-import styled from 'styled-components';
-import {PropsWithTheme} from '../../common/theme';
 
 export const AppRegenerateSecret = () => {
     const history = useHistory();
@@ -22,7 +22,7 @@ export const AppRegenerateSecret = () => {
     };
 
     const handleClick = async () => {
-        const result = await fetch<undefined, undefined>(url, {
+        const result = await fetchResult<undefined, undefined>(url, {
             method: 'POST',
         });
 
