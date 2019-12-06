@@ -42,7 +42,6 @@ class JobExecutionMessageRepository
 
     /**
      * @param JobExecutionMessage $jobExecutionMessage
-     * @throws DBALException
      */
     public function createJobExecutionMessage(JobExecutionMessage $jobExecutionMessage)
     {
@@ -68,7 +67,6 @@ SQL;
      * @param JobExecutionMessage $jobExecutionMessage
      *
      * @return bool return whether the job has been updated or not
-     * @throws DBALException
      */
     public function updateJobExecutionMessage(JobExecutionMessage $jobExecutionMessage): bool
     {
@@ -103,7 +101,6 @@ SQL;
      * If there is no job execution available, it returns null.
      *
      * @return JobExecutionMessage|null
-     * @throws DBALException
      */
     public function getAvailableJobExecutionMessage(): ?JobExecutionMessage
     {
@@ -133,7 +130,6 @@ SQL;
      * @param string[] $jobInstanceCodes
      *
      * @return JobExecutionMessage|null
-     * @throws DBALException
      */
     public function getAvailableJobWhitelistedExecutionMessageFilteredByCodes(array $jobInstanceCodes): ?JobExecutionMessage
     {
@@ -148,7 +144,8 @@ WHERE
     q.consumer IS NULL
 AND ji.code IN (:job_instance_codes)
 ORDER BY
-    q.create_time, id;
+    q.create_time, id
+    LIMIT 1;
 SQL;
 
         $stmt = $this->entityManager->getConnection()->executeQuery(
@@ -166,8 +163,8 @@ SQL;
      * If there is no job execution available, it returns null.
      *
      * @param array $blacklistedJobInstanceCodes
+     *
      * @return JobExecutionMessage|null
-     * @throws DBALException
      */
     public function getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes(array $blacklistedJobInstanceCodes): ?JobExecutionMessage
     {
@@ -182,7 +179,8 @@ WHERE
     q.consumer IS NULL
 AND ji.code NOT IN (:blacklisted_job_instance_codes)
 ORDER BY
-    q.create_time, id;
+    q.create_time, id
+    LIMIT 1;
 SQL;
 
         $stmt = $this->entityManager->getConnection()->executeQuery(
@@ -201,7 +199,6 @@ SQL;
      * @param JobExecutionMessage $jobExecutionMessage
      *
      * @return string|null
-     * @throws DBALException
      */
     public function getJobInstanceCode(JobExecutionMessage $jobExecutionMessage): ?string
     {
@@ -213,6 +210,7 @@ FROM
 JOIN akeneo_batch_job_instance ji ON ji.id = je.job_instance_id
 WHERE 
     je.id = :id
+    LIMIT 1;
 SQL;
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);

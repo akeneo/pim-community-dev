@@ -40,16 +40,16 @@ class DatabaseJobExecutionQueue implements JobExecutionQueueInterface
     /**
      * {@inheritdoc}
      */
-    public function consume(string $consumer, array $jobInstanceCodes = [], array $blacklistedJobInstanceCodes = []): JobExecutionMessage
+    public function consume(string $consumer, array $whitelistedJobInstanceCodes = [], array $blacklistedJobInstanceCodes = []): JobExecutionMessage
     {
         $hasBeenUpdated = false;
-        $jobExecutionMessage = '';
+        $jobExecutionMessage = null;
 
         do {
-            if (empty($jobInstanceCodes) && empty($blacklistedJobInstanceCodes)) {
+            if (empty($whitelistedJobInstanceCodes) && empty($blacklistedJobInstanceCodes)) {
                 $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessage();
-            } elseif ($jobInstanceCodes){
-                $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobWhitelistedExecutionMessageFilteredByCodes($jobInstanceCodes);
+            } elseif ($whitelistedJobInstanceCodes){
+                $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobWhitelistedExecutionMessageFilteredByCodes($whitelistedJobInstanceCodes);
             } elseif ($blacklistedJobInstanceCodes) {
                 $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes($blacklistedJobInstanceCodes);
             }
