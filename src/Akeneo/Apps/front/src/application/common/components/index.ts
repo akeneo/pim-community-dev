@@ -4,6 +4,7 @@ import {ApplyButton} from './button/ApplyButton';
 import {GreyButton} from './button/GreyButton';
 import {IconButton} from './button/IconButton';
 import {ImportantButton} from './button/ImportantButton';
+import {DropdownLink, SecondaryActionsDropdownButton} from './button/SecondaryActionsButton';
 import {Figure, FigureCaption, FigureImage} from './Figure';
 import {Form} from './form/Form';
 import {FormGroup} from './form/FormGroup';
@@ -21,6 +22,7 @@ export {
     ApplyButton,
     Breadcrumb,
     BreadcrumbItem,
+    DropdownLink,
     Figure,
     FigureCaption,
     FigureImage,
@@ -37,6 +39,7 @@ export {
     Modal,
     PageContent,
     PageHeader,
+    SecondaryActionsDropdownButton,
     Section,
     Select2,
     SmallHelper,

@@ -31,4 +31,14 @@ export const appUpdated = (payload: App): AppUpdatedAction => ({
     payload,
 });
 
-export type Actions = AppsFetchedAction | AppWithCredentialsFetchedAction | AppUpdatedAction;
+export const APP_DELETED = 'APP_DELETED';
+interface AppDeletedAction {
+    type: typeof APP_DELETED;
+    payload: string;
+}
+export const appDeleted = (code: string): AppDeletedAction => ({
+    type: APP_DELETED,
+    payload: code,
+});
+
+export type Actions = AppsFetchedAction | AppWithCredentialsFetchedAction | AppUpdatedAction | AppDeletedAction;

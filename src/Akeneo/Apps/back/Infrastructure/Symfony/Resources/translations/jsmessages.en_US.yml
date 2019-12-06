@@ -46,6 +46,8 @@ pim_apps:
             error: Sorry, an error occurred while editing the App.
 
 akeneo_apps:
+    secondary_actions:
+        title: Other actions
     app:
         client_id: Client ID
         secret: Secret
@@ -90,3 +92,10 @@ akeneo_apps:
         flash:
             success: App secret successfully regenerated.
             error: Sorry, an error occurred while regenerating the app secret.
+    delete_app:
+        title: Confirm deletion
+        description: Are you sure you want to delete the app? Not sure about the impacts? 
+        link: Here is what will happen.
+        link_url: https://www.akeneo.com/
+        flash:
+            success: App successfully deleted.

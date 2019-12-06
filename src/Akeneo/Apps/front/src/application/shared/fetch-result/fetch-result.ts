@@ -14,5 +14,9 @@ export const fetchResult = async <T, E>(input: RequestInfo, init?: RequestInit):
         return err<never, E>(await response.json());
     }
 
+    if (204 === response.status) {
+        return ok<T>((undefined as unknown) as T);
+    }
+
     return ok<T>(await response.json());
 };
