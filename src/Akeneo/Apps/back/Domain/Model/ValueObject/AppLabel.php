@@ -21,7 +21,10 @@ class AppLabel
         if (empty($label)) {
             throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'required'));
         }
-        if (strlen($label) > 100) {
+        if (mb_strlen($label) < 3) {
+            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'too_short'));
+        }
+        if (mb_strlen($label) > 100) {
             throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'too_long'));
         }
 

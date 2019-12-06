@@ -20,6 +20,14 @@ class AppLabelSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(AppLabel::class);
     }
 
+    public function it_cannot_contains_a_string_shorter_than_3_characters()
+    {
+        $this->beConstructedWith('aa');
+        $this->shouldThrow(
+            new \InvalidArgumentException('akeneo_apps.app.constraint.label.too_short')
+        )->duringInstantiation();
+    }
+
     public function it_cannot_contains_a_string_longer_than_100_characters()
     {
         $this->beConstructedWith(str_repeat('a', 101));
