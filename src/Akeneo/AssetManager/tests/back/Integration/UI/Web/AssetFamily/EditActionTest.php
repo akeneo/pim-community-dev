@@ -17,9 +17,12 @@ use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Akeneo\Channel\Component\Model\Locale;
 use PHPUnit\Framework\Assert;
@@ -32,12 +35,16 @@ class EditActionTest extends ControllerIntegrationTestCase
     /** @var WebClientHelper */
     private $webClientHelper;
 
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $this->loadFixtures();
         $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
+        $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
     }
 
@@ -46,19 +53,24 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_an_asset_family_details(): void
     {
+        $attributeIdentifier = $this->getIdentifierForAttribute(
+            AssetFamilyIdentifier::fromString('designer'),
+            AttributeCode::fromString('image')
+        );
+
         $postContent = [
             'identifier' => 'designer',
             'labels'     => [
                 'en_US' => 'foo',
                 'fr_FR' => 'bar',
             ],
-            'attributeAsMainMedia' => 'image',
+            'attributeAsMainMedia' => $attributeIdentifier->stringValue(),
             'image'      => [
                 'filePath'         => '/path/image.jpg',
                 'originalFilename' => 'image.jpg'
             ],
-            'productLinkRules' => [],
-            'transformations' => [],
+            'productLinkRules' => null,
+            'transformations' => null,
         ];
 
         $this->webClientHelper->callRoute(
@@ -188,5 +200,26 @@ class EditActionTest extends ControllerIntegrationTestCase
         $activatedLocales = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers');
         $activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+    }
+
+    private function getIdentifierForAttribute(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AttributeCode $attributeCode
+    ): AttributeIdentifier {
+        $attributes = $this->attributeRepository->findByAssetFamily($assetFamilyIdentifier);
+
+        foreach ($attributes as $attribute) {
+            if ($attribute->getCode()->equals($attributeCode)) {
+                return $attribute->getIdentifier();
+            }
+        }
+
+        throw new \Exception(
+            sprintf(
+                'Cannot find any attribute for asset family "%s" and code "%s"',
+                $assetFamilyIdentifier->normalize(),
+                (string)$attributeCode
+            )
+        );
     }
 }

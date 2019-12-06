@@ -119,7 +119,7 @@ class CreateOrUpdateAssetFamilyAction
             $normalizedAssetFamily['labels'] ?? [],
             null,
             $normalizedAssetFamily['attribute_as_main_media'] ?? null,
-            $normalizedAssetFamily['product_link_rules'] ?? [],
+            $normalizedAssetFamily['product_link_rules'] ?? null,
             $normalizedAssetFamily['transformations'] ?? null
         );
 

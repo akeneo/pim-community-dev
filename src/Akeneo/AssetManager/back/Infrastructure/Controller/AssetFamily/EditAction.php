@@ -16,6 +16,11 @@ use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyC
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,18 +53,28 @@ class EditAction
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
+
     public function __construct(
         EditAssetFamilyHandler $editAssetFamilyHandler,
         CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
         Serializer $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        AttributeRepositoryInterface $attributeRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository
     ) {
         $this->editAssetFamilyHandler = $editAssetFamilyHandler;
         $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
         $this->serializer = $serializer;
         $this->validator = $validator;
+        $this->attributeRepository = $attributeRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
     }
 
     public function __invoke(Request $request): Response
@@ -77,7 +92,18 @@ class EditAction
             throw new AccessDeniedHttpException();
         }
 
-        $command = $this->serializer->deserialize($request->getContent(), EditAssetFamilyCommand::class, 'json');
+        $parameters = json_decode($request->getContent(), true);
+        $parameters = $this->replaceAttributeAsMainMediaIdentifierByCode($parameters);
+
+        $command = new EditAssetFamilyCommand(
+            $parameters['identifier'],
+            $parameters['labels'],
+            $parameters['image'],
+            $parameters['attributeAsMainMedia'],
+            $parameters['productLinkRules'],
+            $parameters['transformations']
+        );
+
         $violations = $this->validator->validate($command);
 
         if ($violations->count() > 0) {
@@ -109,5 +135,27 @@ class EditAction
         $isAllowedToEdit = ($this->canEditAssetFamilyQueryHandler)($query);
 
         return $isAllowedToEdit; // && add Check of ACLs
+    }
+
+    /**
+     * The frontend gives us the Identifier of the attribute as main media,
+     * but the EditAssetFamilyCommand requires the Code of the attribute,
+     * this is why we retrieve the code here and updates the parameters of the request.
+     */
+    private function replaceAttributeAsMainMediaIdentifierByCode(array $parameters)
+    {
+        $attributeAsMainMediaIdentifier = $parameters['attributeAsMainMedia'];
+
+        try {
+            $attribute = $this->attributeRepository->getByIdentifier(
+                AttributeIdentifier::fromString($attributeAsMainMediaIdentifier)
+            );
+
+            $attributeAsMainMediaCode = (string) $attribute->getCode();
+        } catch (AttributeNotFoundException $e) {
+            $attributeAsMainMediaCode = null;
+        }
+
+        return array_merge($parameters, ['attributeAsMainMedia' => $attributeAsMainMediaCode]);
     }
 }

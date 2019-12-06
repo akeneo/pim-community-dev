@@ -30,7 +30,7 @@ class EditAssetFamilyCommand
     /** @var string|null */
     public $attributeAsMainMedia;
 
-    /** @var array */
+    /** @var array|null */
     public $productLinkRules;
 
     /** @var array|null */
@@ -41,7 +41,7 @@ class EditAssetFamilyCommand
         array $labels,
         ?array $image,
         ?string $attributeAsMainMedia,
-        array $productLinkRules,
+        ?array $productLinkRules,
         ?array $transformations
     ) {
         $this->identifier = $identifier;

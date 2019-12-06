@@ -65,11 +65,9 @@ class EditAssetFamilyHandler
     {
         $identifier = AssetFamilyIdentifier::fromString($editAssetFamilyCommand->identifier);
         $labelCollection = LabelCollection::fromArray($editAssetFamilyCommand->labels);
-        $ruleTemplateCollection = RuleTemplateCollection::createFromProductLinkRules($editAssetFamilyCommand->productLinkRules);
 
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($identifier);
         $assetFamily->updateLabels($labelCollection);
-        $assetFamily->updateRuleTemplateCollection($ruleTemplateCollection);
 
         if (null !== $editAssetFamilyCommand->image) {
             $existingImage = $assetFamily->getImage();
@@ -94,6 +92,11 @@ class EditAssetFamilyHandler
             $assetFamily->updateAttributeAsMainMediaReference(
                 AttributeAsMainMediaReference::fromAttributeIdentifier($attributeAsMainMediaIdentifier)
             );
+        }
+
+        if (null !== $editAssetFamilyCommand->productLinkRules) {
+            $ruleTemplateCollection = RuleTemplateCollection::createFromProductLinkRules($editAssetFamilyCommand->productLinkRules);
+            $assetFamily->updateRuleTemplateCollection($ruleTemplateCollection);
         }
 
         if (null !== $editAssetFamilyCommand->transformations) {

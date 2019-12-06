@@ -42,6 +42,10 @@ class ProductLinkRulesShouldBeExecutableValidator extends ConstraintValidator
 
     public function validate($createOrUpdateAssetFamily, Constraint $constraint): void
     {
+        if ($createOrUpdateAssetFamily->productLinkRules === null) {
+            return;
+        }
+
         foreach ($createOrUpdateAssetFamily->productLinkRules as $productLinkRule) {
             $this->addViolationsToContextIfAny(
                 $this->productSelectionValidator->validate(

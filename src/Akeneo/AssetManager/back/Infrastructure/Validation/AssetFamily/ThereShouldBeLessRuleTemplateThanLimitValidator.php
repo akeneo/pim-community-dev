@@ -69,6 +69,10 @@ class ThereShouldBeLessRuleTemplateThanLimitValidator extends ConstraintValidato
 
     private function validateCommand($command): void
     {
+        if ($command->productLinkRules === null) {
+            return;
+        }
+
         $total = count($command->productLinkRules);
 
         if ($total > $this->ruleTemplateByAssetFamilyLimit) {
