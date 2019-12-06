@@ -21,21 +21,17 @@ final class CreateArchiveFromDbTable implements CreateArchive
     /** @var Connection */
     private $connection;
 
-    /** @var string */
-    private $tmpStorageDirectory;
-
     /** @static string */
     const LOG_FILENAME = 'sso.log';
 
-    public function __construct(Connection $connection, string $tmpStorageDirectory)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->tmpStorageDirectory = $tmpStorageDirectory;
     }
 
     public function create(): \SplFileInfo
     {
-        $zipFilePath = tempnam($this->tmpStorageDirectory, 'pim_authentication_logs');
+        $zipFilePath = tempnam(sys_get_temp_dir(), 'pim_authentication_logs');
 
         $archive = new \ZipArchive();
         if (!$archive->open($zipFilePath, \ZipArchive::CREATE)) {

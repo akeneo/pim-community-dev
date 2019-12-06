@@ -41,7 +41,6 @@ services:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchiveFromDbTable'
         arguments:
             - '@database_connection'
-            - '%tmp_storage_dir%'
 
     hslavich_onelogin_saml.saml_token_factory:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\SamlTokenFactory'
