@@ -1,6 +1,9 @@
 # 3.2.x
 
-AST-158: use the type "media_file" to create image attributes in the connector API.
+## Bug fixes
+
+- AST-158: use the type "media_file" to create image attributes in the connector API.
+- PIM-8998: Avoid error 500 on asset list & product list when a user has no permission on categories & asset categories
 
 # 3.2.23 (2019-12-05)
 

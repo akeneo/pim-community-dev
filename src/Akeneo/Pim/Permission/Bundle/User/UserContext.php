@@ -135,9 +135,7 @@ class UserContext extends BaseUserContext
     /**
      * Get accessible user category tree
      *
-     * @throws \LogicException
-     *
-     * @return CategoryInterface
+     * @return CategoryInterface|null
      */
     public function getAccessibleUserTree()
     {
@@ -158,7 +156,7 @@ class UserContext extends BaseUserContext
             return current($grantedTrees);
         }
 
-        throw new \LogicException('User should have a default product tree');
+        return null;
     }
 
     /**
