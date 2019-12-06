@@ -46,6 +46,8 @@ pim_apps:
             error: Sorry, an error occurred while editing the App.
 
 akeneo_apps:
+    secondary_actions:
+        title: Other actions
     app:
         client_id: Client ID
         secret: Secret

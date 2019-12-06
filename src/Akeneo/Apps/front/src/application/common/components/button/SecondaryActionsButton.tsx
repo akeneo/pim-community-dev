@@ -6,7 +6,7 @@ export const SecondaryActionsDropdownButton = ({children}: {children: ReactNode}
         <div className='AknSecondaryActions-button' data-toggle='dropdown'></div>
         <div className='AknDropdown-menu AknDropdown-menu--right'>
             <div className='AknDropdown-menuTitle'>
-                <Translate id='other_actions' />
+                <Translate id='akeneo_apps.secondary_actions.title' />
             </div>
             {children}
         </div>
