@@ -30,6 +30,10 @@ class ScriptNonceGenerator
 
     public function getGeneratedNonce(): string
     {
+        if (!$this->request->getCurrentRequest()->isXmlHttpRequest()) {
+            $this->session->set('nonce', null);
+        }
+
         if (null === $this->generatedNonce) {
             $this->generatedNonce = $this->session->get('nonce', null);
         }
