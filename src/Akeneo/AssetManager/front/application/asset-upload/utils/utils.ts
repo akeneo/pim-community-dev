@@ -5,7 +5,7 @@ import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/att
 import sanitize from 'akeneoassetmanager/tools/sanitize';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
 import {NormalizedMinimalValue} from 'akeneoassetmanager/domain/model/asset/value';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 
 export const createLineFromFilename = (filename: string, assetFamily: AssetFamily): Line => {
@@ -23,7 +23,7 @@ export const createLineFromFilename = (filename: string, assetFamily: AssetFamil
     channel: info.channel,
     status: LineStatus.WaitingForUpload,
     uploadProgress: null,
-    validation: {
+    errors: {
       back: [],
     },
   };
@@ -119,6 +119,9 @@ export const createAssetsFromLines = (lines: Line[], assetFamily: AssetFamily): 
   }, []);
 };
 
+/*
+ * Lines operations
+ */
 export const addLines = (lines: Line[], linesToAdd: Line[]): Line[] => {
   return [...linesToAdd, ...lines];
 };
@@ -127,42 +130,42 @@ export const addThumbnail = (lines: Line[], lineToUpdate: Line, thumbnail: Thumb
   return lines.map((line: Line) => (line.id === lineToUpdate.id ? {...line, thumbnail} : line));
 };
 
-export const removeLine = (lines: Line[], lineToRemove: Line) =>
+export const removeLine = (lines: Line[], lineToRemove: Line): Line[] =>
   lines.filter((line: Line) => line.id !== lineToRemove.id);
 
-export const addUploadedFileToLine = (lines: Line[], lineToUpdate: Line, file: FileModel) => {
+export const addUploadedFileToLine = (lines: Line[], lineToUpdate: Line, file: FileModel): Line[] => {
   return lines.map((line: Line) => (line.id === lineToUpdate.id ? {...line, file} : line));
 };
 
-export const updateUploadProgressToLine = (lines: Line[], lineToUpdate: Line, progress: number) => {
+export const updateUploadProgressToLine = (lines: Line[], lineToUpdate: Line, progress: number): Line[] => {
   return lines.map((line: Line) => (line.id === lineToUpdate.id ? {...line, uploadProgress: progress} : line));
 };
 
-const addBackValidationError = (line: Line, validation: ValidationError[]) => ({
+const addBackValidationError = (line: Line, errors: ValidationError[]): Line => ({
   ...line,
-  validation: {
-    ...line.validation,
-    back: validation,
+  errors: {
+    ...line.errors,
+    back: errors,
   },
 });
 
-const assetCreationFailed = (lines: Line[], asset: CreationAsset, validation: ValidationError[]) => {
-  return lines.map((line: Line) => (line.code === asset.code ? addBackValidationError(line, validation) : asset));
+export const assetCreationFailed = (lines: Line[], asset: CreationAsset, errors: ValidationError[]): Line[] => {
+  return lines.map((line: Line) => (line.code === asset.code ? addBackValidationError(line, errors) : line));
 };
 
-const assetCreationSucceeded = (lines: Line[], asset: CreationAsset) => {
-  return lines.map((line: Line) => (line.code === asset.code ? {...asset, create: true} : asset));
+export const assetCreationSucceeded = (lines: Line[], asset: CreationAsset): Line[] => {
+  return lines.map((line: Line) => (line.code === asset.code ? {...line, create: true} : line));
 };
 
-const lineIsSendind = (lines: Line[], lineToSend: Line): Line[] =>
+export const lineCreationStart = (lines: Line[], lineToSend: Line): Line[] =>
   lines.map((line: Line) => (lineToSend.id === line.id ? {...line, isSending: true} : line));
 
-const assetIsSent = (lines: Line[], asset: CreationAsset): Line[] =>
+export const assetIsSent = (lines: Line[], asset: CreationAsset): Line[] =>
   lines.map((line: Line) => (line.code === asset.code ? {...line, isSending: false} : line));
 
-const selectLinesToSend = (lines: Line[]): Line[] =>
+export const selectLinesToSend = (lines: Line[]): Line[] =>
   lines.filter((line: Line) => !line.created && null !== line.file && !line.isSending);
-const selectLinesCreated = (lines: Line[]): Line[] => lines.filter((line: Line) => line.created);
+export const selectLinesCreated = (lines: Line[]): Line[] => lines.filter((line: Line) => line.created);
 
 // export const sendAssets = (
 //   assets: Asset[],
@@ -172,6 +175,9 @@ const selectLinesCreated = (lines: Line[]): Line[] => lines.filter((line: Line) 
 //
 // };
 
+/**
+ * Misc
+ */
 const createUUIDV4 = (): string => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     let r = (Math.random() * 16) | 0,

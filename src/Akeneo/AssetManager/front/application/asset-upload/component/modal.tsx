@@ -5,17 +5,27 @@ import {CloseButton} from 'akeneoassetmanager/application/component/app/close-bu
 import LineList from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import {
   createLineFromFilename,
-  addLines,
-  addThumbnail,
-  removeLine,
-  addUploadedFileToLine,
-  updateUploadProgressToLine,
+  selectLinesToSend,
+  createAssetsFromLines,
 } from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import Line, {Thumbnail} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
+import {create} from 'akeneoassetmanager/application/asset-upload/saver/asset';
+import {
+  lineCreationStartAction,
+  fileThumbnailGenerationAction,
+  fileUploadProgressAction,
+  linesAddedAction,
+  removeLineAction,
+  fileUploadSuccessAction,
+  reducer,
+  assetCreationFailAction,
+  assetCreationSuccessAction,
+} from 'akeneoassetmanager/application/asset-upload/reducer/asset-upload';
 
 type UploadModalProps = {
   assetFamily: AssetFamily;
@@ -35,103 +45,6 @@ const getThumbnailFromFile = async (file: File, line: Line): Promise<{thumbnail:
       resolve({thumbnail: null, line});
     }
   });
-};
-
-type State = {
-  lines: Line[];
-};
-
-const ADD_LINES = 'asset-upload/ADD_LINES';
-type OnAddLineAction = {
-  type: typeof ADD_LINES;
-  payload: {lines: Line[]};
-};
-const linesAddedAction = (lines: Line[]): OnAddLineAction => ({
-  type: ADD_LINES,
-  payload: {
-    lines,
-  },
-});
-
-const REMOVE_LINE = 'asset-upload/REMOVE_LINE';
-type OnRemoveLineAction = {
-  type: typeof REMOVE_LINE;
-  payload: {line: Line};
-};
-const removeLineAction = (line: Line): OnRemoveLineAction => ({
-  type: REMOVE_LINE,
-  payload: {
-    line,
-  },
-});
-
-const FILE_UPLOAD_SUCCESS = 'asset-upload/FILE_UPLOAD_SUCCESS';
-type OnFileUploadSuccessAction = {
-  type: typeof FILE_UPLOAD_SUCCESS;
-  payload: {line: Line; file: FileModel};
-};
-const fileUploadSuccessAction = (line: Line, file: FileModel): OnFileUploadSuccessAction => ({
-  type: FILE_UPLOAD_SUCCESS,
-  payload: {
-    line,
-    file,
-  },
-});
-
-const FILE_UPLOAD_PROGRESS = 'asset-upload/FILE_UPLOAD_PROGRESS';
-type OnFileUploadProgressAction = {
-  type: typeof FILE_UPLOAD_PROGRESS;
-  payload: {line: Line; progress: number};
-};
-const fileUploadProgressAction = (line: Line, progress: number): OnFileUploadProgressAction => ({
-  type: FILE_UPLOAD_PROGRESS,
-  payload: {
-    line,
-    progress,
-  },
-});
-
-const FILE_THUMBNAIL_GENERATION = 'asset-upload/THUMBNAIL_GENERATED';
-type OnFileThumbnailGenerationAction = {
-  type: typeof FILE_THUMBNAIL_GENERATION;
-  payload: {
-    thumbnail: Thumbnail;
-    line: Line;
-  };
-};
-const fileThumbnailGenerationAction = (thumbnail: Thumbnail, line: Line): OnFileThumbnailGenerationAction => ({
-  type: FILE_THUMBNAIL_GENERATION,
-  payload: {
-    thumbnail,
-    line,
-  },
-});
-
-const reducer = (
-  state: State,
-  action:
-    | OnAddLineAction
-    | OnFileThumbnailGenerationAction
-    | OnRemoveLineAction
-    | OnFileUploadSuccessAction
-    | OnFileUploadProgressAction
-) => {
-  console.log(state, action);
-
-  switch (action.type) {
-    case ADD_LINES:
-      return {...state, lines: addLines(state.lines, action.payload.lines)};
-    case FILE_THUMBNAIL_GENERATION:
-      return {...state, lines: addThumbnail(state.lines, action.payload.line, action.payload.thumbnail)};
-    case REMOVE_LINE:
-      return {...state, lines: removeLine(state.lines, action.payload.line)};
-    case FILE_UPLOAD_SUCCESS:
-      return {...state, lines: addUploadedFileToLine(state.lines, action.payload.line, action.payload.file)};
-    case FILE_UPLOAD_PROGRESS:
-      return {...state, lines: updateUploadProgressToLine(state.lines, action.payload.line, action.payload.progress)};
-    default:
-      return state;
-  }
 };
 
 const uploadFile = async (
@@ -158,7 +71,7 @@ const uploadFile = async (
   });
 };
 
-const UploadModal = ({assetFamily, onCancel, onAssetCreated}: UploadModalProps) => {
+const UploadModal = ({assetFamily, onCancel}: UploadModalProps) => {
   const [state, dispatch] = React.useReducer(reducer, {lines: []});
 
   return (
@@ -166,7 +79,40 @@ const UploadModal = ({assetFamily, onCancel, onAssetCreated}: UploadModalProps) 
       <Header>
         <CloseButton title={__('pim_asset_manager.close')} onClick={onCancel} />
         <Title>{__('pim_asset_manager.asset.upload.title')}</Title>
-        <ConfirmButton title={__('pim_asset_manager.asset.upload.confirm')} color="green" onClick={onAssetCreated}>
+        <ConfirmButton
+          title={__('pim_asset_manager.asset.upload.confirm')}
+          color="green"
+          onClick={() => {
+            const linesToSend = selectLinesToSend(state.lines);
+            const assetsToSend = createAssetsFromLines(linesToSend, assetFamily);
+
+            linesToSend.forEach((line: Line) => dispatch(lineCreationStartAction(line)));
+
+            assetsToSend.forEach(async (asset: CreationAsset) => {
+              try {
+                const result = await create(asset);
+
+                if (null !== result) {
+                  dispatch(assetCreationFailAction(asset, result));
+                } else {
+                  dispatch(assetCreationSuccessAction(asset));
+                }
+              } catch (e) {
+                dispatch(
+                  assetCreationFailAction(asset, [
+                    {
+                      messageTemplate: 'pim_asset_manager.asset.validation.server_error',
+                      parameters: {},
+                      message: 'Internal server error',
+                      propertyPath: '',
+                      invalidValue: asset,
+                    },
+                  ])
+                );
+              }
+            });
+          }}
+        >
           {__('pim_asset_manager.asset.upload.confirm')}
         </ConfirmButton>
       </Header>

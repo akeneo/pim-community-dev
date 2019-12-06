@@ -1,6 +1,6 @@
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 
 export enum LineStatus {
@@ -26,7 +26,7 @@ export default interface Line {
   channel: ChannelReference;
   status: LineStatus;
   uploadProgress: number | null;
-  validation: {
+  errors: {
     back: ValidationError[];
   };
 }
