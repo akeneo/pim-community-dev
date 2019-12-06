@@ -42,18 +42,28 @@ const ListColumnHeader = styled.th<{width?: number}>`
 type LineListProps = {
   lines: Line[];
   onLineRemove: (line: Line) => void;
+  onLineRemoveAll: () => void;
   onLineChange: (line: Line) => void;
   localizable?: boolean;
   scopable?: boolean;
 };
 
-const LineList = ({lines, onLineRemove, onLineChange, localizable = true, scopable = true}: LineListProps) => {
+const LineList = ({
+  lines,
+  onLineRemove,
+  onLineRemoveAll,
+  onLineChange,
+  localizable = true,
+  scopable = true,
+}: LineListProps) => {
   return (
     <>
       <Header>
         <LineCount>{__('pim_asset_manager.asset.upload.line_count', {count: lines.length}, lines.length)}</LineCount>
         <Spacer />
-        <ActionButton color="outline">{__('pim_asset_manager.asset.upload.remove_all')}</ActionButton>
+        <ActionButton color="outline" onClick={onLineRemoveAll}>
+          {__('pim_asset_manager.asset.upload.remove_all')}
+        </ActionButton>
       </Header>
       <List>
         <ListHeader>

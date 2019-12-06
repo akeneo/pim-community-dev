@@ -30,6 +30,7 @@ import {
   OnFileUploadProgressAction,
   OnAddLineAction,
   editLineAction,
+  removeAllLinesAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/asset-upload';
 import FileDropZone from 'akeneoassetmanager/application/asset-upload/component/file-drop-zone';
 
@@ -171,6 +172,9 @@ const UploadModal = ({assetFamily, onCancel}: UploadModalProps) => {
         }}
         onLineRemove={(line: Line) => {
           dispatch(removeLineAction(line));
+        }}
+        onLineRemoveAll={() => {
+          dispatch(removeAllLinesAction());
         }}
       />
     </Modal>

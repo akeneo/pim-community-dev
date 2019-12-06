@@ -78,6 +78,16 @@ export const removeLineAction = (line: Line): OnRemoveLineAction => ({
   },
 });
 
+export const REMOVE_ALL_LINES = 'asset-upload/REMOVE_ALL_LINES';
+export type OnRemoveAllLinesAction = {
+  type: typeof REMOVE_ALL_LINES;
+  payload: {};
+};
+export const removeAllLinesAction = (): OnRemoveAllLinesAction => ({
+  type: REMOVE_ALL_LINES,
+  payload: {},
+});
+
 export const EDIT_LINE = 'asset-upload/EDIT_LINE';
 export type OnEditLineAction = {
   type: typeof EDIT_LINE;
@@ -148,6 +158,7 @@ export const reducer = (
     | OnAssetCreationSuccessAction
     | OnAssetCreationFailAction
     | OnEditLineAction
+    | OnRemoveAllLinesAction
 ) => {
   console.log(state, action);
 
@@ -158,6 +169,8 @@ export const reducer = (
       return {...state, lines: addThumbnail(state.lines, action.payload.line, action.payload.thumbnail)};
     case REMOVE_LINE:
       return {...state, lines: removeLine(state.lines, action.payload.line)};
+    case REMOVE_ALL_LINES:
+      return {...state, lines: []};
     case EDIT_LINE:
       return {...state, lines: editLine(state.lines, action.payload.line)};
     case FILE_UPLOAD_SUCCESS:
