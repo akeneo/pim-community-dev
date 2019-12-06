@@ -34,11 +34,12 @@ const Input = styled.input`
 type RowProps = {
   line: Line;
   onLineRemove: (line: Line) => void;
+  onLineChange: (line: Line) => void;
   localizable: boolean;
   scopable: boolean;
 };
 
-const Row = ({line, onLineRemove, localizable = true, scopable = true}: RowProps) => {
+const Row = ({line, onLineRemove, onLineChange, localizable = true, scopable = true}: RowProps) => {
   return (
     <Container>
       <Cell>{null !== line.thumbnail && <Thumbnail src={line.thumbnail} />}</Cell>

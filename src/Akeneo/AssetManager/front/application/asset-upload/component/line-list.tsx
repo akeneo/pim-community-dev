@@ -42,11 +42,12 @@ const ListColumnHeader = styled.th<{width?: number}>`
 type LineListProps = {
   lines: Line[];
   onLineRemove: (line: Line) => void;
+  onLineChange: (line: Line) => void;
   localizable?: boolean;
   scopable?: boolean;
 };
 
-const LineList = ({lines, onLineRemove, localizable = true, scopable = true}: LineListProps) => {
+const LineList = ({lines, onLineRemove, onLineChange, localizable = true, scopable = true}: LineListProps) => {
   return (
     <>
       <Header>
@@ -68,7 +69,14 @@ const LineList = ({lines, onLineRemove, localizable = true, scopable = true}: Li
         </ListHeader>
         <tbody>
           {lines.map((line: Line) => (
-            <Row key={line.id} line={line} onLineRemove={onLineRemove} localizable={localizable} scopable={scopable} />
+            <Row
+              key={line.id}
+              line={line}
+              onLineChange={onLineChange}
+              onLineRemove={onLineRemove}
+              localizable={localizable}
+              scopable={scopable}
+            />
           ))}
         </tbody>
       </List>

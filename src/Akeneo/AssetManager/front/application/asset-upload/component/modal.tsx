@@ -147,6 +147,7 @@ const UploadModal = ({assetFamily, onCancel}: UploadModalProps) => {
       />
       <LineList
         lines={state.lines}
+        onLineChange={() => {}}
         onLineRemove={(line: Line) => {
           dispatch(removeLineAction(line));
         }}
