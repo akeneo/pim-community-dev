@@ -13,33 +13,31 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
-use League\Flysystem\FilesystemNotFoundException;
+use League\Flysystem\FileExistsException;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\MountManager;
-use League\Flysystem\RootViolationException;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-class FileStorageChecker
+final class FileStorageChecker
 {
     private const STORAGE_PREFIXES = [
         'catalogStorage',
         'archivist',
         'jobsStorage',
         'assetManagerStorage',
-        'tmpAssetUpload',
-        'tmpStorage'
+        'tmpAssetUpload'
     ];
+
+    /** @var string */
+    private $tmpStorageDir;
 
     /** @var MountManager */
     private $mountManager;
 
-    public function __construct(MountManager $mountManager)
+    public function __construct(MountManager $mountManager, string $tmpStorageDir)
     {
         $this->mountManager = $mountManager;
+        $this->tmpStorageDir =$tmpStorageDir;
     }
 
     public function status(): ServiceStatus
@@ -51,6 +49,10 @@ class FileStorageChecker
             }
         }
 
+        if (!$this->isTemporaryStorageAvailable()) {
+            $failingFileStorages[] = 'tmpStorage';
+        }
+
         return empty($failingFileStorages) ?
             ServiceStatus::ok() :
             ServiceStatus::notOk('Failing file storages: ' . implode(',', $failingFileStorages));
@@ -60,13 +62,26 @@ class FileStorageChecker
     {
         try {
             $filesystem = $this->mountManager->getFilesystem($prefix);
-            $dirname = Uuid::uuid4();
-            $isCreationOk = $filesystem->createDir($dirname);
-            $isDeletionOk = $filesystem->deleteDir($dirname);
+            $filename = Uuid::uuid4();
+            $isCreationOk = $filesystem->write($filename, 'monitoring');
+            $isDeletionOk = $filesystem->readAndDelete($filename);
 
-            return $isCreationOk && $isDeletionOk;
-        } catch (FilesystemNotFoundException|RootViolationException|UnsatisfiedDependencyException|\InvalidArgumentException $e) {
+            return $isCreationOk && $isDeletionOk === 'monitoring';
+        } catch (FileNotFoundException|FileExistsException $e) {
             return false;
         }
+    }
+
+    /**
+     * Temporary file storage does not use Flysystem. We test with basic method.
+     */
+    private function isTemporaryStorageAvailable(): bool
+    {
+        $path = $this->tmpStorageDir . DIRECTORY_SEPARATOR . Uuid::uuid4();
+        $isCreationOk = file_put_contents($path, 'monitoring');
+        $contentInFile = file_get_contents($path);
+        $isDeletionOk = unlink($path);
+
+        return false !== $isCreationOk && 'monitoring' === $contentInFile && true === $isDeletionOk;
     }
 }

@@ -13,6 +13,7 @@ services:
         class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageChecker'
         arguments:
             - '@oneup_flysystem.mount_manager'
+            - '%tmp_storage_dir%'
 
     Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\Controller:
         class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\Controller'
