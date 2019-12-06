@@ -69,7 +69,7 @@
         "gedmo/doctrine-extensions":"v2.4.37",
         "league/flysystem": "^1.0",
         "league/flysystem-ziparchive": "1.0.3",
-        "liip/imagine-bundle": "2.0.0",
+        "liip/imagine-bundle": "2.2.0",
         "imagine/imagine": "0.7.1",
         "monolog/monolog": "1.23.0",
         "ocramius/proxy-manager": "2.2.3",
