@@ -60,15 +60,3 @@ Feature: Filter products
     And I hide the filter "sku"
     Then I should see the filters name, info, family and enabled
     And I should not see the filters Image, sku
-
-  Scenario: Successfully order available filters
-    Given I am on the products grid
-    And I should not see the filters name, image and info
-    Then I should see available filters "sku,name,info,image"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-5208
-  Scenario: View only attribute filters that are usable as grid filters
-    Given I am on the products grid
-    Then I should see the available filters sku, family, enabled
-    And I should see the available filters name, image, info
-    And I should not see the available filters description
