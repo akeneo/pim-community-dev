@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
@@ -84,7 +85,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedName->identifier = (string) $this->fixturesDesigner['attributes']['name']->getIdentifier();
         $expectedName->assetFamilyIdentifier = 'designer';
         $expectedName->code = 'name';
-        $expectedName->labels = ['en_US' => 'Name', 'fr_FR' => 'Nom'];
+        $expectedName->labels = LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']);
         $expectedName->order = 2;
         $expectedName->isRequired = false;
         $expectedName->valuePerChannel = false;
@@ -109,7 +110,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedEmail->identifier = (string) $this->fixturesDesigner['attributes']['email']->getIdentifier();
         $expectedEmail->assetFamilyIdentifier = 'designer';
         $expectedEmail->code = 'email';
-        $expectedEmail->labels = ['en_US' => 'Email', 'fr_FR' => 'Email'];
+        $expectedEmail->labels = LabelCollection::fromArray(['en_US' => 'Email', 'fr_FR' => 'Email']);
         $expectedEmail->order = 3;
         $expectedEmail->isRequired = true;
         $expectedEmail->valuePerChannel = false;
@@ -134,7 +135,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedRegex->identifier = (string) $this->fixturesDesigner['attributes']['regex']->getIdentifier();
         $expectedRegex->assetFamilyIdentifier = 'designer';
         $expectedRegex->code = 'regex';
-        $expectedRegex->labels = ['en_US' => 'Regex'];
+        $expectedRegex->labels = LabelCollection::fromArray(['en_US' => 'Regex']);
         $expectedRegex->order = 4;
         $expectedRegex->isRequired = true;
         $expectedRegex->valuePerChannel = true;
@@ -159,7 +160,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedLongDescription->identifier = (string) $this->fixturesDesigner['attributes']['long_description']->getIdentifier();
         $expectedLongDescription->assetFamilyIdentifier = 'designer';
         $expectedLongDescription->code = 'long_description';
-        $expectedLongDescription->labels = ['en_US' => 'Long description'];
+        $expectedLongDescription->labels = LabelCollection::fromArray(['en_US' => 'Long description']);
         $expectedLongDescription->order = 5;
         $expectedLongDescription->isRequired = true;
         $expectedLongDescription->valuePerChannel = true;
@@ -188,7 +189,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedImage->identifier = (string) $this->fixturesDesigner['attributes']['main_image']->getIdentifier();
         $expectedImage->assetFamilyIdentifier = 'designer';
         $expectedImage->code = 'main_image';
-        $expectedImage->labels = ['en_US' => 'Portrait'];
+        $expectedImage->labels = LabelCollection::fromArray(['en_US' => 'Portrait']);
         $expectedImage->order = 6;
         $expectedImage->isRequired = true;
         $expectedImage->valuePerChannel = true;

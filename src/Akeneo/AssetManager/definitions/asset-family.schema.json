@@ -1,5 +1,4 @@
 {
-    "$id": "akeneoasseetmanager/asset-family/asset-family",
     "title": "BackendAssetFamily",
     "type": "object",
     "properties": {
@@ -29,14 +28,12 @@
         "asset_count": { "type": "integer" },
         "attributes": {
             "type": "array",
-            "items": {"$id": "akeneoasseetmanager/asset-family/attribute"}
+            "items": { "$ref": "attribute.schema.json" }
         },
         "permission": {
             "type": "object",
             "patternProperties": {
-                ".+": {
-                    "type": "boolean"
-                }
+                ".+": { "type": "boolean" }
             }
         },
         "attribute_as_label": { "type": "string" },

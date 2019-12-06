@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
 use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesInterface;
@@ -90,7 +91,7 @@ SQL;
             $attributeDetails->assetFamilyIdentifier = $result['asset_family_identifier'];
             $attributeDetails->code = $result['code'];
             $attributeDetails->order = (int) $result['attribute_order'];
-            $attributeDetails->labels = $this->getLabelsByActivatedLocale($result, $activatedLocales);
+            $attributeDetails->labels = LabelCollection::fromArray($this->getLabelsByActivatedLocale($result, $activatedLocales));
             $attributeDetails->isRequired = (bool) $result['is_required'];
             $attributeDetails->valuePerChannel = (bool) $result['value_per_channel'];
             $attributeDetails->valuePerLocale = (bool) $result['value_per_locale'];

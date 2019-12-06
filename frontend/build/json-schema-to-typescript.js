@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
-const { compileFromFile } = require('json-schema-to-typescript');
+const { compile } = require('json-schema-to-typescript');
+const $RefParser = require('json-schema-ref-parser');
 
 const JSON_SCHEMA_EXT = '.schema.json';
 const TYPESCRIPT_EXT = '.ts';
@@ -64,11 +65,29 @@ if (fs.existsSync(target) && !fs.lstatSync(target).isDirectory()) {
   process.exit(1);
 }
 
-const copyAndCompile = async (jsonSchemaSource, jsonSchemaTarget) => {
-  let typescriptFilepath = jsonSchemaTarget.replace(JSON_SCHEMA_EXT, TYPESCRIPT_EXT);
+const resolveSchema = async (jsonSchemaPath, cwd) => {
+  let schema = fs.readFileSync(jsonSchemaPath, { encoding: 'utf8' });
+  schema = JSON.parse(schema);
 
-  fs.copyFileSync(jsonSchemaSource, jsonSchemaTarget);
-  fs.writeFileSync(typescriptFilepath, await compileFromFile(jsonSchemaSource, {cwd: path.dirname(jsonSchemaSource)}));
+  // Resolve $ref links into flatten schemas
+  schema = await $RefParser.dereference(cwd, schema, {});
+
+  return schema;
+};
+
+const copyAndCompile = async (jsonSchemaSource, jsonSchemaTarget) => {
+  const typescriptFilepath = jsonSchemaTarget.replace(JSON_SCHEMA_EXT, TYPESCRIPT_EXT);
+
+  // We assume that the root directory for relative schemas is the directory
+  // where the schema is stored.
+  const cwd = path.dirname(jsonSchemaSource) + path.sep;
+
+  const name = path.basename(jsonSchemaSource);
+  const schema = await resolveSchema(jsonSchemaSource, cwd);
+  const typescript = await compile(schema, name, { cwd });
+
+  fs.writeFileSync(jsonSchemaTarget, JSON.stringify(schema, null, 2));
+  fs.writeFileSync(typescriptFilepath, typescript);
 };
 
 (async () => {

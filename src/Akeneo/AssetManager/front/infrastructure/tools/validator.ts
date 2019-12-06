@@ -4,15 +4,19 @@ const Ajv = require('ajv');
 const ajv = new Ajv();
 
 export const isValidAgainstSchema = <T>(data: any, schema: object): data is T => {
-  return ajv.validate(schema, data);
+  try {
+    return ajv.validate(schema, data);
+  } catch (e) {
+    throw Error(e.message);
+  }
 };
 
 export const validateAgainstSchema = <T>(data: any, schema: object): T => {
   const isValid = isValidAgainstSchema<T>(data, schema);
 
   if (!isValid) {
-    console.warn('validator errors', ajv.errors);
-    throw Error('The value does not match the JSON schema');
+    console.error('The data does not match the JSON schema', ajv.errors);
+    throw Error('The data does not match the JSON schema');
   }
 
   return data;

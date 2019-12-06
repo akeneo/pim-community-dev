@@ -1,5 +1,4 @@
 {
-    "$id": "akeneoasseetmanager/asset-family/attribute",
     "title": "BackendAttribute",
     "type": "object",
     "properties": {
@@ -17,20 +16,21 @@
         "order": { "type": "integer" },
         "value_per_locale": { "type": "boolean" },
         "value_per_channel": { "type": "boolean" },
-        "max_length": { "type": "integer" },
+        "max_length": { "type": ["integer", "null"] },
         "is_textarea": { "type": "boolean" },
         "is_rich_text_editor": { "type": "boolean" },
         "validation_rule": { "type": "string" },
         "regular_expression": { "type": ["string", "null"] },
-        "max_file_size": { "type": "string" },
+        "media_type": { "type": ["string", "null"] },
+        "max_file_size": { "type": ["string", "null"] },
         "allowed_extensions": {
             "type": "array",
             "items": { "type": "string" }
         },
-        "min_value": { "type": "string"},
-        "max_value": { "type": "string"},
-        "decimals_allowed": { "type": "boolean"},
-        "asset_type": { "type": "string"},
+        "min_value": { "type": "string" },
+        "max_value": { "type": "string" },
+        "decimals_allowed": { "type": "boolean" },
+        "asset_type": { "type": "string" },
         "options": {
             "type": "array",
             "items": {
