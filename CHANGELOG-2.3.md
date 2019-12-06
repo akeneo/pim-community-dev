@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.73 (2019-12-06)
+
 ## Bug fixes
 
 - PIM-9003: Fix product variant navigation when there is no completeness for a given channel
