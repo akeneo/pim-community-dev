@@ -160,9 +160,9 @@ You can now use it in your Asset Family configuration, in the transformation sec
             operations: [
                 {
                     type: rotate,
-                    parameters: [
+                    parameters: {
                         angle: 90
-                    ]                   
+                    }
                 }
             ]           
         }
