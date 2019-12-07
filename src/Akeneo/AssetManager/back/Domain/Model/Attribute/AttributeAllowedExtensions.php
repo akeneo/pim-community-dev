@@ -23,7 +23,6 @@ use Webmozart\Assert\Assert;
 class AttributeAllowedExtensions
 {
     public const ALL_ALLOWED = [];
-    public const VALID_EXTENSIONS = ['gif', 'jfif', 'jif', 'jpeg', 'jpg', 'pdf', 'png', 'psd', 'tif', 'tiff'];
     private const EXTENSION_SEPARATOR = '.';
 
     /** @var string[] */

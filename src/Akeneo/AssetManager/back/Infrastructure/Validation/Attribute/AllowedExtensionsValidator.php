@@ -45,8 +45,6 @@ class AllowedExtensionsValidator extends ConstraintValidator
         if ($this->isNotArrayOfStrings($allowedExtensions)) {
             return;
         }
-
-        $this->checkExtensionsAreValid($allowedExtensions);
     }
 
     private function addViolations(ConstraintViolationListInterface $violations): void
@@ -87,21 +85,5 @@ class AllowedExtensionsValidator extends ConstraintValidator
         }
 
         return $notValid;
-    }
-
-    private function checkExtensionsAreValid($allowedExtensions): void
-    {
-        $validator = Validation::createValidator();
-        $violations = $validator->validate($allowedExtensions, [
-            new Assert\Choice([
-                'strict' => true,
-                'choices' => AttributeAllowedExtensions::VALID_EXTENSIONS,
-                'multiple' => true,
-            ]),
-        ]);
-
-        if ($violations->count() > 0) {
-            $this->addViolations($violations);
-        }
     }
 }
