@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
- * Generate and return the CSP javascript nonce
+ * Generate and return the CSP javascript nonce.
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -28,6 +28,9 @@ class ScriptNonceGenerator
         $this->session = $session;
     }
 
+    /**
+    * For XML http requests, the nonce is read from session to ensure it is the same than the original request.
+    */
     public function getGeneratedNonce(): string
     {
         if (!$this->request->getCurrentRequest()->isXmlHttpRequest()) {
