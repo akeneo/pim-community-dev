@@ -188,3 +188,8 @@ EOF
 EOF
   }
 }
+
+resource "random_string" "monitoring_authentication_token" {
+  length  = 32
+  special = true
+}

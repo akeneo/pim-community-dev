@@ -66,3 +66,8 @@ variable "google_storage_location" {
 variable "force_destroy_storage" {
   default = "false"
 }
+
+variable "monitoring_authentication_token" {
+  type    = "string"
+  default = ""
+}

@@ -15,6 +15,7 @@ data "template_file" "helm_pim_config" {
     bucketName          = "${google_storage_bucket.srnt_bucket.name}"
     pimStoragekey       = "${google_service_account_key.pimstorage.private_key}"
     papoProjectCode     = "${var.papo_project_code}"
+    monitoring_authentication_token = "${random_string.monitoring_authentication_token.result}"
   }
 }
 
