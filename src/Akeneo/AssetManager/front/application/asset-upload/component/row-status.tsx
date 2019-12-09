@@ -5,7 +5,7 @@ import {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 
 const StatusLabel = styled.span`
-  color: 1px solid ${(props: ThemedProps<{color: string}>) => props.color};
+  color: ${(props: ThemedProps<{color: string}>) => props.color};
   border: 1px solid ${(props: ThemedProps<{color: string}>) => props.color};
   text-transform: uppercase;
   border-radius: 2px;
@@ -15,6 +15,7 @@ const StatusLabel = styled.span`
 `;
 const ProgressBar = styled.div`
   background: ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  border-radius: 2px;
   height: 18px;
   overflow: hidden;
   position: relative;
@@ -22,10 +23,12 @@ const ProgressBar = styled.div`
 `;
 const ProgressBarFill = styled.div<{width: number}>`
   background: ${(props: ThemedProps<{width: number}>) => props.theme.color.blue100};
+  border-radius: 2px;
   height: 18px;
   left: 0;
   position: absolute;
   top: 0;
+  transition: width 0.3s;
   width: ${(props: ThemedProps<{width: number}>) => props.width}%;
 `;
 
