@@ -5,15 +5,18 @@ export const isValidAllowedExtension = (allowedExtensions: string[]): allowedExt
     return false;
   }
 
-  return allowedExtensions.every((extension: string) => typeof extension === 'string'); // TODO: Leading '.' ?
+  return allowedExtensions.every((extension: string) => typeof extension === 'string');
 };
 
 export const createAllowedExtensionFromNormalized = (allowedExtensions: string[]): AllowedExtensions => {
   if (!isValidAllowedExtension(allowedExtensions)) {
     throw new Error(`AllowedExtension is not valid`);
   }
+  const extensionsWithoutLeadingPoint = allowedExtensions.map(
+    (allowedExtension: string) => allowedExtension.replace(/^\./, '')
+  );
 
-  return allowedExtensions;
+  return extensionsWithoutLeadingPoint;
 };
 
 export const createAllowedExtensionFromArray = (allowedExtensions: string[]): AllowedExtensions => {

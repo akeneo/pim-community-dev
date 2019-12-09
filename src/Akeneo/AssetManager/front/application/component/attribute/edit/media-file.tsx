@@ -119,7 +119,7 @@ const MediaFileView = ({
             id="pim_asset_manager.attribute.edit.input.allowed_extensions"
             name="allowed_extensions"
             values={normalizeAllowedExtension(attribute.allowedExtensions)}
-            tags={normalizeAllowedExtension(attribute.allowedExtensions)}
+            tags={[]}
             readOnly={!rights.attribute.edit}
             configuration={{maximumInputLength: 20}}
             onChange={(allowedExtensions: string[]) => {

@@ -27,7 +27,7 @@ export default class Tags extends React.Component<TagsProps & any> {
 
     if (undefined !== $el.select2) {
       $el.val(this.props.values.join(',')).select2(this.getConfiguration());
-      $el.on('change', (event: any) => this.props.onChange(this.cleanExtensions(event.val))); // Still appears to the user :/
+      $el.on('change', (event: any) => this.props.onChange(event.val));
     }
   }
 
@@ -56,24 +56,12 @@ export default class Tags extends React.Component<TagsProps & any> {
 
     return <div {...props} ref={this.tags} disabled={props.readOnly}></div>;
   }
+
   private getConfiguration() {
     return {
       ...this.props.configuration,
       tags: this.props.tags,
-      tokenSeparators: [',', ' '],
-      onChange: (params: any) => {
-        console.log(params.term);
-        return {
-          id: params.term,
-          text: params.term,
-        };
-      },
+      tokenSeparators: [',', ' ']
     };
-  }
-
-  private cleanExtensions(extensions: string[]) {
-    // Remove special characters ?
-    // allow only [a-zA-Z0-9]* ?
-    return extensions.map((extension: string) => ('.' === extension.charAt(0) ? extension.slice(1) : extension));
   }
 }
