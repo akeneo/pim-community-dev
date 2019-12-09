@@ -28,7 +28,7 @@ class WeeklyEventCountByAppSpec extends ObjectBehavior
     function it_normalizes_an_app()
     {
         $this->normalize()->shouldReturn([
-            'app_code' => 'magento',
+            'app_label' => 'magento',
             'event_type' => 'product_created',
             'event_counts' => [],
         ]);
