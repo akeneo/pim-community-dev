@@ -111,7 +111,12 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
 
-    akeneo_assetmanager.application.asset.compute_transformations.handler:
-        class: Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsHandler
+    akeneo_assetmanager.application.asset.compute_transformations_from_asset_identifiers.handler:
+        class: Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsFromAssetIdentifiersHandler
         arguments:
-            - '@akeneo_assetmanager.infrastructure.job.compute_transformations_launcher'
+            - '@akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher'
+
+    akeneo_assetmanager.application.asset.compute_transformations_from_asset_family_identifier.handler:
+        class: Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsFromAssetFamilyIdentifierHandler
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_family_identifier_launcher'

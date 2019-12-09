@@ -36,6 +36,11 @@ services:
             - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
             - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
 
+    akeneo_assetmanager.tests.back.acceptance.context.compute_transformations_context:
+        class: Akeneo\AssetManager\Acceptance\Context\ComputeTransformationsContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_family_identifier_launcher'
+
     akeneo_assetmanager.tests.back.acceptance.context.delete_asset_family_context:
         class: Akeneo\AssetManager\Acceptance\Context\DeleteAssetFamilyContext
         arguments:
