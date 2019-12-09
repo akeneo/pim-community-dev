@@ -24,8 +24,6 @@ SQL
 
     public function down(Schema $schema) : void
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('DROP TABLE IF EXISTS pimee_workflow_proposal_tracking');
+        $this->throwIrreversibleMigrationException();
     }
 }
