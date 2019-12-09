@@ -3,15 +3,15 @@
 namespace spec\Akeneo\AssetManager\Infrastructure\Job;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
-use Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationLauncher;
+use Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationFromAssetIdentifiersLauncher;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use PhpSpec\ObjectBehavior;
 
-class ComputeTransformationLauncherSpec extends ObjectBehavior
+class ComputeTransformationFromAssetIdentifiersLauncherSpec extends ObjectBehavior
 {
     function let(PublishJobToQueue $publishJobToQueue) {
         $this->beConstructedWith($publishJobToQueue);
-        $this->shouldHaveType(ComputeTransformationLauncher::class);
+        $this->shouldHaveType(ComputeTransformationFromAssetIdentifiersLauncher::class);
     }
 
     function it_throws_an_exception_when_lauching_wrong_type()

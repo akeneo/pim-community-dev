@@ -34,7 +34,9 @@ class ComputeTransformations implements ConstraintCollectionProviderInterface, D
                             new NotBlank(),
                         ]
                     ),
+                    'asset_family_identifier' => new Type(['type' => 'string'])
                 ],
+                'allowMissingFields' => true,
             ]
         );
     }
@@ -48,6 +50,7 @@ class ComputeTransformations implements ConstraintCollectionProviderInterface, D
     {
         return [
             'asset_identifiers' => [],
+            'asset_family_identifier' => null,
         ];
     }
 }

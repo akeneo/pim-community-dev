@@ -15,17 +15,17 @@ namespace Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 
-class ComputeTransformationsHandler
+class ComputeTransformationsFromAssetIdentifiersHandler
 {
-    /** @var ComputeTransformationLauncherInterface */
+    /** @var ComputeTransformationFromAssetIdentifiersLauncherInterface */
     private $computeTransformationLauncher;
 
-    public function __construct(ComputeTransformationLauncherInterface $computeTransformationLauncher)
+    public function __construct(ComputeTransformationFromAssetIdentifiersLauncherInterface $computeTransformationLauncher)
     {
         $this->computeTransformationLauncher = $computeTransformationLauncher;
     }
 
-    public function handle(ComputeTransformationsCommand $command): void
+    public function handle(ComputeTransformationsFromAssetIdentifiersCommand $command): void
     {
         $this->computeTransformationLauncher->launch(array_map(function ($assetIdenfier) {
             return AssetIdentifier::fromString($assetIdenfier);

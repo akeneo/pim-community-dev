@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets;
 
 use Webmozart\Assert\Assert;
 
-class ComputeTransformationsCommand
+class ComputeTransformationsFromAssetIdentifiersCommand
 {
     /** @var string[] */
     private $assetIdentifiers;

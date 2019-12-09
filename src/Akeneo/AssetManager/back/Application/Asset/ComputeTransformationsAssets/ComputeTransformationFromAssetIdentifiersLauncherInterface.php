@@ -13,7 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets;
 
-interface ComputeTransformationLauncherInterface
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+
+interface ComputeTransformationFromAssetIdentifiersLauncherInterface
 {
+    /**
+     * @param AssetIdentifier[] $assetIdentifiers
+     */
     public function launch(array $assetIdentifiers): void;
 }
