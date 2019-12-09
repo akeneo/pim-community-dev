@@ -12,7 +12,7 @@ namespace Akeneo\Apps\Audit\Domain\Model\Read;
 final class WeeklyEventCountByApp
 {
     /** @var string */
-    private $appCode;
+    private $appLabel;
 
     /** @var string */
     private $eventType;
@@ -20,9 +20,9 @@ final class WeeklyEventCountByApp
     /** @var array */
     private $eventCounts;
 
-    public function __construct(string $appCode, string $eventType, array $eventCounts)
+    public function __construct(string $appLabel, string $eventType, array $eventCounts)
     {
-        $this->appCode = $appCode;
+        $this->appLabel = $appLabel;
         $this->eventType = $eventType;
         $this->eventCounts = $eventCounts;
     }
@@ -35,7 +35,7 @@ final class WeeklyEventCountByApp
         }
 
         return [
-            'app_code' => $this->appCode,
+            'app_label' => $this->appLabel,
             'event_type' => $this->eventType,
             'event_counts' => $eventCounts,
         ];

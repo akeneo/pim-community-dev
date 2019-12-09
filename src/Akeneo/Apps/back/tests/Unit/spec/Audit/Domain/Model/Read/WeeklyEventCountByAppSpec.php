@@ -48,7 +48,7 @@ class WeeklyEventCountByAppSpec extends ObjectBehavior
         $this->beConstructedWith('magento', 'product_updated', [$eventCount1, $eventCount2, $eventCount3]);
         $this->normalize()->shouldReturn(
             [
-                'app_code' => 'magento',
+                'app_label' => 'magento',
                 'event_type' => 'product_updated',
                 'event_counts' => [
                     '2019-12-12' => 153,
