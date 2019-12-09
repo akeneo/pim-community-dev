@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Controller\AssetFamily;
 
+use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationFromAssetFamilyIdentifierLauncherInterface;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyDetailsInterface;
@@ -31,36 +32,22 @@ class ComputeTransformationsAction
     /** @var FindAssetFamilyDetailsInterface */
     private $findOneAssetFamilyQuery;
 
-    /** @var JobLauncherInterface */
-    private $jobLauncher;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var JobInstanceRepository */
-    private $jobInstanceRepository;
+    /** @var ComputeTransformationFromAssetFamilyIdentifierLauncherInterface */
+    private $computeTransformationsLauncher;
 
     public function __construct(
         FindAssetFamilyDetailsInterface $findOneAssetFamilyQuery,
-        JobLauncherInterface $jobLauncher,
-        TokenStorageInterface $tokenStorage,
-        JobInstanceRepository $jobInstanceRepository
+        ComputeTransformationFromAssetFamilyIdentifierLauncherInterface $computeTransformationsLauncher
     ) {
         $this->findOneAssetFamilyQuery = $findOneAssetFamilyQuery;
-        $this->jobLauncher = $jobLauncher;
-        $this->tokenStorage = $tokenStorage;
-        $this->jobInstanceRepository = $jobInstanceRepository;
+        $this->computeTransformationsLauncher = $computeTransformationsLauncher;
     }
 
     public function __invoke(string $identifier): JsonResponse
     {
         $assetFamilyIdentifier = $this->getAssetFamilyIdentifierOr404($identifier);
         $this->findAssetFamilyDetailsOr404($assetFamilyIdentifier);
-
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::$JOB_INSTANCE_CODE);
-        $this->jobLauncher->launch($jobInstance, $this->getUser(), [
-            'asset_family_identifier' => $identifier
-        ]);
+        $this->computeTransformationsLauncher->launch($assetFamilyIdentifier);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
@@ -82,10 +69,5 @@ class ComputeTransformationsAction
         }
 
         return $result;
-    }
-
-    private function getUser(): UserInterface
-    {
-        return $this->tokenStorage->getToken()->getUser();
     }
 }
