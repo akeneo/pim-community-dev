@@ -16,6 +16,6 @@ cp -r $DEV_DISTRIB_DIR/upgrades $STANDARD_DISTRIB_DIR
 cp $DEV_DISTRIB_DIR/config/bootstrap.php $STANDARD_DISTRIB_DIR/config/
 cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
 cp $DEV_DISTRIB_DIR/public/index.php $STANDARD_DISTRIB_DIR/public/
-cp $DEV_DISTRIB_DIR/std-build/src/Kernel.php $STANDARD_DISTRIB_DIR/src
+cp $DEV_DISTRIB_DIR/std-build/Kernel.php $STANDARD_DISTRIB_DIR/src
 
 [ -f $STANDARD_DISTRIB_DIR/config/packages/prod/oneup_flysystem.yml ] || cp $DEV_DISTRIB_DIR/config/packages/prod_onprem_paas/oneup_flysystem.yml $STANDARD_DISTRIB_DIR/config/packages/prod/oneup_flysystem.yml
