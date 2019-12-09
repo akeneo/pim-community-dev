@@ -1,0 +1,35 @@
+{
+    "title": "BackendAttributeAny",
+    "type": "object",
+    "properties": {
+        "type": {
+            "type": "string",
+            "pattern": "^(?!text|media_file|option_collection).*$"
+        },
+        "identifier": { "type": "string" },
+        "asset_family_identifier": { "type": "string" },
+        "code": { "type": "string" },
+        "labels": {
+            "type": "object",
+            "patternProperties": {
+                ".+": { "type": "string" }
+            }
+        },
+        "is_required": { "type": "boolean" },
+        "order": { "type": "integer" },
+        "value_per_locale": { "type": "boolean" },
+        "value_per_channel": { "type": "boolean" }
+    },
+    "required": [
+        "type",
+        "identifier",
+        "asset_family_identifier",
+        "code",
+        "labels",
+        "is_required",
+        "order",
+        "value_per_locale",
+        "value_per_channel"
+    ],
+    "additionalProperties": true
+}

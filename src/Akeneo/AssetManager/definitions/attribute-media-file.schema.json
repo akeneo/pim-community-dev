@@ -1,0 +1,38 @@
+{
+    "title": "BackendAttributeMediaFile",
+    "type": "object",
+    "properties": {
+        "type": { "const": "media_file" },
+        "identifier": { "type": "string" },
+        "asset_family_identifier": { "type": "string" },
+        "code": { "type": "string" },
+        "labels": {
+            "type": "object",
+            "patternProperties": {
+                ".+": { "type": "string" }
+            }
+        },
+        "is_required": { "type": "boolean" },
+        "order": { "type": "integer" },
+        "value_per_locale": { "type": "boolean" },
+        "value_per_channel": { "type": "boolean" },
+        "media_type": { "type": ["string"] },
+        "max_file_size": { "type": ["string", "null"] },
+        "allowed_extensions": {
+            "type": "array",
+            "items": { "type": "string" }
+        }
+    },
+    "required": [
+        "type",
+        "identifier",
+        "asset_family_identifier",
+        "code",
+        "labels",
+        "is_required",
+        "order",
+        "value_per_locale",
+        "value_per_channel"
+    ],
+    "additionalProperties": false
+}
