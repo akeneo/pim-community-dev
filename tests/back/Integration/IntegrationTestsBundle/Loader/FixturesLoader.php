@@ -30,8 +30,6 @@ use Symfony\Component\Process\Process;
  */
 class FixturesLoader implements FixturesLoaderInterface
 {
-    const CACHE_DIR = '/pim-integration-tests-data-cache/';
-
     /** @var KernelInterface */
     private $kernel;
 
@@ -86,6 +84,9 @@ class FixturesLoader implements FixturesLoaderInterface
     /** @var string */
     private $databasePassword;
 
+    /** @var string */
+    private $sqlDumpDirectory;
+
     public function __construct(
         KernelInterface $kernel,
         DatabaseSchemaHandler $databaseSchemaHandler,
@@ -103,7 +104,8 @@ class FixturesLoader implements FixturesLoaderInterface
         string $databaseHost,
         string $databaseName,
         string $databaseUser,
-        string $databasePassword
+        string $databasePassword,
+        string $sqlDumpDirectory
     ) {
         $this->kernel = $kernel;
         $this->databaseSchemaHandler = $databaseSchemaHandler;
@@ -126,6 +128,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->databaseName = $databaseName;
         $this->databaseUser = $databaseUser;
         $this->databasePassword = $databasePassword;
+        $this->sqlDumpDirectory = $sqlDumpDirectory;
     }
 
     public function __destruct()
@@ -150,7 +153,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
 
-        $dumpFile = sys_get_temp_dir().self::CACHE_DIR.$fixturesHash.'.sql';
+        $dumpFile = $this->sqlDumpDirectory . $fixturesHash . '.sql';
         if (file_exists($dumpFile)) {
             $this->databaseSchemaHandler->reset();
 
