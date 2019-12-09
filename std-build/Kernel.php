@@ -47,14 +47,14 @@ class Kernel extends BaseKernel
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', true);
 
-        $eeConfDir = $this->getProjectDir() . '/config';
         $ceConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config';
+        $projectConfDir = $this->getProjectDir() . '/config';
 
         $this->loadPackagesConfigurationExceptSecurity($loader, $ceConfDir);
-        $this->loadPackagesConfiguration($loader, $eeConfDir);
+        $this->loadPackagesConfiguration($loader, $projectConfDir);
 
         $this->loadContainerConfiguration($loader, $ceConfDir);
-        $this->loadContainerConfiguration($loader, $eeConfDir);
+        $this->loadContainerConfiguration($loader, $projectConfDir);
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void

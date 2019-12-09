@@ -17,5 +17,9 @@ cp $DEV_DISTRIB_DIR/config/bootstrap.php $STANDARD_DISTRIB_DIR/config/
 cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
 cp $DEV_DISTRIB_DIR/public/index.php $STANDARD_DISTRIB_DIR/public/
 cp $DEV_DISTRIB_DIR/std-build/Kernel.php $STANDARD_DISTRIB_DIR/src
+cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 
 [ -f $STANDARD_DISTRIB_DIR/config/packages/prod/oneup_flysystem.yml ] || cp $DEV_DISTRIB_DIR/config/packages/prod_onprem_paas/oneup_flysystem.yml $STANDARD_DISTRIB_DIR/config/packages/prod/oneup_flysystem.yml
+[ -f $STANDARD_DISTRIB_DIR/config/packages/security.yml ] || cp $DEV_DISTRIB_DIR/config/packages/security.yml $STANDARD_DISTRIB_DIR/config/packages/security.yml
+[ -f $STANDARD_DISTRIB_DIR/Makefile ] || cp $DEV_DISTRIB_DIR/std-build/Makefile $STANDARD_DISTRIB_DIR/Makefile
+[ -f $STANDARD_DISTRIB_DIR/config/bundles.php ] || cp $DEV_DISTRIB_DIR/std-build/bundles.php $STANDARD_DISTRIB_DIR/config

@@ -29,7 +29,7 @@
     },
     "scripts": {
         "post-update-cmd": [
-            "vendor/akeneo/pim-community-dev/std-build/copy-missing-files.sh"
+            "vendor/akeneo/pim-community-dev/std-build/copy-required-files.sh"
         ]
     },
     "minimum-stability": "stable"

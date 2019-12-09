@@ -23,3 +23,4 @@ cp $SRC_DIR/std-build/composer.json $TARGET_DIR/
 
 cp $SRC_DIR/Dockerfile $TARGET_DIR/
 cp -r $SRC_DIR/docker $TARGET_DIR/
+cp -r $SRC_DIR/docker-compose.yml $TARGET_DIR/
