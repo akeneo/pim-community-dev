@@ -17,8 +17,9 @@ export const createAllowedExtensionFromNormalized = (allowedExtensions: string[]
       .replace(/^\./, '')
       .toLowerCase()
   );
+  const uniqExtensions = Array.from(new Set<string>(extensionsWithoutLeadingPoint));
 
-  return extensionsWithoutLeadingPoint;
+  return uniqExtensions;
 };
 
 export const createAllowedExtensionFromArray = (allowedExtensions: string[]): AllowedExtensions => {

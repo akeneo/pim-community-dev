@@ -47,6 +47,8 @@ class AllowedExtensionsValidator extends ConstraintValidator
         if ($this->isNotArrayOfValidExtensions($allowedExtensions)) {
             return;
         }
+
+        $this->checkDuplicateExtensions($allowedExtensions);
     }
 
     private function addViolations(ConstraintViolationListInterface $violations): void
@@ -73,23 +75,23 @@ class AllowedExtensionsValidator extends ConstraintValidator
         return $notValid;
     }
 
-    private function isNotArrayOfValidExtensions($allowedExtensions): bool
+    private function isNotArrayOfValidExtensions(array $allowedExtensions): bool
     {
-        $assertDoesNotContainExtensionSeparator = new Assert\Callback(function ($allowedExtension, ExecutionContextInterface $context, $payload) {
+        $assertDoesNotContainExtensionSeparator = new Assert\Callback(function (string $allowedExtension, ExecutionContextInterface $context, $payload) {
             if ($this->hasExtensionSeparator($allowedExtension)) {
                 $context->buildViolation(AllowedExtensions::MESSAGE_CANNOT_CONTAIN_EXTENSION_SEPARATOR)
                         ->setParameter('%wrong_extension%', $allowedExtension)
                         ->addViolation();
             }
         });
-        $assertExtensionOnlyContainsLowercaseLettersOrNumbers = new Assert\Callback(function ($allowedExtension, ExecutionContextInterface $context, $payload) {
+        $assertExtensionOnlyContainsLowercaseLettersOrNumbers = new Assert\Callback(function (string $allowedExtension, ExecutionContextInterface $context, $payload) {
             if ($this->containsForbiddenCharacters($allowedExtension)) {
                 $context->buildViolation(AllowedExtensions::MESSAGE_SHOULD_ONLY_CONTAIN_LOWERCASE_LETTERS_AND_NUMBERS)
                         ->setParameter('%wrong_extension%', $allowedExtension)
                         ->addViolation();
             }
         });
-        $assertExtensionLengthLowerThanMax = new Assert\Callback(function ($allowedExtension, ExecutionContextInterface $context, $payload) {
+        $assertExtensionLengthLowerThanMax = new Assert\Callback(function (string $allowedExtension, ExecutionContextInterface $context, $payload) {
             $actualLength = strlen($allowedExtension);
             if ($actualLength > AttributeAllowedExtensions::MAX_EXTENSION_LENGTH) {
                 $context->buildViolation(AllowedExtensions::MESSAGE_CANNOT_BE_LONGER_THAN_MAX)
@@ -118,15 +120,35 @@ class AllowedExtensionsValidator extends ConstraintValidator
         return $notValid;
     }
 
-    private function hasExtensionSeparator($allowedExtension): bool
+    private function hasExtensionSeparator(string $allowedExtension): bool
     {
         return strpos($allowedExtension, AttributeAllowedExtensions::EXTENSION_SEPARATOR) === 0;
     }
 
-    private function containsForbiddenCharacters($allowedExtension): bool
+    private function containsForbiddenCharacters(string $allowedExtension): bool
     {
         preg_match('/[^a-z0-9]/', $allowedExtension, $invalidCharacters);
 
         return !empty($invalidCharacters);
+    }
+
+    private function checkDuplicateExtensions(array $allowedExtensions): void
+    {
+        $assertThereIsNoDuplicatedExtensions = new Assert\Callback(function (array $allowedExtensions, ExecutionContextInterface $context, $payload) {
+            $duplicates = array_diff_assoc($allowedExtensions, array_unique($allowedExtensions));
+            if (!empty($duplicates)) {
+                $context->buildViolation(AllowedExtensions::MESSAGE_THERE_CANNOT_BE_DUPLICATE_EXTENSIONS)
+                        ->setParameter('%duplicates%', implode(', ', $duplicates))
+                        ->addViolation();
+            }
+        });
+
+        $validator = Validation::createValidator();
+        $violations = $validator->validate($allowedExtensions, $assertThereIsNoDuplicatedExtensions);
+
+        $notValid = $violations->count() > 0;
+        if ($notValid) {
+            $this->addViolations($violations);
+        }
     }
 }

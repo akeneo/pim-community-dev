@@ -86,11 +86,12 @@ Feature: Edit an attribute of an asset family
     Then there should be a validation error on the property 'allowedExtensions' with message '<message>'
 
     Examples:
-      | invalid_allowed_extensions | message                                                                      |
-      | [".notvalid"]              | Extensions cannot contain the extension separator ".", ".notvalid" given.    |
-      | ["azaz_"]                  | Extensions should only contain lowercase letters and numbers, "azaz_" given. |
-      | ["JPEG"]                   | Extensions should only contain lowercase letters and numbers, "JPEG" given.  |
-      | ["012345678901234567891"]  | Extensions cannot be longer than 20 characters, length of 21 given.          |
+      | invalid_allowed_extensions     | message                                                                      |
+      | [".notvalid"]                  | Extensions cannot contain the extension separator ".", ".notvalid" given.    |
+      | ["azaz_"]                      | Extensions should only contain lowercase letters and numbers, "azaz_" given. |
+      | ["JPEG"]                       | Extensions should only contain lowercase letters and numbers, "JPEG" given.  |
+      | ["012345678901234567891"]      | Extensions cannot be longer than 20 characters, length of 21 given.          |
+      | ["jpeg", "jpeg", "png", "png"] | There cannot be duplicated extensions: jpeg, png found.                      |
 
   @acceptance-back
   Scenario: Updating media type
