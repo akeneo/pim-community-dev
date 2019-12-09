@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.59 (2019-12-09)
+
 ## Bug fixes
 
 - PIM-9010: New tags are now created during assets "add tags" mass edit action
