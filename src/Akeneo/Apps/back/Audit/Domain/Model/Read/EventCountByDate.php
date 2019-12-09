@@ -23,11 +23,13 @@ final class EventCountByDate
         $this->eventDate = $eventDate;
     }
 
-    public function normalize()
+    public function date(): \DateTime
     {
-        return [
-            'event_count' => $this->eventCount,
-            'event_date' => $this->eventDate->format('Y-m-d'),
-        ];
+        return $this->eventDate;
+    }
+
+    public function count(): int
+    {
+        return $this->eventCount;
     }
 }

@@ -29,9 +29,15 @@ final class WeeklyEventCountByApp
 
     public function normalize()
     {
+        $eventCounts = [];
+        foreach ($this->eventCounts as $eventCount) {
+            $eventCounts[$eventCount->date()->format('Y-m-d')] = $eventCount->count();
+        }
+
         return [
             'app_code' => $this->appCode,
             'event_type' => $this->eventType,
+            'event_counts' => $eventCounts,
         ];
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Apps\Audit\Domain\Model\Read;
 
-use Akeneo\Apps\Audit\Domain\Model\Read\EventCountByApp;
+use Akeneo\Apps\Audit\Domain\Model\Read\EventCountByDate;
 use Akeneo\Apps\Audit\Domain\Model\Read\WeeklyEventCountByApp;
 use PhpSpec\ObjectBehavior;
 
@@ -17,7 +17,6 @@ class WeeklyEventCountByAppSpec extends ObjectBehavior
 {
     function let()
     {
-        $eventDate = new \DateTime('2019-12-03', new \DateTimeZone('UTC'));
         $this->beConstructedWith('magento', 'product_created', []);
     }
 
@@ -30,7 +29,33 @@ class WeeklyEventCountByAppSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
             'app_code' => 'magento',
-            'event_type' => 'product_created'
+            'event_type' => 'product_created',
+            'event_counts' => [],
         ]);
+    }
+
+    function it_normalizes_an_app_with_event_counts()
+    {
+        $eventDate1 = $eventDate = new \DateTime('2019-12-12', new \DateTimeZone('UTC'));
+        $eventCount1 = new EventCountByDate(153, $eventDate1);
+
+        $eventDate2 = $eventDate = new \DateTime('2019-12-13', new \DateTimeZone('UTC'));
+        $eventCount2 = new EventCountByDate(231, $eventDate2);
+
+        $eventDate3 = $eventDate = new \DateTime('2019-12-14', new \DateTimeZone('UTC'));
+        $eventCount3 = new EventCountByDate(127, $eventDate3);
+
+        $this->beConstructedWith('magento', 'product_updated', [$eventCount1, $eventCount2, $eventCount3]);
+        $this->normalize()->shouldReturn(
+            [
+                'app_code' => 'magento',
+                'event_type' => 'product_updated',
+                'event_counts' => [
+                    '2019-12-12' => 153,
+                    '2019-12-13' => 231,
+                    '2019-12-14' => 127,
+                ]
+            ]
+        );
     }
 }
