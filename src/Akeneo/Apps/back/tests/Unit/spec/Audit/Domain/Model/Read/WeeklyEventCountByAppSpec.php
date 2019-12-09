@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Apps\Audit\Domain\Model\Read;
 
 use Akeneo\Apps\Audit\Domain\Model\Read\EventCountByApp;
+use Akeneo\Apps\Audit\Domain\Model\Read\WeeklyEventCountByApp;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -12,26 +13,24 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class EventCountByAppSpec extends ObjectBehavior
+class WeeklyEventCountByAppSpec extends ObjectBehavior
 {
     function let()
     {
         $eventDate = new \DateTime('2019-12-03', new \DateTimeZone('UTC'));
-        $this->beConstructedWith('magento', 'product_created', 5, $eventDate);
+        $this->beConstructedWith('magento', 'product_created', []);
     }
 
     function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf(EventCountByApp::class);
+        $this->shouldBeAnInstanceOf(WeeklyEventCountByApp::class);
     }
 
     function it_normalizes_an_app()
     {
         $this->normalize()->shouldReturn([
             'app_code' => 'magento',
-            'event_type' => 'product_created',
-            'event_count' => 5,
-            'event_date' => '2019-12-03',
+            'event_type' => 'product_created'
         ]);
     }
 }
