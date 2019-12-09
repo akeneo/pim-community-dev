@@ -13,8 +13,6 @@ class MassEditOperation implements BatchableOperationInterface
 {
     /** @var string The background job code to launch */
     protected $jobInstanceCode;
-    protected $whitelistedJobInstanceCode;
-    protected $blacklistedJobInstanceCode;
 
     /** @var array */
     protected $filters;
@@ -24,7 +22,7 @@ class MassEditOperation implements BatchableOperationInterface
 
 
     /**
-     * @param $jobInstanceCode
+     * @param string $jobInstanceCode
      * @param array $filters
      * @param array $actions
      */
@@ -47,11 +45,12 @@ class MassEditOperation implements BatchableOperationInterface
     }
 
     /**
+     * {@inheritdoc}
      * Get the code of the JobInstance
      *
      * @return string
      */
-    public function getJobInstanceCode()
+    public function getJobInstanceCode(): string
     {
         return $this->jobInstanceCode;
     }
