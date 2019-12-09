@@ -38,6 +38,7 @@ import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
+import {assetUploadStart} from 'akeneoassetmanager/domain/event/asset/upload';
 
 const securityContext = require('pim/security-context');
 
@@ -86,6 +87,7 @@ interface DispatchProps {
     onAssetCreationStart: () => void;
     onFirstLoad: () => void;
     onOpenDeleteAllAssetsModal: () => void;
+    onAssetUploadStart: () => void;
     onOpenDeleteAssetModal: (assetCode: AssetCode, label: string) => void;
     onCancelDeleteModal: () => void;
   };
@@ -102,19 +104,40 @@ export type FilterViews = {
   };
 };
 
-const SecondaryAction = ({onOpenDeleteAllAssetsModal}: {onOpenDeleteAllAssetsModal: () => void}) => {
+const SecondaryActions = ({
+  canDeleteAllAssets,
+  canCreateAsset,
+  onOpenDeleteAllAssetsModal,
+  onStartMassUpload,
+}: {
+  onOpenDeleteAllAssetsModal: () => void;
+  onStartMassUpload: () => void;
+  canDeleteAllAssets: boolean;
+  canCreateAsset: boolean;
+}) => {
+  if (!canDeleteAllAssets && !canCreateAsset) return null;
+
   return (
-    <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-      <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
-      <div className="AknDropdown-menu AknDropdown-menu--right">
-        <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
-        <div>
-          <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onOpenDeleteAllAssetsModal()}>
-            {__('pim_asset_manager.asset.button.delete_all')}
-          </button>
+    <>
+      <div className="AknSecondaryActions AknDropdown AknButtonList-item">
+        <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
+        <div className="AknDropdown-menu AknDropdown-menu--right">
+          <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
+          <div>
+            {canDeleteAllAssets && (
+              <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onOpenDeleteAllAssetsModal()}>
+                {__('pim_asset_manager.asset.button.delete_all')}
+              </button>
+            )}
+            {canCreateAsset && (
+              <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onStartMassUpload()}>
+                {__('pim_asset_manager.asset.button.mass_upload')}
+              </button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -186,13 +209,18 @@ class Assets extends React.Component<StateProps & DispatchProps, {cellViews: Cel
             ) : null;
           }}
           secondaryActions={() => {
-            return rights.asset.deleteAll ? (
-              <SecondaryAction
+            return (
+              <SecondaryActions
                 onOpenDeleteAllAssetsModal={() => {
                   events.onOpenDeleteAllAssetsModal();
                 }}
+                onStartMassUpload={() => {
+                  events.onAssetUploadStart();
+                }}
+                canCreateAsset={rights.asset.deleteAll}
+                canDeleteAllAssets={rights.asset.create}
               />
-            ) : null;
+            );
           }}
           withLocaleSwitcher={true}
           withChannelSwitcher={true}
@@ -340,6 +368,9 @@ export default connect(
         },
         onAssetCreationStart: () => {
           dispatch(assetCreationStart());
+        },
+        onAssetUploadStart: () => {
+          dispatch(assetUploadStart());
         },
         onDeleteAllAssets: (assetFamily: AssetFamily) => {
           dispatch(deleteAllAssetFamilyAssets(assetFamily));

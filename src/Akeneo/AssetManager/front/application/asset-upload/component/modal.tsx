@@ -10,7 +10,7 @@ import {
   createAssetsFromLines,
 } from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import Line, {Thumbnail} from 'akeneoassetmanager/application/asset-upload/model/line';
-import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
@@ -160,6 +160,7 @@ const onFileDrop = (
 
 const UploadModal = ({assetFamily, onCancel}: UploadModalProps) => {
   const [state, dispatch] = React.useReducer(reducer, {lines: []});
+  const attributeAsMainMedia = getAssetFamilyMainMedia(assetFamily) as NormalizedAttribute;
 
   return (
     <Modal>
@@ -198,6 +199,8 @@ const UploadModal = ({assetFamily, onCancel}: UploadModalProps) => {
         onLineRemoveAll={() => {
           dispatch(removeAllLinesAction());
         }}
+        valuePerLocale={attributeAsMainMedia.value_per_locale}
+        valuePerChannel={attributeAsMainMedia.value_per_locale}
       />
     </Modal>
   );

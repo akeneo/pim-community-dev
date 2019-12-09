@@ -10,6 +10,7 @@ import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/acti
 import Key from 'akeneoassetmanager/tools/key';
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {assetUploadCancel} from 'akeneoassetmanager/domain/event/asset/upload';
 
 interface StateProps {
   assetFamily: AssetFamily;
@@ -20,11 +21,15 @@ interface StateProps {
   createAsset: {
     active: boolean;
   };
+  uploadAsset: {
+    active: boolean;
+  };
 }
 
 interface DispatchProps {
   events: {
     backToAssetFamilyList: () => void;
+    cancelMassUpload: () => void;
   };
 }
 
@@ -73,8 +78,14 @@ class AssetFamilyEditView extends React.Component<EditProps> {
           </div>
         </div>
         <Sidebar backButton={this.backToAssetFamilyList} />
-        {this.props.createAsset.active ? <CreateAssetModal /> : null}
-        <UploadModal assetFamily={this.props.assetFamily} onCancel={() => {}} onAssetCreated={() => {}} />
+        {this.props.createAsset.active && <CreateAssetModal />}
+        {this.props.uploadAsset.active && (
+          <UploadModal
+            assetFamily={this.props.assetFamily}
+            onCancel={this.props.events.cancelMassUpload}
+            onAssetCreated={() => {}}
+          />
+        )}
       </div>
     );
   }
@@ -94,6 +105,9 @@ export default connect(
       createAsset: {
         active: state.createAsset.active,
       },
+      uploadAsset: {
+        active: state.uploadAsset.active,
+      },
     };
   },
   (dispatch: any): DispatchProps => {
@@ -101,6 +115,9 @@ export default connect(
       events: {
         backToAssetFamilyList: () => {
           dispatch(redirectToAssetFamilyListItem());
+        },
+        cancelMassUpload: () => {
+          dispatch(assetUploadCancel());
         },
       },
     };

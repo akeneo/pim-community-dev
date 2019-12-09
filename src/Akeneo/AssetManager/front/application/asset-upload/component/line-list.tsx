@@ -58,8 +58,8 @@ type LineListProps = {
   onLineRemove: (line: Line) => void;
   onLineRemoveAll: () => void;
   onLineChange: (line: Line) => void;
-  localizable?: boolean;
-  scopable?: boolean;
+  valuePerLocale: boolean;
+  valuePerChannel: boolean;
 };
 
 const LineList = ({
@@ -67,8 +67,8 @@ const LineList = ({
   onLineRemove,
   onLineRemoveAll,
   onLineChange,
-  localizable = true,
-  scopable = true,
+  valuePerLocale,
+  valuePerChannel,
 }: LineListProps) => {
   return (
     <>
@@ -98,8 +98,8 @@ const LineList = ({
               line={line}
               onLineChange={onLineChange}
               onLineRemove={onLineRemove}
-              localizable={localizable}
-              scopable={scopable}
+              valuePerLocale={valuePerLocale}
+              valuePerChannel={valuePerChannel}
             />
           ))}
         </tbody>

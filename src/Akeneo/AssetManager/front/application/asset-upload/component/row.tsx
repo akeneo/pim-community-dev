@@ -36,8 +36,8 @@ type RowProps = {
   line: Line;
   onLineRemove: (line: Line) => void;
   onLineChange: (line: Line) => void;
-  localizable: boolean;
-  scopable: boolean;
+  valuePerLocale: boolean;
+  valuePerChannel: boolean;
 };
 
 const Row = ({line, onLineRemove, onLineChange, localizable = true, scopable = true}: RowProps) => {
@@ -56,12 +56,12 @@ const Row = ({line, onLineRemove, onLineChange, localizable = true, scopable = t
           }}
         />
       </Cell>
-      {localizable && (
+      {valuePerLocale && (
         <Cell>
           <Input type="text" value={null === line.locale ? '' : line.locale} />
         </Cell>
       )}
-      {scopable && (
+      {valuePerChannel && (
         <Cell>
           <Input type="text" value={null === line.channel ? '' : line.channel} />
         </Cell>
