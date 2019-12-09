@@ -19,13 +19,10 @@ class ScriptNonceGenerator
     private $generatedNonce;
     /** @var RequestStack */
     private $request;
-    /** @var Session */
-    private $session;
 
-    public function __construct(RequestStack $request, Session $session)
+    public function __construct(RequestStack $request)
     {
         $this->request = $request;
-        $this->session = $session;
     }
 
     /**
@@ -34,17 +31,17 @@ class ScriptNonceGenerator
     public function getGeneratedNonce(): string
     {
         if (!$this->request->getCurrentRequest()->isXmlHttpRequest()) {
-            $this->session->set('nonce', null);
+            $this->request->getCurrentRequest()->getSession()->set('nonce', null);
         }
 
         if (null === $this->generatedNonce) {
-            $this->generatedNonce = $this->session->get('nonce', null);
+            $this->generatedNonce = $this->request->getCurrentRequest()->getSession()->get('nonce', null);
         }
 
         if (null === $this->generatedNonce) {
             $this->generatedNonce = Uuid::uuid4()->toString();
             if (!$this->request->getCurrentRequest()->isXmlHttpRequest()) {
-                $this->session->set('nonce', $this->generatedNonce);
+                $this->request->getCurrentRequest()->getSession()->set('nonce', $this->generatedNonce);
             }
         }
 

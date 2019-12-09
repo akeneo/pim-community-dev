@@ -60,7 +60,6 @@ services:
       class: Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator
       arguments:
           - '@request_stack'
-          - '@session'
 
     pim_enrich.normalizer.constraint_violation_list:
         class: 'Akeneo\Platform\Bundle\UIBundle\Normalizer\ConstraintViolationListNormalizer'
