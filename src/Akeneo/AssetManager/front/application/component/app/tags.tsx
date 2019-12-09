@@ -54,14 +54,7 @@ export default class Tags extends React.Component<TagsProps & any> {
   render(): JSX.Element | JSX.Element[] {
     const {configuration, ...props} = this.props;
 
-    return (
-      <div
-        {...props}
-        ref={this.tags}
-        disabled={props.readOnly}
-      >
-      </div>
-    );
+    return <div {...props} ref={this.tags} disabled={props.readOnly}></div>;
   }
   private getConfiguration() {
     return {
@@ -73,14 +66,14 @@ export default class Tags extends React.Component<TagsProps & any> {
         return {
           id: params.term,
           text: params.term,
-        }
-      }
+        };
+      },
     };
   }
 
   private cleanExtensions(extensions: string[]) {
     // Remove special characters ?
     // allow only [a-zA-Z0-9]* ?
-    return extensions.map((extension: string) => '.' === extension.charAt(0) ? extension.slice(1) : extension);
+    return extensions.map((extension: string) => ('.' === extension.charAt(0) ? extension.slice(1) : extension));
   }
 }

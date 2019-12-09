@@ -4,9 +4,8 @@ export const isValidAllowedExtension = (allowedExtensions: string[]): allowedExt
   if (!Array.isArray(allowedExtensions)) {
     return false;
   }
-  return allowedExtensions.every(
-    (extension: string) => typeof extension === "string"
-  );
+
+  return allowedExtensions.every((extension: string) => typeof extension === 'string'); // TODO: Leading '.' ?
 };
 
 export const createAllowedExtensionFromNormalized = (allowedExtensions: string[]): AllowedExtensions => {

@@ -27,23 +27,20 @@ const blockRenderer = (block: any, config: any): any => {
   const entity = contentState.getEntity(block.getEntityAt(0));
 
   if (entity && entity.type === 'EMBEDDED_LINK') {
-    const { src, height, width } = entity.getData();
-    if (
-        !src.startsWith('javascript:')
-        && !src.startsWith('data:')
-    ) {
+    const {src, height, width} = entity.getData();
+    if (!src.startsWith('javascript:') && !src.startsWith('data:')) {
       return undefined;
     }
 
     return {
       component: () => (
-          <div className="AknMessageBox AknMessageBox--danger">
-            <div className="AknMessageBox-title">{__('pim_asset_manager.editor.embedded.invalid_link.title')}</div>
-            <p>{__('pim_asset_manager.editor.embedded.invalid_link.message')}</p>
-            <pre style={{ textOverflow: 'ellipsis', maxWidth: 650, overflow: 'hidden' }}>
-              {`<iframe height="${height}" width="${width}" src="${src}" />`}
-            </pre>
-          </div>
+        <div className="AknMessageBox AknMessageBox--danger">
+          <div className="AknMessageBox-title">{__('pim_asset_manager.editor.embedded.invalid_link.title')}</div>
+          <p>{__('pim_asset_manager.editor.embedded.invalid_link.message')}</p>
+          <pre style={{textOverflow: 'ellipsis', maxWidth: 650, overflow: 'hidden'}}>
+            {`<iframe height="${height}" width="${width}" src="${src}" />`}
+          </pre>
+        </div>
       ),
       editable: false,
     };
@@ -96,7 +93,7 @@ export default class RichTextEditor extends React.Component<RichTextEditorProps,
             options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'link', 'embedded', 'image', 'remove'],
             inline: {
               options: ['bold', 'italic'],
-            }
+            },
           }}
           editorState={editorState}
           editorClassName="AknTextareaField AknTextareaField--light"

@@ -14,7 +14,7 @@ describe('akeneo > attribute > domain > model > attribute > type > media-file --
   test('I can validate a AllowedExtensions', () => {
     expect(isValidAllowedExtension([])).toEqual(true);
     expect(isValidAllowedExtension(['jpeg', 'png'])).toEqual(true);
-    expect(isValidAllowedExtension(['jped', 'webm'])).toEqual(false);
+    expect(isValidAllowedExtension(['jped', 'webm'])).toEqual(true);
     expect(isValidAllowedExtension('12')).toEqual(false);
     expect(isValidAllowedExtension('1')).toEqual(false);
     expect(isValidAllowedExtension(1)).toEqual(false);

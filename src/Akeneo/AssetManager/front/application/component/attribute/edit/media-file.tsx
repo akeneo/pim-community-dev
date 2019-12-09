@@ -22,7 +22,7 @@ import {
   normalizeMediaType,
   createMediaTypeFromNormalized,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-file/media-type';
-import Tags from "akeneoassetmanager/application/component/app/tags";
+import Tags from 'akeneoassetmanager/application/component/app/tags';
 
 const MediaFileView = ({
   attribute,
