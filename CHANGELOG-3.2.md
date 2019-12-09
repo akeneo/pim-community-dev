@@ -3,6 +3,7 @@
 ## Bug fixes:
 
 - PIM-8998: Fix error 500 on asset list & product list when a user has no permission on categories & asset categories
+- PIM-9016: Fix error message not translated for attribute code
 
 # 3.2.23 (2019-12-05)
 
