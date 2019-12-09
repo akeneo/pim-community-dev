@@ -6,3 +6,4 @@ parameters:
     product_model_index_name: '%env(APP_PRODUCT_MODEL_INDEX_NAME)%'
     record_index_name: '%env(APP_RECORD_INDEX_NAME)%'
     asset_index_name: '%env(APP_ASSET_INDEX_NAME)%'
+    monitoring_authentication_token: '%env(MONITORING_AUTHENTICATION_TOKEN)%'

@@ -32,6 +32,10 @@ security:
             anonymous:                      true
             logout_on_user_change:          true
 
+        monitoring:
+            pattern:                        ^/monitoring/services_status
+            security:                       false
+
         reset_password:
             pattern:                        ^/user/reset/*
             provider:                       chain_provider

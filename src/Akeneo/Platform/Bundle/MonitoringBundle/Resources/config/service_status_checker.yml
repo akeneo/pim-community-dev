@@ -1,0 +1,24 @@
+services:
+    Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\MysqlChecker:
+        class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\MysqlChecker'
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ElasticsearchChecker:
+        class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ElasticsearchChecker'
+        arguments:
+            - '@akeneo_elasticsearch.registry.clients'
+
+    Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageChecker:
+        class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageChecker'
+        arguments:
+            - '@oneup_flysystem.mount_manager'
+            - '%tmp_storage_dir%'
+
+    Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\Controller:
+        class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\Controller'
+        arguments:
+            - '@Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\MysqlChecker'
+            - '@Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ElasticsearchChecker'
+            - '@Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageChecker'
+            - '%monitoring_authentication_token%'
