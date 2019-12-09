@@ -42,7 +42,7 @@ class FileData implements ValueDataInterface
     private function __construct(
         string $key,
         string $originalFilename,
-        ?\DateTimeInterface $updatedAt,
+        \DateTimeInterface $updatedAt,
         ?int $size = 0,
         ?string $mimeType = '',
         ?string $extension = ''
@@ -76,6 +76,16 @@ class FileData implements ValueDataInterface
     public function getKey(): string
     {
         return $this->key;
+    }
+
+    public function getOriginalFilename(): string
+    {
+        return $this->originalFilename;
+    }
+
+    public function getUpdatedAt(): \DateTimeInterface
+    {
+        return $this->updatedAt;
     }
 
     public static function createFromFileinfo(
@@ -124,10 +134,5 @@ class FileData implements ValueDataInterface
             $normalizedData[self::MIME_TYPE],
             $normalizedData[self::EXTENSION]
         );
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
     }
 }

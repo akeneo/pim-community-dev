@@ -1,9 +1,4 @@
 services:
-    akeneo_assetmanager.infrastructure.transformation.compute_transformations.executor:
-        class: Akeneo\AssetManager\Infrastructure\Transformation\ComputeTransformationsExecutor
-        arguments:
-            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations'
-
     akeneo_assetmanager.infrastructure.filter.colorspace:
         class: Akeneo\AssetManager\Infrastructure\Filesystem\Filter\ColorspaceFilter
         tags:
@@ -56,6 +51,24 @@ services:
             - { name: akeneo_assetmanager.transformation.operation_applier }
 
     # executor
-    Akeneo\AssetManager\Infrastructure\Transformation\FileTransformer:
+    akeneo_assetmanager.infrastructure.transformation.file_transformer:
+        class: Akeneo\AssetManager\Infrastructure\Transformation\FileTransformer
         arguments:
             - '@Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplierRegistry'
+
+    akeneo_assetmanager.infrastructure.transformation.get_outdated_variation_source:
+        class: Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
+    akeneo_assetmanager.infrastructure.transformation.compute_transformations.executor:
+        class: Akeneo\AssetManager\Infrastructure\Transformation\ComputeTransformationsExecutor
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations'
+            - '@akeneo_assetmanager.infrastructure.transformation.get_outdated_variation_source'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader'
+            - '@akeneo_assetmanager.infrastructure.transformation.file_transformer'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_assetmanager.application.asset.edit_asset_handler'

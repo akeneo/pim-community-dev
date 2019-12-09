@@ -35,7 +35,7 @@ class ScaleOperation implements Operation
     /** @var integer|null */
     private $ratioPercent;
 
-    public function __construct(?int $width, ?int $height, ?int $ratioPercent)
+    private function __construct(?int $width, ?int $height, ?int $ratioPercent)
     {
         if (null === $width && null === $height && null === $ratioPercent) {
             throw new \LogicException("No parameter is provided for 'scale' operation.");
