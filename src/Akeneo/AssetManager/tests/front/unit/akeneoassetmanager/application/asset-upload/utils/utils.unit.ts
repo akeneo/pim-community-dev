@@ -415,14 +415,16 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
   };
 
   test('I can calculate the status of a line localizable and scopable', () => {
-    const assetFamily = createAssetFamilyWithMainMedia(true, true);
+    const localizable = true;
+    const scopable = true;
 
     expect(
       getStatusFromLine(
         {
           ...defaultLine,
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.WaitingForUpload);
     expect(
@@ -431,7 +433,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
           ...defaultLine,
           isSending: true,
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.UploadInProgress);
     expect(
@@ -443,7 +446,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
             originalFilename: 'foo.jpg',
           },
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Uploaded);
     expect(
@@ -456,7 +460,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
           },
           locale: 'en_US',
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Uploaded);
     expect(
@@ -469,7 +474,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
           },
           channel: 'ecommerce',
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Uploaded);
     expect(
@@ -483,7 +489,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
           locale: 'en_US',
           channel: 'ecommerce',
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Valid);
     expect(
@@ -492,7 +499,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
           ...defaultLine,
           created: true,
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Created);
     expect(
@@ -503,13 +511,15 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
             back: [defaultError],
           },
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Invalid);
   });
 
   test('I can calculate the status of a line localizable and not scopable', () => {
-    const assetFamily = createAssetFamilyWithMainMedia(true, false);
+    const localizable = true;
+    const scopable = false;
 
     expect(
       getStatusFromLine(
@@ -520,7 +530,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
             originalFilename: 'foo.jpg',
           },
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Uploaded);
     expect(
@@ -533,7 +544,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
           },
           locale: 'en_US',
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Valid);
     expect(
@@ -546,7 +558,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
           },
           channel: 'ecommerce',
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Uploaded);
     expect(
@@ -560,13 +573,15 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
           locale: 'en_US',
           channel: 'ecommerce',
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Valid);
   });
 
   test('I can calculate the status of a line not localizable and scopable', () => {
-    const assetFamily = createAssetFamilyWithMainMedia(false, true);
+    const localizable = false;
+    const scopable = true;
 
     expect(
       getStatusFromLine(
@@ -577,7 +592,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
             originalFilename: 'foo.jpg',
           },
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Uploaded);
     expect(
@@ -590,7 +606,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
           },
           locale: 'en_US',
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Uploaded);
     expect(
@@ -603,7 +620,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
           },
           channel: 'ecommerce',
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Valid);
     expect(
@@ -617,13 +635,15 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
           locale: 'en_US',
           channel: 'ecommerce',
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Valid);
   });
 
   test('I can calculate the status of a line not localizable and not scopable', () => {
-    const assetFamily = createAssetFamilyWithMainMedia(false, false);
+    const localizable = false;
+    const scopable = false;
 
     expect(
       getStatusFromLine(
@@ -634,7 +654,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
             originalFilename: 'foo.jpg',
           },
         },
-        assetFamily
+        localizable,
+        scopable
       )
     ).toEqual(LineStatus.Valid);
   });

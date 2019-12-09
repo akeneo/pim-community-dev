@@ -4,7 +4,7 @@ import CrossIcon from 'akeneoassetmanager/application/component/app/icon/close';
 import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import RowStatus from 'akeneoassetmanager/application/asset-upload/component/row-status';
-import {getStatusFromLine} from 'src/Akeneo/AssetManager/front/application/asset-upload/utils/utils';
+import {getStatusFromLine} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 
 const Container = styled.tr`
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
@@ -41,6 +41,8 @@ type RowProps = {
 };
 
 const Row = ({line, onLineRemove, onLineChange, localizable = true, scopable = true}: RowProps) => {
+  const status = getStatusFromLine(line, localizable, scopable);
+
   return (
     <Container>
       <Cell>{null !== line.thumbnail && <Thumbnail src={line.thumbnail} />}</Cell>
@@ -65,7 +67,7 @@ const Row = ({line, onLineRemove, onLineChange, localizable = true, scopable = t
         </Cell>
       )}
       <Cell>
-        <RowStatus status={line.status} progress={line.uploadProgress} />
+        <RowStatus status={status} progress={line.uploadProgress} />
       </Cell>
       <Cell>
         <RemoveLineButton onClick={() => onLineRemove(line)}>

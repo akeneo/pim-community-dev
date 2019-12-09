@@ -1,6 +1,7 @@
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
-import {Modal, Header, Title, ConfirmButton} from 'akeneoassetmanager/application/component/app/modal';
+import styled from 'styled-components';
+import {Modal, Header, ConfirmButton} from 'akeneoassetmanager/application/component/app/modal';
 import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
 import LineList from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import {
@@ -33,6 +34,25 @@ import {
   removeAllLinesAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/asset-upload';
 import FileDropZone from 'akeneoassetmanager/application/asset-upload/component/file-drop-zone';
+import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import {getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+
+const Subtitle = styled.div`
+  color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
+  margin-bottom: 12px;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+`;
+
+const Title = styled.div`
+  color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
+  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.title};
+  line-height: ${(props: ThemedProps<void>) => props.theme.fontSize.title};
+  margin-bottom: 33px;
+  text-align: center;
+  width: 100%;
+`;
 
 type UploadModalProps = {
   assetFamily: AssetFamily;
@@ -145,6 +165,8 @@ const UploadModal = ({assetFamily, onCancel}: UploadModalProps) => {
     <Modal>
       <Header>
         <CloseButton title={__('pim_asset_manager.close')} onClick={onCancel} />
+        {/* TODO retrieve the correct locale */}
+        <Subtitle>{getAssetFamilyLabel(assetFamily, 'en_US', true)}</Subtitle>
         <Title>{__('pim_asset_manager.asset.upload.title')}</Title>
         <ConfirmButton
           title={__('pim_asset_manager.asset.upload.confirm')}

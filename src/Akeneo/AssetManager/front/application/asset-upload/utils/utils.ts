@@ -182,15 +182,13 @@ export const selectLinesCreated = (lines: Line[]): Line[] => lines.filter((line:
 //
 // };
 
-export const getStatusFromLine = (line: Line, assetFamily: AssetFamily): LineStatus => {
+export const getStatusFromLine = (line: Line, localizable: boolean, scopable: boolean): LineStatus => {
   const errorsCount = Object.values(line.errors).reduce((count: number, errors: ValidationError[]) => {
     return count + errors.length;
   }, 0);
-  const attribute = getAssetFamilyMainMedia(assetFamily) as NormalizedAttribute;
-  const localizable = attribute.value_per_locale;
-  const scopable = attribute.value_per_channel;
   const isComplete: boolean =
-    (!localizable || (localizable && line.locale !== null)) && (!scopable || (scopable && line.channel !== null));
+    (!localizable || (localizable && line.locale !== null))
+    && (!scopable || (scopable && line.channel !== null));
 
   if (errorsCount > 0) {
     return LineStatus.Invalid;
