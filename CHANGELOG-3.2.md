@@ -3,6 +3,7 @@
 ## Bug fixes:
 
 - PIM-8998: Fix error 500 on asset list & product list when a user has no permission on categories & asset categories
+- PIM-9015: Fix validation message display on attribute group creation failure
 
 # 3.2.23 (2019-12-05)
 
