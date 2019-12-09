@@ -318,7 +318,10 @@ jobs:
           - set_gcloud_config
           - prepare_terraform
           - run:
-              name: Deploy PIM on kubernetes
+              name: Test services are up
+              command: make test-prod
+          - run:
+              name: Test dashboard connection
               command: IMAGE_TAG=$CIRCLE_SHA1 make test-pim-connection
           - run:
               name: Delete FAILED validation env
