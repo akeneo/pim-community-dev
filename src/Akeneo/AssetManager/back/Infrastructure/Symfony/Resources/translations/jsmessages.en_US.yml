@@ -226,6 +226,7 @@ pim_asset_manager:
       remove_all: Remove all
       confirm: Create
       drop_or_click_here: Drag and drop your files or click here
+      will_appear_here: Upload assets and they will appear just here!
       list:
         asset: Asset
         filename: Filename

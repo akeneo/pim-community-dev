@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import Row from 'akeneoassetmanager/application/asset-upload/component/row';
+import AssetBox from 'akeneoassetmanager/application/component/app/icon/asset-box';
 
 const Header = styled.div`
   align-items: center;
@@ -38,6 +39,18 @@ const ListColumnHeader = styled.th<{width?: number}>`
   text-align: left;
   width: ${(props: ThemedProps<{width?: number}>) => (undefined !== props.width ? props.width : 'auto')};
   white-space: nowrap;
+`;
+const Placeholder = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 60px 0;
+`;
+const PlaceholderHelper = styled.div`
+  color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
+  font-size: 30px;
+  line-height: 30px;
+  margin-top: 7px;
 `;
 
 type LineListProps = {
@@ -91,6 +104,12 @@ const LineList = ({
           ))}
         </tbody>
       </List>
+      {lines.length === 0 &&
+        <Placeholder>
+          <AssetBox/>
+          <PlaceholderHelper>{__('pim_asset_manager.asset.upload.will_appear_here')}</PlaceholderHelper>
+        </Placeholder>
+      }
     </>
   );
 };
