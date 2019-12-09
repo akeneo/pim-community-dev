@@ -21,7 +21,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
-use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceAdapterResolver;
+use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceAdapterResolverInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension as BaseFilterExtension;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -50,7 +50,7 @@ class FilterExtension extends BaseFilterExtension
     public function __construct(
         RequestParameters $requestParams,
         TranslatorInterface $translator,
-        DatasourceAdapterResolver $adapterResolver,
+        DatasourceAdapterResolverInterface $adapterResolver,
         AttributeRepositoryInterface $attributeRepository,
         AttributeGroupAccessRepository $accessRepository,
         UserContext $userContext,
