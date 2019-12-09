@@ -5,7 +5,7 @@
 
 set -e
 
-if [ $# -eq 1 ]; then
+if [ ! $# -eq 1 ]; then
     echo "Usage: $0 <target-directory>" >&2
     exit 1;
 fi
@@ -19,4 +19,4 @@ fi
 
 SRC_DIR=$(dirname $0)/..
 
-cp $SRC_DIR/std-build/composer.json $TARGET_DIR/*
+cp $SRC_DIR/std-build/composer.json $TARGET_DIR/

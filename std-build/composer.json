@@ -26,7 +26,6 @@
     },
     "scripts": {
         "post-update-cmd": [
-            "Akeneo\\Platform\\Bundle\\InstallerBundle\\ComposerScripts::copyUpgradesFiles",
             "vendor/akeneo/pim-community/std-build/copy-missing-files.sh"
         ]
     },
