@@ -1,0 +1,91 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2019 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\AssetManager\Infrastructure\Controller\AssetFamily;
+
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyDetailsInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
+class ComputeTransformationsAction
+{
+    private static $JOB_INSTANCE_CODE = 'asset_manager_compute_transformations';
+
+    /** @var FindAssetFamilyDetailsInterface */
+    private $findOneAssetFamilyQuery;
+
+    /** @var JobLauncherInterface */
+    private $jobLauncher;
+
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
+    /** @var JobInstanceRepository */
+    private $jobInstanceRepository;
+
+    public function __construct(
+        FindAssetFamilyDetailsInterface $findOneAssetFamilyQuery,
+        JobLauncherInterface $jobLauncher,
+        TokenStorageInterface $tokenStorage,
+        JobInstanceRepository $jobInstanceRepository
+    ) {
+        $this->findOneAssetFamilyQuery = $findOneAssetFamilyQuery;
+        $this->jobLauncher = $jobLauncher;
+        $this->tokenStorage = $tokenStorage;
+        $this->jobInstanceRepository = $jobInstanceRepository;
+    }
+
+    public function __invoke(string $identifier): JsonResponse
+    {
+        $assetFamilyIdentifier = $this->getAssetFamilyIdentifierOr404($identifier);
+        $this->findAssetFamilyDetailsOr404($assetFamilyIdentifier);
+
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::$JOB_INSTANCE_CODE);
+        $this->jobLauncher->launch($jobInstance, $this->getUser(), [
+            'asset_family_identifier' => $identifier
+        ]);
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    private function getAssetFamilyIdentifierOr404(string $identifier): AssetFamilyIdentifier
+    {
+        try {
+            return AssetFamilyIdentifier::fromString($identifier);
+        } catch (\Exception $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        }
+    }
+
+    private function findAssetFamilyDetailsOr404(AssetFamilyIdentifier $identifier): AssetFamilyDetails
+    {
+        $result = $this->findOneAssetFamilyQuery->find($identifier);
+        if (null === $result) {
+            throw new NotFoundHttpException();
+        }
+
+        return $result;
+    }
+
+    private function getUser(): UserInterface
+    {
+        return $this->tokenStorage->getToken()->getUser();
+    }
+}

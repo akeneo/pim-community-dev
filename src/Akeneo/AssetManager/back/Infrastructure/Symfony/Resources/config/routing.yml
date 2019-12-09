@@ -22,6 +22,11 @@ akeneo_asset_manager_asset_family_get_rest:
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset_family.get }
     methods: [GET]
 
+akeneo_asset_manager_asset_family_compute_transformations_rest:
+    path: '/rest/asset_manager/{identifier}/compute_transformations'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset_family.compute_transformations }
+    methods: [POST]
+
 akeneo_asset_manager_asset_family_edit_rest:
     path: '/rest/asset_manager/{identifier}'
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset_family.edit }

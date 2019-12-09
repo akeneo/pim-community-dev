@@ -24,6 +24,11 @@ services:
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@security.token_storage'
 
+    akeneo_assetmanager.infrastructure.action.asset_family.compute_transformations:
+        class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\ComputeTransformationsAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_details'
+
     akeneo_assetmanager.infrastructure.action.asset_family.edit:
         class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\EditAction
         arguments:
