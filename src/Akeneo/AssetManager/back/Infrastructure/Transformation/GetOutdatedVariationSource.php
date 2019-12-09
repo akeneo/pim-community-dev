@@ -24,7 +24,7 @@ use Akeneo\AssetManager\Infrastructure\Transformation\Exception\NonApplicableTra
 /**
  * This class checks that a transformation is applicable to a fiven asset, meaning:
  * - the values corresponding to the transformation's source and target are of the right type (MediaFile)
- * - the target value is older than the source value (TODO: and older than the transformation)
+ * - the target value is older than the source value (TODO ATR-50: and older than the transformation)
  */
 class GetOutdatedVariationSource
 {
@@ -52,7 +52,7 @@ class GetOutdatedVariationSource
             $asset->getAssetFamilyIdentifier()
         );
         if (!($sourceAttribute instanceof MediaFileAttribute)) {
-            // TODO: more explicit error message
+            // TODO ATR-51: more explicit error message
             throw new NonApplicableTransformationException('source should be a media file');
         }
 
@@ -64,7 +64,7 @@ class GetOutdatedVariationSource
             )
         );
         if (null === $sourceValue) {
-            // TODO: more explicit error message
+            // TODO ATR-51: more explicit error message
             throw new NonApplicableTransformationException('source is empty');
         }
 
@@ -74,7 +74,7 @@ class GetOutdatedVariationSource
             $asset->getAssetFamilyIdentifier()
         );
         if (!($targetAttribute instanceof MediaFileAttribute)) {
-            // TODO: more explicit error message
+            // TODO ATR-51: more explicit error message
             throw new NonApplicableTransformationException('target should be a media file');
         }
         $targetValue = $asset->findValue(
@@ -86,11 +86,15 @@ class GetOutdatedVariationSource
         );
 
         // TODO ATR-12/ATR-50: also compare with transformation->getUpdatedAt()
-        if (null !== $targetValue && $targetValue->getData()->getUpdatedAt() >= $sourceValue->getData()->getUpdatedAt(
-            )) {
-            return null;
+        if (null === $targetValue || $this->isTargetValueOutdated($sourceValue->getData(), $targetValue->getData())) {
+            return $sourceValue->getData();
         }
 
-        return $sourceValue->getData();
+        return null;
+    }
+
+    private function isTargetValueOutdated(FileData $sourceData, FileData $targetData): bool
+    {
+        return null === $targetData->getUpdatedAt() || $targetData->getUpdatedAt() < $sourceData->getUpdatedAt();
     }
 }

@@ -93,7 +93,7 @@ class ComputeTransformationsExecutor
                 try {
                     $sourceFile = $this->getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation);
                 } catch (NonApplicableTransformationException $e) {
-                    // TODO: add warning with exception message
+                    // TODO ATR-51: add warning with exception message
                     continue;
                 }
 
@@ -105,7 +105,7 @@ class ComputeTransformationsExecutor
                             $transformation
                         );
                     } catch (\Exception $e) {
-                        // TODO: catch the right execption types
+                        // TODO ATR-51: catch the right exception types
                         // TODO: add warning
                         continue;
                     }
@@ -131,7 +131,7 @@ class ComputeTransformationsExecutor
         $file = $this->fileDownloader->get($sourceFile->getKey());
         $transformedFile = $this->fileTransformer->transform($file, $transformation->getOperationCollection());
         $renamedFile = $this->rename($transformedFile, $sourceFile->getOriginalFilename(), $transformation);
-        $storedFile = $this->fileStorer->store($renamedFile, Storage::FILE_STORAGE_ALIAS);
+        $storedFile = $this->fileStorer->store($renamedFile, Storage::FILE_STORAGE_ALIAS, true);
 
         $target = $transformation->getTarget();
         $targetAttribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(

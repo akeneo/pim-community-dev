@@ -191,7 +191,7 @@ class ComputeTransformationsExecutorTest extends KernelTestCase
             $assetFamilyIdentifier,
             $assetCode,
             [$editValueCommand]
-        );;
+        );
         ($this->getEditAssetHandler())($editAssetCommand);
     }
 
@@ -217,7 +217,7 @@ class ComputeTransformationsExecutorTest extends KernelTestCase
 
     private function getFileDownloader(): FileDownloader
     {
-        return $this->get('akeneo_assetmanager.infrastructure.transformation.file_downloader');
+        return $this->get('Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader');
     }
 
     private function getFixturesLoader(): FixturesLoader

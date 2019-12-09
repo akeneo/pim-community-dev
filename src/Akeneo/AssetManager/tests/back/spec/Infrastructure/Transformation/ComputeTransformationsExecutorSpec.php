@@ -126,7 +126,8 @@ class ComputeTransformationsExecutorSpec extends ObjectBehavior
         $storedFileInfo->getMimeType()->willReturn('image/png');
         $storedFileInfo->getExtension()->willReturn('png');
 
-        $fileStorer->store($sourceFile, Storage::FILE_STORAGE_ALIAS)->shouldBeCalled()->willReturn($storedFileInfo);
+        $fileStorer->store($sourceFile, Storage::FILE_STORAGE_ALIAS, true)
+                   ->shouldBeCalled()->willReturn($storedFileInfo);
         $attributeRepository->getByCodeAndAssetFamilyIdentifier(
             AttributeCode::fromString('thumbnail'),
             $assetFamilyIdentifier
