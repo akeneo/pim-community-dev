@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset;
 
 use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\Tag;
 use Akeneo\Asset\Component\Model\TagInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Classification\Repository\TagRepositoryInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -38,18 +40,28 @@ class AddTagsToAssetsProcessor extends AbstractProcessor
     private $authorizationChecker;
 
     /**
-     * @param TagRepositoryInterface        $repository
-     * @param ValidatorInterface            $validator
-     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @var ObjectManager
+     */
+    private $objectManager;
+
+    /** @var array Cache for new tags */
+    private $newTags;
+
+    /**
+     * @todo merge master: remove the null default value for $objectManager
      */
     public function __construct(
         TagRepositoryInterface $repository,
         ValidatorInterface $validator,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        ObjectManager $objectManager = null
     ) {
         $this->repository = $repository;
         $this->validator = $validator;
         $this->authorizationChecker = $authorizationChecker;
+        $this->objectManager = $objectManager;
+
+        $this->newTags = [];
     }
 
     /**
@@ -93,8 +105,24 @@ class AddTagsToAssetsProcessor extends AbstractProcessor
             $value = $action['value'];
             foreach ($value as $tagCode) {
                 $tag = $this->getTag($tagCode);
-                if (null !== $tag) {
+                /**
+                 * @todo merge master: create the tag only if $tag === null and move the addTag() call just after the if, like that :
+                 * if ($tag === null) {
+                 *     $tag = new Tag();
+                 *     $tag->setCode($tagCode);
+                 *     $this->objectManager->persist($tag);
+                 *     $this->newTags[$tagCode] = $tag;
+                 * }
+                 * $asset->addTag($tag);
+                 */
+                if ($tag !== null) {
                     $asset->addTag($tag);
+                } elseif ($this->objectManager !== null) {
+                    $tag = new Tag();
+                    $tag->setCode($tagCode);
+                    $this->objectManager->persist($tag);
+                    $asset->addTag($tag);
+                    $this->newTags[$tagCode] = $tag;
                 }
             }
         }
@@ -107,17 +135,11 @@ class AddTagsToAssetsProcessor extends AbstractProcessor
      */
     protected function getTag($code)
     {
-        $tag = $this->repository->findOneByIdentifier($code);
-
-        if (null === $tag) {
-            $this->stepExecution->addWarning(
-                'pim_enrich.mass_edit_action.add-tags-to-assets.message.error',
-                [],
-                new DataInvalidItem([$code])
-            );
+        if (array_key_exists($code, $this->newTags)) {
+            return $this->newTags[$code];
         }
 
-        return $tag;
+        return $this->repository->findOneByIdentifier($code);
     }
 
     /**

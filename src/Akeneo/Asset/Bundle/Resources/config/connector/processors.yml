@@ -79,3 +79,4 @@ services:
             - '@pimee_product_asset.repository.tag'
             - '@validator'
             - '@security.authorization_checker'
+            - '@doctrine.orm.entity_manager'
