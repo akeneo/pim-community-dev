@@ -54,8 +54,4 @@ class MassEditOperation implements BatchableOperationInterface
     {
         return $this->jobInstanceCode;
     }
-
-
-
-
 }
