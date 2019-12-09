@@ -145,7 +145,7 @@ WHERE
 AND ji.code IN (:job_instance_codes)
 ORDER BY
     q.create_time, id
-    LIMIT 1;
+LIMIT 1;
 SQL;
 
         $stmt = $this->entityManager->getConnection()->executeQuery(
@@ -180,7 +180,7 @@ WHERE
 AND ji.code NOT IN (:blacklisted_job_instance_codes)
 ORDER BY
     q.create_time, id
-    LIMIT 1;
+LIMIT 1;
 SQL;
 
         $stmt = $this->entityManager->getConnection()->executeQuery(
