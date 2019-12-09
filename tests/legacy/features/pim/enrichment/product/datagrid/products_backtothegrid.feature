@@ -19,16 +19,3 @@ Feature: Products back to the grid
     And the criteria of "sku" filter should be "contains "boots_1""
     And I should see product boots_1
     And I should not see product sneakers_1
-
-  @skip
-  Scenario: Successfully restore the scope dropdown
-    And I should see the text "Ecommerce"
-    And I should not see the text "Mobile"
-    And I click on the "sneakers_1" row
-    And I should be on the product "sneakers_1" edit page
-    When I switch the scope to "mobile"
-    Then I should see the text "Mobile"
-    And I should not see the text "Ecommerce"
-    When I move backward one page
-    Then I should see the text "Mobile"
-    And I should not see the text "Ecommerce"

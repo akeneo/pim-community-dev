@@ -319,6 +319,9 @@
     "phenx/php-svg-lib": {
         "version": "v0.3.3"
     },
+    "php": {
+        "version": "7.3"
+    },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
     },
@@ -494,6 +497,9 @@
             "config/bootstrap.php"
         ]
     },
+    "symfony/contracts": {
+        "version": "v1.1.0"
+    },
     "symfony/css-selector": {
         "version": "v3.4.31"
     },
@@ -523,6 +529,9 @@
     },
     "symfony/dotenv": {
         "version": "v4.3.4"
+    },
+    "symfony/error-handler": {
+        "version": "v4.4.0"
     },
     "symfony/event-dispatcher": {
         "version": "v4.3.4"

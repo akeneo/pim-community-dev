@@ -28,16 +28,3 @@ Feature: Import families
     Then there should be the following family:
       | code     | attributes            | attribute_as_label | requirements-mobile | requirements-tablet | label-en_US |
       | tractors | sku,name,manufacturer | name               | sku,manufacturer    | sku,manufacturer    | Tractors    |
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6124
-  Scenario: Import a family with missing requirements does not remove associated family requirements
-    Given the "footwear" catalog configuration
-    And the following CSV file to import:
-      """
-      code;attribute_as_label;requirements-mobile
-      heels;name;manufacturer
-      """
-    When the channels are imported via the job csv_footwear_family_import
-    Then there should be the following family:
-      | code  | attribute_as_label | requirements-mobile | requirements-tablet                                                   |
-      | heels | name               | sku,manufacturer    | sku,name,description,price,side_view,size,color,heel_color,sole_color |

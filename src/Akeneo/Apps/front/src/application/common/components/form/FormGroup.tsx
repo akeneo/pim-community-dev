@@ -1,8 +1,9 @@
 import React, {cloneElement, ComponentProps, ReactElement, ReactNode} from 'react';
+import styled from 'styled-components';
+import {InlineHelper} from '..';
+import {FormControlError} from './FormControlError';
 import {FormInput} from './FormInput';
 import {FormLabel} from './FormLabel';
-import {FormControlInfo} from './FormControlInfo';
-import {FormControlError} from './FormControlError';
 
 interface Props {
     children: ReactElement<ComponentProps<typeof FormInput>, typeof FormInput>;
@@ -25,7 +26,9 @@ export const FormGroup = ({children: control, controlId, label, errors, info, re
 
         {info && (
             <div className='AknFieldContainer-footer'>
-                <FormControlInfo>{info}</FormControlInfo>
+                <FormControlHelper>
+                    <InlineHelper info>{info}</InlineHelper>
+                </FormControlHelper>
             </div>
         )}
 
@@ -44,3 +47,7 @@ const FormControlErrors = ({errors}: {errors: string[]}) => (
         ))}
     </div>
 );
+
+const FormControlHelper = styled.div`
+    margin-top: 6px;
+`;

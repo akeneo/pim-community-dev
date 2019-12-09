@@ -40,24 +40,3 @@ Feature: Filter products with multiples simpleselect filters
     And I should see entities "MUG-2"
     And I hide the filter "company"
     And I hide the filter "color"
-
-  Scenario: Successfully filter products without common attribute
-    Given I am on the products grid
-    And I show the filter "company"
-    And I filter by "company" with operator "in list" and value "Debian"
-    And I show the filter "color"
-    And I filter by "color" with operator "in list" and value "Black"
-    Then the grid should contain 0 elements
-    And I hide the filter "company"
-    And I hide the filter "color"
-
-  Scenario: Successfully filter only one product
-    Given I am on the products grid
-    And I show the filter "company"
-    And I filter by "company" with operator "in list" and value "Canonical"
-    And I show the filter "color"
-    And I filter by "color" with operator "in list" and value "Green"
-    Then the grid should contain 1 elements
-    And I should see entities "MUG-1"
-    And I hide the filter "company"
-    And I hide the filter "color"

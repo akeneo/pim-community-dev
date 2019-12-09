@@ -14,7 +14,7 @@ class FileIntegration extends AbstractStandardNormalizerTestCase
     public function testNormalizedFile()
     {
         $fileStorer = $this->get('akeneo_file_storage.file_storage.file.file_storer');
-        $fileStorer->store(new \SplFileInfo($this->getFixturePath('akeneo.jpg')), 'tmpStorage');
+        $fileStorer->store(new \SplFileInfo($this->getFixturePath('akeneo.jpg')), 'catalogStorage');
 
         $expected = [
             'code'              => '1/8/c/d/18cd06901ca3bd633afc0c178e347ffba20cbd11_akeneo.jpg',

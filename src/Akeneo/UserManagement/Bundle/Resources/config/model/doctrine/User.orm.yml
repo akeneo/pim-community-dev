@@ -99,6 +99,13 @@ Akeneo\UserManagement\Component\Model\User:
             type: string
             nullable: false
             length: 30
+        type:
+            type: string
+            nullable: false
+            column: user_type
+            length: 20
+            options:
+                default: user
         properties:
             type: json_array
     manyToMany:

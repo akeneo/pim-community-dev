@@ -7,6 +7,7 @@ use Akeneo\Apps\Application\Service\CreateClientInterface;
 use Akeneo\Apps\Application\Service\CreateUserInterface;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\Read\AppWithCredentials;
+use Akeneo\Apps\Domain\Model\ValueObject\UserId;
 use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -49,24 +50,15 @@ class CreateAppHandler
             throw new ConstraintViolationListException($violations);
         }
 
+        $user = $this->createUser->execute($command->code(), $command->label(), ' ');
         $client = $this->createClient->execute($command->label());
-
-        $username = $command->code();
-        $password = $command->code();
-        $userId = $this->createUser->execute(
-            $username,
-            $command->label(),
-            'APP',
-            $password,
-            uniqid() . '@akeneo.com'
-        );
 
         $app = new App(
             $command->code(),
             $command->label(),
             $command->flowType(),
             $client->id(),
-            $userId
+            new UserId($user->id())
         );
         $this->repository->create($app);
 
@@ -76,8 +68,8 @@ class CreateAppHandler
             $command->flowType(),
             $client->clientId(),
             $client->secret(),
-            $username,
-            $password
+            $user->username(),
+            $user->password()
         );
     }
 }

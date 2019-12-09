@@ -226,7 +226,7 @@ class DatabaseCommand extends Command
                 `sess_id` VARBINARY(128) NOT NULL PRIMARY KEY,
                 `sess_data` BLOB NOT NULL,
                 `sess_time` INTEGER UNSIGNED NOT NULL,
-                `sess_lifetime` MEDIUMINT NOT NULL DEFAULT  '0'
+                `sess_lifetime` INTEGER UNSIGNED NOT NULL
             ) COLLATE utf8mb4_bin, ENGINE = InnoDB;";
         $this->connection->exec($sessionTableSql);
 
@@ -302,7 +302,7 @@ class DatabaseCommand extends Command
     private function setLatestKnownMigration(InputInterface $input): void
     {
         $latestMigration = $this->getLatestMigration($input);
-        
+
         $this->commandExecutor->runCommand(
             'doctrine:migrations:version',
             ['version' => $latestMigration, '--add' => true, '--all' => true, '-q' => true]

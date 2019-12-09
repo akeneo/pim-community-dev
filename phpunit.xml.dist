@@ -17,7 +17,6 @@
         <ini name="intl.error_level" value="0"/>
         <ini name="memory_limit" value="-1"/>
         <ini name="zend.enable_gc" value="1"/>
-        <server name="APP_ENV" value="test" force="true" />
         <server name="KERNEL_CLASS" value="Kernel" force="true" />
     </php>
 
@@ -31,6 +30,10 @@
         <testsuite name="PIM_Integration_Test">
             <directory suffix="Integration.php">src</directory>
             <directory suffix="Integration.php">tests</directory>
+        </testsuite>
+
+        <testsuite name="PIM_Migration_Test">
+            <directory suffix="Integration.php">upgrades/test_schema</directory>
         </testsuite>
 
         <testsuite name="Akeneo_Apps_Integration">

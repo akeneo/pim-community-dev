@@ -1,10 +1,13 @@
 pim_menu:
     item:
         apps: Apps
+        apps_dashboard: App dashboard
 
 pim_title:
     akeneo_apps_index: Apps
     akeneo_apps_any: Apps
+    akeneo_apps_dashboard_index: App dashboard
+    akeneo_apps_dashboard_any: App dashboard
 
 pim_apps:
     apps: Apps
@@ -43,7 +46,13 @@ pim_apps:
             error: Sorry, an error occurred while editing the App.
 
 akeneo_apps:
+    secondary_actions:
+        title: Other actions
     app:
+        client_id: Client ID
+        secret: Secret
+        username: Username
+        password: Password
         constraint:
             code:
                 required: App code is required.
@@ -55,3 +64,38 @@ akeneo_apps:
                 too_long: App label is too long. It should have 100 characters or less.
             flow_type:
                 invalid: App flow type can only be 'data_source', 'data_destination' or 'other'.
+    edit_app:
+        credentials:
+            title: Credentials
+            helper: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+            password_placeholder: ••••••••
+            password_helper:
+                message: If you forgot your password, you can generate a new one here.
+                link: More info…
+                link_url: https://www.akeneo.com/
+            clear_password_helper:
+                message: Make sure to save this password somewhere as we won’t show it to you twice.
+                link: More info…
+                link_url: https://www.akeneo.com/
+            action:
+                copy: Copy to clipboard
+                regenerate: Regenerate
+            flash:
+                copied: '{{ name }} copied to clipboard'
+    regenerate_secret:
+        title: Confirm regeneration
+        description: Are you sure you want to regenerate the app secret? Not sure about the impacts?
+        link: Here is what will happen.
+        link_url: https://www.akeneo.com/
+        action:
+            regenerate: Regenerate
+        flash:
+            success: App secret successfully regenerated.
+            error: Sorry, an error occurred while regenerating the app secret.
+    delete_app:
+        title: Confirm deletion
+        description: Are you sure you want to delete the app? Not sure about the impacts? 
+        link: Here is what will happen.
+        link_url: https://www.akeneo.com/
+        flash:
+            success: App successfully deleted.

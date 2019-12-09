@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Infrastructure\User\Internal;
 
 use Akeneo\Apps\Application\Service\CreateUserInterface;
-use Akeneo\Apps\Domain\Model\ValueObject\UserId;
+use Akeneo\Apps\Domain\Model\Read\User;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -41,22 +41,21 @@ class CreateUser implements CreateUserInterface
         $this->userSaver = $userSaver;
     }
 
-    public function execute(
-        string $username,
-        string $firstname,
-        string $lastname,
-        string $password,
-        string $email
-    ): UserId {
+    public function execute(string $username, string $firstname, string $lastname): User
+    {
+        $password = $this->generatePassword();
+        $username = $this->generateUsername($username);
+
         $user = $this->userFactory->create();
+        $user->defineAsUserApp();
         $this->userUpdater->update(
             $user,
             [
                 'username' => $username,
-                'password' => $username,
+                'password' => $password,
                 'first_name' => $firstname,
                 'last_name' => $lastname,
-                'email' => $email,
+                'email' => sprintf('%s@example.com', $username),
             ]
         );
 
@@ -72,6 +71,18 @@ class CreateUser implements CreateUserInterface
 
         $this->userSaver->save($user);
 
-        return new UserId($user->getId());
+        return new User($user->getId(), $username, $password);
+    }
+
+    private function generatePassword(): string
+    {
+        return str_shuffle(ucfirst(substr(uniqid(), 0, 9)));
+    }
+
+    private function generateUsername(string $username): string
+    {
+        $randomNumberString = str_pad((string) rand(1, 9999), 4, "0", STR_PAD_LEFT);
+
+        return sprintf('%s_%s', $username, $randomNumberString);
     }
 }

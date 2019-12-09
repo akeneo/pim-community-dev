@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Page should render 1`] = `
+<div
+  className="AknDefault-contentWithColumn"
+>
+  <div
+    className="AknDefault-contentWithBottom"
+  >
+    <div
+      className="AknDefault-mainContent"
+    >
+      content
+    </div>
+  </div>
+</div>
+`;

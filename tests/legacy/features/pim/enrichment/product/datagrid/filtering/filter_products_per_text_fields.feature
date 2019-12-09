@@ -59,43 +59,6 @@ Feature: Filter products by text field
       | sku    | is equal to      | 135-2541             | 135-2541                                                                                    |
       | sku    | in list          | 135-2541, 13572541   | 135-2541, 13572541                                                                          |
 
-  Scenario: Successfully filter products by empty value for text and textarea attributes
-    Given the following attributes:
-      | label-en_US | type                 | localizable | scopable | useable_as_grid_filter | group | code        |
-      | name        | pim_catalog_text     | 0           | 0        | 1                      | other | name        |
-      | description | pim_catalog_textarea | 0           | 0        | 1                      | other | description |
-    And the following products:
-      | sku    | name     | description      |
-      | postit | MyPostit |                  |
-      | book   |          |                  |
-      | mug    |          | MyMugDescription |
-    And I am on the products grid
-    Then the grid should contain 3 elements
-    And I should see products postit, book and mug
-    And I should be able to use the following filters:
-      | filter      | operator     | value | result |
-      | name        | is empty     |       |        |
-      | name        | is not empty |       | postit |
-      | description | is empty     |       |        |
-      | description | is not empty |       | mug    |
-
-  Scenario: Successfully filter products by empty value for localizable text attribute
-    Given the following attributes:
-      | label-en_US | type             | localizable | scopable | useable_as_grid_filter | group | code |
-      | name        | pim_catalog_text | 1           | 0        | 1                      | other | name |
-    And the following products:
-      | sku    | name-en_US | name-fr_FR |
-      | postit | MyPostit   | MonPostit  |
-      | book   |            | MonLivre   |
-      | mug    |            |            |
-    And I am on the products grid
-    Then the grid should contain 3 elements
-    And I should see products postit, book and mug
-    And I should be able to use the following filters:
-      | filter | operator     | value | result |
-      | name   | is empty     |       |        |
-      | name   | is not empty |       | postit |
-
   @critical
   Scenario: Successfully filter products by empty value for scopable text attribute
     Given the following attributes:
@@ -106,24 +69,6 @@ Feature: Filter products by text field
       | postit | MyPostit       | MyPostit    |
       | book   |                | MyBook      |
       | mug    |                |             |
-    And I am on the products grid
-    Then the grid should contain 3 elements
-    And I should see products postit, book and mug
-    And I should be able to use the following filters:
-      | filter | operator     | value | result |
-      | name   | is empty     |       |        |
-      | name   | is not empty |       | postit |
-
-  Scenario: Successfully filter products by empty value for scopable and localizable text attribute
-    Given I add the "english" locale to the "mobile" channel
-    And the following attributes:
-      | label-en_US | type             | localizable | scopable | useable_as_grid_filter | group | code |
-      | name        | pim_catalog_text | 1           | 1        | 1                      | other | name |
-    And the following products:
-      | sku    | name-en_US-ecommerce | name-en_US-mobile | name-fr_FR-ecommerce | name-fr_FR-mobile |
-      | postit | MyPostit             | MyPostit          | MonPostit            | MonPostit         |
-      | book   |                      | MyBook            | MonLivre             | MonLivre          |
-      | mug    |                      |                   |                      |                   |
     And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug

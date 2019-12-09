@@ -68,7 +68,7 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
         $sql = <<<SQL
             SELECT
                 channel.code as channel_code,
-                channel_translation.json_labels as channel_labels,
+                channel_translation.labels as channel_labels,
                 JSON_ARRAY_APPEND(COALESCE(child.children_codes, "[]"), '$', root.code) as category_codes_in_channel,
                 pim_locales.json_locales as locales
             FROM
@@ -89,12 +89,14 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
                 LEFT JOIN
                 (
                     SELECT
-                        channel.code as channel_code,
-                        JSON_OBJECTAGG(channel_translation.locale, channel_translation.label) as json_labels
-                    FROM pim_catalog_channel as channel
-                    LEFT JOIN pim_catalog_channel_translation as channel_translation ON channel.id = channel_translation.foreign_key
-                    GROUP BY
-                        channel.code
+                        channel.channel_code,
+                        JSON_OBJECTAGG(locale.code, channel_translation.label) as labels
+                    FROM
+                        (SELECT DISTINCT code as channel_code, id as channel_id FROM pim_catalog_channel) AS channel
+                    CROSS JOIN pim_catalog_locale locale
+                    LEFT JOIN pim_catalog_channel_translation channel_translation ON channel_translation.foreign_key = channel.channel_id AND channel_translation.locale = locale.code
+                    WHERE locale.is_activated = true
+                    GROUP BY channel.channel_code
                 ) AS channel_translation on channel_translation.channel_code = channel.code
                 LEFT JOIN
                 (

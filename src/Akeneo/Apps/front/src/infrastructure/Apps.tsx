@@ -1,39 +1,17 @@
-import React from 'react';
-import {ThemeProvider} from 'styled-components';
+import {default as React, StrictMode, useReducer} from 'react';
+import {AppsStateContext} from '../application/apps/app-state-context';
 import {Index} from '../application/apps/pages/Index';
-import {theme} from '../application/common/theme';
-import {NotifyContext, NotifyInterface} from '../application/shared/notify';
-import {RouterContext, RouterInterface} from '../application/shared/router';
-import {TranslateContext, TranslateInterface} from '../application/shared/translate';
-import {composeProviders} from './compose-providers';
-import {LegacyContext} from './legacy-context';
-import {ViewBuilder} from './pim-view/view-builder';
+import {reducer} from '../application/apps/reducers/apps-reducer';
+import {withContexts} from './with-contexts';
 
-interface Props {
-    router: RouterInterface;
-    translate: TranslateInterface;
-    viewBuilder: ViewBuilder;
-    notify: NotifyInterface;
-}
-
-export const Apps = ({router, translate, viewBuilder, notify}: Props) => {
-    const Providers = composeProviders(
-        [RouterContext.Provider, router],
-        [TranslateContext.Provider, translate],
-        [NotifyContext.Provider, notify],
-        [
-            LegacyContext.Provider,
-            {
-                viewBuilder,
-            },
-        ]
-    );
+export const Apps = withContexts(() => {
+    const [app, dispatch] = useReducer(reducer, {});
 
     return (
-        <Providers>
-            <ThemeProvider theme={theme}>
+        <StrictMode>
+            <AppsStateContext.Provider value={[app, dispatch]}>
                 <Index />
-            </ThemeProvider>
-        </Providers>
+            </AppsStateContext.Provider>
+        </StrictMode>
     );
-};
+});

@@ -22,6 +22,8 @@ class User implements UserInterface
     const GROUP_DEFAULT = 'All';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
     const DEFAULT_TIMEZONE = 'UTC';
+    const TYPE_USER = 'user';
+    const TYPE_APP = 'app';
 
     /** @var int|string */
     protected $id;
@@ -148,6 +150,8 @@ class User implements UserInterface
 
     /** @var array $property bag for properties extension */
     private $properties = [];
+
+    protected $type = self::TYPE_USER;
 
     public function __construct()
     {
@@ -1086,6 +1090,16 @@ class User implements UserInterface
         $this->timezone = $timezone;
 
         return $this;
+    }
+
+    public function isAUserApp(): bool
+    {
+        return self::TYPE_APP === $this->type;
+    }
+
+    public function defineAsUserApp(): void
+    {
+        $this->type = self::TYPE_APP;
     }
 
     /**

@@ -8,7 +8,12 @@ config:
                 akeneo_apps_any:
                     module: pim/controller/apps
                     aclResourceId: akeneo_apps_manage_settings
+                akeneo_apps_dashboard_index:
+                    module: pim/controller/apps/dashboard
+                akeneo_apps_dashboard_any:
+                    module: pim/controller/apps/dashboard
+
     
     paths:
         pim/controller/apps: akeneoapps/js/controller/apps.tsx
-        
+        pim/controller/apps/dashboard: akeneoapps/js/controller/dashboard.tsx

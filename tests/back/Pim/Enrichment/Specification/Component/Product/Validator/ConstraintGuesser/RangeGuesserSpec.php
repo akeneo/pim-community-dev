@@ -245,16 +245,4 @@ class RangeGuesserSpec extends ObjectBehavior
 
         $constraints->shouldReturn([]);
     }
-
-    function it_forces_number_max_if_nothing_was_specified()
-    {
-        $number = new Attribute();
-        $number->setType(AttributeTypes::NUMBER);
-
-        $constraints = $this->guessConstraints($number);
-        $constraints->shouldHaveCount(1);
-        $range = $constraints[0];
-        $range->shouldBeAnInstanceOf(Range::class);
-        $range->max->shouldBe(floatval(PHP_INT_MAX));
-    }
 }

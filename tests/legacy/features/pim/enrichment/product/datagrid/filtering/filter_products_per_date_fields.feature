@@ -29,36 +29,18 @@ Feature: Filter products by date field
       | release | is not empty |       | postit       |
 
   @critical
-  Scenario: Successfully filter products by date attributes
-    Given the following products:
-      | sku    | family   | release    |
-      | postit | a_family |2014-05-01 |
-      | book   | a_family |2014-05-02 |
-      | mug    | a_family |2014-05-03 |
-      | tshirt | a_family |2014-05-03 |
-      | pen    | a_family |2014-05-06 |
-    When I am on the products grid
-    Then the grid should contain 5 elements
-    And I should see products postit, book, mug, tshirt and pen
+  Scenario: Successfully filter products by date attributes with user timezone America/New_York
+    Given the postit product created at "2018-10-03 01:30:00"
+    And the mug product created at "2018-10-03 05:30:00"
+    And the pen product created at "2018-10-02 23:30:00"
+    When I am logged in as "Julia"
+    And I am on the products grid
+    Then the grid should contain 3 elements
+    And I should see products postit, mug and pen
     And I should be able to use the following filters:
-      | filter  | operator    | value                     | result               |
-      | release | more than   | 05/02/2014                | mug, tshirt and pen  |
-      | release | less than   | 05/03/2014                | postit and book      |
-      | release | between     | 05/02/2014 and 05/03/2014 | book, mug and tshirt |
-      | release | not between | 05/02/2014 and 05/03/2014 | postit and pen       |
+      | filter  | operator    | value                     | result         |
+      | created | more than   | 10/02/2018                | mug            |
+      | created | less than   | 10/03/2018                | postit and pen |
+      | created | between     | 10/02/2018 and 10/02/2018 | postit and pen |
+      | created | not between | 10/02/2018 and 10/02/2018 | mug            |
 
-  Scenario: Filter products by date attributes and keep the appropriate default filter values
-    Given the following products:
-      | sku  | family   | release    |
-      | book | a_family | 2014-05-02 |
-      | pen  | a_family | 2014-05-06 |
-    And I am on the products grid
-    And I show the filter "release"
-    When I filter by "release" with operator "between" and value "05/01/2014 and 05/03/2014"
-    Then the filter "release" should be set to operator "between" and value "05/01/2014 and 05/03/2014"
-    When I click on the "book" row
-    And I should be on the product "book" edit page
-    And I am on the products grid
-    Then the filter "release" should be set to operator "between" and value "05/01/2014 and 05/03/2014"
-    When I refresh current page
-    Then the filter "release" should be set to operator "between" and value "05/01/2014 and 05/03/2014"

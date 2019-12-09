@@ -4,18 +4,17 @@ namespace spec\Akeneo\Tool\Component\FileStorage\File;
 
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
 
 class FileFetcherSpec extends ObjectBehavior
 {
-    function let(Filesystem $tmpFilesystem)
+    function let()
     {
-        $this->beConstructedWith($tmpFilesystem);
+        $this->beConstructedWith(sys_get_temp_dir());
     }
 
-    function it_fetches_a_file($tmpFilesystem, Local $adapter, FilesystemInterface $filesystem)
+    function it_fetches_a_file(Local $adapter, FilesystemInterface $filesystem)
     {
         if (!is_dir(sys_get_temp_dir() . '/spec/path/to')) {
             mkdir(sys_get_temp_dir() . '/spec/path/to', 0777, true);
@@ -23,12 +22,6 @@ class FileFetcherSpec extends ObjectBehavior
 
         $filesystem->has('path/to/file.txt')->willReturn(true);
         $filesystem->readStream('path/to/file.txt')->shouldBeCalled();
-
-        $tmpFilesystem->getAdapter()->willReturn($adapter);
-        $adapter->getPathPrefix()->willReturn(sys_get_temp_dir() . '/spec/');
-
-        $tmpFilesystem->has('path/to')->willReturn(false);
-        $tmpFilesystem->createDir('path/to')->shouldBeCalled();
 
         $rawFile = $this->fetch($filesystem, 'path/to/file.txt');
         $rawFile->shouldBeAnInstanceOf('\SplFileInfo');

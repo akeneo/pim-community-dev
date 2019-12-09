@@ -168,7 +168,7 @@
 
 {% block form_errors %}{% spaceless %}
     {% if errors|length > 0 %}
-        <script type="text/javascript">
+        <script type="text/javascript" nonce="{{ js_nonce() }}">
             var el = document.getElementById('{{ _self.getRootId(form) }}');
 
             if (el) {
@@ -251,7 +251,7 @@
                 {{ form_widget(form.id) }}
             </div>
         </div>
-        <script type="text/javascript">
+        <script type="text/javascript" nonce="{{ js_nonce() }}">
             require(
                 ['pim/fileinput'],
                 function(fileinput) {
@@ -293,7 +293,7 @@
         <input id="{{ originalId }}" type="checkbox" {% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}{% if disabled %} disabled="disabled"{% endif %}>
         <input type="hidden" {{ block('widget_attributes') }}{% if checked or attr.checked is defined and attr.checked %} value="1"{% endif %}>
     </div>
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
     require(
         ['jquery'],
         function ($) {

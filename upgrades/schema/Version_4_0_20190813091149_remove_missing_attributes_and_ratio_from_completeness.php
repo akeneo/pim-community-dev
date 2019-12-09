@@ -20,6 +20,6 @@ final class Version_4_0_20190813091149_remove_missing_attributes_and_ratio_from_
 
     public function down(Schema $schema) : void
     {
-        throw new IrreversibleMigrationException();
+        $this->throwIrreversibleMigrationException();
     }
 }

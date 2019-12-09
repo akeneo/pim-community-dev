@@ -10,6 +10,7 @@ use Akeneo\Apps\Application\Service\CreateUserInterface;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\Read\AppWithCredentials;
 use Akeneo\Apps\Domain\Model\Read\Client;
+use Akeneo\Apps\Domain\Model\Read\User;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Model\Write\App;
@@ -49,7 +50,9 @@ class CreateAppHandlerSpec extends ObjectBehavior
 
         $client = new Client(42, '42_myclientId', 'secret');
         $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($client);
-        $createUser->execute('magento', 'Magento Connector', 'APP', 'magento', Argument::any())->shouldBeCalled();
+
+        $user = new User(42, 'magento_app', 'my_client_pwd');
+        $createUser->execute(Argument::type('string'), 'Magento Connector', ' ')->willReturn($user);
 
         $repository->create(Argument::type(App::class))->shouldBeCalled();
 
@@ -69,7 +72,9 @@ class CreateAppHandlerSpec extends ObjectBehavior
 
         $client = new Client(42, '42_myclientId', 'secret');
         $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($client);
-        $createUser->execute('magento', 'Magento Connector', 'APP', 'magento', Argument::any())->shouldBeCalled();
+
+        $user = new User(42, 'magento_app', 'my_client_pwd');
+        $createUser->execute(Argument::type('string'), 'Magento Connector', ' ')->willReturn($user);
 
         $repository->create(Argument::type(App::class))->shouldBeCalled();
 
@@ -80,8 +85,8 @@ class CreateAppHandlerSpec extends ObjectBehavior
         $appWithCredentials->flowType()->shouldReturn(FlowType::DATA_DESTINATION);
         $appWithCredentials->clientId()->shouldReturn('42_myclientId');
         $appWithCredentials->secret()->shouldReturn('secret');
-        $appWithCredentials->username()->shouldReturn('magento');
-        $appWithCredentials->password()->shouldReturn('magento');
+        $appWithCredentials->username()->shouldReturn('magento_app');
+        $appWithCredentials->password()->shouldReturn('my_client_pwd');
     }
 
     public function it_throws_a_constraint_exception_when_something_is_invalid(

@@ -476,3 +476,12 @@ measures_config:
             DOZEN:
                 convert: [{'mul': '12'}]
                 symbol: Dz
+    Brightness:
+        standard: LUMEN
+        units:
+            LUMEN:
+                convert: [{'mul': '1'}]
+                symbol: lm
+            NIT:
+                convert: [{'mul': '0.2918855809'}]
+                symbol: nits

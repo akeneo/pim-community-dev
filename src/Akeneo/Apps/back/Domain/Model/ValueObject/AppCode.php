@@ -17,11 +17,14 @@ class AppCode
     public function __construct(string $code)
     {
         $code = trim($code);
-        
+
         if (empty($code)) {
             throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'required'));
         }
-        if (strlen($code) > 100) {
+        if (mb_strlen($code) < 3) {
+            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'too_short'));
+        }
+        if (mb_strlen($code) > 100) {
             throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'too_long'));
         }
         if (!preg_match('/^[0-9a-zA-Z_]+$/', $code)) {
