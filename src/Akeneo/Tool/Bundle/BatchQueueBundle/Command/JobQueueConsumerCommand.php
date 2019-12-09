@@ -131,7 +131,6 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
      * @param JobExecutionMessage $jobExecutionMessage
      *
      * @return array
-     * @throws \Doctrine\DBAL\DBALException
      */
     protected function getArguments(JobExecutionMessage $jobExecutionMessage): array
     {
