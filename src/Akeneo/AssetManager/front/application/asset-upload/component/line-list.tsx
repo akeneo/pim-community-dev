@@ -36,7 +36,8 @@ const ListColumnHeader = styled.th<{width?: number}>`
   line-height: 44px;
   padding-left: 15px;
   text-align: left;
-  width: ${(props: ThemedProps<{width?: number}>) => (props.width ? props.width : 'auto')};
+  width: ${(props: ThemedProps<{width?: number}>) => (undefined !== props.width ? props.width : 'auto')};
+  white-space: nowrap;
 `;
 
 type LineListProps = {
@@ -70,9 +71,9 @@ const LineList = ({
           <tr>
             <ListColumnHeader width={78}>{__('pim_asset_manager.asset.upload.list.asset')}</ListColumnHeader>
             <ListColumnHeader>{__('pim_asset_manager.asset.upload.list.filename')}</ListColumnHeader>
-            <ListColumnHeader>{__('pim_asset_manager.asset.upload.list.code')}</ListColumnHeader>
-            {localizable && <ListColumnHeader>{__('pim_asset_manager.asset.upload.list.locale')}</ListColumnHeader>}
-            {scopable && <ListColumnHeader>{__('pim_asset_manager.asset.upload.list.channel')}</ListColumnHeader>}
+            <ListColumnHeader width={250}>{__('pim_asset_manager.asset.upload.list.code')}</ListColumnHeader>
+            {localizable && <ListColumnHeader width={250}>{__('pim_asset_manager.asset.upload.list.locale')}</ListColumnHeader>}
+            {scopable && <ListColumnHeader width={250}>{__('pim_asset_manager.asset.upload.list.channel')}</ListColumnHeader>}
             <ListColumnHeader width={0}>{__('pim_asset_manager.asset.upload.list.status')}</ListColumnHeader>
             <ListColumnHeader width={0} />
           </tr>

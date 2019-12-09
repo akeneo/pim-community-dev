@@ -11,6 +11,7 @@ const StatusLabel = styled.span`
   border-radius: 2px;
   padding: 0 4px;
   font-size: 11px;
+  white-space: nowrap;
 `;
 const ProgressBar = styled.div`
   background: ${(props: ThemedProps<void>) => props.theme.color.grey80};
