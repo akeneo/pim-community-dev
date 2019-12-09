@@ -18,9 +18,9 @@ class ComputeTransformationsFromAssetFamilyIdentifierCommand
     /** @var string */
     private $assetFamilyIdentifier;
 
-    public function __construct(string $assetIdentifiers)
+    public function __construct(string $assetFamilyIdentifier)
     {
-        $this->assetFamilyIdentifier = $assetIdentifiers;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
     }
 
     public function getAssetFamilyIdentifier(): string

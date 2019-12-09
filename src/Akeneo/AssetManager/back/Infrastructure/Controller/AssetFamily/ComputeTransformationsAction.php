@@ -17,18 +17,12 @@ use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTr
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyDetailsInterface;
-use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
-use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ComputeTransformationsAction
 {
-    private static $JOB_INSTANCE_CODE = 'asset_manager_compute_transformations';
-
     /** @var FindAssetFamilyDetailsInterface */
     private $findOneAssetFamilyQuery;
 

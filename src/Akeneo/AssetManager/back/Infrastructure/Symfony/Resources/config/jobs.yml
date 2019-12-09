@@ -78,4 +78,5 @@ services:
         class: 'Akeneo\AssetManager\Infrastructure\Job\ComputeTransformations'
         arguments:
             - '@akeneo_assetmanager.infrastructure.transformation.compute_transformations.executor'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_searchable_assets'
         public: false
