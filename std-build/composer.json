@@ -15,7 +15,11 @@
         },
         "psr-4": {
           "Pim\\Upgrade\\": "upgrades/"
-        }
+        },
+        "exclude-from-classmap": [
+            "vendor/akeneo/pim-community-dev/src/Kernel.php"
+        ]
+
     },
     "require": {
         "akeneo/pim-community-dev": "dev-TIP-1346@dev"
