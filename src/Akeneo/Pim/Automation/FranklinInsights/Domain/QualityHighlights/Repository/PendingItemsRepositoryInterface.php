@@ -31,6 +31,8 @@ interface PendingItemsRepositoryInterface
 
     public function acquireLock(Lock $lock): void;
 
+    public function releaseLock(Lock $lock): void;
+
     public function removeUpdatedAttributes(array $attributeCodes, Lock $lock): void;
 
     public function releaseUpdatedAttributesLock(array $attributeCodes, Lock $lock): void;

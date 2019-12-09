@@ -116,6 +116,17 @@ SQL;
         $this->connection->executeQuery($lockQuery, $bindParams);
     }
 
+    public function releaseLock(Lock $lock): void
+    {
+        $query = <<<'SQL'
+UPDATE pimee_franklin_insights_quality_highlights_pending_items
+SET lock_id = ''
+WHERE lock_id = :lock
+SQL;
+
+        $this->connection->executeQuery($query, ['lock' => strval($lock)]);
+    }
+
     public function removeUpdatedAttributes(array $attributeCodes, Lock $lock): void
     {
         $bindParams = [

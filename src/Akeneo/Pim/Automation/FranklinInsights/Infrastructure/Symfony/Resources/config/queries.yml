@@ -107,3 +107,7 @@ services:
         class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectSupportedAttributesByFamilyQuery
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectUpdatedProductsIdsToApplyQuery:
+        arguments:
+            - '@database_connection'

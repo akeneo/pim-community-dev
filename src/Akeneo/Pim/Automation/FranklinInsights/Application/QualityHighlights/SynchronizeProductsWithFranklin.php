@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\Normali
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Model\Write\AsyncRequest;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectProductsToApplyQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectUpdatedProductsIdsToApplyQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\BatchSize;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
@@ -40,8 +41,12 @@ class SynchronizeProductsWithFranklin
     /** @var ProductNormalizerInterface */
     private $productNormalizer;
 
+    /** @var SelectUpdatedProductsIdsToApplyQueryInterface */
+    private $selectUpdatedProductsIdsToApplyQuery;
+
     public function __construct(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
+        SelectUpdatedProductsIdsToApplyQueryInterface $selectUpdatedProductsIdsToApplyQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
         PendingItemsRepositoryInterface $pendingItemsRepository,
         SelectProductsToApplyQueryInterface $selectProductsToApplyQuery,
@@ -52,14 +57,15 @@ class SynchronizeProductsWithFranklin
         $this->pendingItemsRepository = $pendingItemsRepository;
         $this->selectProductsToApplyQuery = $selectProductsToApplyQuery;
         $this->productNormalizer = $productNormalizer;
+        $this->selectUpdatedProductsIdsToApplyQuery = $selectUpdatedProductsIdsToApplyQuery;
     }
 
     public function synchronizeUpdatedProducts(Lock $lock, BatchSize $productsPerRequest, BatchSize $requestsPerPool): void
     {
-        $poolSize = $productsPerRequest->toInt() * $requestsPerPool->toInt();
+        $poolSize = new BatchSize($productsPerRequest->toInt() * $requestsPerPool->toInt());
 
         do {
-            $updatedProductIds = $this->pendingItemIdentifiersQuery->getUpdatedProductIds($lock, $poolSize);
+            $updatedProductIds = $this->selectUpdatedProductsIdsToApplyQuery->execute($lock, $poolSize);
 
             if (empty($updatedProductIds)) {
                 continue;
@@ -86,7 +92,7 @@ class SynchronizeProductsWithFranklin
             }
 
             $this->qualityHighlightsProvider->applyAsyncProducts($asyncRequests);
-        } while (count($updatedProductIds) >= $poolSize);
+        } while (count($updatedProductIds) >= $poolSize->toInt());
     }
 
     public function synchronizeDeletedProducts(Lock $lock, BatchSize $batchSize): void

@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Model\Read\P
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Model\Write\AsyncRequest;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectProductsToApplyQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectUpdatedProductsIdsToApplyQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\BatchSize;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
@@ -32,16 +33,17 @@ class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
 {
     function let(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
+        SelectUpdatedProductsIdsToApplyQueryInterface $selectUpdatedProductsIdsToApplyQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
         PendingItemsRepositoryInterface $pendingItemsRepository,
         SelectProductsToApplyQueryInterface $selectProductsToApplyQuery,
         ProductNormalizerInterface $productNormalizer
     ) {
-        $this->beConstructedWith($pendingItemIdentifiersQuery, $qualityHighlightsProvider, $pendingItemsRepository, $selectProductsToApplyQuery, $productNormalizer);
+        $this->beConstructedWith($pendingItemIdentifiersQuery, $selectUpdatedProductsIdsToApplyQuery, $qualityHighlightsProvider, $pendingItemsRepository, $selectProductsToApplyQuery, $productNormalizer);
     }
 
     function it_synchronizes_updated_products_with_franklin(
-        SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
+        SelectUpdatedProductsIdsToApplyQueryInterface $selectUpdatedProductsIdsToApplyQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
         SelectProductsToApplyQueryInterface $selectProductsToApplyQuery,
         ProductNormalizerInterface $productNormalizer
@@ -129,7 +131,7 @@ class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
         $productsPerRequest = new BatchSize(2);
         $requestsPerPool = new BatchSize(3);
 
-        $pendingItemIdentifiersQuery->getUpdatedProductIds($lock, 6)->willReturn([42, 123, 333]);
+        $selectUpdatedProductsIdsToApplyQuery->execute($lock, new BatchSize(6))->willReturn([42, 123, 333]);
         $selectProductsToApplyQuery->execute([42, 123])->willReturn([$product1, $product2]);
         $selectProductsToApplyQuery->execute([333])->willReturn([$product3]);
         $qualityHighlightsProvider->applyAsyncProducts(Argument::that(
@@ -155,14 +157,14 @@ class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
     }
 
     public function it_does_nothing_if_there_is_no_updated_products(
-        SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
+        SelectUpdatedProductsIdsToApplyQueryInterface $selectUpdatedProductsIdsToApplyQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider
     ) {
         $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
         $productsPerRequest = new BatchSize(3);
         $requestsPerPool = new BatchSize(2);
 
-        $pendingItemIdentifiersQuery->getUpdatedProductIds($lock, 6)->willReturn([]);
+        $selectUpdatedProductsIdsToApplyQuery->execute($lock, new BatchSize(6))->willReturn([]);
         $qualityHighlightsProvider->applyAsyncProducts(Argument::any())->shouldNotBeCalled();
 
         $this->synchronizeUpdatedProducts($lock, $productsPerRequest, $requestsPerPool);

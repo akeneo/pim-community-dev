@@ -223,14 +223,7 @@ SQL;
 
         $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
         $this->getRepository()->acquireLock($lock);
-
-        $sqlQuery = <<<SQL
-        SELECT lock_id FROM pimee_franklin_insights_quality_highlights_pending_items
-        WHERE lock_id = '42922021-cec9-4810-ac7a-ace3584f8671'
-SQL;
-        $pendingItems = $this->getDbConnection()->query($sqlQuery)->fetchAll();
-
-        $this->assertCount(6, $pendingItems);
+        $this->assertCountPendingItemsByLock(6, strval($lock));
 
         $this->getRepository()->releaseUpdatedAttributesLock(['weight'], $lock);
         $this->getRepository()->releaseDeletedAttributesLock(['size'], $lock);
@@ -239,13 +232,35 @@ SQL;
         $this->getRepository()->releaseUpdatedProductsLock([42], $lock);
         $this->getRepository()->releaseDeletedProductsLock([456], $lock);
 
+        $this->assertCountPendingItemsByLock(6, '');
+    }
+
+    public function test_it_releases_a_lock()
+    {
+        $this->getRepository()->addUpdatedAttributeCode('weight');
+        $this->getRepository()->addUpdatedProductId(42);
+        $this->getRepository()->addDeletedProductId(456);
+
+        $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
+        $this->getRepository()->acquireLock($lock);
+        $this->assertCountPendingItemsByLock(3, strval($lock));
+
+        $this->getRepository()->addUpdatedProductId(42);
+        $this->getRepository()->acquireLock(new Lock('fccee5d7-860c-4801-8007-657d0307aaf8'));
+
+        $this->getRepository()->releaseLock($lock);
+        $this->assertCountPendingItemsByLock(0, strval($lock));
+        $this->assertCountPendingItemsByLock(3, '');
+    }
+
+    private function assertCountPendingItemsByLock(int $count, string $lock): void
+    {
         $sqlQuery = <<<SQL
         SELECT lock_id FROM pimee_franklin_insights_quality_highlights_pending_items
-        WHERE lock_id = ''
+        WHERE lock_id = '$lock'
 SQL;
         $pendingItems = $this->getDbConnection()->query($sqlQuery)->fetchAll();
-
-        $this->assertCount(6, $pendingItems);
+        $this->assertCount($count, $pendingItems);
     }
 
     private function createTextAttribute(string $attributeCode): void

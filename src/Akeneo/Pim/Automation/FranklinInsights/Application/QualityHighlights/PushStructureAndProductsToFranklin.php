@@ -66,6 +66,7 @@ class PushStructureAndProductsToFranklin
         $this->synchronizeProductsWithFranklin->synchronizeUpdatedProducts($lock, $productsBatchSize, $this->concurrencyBatchSize);
         $this->synchronizeProductsWithFranklin->synchronizeDeletedProducts($lock, $productsBatchSize);
 
-        // TODO: release lock for possible remaining locks (products with family to synchronize)
+        // Release the possible remaining locks (for the products with family to synchronize)
+        $this->pendingItemsRepository->releaseLock($lock);
     }
 }
