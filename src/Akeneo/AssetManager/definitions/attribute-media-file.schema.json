@@ -2,7 +2,7 @@
     "title": "BackendAttributeMediaFile",
     "type": "object",
     "properties": {
-        "type": { "const": "media_file" },
+        "type": { "type": "string", "const": "media_file" },
         "identifier": { "type": "string" },
         "asset_family_identifier": { "type": "string" },
         "code": { "type": "string" },

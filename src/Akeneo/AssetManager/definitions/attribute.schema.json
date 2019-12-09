@@ -1,6 +1,7 @@
 {
     "title": "BackendAttribute",
     "type": "object",
+    "$comment": "See the attached README.md for specifics of this file.",
     "anyOf": [
         { "$ref": "attribute-media-file.schema.json" },
         { "$ref": "attribute-any.schema.json" }

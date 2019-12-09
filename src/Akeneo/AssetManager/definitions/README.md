@@ -12,7 +12,7 @@ We use the `*.schema.json` to generate interface corresponding to these JSON str
 
 To re-generate interfaces:
 ```
-yarn generate-asset-manager-models 
+yarn generate-asset-manager-models
 ```
 
 ### 2) Validate `.json` test files
@@ -42,7 +42,7 @@ As the **JSON Schema will validate both frontend & backend response files**, the
 The JSON Schema file needs to be **in the same hierarchy than the .json responses it's validating.**
 
 For example:
-If the response files you want to write the JSON Schema for are located in: 
+If the response files you want to write the JSON Schema for are located in:
 ```text
 tests/front/integration/responses/Attribute/ListDetails
 tests/back/Integration/Resources/responses/Attribute/ListDetails
@@ -60,11 +60,11 @@ To do this, browse every JSON Schema we have:
 - In the `src/Akeneo/AssetManager/tests/shared/schemas` folder
 - But also in the `src/Akeneo/AssetManager/definitions` folder itself
 
-And where we use an attribute, simply replace it by the ref of the new JSON Schema using the `$ref` keyword followed by the path to the JSON Schema file:
- 
+And where we use an attribute, simply replace it by the ref of the new JSON Schema using the `$ref` keyword followed by the relative path to the JSON Schema file:
+
 ```json
 {
-    "my_attribute": {"$ref":  "src/Akeneo/AssetManager/definitions/attribute.schema.json"}
+    "my_attribute": {"$ref":  "attribute.schema.json"}
 }
 ```
 
@@ -76,3 +76,24 @@ make asset-manager-static-back
 ```
 
 Then of course, CI time!
+
+# attribute.schema.json specifics
+
+The `attribute.schema.json` will validate an attribute depending on its type.
+
+Every known attribute type can be defined in a separate schema, using a constant
+matching the type:
+```
+  "type": { "type": "string", "const": "MY_CUSTOM_TYPE" },
+```
+
+In `attribute.schema.json`, the `anyOf` list will check if one the attribute
+schemas match the value. There is a `attribute-any.schema.json` for matching
+custom attributes created by external sources. (eg: integrators)
+This `any` allows any additional properties.
+When you define a specific attribute type, you must ensure that the `any` does not
+validate it instead. For this, there is a regex in `attribute-any.schema.json`,
+**don't forget** to update it:
+```
+"pattern": "^(?!media_file|MY_CUSTOM_TYPE).*$"
+```
