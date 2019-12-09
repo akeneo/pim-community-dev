@@ -13,7 +13,9 @@ export const createAllowedExtensionFromNormalized = (allowedExtensions: string[]
     throw new Error(`AllowedExtension is not valid`);
   }
   const extensionsWithoutLeadingPoint = allowedExtensions.map(
-    (allowedExtension: string) => allowedExtension.replace(/^\./, '')
+    (allowedExtension: string) => allowedExtension
+      .replace(/^\./, '')
+      .toLowerCase()
   );
 
   return extensionsWithoutLeadingPoint;

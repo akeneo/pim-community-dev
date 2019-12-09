@@ -70,8 +70,8 @@ Feature: Edit an attribute of an asset family
   @acceptance-back
   Scenario: Updating allowed extensions
     Given an asset family with a media file attribute 'image' with allowed extensions: '["png"]'
-    When the user changes adds '["png"]' to the allowed extensions of 'image'
-    Then the 'image' should have '["png"]' as an allowed extension
+    When the user changes adds '["png", "mp3", "JPEG"]' to the allowed extensions of 'image'
+    Then the 'image' should have '["png", "mp3", "JPEG"]' as an allowed extension
 
   @acceptance-back
   Scenario: Updating allowed extensions to extensions all allowed
@@ -79,16 +79,18 @@ Feature: Edit an attribute of an asset family
     When the user changes adds '[]' to the allowed extensions of 'image'
     Then the 'image' should have '[]' as an allowed extension
 
-# Should we accept leading '.' ? should the VO try to remove it on its own if it exists ?
-#  @acceptance-back
-#  Scenario Outline: Invalid allowed extensions
-#    Given an asset family with a media file attribute 'image' with allowed extensions: '["png", "jpeg"]'
-#    When the user changes adds '<invalid_allowed_extensions>' to the allowed extensions of 'image'
-#    Then there should be a validation error on the property 'allowedExtensions' with message '<message>'
-#
-#    Examples:
-#      | invalid_allowed_extensions | message                                     |
-#      | [".not_a_valid_extension"] | One or more of the given values is invalid. |
+  @acceptance-back
+  Scenario Outline: Invalid allowed extensions
+    Given an asset family with a media file attribute 'image' with allowed extensions: '["png", "jpeg"]'
+    When the user changes adds '<invalid_allowed_extensions>' to the allowed extensions of 'image'
+    Then there should be a validation error on the property 'allowedExtensions' with message '<message>'
+
+    Examples:
+      | invalid_allowed_extensions | message                                     |
+      | [".not_a_valid_extension"] | One or more of the given values is invalid. |
+      | [".azaz_"] | One or more of the given values is invalid. |
+      | [".az az"] | One or more of the given values is invalid. |
+      | [".JPEG"] | One or more of the given values is invalid. |
 
   @acceptance-back
   Scenario: Updating media type
