@@ -239,30 +239,6 @@ class HookContext extends PimContext
     }
 
     /**
-     * @BeforeScenario
-     */
-    public function clearPimFilesystem()
-    {
-        foreach ($this->getPimFilesystems() as $fs) {
-            foreach ($fs->listContents() as $key) {
-                if ('dir' === $key['type']) {
-                    $fs->deleteDir($key['path']);
-                } else {
-                    $fs->delete($key['path']);
-                }
-            }
-        }
-    }
-
-    /**
-     * @return Filesystem[]
-     */
-    protected function getPimFilesystems()
-    {
-        return [];
-    }
-
-    /**
      * @param AfterScenarioScope $event
      *
      * @AfterScenario
