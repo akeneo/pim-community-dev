@@ -33,7 +33,7 @@ class DatabaseJobExecutionQueueSpec extends ObjectBehavior
         JobExecutionMessage $jobExecutionMessage
     ) {
         $jobExecutionMessageRepository->getAvailableJobExecutionMessage()->willReturn($jobExecutionMessage);
-        $jobExecutionMessageRepository->getAvailableWhitelistedJobExecutionMessageFilteredByCodes(Argument::any())->shouldNotBeCalled();
+        $jobExecutionMessageRepository->getAvailableJobExecutionMessageFilteredByCodes(Argument::any())->shouldNotBeCalled();
         $jobExecutionMessageRepository->getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes(Argument::any())->shouldNotBeCalled();
         $jobExecutionMessageRepository->updateJobExecutionMessage($jobExecutionMessage)->willReturn(true);
 
@@ -47,7 +47,7 @@ class DatabaseJobExecutionQueueSpec extends ObjectBehavior
         JobExecutionMessage $jobExecutionMessage
     ) {
         $jobExecutionMessageRepository->getAvailableJobExecutionMessage()->shouldNotBeCalled();
-        $jobExecutionMessageRepository->getAvailableWhitelistedJobExecutionMessageFilteredByCodes(['csv_export_product'])->willReturn($jobExecutionMessage);
+        $jobExecutionMessageRepository->getAvailableJobExecutionMessageFilteredByCodes(['csv_export_product'])->willReturn($jobExecutionMessage);
         $jobExecutionMessageRepository->getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes(['csv_export_product'])->shouldNotBeCalled();
         $jobExecutionMessageRepository->updateJobExecutionMessage($jobExecutionMessage)->willReturn(true);
 
@@ -61,7 +61,7 @@ class DatabaseJobExecutionQueueSpec extends ObjectBehavior
         JobExecutionMessage $jobExecutionMessage
     ) {
         $jobExecutionMessageRepository->getAvailableJobExecutionMessage()->shouldNotBeCalled();
-        $jobExecutionMessageRepository->getAvailableWhitelistedJobExecutionMessageFilteredByCodes(['csv_export_product'])->shouldNotBeCalled();
+        $jobExecutionMessageRepository->getAvailableJobExecutionMessageFilteredByCodes(['csv_export_product'])->shouldNotBeCalled();
         $jobExecutionMessageRepository->getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes(['csv_export_product'])->willReturn($jobExecutionMessage);
         $jobExecutionMessageRepository->updateJobExecutionMessage($jobExecutionMessage)->willReturn(true);
 
