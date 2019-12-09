@@ -19,4 +19,9 @@ fi
 
 SRC_DIR=$(dirname $0)/..
 
+mkdir -p $TARGET_DIR/src
 cp $SRC_DIR/std-build/composer.json $TARGET_DIR/
+cp $SRC_DIR/std-build/Makefile $TARGET_DIR/
+
+cp $SRC_DIR/Dockerfile $TARGET_DIR/
+cp -r $SRC_DIR/docker $TARGET_DIR/
