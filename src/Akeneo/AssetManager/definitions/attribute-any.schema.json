@@ -4,7 +4,7 @@
     "properties": {
         "type": {
             "type": "string",
-            "pattern": "^(?!text|media_file|option_collection).*$"
+            "pattern": "^(?!media_file).*$"
         },
         "identifier": { "type": "string" },
         "asset_family_identifier": { "type": "string" },
