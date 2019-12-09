@@ -243,7 +243,7 @@ jobs:
             name: Front integration tests
             command: make integration-front
 
-  back_performance:
+  test_back_performance:
     machine:
         image: ubuntu-1604:201903-01
     steps:
@@ -445,7 +445,7 @@ workflows:
                     - test_back_data_migrations
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
-          - back_performance:
+          - test_back_performance:
                 requires:
                     - test_back_data_migrations
                     - test_back_missing_structure_migrations
@@ -478,7 +478,7 @@ workflows:
           - back_behat_legacy:
                 requires:
                     - test_back_phpunit
-          - back_performance:
+          - test_back_performance:
                 requires:
                     - back_behat_legacy
   deployment:
