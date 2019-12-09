@@ -19,22 +19,8 @@ final class Version_4_0_20191209111232_rename_columns_in_audit_table extends Abs
         $alterTableColumnCountQuery = <<<SQL
 ALTER TABLE akeneo_app_audit RENAME COLUMN count TO event_count
 SQL;
-        $alterTableDropForeignKey = <<<SQL
-ALTER TABLE akeneo_app_audit DROP FOREIGN KEY FK_AUDIT_akeneo_app_audit_code
-SQL;
-        $alterTableColumnAppCodeQuery = <<<SQL
-ALTER TABLE akeneo_app_audit CHANGE app_code app_username VARCHAR(105)
-SQL;
-        $alterTableAddForeignKey = <<<SQL
-ALTER TABLE akeneo_app_audit 
-ADD CONSTRAINT FK_AUDIT_akeneo_app_audit_username 
-FOREIGN KEY (app_username) REFERENCES oro_user (username)
-SQL;
 
         $this->addSql($alterTableColumnCountQuery);
-        $this->addSql($alterTableDropForeignKey);
-        $this->addSql($alterTableColumnAppCodeQuery);
-        $this->addSql($alterTableAddForeignKey);
     }
 
     public function down(Schema $schema) : void
