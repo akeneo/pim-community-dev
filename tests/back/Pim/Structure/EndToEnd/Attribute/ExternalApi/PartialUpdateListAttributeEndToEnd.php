@@ -274,7 +274,7 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"code":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"code","message":"Attribute code may contain only letters, numbers and underscores"}]}
+{"line":1,"code":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"code","message":"Attribute code may contain only letters, numbers and underscore"}]}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/attributes', [], [], [], $data);
