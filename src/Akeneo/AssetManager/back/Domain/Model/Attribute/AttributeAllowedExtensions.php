@@ -23,7 +23,8 @@ use Webmozart\Assert\Assert;
 class AttributeAllowedExtensions
 {
     public const ALL_ALLOWED = [];
-    private const EXTENSION_SEPARATOR = '.';
+    public const MAX_EXTENSION_LENGTH = 20;
+    public const EXTENSION_SEPARATOR = '.';
 
     /** @var string[] */
     private $allowedExtensions;
@@ -33,6 +34,8 @@ class AttributeAllowedExtensions
         Assert::allStringNotEmpty($allowedExtensions, 'Expected allowed extension to be a string');
         array_walk($allowedExtensions, function ($allowedExtension) {
             Assert::notEq(self::EXTENSION_SEPARATOR, $allowedExtension[0], 'Extension should not contain the extension separator.');
+            Assert::maxLength($allowedExtension, self::MAX_EXTENSION_LENGTH, sprintf('Extensions cannot be longer than %d characters', self::MAX_EXTENSION_LENGTH));
+            Assert::regex($allowedExtension, '/^[a-z0-9]+$/', 'Expected extensions to contain only lowercase letters and numbers');
         });
 
         $this->allowedExtensions = $allowedExtensions;

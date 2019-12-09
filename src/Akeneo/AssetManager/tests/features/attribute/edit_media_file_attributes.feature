@@ -70,8 +70,8 @@ Feature: Edit an attribute of an asset family
   @acceptance-back
   Scenario: Updating allowed extensions
     Given an asset family with a media file attribute 'image' with allowed extensions: '["png"]'
-    When the user changes adds '["png", "mp3", "JPEG"]' to the allowed extensions of 'image'
-    Then the 'image' should have '["png", "mp3", "JPEG"]' as an allowed extension
+    When the user changes adds '["png", "mp3", "jpeg"]' to the allowed extensions of 'image'
+    Then the 'image' should have '["png", "mp3", "jpeg"]' as an allowed extension
 
   @acceptance-back
   Scenario: Updating allowed extensions to extensions all allowed
@@ -86,11 +86,11 @@ Feature: Edit an attribute of an asset family
     Then there should be a validation error on the property 'allowedExtensions' with message '<message>'
 
     Examples:
-      | invalid_allowed_extensions | message                                     |
-      | [".not_a_valid_extension"] | One or more of the given values is invalid. |
-      | [".azaz_"] | One or more of the given values is invalid. |
-      | [".az az"] | One or more of the given values is invalid. |
-      | [".JPEG"] | One or more of the given values is invalid. |
+      | invalid_allowed_extensions | message                                                                      |
+      | [".notvalid"]              | Extensions cannot contain the extension separator ".", ".notvalid" given.    |
+      | ["azaz_"]                  | Extensions should only contain lowercase letters and numbers, "azaz_" given. |
+      | ["JPEG"]                   | Extensions should only contain lowercase letters and numbers, "JPEG" given.  |
+      | ["012345678901234567891"]  | Extensions cannot be longer than 20 characters, length of 21 given.          |
 
   @acceptance-back
   Scenario: Updating media type

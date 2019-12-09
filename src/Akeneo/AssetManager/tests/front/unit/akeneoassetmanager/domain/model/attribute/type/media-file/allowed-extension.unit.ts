@@ -7,7 +7,7 @@ import {
 
 describe('akeneo > attribute > domain > model > attribute > type > media-file --- AllowedExtensions', () => {
   test('I can create a AllowedExtensions from normalized', () => {
-    expect(createAllowedExtensionFromNormalized(['png', 'jpg'])).toEqual(['png', 'jpg']);
+    expect(createAllowedExtensionFromNormalized(['png', 'jpg', '.pdf', 'JPEG'])).toEqual(['png', 'jpg', 'pdf', 'jpeg']);
     expect(createAllowedExtensionFromNormalized([])).toEqual([]);
     expect(() => createAllowedExtensionFromNormalized('true')).toThrow();
   });

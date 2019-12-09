@@ -332,6 +332,33 @@ final class EditAssetContext implements Context
     }
 
     /**
+     * @Given /^an asset family with a media file attribute and "([^"]*)" as an allowed extension$/
+     */
+    public function anAssetFamilyWithAMediaFileAttributeAndAsAnAllowedExtension(string $allowedExtension)
+    {
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $this->attributeRepository->create(
+            MediaFileAttribute::create(
+                AttributeIdentifier::create(
+                    self::ASSET_FAMILY_IDENTIFIER,
+                    self::MEDIA_FILE_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+                AttributeCode::fromString(self::MEDIA_FILE_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(2),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxFileSize::noLimit(),
+                AttributeAllowedExtensions::fromList([$allowedExtension]),
+                MediaType::fromString(MediaType::IMAGE)
+            )
+        );
+    }
+
+    /**
      * @Given /^an asset belonging to this asset family with the file "([^"]*)" for the media file attribute$/
      */
     public function aAssetBelongingToThisAssetFamilyWithATheFileForTheMediaFileAttribute(string $originalFilename)
@@ -1183,7 +1210,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user enriches a scopable attribute value of a asset without specifying the channel$/
+     * @When /^the user enriches a scopable attribute value of an asset without specifying the channel$/
      */
     public function theUserEnrichesAnScopableAttributeValueOfAAssetWithoutChannel()
     {
@@ -1759,7 +1786,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^an asset family and a asset with french label "([^"]*)"$/
+     * @Given /^an asset family and an asset with french label "([^"]*)"$/
      */
     public function aAssetFamilyAndAAssetWithLabel(string $label): void
     {
@@ -1786,7 +1813,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^a assetFamily and a asset with an image$/
+     * @Given /^an asset family and an asset with an image$/
      */
     public function aAssetFamilyAndAAssetWithAnImage(): void
     {
@@ -1985,7 +2012,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^an asset family with a asset attribute$/
+     * @Given /^an asset family with an asset attribute$/
      */
     public function anAssetFamilyWithAAssetAttribute()
     {
@@ -2275,7 +2302,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^an asset family with a asset collection attribute$/
+     * @Given /^an asset family with an asset collection attribute$/
      */
     public function anAssetFamilyWithAAssetCollectionAttribute()
     {

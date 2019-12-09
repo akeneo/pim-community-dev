@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
@@ -42,7 +44,7 @@ class AllowedExtensionsValidator extends ConstraintValidator
             return;
         }
 
-        if ($this->isNotArrayOfStrings($allowedExtensions)) {
+        if ($this->isNotArrayOfValidExtensions($allowedExtensions)) {
             return;
         }
     }
@@ -71,12 +73,41 @@ class AllowedExtensionsValidator extends ConstraintValidator
         return $notValid;
     }
 
-    private function isNotArrayOfStrings($allowedExtensions): bool
+    private function isNotArrayOfValidExtensions($allowedExtensions): bool
     {
+        $assertDoesNotContainExtensionSeparator = new Assert\Callback(function ($allowedExtension, ExecutionContextInterface $context, $payload) {
+            if ($this->hasExtensionSeparator($allowedExtension)) {
+                $context->buildViolation(AllowedExtensions::MESSAGE_CANNOT_CONTAIN_EXTENSION_SEPARATOR)
+                        ->setParameter('%wrong_extension%', $allowedExtension)
+                        ->addViolation();
+            }
+        });
+        $assertExtensionOnlyContainsLowercaseLettersOrNumbers = new Assert\Callback(function ($allowedExtension, ExecutionContextInterface $context, $payload) {
+            if ($this->containsForbiddenCharacters($allowedExtension)) {
+                $context->buildViolation(AllowedExtensions::MESSAGE_SHOULD_ONLY_CONTAIN_LOWERCASE_LETTERS_AND_NUMBERS)
+                        ->setParameter('%wrong_extension%', $allowedExtension)
+                        ->addViolation();
+            }
+        });
+        $assertExtensionLengthLowerThanMax = new Assert\Callback(function ($allowedExtension, ExecutionContextInterface $context, $payload) {
+            $actualLength = strlen($allowedExtension);
+            if ($actualLength > AttributeAllowedExtensions::MAX_EXTENSION_LENGTH) {
+                $context->buildViolation(AllowedExtensions::MESSAGE_CANNOT_BE_LONGER_THAN_MAX)
+                        ->setParameter('%actual_length%', strlen($allowedExtension))
+                        ->setParameter('%expected_length%', AttributeAllowedExtensions::MAX_EXTENSION_LENGTH)
+                        ->addViolation();
+            }
+        });
+
         $validator = Validation::createValidator();
         $violations = new ConstraintViolationList();
         foreach ($allowedExtensions as $allowedExtension) {
-            $violations = $validator->validate($allowedExtension, [new Assert\Type('string')]);
+            $violations = $validator->validate($allowedExtension, [
+                new Assert\Type('string'),
+                $assertDoesNotContainExtensionSeparator,
+                $assertExtensionOnlyContainsLowercaseLettersOrNumbers,
+                $assertExtensionLengthLowerThanMax
+            ]);
         }
 
         $notValid = $violations->count() > 0;
@@ -85,5 +116,17 @@ class AllowedExtensionsValidator extends ConstraintValidator
         }
 
         return $notValid;
+    }
+
+    private function hasExtensionSeparator($allowedExtension): bool
+    {
+        return strpos($allowedExtension, AttributeAllowedExtensions::EXTENSION_SEPARATOR) === 0;
+    }
+
+    private function containsForbiddenCharacters($allowedExtension): bool
+    {
+        preg_match('/[^a-z0-9]/', $allowedExtension, $invalidCharacters);
+
+        return !empty($invalidCharacters);
     }
 }
