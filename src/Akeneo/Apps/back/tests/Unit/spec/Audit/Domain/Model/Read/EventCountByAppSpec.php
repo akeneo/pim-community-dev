@@ -17,7 +17,7 @@ class EventCountByAppSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('magento', 'product_created', []);
+        $this->beConstructedWith('magento');
     }
 
     function it_is_initializable()
@@ -43,7 +43,11 @@ class EventCountByAppSpec extends ObjectBehavior
         $eventDate3 = $eventDate = new \DateTime('2019-12-14', new \DateTimeZone('UTC'));
         $eventCount3 = new EventCountByDate(127, $eventDate3);
 
-        $this->beConstructedWith('magento', 'product_updated', [$eventCount1, $eventCount2, $eventCount3]);
+        $this->beConstructedWith('magento');
+        $this->addEventCount($eventCount1);
+        $this->addEventCount($eventCount2);
+        $this->addEventCount($eventCount3);
+
         $this->normalize()->shouldReturn(
             [
                 'magento' => [

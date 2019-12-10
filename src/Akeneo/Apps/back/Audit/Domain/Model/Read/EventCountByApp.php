@@ -14,8 +14,8 @@ final class EventCountByApp
     /** @var string */
     private $appLabel;
 
-    /** @var array */
-    private $eventCounts;
+    /** @var EventCountByDate[] */
+    private $eventCounts = [];
 
     public function __construct(string $appLabel)
     {
