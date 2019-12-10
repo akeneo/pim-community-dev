@@ -1,4 +1,4 @@
-import Line, {LineStatus, Thumbnail, LineIdentifier} from 'akeneoassetmanager/application/asset-upload/model/line';
+import Line, {LineStatus, LineIdentifier} from 'akeneoassetmanager/application/asset-upload/model/line';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamily, getAssetFamilyMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
@@ -6,7 +6,6 @@ import sanitize from 'akeneoassetmanager/tools/sanitize';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
 import {NormalizedMinimalValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
-import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 
 export const createLineFromFilename = (filename: string, assetFamily: AssetFamily): Line => {
   const info = extractInfoFromFilename(filename, assetFamily);
@@ -131,13 +130,6 @@ export const updateLine = (lines: Line[], lineToUpdateIdentifier: LineIdentifier
 
 export const removeLine = (lines: Line[], lineToRemove: Line): Line[] =>
   lines.filter((line: Line) => line.id !== lineToRemove.id);
-
-export const updateUploadProgressToLine = (lines: Line[], lineToUpdate: Line, uploadProgress: number): Line[] => {
-  return updateLine(lines, lineToUpdate.id, {
-    uploadProgress,
-    isSending: true,
-  });
-};
 
 const addBackValidationError = (line: Line, errors: ValidationError[]): Line => ({
   ...line,
