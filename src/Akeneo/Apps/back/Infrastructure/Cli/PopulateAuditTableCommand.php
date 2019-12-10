@@ -7,6 +7,8 @@ namespace Akeneo\Apps\Infrastructure\Cli;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Application\Query\FindAnAppHandler;
 use Akeneo\Apps\Application\Query\FindAnAppQuery;
+use Akeneo\Apps\Audit\Application\Query\FetchAppsEventCountByEventHandler;
+use Akeneo\Apps\Audit\Application\Query\FetchAppsEventCountByEventQuery;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,14 +29,19 @@ class PopulateAuditTableCommand extends Command
     private $dbalConnection;
     /** @var FetchAppsHandler */
     private $fetchAppsHandler;
+    /** @var FetchAppsEventCountByEventHandler */
+    private $fetchAppsEventCountByEventHandler;
 
     public function __construct(
         Connection $dbalConnection,
-        FetchAppsHandler $fetchAppsHandler
+        FetchAppsHandler $fetchAppsHandler,
+        FetchAppsEventCountByEventHandler $fetchAppsEventCountByEventHandler
     ) {
         parent::__construct();
+
         $this->dbalConnection = $dbalConnection;
         $this->fetchAppsHandler = $fetchAppsHandler;
+        $this->fetchAppsEventCountByEventHandler = $fetchAppsEventCountByEventHandler;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -49,6 +56,9 @@ class PopulateAuditTableCommand extends Command
                 }
             }
         }
+
+        $query = new FetchAppsEventCountByEventQuery('product_updated', '2019-12-10', '2019-12-13');
+        var_dump($this->fetchAppsEventCountByEventHandler->handle($query));
     }
 
     private function insertAuditData($appCode, $eventDate, $eventCount, $eventType): void
@@ -59,12 +69,7 @@ VALUES (:app_code, :event_date, :event_count, :event_type)
 SQL;
         $this->dbalConnection->executeQuery(
             $sqlQuery,
-            [
-                'app_code' => $appCode,
-                'event_date' => $eventDate,
-                'event_count' => $eventCount,
-                'event_type' => $eventType
-            ]
+            ['app_code' => $appCode, 'event_date' => $eventDate, 'event_count' => $eventCount, 'event_type' => $eventType]
         );
     }
 }
