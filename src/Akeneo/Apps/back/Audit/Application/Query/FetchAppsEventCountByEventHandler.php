@@ -23,8 +23,15 @@ class FetchAppsEventCountByEventHandler
 
     public function handle(FetchAppsEventCountByEventQuery $query)
     {
-        $eventCountByApp = $query->execute($query->eventType(), $query->startDate(), $query->endDate());
+        $eventCountByApps = $this
+            ->selectAppsEventCountByDateQuery
+            ->execute($query->eventType(), $query->startDate(), $query->endDate());
 
-        return $eventCountByApp->normalize();
+        $eventCount = [];
+        foreach ($eventCountByApps as $eventCountByApp) {
+            $eventCount[] = $eventCountByApp->normalize();
+        }
+
+        return $eventCount;
     }
 }

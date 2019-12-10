@@ -36,7 +36,7 @@ FROM akeneo_app_audit au
 INNER JOIN akeneo_app app ON app.code = au.app_code
 WHERE event_date BETWEEN :start_date AND :end_date
 AND event_type = :event_type
-GROUP BY app_code
+GROUP BY app.code, app.label
 SQL;
         $sqlParams = [
             'start_date' => $startDateTime->format('Y-m-d'),
@@ -48,7 +48,8 @@ SQL;
 
         $eventCountByApps = [];
         foreach ($dataRows as $dataRow) {
-            $eventCounts = json_decode($dataRow['event_count']);
+            $eventCounts = json_decode($dataRow['event_count'], true);
+//            var_dump($eventCounts);
             $eventCountByApps[] = new EventCountByApp($dataRow['label'], $eventType, $eventCounts);
         }
 

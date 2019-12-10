@@ -24,7 +24,11 @@ final class EventCountByApp
     {
         $this->appLabel = $appLabel;
         $this->eventType = $eventType;
-        $this->eventCounts = $eventCounts;
+
+        foreach ($eventCounts as $eventDate => $eventCount) {
+            $this->eventCounts[] = new EventCountByDate($eventCount, new \DateTime($eventDate, new \DateTimeZone('UTC')));
+        }
+//        $this->eventCounts = $eventCounts;
     }
 
     public function normalize()
