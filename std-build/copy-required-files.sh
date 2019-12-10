@@ -8,7 +8,13 @@ set -e
 DEV_DISTRIB_DIR=$(dirname $0)/..
 STANDARD_DISTRIB_DIR=./
 
-mkdir -p $STANDARD_DISTRIB_DIR/src $STANDARD_DISTRIB_DIR/bin $STANDARD_DISTRIB_DIR/public $STANDARD_DISTRIB_DIR/config/packages/prod  $STANDARD_DISTRIB_DIR/config/packages/dev $STANDARD_DISTRIB_DIR/docker
+mkdir -p $STANDARD_DISTRIB_DIR/src \
+         $STANDARD_DISTRIB_DIR/bin \
+         $STANDARD_DISTRIB_DIR/public \
+         $STANDARD_DISTRIB_DIR/config/packages/prod \
+         $STANDARD_DISTRIB_DIR/config/packages/dev \
+         $STANDARD_DISTRIB_DIR/config/services \
+         $STANDARD_DISTRIB_DIR/docker
 
 cp $DEV_DISTRIB_DIR/CHANGELOG*.md $STANDARD_DISTRIB_DIR
 cp $DEV_DISTRIB_DIR/UPGRADE*.md $STANDARD_DISTRIB_DIR
@@ -31,3 +37,4 @@ cp --no-clobber $DEV_DISTRIB_DIR/std-build/tsconfig.json $STANDARD_DISTRIB_DIR/t
 cp --no-clobber $DEV_DISTRIB_DIR/docker-compose.yml $STANDARD_DISTRIB_DIR/
 cp --no-clobber -r $DEV_DISTRIB_DIR/docker/* $STANDARD_DISTRIB_DIR/docker/
 cp --no-clobber $DEV_DISTRIB_DIR/.gitignore $STANDARD_DISTRIB_DIR/
+cp --no-clobber $DEV_DISTRIB_DIR/std-build/services.yml $STANDARD_DISTRIB_DIR/config/services/

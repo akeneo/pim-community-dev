@@ -1,4 +1,4 @@
-## Include all *.mk files
+DEV_CATALOG_DIR=src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 .DEFAULT_GOAL := help
 
 .PHONY: help

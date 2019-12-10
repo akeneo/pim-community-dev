@@ -117,7 +117,7 @@ pim-dev:
 	$(MAKE) assets
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
-	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
+	APP_ENV=dev $(MAKE) database O="--catalog $(DEV_CATALOG_DIR)"
 
 .PHONY: pim-prod
 pim-prod:
