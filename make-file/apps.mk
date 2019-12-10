@@ -72,7 +72,7 @@ else
 	${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Apps_Integration $(O)
 endif
 
-apps-e2e:
+apps-e2e-back:
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Apps_EndToEnd
 else
@@ -84,7 +84,7 @@ apps-back:
 	make apps-unit-back
 	make apps-acceptance-back
 	make apps-integration-back
-	make apps-e2e
+	make apps-e2e-back
 
 # Tests Front
 
