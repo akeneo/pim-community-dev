@@ -27,18 +27,14 @@ class PopulateAuditTableCommand extends Command
     private $dbalConnection;
     /** @var FetchAppsHandler */
     private $fetchAppsHandler;
-    /** @var FindAnAppHandler */
-    private $findAnAppHandler;
 
     public function __construct(
         Connection $dbalConnection,
-        FetchAppsHandler $fetchAppsHandler,
-        FindAnAppHandler $findAnAppHandler
+        FetchAppsHandler $fetchAppsHandler
     ) {
         parent::__construct();
         $this->dbalConnection = $dbalConnection;
         $this->fetchAppsHandler = $fetchAppsHandler;
-        $this->findAnAppHandler = $findAnAppHandler;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -47,11 +43,9 @@ class PopulateAuditTableCommand extends Command
         $apps = $this->fetchAppsHandler->query();
 
         foreach ($apps as $app) {
-            $appWithCredentials = $this->findAnAppHandler->handle(new FindAnAppQuery($app->code()));
-
             foreach ($dates as $date) {
                 foreach (['product_created', 'product_updated'] as $eventType) {
-                    $this->insertAuditData($appWithCredentials->username(), $date, rand(1, 10000), $eventType);
+                    $this->insertAuditData($app->code(), $date, rand(1, 10000), $eventType);
                 }
             }
         }
@@ -60,19 +54,19 @@ class PopulateAuditTableCommand extends Command
     private function insertAuditData($appUsername, $eventDate, $eventCount, $eventType): void
     {
         $sqlQuery = <<<SQL
-INSERT INTO akeneo_app_audit (app_username, event_date, event_count, event_type)
-VALUES (:app_username, :event_date, :event_count, :event_type)
+INSERT INTO akeneo_app_audit (app_code, event_date, event_count, event_type)
+VALUES (:app_code, :event_date, :event_count, :event_type)
 SQL;
         $this->dbalConnection->executeQuery(
             $sqlQuery,
             [
-                'app_username' => $appUsername,
+                'app_code' => $appUsername,
                 'event_date' => $eventDate,
                 'event_count' => $eventCount,
                 'event_type' => $eventType
             ],
             [
-                'app_username' => \PDO::PARAM_STR,
+                'app_code' => \PDO::PARAM_STR,
                 'event_date' => \PDO::PARAM_STR,
                 'event_count' => \PDO::PARAM_INT,
                 'event_type' => \PDO::PARAM_STR
