@@ -6,6 +6,7 @@
 
 - AST-158: use the type "media_file" to create image attributes in the connector API.
 - PIM-8998: Avoid error 500 on asset list & product list when a user has no permission on categories & asset categories
+- PIM-7273: Hide proposal changes that are already reviewed
 
 # 3.2.23 (2019-12-05)
 
