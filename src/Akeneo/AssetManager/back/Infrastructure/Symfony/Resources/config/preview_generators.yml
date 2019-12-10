@@ -13,6 +13,17 @@ services:
         tags:
             - { name: akeneo_assetmanager.preview_generator }
 
+    akeneo_assetmanager.infrastructure.generator.binary_pdf_generator:
+        class: Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\BinaryPdfGenerator
+        arguments:
+            - '@liip_imagine.data.manager'
+            - '@liip_imagine.cache.manager'
+            - '@liip_imagine.filter.manager'
+            - '@pim_asset.provider.default_image'
+            - '@logger'
+        tags:
+            - { name: akeneo_assetmanager.preview_generator }
+
     akeneo_assetmanager.infrastructure.generator.media_link_pdf_generator:
         class: Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\MediaLinkPdfGenerator
         arguments:
