@@ -18,18 +18,15 @@ class ScriptNonceGeneratorSpec extends ObjectBehavior
 
     function it_generate_a_new_nonce_on_first_request(Request $request, SessionInterface $session)
     {
-        $request->isXmlHttpRequest()->willReturn(false);
         $request->getSession()->willReturn($session);
-        $session->set('nonce', null)->shouldBeCalledTimes(1);
         $session->get('nonce', null)->willReturn(null);
         $session->set('nonce', Argument::type('string'))->shouldBeCalledTimes(1);
 
         $this->getGeneratedNonce()->shouldMatch('/\w{8}-\w{4}-\w{4}-\w{4}-\w{8}/');
     }
 
-    function it_get_the_nonce_from_session_for_xmlhttprequest(Request $request, SessionInterface $session)
+    function it_get_the_nonce_from_session(Request $request, SessionInterface $session)
     {
-        $request->isXmlHttpRequest()->willReturn(true);
         $request->getSession()->willReturn($session);
         $session->set('nonce', null)->shouldNotBeCalled();
         $session->get('nonce', null)->willReturn('session_nonce');
