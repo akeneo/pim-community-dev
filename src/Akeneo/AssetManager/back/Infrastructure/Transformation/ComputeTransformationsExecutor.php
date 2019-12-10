@@ -16,7 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Transformation;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
-use Akeneo\AssetManager\Application\AssetFamily\Transformation\NonApplicableTransformationException;
+use Akeneo\AssetManager\Application\AssetFamily\Transformation\Exception\NonApplicableTransformationException;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;

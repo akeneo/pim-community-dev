@@ -933,7 +933,7 @@ class CreateOrUpdateAssetContext implements Context
     }
 
     /**
-     * @Then a job runs to automatically compute the transformation on the asset code :arg1 in asset family :arg2
+     * @Then a job runs to automatically compute the transformations on the asset code :arg1 in asset family :arg2
      */
     public function aJobRunsToAutomaticallyComputeTheTransformationOnTheAsset(
         string $assetcode,

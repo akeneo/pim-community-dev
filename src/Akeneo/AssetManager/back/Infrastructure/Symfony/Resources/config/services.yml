@@ -109,9 +109,3 @@ services:
     Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory:
         arguments:
             - '%asset_manager_transformation_operation%'
-
-    # @todo: the service should also be created by Mathia and Pierre: merge the 2 services
-    Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetOutdatedValues:
-        class: Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetOutdatedValues
-        arguments:
-            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'

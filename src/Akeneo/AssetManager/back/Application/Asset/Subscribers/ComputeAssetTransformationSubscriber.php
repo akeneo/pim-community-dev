@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Asset\Subscribers;
 
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationFromAssetIdentifiersLauncherInterface;
+use Akeneo\AssetManager\Application\AssetFamily\Transformation\Exception\NonApplicableTransformationException;
 use Akeneo\AssetManager\Application\AssetFamily\Transformation\GetOutdatedVariationSourceInterface;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
@@ -24,6 +25,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -86,7 +88,7 @@ class ComputeAssetTransformationSubscriber implements EventSubscriberInterface
             if (!$this->assetContainsOutdatedTransformation($assetFamily, $asset)) {
                 return;
             }
-        } catch (AssetNotFoundException | AssetFamilyNotFoundException | \LogicException $e) {
+        } catch (AssetNotFoundException | AssetFamilyNotFoundException | AttributeNotFoundException $e) {
             // Here we catch all errors if the asset is not found, the asset family is not found or
             // one attribute in transformation is not found.
             return;
@@ -103,7 +105,7 @@ class ComputeAssetTransformationSubscriber implements EventSubscriberInterface
                 if (null !== $source) {
                     return true;
                 }
-            } catch (\Exception $e) {
+            } catch (NonApplicableTransformationException $e) {
             }
         }
 

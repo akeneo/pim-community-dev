@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Application\AssetFamily\Transformation;
+namespace Akeneo\AssetManager\Application\AssetFamily\Transformation\Exception;
 
 class NonApplicableTransformationException extends \RuntimeException
 {

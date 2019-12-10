@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Transformation;
 
-use Akeneo\AssetManager\Application\AssetFamily\Transformation\NonApplicableTransformationException;
+use Akeneo\AssetManager\Application\AssetFamily\Transformation\Exception\NonApplicableTransformationException;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;

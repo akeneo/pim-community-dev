@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Transformation;
 
+use Akeneo\AssetManager\Application\AssetFamily\Transformation\Exception\NonApplicableTransformationException;
 use Akeneo\AssetManager\Application\AssetFamily\Transformation\GetOutdatedVariationSourceInterface;
-use Akeneo\AssetManager\Application\AssetFamily\Transformation\NonApplicableTransformationException;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
