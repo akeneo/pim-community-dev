@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Quali
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighlightsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\Normalizer\ProductNormalizerInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeProductsWithFranklin;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Model\Read\Product;
@@ -28,10 +29,11 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
         SelectUpdatedProductsIdsToApplyQueryInterface $selectUpdatedProductsIdsToApplyQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
@@ -42,7 +44,7 @@ class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
         $this->beConstructedWith($pendingItemIdentifiersQuery, $selectUpdatedProductsIdsToApplyQuery, $qualityHighlightsProvider, $pendingItemsRepository, $selectProductsToApplyQuery, $productNormalizer);
     }
 
-    function it_synchronizes_updated_products_with_franklin(
+    public function it_synchronizes_updated_products_with_franklin(
         SelectUpdatedProductsIdsToApplyQueryInterface $selectUpdatedProductsIdsToApplyQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
         SelectProductsToApplyQueryInterface $selectProductsToApplyQuery,
@@ -170,7 +172,46 @@ class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
         $this->synchronizeUpdatedProducts($lock, $productsPerRequest, $requestsPerPool);
     }
 
-    function it_synchronize_deleted_products_with_franklin(
+    public function it_does_not_send_over_sized_requests_for_the_updated_products(
+        SelectUpdatedProductsIdsToApplyQueryInterface $selectUpdatedProductsIdsToApplyQuery,
+        QualityHighlightsProviderInterface $qualityHighlightsProvider,
+        SelectProductsToApplyQueryInterface $selectProductsToApplyQuery,
+        ProductNormalizerInterface $productNormalizer
+    ) {
+        $productIds = [];
+        $products = [];
+        $normalizedProducts = [];
+        $expectedProductsInRequest = 2;
+
+        $overSizedProductId = SynchronizeProductsWithFranklin::REQUEST_REDUCTION_SIZE + 1;
+        for ($productId = 1; $productId <= SynchronizeProductsWithFranklin::REQUEST_REDUCTION_SIZE + $expectedProductsInRequest; $productId++) {
+            $productIds[] = $productId;
+            $product = $productId === $overSizedProductId ? $this->buildRandomOverSizedProduct($productId) : $this->buildRandomProduct($productId);
+            $products[$productId] = $product;
+            $normalizedProduct = $this->normalizeRandomProduct($product);
+            $normalizedProducts[$productId] = $normalizedProduct;
+            $productNormalizer->normalize($product)->willReturn($normalizedProduct);
+        }
+
+        $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
+        $productsPerRequest = new BatchSize(SynchronizeProductsWithFranklin::REQUEST_REDUCTION_SIZE + 2);
+        $requestsPerPool = new BatchSize(2);
+
+        $selectUpdatedProductsIdsToApplyQuery
+            ->execute($lock, new BatchSize($productsPerRequest->toInt() * $requestsPerPool->toInt()))
+            ->willReturn($productIds);
+        $selectProductsToApplyQuery->execute($productIds)->willReturn($products);
+
+        $qualityHighlightsProvider->applyAsyncProducts(Argument::that(
+            function ($asyncRequests) use ($expectedProductsInRequest) {
+                return count($asyncRequests) === 1 && count($asyncRequests[0]->getData()) === $expectedProductsInRequest;
+            }
+        ))->shouldBeCalled();
+
+        $this->synchronizeUpdatedProducts($lock, $productsPerRequest, $requestsPerPool);
+    }
+
+    public function it_synchronize_deleted_products_with_franklin(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
         PendingItemsRepositoryInterface $pendingItemsRepository
@@ -185,7 +226,7 @@ class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
         $this->synchronizeDeletedProducts($lock, new BatchSize(100));
     }
 
-    function it_releases_the_lock_on_exception_when_synchronizing_deleted_products(
+    public function it_releases_the_lock_on_exception_when_synchronizing_deleted_products(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
         PendingItemsRepositoryInterface $pendingItemsRepository
@@ -200,7 +241,7 @@ class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
         $this->synchronizeDeletedProducts($lock, new BatchSize(100));
     }
 
-    function it_ignores_bad_request_exception_when_synchronizing_deleted_products(
+    public function it_ignores_bad_request_exception_when_synchronizing_deleted_products(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
         PendingItemsRepositoryInterface $pendingItemsRepository
@@ -213,5 +254,52 @@ class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
         $pendingItemsRepository->removeDeletedProducts([43], $lock)->shouldBeCalled();
 
         $this->synchronizeDeletedProducts($lock, new BatchSize(100));
+    }
+
+    private function buildRandomProduct(int $productId): Product
+    {
+        return new Product(
+            new ProductId($productId),
+            new FamilyCode('mugs'),
+            [
+                'name' => [
+                    'ecommerce' => [
+                        'en_US' => strval(Uuid::uuid4()),
+                    ]
+                ]
+            ]
+        );
+    }
+
+    private function buildRandomOverSizedProduct(int $productId): Product
+    {
+        return new Product(
+            new ProductId($productId),
+            new FamilyCode('mugs'),
+            [
+                'name' => [
+                    'ecommerce' => [
+                        'en_US' => str_repeat('a', SynchronizeProductsWithFranklin::REQUEST_MAX_SIZE),
+                    ]
+                ]
+            ]
+        );
+    }
+
+    private function normalizeRandomProduct(Product $product): array
+    {
+        return [
+            'catalog_product_id' => $product->getId()->toInt(),
+            'family' => 'mugs',
+            'attributes' => [
+                'name' => [
+                    [
+                        'value' => $product->getRawValues()['name']['ecommerce']['en_US'],
+                        'locale' => 'en_US',
+                        'channel' => 'ecommerce',
+                    ]
+                ]
+            ]
+        ];
     }
 }

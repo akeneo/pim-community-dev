@@ -26,6 +26,12 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Except
 
 class SynchronizeProductsWithFranklin
 {
+    /** @var int Requests maximum size (Octets) */
+    const REQUEST_MAX_SIZE = 8000000;
+
+    /** @var int Number of products removed at each attempt to reduce the size of an over sized request */
+    const REQUEST_REDUCTION_SIZE = 10;
+
     /** @var SelectPendingItemIdentifiersQueryInterface */
     private $pendingItemIdentifiersQuery;
 
@@ -75,20 +81,7 @@ class SynchronizeProductsWithFranklin
             $asyncRequests = [];
 
             foreach ($chunkedProductIds as $productIds) {
-                $products = array_map(function ($product) {
-                    return $this->productNormalizer->normalize($product);
-                }, $this->selectProductsToApplyQuery->execute($productIds));
-
-                $asyncRequests[] = new AsyncRequest(
-                    $products,
-                    function () use ($productIds, $lock) {
-                        $this->pendingItemsRepository->removeUpdatedProducts($productIds, $lock);
-                    },
-                    function () use ($productIds, $lock) {
-                        //Remove the lock, we will process those products next time
-                        $this->pendingItemsRepository->releaseUpdatedProductsLock($productIds, $lock);
-                    }
-                );
+                $asyncRequests[] = $this->buildSizeLimitedAsyncRequest($lock, $productIds);
             }
 
             $this->qualityHighlightsProvider->applyAsyncProducts($asyncRequests);
@@ -115,5 +108,37 @@ class SynchronizeProductsWithFranklin
                 $this->pendingItemsRepository->removeDeletedProducts($productIds, $lock);
             }
         } while (count($productIds) >= $batchSize->toInt());
+    }
+
+    private function buildSizeLimitedAsyncRequest(Lock $lock, array $productIds): AsyncRequest
+    {
+        $products = $this->selectProductsToApplyQuery->execute($productIds);
+        $normalizedProducts = [];
+        foreach ($products as $product) {
+            $normalizedProducts[$product->getId()->toInt()] = $this->productNormalizer->normalize($product);
+        }
+
+        $productsCount = count($normalizedProducts);
+        /*
+         * We use REQUEST_REDUCTION_SIZE as minimum size to avoid to have an empty request that would cause an infinite loop (products never unlocked).
+         * TODO: use mb_strlen when available to handle multibyte characters
+         */
+        while ($productsCount > self::REQUEST_REDUCTION_SIZE && strlen(json_encode($normalizedProducts)) >= self::REQUEST_MAX_SIZE) {
+            $productsCount -= self::REQUEST_REDUCTION_SIZE;
+            $normalizedProducts = array_splice($normalizedProducts, 0, $productsCount);
+        }
+
+        $productIds = array_keys($normalizedProducts);
+
+        return new AsyncRequest(
+            array_values($normalizedProducts),
+            function () use ($productIds, $lock) {
+                $this->pendingItemsRepository->removeUpdatedProducts($productIds, $lock);
+            },
+            function () use ($productIds, $lock) {
+                //Remove the lock, we will process those products next time
+                $this->pendingItemsRepository->releaseUpdatedProductsLock($productIds, $lock);
+            }
+        );
     }
 }
