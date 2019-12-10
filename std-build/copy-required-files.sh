@@ -27,4 +27,4 @@ cp --no-clobber $DEV_DISTRIB_DIR/std-build/Makefile $STANDARD_DISTRIB_DIR/Makefi
 cp --no-clobber $DEV_DISTRIB_DIR/std-build/bundles.php $STANDARD_DISTRIB_DIR/config
 cp --no-clobber $DEV_DISTRIB_DIR/std-build/package.json $STANDARD_DISTRIB_DIR/package.json
 cp --no-clobber $DEV_DISTRIB_DIR/yarn.lock $STANDARD_DISTRIB_DIR/yarn.lock
-cp --no-clobber $DEV_DISTRIB_DIR/tsconfig.json $STANDARD_DISTRIB_DIR/tsconfig.json
+cp --no-clobber $DEV_DISTRIB_DIR/std-build/tsconfig.json $STANDARD_DISTRIB_DIR/tsconfig.json
