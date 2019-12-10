@@ -23,6 +23,7 @@ export const createAsset = (createAnother: boolean) => async (
   const asset = assetFactory(
     code,
     assetFamily.identifier,
+    assetFamily.attributeAsMainMedia,
     denormalizeAssetCode(code),
     labels,
     createEmptyFile(),
