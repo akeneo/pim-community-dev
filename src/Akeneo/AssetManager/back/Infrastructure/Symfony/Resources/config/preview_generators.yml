@@ -54,14 +54,28 @@ services:
             - { name: akeneo_assetmanager.preview_generator }
 
     akeneo_assetmanager.infrastructure.loader.stream_pdf_loader:
-        class: Akeneo\AssetManager\Infrastructure\Filesystem\Loader\StreamPdfLoader
+        class: Akeneo\AssetManager\Infrastructure\Filesystem\Loader\PdfLoader
         arguments:
             - '@akeneo_assetmanager.infrastructure.loader.stream_loader'
             - '@pim_asset.provider.default_image'
         tags:
             - { name: liip_imagine.binary.loader, loader: stream_pdf_loader }
 
+    akeneo_assetmanager.infrastructure.loader.flysystem_pdf_loader:
+        class: Akeneo\AssetManager\Infrastructure\Filesystem\Loader\PdfLoader
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.loader.flysystem_loader'
+            - '@pim_asset.provider.default_image'
+        tags:
+            - { name: liip_imagine.binary.loader, loader: flysystem_pdf_loader }
+
     akeneo_assetmanager.infrastructure.loader.stream_loader:
             class: 'Liip\ImagineBundle\Binary\Loader\StreamLoader'
             arguments:
                 - ''
+
+    akeneo_assetmanager.infrastructure.loader.flysystem_loader:
+        class: 'Liip\ImagineBundle\Binary\Loader\FlysystemLoader'
+        arguments:
+            - '@liip_imagine.extension_guesser'
+            - '@oneup_flysystem.asset_manager_storage_filesystem'

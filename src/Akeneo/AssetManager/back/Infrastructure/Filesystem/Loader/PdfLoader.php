@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Infrastructure\Filesystem\Loader;
 
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\DefaultImageProviderInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\MediaLinkPdfGenerator;
+use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
 use Liip\ImagineBundle\Model\Binary;
 
@@ -22,7 +23,7 @@ use Liip\ImagineBundle\Model\Binary;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class StreamPdfLoader implements LoaderInterface
+class PdfLoader implements LoaderInterface
 {
     private $streamLoader;
     private $defaultImageProvider;
@@ -42,6 +43,10 @@ class StreamPdfLoader implements LoaderInterface
         $gsExists = !empty(shell_exec('which gs'));
         if (!$gsExists) {
             return $this->defaultImageProvider->getImageBinary(MediaLinkPdfGenerator::DEFAULT_IMAGE);
+        }
+
+        if ($file instanceof BinaryInterface) {
+            $file = $file->getContent();
         }
 
         $imagick = new \Imagick();
