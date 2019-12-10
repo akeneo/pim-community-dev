@@ -117,13 +117,9 @@ $(INSTANCE_DIR)/terraform/terraform.tfvars: $(INSTANCE_DIR)
 	@echo "force_destroy_storage               = true" >> $(INSTANCE_DIR)/terraform/terraform.tfvars
 	@echo $(INSTANCE_DIR)/terraform/terraform.tfvars file created
 
-.PHONY: test-pim-connection
-test-pim-connection:
-	helm test ${PFID}
-
 .PHONY: test-prod
 test-prod:
-	exit 1
+	helm test ${PFID}
 
 .PHONY: release
 release:
