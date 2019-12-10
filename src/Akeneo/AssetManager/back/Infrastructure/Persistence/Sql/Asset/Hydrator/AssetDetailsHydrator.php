@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -83,6 +84,7 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         $assetDetails = new AssetDetails(
             AssetIdentifier::fromString($assetIdentifier),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeIdentifier::fromString($attributeAsMainMedia),
             AssetCode::fromString($assetCode),
             LabelCollection::fromArray($labels),
             $assetImage,

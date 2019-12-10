@@ -16,10 +16,12 @@ import {NormalizedValue, NormalizedMinimalValue} from 'akeneoassetmanager/domain
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import Completeness, {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
+import AttributeIdentifier, {denormalizeAttributeIdentifier} from "akeneoassetmanager/domain/model/attribute/identifier";
 
 interface CommonNormalizedAsset {
   identifier: AssetIdentifier;
   asset_family_identifier: string;
+  attribute_as_main_media_identifier: string;
   code: AssetCode;
   labels: LabelCollection;
 }
@@ -49,6 +51,7 @@ export default interface Asset {
   getIdentifier: () => AssetIdentifier;
   getCode: () => AssetCode;
   getAssetFamilyIdentifier: () => AssetFamilyIdentifier;
+  getAttributeAsMainMediaIdentifier: () => AttributeIdentifier;
   getLabel: (locale: string, fallbackOnCode?: boolean) => string;
   getLabelCollection: () => LabelCollection;
   getImage: () => File;
@@ -65,6 +68,7 @@ class AssetImplementation implements Asset {
   private constructor(
     private identifier: AssetIdentifier,
     private assetFamilyIdentifier: AssetFamilyIdentifier,
+    private attributeAsMainMediaIdentifier: AttributeIdentifier,
     private code: AssetCode,
     private labelCollection: LabelCollection,
     private image: File,
@@ -80,6 +84,7 @@ class AssetImplementation implements Asset {
   public static create(
     identifier: AssetIdentifier,
     assetFamilyIdentifier: AssetFamilyIdentifier,
+    attributeAsMainMediaIdentifier: AttributeIdentifier,
     assetCode: AssetCode,
     labelCollection: LabelCollection,
     image: File,
@@ -88,6 +93,7 @@ class AssetImplementation implements Asset {
     return new AssetImplementation(
       denormalizeAssetIdentifier(identifier),
       denormalizeAssetFamilyIdentifier(assetFamilyIdentifier),
+      denormalizeAttributeIdentifier(attributeAsMainMediaIdentifier),
       denormalizeAssetCode(assetCode),
       denormalizeLabelCollection(labelCollection),
       image,
@@ -101,6 +107,10 @@ class AssetImplementation implements Asset {
 
   public getAssetFamilyIdentifier(): AssetFamilyIdentifier {
     return this.assetFamilyIdentifier;
+  }
+
+  public getAttributeAsMainMediaIdentifier(): AttributeIdentifier {
+    return this.attributeAsMainMediaIdentifier;
   }
 
   public getCode(): AssetCode {
@@ -131,6 +141,7 @@ class AssetImplementation implements Asset {
     return {
       identifier: this.getIdentifier(),
       asset_family_identifier: this.getAssetFamilyIdentifier(),
+      attribute_as_main_media_identifier: this.getAttributeAsMainMediaIdentifier(),
       code: assetCodeStringValue(this.code),
       labels: this.getLabelCollection(),
       image: this.getImage(),
@@ -142,6 +153,7 @@ class AssetImplementation implements Asset {
     return {
       identifier: this.getIdentifier().normalize(),
       asset_family_identifier: this.getAssetFamilyIdentifier(),
+      attribute_as_main_media_identifier: this.getAttributeAsMainMediaIdentifier(),
       code: assetCodeStringValue(this.code),
       labels: this.getLabelCollection(),
       image: this.getImage(),

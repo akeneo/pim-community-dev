@@ -17,6 +17,7 @@ const dataReducer = (
   state: NormalizedAsset = {
     identifier: '',
     asset_family_identifier: '',
+    attribute_as_main_media_identifier: '',
     code: '',
     labels: {},
     image: null,
