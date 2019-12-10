@@ -12,24 +12,22 @@ namespace Akeneo\Apps\Audit\Domain\Model\Read;
 final class EventCountByDate
 {
     /** @var int */
-    private $eventCount;
+    private $count;
 
     /** @var \Datetime */
-    private $eventDate;
+    private $date;
 
-    public function __construct(int $eventCount, \DateTime $eventDate)
+    public function __construct(int $count, \DateTime $date)
     {
-        $this->eventCount = $eventCount;
-        $this->eventDate = $eventDate;
+        $this->count = $count;
+        $this->date = $date;
     }
 
-    public function date(): \DateTime
+    public function normalize(): array
     {
-        return $this->eventDate;
-    }
-
-    public function count(): int
-    {
-        return $this->eventCount;
+        return [
+            'date' => $this->date->format('Y-m-d'),
+            'value' => $this->count
+        ];
     }
 }

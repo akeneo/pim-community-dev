@@ -25,19 +25,11 @@ class EventCountByDateSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(EventCountByDate::class);
     }
 
-    function it_returns_the_event_date()
+    function it_normalizes_the_event_count()
     {
-        $eventDate = $eventDate = new \DateTime('2019-12-14', new \DateTimeZone('UTC'));
-        $this->beConstructedWith(4, $eventDate);
-
-        $this->date()->shouldReturn($eventDate);
-    }
-
-    function it_returns_the_event_count()
-    {
-        $eventDate = $eventDate = new \DateTime('2019-12-09', new \DateTimeZone('UTC'));
-        $this->beConstructedWith(143, $eventDate);
-
-        $this->count()->shouldReturn(143);
+        $this->normalize()->shouldReturn([
+            'date' => '2019-12-03',
+            'value' => 5
+        ]);
     }
 }
