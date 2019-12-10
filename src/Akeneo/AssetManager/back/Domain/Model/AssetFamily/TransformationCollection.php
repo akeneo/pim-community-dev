@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
-use Traversable;
 use Webmozart\Assert\Assert;
 
 class TransformationCollection implements \IteratorAggregate

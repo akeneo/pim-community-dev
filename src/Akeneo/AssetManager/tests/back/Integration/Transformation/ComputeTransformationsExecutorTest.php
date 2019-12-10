@@ -79,6 +79,7 @@ class ComputeTransformationsExecutorTest extends KernelTestCase
             )
         );
 
+        $this->assertNotNull($targetValue);
         $targetData = $targetValue->getData();
         $this->assertInstanceOf(FileData::class, $targetData);
 

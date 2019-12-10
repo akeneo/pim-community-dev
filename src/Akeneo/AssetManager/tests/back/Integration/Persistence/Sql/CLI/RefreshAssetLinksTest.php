@@ -78,6 +78,7 @@ class RefreshAssetLinksTest extends SqlIntegrationTestCase
         $this->assertTrue($this->IsAssetHavingValue('kartell', 'stark'));
         $this->assertTrue($this->IsAssetHavingValue('kartell', 'dyson'));
 
+        $this->clearCache();
         $this->runRefreshAssetsCommand();
 
         $this->assertFalse($this->IsAssetHavingValue('kartell', 'stark'));
@@ -243,5 +244,11 @@ class RefreshAssetLinksTest extends SqlIntegrationTestCase
         }
 
         return $data === $assetTo;
+    }
+
+    private function clearCache(): void
+    {
+        $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection')->clearCache();
+        $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier')->clearCache();
     }
 }

@@ -74,6 +74,15 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\AssetManager\Application\Asset\Subscribers\ComputeAssetTransformationSubscriber:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.transformation.get_outdated_variation_source'
+        tags:
+            - { name: kernel.event_subscriber }
+
     akeneo_assetmanager.common.helper.fixtures_loader:
         class: Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader
         arguments:

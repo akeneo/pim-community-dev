@@ -63,6 +63,7 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
         $this->removeOptionFromAttribute('red');
         $this->assertTrue($this->IsAssetHavingValue('red'));
 
+        $this->clearCache();
         $this->runRefreshAssetsCommand();
 
         $this->assertFalse($this->IsAssetHavingValue('red'));
@@ -79,6 +80,7 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
         $this->assertTrue($this->IsAssetHavingValue('red'));
         $this->assertTrue($this->IsAssetHavingValue('blue'));
 
+        $this->clearCache();
         $this->runRefreshAssetsCommand();
 
         $this->assertTrue($this->IsAssetHavingValue('blue'));
@@ -272,5 +274,11 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
         }
 
         return $data === $optionCode;
+    }
+
+    private function clearCache(): void
+    {
+        $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection')->clearCache();
+        $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier')->clearCache();
     }
 }
