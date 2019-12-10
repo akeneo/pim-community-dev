@@ -1,5 +1,4 @@
 {
-    "$id": "akeneoasseetmanager/asset-family/asset-family",
     "title": "BackendAssetFamily",
     "type": "object",
     "properties": {

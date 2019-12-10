@@ -1,5 +1,4 @@
 {
-    "$id": "akeneoasseetmanager/asset-family/attribute",
     "title": "BackendAttribute",
     "type": "object",
     "$comment": "See the attached README.md for specifics of this file.",
