@@ -97,7 +97,6 @@ pim-behat:
 	APP_ENV=behat $(MAKE) up
 	APP_ENV=behat $(MAKE) cache
 	$(MAKE) assets
-	$(MAKE) css
 	$(MAKE) javascript-test
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
@@ -116,7 +115,6 @@ pim-dev:
 	APP_ENV=dev $(MAKE) up
 	APP_ENV=dev $(MAKE) cache
 	$(MAKE) assets
-	$(MAKE) css
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
@@ -126,7 +124,6 @@ pim-prod:
 	APP_ENV=prod $(MAKE) up
 	APP_ENV=prod $(MAKE) cache
 	$(MAKE) assets
-	$(MAKE) css
 	$(MAKE) javascript-prod
 	docker/wait_docker_up.sh
 	APP_ENV=prod $(MAKE) database
