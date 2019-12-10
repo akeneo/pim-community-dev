@@ -48,8 +48,6 @@ SQL;
 
         $eventCountByApps = [];
         foreach ($dataRows as $dataRow) {
-
-
             $eventCountByApps[] = $this->hydrateRow($dataRow);
         }
 
