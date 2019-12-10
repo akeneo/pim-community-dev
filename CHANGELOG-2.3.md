@@ -1,5 +1,7 @@
 # 2.3.x
 
+- PIM-9017: Remove "Add an attribute to a product" ACL
+
 # 2.3.73 (2019-12-06)
 
 ## Bug fixes
