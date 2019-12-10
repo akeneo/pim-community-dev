@@ -5,7 +5,6 @@ import Sidebar from 'akeneoassetmanager/application/component/app/sidebar';
 import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
 import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
 import Breadcrumb from 'akeneoassetmanager/application/component/app/breadcrumb';
-import Image from 'akeneoassetmanager/application/component/app/image';
 import __ from 'akeneoassetmanager/tools/translator';
 import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
 import Asset, {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
@@ -32,6 +31,7 @@ import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attri
 import {redirectToProductGrid} from 'akeneoassetmanager/application/event/router';
 import AttributeCode from 'akeneoassetmanager/domain/model/attribute/code';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import FileComponent from "akeneoassetmanager/application/component/app/file-component";
 
 const securityContext = require('pim/security-context');
 
@@ -162,9 +162,10 @@ class AssetEditView extends React.Component<EditProps> {
             <div className="AknDefault-mainContent" data-tab={this.props.sidebar.currentTab}>
               <header className="AknTitleContainer">
                 <div className="AknTitleContainer-line">
-                  <Image
+                  <FileComponent
                     alt={__('pim_asset_manager.asset.img', {'{{ label }}': label})}
                     image={asset.getImage()}
+                    attribute={asset.getAttributeAsMainMediaIdentifier()}
                     readOnly={true}
                   />
                   <div className="AknTitleContainer-mainContainer AknTitleContainer-mainContainer--contained">
