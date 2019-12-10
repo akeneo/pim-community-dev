@@ -85,8 +85,8 @@ const LineList = ({
             <ListColumnHeader width={78}>{__('pim_asset_manager.asset.upload.list.asset')}</ListColumnHeader>
             <ListColumnHeader>{__('pim_asset_manager.asset.upload.list.filename')}</ListColumnHeader>
             <ListColumnHeader width={250}>{__('pim_asset_manager.asset.upload.list.code')}</ListColumnHeader>
-            {localizable && <ListColumnHeader width={250}>{__('pim_asset_manager.asset.upload.list.locale')}</ListColumnHeader>}
-            {scopable && <ListColumnHeader width={250}>{__('pim_asset_manager.asset.upload.list.channel')}</ListColumnHeader>}
+            {valuePerLocale && <ListColumnHeader width={250}>{__('pim_asset_manager.asset.upload.list.locale')}</ListColumnHeader>}
+            {valuePerChannel && <ListColumnHeader width={250}>{__('pim_asset_manager.asset.upload.list.channel')}</ListColumnHeader>}
             <ListColumnHeader width={0}>{__('pim_asset_manager.asset.upload.list.status')}</ListColumnHeader>
             <ListColumnHeader width={0} />
           </tr>

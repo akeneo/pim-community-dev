@@ -40,8 +40,8 @@ type RowProps = {
   valuePerChannel: boolean;
 };
 
-const Row = ({line, onLineRemove, onLineChange, localizable = true, scopable = true}: RowProps) => {
-  const status = getStatusFromLine(line, localizable, scopable);
+const Row = ({line, onLineRemove, onLineChange, valuePerLocale = true, valuePerChannel = true}: RowProps) => {
+  const status = getStatusFromLine(line, valuePerLocale, valuePerChannel);
 
   return (
     <Container>

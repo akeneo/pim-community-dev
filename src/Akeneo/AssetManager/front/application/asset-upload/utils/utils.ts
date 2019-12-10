@@ -155,6 +155,7 @@ export const assetIsSent = (lines: Line[], asset: CreationAsset): Line[] =>
 
 export const selectLinesToSend = (lines: Line[]): Line[] =>
   lines.filter((line: Line) => !line.created && null !== line.file && !line.isSending);
+
 export const selectLinesCreated = (lines: Line[]): Line[] => lines.filter((line: Line) => line.created);
 
 export const getStatusFromLine = (line: Line, localizable: boolean, scopable: boolean): LineStatus => {

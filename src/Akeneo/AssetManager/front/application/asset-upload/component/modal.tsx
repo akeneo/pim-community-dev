@@ -36,6 +36,7 @@ import {
 import FileDropZone from 'akeneoassetmanager/application/asset-upload/component/file-drop-zone';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 const Subtitle = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
