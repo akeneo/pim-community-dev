@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.24 (2019-12-10)
+
 ## Bug fixes
 
 - AST-158: use the type "media_file" to create image attributes in the connector API.
