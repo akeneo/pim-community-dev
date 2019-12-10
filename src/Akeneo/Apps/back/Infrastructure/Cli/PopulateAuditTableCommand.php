@@ -64,12 +64,6 @@ SQL;
                 'event_date' => $eventDate,
                 'event_count' => $eventCount,
                 'event_type' => $eventType
-            ],
-            [
-                'app_code' => \PDO::PARAM_STR,
-                'event_date' => \PDO::PARAM_STR,
-                'event_count' => \PDO::PARAM_INT,
-                'event_type' => \PDO::PARAM_STR
             ]
         );
     }
