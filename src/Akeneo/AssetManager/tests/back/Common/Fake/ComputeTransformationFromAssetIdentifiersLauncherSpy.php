@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationLauncherInterface;
+use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationFromAssetIdentifiersLauncherInterface;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class ComputeTransformationLauncherSpy implements ComputeTransformationLauncherInterface
+class ComputeTransformationFromAssetIdentifiersLauncherSpy implements ComputeTransformationFromAssetIdentifiersLauncherInterface
 {
     private $assetIdentifiersInJobs = [];
 

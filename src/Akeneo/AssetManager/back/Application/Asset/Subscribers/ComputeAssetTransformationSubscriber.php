@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\Subscribers;
 
-use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationLauncherInterface;
+use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationFromAssetIdentifiersLauncherInterface;
 use Akeneo\AssetManager\Application\AssetFamily\Transformation\GetOutdatedVariationSourceInterface;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
@@ -32,7 +32,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ComputeAssetTransformationSubscriber implements EventSubscriberInterface
 {
-    /** @var ComputeTransformationLauncherInterface */
+    /** @var ComputeTransformationFromAssetIdentifiersLauncherInterface */
     private $computeTransformationLauncher;
 
     /** @var AssetRepositoryInterface */
@@ -45,7 +45,7 @@ class ComputeAssetTransformationSubscriber implements EventSubscriberInterface
     private $getOutdatedVariationSource;
 
     public function __construct(
-        ComputeTransformationLauncherInterface $computeTransformationLauncher,
+        ComputeTransformationFromAssetIdentifiersLauncherInterface $computeTransformationLauncher,
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         GetOutdatedVariationSourceInterface $getOutdatedVariationSource

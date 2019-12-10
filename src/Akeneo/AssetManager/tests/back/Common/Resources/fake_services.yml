@@ -279,12 +279,11 @@ services:
         class: 'Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy'
 
     # Compute Transformations
+    akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher:
+        class: Akeneo\AssetManager\Common\Fake\ComputeTransformationFromAssetIdentifiersLauncherSpy
+
     akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_family_identifier_launcher:
         class: Akeneo\AssetManager\Common\Fake\ComputeTransformationsFromAssetFamilyIdentifierLauncherSpy
-
-    # Transformation runner
-    akeneo_assetmanager.infrastructure.job.compute_transformations_launcher:
-        class: Akeneo\AssetManager\Common\Fake\ComputeTransformationLauncherSpy
 
     # Third party services
     oro_security.security_facade:

@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 
-use Akeneo\AssetManager\Common\Fake\ComputeTransformationLauncherSpy;
+use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationFromAssetIdentifiersLauncherInterface;
+use Akeneo\AssetManager\Common\Fake\ComputeTransformationFromAssetIdentifiersLauncherSpy;
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
@@ -120,7 +121,7 @@ class CreateOrUpdateAssetContext implements Context
     /** @var ProductLinkRuleLauncherSpy */
     private $productLinkRuleLauncherSpy;
 
-    /** @var ComputeTransformationLauncherSpy */
+    /** @var ComputeTransformationFromAssetIdentifiersLauncherSpy */
     private $computeTransformationLauncherSpy;
 
     public function __construct(
@@ -136,7 +137,7 @@ class CreateOrUpdateAssetContext implements Context
         InMemoryFileExists $fileExists,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
         ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy,
-        ComputeTransformationLauncherSpy $computeTransformationLauncherSpy
+        ComputeTransformationFromAssetIdentifiersLauncherSpy $computeTransformationLauncherSpy
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;

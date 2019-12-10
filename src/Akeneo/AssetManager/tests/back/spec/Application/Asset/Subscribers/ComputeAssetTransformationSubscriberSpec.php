@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Application\Asset\Subscribers;
 
-use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationLauncherInterface;
+use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationFromAssetIdentifiersLauncherInterface;
 use Akeneo\AssetManager\Application\Asset\Subscribers\ComputeAssetTransformationSubscriber;
 use Akeneo\AssetManager\Application\AssetFamily\Transformation\GetOutdatedVariationSourceInterface;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
@@ -39,7 +39,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
 {
     function let(
-        ComputeTransformationLauncherInterface $computeTransformationLauncher,
+        ComputeTransformationFromAssetIdentifiersLauncherInterface $computeTransformationLauncher,
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         GetOutdatedVariationSourceInterface $getOutdatedVariationSource
@@ -73,7 +73,7 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
     }
 
     function it_launches_a_compute_transformation_job_on_asset_update(
-        ComputeTransformationLauncherInterface $computeTransformationLauncher,
+        ComputeTransformationFromAssetIdentifiersLauncherInterface $computeTransformationLauncher,
         GetOutdatedVariationSourceInterface $getOutdatedVariationSource,
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
@@ -110,7 +110,7 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_not_launch_job_at_update_if_all_asset_values_are_up_to_date(
-        ComputeTransformationLauncherInterface $computeTransformationLauncher,
+        ComputeTransformationFromAssetIdentifiersLauncherInterface $computeTransformationLauncher,
         GetOutdatedVariationSourceInterface $getOutdatedVariationSource,
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
@@ -150,7 +150,7 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
     }
 
     function it_launches_a_compute_transformation_job_on_asset_creation(
-        ComputeTransformationLauncherInterface $computeTransformationLauncher,
+        ComputeTransformationFromAssetIdentifiersLauncherInterface $computeTransformationLauncher,
         GetOutdatedVariationSourceInterface $getOutdatedVariationSource,
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
@@ -187,7 +187,7 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_not_launch_job_at_creation_if_all_asset_values_are_up_to_date(
-        ComputeTransformationLauncherInterface $computeTransformationLauncher,
+        ComputeTransformationFromAssetIdentifiersLauncherInterface $computeTransformationLauncher,
         GetOutdatedVariationSourceInterface $getOutdatedVariationSource,
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
