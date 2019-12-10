@@ -49,12 +49,12 @@ services:
         arguments:
             - '@http_kernel'
 
-    security.event_listener.add_csp:
-      class: Akeneo\Platform\Bundle\UIBundle\EventListener\AddContentSecurityPolicyListener
-      arguments:
-        - '@security.script_nonce_generator'
-      tags:
-        - { name: kernel.event_subscriber }
+#    security.event_listener.add_csp:
+#      class: Akeneo\Platform\Bundle\UIBundle\EventListener\AddContentSecurityPolicyListener
+#      arguments:
+#        - '@security.script_nonce_generator'
+#      tags:
+#        - { name: kernel.event_subscriber }
 
     security.script_nonce_generator:
       class: Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator
