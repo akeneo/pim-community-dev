@@ -20,7 +20,6 @@ export const createLineFromFilename = (filename: string, assetFamily: AssetFamil
     code: sanitize(info.code),
     locale: info.locale,
     channel: info.channel,
-    status: LineStatus.WaitingForUpload,
     uploadProgress: null,
     errors: {
       back: [],

@@ -25,7 +25,6 @@ export default interface Line {
   code: string;
   locale: LocaleReference;
   channel: ChannelReference;
-  status: LineStatus;
   uploadProgress: number | null;
   errors: {
     back: ValidationError[];
