@@ -1,3 +1,4 @@
+import {Attribute} from "akeneoassetmanager/domain/model/attribute/attribute";
 const routing = require('routing');
 import {File, isFileEmpty} from 'akeneoassetmanager/domain/model/file';
 import MediaLinkData from 'akeneoassetmanager/domain/model/asset/data/media-link';
@@ -23,6 +24,15 @@ export const getImageShowUrl = (image: File, filter: string): string => {
   const filename = encodeURIComponent(path);
 
   return routing.generate('pim_enrich_media_show', {filename, filter});
+};
+
+export const getFilePreviewUrl = (type: string, file: File, attribute: Attribute): string => {
+  if (file === null) return '';
+
+  const data = btoa(file.filePath);
+  const attributeIdentifier = attribute.identifier;
+
+  return routing.generate('akeneo_asset_manager_image_preview', {type, attributeIdentifier, data});
 };
 
 export const getImageDownloadUrl = (image: File): string => {

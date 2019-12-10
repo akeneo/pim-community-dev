@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Image from 'akeneoassetmanager/application/component/app/image';
 import Value from 'akeneoassetmanager/domain/model/asset/value';
 import FileData, {create} from 'akeneoassetmanager/domain/model/asset/data/file';
 import __ from 'akeneoassetmanager/tools/translator';
 import {File} from 'akeneoassetmanager/domain/model/file';
 import {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
+import FileComponent from "akeneoassetmanager/application/component/app/file-component";
 
 const View = ({
   value,
@@ -20,12 +20,13 @@ const View = ({
   }
 
   return (
-    <Image
+    <FileComponent
       id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
       alt={__('pim_asset_manager.asset.value.file', {
         '{{ attribute_code }}': value.attribute.getLabel(localeReferenceStringValue(value.locale)),
       })}
       image={value.data.getFile()}
+      attribute={value.attribute}
       wide={true}
       readOnly={!canEditData}
       onImageChange={(image: File) => {
