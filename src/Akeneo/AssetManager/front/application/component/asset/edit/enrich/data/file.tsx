@@ -26,7 +26,7 @@ const View = ({
         '{{ attribute_code }}': value.attribute.getLabel(localeReferenceStringValue(value.locale)),
       })}
       image={value.data.getFile()}
-      attribute={value.attribute}
+      attribute={value.attribute.identifier}
       wide={true}
       readOnly={!canEditData}
       onImageChange={(image: File) => {
