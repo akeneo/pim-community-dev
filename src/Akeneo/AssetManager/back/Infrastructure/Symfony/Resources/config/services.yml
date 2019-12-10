@@ -75,12 +75,11 @@ services:
             - { name: kernel.event_subscriber }
 
     Akeneo\AssetManager\Application\Asset\Subscribers\ComputeAssetTransformationSubscriber:
-        class: Akeneo\AssetManager\Application\Asset\Subscribers\ComputeAssetTransformationSubscriber
         arguments:
             - '@akeneo_assetmanager.infrastructure.job.compute_transformations_launcher'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
-            - '@Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetOutdatedValues'
+            - '@akeneo_assetmanager.infrastructure.transformation.get_outdated_variation_source'
         tags:
             - { name: kernel.event_subscriber }
 

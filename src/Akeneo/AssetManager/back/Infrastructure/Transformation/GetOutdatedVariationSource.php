@@ -13,20 +13,21 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Transformation;
 
+use Akeneo\AssetManager\Application\AssetFamily\Transformation\GetOutdatedVariationSourceInterface;
+use Akeneo\AssetManager\Application\AssetFamily\Transformation\NonApplicableTransformationException;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Transformation\Exception\NonApplicableTransformationException;
 
 /**
  * This class checks that a transformation is applicable to a fiven asset, meaning:
  * - the values corresponding to the transformation's source and target are of the right type (MediaFile)
  * - the target value is older than the source value (TODO ATR-50: and older than the transformation)
  */
-class GetOutdatedVariationSource
+class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
 {
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;

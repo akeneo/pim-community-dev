@@ -769,7 +769,8 @@ class CreateOrUpdateAssetContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('120'),
-            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::VALID_EXTENSIONS)
+            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::VALID_EXTENSIONS),
+            MediaType::fromString(MediaType::IMAGE)
         );
 
         if (null !== $filePath) {

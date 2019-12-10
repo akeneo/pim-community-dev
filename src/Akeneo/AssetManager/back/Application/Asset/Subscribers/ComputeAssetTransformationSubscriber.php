@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Asset\Subscribers;
 
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationLauncherInterface;
+use Akeneo\AssetManager\Application\AssetFamily\Transformation\GetOutdatedVariationSourceInterface;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetOutdatedValues;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
@@ -39,19 +41,19 @@ class ComputeAssetTransformationSubscriber implements EventSubscriberInterface
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
 
-    /** @var GetOutdatedValues */
-    private $getOutdatedValues;
+    /** @var GetOutdatedVariationSourceInterface */
+    private $getOutdatedVariationSource;
 
     public function __construct(
         ComputeTransformationLauncherInterface $computeTransformationLauncher,
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
-        GetOutdatedValues $getOutdatedValues
+        GetOutdatedVariationSourceInterface $getOutdatedVariationSource
     ) {
         $this->computeTransformationLauncher = $computeTransformationLauncher;
-        $this->getOutdatedValues = $getOutdatedValues;
         $this->assetRepository = $assetRepository;
         $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->getOutdatedVariationSource = $getOutdatedVariationSource;
     }
 
     /**
@@ -75,15 +77,13 @@ class ComputeAssetTransformationSubscriber implements EventSubscriberInterface
         $this->launchJobIfNeeded($assetCreatedEvent->getAssetIdentifier());
     }
 
-    protected function launchJobIfNeeded(AssetIdentifier $assetIdentifier): void
+    private function launchJobIfNeeded(AssetIdentifier $assetIdentifier): void
     {
         try {
             $asset = $this->assetRepository->getByIdentifier($assetIdentifier);
             $assetFamily = $this->assetFamilyRepository->getByIdentifier($asset->getAssetFamilyIdentifier());
-            $transformationCollection = $assetFamily->getTransformationCollection();
 
-            $valueCollection = $this->getOutdatedValues->fromAsset($asset, $transformationCollection);
-            if (0 === $valueCollection->count()) {
+            if (!$this->assetContainsOutdatedTransformation($assetFamily, $asset)) {
                 return;
             }
         } catch (AssetNotFoundException | AssetFamilyNotFoundException | \LogicException $e) {
@@ -93,5 +93,20 @@ class ComputeAssetTransformationSubscriber implements EventSubscriberInterface
         }
 
         $this->computeTransformationLauncher->launch([$assetIdentifier]);
+    }
+
+    private function assetContainsOutdatedTransformation(AssetFamily $assetFamily, Asset $asset): bool
+    {
+        foreach ($assetFamily->getTransformationCollection() as $transformation) {
+            try {
+                $source = $this->getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation);
+                if (null !== $source) {
+                    return true;
+                }
+            } catch (\Exception $e) {
+            }
+        }
+
+        return false;
     }
 }

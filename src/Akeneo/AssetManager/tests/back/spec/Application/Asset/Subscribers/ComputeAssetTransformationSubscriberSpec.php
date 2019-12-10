@@ -15,16 +15,18 @@ namespace spec\Akeneo\AssetManager\Application\Asset\Subscribers;
 
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationLauncherInterface;
 use Akeneo\AssetManager\Application\Asset\Subscribers\ComputeAssetTransformationSubscriber;
+use Akeneo\AssetManager\Application\AssetFamily\Transformation\GetOutdatedVariationSourceInterface;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetOutdatedValues;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -40,13 +42,13 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
         ComputeTransformationLauncherInterface $computeTransformationLauncher,
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
-        GetOutdatedValues $getOutdatedValues
+        GetOutdatedVariationSourceInterface $getOutdatedVariationSource
     ) {
         $this->beConstructedWith(
             $computeTransformationLauncher,
             $assetRepository,
             $assetFamilyRepository,
-            $getOutdatedValues
+            $getOutdatedVariationSource
         );
     }
 
@@ -72,12 +74,14 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
 
     function it_launches_a_compute_transformation_job_on_asset_update(
         ComputeTransformationLauncherInterface $computeTransformationLauncher,
-        GetOutdatedValues $getOutdatedValues,
+        GetOutdatedVariationSourceInterface $getOutdatedVariationSource,
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AssetFamily $assetFamily,
         TransformationCollection $transformationCollection,
-        ValueCollection $valueCollection
+        \ArrayIterator $transformationCollectionIterator,
+        Transformation $transformation,
+        FileData $fileData
     ) {
         $assetIdentifier = AssetIdentifier::fromString('id');
         $assetUpdatedEvent = new AssetUpdatedEvent(
@@ -93,8 +97,12 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
         $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
         $assetFamily->getTransformationCollection()->willReturn($transformationCollection);
 
-        $getOutdatedValues->fromAsset($asset, $transformationCollection)->willReturn($valueCollection);
-        $valueCollection->count()->willReturn(1);
+        $transformationCollection->getIterator()->willReturn($transformationCollectionIterator);
+        $transformationCollectionIterator->valid()->willReturn(true, true, false);
+        $transformationCollectionIterator->current()->willReturn($transformation);
+        $transformationCollectionIterator->rewind()->shouldBeCalled();
+        $getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation)
+            ->willReturn($fileData);
 
         $computeTransformationLauncher->launch([$assetIdentifier])->shouldBeCalled();
 
@@ -103,12 +111,14 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
 
     function it_does_not_launch_job_at_update_if_all_asset_values_are_up_to_date(
         ComputeTransformationLauncherInterface $computeTransformationLauncher,
-        GetOutdatedValues $getOutdatedValues,
+        GetOutdatedVariationSourceInterface $getOutdatedVariationSource,
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AssetFamily $assetFamily,
         TransformationCollection $transformationCollection,
-        ValueCollection $valueCollection
+        \ArrayIterator $transformationCollectionIterator,
+        Transformation $transformation1,
+        Transformation $transformation2
     ) {
         $assetIdentifier = AssetIdentifier::fromString('id');
         $assetUpdatedEvent = new AssetUpdatedEvent(
@@ -124,8 +134,15 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
         $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
         $assetFamily->getTransformationCollection()->willReturn($transformationCollection);
 
-        $getOutdatedValues->fromAsset($asset, $transformationCollection)->willReturn($valueCollection);
-        $valueCollection->count()->willReturn(0);
+        $transformationCollection->getIterator()->willReturn($transformationCollectionIterator);
+        $transformationCollectionIterator->valid()->willReturn(true, true, false);
+        $transformationCollectionIterator->current()->willReturn($transformation1, $transformation2);
+        $transformationCollectionIterator->rewind()->shouldBeCalled();
+        $transformationCollectionIterator->next()->shouldBeCalled();
+        $getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation1)
+            ->willReturn(null);
+        $getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation2)
+            ->willReturn(null);
 
         $computeTransformationLauncher->launch([$assetIdentifier])->shouldNotBeCalled();
 
@@ -134,12 +151,14 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
 
     function it_launches_a_compute_transformation_job_on_asset_creation(
         ComputeTransformationLauncherInterface $computeTransformationLauncher,
-        GetOutdatedValues $getOutdatedValues,
+        GetOutdatedVariationSourceInterface $getOutdatedVariationSource,
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AssetFamily $assetFamily,
         TransformationCollection $transformationCollection,
-        ValueCollection $valueCollection
+        \ArrayIterator $transformationCollectionIterator,
+        Transformation $transformation,
+        FileData $fileData
     ) {
         $assetIdentifier = AssetIdentifier::fromString('id');
         $assetCreatedEvent = new AssetCreatedEvent(
@@ -155,8 +174,12 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
         $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
         $assetFamily->getTransformationCollection()->willReturn($transformationCollection);
 
-        $getOutdatedValues->fromAsset($asset, $transformationCollection)->willReturn($valueCollection);
-        $valueCollection->count()->willReturn(1);
+        $transformationCollection->getIterator()->willReturn($transformationCollectionIterator);
+        $transformationCollectionIterator->valid()->willReturn(true, true, false);
+        $transformationCollectionIterator->current()->willReturn($transformation);
+        $transformationCollectionIterator->rewind()->shouldBeCalled();
+        $getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation)
+            ->willReturn($fileData);
 
         $computeTransformationLauncher->launch([$assetIdentifier])->shouldBeCalled();
 
@@ -165,12 +188,14 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
 
     function it_does_not_launch_job_at_creation_if_all_asset_values_are_up_to_date(
         ComputeTransformationLauncherInterface $computeTransformationLauncher,
-        GetOutdatedValues $getOutdatedValues,
+        GetOutdatedVariationSourceInterface $getOutdatedVariationSource,
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AssetFamily $assetFamily,
         TransformationCollection $transformationCollection,
-        ValueCollection $valueCollection
+        \ArrayIterator $transformationCollectionIterator,
+        Transformation $transformation1,
+        Transformation $transformation2
     ) {
         $assetIdentifier = AssetIdentifier::fromString('id');
         $assetCreatedEvent = new AssetCreatedEvent(
@@ -186,8 +211,15 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
         $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
         $assetFamily->getTransformationCollection()->willReturn($transformationCollection);
 
-        $getOutdatedValues->fromAsset($asset, $transformationCollection)->willReturn($valueCollection);
-        $valueCollection->count()->willReturn(0);
+        $transformationCollection->getIterator()->willReturn($transformationCollectionIterator);
+        $transformationCollectionIterator->valid()->willReturn(true, true, false);
+        $transformationCollectionIterator->current()->willReturn($transformation1, $transformation2);
+        $transformationCollectionIterator->rewind()->shouldBeCalled();
+        $transformationCollectionIterator->next()->shouldBeCalled();
+        $getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation1)
+            ->willReturn(null);
+        $getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation2)
+            ->willReturn(null);
 
         $computeTransformationLauncher->launch([$assetIdentifier])->shouldNotBeCalled();
 

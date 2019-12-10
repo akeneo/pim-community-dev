@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Transformation;
 
+use Akeneo\AssetManager\Application\AssetFamily\Transformation\NonApplicableTransformationException;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
@@ -17,7 +18,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Transformation\Exception\NonApplicableTransformationException;
 use Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource;
 use PhpSpec\ObjectBehavior;
 

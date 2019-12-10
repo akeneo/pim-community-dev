@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Transformation;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
+use Akeneo\AssetManager\Application\AssetFamily\Transformation\NonApplicableTransformationException;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -25,7 +26,6 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformatio
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
-use Akeneo\AssetManager\Infrastructure\Transformation\Exception\NonApplicableTransformationException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Webmozart\Assert\Assert;
