@@ -5,7 +5,7 @@
 {% set widgetContent %}
     <table id="last-operations-widget" class="AknGrid AknGrid--unclickable"></table>
 
-    <script type="text/javascript" nonce="{{ js_nonce() }}">
+    <script type="text/javascript">
         require(
             ['jquery', 'pim/dashboard/widget-container', 'pim/importexport/widget/last-operations-widget'],
             function ($, widgetContainer, LastOperationsWidget) {

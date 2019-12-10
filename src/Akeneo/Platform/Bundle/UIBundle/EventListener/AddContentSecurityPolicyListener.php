@@ -15,14 +15,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class AddContentSecurityPolicyListener implements EventSubscriberInterface
 {
-    /** @var string */
-    private $generatedNonce;
-
-    public function __construct(ScriptNonceGenerator $nonceGenerator)
-    {
-        $this->generatedNonce = $nonceGenerator->getGeneratedNonce();
-    }
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -32,10 +24,7 @@ class AddContentSecurityPolicyListener implements EventSubscriberInterface
 
     public function addCspHeaders(FilterResponseEvent $event): void
     {
-        $policy = sprintf(
-            "default-src 'self' *.akeneo.com 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'nonce-%s'; img-src 'self' data:",
-            $this->generatedNonce
-        );
+        $policy = "default-src 'self' *.akeneo.com; script-src 'self' 'unsafe-eval'; img-src 'self' data:";
 
         $response = $event->getResponse();
         $response->headers->set('Content-Security-Policy', $policy);

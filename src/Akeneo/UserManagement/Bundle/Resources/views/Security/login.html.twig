@@ -3,7 +3,7 @@
 {% block bodyClass %}AknLogin{% endblock %}
 
 {% block content %}
-<script type="text/javascript" nonce="{{ js_nonce() }}">
+<script type="text/javascript">
     sessionStorage.clear();
     document.title = '{{ 'Login'|trans }}';
 </script>

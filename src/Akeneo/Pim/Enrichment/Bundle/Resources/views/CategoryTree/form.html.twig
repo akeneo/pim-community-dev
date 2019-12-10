@@ -89,7 +89,7 @@
 
 {{ form_end(form) }}
 
-<script type="text/javascript" nonce="{{ js_nonce() }}">
+<script type="text/javascript">
     window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
 
     require(['pim/menu/resizable'], function(Resizable) {
