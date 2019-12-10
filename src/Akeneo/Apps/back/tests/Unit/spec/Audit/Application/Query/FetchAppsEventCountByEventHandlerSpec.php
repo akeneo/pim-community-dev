@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Apps\Audit\Domain\Model\Read;
 
+use Akeneo\Apps\Audit\Application\Query\FetchAppsEventCountByEventHandler;
 use Akeneo\Apps\Audit\Application\Query\FetchAppsEventCountByEventQuery;
+use Akeneo\Apps\Audit\Domain\Model\Read\EventCountByApp;
+use Akeneo\Apps\Audit\Domain\Model\Read\EventCountByDate;
+use Akeneo\Apps\Audit\Domain\Persistence\Query\SelectAppsEventCountByDateQuery;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -14,28 +18,35 @@ use PhpSpec\ObjectBehavior;
  */
 class FetchAppsEventCountByEventHandlerSpec extends ObjectBehavior
 {
-    function let()
+    function let(SelectAppsEventCountByDateQuery $selectAppsEventCountByDateQuery)
     {
-        $this->beConstructedWith('product_created', '2019-12-10', '2019-12-12');
+        $this->beConstructedWith($selectAppsEventCountByDateQuery);
     }
 
     function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf(FetchAppsEventCountByEventQuery::class);
+        $this->shouldBeAnInstanceOf(FetchAppsEventCountByEventHandler::class);
     }
 
-    function it_returns_the_event_type()
+    function it_handles_the_event_count($selectAppsEventCountByDateQuery)
     {
-        $this->eventType()->shouldReturn('product_created');
-    }
+        $eventCountByApp = new EventCountByApp('Magento');
+        $eventCountByApp->addEventCount(new EventCountByDate(42, new \DateTime('2019-12-10')));
 
-    function it_returns_the_start_date()
-    {
-        $this->startDate()->shouldReturn('2019-12-10');
-    }
+        $selectAppsEventCountByDateQuery
+            ->execute('product_created', '2019-12-10', '2019-12-12')
+            ->willReturn([$eventCountByApp]);
 
-    function it_returns_the_end_date()
-    {
-        $this->endDate()->shouldReturn('2019-12-12');
+        $expectedData = [
+            'Magento' => [
+                '2019-12-10' => 42,
+                '2019-12-11' => 123,
+            ],
+            'Bynder' => [
+                '2019-12-11' => 36,
+            ]
+        ];
+        $query = new FetchAppsEventCountByEventQuery('product_created', '2019-12-12', '2019-12-14');
+        $this->handle($query)->shouldReturn($expectedData);
     }
 }
