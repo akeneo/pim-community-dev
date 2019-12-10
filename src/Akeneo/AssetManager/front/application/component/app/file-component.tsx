@@ -14,7 +14,7 @@ import Download from 'akeneoassetmanager/application/component/app/icon/download
 import Import from 'akeneoassetmanager/application/component/app/illustration/import';
 import Key from 'akeneoassetmanager/tools/key';
 import styled from 'styled-components';
-import {Attribute} from "akeneoassetmanager/domain/model/attribute/attribute";
+import AttributeIdentifier from "akeneoassetmanager/domain/model/attribute/identifier";
 
 const Img = styled.img`
   margin: auto;
@@ -29,7 +29,7 @@ class FileComponent extends React.Component<
   {
     id?: string;
     image: FileModel;
-    attribute: Attribute;
+    attribute: AttributeIdentifier;
     alt: string;
     wide?: boolean;
     readOnly?: boolean;
