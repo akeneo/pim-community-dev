@@ -47,7 +47,7 @@ class GetOutdatedVariationSourceSpec extends ObjectBehavior
         $this->shouldHaveType(GetOutdatedVariationSource::class);
     }
 
-    function it_returns_the_source_file_data_for_an_outdated_target_value(
+    function it_returns_the_source_file_data_for_a_target_value_older_than_source(
         Asset $asset,
         Transformation $transformation,
         Value $sourceValue,
@@ -98,6 +98,65 @@ class GetOutdatedVariationSourceSpec extends ObjectBehavior
                 LocaleReference::noReference()
             )
         )->willReturn($targetValue);
+
+        $this->forAssetAndTransformation($asset, $transformation)->shouldReturn($sourceFileData);
+    }
+
+    function it_returns_null_for_a_target_value_older_than_transformation_setup(
+        Asset $asset,
+        Transformation $transformation,
+        Value $sourceValue,
+        FileData $sourceFileData,
+        Value $targetValue,
+        FileData $targetFileData
+    ) {
+        $asset->getAssetFamilyIdentifier()->willReturn(AssetFamilyIdentifier::fromString('packshot'));
+        $transformation->getSource()->willReturn(
+            Source::createFromNormalized(
+                [
+                    'attribute' => 'main_image',
+                    'channel' => null,
+                    'locale' => null,
+                ]
+            )
+        );
+        $sourceFileData->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-01T00:00:21+0000')
+        );
+        $sourceValue->getData()->willReturn($sourceFileData);
+        $asset->findValue(
+            ValueKey::create(
+                AttributeIdentifier::fromString('packshot_main_image_123456'),
+                ChannelReference::noReference(),
+                LocaleReference::noReference()
+            )
+        )->willReturn($sourceValue);
+
+        $transformation->getTarget()->willReturn(
+            Target::createFromNormalized(
+                [
+                    'attribute' => 'target_image',
+                    'channel' => null,
+                    'locale' => null,
+                ]
+            )
+        );
+
+        $targetFileData->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-02T15:16:21+0000')
+        );
+        $targetValue->getData()->willReturn($targetFileData);
+        $asset->findValue(
+            ValueKey::create(
+                AttributeIdentifier::fromString('packshot_target_image_123456'),
+                ChannelReference::noReference(),
+                LocaleReference::noReference()
+            )
+        )->willReturn($targetValue);
+        $transformation->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-03T11:14:49+0000')
+        );
+
 
         $this->forAssetAndTransformation($asset, $transformation)->shouldReturn($sourceFileData);
     }
@@ -153,6 +212,10 @@ class GetOutdatedVariationSourceSpec extends ObjectBehavior
                 LocaleReference::noReference()
             )
         )->willReturn($targetValue);
+        $transformation->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-10-01T11:14:49+0000')
+        );
+
 
         $this->forAssetAndTransformation($asset, $transformation)->shouldReturn(null);
     }

@@ -23,9 +23,9 @@ use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 
 /**
- * This class checks that a transformation is applicable to a fiven asset, meaning:
+ * This class checks that a transformation is applicable to a given asset, meaning:
  * - the values corresponding to the transformation's source and target are of the right type (MediaFile)
- * - the target value is older than the source value (TODO ATR-50: and older than the transformation)
+ * - the target value is older than the source value
  */
 class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
 {
@@ -86,16 +86,25 @@ class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
             )
         );
 
-        // TODO ATR-12/ATR-50: also compare with transformation->getUpdatedAt()
-        if (null === $targetValue || $this->isTargetValueOutdated($sourceValue->getData(), $targetValue->getData())) {
+        if (null === $targetValue
+            || $this->isTargetValueOlderThanSource($sourceValue->getData(), $targetValue->getData())
+            || $this->isTargetValueOlderThanTransformationSetup($transformation, $targetValue->getData())
+        ) {
             return $sourceValue->getData();
         }
 
         return null;
     }
 
-    private function isTargetValueOutdated(FileData $sourceData, FileData $targetData): bool
+    private function isTargetValueOlderThanSource(FileData $sourceData, FileData $targetData): bool
     {
         return null === $targetData->getUpdatedAt() || $targetData->getUpdatedAt() < $sourceData->getUpdatedAt();
+    }
+
+    private function isTargetValueOlderThanTransformationSetup(
+        Transformation $transformation,
+        FileData $targetData
+    ): bool {
+        return null === $targetData->getUpdatedAt() || $targetData->getUpdatedAt() < $transformation->getUpdatedAt();
     }
 }
