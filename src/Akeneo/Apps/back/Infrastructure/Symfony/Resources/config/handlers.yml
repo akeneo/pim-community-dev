@@ -36,3 +36,8 @@ services:
         arguments:
             - '@akeneo_app.persistence.repository.app'
             - '@akeneo_app.service.client.regenerate_client_secret'
+
+    akeneo_app.audit.application.handler.fetch_apps_event_count_by_event:
+        class: 'Akeneo\Apps\Audit\Application\Query\FetchAppsEventCountByEventHandler'
+        arguments:
+            - '@akeneo_app.audit.persistence.query.select_apps_event_count_by_date'
