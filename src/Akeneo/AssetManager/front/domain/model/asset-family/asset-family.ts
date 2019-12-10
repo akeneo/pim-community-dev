@@ -8,7 +8,9 @@ import LabelCollection, {
   getLabelInCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
 import {createEmptyFile, createFileFromNormalized, File} from 'akeneoassetmanager/domain/model/file';
-import AttributeIdentifier, {denormalizeAttributeIdentifier,} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AttributeIdentifier, {
+  denormalizeAttributeIdentifier,
+} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import AssetFamilyCode from 'akeneoassetmanager/domain/model/asset-family/code';
 import TransformationCollection, {
@@ -61,7 +63,9 @@ export const assetFamilyAreEqual = (first: AssetFamily, second: AssetFamily): bo
   assetFamilyidentifiersAreEqual(first.identifier, second.identifier);
 
 export const getAssetFamilyMainMedia = (assetFamily: AssetFamily): NormalizedAttribute => {
-  const attribute = assetFamily.attributes.find((attribute: NormalizedAttribute) => attribute.identifier === assetFamily.attributeAsMainMedia);
+  const attribute = assetFamily.attributes.find(
+    (attribute: NormalizedAttribute) => attribute.identifier === assetFamily.attributeAsMainMedia
+  );
   if (undefined === attribute) {
     throw new Error('The AssetFamily must have an attribute as main media');
   }
