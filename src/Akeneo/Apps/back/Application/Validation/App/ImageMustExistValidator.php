@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Application\Validation\App;
 
-use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
+use Akeneo\Apps\Application\Service\DoesImageExistQueryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -12,19 +12,19 @@ use Symfony\Component\Validator\ConstraintValidator;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CodeMustBeUniqueValidator extends ConstraintValidator
+class ImageMustExistValidator extends ConstraintValidator
 {
-    /** @var AppRepository */
-    private $repository;
+    /** @var DoesImageExistQueryInterface */
+    private $doesImageExistQuery;
 
-    public function __construct(AppRepository $repository)
+    public function __construct(DoesImageExistQueryInterface $doesImageExistQuery)
     {
-        $this->repository = $repository;
+        $this->doesImageExistQuery = $doesImageExistQuery;
     }
 
     public function validate($value, Constraint $constraint): void
     {
-        if (null !== $this->repository->findOneByCode($value)) {
+        if (null !== $value && !$this->doesImageExistQuery->execute($value)) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }

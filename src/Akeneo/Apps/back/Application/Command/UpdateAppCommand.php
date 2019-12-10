@@ -20,25 +20,34 @@ class UpdateAppCommand
     /** @var string */
     private $flowType;
 
-    public function __construct(string $code, string $label, string $flowType)
+    /** @var string|null */
+    private $image;
+
+    public function __construct(string $code, string $label, string $flowType, ?string $image = null)
     {
         $this->code = $code;
         $this->label = $label;
         $this->flowType = $flowType;
+        $this->image = $image;
     }
 
-    public function code()
+    public function code(): string
     {
         return $this->code;
     }
 
-    public function label()
+    public function label(): string
     {
         return $this->label;
     }
 
-    public function flowType()
+    public function flowType(): string
     {
         return $this->flowType;
+    }
+
+    public function image(): ?string
+    {
+        return $this->image;
     }
 }

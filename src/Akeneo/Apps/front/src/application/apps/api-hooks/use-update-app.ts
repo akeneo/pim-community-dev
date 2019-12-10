@@ -27,6 +27,7 @@ export const useUpdateApp = (code: string) => {
                 code: app.code,
                 label: app.label,
                 flow_type: app.flowType,
+                image: app.image,
             }),
         });
         if (isErr(result)) {

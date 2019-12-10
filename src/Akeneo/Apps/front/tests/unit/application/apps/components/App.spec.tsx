@@ -11,7 +11,7 @@ describe('App', () => {
     it('should render', () => {
         const component = createWithTheme(
             <MemoryRouter>
-                <App code={'google-shopping'} label={'Google Shopping'} />
+                <App code={'google-shopping'} label={'Google Shopping'} image={'a/b/c/path.jpg'} />
             </MemoryRouter>
         );
 
@@ -23,7 +23,7 @@ describe('App', () => {
         const component = mount(
             <ThemeProvider theme={theme}>
                 <Router history={history}>
-                    <App code={'google-shopping'} label={'Google Shopping'} />
+                    <App code={'google-shopping'} label={'Google Shopping'} image={'a/b/c/path.jpg'} />
                 </Router>
             </ThemeProvider>
         );

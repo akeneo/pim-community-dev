@@ -137,7 +137,12 @@ class AppController
         $data = json_decode($request->getContent(), true);
         // TODO: Valid JSON format
 
-        $command = new UpdateAppCommand($request->get('code', ''), $data['label'], $data['flow_type']);
+        $command = new UpdateAppCommand(
+            $request->get('code', ''),
+            $data['label'],
+            $data['flow_type'],
+            $data['image']
+        );
 
         try {
             $this->updateAppHandler->handle($command);

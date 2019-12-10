@@ -20,7 +20,8 @@ class AppSpec extends ObjectBehavior
         $this->beConstructedWith(
             'magento',
             'Magento Connector',
-            FlowType::DATA_DESTINATION
+            FlowType::DATA_DESTINATION,
+            'a/b/c/the_path.jpg'
         );
     }
 
@@ -39,6 +40,21 @@ class AppSpec extends ObjectBehavior
         $this->label()->shouldReturn('Magento Connector');
     }
 
+    public function it_returns_null_if_there_is_no_image()
+    {
+        $this->beConstructedWith(
+            'magento',
+            'Magento Connector',
+            FlowType::DATA_DESTINATION
+        );
+        $this->image()->shouldReturn(null);
+    }
+
+    public function it_returns_the_image()
+    {
+        $this->image()->shouldReturn('a/b/c/the_path.jpg');
+    }
+
     public function it_returns_the_flow_type()
     {
         $this->flowType()->shouldReturn(FlowType::DATA_DESTINATION);
@@ -49,7 +65,8 @@ class AppSpec extends ObjectBehavior
         $this->normalize()->shouldReturn([
             'code' => 'magento',
             'label' => 'Magento Connector',
-            'flowType' => FlowType::DATA_DESTINATION
+            'flowType' => FlowType::DATA_DESTINATION,
+            'image' => 'a/b/c/the_path.jpg'
         ]);
     }
 }

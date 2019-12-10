@@ -111,11 +111,16 @@ class AppContext implements Context
     public function iChangeTheOfTheAppBy(string $label, TableNode $table)
     {
         $code = self::slugify($label);
-        $newLabel = $table->getRow(1)[0];
-        $newFlowType = $table->getRow(1)[1];
+        $data = $table->getColumnsHash()[0];
+        $newLabel = $data['label'] ?? $label;
+        if (!isset($data['flow_type']) || empty($data['flow_type'])) {
+            throw new \InvalidArgumentException('You need to provide a new flow type to update the app.');
+        }
+        $newFlowType = $data['flow_type'];
+        $newImage = $data['image'] ?? null;
 
         try {
-            $command = new UpdateAppCommand($code, $newLabel, $newFlowType);
+            $command = new UpdateAppCommand($code, $newLabel, $newFlowType, $newImage);
             $this->updateAppHandler->handle($command);
         } catch (ConstraintViolationListException $violationList) {
             $this->violations = $violationList;
@@ -198,6 +203,26 @@ class AppContext implements Context
     }
 
     /**
+     * @Then the App :label image should be :expectedImage
+     */
+    public function theAppImageShouldBe(string $label, string $expectedImage): void
+    {
+        $app = $this->appRepository->findOneByCode(self::slugify($label));
+
+        Assert::eq($expectedImage, (string) $app->image());
+    }
+
+    /**
+     * @Then the App :label should not have an image
+     */
+    public function theAppShouldNotHaveAnImage(string $label): void
+    {
+        $app = $this->appRepository->findOneByCode(self::slugify($label));
+
+        Assert::null($app->image());
+    }
+
+    /**
      * @Then I should have been warn that the code is unique
      */
     public function iShouldHaveBeenWarnThatTheCodeIsUnique()
@@ -213,6 +238,24 @@ class AppContext implements Context
         }
 
         throw new \Exception('No exception about code uniqueness received.');
+    }
+
+    /**
+     * @Then I should have been warn that the image does not exist
+     */
+    public function iShouldHaveBeenWarnThatTheImageDoesNotExist()
+    {
+        Assert::isInstanceOf($this->violations, ConstraintViolationListException::class);
+
+        foreach ($this->violations->getConstraintViolationList() as $violation) {
+            if ('image' === $violation->getPropertyPath() &&
+                'akeneo_apps.app.constraint.image.must_exist' === $violation->getMessage()
+            ) {
+                return;
+            }
+        }
+
+        throw new \Exception('No exception about image received.');
     }
 
     private static function slugify(string $label): string

@@ -5,14 +5,18 @@ exports[`Figure should render 1`] = `
   className="sc-bwzfXH ivdGIV"
 >
   <div
-    className="sc-bxivhb gNwQRU"
+    className="sc-ifAKCX eVvIoj"
   >
-    <img
-      className="sc-htpNat fWxVNi"
-    />
+    <div
+      className="sc-htpNat krYJTA"
+    >
+      <img
+        className="sc-bxivhb jXeAXC"
+      />
+    </div>
   </div>
   <div
-    className="sc-ifAKCX bcBuic"
+    className="sc-EHOje iJEEnh"
   />
 </div>
 `;

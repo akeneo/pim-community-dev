@@ -2,7 +2,7 @@ import React, {useContext, useEffect} from 'react';
 import {useHistory} from 'react-router';
 import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {PimView} from '../../../infrastructure/pim-view/PimView';
-import {NoApp} from '../../apps/components/NoApp';
+import {NoApp} from '../components/NoApp';
 import {
     ApplyButton,
     Breadcrumb,
@@ -20,10 +20,11 @@ import {Translate, TranslateContext} from '../../shared/translate';
 import {appsFetched} from '../actions/apps-actions';
 import {useAppsState} from '../app-state-context';
 import {AppGrid} from '../components/AppGrid';
+import {App} from '../../../domain/apps/app.interface';
 
 const MAXIMUM_NUMBER_OF_ALLOWED_APPS = 50;
 
-type ResultValue = Array<{code: string; label: string; flowType: FlowType}>;
+type ResultValue = Array<App>;
 
 export const AppList = () => {
     const history = useHistory();
