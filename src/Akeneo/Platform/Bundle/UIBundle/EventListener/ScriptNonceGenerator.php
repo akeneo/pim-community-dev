@@ -30,19 +30,13 @@ class ScriptNonceGenerator
     */
     public function getGeneratedNonce(): string
     {
-        if (!$this->request->getCurrentRequest()->isXmlHttpRequest()) {
-            $this->request->getCurrentRequest()->getSession()->set('nonce', null);
-        }
-
         if (null === $this->generatedNonce) {
             $this->generatedNonce = $this->request->getCurrentRequest()->getSession()->get('nonce', null);
         }
 
         if (null === $this->generatedNonce) {
             $this->generatedNonce = Uuid::uuid4()->toString();
-            if (!$this->request->getCurrentRequest()->isXmlHttpRequest()) {
-                $this->request->getCurrentRequest()->getSession()->set('nonce', $this->generatedNonce);
-            }
+            $this->request->getCurrentRequest()->getSession()->set('nonce', $this->generatedNonce);
         }
 
         return $this->generatedNonce;
