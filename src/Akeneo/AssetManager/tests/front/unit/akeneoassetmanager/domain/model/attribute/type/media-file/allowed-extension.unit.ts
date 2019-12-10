@@ -7,14 +7,14 @@ import {
 
 describe('akeneo > attribute > domain > model > attribute > type > media-file --- AllowedExtensions', () => {
   test('I can create a AllowedExtensions from normalized', () => {
-    expect(createAllowedExtensionFromNormalized(['png', 'jpg'])).toEqual(['png', 'jpg']);
+    expect(createAllowedExtensionFromNormalized(['png', 'jpg', '.pdf', 'JPEG', 'jpeg'])).toEqual(['png', 'jpg', 'pdf', 'jpeg']);
     expect(createAllowedExtensionFromNormalized([])).toEqual([]);
     expect(() => createAllowedExtensionFromNormalized('true')).toThrow();
   });
   test('I can validate a AllowedExtensions', () => {
     expect(isValidAllowedExtension([])).toEqual(true);
     expect(isValidAllowedExtension(['jpeg', 'png'])).toEqual(true);
-    expect(isValidAllowedExtension(['jped', 'webm'])).toEqual(false);
+    expect(isValidAllowedExtension(['jped', 'webm'])).toEqual(true);
     expect(isValidAllowedExtension('12')).toEqual(false);
     expect(isValidAllowedExtension('1')).toEqual(false);
     expect(isValidAllowedExtension(1)).toEqual(false);

@@ -135,7 +135,7 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
                 $command->extension,
                 [
                     new Constraints\Callback(function ($extension) use ($attribute) {
-                        if (!in_array($extension, $attribute->getAllowedExtensions()->normalize())) {
+                        if (!in_array(strtolower($extension), $attribute->getAllowedExtensions()->normalize())) {
                             $this->context
                                 ->buildViolation(EditMediaFileValueCommandConstraint::FILE_EXTENSION_NOT_ALLOWED_MESSAGE)
                                 ->setParameter('%file_extension%', '.' . $extension)

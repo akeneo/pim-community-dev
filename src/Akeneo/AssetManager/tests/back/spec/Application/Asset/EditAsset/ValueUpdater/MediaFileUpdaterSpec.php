@@ -30,6 +30,8 @@ use Prophecy\Argument;
 
 class MediaFileUpdaterSpec extends ObjectBehavior
 {
+    private const VALID_EXTENSIONS = ['gif', 'jfif', 'jif', 'jpeg', 'jpg', 'pdf', 'png', 'psd', 'tif', 'tiff'];
+
     function it_is_initializable()
     {
         $this->shouldHaveType(MediaFileUpdater::class);
@@ -126,7 +128,7 @@ class MediaFileUpdaterSpec extends ObjectBehavior
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::fromString('120'),
-            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::VALID_EXTENSIONS),
+            AttributeAllowedExtensions::fromList(self::VALID_EXTENSIONS),
             MediaType::fromString(MediaType::IMAGE)
         );
 

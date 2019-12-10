@@ -20,7 +20,7 @@ export const attributeEditionAdditionalPropertyUpdated = (
   return {
     type: 'ATTRIBUTE_EDITION_ADDITIONAL_PROPERTY_UPDATED',
     propertyCode,
-    propertyValue: propertyValue.normalize(),
+    propertyValue: propertyValue,
   };
 };
 

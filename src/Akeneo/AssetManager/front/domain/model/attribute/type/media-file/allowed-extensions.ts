@@ -1,35 +1,25 @@
-export type AllowedExtensions = AllowedExtensionsOptions[];
-
-export enum AllowedExtensionsOptions {
-  gif = 'gif',
-  jfif = 'jfif',
-  jif = 'jif',
-  jpeg = 'jpeg',
-  jpg = 'jpg',
-  pdf = 'pdf',
-  png = 'png',
-  psd = 'psd',
-  tif = 'tif',
-  tiff = 'tiff',
-}
-
-export const validAllowedExtensionsOptions = Object.values(AllowedExtensionsOptions);
+export type AllowedExtensions = string[];
 
 export const isValidAllowedExtension = (allowedExtensions: string[]): allowedExtensions is AllowedExtensions => {
   if (!Array.isArray(allowedExtensions)) {
     return false;
   }
-  return !allowedExtensions.some(
-    (extension: string) => !Object.values(AllowedExtensionsOptions).includes(extension as any)
-  );
+
+  return allowedExtensions.every((extension: string) => typeof extension === 'string');
 };
 
 export const createAllowedExtensionFromNormalized = (allowedExtensions: string[]): AllowedExtensions => {
   if (!isValidAllowedExtension(allowedExtensions)) {
-    throw new Error(`AllowedExtension should be ${validAllowedExtensionsOptions.join(',')}`);
+    throw new Error(`AllowedExtension is not valid`);
   }
+  const extensionsWithoutLeadingPoint = allowedExtensions.map(
+    (allowedExtension: string) => allowedExtension
+      .replace(/^\./, '')
+      .toLowerCase()
+  );
+  const uniqExtensions = Array.from(new Set<string>(extensionsWithoutLeadingPoint));
 
-  return allowedExtensions;
+  return uniqExtensions;
 };
 
 export const createAllowedExtensionFromArray = (allowedExtensions: string[]): AllowedExtensions => {

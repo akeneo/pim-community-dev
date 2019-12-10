@@ -8,7 +8,6 @@ import {
   MediaFileAdditionalProperty,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import {
-  AllowedExtensionsOptions,
   normalizeAllowedExtension,
   createAllowedExtensionFromArray,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-file/allowed-extensions';
@@ -23,6 +22,7 @@ import {
   normalizeMediaType,
   createMediaTypeFromNormalized,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-file/media-type';
+import Tags from 'akeneoassetmanager/application/component/app/tags';
 
 const MediaFileView = ({
   attribute,
@@ -80,6 +80,7 @@ const MediaFileView = ({
         </div>
         {getErrorsView(errors, 'maxFileSize')}
       </div>
+
       <div className="AknFieldContainer" data-code="mediaType">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.media_type">
@@ -103,6 +104,7 @@ const MediaFileView = ({
         </div>
         {getErrorsView(errors, 'mediaType')}
       </div>
+
       <div className="AknFieldContainer" data-code="allowedExtensions">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label
@@ -113,16 +115,13 @@ const MediaFileView = ({
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
-          <Select2
+          <Tags
             id="pim_asset_manager.attribute.edit.input.allowed_extensions"
             name="allowed_extensions"
-            data={(AllowedExtensionsOptions as any) as {[choiceValue: string]: string}}
-            value={normalizeAllowedExtension(attribute.allowedExtensions)}
-            multiple={true}
+            values={normalizeAllowedExtension(attribute.allowedExtensions)}
+            tags={[]}
             readOnly={!rights.attribute.edit}
-            configuration={{
-              allowClear: true,
-            }}
+            configuration={{maximumInputLength: 20}}
             onChange={(allowedExtensions: string[]) => {
               onAdditionalPropertyUpdated('allowed_extensions', createAllowedExtensionFromArray(allowedExtensions));
             }}

@@ -113,3 +113,8 @@ pim_asset_manager:
                 should_not_be_empty: 'The suffix cannot be an empty string.'
             media_type:
                 not_expected: 'The media type given is not corresponding to the expected ones (%supported_media_types%).'
+            media_file:
+                cannot_contain_extension_separator: 'Extensions cannot contain the extension separator ".", "%wrong_extension%" given.'
+                should_only_contain_lowercase_letters_and_numbers: 'Extensions should only contain lowercase letters and numbers, "%wrong_extension%" given.'
+                cannot_be_longer_than_max: 'Extensions cannot be longer than %expected_length% characters, length of %actual_length% given.'
+                there_cannot_be_duplicated_extensions: 'There cannot be duplicated extensions: %duplicates% found.'

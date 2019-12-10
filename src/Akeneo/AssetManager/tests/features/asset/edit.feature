@@ -4,42 +4,42 @@ Feature: Edit an asset
   I want see the details of an asset and update them
 
   @acceptance-back
-  Scenario: Updating a asset label
-    Given an asset family and a asset with french label "My label"
+  Scenario: Updating an asset label
+    Given an asset family and an asset with french label "My label"
     When the user updates the french label to "My updated label"
     Then there is no exception thrown
     And there is no violations errors
     And the asset should have the french label "My updated label"
 
   @acceptance-back
-  Scenario: Emptying a asset label
-    Given an asset family and a asset with french label "My label"
+  Scenario: Emptying an asset label
+    Given an asset family and an asset with french label "My label"
     When the user empties the french label
     Then there is no exception thrown
     And there is no violations errors
     And the asset should not have a french label
 
   @acceptance-back
-  Scenario: Asset is not valid when enriching a asset label by specifying a not activated locale for the label
-    Given an asset family and a asset with french label "My label"
+  Scenario: Asset is not valid when enriching an asset label by specifying a not activated locale for the label
+    Given an asset family and an asset with french label "My label"
     When the user updates the german label to "My updated label"
     Then there should be a validation error on the property labels with message "The locale "de_DE" is not activated."
 
   @acceptance-back
-  Scenario: Updating a asset default image
-    Given a assetFamily and a asset with an image
+  Scenario: Updating an asset default image
+    Given an asset family and an asset with an image
     When the user updates the asset default image with a valid file
     And the asset should have the new default image
 
   @acceptance-back
-  Scenario: Updating a asset with an empty image
-    Given a assetFamily and a asset with an image
+  Scenario: Updating an asset with an empty image
+    Given an asset family and an asset with an image
     When the user updates the asset default image with an empty image
     And the asset should have an empty image
 
   # ValuePerChannel / ValuePerLocale
   @acceptance-back
-  Scenario: Updating a localizable value of a asset
+  Scenario: Updating a localizable value of an asset
     Given an asset family with a localizable attribute
     And an asset belonging to this asset family with a value for the french locale
     When the user updates the attribute of the asset for the french locale
@@ -48,25 +48,25 @@ Feature: Edit an asset
     And the asset should have the updated value for this attribute and the french locale
 
   @acceptance-back
-  Scenario: Asset is not valid when enriching a localizable attribute value of a asset without specifying the locale in the value
+  Scenario: Asset is not valid when enriching a localizable attribute value of an asset without specifying the locale in the value
     Given an asset family with a localizable attribute
     When the user updates the localizable attribute value of the asset without specifying the locale
     Then there should be a validation error on the property text attribute with message "A locale is expected for attribute "name" because it has a value per locale."
 
   @acceptance-back
-  Scenario: Asset is not valid when enriching a not localizable attribute value of a asset by specifying the locale in the value
+  Scenario: Asset is not valid when enriching a not localizable attribute value of an asset by specifying the locale in the value
     Given an asset family with a not localizable attribute
     When the user updates the not localizable attribute value of the asset by specifying the locale
     Then there should be a validation error on the property text attribute with message "A locale is not expected for attribute "name" because it has not a value per locale."
 
   @acceptance-back
-  Scenario: Asset is not valid when enriching a localizable attribute value of a asset by specifying a not activated locale in the value
+  Scenario: Asset is not valid when enriching a localizable attribute value of an asset by specifying a not activated locale in the value
     Given an asset family with a localizable attribute
     When the user updates the attribute value of the asset by specifying a not activated locale
     Then there should be a validation error on the property text attribute with message "The locale "de_DE" is not activated."
 
   @acceptance-back
-  Scenario: Updating a scopable value of a asset
+  Scenario: Updating a scopable value of an asset
     Given an asset family with a scopable attribute
     And an asset belonging to this asset family with a value for the ecommerce channel
     When the user updates the attribute of the asset for the ecommerce channel
@@ -78,7 +78,7 @@ Feature: Edit an asset
   Scenario: Asset is not valid when enriching a scopable attribute value without specifying the channel in the value
     Given an asset family with a scopable attribute
     And an asset belonging to this asset family with a value for the ecommerce channel
-    When the user enriches a scopable attribute value of a asset without specifying the channel
+    When the user enriches a scopable attribute value of an asset without specifying the channel
     Then there should be a validation error on the property text attribute with message "A channel is expected for attribute "name" because it has a value per channel."
 
   @acceptance-back
@@ -96,7 +96,7 @@ Feature: Edit an asset
     Then there should be a validation error on the property text attribute with message "The channel "unknown_channel" does not exist."
 
   @acceptance-back
-  Scenario: Updating a scopable and localizable value of a asset
+  Scenario: Updating a scopable and localizable value of an asset
     Given an asset family with a scopable and localizable attribute
     And an asset belonging to this asset family with a value for the ecommerce channel and french locale
     When the user updates the attribute of the asset for the ecommerce channel and french locale
@@ -112,7 +112,7 @@ Feature: Edit an asset
 
   # Text
   @acceptance-back
-  Scenario: Updating the text value of a asset
+  Scenario: Updating the text value of an asset
     Given an asset family with a text attribute
     And an asset belonging to this asset family with a value of "Philippe stark" for the text attribute
     When the user updates the text attribute of the asset to "Stark"
@@ -139,7 +139,7 @@ Feature: Edit an asset
     And the asset should have an empty value for this attribute
 
   @acceptance-back
-  Scenario: Updating the text value of a asset with an invalid value type
+  Scenario: Updating the text value of an asset with an invalid value type
     Given an asset family with a text attribute
     And an asset belonging to this asset family with a value of "Philippe stark" for the text attribute
     When the user updates the text attribute of the asset to an invalid value type
@@ -209,9 +209,9 @@ Feature: Edit an asset
     And there is no violations errors
     And the asset should have the text value "15|25" for this attribute
 
-  # Image
+  # Media file
   @acceptance-back
-  Scenario: Updating the image value of a asset by uploading a new one
+  Scenario: Updating the image value of an asset by uploading a new one
     Given an asset family with a media file attribute
     And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
     When the user updates the media file attribute of the asset with a valid uploaded file
@@ -220,7 +220,7 @@ Feature: Edit an asset
     And the asset should have the valid image for this attribute
 
   @acceptance-back
-  Scenario: Emptying the file value of a asset
+  Scenario: Emptying the file value of an asset
     Given an asset family with a media file attribute
     And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
     When the user removes an image from the asset for this attribute
@@ -229,28 +229,28 @@ Feature: Edit an asset
     And the asset should not have any image for this attribute
 
   @acceptance-back
-  Scenario: Updating the image value of a asset with an image that does not exist
+  Scenario: Updating the image value of an asset with an image that does not exist
     Given an asset family with a media file attribute
     And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
     When the user updates the media file attribute of the asset to an image that does not exist
     Then there should be a validation error on the property media file attribute with message "The file "/files/not_found.png" was not found."
 
   @acceptance-back
-  Scenario: Updating the image value of a asset with an uploaded file having an extension not allowed
+  Scenario: Updating the image value of an asset with an uploaded file having an extension not allowed
     Given an asset family with a media file attribute allowing only files with extension png
     And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
     When the user updates the media file attribute of the asset with an uploaded gif file which is a denied extension
     Then there should be a validation error on the property media file attribute with message '".gif" files are not allowed for this attribute. Allowed extensions are: png'
 
   @acceptance-back
-  Scenario: Updating the image value of a asset with an stored file having an extension not allowed
+  Scenario: Updating the image value of an asset with an stored file having an extension not allowed
     Given an asset family with a media file attribute allowing only files with extension png
     And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
     When the user updates the media file attribute of the asset with a stored gif file which is a denied extension
     Then there should be a validation error on the property media file attribute with message '".gif" files are not allowed for this attribute. Allowed extensions are: png'
 
   @acceptance-back
-  Scenario: Updating the image value of a asset with a file having an extension not allowed
+  Scenario: Updating the image value of an asset with a file having an extension not allowed
     Given an asset family with a media file attribute allowing only files with extension png
     And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
     When the user updates the media file attribute of the asset with an uploaded png file
@@ -259,28 +259,28 @@ Feature: Edit an asset
     And the asset should have the valid image for this attribute
 
   @acceptance-back
-  Scenario: Updating the image value of a asset with an uploaded file bigger than the limit
+  Scenario: Updating the image value of an asset with an uploaded file bigger than the limit
     Given an asset family with a media file attribute having a max file size of 15ko
     And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
     When the user updates the media file attribute of the asset with a bigger uploaded file than the limit
     Then there should be a validation error on the property media file attribute with message "The file exceeds the max file size set for the attribute."
 
   @acceptance-back
-  Scenario: Updating the image value of a asset with a stored file bigger than the limit
+  Scenario: Updating the image value of an asset with a stored file bigger than the limit
     Given an asset family with a media file attribute having a max file size of 15ko
     And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
     When the user updates the media file attribute of the asset with a bigger stored file than the limit
     Then there should be a validation error on the property media file attribute with message "The file exceeds the max file size set for the attribute."
 
   @acceptance-back
-  Scenario: Updating the image value of a asset with an invalid mime type
+  Scenario: Updating the image value of an asset with an invalid mime type
     Given an asset family with a media file attribute allowing only files with extension png
     And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
     When the user updates the media file attribute of the asset with a stored gif file which is a denied extension
     Then there should be a validation error on the property media file attribute with message '".gif" files are not allowed for this attribute. Allowed extensions are: png'
 
   @acceptance-back
-  Scenario: Updating the image value of a asset with a file smaller than the limit
+  Scenario: Updating the image value of an asset with a file smaller than the limit
     Given an asset family with a media file attribute having a max file size of 15ko
     And an asset belonging to this asset family with the file "picture.jpeg" for the media file attribute
     When the user updates the media file attribute of the asset with a smaller file than the limit
@@ -290,8 +290,8 @@ Feature: Edit an asset
 
   # Asset value
   @acceptance-back
-  Scenario: Updating the asset value of a asset
-    Given an asset family with a asset attribute
+  Scenario: Updating the asset value of an asset
+    Given an asset family with an asset attribute
     And an asset belonging to this asset family with a value of "ikea" for the asset attribute
     When the user updates the asset attribute of the asset to "made"
     Then there is no exception thrown
@@ -299,23 +299,23 @@ Feature: Edit an asset
     And the asset should have the asset value "made" for this attribute
 
   @acceptance-back
-  Scenario: Updating the asset value of a asset with an invalid asset value
-    Given an asset family with a asset attribute
+  Scenario: Updating the asset value of an asset with an invalid asset value
+    Given an asset family with an asset attribute
     And an asset belonging to this asset family with a value of "ikea" for the asset attribute
     When the user updates the asset attribute of the asset to an invalid asset value
     Then an exception is thrown with message "There was no factory found to create the edit asset value command of the attribute "brand_linked_designer_fingerprint""
 
   @acceptance-back
-  Scenario: Updating the asset value of a asset with a non-existent asset
-    Given an asset family with a asset attribute
+  Scenario: Updating the asset value of an asset with a non-existent asset
+    Given an asset family with an asset attribute
     And an asset belonging to this asset family with a value of "ikea" for the asset attribute
     When the user tries to update the asset attribute of the asset with an unknown value
     Then there should be a validation error on the property asset attribute with message "The asset "unknown_brand" was not found."
 
   # Asset collection value
   @acceptance-back
-  Scenario: Updating the asset collection value of a asset
-    Given an asset family with a asset collection attribute
+  Scenario: Updating the asset collection value of an asset
+    Given an asset family with an asset collection attribute
     And an asset belonging to this asset family with values of "ikea,made" for the asset collection attribute
     When the user updates the asset collection attribute of the asset to "stork,cogip"
     Then there is no exception thrown
@@ -323,22 +323,22 @@ Feature: Edit an asset
     And the asset should have the asset collection value "stork,cogip" for this attribute
 
   @acceptance-back
-  Scenario: Updating the asset collection value of a asset with an invalid asset value
-    Given an asset family with a asset collection attribute
+  Scenario: Updating the asset collection value of an asset with an invalid asset value
+    Given an asset family with an asset collection attribute
     And an asset belonging to this asset family with values of "ikea,made" for the asset collection attribute
     When the user updates the asset collection attribute of the asset to an invalid asset value
     Then an exception is thrown with message "There was no factory found to create the edit asset value command of the attribute "brand_linked_designer_fingerprint""
 
   @acceptance-back
-  Scenario: Updating the asset collection value of a asset with non-existent assets
-    Given an asset family with a asset collection attribute
+  Scenario: Updating the asset collection value of an asset with non-existent assets
+    Given an asset family with an asset collection attribute
     And an asset belonging to this asset family with values of "ikea,made" for the asset collection attribute
     When the user updates the asset collection attribute of the asset with unknown values
     Then there should be a validation error on the property asset attribute with message "The assets "unknown_brand,wrong_brand" were not found."
 
   # Option value
   @acceptance-back
-  Scenario: Updating the option value of a asset
+  Scenario: Updating the option value of an asset
     Given an asset family with an option attribute
     And an asset belonging to this asset family with values of "green" for the option attribute
     When the user updates the option attribute of the asset to "red"
@@ -347,7 +347,7 @@ Feature: Edit an asset
     And the asset should have the option value "red" for this attribute
 
   @acceptance-back
-  Scenario: Updating the option value of a asset with non-existent option
+  Scenario: Updating the option value of an asset with non-existent option
     Given an asset family with an option attribute
     And an asset belonging to this asset family with values of "green" for the option attribute
     When the user updates the option attribute of the asset to "blue"
@@ -356,7 +356,7 @@ Feature: Edit an asset
 
   # Option collection value
   @acceptance-back
-  Scenario: Updating the option collection value of a asset
+  Scenario: Updating the option collection value of an asset
     Given an asset family with an option collection attribute
     And an asset belonging to this asset family with values of "vodka, whisky" for the option collection attribute
     When the user updates the option collection attribute of the asset to "vodka, rhum"
@@ -365,7 +365,7 @@ Feature: Edit an asset
     And the asset should have the option collection value "vodka, rhum" for this attribute
 
   @acceptance-back
-  Scenario: Updating the option collection value of a asset with non-existent option
+  Scenario: Updating the option collection value of an asset with non-existent option
     Given an asset family with an option collection attribute
     And an asset belonging to this asset family with values of "vodka, whisky" for the option collection attribute
     When the user updates the option collection attribute of the asset to "vodka, water"
@@ -374,7 +374,7 @@ Feature: Edit an asset
 
   # Number value
   @acceptance-back
-  Scenario Outline: Updating the number value of a asset with decimals
+  Scenario Outline: Updating the number value of an asset with decimals
     Given an asset family with a number attribute
     And an asset belonging to this asset family with values of "33" for the number attribute
     When the user updates the number attribute of the asset to "<new_value>"
@@ -391,7 +391,7 @@ Feature: Edit an asset
       | -0.5      |
 
   @acceptance-back
-  Scenario: Updating the number value of a asset with decimals with an invalid value
+  Scenario: Updating the number value of an asset with decimals with an invalid value
     Given an asset family with a number attribute
     And an asset belonging to this asset family with values of "33" for the number attribute
     When the user updates the number attribute of the asset to "aze"
@@ -399,7 +399,7 @@ Feature: Edit an asset
     And the asset should have the number value "33" for this attribute
 
   @acceptance-back
-  Scenario Outline: Updating the number value of a asset with no decimal
+  Scenario Outline: Updating the number value of an asset with no decimal
     Given an asset family with a number attribute with no decimal value
     And an asset belonging to this asset family with values of "33" for the number attribute
     When the user updates the number attribute of the asset to "<new_value>"
@@ -414,7 +414,7 @@ Feature: Edit an asset
       | -159      |
 
   @acceptance-back
-  Scenario Outline: Updating the number value of a asset with a forbidden decimal value
+  Scenario Outline: Updating the number value of an asset with a forbidden decimal value
     Given an asset family with a number attribute with no decimal value
     And an asset belonging to this asset family with values of "10" for the number attribute
     When the user updates the number attribute of the asset to "<invalid_value>"
@@ -474,7 +474,7 @@ Feature: Edit an asset
     Then the asset should have the mediaLink value for this attribute
 
   @acceptance-front
-  Scenario: Updating a asset details
+  Scenario: Updating an asset details
     Given a valid asset
     And the user has the locale permission to edit the asset
     And the user has the following rights:
@@ -483,7 +483,7 @@ Feature: Edit an asset
     Then the user should see a success message on the edit page
 
   @acceptance-front
-  Scenario: User can't update a asset details without the edit rights
+  Scenario: User can't update an asset details without the edit rights
     Given a valid asset
     And the user has the locale permission to edit the asset
     And the user has the following rights:
@@ -491,7 +491,7 @@ Feature: Edit an asset
     Then the user cannot save the asset
 
   @acceptance-front
-  Scenario: Updating a asset with a simple text value
+  Scenario: Updating an asset with a simple text value
     Given a valid asset
     And the user has the locale permission to edit the asset
     And the user has the following rights:
@@ -500,7 +500,7 @@ Feature: Edit an asset
     Then the user should see a success message on the edit page
 
   @acceptance-front
-  Scenario: Updating a asset with an invalid simple text value
+  Scenario: Updating an asset with an invalid simple text value
     Given a valid asset
     And the user has the locale permission to edit the asset
     And the user has the following rights:
@@ -517,7 +517,7 @@ Feature: Edit an asset
     Then the user cannot update the simple text value
 
   @acceptance-front
-  Scenario: Updating a asset with a simple option value
+  Scenario: Updating an asset with a simple option value
     Given a valid asset with an option attribute
     And the user has the locale permission to edit the asset
     And the user has the following rights:
@@ -526,7 +526,7 @@ Feature: Edit an asset
     Then the user should see a success message on the edit page
 
   @acceptance-front
-  Scenario: Updating a asset with an invalid simple option value
+  Scenario: Updating an asset with an invalid simple option value
     Given a valid asset with an option attribute
     And the user has the locale permission to edit the asset
     And the user has the following rights:
@@ -543,7 +543,7 @@ Feature: Edit an asset
     Then the user cannot update the simple option value
 
   #@acceptance-front
-  Scenario: Updating a asset with a multiple option value
+  Scenario: Updating an asset with a multiple option value
     Given a valid asset with an option collection attribute
     And the user has the locale permission to edit the asset
     And the user has the following rights:
@@ -552,7 +552,7 @@ Feature: Edit an asset
     Then the user should see a success message on the edit page
 
   @acceptance-front
-  Scenario: Updating a asset with an invalid multiple option value
+  Scenario: Updating an asset with an invalid multiple option value
     Given a valid asset with an option collection attribute
     And the user has the locale permission to edit the asset
     And the user has the following rights:
@@ -580,7 +580,7 @@ Feature: Edit an asset
     Then the user should not see a completeness bullet point on the required field: "website"
 
   @acceptance-front
-  Scenario: Display completeness percentage on a asset with required fields
+  Scenario: Display completeness percentage on an asset with required fields
     Given a valid asset
     And the user has the locale permission to edit the asset
     And the user has the following rights:
@@ -591,7 +591,7 @@ Feature: Edit an asset
     Then the user should see the completeness percentage with a value of "100%"
 
   @acceptance-front
-  Scenario: Updating a asset with a single asset linked
+  Scenario: Updating an asset with a single asset linked
     Given a valid asset with an asset family single link attribute
     And the user has the locale permission to edit the asset
     And the user has the following rights:
@@ -608,7 +608,7 @@ Feature: Edit an asset
     Then the user cannot update the single asset linked value
 
 #  @acceptance-front
-  Scenario: Updating a asset with a multiple asset linked
+  Scenario: Updating an asset with a multiple asset linked
     Given a valid asset with an asset collection attribute
     And the user has the locale permission to edit the asset
     And the user has the following rights:
@@ -625,7 +625,7 @@ Feature: Edit an asset
     Then the user cannot update the multiple asset linked value
 
   @acceptance-front
-  Scenario: Updating a asset with a number value
+  Scenario: Updating an asset with a number value
     Given a valid asset
     And the user has the locale permission to edit the asset
     And the user has the following rights:
@@ -634,7 +634,7 @@ Feature: Edit an asset
     Then the user should see a success message on the edit page
 
 #  @acceptance-front
-  Scenario: Updating a asset with a number value out of range
+  Scenario: Updating an asset with a number value out of range
     Given a valid asset
     And the user has the locale permission to edit the asset
     And the user has the following rights:
@@ -645,13 +645,13 @@ Feature: Edit an asset
 
 #  Todo : Fix random call for the preview image
 #  @acceptance-front
-#  Scenario: Updating a asset with an image value
+#  Scenario: Updating an asset with an image value
 #    Given a valid asset
 #    When the user updates the valid asset with an image value
 #    Then the user should see a success message after the update asset
 #
 #  @acceptance-front
-#  Scenario: Updating a asset with an invalid image value
+#  Scenario: Updating an asset with an invalid image value
 #    Given a valid asset
 #    When the user saves the valid asset with an invalid image value
 #    Then the user should see the validation error after the update asset : "This value is not a valid URL."

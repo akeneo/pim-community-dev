@@ -54,6 +54,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CreateOrUpdateAssetFamilyContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'AssetFamily/Connector/Collect/';
+    private const VALID_EXTENSIONS = ['gif', 'jfif', 'jif', 'jpeg', 'jpg', 'pdf', 'png', 'psd', 'tif', 'tiff'];
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -389,7 +390,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('120'),
-            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::VALID_EXTENSIONS),
+            AttributeAllowedExtensions::fromList(self::VALID_EXTENSIONS),
             MediaType::fromString(MediaType::IMAGE)
         );
 
