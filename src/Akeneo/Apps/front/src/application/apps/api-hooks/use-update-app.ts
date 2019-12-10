@@ -31,15 +31,11 @@ export const useUpdateApp = (code: string) => {
             }),
         });
         if (isErr(result)) {
-            if (!result.error.errors) {
+            if (result.error.errors) {
+                result.error.errors.forEach(({reason}) => notify(NotificationLevel.ERROR, translate(reason)));
+            } else {
                 notify(NotificationLevel.ERROR, translate('pim_apps.edit_app.flash.error'));
-
-                return result;
             }
-
-            result.error.errors
-                .filter(({name}) => name !== 'label')
-                .forEach(({reason}) => notify(NotificationLevel.ERROR, translate(reason)));
 
             return result;
         }

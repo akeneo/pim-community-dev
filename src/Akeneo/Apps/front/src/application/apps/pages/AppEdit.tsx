@@ -15,7 +15,7 @@ import {
 } from '../../common';
 import defaultImageUrl from '../../common/assets/illustrations/api.svg';
 import {fetchResult} from '../../shared/fetch-result';
-import {isOk} from '../../shared/fetch-result/result';
+import {isOk, isErr} from '../../shared/fetch-result/result';
 import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {appUpdated, appWithCredentialsFetched} from '../actions/apps-actions';
@@ -54,7 +54,9 @@ const validate = ({label}: FormValues): FormErrors => {
     if (!label || label.trim().length === 0) {
         errors.label = 'akeneo_apps.app.constraint.label.required';
     }
-
+    if (label.trim().length < 3) {
+        errors.label = 'akeneo_apps.app.constraint.label.too_short';
+    }
     return errors;
 };
 
@@ -68,18 +70,18 @@ export const AppEdit = () => {
     const fetchAppUrl = useRoute('akeneo_apps_get_rest', {code});
     useEffect(() => {
         fetchResult<FetchAppData, unknown>(fetchAppUrl).then(result => {
-            if (isOk(result)) {
-                dispatch(
-                    appWithCredentialsFetched({
-                        ...result.value,
-                        flowType: result.value.flow_type,
-                        clientId: result.value.client_id,
-                    })
-                );
-            } else {
-                console.error('App not found!');
+            if (isErr(result)) {
                 history.push('/apps');
+                return;
             }
+
+            dispatch(
+                appWithCredentialsFetched({
+                    ...result.value,
+                    flowType: result.value.flow_type,
+                    clientId: result.value.client_id,
+                })
+            );
         });
     }, [dispatch, fetchAppUrl, history]);
 
@@ -102,9 +104,6 @@ export const AppEdit = () => {
                     image,
                 })
             );
-        } else {
-            console.error('Error while saving the app!');
-            history.push('/apps');
         }
     };
 
