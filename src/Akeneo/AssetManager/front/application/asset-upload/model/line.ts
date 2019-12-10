@@ -19,6 +19,7 @@ export default interface Line {
   id: LineIdentifier;
   thumbnail: Thumbnail;
   created: boolean;
+  isCreating: boolean;
   isSending: boolean;
   file: FileModel;
   filename: string;

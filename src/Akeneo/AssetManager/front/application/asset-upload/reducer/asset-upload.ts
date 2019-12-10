@@ -156,8 +156,6 @@ export const reducer = (
     | OnEditLineAction
     | OnRemoveAllLinesAction
 ) => {
-  console.log(state, action);
-
   switch (action.type) {
     case ADD_LINES:
       return {...state, lines: addLines(state.lines, action.payload.lines)};
@@ -190,7 +188,7 @@ export const reducer = (
         }),
       };
     case LINE_CREATION_START:
-      return {...state, lines: updateLine(state.lines, action.payload.line.id, {})};
+      return {...state, lines: updateLine(state.lines, action.payload.line.id, {isCreating: true})};
     case ASSET_CREATION_SUCCESS:
       return {...state, lines: assetCreationSucceeded(state.lines, action.payload.asset)};
     case ASSET_CREATION_FAIL:

@@ -14,6 +14,7 @@ export const createLineFromFilename = (filename: string, assetFamily: AssetFamil
     id: createUUIDV4(),
     thumbnail: null,
     created: false,
+    isCreating: false,
     isSending: false,
     file: null,
     filename: filename,
@@ -143,19 +144,11 @@ export const assetCreationFailed = (lines: Line[], asset: CreationAsset, errors:
 };
 
 export const assetCreationSucceeded = (lines: Line[], asset: CreationAsset): Line[] => {
-  return lines.map((line: Line) => (line.code === asset.code ? {...line, create: true} : line));
+  return lines.map((line: Line) => (line.code === asset.code ? {...line, created: true, isCreating: false} : line));
 };
-
-export const lineCreationStart = (lines: Line[], lineToSend: Line): Line[] =>
-  updateLine(lines, lineToSend.id, {isSending: true});
-
-export const assetIsSent = (lines: Line[], asset: CreationAsset): Line[] =>
-  lines.map((line: Line) => (line.code === asset.code ? {...line, isSending: false} : line));
 
 export const selectLinesToSend = (lines: Line[]): Line[] =>
   lines.filter((line: Line) => !line.created && null !== line.file && !line.isSending);
-
-export const selectLinesCreated = (lines: Line[]): Line[] => lines.filter((line: Line) => line.created);
 
 export const getStatusFromLine = (line: Line, localizable: boolean, scopable: boolean): LineStatus => {
   const errorsCount = Object.values(line.errors).reduce((count: number, errors: ValidationError[]) => {
