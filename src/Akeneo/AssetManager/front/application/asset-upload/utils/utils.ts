@@ -1,4 +1,4 @@
-import Line, {LineStatus, Thumbnail} from 'akeneoassetmanager/application/asset-upload/model/line';
+import Line, {LineStatus, Thumbnail, LineIdentifier} from 'akeneoassetmanager/application/asset-upload/model/line';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamily, getAssetFamilyMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
@@ -126,26 +126,17 @@ export const addLines = (lines: Line[], linesToAdd: Line[]): Line[] => {
   return [...linesToAdd, ...lines];
 };
 
-export const addThumbnail = (lines: Line[], lineToUpdate: Line, thumbnail: Thumbnail): Line[] => {
-  return lines.map((line: Line) => (line.id === lineToUpdate.id ? {...line, thumbnail} : line));
-};
+export const updateLine = (lines: Line[], lineToUpdateIdentifier: LineIdentifier, update: any): Line[] =>
+  lines.map((line: Line): Line => (line.id === lineToUpdateIdentifier ? {...line, ...(update as Line)} : line));
 
 export const removeLine = (lines: Line[], lineToRemove: Line): Line[] =>
   lines.filter((line: Line) => line.id !== lineToRemove.id);
 
-export const editLine = (lines: Line[], lineToEdit: Line): Line[] =>
-  lines.map((line: Line) =>
-    line.id === lineToEdit.id
-      ? {...line, code: lineToEdit.code, locale: lineToEdit.locale, channel: lineToEdit.channel}
-      : line
-  );
-
-export const addUploadedFileToLine = (lines: Line[], lineToUpdate: Line, file: FileModel): Line[] => {
-  return lines.map((line: Line) => (line.id === lineToUpdate.id ? {...line, file} : line));
-};
-
-export const updateUploadProgressToLine = (lines: Line[], lineToUpdate: Line, progress: number): Line[] => {
-  return lines.map((line: Line) => (line.id === lineToUpdate.id ? {...line, uploadProgress: progress} : line));
+export const updateUploadProgressToLine = (lines: Line[], lineToUpdate: Line, uploadProgress: number): Line[] => {
+  return updateLine(lines, lineToUpdate.id, {
+    uploadProgress,
+    isSending: true,
+  });
 };
 
 const addBackValidationError = (line: Line, errors: ValidationError[]): Line => ({
@@ -165,7 +156,7 @@ export const assetCreationSucceeded = (lines: Line[], asset: CreationAsset): Lin
 };
 
 export const lineCreationStart = (lines: Line[], lineToSend: Line): Line[] =>
-  lines.map((line: Line) => (lineToSend.id === line.id ? {...line, isSending: true} : line));
+  updateLine(lines, lineToSend.id, {isSending: true});
 
 export const assetIsSent = (lines: Line[], asset: CreationAsset): Line[] =>
   lines.map((line: Line) => (line.code === asset.code ? {...line, isSending: false} : line));
@@ -174,21 +165,12 @@ export const selectLinesToSend = (lines: Line[]): Line[] =>
   lines.filter((line: Line) => !line.created && null !== line.file && !line.isSending);
 export const selectLinesCreated = (lines: Line[]): Line[] => lines.filter((line: Line) => line.created);
 
-// export const sendAssets = (
-//   assets: Asset[],
-//   onSuccess: (asset: Asset) => void,
-//   onError: (asset: Asset, errors: any) => void
-// ) => {
-//
-// };
-
 export const getStatusFromLine = (line: Line, localizable: boolean, scopable: boolean): LineStatus => {
   const errorsCount = Object.values(line.errors).reduce((count: number, errors: ValidationError[]) => {
     return count + errors.length;
   }, 0);
   const isComplete: boolean =
-    (!localizable || (localizable && line.locale !== null))
-    && (!scopable || (scopable && line.channel !== null));
+    (!localizable || (localizable && line.locale !== null)) && (!scopable || (scopable && line.channel !== null));
 
   if (errorsCount > 0) {
     return LineStatus.Invalid;
@@ -222,38 +204,3 @@ const createUUIDV4 = (): string => {
     return v.toString(16);
   });
 };
-
-/*
-to code: onUploadDown, onUploadError, removeLine
-
-
-const lines = [];
-
-user drops files:
-
-const fileCollection = [];
-const fileNames = fileCollection.map(file -> file.name);
-startUpload(fileCollection, onUploadDown, onUploadError);
-const newLines = filenames.map(filename => createLineFromFilename(filename, assetFamily));
-const lines = addLines(lines, newLines);
-
-user click on create
-
-const linesToSend = selectLineToSend(lines);
-const assets = createAssetsFromLines(linesToSend)
-const lines = linesToSend.forEach((line: Line) => {
-  return lineIsSending(lines, line)
-}
-
-assets.forEach(async (asset) => {
-  const result = await createAsset(asset);
-
-  if (null !== result) {
-    assetCreationFailed(lines, asset, result);
-  } else {
-    assetCreationSucceeded(lines, asset)
-  }
-  assetIsSent(lines, asset)
-})
-
-*/

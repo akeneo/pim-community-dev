@@ -13,9 +13,10 @@ export enum LineStatus {
 }
 
 export type Thumbnail = string | null;
+export type LineIdentifier = string;
 
 export default interface Line {
-  id: string;
+  id: LineIdentifier;
   thumbnail: Thumbnail;
   created: boolean;
   isSending: boolean;
