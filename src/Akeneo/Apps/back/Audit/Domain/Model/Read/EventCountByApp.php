@@ -9,7 +9,7 @@ namespace Akeneo\Apps\Audit\Domain\Model\Read;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class WeeklyEventCountByApp
+final class EventCountByApp
 {
     /** @var string */
     private $appLabel;
@@ -31,13 +31,11 @@ final class WeeklyEventCountByApp
     {
         $eventCounts = [];
         foreach ($this->eventCounts as $eventCount) {
-            $eventCounts[$eventCount->date()->format('Y-m-d')] = $eventCount->count();
+            $eventCounts[] = $eventCount->normalize();
         }
 
         return [
-            'app_label' => $this->appLabel,
-            'event_type' => $this->eventType,
-            'event_counts' => $eventCounts,
+            $this->appLabel => $eventCounts
         ];
     }
 }

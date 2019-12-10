@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Apps\Audit\Domain\Model\Read;
 
 use Akeneo\Apps\Audit\Domain\Model\Read\EventCountByDate;
-use Akeneo\Apps\Audit\Domain\Model\Read\WeeklyEventCountByApp;
+use Akeneo\Apps\Audit\Domain\Model\Read\EventCountByApp;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class WeeklyEventCountByAppSpec extends ObjectBehavior
+class EventCountByAppSpec extends ObjectBehavior
 {
     function let()
     {
@@ -22,15 +22,13 @@ class WeeklyEventCountByAppSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf(WeeklyEventCountByApp::class);
+        $this->shouldBeAnInstanceOf(EventCountByApp::class);
     }
 
     function it_normalizes_an_app()
     {
         $this->normalize()->shouldReturn([
-            'app_label' => 'magento',
-            'event_type' => 'product_created',
-            'event_counts' => [],
+            'magento' => [],
         ]);
     }
 
@@ -48,12 +46,10 @@ class WeeklyEventCountByAppSpec extends ObjectBehavior
         $this->beConstructedWith('magento', 'product_updated', [$eventCount1, $eventCount2, $eventCount3]);
         $this->normalize()->shouldReturn(
             [
-                'app_label' => 'magento',
-                'event_type' => 'product_updated',
-                'event_counts' => [
-                    '2019-12-12' => 153,
-                    '2019-12-13' => 231,
-                    '2019-12-14' => 127,
+                'magento' => [
+                    ['date' => '2019-12-12', 'value' => 153],
+                    ['date' => '2019-12-13', 'value' => 231],
+                    ['date' => '2019-12-14', 'value' => 127],
                 ]
             ]
         );
