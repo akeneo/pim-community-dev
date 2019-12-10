@@ -13,22 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets;
 
-use Webmozart\Assert\Assert;
-
-class ComputeTransformationsCommand
+class ComputeTransformationsFromAssetFamilyIdentifierCommand
 {
-    /** @var string[] */
-    private $assetIdentifiers;
+    /** @var string */
+    private $assetFamilyIdentifier;
 
-    public function __construct(array $assetIdentifiers)
+    public function __construct(string $assetFamilyIdentifier)
     {
-        Assert::allStringNotEmpty($assetIdentifiers);
-
-        $this->assetIdentifiers = $assetIdentifiers;
+        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
     }
 
-    public function getAssetIdentifiers(): array
+    public function getAssetFamilyIdentifier(): string
     {
-        return $this->assetIdentifiers;
+        return $this->assetFamilyIdentifier;
     }
 }

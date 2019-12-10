@@ -6,6 +6,7 @@ default:
             contexts:
                 - akeneo_assetmanager.tests.back.acceptance.context.edit_asset_family_context
                 - akeneo_assetmanager.tests.back.acceptance.context.edit_asset_family_transformations_context
+                - akeneo_assetmanager.tests.back.acceptance.context.compute_transformations_context
                 - akeneo_assetmanager.tests.back.acceptance.context.delete_asset_family_context
                 - akeneo_assetmanager.tests.back.acceptance.context.create_asset_family_context
                 - akeneo_assetmanager.tests.back.acceptance.context.create_asset_context

@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Job;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindSearchableAssetsInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\SearchableAssetItem;
 use Akeneo\AssetManager\Infrastructure\Transformation\ComputeTransformationsExecutor;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -26,9 +29,15 @@ class ComputeTransformations implements TaskletInterface
     /** @var ComputeTransformationsExecutor */
     private $computeTransformationsExecutor;
 
-    public function __construct(ComputeTransformationsExecutor $computeTransformationsExecutor)
-    {
+    /** @var FindSearchableAssetsInterface */
+    private $findSearchableAssets;
+
+    public function __construct(
+        ComputeTransformationsExecutor $computeTransformationsExecutor,
+        FindSearchableAssetsInterface $findSearchableAssets
+    ) {
         $this->computeTransformationsExecutor = $computeTransformationsExecutor;
+        $this->findSearchableAssets = $findSearchableAssets;
     }
 
     public function setStepExecution(StepExecution $stepExecution)
@@ -38,8 +47,22 @@ class ComputeTransformations implements TaskletInterface
 
     public function execute()
     {
-        $this->computeTransformationsExecutor->execute(array_map(function (string $assetIdentifier) {
-            return AssetIdentifier::fromString($assetIdentifier);
-        }, $this->stepExecution->getJobParameters()->get('asset_identifiers')));
+        $assetIdentifiers = [];
+
+        if ($this->stepExecution->getJobParameters()->has('asset_family_identifier')) {
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(
+                $this->stepExecution->getJobParameters()->get('asset_family_identifier')
+            );
+            foreach ($this->findSearchableAssets->byAssetFamilyIdentifier($assetFamilyIdentifier) as $asset) {
+                /** @var SearchableAssetItem $asset */
+                $assetIdentifiers[] = AssetIdentifier::fromString($asset->identifier);
+            }
+        } elseif ($this->stepExecution->getJobParameters()->has('asset_identifiers')) {
+            $assetIdentifiers = array_map(function (string $assetIdentifier) {
+                return AssetIdentifier::fromString($assetIdentifier);
+            }, $this->stepExecution->getJobParameters()->get('asset_identifiers'));
+        }
+
+        $this->computeTransformationsExecutor->execute($assetIdentifiers);
     }
 }

@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Job;
 
-use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationLauncherInterface;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationFromAssetFamilyIdentifierLauncherInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
-use Webmozart\Assert\Assert;
 
-class ComputeTransformationLauncher implements ComputeTransformationLauncherInterface
+class ComputeTransformationFromAssetFamilyIdentifierLauncher implements ComputeTransformationFromAssetFamilyIdentifierLauncherInterface
 {
     /** @var PublishJobToQueue */
     private $publishJobToQueue;
@@ -28,17 +27,10 @@ class ComputeTransformationLauncher implements ComputeTransformationLauncherInte
         $this->publishJobToQueue = $publishJobToQueue;
     }
 
-    /**
-     * @param AssetIdentifier[] $assetIdentifiers
-     */
-    public function launch(array $assetIdentifiers): void
+    public function launch(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
-        Assert::allIsInstanceOf($assetIdentifiers, AssetIdentifier::class);
-
         $config = [
-            'asset_identifiers' => array_map(function (AssetIdentifier $assetIdentifier) {
-                return (string) $assetIdentifier;
-            }, $assetIdentifiers),
+            'asset_family_identifier' => (string) $assetFamilyIdentifier,
         ];
 
         $this->publishJobToQueue->publish(

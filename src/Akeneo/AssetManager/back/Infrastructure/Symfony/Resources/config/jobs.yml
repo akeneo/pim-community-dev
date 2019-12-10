@@ -4,8 +4,13 @@ services:
         arguments:
             - '@akeneo_batch_queue.queue.publish_job_to_queue'
 
-    akeneo_assetmanager.infrastructure.job.compute_transformations_launcher:
-        class: Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationLauncher
+    akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher:
+        class: Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationFromAssetIdentifiersLauncher
+        arguments:
+            - '@akeneo_batch_queue.queue.publish_job_to_queue'
+
+    akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_family_identifier_launcher:
+        class: Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationFromAssetFamilyIdentifierLauncher
         arguments:
             - '@akeneo_batch_queue.queue.publish_job_to_queue'
 
@@ -73,4 +78,5 @@ services:
         class: 'Akeneo\AssetManager\Infrastructure\Job\ComputeTransformations'
         arguments:
             - '@akeneo_assetmanager.infrastructure.transformation.compute_transformations.executor'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_searchable_assets'
         public: false
