@@ -14,21 +14,17 @@ final class EventCountByApp
     /** @var string */
     private $appLabel;
 
-    /** @var string */
-    private $eventType;
-
     /** @var array */
     private $eventCounts;
 
-    public function __construct(string $appLabel, string $eventType, array $eventCounts)
+    public function __construct(string $appLabel)
     {
         $this->appLabel = $appLabel;
-        $this->eventType = $eventType;
+    }
 
-        foreach ($eventCounts as $eventDate => $eventCount) {
-            $this->eventCounts[] = new EventCountByDate($eventCount, new \DateTime($eventDate, new \DateTimeZone('UTC')));
-        }
-//        $this->eventCounts = $eventCounts;
+    public function addEventCount(EventCountByDate $eventCountByDate): void
+    {
+        $this->eventCounts[] = $eventCountByDate;
     }
 
     public function normalize()

@@ -48,11 +48,23 @@ SQL;
 
         $eventCountByApps = [];
         foreach ($dataRows as $dataRow) {
-            $eventCounts = json_decode($dataRow['event_count'], true);
-//            var_dump($eventCounts);
-            $eventCountByApps[] = new EventCountByApp($dataRow['label'], $eventType, $eventCounts);
+
+
+            $eventCountByApps[] = $this->hydrateRow($dataRow);
         }
 
         return $eventCountByApps;
+    }
+
+    private function hydrateRow(array $dataRow): EventCountByApp
+    {
+        $eventCountByApp = new EventCountByApp($dataRow['label']);
+        foreach (json_decode($dataRow['event_count'], true) as $eventDate => $eventCount) {
+            $eventCountByApp->addEventCount(
+                new EventCountByDate($eventCount, new \DateTime($eventDate, new \DateTimeZone('UTC')))
+            );
+        }
+
+        return $eventCountByApp;
     }
 }
