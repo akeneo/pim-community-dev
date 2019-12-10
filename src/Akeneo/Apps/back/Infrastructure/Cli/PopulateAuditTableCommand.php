@@ -51,7 +51,7 @@ class PopulateAuditTableCommand extends Command
         }
     }
 
-    private function insertAuditData($appUsername, $eventDate, $eventCount, $eventType): void
+    private function insertAuditData($appCode, $eventDate, $eventCount, $eventType): void
     {
         $sqlQuery = <<<SQL
 INSERT INTO akeneo_app_audit (app_code, event_date, event_count, event_type)
@@ -60,7 +60,7 @@ SQL;
         $this->dbalConnection->executeQuery(
             $sqlQuery,
             [
-                'app_code' => $appUsername,
+                'app_code' => $appCode,
                 'event_date' => $eventDate,
                 'event_count' => $eventCount,
                 'event_type' => $eventType
