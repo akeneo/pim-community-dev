@@ -25,9 +25,9 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * This class checks that a transformation is applicable to a fiven asset, meaning:
- * - the values corresponding to the transformation's source and target are of the right type (MediaFile)
- * - the target value is older than the source value (TODO ATR-50: and older than the transformation)
+ * This class checks that a transformation is applicable to a given asset, meaning:
+ * - the transformation is valid
+ * - the target value is older than the source value
  */
 class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
 {
@@ -70,8 +70,8 @@ class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
 
         $targetValue = $this->getValueForReference($transformation->getTarget(), $asset);
         if (null === $targetValue
-            || $this->isTargetValueOlderThanSource($sourceValue->getData(), $targetValue->getData())
-            || $this->isTargetValueOlderThanTransformationSetup($transformation, $targetValue->getData())
+            || $targetValue->getData()->getUpdatedAt() < $sourceValue->getData()->getUpdatedAt()
+            || $targetValue->getData()->getUpdatedAt() < $transformation->getUpdatedAt()
         ) {
             return $sourceValue->getData();
         }
@@ -93,17 +93,5 @@ class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
                 $reference->getLocaleReference()
             )
         );
-    }
-
-    private function isTargetValueOlderThanSource(FileData $sourceData, FileData $targetData): bool
-    {
-        return $targetData->getUpdatedAt() < $sourceData->getUpdatedAt();
-    }
-
-    private function isTargetValueOlderThanTransformationSetup(
-        Transformation $transformation,
-        FileData $targetData
-    ): bool {
-        return null === $targetData->getUpdatedAt() || $targetData->getUpdatedAt() < $transformation->getUpdatedAt();
     }
 }

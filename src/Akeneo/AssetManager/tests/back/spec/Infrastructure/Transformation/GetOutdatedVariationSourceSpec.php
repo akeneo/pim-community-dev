@@ -226,6 +226,70 @@ class GetOutdatedVariationSourceSpec extends ObjectBehavior
         $this->forAssetAndTransformation($asset, $transformation)->shouldReturn($sourceFile);
     }
 
+    function it_returns_the_source_file_if_target_file_is_older_than_transformation(
+        Asset $asset,
+        Transformation $transformation,
+        MediaFileAttribute $mainImage,
+        FileData $sourceFile,
+        MediaFileAttribute $targetImage,
+        FileData $targetFile
+    ) {
+        $transformation->normalize()->willReturn(['normalized_transformation_without_errors']);
+        $asset->getAssetFamilyIdentifier()->willReturn(AssetFamilyIdentifier::fromString('packshot'));
+
+        $transformation->getSource()->willReturn(
+            Source::createFromNormalized(
+                [
+                    'attribute' => 'main_image',
+                    'channel' => null,
+                    'locale' => null,
+                ]
+            )
+        );
+        $mainImageIdentifier = AttributeIdentifier::fromString('packshot-main_image-123456');
+        $mainImage->getIdentifier()->willReturn($mainImageIdentifier);
+        $asset->findValue(ValueKey::createFromNormalized('packshot-main_image-123456'))->willReturn(
+            Value::create(
+                $mainImageIdentifier,
+                ChannelReference::noReference(),
+                LocaleReference::noReference(),
+                $sourceFile->getWrappedObject()
+            )
+        );
+
+        $transformation->getTarget()->willReturn(
+            Target::createFromNormalized(
+                [
+                    'attribute' => 'target_image',
+                    'channel' => null,
+                    'locale' => null,
+                ]
+            )
+        );
+        $targetImageIdentifier = AttributeIdentifier::fromString('packshot-target_image-789012');
+        $targetImage->getIdentifier()->willReturn($targetImageIdentifier);
+        $asset->findValue(ValueKey::createFromNormalized('packshot-target_image-789012'))->willReturn(
+            Value::create(
+                $targetImageIdentifier,
+                ChannelReference::noReference(),
+                LocaleReference::noReference(),
+                $targetFile->getWrappedObject()
+            )
+        );
+
+        $sourceFile->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-30T00:00:00+0000')
+        );
+        $targetFile->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-12-02T00:00:00+0000')
+        );
+        $transformation->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-12-05T00:00:00+0000')
+        );
+
+        $this->forAssetAndTransformation($asset, $transformation)->shouldReturn($sourceFile);
+    }
+
     function it_returns_the_source_file_if_the_target_is_missing(
         Asset $asset,
         Transformation $transformation,
