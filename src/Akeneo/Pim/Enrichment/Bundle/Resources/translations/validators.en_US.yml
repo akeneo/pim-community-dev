@@ -2,6 +2,7 @@ An identifier attribute already exists.:                                        
 Attribute code may contain only letters, numbers and underscore:                          Attribute code may contain only letters, numbers and underscore
 Attribute code may contain only letters (at least one), numbers and underscores:          Attribute code may contain only letters (at least one), numbers and underscores
 Attribute code may not contain line-feed characters:                                      Attribute code may not contain line-feed characters
+Attribute group code may contain only letters, numbers and underscores:                   Attribute group code may contain only letters, numbers and underscores
 This attribute type can't be used as a grid filter:                                       This attribute type can't be used as a grid filter
 This code is not available:                                                               This code is not available
 This attribute type must be required:                                                     This attribute type must be required
