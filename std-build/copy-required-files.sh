@@ -34,5 +34,4 @@ cp --no-clobber $DEV_DISTRIB_DIR/std-build/tsconfig.json $STANDARD_DISTRIB_DIR/t
 cp --no-clobber -r $DEV_DISTRIB_DIR/docker/* $STANDARD_DISTRIB_DIR/docker/
 cp --no-clobber $DEV_DISTRIB_DIR/.gitignore $STANDARD_DISTRIB_DIR/
 cp --no-clobber $DEV_DISTRIB_DIR/std-build/services.yml $STANDARD_DISTRIB_DIR/config/services/
-
-[ ! -f $STANDARD_DISTRIB_DIR/docker-composer.yml ] | sed -e 's#akeneo/pim-dev/php:7.3#akeneo/pim-php-dev:4.0#g' $DEV_DISTRIB_DIR/docker-compose.yml > $STANDARD_DISTRIB_DIR/docker-compose.yml
+cp --no-clobber $DEV_DISTRIB_DIR/std-build/docker-compose.yml $STANDARD_DISTRIB_DIR/std-build/
