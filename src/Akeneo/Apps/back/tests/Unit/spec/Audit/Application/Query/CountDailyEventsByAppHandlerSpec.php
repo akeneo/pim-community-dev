@@ -41,16 +41,7 @@ class CountDailyEventsByAppHandlerSpec extends ObjectBehavior
             ->execute('product_created', '2019-12-10', '2019-12-12')
             ->willReturn([$eventCountByApp1, $eventCountByApp2]);
 
-        $expectedData = [
-            'Magento' => [
-                '2019-12-10' => 42,
-                '2019-12-11' => 123,
-            ],
-            'Bynder' => [
-                '2019-12-11' => 36,
-            ]
-        ];
         $query = new CountDailyEventsByAppQuery('product_created', '2019-12-10', '2019-12-12');
-        $this->handle($query)->shouldBeLike($expectedData);
+        $this->handle($query)->shouldReturn([$eventCountByApp1, $eventCountByApp2]);
     }
 }

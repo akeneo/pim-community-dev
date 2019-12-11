@@ -21,17 +21,12 @@ class CountDailyEventsByAppHandler
         $this->selectAppsEventCountByDateQuery = $selectAppsEventCountByDateQuery;
     }
 
-    public function handle(CountDailyEventsByAppQuery $query)
+    public function handle(CountDailyEventsByAppQuery $query): array
     {
         $eventCountByApps = $this
             ->selectAppsEventCountByDateQuery
             ->execute($query->eventType(), $query->startDate(), $query->endDate());
 
-        $eventCount = [];
-        foreach ($eventCountByApps as $eventCountByApp) {
-            $eventCount[] = $eventCountByApp->normalize();
-        }
-
-        return $eventCount;
+        return $eventCountByApps;
     }
 }
