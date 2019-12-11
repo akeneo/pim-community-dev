@@ -10,3 +10,7 @@ help:
 	@echo ""
 
 include make-file/*.mk
+
+.PHONY: php-image-dev
+php-image-dev:
+	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag akeneo/pim-dev/php:7.3 --target dev .
