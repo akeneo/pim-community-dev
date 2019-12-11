@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\SearchableAssetItem;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Job\ComputeTransformations;
-use Akeneo\AssetManager\Infrastructure\Transformation\ComputeTransformationsExecutor;
+use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
 use Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -33,7 +33,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
         GetTransformations $getTransformations,
         AssetRepositoryInterface $assetRepository,
         GetOutdatedVariationSource $getOutdatedVariationSource,
-        ComputeTransformationsExecutor $computeTransformationsExecutor,
+        TransformationExecutor $transformationExecutor,
         EditAssetHandler $editAssetHandler,
         StepExecution $stepExecution,
         JobParameters $jobParameters
@@ -43,7 +43,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
             $getTransformations,
             $assetRepository,
             $getOutdatedVariationSource,
-            $computeTransformationsExecutor,
+            $transformationExecutor,
             $editAssetHandler
         );
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -57,10 +57,10 @@ class ComputeTransformationsSpec extends ObjectBehavior
     }
 
     function it_executes_the_compute_transformations_from_asset_identifiers(
-        ComputeTransformationsExecutor $computeTransformationsExecutor,
         GetTransformations $getTransformations,
         AssetRepositoryInterface $assetRepository,
         GetOutdatedVariationSource $getOutdatedVariationSource,
+        TransformationExecutor $transformationExecutor,
         EditAssetHandler $editAssetHandler,
         JobParameters $jobParameters,
         Transformation $thumbnail,
@@ -99,7 +99,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
 
         $getOutdatedVariationSource->forAssetAndTransformation($asset1, $thumbnail)->willReturn($sourceFileData);
         $getOutdatedVariationSource->forAssetAndTransformation($asset2, $thumbnail)->willReturn(null);
-        $computeTransformationsExecutor->execute($sourceFileData, $assetFamilyIdentifier, $thumbnail)
+        $transformationExecutor->execute($sourceFileData, $assetFamilyIdentifier, $thumbnail)
                                        ->willReturn($command);
 
         $editAssetHandler->__invoke(
@@ -121,11 +121,11 @@ class ComputeTransformationsSpec extends ObjectBehavior
     }
 
     function it_executes_the_compute_transformations_from_asset_family_identifier(
-        ComputeTransformationsExecutor $computeTransformationsExecutor,
         FindSearchableAssetsInterface $findSearchableAssets,
         GetTransformations $getTransformations,
         AssetRepositoryInterface $assetRepository,
         GetOutdatedVariationSource $getOutdatedVariationSource,
+        TransformationExecutor $transformationExecutor,
         EditAssetHandler $editAssetHandler,
         JobParameters $jobParameters,
         Transformation $thumbnail,
@@ -172,7 +172,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
 
         $getOutdatedVariationSource->forAssetAndTransformation($asset1, $thumbnail)->willReturn($sourceFileData);
         $getOutdatedVariationSource->forAssetAndTransformation($asset2, $thumbnail)->willReturn(null);
-        $computeTransformationsExecutor->execute($sourceFileData, $assetFamilyIdentifier, $thumbnail)
+        $transformationExecutor->execute($sourceFileData, $assetFamilyIdentifier, $thumbnail)
                                        ->willReturn($command);
 
         $editAssetHandler->__invoke(

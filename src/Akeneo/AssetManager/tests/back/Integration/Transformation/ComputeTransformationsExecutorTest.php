@@ -42,7 +42,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
-use Akeneo\AssetManager\Infrastructure\Transformation\ComputeTransformationsExecutor;
+use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
 use Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -209,7 +209,7 @@ class ComputeTransformationsExecutorTest extends KernelTestCase
         return $this->get('akeneo_file_storage.file_storage.file.file_storer');
     }
 
-    private function getComputeTransformationsExecutor(): ComputeTransformationsExecutor
+    private function getComputeTransformationsExecutor(): TransformationExecutor
     {
         return $this->get('akeneo_assetmanager.infrastructure.transformation.compute_transformations.executor');
     }

@@ -15,7 +15,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
-use Akeneo\AssetManager\Infrastructure\Transformation\ComputeTransformationsExecutor;
+use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
 use Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader;
 use Akeneo\AssetManager\Infrastructure\Transformation\FileTransformer;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
@@ -24,7 +24,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\File\File;
 
-class ComputeTransformationsExecutorSpec extends ObjectBehavior
+class TransformationExecutorSpec extends ObjectBehavior
 {
     function let(
         FileDownloader $fileDownloader,
@@ -42,7 +42,7 @@ class ComputeTransformationsExecutorSpec extends ObjectBehavior
 
     function it_is_a_compute_transformation_executor()
     {
-        $this->shouldHaveType(ComputeTransformationsExecutor::class);
+        $this->shouldHaveType(TransformationExecutor::class);
     }
 
     function it_computes_a_transformation(

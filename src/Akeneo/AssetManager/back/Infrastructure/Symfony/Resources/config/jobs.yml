@@ -81,6 +81,6 @@ services:
             - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
             - '@akeneo_assetmanager.infrastructure.transformation.get_outdated_variation_source'
-            - '@akeneo_assetmanager.infrastructure.transformation.compute_transformations.executor'
+            - '@Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor'
             - '@akeneo_assetmanager.application.asset.edit_asset_handler'
         public: false

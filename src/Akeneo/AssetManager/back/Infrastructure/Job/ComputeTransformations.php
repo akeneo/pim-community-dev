@@ -22,7 +22,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\FindSearchableAssetsInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Transformation\ComputeTransformationsExecutor;
+use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
 use Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -44,8 +44,8 @@ class ComputeTransformations implements TaskletInterface
     /** @var GetOutdatedVariationSource */
     private $getOutdatedVariationSource;
 
-    /** @var ComputeTransformationsExecutor */
-    private $computeTransformationsExecutor;
+    /** @var TransformationExecutor */
+    private $transformationExecutor;
 
     /** @var EditAssetHandler */
     private $editAssetHandler;
@@ -55,14 +55,14 @@ class ComputeTransformations implements TaskletInterface
         GetTransformations $getTransformations,
         AssetRepositoryInterface $assetRepository,
         GetOutdatedVariationSource $getOutdatedVariationSource,
-        ComputeTransformationsExecutor $computeTransformationsExecutor,
+        TransformationExecutor $transformationExecutor,
         EditAssetHandler $editAssetHandler
     ) {
         $this->findSearchableAssets = $findSearchableAssets;
         $this->getTransformations = $getTransformations;
         $this->assetRepository = $assetRepository;
         $this->getOutdatedVariationSource = $getOutdatedVariationSource;
-        $this->computeTransformationsExecutor = $computeTransformationsExecutor;
+        $this->transformationExecutor = $transformationExecutor;
         $this->editAssetHandler = $editAssetHandler;
     }
 
@@ -91,9 +91,6 @@ class ComputeTransformations implements TaskletInterface
 
     /**
      * @param string[] $assetIdentifiers
-     *
-     * @throws \Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException
-     * @throws \Akeneo\Tool\Component\FileStorage\Exception\FileTransferException
      */
     private function doExecute(array $assetIdentifiers): void
     {
@@ -125,7 +122,7 @@ class ComputeTransformations implements TaskletInterface
 
                 if (null !== $sourceFile) {
                     try {
-                        $commands[] = $this->computeTransformationsExecutor->execute(
+                        $commands[] = $this->transformationExecutor->execute(
                             $sourceFile,
                             $asset->getAssetFamilyIdentifier(),
                             $transformation

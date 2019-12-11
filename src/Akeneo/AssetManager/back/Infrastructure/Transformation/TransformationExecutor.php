@@ -22,7 +22,7 @@ use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
-class ComputeTransformationsExecutor
+class TransformationExecutor
 {
     /** @var FileDownloader */
     private $fileDownloader;
