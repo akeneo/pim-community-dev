@@ -110,66 +110,61 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
 
         $expectedValues = [
             [
-                'data' => null,
-                'locale' => 'de_DE',
-                'channel' => null,
+                'data'      => null,
+                'locale'    => 'de_DE',
+                'channel'   => null,
                 'attribute' => $descriptionAttribute->normalize(),
             ],
             [
-                'data' => null,
-                'locale' => 'en_US',
-                'channel' => null,
+                'data'      => null,
+                'locale'    => 'en_US',
+                'channel'   => null,
                 'attribute' => $descriptionAttribute->normalize(),
             ],
             [
-                'data' => null,
-                'locale' => 'fr_FR',
-                'channel' => null,
+                'data'      => null,
+                'locale'    => 'fr_FR',
+                'channel'   => null,
                 'attribute' => $descriptionAttribute->normalize(),
             ],
             [
-                'data' => 'Hello',
-                'locale' => null,
-                'channel' => null,
+                'data'      => 'Hello',
+                'locale'    => null,
+                'channel'   => null,
                 'attribute' => $nameAttribute->normalize(),
             ],
             [
-                'data' => 'Philippe Starck',
-                'locale' => 'fr_FR',
-                'channel' => null,
+                'data'      => 'Philippe Starck',
+                'locale'    => 'fr_FR',
+                'channel'   => null,
                 'attribute' => $labelAttribute->normalize(),
             ],
             [
-                'data' => null,
-                'locale' => 'en_US',
-                'channel' => null,
+                'data'      => null,
+                'locale'    => 'en_US',
+                'channel'   => null,
                 'attribute' => $labelAttribute->normalize(),
             ],
             [
-                'data' => null,
-                'locale' => 'de_DE',
-                'channel' => null,
+                'data'      => null,
+                'locale'    => 'de_DE',
+                'channel'   => null,
                 'attribute' => $labelAttribute->normalize(),
             ],
             [
-                'data' => [
-                    'filePath' => 'test/image_2.jpg',
+                'data'      => [
+                    'filePath'         => 'test/image_2.jpg',
                     'originalFilename' => 'image_2.jpg',
-                    'size' => 100,
-                    'mimeType' => 'image/jpg',
-                    'extension' => '.jpg',
-                    'updatedAt' => '2019-11-22T15:16:21+0000',
+                    'size'             => 100,
+                    'mimeType'         => 'image/jpg',
+                    'extension'        => '.jpg',
+                    'updatedAt'        => '2019-11-22T15:16:21+0000',
                 ],
-                'locale' => null,
-                'channel' => null,
+                'locale'    => null,
+                'channel'   => null,
                 'attribute' => $mediaFileAttribute->normalize(),
             ],
         ];
-
-        $imageInfo = new FileInfo();
-        $imageInfo
-            ->setOriginalFilename('image_2.jpg')
-            ->setKey('test/image_2.jpg');
 
         $expectedStarck = new AssetDetails(
             $this->assetIdentifier,
@@ -177,7 +172,21 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
             $assetFamily->getAttributeAsMainMediaReference()->getIdentifier(),
             $assetCode,
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
-            Image::fromFileInfo($imageInfo),
+            [
+                [
+                    'data'      => [
+                        'size'             => 100,
+                        'filePath'         => 'test/image_2.jpg',
+                        'mimeType'         => 'image/jpg',
+                        'extension'        => '.jpg',
+                        'updatedAt'        => '2019-11-22T15:16:21+0000',
+                        'originalFilename' => 'image_2.jpg',
+                    ],
+                    'locale'    => null,
+                    'channel'   => null,
+                    'attribute' => $mediaFileAttribute->normalize(),
+                ],
+            ],
             $expectedValues,
             true
         );
@@ -280,8 +289,17 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
         );
     }
 
-    private function assertAssetDetails(AssetDetails $expected, AssetDetails $actual)
+    private function assertAssetDetails(AssetDetails $expected, AssetDetails $actual): void
     {
-        $this->assertEqualsCanonicalizing($expected->normalize(), $actual->normalize());
+        $normalizeExpectedValues = $expected->normalize();
+        $normalizeActualValues = $actual->normalize();
+        $this->assertEquals($normalizeExpectedValues['identifier'], $normalizeActualValues['identifier']);
+        $this->assertEquals($normalizeExpectedValues['asset_family_identifier'], $normalizeActualValues['asset_family_identifier']);
+        $this->assertEquals($normalizeExpectedValues['attribute_as_main_media_identifier'], $normalizeActualValues['attribute_as_main_media_identifier']);
+        $this->assertEquals($normalizeExpectedValues['code'], $normalizeActualValues['code']);
+        $this->assertEquals($normalizeExpectedValues['labels'], $normalizeActualValues['labels']);
+        $this->assertEqualsCanonicalizing($normalizeExpectedValues['values'], $normalizeActualValues['values']);
+        $this->assertEquals($normalizeExpectedValues['image'], $normalizeActualValues['image']);
+        $this->assertEquals($normalizeExpectedValues['permission'], $normalizeActualValues['permission']);
     }
 }

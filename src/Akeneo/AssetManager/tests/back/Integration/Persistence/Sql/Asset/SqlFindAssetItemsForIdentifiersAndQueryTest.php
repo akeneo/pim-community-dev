@@ -118,14 +118,7 @@ class SqlFindAssetItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCase
             ]
         ];
         $starck->completeness = ['complete' => 0, 'required' => 0];
-        $starck->image = [
-            [
-                'attribute' => $imageIdentifier,
-                'locale' => null,
-                'channel' => null,
-                'data' => ['filePath' => '', 'originalFilename' => '']
-            ]
-        ];
+        $starck->image = [];
 
         $coco = new AssetItem();
         $coco->identifier = (string) $this->cocoIdentifier;
@@ -141,14 +134,7 @@ class SqlFindAssetItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCase
             ]
         ];
         $coco->completeness = ['complete' => 0, 'required' => 0];
-        $coco->image = [
-            [
-                'attribute' => $imageIdentifier,
-                'locale' => null,
-                'channel' => null,
-                'data' => ['filePath' => '', 'originalFilename' => '']
-            ]
-        ];
+        $coco->image = [];
 
         $this->assertAssetItem($starck, $assetItems[0]);
         $this->assertAssetItem($coco, $assetItems[1]);
@@ -227,16 +213,8 @@ class SqlFindAssetItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCase
             ),
             'Labels for the asset item are not the same'
         );
-        $this->assertEquals(
-            $expected->values,
-            $actual->values,
-            'Values are not the same'
-        );
-        $this->assertEquals(
-            $expected->image,
-            $actual->image,
-            'Image are not the same'
-        );
+        $this->assertEquals($expected->values, $actual->values, 'Values are not the same');
+        $this->assertEquals($expected->image, $actual->image, 'Image are not the same');
         $this->assertEquals($expected->completeness, $actual->completeness);
     }
 }

@@ -53,7 +53,7 @@ class AssetDetails
     /** @var LabelCollection */
     public $labels;
 
-    /** @var Image */
+    /** @var array */
     public $image;
 
     /** @var array */
@@ -68,7 +68,7 @@ class AssetDetails
         AttributeIdentifier $attributeAsMainMediaIdentifier,
         AssetCode $code,
         LabelCollection $labels,
-        Image $image,
+        array $image,
         array $values,
         bool $isAllowedToEdit
     ) {
@@ -90,7 +90,7 @@ class AssetDetails
             self::ATTRIBUTE_AS_MAIN_MEDIA_IDENTIFIER => $this->attributeAsMainMediaIdentifier->normalize(),
             self::CODE                        => $this->code->normalize(),
             self::LABELS                      => $this->labels->normalize(),
-            self::IMAGE                       => $this->image->normalize(),
+            self::IMAGE                       => $this->image,
             self::VALUES                      => $this->values,
             self::PERMISSION                  => [
                 self::EDIT_PERMISSION => $this->isAllowedToEdit,

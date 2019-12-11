@@ -7,7 +7,7 @@ import sidebarProvider from 'akeneoassetmanager/application/configuration/sideba
 import Breadcrumb from 'akeneoassetmanager/application/component/app/breadcrumb';
 import __ from 'akeneoassetmanager/tools/translator';
 import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
-import Asset, {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
+import Asset, {getAssetImage, NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {assetImageUpdated, backToAssetFamily, saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
 import EditState from 'akeneoassetmanager/application/component/app/edit-state';
@@ -141,30 +141,17 @@ class AssetEditView extends React.Component<EditProps> {
             <div className="AknDefault-thirdColumn" />
           </div>
           <div className="AknDefault-contentWithBottom">
-            {/* @todo to remove when the feature is available */}
-            <div
-              style={{
-                display: 'flex',
-                fontSize: '15px',
-                color: 'rgb(255, 255, 255)',
-                minHeight: '50px',
-                alignItems: 'center',
-                lineHeight: '17px',
-                background: 'rgba(189, 10, 10, 0.62)',
-                justifyContent: 'center',
-              }}
-            >
-              <p>
-                The Asset Manager is still in progress. This page is under development. This is a temporary screen which
-                is not supported.
-              </p>
-            </div>
             <div className="AknDefault-mainContent" data-tab={this.props.sidebar.currentTab}>
               <header className="AknTitleContainer">
                 <div className="AknTitleContainer-line">
                   <FileComponent
                     alt={__('pim_asset_manager.asset.img', {'{{ label }}': label})}
-                    image={asset.getImage()}
+                    image={getAssetImage(
+                      asset.getValueCollection().values,
+                      asset.getAttributeAsMainMediaIdentifier(),
+                      this.props.context.channel,
+                      this.props.context.locale
+                    )}
                     attribute={asset.getAttributeAsMainMediaIdentifier()}
                     readOnly={true}
                   />

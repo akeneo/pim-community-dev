@@ -61,7 +61,7 @@ export const Carousel = ({
           data-role={`carousel-thumbnail-${asset.code}`}
           key={asset.code}
           highlighted={selectedAssetCode === asset.code}
-          src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail)}
+          src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail, context)}
           onClick={() => onAssetChange(asset.code)}
         />
       ))}

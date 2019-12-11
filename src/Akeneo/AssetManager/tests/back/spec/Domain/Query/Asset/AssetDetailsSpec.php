@@ -28,7 +28,7 @@ class AssetDetailsSpec extends ObjectBehavior
             $attributeAsMainMediaIdentifier,
             $code,
             $labelCollection,
-            Image::createEmpty(),
+            ['image_value'],
             [],
             true
         );
@@ -58,7 +58,7 @@ class AssetDetailsSpec extends ObjectBehavior
             'attribute_as_main_media_identifier' => 'main_image',
             'code'                               => 'starck',
             'labels'                             => ['fr_FR' => 'Philippe Starck'],
-            'image'                              => null,
+            'image'                              => ['image_value'],
             'values'                             => [],
             'permission'                         => [
                 'edit' => true,

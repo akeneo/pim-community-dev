@@ -2,7 +2,7 @@ import * as React from 'react';
 import {NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {CellView} from 'akeneoassetmanager/application/configuration/value';
 import {Column} from 'akeneoassetmanager/application/reducer/grid';
-import {NormalizedFileData} from 'akeneoassetmanager/domain/model/asset/data/file';
+import {NormalizedFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 import {getFileThumbnailUrl} from 'akeneoassetmanager/tools/media-url-generator';
 
 const memo = (React as any).memo;

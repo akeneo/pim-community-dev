@@ -202,7 +202,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             $portraitAttribute->getIdentifier(),
             AssetCode::fromString('starck'),
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
-            Image::createEmpty(),
+            [],
             $values,
             true
         );

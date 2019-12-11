@@ -25,7 +25,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
         code: 'starck',
         identifier: 'designer_starck_a1677570-a278-444b-ab46-baa1db199392',
         attributeAsMainMediaIdentifier: 'portrait_designer_fingerprint',
-        image: null,
+        image: [],
         labelCollection: {fr_FR: 'Philippe Starck'},
         assetFamilyIdentifier: 'designer',
         valueCollection: {
@@ -195,14 +195,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
           identifier: 'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
           labels: {en_US: 'Dyson', fr_FR: 'Dyson'},
           asset_family_identifier: 'designer',
-          image: [
-            {
-              attribute: 'image_designer_ca1857d521a3e5dbc487791da82b7428',
-              locale: null,
-              channel: null,
-              data: {filePath: '', originalFilename: ''},
-            },
-          ],
+          image: [],
           values: {
             label_designer_d00de54460082b239164135175588647_en_US: {
               attribute: 'label_designer_d00de54460082b239164135175588647',
@@ -249,14 +242,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
           identifier: 'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
           labels: {en_US: 'Starck'},
           asset_family_identifier: 'designer',
-          image: [
-            {
-              attribute: 'image_designer_ca1857d521a3e5dbc487791da82b7428',
-              locale: null,
-              channel: null,
-              data: {filePath: '', originalFilename: ''},
-            },
-          ],
+          image: [],
           values: {
             'description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US': {
               attribute: 'description_designer_29aea250-bc94-49b2-8259-bbc116410eb2',

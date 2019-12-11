@@ -163,7 +163,7 @@ const getMediaLinkPreviewView = (asset: Asset, context: Context) => {
 
 const PreviewImage = ({asset, context}: PreviewProps) => (
   <Image
-    src={getAssetPreview(asset, MediaPreviewTypes.Preview)}
+    src={getAssetPreview(asset, MediaPreviewTypes.Preview, context)}
     alt={getAssetLabel(asset, context.locale)}
     data-role="asset-preview"
   />

@@ -95,7 +95,7 @@ class AssetPreviewGenerator
         }
 
         return $this->imagePreviewUrlGenerator->generate(
-            $rawData,
+            base64_encode($rawData),
             $attributeAsMainMediaIdentifier->stringValue(),
             $format
         );

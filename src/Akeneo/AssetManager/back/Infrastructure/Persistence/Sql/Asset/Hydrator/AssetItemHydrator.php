@@ -148,24 +148,10 @@ class AssetItemHydrator implements AssetItemHydratorInterface
     {
         $images = array_values(array_filter(
             $valueCollection,
-            function (array $value) use ($attributeAsMainMediaIdentifier, $query) {
-                return $value['attribute'] === $attributeAsMainMediaIdentifier &&
-                    (null === $value['channel'] || $query->getChannel() === $value['channel']) &&
-                    (null === $value['locale'] || $query->getLocale() === $value['locale']);
+            function (array $value) use ($attributeAsMainMediaIdentifier) {
+                return $value['attribute'] === $attributeAsMainMediaIdentifier;
             }
         ));
-
-        if (empty($images)) {
-            return [[
-                'channel' => null,
-                'locale' => null,
-                'attribute' => $attributeAsMainMediaIdentifier,
-                'data' => [
-                    'filePath' => '',
-                    'originalFilename' => ''
-                ]
-            ]];
-        }
 
         return $images;
     }

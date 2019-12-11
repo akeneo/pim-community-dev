@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ImagePreviewUrlGenerator;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class AssetPreviewGeneratorSpec extends ObjectBehavior
 {
@@ -81,7 +82,11 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
         ]);
 
         $imagePreviewUrlGenerator->generate(
-            '/a/b/c/d/jambon.png',
+            Argument::that(
+                function ($base64EncodedData) {
+                    return '/a/b/c/d/jambon.png' === base64_decode((string) $base64EncodedData);
+                }
+            ),
             'packshot',
             'thumbnail'
         )->willReturn('URL_TO_IMAGE');
@@ -132,7 +137,11 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
         $data->normalize()->willReturn('http://www.example.org/image.png');
 
         $imagePreviewUrlGenerator->generate(
-            'http://www.example.org/image.png',
+            Argument::that(
+                function ($base64EncodedData) {
+                    return 'http://www.example.org/image.png' === base64_decode((string) $base64EncodedData);
+                }
+            ),
             'packshot',
             'thumbnail'
         )->willReturn('URL_TO_IMAGE');

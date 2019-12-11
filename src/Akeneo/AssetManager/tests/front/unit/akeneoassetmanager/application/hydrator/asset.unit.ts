@@ -9,7 +9,7 @@ describe('akeneo > asset family > application > hydrator --- asset', () => {
         attribute_as_main_media_identifier: 'image_1234',
         code: 'starck',
         labels: {en_US: 'Stark'},
-        image: null,
+        image: [],
         values: [],
       })
     );

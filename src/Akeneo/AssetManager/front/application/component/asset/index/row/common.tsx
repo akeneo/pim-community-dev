@@ -12,11 +12,13 @@ const CommonRow = memo(
   ({
     asset,
     locale,
+    channel,
     placeholder = false,
     onRedirectToAsset,
   }: {
     asset: NormalizedItemAsset;
     locale: string;
+    channel: string;
     placeholder?: boolean;
   } & {
     onRedirectToAsset: (asset: NormalizedItemAsset) => void;
@@ -53,7 +55,7 @@ const CommonRow = memo(
             className="AknGrid-image AknLoadingPlaceHolder"
             width="44"
             height="44"
-            src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail)}
+            src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail, {locale, channel})}
           />
         </td>
         <td className="AknGrid-bodyCell" title={label}>
@@ -75,6 +77,7 @@ const CommonRows = memo(
     assets,
     assetFamily,
     locale,
+    channel,
     placeholder,
     onRedirectToAsset,
     assetCount,
@@ -82,6 +85,7 @@ const CommonRows = memo(
     assets: NormalizedItemAsset[];
     assetFamily: AssetFamily;
     locale: string;
+    channel: string;
     placeholder: boolean;
     onRedirectToAsset: (asset: NormalizedItemAsset) => void;
     nextItemToAddPosition: number;
@@ -107,6 +111,7 @@ const CommonRows = memo(
           asset={asset}
           assetFamily={assetFamily}
           locale={locale}
+          channel={channel}
           onRedirectToAsset={() => {}}
         />
       ));
@@ -120,6 +125,7 @@ const CommonRows = memo(
           asset={asset}
           assetFamily={assetFamily}
           locale={locale}
+          channel={channel}
           onRedirectToAsset={onRedirectToAsset}
         />
       );

@@ -1,4 +1,4 @@
-import {File} from 'akeneoassetmanager/domain/model/file';
+import {createEmptyFile, File} from 'akeneoassetmanager/domain/model/file';
 import AssetFamilyIdentifier, {
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
@@ -11,14 +11,18 @@ import AssetIdentifier, {
   denormalizeAssetIdentifier,
   assetidentifiersAreEqual,
 } from 'akeneoassetmanager/domain/model/asset/identifier';
-import ValueCollection from 'akeneoassetmanager/domain/model/asset/value-collection';
-import {NormalizedValue, NormalizedMinimalValue} from 'akeneoassetmanager/domain/model/asset/value';
+import ValueCollection, {getValueFilter} from 'akeneoassetmanager/domain/model/asset/value-collection';
+import Value, {NormalizedValue, NormalizedMinimalValue} from 'akeneoassetmanager/domain/model/asset/value';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import Completeness, {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
 import AttributeIdentifier, {
   denormalizeAttributeIdentifier,
 } from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
+import {MEDIA_LINK_ATTRIBUTE_TYPE, MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import {createFile} from 'akeneoreferenceentity/domain/model/file';
 
 interface CommonNormalizedAsset {
   identifier: AssetIdentifier;
@@ -29,18 +33,18 @@ interface CommonNormalizedAsset {
 }
 
 export interface NormalizedAsset extends CommonNormalizedAsset {
-  image: File;
+  image: NormalizedValue[];
   values: NormalizedValue[];
 }
 
 export interface NormalizedItemAsset extends CommonNormalizedAsset {
-  image: {filePath: string; originalFilename: string};
+  image: [{filePath: string; originalFilename: string}];
   values: NormalizedValue[];
   completeness: NormalizedCompleteness;
 }
 
 export interface NormalizedMinimalAsset extends CommonNormalizedAsset {
-  image: File;
+  image: NormalizedValue[];
   values: NormalizedMinimalValue[];
 }
 
@@ -56,13 +60,39 @@ export default interface Asset {
   getAttributeAsMainMediaIdentifier: () => AttributeIdentifier;
   getLabel: (locale: string, fallbackOnCode?: boolean) => string;
   getLabelCollection: () => LabelCollection;
-  getImage: () => File;
+  getImage: () => Value[];
   getValueCollection: () => ValueCollection;
   equals: (asset: Asset) => boolean;
   normalize: () => NormalizedAsset;
   normalizeMinimal: () => NormalizedMinimalAsset;
   getCompleteness: (channel: ChannelReference, locale: LocaleReference) => Completeness;
 }
+
+export const getAssetImage = (
+  values: Value[],
+  attributeAsMainMedia: AttributeIdentifier,
+  channel: ChannelCode,
+  locale: LocaleCode
+): File => {
+  const imageValue = values.find(getValueFilter(attributeAsMainMedia, channel, locale));
+  if (undefined === imageValue || '' === imageValue.data.normalize()) {
+    return createEmptyFile();
+  }
+
+  return MEDIA_LINK_ATTRIBUTE_TYPE === imageValue.attribute.type
+    ? createFileFromMediaLinkValue(imageValue)
+    : imageValue.data.normalize();
+};
+
+const createFileFromMediaLinkValue = (value: Value) => {
+  const attribute = value.attribute as MediaLinkAttribute;
+  const prefix = null !== attribute.prefix ? attribute.prefix : '';
+  const suffix = null !== attribute.suffix ? attribute.suffix : '';
+  const filePath = `${prefix}${value.data.normalize()}${suffix}`;
+  const originalFilename = value.data.normalize();
+
+  return createFile(filePath, originalFilename);
+};
 
 class InvalidArgumentError extends Error {}
 
@@ -73,7 +103,7 @@ class AssetImplementation implements Asset {
     private attributeAsMainMediaIdentifier: AttributeIdentifier,
     private code: AssetCode,
     private labelCollection: LabelCollection,
-    private image: File,
+    private image: Value[],
     private valueCollection: ValueCollection
   ) {
     if (!(valueCollection instanceof ValueCollection)) {
@@ -89,7 +119,7 @@ class AssetImplementation implements Asset {
     attributeAsMainMediaIdentifier: AttributeIdentifier,
     assetCode: AssetCode,
     labelCollection: LabelCollection,
-    image: File,
+    image: Value[],
     valueCollection: ValueCollection
   ): Asset {
     return new AssetImplementation(
@@ -123,7 +153,7 @@ class AssetImplementation implements Asset {
     return getLabelInCollection(this.labelCollection, locale, fallbackOnCode, this.getCode());
   }
 
-  public getImage(): File {
+  public getImage(): Value[] {
     return this.image;
   }
 
@@ -146,7 +176,7 @@ class AssetImplementation implements Asset {
       attribute_as_main_media_identifier: this.getAttributeAsMainMediaIdentifier(),
       code: assetCodeStringValue(this.code),
       labels: this.getLabelCollection(),
-      image: this.getImage(),
+      image: this.getImage().map((value: Value) => value.normalize()),
       values: this.valueCollection.normalize(),
     };
   }
@@ -158,7 +188,7 @@ class AssetImplementation implements Asset {
       attribute_as_main_media_identifier: this.getAttributeAsMainMediaIdentifier(),
       code: assetCodeStringValue(this.code),
       labels: this.getLabelCollection(),
-      image: this.getImage(),
+      image: this.getImage().map((value: Value) => value.normalize()),
       values: this.valueCollection.normalizeMinimal(),
     };
   }

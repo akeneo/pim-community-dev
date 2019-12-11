@@ -1,10 +1,14 @@
-import {createAsset} from 'akeneoassetmanager/domain/model/asset/asset';
-import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
+import {createAsset, getAssetImage} from 'akeneoassetmanager/domain/model/asset/asset';
 import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
 import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import {denormalize as denormalizeMediaFileAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
+import {denormalize as denormalizeMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
+import {denormalize as denormalizeFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
+import {denormalize as denormalizeMediaLinkData} from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {denormalizeAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
 const michelIdentifier = 'michel';
 const designerIdentifier = 'designer';
@@ -14,7 +18,7 @@ const sofaIdentifier = 'sofa';
 const didierIdentifier = 'designer_didier_1';
 const didierCode = 'didier';
 const didierLabels = {en_US: 'Didier'};
-const emptyFile = createEmptyFile();
+const emptyFile = [];
 const channelEcommerce = 'ecommerce';
 const localeEnUS = 'en_US';
 const normalizedDescription = {
@@ -50,13 +54,54 @@ const normalizedWebsite = {
   validation_rule: 'url',
   regular_expression: null,
 };
+const normalizedImage = {
+  identifier: 'main_image_designer_fingerprint',
+  asset_family_identifier: 'designer',
+  code: 'image',
+  labels: {en_US: 'Image'},
+  type: 'media-file',
+  order: 0,
+  value_per_locale: true,
+  value_per_channel: true,
+  is_required: true,
+  max_file_size: 50,
+  media_type: 'image',
+  allowed_extensions: [],
+};
+const normalizedUrl = {
+  identifier: 'url_designer_fingerprint',
+  asset_family_identifier: 'designer',
+  code: 'url',
+  labels: {en_US: 'Image'},
+  type: 'media_link',
+  order: 0,
+  value_per_locale: true,
+  value_per_channel: true,
+  is_required: true,
+  media_type: 'image',
+  prefix: 'https://my-dam.com/',
+  suffix: '/500x500/small',
+};
+
 const website = denormalizeTextAttribute(normalizedWebsite);
+const image = denormalizeMediaFileAttribute(normalizedImage);
+const url = denormalizeMediaLinkAttribute(normalizedUrl);
 const descriptionData = denormalizeTextData('a nice description');
 const descriptionValue = createValue(description, 'ecommerce', 'en_US', descriptionData);
 const websiteData = denormalizeTextData('');
 const websiteValue = createValue(website, 'ecommerce', 'en_US', websiteData);
-const valueCollection = createValueCollection([descriptionValue, websiteValue]);
-const attributeAsMainMediaIdentifier = denormalizeAttributeIdentifier('image_1234');
+const urlData = denormalizeMediaLinkData('IMG_1111.jpg');
+const urlValue = createValue(url, 'ecommerce', 'en_US', urlData);
+const imageData = denormalizeFileData({
+  filePath: '/path/to/img.jpg',
+  originalFilename: 'img.jpg',
+  size: 1234,
+  mimeType: 'application/jpeg',
+  extension: 'jpg',
+});
+const imageValue = createValue(image, 'ecommerce', 'en_US', imageData);
+const valueCollection = createValueCollection([descriptionValue, websiteValue, imageValue, urlValue]);
+const attributeAsMainMediaIdentifier = denormalizeAttributeIdentifier('main_image_designer_fingerprint');
 
 describe('akeneo > asset > domain > model --- asset', () => {
   test('I can create a new asset with a identifier and labels', () => {
@@ -190,15 +235,15 @@ describe('akeneo > asset > domain > model --- asset', () => {
       attributeAsMainMediaIdentifier,
       didierCode,
       didierLabels,
-      emptyFile,
+      [imageValue],
       createValueCollection([])
     );
 
     expect(michelAsset.normalize()).toEqual({
       identifier: 'designer_didier_1',
       asset_family_identifier: 'designer',
-      attribute_as_main_media_identifier: 'image_1234',
-      image: null,
+      attribute_as_main_media_identifier: 'main_image_designer_fingerprint',
+      image: [imageValue.normalize()],
       code: 'didier',
       labels: {en_US: 'Didier'},
       values: [],
@@ -207,8 +252,8 @@ describe('akeneo > asset > domain > model --- asset', () => {
     expect(michelAsset.normalizeMinimal()).toEqual({
       identifier: 'designer_didier_1',
       asset_family_identifier: 'designer',
-      attribute_as_main_media_identifier: 'image_1234',
-      image: null,
+      attribute_as_main_media_identifier: 'main_image_designer_fingerprint',
+      image: [imageValue.normalize()],
       code: 'didier',
       labels: {en_US: 'Didier'},
       values: [],
@@ -278,6 +323,32 @@ describe('akeneo > asset > domain > model --- asset', () => {
         emptyFile,
         valueCollection
       ).getCompleteness(channelEcommerce, localeEnUS)
-    ).toEqual({complete: 1, required: 2});
+    ).toEqual({complete: 3, required: 4});
+  });
+
+  test('I can get an empty image of the asset if the asset does not have it for the channel/locale', () => {
+    expect(getAssetImage(valueCollection.values, 'unknown_attribute_identifier', 'channel', 'fr_FR')).toEqual(
+      createEmptyFile()
+    );
+  });
+
+  test('I can get the image of the asset for the channel and locale', () => {
+    expect(getAssetImage([imageValue], 'main_image_designer_fingerprint', 'ecommerce', 'en_US')).toEqual({
+      extension: 'jpg',
+      filePath: '/path/to/img.jpg',
+      mimeType: 'application/jpeg',
+      originalFilename: 'img.jpg',
+      size: 1234,
+    });
+  });
+
+  test('I can get the image of the asset for the channel and locale and a media link attribute', () => {
+    expect(getAssetImage([urlValue], 'url_designer_fingerprint', 'ecommerce', 'en_US')).toEqual({
+      extension: undefined,
+      filePath: 'https://my-dam.com/IMG_1111.jpg/500x500/small',
+      mimeType: undefined,
+      originalFilename: 'IMG_1111.jpg',
+      size: undefined,
+    });
   });
 });
