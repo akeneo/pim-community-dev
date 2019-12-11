@@ -24,28 +24,4 @@ class ScriptNonceGeneratorSpec extends ObjectBehavior
 
         $this->getGeneratedNonce()->shouldReturn('94d18804ef7db19a4654c6be2e9a581fb1551dbf');
     }
-
-    function it_generate_a_random_nonce_if_bapid_is_null(Request $request, ParameterBag $cookies)
-    {
-        $cookies->get('BAPID')->willReturn(null);
-        $request->cookies = $cookies;
-
-        $this->getGeneratedNonce()->shouldMatch('/\w{8}-\w{4}-\w{4}-\w{4}-\w{8}/');
-    }
-
-    function it_generate_a_random_nonce_if_bapid_is_empty(Request $request, ParameterBag $cookies)
-    {
-        $cookies->get('BAPID')->willReturn('');
-        $request->cookies = $cookies;
-
-        $this->getGeneratedNonce()->shouldMatch('/\w{8}-\w{4}-\w{4}-\w{4}-\w{8}/');
-    }
-
-    function it_generate_a_random_nonce_if_bapid_is_blank(Request $request, ParameterBag $cookies)
-    {
-        $cookies->get('BAPID')->willReturn('  ');
-        $request->cookies = $cookies;
-
-        $this->getGeneratedNonce()->shouldMatch('/\w{8}-\w{4}-\w{4}-\w{4}-\w{8}/');
-    }
 }

@@ -42,16 +42,8 @@ class ScriptNonceGenerator
     public function getGeneratedNonce(): string
     {
         $request = $this->request->getCurrentRequest();
-        $bapid = $request->cookies->get('BAPID');
+        $bapId = $request->cookies->get('BAPID');
 
-        // If the BAPID id null because of a tricked request, we could have the same nonce opening a security hole
-        // because the generated nonce would always be the same.
-        // We can prevent it by generationg a random UUID string. It will probably break the PIM inline scripts,
-        // but also protect us against other inline scripts (like in wysiwig)
-        if (null === $bapid || '' === trim($bapid)) {
-            return Uuid::uuid4()->toString();
-        }
-
-        return hash_hmac('ripemd160', $bapid, $this->kernelSecret);
+        return hash_hmac('ripemd160', $bapId, $this->kernelSecret);
     }
 }
