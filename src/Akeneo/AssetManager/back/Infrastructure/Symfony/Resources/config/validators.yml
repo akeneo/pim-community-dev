@@ -281,14 +281,10 @@ services:
             - '@pim_catalog.repository.attribute'
 
     Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCollectionValidator:
-        arguments:
-            - '@validator'
         tags:
             - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCollectionValidator' }
 
     Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationValidator:
-        arguments:
-            - '@validator'
         tags:
             - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationValidator' }
 

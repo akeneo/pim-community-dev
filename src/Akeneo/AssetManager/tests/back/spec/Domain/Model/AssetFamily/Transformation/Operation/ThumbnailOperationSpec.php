@@ -63,7 +63,7 @@ class ThumbnailOperationSpec extends ObjectBehavior
     function it_can_not_be_constructed_without_parameter()
     {
         $this->beConstructedThrough('create', [[]]);
-        $this->shouldThrow(new \LogicException("No parameter is provided for 'thumbnail' operation."))
+        $this->shouldThrow(new \LogicException("No parameter is provided for \"thumbnail\" operation."))
             ->duringInstantiation();
     }
 

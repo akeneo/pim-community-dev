@@ -47,6 +47,7 @@ class TransformationFilenameIsUniqueValidator extends ConstraintValidator
                     ->setParameter('%filename_prefix%', $transformation['filename_prefix'] ?? '')
                     ->setParameter('%filename_suffix%', $transformation['filename_suffix'] ?? '')
                     ->setParameter('%attribute_code%', $transformation['source']['attribute'])
+                    ->atPath('transformations')
                     ->addViolation();
             }
         }

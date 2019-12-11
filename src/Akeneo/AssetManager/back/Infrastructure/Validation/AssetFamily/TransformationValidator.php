@@ -36,14 +36,6 @@ class TransformationValidator extends ConstraintValidator
 {
     public const FILENAME_REGEX = '/^[\w\-\. ]*$/';
 
-    /** @var ValidatorInterface */
-    private $validator;
-
-    public function __construct(ValidatorInterface $validator)
-    {
-        $this->validator = $validator;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -81,7 +73,7 @@ class TransformationValidator extends ConstraintValidator
                 new Assert\All([
                     new Assert\Collection([
                         'type' => new Assert\NotNull(),
-                        'parameters' => new Assert\Type('array'),
+                        'parameters' => new Assert\Optional(new Assert\Type('array')),
                     ]),
                     new OperationShouldBeInstantiable(),
                 ]),
@@ -104,9 +96,8 @@ class TransformationValidator extends ConstraintValidator
             'updated_at' => new Assert\Optional(new Assert\Type('string')),
         ]);
 
-        $violations = $this->validator->validate($normalizedTransformation, $constraint);
-        foreach ($violations as $violation) {
-            $this->context->addViolation($violation->getMessage(), $violation->getParameters());
-        }
+        $context = $this->context;
+        $validator = $context->getValidator()->inContext($context);
+        $validator->validate($normalizedTransformation, $constraint, Constraint::DEFAULT_GROUP);
     }
 }

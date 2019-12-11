@@ -32,7 +32,7 @@ class ThumbnailOperation implements Operation
     public function __construct(?int $width, ?int $height)
     {
         if (null === $width && null === $height) {
-            throw new \LogicException("No parameter is provided for 'thumbnail' operation.");
+            throw new \LogicException("No parameter is provided for \"thumbnail\" operation.");
         }
 
         foreach (['width' => $width, 'height' => $height] as $parameterName => $value) {
