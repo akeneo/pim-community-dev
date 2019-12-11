@@ -8,3 +8,8 @@ services:
         class: 'Akeneo\Apps\Infrastructure\Persistence\Dbal\Query\DbalSelectAppWithCredentialsByCodeQuery'
         arguments:
             - '@database_connection'
+
+    akeneo_app.persistence.query.select_apps_event_count_by_day:
+        class: 'Akeneo\Apps\Infrastructure\Persistence\Dbal\Query\DbalSelectAppsEventCountByDayQuery'
+        arguments:
+            - '@database_connection'
