@@ -111,3 +111,15 @@ akeneo_apps:
         link_url: https://www.akeneo.com/
         flash:
             success: App successfully deleted.
+    dashboard:
+        helper:
+            title: 👋 Welcome in your app dashboard!
+            description: Here, you will be able to track all the data flows that are collected into your PIM via your apps, as well as all the data flows that are distributed to your channels via your apps.
+            link: Wanna know more? Here you go!
+            link_url: https://www.akeneo.com/
+        charts:
+            number_of_products_created: Number of products created
+            number_of_product_updated: Number of products updated
+            legend:
+                during_the_last_seven_days: During the last seven days
+                today: Today
