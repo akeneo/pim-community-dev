@@ -42,11 +42,7 @@ class TransformationCollectionValidator extends ConstraintValidator
         $validator = $context->getValidator()->inContext($context);
         $validator
             ->atPath('transformations')
-            ->validate(
-                $command->transformations,
-                $nestedConstraints,
-                Constraint::DEFAULT_GROUP
-            );
+            ->validate($command->transformations, $nestedConstraints, Constraint::DEFAULT_GROUP);
     }
 
     /**
