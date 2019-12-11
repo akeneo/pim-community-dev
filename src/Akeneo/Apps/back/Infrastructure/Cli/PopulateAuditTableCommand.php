@@ -7,8 +7,8 @@ namespace Akeneo\Apps\Infrastructure\Cli;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Application\Query\FindAnAppHandler;
 use Akeneo\Apps\Application\Query\FindAnAppQuery;
-use Akeneo\Apps\Audit\Application\Query\FetchAppsEventCountByEventHandler;
-use Akeneo\Apps\Audit\Application\Query\FetchAppsEventCountByEventQuery;
+use Akeneo\Apps\Audit\Application\Query\CountDailyEventsByAppHandler;
+use Akeneo\Apps\Audit\Application\Query\CountDailyEventsByAppQuery;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,13 +29,13 @@ class PopulateAuditTableCommand extends Command
     private $dbalConnection;
     /** @var FetchAppsHandler */
     private $fetchAppsHandler;
-    /** @var FetchAppsEventCountByEventHandler */
+    /** @var CountDailyEventsByAppHandler */
     private $fetchAppsEventCountByEventHandler;
 
     public function __construct(
         Connection $dbalConnection,
         FetchAppsHandler $fetchAppsHandler,
-        FetchAppsEventCountByEventHandler $fetchAppsEventCountByEventHandler
+        CountDailyEventsByAppHandler $fetchAppsEventCountByEventHandler
     ) {
         parent::__construct();
 
@@ -57,7 +57,7 @@ class PopulateAuditTableCommand extends Command
             }
         }
 
-        $query = new FetchAppsEventCountByEventQuery('product_updated', '2019-12-10', '2019-12-13');
+        $query = new CountDailyEventsByAppQuery('product_updated', '2019-12-10', '2019-12-13');
         var_dump($this->fetchAppsEventCountByEventHandler->handle($query));
     }
 

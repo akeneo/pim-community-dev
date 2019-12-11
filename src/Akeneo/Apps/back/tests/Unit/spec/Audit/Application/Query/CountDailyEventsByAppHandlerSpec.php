@@ -8,7 +8,7 @@ use Akeneo\Apps\Audit\Application\Query\CountDailyEventsByAppHandler;
 use Akeneo\Apps\Audit\Application\Query\CountDailyEventsByAppQuery;
 use Akeneo\Apps\Audit\Domain\Model\Read\AppEventCounts;
 use Akeneo\Apps\Audit\Domain\Model\Read\DailyEventCount;
-use Akeneo\Apps\Audit\Domain\Persistence\Query\SelectAppsEventCountByDateQuery;
+use Akeneo\Apps\Audit\Domain\Persistence\Query\SelectAppsEventCountByDayQuery;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -18,9 +18,9 @@ use PhpSpec\ObjectBehavior;
  */
 class CountDailyEventsByAppHandlerSpec extends ObjectBehavior
 {
-    function let(SelectAppsEventCountByDateQuery $selectAppsEventCountByDateQuery)
+    function let(SelectAppsEventCountByDayQuery $selectAppsEventCountByDayQuery)
     {
-        $this->beConstructedWith($selectAppsEventCountByDateQuery);
+        $this->beConstructedWith($selectAppsEventCountByDayQuery);
     }
 
     function it_is_initializable()
@@ -28,7 +28,7 @@ class CountDailyEventsByAppHandlerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(CountDailyEventsByAppHandler::class);
     }
 
-    function it_handles_the_event_count($selectAppsEventCountByDateQuery)
+    function it_handles_the_event_count($selectAppsEventCountByDayQuery)
     {
         $eventCountByApp1 = new AppEventCounts('Magento');
         $eventCountByApp1->addEventCount(new DailyEventCount(42, new \DateTime('2019-12-10')));
@@ -37,7 +37,7 @@ class CountDailyEventsByAppHandlerSpec extends ObjectBehavior
         $eventCountByApp2 = new AppEventCounts('Bynder');
         $eventCountByApp2->addEventCount(new DailyEventCount(36, new \DateTime('2019-12-11')));
 
-        $selectAppsEventCountByDateQuery
+        $selectAppsEventCountByDayQuery
             ->execute('product_created', '2019-12-10', '2019-12-12')
             ->willReturn([$eventCountByApp1, $eventCountByApp2]);
 

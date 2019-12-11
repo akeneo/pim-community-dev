@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Audit\Infrastructure\Persistence\Dbal\Query;
 
-use Akeneo\Apps\Audit\Domain\Model\Read\EventCountByApp;
-use Akeneo\Apps\Audit\Domain\Model\Read\EventCountByDate;
-use Akeneo\Apps\Audit\Domain\Persistence\Query\SelectAppsEventCountByDateQuery;
+use Akeneo\Apps\Audit\Domain\Model\Read\AppEventCounts;
+use Akeneo\Apps\Audit\Domain\Model\Read\DailyEventCount;
+use Akeneo\Apps\Audit\Domain\Persistence\Query\SelectAppsEventCountByDayQuery;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -14,7 +14,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DbalSelectAppsEventCountByDateQuery implements SelectAppsEventCountByDateQuery
+class DbalSelectAppsEventCountByDayQuery implements SelectAppsEventCountByDayQuery
 {
 
     /** @var Connection */
@@ -54,12 +54,12 @@ SQL;
         return $eventCountByApps;
     }
 
-    private function hydrateRow(array $dataRow): EventCountByApp
+    private function hydrateRow(array $dataRow): AppEventCounts
     {
-        $eventCountByApp = new EventCountByApp($dataRow['label']);
+        $eventCountByApp = new AppEventCounts($dataRow['label']);
         foreach (json_decode($dataRow['event_count'], true) as $eventDate => $eventCount) {
             $eventCountByApp->addEventCount(
-                new EventCountByDate($eventCount, new \DateTime($eventDate, new \DateTimeZone('UTC')))
+                new DailyEventCount($eventCount, new \DateTime($eventDate, new \DateTimeZone('UTC')))
             );
         }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Audit\Application\Query;
 
-use Akeneo\Apps\Audit\Domain\Persistence\Query\SelectAppsEventCountByDateQuery;
+use Akeneo\Apps\Audit\Domain\Persistence\Query\SelectAppsEventCountByDayQuery;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -13,10 +13,10 @@ use Akeneo\Apps\Audit\Domain\Persistence\Query\SelectAppsEventCountByDateQuery;
  */
 class CountDailyEventsByAppHandler
 {
-    /** @var SelectAppsEventCountByDateQuery */
+    /** @var SelectAppsEventCountByDayQuery */
     private $selectAppsEventCountByDateQuery;
 
-    public function __construct(SelectAppsEventCountByDateQuery $selectAppsEventCountByDateQuery)
+    public function __construct(SelectAppsEventCountByDayQuery $selectAppsEventCountByDateQuery)
     {
         $this->selectAppsEventCountByDateQuery = $selectAppsEventCountByDateQuery;
     }
