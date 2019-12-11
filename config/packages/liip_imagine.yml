@@ -76,3 +76,18 @@ liip_imagine:
             data_loader:      stream_pdf_loader
             filters:
                 thumbnail:    { size: [320, 320], mode: inset }
+
+        am_binary_pdf_preview:
+            quality:          95
+            format:           jpg
+            data_loader:      flysystem_pdf_loader
+            filters:
+                background:
+                    color: "#ffffff"
+
+        am_binary_pdf_thumbnail:
+            quality:          95
+            format:           png
+            data_loader:      flysystem_pdf_loader
+            filters:
+                thumbnail:    { size: [320, 320], mode: inset }
