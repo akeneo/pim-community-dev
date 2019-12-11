@@ -29,13 +29,10 @@ final class AppEventCounts
 
     public function normalize()
     {
-        $eventCounts = [];
-        foreach ($this->dailyEventCounts as $eventCount) {
-            $eventCounts[] = $eventCount->normalize();
-        }
-
         return [
-            $this->appCode => $eventCounts
+            $this->appCode => \array_map(function (DailyEventCount $dailyEventCount) {
+                return $dailyEventCount->normalize();
+            }, $this->dailyEventCounts)
         ];
     }
 }
