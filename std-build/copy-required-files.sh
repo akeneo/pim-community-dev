@@ -22,9 +22,9 @@ cp $DEV_DISTRIB_DIR/config/bootstrap.php $STANDARD_DISTRIB_DIR/config/
 cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
 cp $DEV_DISTRIB_DIR/public/index.php $STANDARD_DISTRIB_DIR/public/
 cp $DEV_DISTRIB_DIR/std-build/Kernel.php $STANDARD_DISTRIB_DIR/src
-cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 
 # The following files are only copied if the destination does not exist
+cp --no-clobber $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 cp --no-clobber $DEV_DISTRIB_DIR/config/packages/security.yml $STANDARD_DISTRIB_DIR/config/packages/security.yml
 cp --no-clobber $DEV_DISTRIB_DIR/std-build/Makefile $STANDARD_DISTRIB_DIR/Makefile
 cp --no-clobber $DEV_DISTRIB_DIR/std-build/bundles.php $STANDARD_DISTRIB_DIR/config
