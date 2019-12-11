@@ -46,13 +46,9 @@ jobs:
             name: Install asset
             command: make assets
       - run:
-            name: Build CSS
-            command: make css
-      - run:
             name: Build Javascript
             command: |
                 make javascript-test
-                make javascript-dev
       - run:
             name: Change owner on project dir after install
             command: sudo chmod -R 777 ../project
