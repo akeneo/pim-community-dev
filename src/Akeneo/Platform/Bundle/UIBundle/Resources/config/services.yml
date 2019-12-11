@@ -53,6 +53,7 @@ services:
       class: Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator
       arguments:
           - '@request_stack'
+          - '%kernel.secret%'
 
     security.event_listener.add_csp:
         class: Akeneo\Platform\Bundle\UIBundle\EventListener\AddContentSecurityPolicyListener

@@ -9,20 +9,31 @@ use Symfony\Component\HttpFoundation\Session\Session;
 /**
  * Generate and return the CSP javascript nonce.
  *
+ * The nonce is a generated string used to identify valid inline scripts used in the PIM.
+ * Every inline script that will not match this nonce will be blocked for execution.
+ * This is mainly used to avoid inline scripts in our wysiwyg editor,
+ * but also every text input that could import malicious javascript.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src
+ *
+ * The generated nonce is used in the AddContentSecurityPolicyListener to add the CSP to the HTTP response.
+ * It is also used in Twig template to set the nonce in inline script tags.
+ *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ScriptNonceGenerator
 {
-    /** @var string */
-    private $generatedNonce;
     /** @var RequestStack */
     private $request;
+    /** @var string */
+    private $kernelSecret;
 
-    public function __construct(RequestStack $request)
+    public function __construct(RequestStack $request, string $kernelSecret)
     {
         $this->request = $request;
+        $this->kernelSecret = $kernelSecret;
     }
 
     /**
@@ -30,15 +41,17 @@ class ScriptNonceGenerator
     */
     public function getGeneratedNonce(): string
     {
-        if (null === $this->generatedNonce) {
-            $this->generatedNonce = $this->request->getCurrentRequest()->getSession()->get('nonce', null);
+        $request = $this->request->getCurrentRequest();
+        $bapid = $request->cookies->get('BAPID');
+
+        // If the BAPID id null because of a tricked request, we could have the same nonce opening a security hole
+        // because the generated nonce would always be the same.
+        // We can prevent it by generationg a random UUID string. It will probably break the PIM inline scripts,
+        // but also protect us against other inline scripts (like in wysiwig)
+        if (null === $bapid || '' === trim($bapid)) {
+            return Uuid::uuid4()->toString();
         }
 
-        if (null === $this->generatedNonce) {
-            $this->generatedNonce = Uuid::uuid4()->toString();
-            $this->request->getCurrentRequest()->getSession()->set('nonce', $this->generatedNonce);
-        }
-
-        return $this->generatedNonce;
+        return hash_hmac('ripemd160', $bapid, $this->kernelSecret);
     }
 }
