@@ -46,6 +46,7 @@ services:
             - '%env(APP_DATABASE_USER)%'
             - '%env(APP_DATABASE_PASSWORD)%'
             - '%kernel.cache_dir%/sql-dump/'
+            - '%index_hosts%'
 
     akeneo_integration_tests.loader.category_tree_loader:
         class: 'AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\CategoryTree\CategoryTreeFixturesLoader'
