@@ -27,6 +27,6 @@ class CountDailyEventsByAppHandler
             ->selectAppsEventCountByDayQuery
             ->execute($query->eventType(), $query->startDate(), $query->endDate());
 
-        return $eventCountByApps;
+        return $appEventCounts;
     }
 }
