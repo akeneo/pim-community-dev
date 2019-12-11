@@ -62,7 +62,7 @@ export const getAssetFamilyLabel = (
 export const assetFamilyAreEqual = (first: AssetFamily, second: AssetFamily): boolean =>
   assetFamilyidentifiersAreEqual(first.identifier, second.identifier);
 
-export const getAssetFamilyMainMedia = (assetFamily: AssetFamily): NormalizedAttribute => {
+export const getAttributeAsMainMedia = (assetFamily: AssetFamily): NormalizedAttribute => {
   const attribute = assetFamily.attributes.find(
     (attribute: NormalizedAttribute) => attribute.identifier === assetFamily.attributeAsMainMedia
   );

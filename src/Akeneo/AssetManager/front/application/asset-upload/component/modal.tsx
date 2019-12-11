@@ -10,7 +10,7 @@ import {
   createAssetsFromLines,
 } from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import Line, {Thumbnail} from 'akeneoassetmanager/application/asset-upload/model/line';
-import {AssetFamily, getAssetFamilyMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
@@ -24,6 +24,7 @@ import {
   removeLineAction,
   fileUploadSuccessAction,
   reducer,
+  State,
   assetCreationFailAction,
   assetCreationSuccessAction,
   OnFileThumbnailGenerationAction,
@@ -37,6 +38,7 @@ import FileDropZone from 'akeneoassetmanager/application/asset-upload/component/
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {Reducer} from 'redux';
 
 const Subtitle = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
@@ -108,7 +110,6 @@ const onCreateAllAssetAction = (assetFamily: AssetFamily, lines: Line[], dispatc
   assetsToSend.forEach(async (asset: CreationAsset) => {
     try {
       const result = await create(asset);
-
       if (null !== result) {
         dispatch(assetCreationFailAction(asset, result));
       } else {
@@ -160,8 +161,8 @@ const onFileDrop = (
 };
 
 const UploadModal = ({assetFamily, onCancel}: UploadModalProps) => {
-  const [state, dispatch] = React.useReducer(reducer, {lines: []});
-  const attributeAsMainMedia = getAssetFamilyMainMedia(assetFamily) as NormalizedAttribute;
+  const [state, dispatch] = React.useReducer<Reducer<State>>(reducer, {lines: []});
+  const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
 
   return (
     <Modal>

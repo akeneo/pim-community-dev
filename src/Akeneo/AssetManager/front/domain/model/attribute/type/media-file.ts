@@ -14,7 +14,7 @@ import {MediaType} from 'akeneoassetmanager/domain/model/attribute/type/media-fi
 export const MEDIA_FILE_ATTRIBUTE_TYPE = 'media_file';
 
 export interface NormalizedMediaFileAttribute extends NormalizedAttribute {
-  type: 'media_file';
+  type: typeof MEDIA_FILE_ATTRIBUTE_TYPE;
   allowed_extensions: AllowedExtensions;
   max_file_size: MaxFileSize;
   media_type: MediaType;

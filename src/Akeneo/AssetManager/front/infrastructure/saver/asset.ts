@@ -39,24 +39,28 @@ export class AssetSaverImplementation implements AssetSaver {
   async save(asset: Asset): Promise<ValidationError[] | null> {
     const normalizedAsset = asset.normalizeMinimal();
 
-    return await postJSON(
+    const result = await postJSON(
       routing.generate('akeneo_asset_manager_asset_edit_rest', {
         assetFamilyIdentifier: assetFamilyIdentifierStringValue(asset.getAssetFamilyIdentifier()),
         assetCode: assetCodeStringValue(asset.getCode()),
       }),
       normalizedAsset
     ).catch(handleError);
+
+    return undefined === result ? null : result;
   }
 
   async create(asset: CreationAsset): Promise<ValidationError[] | null> {
     const normalizedAsset = normalizeCreationAsset(asset);
 
-    return await postJSON(
+    const result = await postJSON(
       routing.generate('akeneo_asset_manager_asset_create_rest', {
         assetFamilyIdentifier: assetFamilyIdentifierStringValue(asset.assetFamilyIdentifier),
       }),
       normalizedAsset
     ).catch(handleError);
+
+    return undefined === result ? null : result;
   }
 }
 

@@ -42,8 +42,10 @@ export type NormalizedTextAdditionalProperty =
   | ValidationRule
   | RegularExpression;
 
+export const TEXT_ATTRIBUTE_TYPE = 'text';
+
 export interface NormalizedTextAttribute extends NormalizedAttribute {
-  type: 'text';
+  type: typeof TEXT_ATTRIBUTE_TYPE;
   max_length: MaxLength;
   is_textarea: IsTextarea;
   is_rich_text_editor: IsRichTextEditor;

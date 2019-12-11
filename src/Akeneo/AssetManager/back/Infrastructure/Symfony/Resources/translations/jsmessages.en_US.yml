@@ -183,6 +183,7 @@ pim_asset_manager:
     button:
       save: Save
       create: Add new
+      mass_upload: Mass upload
       delete: Delete
       delete_all: Delete all assets
       back: Back to list

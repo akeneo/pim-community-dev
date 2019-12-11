@@ -1,6 +1,6 @@
 import Line, {LineStatus, LineIdentifier} from 'akeneoassetmanager/application/asset-upload/model/line';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {AssetFamily, getAssetFamilyMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import sanitize from 'akeneoassetmanager/tools/sanitize';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
@@ -29,7 +29,7 @@ export const createLineFromFilename = (filename: string, assetFamily: AssetFamil
 };
 
 const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily) => {
-  const attribute = getAssetFamilyMainMedia(assetFamily) as NormalizedAttribute;
+  const attribute = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
   const localizable = attribute.value_per_locale;
   const scopable = attribute.value_per_channel;
   let matches;

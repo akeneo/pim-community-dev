@@ -5,7 +5,11 @@ import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {redirectToAsset} from 'akeneoassetmanager/application/action/asset/router';
 import __ from 'akeneoassetmanager/tools/translator';
-import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {
+  getAssetFamilyLabel,
+  getAttributeAsMainMedia,
+  AssetFamily,
+} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {assetCreationStart} from 'akeneoassetmanager/domain/event/asset/create';
 import {deleteAllAssetFamilyAssets, deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
@@ -39,6 +43,7 @@ import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {assetUploadStart} from 'akeneoassetmanager/domain/event/asset/upload';
+import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 
 const securityContext = require('pim/security-context');
 
@@ -60,6 +65,7 @@ interface StateProps {
   attributes: NormalizedAttribute[] | null;
   rights: {
     asset: {
+      upload: boolean;
       create: boolean;
       edit: boolean;
       deleteAll: boolean;
@@ -106,16 +112,16 @@ export type FilterViews = {
 
 const SecondaryActions = ({
   canDeleteAllAssets,
-  canCreateAsset,
+  canUploadAsset,
   onOpenDeleteAllAssetsModal,
   onStartMassUpload,
 }: {
   onOpenDeleteAllAssetsModal: () => void;
   onStartMassUpload: () => void;
   canDeleteAllAssets: boolean;
-  canCreateAsset: boolean;
+  canUploadAsset: boolean;
 }) => {
-  if (!canDeleteAllAssets && !canCreateAsset) return null;
+  if (!canDeleteAllAssets && !canUploadAsset) return null;
 
   return (
     <>
@@ -129,7 +135,7 @@ const SecondaryActions = ({
                 {__('pim_asset_manager.asset.button.delete_all')}
               </button>
             )}
-            {canCreateAsset && (
+            {canUploadAsset && (
               <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onStartMassUpload()}>
                 {__('pim_asset_manager.asset.button.mass_upload')}
               </button>
@@ -217,8 +223,8 @@ class Assets extends React.Component<StateProps & DispatchProps, {cellViews: Cel
                 onStartMassUpload={() => {
                   events.onAssetUploadStart();
                 }}
-                canCreateAsset={rights.asset.deleteAll}
-                canDeleteAllAssets={rights.asset.create}
+                canDeleteAllAssets={rights.asset.deleteAll}
+                canUploadAsset={rights.asset.upload}
               />
             );
           }}
@@ -301,6 +307,12 @@ export default connect(
     const matchesCount =
       undefined === state.grid || undefined === state.grid.matchesCount ? 0 : state.grid.matchesCount;
 
+    const canCreateAsset =
+      securityContext.isGranted('akeneo_assetmanager_asset_create') &&
+      canEditAssetFamily(state.right.assetFamily, state.form.data.identifier);
+    const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily);
+    const canUploadAsset = canCreateAsset && attributeAsMainMedia.type === MEDIA_FILE_ATTRIBUTE_TYPE;
+
     return {
       context: {
         locale: state.user.catalogLocale,
@@ -319,9 +331,8 @@ export default connect(
       attributes: state.attributes.attributes,
       rights: {
         asset: {
-          create:
-            securityContext.isGranted('akeneo_assetmanager_asset_create') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
+          upload: canUploadAsset,
+          create: canCreateAsset,
           edit:
             securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
