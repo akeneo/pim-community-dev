@@ -11,7 +11,7 @@ use Akeneo\Apps\Audit\Domain\Persistence\Query\SelectAppsEventCountByDateQuery;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class FetchAppsEventCountByEventHandler
+class CountDailyEventsByAppHandler
 {
     /** @var SelectAppsEventCountByDateQuery */
     private $selectAppsEventCountByDateQuery;
@@ -21,7 +21,7 @@ class FetchAppsEventCountByEventHandler
         $this->selectAppsEventCountByDateQuery = $selectAppsEventCountByDateQuery;
     }
 
-    public function handle(FetchAppsEventCountByEventQuery $query)
+    public function handle(CountDailyEventsByAppQuery $query)
     {
         $eventCountByApps = $this
             ->selectAppsEventCountByDateQuery

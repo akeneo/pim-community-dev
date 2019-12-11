@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Apps\Audit\Domain\Model\Read;
+namespace spec\Akeneo\Apps\Audit\Application\Query;
 
-use Akeneo\Apps\Audit\Application\Query\FetchAppsEventCountByEventQuery;
+use Akeneo\Apps\Audit\Application\Query\CountDailyEventsByAppQuery;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class FetchAppsEventCountByEventQuerySpec extends ObjectBehavior
+class CountDailyEventsByAppQuerySpec extends ObjectBehavior
 {
     function let()
     {
@@ -21,7 +21,7 @@ class FetchAppsEventCountByEventQuerySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf(FetchAppsEventCountByEventQuery::class);
+        $this->shouldBeAnInstanceOf(CountDailyEventsByAppQuery::class);
     }
 
     function it_returns_the_event_type()
