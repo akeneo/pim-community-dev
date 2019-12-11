@@ -20,12 +20,7 @@ node_modules: yarn.lock
 .PHONY: assets
 assets:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/bundles public/js
-	$(PHP_RUN) bin/console --env=prod pim:installer:assets --symlink --clean
-
-.PHONY: css
-css:
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/css
-	$(YARN_RUN) run less
+	$(PHP_RUN) bin/console pim:installer:assets --symlink --clean
 
 .PHONY: javascript-prod
 javascript-prod:
@@ -43,7 +38,7 @@ javascript-test:
 	$(YARN_RUN) run webpack-test
 
 .PHONY: front
-front: assets css javascript-test javascript-dev
+front: assets javascript-test javascript-dev
 
 ##
 ## Back
@@ -127,14 +122,6 @@ pim-prod:
 	$(MAKE) javascript-prod
 	docker/wait_docker_up.sh
 	APP_ENV=prod $(MAKE) database
-
-##
-## Docker
-##
-
-.PHONY: php-image-dev
-php-image-dev:
-	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag akeneo/pim-dev/php:7.3 --target dev .
 
 .PHONY: up
 up:
