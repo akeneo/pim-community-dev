@@ -9,20 +9,20 @@ namespace Akeneo\Apps\Audit\Domain\Model\Read;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class EventCountByApp
+final class AppEventCounts
 {
     /** @var string */
-    private $appLabel;
+    private $appCode;
 
-    /** @var EventCountByDate[] */
+    /** @var DailyEventCount[] */
     private $eventCounts = [];
 
-    public function __construct(string $appLabel)
+    public function __construct(string $appCode)
     {
-        $this->appLabel = $appLabel;
+        $this->appCode = $appCode;
     }
 
-    public function addEventCount(EventCountByDate $eventCountByDate): void
+    public function addEventCount(DailyEventCount $eventCountByDate): void
     {
         $this->eventCounts[] = $eventCountByDate;
     }
@@ -35,7 +35,7 @@ final class EventCountByApp
         }
 
         return [
-            $this->appLabel => $eventCounts
+            $this->appCode => $eventCounts
         ];
     }
 }

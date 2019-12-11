@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Apps\Audit\Domain\Model\Read;
 
-use Akeneo\Apps\Audit\Domain\Model\Read\EventCountByDate;
+use Akeneo\Apps\Audit\Domain\Model\Read\DailyEventCount;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class EventCountByDateSpec extends ObjectBehavior
+class DailyEventCountSpec extends ObjectBehavior
 {
     function let()
     {
@@ -22,7 +22,7 @@ class EventCountByDateSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf(EventCountByDate::class);
+        $this->shouldBeAnInstanceOf(DailyEventCount::class);
     }
 
     function it_normalizes_the_event_count()
