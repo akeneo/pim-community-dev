@@ -29,9 +29,9 @@ class OperationJobLauncher
     protected $tokenStorage;
 
     /**
-     * @param JobLauncherInterface $jobLauncher
+     * @param JobLauncherInterface                  $jobLauncher
      * @param IdentifiableObjectRepositoryInterface $jobInstanceRepo
-     * @param TokenStorageInterface $tokenStorage
+     * @param TokenStorageInterface                 $tokenStorage
      */
     public function __construct(
         JobLauncherInterface $jobLauncher,
@@ -53,9 +53,7 @@ class OperationJobLauncher
     public function launch(BatchableOperationInterface $operation)
     {
         $jobInstanceCode = $operation->getJobInstanceCode();
-
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier($jobInstanceCode);
-
 
         if (null === $jobInstance) {
             throw new NotFoundResourceException(sprintf('No JobInstance found with code "%s"', $jobInstanceCode));
