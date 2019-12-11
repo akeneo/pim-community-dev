@@ -93,6 +93,7 @@ pim_asset_manager:
       attribute: Attributes
       properties: Properties
       permission: Permissions
+      transformations: Transformations
     properties:
       title: Asset family properties
       identifier: Code

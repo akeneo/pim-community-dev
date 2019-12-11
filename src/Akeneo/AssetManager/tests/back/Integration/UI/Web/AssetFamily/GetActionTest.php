@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -82,6 +83,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $entityItem->assetCount = 123;
         $entityItem->attributeAsMainMedia = AttributeAsMainMediaReference::createFromNormalized('designer_portrait_123456');
         $entityItem->attributeAsLabel = AttributeAsLabelReference::createFromNormalized('designer_name_123456');
+        $entityItem->transformations = TransformationCollection::noTransformation();
 
         $name = new AttributeDetails();
         $name->identifier = 'designer_name_123456';

@@ -4,6 +4,7 @@ import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {combineReducers} from 'redux';
 import {File} from 'akeneoassetmanager/domain/model/file';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import TransformationCollection from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
 
 export interface EditionFormState {
   state: FormState;
@@ -22,6 +23,7 @@ const dataReducer = (
     locale,
     image,
     attributeAsMainMedia,
+    transformations,
   }: {
     type: string;
     assetFamily: AssetFamily;
@@ -29,6 +31,7 @@ const dataReducer = (
     locale: string;
     image: File;
     attributeAsMainMedia: AttributeIdentifier;
+    transformations: TransformationCollection;
   }
 ) => {
   switch (type) {
@@ -43,6 +46,9 @@ const dataReducer = (
       break;
     case 'ASSET_FAMILY_EDITION_ATTRIBUTE_AS_MAIN_MEDIA_UPDATED':
       state = {...state, attributeAsMainMedia};
+      break;
+    case 'ASSET_FAMILY_EDITION_TRANSFORMATIONS_UPDATED':
+      state = {...state, transformations};
       break;
     default:
       break;

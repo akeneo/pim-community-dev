@@ -70,7 +70,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'originalFilename' => 'image.jpg'
             ],
             'productLinkRules' => null,
-            'transformations' => null,
+            'transformations' => '[]',
         ];
 
         $this->webClientHelper->callRoute(

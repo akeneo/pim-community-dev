@@ -39,20 +39,25 @@ class AttributeSourceIsNotATargetValidator extends ConstraintValidator
             return;
         }
 
-        $targets = array_map(function (array $transformation) {
-            return Target::createFromNormalized($transformation['target']);
-        }, $command->transformations);
+        $targets = [];
+        foreach ($command->transformations as $transformation) {
+            if (isset($transformation['target'])) {
+                $targets[] = Target::createFromNormalized($transformation['target']);
+            }
+        }
 
         foreach ($command->transformations as $transformation) {
-            $source = Source::createFromNormalized($transformation['source']);
+            if (isset($transformation['source'])) {
+                $source = Source::createFromNormalized($transformation['source']);
 
-            if ($this->thereIsATargetEqualToTheSource($source, $targets)) {
-                $this->context->buildViolation(
-                    AttributeSourceIsNotATarget::ERROR_MESSAGE,
-                    [
-                        '%attribute_code%' => $source->getAttributeCode(),
-                    ]
-                )->addViolation();
+                if ($this->thereIsATargetEqualToTheSource($source, $targets)) {
+                    $this->context->buildViolation(
+                        AttributeSourceIsNotATarget::ERROR_MESSAGE,
+                        [
+                            '%attribute_code%' => $source->getAttributeCode(),
+                        ]
+                    )->addViolation();
+                }
             }
         }
     }

@@ -137,6 +137,7 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
       image: null,
       attributeAsMainMedia: '',
       attributeAsLabel: '',
+      transformations: '[]',
     });
   });
 });

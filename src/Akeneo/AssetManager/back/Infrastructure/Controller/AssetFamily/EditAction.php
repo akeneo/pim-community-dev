@@ -95,17 +95,22 @@ class EditAction
         $parameters = json_decode($request->getContent(), true);
         $parameters = $this->replaceAttributeAsMainMediaIdentifierByCode($parameters);
 
+        $transformations = json_decode($parameters['transformations'], true);
+        if (null === $transformations) {
+            // TODO Put a real validation error to be displayed correctly
+            return new JsonResponse(sprintf('Impossible to parse %s', $parameters['transformations']), Response::HTTP_BAD_REQUEST);
+        }
+
         $command = new EditAssetFamilyCommand(
             $parameters['identifier'],
             $parameters['labels'],
             $parameters['image'],
             $parameters['attributeAsMainMedia'],
             $parameters['productLinkRules'],
-            $parameters['transformations']
+            $transformations
         );
 
         $violations = $this->validator->validate($command);
-
         if ($violations->count() > 0) {
             return new JsonResponse($this->serializer->normalize($violations, 'internal_api'),
                 Response::HTTP_BAD_REQUEST);

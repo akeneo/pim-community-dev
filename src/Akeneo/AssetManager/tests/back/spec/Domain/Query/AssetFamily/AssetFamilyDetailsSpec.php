@@ -3,6 +3,7 @@
 namespace spec\Akeneo\AssetManager\Domain\Query\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
@@ -35,6 +36,7 @@ class AssetFamilyDetailsSpec extends ObjectBehavior
         $this->attributes = [
             $name
         ];
+        $this->transformations = TransformationCollection::noTransformation();
         $this->isAllowedToEdit = false;
         $this->attributeAsLabel = AttributeAsLabelReference::noReference();
         $this->attributeAsMainMedia = AttributeAsMainMediaReference::noReference();
@@ -63,6 +65,7 @@ class AssetFamilyDetailsSpec extends ObjectBehavior
                 ],
                 'attribute_as_label' => null,
                 'attribute_as_main_media' => null,
+                'transformations' => []
             ]
         );
     }
