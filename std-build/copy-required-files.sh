@@ -34,4 +34,4 @@ cp --no-clobber $DEV_DISTRIB_DIR/std-build/tsconfig.json $STANDARD_DISTRIB_DIR/t
 cp --no-clobber -r $DEV_DISTRIB_DIR/docker/* $STANDARD_DISTRIB_DIR/docker/
 cp --no-clobber $DEV_DISTRIB_DIR/.gitignore $STANDARD_DISTRIB_DIR/
 cp --no-clobber $DEV_DISTRIB_DIR/std-build/services.yml $STANDARD_DISTRIB_DIR/config/services/
-cp --no-clobber $DEV_DISTRIB_DIR/std-build/docker-compose.yml $STANDARD_DISTRIB_DIR/std-build/
+cp --no-clobber $DEV_DISTRIB_DIR/std-build/docker-compose.yml $STANDARD_DISTRIB_DIR/
