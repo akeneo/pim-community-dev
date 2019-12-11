@@ -1,7 +1,3 @@
-parameters:
-    akeneo_ee_integration_tests.loader.fixtures_loader.class: AkeneoEnterprise\Test\IntegrationTestsBundle\Loader\FixturesLoader
-    akeneo_ee_integration_tests.loader.permission_cleaner.class: AkeneoEnterprise\Test\IntegrationTestsBundle\Loader\PermissionCleaner
-
 services:
     akeneo_integration_tests.loader.reference_data_loader:
         class: '%akeneo_integration_tests.loader.reference_data_loader.class%'
@@ -13,7 +9,7 @@ services:
             - 'AcmeEnterprise\Bundle\AppBundle\Entity\Color'
 
     akeneo_ee_integration_tests.loader.fixtures_loader:
-        class: '%akeneo_ee_integration_tests.loader.fixtures_loader.class%'
+        class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Loader\FixturesLoader'
         decorates: 'akeneo_integration_tests.loader.fixtures_loader'
         decoration_inner_name: 'akeneo_integration_tests.loader.fixtures_loader.base'
         arguments:
@@ -21,10 +17,9 @@ services:
             - '@akeneo_ee_integration_tests.loader.permission_cleaner'
 
     akeneo_ee_integration_tests.loader.permission_cleaner:
-        class: '%akeneo_ee_integration_tests.loader.permission_cleaner.class%'
+        class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Loader\PermissionCleaner'
         arguments:
-            - '@Akeneo\Platform\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand'
-            - '@Akeneo\Platform\Bundle\InstallerBundle\Command\CleanAttributeGroupAccessesCommand'
+            - '@database_connection'
 
     akeneo_integration_tests.catalogs_enterprise:
         class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Configuration\Catalog'

@@ -2,26 +2,16 @@
 
 namespace AkeneoEnterprise\Test\IntegrationTestsBundle\Loader;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Command\CleanAttributeGroupAccessesCommand;
-use Akeneo\Platform\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Akeneo\UserManagement\Component\Model\User;
+use Doctrine\DBAL\Connection;
 
 class PermissionCleaner
 {
-    /** @var CleanCategoryAccessesCommand */
-    private $cleanCategoryAccessesCommand;
+    /** @var Connection */
+    private $connection;
 
-    /** @var CleanAttributeGroupAccessesCommand */
-    private $cleanAttributeGroupAccessesCommand;
-
-    public function __construct(
-        CleanCategoryAccessesCommand $cleanCategoryAccessesCommand,
-        CleanAttributeGroupAccessesCommand $cleanAttributeGroupAccessesCommand
-    ) {
-        $this->cleanCategoryAccessesCommand = $cleanCategoryAccessesCommand;
-        $this->cleanAttributeGroupAccessesCommand = $cleanAttributeGroupAccessesCommand;
+    public function __construct(Connection $connection) {
+        $this->connection = $connection;
     }
 
     /**
@@ -31,19 +21,28 @@ class PermissionCleaner
      */
     public function cleanPermission()
     {
-        $application = new Application();
+        $sql = <<<SQL
+            DELETE FROM pimee_security_attribute_group_access WHERE user_group_id IN (
+                SELECT id FROM akeneo_pim.oro_access_group WHERE name = :group_name
+            );
+        SQL;
 
-        $cleanCategoryRight = $application->add($this->cleanCategoryAccessesCommand);
-        $cleanAttributeGroupRight = $application->add($this->cleanAttributeGroupAccessesCommand);
+        $this->connection->executeQuery($sql, ['group_name' => User::GROUP_DEFAULT]);
 
-        $cleanCategoryRightCommand = new CommandTester($cleanCategoryRight);
-        $cleanAttributeGroupRightCommand = new CommandTester($cleanAttributeGroupRight);
+        $sql = <<<SQL
+            DELETE FROM pimee_security_asset_category_access WHERE user_group_id IN (
+                SELECT id FROM akeneo_pim.oro_access_group WHERE name = :group_name
+            );
+        SQL;
 
-        $cleanCategoryRightCode = $cleanCategoryRightCommand->execute([]);
-        $cleanAttributeGroupRightCode = $cleanAttributeGroupRightCommand->execute([]);
+        $this->connection->executeQuery($sql, ['group_name' => User::GROUP_DEFAULT]);
 
-        if (0 !== $cleanCategoryRightCode && 0 !== $cleanAttributeGroupRightCode) {
-            throw new \Exception('Failed to clean accesses.');
-        }
+        $sql = <<<SQL
+            DELETE FROM pimee_security_product_category_access WHERE user_group_id IN (
+                SELECT id FROM akeneo_pim.oro_access_group WHERE name = :group_name
+            );
+        SQL;
+
+        $this->connection->executeQuery($sql, ['group_name' => User::GROUP_DEFAULT]);
     }
 }
