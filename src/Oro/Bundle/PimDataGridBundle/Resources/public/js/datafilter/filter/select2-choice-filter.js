@@ -169,11 +169,11 @@ define(
                     this._showCriteria();
 
                     if (_.contains(['empty', 'not empty'], this.getValue().type)) {
-                      this._disableInput();
+                        this._disableInput();
                     } else {
-                      initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config())
-                        .select2('data', this._getCachedResults(this.getValue().value))
-                        .select2('open');
+                        initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config())
+                            .select2('data', this._getCachedResults(this.getValue().value))
+                            .select2('open');
                     }
                 } else {
                     this._hideCriteria();
