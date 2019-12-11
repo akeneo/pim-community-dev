@@ -8,6 +8,7 @@ const initialState = {
     code: '',
     labels: {},
     image: null,
+    transformations: '[]',
   },
   errors: [],
   state: {
@@ -118,6 +119,34 @@ describe('akeneo > asset family > application > reducer > asset-family --- edit'
           fr_FR: 'Concepteur',
         },
         image: null,
+      },
+      state: {isDirty: false, originalData: ''},
+    });
+  });
+
+  test('I can update the transformations of the asset family', () => {
+    const previousState = {
+      data: {
+        identifier: '',
+        labels: {},
+        image: null,
+        transformations: '[]',
+      },
+      errors: [],
+      state: {isDirty: false, originalData: ''},
+    };
+    const newState = reducer(previousState, {
+      type: 'ASSET_FAMILY_EDITION_TRANSFORMATIONS_UPDATED',
+      transformations: '["new transformations"]',
+    });
+
+    expect(newState).toEqual({
+      errors: [],
+      data: {
+        identifier: '',
+        labels: {},
+        image: null,
+        transformations: '["new transformations"]',
       },
       state: {isDirty: false, originalData: ''},
     });

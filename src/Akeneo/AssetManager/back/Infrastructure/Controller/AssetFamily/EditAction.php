@@ -95,7 +95,6 @@ class EditAction
         $parameters = json_decode($request->getContent(), true);
         $parameters = $this->replaceAttributeAsMainMediaIdentifierByCode($parameters);
 
-        // TODO Maybe a better solution should be to send a string into EditAssetFamilyCommand and validate this command instead.
         $transformations = json_decode($parameters['transformations'], true);
         if (null === $transformations) {
             // TODO Put a real validation error to be displayed correctly

@@ -15,7 +15,7 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import AssetFamilyCode from 'akeneoassetmanager/domain/model/asset-family/code';
 import TransformationCollection, {
   denormalizeAssetFamilyTransformations,
-} from "akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection";
+} from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
 
 export interface AssetFamily {
   identifier: AssetFamilyIdentifier;
