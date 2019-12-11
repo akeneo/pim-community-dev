@@ -5,6 +5,7 @@ import {
   createAssetsFromLines,
   createLineFromFilename,
   getStatusFromLine,
+  selectLinesToSend,
 } from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {NormalizedValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 
@@ -658,5 +659,82 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
         scopable
       )
     ).toEqual(LineStatus.Valid);
+  });
+});
+
+describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLinesToSend', () => {
+  const defaultLine: Line = {
+    id: '68529cb2-4016-427c-b6a2-cda6b118562e',
+    thumbnail: null,
+    created: false,
+    isSending: false,
+    file: null,
+    filename: 'foo.jpg',
+    code: 'foo',
+    locale: null,
+    channel: null,
+    uploadProgress: null,
+    errors: {
+      back: [],
+    },
+  };
+
+  test('I can find which lines are ready to be sent', () => {
+    const lines = [
+      {
+        ...defaultLine,
+        created: true,
+        file: {
+          filePath: 'foo.jpg',
+          originalFilename: 'foo.jpg',
+        },
+        isSending: true,
+      },
+      {
+        ...defaultLine,
+        created: false,
+        file: {
+          filePath: 'foo.jpg',
+          originalFilename: 'foo.jpg',
+        },
+        isSending: true,
+      },
+      {
+        ...defaultLine,
+        created: true,
+        file: null,
+        isSending: true,
+      },
+      {
+        ...defaultLine,
+        created: true,
+        file: {
+          filePath: 'foo.jpg',
+          originalFilename: 'foo.jpg',
+        },
+        isSending: false,
+      },
+      {
+        ...defaultLine,
+        created: false,
+        file: {
+          filePath: 'foo.jpg',
+          originalFilename: 'foo.jpg',
+        },
+        isSending: false,
+      },
+    ];
+
+    expect(selectLinesToSend(lines)).toEqual([
+      {
+        ...defaultLine,
+        created: false,
+        file: {
+          filePath: 'foo.jpg',
+          originalFilename: 'foo.jpg',
+        },
+        isSending: false,
+      },
+    ]);
   });
 });

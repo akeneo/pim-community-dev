@@ -160,11 +160,11 @@ export const getStatusFromLine = (line: Line, localizable: boolean, scopable: bo
   if (errorsCount > 0) {
     return LineStatus.Invalid;
   }
-  if (!line.created && !line.isSending && line.file === null) {
-    return LineStatus.WaitingForUpload;
-  }
   if (line.isSending) {
     return LineStatus.UploadInProgress;
+  }
+  if (line.created) {
+    return LineStatus.Created;
   }
   if (line.file !== null && !isComplete) {
     return LineStatus.Uploaded;
@@ -172,11 +172,8 @@ export const getStatusFromLine = (line: Line, localizable: boolean, scopable: bo
   if (line.file !== null && isComplete) {
     return LineStatus.Valid;
   }
-  if (line.created) {
-    return LineStatus.Created;
-  }
 
-  throw Error('Unsupported state for upload line');
+  return LineStatus.WaitingForUpload;
 };
 
 /**
