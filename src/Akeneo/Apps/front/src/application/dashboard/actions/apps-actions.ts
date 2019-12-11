@@ -1,13 +1,13 @@
 import {SourceApp} from '../model/source-app';
 
-export const APPS_FETCHED = 'APPS_FETCHED';
-interface AppsFetchedAction {
-    type: typeof APPS_FETCHED;
+export const SOURCE_APPS_FETCHED = 'APPS_FETCHED';
+interface SourceAppsFetchedAction {
+    type: typeof SOURCE_APPS_FETCHED;
     payload: SourceApp[];
 }
-export const appsFetched = (payload: SourceApp[]): AppsFetchedAction => ({
-    type: APPS_FETCHED,
+export const appsFetched = (payload: SourceApp[]): SourceAppsFetchedAction => ({
+    type: SOURCE_APPS_FETCHED,
     payload,
 });
 
-export type Actions = AppsFetchedAction;
+export type Actions = SourceAppsFetchedAction;

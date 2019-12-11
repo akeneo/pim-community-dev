@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {Chart} from './Chart';
 import {AppSelect} from './AppSelect';
-import {useAppsState} from '../../dashboard/app-state-context';
+import {useDashboardState} from '../dashboard-state-context';
 import {Section} from '../../common';
 import {Translate} from '../../shared/translate';
 
 export const EventChart = () => {
-    const [apps] = useAppsState();
+    const [apps] = useDashboardState();
     const [code, setCode] = useState();
 
     useEffect(() => {

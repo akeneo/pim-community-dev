@@ -5,11 +5,11 @@ import {fetchResult} from '../../shared/fetch-result';
 import {isOk} from '../../shared/fetch-result/result';
 import {useRoute} from '../../shared/router';
 import {appsFetched} from '../actions/apps-actions';
-import {useAppsState} from '../app-state-context';
+import {useDashboardState} from '../dashboard-state-context';
 import {SourceApp} from '../model/source-app';
 
 export const Charts = () => {
-    const [apps, dispatch] = useAppsState();
+    const [apps, dispatch] = useDashboardState();
 
     const route = useRoute('akeneo_apps_list_rest');
     useEffect(() => {
