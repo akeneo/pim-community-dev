@@ -25,20 +25,23 @@ use Liip\ImagineBundle\Model\Binary;
  */
 class PdfLoader implements LoaderInterface
 {
-    private $streamLoader;
+    /** @var LoaderInterface */
+    private $loader;
+
+    /** @var DefaultImageProviderInterface */
     private $defaultImageProvider;
 
     public function __construct(
         LoaderInterface $streamLoader,
         DefaultImageProviderInterface $defaultImageProvider
     ) {
-        $this->streamLoader = $streamLoader;
+        $this->loader = $streamLoader;
         $this->defaultImageProvider = $defaultImageProvider;
     }
 
     public function find($path)
     {
-        $file = $this->streamLoader->find($path);
+        $file = $this->loader->find($path);
 
         $gsExists = !empty(shell_exec('which gs'));
         if (!$gsExists) {

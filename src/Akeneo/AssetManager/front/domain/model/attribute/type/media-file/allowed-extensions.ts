@@ -12,10 +12,8 @@ export const createAllowedExtensionFromNormalized = (allowedExtensions: string[]
   if (!isValidAllowedExtension(allowedExtensions)) {
     throw new Error(`AllowedExtension is not valid`);
   }
-  const extensionsWithoutLeadingPoint = allowedExtensions.map(
-    (allowedExtension: string) => allowedExtension
-      .replace(/^\./, '')
-      .toLowerCase()
+  const extensionsWithoutLeadingPoint = allowedExtensions.map((allowedExtension: string) =>
+    allowedExtension.replace(/^\./, '').toLowerCase()
   );
   const uniqExtensions = Array.from(new Set<string>(extensionsWithoutLeadingPoint));
 

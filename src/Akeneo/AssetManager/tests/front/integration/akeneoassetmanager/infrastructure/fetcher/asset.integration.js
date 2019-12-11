@@ -24,6 +24,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
       asset: {
         code: 'starck',
         identifier: 'designer_starck_a1677570-a278-444b-ab46-baa1db199392',
+        attributeAsMainMediaIdentifier: 'portrait_designer_fingerprint',
         image: null,
         labelCollection: {fr_FR: 'Philippe Starck'},
         assetFamilyIdentifier: 'designer',

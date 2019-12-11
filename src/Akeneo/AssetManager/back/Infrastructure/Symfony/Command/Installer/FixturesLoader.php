@@ -411,6 +411,28 @@ class FixturesLoader
             );
         }
 
+        // MAIN document
+        if (in_array('main_document', $this->loadedAttributes)) {
+            $attributes['main_document'] = MediaFileAttribute::create(
+                $this->attributeRepository->nextIdentifier(
+                    $assetFamilyIdentifier,
+                    AttributeCode::fromString('main_document')
+                ),
+                $assetFamilyIdentifier,
+                AttributeCode::fromString('main_document'),
+                LabelCollection::fromArray([
+                    'en_US' => 'Main pdf',
+                ]),
+                $this->getOrderForAttribute('main_document'),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxFileSize::fromString('1000'),
+                AttributeAllowedExtensions::fromList(['pdf']),
+                MediaFileMediaType::fromString(MediaFileMediaType::PDF)
+            );
+        }
+
         // COUNTRY
         if (in_array('country', $this->loadedAttributes)) {
             $attributes['country'] = AssetAttribute::create(

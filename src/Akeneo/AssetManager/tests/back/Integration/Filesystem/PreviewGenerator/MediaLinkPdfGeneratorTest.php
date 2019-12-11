@@ -15,7 +15,7 @@ use Akeneo\AssetManager\Integration\PreviewGeneratorIntegrationTestCase;
  */
 final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCase
 {
-    protected const FILENAME = '2016/04/Fred-site-web.pdf';
+    protected const IMAGE_FILENAME = '2016/04/Fred-site-web.pdf';
 
     /** @var PreviewGeneratorInterface */
     private $mediaLinkPdfGenerator;
@@ -36,19 +36,19 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
      */
     public function it_can_support_only_supported_type_image_of_an_media_link_attribute()
     {
-        $isSupported = $this->mediaLinkPdfGenerator->supports(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $isSupported = $this->mediaLinkPdfGenerator->supports(self::IMAGE_FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->mediaLinkPdfGenerator->supports(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE);
+        $isSupported = $this->mediaLinkPdfGenerator->supports(self::IMAGE_FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->mediaLinkPdfGenerator->supports(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::PREVIEW_TYPE);
+        $isSupported = $this->mediaLinkPdfGenerator->supports(self::IMAGE_FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::PREVIEW_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->mediaLinkPdfGenerator->supports(self::FILENAME, $this->mediaLinkAttribute, 'wrong_type');
+        $isSupported = $this->mediaLinkPdfGenerator->supports(self::IMAGE_FILENAME, $this->mediaLinkAttribute, 'wrong_type');
 
         $this->assertFalse($isSupported);
     }
@@ -128,7 +128,7 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
                      [
                          'channel' => null,
                          'locale' => null,
-                         'data' => self::FILENAME,
+                         'data' => self::IMAGE_FILENAME,
                      ]
                  ]
             ])
@@ -137,6 +137,6 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
 
     private function data(): string
     {
-        return base64_encode(self::FILENAME);
+        return base64_encode(self::IMAGE_FILENAME);
     }
 }

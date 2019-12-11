@@ -33,7 +33,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_can_support_only_media_file_attribute()
     {
-        $isSupported = $this->binaryImageGenerator->supports(self::FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $isSupported = $this->binaryImageGenerator->supports(self::IMAGE_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
     }
@@ -43,19 +43,19 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_can_support_only_supported_types_of_a_media_file_attribute()
     {
-        $isSupported = $this->binaryImageGenerator->supports(self::FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $isSupported = $this->binaryImageGenerator->supports(self::IMAGE_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->binaryImageGenerator->supports(self::FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE);
+        $isSupported = $this->binaryImageGenerator->supports(self::IMAGE_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->binaryImageGenerator->supports(self::FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::PREVIEW_TYPE);
+        $isSupported = $this->binaryImageGenerator->supports(self::IMAGE_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::PREVIEW_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->binaryImageGenerator->supports(self::FILENAME, $this->mediaFileAttribute, 'wrong_type');
+        $isSupported = $this->binaryImageGenerator->supports(self::IMAGE_FILENAME, $this->mediaFileAttribute, 'wrong_type');
 
         $this->assertFalse($isSupported);
     }
@@ -66,7 +66,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     public function it_get_a_preview_for_a_media_file_attribute()
     {
         $this->binaryImageGenerator->supports('google-logo.png', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
-        $previewImage = $this->binaryImageGenerator->generate(self::FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->binaryImageGenerator->generate(self::IMAGE_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
     }
@@ -77,11 +77,11 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     public function it_get_a_preview_for_a_media_file_attribute_from_the_cache()
     {
         $this->binaryImageGenerator->supports('akeneo.png', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
-        $previewImage = $this->binaryImageGenerator->generate(self::FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->binaryImageGenerator->generate(self::IMAGE_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
 
-        $previewImage = $this->binaryImageGenerator->generate(self::FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->binaryImageGenerator->generate(self::IMAGE_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
     }
@@ -118,8 +118,8 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
                          'channel' => null,
                          'locale' => null,
                          'data' => [
-                             'filePath' => self::FILENAME,
-                             'originalFilename' => self::FILENAME,
+                             'filePath' => self::IMAGE_FILENAME,
+                             'originalFilename' => self::IMAGE_FILENAME,
                              'size' => 12,
                              'mimeType' => 'image/png',
                              'extension' => '.png',

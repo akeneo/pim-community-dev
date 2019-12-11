@@ -4,6 +4,7 @@ import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value
 import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
+import {denormalizeAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 const michelIdentifier = 'michel';
 const designerIdentifier = 'designer';
@@ -55,6 +56,7 @@ const descriptionValue = createValue(description, 'ecommerce', 'en_US', descript
 const websiteData = denormalizeTextData('');
 const websiteValue = createValue(website, 'ecommerce', 'en_US', websiteData);
 const valueCollection = createValueCollection([descriptionValue, websiteValue]);
+const attributeAsMainMediaIdentifier = denormalizeAttributeIdentifier('image_1234');
 
 describe('akeneo > asset > domain > model --- asset', () => {
   test('I can create a new asset with a identifier and labels', () => {
@@ -62,6 +64,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
       createAsset(
         michelIdentifier,
         designerIdentifier,
+        attributeAsMainMediaIdentifier,
         michelCode,
         michelLabels,
         emptyFile,
@@ -75,7 +78,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
       createAsset(michelIdentifier, undefined, '');
     }).toThrow('Identifier expects a string as parameter to be created');
     expect(() => {
-      createAsset(michelIdentifier, designerIdentifier);
+      createAsset(michelIdentifier, designerIdentifier, attributeAsMainMediaIdentifier);
     }).toThrow('Code expects a string as parameter to be created');
     expect(() => {
       createAsset(undefined, '', '');
@@ -84,10 +87,25 @@ describe('akeneo > asset > domain > model --- asset', () => {
       createAsset(12, '', '');
     }).toThrow('Identifier expects a string as parameter to be created');
     expect(() => {
-      createAsset(michelIdentifier, sofaIdentifier, {nice: '12'}, michelLabels, emptyFile);
+      createAsset(
+        michelIdentifier,
+        sofaIdentifier,
+        attributeAsMainMediaIdentifier,
+        {nice: '12'},
+        michelLabels,
+        emptyFile
+      );
     }).toThrow('Code expects a string as parameter to be created');
     expect(() => {
-      createAsset(michelIdentifier, designerIdentifier, didierCode, didierLabels, emptyFile, '');
+      createAsset(
+        michelIdentifier,
+        designerIdentifier,
+        attributeAsMainMediaIdentifier,
+        didierCode,
+        didierLabels,
+        emptyFile,
+        ''
+      );
     }).toThrow('Asset expects a ValueCollection as valueCollection argument');
   });
 
@@ -97,6 +115,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
       createAsset(
         didierIdentifier,
         designerIdentifier,
+        attributeAsMainMediaIdentifier,
         didierCode,
         didierLabels,
         emptyFile,
@@ -105,6 +124,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
         createAsset(
           didierIdentifier,
           designerIdentifier,
+          attributeAsMainMediaIdentifier,
           didierCode,
           didierLabels,
           emptyFile,
@@ -116,6 +136,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
       createAsset(
         didierIdentifier,
         designerIdentifier,
+        attributeAsMainMediaIdentifier,
         didierCode,
         didierLabels,
         emptyFile,
@@ -124,6 +145,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
         createAsset(
           michelIdentifier,
           designerIdentifier,
+          attributeAsMainMediaIdentifier,
           michelCode,
           michelLabels,
           emptyFile,
@@ -138,6 +160,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
       createAsset(
         didierIdentifier,
         designerIdentifier,
+        attributeAsMainMediaIdentifier,
         didierCode,
         didierLabels,
         emptyFile,
@@ -151,6 +174,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
       createAsset(
         didierIdentifier,
         designerIdentifier,
+        attributeAsMainMediaIdentifier,
         didierCode,
         didierLabels,
         emptyFile,
@@ -163,6 +187,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
     const michelAsset = createAsset(
       didierIdentifier,
       designerIdentifier,
+      attributeAsMainMediaIdentifier,
       didierCode,
       didierLabels,
       emptyFile,
@@ -172,6 +197,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
     expect(michelAsset.normalize()).toEqual({
       identifier: 'designer_didier_1',
       asset_family_identifier: 'designer',
+      attribute_as_main_media_identifier: 'image_1234',
       image: null,
       code: 'didier',
       labels: {en_US: 'Didier'},
@@ -181,6 +207,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
     expect(michelAsset.normalizeMinimal()).toEqual({
       identifier: 'designer_didier_1',
       asset_family_identifier: 'designer',
+      attribute_as_main_media_identifier: 'image_1234',
       image: null,
       code: 'didier',
       labels: {en_US: 'Didier'},
@@ -193,6 +220,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
       createAsset(
         michelIdentifier,
         designerIdentifier,
+        attributeAsMainMediaIdentifier,
         michelCode,
         michelLabels,
         emptyFile,
@@ -203,6 +231,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
       createAsset(
         michelIdentifier,
         designerIdentifier,
+        attributeAsMainMediaIdentifier,
         michelCode,
         michelLabels,
         emptyFile,
@@ -213,6 +242,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
       createAsset(
         michelIdentifier,
         designerIdentifier,
+        attributeAsMainMediaIdentifier,
         michelCode,
         michelLabels,
         emptyFile,
@@ -223,7 +253,15 @@ describe('akeneo > asset > domain > model --- asset', () => {
 
   test('I can get the value collection of the asset', () => {
     expect(
-      createAsset(michelIdentifier, designerIdentifier, michelCode, michelLabels, emptyFile, createValueCollection([]))
+      createAsset(
+        michelIdentifier,
+        designerIdentifier,
+        attributeAsMainMediaIdentifier,
+        michelCode,
+        michelLabels,
+        emptyFile,
+        createValueCollection([])
+      )
         .getValueCollection()
         .normalize()
     ).toEqual([]);
@@ -234,6 +272,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
       createAsset(
         michelIdentifier,
         designerIdentifier,
+        attributeAsMainMediaIdentifier,
         michelCode,
         michelLabels,
         emptyFile,

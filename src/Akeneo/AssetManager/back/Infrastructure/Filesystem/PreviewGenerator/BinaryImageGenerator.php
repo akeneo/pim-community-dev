@@ -33,7 +33,6 @@ class BinaryImageGenerator extends AbstractPreviewGenerator
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
         return $attribute instanceof MediaFileAttribute
-            && MediaFileAttribute::ATTRIBUTE_TYPE === $attribute->getType()
             && $attribute->getMediaType()->normalize() === MediaType::IMAGE
             && array_key_exists($type, self::SUPPORTED_TYPES);
     }

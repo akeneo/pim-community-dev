@@ -1,6 +1,5 @@
 import {
   ASSET_COLLECTION_LIMIT,
-  getImage,
   isComplete,
   emptyAsset,
   getAssetLabel,

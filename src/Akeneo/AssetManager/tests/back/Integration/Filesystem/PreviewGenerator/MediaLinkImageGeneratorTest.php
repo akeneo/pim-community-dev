@@ -34,7 +34,7 @@ final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestC
      */
     public function it_can_support_media_type_image_of_an_media_link_attribute()
     {
-        $isSupported = $this->mediaLinkImageGenerator->supports(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $isSupported = $this->mediaLinkImageGenerator->supports(self::IMAGE_FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
     }
@@ -44,19 +44,19 @@ final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestC
      */
     public function it_can_support_only_supported_type_image_of_an_media_link_attribute()
     {
-        $isSupported = $this->mediaLinkImageGenerator->supports(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $isSupported = $this->mediaLinkImageGenerator->supports(self::IMAGE_FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->mediaLinkImageGenerator->supports(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE);
+        $isSupported = $this->mediaLinkImageGenerator->supports(self::IMAGE_FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->mediaLinkImageGenerator->supports(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::PREVIEW_TYPE);
+        $isSupported = $this->mediaLinkImageGenerator->supports(self::IMAGE_FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::PREVIEW_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->mediaLinkImageGenerator->supports(self::FILENAME, $this->mediaLinkAttribute, 'wrong_type');
+        $isSupported = $this->mediaLinkImageGenerator->supports(self::IMAGE_FILENAME, $this->mediaLinkAttribute, 'wrong_type');
 
         $this->assertFalse($isSupported);
     }
@@ -67,7 +67,7 @@ final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestC
     public function it_get_a_preview_for_an_image_media_link_attribute()
     {
         $this->mediaLinkImageGenerator->supports('2016/04/Ben-site-web.jpg', $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
-        $previewImage = $this->mediaLinkImageGenerator->generate(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->mediaLinkImageGenerator->generate(self::IMAGE_FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
     }
@@ -78,11 +78,11 @@ final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestC
     public function it_get_a_preview_for_an_image_media_link_attribute_from_the_cache()
     {
         $this->mediaLinkImageGenerator->supports('2016/04/Site-web-Nico.jpg', $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
-        $previewImage = $this->mediaLinkImageGenerator->generate(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->mediaLinkImageGenerator->generate(self::IMAGE_FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
 
-        $previewImage = $this->mediaLinkImageGenerator->generate(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->mediaLinkImageGenerator->generate(self::IMAGE_FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
     }
@@ -119,7 +119,7 @@ final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestC
                      [
                          'channel' => null,
                          'locale' => null,
-                         'data' => self::FILENAME,
+                         'data' => self::IMAGE_FILENAME,
                      ]
                  ]
             ])
