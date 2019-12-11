@@ -18,8 +18,8 @@ use Akeneo\AssetManager\Domain\Query\Asset\SearchableAssetItem;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Job\ComputeTransformations;
-use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
 use Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource;
+use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -62,6 +62,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
         GetOutdatedVariationSource $getOutdatedVariationSource,
         TransformationExecutor $transformationExecutor,
         EditAssetHandler $editAssetHandler,
+        StepExecution $stepExecution,
         JobParameters $jobParameters,
         Transformation $thumbnail,
         Asset $asset1,
@@ -99,6 +100,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
 
         $getOutdatedVariationSource->forAssetAndTransformation($asset1, $thumbnail)->willReturn($sourceFileData);
         $getOutdatedVariationSource->forAssetAndTransformation($asset2, $thumbnail)->willReturn(null);
+        $stepExecution->incrementSummaryInfo('skipped')->shouldBeCalled();
         $transformationExecutor->execute($sourceFileData, $assetFamilyIdentifier, $thumbnail)
                                        ->willReturn($command);
 
@@ -109,6 +111,8 @@ class ComputeTransformationsSpec extends ObjectBehavior
                 [$command->getWrappedObject()]
             )
         )->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('transformations', 1)->shouldBeCalled();
+
         $editAssetHandler->__invoke(
             new EditAssetCommand(
                 'packshot',
@@ -127,6 +131,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
         GetOutdatedVariationSource $getOutdatedVariationSource,
         TransformationExecutor $transformationExecutor,
         EditAssetHandler $editAssetHandler,
+        StepExecution $stepExecution,
         JobParameters $jobParameters,
         Transformation $thumbnail,
         Asset $asset1,
@@ -172,6 +177,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
 
         $getOutdatedVariationSource->forAssetAndTransformation($asset1, $thumbnail)->willReturn($sourceFileData);
         $getOutdatedVariationSource->forAssetAndTransformation($asset2, $thumbnail)->willReturn(null);
+        $stepExecution->incrementSummaryInfo('skipped')->shouldBeCalled();
         $transformationExecutor->execute($sourceFileData, $assetFamilyIdentifier, $thumbnail)
                                        ->willReturn($command);
 
@@ -182,6 +188,8 @@ class ComputeTransformationsSpec extends ObjectBehavior
                 [$command->getWrappedObject()]
             )
         )->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('transformations', 1)->shouldBeCalled();
+
         $editAssetHandler->__invoke(
             new EditAssetCommand(
                 'packshot',

@@ -29,11 +29,13 @@ class GetOutdatedVariationSourceSpec extends ObjectBehavior
         MediaFileAttribute $targetImage
     ) {
         $mainImage->getIdentifier()->willReturn(AttributeIdentifier::fromString('packshot_main_image_123456'));
+        $mainImage->getCode()->willReturn(AttributeCode::fromString('main_image'));
         $attributeRepository->getByCodeAndAssetFamilyIdentifier(
             AttributeCode::fromString('main_image'),
             AssetFamilyIdentifier::fromString('packshot')
         )->willReturn($mainImage);
         $targetImage->getIdentifier()->willReturn(AttributeIdentifier::fromString('packshot_target_image_123456'));
+        $targetImage->getCode()->willReturn(AttributeCode::fromString('target_image'));
         $attributeRepository->getByCodeAndAssetFamilyIdentifier(
             AttributeCode::fromString('target_image'),
             AssetFamilyIdentifier::fromString('packshot')
@@ -241,9 +243,10 @@ class GetOutdatedVariationSourceSpec extends ObjectBehavior
             AttributeCode::fromString('main_source'),
             $assetFamilyIdentifier
         )->willReturn($mainSource);
+        $mainSource->getCode()->willReturn(AttributeCode::fromString('main_source'));
 
         $this->shouldThrow(
-            new NonApplicableTransformationException('source should be a media file')
+            new NonApplicableTransformationException('Source attribute "main_source" is not a media file attribute')
         )->during('forAssetAndTransformation', [$asset->getWrappedObject(), $transformation->getWrappedObject()]);
     }
 
@@ -271,7 +274,7 @@ class GetOutdatedVariationSourceSpec extends ObjectBehavior
         )->willReturn(null);
 
         $this->shouldThrow(
-            new NonApplicableTransformationException('source is empty')
+            new NonApplicableTransformationException('The source file for attribute "main_image" is missing')
         )->during('forAssetAndTransformation', [$asset->getWrappedObject(), $transformation->getWrappedObject()]);
     }
 
@@ -309,13 +312,14 @@ class GetOutdatedVariationSourceSpec extends ObjectBehavior
                 ]
             )
         );
+        $targetAttribute->getCode()->willReturn(AttributeCode::fromString('target_attribute'));
         $attributeRepository->getByCodeAndAssetFamilyIdentifier(
             AttributeCode::fromString('target_attribute'),
             AssetFamilyIdentifier::fromString('packshot')
         )->willReturn($targetAttribute);
 
         $this->shouldThrow(
-            new NonApplicableTransformationException('target should be a media file')
+            new NonApplicableTransformationException('Target attribute "target_attribute" is not a media file attribute')
         )->during('forAssetAndTransformation', [$asset->getWrappedObject(), $transformation->getWrappedObject()]);
     }
 }

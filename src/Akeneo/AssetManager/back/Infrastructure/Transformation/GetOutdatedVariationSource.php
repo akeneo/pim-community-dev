@@ -53,8 +53,11 @@ class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
             $asset->getAssetFamilyIdentifier()
         );
         if (!($sourceAttribute instanceof MediaFileAttribute)) {
-            // TODO ATR-51: more explicit error message
-            throw new NonApplicableTransformationException('source should be a media file');
+            $message = sprintf(
+                'Source attribute "%s" is not a media file attribute',
+                $sourceAttribute->getCode()->__toString()
+            );
+            throw new NonApplicableTransformationException($message);
         }
 
         $sourceValue = $asset->findValue(
@@ -65,8 +68,11 @@ class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
             )
         );
         if (null === $sourceValue) {
-            // TODO ATR-51: more explicit error message
-            throw new NonApplicableTransformationException('source is empty');
+            $message = sprintf(
+                'The source file for attribute "%s" is missing',
+                $sourceAttribute->getCode()->__toString()
+            );
+            throw new NonApplicableTransformationException($message);
         }
 
         $target = $transformation->getTarget();
@@ -74,9 +80,13 @@ class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
             $target->getAttributeCode(),
             $asset->getAssetFamilyIdentifier()
         );
+
         if (!($targetAttribute instanceof MediaFileAttribute)) {
-            // TODO ATR-51: more explicit error message
-            throw new NonApplicableTransformationException('target should be a media file');
+            $message = sprintf(
+                'Target attribute "%s" is not a media file attribute',
+                $targetAttribute->getCode()->__toString()
+            );
+            throw new NonApplicableTransformationException($message);
         }
         $targetValue = $asset->findValue(
             ValueKey::create(

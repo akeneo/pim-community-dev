@@ -22,8 +22,10 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\FindSearchableAssetsInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
+use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationFailedException;
 use Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource;
+use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -104,19 +106,31 @@ class ComputeTransformations implements TaskletInterface
         );
 
         foreach ($assetIdentifiers as $assetIdentifier) {
+            $commands = [];
+            $transformedFilesCount = 0;
+
             $asset = $this->assetRepository->getByIdentifier(Assetidentifier::fromString($assetIdentifier));
             if (null === $asset) {
                 $this->stepExecution->addError(sprintf('Asset % does not exist', $assetIdentifier));
+                continue;
             }
 
-            $commands = [];
             $transformations = $transformationsPerAssetIdentifier[$assetIdentifier] ?? TransformationCollection::noTransformation();
 
             foreach ($transformations as $transformation) {
                 try {
                     $sourceFile = $this->getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation);
                 } catch (NonApplicableTransformationException $e) {
-                    // TODO ATR-51: add warning with exception message
+                    $this->stepExecution->addWarning(
+                        sprintf(
+                            'Cannot apply transformation "%s" for asset "%s": %s',
+                            $transformation->getCode(),
+                            $asset->getCode(),
+                            $e->getMessage()
+                        ),
+                        [],
+                        new DataInvalidItem($transformation->normalize())
+                    );
                     continue;
                 }
 
@@ -127,11 +141,18 @@ class ComputeTransformations implements TaskletInterface
                             $asset->getAssetFamilyIdentifier(),
                             $transformation
                         );
-                    } catch (\Exception $e) {
-                        // TODO ATR-51: catch the right exception types
-                        // TODO: add warning
+                        $transformedFilesCount++;
+                    } catch (TransformationFailedException $e) {
+                        $this->stepExecution->addError(sprintf(
+                            'Could not apply transformation "%s" on asset "%s": %s',
+                            $transformation->getCode(),
+                            $asset->getCode(),
+                            $e->getMessage()
+                        ));
                         continue;
                     }
+                } else {
+                    $this->stepExecution->incrementSummaryInfo('skipped');
                 }
             }
             if (!empty($commands)) {
@@ -142,6 +163,7 @@ class ComputeTransformations implements TaskletInterface
                         $commands
                     )
                 );
+                $this->stepExecution->incrementSummaryInfo('transformations', $transformedFilesCount);
             }
         }
     }

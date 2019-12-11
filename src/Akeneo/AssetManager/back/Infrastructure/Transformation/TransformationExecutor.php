@@ -19,7 +19,11 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
+use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationFailedException;
+use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
+use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
+use Liip\ImagineBundle\Exception\ExceptionInterface as LiipImagineException;
 use Symfony\Component\HttpFoundation\File\File;
 
 class TransformationExecutor
@@ -53,19 +57,23 @@ class TransformationExecutor
         AssetFamilyIdentifier $assetFamilyIdentifier,
         Transformation $transformation
     ): EditMediaFileValueCommand {
-        $sourceFile = $this->getSourceFile($sourceFileData->getKey());
-        $transformedFile = $this->fileTransformer->transform(
-            $sourceFile,
-            $transformation->getOperationCollection()
-        );
-        $renamedFile = $this->rename($transformedFile, $sourceFileData->getOriginalFilename(), $transformation);
-        $storedFile = $this->fileStorer->store($renamedFile, Storage::FILE_STORAGE_ALIAS, true);
+        try {
+            $sourceFile = $this->getSourceFile($sourceFileData->getKey());
+            $transformedFile = $this->fileTransformer->transform(
+                $sourceFile,
+                $transformation->getOperationCollection()
+            );
+            $renamedFile = $this->rename($transformedFile, $sourceFileData->getOriginalFilename(), $transformation);
+            $storedFile = $this->fileStorer->store($renamedFile, Storage::FILE_STORAGE_ALIAS, true);
 
-        $target = $transformation->getTarget();
-        $targetAttribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
-            $target->getAttributeCode(),
-            $assetFamilyIdentifier
-        );
+            $target = $transformation->getTarget();
+            $targetAttribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+                $target->getAttributeCode(),
+                $assetFamilyIdentifier
+            );
+        } catch (FileTransferException | LiipImagineException | FileRemovalException $e) {
+            throw new TransformationFailedException($e->getMessage(), $e->getCocde());
+        }
 
         return new EditMediaFileValueCommand(
             $targetAttribute,
