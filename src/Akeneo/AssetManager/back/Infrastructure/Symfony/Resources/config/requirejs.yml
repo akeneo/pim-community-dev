@@ -105,6 +105,9 @@ config:
                     permission:
                         label: pim_asset_manager.asset_family.tab.permission
                         view: '@akeneoassetmanager/application/component/asset-family/edit/permission'
+                    transformation:
+                        label: pim_asset_manager.asset_family.tab.transformations
+                        view: '@akeneoassetmanager/application/component/asset-family/edit/transformation'
             akeneo_asset_manager_asset_edit:
                 tabs:
                     enrich:

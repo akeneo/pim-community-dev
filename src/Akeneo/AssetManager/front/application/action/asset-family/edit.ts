@@ -7,6 +7,7 @@ import {
   assetFamilyEditionSucceeded,
   assetFamilyAssetCountUpdated,
   assetFamilyEditionAttributeAsMainMediaUpdated,
+  assetFamilyEditionTransformationsUpdated,
 } from 'akeneoassetmanager/domain/event/asset-family/edit';
 import {
   notifyAssetFamilyWellSaved,
@@ -20,6 +21,7 @@ import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edi
 import {assetFamilyPermissionChanged} from 'akeneoassetmanager/domain/event/user';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import TransformationCollection from "akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection";
 
 export const saveAssetFamily = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const assetFamily = getState().form.data;
@@ -76,5 +78,13 @@ export const attributeAsMainMediaUpdated = (attributeAsMainMedia: AttributeIdent
   getState: () => EditState
 ) => {
   dispatch(assetFamilyEditionAttributeAsMainMediaUpdated(attributeAsMainMedia));
+  dispatch(assetFamilyEditionUpdated(getState().form.data));
+};
+
+export const assetFamilyTransformationsUpdated = (transformations: TransformationCollection) => (
+  dispatch: any,
+  getState: () => EditState
+) => {
+  dispatch(assetFamilyEditionTransformationsUpdated(transformations));
   dispatch(assetFamilyEditionUpdated(getState().form.data));
 };

@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
@@ -41,14 +42,19 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
     /** @var FindActivatedLocalesInterface  */
     private $findActivatedLocales;
 
+    /** @var TransformationCollectionFactory */
+    private $transformationCollectionFactory;
+
     public function __construct(
         Connection $sqlConnection,
         FindAttributesDetailsInterface $findAttributesDetails,
-        FindActivatedLocalesInterface $findActivatedLocales
+        FindActivatedLocalesInterface $findActivatedLocales,
+        TransformationCollectionFactory $transformationCollectionFactory
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->findAttributesDetails = $findAttributesDetails;
         $this->findActivatedLocales = $findActivatedLocales;
+        $this->transformationCollectionFactory = $transformationCollectionFactory;
     }
 
     /**
@@ -74,7 +80,8 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
             $result['original_filename'],
             $attributesDetails,
             $result['attribute_as_label'],
-            $result['attribute_as_main_media']
+            $result['attribute_as_main_media'],
+            json_decode($result['transformations'], true)
         );
     }
 
@@ -86,6 +93,7 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
             am.labels,
             am.attribute_as_label,
             am.attribute_as_main_media,
+            am.transformations,
             fi.file_key,
             fi.original_filename, (
                 SELECT count(*) FROM akeneo_asset_manager_asset WHERE asset_family_identifier = :identifier
@@ -117,7 +125,8 @@ SQL;
         ?string $originalFilename,
         array $attributesDetails,
         ?string $attributeAsLabel,
-        ?string $attributeAsMainMedia
+        ?string $attributeAsMainMedia,
+        array $transformations
     ): AssetFamilyDetails {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $activatedLocales = $this->findActivatedLocales->findAll();
@@ -144,6 +153,7 @@ SQL;
         $assetFamilyItem->attributes = $attributesDetails;
         $assetFamilyItem->attributeAsLabel = AttributeAsLabelReference::createFromNormalized($attributeAsLabel);
         $assetFamilyItem->attributeAsMainMedia = AttributeAsMainMediaReference::createFromNormalized($attributeAsMainMedia);
+        $assetFamilyItem->transformations = $this->transformationCollectionFactory->fromNormalized($transformations);
 
         return $assetFamilyItem;
     }

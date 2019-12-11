@@ -2,6 +2,7 @@ import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-fa
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {File} from 'akeneoassetmanager/domain/model/file';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import TransformationCollection from "akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection";
 
 export const assetFamilyEditionReceived = (assetFamily: AssetFamily) => {
   return {type: 'ASSET_FAMILY_EDITION_RECEIVED', assetFamily};
@@ -20,7 +21,11 @@ export const assetFamilyEditionLabelUpdated = (value: string, locale: string) =>
 };
 
 export const assetFamilyEditionImageUpdated = (image: File) => {
-  return {type: 'ASSET_FAMILY_EDITION_IMAGE_UPDATED', image: image};
+  return {type: 'ASSET_FAMILY_EDITION_IMAGE_UPDATED', image};
+};
+
+export const assetFamilyEditionTransformationsUpdated = (transformations: TransformationCollection) => {
+  return {type: 'ASSET_FAMILY_EDITION_TRANSFORMATIONS_UPDATED', transformations};
 };
 
 export const assetFamilyEditionAttributeAsMainMediaUpdated = (attributeAsMainMedia: AttributeIdentifier) => {

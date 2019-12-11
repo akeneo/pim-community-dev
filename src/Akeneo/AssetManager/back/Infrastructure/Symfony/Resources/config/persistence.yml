@@ -52,6 +52,7 @@ services:
             - '@database_connection'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_details'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales'
+            - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_asset_items_for_identifiers_and_query:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetItemsForIdentifiersAndQuery

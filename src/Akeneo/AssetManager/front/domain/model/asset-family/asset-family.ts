@@ -13,6 +13,9 @@ import AttributeIdentifier, {
 } from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import AssetFamilyCode from 'akeneoassetmanager/domain/model/asset-family/code';
+import TransformationCollection, {
+  denormalizeAssetFamilyTransformations,
+} from "akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection";
 
 export interface AssetFamily {
   identifier: AssetFamilyIdentifier;
@@ -21,6 +24,7 @@ export interface AssetFamily {
   image: File;
   attributeAsLabel: AttributeIdentifier;
   attributeAsMainMedia: AttributeIdentifier;
+  transformations: TransformationCollection;
 }
 
 export const createEmptyAssetFamily = (): AssetFamily => ({
@@ -30,6 +34,7 @@ export const createEmptyAssetFamily = (): AssetFamily => ({
   image: createEmptyFile(),
   attributeAsMainMedia: '',
   attributeAsLabel: '',
+  transformations: '[]',
 });
 export const createAssetFamilyFromNormalized = (normalizedAssetFamily: any): AssetFamily => ({
   identifier: denormalizeAssetFamilyIdentifier(normalizedAssetFamily.identifier),
@@ -38,6 +43,7 @@ export const createAssetFamilyFromNormalized = (normalizedAssetFamily: any): Ass
   image: createFileFromNormalized(normalizedAssetFamily.image),
   attributeAsMainMedia: denormalizeAttributeIdentifier(normalizedAssetFamily.attribute_as_main_media),
   attributeAsLabel: denormalizeAttributeIdentifier(normalizedAssetFamily.attribute_as_label),
+  transformations: denormalizeAssetFamilyTransformations(normalizedAssetFamily.transformations),
 });
 export const getAssetFamilyLabel = (
   assetFamily: AssetFamily,
