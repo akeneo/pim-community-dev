@@ -26,7 +26,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
 {
-    protected const FILENAME = '2016/04/Fred-site-web.jpg';
+    protected const IMAGE_FILENAME = '2016/04/Fred-site-web.jpg';
+    protected const DOCUMENT_FILENAME = '2016/04/1_4_user_guide.pdf';
 
     /** @var FixturesLoader */
     protected $fixturesLoader;

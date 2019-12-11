@@ -6,6 +6,7 @@ describe('akeneo > asset family > application > hydrator --- asset', () => {
       hydrator({
         identifier: 'designer_starck_fingerprint',
         asset_family_identifier: 'designer',
+        attribute_as_main_media_identifier: 'image_1234',
         code: 'starck',
         labels: {en_US: 'Stark'},
         image: null,

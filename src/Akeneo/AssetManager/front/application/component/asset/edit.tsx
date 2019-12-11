@@ -31,7 +31,7 @@ import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attri
 import {redirectToProductGrid} from 'akeneoassetmanager/application/event/router';
 import AttributeCode from 'akeneoassetmanager/domain/model/attribute/code';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import FileComponent from "akeneoassetmanager/application/component/app/file-component";
+import FileComponent from 'akeneoassetmanager/application/component/app/file-component';
 
 const securityContext = require('pim/security-context');
 

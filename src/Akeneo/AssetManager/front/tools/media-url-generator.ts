@@ -1,4 +1,4 @@
-import {identifierStringValue} from "akeneoassetmanager/domain/model/identifier";
+import {identifierStringValue} from 'akeneoassetmanager/domain/model/identifier';
 
 const routing = require('routing');
 import {File, isFileEmpty} from 'akeneoassetmanager/domain/model/file';

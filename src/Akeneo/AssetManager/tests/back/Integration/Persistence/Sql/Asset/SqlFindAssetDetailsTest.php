@@ -174,6 +174,7 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
         $expectedStarck = new AssetDetails(
             $this->assetIdentifier,
             $assetFamilyIdentifier,
+            $assetFamily->getAttributeAsMainMediaReference()->getIdentifier(),
             $assetCode,
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
             Image::fromFileInfo($imageInfo),

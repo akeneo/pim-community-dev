@@ -4,7 +4,7 @@ import FileData, {create} from 'akeneoassetmanager/domain/model/asset/data/file'
 import __ from 'akeneoassetmanager/tools/translator';
 import {File} from 'akeneoassetmanager/domain/model/file';
 import {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
-import FileComponent from "akeneoassetmanager/application/component/app/file-component";
+import FileComponent from 'akeneoassetmanager/application/component/app/file-component';
 
 const View = ({
   value,

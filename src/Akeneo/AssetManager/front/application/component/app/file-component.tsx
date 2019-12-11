@@ -4,7 +4,7 @@ import {
   getImageDownloadUrl,
   getImageShowUrl,
   getFilePreviewUrl,
-  MediaPreviewTypes
+  MediaPreviewTypes,
 } from 'akeneoassetmanager/tools/media-url-generator';
 import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
@@ -14,7 +14,7 @@ import Download from 'akeneoassetmanager/application/component/app/icon/download
 import Import from 'akeneoassetmanager/application/component/app/illustration/import';
 import Key from 'akeneoassetmanager/tools/key';
 import styled from 'styled-components';
-import AttributeIdentifier from "akeneoassetmanager/domain/model/attribute/identifier";
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 const Img = styled.img`
   margin: auto;

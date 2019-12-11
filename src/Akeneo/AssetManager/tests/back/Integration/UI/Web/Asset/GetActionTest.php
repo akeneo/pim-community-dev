@@ -199,6 +199,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $starck = new AssetDetails(
             AssetIdentifier::fromString('designer_starck_a1677570-a278-444b-ab46-baa1db199392'),
             AssetFamilyIdentifier::fromString('designer'),
+            $portraitAttribute->getIdentifier(),
             AssetCode::fromString('starck'),
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
             Image::createEmpty(),

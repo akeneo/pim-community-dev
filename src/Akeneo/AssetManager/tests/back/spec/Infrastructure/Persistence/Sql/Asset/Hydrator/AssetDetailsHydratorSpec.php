@@ -110,15 +110,16 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
         );
 
         $assetDetails->normalize()->shouldReturn([
-            'identifier'                  => 'wow_game_A8E76F8A76E87F6A',
-            'asset_family_identifier' => 'game',
-            'code'                        => 'world_of_warcraft',
-            'labels'                      => [
+            'identifier'                         => 'wow_game_A8E76F8A76E87F6A',
+            'asset_family_identifier'            => 'game',
+            'attribute_as_main_media_identifier' => 'main_image_game_fingerprint',
+            'code'                               => 'world_of_warcraft',
+            'labels'                             => [
                 'fr_FR' => 'MMORPG Blizzard',
                 'en_US' => 'Blizzard\'s MMORPG',
             ],
-            'image'                       => null,
-            'values'                      => [
+            'image'                              => null,
+            'values'                             => [
                 [
                     'data'      => 'MMORPG Blizzard',
                     'channel'   => null,
@@ -132,7 +133,7 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
                     'attribute' => 'label_game_fingerprint',
                 ],
             ],
-            'permission'                  => [
+            'permission'                         => [
                 'edit' => true,
             ],
         ]);

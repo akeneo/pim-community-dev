@@ -16,7 +16,9 @@ import {NormalizedValue, NormalizedMinimalValue} from 'akeneoassetmanager/domain
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import Completeness, {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
-import AttributeIdentifier, {denormalizeAttributeIdentifier} from "akeneoassetmanager/domain/model/attribute/identifier";
+import AttributeIdentifier, {
+  denormalizeAttributeIdentifier,
+} from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 interface CommonNormalizedAsset {
   identifier: AssetIdentifier;

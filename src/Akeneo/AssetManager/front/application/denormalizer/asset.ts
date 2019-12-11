@@ -6,18 +6,28 @@ import denormalizeValue from 'akeneoassetmanager/application/denormalizer/asset/
 import {createFileFromNormalized} from 'akeneoassetmanager/domain/model/file';
 import {denormalizeAssetIdentifier} from 'akeneoassetmanager/domain/model/asset/identifier';
 import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {denormalizeAttributeIdentifier} from "akeneoassetmanager/domain/model/attribute/identifier";
+import {denormalizeAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 const denormalizeAsset = (normalizedAsset: NormalizedAsset): Asset => {
   const identifier = denormalizeAssetIdentifier(normalizedAsset.identifier);
   const code = denormalizeAssetCode(normalizedAsset.code);
   const assetFamilyIdentifier = denormalizeAssetFamilyIdentifier(normalizedAsset.asset_family_identifier);
-  const attributeAsMainMediaIdentifier = denormalizeAttributeIdentifier(normalizedAsset.attribute_as_main_media_identifier);
+  const attributeAsMainMediaIdentifier = denormalizeAttributeIdentifier(
+    normalizedAsset.attribute_as_main_media_identifier
+  );
   const labelCollection = denormalizeLabelCollection(normalizedAsset.labels);
   const image = createFileFromNormalized(normalizedAsset.image);
   const valueCollection = createValueCollection(normalizedAsset.values.map(denormalizeValue));
 
-  return createAsset(identifier, assetFamilyIdentifier, attributeAsMainMediaIdentifier, code, labelCollection, image, valueCollection);
+  return createAsset(
+    identifier,
+    assetFamilyIdentifier,
+    attributeAsMainMediaIdentifier,
+    code,
+    labelCollection,
+    image,
+    valueCollection
+  );
 };
 
 export default denormalizeAsset;

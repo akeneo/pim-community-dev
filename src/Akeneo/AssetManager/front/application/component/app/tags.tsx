@@ -61,7 +61,7 @@ export default class Tags extends React.Component<TagsProps & any> {
     return {
       ...this.props.configuration,
       tags: this.props.tags,
-      tokenSeparators: [',', ' ']
+      tokenSeparators: [',', ' '],
     };
   }
 }
