@@ -77,6 +77,10 @@ services:
     akeneo_assetmanager.tasklet.compute_transformations:
         class: 'Akeneo\AssetManager\Infrastructure\Job\ComputeTransformations'
         arguments:
-            - '@akeneo_assetmanager.infrastructure.transformation.compute_transformations.executor'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_searchable_assets'
+            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.transformation.get_outdated_variation_source'
+            - '@akeneo_assetmanager.infrastructure.transformation.compute_transformations.executor'
+            - '@akeneo_assetmanager.application.asset.edit_asset_handler'
         public: false

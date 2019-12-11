@@ -13,37 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Transformation;
 
-use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand;
-use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
-use Akeneo\AssetManager\Application\AssetFamily\Transformation\Exception\NonApplicableTransformationException;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
-use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Symfony\Component\HttpFoundation\File\File;
-use Webmozart\Assert\Assert;
 
 class ComputeTransformationsExecutor
 {
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
-
-    /** @var GetTransformations */
-    private $getTransformations;
-
-    /** @var GetOutdatedVariationSource */
-    private $getOutdatedVariationSource;
-
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
     /** @var FileDownloader */
     private $fileDownloader;
 
@@ -53,84 +33,32 @@ class ComputeTransformationsExecutor
     /** @var FileStorerInterface */
     private $fileStorer;
 
-    /** @var EditAssetHandler */
-    private $editAssetHandler;
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
 
     public function __construct(
-        AssetRepositoryInterface $assetRepository,
-        GetTransformations $getTransformations,
-        GetOutdatedVariationSource $getOutdatedVariationSource,
-        AttributeRepositoryInterface $attributeRepository,
         FileDownloader $fileDownloader,
         FileTransformer $fileTransformer,
         FileStorerInterface $fileStorer,
-        EditAssetHandler $editAssetHandler
+        AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->assetRepository = $assetRepository;
-        $this->getTransformations = $getTransformations;
-        $this->getOutdatedVariationSource = $getOutdatedVariationSource;
-        $this->attributeRepository = $attributeRepository;
         $this->fileDownloader = $fileDownloader;
         $this->fileTransformer = $fileTransformer;
         $this->fileStorer = $fileStorer;
-        $this->editAssetHandler = $editAssetHandler;
+        $this->attributeRepository = $attributeRepository;
     }
 
-    /**
-     * @param AssetIdentifier[] $assetIdentifiers
-     */
-    public function execute(array $assetIdentifiers): void
-    {
-        Assert::allIsInstanceOf($assetIdentifiers, AssetIdentifier::class);
-        $transformationsPerAssetIdentifier = $this->getTransformations->fromAssetIdentifiers($assetIdentifiers);
-
-        foreach ($transformationsPerAssetIdentifier as $assetIdentifier => $transformations) {
-            $commands = [];
-            $asset = $this->assetRepository->getByIdentifier(AssetIdentifier::fromString($assetIdentifier));
-            $transformations = $transformationsPerAssetIdentifier[$assetIdentifier] ?? TransformationCollection::noTransformation();
-
-            foreach ($transformations as $transformation) {
-                try {
-                    $sourceFile = $this->getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation);
-                } catch (NonApplicableTransformationException $e) {
-                    // TODO ATR-51: add warning with exception message
-                    continue;
-                }
-
-                if (null !== $sourceFile) {
-                    try {
-                        $commands[] = $this->handleTransformation(
-                            $sourceFile,
-                            $asset->getAssetFamilyIdentifier(),
-                            $transformation
-                        );
-                    } catch (\Exception $e) {
-                        // TODO ATR-51: catch the right exception types
-                        // TODO: add warning
-                        continue;
-                    }
-                }
-            }
-            if (!empty($commands)) {
-                ($this->editAssetHandler)(
-                    new EditAssetCommand(
-                        (string)$asset->getAssetFamilyIdentifier(),
-                        (string)$asset->getCode(),
-                        $commands
-                    )
-                );
-            }
-        }
-    }
-
-    private function handleTransformation(
-        FileData $sourceFile,
+    public function execute(
+        FileData $sourceFileData,
         AssetFamilyIdentifier $assetFamilyIdentifier,
         Transformation $transformation
     ): EditMediaFileValueCommand {
-        $file = $this->fileDownloader->get($sourceFile->getKey());
-        $transformedFile = $this->fileTransformer->transform($file, $transformation->getOperationCollection());
-        $renamedFile = $this->rename($transformedFile, $sourceFile->getOriginalFilename(), $transformation);
+        $sourceFile = $this->getSourceFile($sourceFileData->getKey());
+        $transformedFile = $this->fileTransformer->transform(
+            $sourceFile,
+            $transformation->getOperationCollection()
+        );
+        $renamedFile = $this->rename($transformedFile, $sourceFileData->getOriginalFilename(), $transformation);
         $storedFile = $this->fileStorer->store($renamedFile, Storage::FILE_STORAGE_ALIAS, true);
 
         $target = $transformation->getTarget();
@@ -150,6 +78,11 @@ class ComputeTransformationsExecutor
             $storedFile->getExtension(),
             (new \DateTimeImmutable())->format(\DateTimeInterface::ISO8601)
         );
+    }
+
+    private function getSourceFile($fileKey): File
+    {
+        return $this->fileDownloader->get($fileKey);
     }
 
     private function rename(File $file, string $originalFilename, Transformation $transformation): File
