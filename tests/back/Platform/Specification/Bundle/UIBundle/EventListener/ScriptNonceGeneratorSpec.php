@@ -25,7 +25,7 @@ class ScriptNonceGeneratorSpec extends ObjectBehavior
         $this->getGeneratedNonce()->shouldMatch('/\w{8}-\w{4}-\w{4}-\w{4}-\w{8}/');
     }
 
-    function it_get_the_nonce_from_session(Request $request, SessionInterface $session)
+    function it_gets_the_nonce_from_session(Request $request, SessionInterface $session)
     {
         $request->getSession()->willReturn($session);
         $session->set('nonce', null)->shouldNotBeCalled();
