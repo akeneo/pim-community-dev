@@ -32,6 +32,16 @@ const ProgressBarFill = styled.div<{width: number}>`
   width: ${(props: ThemedProps<{width: number}>) => props.width}%;
 `;
 
+const progressToWidth = (progress: number | null): number => {
+  if (null === progress || progress < 0) {
+    return 0;
+  }
+  if (progress > 1) {
+    return 100;
+  }
+  return Math.round(progress * 100);
+};
+
 type LineStatusProps = {
   status: LineStatus;
   progress: number | null;
@@ -67,7 +77,10 @@ const RowStatus = ({status, progress}: LineStatusProps) => {
     case LineStatus.UploadInProgress:
       return (
         <ProgressBar>
-          <ProgressBarFill width={Math.round((progress || 0) * 100)} />
+          <ProgressBarFill
+            title={__('pim_asset_manager.asset.upload.status.' + status)}
+            width={progressToWidth(progress)}
+          />
         </ProgressBar>
       );
     default:
