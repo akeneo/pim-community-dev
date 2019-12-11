@@ -1,3 +1,5 @@
+'use strict';
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
@@ -24,7 +26,7 @@ describe('Test row status component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={LineStatus.WaitingForUpload} progress={0}/>
+          <RowStatus status={LineStatus.WaitingForUpload} progress={0} />
         </ThemeProvider>,
         container
       );
@@ -37,7 +39,7 @@ describe('Test row status component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={0}/>
+          <RowStatus status={status} progress={0} />
         </ThemeProvider>,
         container
       );
@@ -48,12 +50,12 @@ describe('Test row status component', () => {
   });
 
   test('It renders the Valid label', async () => {
-    const status = LineStatus.WaitingForUpload;
+    const status = LineStatus.Valid;
 
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={0}/>
+          <RowStatus status={status} progress={0} />
         </ThemeProvider>,
         container
       );
@@ -69,7 +71,7 @@ describe('Test row status component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={0}/>
+          <RowStatus status={status} progress={0} />
         </ThemeProvider>,
         container
       );
@@ -85,7 +87,7 @@ describe('Test row status component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={0}/>
+          <RowStatus status={status} progress={0} />
         </ThemeProvider>,
         container
       );
@@ -101,7 +103,7 @@ describe('Test row status component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={0}/>
+          <RowStatus status={status} progress={0} />
         </ThemeProvider>,
         container
       );
@@ -117,7 +119,7 @@ describe('Test row status component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={0.4}/>
+          <RowStatus status={status} progress={0.4} />
         </ThemeProvider>,
         container
       );
@@ -135,7 +137,7 @@ describe('Test row status component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={-0.4}/>
+          <RowStatus status={status} progress={-0.4} />
         </ThemeProvider>,
         container
       );
@@ -153,7 +155,7 @@ describe('Test row status component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={1.4}/>
+          <RowStatus status={status} progress={1.4} />
         </ThemeProvider>,
         container
       );
@@ -171,7 +173,7 @@ describe('Test row status component', () => {
     expect(() => {
       render(
         <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={'something_else'} progress={0}/>
+          <RowStatus status={'something_else'} progress={0} />
         </ThemeProvider>
       );
     }).toThrow();

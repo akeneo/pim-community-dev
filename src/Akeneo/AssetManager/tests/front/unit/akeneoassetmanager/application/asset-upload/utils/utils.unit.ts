@@ -1,3 +1,5 @@
+'use strict';
+
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {

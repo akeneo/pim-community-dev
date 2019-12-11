@@ -95,7 +95,7 @@ const LineList = ({
             <ListColumnHeader width={0} />
           </tr>
         </ListHeader>
-        <tbody>
+        <tbody aria-label={__('pim_asset_manager.asset.upload.lines')}>
           {lines.map((line: Line) => (
             <Row
               key={line.id}

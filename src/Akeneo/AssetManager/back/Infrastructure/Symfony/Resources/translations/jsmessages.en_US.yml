@@ -224,6 +224,8 @@ pim_asset_manager:
     upload:
       line_count: '[0,1]{{ count }} file|]1,Inf] {{ count }} files'
       title: Upload assets
+      lines: Files
+      remove: Remove
       remove_all: Remove all
       confirm: Create
       drop_or_click_here: Drag and drop your files or click here

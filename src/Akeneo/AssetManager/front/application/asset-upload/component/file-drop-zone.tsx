@@ -69,7 +69,12 @@ type FileDropZoneProps = {
 const FileDropZone = ({onDrop}: FileDropZoneProps) => {
   return (
     <Container>
-      <FileInput type="file" multiple onChange={onDrop} aria-label="files" />
+      <FileInput
+        type="file"
+        multiple
+        onChange={onDrop}
+        aria-label={__('pim_asset_manager.asset.upload.drop_or_click_here')}
+      />
       <Uploader>
         <ImportIcon />
         <UploaderHelper>{__(`pim_asset_manager.asset.upload.drop_or_click_here`)}</UploaderHelper>

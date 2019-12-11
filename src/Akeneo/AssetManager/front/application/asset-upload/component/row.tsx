@@ -1,7 +1,8 @@
 import * as React from 'react';
+import __ from 'akeneoassetmanager/tools/translator';
+import styled from 'styled-components';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import CrossIcon from 'akeneoassetmanager/application/component/app/icon/close';
-import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import RowStatus from 'akeneoassetmanager/application/asset-upload/component/row-status';
 import {getStatusFromLine} from 'akeneoassetmanager/application/asset-upload/utils/utils';
@@ -40,7 +41,7 @@ type RowProps = {
   valuePerChannel: boolean;
 };
 
-const Row = ({line, onLineRemove, onLineChange, valuePerLocale = true, valuePerChannel = true}: RowProps) => {
+const Row = ({line, onLineRemove, onLineChange, valuePerLocale, valuePerChannel}: RowProps) => {
   const status = getStatusFromLine(line, valuePerLocale, valuePerChannel);
 
   return (
@@ -54,23 +55,38 @@ const Row = ({line, onLineRemove, onLineChange, valuePerLocale = true, valuePerC
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             onLineChange({...line, code: event.target.value});
           }}
+          aria-label={__('pim_asset_manager.asset.upload.list.code')}
         />
       </Cell>
       {valuePerLocale && (
         <Cell>
-          <Input type="text" value={null === line.locale ? '' : line.locale} />
+          <Input
+            type="text"
+            value={null === line.locale ? '' : line.locale}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onLineChange({...line, locale: event.target.value});
+            }}
+            aria-label={__('pim_asset_manager.asset.upload.list.locale')}
+          />
         </Cell>
       )}
       {valuePerChannel && (
         <Cell>
-          <Input type="text" value={null === line.channel ? '' : line.channel} />
+          <Input
+            type="text"
+            value={null === line.channel ? '' : line.channel}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onLineChange({...line, channel: event.target.value});
+            }}
+            aria-label={__('pim_asset_manager.asset.upload.list.channel')}
+          />
         </Cell>
       )}
       <Cell>
         <RowStatus status={status} progress={line.uploadProgress} />
       </Cell>
       <Cell>
-        <RemoveLineButton onClick={() => onLineRemove(line)}>
+        <RemoveLineButton onClick={() => onLineRemove(line)} aria-label={__('pim_asset_manager.asset.upload.remove')}>
           <CrossIcon />
         </RemoveLineButton>
       </Cell>

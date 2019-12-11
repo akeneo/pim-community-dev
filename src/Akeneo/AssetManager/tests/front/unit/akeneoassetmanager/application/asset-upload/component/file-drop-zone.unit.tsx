@@ -1,3 +1,5 @@
+'use strict';
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
@@ -52,7 +54,7 @@ describe('Test file drop zone component', () => {
       new File(['bar'], 'bar.png', {type: 'image/png'}),
     ];
 
-    const input = getByLabelText(container, 'files');
+    const input = getByLabelText(container, 'pim_asset_manager.asset.upload.drop_or_click_here');
     fireEvent.change(input, {target: {files: files}});
 
     expect(result).toEqual(['foo.png', 'bar.png']);
