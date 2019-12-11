@@ -75,6 +75,7 @@ class CreateOrUpdateAssetContext implements Context
     private const HOUSE_ASSET_CODE = 'house';
     private const FLOWER_ASSET_CODE = 'flower';
     private const PHONE_ASSET_CODE = 'phone';
+    private const VALID_EXTENSIONS = ['gif', 'jfif', 'jif', 'jpeg', 'jpg', 'pdf', 'png', 'psd', 'tif', 'tiff'];
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -770,7 +771,7 @@ class CreateOrUpdateAssetContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('120'),
-            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::VALID_EXTENSIONS),
+            AttributeAllowedExtensions::fromList(self::VALID_EXTENSIONS),
             MediaType::fromString(MediaType::IMAGE)
         );
 

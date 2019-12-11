@@ -17,6 +17,8 @@ use PHPUnit\Framework\Assert;
  */
 class FixturesInstallerTest extends SqlIntegrationTestCase
 {
+    private const TOTAL_ASSETS = 28;
+
     /** @var FixturesInstaller */
     private $fixturesInstaller;
 
@@ -25,8 +27,6 @@ class FixturesInstallerTest extends SqlIntegrationTestCase
 
     /** @var Client */
     private $assetClient;
-
-    private const TOTAL_ASSETS = 16;
 
     public function setUp(): void
     {
@@ -96,8 +96,8 @@ SQL;
 
     private function assertFixturesPersisted(): void
     {
-        Assert::assertEquals(5, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family;')->rowCount());
-        Assert::assertEquals(17, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_attribute')->rowCount());
+        Assert::assertEquals(6, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family;')->rowCount());
+        Assert::assertEquals(20, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_attribute')->rowCount());
         Assert::assertEquals(self::TOTAL_ASSETS, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset')->rowCount());
         Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family_permissions')->rowCount());
     }

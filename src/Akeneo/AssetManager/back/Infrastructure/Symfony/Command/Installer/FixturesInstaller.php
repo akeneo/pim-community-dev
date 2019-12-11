@@ -57,6 +57,7 @@ class FixturesInstaller
     private const NOTICE_ASSET_FAMILY_IDENTIFIER = 'notice';
     private const VIDEO_ASSET_FAMILY_IDENTIFIER = 'video';
     private const ZOOM_ON_MATERIAL_ASSET_FAMILY_IDENTIFIER = 'zoom_on_material';
+    private const USER_GUIDE_ASSET_FAMILY_IDENTIFIER = 'user_guide';
 
     /** @var Connection */
     private $sqlConnection;
@@ -214,6 +215,9 @@ SQL;
         $this->loadZoomOnMaterial();
         $this->loadZoomOnMaterialAssets();
 
+        $this->loadUserGuides();
+        $this->loadUserGuideAssets();
+
         $this->indexAssets();
     }
 
@@ -265,7 +269,7 @@ SQL;
                         'locale'  => null,
                         'data' => [
                             'size'             => 5396,
-                            'filePath'         => $this->uploadImage('absorb_packshot_1')->getKey(),
+                            'filePath'         => $this->uploadMedia('absorb_packshot_1.jpg')->getKey(),
                             'mimeType'         => 'image/jpeg',
                             'extension'        => 'jpeg',
                             'originalFilename' => 'absorb_packshot_1.jpg',
@@ -288,7 +292,7 @@ SQL;
                         'locale'  => null,
                         'data'    => [
                             'size'             => 5396,
-                            'filePath'         => $this->uploadImage('absorb_packshot_2')->getKey(),
+                            'filePath'         => $this->uploadMedia('absorb_packshot_2.jpg')->getKey(),
                             'mimeType'         => 'image/jpeg',
                             'extension'        => 'jpeg',
                             'originalFilename' => 'absorb_packshot_2.jpg',
@@ -311,7 +315,7 @@ SQL;
                         'locale'  => null,
                         'data'    => [
                             'size'             => 5396,
-                            'filePath'         => $this->uploadImage('absorb_packshot_3')->getKey(),
+                            'filePath'         => $this->uploadMedia('absorb_packshot_3.jpg')->getKey(),
                             'mimeType'         => 'image/jpeg',
                             'extension'        => 'jpeg',
                             'originalFilename' => 'absorb_packshot_3.jpg',
@@ -334,7 +338,7 @@ SQL;
                         'locale'  => null,
                         'data'    => [
                             'size'             => 5496,
-                            'filePath'         => $this->uploadImage('absorb_packshot_4')->getKey(),
+                            'filePath'         => $this->uploadMedia('absorb_packshot_4.jpg')->getKey(),
                             'mimeType'         => 'image/jpeg',
                             'extension'        => 'jpeg',
                             'originalFilename' => 'absorb_packshot_4.jpg',
@@ -357,7 +361,7 @@ SQL;
                         'locale'  => null,
                         'data'    => [
                             'size'             => 5596,
-                            'filePath'         => $this->uploadImage('admete_packshot_1')->getKey(),
+                            'filePath'         => $this->uploadMedia('admete_packshot_1.jpg')->getKey(),
                             'mimeType'         => 'image/jpeg',
                             'extension'        => 'jpeg',
                             'originalFilename' => 'admete_packshot_1.jpg',
@@ -380,7 +384,7 @@ SQL;
                         'locale'  => null,
                         'data'    => [
                             'size'             => 5596,
-                            'filePath'         => $this->uploadImage('admete_packshot_2')->getKey(),
+                            'filePath'         => $this->uploadMedia('admete_packshot_2.jpg')->getKey(),
                             'mimeType'         => 'image/jpeg',
                             'extension'        => 'jpeg',
                             'originalFilename' => 'admete_packshot_2.jpg',
@@ -403,7 +407,7 @@ SQL;
                         'locale'  => null,
                         'data'    => [
                             'size'             => 5596,
-                            'filePath'         => $this->uploadImage('admete_packshot_3')->getKey(),
+                            'filePath'         => $this->uploadMedia('admete_packshot_3.jpg')->getKey(),
                             'mimeType'         => 'image/jpeg',
                             'extension'        => 'jpeg',
                             'originalFilename' => 'admete_packshot_3.jpg',
@@ -426,7 +430,7 @@ SQL;
                         'locale'  => null,
                         'data'    => [
                             'size'             => 5596,
-                            'filePath'         => $this->uploadImage('admete_packshot_4')->getKey(),
+                            'filePath'         => $this->uploadMedia('admete_packshot_4.jpg')->getKey(),
                             'mimeType'         => 'image/jpeg',
                             'extension'        => 'jpeg',
                             'originalFilename' => 'admete_packshot_4.jpg',
@@ -757,8 +761,8 @@ SQL;
             LabelCollection::fromArray(['en_US' => 'Zoom image', 'fr_FR' => 'Zoom sur image']),
             AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::noLimit(),
             AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED),
             MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
@@ -781,7 +785,7 @@ SQL;
                         'locale'  => 'en_US',
                         'data'    => [
                             'size'             => 5596,
-                            'filePath'         => $this->uploadImage('admete_zoom_en_US')->getKey(),
+                            'filePath'         => $this->uploadMedia('admete_zoom_en_US.jpg')->getKey(),
                             'mimeType'         => 'image/jpeg',
                             'extension'        => 'jpeg',
                             'originalFilename' => 'admete_zoom_en_US.jpg',
@@ -793,7 +797,7 @@ SQL;
                         'locale'  => 'fr_FR',
                         'data'    => [
                             'size'             => 5596,
-                            'filePath'         => $this->uploadImage('admete_zoom_fr_FR')->getKey(),
+                            'filePath'         => $this->uploadMedia('admete_zoom_fr_FR.jpg')->getKey(),
                             'mimeType'         => 'image/jpeg',
                             'extension'        => 'jpeg',
                             'originalFilename' => 'admete_zoom_fr_FR.jpg',
@@ -805,7 +809,7 @@ SQL;
                         'locale'  => 'de_DE',
                         'data'    => [
                             'size'             => 5596,
-                            'filePath'         => $this->uploadImage('admete_zoom_de_DE')->getKey(),
+                            'filePath'         => $this->uploadMedia('admete_zoom_de_DE.jpg')->getKey(),
                             'mimeType'         => 'image/jpeg',
                             'extension'        => 'jpeg',
                             'originalFilename' => 'admete_zoom_de_DE.jpg',
@@ -820,9 +824,309 @@ SQL;
             ->load();
     }
 
-    private function uploadImage($code): FileInfoInterface
+    private function loadUserGuides(): void
     {
-        $path = sprintf('/../../Resources/fixtures/files/%s.jpg', $code);
+        $loadUserGuides = AssetFamily::create(
+            AssetFamilyIdentifier::fromString(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER),
+            ['en_US' => 'User guide'],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
+
+        $this->assetFamilyRepository->create($loadUserGuides);
+        $order = 2;
+
+        $document = MediaFileAttribute::create(
+            AttributeIdentifier::create(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER, 'regulatory_document', 'fingerprint'),
+            AssetFamilyIdentifier::fromString(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER),
+            AttributeCode::fromString('document'),
+            LabelCollection::fromArray(['en_US' => 'Document']),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::noLimit(),
+            AttributeAllowedExtensions::fromList(['pdf']),
+            MediaFileMediaType::fromString(MediaFileMediaType::PDF)
+        );
+        $this->attributeRepository->create($document);
+
+        $updatedUserGuides = $this->assetFamilyRepository->getByIdentifier($loadUserGuides->getIdentifier());
+        $updatedUserGuides->updateAttributeAsMainMediaReference(AttributeAsMainMediaReference::fromAttributeIdentifier($document->getIdentifier()));
+        $this->assetFamilyRepository->update($updatedUserGuides);
+    }
+
+    private function loadUserGuideAssets(): void
+    {
+        $this->fixturesLoader
+            ->asset(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER, '1_7_end_user_role')
+            ->withValues([
+                'document' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadMedia('user_guides/1_7_end_user_role.pdf')->getKey(),
+                            'mimeType'         => 'application/pdf',
+                            'extension'        => 'pdf',
+                            'originalFilename' => '1_7_end_user_role.pdf',
+                            'updatedAt'        => '2019-12-22T15:16:21+0000',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => '1.7 End user role']
+                ],
+            ])
+            ->load();
+        $this->fixturesLoader
+            ->asset(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER, '1_7_catalog_setting')
+            ->withValues([
+                'document' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadMedia('user_guides/1_7_catalog_setting.pdf')->getKey(),
+                            'mimeType'         => 'application/pdf',
+                            'extension'        => 'pdf',
+                            'originalFilename' => '1_7_catalog_setting.pdf',
+                            'updatedAt'        => '2019-12-22T15:16:21+0000',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => '1.7 Catalog setting']
+                ],
+            ])
+            ->load();
+        $this->fixturesLoader
+            ->asset(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER, '1_7_administrator')
+            ->withValues([
+                'document' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadMedia('user_guides/1_7_administrator.pdf')->getKey(),
+                            'mimeType'         => 'application/pdf',
+                            'extension'        => 'pdf',
+                            'originalFilename' => '1_7_administrator.pdf',
+                            'updatedAt'        => '2019-12-22T15:16:21+0000',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => '1.7 Administrator']
+                ],
+            ])
+            ->load();
+        $this->fixturesLoader
+            ->asset(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER, '1_6_end_user_role')
+            ->withValues([
+                'document' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadMedia('user_guides/1_6_end_user_role.pdf')->getKey(),
+                            'mimeType'         => 'application/pdf',
+                            'extension'        => 'pdf',
+                            'originalFilename' => '1_6_end_user_role.pdf',
+                            'updatedAt'        => '2019-12-22T15:16:21+0000',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => '1.6 End user role']
+                ],
+            ])
+            ->load();
+        $this->fixturesLoader
+            ->asset(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER, '1_6_catalog_setting')
+            ->withValues([
+                'document' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadMedia('user_guides/1_6_catalog_setting.pdf')->getKey(),
+                            'mimeType'         => 'application/pdf',
+                            'extension'        => 'pdf',
+                            'originalFilename' => '1_6_catalog_setting.pdf',
+                            'updatedAt'        => '2019-12-22T15:16:21+0000',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => '1.6 Catalog setting']
+                ],
+            ])
+            ->load();
+        $this->fixturesLoader
+            ->asset(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER, '1_6_administrator')
+            ->withValues([
+                'document' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadMedia('user_guides/1_6_administrator.pdf')->getKey(),
+                            'mimeType'         => 'application/pdf',
+                            'extension'        => 'pdf',
+                            'originalFilename' => '1_6_administrator.pdf',
+                            'updatedAt'        => '2019-12-22T15:16:21+0000',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => '1.6 Administrator']
+                ],
+            ])
+            ->load();
+        $this->fixturesLoader
+            ->asset(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER, '1_5_end_user_role')
+            ->withValues([
+                'document' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadMedia('user_guides/1_5_end_user_role.pdf')->getKey(),
+                            'mimeType'         => 'application/pdf',
+                            'extension'        => 'pdf',
+                            'originalFilename' => '1_5_end_user_role.pdf',
+                            'updatedAt'        => '2019-12-22T15:16:21+0000',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => '1.5 End user role']
+                ],
+            ])
+            ->load();
+        $this->fixturesLoader
+            ->asset(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER, '1_5_catalog_setting')
+            ->withValues([
+                'document' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadMedia('user_guides/1_5_catalog_setting.pdf')->getKey(),
+                            'mimeType'         => 'application/pdf',
+                            'extension'        => 'pdf',
+                            'originalFilename' => '1_5_catalog_setting.pdf',
+                            'updatedAt'        => '2019-12-22T15:16:21+0000',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => '1.5 Catalog setting']
+                ],
+            ])
+            ->load();
+        $this->fixturesLoader
+            ->asset(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER, '1_5_administrator')
+            ->withValues([
+                'document' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadMedia('user_guides/1_5_administrator.pdf')->getKey(),
+                            'mimeType'         => 'application/pdf',
+                            'extension'        => 'pdf',
+                            'originalFilename' => '1_5_administrator.pdf',
+                            'updatedAt'        => '2019-12-22T15:16:21+0000',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => '1.5 Administrator']
+                ],
+            ])
+            ->load();
+        $this->fixturesLoader
+            ->asset(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER, '1_4_end_user_role')
+            ->withValues([
+                'document' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadMedia('user_guides/1_4_end_user_role.pdf')->getKey(),
+                            'mimeType'         => 'application/pdf',
+                            'extension'        => 'pdf',
+                            'originalFilename' => '1_4_end_user_role.pdf',
+                            'updatedAt'        => '2019-12-22T15:16:21+0000',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => '1.4 End user role']
+                ],
+            ])
+            ->load();
+        $this->fixturesLoader
+            ->asset(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER, '1_4_catalog_setting')
+            ->withValues([
+                'document' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadMedia('user_guides/1_4_catalog_setting.pdf')->getKey(),
+                            'mimeType'         => 'application/pdf',
+                            'extension'        => 'pdf',
+                            'originalFilename' => '1_4_catalog_setting.pdf',
+                            'updatedAt'        => '2019-12-22T15:16:21+0000',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => '1.4 Catalog setting']
+                ],
+            ])
+            ->load();
+        $this->fixturesLoader
+            ->asset(self::USER_GUIDE_ASSET_FAMILY_IDENTIFIER, '1_4_administrator')
+            ->withValues([
+                'document' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadMedia('user_guides/1_4_administrator.pdf')->getKey(),
+                            'mimeType'         => 'application/pdf',
+                            'extension'        => 'pdf',
+                            'originalFilename' => '1_4_administrator.pdf',
+                            'updatedAt'        => '2019-12-22T15:16:21+0000',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => '1.4 Administrator']
+                ],
+            ])
+            ->load();
+    }
+
+    private function uploadMedia(string $media): FileInfoInterface
+    {
+        $path = sprintf('/../../Resources/fixtures/files/%s', $media);
         $rawFile = new \SplFileInfo(__DIR__ . $path);
 
         return $this->storer->store($rawFile, Storage::FILE_STORAGE_ALIAS);
