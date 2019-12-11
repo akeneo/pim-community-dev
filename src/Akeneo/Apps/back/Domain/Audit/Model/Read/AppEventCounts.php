@@ -15,22 +15,22 @@ final class AppEventCounts
     private $appCode;
 
     /** @var DailyEventCount[] */
-    private $eventCounts = [];
+    private $dailyEventCounts = [];
 
     public function __construct(string $appCode)
     {
         $this->appCode = $appCode;
     }
 
-    public function addEventCount(DailyEventCount $eventCountByDate): void
+    public function addDailyEventCount(DailyEventCount $dailyEventCount): void
     {
-        $this->eventCounts[] = $eventCountByDate;
+        $this->dailyEventCounts[] = $dailyEventCount;
     }
 
     public function normalize()
     {
         $eventCounts = [];
-        foreach ($this->eventCounts as $eventCount) {
+        foreach ($this->dailyEventCounts as $eventCount) {
             $eventCounts[] = $eventCount->normalize();
         }
 

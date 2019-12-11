@@ -31,11 +31,11 @@ class CountDailyEventsByAppHandlerSpec extends ObjectBehavior
     function it_handles_the_event_count($selectAppsEventCountByDayQuery)
     {
         $eventCountByApp1 = new AppEventCounts('Magento');
-        $eventCountByApp1->addEventCount(new DailyEventCount(42, new \DateTime('2019-12-10')));
-        $eventCountByApp1->addEventCount(new DailyEventCount(123, new \DateTime('2019-12-11')));
+        $eventCountByApp1->addDailyEventCount(new DailyEventCount(42, new \DateTime('2019-12-10')));
+        $eventCountByApp1->addDailyEventCount(new DailyEventCount(123, new \DateTime('2019-12-11')));
 
         $eventCountByApp2 = new AppEventCounts('Bynder');
-        $eventCountByApp2->addEventCount(new DailyEventCount(36, new \DateTime('2019-12-11')));
+        $eventCountByApp2->addDailyEventCount(new DailyEventCount(36, new \DateTime('2019-12-11')));
 
         $selectAppsEventCountByDayQuery
             ->execute('product_created', '2019-12-10', '2019-12-12')

@@ -37,7 +37,7 @@ services:
             - '@akeneo_app.persistence.repository.app'
             - '@akeneo_app.service.client.regenerate_client_secret'
 
-    akeneo_app.audit.application.handler.count_daily_events_by_app:
-        class: 'Akeneo\Apps\Audit\Application\Query\CountDailyEventsByAppHandler'
+    akeneo_app.application.audit.handler.count_daily_events_by_app:
+        class: 'Akeneo\Apps\Application\Audit\Query\CountDailyEventsByAppHandler'
         arguments:
-            - '@akeneo_app.audit.persistence.query.select_apps_event_count_by_date'
+            - '@akeneo_app.persistence.query.select_apps_event_count_by_day'

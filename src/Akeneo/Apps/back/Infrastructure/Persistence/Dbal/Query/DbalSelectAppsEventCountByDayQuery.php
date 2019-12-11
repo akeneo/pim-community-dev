@@ -58,7 +58,7 @@ SQL;
     {
         $eventCountByApp = new AppEventCounts($dataRow['label']);
         foreach (json_decode($dataRow['event_count'], true) as $eventDate => $eventCount) {
-            $eventCountByApp->addEventCount(
+            $eventCountByApp->addDailyEventCount(
                 new DailyEventCount($eventCount, new \DateTime($eventDate, new \DateTimeZone('UTC')))
             );
         }

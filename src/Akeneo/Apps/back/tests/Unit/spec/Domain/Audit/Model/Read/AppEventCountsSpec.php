@@ -44,9 +44,9 @@ class AppEventCountsSpec extends ObjectBehavior
         $eventCount3 = new DailyEventCount(127, $eventDate3);
 
         $this->beConstructedWith('magento');
-        $this->addEventCount($eventCount1);
-        $this->addEventCount($eventCount2);
-        $this->addEventCount($eventCount3);
+        $this->addDailyEventCount($eventCount1);
+        $this->addDailyEventCount($eventCount2);
+        $this->addDailyEventCount($eventCount3);
 
         $this->normalize()->shouldReturn(
             [

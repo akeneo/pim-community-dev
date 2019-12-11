@@ -14,17 +14,17 @@ use Akeneo\Apps\Domain\Audit\Persistence\Query\SelectAppsEventCountByDayQuery;
 class CountDailyEventsByAppHandler
 {
     /** @var SelectAppsEventCountByDayQuery */
-    private $selectAppsEventCountByDateQuery;
+    private $selectAppsEventCountByDayQuery;
 
-    public function __construct(SelectAppsEventCountByDayQuery $selectAppsEventCountByDateQuery)
+    public function __construct(SelectAppsEventCountByDayQuery $selectAppsEventCountByDayQuery)
     {
-        $this->selectAppsEventCountByDateQuery = $selectAppsEventCountByDateQuery;
+        $this->selectAppsEventCountByDayQuery = $selectAppsEventCountByDayQuery;
     }
 
     public function handle(CountDailyEventsByAppQuery $query): array
     {
         $eventCountByApps = $this
-            ->selectAppsEventCountByDateQuery
+            ->selectAppsEventCountByDayQuery
             ->execute($query->eventType(), $query->startDate(), $query->endDate());
 
         return $eventCountByApps;

@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Cli;
 
+use Akeneo\Apps\Application\Audit\Query\CountDailyEventsByAppHandler;
+use Akeneo\Apps\Application\Audit\Query\CountDailyEventsByAppQuery;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
-use Akeneo\Apps\Application\Query\FindAnAppHandler;
-use Akeneo\Apps\Application\Query\FindAnAppQuery;
-use Akeneo\Apps\Audit\Application\Query\CountDailyEventsByAppHandler;
-use Akeneo\Apps\Audit\Application\Query\CountDailyEventsByAppQuery;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,18 +28,18 @@ class PopulateAuditTableCommand extends Command
     /** @var FetchAppsHandler */
     private $fetchAppsHandler;
     /** @var CountDailyEventsByAppHandler */
-    private $fetchAppsEventCountByEventHandler;
+    private $countDailyEventsByAppHandler;
 
     public function __construct(
         Connection $dbalConnection,
         FetchAppsHandler $fetchAppsHandler,
-        CountDailyEventsByAppHandler $fetchAppsEventCountByEventHandler
+        CountDailyEventsByAppHandler $countDailyEventsByAppHandler
     ) {
         parent::__construct();
 
         $this->dbalConnection = $dbalConnection;
         $this->fetchAppsHandler = $fetchAppsHandler;
-        $this->fetchAppsEventCountByEventHandler = $fetchAppsEventCountByEventHandler;
+        $this->countDailyEventsByAppHandler = $countDailyEventsByAppHandler;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -58,7 +56,7 @@ class PopulateAuditTableCommand extends Command
         }
 
         $query = new CountDailyEventsByAppQuery('product_updated', '2019-12-10', '2019-12-13');
-        var_dump($this->fetchAppsEventCountByEventHandler->handle($query));
+        var_dump($this->countDailyEventsByAppHandler->handle($query));
     }
 
     private function insertAuditData($appCode, $eventDate, $eventCount, $eventType): void

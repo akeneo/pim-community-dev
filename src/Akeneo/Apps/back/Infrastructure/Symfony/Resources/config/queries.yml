@@ -9,7 +9,7 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_app.audit.persistence.query.select_apps_event_count_by_date:
-        class: 'Akeneo\Apps\Audit\Infrastructure\Persistence\Dbal\Query\DbalSelectAppsEventCountByDateQuery'
+    akeneo_app.persistence.query.select_apps_event_count_by_day:
+        class: 'Akeneo\Apps\Infrastructure\Persistence\Dbal\Query\DbalSelectAppsEventCountByDayQuery'
         arguments:
             - '@database_connection'
