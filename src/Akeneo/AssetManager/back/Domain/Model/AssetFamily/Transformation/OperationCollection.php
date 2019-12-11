@@ -22,6 +22,7 @@ class OperationCollection implements \IteratorAggregate
 
     private function __construct(array $operations)
     {
+        Assert::notEmpty($operations);
         Assert::allIsInstanceOf($operations, Operation::class);
         $this->operations = $operations;
     }

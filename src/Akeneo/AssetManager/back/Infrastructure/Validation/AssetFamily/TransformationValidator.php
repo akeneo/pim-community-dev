@@ -68,6 +68,7 @@ class TransformationValidator extends ConstraintValidator
             ],
             'operations' => [
                 new Assert\Type('array'),
+                new Assert\Count(['min' => 1]),
                 new Assert\All([
                     new Assert\Collection([
                         'type' => new Assert\NotNull(),

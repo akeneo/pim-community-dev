@@ -17,6 +17,12 @@ class OperationCollectionSpec extends ObjectBehavior
         $this->getWrappedObject();
     }
 
+    function it_throws_an_exception_when_no_item_is_provided()
+    {
+        $this->beConstructedThrough('create', [[]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
     function it_throws_an_exception_when_a_collection_item_is_not_an_operation()
     {
         $thumbnail = ThumbnailOperation::create(['width' => 100, 'height' => 80]);

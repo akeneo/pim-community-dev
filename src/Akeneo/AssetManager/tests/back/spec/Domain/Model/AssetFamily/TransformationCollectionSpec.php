@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
@@ -140,11 +141,13 @@ class TransformationCollectionSpec extends ObjectBehavior
 
     function it_can_be_updated_based_on_another_collection()
     {
+        $operation = ThumbnailOperation::create(['width' => 100, 'height' => 80]);
+
         $actualTransformation1 = Transformation::create(
             TransformationLabel::fromString('label1'),
             Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => 'en_US']),
-            OperationCollection::create([]),
+            OperationCollection::create([$operation]),
             null,
             '_1',
             new \DateTime('2010-01-01')
@@ -153,7 +156,7 @@ class TransformationCollectionSpec extends ObjectBehavior
             TransformationLabel::fromString('label2'),
             Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => 'fr_FR']),
-            OperationCollection::create([]),
+            OperationCollection::create([$operation]),
             null,
             '_2',
             new \DateTime('2010-01-01')
@@ -162,7 +165,7 @@ class TransformationCollectionSpec extends ObjectBehavior
             TransformationLabel::fromString('label3'),
             Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => 'de_DE']),
-            OperationCollection::create([]),
+            OperationCollection::create([$operation]),
             null,
             '_3',
             new \DateTime('2010-01-01')
@@ -173,7 +176,7 @@ class TransformationCollectionSpec extends ObjectBehavior
             TransformationLabel::fromString('label1'),
             Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => 'en_US']),
-            OperationCollection::create([]),
+            OperationCollection::create([$operation]),
             null,
             '_1',
             new \DateTime('2010-06-30')
@@ -182,7 +185,7 @@ class TransformationCollectionSpec extends ObjectBehavior
             TransformationLabel::fromString('new_label'),
             Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => 'fr_FR']),
-            OperationCollection::create([]),
+            OperationCollection::create([$operation]),
             null,
             '_2',
             new \DateTime('2010-01-01')
@@ -191,7 +194,7 @@ class TransformationCollectionSpec extends ObjectBehavior
             TransformationLabel::fromString('label3'),
             Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => 'de_DE']),
-            OperationCollection::create([]),
+            OperationCollection::create([$operation]),
             null,
             '_new_suffix',
             new \DateTime('2011-01-01')
