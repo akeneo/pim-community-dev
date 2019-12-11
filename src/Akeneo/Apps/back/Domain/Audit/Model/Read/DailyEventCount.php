@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Audit\Domain\Model\Read;
+namespace Akeneo\Apps\Domain\Audit\Model\Read;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

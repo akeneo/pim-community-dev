@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Apps\Audit\Domain\Model\Read;
+namespace spec\Akeneo\Apps\Domain\Audit\Model\Read;
 
-use Akeneo\Apps\Audit\Domain\Model\Read\DailyEventCount;
+use Akeneo\Apps\Domain\Audit\Model\Read\DailyEventCount;
 use PhpSpec\ObjectBehavior;
 
 /**

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Audit\Application\Query;
+namespace Akeneo\Apps\Application\Audit\Query;
 
-use Akeneo\Apps\Audit\Domain\Persistence\Query\SelectAppsEventCountByDayQuery;
+use Akeneo\Apps\Domain\Audit\Persistence\Query\SelectAppsEventCountByDayQuery;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Apps\Audit\Application\Query;
+namespace spec\Akeneo\Apps\Application\Audit\Query;
 
-use Akeneo\Apps\Audit\Application\Query\CountDailyEventsByAppHandler;
-use Akeneo\Apps\Audit\Application\Query\CountDailyEventsByAppQuery;
-use Akeneo\Apps\Audit\Domain\Model\Read\AppEventCounts;
-use Akeneo\Apps\Audit\Domain\Model\Read\DailyEventCount;
-use Akeneo\Apps\Audit\Domain\Persistence\Query\SelectAppsEventCountByDayQuery;
+use Akeneo\Apps\Application\Audit\Query\CountDailyEventsByAppHandler;
+use Akeneo\Apps\Application\Audit\Query\CountDailyEventsByAppQuery;
+use Akeneo\Apps\Domain\Audit\Model\Read\AppEventCounts;
+use Akeneo\Apps\Domain\Audit\Model\Read\DailyEventCount;
+use Akeneo\Apps\Domain\Audit\Persistence\Query\SelectAppsEventCountByDayQuery;
 use PhpSpec\ObjectBehavior;
 
 /**

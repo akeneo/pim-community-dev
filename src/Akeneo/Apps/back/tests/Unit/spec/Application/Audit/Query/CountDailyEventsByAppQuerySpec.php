@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Apps\Audit\Application\Query;
+namespace spec\Akeneo\Apps\Application\Audit\Query;
 
-use Akeneo\Apps\Audit\Application\Query\CountDailyEventsByAppQuery;
+use Akeneo\Apps\Application\Audit\Query\CountDailyEventsByAppQuery;
 use PhpSpec\ObjectBehavior;
 
 /**

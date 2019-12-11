@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Audit\Domain\Persistence\Query;
+namespace Akeneo\Apps\Domain\Audit\Persistence\Query;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

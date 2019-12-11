@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Audit\Infrastructure\Persistence\Dbal\Query;
+namespace Akeneo\Apps\Infrastructure\Persistence\Dbal\Query;
 
-use Akeneo\Apps\Audit\Domain\Model\Read\AppEventCounts;
-use Akeneo\Apps\Audit\Domain\Model\Read\DailyEventCount;
-use Akeneo\Apps\Audit\Domain\Persistence\Query\SelectAppsEventCountByDayQuery;
+use Akeneo\Apps\Domain\Audit\Model\Read\AppEventCounts;
+use Akeneo\Apps\Domain\Audit\Model\Read\DailyEventCount;
+use Akeneo\Apps\Domain\Audit\Persistence\Query\SelectAppsEventCountByDayQuery;
 use Doctrine\DBAL\Connection;
 
 /**
