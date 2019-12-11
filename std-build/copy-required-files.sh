@@ -11,8 +11,7 @@ STANDARD_DISTRIB_DIR=./
 mkdir -p $STANDARD_DISTRIB_DIR/src \
          $STANDARD_DISTRIB_DIR/bin \
          $STANDARD_DISTRIB_DIR/public \
-         $STANDARD_DISTRIB_DIR/config/packages/prod \
-         $STANDARD_DISTRIB_DIR/config/packages/dev \
+         $STANDARD_DISTRIB_DIR/config/packages \
          $STANDARD_DISTRIB_DIR/config/services \
          $STANDARD_DISTRIB_DIR/docker
 
@@ -26,8 +25,6 @@ cp $DEV_DISTRIB_DIR/std-build/Kernel.php $STANDARD_DISTRIB_DIR/src
 cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 
 # The following files are only copied if the destination does not exist
-cp --no-clobber $DEV_DISTRIB_DIR/config/packages/prod_onprem_paas/oneup_flysystem.yml $STANDARD_DISTRIB_DIR/config/packages/prod/oneup_flysystem.yml
-cp --no-clobber $DEV_DISTRIB_DIR/config/packages/prod_onprem_paas/oneup_flysystem.yml $STANDARD_DISTRIB_DIR/config/packages/dev/oneup_flysystem.yml
 cp --no-clobber $DEV_DISTRIB_DIR/config/packages/security.yml $STANDARD_DISTRIB_DIR/config/packages/security.yml
 cp --no-clobber $DEV_DISTRIB_DIR/std-build/Makefile $STANDARD_DISTRIB_DIR/Makefile
 cp --no-clobber $DEV_DISTRIB_DIR/std-build/bundles.php $STANDARD_DISTRIB_DIR/config
