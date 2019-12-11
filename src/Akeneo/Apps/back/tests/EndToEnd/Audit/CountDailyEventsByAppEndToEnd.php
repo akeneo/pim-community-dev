@@ -34,6 +34,11 @@ class CountDailyEventsByAppEndToEnd extends WebTestCase
         ];
         $this->client->request('GET', '/rest/apps/franklin');
         $response = $this->client->getResponse();
+        var_dump($response->getContent());
+        var_dump($response->getStatusCode());
+
+        $this->client->request('GET', '/rest/apps/audit/source-apps-event', ['event_type' => 'product_created']);
+        $response = $this->client->getResponse();
 
         var_dump($response->getContent());
         var_dump($response->getStatusCode());
@@ -41,6 +46,7 @@ class CountDailyEventsByAppEndToEnd extends WebTestCase
 
     private function loadAuditData(array $apps): void
     {
+        // TODO: Calculate dates from "now +1day" to "now -2 days"
         $dates = ['2019-12-08', '2019-12-09', '2019-12-10', '2019-12-11'];
         foreach ($apps as $app) {
             $count = 0;
