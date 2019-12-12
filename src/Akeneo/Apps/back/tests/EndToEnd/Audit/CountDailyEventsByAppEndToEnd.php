@@ -11,6 +11,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
@@ -22,42 +23,38 @@ class CountDailyEventsByAppEndToEnd extends WebTestCase
 {
     public function test_it_finds_apps_event_by_created_product()
     {
-        // load fixtures
-        $appFranklin = $this->get('akeneo_app.fixtures.app_loader')->createApp('franklin', 'Franklin', FlowType::DATA_SOURCE);
-        $appErp = $this->get('akeneo_app.fixtures.app_loader')->createApp('erp', 'ERP', FlowType::DATA_SOURCE);
-        $this->loadAuditData([$appFranklin, $appErp]);
+        $this->get('akeneo_app.fixtures.app_loader')->createApp('franklin', 'Franklin', FlowType::DATA_SOURCE);
+        $this->get('akeneo_app.fixtures.app_loader')->createApp('erp', 'ERP', FlowType::DATA_SOURCE);
+        $this->loadAuditData();
         $this->createAdminUser();
-
-        $authParams = [
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW'   => 'admin',
-        ];
-        $this->client->request('GET', '/rest/apps/franklin');
-        $response = $this->client->getResponse();
-        var_dump($response->getContent());
-        var_dump($response->getStatusCode());
 
         $this->client->request('GET', '/rest/apps/audit/source-apps-event', ['event_type' => 'product_created']);
         $response = $this->client->getResponse();
 
-        var_dump($response->getContent());
-        var_dump($response->getStatusCode());
+        Assert::assertTrue($response->isOk());
+        Assert::assertEquals(
+            file_get_contents('../Resources/json_response/count_daily_events_by_app.json'),
+            $response->getContent()
+        );
     }
 
-    private function loadAuditData(array $apps): void
+    private function loadAuditData(): void
     {
-        // TODO: Calculate dates from "now +1day" to "now -2 days"
-        $dates = ['2019-12-08', '2019-12-09', '2019-12-10', '2019-12-11'];
-        foreach ($apps as $app) {
-            $count = 0;
-            foreach ($dates as $date) {
-                foreach (['product_created', 'product_updated'] as $eventType) {
-                    $this
-                        ->get('akeneo_app.fixtures.audit_loader')
-                        ->insertData($app->code(), $date, $count++, $eventType);
-                }
-            }
-        }
+        $eventDate = new \DateTime('now', new \DateTimeZone('UTC'));
+        $auditLoader = $this->get('akeneo_app.fixtures.audit_loader');
+        // today
+        $auditLoader->insertData('franklin', $eventDate, 11, 'product_created');
+        $auditLoader->insertData('erp', $eventDate, 28, 'product_updated');
+        $auditLoader->insertData('erp', $eventDate, 37, 'product_created');
+        // yesterday
+        $auditLoader->insertData('franklin', $eventDate->modify('-1 day'), 5, 'product_created');
+        $auditLoader->insertData('franklin', $eventDate, 132, 'product_updated');
+        // 2 days ago
+        $auditLoader->insertData('franklin', $eventDate->modify('-1 day'), 10, 'product_created');
+        $auditLoader->insertData('franklin', $eventDate, 7, 'product_created');
+        // 10 days ago
+        $auditLoader->insertData('franklin', $eventDate->modify('-7 day'), 15, 'product_created');
+
     }
 
     /**

@@ -23,7 +23,7 @@ class AuditLoader
         $this->dbalConnection = $dbalConnection;
     }
 
-    public function insertData($appCode, $eventDate, $eventCount, $eventType)
+    public function insertData(string $appCode, \DateTime $eventDate, int $eventCount, string $eventType)
     {
         $sqlQuery = <<<SQL
 INSERT INTO akeneo_app_audit (app_code, event_date, event_count, event_type)
@@ -31,7 +31,12 @@ VALUES (:app_code, :event_date, :event_count, :event_type)
 SQL;
         $this->dbalConnection->executeQuery(
             $sqlQuery,
-            ['app_code' => $appCode, 'event_date' => $eventDate, 'event_count' => $eventCount, 'event_type' => $eventType]
+            [
+                'app_code' => $appCode,
+                'event_date' => $eventDate->format('Y-m-d'),
+                'event_count' => $eventCount,
+                'event_type' => $eventType
+            ]
         );
     }
 }
