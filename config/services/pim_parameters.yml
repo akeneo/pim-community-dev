@@ -19,7 +19,7 @@ parameters:
     upload_dir:           '%kernel.project_dir%/var/uploads/product'
     archive_dir:          '%kernel.project_dir%/var/archive'
     catalog_storage_dir:  '%kernel.project_dir%/var/file_storage/catalog'
-    tmp_storage_dir:      '/tmp/pim/file_storage'
+    jobs_storage_dir:     '%kernel.project_dir%/var/jobs'
     upload_tmp_dir:       '/tmp/pim/upload_tmp_dir'
 
     max_products_category_removal: 100
