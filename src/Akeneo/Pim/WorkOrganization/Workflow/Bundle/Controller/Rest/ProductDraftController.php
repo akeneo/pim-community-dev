@@ -25,6 +25,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\EntityWithValuesDraftManager;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
@@ -98,6 +99,10 @@ class ProductDraftController
     /** @var ListAttributesUseableInProductGrid */
     private $attributesUseableInGrid;
 
+    /** @var Client */
+    private $elasticSearchClient;
+
+    /** @todo merge master: remove $elasticSearchClient being nullable */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         EntityWithValuesDraftRepositoryInterface $repository,
@@ -113,7 +118,8 @@ class ProductDraftController
         SearchableRepositoryInterface $attributeSearchableRepository,
         ListAttributesUseableInProductGrid $attributesUseableInGrid,
         ConfiguratorInterface $filtersConfigurator,
-        FilterExtension $filterExtension
+        FilterExtension $filterExtension,
+        Client $elasticSearchClient = null
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->repository = $repository;
@@ -130,6 +136,7 @@ class ProductDraftController
         $this->attributesUseableInGrid = $attributesUseableInGrid;
         $this->filtersConfigurator = $filtersConfigurator;
         $this->filterExtension = $filterExtension;
+        $this->elasticSearchClient = $elasticSearchClient;
     }
 
     /**
@@ -218,6 +225,9 @@ class ProductDraftController
                 $channel,
                 ['comment' => $request->query->get('comment')]
             );
+            if (null !== $this->elasticSearchClient) {
+                $this->elasticSearchClient->refreshIndex();
+            }
         } catch (ValidatorException $e) {
             return new JsonResponse(['message' => $e->getMessage()], 400);
         }
@@ -266,6 +276,9 @@ class ProductDraftController
 
         try {
             $this->manager->$action($productDraft, ['comment' => $request->request->get('comment')]);
+            if (null !== $this->elasticSearchClient) {
+                $this->elasticSearchClient->refreshIndex();
+            }
         } catch (ValidatorException $e) {
             return new JsonResponse(['message' => $e->getMessage()], 400);
         }

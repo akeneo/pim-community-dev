@@ -66,6 +66,7 @@ services:
             - '@pimee_security.product_grid.query.list_attributes'
             - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
             - '@pim_datagrid.extension.filter'
+            - '@akeneo_elasticsearch.client.product_proposal'
 
     pimee_workflow.controller.rest.product:
         class: '%pimee_workflow.controller.rest.product.class%'
