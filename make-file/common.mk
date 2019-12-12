@@ -122,7 +122,7 @@ pim-prod:
 	$(MAKE) javascript-prod
 	docker/wait_docker_up.sh
 	APP_ENV=prod $(MAKE) database O="--catalog $(PROD_CATALOG_DIR)"
-	APP_ENV=behat $(PHP_RUN) bin/console pim:user:create --admin -n -- admin admin test@example.com John Doe en_US
+	APP_ENV=prod $(PHP_RUN) bin/console pim:user:create --admin -n -- admin admin test@example.com John Doe en_US
 
 .PHONY: up
 up:

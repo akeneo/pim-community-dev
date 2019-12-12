@@ -22,6 +22,8 @@ cp $DEV_DISTRIB_DIR/config/bootstrap.php $STANDARD_DISTRIB_DIR/config/
 cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
 cp $DEV_DISTRIB_DIR/public/index.php $STANDARD_DISTRIB_DIR/public/
 cp $DEV_DISTRIB_DIR/std-build/Kernel.php $STANDARD_DISTRIB_DIR/src
+cp $DEV_DISTRIB_DIR/docker/* $STANDARD_DISTRIB_DIR/docker/
+cp $DEV_DISTRIB_DIR/std-build/docker-compose.yml $STANDARD_DISTRIB_DIR/
 
 # The following files are only copied if the destination does not exist
 cp --no-clobber $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
@@ -30,7 +32,5 @@ cp --no-clobber $DEV_DISTRIB_DIR/std-build/Makefile $STANDARD_DISTRIB_DIR/Makefi
 cp --no-clobber $DEV_DISTRIB_DIR/std-build/bundles.php $STANDARD_DISTRIB_DIR/config
 cp --no-clobber $DEV_DISTRIB_DIR/std-build/package.json $STANDARD_DISTRIB_DIR/package.json
 cp --no-clobber $DEV_DISTRIB_DIR/std-build/tsconfig.json $STANDARD_DISTRIB_DIR/tsconfig.json
-cp --no-clobber -r $DEV_DISTRIB_DIR/docker/* $STANDARD_DISTRIB_DIR/docker/
 cp --no-clobber $DEV_DISTRIB_DIR/.gitignore $STANDARD_DISTRIB_DIR/
 cp --no-clobber $DEV_DISTRIB_DIR/std-build/services.yml $STANDARD_DISTRIB_DIR/config/services/
-cp --no-clobber $DEV_DISTRIB_DIR/std-build/docker-compose.yml $STANDARD_DISTRIB_DIR/
