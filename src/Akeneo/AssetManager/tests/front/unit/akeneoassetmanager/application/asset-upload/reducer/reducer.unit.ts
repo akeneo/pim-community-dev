@@ -13,65 +13,27 @@ import {
   removeAllLinesAction,
   removeLineAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
-import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
-import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
+import {createFakeAssetFamily, createFakeCreationAsset, createFakeError, createFakeLine} from '../tools';
 
-const assetFamily = Object.freeze({
-  identifier: 'packshot',
-  code: 'packshot',
-  labels: {en_US: 'Packshot'},
-  image: null,
-  attributeAsLabel: 'name',
-  attributeAsMainMedia: 'picture_fingerprint',
-  attributes: [
-    {
-      identifier: 'name',
-      asset_family_identifier: 'name',
-      code: 'name',
-      type: 'text',
-      labels: {en_US: 'Name'},
-      order: 0,
-      is_required: true,
-      value_per_locale: false,
-      value_per_channel: false,
-    },
-    {
-      identifier: 'picture_fingerprint',
-      asset_family_identifier: 'packshot',
-      code: 'picture',
-      type: 'media_file',
-      labels: {en_US: 'Picture'},
-      order: 0,
-      is_required: true,
-      value_per_locale: true,
-      value_per_channel: true,
-    },
-  ],
-});
-
-const defaultError = Object.freeze({
-  messageTemplate: '',
-  parameters: {},
-  message: 'error',
-  propertyPath: '',
-  invalidValue: null,
-});
+const valuePerLocale = true;
+const valuePerChannel = true;
+const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
 
 const lines = {
-  A: Object.freeze(createLineFromFilename('a.jpg', assetFamily)),
-  B: Object.freeze(createLineFromFilename('b.jpg', assetFamily)),
-  C: Object.freeze(createLineFromFilename('c.jpg', assetFamily)),
-  D: Object.freeze(createLineFromFilename('d.jpg', assetFamily)),
-  E: Object.freeze(createLineFromFilename('e.jpg', assetFamily)),
-  F: Object.freeze(createLineFromFilename('f.jpg', assetFamily)),
+  A: createFakeLine('a.jpg', assetFamily),
+  B: createFakeLine('b.jpg', assetFamily),
+  C: createFakeLine('c.jpg', assetFamily),
+  D: createFakeLine('d.jpg', assetFamily),
+  E: createFakeLine('e.jpg', assetFamily),
+  F: createFakeLine('f.jpg', assetFamily),
 };
 
 const defaultState = {
   lines: [],
 };
 
-describe('akeneoassetmanager/application/asset-upload/reducer/asset-upload.ts -> reducer', () => {
+describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () => {
   test('I can pass other actions', () => {
     const state = Object.freeze({
       ...defaultState,
@@ -321,12 +283,7 @@ describe('akeneoassetmanager/application/asset-upload/reducer/asset-upload.ts ->
       lines: [lines.A, lines.B],
     });
 
-    const asset: CreationAsset = {
-      assetFamilyIdentifier: assetFamily.identifier,
-      code: lines.A.code,
-      labels: {},
-      values: [],
-    };
+    const asset = createFakeCreationAsset(lines.A.code, assetFamily);
 
     const action = assetCreationSuccessAction(asset);
     const newState = reducer(state, action);
@@ -352,18 +309,8 @@ describe('akeneoassetmanager/application/asset-upload/reducer/asset-upload.ts ->
       lines: [lines.A, lines.B],
     });
 
-    const asset: CreationAsset = {
-      assetFamilyIdentifier: assetFamily.identifier,
-      code: lines.A.code,
-      labels: {},
-      values: [],
-    };
-    const errors = [
-      {
-        ...defaultError,
-        message: 'foobar',
-      },
-    ];
+    const asset = createFakeCreationAsset(lines.A.code, assetFamily);
+    const errors = [createFakeError('some error')];
 
     const action = assetCreationFailAction(asset, errors);
     const newState = reducer(state, action);

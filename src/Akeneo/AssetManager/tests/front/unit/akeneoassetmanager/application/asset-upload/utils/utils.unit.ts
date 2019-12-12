@@ -1,7 +1,7 @@
 'use strict';
 
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
+import {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {
   addLines,
   createAssetsFromLines,
@@ -9,42 +9,7 @@ import {
   getStatusFromLine,
   selectLinesToSend,
 } from 'akeneoassetmanager/application/asset-upload/utils/utils';
-import {NormalizedValidationError} from 'akeneoassetmanager/domain/model/validation-error';
-
-const createAssetFamilyWithMainMedia = (localizable: boolean, scopable: boolean): AssetFamily => {
-  return {
-    identifier: 'packshot',
-    code: 'packshot',
-    labels: {en_US: 'Packshot'},
-    image: null,
-    attributeAsLabel: 'name',
-    attributeAsMainMedia: 'picture_fingerprint',
-    attributes: [
-      {
-        identifier: 'name',
-        asset_family_identifier: 'name',
-        code: 'name',
-        type: 'text',
-        labels: {en_US: 'Name'},
-        order: 0,
-        is_required: true,
-        value_per_locale: false,
-        value_per_channel: false,
-      },
-      {
-        identifier: 'picture_fingerprint',
-        asset_family_identifier: 'packshot',
-        code: 'picture',
-        type: 'media_file',
-        labels: {en_US: 'Picture'},
-        order: 0,
-        is_required: true,
-        value_per_locale: localizable,
-        value_per_channel: scopable,
-      },
-    ],
-  };
-};
+import {createFakeAssetFamily, createFakeError, createFakeLine} from '../tools';
 
 describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLineFromFilename', () => {
   const line = {
@@ -60,7 +25,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
   };
 
   test('I can create a line from a filename not localizable and not scopable', () => {
-    const assetFamily = createAssetFamilyWithMainMedia(false, false);
+    const assetFamily = createFakeAssetFamily(false, false);
 
     [
       {
@@ -91,7 +56,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
   });
 
   test('I can create a line from a filename localizable and not scopable', () => {
-    const assetFamily = createAssetFamilyWithMainMedia(true, false);
+    const assetFamily = createFakeAssetFamily(true, false);
 
     [
       {
@@ -125,7 +90,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
   });
 
   test('I can create a line from a filename not localizable and scopable', () => {
-    const assetFamily = createAssetFamilyWithMainMedia(false, true);
+    const assetFamily = createFakeAssetFamily(false, true);
 
     [
       {
@@ -159,7 +124,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
   });
 
   test('I can create a line from a filename localizable and scopable', () => {
-    const assetFamily = createAssetFamilyWithMainMedia(true, true);
+    const assetFamily = createFakeAssetFamily(true, true);
 
     [
       {
@@ -228,14 +193,14 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
 
 describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> addLines', () => {
   test('I can add new lines', () => {
-    const assetFamily = createAssetFamilyWithMainMedia(false, false);
+    const assetFamily = createFakeAssetFamily(false, false);
 
-    const A = createLineFromFilename('a.png', assetFamily);
-    const B = createLineFromFilename('b.png', assetFamily);
-    const C = createLineFromFilename('c.png', assetFamily);
-    const D = createLineFromFilename('d.png', assetFamily);
-    const E = createLineFromFilename('e.png', assetFamily);
-    const F = createLineFromFilename('f.png', assetFamily);
+    const A = createFakeLine('a.png', assetFamily);
+    const B = createFakeLine('b.png', assetFamily);
+    const C = createFakeLine('c.png', assetFamily);
+    const D = createFakeLine('d.png', assetFamily);
+    const E = createFakeLine('e.png', assetFamily);
+    const F = createFakeLine('f.png', assetFamily);
 
     expect(addLines([A, B, C], [D, E, F])).toEqual([D, E, F, A, B, C]);
     expect(addLines([], [D, E, F])).toEqual([D, E, F]);
@@ -247,7 +212,6 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createAs
   const createUploadedLineFromFilename = (filename: string, assetFamily: AssetFamily) => {
     return {
       ...createLineFromFilename(filename, assetFamily),
-      status: LineStatus.Uploaded,
       file: {
         filePath: filename,
         originalFilename: filename,
@@ -256,7 +220,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createAs
   };
 
   test('I can create an asset localizable and scopable from lines with different values for each scope and locale', () => {
-    const assetFamily = createAssetFamilyWithMainMedia(true, true);
+    const assetFamily = createFakeAssetFamily(true, true);
 
     const lines = [
       createUploadedLineFromFilename('foo-en_US-ecommerce.jpg', assetFamily),
@@ -303,7 +267,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createAs
   });
 
   test('I can create an asset localizable and scopable from lines even without the expected filenames', () => {
-    const assetFamily = createAssetFamilyWithMainMedia(true, true);
+    const assetFamily = createFakeAssetFamily(true, true);
 
     const lines = [createUploadedLineFromFilename('foo.jpg', assetFamily)];
 
@@ -328,7 +292,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createAs
   });
 
   test('I can create several assets localizable and scopable from lines', () => {
-    const assetFamily = createAssetFamilyWithMainMedia(true, true);
+    const assetFamily = createFakeAssetFamily(true, true);
 
     const lines = [
       createUploadedLineFromFilename('foo-en_US-ecommerce.jpg', assetFamily),
@@ -393,98 +357,69 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createAs
 });
 
 describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatusFromLine', () => {
-  const defaultLine: Line = {
-    id: '68529cb2-4016-427c-b6a2-cda6b118562e',
-    thumbnail: null,
-    created: false,
-    isSending: false,
-    file: null,
-    filename: 'foo.jpg',
-    code: 'foo',
-    locale: null,
-    channel: null,
-    uploadProgress: null,
-    errors: {
-      back: [],
-    },
-  };
-
-  const defaultError: NormalizedValidationError = {
-    messageTemplate: '',
-    parameters: {},
-    message: 'error',
-    propertyPath: '',
-    invalidValue: null,
-  };
-
   test('I can calculate the status of a line localizable and scopable', () => {
-    const localizable = true;
-    const scopable = true;
+    const valuePerLocale = true;
+    const valuePerChannel = true;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
 
+    expect(getStatusFromLine(createFakeLine('foo.jpg', assetFamily), valuePerLocale, valuePerChannel)).toEqual(
+      LineStatus.WaitingForUpload
+    );
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
-        },
-        localizable,
-        scopable
-      )
-    ).toEqual(LineStatus.WaitingForUpload);
-    expect(
-      getStatusFromLine(
-        {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           isSending: true,
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.UploadInProgress);
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
           },
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Uploaded);
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
           },
           locale: 'en_US',
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Uploaded);
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
           },
           channel: 'ecommerce',
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Uploaded);
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -492,83 +427,84 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
           locale: 'en_US',
           channel: 'ecommerce',
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Valid);
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           created: true,
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Created);
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           errors: {
-            back: [defaultError],
+            back: [createFakeError('some error')],
           },
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Invalid);
   });
 
   test('I can calculate the status of a line localizable and not scopable', () => {
-    const localizable = true;
-    const scopable = false;
+    const valuePerLocale = true;
+    const valuePerChannel = false;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
 
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
           },
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Uploaded);
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
           },
           locale: 'en_US',
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Valid);
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
           },
           channel: 'ecommerce',
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Uploaded);
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -576,61 +512,62 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
           locale: 'en_US',
           channel: 'ecommerce',
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Valid);
   });
 
   test('I can calculate the status of a line not localizable and scopable', () => {
-    const localizable = false;
-    const scopable = true;
+    const valuePerLocale = false;
+    const valuePerChannel = true;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
 
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
           },
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Uploaded);
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
           },
           locale: 'en_US',
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Uploaded);
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
           },
           channel: 'ecommerce',
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Valid);
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -638,53 +575,43 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
           locale: 'en_US',
           channel: 'ecommerce',
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Valid);
   });
 
   test('I can calculate the status of a line not localizable and not scopable', () => {
-    const localizable = false;
-    const scopable = false;
+    const valuePerLocale = false;
+    const valuePerChannel = false;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
 
     expect(
       getStatusFromLine(
         {
-          ...defaultLine,
+          ...createFakeLine('foo.jpg', assetFamily),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
           },
         },
-        localizable,
-        scopable
+        valuePerLocale,
+        valuePerChannel
       )
     ).toEqual(LineStatus.Valid);
   });
 });
 
 describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLinesToSend', () => {
-  const defaultLine: Line = {
-    id: '68529cb2-4016-427c-b6a2-cda6b118562e',
-    thumbnail: null,
-    created: false,
-    isSending: false,
-    file: null,
-    filename: 'foo.jpg',
-    code: 'foo',
-    locale: null,
-    channel: null,
-    uploadProgress: null,
-    errors: {
-      back: [],
-    },
-  };
-
   test('I can find which lines are ready to be sent', () => {
+    const valuePerLocale = false;
+    const valuePerChannel = false;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+
     const lines = [
       {
-        ...defaultLine,
+        ...createFakeLine('foo.jpg', assetFamily),
+        id: '1',
         created: true,
         file: {
           filePath: 'foo.jpg',
@@ -693,7 +620,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
         isSending: true,
       },
       {
-        ...defaultLine,
+        ...createFakeLine('foo.jpg', assetFamily),
+        id: '2',
         created: false,
         file: {
           filePath: 'foo.jpg',
@@ -702,13 +630,15 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
         isSending: true,
       },
       {
-        ...defaultLine,
+        ...createFakeLine('foo.jpg', assetFamily),
+        id: '3',
         created: true,
         file: null,
         isSending: true,
       },
       {
-        ...defaultLine,
+        ...createFakeLine('foo.jpg', assetFamily),
+        id: '4',
         created: true,
         file: {
           filePath: 'foo.jpg',
@@ -717,7 +647,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
         isSending: false,
       },
       {
-        ...defaultLine,
+        ...createFakeLine('foo.jpg', assetFamily),
+        id: '5',
         created: false,
         file: {
           filePath: 'foo.jpg',
@@ -729,7 +660,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
 
     expect(selectLinesToSend(lines)).toEqual([
       {
-        ...defaultLine,
+        ...createFakeLine('foo.jpg', assetFamily),
+        id: '5',
         created: false,
         file: {
           filePath: 'foo.jpg',

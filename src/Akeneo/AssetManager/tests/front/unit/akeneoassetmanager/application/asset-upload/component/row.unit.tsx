@@ -7,52 +7,10 @@ import {act, fireEvent, getByLabelText} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import Row from 'akeneoassetmanager/application/asset-upload/component/row';
-import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
+import {createFakeAssetFamily, createFakeLine} from '../tools';
 
 describe('Test row component', () => {
   let container: HTMLElement;
-
-  const createAssetFamily = (valuePerLocale: boolean, valuePerChannel: boolean) => {
-    return Object.freeze({
-      identifier: 'packshot',
-      code: 'packshot',
-      labels: {en_US: 'Packshot'},
-      image: null,
-      attributeAsLabel: 'name',
-      attributeAsMainMedia: 'picture_fingerprint',
-      attributes: [
-        {
-          identifier: 'name',
-          asset_family_identifier: 'name',
-          code: 'name',
-          type: 'text',
-          labels: {en_US: 'Name'},
-          order: 0,
-          is_required: true,
-          value_per_locale: false,
-          value_per_channel: false,
-        },
-        {
-          identifier: 'picture_fingerprint',
-          asset_family_identifier: 'packshot',
-          code: 'picture',
-          type: 'media_file',
-          labels: {en_US: 'Picture'},
-          order: 0,
-          is_required: true,
-          value_per_locale: valuePerLocale,
-          value_per_channel: valuePerChannel,
-        },
-      ],
-    });
-  };
-
-  const createLine = (filename: string, valuePerLocale: boolean, valuePerChannel: boolean) => {
-    return Object.freeze({
-      ...createLineFromFilename(filename, createAssetFamily(valuePerLocale, valuePerChannel)),
-      thumbnail: '/tmb/' + filename,
-    });
-  };
 
   beforeEach(() => {
     container = document.createElement('div');
@@ -66,7 +24,8 @@ describe('Test row component', () => {
   test('It renders without errors', async () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
-    const line = createLine('foo.png', valuePerLocale, valuePerChannel);
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const line = createFakeLine('foo.png', assetFamily);
 
     await act(async () => {
       ReactDOM.render(
@@ -75,8 +34,8 @@ describe('Test row component', () => {
             <tbody>
               <Row
                 line={line}
-                onLineRemove={() => null}
-                onLineChange={() => null}
+                onLineRemove={() => {}}
+                onLineChange={() => {}}
                 valuePerLocale={valuePerLocale}
                 valuePerChannel={valuePerChannel}
               />
@@ -91,7 +50,8 @@ describe('Test row component', () => {
   test('It renders a row with the code editable', async () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
-    const line = createLine('foo.png', valuePerLocale, valuePerChannel);
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const line = createFakeLine('foo.png', assetFamily);
     const onLineChange = jest.fn();
 
     await act(async () => {
@@ -101,7 +61,7 @@ describe('Test row component', () => {
             <tbody>
               <Row
                 line={line}
-                onLineRemove={() => null}
+                onLineRemove={() => {}}
                 onLineChange={onLineChange}
                 valuePerLocale={valuePerLocale}
                 valuePerChannel={valuePerChannel}
@@ -126,7 +86,8 @@ describe('Test row component', () => {
   test('It renders a row with the locale editable', async () => {
     const valuePerLocale = true;
     const valuePerChannel = false;
-    const line = createLine('foo-en_US.png', valuePerLocale, valuePerChannel);
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const line = createFakeLine('foo-en_US.png', assetFamily);
     const onLineChange = jest.fn();
 
     await act(async () => {
@@ -136,7 +97,7 @@ describe('Test row component', () => {
             <tbody>
               <Row
                 line={line}
-                onLineRemove={() => null}
+                onLineRemove={() => {}}
                 onLineChange={onLineChange}
                 valuePerLocale={valuePerLocale}
                 valuePerChannel={valuePerChannel}
@@ -161,7 +122,8 @@ describe('Test row component', () => {
   test('It renders a row with the channel editable', async () => {
     const valuePerLocale = false;
     const valuePerChannel = true;
-    const line = createLine('foo-ecommerce.png', valuePerLocale, valuePerChannel);
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const line = createFakeLine('foo-ecommerce.png', assetFamily);
     const onLineChange = jest.fn();
 
     await act(async () => {
@@ -171,7 +133,7 @@ describe('Test row component', () => {
             <tbody>
               <Row
                 line={line}
-                onLineRemove={() => null}
+                onLineRemove={() => {}}
                 onLineChange={onLineChange}
                 valuePerLocale={valuePerLocale}
                 valuePerChannel={valuePerChannel}
@@ -196,7 +158,8 @@ describe('Test row component', () => {
   test('It renders a row and I can remove it', async () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
-    const line = createLine('foo.png', valuePerLocale, valuePerChannel);
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const line = createFakeLine('foo.png', assetFamily);
     const onLineRemove = jest.fn();
 
     await act(async () => {
@@ -207,7 +170,7 @@ describe('Test row component', () => {
               <Row
                 line={line}
                 onLineRemove={onLineRemove}
-                onLineChange={() => null}
+                onLineChange={() => {}}
                 valuePerLocale={valuePerLocale}
                 valuePerChannel={valuePerChannel}
               />

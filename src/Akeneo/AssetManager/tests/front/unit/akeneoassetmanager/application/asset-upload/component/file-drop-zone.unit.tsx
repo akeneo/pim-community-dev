@@ -9,7 +9,7 @@ import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import FileDropZone from 'akeneoassetmanager/application/asset-upload/component/file-drop-zone';
 
-describe('Test file drop zone component', () => {
+describe('Test file-drop-zone component', () => {
   let container: HTMLElement;
 
   beforeEach(() => {
@@ -25,7 +25,7 @@ describe('Test file drop zone component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <FileDropZone onDrop={() => null} />
+          <FileDropZone onDrop={() => {}} />
         </ThemeProvider>,
         container
       );

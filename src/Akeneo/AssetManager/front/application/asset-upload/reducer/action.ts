@@ -2,6 +2,7 @@ import Line, {Thumbnail} from 'akeneoassetmanager/application/asset-upload/model
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+
 export const ADD_LINES = 'asset-upload/ADD_LINES';
 export type OnAddLineAction = {
   type: typeof ADD_LINES;
@@ -15,6 +16,7 @@ export const linesAddedAction = (lines: Line[]): OnAddLineAction => ({
     lines,
   },
 });
+
 export const LINE_CREATION_START = 'asset-upload/LINE_CREATION_START';
 export type OnLineCreationStartAction = {
   type: typeof LINE_CREATION_START;
@@ -28,6 +30,7 @@ export const lineCreationStartAction = (line: Line): OnLineCreationStartAction =
     line,
   },
 });
+
 export const ASSET_CREATION_SUCCESS = 'asset-upload/ASSET_CREATION_SUCCESS';
 export type OnAssetCreationSuccessAction = {
   type: typeof ASSET_CREATION_SUCCESS;
@@ -41,6 +44,7 @@ export const assetCreationSuccessAction = (asset: CreationAsset): OnAssetCreatio
     asset,
   },
 });
+
 export const ASSET_CREATION_FAIL = 'asset-upload/ASSET_CREATION_FAIL';
 export type OnAssetCreationFailAction = {
   type: typeof ASSET_CREATION_FAIL;
@@ -59,6 +63,7 @@ export const assetCreationFailAction = (
     errors,
   },
 });
+
 export const REMOVE_LINE = 'asset-upload/REMOVE_LINE';
 export type OnRemoveLineAction = {
   type: typeof REMOVE_LINE;
@@ -72,6 +77,7 @@ export const removeLineAction = (line: Line): OnRemoveLineAction => ({
     line,
   },
 });
+
 export const REMOVE_ALL_LINES = 'asset-upload/REMOVE_ALL_LINES';
 export type OnRemoveAllLinesAction = {
   type: typeof REMOVE_ALL_LINES;
@@ -81,6 +87,7 @@ export const removeAllLinesAction = (): OnRemoveAllLinesAction => ({
   type: REMOVE_ALL_LINES,
   payload: {},
 });
+
 export const EDIT_LINE = 'asset-upload/EDIT_LINE';
 export type OnEditLineAction = {
   type: typeof EDIT_LINE;
@@ -94,6 +101,7 @@ export const editLineAction = (line: Line): OnEditLineAction => ({
     line,
   },
 });
+
 export const FILE_UPLOAD_SUCCESS = 'asset-upload/FILE_UPLOAD_SUCCESS';
 export type OnFileUploadSuccessAction = {
   type: typeof FILE_UPLOAD_SUCCESS;
@@ -109,6 +117,7 @@ export const fileUploadSuccessAction = (line: Line, file: FileModel): OnFileUplo
     file,
   },
 });
+
 export const FILE_UPLOAD_PROGRESS = 'asset-upload/FILE_UPLOAD_PROGRESS';
 export type OnFileUploadProgressAction = {
   type: typeof FILE_UPLOAD_PROGRESS;
@@ -124,6 +133,7 @@ export const fileUploadProgressAction = (line: Line, progress: number): OnFileUp
     progress,
   },
 });
+
 export const FILE_THUMBNAIL_GENERATION = 'asset-upload/THUMBNAIL_GENERATED';
 export type OnFileThumbnailGenerationAction = {
   type: typeof FILE_THUMBNAIL_GENERATION;

@@ -10,7 +10,7 @@ import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import RowStatus from 'akeneoassetmanager/application/asset-upload/component/row-status';
 import {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 
-describe('Test row status component', () => {
+describe('Test row-status component', () => {
   let container: HTMLElement;
 
   beforeEach(() => {

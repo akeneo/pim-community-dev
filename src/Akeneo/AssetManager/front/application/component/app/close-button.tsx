@@ -13,7 +13,7 @@ const Container = styled(TransparentButton)`
 `;
 
 export const CloseButton = ({title, ...props}: {title: string} & any) => (
-  <Container title={title} tabIndex={0} {...props}>
+  <Container title={title} tabIndex={0} aria-label={title} {...props}>
     <Close color={akeneoTheme.color.grey100} title={title} size={24} />
   </Container>
 );

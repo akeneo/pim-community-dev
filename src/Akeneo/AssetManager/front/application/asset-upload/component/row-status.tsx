@@ -33,7 +33,7 @@ const ProgressBarFill = styled.div<{width: number}>`
 `;
 
 const progressToWidth = (progress: number | null): number => {
-  if (null === progress || progress < 0) {
+  if (null === progress || Number.isNaN(progress) || progress < 0) {
     return 0;
   }
   if (progress > 1) {

@@ -46,7 +46,7 @@ const Row = ({line, onLineRemove, onLineChange, valuePerLocale, valuePerChannel}
 
   return (
     <Container>
-      <Cell>{null !== line.thumbnail && <Thumbnail src={line.thumbnail} />}</Cell>
+      <Cell>{null !== line.thumbnail && <Thumbnail src={line.thumbnail} title={line.filename} />}</Cell>
       <Cell>{line.filename}</Cell>
       <Cell>
         <Input

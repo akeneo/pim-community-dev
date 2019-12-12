@@ -6,54 +6,11 @@ import '@testing-library/jest-dom/extend-expect';
 import {act, fireEvent, getByLabelText, getByText} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
-import Row from 'akeneoassetmanager/application/asset-upload/component/row';
-import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import LineList from 'akeneoassetmanager/application/asset-upload/component/line-list';
+import {createFakeAssetFamily, createFakeLine} from '../tools';
 
 describe('Test line-list component', () => {
   let container: HTMLElement;
-
-  const createAssetFamily = (valuePerLocale: boolean, valuePerChannel: boolean) => {
-    return Object.freeze({
-      identifier: 'packshot',
-      code: 'packshot',
-      labels: {en_US: 'Packshot'},
-      image: null,
-      attributeAsLabel: 'name',
-      attributeAsMainMedia: 'picture_fingerprint',
-      attributes: [
-        {
-          identifier: 'name',
-          asset_family_identifier: 'name',
-          code: 'name',
-          type: 'text',
-          labels: {en_US: 'Name'},
-          order: 0,
-          is_required: true,
-          value_per_locale: false,
-          value_per_channel: false,
-        },
-        {
-          identifier: 'picture_fingerprint',
-          asset_family_identifier: 'packshot',
-          code: 'picture',
-          type: 'media_file',
-          labels: {en_US: 'Picture'},
-          order: 0,
-          is_required: true,
-          value_per_locale: valuePerLocale,
-          value_per_channel: valuePerChannel,
-        },
-      ],
-    });
-  };
-
-  const createLine = (filename: string, valuePerLocale: boolean, valuePerChannel: boolean) => {
-    return Object.freeze({
-      ...createLineFromFilename(filename, createAssetFamily(valuePerLocale, valuePerChannel)),
-      thumbnail: '/tmb/' + filename,
-    });
-  };
 
   beforeEach(() => {
     container = document.createElement('div');
@@ -73,9 +30,9 @@ describe('Test line-list component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <LineList
             lines={[]}
-            onLineRemove={() => null}
-            onLineRemoveAll={() => null}
-            onLineChange={() => null}
+            onLineRemove={() => {}}
+            onLineRemoveAll={() => {}}
+            onLineChange={() => {}}
             valuePerLocale={valuePerLocale}
             valuePerChannel={valuePerChannel}
           />
@@ -94,9 +51,9 @@ describe('Test line-list component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <LineList
             lines={[]}
-            onLineRemove={() => null}
-            onLineRemoveAll={() => null}
-            onLineChange={() => null}
+            onLineRemove={() => {}}
+            onLineRemoveAll={() => {}}
+            onLineChange={() => {}}
             valuePerLocale={valuePerLocale}
             valuePerChannel={valuePerChannel}
           />
@@ -112,10 +69,11 @@ describe('Test line-list component', () => {
   test('It renders the lines', async () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
     const lines = [
-      createLine('a.png', valuePerLocale, valuePerChannel),
-      createLine('b.png', valuePerLocale, valuePerChannel),
-      createLine('c.png', valuePerLocale, valuePerChannel),
+      createFakeLine('a.png', assetFamily),
+      createFakeLine('b.png', assetFamily),
+      createFakeLine('c.png', assetFamily),
     ];
 
     await act(async () => {
@@ -123,9 +81,9 @@ describe('Test line-list component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <LineList
             lines={lines}
-            onLineRemove={() => null}
-            onLineRemoveAll={() => null}
-            onLineChange={() => null}
+            onLineRemove={() => {}}
+            onLineRemoveAll={() => {}}
+            onLineChange={() => {}}
             valuePerLocale={valuePerLocale}
             valuePerChannel={valuePerChannel}
           />
@@ -141,10 +99,11 @@ describe('Test line-list component', () => {
   test('It allows me to remove all the lines', async () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
     const lines = [
-      createLine('a.png', valuePerLocale, valuePerChannel),
-      createLine('b.png', valuePerLocale, valuePerChannel),
-      createLine('c.png', valuePerLocale, valuePerChannel),
+      createFakeLine('a.png', assetFamily),
+      createFakeLine('b.png', assetFamily),
+      createFakeLine('c.png', assetFamily),
     ];
     const removeAll = jest.fn();
 
@@ -153,9 +112,9 @@ describe('Test line-list component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <LineList
             lines={lines}
-            onLineRemove={() => null}
+            onLineRemove={() => {}}
             onLineRemoveAll={removeAll}
-            onLineChange={() => null}
+            onLineChange={() => {}}
             valuePerLocale={valuePerLocale}
             valuePerChannel={valuePerChannel}
           />
@@ -172,10 +131,11 @@ describe('Test line-list component', () => {
   test('It renders the list with a locale column', async () => {
     const valuePerLocale = true;
     const valuePerChannel = false;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
     const lines = [
-      createLine('a.png', valuePerLocale, valuePerChannel),
-      createLine('b.png', valuePerLocale, valuePerChannel),
-      createLine('c.png', valuePerLocale, valuePerChannel),
+      createFakeLine('a.png', assetFamily),
+      createFakeLine('b.png', assetFamily),
+      createFakeLine('c.png', assetFamily),
     ];
 
     await act(async () => {
@@ -183,9 +143,9 @@ describe('Test line-list component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <LineList
             lines={lines}
-            onLineRemove={() => null}
-            onLineRemoveAll={() => null}
-            onLineChange={() => null}
+            onLineRemove={() => {}}
+            onLineRemoveAll={() => {}}
+            onLineChange={() => {}}
             valuePerLocale={valuePerLocale}
             valuePerChannel={valuePerChannel}
           />
@@ -201,10 +161,11 @@ describe('Test line-list component', () => {
   test('It renders the list with a channel column', async () => {
     const valuePerLocale = false;
     const valuePerChannel = true;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
     const lines = [
-      createLine('a.png', valuePerLocale, valuePerChannel),
-      createLine('b.png', valuePerLocale, valuePerChannel),
-      createLine('c.png', valuePerLocale, valuePerChannel),
+      createFakeLine('a.png', assetFamily),
+      createFakeLine('b.png', assetFamily),
+      createFakeLine('c.png', assetFamily),
     ];
 
     await act(async () => {
@@ -212,9 +173,9 @@ describe('Test line-list component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <LineList
             lines={lines}
-            onLineRemove={() => null}
-            onLineRemoveAll={() => null}
-            onLineChange={() => null}
+            onLineRemove={() => {}}
+            onLineRemoveAll={() => {}}
+            onLineChange={() => {}}
             valuePerLocale={valuePerLocale}
             valuePerChannel={valuePerChannel}
           />
