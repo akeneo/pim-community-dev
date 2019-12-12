@@ -59,6 +59,9 @@ const useFormValidation = (
                 if (input.validity.patternMismatch) {
                     dispatch(setError(name, `akeneo_apps.app.constraint.${name}.invalid`));
                 }
+                if (input.validity.tooShort) {
+                    dispatch(setError(name, `akeneo_apps.app.constraint.${name}.too_short`));
+                }
             }
         });
     }, [dispatch, codeInputRef, labelInputRef, state.controls]);
@@ -137,6 +140,7 @@ export const AppCreateForm = () => {
                     value={state.controls.label.value}
                     onChange={handleChange}
                     required
+                    minLength={3}
                     maxLength={100}
                 />
             </FormGroup>
@@ -149,6 +153,7 @@ export const AppCreateForm = () => {
                     value={state.controls.code.value}
                     onChange={handleChange}
                     required
+                    minLength={3}
                     maxLength={100}
                     pattern='^[0-9a-zA-Z_]+$'
                 />
