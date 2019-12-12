@@ -1,0 +1,115 @@
+// Coming from CE src/Akeneo/Platform/Bundle/UIBundle/Resources/public/less/base/variables.less
+@AknDefaultFont: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
+@AknMonospacedFot: Courier, "MS Courier New", Prestige, "Everson Mono";
+@AknBlue: #5992C7;
+@AknMediumGrey: #D9DDE2;
+@AknGrey: #A1A9B7;
+@AknSlateGrey:#67768A;
+@AknOrange20: #FEF0D9;
+@AknRed20: #F6DFDC;
+@AknBorderColor: lighten(@AknGrey, 15%);
+@AknDefaultFontColor: @AknSlateGrey;
+@AknDefaultFontSize: 13px;
+@AknFontSizeBig: 15px;
+@AknFormHeight: 40px;
+
+// Overrides the default jsoneditor-react/es/editor.min.css
+.AknJsonEditor {
+  .jsoneditor {
+    min-height: 330px;
+    height: calc(100vh - 410px);
+    border-color: @AknBorderColor;
+    border-radius: 2px;
+    color: @AknDefaultFontColor;
+  }
+  .jsoneditor-menu {
+    background-color: lighten(@AknGrey, 30%);
+    border-bottom-color: @AknBorderColor;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+  }
+  .jsoneditor-statusbar {
+    background-color: lighten(@AknGrey, 30%);
+    border-top-color: @AknBorderColor;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+  div.jsoneditor-field, div.jsoneditor-value, div.jsoneditor td, div.jsoneditor th, div.jsoneditor textarea, pre.jsoneditor-preview, .jsoneditor-schema-error, .jsoneditor-popover {
+    font-family: @AknMonospacedFont !important;
+  }
+  .jsoneditor .jsoneditor-text-errors tr {
+    background-color: @AknOrange20;
+  }
+  .jsoneditor .jsoneditor-text-errors tr.parse-error {
+    background-color: @AknRed20;
+  }
+  .jsoneditor-menu>button, .jsoneditor-menu>.jsoneditor-modes>button {
+    background-color: @AknSlateGrey;
+    border-color: @AknBorderColor;
+    cursor: pointer;
+  }
+  .jsoneditor-menu>button:hover, .jsoneditor-menu>.jsoneditor-modes>button:hover {
+    background-color: darken(@AknSlateGrey, 10%);
+    border-color: @AknBorderColor;
+  }
+  .jsoneditor-menu>button:focus, .jsoneditor-menu>button:active, .jsoneditor-menu>.jsoneditor-modes>button:focus, .jsoneditor-menu>.jsoneditor-modes>button:active {
+    background-color: darken(@AknSlateGrey, 10%);
+  }
+  .jsoneditor-sort {
+    display: none; // Hide useless button
+  }
+  .jsoneditor-transform {
+    display: none; // Hide useless button
+  }
+}
+
+/*
+.jsoneditor-modal .pico-modal-header {
+  background: @AknSlateGrey !important;
+  font-family: @AknDefaultFont !important;
+  font-size: @AknFontSizeBig !important;
+}
+.jsoneditor-modal, .jsoneditor-modal table td, .jsoneditor-modal table th, .jsoneditor-modal select, .jsoneditor-modal option, .jsoneditor-modal textarea, .jsoneditor-modal input, .jsoneditor-modal #query {
+  font-size: @AknDefaultFontSize !important;
+  font-family: @AknDefaultFont !important;
+  color: @AknDefaultFontColor !important;
+}
+.jsoneditor-modal .jsoneditor-button-group.jsoneditor-button-group-value-asc input.jsoneditor-button-asc, .jsoneditor-modal .jsoneditor-button-group.jsoneditor-button-group-value-desc input.jsoneditor-button-desc {
+  background: @AknGreen !important;
+  border-color: @AknGreen !important;
+  color: white !important;
+}
+.jsoneditor-modal select, .jsoneditor-modal textarea, .jsoneditor-modal input, .jsoneditor-modal #query {
+  height: @AknFormHeight !important;
+  padding: 11px !important;
+}
+.jsoneditor-jmespath-block.jsoneditor-modal-actions input[type=submit],
+.jsoneditor-modal-input.jsoneditor-modal-actions input[type=submit] {
+  background-color: #67b373;
+  border-color: #67b373;
+  color: white !important;
+  height: 32px !important;
+  line-height: 30px;
+  font-size: 15px !important;
+  min-width: 32px;
+  display: inline-block;
+  padding: 0 16px !important;
+  border-radius: 100px;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  transition: background 0.1s ease, color 0.1s ease, border-color 0.1s ease;
+  position: relative;
+  text-transform: uppercase;
+}
+.jsoneditor-modal a {
+  color: @AknLightPurple !important;
+}
+.jsoneditor-modal .jsoneditor-jmespath-label {
+  color: @AknLightPurple !important;
+}
+.jsoneditor-modal .selectr-selected {
+  height: @AknFormHeight !important;
+  padding: 11px !important;
+}
+*/

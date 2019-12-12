@@ -16,9 +16,9 @@ namespace Akeneo\AssetManager\Domain\Query\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 
 /**
@@ -60,7 +60,7 @@ class AssetFamilyDetails
     /** @var AttributeAsMainMediaReference */
     public $attributeAsMainMedia;
 
-    /** @var TransformationCollection */
+    /** @var ConnectorTransformationCollection */
     public $transformations;
 
     /** @var bool */

@@ -16,13 +16,13 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyDetailsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
 use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -42,19 +42,19 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
     /** @var FindActivatedLocalesInterface  */
     private $findActivatedLocales;
 
-    /** @var TransformationCollectionFactory */
-    private $transformationCollectionFactory;
+    /** @var ConnectorTransformationCollectionHydrator */
+    private $transformationCollectionHydrator;
 
     public function __construct(
         Connection $sqlConnection,
         FindAttributesDetailsInterface $findAttributesDetails,
         FindActivatedLocalesInterface $findActivatedLocales,
-        TransformationCollectionFactory $transformationCollectionFactory
+        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->findAttributesDetails = $findAttributesDetails;
         $this->findActivatedLocales = $findActivatedLocales;
-        $this->transformationCollectionFactory = $transformationCollectionFactory;
+        $this->transformationCollectionHydrator = $transformationCollectionHydrator;
     }
 
     /**
@@ -153,7 +153,10 @@ SQL;
         $assetFamilyItem->attributes = $attributesDetails;
         $assetFamilyItem->attributeAsLabel = AttributeAsLabelReference::createFromNormalized($attributeAsLabel);
         $assetFamilyItem->attributeAsMainMedia = AttributeAsMainMediaReference::createFromNormalized($attributeAsMainMedia);
-        $assetFamilyItem->transformations = $this->transformationCollectionFactory->fromNormalized($transformations);
+        $assetFamilyItem->transformations = $this->transformationCollectionHydrator->hydrate(
+            $transformations,
+            AssetFamilyIdentifier::fromString($identifier)
+        );
 
         return $assetFamilyItem;
     }

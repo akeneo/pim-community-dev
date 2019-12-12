@@ -94,6 +94,12 @@ pim_asset_manager:
       properties: Properties
       permission: Permissions
       transformations: Transformations
+    transformations:
+      help:
+        title: '👏Welcome to your new asset management area!'
+        description: 'You can define here up to 10 transformations by asset family.'
+        link: 'If you want to dig into the new Asset Manager transformations, click here'
+      subsection: 'Transformation properties'
     properties:
       title: Asset family properties
       identifier: Code

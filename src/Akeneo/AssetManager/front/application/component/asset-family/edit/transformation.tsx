@@ -31,15 +31,17 @@ const AssetFamilyTransformationEditor = ({
 }: AssetFamilyTransformationEditorProps) => {
   //https://github.com/vankop/jsoneditor-react/blob/HEAD/src/Editor.jsx
   return (
-    <Editor
-      value={JSON.parse(transformations)}
-      onChange={(event: object) => {
-        onAssetFamilyTransformationsChange(JSON.stringify(event));
-      }}
-      mode='code'
-      schema={schema}
-      ajv={ajv}
-    />
+    <div className='AknJsonEditor'>
+      <Editor
+        value={JSON.parse(transformations)}
+        onChange={(event: object) => {
+          onAssetFamilyTransformationsChange(JSON.stringify(event));
+        }}
+        mode='code'
+        schema={schema}
+        ajv={ajv}
+      />
+    </div>
   )
 };
 
@@ -54,13 +56,11 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
   props: StateProps & DispatchProps;
 
   render() {
-    const assetFamily = this.props.assetFamily;
-
     return (
       <React.Fragment>
         <Header
           label={__('pim_asset_manager.asset_family.tab.transformations')}
-          image={assetFamily.image}
+          image={null}
           primaryAction={(defaultFocus: React.RefObject<any>) => (
             <button
               className="AknButton AknButton--apply"
@@ -78,12 +78,36 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
           isDirty={false}
           breadcrumbConfiguration={breadcrumbConfiguration}
         />
-        <AssetFamilyTransformationEditor
-          transformations={this.props.assetFamily.transformations}
-          onAssetFamilyTransformationsChange={(transformations: TransformationCollection) => {
-            this.props.events.onAssetFamilyTransformationsUpdated(transformations);
-          }}
-        />
+        <div className="AknDescriptionHeader AknDescriptionHeader--sticky">
+          <div
+            className="AknDescriptionHeader-icon"
+            style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Asset.svg")'}}
+          />
+          <div className="AknDescriptionHeader-title">
+            {__('pim_asset_manager.asset_family.transformations.help.title')}
+            <div className="AknDescriptionHeader-description">
+              {__('pim_asset_manager.asset_family.transformations.help.description')}<br/>
+              <a href="https://help.akeneo.com/" className="AknDescriptionHeader-link">
+                {__('pim_asset_manager.asset_family.transformations.help.link')}
+              </a>
+              <br />
+            </div>
+          </div>
+        </div>
+        <div className="AknSubsection">
+          <header className="AknSubsection-title">
+            <span className="group-label">{__('pim_asset_manager.asset_family.transformations.subsection')}</span>
+          </header>
+          <div className="AknFormContainer AknFormContainer--wide">
+            <AssetFamilyTransformationEditor
+              transformations={this.props.assetFamily.transformations}
+              onAssetFamilyTransformationsChange={(transformations: TransformationCollection) => {
+                this.props.events.onAssetFamilyTransformationsUpdated(transformations);
+              }}
+            />
+          </div>
+        </div>
+
       </React.Fragment>
     );
   }
