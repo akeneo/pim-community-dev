@@ -50,7 +50,6 @@ class ComputeTransformations implements ConstraintCollectionProviderInterface, D
     {
         return [
             'asset_identifiers' => [],
-            'asset_family_identifier' => null,
         ];
     }
 }

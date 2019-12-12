@@ -124,7 +124,7 @@ class ComputeTransformations implements TaskletInterface
                     $this->stepExecution->addWarning(
                         sprintf(
                             'Cannot apply transformation "%s" for asset "%s": %s',
-                            $transformation->getCode(),
+                            $transformation->getCode()->__toString(),
                             $asset->getCode(),
                             $e->getMessage()
                         ),

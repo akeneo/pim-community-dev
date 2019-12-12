@@ -60,6 +60,7 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@validator'
 
     Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor:
         arguments:
