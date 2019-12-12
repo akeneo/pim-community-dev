@@ -32,7 +32,7 @@ class MassUploadTaskletSpec extends ObjectBehavior
 {
     function let(MassUploadProcessor $processor, StepExecution $stepExecution)
     {
-        $this->beConstructedWith($processor, '/tmp/pim/file_storage');
+        $this->beConstructedWith($processor);
         $this->setStepExecution($stepExecution);
     }
 
@@ -60,7 +60,7 @@ class MassUploadTaskletSpec extends ObjectBehavior
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('username');
-        $processor->applyMassUpload(new UploadContext('/tmp/pim/file_storage', 'username'))->willReturn($processedItemList);
+        $processor->applyMassUpload(new UploadContext(sys_get_temp_dir(), 'username'))->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('Reason for success')->shouldBeCalled();
@@ -82,7 +82,7 @@ class MassUploadTaskletSpec extends ObjectBehavior
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('username');
-        $processor->applyMassUpload(new UploadContext('/tmp/pim/file_storage', 'username'))->willReturn($processedItemList);
+        $processor->applyMassUpload(new UploadContext(sys_get_temp_dir(), 'username'))->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('variations_not_generated')->shouldBeCalled();
@@ -110,7 +110,7 @@ class MassUploadTaskletSpec extends ObjectBehavior
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('username');
-        $processor->applyMassUpload(new UploadContext('/tmp/pim/file_storage', 'username'))->willReturn($processedItemList);
+        $processor->applyMassUpload(new UploadContext(sys_get_temp_dir(), 'username'))->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('error')->shouldBeCalled();
@@ -129,7 +129,7 @@ class MassUploadTaskletSpec extends ObjectBehavior
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('username');
-        $processor->applyMassUpload(new UploadContext('/tmp/pim/file_storage', 'username'))->willReturn($processedItemList);
+        $processor->applyMassUpload(new UploadContext(sys_get_temp_dir(), 'username'))->willReturn($processedItemList);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('execute');
     }

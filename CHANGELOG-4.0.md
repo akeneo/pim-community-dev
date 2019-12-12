@@ -18,6 +18,10 @@
 
 ## BC breaks
 
+### Storage configuration
+- Removes the "%tmp_storage_dir%" parameter. Please use "sys_get_temp_dir()" in your code instead.
+- Removes all the directories parameter. Please use the associated Flysystem filesystem in your code instead.
+
 ### Elasticsearch
 
 `published_product_and_published_product_model` index is removed as it was useless.

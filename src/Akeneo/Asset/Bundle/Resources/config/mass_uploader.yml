@@ -81,11 +81,9 @@ services:
         class: 'Akeneo\Asset\Bundle\MassUpload\MassUploadTasklet'
         arguments:
             - '@pimee_product_asset.mass_upload_processor'
-            - '%tmp_storage_dir%'
 
     pimee_product_asset.tasklet.mass_upload_into_asset_collection:
         class: 'Akeneo\Asset\Bundle\MassUpload\MassUploadIntoAssetCollectionTasklet'
         arguments:
             - '@pimee_product_asset.mass_upload.processor.into_product'
             - '@pimee_product_asset.mass_upload.processor.into_product_model'
-            - '%tmp_storage_dir%'

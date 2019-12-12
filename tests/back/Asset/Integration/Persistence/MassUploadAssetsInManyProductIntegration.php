@@ -32,7 +32,7 @@ class MassUploadAssetsInManyProductIntegration extends TestCase
      */
     public function testToUploadSeveralFilesThenLaunchAllImport()
     {
-        $uploadContext = new UploadContext($this->getParameter('tmp_storage_dir'), 'admin');
+        $uploadContext = new UploadContext(sys_get_temp_dir(), 'admin');
 
         $originDir = __DIR__ . '/../../Common/images/%s';
         $originMugFilePath = sprintf($originDir, 'mugs.jpg');
@@ -127,7 +127,7 @@ class MassUploadAssetsInManyProductIntegration extends TestCase
     protected function tearDown(): void
     {
         $fs = new Filesystem();
-        $uploadContext = new UploadContext($this->getParameter('tmp_storage_dir'), 'admin');
+        $uploadContext = new UploadContext(sys_get_temp_dir(), 'admin');
         $importDir = $uploadContext->getTemporaryImportDirectory();
 
         $importedMugPath = $importDir . '/mugs.jpg';

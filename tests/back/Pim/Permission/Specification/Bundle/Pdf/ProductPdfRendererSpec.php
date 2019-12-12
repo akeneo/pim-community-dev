@@ -41,7 +41,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
         AssetRepositoryInterface $assetRepository,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository
     ) {
-        $uploadDirectory = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
         $this->beConstructedWith(
             $templating,
             $pdfBuilder,
@@ -54,7 +53,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
             $localeRepository,
             $assetRepository,
             self::TEMPLATE_NAME,
-            $uploadDirectory,
             $attributeOptionRepository,
             null
         );

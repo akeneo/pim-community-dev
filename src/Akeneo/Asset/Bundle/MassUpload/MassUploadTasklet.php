@@ -37,19 +37,9 @@ class MassUploadTasklet implements TaskletInterface
     /** @var MassUploadProcessor */
     protected $processor;
 
-    /** @var string */
-    protected $tmpStorageDir;
-
-    /**
-     * @param MassUploadProcessor $processor
-     * @param string              $tmpStorageDir
-     */
-    public function __construct(
-        MassUploadProcessor $processor,
-        string $tmpStorageDir
-    ) {
+    public function __construct(MassUploadProcessor $processor)
+    {
         $this->processor = $processor;
-        $this->tmpStorageDir = $tmpStorageDir;
     }
 
     /**
@@ -68,7 +58,7 @@ class MassUploadTasklet implements TaskletInterface
         $jobExecution = $this->stepExecution->getJobExecution();
 
         $username = $jobExecution->getUser();
-        $uploadContext = new UploadContext($this->tmpStorageDir, $username);
+        $uploadContext = new UploadContext(sys_get_temp_dir(), $username);
 
         $processedItems = $this->processor->applyMassUpload($uploadContext);
 

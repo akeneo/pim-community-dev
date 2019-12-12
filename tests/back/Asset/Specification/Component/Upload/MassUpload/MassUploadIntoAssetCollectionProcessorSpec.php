@@ -72,7 +72,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         \SplFileInfo $importedFile,
         AssetInterface $asset
     ) {
-        $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
+        $uploadContext = new UploadContext(sys_get_temp_dir(), 'username');
         $addAssetTo = new EntityToAddAssetsInto('foobar', 'asset_collection');
 
         $importer->import($uploadContext, ['car.png'])->shouldBeCalled();
@@ -113,7 +113,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         \SplFileInfo $importedFile,
         AssetInterface $asset
     ) {
-        $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
+        $uploadContext = new UploadContext(sys_get_temp_dir(), 'username');
         $addAssetTo = new EntityToAddAssetsInto('foobar', 'asset_collection');
 
         $importer->import($uploadContext, ['car.png'])->shouldBeCalled();
@@ -154,7 +154,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         \SplFileInfo $importedFile,
         AssetInterface $asset
     ) {
-        $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
+        $uploadContext = new UploadContext(sys_get_temp_dir(), 'username');
         $addAssetTo = new EntityToAddAssetsInto('foobar', 'asset_collection');
 
         $importer->import($uploadContext, ['car.png'])->shouldBeCalled();
@@ -194,7 +194,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         $addAssetToEntityWithValues,
         \SplFileInfo $importedFile
     ) {
-        $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
+        $uploadContext = new UploadContext(sys_get_temp_dir(), 'username');
         $addAssetTo = new EntityToAddAssetsInto('foobar', 'asset_collection');
 
         $exception = new \Exception('A fatal error!');
@@ -230,7 +230,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         \SplFileInfo $importedFile,
         AssetInterface $asset
     ) {
-        $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
+        $uploadContext = new UploadContext(sys_get_temp_dir(), 'username');
         $addAssetTo = new EntityToAddAssetsInto('foobar', 'asset_collection');
 
         $importer->import($uploadContext, ['car.png'])->shouldBeCalled();

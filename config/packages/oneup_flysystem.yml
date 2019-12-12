@@ -2,13 +2,13 @@ oneup_flysystem:
     adapters:
         asset_storage_adapter:
             local:
-                directory: '%asset_storage_dir%'
+                directory: '%kernel.project_dir%/var/file_storage/asset'
         asset_manager_storage_adapter:
             local:
-                directory: '%asset_manager_storage_dir%'
+                directory: '%kernel.project_dir%/var/file_storage/asset_manager'
         tmp_asset_upload_adapter:
             local:
-                directory: '%upload_tmp_dir%'
+                directory: '%kernel.project_dir%/var/upload_tmp_dir'
     filesystems:
         asset_storage:
             adapter: asset_storage_adapter
