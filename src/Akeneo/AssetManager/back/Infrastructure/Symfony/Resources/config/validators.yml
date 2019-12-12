@@ -320,10 +320,6 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationFilenameIsUniqueValidator' }
 
-    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCodeIsUniqueValidator:
-        tags:
-            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCodeIsUniqueValidator' }
-
     Akeneo\AssetManager\Infrastructure\Validation\Locale\RawLocaleShouldBeActivatedValidator:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'

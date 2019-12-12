@@ -16,7 +16,7 @@ namespace Akeneo\AssetManager\Domain\Query\AssetFamily\Connector;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -24,8 +24,8 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCo
  */
 class ConnectorTransformation
 {
-    /** @var TransformationCode */
-    private $code;
+    /** @var TransformationLabel */
+    private $label;
 
     /** @var Source */
     private $source;
@@ -43,14 +43,14 @@ class ConnectorTransformation
     private $filenameSuffix;
 
     public function __construct(
-        TransformationCode $code,
+        TransformationLabel $label,
         Source $source,
         Target $target,
         OperationCollection $operations,
         ?string $filenamePrefix,
         ?string $filenameSuffix
     ) {
-        $this->code = $code;
+        $this->label = $label;
         $this->source = $source;
         $this->target = $target;
         $this->operations = $operations;
@@ -62,7 +62,7 @@ class ConnectorTransformation
     {
         return array_filter(
             [
-                'code' => $this->code->normalize(),
+                'label' => $this->label->normalize(),
                 'source' => $this->source->normalize(),
                 'target' => $this->target->normalize(),
                 'operations' => $this->operations->normalize(),

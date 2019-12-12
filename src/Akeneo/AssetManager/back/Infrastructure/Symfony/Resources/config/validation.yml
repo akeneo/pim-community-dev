@@ -15,7 +15,6 @@ Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyComma
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCollection: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimit: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AttributeSourceIsNotATarget: { groups: [other_constraints] }
-        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCodeIsUnique: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationFilenameIsUnique: { groups: [other_constraints] }
 
 Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand:

@@ -30,7 +30,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
         $transformationCollection = $this->fromNormalized(
             [
                 [
-                    'code' =>'code1',
+                    'label' =>'label1',
                     'source' => [
                         'attribute' => 'source',
                         'channel' => null,
@@ -60,7 +60,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                     'updated_at' => '1970-01-01',
                 ],
                 [
-                    'code' =>'code2',
+                    'label' =>'label2',
                     'source' => [
                         'attribute' => 'source',
                         'channel' => null,
@@ -118,7 +118,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
-                'code' =>'code',
+                'label' =>'label',
                 'target' => [
                     'attribute' => 'target',
                     'channel' => null,
@@ -138,7 +138,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
-                'code' =>'code',
+                'label' =>'label',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -158,7 +158,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
-                'code' =>'code',
+                'label' =>'label',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -182,7 +182,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
-                'code' =>'code',
+                'label' =>'label',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -205,7 +205,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
-                'code' =>'code',
+                'label' =>'label',
                 'source' => 'foo',
                 'target' => [
                     'attribute' => 'target',
@@ -226,7 +226,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = $this->fromNormalized([
             [
-                'code' =>'code',
+                'label' =>'label',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -250,7 +250,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = $this->fromNormalized([
             [
-                'code' =>'code',
+                'label' =>'label',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -275,7 +275,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
-                'code' =>'code',
+                'label' =>'label',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -299,7 +299,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
-                'code' =>'code',
+                'label' =>'label',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,

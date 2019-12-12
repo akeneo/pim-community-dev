@@ -43,6 +43,7 @@
             "items": {
                 "type": "object",
                 "properties": {
+                    "label": {"type": "string"},
                     "source": {
                         "type": "object",
                         "properties": {

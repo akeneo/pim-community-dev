@@ -15,7 +15,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollect
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
@@ -90,7 +90,7 @@ class ComputeTransformationsExecutorSpec extends ObjectBehavior
         $assetRepository->getByIdentifier($assetIdentifier)->willReturn($asset);
 
         $transformation = Transformation::create(
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             Source::createFromNormalized(['attribute' => 'main', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'thumbnail', 'channel' => null, 'locale' => null]),
             OperationCollection::create([]),

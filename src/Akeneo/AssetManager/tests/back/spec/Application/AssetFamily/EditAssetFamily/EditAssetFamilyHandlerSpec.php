@@ -289,7 +289,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
     ) {
         $normalizedTransformations = [
             [
-                'code' => 'code',
+                'label' => 'label',
                 'source' => [
                     'attribute' => 'main',
                     'locale' => null,

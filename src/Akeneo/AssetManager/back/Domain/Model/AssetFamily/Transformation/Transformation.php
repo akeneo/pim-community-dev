@@ -17,8 +17,8 @@ use Webmozart\Assert\Assert;
 
 class Transformation
 {
-    /** @var TransformationCode */
-    private $code;
+    /** @var TransformationLabel */
+    private $label;
 
     /** @var Source */
     private $source;
@@ -39,7 +39,7 @@ class Transformation
     private $updatedAt;
 
     private function __construct(
-        TransformationCode $code,
+        TransformationLabel $label,
         Source $source,
         Target $target,
         OperationCollection $operations,
@@ -54,7 +54,7 @@ class Transformation
             'A transformation must have at least a filename prefix or a filename suffix'
         );
 
-        $this->code = $code;
+        $this->label = $label;
         $this->source = $source;
         $this->target = $target;
         $this->operations = $operations;
@@ -64,7 +64,7 @@ class Transformation
     }
 
     public static function create(
-        TransformationCode $code,
+        TransformationLabel $label,
         Source $source,
         Target $target,
         OperationCollection $operations,
@@ -72,12 +72,12 @@ class Transformation
         ?string $filenameSuffix,
         \DateTimeInterface $updatedAt
     ): self {
-        return new self($code, $source, $target, $operations, $filenamePrefix, $filenameSuffix, $updatedAt);
+        return new self($label, $source, $target, $operations, $filenamePrefix, $filenameSuffix, $updatedAt);
     }
 
-    public function getCode(): TransformationCode
+    public function getLabel(): TransformationLabel
     {
-        return $this->code;
+        return $this->label;
     }
 
     public function getTarget(): Target
@@ -125,7 +125,7 @@ class Transformation
     {
         return array_filter(
             [
-                'code' => $this->code->normalize(),
+                'label' => $this->label->normalize(),
                 'source' => $this->source->normalize(),
                 'target' => $this->target->normalize(),
                 'operations' => $this->operations->normalize(),
@@ -141,7 +141,7 @@ class Transformation
 
     public function equals(Transformation $transformation): bool
     {
-        return $this->code->equals($transformation->getCode())
+        return $this->label->equals($transformation->getLabel())
             && $this->source->equals($transformation->getSource())
             && $this->target->equals($transformation->getTarget())
             && $this->operations->equals($transformation->getOperationCollection())

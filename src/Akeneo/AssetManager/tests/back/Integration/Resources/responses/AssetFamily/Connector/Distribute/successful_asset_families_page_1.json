@@ -51,7 +51,7 @@
             ],
             "transformations": [
               {
-                "code": "code",
+                "label": "label",
                 "source": {
                   "attribute": "main",
                   "channel": null,

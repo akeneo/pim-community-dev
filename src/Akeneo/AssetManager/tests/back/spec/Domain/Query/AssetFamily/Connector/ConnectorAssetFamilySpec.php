@@ -18,13 +18,12 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\Thumbn
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformation;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
-use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation;
 use PhpSpec\ObjectBehavior;
 
 class ConnectorAssetFamilySpec extends ObjectBehavior
@@ -38,7 +37,7 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
         ]);
 
         $transformation = new ConnectorTransformation(
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             Source::createFromNormalized(['attribute' => 'main', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => null]),
             OperationCollection::create([
@@ -108,7 +107,7 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
             ],
             'transformations' => [
                 [
-                    'code' => 'code',
+                    'label' => 'label',
                     'source' => [
                         'attribute' => 'main',
                         'channel' => null,

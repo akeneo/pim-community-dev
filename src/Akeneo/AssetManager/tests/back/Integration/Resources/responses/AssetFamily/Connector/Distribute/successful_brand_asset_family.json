@@ -34,7 +34,7 @@
       ],
       "transformations": [
         {
-          "code": "the_code",
+          "label": "the_label",
           "source": {
             "attribute": "main",
             "channel": null,
