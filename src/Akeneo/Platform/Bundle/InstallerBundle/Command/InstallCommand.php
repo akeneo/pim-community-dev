@@ -74,7 +74,6 @@ class InstallCommand extends Command
 
         try {
             $this
-                ->prepareRequiredDirectoriesStep()
                 ->checkStep()
                 ->databaseStep()
                 ->assetsStep($input);
@@ -89,20 +88,6 @@ class InstallCommand extends Command
         $output->writeln('<info>Akeneo PIM Application has been successfully installed.</info>');
 
         return 0;
-    }
-
-    /**
-     * Step where required directories are created.
-     *
-     * @throws \RuntimeException
-     *
-     * @return InstallCommand
-     */
-    protected function prepareRequiredDirectoriesStep(): InstallCommand
-    {
-        $this->commandExecutor->runCommand('pim:installer:prepare-required-directories');
-
-        return $this;
     }
 
     /**
