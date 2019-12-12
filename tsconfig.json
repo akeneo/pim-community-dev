@@ -5,6 +5,7 @@
     },
     "include": [
         "public/bundles",
-        "vendor/akeneo/pim-community-dev/frontend/types.d.ts"
+        "vendor/akeneo/pim-community-dev/frontend/types.d.ts",
+        "frontend/types.d.ts"
     ]
 }
