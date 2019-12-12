@@ -8,11 +8,13 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationFromAssetIdentifiersLauncher
         arguments:
             - '@akeneo_batch_queue.queue.publish_job_to_queue'
+            - '@security.token_storage'
 
     akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_family_identifier_launcher:
         class: Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationFromAssetFamilyIdentifierLauncher
         arguments:
             - '@akeneo_batch_queue.queue.publish_job_to_queue'
+            - '@security.token_storage'
 
     akeneo_assetmanager.infrastructure.job.provider.link_assets_to_products:
         class: 'Akeneo\AssetManager\Infrastructure\Job\Provider\LinkAssetsToProducts'
