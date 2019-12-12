@@ -1,3 +1,5 @@
+'use strict';
+
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -45,7 +47,7 @@ export const createFakeLine = (filename: string, assetFamily: AssetFamily): Line
 
 export const createFakeError = (message: string = 'error'): NormalizedValidationError => {
   return Object.freeze({
-    messageTemplate: '',
+    messageTemplate: 'pim_asset_manager.asset.validation.server_error',
     parameters: {},
     message: message,
     propertyPath: '',
