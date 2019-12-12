@@ -1,5 +1,7 @@
 # 3.2.x
 
+- PIM-9021: Fix input displaying when selecting empty/not empty filter operator
+
 # 3.2.25 (2019-12-11)
 
 - PIM-9020: Add missing attribute group code validation message translation key
