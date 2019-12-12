@@ -13,7 +13,7 @@
             "product_link_rules": [],
             "transformations": [
                 {
-                    "code": "thumbnail_100x80",
+                    "label": "thumbnail_100x80",
                     "source": {
                         "attribute": "main_image",
                         "channel": null,
@@ -36,7 +36,7 @@
                     "filename_suffix": "_2"
                 },
                 {
-                    "code": "invalid code.",
+                    "label": "thumbnail_100x80",
                     "source": {
                         "attribute": "main_image",
                         "channel": "ecommerce",
@@ -67,7 +67,7 @@
                     "filename_suffix": "_2"
                 },
                 {
-                    "code": "thumbnail_100x80",
+                    "label": "thumbnail_100x80",
                     "source": {
                         "attribute": "main_image",
                         "channel": null,
@@ -98,56 +98,56 @@
                     "filename_suffix": "_2"
                 },
                 {
-                    "code": "thumbnail3",
+                    "label": "thumbnail3",
                     "source": {"attribute": "main_image", "channel": null, "locale": null},
                     "target": {"attribute": "test_scopable_localizable", "channel": "ecommerce", "locale": "en_US"},
                     "operations": [{"type": "thumbnail", "parameters": {"width": 100, "height": 80}}],
                     "filename_suffix": "_3"
                 },
                 {
-                    "code": "thumbnail4",
+                    "label": "thumbnail4",
                     "source": {"attribute": "main_image", "channel": null, "locale": null},
                     "target": {"attribute": "test_scopable_localizable", "channel": "ecommerce", "locale": "fr_FR"},
                     "operations": [{"type": "thumbnail", "parameters": {"width": 100, "height": 80}}],
                     "filename_suffix": "_4"
                 },
                 {
-                    "code": "thumbnail5",
+                    "label": "thumbnail5",
                     "source": {"attribute": "main_image", "channel": null, "locale": null},
                     "target": {"attribute": "test_scopable_localizable", "channel": "ecommerce", "locale": "de_DE"},
                     "operations": [{"type": "thumbnail", "parameters": {"width": 100, "height": 80}}],
                     "filename_suffix": "_5"
                 },
                 {
-                    "code": "thumbnail6",
+                    "label": "thumbnail6",
                     "source": {"attribute": "main_image", "channel": null, "locale": null},
                     "target": {"attribute": "test_scopable_localizable", "channel": "print", "locale": "en_US"},
                     "operations": [{"type": "thumbnail", "parameters": {"width": 100, "height": 80}}],
                     "filename_suffix": "_6"
                 },
                 {
-                    "code": "thumbnail7",
+                    "label": "thumbnail7",
                     "source": {"attribute": "main_image", "channel": null, "locale": null},
                     "target": {"attribute": "test_scopable_localizable", "channel": "print", "locale": "fr_FR"},
                     "operations": [{"type": "thumbnail", "parameters": {"width": 100, "height": 80}}],
                     "filename_suffix": "_7"
                 },
                 {
-                    "code": "thumbnail8",
+                    "label": "thumbnail8",
                     "source": {"attribute": "main_image", "channel": null, "locale": null},
                     "target": {"attribute": "test_scopable_localizable", "channel": "print", "locale": "de_DE"},
                     "operations": [{"type": "thumbnail", "parameters": {"width": 100, "height": 80}}],
                     "filename_suffix": "_8"
                 },
                 {
-                    "code": "thumbnail9",
+                    "label": "thumbnail9",
                     "source": {"attribute": "main_image", "channel": null, "locale": null},
                     "target": {"attribute": "test_scopable_localizable", "channel": "other", "locale": "en_US"},
                     "operations": [{"type": "thumbnail", "parameters": {"width": 100, "height": 80}}],
                     "filename_suffix": "_9"
                 },
                 {
-                    "code": "thumbnail10",
+                    "label": "thumbnail10",
                     "source": {"attribute": "test_scopable_localizable", "channel": "other", "locale": "en_US"},
                     "target": {"attribute": "test_scopable_localizable", "channel": "other", "locale": "fr_FR"},
                     "operations": [{"type": "thumbnail", "parameters": {"width": 100, "height": 80}}],
@@ -165,10 +165,6 @@
                 {
                     "property": "transformations[0][target].target",
                     "message": "The attribute \"unknown\" does not exist for this asset family"
-                },
-                {
-                    "property": "transformations[1][code]",
-                    "message": "Code contains illegal character. Allowed characters are alphanumerics and underscore."
                 },
                 {
                     "property": "transformations[1][source].source",
@@ -201,10 +197,6 @@
                 {
                     "property": "transformations",
                     "message": "The attribute source \"test_scopable_localizable\" can not be an attribute target of a transformation."
-                },
-                {
-                    "property": "transformations",
-                    "message": "You cannot define two transformations with the same code \"thumbnail_100x80\""
                 },
                 {
                     "property": "transformations",
