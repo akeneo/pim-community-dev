@@ -1,4 +1,5 @@
 DEV_CATALOG_DIR=src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+PROD_CATALOG_DIR=src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
 .DEFAULT_GOAL := help
 
 .PHONY: help
