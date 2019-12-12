@@ -16,12 +16,6 @@ parameters:
     websocket_host:       "127.0.0.1"
     websocket_port:       8080
 
-    upload_dir:           '%kernel.project_dir%/var/uploads/product'
-    archive_dir:          '%kernel.project_dir%/var/archive'
-    catalog_storage_dir:  '%kernel.project_dir%/var/file_storage/catalog'
-    jobs_storage_dir:     '%kernel.project_dir%/var/jobs'
-    upload_tmp_dir:       '/tmp/pim/upload_tmp_dir'
-
     max_products_category_removal: 100
 
     pim_catalog_image_allowed_extensions: [gif, jfif, jif, jpeg, jpg, pdf, png, psd, tif, tiff]

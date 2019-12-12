@@ -1,6 +1,2 @@
 parameters:
     max_products_category_removal: 20
-    upload_dir:           '%kernel.root_dir%/../var/cache/uploads/product'
-    archive_dir:          '%kernel.root_dir%/../var/cache/archive'
-    catalog_storage_dir:  '%kernel.root_dir%/../var/cache/file_storage/catalog'
-    upload_tmp_dir:       '%kernel.root_dir%/../var/cache/tmp/pim/upload_tmp_dir'

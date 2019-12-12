@@ -1,6 +1,5 @@
 parameters:
     pim_installer.install_status_manager.class:       Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager
-    pim_installer.directories_registry.class:         Akeneo\Platform\Bundle\InstallerBundle\PimDirectoriesRegistry
 
 services:
     pim_installer.install_status_manager:
@@ -8,8 +7,3 @@ services:
             arguments:
                 - '@doctrine'
                 - '%env(APP_DATABASE_NAME)%'
-
-    pim_installer.directories_registry:
-        class: '%pim_installer.directories_registry.class%'
-        arguments:
-            - ['%catalog_storage_dir%', '%archive_dir%', '%jobs_storage_dir%', '%upload_dir%', '%kernel.logs_dir%', '%upload_tmp_dir%']
