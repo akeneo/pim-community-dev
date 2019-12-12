@@ -518,6 +518,9 @@ workflows:
           - back_behat_legacy:
                 requires:
                     - build_dev
+          - test_back_data_migrations:
+                requires:
+                    - build_dev
           - test_back_performance:
                 requires:
                     - build_dev
@@ -528,6 +531,7 @@ workflows:
                     - test_back_phpunit
                     - test_back_performance
                     - back_behat_legacy
+                    - test_back_data_migrations
                     - destroy_new_environment
 
 
