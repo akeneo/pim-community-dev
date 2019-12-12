@@ -1,0 +1,86 @@
+{
+  "title": "BackendAssetFamilyTransformation",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "code": {
+        "type": "string"
+      },
+      "source": {
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "type": "string"
+          },
+          "channel": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "locale": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "attribute",
+          "channel",
+          "locale"
+        ],
+        "additionalProperties": false
+      },
+      "target": {
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "type": "string"
+          },
+          "channel": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "locale": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "attribute",
+          "channel",
+          "locale"
+        ],
+        "additionalProperties": false
+      },
+      "operations": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "filename_prefix": {
+        "type": "string"
+      },
+      "filename_suffix": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "source",
+      "target",
+      "operations"
+    ],
+    "additionalProperties": false
+  }
+}

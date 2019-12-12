@@ -14,6 +14,7 @@ import {
 } from 'akeneoassetmanager/application/action/asset-family/edit';
 import Ajv from 'ajv';
 const ajv = new Ajv({ allErrors: true, verbose: true });
+const schema = require('akeneoassetmanager/infrastructure/model/asset-family-transformations.schema.json');
 
 interface StateProps {
   assetFamily: AssetFamily;
@@ -28,99 +29,15 @@ const AssetFamilyTransformationEditor = ({
   transformations,
   onAssetFamilyTransformationsChange,
 }: AssetFamilyTransformationEditorProps) => {
-  let transformationSchema = {
-    "title": "BackendAssetFamilyTransformation",
-    "type": "array",
-    "items": {
-      "type": "object",
-      "properties": {
-        "source": {
-          "type": "object",
-          "properties": {
-            "attribute": {
-              "type": "string",
-            },
-            "channel": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "locale": {
-              "type": [
-                "string",
-                "null"
-              ]
-            }
-          },
-          "required": [
-            "attribute",
-            "channel",
-            "locale"
-          ],
-          "additionalProperties": false
-        },
-        "target": {
-          "type": "object",
-          "properties": {
-            "attribute": {
-              "type": "string"
-            },
-            "channel": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "locale": {
-              "type": [
-                "string",
-                "null"
-              ]
-            }
-          },
-          "required": [
-            "attribute",
-            "channel",
-            "locale"
-          ],
-          "additionalProperties": false
-        },
-        "operations": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "required": [
-              "type"
-            ],
-            "additionalProperties": true
-          }
-        },
-        "filename_prefix": {
-          "type": "string"
-        },
-        "filename_suffix": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "source",
-        "target",
-        "operations",
-      ],
-      "additionalProperties": false
-    }
-  };
-
   //https://github.com/vankop/jsoneditor-react/blob/HEAD/src/Editor.jsx
   return (
     <Editor
       value={JSON.parse(transformations)}
-      onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        onAssetFamilyTransformationsChange(event.target.value);
+      onChange={(event: object) => {
+        onAssetFamilyTransformationsChange(JSON.stringify(event));
       }}
       mode='code'
-      schema={transformationSchema}
+      schema={schema}
       ajv={ajv}
     />
   )
