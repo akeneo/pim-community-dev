@@ -39,6 +39,8 @@ class TransformationCollectionFactory
 
     private function buildTransformation(array $normalizedTransformation): Transformation
     {
+        Assert::keyExists($normalizedTransformation, 'code');
+        Assert::stringNotEmpty($normalizedTransformation['code']);
         Assert::keyExists($normalizedTransformation, 'source');
         Assert::isArray($normalizedTransformation['source']);
         Assert::keyExists($normalizedTransformation, 'target');
@@ -48,8 +50,10 @@ class TransformationCollectionFactory
         Assert::allIsArray($normalizedTransformation['operations']);
         Assert::nullOrString($normalizedTransformation['filename_prefix'] ?? null);
         Assert::nullOrString($normalizedTransformation['filename_suffix'] ?? null);
+        Assert::stringNotEmpty($normalizedTransformation['updated_at']);
 
         return Transformation::create(
+            TransformationCode::fromString($normalizedTransformation['code']),
             Source::createFromNormalized($normalizedTransformation['source']),
             Target::createFromNormalized($normalizedTransformation['target']),
             OperationCollection::create(
@@ -61,7 +65,8 @@ class TransformationCollectionFactory
                 )
             ),
             $normalizedTransformation['filename_prefix'] ?? null,
-            $normalizedTransformation['filename_suffix'] ?? null
+            $normalizedTransformation['filename_suffix'] ?? null,
+            new \DateTimeImmutable($normalizedTransformation['updated_at'])
         );
     }
 

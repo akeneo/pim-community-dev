@@ -32,6 +32,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollect
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
@@ -136,6 +137,7 @@ class ComputeTransformationsExecutorTest extends KernelTestCase
         $updatedFamily = $family->withTransformationCollection(
             TransformationCollection::create([
                 Transformation::create(
+                    TransformationCode::fromString('code'),
                     Source::create(
                         $source,
                         ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
@@ -154,7 +156,8 @@ class ComputeTransformationsExecutorTest extends KernelTestCase
                         ResolutionOperation::create(['resolution-x' => 1000, 'resolution-y' => 1000, 'resolution-unit' => 'ppc']),
                     ]),
                     null,
-                    '_computed'
+                    '_computed',
+                    new \DateTime()
                 )
             ])
         );

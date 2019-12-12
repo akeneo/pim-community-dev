@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyH
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand;
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryClock;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -36,6 +37,7 @@ class EditAssetFamilyTransformationsContext implements Context
 {
     private const COMPLEX_TRANSFORMATIONS = [
         [
+            'code' => 'code1',
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
             'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
             'operations' => [
@@ -46,6 +48,7 @@ class EditAssetFamilyTransformationsContext implements Context
             'filename_suffix' => '_3'
         ],
         [
+            'code' => 'code_2',
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
             'target' => ['attribute' => 'target_scopable', 'channel' => 'ecommerce', 'locale' => null],
             'operations' => [
@@ -54,6 +57,7 @@ class EditAssetFamilyTransformationsContext implements Context
             'filename_suffix' => '_4',
         ],
         [
+            'code' => 'CODE3',
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
             'target' => ['attribute' => 'target_localizable', 'channel' => null, 'locale' => 'en_US'],
             'operations' => [
@@ -62,6 +66,7 @@ class EditAssetFamilyTransformationsContext implements Context
             'filename_prefix' => '   ',
         ],
         [
+            'code' => 'Code4',
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
             'target' => ['attribute' => 'target_scopable_localizable', 'channel' => 'ecommerce', 'locale' => 'en_US'],
             'operations' => [
@@ -97,6 +102,9 @@ class EditAssetFamilyTransformationsContext implements Context
     /** @var InMemoryChannelExists */
     private $channelExists;
 
+    /** @var InMemoryClock */
+    private $clock;
+
     public function __construct(
         CreateAssetFamilyHandler $createAssetFamilyHandler,
         EditAssetFamilyHandler $editAssetFamilyHandler,
@@ -105,7 +113,8 @@ class EditAssetFamilyTransformationsContext implements Context
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         ValidatorInterface $validator,
         ConstraintViolationsContext $constraintViolationsContext,
-        InMemoryChannelExists $channelExists
+        InMemoryChannelExists $channelExists,
+        InMemoryClock $clock
     ) {
         $this->createAssetFamilyHandler = $createAssetFamilyHandler;
         $this->editAssetFamilyHandler = $editAssetFamilyHandler;
@@ -115,6 +124,7 @@ class EditAssetFamilyTransformationsContext implements Context
         $this->validator = $validator;
         $this->constraintViolationsContext = $constraintViolationsContext;
         $this->channelExists = $channelExists;
+        $this->clock = $clock;
     }
 
     /**
@@ -147,6 +157,7 @@ class EditAssetFamilyTransformationsContext implements Context
     {
         $this->editTransformationForAssetFamily($familyIdentifier, [
             [
+                'code' => 'code',
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [
@@ -166,7 +177,48 @@ class EditAssetFamilyTransformationsContext implements Context
      */
     public function theUserEditsTheFamilyToAddValidComplexTransformations(string $familyIdentifier): void
     {
+        InMemoryClock::$actualDateTime = new \DateTimeImmutable('2000-01-01');
         $this->editTransformationForAssetFamily($familyIdentifier, self::COMPLEX_TRANSFORMATIONS);
+    }
+
+    /**
+     * @When the user edits the :familyIdentifier family to add a transformation with invalid code
+     */
+    public function theUserEditsTheFamilyToAddATransformationWithInvalidCode(string $familyIdentifier): void
+    {
+        $this->editTransformationForAssetFamily($familyIdentifier, [
+            [
+                'code' => 'invalid code',
+                'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
+                'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
+                'operations' => [],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
+            ],
+        ]);
+    }
+
+    /**
+     * @When the user edits the :familyIdentifier family to add transformations with same code
+     */
+    public function theUserEditsTheFamilyToAddTransformationsWithSameCode(string $familyIdentifier): void
+    {
+        $this->editTransformationForAssetFamily($familyIdentifier, [
+            [
+                'code' => 'code',
+                'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
+                'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
+                'operations' => [],
+                'filename_suffix' => '_2'
+            ],
+            [
+                'code' => 'code',
+                'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
+                'target' => ['attribute' => 'target_scopable', 'channel' => 'ecommerce', 'locale' => null],
+                'operations' => [],
+                'filename_suffix' => '_3'
+            ],
+        ]);
     }
 
     /**
@@ -192,6 +244,7 @@ class EditAssetFamilyTransformationsContext implements Context
     {
         $this->editTransformationForAssetFamily($familyIdentifier, [
             [
+                'code' => 'code',
                 'source' => ['attribute' => 'unknown', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [],
@@ -208,6 +261,7 @@ class EditAssetFamilyTransformationsContext implements Context
     {
         $this->editTransformationForAssetFamily($familyIdentifier, [
             [
+                'code' => 'code',
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'unknown', 'channel' => null, 'locale' => null],
                 'operations' => [],
@@ -224,6 +278,7 @@ class EditAssetFamilyTransformationsContext implements Context
     {
         $this->editTransformationForAssetFamily($familyIdentifier, [
             [
+                'code' => 'code1',
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [],
@@ -231,6 +286,7 @@ class EditAssetFamilyTransformationsContext implements Context
                 'filename_suffix' => '_2'
             ],
             [
+                'code' => 'code2',
                 'source' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target2', 'channel' => null, 'locale' => null],
                 'operations' => [],
@@ -247,6 +303,7 @@ class EditAssetFamilyTransformationsContext implements Context
     {
         $this->editTransformationForAssetFamily($familyIdentifier, [
             [
+                'code' => 'code1',
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [
@@ -269,8 +326,10 @@ class EditAssetFamilyTransformationsContext implements Context
         $this->createLocale('fr_FR');
         $this->createLocale('en_GB');
         $transformations = [];
+        $codeIndex = 0;
         foreach (['ecommerce', 'print'] as $scope) {
             $transformations[] = [
+                'code' => sprintf('code_%d', $codeIndex++),
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target_scopable', 'channel' => $scope, 'locale' => null],
                 'operations' => [],
@@ -279,6 +338,7 @@ class EditAssetFamilyTransformationsContext implements Context
             ];
             foreach (['fr_FR', 'en_US', 'en_GB'] as $locale) {
                 $transformations[] = [
+                    'code' => sprintf('code_%d', $codeIndex++),
                     'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                     'target' => ['attribute' => 'target_localizable', 'channel' => null, 'locale' => $locale],
                     'operations' => [],
@@ -286,6 +346,7 @@ class EditAssetFamilyTransformationsContext implements Context
                     'filename_suffix' => '_2'
                 ];
                 $transformations[] = [
+                    'code' => sprintf('code_%d', $codeIndex++),
                     'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                     'target' => ['attribute' => 'target_scopable_localizable', 'channel' => $scope, 'locale' => $locale],
                     'operations' => [],
@@ -305,6 +366,7 @@ class EditAssetFamilyTransformationsContext implements Context
     {
         $this->editTransformationForAssetFamily($familyIdentifier, [
             [
+                'code' => 'code',
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [
@@ -323,6 +385,7 @@ class EditAssetFamilyTransformationsContext implements Context
     {
         $this->editTransformationForAssetFamily($familyIdentifier, [
             [
+                'code' => 'code',
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [
@@ -341,12 +404,14 @@ class EditAssetFamilyTransformationsContext implements Context
     {
         $this->editTransformationForAssetFamily($familyIdentifier, [
             [
+                'code' => 'code1',
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [],
                 'filename_prefix' => '1_',
             ],
             [
+                'code' => 'code2',
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target2', 'channel' => null, 'locale' => null],
                 'operations' => [],
@@ -363,6 +428,7 @@ class EditAssetFamilyTransformationsContext implements Context
     {
         $this->editTransformationForAssetFamily($familyIdentifier, [
             [
+                'code' => 'code',
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [],
@@ -379,6 +445,7 @@ class EditAssetFamilyTransformationsContext implements Context
     {
         $this->editTransformationForAssetFamily($familyIdentifier, [
             [
+                'code' => 'code',
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [],
@@ -406,17 +473,18 @@ class EditAssetFamilyTransformationsContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $assetFamily = $this->getAssetFamily($familyIdentifier);
 
-        $value = array_map(
+        $expectedValue = array_map(
             function (array $transformation) {
-                return array_filter($transformation);
+                $transformation = array_filter($transformation);
+                $transformation['updated_at'] = $this->clock->now()->format(\DateTimeImmutable::ISO8601);
+
+                return $transformation;
             },
             self::COMPLEX_TRANSFORMATIONS
         );
+        $value = $assetFamily->getTransformationCollection()->normalize();
 
-        Assert::same(
-            json_encode($assetFamily->getTransformationCollection()->normalize(), JSON_PRETTY_PRINT),
-            json_encode($value, JSON_PRETTY_PRINT)
-        );
+        Assert::same($expectedValue, $value);
     }
 
     /**
@@ -427,6 +495,26 @@ class EditAssetFamilyTransformationsContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $assetFamily = $this->getAssetFamily($familyIdentifier);
         Assert::eq($assetFamily->getTransformationCollection(), TransformationCollection::noTransformation());
+    }
+
+    /**
+     * @Then there should be a validation error stating that the code is invalid
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheCodeIsInvalid()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            'Code contains illegal character. Allowed characters are alphanumerics and underscore.'
+        );
+    }
+
+    /**
+     * @Then there should be a validation error stating that two transformations have the same code
+     */
+    public function thereShouldBeAValidationErrorStatingTwoTransformationsHaveTheSameCode()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            'You cannot define two transformations with the same code "code"'
+        );
     }
 
     /**

@@ -55,6 +55,7 @@
       ],
       "transformations": [
         {
+          "code": "thumbnail_100x80",
           "source": {
             "attribute": "main_image",
             "channel": null,

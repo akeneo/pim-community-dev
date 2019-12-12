@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollect
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -33,6 +34,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Query\ClockInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
@@ -321,11 +323,13 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
         return TransformationCollection::create(
             [
                 Transformation::create(
+                    TransformationCode::fromString('code'),
                     Source::createFromNormalized(['attribute' => 'main_image', 'channel' => null, 'locale' => null]),
                     Target::createFromNormalized(['attribute' => 'thumbnail', 'channel' => null, 'locale' => null]),
                     OperationCollection::create([]),
                     '1_',
-                    '_2'
+                    '_2',
+                    new \DateTime('1990-01-01')
                 ),
             ]
         );

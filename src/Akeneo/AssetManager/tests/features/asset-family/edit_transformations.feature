@@ -28,6 +28,18 @@ Feature: Edit the transformations of an asset family
     Then the "packshot" family should have the complex transformations
 
   @acceptance-back @error
+  Scenario: Can not update transformations when the code is not valid
+    Given an asset family "packshot" with no transformation
+    When the user edits the "packshot" family to add a transformation with invalid code
+    Then there should be a validation error stating that the code is invalid
+
+  @acceptance-back @error
+  Scenario: Can not update transformations when two transformations have the same code
+    Given an asset family "packshot" with no transformation
+    When the user edits the "packshot" family to add transformations with same code
+    Then there should be a validation error stating that two transformations have the same code
+
+  @acceptance-back @error
   Scenario: Can not update transformations when the source does not exist in family
     Given an asset family "packshot" with no transformation
     When the user edits the "packshot" family to add a transformation with unknown source

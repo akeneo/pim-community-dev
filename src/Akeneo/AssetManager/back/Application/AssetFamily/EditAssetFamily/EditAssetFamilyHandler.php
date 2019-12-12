@@ -16,10 +16,12 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
+use Akeneo\AssetManager\Domain\Query\ClockInterface;
 use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
@@ -47,18 +49,23 @@ class EditAssetFamilyHandler
     /** @var TransformationCollectionFactory */
     private $transformationCollectionFactory;
 
+    /** @var ClockInterface */
+    private $clock;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         GetAttributeIdentifierInterface $getAttributeIdentifier,
         FileStorerInterface $storer,
         FileExistsInterface $fileExists,
-        TransformationCollectionFactory $transformationCollectionFactory
+        TransformationCollectionFactory $transformationCollectionFactory,
+        ClockInterface $clock
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->storer = $storer;
         $this->fileExists = $fileExists;
         $this->transformationCollectionFactory = $transformationCollectionFactory;
+        $this->clock = $clock;
     }
 
     public function __invoke(EditAssetFamilyCommand $editAssetFamilyCommand): void
@@ -100,8 +107,8 @@ class EditAssetFamilyHandler
         }
 
         if (null !== $editAssetFamilyCommand->transformations) {
-            $assetFamily = $assetFamily->withTransformationCollection(
-                $this->transformationCollectionFactory->fromNormalized($editAssetFamilyCommand->transformations)
+            $assetFamily->getTransformationCollection()->update(
+                $this->computeUpdatedTransformationCollection($editAssetFamilyCommand->transformations)
             );
         }
 
@@ -124,5 +131,15 @@ class EditAssetFamilyHandler
         $storedImage = Image::fromFileInfo($mediaFile);
 
         return $storedImage;
+    }
+
+    private function computeUpdatedTransformationCollection(array $normalizedTransformations): TransformationCollection
+    {
+        $formattedDate = $this->clock->now()->format(\DateTimeInterface::ISO8601);
+        foreach ($normalizedTransformations as &$normalizedTransformation) {
+            $normalizedTransformation['updated_at'] = $formattedDate;
+        }
+
+        return $this->transformationCollectionFactory->fromNormalized($normalizedTransformations);
     }
 }

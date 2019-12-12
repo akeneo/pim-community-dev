@@ -35,6 +35,7 @@ services:
             - '@validator'
             - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
             - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+            - '@Akeneo\AssetManager\Infrastructure\Clock'
 
     akeneo_assetmanager.tests.back.acceptance.context.compute_transformations_context:
         class: Akeneo\AssetManager\Acceptance\Context\ComputeTransformationsContext

@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
 use Webmozart\Assert\Assert;
 
-final class OperationCollection implements \IteratorAggregate
+class OperationCollection implements \IteratorAggregate
 {
     /** @var Operation[] */
     private $operations = [];
@@ -45,5 +45,10 @@ final class OperationCollection implements \IteratorAggregate
         return array_map(function (Operation $operation) {
             return $operation->normalize();
         }, $this->operations);
+    }
+
+    public function equals(OperationCollection $otherOperationCollection): bool
+    {
+        return $this->normalize() === $otherOperationCollection->normalize();
     }
 }

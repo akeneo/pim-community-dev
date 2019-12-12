@@ -16,11 +16,11 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyQuery;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyItemsInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
@@ -57,7 +57,7 @@ class SqlFindConnectorAssetFamilyItemsTest extends SqlIntegrationTestCase
                 LabelCollection::fromArray(['en_US' => sprintf('asset_family_%s', $i)]),
                 Image::createEmpty(),
                 [],
-                TransformationCollection::noTransformation()
+                new ConnectorTransformationCollection([])
             );
         }
 
@@ -91,7 +91,7 @@ class SqlFindConnectorAssetFamilyItemsTest extends SqlIntegrationTestCase
                 LabelCollection::fromArray(['en_US' => sprintf('asset_family_%s', $i)]),
                 Image::createEmpty(),
                 [],
-                TransformationCollection::noTransformation()
+                new ConnectorTransformationCollection([])
             );
         }
 

@@ -30,6 +30,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
         $transformationCollection = $this->fromNormalized(
             [
                 [
+                    'code' =>'code1',
                     'source' => [
                         'attribute' => 'source',
                         'channel' => null,
@@ -56,8 +57,10 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                     ],
                     'filename_prefix' => 'pre',
                     'filename_suffix' => '_2',
+                    'updated_at' => '1970-01-01',
                 ],
                 [
+                    'code' =>'code2',
                     'source' => [
                         'attribute' => 'source',
                         'channel' => null,
@@ -79,6 +82,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                     ],
                     'filename_prefix' => 'pre',
                     'filename_suffix' => '_2',
+                    'updated_at' => '1970-01-01',
                 ],
             ]
         );
@@ -86,10 +90,15 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
         $transformationCollection->shouldBeAnInstanceOf(TransformationCollection::class);
     }
 
-    function it_throws_an_exception_if_source_is_missing()
+    function it_throws_an_exception_if_code_is_missing()
     {
         $transformationCollection = [
             [
+                'source' => [
+                    'attribute' => 'source',
+                    'channel' => null,
+                    'locale' => null,
+                ],
                 'target' => [
                     'attribute' => 'target',
                     'channel' => null,
@@ -98,6 +107,27 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                 'operations' => [],
                 'filename_prefix' => '',
                 'filename_suffix' => '_2',
+                'updated_at' => '1970-01-01',
+            ],
+        ];
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fromNormalized', [$transformationCollection]);
+    }
+
+    function it_throws_an_exception_if_source_is_missing()
+    {
+        $transformationCollection = [
+            [
+                'code' =>'code',
+                'target' => [
+                    'attribute' => 'target',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'operations' => [],
+                'filename_prefix' => '',
+                'filename_suffix' => '_2',
+                'updated_at' => '1970-01-01',
             ],
         ];
 
@@ -108,6 +138,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
+                'code' =>'code',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -116,6 +147,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                 'operations' => [],
                 'filename_prefix' => '',
                 'filename_suffix' => '_2',
+                'updated_at' => '1970-01-01',
             ],
         ];
 
@@ -126,6 +158,31 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
+                'code' =>'code',
+                'source' => [
+                    'attribute' => 'source',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'target' => [
+                    'attribute' => 'target',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'filename_prefix' => '',
+                'filename_suffix' => '_2',
+                'updated_at' => '1970-01-01',
+            ],
+        ];
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fromNormalized', [$transformationCollection]);
+    }
+
+    function it_throws_an_exception_if_updated_at_is_missing()
+    {
+        $transformationCollection = [
+            [
+                'code' =>'code',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -148,6 +205,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
+                'code' =>'code',
                 'source' => 'foo',
                 'target' => [
                     'attribute' => 'target',
@@ -157,6 +215,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                 'operations' => [],
                 'filename_prefix' => '',
                 'filename_suffix' => '_2',
+                'updated_at' => '1970-01-01',
             ],
         ];
 
@@ -167,6 +226,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = $this->fromNormalized([
             [
+                'code' =>'code',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -179,6 +239,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                 ],
                 'operations' => [],
                 'filename_suffix' => '_2',
+                'updated_at' => '1970-01-01',
             ],
         ]);
 
@@ -189,6 +250,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = $this->fromNormalized([
             [
+                'code' =>'code',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -202,6 +264,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                 'operations' => [],
                 'filename_prefix' => 'prefix_',
                 'filename_suffix' => null,
+                'updated_at' => '1970-01-01',
             ],
         ]);
 
@@ -212,6 +275,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
+                'code' =>'code',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -224,6 +288,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                 ],
                 'operations' => [],
                 'filename_prefix' => [],
+                'updated_at' => '1970-01-01',
             ],
         ];
 
@@ -234,6 +299,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
+                'code' =>'code',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -246,6 +312,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                 ],
                 'operations' => [],
                 'filename_suffix' => new \stdClass(),
+                'updated_at' => '1970-01-01',
             ],
         ];
 

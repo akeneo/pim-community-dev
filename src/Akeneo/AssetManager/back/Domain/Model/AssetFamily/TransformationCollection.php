@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
 use Webmozart\Assert\Assert;
 
 class TransformationCollection implements \IteratorAggregate
@@ -21,17 +22,12 @@ class TransformationCollection implements \IteratorAggregate
     /** @var Transformation[] */
     private $transformations = [];
 
-    /**
-     * @param Transformation[] $transformations
-     */
     private function __construct(array $transformations)
     {
         Assert::allIsInstanceOf($transformations, Transformation::class);
         foreach ($transformations as $transformation) {
             $this->add($transformation);
         }
-
-        $this->transformations = $transformations;
     }
 
     public static function create(array $transformations): self
@@ -41,17 +37,22 @@ class TransformationCollection implements \IteratorAggregate
 
     public function normalize(): array
     {
-        return array_map(
+        return array_values(array_map(
             function (Transformation $transformation) {
                 return $transformation->normalize();
             },
             $this->transformations
-        );
+        ));
     }
 
     public static function noTransformation(): self
     {
         return new self([]);
+    }
+
+    public function getByTransformationCode(TransformationCode $code): ?Transformation
+    {
+        return $this->transformations[$code->toString()] ?? null;
     }
 
     private function add(Transformation $transformation)
@@ -67,13 +68,57 @@ class TransformationCollection implements \IteratorAggregate
                     'You can not define a transformation having a source as a target of another transformation'
                 );
             }
+
+            if ($existingTransformation->getCode()->equals($transformation->getCode())) {
+                throw new \InvalidArgumentException(sprintf(
+                    'You cannot define two transformations with the same code "%s"',
+                    $transformation->getCode()->toString()
+                ));
+            }
         }
 
-        $this->transformations[] = $transformation;
+        $this->transformations[$transformation->getCode()->toString()] = $transformation;
     }
 
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->transformations);
+    }
+
+    public function update(TransformationCollection $transformationCollection): void
+    {
+        foreach ($this->transformations as $code => $currentTransformation) {
+            $findInNewCollection = $transformationCollection->getByTransformationCode(
+                TransformationCode::fromString($code)
+            );
+            if (null === $findInNewCollection) {
+                $this->removeTransformation($code);
+                continue;
+            }
+
+            if ($currentTransformation->equals($findInNewCollection)) {
+                continue;
+            }
+
+            $this->updateTransformation($findInNewCollection);
+        }
+
+        /** @var Transformation $newTransformation */
+        foreach ($transformationCollection as $newTransformation) {
+            $transformationCode = $newTransformation->getCode();
+            if (null === $this->getByTransformationCode($transformationCode)) {
+                $this->add($newTransformation);
+            }
+        }
+    }
+
+    private function updateTransformation(Transformation $transformation): void
+    {
+        $this->transformations[$transformation->getCode()->toString()] = $transformation;
+    }
+
+    private function removeTransformation(string $code): void
+    {
+        unset($this->transformations[$code]);
     }
 }

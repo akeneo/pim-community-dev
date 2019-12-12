@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryClock;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeAdapter;
@@ -30,6 +31,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollect
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
@@ -180,6 +182,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
      */
     public function theBrandAssetFamilyExistingInTheErpAndInThePimWithDifferentProperties()
     {
+        InMemoryClock::$actualDateTime = new \DateTime('1990-01-01');
         $this->findAssetCollectionTypeACL->stubWith('brand');
         $this->requestContract = 'successful_brand_asset_family_update.json';
 
@@ -251,13 +254,15 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
         $expectedBrand = $expectedBrand->withTransformationCollection(TransformationCollection::create([
             Transformation::create(
+                TransformationCode::fromString('thumbnail_100x80'),
                 Source::createFromNormalized(['attribute' => 'main_image', 'channel'=> null, 'locale' => null]),
                 Target::createFromNormalized(['attribute' => 'thumbnail', 'channel'=> null, 'locale' => null]),
                 OperationCollection::create([
                     ThumbnailOperation::create(['width' => 100, 'height' => 80]),
                 ]),
                 '1_',
-                '_2'
+                '_2',
+                InMemoryClock::$actualDateTime
             ),
         ]));
 
