@@ -15,14 +15,14 @@ mkdir -p $STANDARD_DISTRIB_DIR/src \
          $STANDARD_DISTRIB_DIR/config/services \
          $STANDARD_DISTRIB_DIR/docker
 
-cp $DEV_DISTRIB_DIR/CHANGELOG*.md $STANDARD_DISTRIB_DIR
-cp $DEV_DISTRIB_DIR/UPGRADE*.md $STANDARD_DISTRIB_DIR
 cp -r $DEV_DISTRIB_DIR/upgrades $STANDARD_DISTRIB_DIR
+cp $DEV_DISTRIB_DIR/docker/akeneo.conf $STANDARD_DISTRIB_DIR/docker/
+cp $DEV_DISTRIB_DIR/docker/httpd.conf $STANDARD_DISTRIB_DIR/docker/
+cp $DEV_DISTRIB_DIR/docker/wait_docker_up.sh $STANDARD_DISTRIB_DIR/docker/
 cp $DEV_DISTRIB_DIR/config/bootstrap.php $STANDARD_DISTRIB_DIR/config/
 cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
 cp $DEV_DISTRIB_DIR/public/index.php $STANDARD_DISTRIB_DIR/public/
 cp $DEV_DISTRIB_DIR/std-build/Kernel.php $STANDARD_DISTRIB_DIR/src
-cp $DEV_DISTRIB_DIR/docker/* $STANDARD_DISTRIB_DIR/docker/
 cp $DEV_DISTRIB_DIR/std-build/docker-compose.yml $STANDARD_DISTRIB_DIR/
 
 # The following files are only copied if the destination does not exist
