@@ -184,7 +184,7 @@ class EditAssetFamilyTransformationsContext implements Context
     /**
      * @When the user edits the :familyIdentifier family to add a transformation with empty label
      */
-    public function theUserEditsTheFamilyToAddATransformationWithInvalidCode(string $familyIdentifier): void
+    public function theUserEditsTheFamilyToAddATransformationWithEmptyLabel(string $familyIdentifier): void
     {
         $this->editTransformationForAssetFamily($familyIdentifier, [
             [
