@@ -32,7 +32,7 @@ define(
                     lastLoggedIn: lastLoginDate.toLocaleString(),
                     loginCount: user.login_count
                 }));
-               
+
                 return BaseForm.prototype.render.apply(this, arguments);
             }
         });
