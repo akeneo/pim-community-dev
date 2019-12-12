@@ -99,7 +99,7 @@ define([
                 el: modal.$el.find('.modal-body'),
                 attributes: {
                     channel: this.getParentForm().getFilters().structure.scope,
-                    categories: 'IN CHILDREN' === this.getOperator() ? [] : this.getValue()
+                    categories: 'IN CHILDREN' === this.getOperator() ? [] : [...this.getValue()]
                 }
             });
 

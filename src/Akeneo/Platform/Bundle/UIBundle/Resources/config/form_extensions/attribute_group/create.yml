@@ -70,13 +70,25 @@ extensions:
             template: pim/template/form/tab/sections
 
     pim-attribute-group-create-form-properties-general:
-        module: pim/create/properties/general
+        module: pim/common/simple-view
         parent: pim-attribute-group-create-form-properties
         targetZone: accordion
         position: 100
         config:
-            sectionTitle: pim_common.general_properties
-            codeLabel: pim_common.code
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_common.general_properties
+                dropZone: content
+
+    pim-attribute-group-create-form-properties-general-code:
+        module: pim/form/common/fields/text
+        parent: pim-attribute-group-create-form-properties-general
+        targetZone: content
+        position: 90
+        config:
+            fieldName: code
+            label: pim_common.code
+            required: true
 
     pim-attribute-group-create-form-properties-translation-section:
         module: pim/common/simple-view
