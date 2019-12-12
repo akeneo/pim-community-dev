@@ -694,6 +694,7 @@ class DataGridContext extends PimContext implements PageObjectAware
      * @Then /^I should not see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
      * @Then /^I should not see group(?: type)?s? (.*)$/
      * @Then /^I should not see association (?:types? )?(.*)$/
+     * @Then /^I should not see users? (.*)$/
      * @Then /^I should not see famil(?:y|ies) (.*)$/
      * @Then /^I should not see client(?:|s) (.*)$/
      */
