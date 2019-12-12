@@ -210,7 +210,7 @@ FROM
 JOIN akeneo_batch_job_instance ji ON ji.id = je.job_instance_id
 WHERE 
     je.id = :id
-    LIMIT 1;
+LIMIT 1;
 SQL;
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
