@@ -11,8 +11,10 @@ import Key from 'akeneoassetmanager/tools/key';
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {assetUploadCancel} from 'akeneoassetmanager/domain/event/asset/upload';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 interface StateProps {
+  locale: LocaleCode;
   assetFamily: AssetFamily;
   sidebar: {
     tabs: Tab[];
@@ -81,6 +83,7 @@ class AssetFamilyEditView extends React.Component<EditProps> {
         {this.props.createAsset.active && <CreateAssetModal />}
         {this.props.uploadAsset.active && (
           <UploadModal
+            locale={this.props.locale}
             assetFamily={this.props.assetFamily}
             onCancel={this.props.events.cancelMassUpload}
             onAssetCreated={() => {}}
@@ -97,6 +100,7 @@ export default connect(
     const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
 
     return {
+      locale: state.user.catalogLocale,
       assetFamily: state.form.data,
       sidebar: {
         tabs,

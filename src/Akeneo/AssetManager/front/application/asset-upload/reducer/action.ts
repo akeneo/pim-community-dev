@@ -1,19 +1,13 @@
 import Line, {Thumbnail} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
-import {
-  addLines,
-  removeLine,
-  assetCreationSucceeded,
-  assetCreationFailed,
-  updateLine,
-} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
-
 export const ADD_LINES = 'asset-upload/ADD_LINES';
 export type OnAddLineAction = {
   type: typeof ADD_LINES;
-  payload: {lines: Line[]};
+  payload: {
+    lines: Line[];
+  };
 };
 export const linesAddedAction = (lines: Line[]): OnAddLineAction => ({
   type: ADD_LINES,
@@ -21,11 +15,12 @@ export const linesAddedAction = (lines: Line[]): OnAddLineAction => ({
     lines,
   },
 });
-
 export const LINE_CREATION_START = 'asset-upload/LINE_CREATION_START';
 export type OnLineCreationStartAction = {
   type: typeof LINE_CREATION_START;
-  payload: {line: Line};
+  payload: {
+    line: Line;
+  };
 };
 export const lineCreationStartAction = (line: Line): OnLineCreationStartAction => ({
   type: LINE_CREATION_START,
@@ -33,11 +28,12 @@ export const lineCreationStartAction = (line: Line): OnLineCreationStartAction =
     line,
   },
 });
-
 export const ASSET_CREATION_SUCCESS = 'asset-upload/ASSET_CREATION_SUCCESS';
 export type OnAssetCreationSuccessAction = {
   type: typeof ASSET_CREATION_SUCCESS;
-  payload: {asset: CreationAsset};
+  payload: {
+    asset: CreationAsset;
+  };
 };
 export const assetCreationSuccessAction = (asset: CreationAsset): OnAssetCreationSuccessAction => ({
   type: ASSET_CREATION_SUCCESS,
@@ -45,11 +41,13 @@ export const assetCreationSuccessAction = (asset: CreationAsset): OnAssetCreatio
     asset,
   },
 });
-
 export const ASSET_CREATION_FAIL = 'asset-upload/ASSET_CREATION_FAIL';
 export type OnAssetCreationFailAction = {
   type: typeof ASSET_CREATION_FAIL;
-  payload: {asset: CreationAsset; errors: ValidationError[]};
+  payload: {
+    asset: CreationAsset;
+    errors: ValidationError[];
+  };
 };
 export const assetCreationFailAction = (
   asset: CreationAsset,
@@ -61,11 +59,12 @@ export const assetCreationFailAction = (
     errors,
   },
 });
-
 export const REMOVE_LINE = 'asset-upload/REMOVE_LINE';
 export type OnRemoveLineAction = {
   type: typeof REMOVE_LINE;
-  payload: {line: Line};
+  payload: {
+    line: Line;
+  };
 };
 export const removeLineAction = (line: Line): OnRemoveLineAction => ({
   type: REMOVE_LINE,
@@ -73,7 +72,6 @@ export const removeLineAction = (line: Line): OnRemoveLineAction => ({
     line,
   },
 });
-
 export const REMOVE_ALL_LINES = 'asset-upload/REMOVE_ALL_LINES';
 export type OnRemoveAllLinesAction = {
   type: typeof REMOVE_ALL_LINES;
@@ -83,11 +81,12 @@ export const removeAllLinesAction = (): OnRemoveAllLinesAction => ({
   type: REMOVE_ALL_LINES,
   payload: {},
 });
-
 export const EDIT_LINE = 'asset-upload/EDIT_LINE';
 export type OnEditLineAction = {
   type: typeof EDIT_LINE;
-  payload: {line: Line};
+  payload: {
+    line: Line;
+  };
 };
 export const editLineAction = (line: Line): OnEditLineAction => ({
   type: EDIT_LINE,
@@ -95,11 +94,13 @@ export const editLineAction = (line: Line): OnEditLineAction => ({
     line,
   },
 });
-
 export const FILE_UPLOAD_SUCCESS = 'asset-upload/FILE_UPLOAD_SUCCESS';
 export type OnFileUploadSuccessAction = {
   type: typeof FILE_UPLOAD_SUCCESS;
-  payload: {line: Line; file: FileModel};
+  payload: {
+    line: Line;
+    file: FileModel;
+  };
 };
 export const fileUploadSuccessAction = (line: Line, file: FileModel): OnFileUploadSuccessAction => ({
   type: FILE_UPLOAD_SUCCESS,
@@ -108,11 +109,13 @@ export const fileUploadSuccessAction = (line: Line, file: FileModel): OnFileUplo
     file,
   },
 });
-
 export const FILE_UPLOAD_PROGRESS = 'asset-upload/FILE_UPLOAD_PROGRESS';
 export type OnFileUploadProgressAction = {
   type: typeof FILE_UPLOAD_PROGRESS;
-  payload: {line: Line; progress: number};
+  payload: {
+    line: Line;
+    progress: number;
+  };
 };
 export const fileUploadProgressAction = (line: Line, progress: number): OnFileUploadProgressAction => ({
   type: FILE_UPLOAD_PROGRESS,
@@ -121,7 +124,6 @@ export const fileUploadProgressAction = (line: Line, progress: number): OnFileUp
     progress,
   },
 });
-
 export const FILE_THUMBNAIL_GENERATION = 'asset-upload/THUMBNAIL_GENERATED';
 export type OnFileThumbnailGenerationAction = {
   type: typeof FILE_THUMBNAIL_GENERATION;
@@ -137,63 +139,3 @@ export const fileThumbnailGenerationAction = (thumbnail: Thumbnail, line: Line):
     line,
   },
 });
-
-export type State = {
-  lines: Line[];
-};
-
-export const reducer = (
-  state: State,
-  action:
-    | OnAddLineAction
-    | OnFileThumbnailGenerationAction
-    | OnRemoveLineAction
-    | OnFileUploadSuccessAction
-    | OnFileUploadProgressAction
-    | OnLineCreationStartAction
-    | OnAssetCreationSuccessAction
-    | OnAssetCreationFailAction
-    | OnEditLineAction
-    | OnRemoveAllLinesAction
-) => {
-  switch (action.type) {
-    case ADD_LINES:
-      return {...state, lines: addLines(state.lines, action.payload.lines)};
-    case REMOVE_LINE:
-      return {...state, lines: removeLine(state.lines, action.payload.line)};
-    case REMOVE_ALL_LINES:
-      return {...state, lines: []};
-    case FILE_THUMBNAIL_GENERATION:
-      return {...state, lines: updateLine(state.lines, action.payload.line.id, {thumbnail: action.payload.thumbnail})};
-    case EDIT_LINE:
-      return {
-        ...state,
-        lines: updateLine(state.lines, action.payload.line.id, {
-          code: action.payload.line.code,
-          channel: action.payload.line.channel,
-          locale: action.payload.line.locale,
-        }),
-      };
-    case FILE_UPLOAD_SUCCESS:
-      return {
-        ...state,
-        lines: updateLine(state.lines, action.payload.line.id, {file: action.payload.file, isSending: false}),
-      };
-    case FILE_UPLOAD_PROGRESS:
-      return {
-        ...state,
-        lines: updateLine(state.lines, action.payload.line.id, {
-          uploadProgress: action.payload.progress,
-          isSending: true,
-        }),
-      };
-    case LINE_CREATION_START:
-      return {...state, lines: updateLine(state.lines, action.payload.line.id, {isCreating: true})};
-    case ASSET_CREATION_SUCCESS:
-      return {...state, lines: assetCreationSucceeded(state.lines, action.payload.asset)};
-    case ASSET_CREATION_FAIL:
-      return {...state, lines: assetCreationFailed(state.lines, action.payload.asset, action.payload.errors)};
-    default:
-      return state;
-  }
-};

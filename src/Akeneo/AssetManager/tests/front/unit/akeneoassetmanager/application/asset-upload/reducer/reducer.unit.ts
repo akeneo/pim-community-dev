@@ -1,5 +1,6 @@
 'use strict';
 
+import {reducer} from 'akeneoassetmanager/application/asset-upload/reducer/reducer';
 import {
   assetCreationFailAction,
   assetCreationSuccessAction,
@@ -9,10 +10,9 @@ import {
   fileUploadSuccessAction,
   lineCreationStartAction,
   linesAddedAction,
-  reducer,
   removeAllLinesAction,
   removeLineAction,
-} from 'akeneoassetmanager/application/asset-upload/reducer/asset-upload';
+} from 'akeneoassetmanager/application/asset-upload/reducer/action';
 import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';

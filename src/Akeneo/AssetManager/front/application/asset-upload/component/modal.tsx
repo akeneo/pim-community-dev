@@ -16,6 +16,7 @@ import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
 import {create} from 'akeneoassetmanager/application/asset-upload/saver/asset';
+import {reducer, State} from 'akeneoassetmanager/application/asset-upload/reducer/reducer';
 import {
   lineCreationStartAction,
   fileThumbnailGenerationAction,
@@ -23,8 +24,6 @@ import {
   linesAddedAction,
   removeLineAction,
   fileUploadSuccessAction,
-  reducer,
-  State,
   assetCreationFailAction,
   assetCreationSuccessAction,
   OnFileThumbnailGenerationAction,
@@ -33,12 +32,13 @@ import {
   OnAddLineAction,
   editLineAction,
   removeAllLinesAction,
-} from 'akeneoassetmanager/application/asset-upload/reducer/asset-upload';
+} from 'akeneoassetmanager/application/asset-upload/reducer/action';
 import FileDropZone from 'akeneoassetmanager/application/asset-upload/component/file-drop-zone';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {Reducer} from 'redux';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 const Subtitle = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
@@ -59,6 +59,7 @@ const Title = styled.div`
 
 type UploadModalProps = {
   assetFamily: AssetFamily;
+  locale: LocaleCode;
   onCancel: () => void;
   onAssetCreated: () => void;
 };
@@ -160,7 +161,7 @@ const onFileDrop = (
   dispatch(linesAddedAction(lines));
 };
 
-const UploadModal = ({assetFamily, onCancel}: UploadModalProps) => {
+const UploadModal = ({assetFamily, locale, onCancel}: UploadModalProps) => {
   const [state, dispatch] = React.useReducer<Reducer<State>>(reducer, {lines: []});
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
 
@@ -168,8 +169,7 @@ const UploadModal = ({assetFamily, onCancel}: UploadModalProps) => {
     <Modal>
       <Header>
         <CloseButton title={__('pim_asset_manager.close')} onClick={onCancel} />
-        {/* TODO retrieve the correct locale */}
-        <Subtitle>{getAssetFamilyLabel(assetFamily, 'en_US', true)}</Subtitle>
+        <Subtitle>{getAssetFamilyLabel(assetFamily, locale, true)}</Subtitle>
         <Title>{__('pim_asset_manager.asset.upload.title')}</Title>
         <ConfirmButton
           title={__('pim_asset_manager.asset.upload.confirm')}
