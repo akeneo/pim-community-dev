@@ -9,17 +9,8 @@ use PhpSpec\ObjectBehavior;
 
 class FileFetcherSpec extends ObjectBehavior
 {
-    function let()
-    {
-        $this->beConstructedWith(sys_get_temp_dir());
-    }
-
     function it_fetches_a_file(Local $adapter, FilesystemInterface $filesystem)
     {
-        if (!is_dir(sys_get_temp_dir() . '/spec/path/to')) {
-            mkdir(sys_get_temp_dir() . '/spec/path/to', 0777, true);
-        }
-
         $filesystem->has('path/to/file.txt')->willReturn(true);
         $filesystem->readStream('path/to/file.txt')->shouldBeCalled();
 

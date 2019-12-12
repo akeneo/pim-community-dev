@@ -43,16 +43,12 @@ class PimRequirements
         'mbstring',
     ];
 
-    /** @var string[] */
-    private $directoriesToCheck;
-
     /** @var string */
     private $baseDir;
 
-    public function __construct(string $baseDir, array $directoriesToCheck = [])
+    public function __construct(string $baseDir)
     {
         $this->baseDir = $baseDir;
-        $this->directoriesToCheck = $directoriesToCheck;
     }
 
     /**
@@ -166,14 +162,6 @@ class PimRequirements
             true
         );
 
-        foreach ($this->directoriesToCheck as $directoryToCheck) {
-            $requirements[] = new Requirement(
-                $this->directoryIsWritableIfExists($directoryToCheck),
-                sprintf('%s directory must be writable if it exists', $directoryToCheck),
-                sprintf('Change the permissions of the "<strong>%s</strong>" directory', $directoryToCheck)
-            );
-        }
-
         return $requirements;
     }
 
@@ -256,24 +244,6 @@ class PimRequirements
         }
 
         return (float) $val;
-    }
-
-    /**
-     * This checks is only useful for PIM instances that use a local filesystem for storage.
-     * In that case, we have to check the directories are writable when the directory already exists.
-     * If the directories do not exist, no problem, FlySystem will create them when needed.
-     *
-     * @param string $directory
-     *
-     * @return bool
-     */
-    private function directoryIsWritableIfExists(string $directory): bool
-    {
-        if (is_dir($directory)) {
-            return is_writable($directory);
-        }
-
-        return true;
     }
 
     private function isGhostScriptVersionSupported(): bool

@@ -16,14 +16,6 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class FileFetcher implements FileFetcherInterface
 {
-    /** @var string */
-    protected $tmpDir;
-
-    public function __construct(string $tmpDir)
-    {
-        $this->tmpDir = $tmpDir;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -40,12 +32,13 @@ class FileFetcher implements FileFetcherInterface
         }
 
         $fsTools = new Filesystem();
+        $tmpDir = sys_get_temp_dir();
 
-        if (!$fsTools->exists($this->tmpDir . DIRECTORY_SEPARATOR. dirname($fileKey))) {
-            $fsTools->mkdir($this->tmpDir . DIRECTORY_SEPARATOR . dirname($fileKey));
+        if (!$fsTools->exists($tmpDir . DIRECTORY_SEPARATOR. dirname($fileKey))) {
+            $fsTools->mkdir($tmpDir . DIRECTORY_SEPARATOR . dirname($fileKey));
         }
 
-        $localPathname = $this->tmpDir . DIRECTORY_SEPARATOR . $fileKey;
+        $localPathname = $tmpDir . DIRECTORY_SEPARATOR . $fileKey;
 
         if (false === file_put_contents($localPathname, $stream)) {
             throw new FileTransferException(

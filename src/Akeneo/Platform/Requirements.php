@@ -21,11 +21,11 @@ class Requirements extends SymfonyRequirements
     /**
      * {@inheritdoc}
      */
-    public function __construct(string $baseDirectory, array $directoriesToCheck = [])
+    public function __construct(string $baseDirectory)
     {
         parent::__construct($baseDirectory);
 
-        $communityRequirements = new PimRequirements($baseDirectory, $directoriesToCheck);
+        $communityRequirements = new PimRequirements($baseDirectory);
 
         foreach ($communityRequirements->getRequirements() as $requirement) {
             if (!$requirement->isOptional()) {

@@ -20,7 +20,6 @@ services:
 
     Akeneo\Platform\Bundle\InstallerBundle\Command\CheckRequirementsCommand:
         arguments:
-            - '@pim_installer.directories_registry'
             - '%pim_catalog.version.class%'
             - '%kernel.environment%'
             - '%kernel.project_dir%'
@@ -43,10 +42,5 @@ services:
         arguments:
             - '%kernel.root_dir%'
             - '%kernel.bundles%'
-        tags:
-            - { name: console.command }
-    Akeneo\Platform\Bundle\InstallerBundle\Command\PrepareRequiredDirectoriesCommand:
-        arguments:
-            - '@pim_installer.directories_registry'
         tags:
             - { name: console.command }
