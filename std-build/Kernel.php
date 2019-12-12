@@ -29,8 +29,9 @@ class Kernel extends BaseKernel
 
     public function registerBundles(): iterable
     {
-        $contents = require $this->getProjectDir() . '/config/bundles.php';
-        foreach ($contents as $class => $envs) {
+        $bundles = require $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config/bundles.php';
+        $bundles += require $this->getProjectDir() . '/config/bundles.php';
+        foreach ($bundles as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
                 yield new $class();
             }
