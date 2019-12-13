@@ -10,11 +10,12 @@ import {
   linesAddedAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 
-export const onFileDrop = (files: FileList | null, assetFamily: AssetFamily, dispatch: (action: any) => void) => {
-  if (null === files) {
+export const onFileDrop = (files: File[], assetFamily: AssetFamily, dispatch: (action: any) => void) => {
+  if (null === files || 0 === files.length) {
     return;
   }
-  const lines = Object.values(files).map((file: File) => {
+
+  const lines = files.map((file: File) => {
     const filename = file.name;
 
     const line = createLineFromFilename(filename, assetFamily);

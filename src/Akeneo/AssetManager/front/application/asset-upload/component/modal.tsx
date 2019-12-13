@@ -73,7 +73,7 @@ const UploadModal = ({assetFamily, locale, onCancel}: UploadModalProps) => {
           event.preventDefault();
           event.stopPropagation();
 
-          const files = event.target.files;
+          const files = event.target.files ? Object.values(event.target.files) : [];
           onFileDrop(files, assetFamily, dispatch);
         }}
       />

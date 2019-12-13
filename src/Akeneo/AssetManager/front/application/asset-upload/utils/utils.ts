@@ -6,6 +6,7 @@ import sanitize from 'akeneoassetmanager/tools/sanitize';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
 import {NormalizedMinimalValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {createUUIDV4} from 'akeneoassetmanager/application/asset-upload/utils/uuid';
 
 export const createLineFromFilename = (filename: string, assetFamily: AssetFamily): Line => {
   const info = extractInfoFromFilename(filename, assetFamily);
@@ -174,15 +175,4 @@ export const getStatusFromLine = (line: Line, localizable: boolean, scopable: bo
   }
 
   return LineStatus.WaitingForUpload;
-};
-
-/**
- * Misc
- */
-const createUUIDV4 = (): string => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-    let r = (Math.random() * 16) | 0,
-      v = c == 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
 };
