@@ -17,6 +17,7 @@ import {PageHeader} from './PageHeader';
 import {Section} from './Section';
 import {Select2} from './Select2';
 import {SmallHelper} from './SmallHelper';
+import {Select} from './select/Select';
 
 export {
     ApplyButton,
@@ -43,4 +44,5 @@ export {
     Section,
     Select2,
     SmallHelper,
+    Select,
 };

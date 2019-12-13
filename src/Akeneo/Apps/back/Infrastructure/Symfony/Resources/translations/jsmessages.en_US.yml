@@ -119,6 +119,8 @@ akeneo_apps:
             description: Here, you will be able to track all the data flows that are collected into your PIM via your apps, as well as all the data flows that are distributed to your channels via your apps.
             link: Wanna know more? Here you go!
             link_url: https://www.akeneo.com/
+        app_selector:
+            title: Source apps
         charts:
             number_of_products_created: Number of products created
             number_of_product_updated: Number of products updated

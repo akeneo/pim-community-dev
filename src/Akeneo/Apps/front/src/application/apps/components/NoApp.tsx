@@ -1,7 +1,8 @@
 import React from 'react';
-import {Translate} from '../../shared/translate';
 import styled from 'styled-components';
 import imgUrl from '../../common/assets/illustrations/api.svg';
+import {PropsWithTheme} from '../../common/theme';
+import {Translate} from '../../shared/translate';
 
 const Container = styled.div`
     text-align: center;
@@ -9,19 +10,19 @@ const Container = styled.div`
 
 const Title = styled.div`
     height: 36px;
-    font-size: 30px;
-    color: #11324d;
+    font-size: ${({theme}: PropsWithTheme) => theme.fontSize.title};
+    color: ${({theme}: PropsWithTheme) => theme.color.grey140};
 `;
 
 const Message = styled.div`
     height: 21px;
-    font-size: 17px;
+    font-size: ${({theme}: PropsWithTheme) => theme.fontSize.bigger};
 `;
 
 const Link = styled.a`
     color: #9452ba;
     cursor: pointer;
-    text-decoration: underline #9452ba;
+    text-decoration: underline ${({theme}: PropsWithTheme) => theme.color.purple100};
 `;
 
 const Image = styled.img`
