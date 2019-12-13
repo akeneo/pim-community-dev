@@ -31,7 +31,7 @@ cp $DEV_DISTRIB_DIR/config/bootstrap.php $STANDARD_DISTRIB_DIR/config/
 cp $DEV_DISTRIB_DIR/config/packages/security.yml $STANDARD_DISTRIB_DIR/config/packages/security.yml
 
 # Partners are most likely to develop and deploy using local filesystem, not MinIO
-cp $DEV_DISTRIB_DIR/std-build/std-build/oneup_flysystem_local_dev.yml $STANDARD_DISTRIB_DIR/config/packages/dev
+cp $DEV_DISTRIB_DIR/std-build/oneup_flysystem_local_dev.yml $STANDARD_DISTRIB_DIR/config/packages/dev
 
 # We need a console and FPM entrypoint
 cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/

@@ -35,6 +35,10 @@ javascript-dev:
 .PHONY: front
 front: assets css javascript-dev
 
+.PHONY: database
+database:
+	$(PHP_RUN) bin/console pim:installer:db ${O}
+
 .PHONY: cache
 cache:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
@@ -69,7 +73,7 @@ pim-dev:
 	$(MAKE) assets
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
-	APP_ENV=env $(MAKE) database O="--catalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev"
+	APP_ENV=dev $(MAKE) database O="--catalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev"
 
 .PHONY: up
 up:
