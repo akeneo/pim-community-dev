@@ -32,8 +32,8 @@ class CountDailyEventsByAppEndToEnd extends WebTestCase
         $response = $this->client->getResponse();
 
         Assert::assertTrue($response->isOk());
-        Assert::assertEquals(
-            file_get_contents('../Resources/json_response/count_daily_events_by_app.json'),
+        Assert::assertJsonStringNotEqualsJsonFile(
+            realpath(__DIR__.'/../Resources/json_response/count_daily_events_by_app.json'),
             $response->getContent()
         );
     }
