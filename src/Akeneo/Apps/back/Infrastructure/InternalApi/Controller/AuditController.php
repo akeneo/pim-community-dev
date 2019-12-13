@@ -29,8 +29,7 @@ class AuditController
     {
         $eventType = $request->get('event_type', '');
         $today = new \DateTime('now', new \DateTimeZone('UTC'));
-        $startPeriod = new \DateTime('now', new \DateTimeZone('UTC'));
-        $startPeriod->modify('-1 week');
+        $startPeriod = new \DateTime('1 week ago', new \DateTimeZone('UTC'));
 
         $query = new CountDailyEventsByAppQuery($eventType, $startPeriod->format('Y-m-d'), $today->format('Y-m-d'));
         $countDailyEventsByApp = $this->countDailyEventsByAppHandler->handle($query);
