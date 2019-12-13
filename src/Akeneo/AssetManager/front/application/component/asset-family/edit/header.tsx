@@ -16,7 +16,7 @@ import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 
 interface OwnProps {
   label: string;
-  image: File;
+  image: File | null;
   primaryAction: (defaultFocus: React.RefObject<any>) => JSX.Element | null;
   secondaryActions: () => JSX.Element | null;
   withLocaleSwitcher: boolean;
@@ -87,7 +87,9 @@ class Header extends React.Component<HeaderProps> {
     return (
       <header className="AknTitleContainer">
         <div className="AknTitleContainer-line">
-          <Image alt={__('pim_asset_manager.asset_family.img', {'{{ label }}': label})} image={image} />
+          {null !== image ? (
+            <Image alt={__('pim_asset_manager.asset_family.img', {'{{ label }}': label})} image={image} />
+          ) : null}
           <div className="AknTitleContainer-mainContainer">
             <div>
               <div className="AknTitleContainer-line">

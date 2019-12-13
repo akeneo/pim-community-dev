@@ -1,0 +1,64 @@
+// Coming from CE src/Akeneo/Platform/Bundle/UIBundle/Resources/public/less/base/variables.less
+@AknDefaultFont: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
+@AknMonospacedFot: Courier, "MS Courier New", Prestige, "Everson Mono";
+@AknBlue: #5992C7;
+@AknMediumGrey: #D9DDE2;
+@AknGrey: #A1A9B7;
+@AknSlateGrey:#67768A;
+@AknOrange20: #FEF0D9;
+@AknRed20: #F6DFDC;
+@AknBorderColor: lighten(@AknGrey, 15%);
+@AknDefaultFontColor: @AknSlateGrey;
+@AknDefaultFontSize: 13px;
+@AknFontSizeBig: 15px;
+@AknFormHeight: 40px;
+
+// Overrides the default jsoneditor-react/es/editor.min.css
+.AknJsonEditor {
+  .jsoneditor {
+    min-height: 330px;
+    height: calc(100vh - 410px);
+    border-color: @AknBorderColor;
+    border-radius: 2px;
+    color: @AknDefaultFontColor;
+  }
+  .jsoneditor-menu {
+    background-color: lighten(@AknGrey, 30%);
+    border-bottom-color: @AknBorderColor;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+  }
+  .jsoneditor-statusbar {
+    background-color: lighten(@AknGrey, 30%);
+    border-top-color: @AknBorderColor;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+  div.jsoneditor-field, div.jsoneditor-value, div.jsoneditor td, div.jsoneditor th, div.jsoneditor textarea, pre.jsoneditor-preview, .jsoneditor-schema-error, .jsoneditor-popover {
+    font-family: @AknMonospacedFont !important;
+  }
+  .jsoneditor .jsoneditor-text-errors tr {
+    background-color: @AknOrange20;
+  }
+  .jsoneditor .jsoneditor-text-errors tr.parse-error {
+    background-color: @AknRed20;
+  }
+  .jsoneditor-menu>button, .jsoneditor-menu>.jsoneditor-modes>button {
+    background-color: @AknSlateGrey;
+    border-color: @AknBorderColor;
+    cursor: pointer;
+  }
+  .jsoneditor-menu>button:hover, .jsoneditor-menu>.jsoneditor-modes>button:hover {
+    background-color: darken(@AknSlateGrey, 10%);
+    border-color: @AknBorderColor;
+  }
+  .jsoneditor-menu>button:focus, .jsoneditor-menu>button:active, .jsoneditor-menu>.jsoneditor-modes>button:focus, .jsoneditor-menu>.jsoneditor-modes>button:active {
+    background-color: darken(@AknSlateGrey, 10%);
+  }
+  .jsoneditor-sort {
+    display: none; // Hide useless button
+  }
+  .jsoneditor-transform {
+    display: none; // Hide useless button
+  }
+}
