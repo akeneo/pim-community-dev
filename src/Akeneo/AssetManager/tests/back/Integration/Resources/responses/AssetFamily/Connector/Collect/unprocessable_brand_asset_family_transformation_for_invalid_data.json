@@ -188,7 +188,7 @@
                 },
                 {
                     "property": "transformations[2][operations]",
-                    "message": "The operation \"thumbnail\" cannot be specified twice in a single transformation"
+                    "message": "The operation \"thumbnail\" cannot be defined twice in a single transformation"
                 },
                 {
                     "property": "transformations",

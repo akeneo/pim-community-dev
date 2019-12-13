@@ -510,7 +510,7 @@ class EditAssetFamilyTransformationsContext implements Context
     public function thereShouldBeAValidationErrorStatingThatAnOperationIsSetTwice()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'The operation "scale" cannot be specified twice in a single transformation'
+            'The operation "scale" cannot be defined twice in a single transformation'
         );
     }
 
