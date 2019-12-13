@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.60 (2019-12-13)
+
 - PIM-9011: Fix display issue on read-only categories
 - PIM-9023: Add login details on user profile page
 
