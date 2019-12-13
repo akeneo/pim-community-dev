@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 
-use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationFromAssetIdentifiersLauncherInterface;
 use Akeneo\AssetManager\Common\Fake\ComputeTransformationFromAssetIdentifiersLauncherSpy;
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
@@ -41,7 +40,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollect
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
@@ -701,7 +700,7 @@ class CreateOrUpdateAssetContext implements Context
             $assetFamily = $assetFamily->withTransformationCollection(
                 TransformationCollection::create([
                     Transformation::create(
-                        TransformationCode::fromString('code'),
+                        TransformationLabel::fromString('label'),
                         Source::createFromNormalized(['attribute' => 'cover_image', 'channel'=> null, 'locale' => null]),
                         Target::createFromNormalized(['attribute' => 'thumbnail', 'channel'=> null, 'locale' => null]),
                         OperationCollection::create([
@@ -729,7 +728,7 @@ class CreateOrUpdateAssetContext implements Context
         $assetFamily = $assetFamily->withTransformationCollection(
             TransformationCollection::create([
                 Transformation::create(
-                    TransformationCode::fromString('code'),
+                    TransformationLabel::fromString('label'),
                     Source::createFromNormalized(['attribute' => 'main_image', 'channel'=> null, 'locale' => null]),
                     Target::createFromNormalized(['attribute' => 'thumbnail', 'channel'=> null, 'locale' => null]),
                     OperationCollection::create([

@@ -39,8 +39,8 @@ class TransformationCollectionFactory
 
     private function buildTransformation(array $normalizedTransformation): Transformation
     {
-        Assert::keyExists($normalizedTransformation, 'code');
-        Assert::stringNotEmpty($normalizedTransformation['code']);
+        Assert::keyExists($normalizedTransformation, 'label');
+        Assert::stringNotEmpty($normalizedTransformation['label']);
         Assert::keyExists($normalizedTransformation, 'source');
         Assert::isArray($normalizedTransformation['source']);
         Assert::keyExists($normalizedTransformation, 'target');
@@ -53,7 +53,7 @@ class TransformationCollectionFactory
         Assert::stringNotEmpty($normalizedTransformation['updated_at']);
 
         return Transformation::create(
-            TransformationCode::fromString($normalizedTransformation['code']),
+            TransformationLabel::fromString($normalizedTransformation['label']),
             Source::createFromNormalized($normalizedTransformation['source']),
             Target::createFromNormalized($normalizedTransformation['target']),
             OperationCollection::create(

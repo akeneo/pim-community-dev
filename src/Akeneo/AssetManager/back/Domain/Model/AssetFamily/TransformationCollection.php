@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
 use Webmozart\Assert\Assert;
 
 class TransformationCollection implements \IteratorAggregate
@@ -50,9 +50,15 @@ class TransformationCollection implements \IteratorAggregate
         return new self([]);
     }
 
-    public function getByTransformationCode(TransformationCode $code): ?Transformation
+    public function getByTarget(Target $target): ?Transformation
     {
-        return $this->transformations[$code->toString()] ?? null;
+        foreach ($this->transformations as $transformation) {
+            if ($transformation->getTarget()->equals($target)) {
+                return $transformation;
+            }
+        }
+
+        return null;
     }
 
     private function add(Transformation $transformation)
@@ -68,16 +74,9 @@ class TransformationCollection implements \IteratorAggregate
                     'You can not define a transformation having a source as a target of another transformation'
                 );
             }
-
-            if ($existingTransformation->getCode()->equals($transformation->getCode())) {
-                throw new \InvalidArgumentException(sprintf(
-                    'You cannot define two transformations with the same code "%s"',
-                    $transformation->getCode()->toString()
-                ));
-            }
         }
 
-        $this->transformations[$transformation->getCode()->toString()] = $transformation;
+        $this->transformations[] = $transformation;
     }
 
     public function getIterator(): \ArrayIterator
@@ -87,12 +86,12 @@ class TransformationCollection implements \IteratorAggregate
 
     public function update(TransformationCollection $transformationCollection): void
     {
-        foreach ($this->transformations as $code => $currentTransformation) {
-            $findInNewCollection = $transformationCollection->getByTransformationCode(
-                TransformationCode::fromString($code)
+        foreach ($this->transformations as $index => $currentTransformation) {
+            $findInNewCollection = $transformationCollection->getByTarget(
+                $currentTransformation->getTarget()
             );
             if (null === $findInNewCollection) {
-                $this->removeTransformation($code);
+                $this->removeTransformation($index);
                 continue;
             }
 
@@ -100,25 +99,24 @@ class TransformationCollection implements \IteratorAggregate
                 continue;
             }
 
-            $this->updateTransformation($findInNewCollection);
+            $this->updateTransformation($index, $findInNewCollection);
         }
 
         /** @var Transformation $newTransformation */
         foreach ($transformationCollection as $newTransformation) {
-            $transformationCode = $newTransformation->getCode();
-            if (null === $this->getByTransformationCode($transformationCode)) {
+            if (null === $this->getByTarget($newTransformation->getTarget())) {
                 $this->add($newTransformation);
             }
         }
     }
 
-    private function updateTransformation(Transformation $transformation): void
+    private function updateTransformation(int $index, Transformation $transformation): void
     {
-        $this->transformations[$transformation->getCode()->toString()] = $transformation;
+        $this->transformations[$index] = $transformation;
     }
 
-    private function removeTransformation(string $code): void
+    private function removeTransformation(int $index): void
     {
-        unset($this->transformations[$code]);
+        unset($this->transformations[$index]);
     }
 }

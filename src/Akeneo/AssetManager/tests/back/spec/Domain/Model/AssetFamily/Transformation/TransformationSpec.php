@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
-use Akeneo\AssetManager\Domain\Query\ClockInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use PhpSpec\ObjectBehavior;
 
 class TransformationSpec extends ObjectBehavior
@@ -23,7 +20,7 @@ class TransformationSpec extends ObjectBehavior
         $source->equals($target)->willReturn(false);
 
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source,
             $target,
             OperationCollection::create([]),
@@ -39,7 +36,7 @@ class TransformationSpec extends ObjectBehavior
         $source->equals($target)->willReturn(true);
 
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source,
             $target,
             OperationCollection::create([]),
@@ -60,7 +57,7 @@ class TransformationSpec extends ObjectBehavior
 
         $updatedAt = new \DateTimeImmutable('1990-01-01');
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source,
             $target,
             OperationCollection::create([$operation1, $operation2]),
@@ -75,7 +72,7 @@ class TransformationSpec extends ObjectBehavior
         $target->normalize()->willReturn($normalizedTarget);
 
         $this->normalize()->shouldReturn([
-            'code' => 'code',
+            'label' => 'label',
             'source' => $normalizedSource,
             'target' => $normalizedTarget,
             'operations' => [
@@ -97,7 +94,7 @@ class TransformationSpec extends ObjectBehavior
 
         $updatedAt = new \DateTimeImmutable();
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source,
             $target,
             OperationCollection::create([$operation1, $operation2]),
@@ -112,7 +109,7 @@ class TransformationSpec extends ObjectBehavior
         $target->normalize()->willReturn($normalizedTarget);
 
         $this->normalize()->shouldReturn([
-            'code' => 'code',
+            'label' => 'label',
             'source' => $normalizedSource,
             'target' => $normalizedTarget,
             'operations' => [
@@ -129,7 +126,7 @@ class TransformationSpec extends ObjectBehavior
         $source->equals($target)->willReturn(false);
 
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source,
             $target,
             OperationCollection::create([]),
@@ -145,7 +142,7 @@ class TransformationSpec extends ObjectBehavior
         $source->equals($target)->willReturn(false);
 
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source,
             $target,
             OperationCollection::create([]),
@@ -161,7 +158,7 @@ class TransformationSpec extends ObjectBehavior
         $source->equals($target)->willReturn(false);
 
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source,
             $target,
             OperationCollection::create([]),
@@ -177,7 +174,7 @@ class TransformationSpec extends ObjectBehavior
         $source->equals($target)->willReturn(false);
 
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source,
             $target,
             OperationCollection::create([]),
@@ -194,7 +191,7 @@ class TransformationSpec extends ObjectBehavior
         $source->equals($target)->willReturn(false);
 
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source,
             $target,
             OperationCollection::create([]),
@@ -210,7 +207,7 @@ class TransformationSpec extends ObjectBehavior
     {
         $source->equals($target)->willReturn(false);
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source,
             $target,
             OperationCollection::create([]),
@@ -225,7 +222,7 @@ class TransformationSpec extends ObjectBehavior
     {
         $source->equals($target)->willReturn(false);
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source,
             $target,
             OperationCollection::create([]),
@@ -240,7 +237,7 @@ class TransformationSpec extends ObjectBehavior
     {
         $source->equals($target)->willReturn(false);
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source,
             $target,
             OperationCollection::create([]),
@@ -255,7 +252,7 @@ class TransformationSpec extends ObjectBehavior
     {
         $source->equals($target)->willReturn(false);
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source,
             $target,
             OperationCollection::create([]),
@@ -277,7 +274,7 @@ class TransformationSpec extends ObjectBehavior
     ) {
         $source1->equals($target1)->willReturn(false);
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source1,
             $target1,
             $operationCollection1,
@@ -286,7 +283,7 @@ class TransformationSpec extends ObjectBehavior
             new \DateTimeImmutable(),
         ]);
 
-        $otherTransformation->getCode()->willReturn(TransformationCode::fromString('code'));
+        $otherTransformation->getLabel()->willReturn(TransformationLabel::fromString('label'));
         $otherTransformation->getSource()->willReturn($source2);
         $otherTransformation->getTarget()->willReturn($target2);
         $otherTransformation->getOperationCollection()->willReturn($operationCollection2);
@@ -311,7 +308,7 @@ class TransformationSpec extends ObjectBehavior
     ) {
         $source1->equals($target1)->willReturn(false);
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source1,
             $target1,
             $operationCollection1,
@@ -320,7 +317,7 @@ class TransformationSpec extends ObjectBehavior
             new \DateTimeImmutable(),
         ]);
 
-        $otherTransformation->getCode()->willReturn(TransformationCode::fromString('code'));
+        $otherTransformation->getLabel()->willReturn(TransformationLabel::fromString('label'));
         $otherTransformation->getSource()->willReturn($source2);
         $otherTransformation->getTarget()->willReturn($target2);
         $otherTransformation->getOperationCollection()->willReturn($operationCollection2);
@@ -345,7 +342,7 @@ class TransformationSpec extends ObjectBehavior
     ) {
         $source1->equals($target1)->willReturn(false);
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source1,
             $target1,
             $operationCollection1,
@@ -354,7 +351,7 @@ class TransformationSpec extends ObjectBehavior
             new \DateTimeImmutable(),
         ]);
 
-        $otherTransformation->getCode()->willReturn(TransformationCode::fromString('code'));
+        $otherTransformation->getLabel()->willReturn(TransformationLabel::fromString('label'));
         $otherTransformation->getSource()->willReturn($source2);
         $otherTransformation->getTarget()->willReturn($target2);
         $otherTransformation->getOperationCollection()->willReturn($operationCollection2);
@@ -379,7 +376,7 @@ class TransformationSpec extends ObjectBehavior
     ) {
         $source1->equals($target1)->willReturn(false);
         $this->beConstructedThrough('create', [
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             $source1,
             $target1,
             $operationCollection1,
@@ -388,7 +385,7 @@ class TransformationSpec extends ObjectBehavior
             new \DateTimeImmutable(),
         ]);
 
-        $otherTransformation->getCode()->willReturn(TransformationCode::fromString('code'));
+        $otherTransformation->getLabel()->willReturn(TransformationLabel::fromString('label'));
         $otherTransformation->getSource()->willReturn($source2);
         $otherTransformation->getTarget()->willReturn($target2);
         $otherTransformation->getOperationCollection()->willReturn($operationCollection2);

@@ -23,7 +23,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\Thumbn
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
@@ -103,7 +103,7 @@ class GetConnectorAssetFamiliesContext implements Context
                 ];
                 $connectorTransformations = new ConnectorTransformationCollection([
                     new ConnectorTransformation(
-                        TransformationCode::fromString('code'),
+                        TransformationLabel::fromString('label'),
                         Source::createFromNormalized(['attribute' => 'main', 'channel' => null, 'locale' => null]),
                         Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => null]),
                         OperationCollection::create([ThumbnailOperation::create(['width' => 100, 'height' => 80])]),

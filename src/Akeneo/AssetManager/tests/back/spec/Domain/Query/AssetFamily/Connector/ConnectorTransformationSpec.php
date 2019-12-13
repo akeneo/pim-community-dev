@@ -16,7 +16,7 @@ namespace spec\Akeneo\AssetManager\Domain\Query\AssetFamily\Connector;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformation;
 use PhpSpec\ObjectBehavior;
 
@@ -29,7 +29,7 @@ class ConnectorTransformationSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedWith(
-            TransformationCode::fromString('the_code'),
+            TransformationLabel::fromString('the label'),
             Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => null]),
             OperationCollection::create([]),
@@ -46,7 +46,7 @@ class ConnectorTransformationSpec extends ObjectBehavior
     function it_can_be_normalized()
     {
         $this->normalize()->shouldReturn([
-            'code' => 'the_code',
+            'label' => 'the label',
             'source' => ['attribute' => 'source', 'channel' => null, 'locale' => null],
             'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
             'operations' => [],

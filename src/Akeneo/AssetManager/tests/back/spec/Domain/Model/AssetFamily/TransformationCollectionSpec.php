@@ -6,7 +6,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollect
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use PhpSpec\ObjectBehavior;
 
@@ -49,8 +49,8 @@ class TransformationCollectionSpec extends ObjectBehavior
         $transformation2->getTarget()->willReturn($target2);
 
         $target1->equals($target2)->willReturn(true);
-        $transformation1->getCode()->willReturn(TransformationCode::fromString('code1'));
-        $transformation2->getCode()->willReturn(TransformationCode::fromString('code2'));
+        $transformation1->getLabel()->willReturn(TransformationLabel::fromString('label1'));
+        $transformation2->getLabel()->willReturn(TransformationLabel::fromString('label2'));
 
         $this->beConstructedThrough('create', [
             [
@@ -76,8 +76,8 @@ class TransformationCollectionSpec extends ObjectBehavior
 
         $target1->equals($source2)->willReturn(true);
         $target1->equals($target2)->willReturn(false);
-        $transformation1->getCode()->willReturn(TransformationCode::fromString('code1'));
-        $transformation2->getCode()->willReturn(TransformationCode::fromString('code2'));
+        $transformation1->getLabel()->willReturn(TransformationLabel::fromString('label1'));
+        $transformation2->getLabel()->willReturn(TransformationLabel::fromString('label2'));
 
         $this->beConstructedThrough('create', [
             [
@@ -106,8 +106,8 @@ class TransformationCollectionSpec extends ObjectBehavior
         $target1->equals($source2)->willReturn(false);
         $target2->equals($source1)->willReturn(false);
 
-        $transformation1->getCode()->willReturn(TransformationCode::fromString('code1'));
-        $transformation2->getCode()->willReturn(TransformationCode::fromString('code2'));
+        $transformation1->getLabel()->willReturn(TransformationLabel::fromString('label1'));
+        $transformation2->getLabel()->willReturn(TransformationLabel::fromString('label2'));
 
         $normalizedTransformation1 = ['key' => 'normalized transformation 1'];
         $normalizedTransformation2 = ['key' => 'normalized transformation 2'];
@@ -121,54 +121,27 @@ class TransformationCollectionSpec extends ObjectBehavior
         ]);
     }
 
-    function it_returns_a_transformation_given_a_string_code(
+    function it_returns_a_transformation_given_a_target(
         Transformation $transformation,
         Source $source,
-        Target $target
+        Target $target,
+        Target $targetFilter
     ) {
         $transformation->getTarget()->willReturn($target);
         $transformation->getSource()->willReturn($source);
-        $transformation->getCode()->WillReturn(TransformationCode::fromString('the_code'));
         $target->equals($source)->willReturn(false);
         $this->beConstructedThrough('create', [[$transformation]]);
 
-        $this->getByTransformationCode(TransformationCode::fromString('the_code'))->shouldReturn($transformation);
-        $this->getByTransformationCode(TransformationCode::fromString('other_code'))->shouldReturn(null);
-    }
-
-    function it_throws_an_exception_when_two_transformations_have_the_same_code(
-        Transformation $transformation1,
-        Transformation $transformation2,
-        Target $target1,
-        Target $target2,
-        Source $source1,
-        Source $source2
-    ) {
-        $transformation1->getTarget()->willReturn($target1);
-        $transformation2->getTarget()->willReturn($target2);
-        $transformation1->getSource()->willReturn($source1);
-        $transformation2->getSource()->willReturn($source2);
-
-        $target1->equals($target2)->willReturn(false);
-        $target1->equals($source2)->willReturn(false);
-        $target2->equals($source1)->willReturn(false);
-        $transformation1->getCode()->willReturn(TransformationCode::fromString('code'));
-        $transformation2->getCode()->willReturn(TransformationCode::fromString('code'));
-
-        $this->beConstructedThrough('create', [
-            [
-                $transformation1,
-                $transformation2
-            ]
-        ]);
-        $this->shouldThrow(new \InvalidArgumentException('You cannot define two transformations with the same code "code"'))
-            ->duringInstantiation();
+        $target->equals($targetFilter)->willReturn(true);
+        $this->getByTarget($targetFilter)->shouldReturn($transformation);
+        $target->equals($targetFilter)->willReturn(false);
+        $this->getByTarget($targetFilter)->shouldReturn(null);
     }
 
     function it_can_be_updated_based_on_another_collection()
     {
         $actualTransformation1 = Transformation::create(
-            TransformationCode::fromString('code1'),
+            TransformationLabel::fromString('label1'),
             Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => 'en_US']),
             OperationCollection::create([]),
@@ -177,7 +150,7 @@ class TransformationCollectionSpec extends ObjectBehavior
             new \DateTime('2010-01-01')
         );
         $actualTransformation2 = Transformation::create(
-            TransformationCode::fromString('code2'),
+            TransformationLabel::fromString('label2'),
             Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => 'fr_FR']),
             OperationCollection::create([]),
@@ -186,7 +159,7 @@ class TransformationCollectionSpec extends ObjectBehavior
             new \DateTime('2010-01-01')
         );
         $actualTransformation3 = Transformation::create(
-            TransformationCode::fromString('code3'),
+            TransformationLabel::fromString('label3'),
             Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => 'de_DE']),
             OperationCollection::create([]),
@@ -197,7 +170,7 @@ class TransformationCollectionSpec extends ObjectBehavior
         $this->beConstructedThrough('create', [[$actualTransformation1, $actualTransformation2, $actualTransformation3]]);
 
         $nonUpdatedTransformation = Transformation::create(
-            TransformationCode::fromString('code1'),
+            TransformationLabel::fromString('label1'),
             Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => 'en_US']),
             OperationCollection::create([]),
@@ -206,7 +179,7 @@ class TransformationCollectionSpec extends ObjectBehavior
             new \DateTime('2010-06-30')
         );
         $newTransformation = Transformation::create(
-            TransformationCode::fromString('new_code'),
+            TransformationLabel::fromString('new_label'),
             Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => 'fr_FR']),
             OperationCollection::create([]),
@@ -215,7 +188,7 @@ class TransformationCollectionSpec extends ObjectBehavior
             new \DateTime('2010-01-01')
         );
         $updatedTransformation = Transformation::create(
-            TransformationCode::fromString('code3'),
+            TransformationLabel::fromString('label3'),
             Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => 'de_DE']),
             OperationCollection::create([]),
@@ -227,8 +200,8 @@ class TransformationCollectionSpec extends ObjectBehavior
         $this->update(TransformationCollection::create([$nonUpdatedTransformation, $newTransformation, $updatedTransformation]));
         $this->normalize()->shouldReturn([
             $actualTransformation1->normalize(),
-            $updatedTransformation->normalize(),
             $newTransformation->normalize(),
+            $updatedTransformation->normalize(),
         ]);
     }
 }

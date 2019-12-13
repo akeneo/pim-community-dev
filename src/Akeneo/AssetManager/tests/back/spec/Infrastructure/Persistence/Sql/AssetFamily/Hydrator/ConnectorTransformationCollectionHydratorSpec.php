@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollect
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformation;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator;
@@ -52,7 +52,7 @@ class ConnectorTransformationCollectionHydratorSpec extends ObjectBehavior
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('id');
         $transformations = [
             [
-                'code' => 'code1',
+                'label' => 'label1',
                 'source' => ['attribute' => 'source', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [
@@ -63,7 +63,7 @@ class ConnectorTransformationCollectionHydratorSpec extends ObjectBehavior
                 'updated_at' => '1990',
             ],
             [
-                'code' => 'code2',
+                'label' => 'label2',
                 'source' => ['attribute' => 'source', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target2', 'channel' => null, 'locale' => null],
                 'operations' => [],
@@ -85,7 +85,7 @@ class ConnectorTransformationCollectionHydratorSpec extends ObjectBehavior
         $result->shouldBeAnInstanceOf(ConnectorTransformationCollection::class);
         $result->shouldBeLike(new ConnectorTransformationCollection([
             new ConnectorTransformation(
-                TransformationCode::fromString('code1'),
+                TransformationLabel::fromString('label1'),
                 Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
                 Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => null]),
                 OperationCollection::create([
@@ -95,7 +95,7 @@ class ConnectorTransformationCollectionHydratorSpec extends ObjectBehavior
                 'suffix'
             ),
             new ConnectorTransformation(
-                TransformationCode::fromString('code2'),
+                TransformationLabel::fromString('label2'),
                 Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
                 Target::createFromNormalized(['attribute' => 'target2', 'channel' => null, 'locale' => null]),
                 OperationCollection::create([]),
@@ -113,7 +113,7 @@ class ConnectorTransformationCollectionHydratorSpec extends ObjectBehavior
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('id');
         $transformation = [
             [
-                'code' => 'code1',
+                'label' => 'label1',
                 'source' => ['attribute' => 'source', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [
@@ -124,7 +124,7 @@ class ConnectorTransformationCollectionHydratorSpec extends ObjectBehavior
                 'updated_at' => '1990',
             ],
             [
-                'code' => 'code2',
+                'label' => 'label2',
                 'source' => ['attribute' => 'source', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target2', 'channel' => null, 'locale' => null],
                 'operations' => [],
@@ -144,7 +144,7 @@ class ConnectorTransformationCollectionHydratorSpec extends ObjectBehavior
         $result->shouldBeAnInstanceOf(ConnectorTransformationCollection::class);
         $result->shouldBeLike(new ConnectorTransformationCollection([
             new ConnectorTransformation(
-                TransformationCode::fromString('code2'),
+                TransformationLabel::fromString('label2'),
                 Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
                 Target::createFromNormalized(['attribute' => 'target2', 'channel' => null, 'locale' => null]),
                 OperationCollection::create([]),

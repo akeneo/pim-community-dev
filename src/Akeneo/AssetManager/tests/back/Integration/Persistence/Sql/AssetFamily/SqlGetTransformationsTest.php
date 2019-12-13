@@ -27,7 +27,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollect
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
@@ -61,7 +61,7 @@ class SqlGetTransformationsTest extends SqlIntegrationTestCase
     {
         $transformationCollectionForAssetFamily1 = TransformationCollection::create([
             Transformation::create(
-                TransformationCode::fromString('code1'),
+                TransformationLabel::fromString('label1'),
                 Source::createFromNormalized(['attribute' => 'attr1', 'channel'=> null, 'locale' => null]),
                 Target::createFromNormalized(['attribute' => 'attr2', 'channel'=> null, 'locale' => null]),
                 OperationCollection::create([
@@ -80,7 +80,7 @@ class SqlGetTransformationsTest extends SqlIntegrationTestCase
 
         $transformationCollectionForAssetFamily2 = TransformationCollection::create([
             Transformation::create(
-                TransformationCode::fromString('code2'),
+                TransformationLabel::fromString('label2'),
                 Source::createFromNormalized(['attribute' => 'attr1', 'channel'=> null, 'locale' => null]),
                 Target::createFromNormalized(['attribute' => 'attr3', 'channel'=> null, 'locale' => null]),
                 OperationCollection::create([

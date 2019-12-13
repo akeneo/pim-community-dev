@@ -56,10 +56,10 @@ class TransformationValidator extends ConstraintValidator
         $assetFamilyIdentifier = $constraint->getAssetFamilyIdentifier();
 
         $constraint = new Assert\Collection([
-            'code' => new Assert\Regex([
-                'pattern' => TransformationCode::REGEX,
-                'message' => "Code contains illegal character. Allowed characters are alphanumerics and underscore.",
-            ]),
+            'label' => [
+                new Assert\Type('string'),
+                new Assert\NotBlank(),
+            ],
             'source' => [
                 new Assert\Collection([
                     'attribute' => new Assert\NotNull(),

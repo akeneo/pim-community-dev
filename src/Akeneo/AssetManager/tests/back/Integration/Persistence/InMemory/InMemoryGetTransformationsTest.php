@@ -31,7 +31,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollect
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use PHPUnit\Framework\TestCase;
@@ -84,7 +84,7 @@ class InMemoryGetTransformationsTest extends TestCase
 
         $assetFamilyIdentifier2 = AssetFamilyIdentifier::fromString('family2');
         $transformation = Transformation::create(
-            TransformationCode::fromString('code'),
+            TransformationLabel::fromString('label'),
             Source::createFromNormalized(['attribute' => 'main', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target1', 'channel' => null, 'locale' => null]),
             OperationCollection::create([
