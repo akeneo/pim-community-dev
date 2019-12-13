@@ -1,11 +1,11 @@
 import {default as React, StrictMode, useReducer} from 'react';
 import {DashboardStateContext} from '../application/dashboard/dashboard-state-context';
 import {Index} from '../application/dashboard/pages/Index';
-import {reducer} from '../application/dashboard/reducers/apps-reducer';
+import {reducer, initialState} from '../application/dashboard/reducers/dashboard-reducer';
 import {withContexts} from './with-contexts';
 
 export const Dashboard = withContexts(() => {
-    const [app, dispatch] = useReducer(reducer, {});
+    const [app, dispatch] = useReducer(reducer, initialState);
 
     return (
         <StrictMode>

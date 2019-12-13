@@ -4,9 +4,10 @@ import {App as AppInterface} from '../../../domain/apps/app.interface';
 import {Section} from '../../common';
 import {Translate} from '../../shared/translate';
 import {App} from './App';
+import {PropsWithTheme} from '../../common/theme';
 
 const AppCount = styled.div`
-    color: #9452ba;
+    color: ${({theme}: PropsWithTheme) => theme.color.purple100};
     line-height: 44px;
 `;
 

@@ -1,4 +1,5 @@
+import {ChevronDownIcon} from './ChevronDownIcon';
 import {DuplicateIcon} from './DuplicateIcon';
 import {UpdateIcon} from './UpdateIcon';
 
-export {DuplicateIcon, UpdateIcon};
+export {ChevronDownIcon, DuplicateIcon, UpdateIcon};
