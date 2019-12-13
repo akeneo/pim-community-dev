@@ -1,6 +1,7 @@
 # 3.2.x
 
 - PIM-9019: Fix proposal counter not updating when approving changes
+- PIM-9026: Fix Asset categories settings page title
 
 # 3.2.25 (2019-12-11)
 
