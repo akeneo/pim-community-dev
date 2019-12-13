@@ -1,5 +1,10 @@
 # 2.3.x
 
+# 2.3.74 (2019-12-12)
+
+- PIM-9017: Remove "Add an attribute to a product" ACL
+- PIM-6427: Fix wrong label update on attribute through the API
+
 # 2.3.73 (2019-12-06)
 
 ## Bug fixes
