@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\FindSearchableAssetsInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
+use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationFailedException;
 use Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource;
@@ -109,9 +110,14 @@ class ComputeTransformations implements TaskletInterface
             $commands = [];
             $transformedFilesCount = 0;
 
-            $asset = $this->assetRepository->getByIdentifier(Assetidentifier::fromString($assetIdentifier));
-            if (null === $asset) {
-                $this->stepExecution->addError(sprintf('Asset % does not exist', $assetIdentifier));
+            try {
+                $asset = $this->assetRepository->getByIdentifier(Assetidentifier::fromString($assetIdentifier));
+            } catch (AssetNotFoundException $e) {
+                $this->stepExecution->addWarning(
+                    sprintf('Asset % does not exist', $assetIdentifier),
+                    [],
+                    new DataInvalidItem(['asset_identifier' => $assetIdentifier])
+                );
                 continue;
             }
 
@@ -124,7 +130,7 @@ class ComputeTransformations implements TaskletInterface
                     $this->stepExecution->addWarning(
                         sprintf(
                             'Cannot apply transformation "%s" for asset "%s": %s',
-                            $transformation->getCode()->__toString(),
+                            $transformation->getLabel()->toString(),
                             $asset->getCode(),
                             $e->getMessage()
                         ),
@@ -145,7 +151,7 @@ class ComputeTransformations implements TaskletInterface
                     } catch (TransformationFailedException $e) {
                         $this->stepExecution->addError(sprintf(
                             'Could not apply transformation "%s" on asset "%s": %s',
-                            $transformation->getCode(),
+                            $transformation->getLabel()->toString(),
                             $asset->getCode(),
                             $e->getMessage()
                         ));
