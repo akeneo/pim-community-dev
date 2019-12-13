@@ -13,4 +13,3 @@ Feature: Browse users
     Given I am on the users page
     Then I should see users "admin", "Peter", "Julia", "Mary" and "Sandra"
     But I should not see users "magento"
-    
