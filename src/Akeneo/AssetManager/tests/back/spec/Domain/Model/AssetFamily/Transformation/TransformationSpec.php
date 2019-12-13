@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
 
 class TransformationSpec extends ObjectBehavior
 {
-    function it_creates_a_transformation(Source $source, Target $target)
+    function it_creates_a_transformation(Source $source, Target $target, OperationCollection $operationCollection)
     {
         $source->equals($target)->willReturn(false);
 
@@ -23,23 +23,26 @@ class TransformationSpec extends ObjectBehavior
             TransformationLabel::fromString('label'),
             $source,
             $target,
-            OperationCollection::create([]),
+            $operationCollection,
             'prefix',
             'suffix',
             new \DateTimeImmutable(),
         ]);
-        $this->getWrappedObject();
+        $this->beAnInstanceOf(Transformation::class);
     }
 
-    function it_throws_an_exception_if_target_is_equal_to_source(Source $source, Target $target)
-    {
+    function it_throws_an_exception_if_target_is_equal_to_source(
+        Source $source,
+        Target $target,
+        OperationCollection $operationCollection
+    ) {
         $source->equals($target)->willReturn(true);
 
         $this->beConstructedThrough('create', [
             TransformationLabel::fromString('label'),
             $source,
             $target,
-            OperationCollection::create([]),
+            $operationCollection,
             'prefix',
             'suffix',
             new \DateTimeImmutable(),
@@ -85,11 +88,11 @@ class TransformationSpec extends ObjectBehavior
         ]);
     }
 
-    function it_does_not_return_null_values_in_normalization(Source $source, Target $target)
-    {
-        $operation1 = ThumbnailOperation::create(['width' => 100, 'height' => 80]);
-        $operation2 = ResizeOperation::create(['width' => 100, 'height' => 80]);
-
+    function it_does_not_return_null_values_in_normalization(
+        Source $source,
+        Target $target,
+        OperationCollection $operationCollection
+    ) {
         $source->equals($target)->willReturn(false);
 
         $updatedAt = new \DateTimeImmutable();
@@ -97,7 +100,7 @@ class TransformationSpec extends ObjectBehavior
             TransformationLabel::fromString('label'),
             $source,
             $target,
-            OperationCollection::create([$operation1, $operation2]),
+            $operationCollection,
             null,
             ' ',
             $updatedAt
@@ -107,77 +110,87 @@ class TransformationSpec extends ObjectBehavior
 
         $source->normalize()->willReturn($normalizedSource);
         $target->normalize()->willReturn($normalizedTarget);
+        $operationCollection->normalize()->willReturn(['operations']);
 
         $this->normalize()->shouldReturn([
             'label' => 'label',
             'source' => $normalizedSource,
             'target' => $normalizedTarget,
-            'operations' => [
-                $operation1->normalize(),
-                $operation2->normalize()
-            ],
+            'operations' => ['operations'],
             'filename_suffix' => ' ',
             'updated_at' => $updatedAt->format(\DateTimeInterface::ISO8601),
         ]);
     }
 
-    function it_can_construct_transformation_with_only_prefix(Source $source, Target $target)
-    {
+    function it_can_construct_transformation_with_only_prefix(
+        Source $source,
+        Target $target,
+        OperationCollection $operationCollection
+    ) {
         $source->equals($target)->willReturn(false);
 
         $this->beConstructedThrough('create', [
             TransformationLabel::fromString('label'),
             $source,
             $target,
-            OperationCollection::create([]),
+            $operationCollection,
             'prefix',
             null,
             new \DateTimeImmutable(),
         ]);
-        $this->getWrappedObject();
+        $this->beAnInstanceOf(Transformation::class);
     }
 
-    function it_can_construct_transformation_with_only_suffix(Source $source, Target $target)
-    {
+    function it_can_construct_transformation_with_only_suffix(
+        Source $source,
+        Target $target,
+        OperationCollection $operationCollection
+    ) {
         $source->equals($target)->willReturn(false);
 
         $this->beConstructedThrough('create', [
             TransformationLabel::fromString('label'),
             $source,
             $target,
-            OperationCollection::create([]),
+            $operationCollection,
             null,
             'suffix',
             new \DateTimeImmutable(),
         ]);
-        $this->getWrappedObject();
+        $this->beAnInstanceOf(Transformation::class);
     }
 
-    function it_can_construct_transformation_with_spaces_in_prefix_and_suffix(Source $source, Target $target)
-    {
+    function it_can_construct_transformation_with_spaces_in_prefix_and_suffix(
+        Source $source,
+        Target $target,
+        OperationCollection $operationCollection
+    ) {
         $source->equals($target)->willReturn(false);
 
         $this->beConstructedThrough('create', [
             TransformationLabel::fromString('label'),
             $source,
             $target,
-            OperationCollection::create([]),
+            $operationCollection,
             '   ',
             '   ',
             new \DateTimeImmutable(),
         ]);
-        $this->getWrappedObject();
+        $this->beAnInstanceOf(Transformation::class);
     }
 
-    function it_can_not_construct_transformation_without_prefix_and_suffix(Source $source, Target $target)
-    {
+    function it_can_not_construct_transformation_without_prefix_and_suffix(
+        Source $source,
+        Target $target,
+        OperationCollection $operationCollection
+    ) {
         $source->equals($target)->willReturn(false);
 
         $this->beConstructedThrough('create', [
             TransformationLabel::fromString('label'),
             $source,
             $target,
-            OperationCollection::create([]),
+            $operationCollection,
             null,
             null,
             new \DateTimeImmutable(),
@@ -186,15 +199,18 @@ class TransformationSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    function it_can_not_construct_transformation_with_empty_prefix_and_suffix(Source $source, Target $target)
-    {
+    function it_can_not_construct_transformation_with_empty_prefix_and_suffix(
+        Source $source,
+        Target $target,
+        OperationCollection $operationCollection
+    ) {
         $source->equals($target)->willReturn(false);
 
         $this->beConstructedThrough('create', [
             TransformationLabel::fromString('label'),
             $source,
             $target,
-            OperationCollection::create([]),
+            $operationCollection,
             '',
             '',
             new \DateTimeImmutable(),
@@ -203,14 +219,17 @@ class TransformationSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    function it_returns_target_with_prefix_and_suffix(Source $source, Target $target)
-    {
+    function it_returns_target_with_prefix_and_suffix(
+        Source $source,
+        Target $target,
+        OperationCollection $operationCollection
+    ) {
         $source->equals($target)->willReturn(false);
         $this->beConstructedThrough('create', [
             TransformationLabel::fromString('label'),
             $source,
             $target,
-            OperationCollection::create([]),
+            $operationCollection,
             'prefix',
             'suffix',
             new \DateTimeImmutable(),
@@ -218,14 +237,14 @@ class TransformationSpec extends ObjectBehavior
         $this->getTargetFilename('jambon.png')->shouldReturn('prefixjambonsuffix.png');
     }
 
-    function it_returns_target_with_prefix(Source $source, Target $target)
+    function it_returns_target_with_prefix(Source $source, Target $target, OperationCollection $operationCollection)
     {
         $source->equals($target)->willReturn(false);
         $this->beConstructedThrough('create', [
             TransformationLabel::fromString('label'),
             $source,
             $target,
-            OperationCollection::create([]),
+            $operationCollection,
             'prefix',
             null,
             new \DateTimeImmutable(),
@@ -233,14 +252,14 @@ class TransformationSpec extends ObjectBehavior
         $this->getTargetFilename('jambon.png')->shouldReturn('prefixjambon.png');
     }
 
-    function it_returns_target_with_suffix(Source $source, Target $target)
+    function it_returns_target_with_suffix(Source $source, Target $target, OperationCollection $operationCollection)
     {
         $source->equals($target)->willReturn(false);
         $this->beConstructedThrough('create', [
             TransformationLabel::fromString('label'),
             $source,
             $target,
-            OperationCollection::create([]),
+            $operationCollection,
             null,
             'suffix',
             new \DateTimeImmutable(),
@@ -248,14 +267,17 @@ class TransformationSpec extends ObjectBehavior
         $this->getTargetFilename('jambon.png')->shouldReturn('jambonsuffix.png');
     }
 
-    function it_returns_target_without_extension(Source $source, Target $target)
-    {
+    function it_returns_target_without_extension(
+        Source $source,
+        Target $target,
+        OperationCollection $operationCollection
+    ) {
         $source->equals($target)->willReturn(false);
         $this->beConstructedThrough('create', [
             TransformationLabel::fromString('label'),
             $source,
             $target,
-            OperationCollection::create([]),
+            $operationCollection,
             'prefix',
             'suffix',
             new \DateTimeImmutable(),

@@ -11,6 +11,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
@@ -77,7 +78,6 @@ class ComputeTransformationsExecutorSpec extends ObjectBehavior
         FileStorerInterface $fileStorer,
         EditAssetHandler $editAssetHandler,
         Asset $asset,
-        Transformation $transformation,
         FileData $sourceFileData,
         File $sourceFile,
         FileInfoInterface $storedFileInfo,
@@ -93,7 +93,7 @@ class ComputeTransformationsExecutorSpec extends ObjectBehavior
             TransformationLabel::fromString('label'),
             Source::createFromNormalized(['attribute' => 'main', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'thumbnail', 'channel' => null, 'locale' => null]),
-            OperationCollection::create([]),
+            OperationCollection::create([ThumbnailOperation::create(['width' => 100, 'height' => 80])]),
             '',
             '_thumbnail',
             new \DateTime()

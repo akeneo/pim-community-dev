@@ -66,7 +66,9 @@ class ConnectorTransformationCollectionHydratorSpec extends ObjectBehavior
                 'label' => 'label2',
                 'source' => ['attribute' => 'source', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target2', 'channel' => null, 'locale' => null],
-                'operations' => [],
+                'operations' => [
+                    ['type' => 'thumbnail', 'parameters' => ['width' => 100, 'height' => 90]],
+                ],
                 'filename_prefix' => 'pref',
                 'updated_at' => '1990',
             ],
@@ -80,6 +82,8 @@ class ConnectorTransformationCollectionHydratorSpec extends ObjectBehavior
 
         $operationFactory->create('thumbnail', ['width' => 100, 'height' => 80])
             ->willReturn(ThumbnailOperation::create(['width' => 100, 'height' => 80]));
+        $operationFactory->create('thumbnail', ['width' => 100, 'height' => 90])
+            ->willReturn(ThumbnailOperation::create(['width' => 100, 'height' => 90]));
 
         $result = $this->hydrate($transformations, $assetFamilyIdentifier);
         $result->shouldBeAnInstanceOf(ConnectorTransformationCollection::class);
@@ -98,7 +102,9 @@ class ConnectorTransformationCollectionHydratorSpec extends ObjectBehavior
                 TransformationLabel::fromString('label2'),
                 Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
                 Target::createFromNormalized(['attribute' => 'target2', 'channel' => null, 'locale' => null]),
-                OperationCollection::create([]),
+                OperationCollection::create([
+                    ThumbnailOperation::create(['width' => 100, 'height' => 90]),
+                ]),
                 'pref',
                 null
             ),
@@ -107,6 +113,7 @@ class ConnectorTransformationCollectionHydratorSpec extends ObjectBehavior
 
     function it_skips_invalid_transformations_while_hydrating_collection(
         ValidatorInterface $validator,
+        OperationFactory $operationFactory,
         ConstraintViolationListInterface $violationsForFirstTransformation,
         ConstraintViolationListInterface $violationsForSecondTransformation
     ) {
@@ -127,7 +134,9 @@ class ConnectorTransformationCollectionHydratorSpec extends ObjectBehavior
                 'label' => 'label2',
                 'source' => ['attribute' => 'source', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target2', 'channel' => null, 'locale' => null],
-                'operations' => [],
+                'operations' => [
+                    ['type' => 'thumbnail', 'parameters' => ['width' => 100, 'height' => 90]],
+                ],
                 'filename_prefix' => 'pref',
                 'updated_at' => '1990',
             ],
@@ -139,6 +148,8 @@ class ConnectorTransformationCollectionHydratorSpec extends ObjectBehavior
             ->willReturn($violationsForSecondTransformation);
         $violationsForFirstTransformation->count()->willReturn(1);
         $violationsForSecondTransformation->count()->willReturn(0);
+        $operationFactory->create('thumbnail', ['width' => 100, 'height' => 90])
+            ->willReturn(ThumbnailOperation::create(['width' => 100, 'height' => 90]));
 
         $result = $this->hydrate($transformation, $assetFamilyIdentifier);
         $result->shouldBeAnInstanceOf(ConnectorTransformationCollection::class);
@@ -147,7 +158,7 @@ class ConnectorTransformationCollectionHydratorSpec extends ObjectBehavior
                 TransformationLabel::fromString('label2'),
                 Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
                 Target::createFromNormalized(['attribute' => 'target2', 'channel' => null, 'locale' => null]),
-                OperationCollection::create([]),
+                OperationCollection::create([ThumbnailOperation::create(['width' => 100, 'height' => 90])]),
                 'pref',
                 null
             ),

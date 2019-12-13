@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
@@ -325,7 +326,7 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
                     TransformationLabel::fromString('label'),
                     Source::createFromNormalized(['attribute' => 'main_image', 'channel' => null, 'locale' => null]),
                     Target::createFromNormalized(['attribute' => 'thumbnail', 'channel' => null, 'locale' => null]),
-                    OperationCollection::create([]),
+                    OperationCollection::create([ThumbnailOperation::create(['width' => 100, 'height' => 80])]),
                     '1_',
                     '_2',
                     new \DateTime('1990-01-01')

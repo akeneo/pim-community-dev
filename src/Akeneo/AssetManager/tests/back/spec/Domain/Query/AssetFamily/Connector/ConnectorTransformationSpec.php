@@ -26,13 +26,15 @@ use PhpSpec\ObjectBehavior;
  */
 class ConnectorTransformationSpec extends ObjectBehavior
 {
-    function let()
+    function let(OperationCollection $operationCollection)
     {
+        $operationCollection->normalize()->willReturn(['normalized_operations']);
+
         $this->beConstructedWith(
             TransformationLabel::fromString('the label'),
             Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => null]),
-            OperationCollection::create([]),
+            $operationCollection,
             'prefix',
             'suffix'
         );
@@ -49,7 +51,7 @@ class ConnectorTransformationSpec extends ObjectBehavior
             'label' => 'the label',
             'source' => ['attribute' => 'source', 'channel' => null, 'locale' => null],
             'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
-            'operations' => [],
+            'operations' => ['normalized_operations'],
             'filename_prefix' => 'prefix',
             'filename_suffix' => 'suffix',
         ]);
