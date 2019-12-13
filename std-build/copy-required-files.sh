@@ -29,7 +29,7 @@ cp $DEV_DISTRIB_DIR/public/index.php $STANDARD_DISTRIB_DIR/public/
 cp $DEV_DISTRIB_DIR/std-build/Kernel.php $STANDARD_DISTRIB_DIR/src
 cp $DEV_DISTRIB_DIR/std-build/bundles.php $STANDARD_DISTRIB_DIR/config
 
-grep -v "APP_ENV" $DEV_DISTRIB_DIR/docker-compose.yml > $STANDARD_DISTRIB_DIR/docker-compose.yml
+cp $DEV_DISTRIB_DIR/docker-compose.yml $STANDARD_DISTRIB_DIR/docker-compose.yml
 
 cp $DEV_DISTRIB_DIR/std-build/Makefile $STANDARD_DISTRIB_DIR/Makefile
 cp $DEV_DISTRIB_DIR/std-build/package.json $STANDARD_DISTRIB_DIR/package.json

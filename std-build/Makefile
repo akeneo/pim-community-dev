@@ -3,6 +3,8 @@ NODE_RUN = $(DOCKER_COMPOSE) run -u node --rm node
 YARN_RUN = $(NODE_RUN) yarn
 PHP_RUN = $(DOCKER_COMPOSE) run -u www-data --rm php php
 
+.DEFAULT_GOAL := dev
+
 yarn.lock: package.json
 	$(YARN_RUN) install
 
@@ -46,12 +48,34 @@ vendor: composer.lock
 .PHONY: dependencies
 dependencies: vendor node_modules
 
-.PHONY: pim
-pim:
-	$(MAKE) up
+.PHONY: dev
+dev:
+	$(MAKE) dependencies
+	$(MAKE) pim-dev
+
+.PHONY: pim-prod
+pim-prod:
+	APP_ENV=prod $(MAKE) up
+	$(MAKE) cache
+	$(MAKE) assets
+	$(MAKE) javascript-prod
+	docker/wait_docker_up.sh
+	APP_ENV=prod $(MAKE) database O="--catalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal"
+
+.PHONY: pim-dev
+pim-dev:
+	APP_ENV=dev $(MAKE) up
 	$(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
-	$(MAKE) database O="--catalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev"
+	APP_ENV=env $(MAKE) database O="--catalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev"
+
+.PHONY: up
+up:
+	$(DOCKER_COMPOSE) up -d --remove-orphan
+
+.PHONY: down
+down:
+	$(DOCKER_COMPOSE) down -v
 
