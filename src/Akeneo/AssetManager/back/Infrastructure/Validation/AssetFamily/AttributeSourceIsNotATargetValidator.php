@@ -53,7 +53,7 @@ class AttributeSourceIsNotATargetValidator extends ConstraintValidator
                     $this->context->buildViolation(
                         AttributeSourceIsNotATarget::ERROR_MESSAGE,
                         [
-                            '%attribute_code%' => $source->getAttributeCode(),
+                            '%attribute_code%' => (string) $source->getAttributeCode(),
                         ]
                     )->atPath('transformations')->addViolation();
                 }
