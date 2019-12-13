@@ -86,12 +86,12 @@ class TransformationCollection implements \IteratorAggregate
 
     public function update(TransformationCollection $transformationCollection): void
     {
-        foreach ($this->transformations as $key => $currentTransformation) {
+        foreach ($this->transformations as $index => $currentTransformation) {
             $findInNewCollection = $transformationCollection->getByTarget(
                 $currentTransformation->getTarget()
             );
             if (null === $findInNewCollection) {
-                $this->removeTransformation($key);
+                $this->removeTransformation($index);
                 continue;
             }
 
@@ -99,7 +99,7 @@ class TransformationCollection implements \IteratorAggregate
                 continue;
             }
 
-            $this->updateTransformation($key, $findInNewCollection);
+            $this->updateTransformation($index, $findInNewCollection);
         }
 
         /** @var Transformation $newTransformation */
@@ -110,13 +110,13 @@ class TransformationCollection implements \IteratorAggregate
         }
     }
 
-    private function updateTransformation(int $key, Transformation $transformation): void
+    private function updateTransformation(int $index, Transformation $transformation): void
     {
-        $this->transformations[$key] = $transformation;
+        $this->transformations[$index] = $transformation;
     }
 
-    private function removeTransformation(int $key): void
+    private function removeTransformation(int $index): void
     {
-        unset($this->transformations[$key]);
+        unset($this->transformations[$index]);
     }
 }
