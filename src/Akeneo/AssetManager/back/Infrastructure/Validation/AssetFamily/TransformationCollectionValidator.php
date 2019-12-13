@@ -20,18 +20,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TransformationCollectionValidator extends ConstraintValidator
 {
-    /** @var ValidatorInterface */
-    private $validator;
-
-    public function __construct(ValidatorInterface $validator)
-    {
-        $this->validator = $validator;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -42,15 +33,16 @@ class TransformationCollectionValidator extends ConstraintValidator
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($command->identifier);
 
-        $constraint = [
+        $nestedConstraints = [
             new Assert\Type('array'),
             new Assert\All(new Transformation($assetFamilyIdentifier)),
         ];
 
-        $violations = $this->validator->validate($command->transformations, $constraint);
-        foreach ($violations as $violation) {
-            $this->context->addViolation($violation->getMessage(), $violation->getParameters());
-        }
+        $context = $this->context;
+        $validator = $context->getValidator()->inContext($context);
+        $validator
+            ->atPath('transformations')
+            ->validate($command->transformations, $nestedConstraints, Constraint::DEFAULT_GROUP);
     }
 
     /**

@@ -105,7 +105,7 @@ class ScaleOperationSpec extends ObjectBehavior
     function it_can_not_be_constructed_without_parameter()
     {
         $this->beConstructedThrough('create', [[]]);
-        $this->shouldThrow(new \LogicException("No parameter is provided for 'scale' operation."))
+        $this->shouldThrow(new \InvalidArgumentException('No parameter is provided for "scale" operation. At least one of parameter "width", "height" and "ratio" must be defined.'))
             ->duringInstantiation();
     }
 
@@ -116,21 +116,21 @@ class ScaleOperationSpec extends ObjectBehavior
             'height' => 100,
             'ratio' => 50,
         ]]);
-        $this->shouldThrow(new \LogicException("Parameter 'width' must be an integer."))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException("Parameter \"width\" must be an integer."))->duringInstantiation();
 
         $this->beConstructedThrough('create', [[
             'width' => 200,
             'height' => '100cm',
             'ratio' => 50,
         ]]);
-        $this->shouldThrow(new \LogicException("Parameter 'height' must be an integer."))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException("Parameter \"height\" must be an integer."))->duringInstantiation();
 
         $this->beConstructedThrough('create', [[
             'width' => 200,
             'height' => 100,
             'ratio' => '50%',
         ]]);
-        $this->shouldThrow(new \LogicException("Parameter 'ratio' must be an integer."))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException("Parameter \"ratio\" must be an integer."))->duringInstantiation();
     }
 
     function it_can_not_be_constructed_with_zero_values()
@@ -140,20 +140,20 @@ class ScaleOperationSpec extends ObjectBehavior
             'height' => 100,
             'ratio' => 50,
         ]]);
-        $this->shouldThrow(new \LogicException("Parameter 'width' must be greater than 0, '0' given."))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException("Parameter \"width\" must be greater than 0, \"0\" given."))->duringInstantiation();
 
         $this->beConstructedThrough('create', [[
             'width' => 200,
             'height' => 0,
             'ratio' => 50,
         ]]);
-        $this->shouldThrow(new \LogicException("Parameter 'height' must be greater than 0, '0' given."))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException("Parameter \"height\" must be greater than 0, \"0\" given."))->duringInstantiation();
 
         $this->beConstructedThrough('create', [[
             'width' => 200,
             'height' => 100,
             'ratio' => -1,
         ]]);
-        $this->shouldThrow(new \LogicException("Parameter 'ratio' must be greater than 0, '-1' given."))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException("Parameter \"ratio\" must be greater than 0, \"-1\" given."))->duringInstantiation();
     }
 }

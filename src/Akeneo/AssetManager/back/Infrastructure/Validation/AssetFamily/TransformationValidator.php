@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\OperationShouldBeInstantiable;
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawSourceExist;
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawTargetExist;
@@ -24,7 +23,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Validate a transformation coming from storage.
@@ -35,14 +33,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class TransformationValidator extends ConstraintValidator
 {
     public const FILENAME_REGEX = '/^[\w\-\. ]*$/';
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    public function __construct(ValidatorInterface $validator)
-    {
-        $this->validator = $validator;
-    }
 
     /**
      * {@inheritdoc}
@@ -81,7 +71,7 @@ class TransformationValidator extends ConstraintValidator
                 new Assert\All([
                     new Assert\Collection([
                         'type' => new Assert\NotNull(),
-                        'parameters' => new Assert\Type('array'),
+                        'parameters' => new Assert\Optional(new Assert\Type('array')),
                     ]),
                     new OperationShouldBeInstantiable(),
                 ]),
@@ -104,9 +94,8 @@ class TransformationValidator extends ConstraintValidator
             'updated_at' => new Assert\Optional(new Assert\Type('string')),
         ]);
 
-        $violations = $this->validator->validate($normalizedTransformation, $constraint);
-        foreach ($violations as $violation) {
-            $this->context->addViolation($violation->getMessage(), $violation->getParameters());
-        }
+        $context = $this->context;
+        $validator = $context->getValidator()->inContext($context);
+        $validator->validate($normalizedTransformation, $constraint, Constraint::DEFAULT_GROUP);
     }
 }

@@ -18,7 +18,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Validation;
 
 class OperationShouldBeInstantiableValidator extends ConstraintValidator
 {
@@ -36,16 +35,13 @@ class OperationShouldBeInstantiableValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, OperationShouldBeInstantiable::class);
         }
 
-        $validator = Validation::createValidator();
-        $violations = $validator->validate($operation, new Assert\Type('array'));
-        foreach ($violations as $violation) {
-            $this->context->addViolation($violation->getMessage(), $violation->getParameters());
-            return;
-        }
+        $context = $this->context;
+        $validator = $context->getValidator()->inContext($context);
+        $validator->validate($operation, new Assert\Type('array'));
 
         try {
-            $this->operationFactory->create($operation['type'], $operation['parameters']);
-        } catch (\InvalidArgumentException $e) {
+            $this->operationFactory->create($operation['type'], $operation['parameters'] ?? []);
+        } catch (\InvalidArgumentException | \LogicException $e) {
             $this->context->buildViolation($e->getMessage())->addViolation();
         }
     }

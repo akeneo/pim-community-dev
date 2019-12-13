@@ -149,7 +149,7 @@ class AssetFamilyValidator
                                             'type' => 'string',
                                         ],
                                         'parameters' => [
-                                            'type' => 'object',
+                                            'type' => ['object', 'null', 'array'],
                                         ],
                                         'required' => ['type'],
                                         'additionalProperties' => false,

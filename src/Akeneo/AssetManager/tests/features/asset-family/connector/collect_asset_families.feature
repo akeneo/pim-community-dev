@@ -26,3 +26,9 @@ Feature: Connection to MDM or ERP systems
     Given some asset families
     When the connector collects an asset family whose data does not comply with the business rules
     Then the PIM notifies the connector about an error indicating that the asset family has data that does not comply with the business rules
+
+  @integration-back
+  Scenario: Notify some errors when collecting an asset family whose transformation does not comply with the business rules
+    Given some asset families with media file attributes
+    When the connector collects an asset family whose transformations do not comply with the business rules
+    Then the PIM notifies the connector about errors indicating that the asset family has transformations that do not comply with the business rules

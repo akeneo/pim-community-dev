@@ -16,7 +16,7 @@ namespace spec\Akeneo\AssetManager\Domain\Query\AssetFamily\Connector;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformation;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
 
@@ -30,7 +30,7 @@ class ConnectorTransformationCollectionSpec
     {
         $this->beConstructedWith([
             new ConnectorTransformation(
-                TransformationCode::fromString('code'),
+                TransformationLabel::fromString('label'),
                 Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
                 Target::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => null]),
                 OperationCollection::create([]),
@@ -49,7 +49,7 @@ class ConnectorTransformationCollectionSpec
     {
         $this->normalize()->shouldReturn([
             [
-                'code' => 'code',
+                'label' => 'label',
                 'source' => ['attribute' => 'source', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'source', 'channel' => null, 'locale' => null],
                 'operations' => [],
