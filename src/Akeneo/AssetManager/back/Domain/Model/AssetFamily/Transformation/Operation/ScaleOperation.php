@@ -38,7 +38,9 @@ class ScaleOperation implements Operation
     private function __construct(?int $width, ?int $height, ?int $ratioPercent)
     {
         if (null === $width && null === $height && null === $ratioPercent) {
-            throw new \LogicException("No parameter is provided for \"scale\" operation.");
+            throw new \InvalidArgumentException(
+                'No parameter is provided for "scale" operation. At least one of parameter "width", "height" and "ratio" must be defined.'
+            );
         }
 
         foreach (['width' => $width, 'height' => $height, 'ratio' => $ratioPercent] as $parameterName => $value) {
@@ -48,7 +50,7 @@ class ScaleOperation implements Operation
 
             if ($value <= 0) {
                 throw new \InvalidArgumentException(sprintf(
-                    "Parameter '%s' must be greater than 0, '%d' given.",
+                    'Parameter "%s" must be greater than 0, "%d" given.',
                     $parameterName,
                     $value
                 ));
@@ -73,7 +75,7 @@ class ScaleOperation implements Operation
             }
 
             Assert::nullOrInteger($parameters[$parameterName], sprintf(
-                "Parameter '%s' must be an integer.",
+                'Parameter "%s" must be an integer.',
                 $parameterName
             ));
         }

@@ -176,11 +176,11 @@
                 },
                 {
                     "property": "transformations[1][operations][1]",
-                    "message": "No parameter is provided for \"thumbnail\" operation."
+                    "message": "No parameter is provided for \"thumbnail\" operation. At least one of parameter \"width\" and \"height\" must be defined."
                 },
                 {
                     "property": "transformations[1][operations][2]",
-                    "message": "No parameter is provided for \"scale\" operation."
+                    "message": "No parameter is provided for \"scale\" operation. At least one of parameter \"width\", \"height\" and \"ratio\" must be defined."
                 },
                 {
                     "property": "transformations[1][filename_prefix]",

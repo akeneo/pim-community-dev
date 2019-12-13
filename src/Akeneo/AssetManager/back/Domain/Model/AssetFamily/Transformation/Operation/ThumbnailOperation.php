@@ -32,7 +32,9 @@ class ThumbnailOperation implements Operation
     public function __construct(?int $width, ?int $height)
     {
         if (null === $width && null === $height) {
-            throw new \LogicException("No parameter is provided for \"thumbnail\" operation.");
+            throw new \InvalidArgumentException(
+                'No parameter is provided for "thumbnail" operation. At least one of parameter "width" and "height" must be defined.'
+            );
         }
 
         foreach (['width' => $width, 'height' => $height] as $parameterName => $value) {
@@ -42,7 +44,7 @@ class ThumbnailOperation implements Operation
 
             if ($value <= 0) {
                 throw new \InvalidArgumentException(sprintf(
-                    "Parameter '%s' must be greater than 0, '%d' given.",
+                    'Parameter "%s" must be greater than 0, "%d" given.',
                     $parameterName,
                     $value
                 ));
@@ -60,8 +62,8 @@ class ThumbnailOperation implements Operation
 
     public static function create(array $parameters): Operation
     {
-        Assert::nullOrInteger($parameters['width'] ?? null, "Parameter 'width' must be an integer.");
-        Assert::nullOrInteger($parameters['height'] ?? null, "Parameter 'height' must be an integer.");
+        Assert::nullOrInteger($parameters['width'] ?? null, 'Parameter "width" must be an integer.');
+        Assert::nullOrInteger($parameters['height'] ?? null, 'Parameter "height" must be an integer.');
 
         return new self($parameters['width'] ?? null, $parameters['height'] ?? null);
     }
