@@ -87,6 +87,7 @@
       }
     },
     "required": [
+      "label",
       "source",
       "target",
       "operations"
