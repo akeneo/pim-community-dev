@@ -14,7 +14,6 @@ STANDARD_DISTRIB_DIR=./
 # Required directories
 mkdir -p $STANDARD_DISTRIB_DIR/src \
          $STANDARD_DISTRIB_DIR/bin \
-         $STANDARD_DISTRIB_DIR/public \
          $STANDARD_DISTRIB_DIR/config/packages/dev \
          $STANDARD_DISTRIB_DIR/config/services \
          $STANDARD_DISTRIB_DIR/docker
@@ -35,7 +34,7 @@ cp $DEV_DISTRIB_DIR/std-build/oneup_flysystem_local_dev.yml $STANDARD_DISTRIB_DI
 
 # We need a console and FPM entrypoint
 cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
-cp $DEV_DISTRIB_DIR/public/index.php $STANDARD_DISTRIB_DIR/public/
+cp $DEV_DISTRIB_DIR/public/* $STANDARD_DISTRIB_DIR/public/
 
 # We provide a kernel that loads configuration from the CE dev and override it with the one in standard
 cp $DEV_DISTRIB_DIR/std-build/Kernel.php $STANDARD_DISTRIB_DIR/src
