@@ -14,7 +14,7 @@ node_modules: yarn.lock
 .PHONY: assets
 assets:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/bundles public/js
-	$(PHP_RUN) bin/console --env=prod pim:installer:assets --symlink --clean
+	$(PHP_RUN) bin/console pim:installer:assets --symlink --clean
 
 .PHONY: css
 css:
@@ -31,13 +31,8 @@ javascript-dev:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(YARN_RUN) run webpack-dev
 
-.PHONY: javascript-test
-javascript-test:
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
-	$(YARN_RUN) run webpack-test
-
 .PHONY: front
-front: assets css javascript-test javascript-dev
+front: assets css javascript-dev
 
 .PHONY: cache
 cache:
@@ -48,6 +43,7 @@ composer.lock: composer.json
 
 vendor: composer.lock
 	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer install
+
 .PHONY: dependencies
 dependencies: vendor node_modules
 
@@ -56,7 +52,6 @@ pim:
 	$(MAKE) up
 	$(MAKE) cache
 	$(MAKE) assets
-	$(MAKE) css
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	$(MAKE) database O="--catalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev"
