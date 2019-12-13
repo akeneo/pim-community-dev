@@ -114,7 +114,7 @@ class ComputeTransformations implements TaskletInterface
                 $asset = $this->assetRepository->getByIdentifier(Assetidentifier::fromString($assetIdentifier));
             } catch (AssetNotFoundException $e) {
                 $this->stepExecution->addWarning(
-                    sprintf('Asset % does not exist', $assetIdentifier),
+                    sprintf('Asset %s does not exist', $assetIdentifier),
                     [],
                     new DataInvalidItem(['asset_identifier' => $assetIdentifier])
                 );

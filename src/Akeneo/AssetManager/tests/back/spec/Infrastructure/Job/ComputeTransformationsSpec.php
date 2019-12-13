@@ -102,7 +102,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
         $getOutdatedVariationSource->forAssetAndTransformation($asset2, $thumbnail)->willReturn(null);
         $stepExecution->incrementSummaryInfo('skipped')->shouldBeCalled();
         $transformationExecutor->execute($sourceFileData, $assetFamilyIdentifier, $thumbnail)
-                                       ->willReturn($command);
+                                              ->willReturn($command);
 
         $editAssetHandler->__invoke(
             new EditAssetCommand(
