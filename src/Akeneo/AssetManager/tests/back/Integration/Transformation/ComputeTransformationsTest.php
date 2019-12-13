@@ -196,7 +196,7 @@ class ComputeTransformationsTest extends KernelTestCase
 
         $warnings = $this->getWarnings($lastExecution);
         Assert::assertSame(
-            [sprintf('Asset % does not exist', $assetIdentifier)],
+            [sprintf('Asset %s does not exist', $assetIdentifier)],
             $warnings
         );
     }

@@ -22,6 +22,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationReference;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -53,8 +54,10 @@ class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
      */
     public function forAssetAndTransformation(Asset $asset, Transformation $transformation): ?FileData
     {
-        $constraint = new \Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation($asset->getAssetFamilyIdentifier());
-        $violations = $this->validator->validate($transformation->normalize(), $constraint);
+        $violations = $this->validator->validate(
+            $transformation->normalize(),
+            new Assert\Transformation($asset->getAssetFamilyIdentifier())
+        );
         if ($violations->count() > 0) {
             throw new NonApplicableTransformationException($violations->get(0)->getMessage());
         }
