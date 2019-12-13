@@ -54,7 +54,6 @@ class CountDailyEventsByAppEndToEnd extends WebTestCase
         $auditLoader->insertData('franklin', $eventDate, 7, 'product_created');
         // 10 days ago
         $auditLoader->insertData('franklin', $eventDate->modify('-7 day'), 15, 'product_created');
-
     }
 
     /**
