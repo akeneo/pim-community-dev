@@ -21,10 +21,6 @@ pim_enrich_product_remove:
     label: pim_enrich.acl.product.remove
     group_name: pim_enrich.acl_group.product
 
-pim_enrich_product_add_attribute:
-    type: action
-    label: pim_enrich.acl.product.add_attribute
-    group_name: pim_enrich.acl_group.product
 pim_enrich_product_remove_attribute:
     type: action
     label: pim_enrich.acl.product.remove_attribute

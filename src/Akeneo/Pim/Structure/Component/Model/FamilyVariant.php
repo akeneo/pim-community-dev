@@ -191,7 +191,7 @@ class FamilyVariant implements FamilyVariantInterface
         }
 
         foreach ($this->getTranslations() as $translation) {
-            if ($translation->getLocale() == $locale) {
+            if ($translation->getLocale() === $locale) {
                 return $translation;
             }
         }

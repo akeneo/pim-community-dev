@@ -928,7 +928,7 @@ abstract class AbstractAttribute implements AttributeInterface
             return null;
         }
         foreach ($this->getTranslations() as $translation) {
-            if ($translation->getLocale() == $locale) {
+            if ($translation->getLocale() === $locale) {
                 return $translation;
             }
         }
