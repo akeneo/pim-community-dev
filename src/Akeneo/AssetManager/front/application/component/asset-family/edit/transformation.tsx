@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import { JsonEditor as Editor } from 'jsoneditor-react';
+import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
 import __ from 'akeneoassetmanager/tools/translator';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
@@ -13,7 +13,7 @@ import {
   saveAssetFamily,
 } from 'akeneoassetmanager/application/action/asset-family/edit';
 import Ajv from 'ajv';
-const ajv = new Ajv({ allErrors: true, verbose: true });
+const ajv = new Ajv({allErrors: true, verbose: true});
 const schema = require('akeneoassetmanager/infrastructure/model/asset-family-transformations.schema.json');
 
 interface StateProps {
@@ -31,18 +31,18 @@ const AssetFamilyTransformationEditor = ({
 }: AssetFamilyTransformationEditorProps) => {
   //https://github.com/vankop/jsoneditor-react/blob/HEAD/src/Editor.jsx
   return (
-    <div className='AknJsonEditor'>
+    <div className="AknJsonEditor">
       <Editor
         value={JSON.parse(transformations)}
         onChange={(event: object) => {
           onAssetFamilyTransformationsChange(JSON.stringify(event));
         }}
-        mode='code'
+        mode="code"
         schema={schema}
         ajv={ajv}
       />
     </div>
-  )
+  );
 };
 
 interface DispatchProps {
@@ -86,7 +86,8 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
           <div className="AknDescriptionHeader-title">
             {__('pim_asset_manager.asset_family.transformations.help.title')}
             <div className="AknDescriptionHeader-description">
-              {__('pim_asset_manager.asset_family.transformations.help.description')}<br/>
+              {__('pim_asset_manager.asset_family.transformations.help.description')}
+              <br />
               <a href="https://help.akeneo.com/" className="AknDescriptionHeader-link">
                 {__('pim_asset_manager.asset_family.transformations.help.link')}
               </a>
@@ -107,7 +108,6 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
             />
           </div>
         </div>
-
       </React.Fragment>
     );
   }

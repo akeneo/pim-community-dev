@@ -87,7 +87,9 @@ class Header extends React.Component<HeaderProps> {
     return (
       <header className="AknTitleContainer">
         <div className="AknTitleContainer-line">
-          {(null !== image) ? <Image alt={__('pim_asset_manager.asset_family.img', {'{{ label }}': label})} image={image} /> : null}
+          {null !== image ? (
+            <Image alt={__('pim_asset_manager.asset_family.img', {'{{ label }}': label})} image={image} />
+          ) : null}
           <div className="AknTitleContainer-mainContainer">
             <div>
               <div className="AknTitleContainer-line">

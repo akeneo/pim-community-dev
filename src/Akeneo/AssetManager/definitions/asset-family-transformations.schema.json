@@ -1,10 +1,11 @@
 {
   "title": "BackendAssetFamilyTransformation",
   "type": "array",
+  "maxItems": 10,
   "items": {
     "type": "object",
     "properties": {
-      "code": {
+      "label": {
         "type": "string"
       },
       "source": {
@@ -61,12 +62,21 @@
       },
       "operations": {
         "type": "array",
+        "minItems": 1,
         "items": {
           "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "parameters": {
+              "type": "object"
+            },
+            "additionalProperties": false
+          },
           "required": [
             "type"
-          ],
-          "additionalProperties": true
+          ]
         }
       },
       "filename_prefix": {
