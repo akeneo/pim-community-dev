@@ -3,6 +3,7 @@ import {
   createEmptyAssetFamily,
   getAssetFamilyLabel,
   assetFamilyAreEqual,
+  getAttributeAsMainMedia,
 } from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
@@ -140,5 +141,51 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
       attributes: [],
       transformations: '[]',
     });
+  });
+
+  test('I should be able to get the attribute as main media', () => {
+    const assetFamily = createAssetFamilyFromNormalized({
+      identifier: michelIdentifier,
+      code: michelIdentifier,
+      labels: michelLabels,
+      image: createEmptyFile(),
+      attribute_as_label: 'name_michel_fingerprint',
+      attribute_as_main_media: 'image_michel_fingerprint',
+      attributes: [
+        {
+          identifier: 'second_image',
+        },
+        {
+          identifier: 'image_michel_fingerprint',
+        },
+      ],
+    });
+
+    expect(getAttributeAsMainMedia(assetFamily)).toEqual({
+      identifier: 'image_michel_fingerprint',
+    });
+  });
+
+  test('I should get an error if I try to get and attribute as main media that does not exist', () => {
+    const assetFamily = createAssetFamilyFromNormalized({
+      identifier: michelIdentifier,
+      code: michelIdentifier,
+      labels: michelLabels,
+      image: createEmptyFile(),
+      attribute_as_label: 'name_michel_fingerprint',
+      attribute_as_main_media: 'image_michel_fingerprint',
+      attributes: [
+        {
+          identifier: 'second_image',
+        },
+        {
+          identifier: 'label',
+        },
+      ],
+    });
+
+    expect(() => getAttributeAsMainMedia(assetFamily)).toThrowError(
+      'The AssetFamily must have an attribute as main media'
+    );
   });
 });
