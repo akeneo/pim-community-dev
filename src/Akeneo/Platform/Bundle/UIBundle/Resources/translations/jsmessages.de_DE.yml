@@ -270,7 +270,7 @@ pim_title:
   pim_enrich_catalog_volume_index: Überwachung Katalogumfang
   pim_enrich_categorytree_index: Kategorie-Strukturbäume
   pim_enrich_categorytree_create: Kategorie-Strukturbäume | Anlegen
-  pim_enrich_categorytree_edit: Kategoriebaum {{ category.label }}}}} | Bearbeiten
+  pim_enrich_categorytree_edit: Kategoriebaum {{ category.label }} | Bearbeiten
   pim_enrich_categorytree_create_tree: Kategorie-Strukturbäume | Anlegen
   pim_enrich_attribute_index: Attribute
   pim_enrich_attribute_create: Attribute | Anlegen
