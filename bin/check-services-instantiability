@@ -74,7 +74,12 @@ function checkServicesInstantiability(ContainerInterface $container, ConsoleOutp
     }
 
     if (0 === count($nonInstantiableServices)) {
-        $output->writeln("All services are instantiable!");
+        $output->writeln(
+            sprintf(
+                "<info>All %s services are instantiable.</info>",
+                count($serviceIds)
+            )
+        );
 
         return 0;
     } else {
