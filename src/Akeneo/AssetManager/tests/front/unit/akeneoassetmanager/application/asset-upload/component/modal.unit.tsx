@@ -14,10 +14,12 @@ jest.mock('akeneoassetmanager/application/asset-upload/saver/asset', () => ({
   create: jest.fn().mockImplementation(() => Promise.resolve(null)),
 }));
 jest.mock('akeneoassetmanager/application/asset-upload/utils/file', () => ({
-  uploadFile: jest.fn().mockImplementation((file: File) => Promise.resolve({
-    filePath: file.name,
-    originalFilename: file.name,
-  })),
+  uploadFile: jest.fn().mockImplementation((file: File) =>
+    Promise.resolve({
+      filePath: file.name,
+      originalFilename: file.name,
+    })
+  ),
   getThumbnailFromFile: jest.fn().mockImplementation((file: File, line: Line) =>
     Promise.resolve({
       thumbnail: '/tmb/' + file.name,

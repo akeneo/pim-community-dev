@@ -5,7 +5,7 @@ import {
   fileThumbnailGenerationAction,
   fileUploadProgressAction,
   fileUploadSuccessAction,
-  linesAddedAction
+  linesAddedAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {onFileDrop} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-file-drop';
@@ -85,10 +85,12 @@ describe('', () => {
     await flushPromises();
 
     const line = createLineFromFilename(file.name, assetFamily);
-    expect(dispatch).toHaveBeenCalledWith(fileUploadSuccessAction(line, {
-      filePath: 'foo.png',
-      originalFilename: 'foo.png',
-    }));
+    expect(dispatch).toHaveBeenCalledWith(
+      fileUploadSuccessAction(line, {
+        filePath: 'foo.png',
+        originalFilename: 'foo.png',
+      })
+    );
     expect(dispatch).toHaveBeenCalledWith(linesAddedAction([line]));
   });
 });

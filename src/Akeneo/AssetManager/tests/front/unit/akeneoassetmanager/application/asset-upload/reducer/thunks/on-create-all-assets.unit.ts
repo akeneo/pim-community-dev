@@ -5,7 +5,7 @@ import {onCreateAllAsset} from 'akeneoassetmanager/application/asset-upload/redu
 import {
   assetCreationFailAction,
   assetCreationSuccessAction,
-  lineCreationStartAction
+  lineCreationStartAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 import {createAssetsFromLines} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {create} from 'akeneoassetmanager/application/asset-upload/saver/asset';
@@ -41,9 +41,7 @@ describe('', () => {
   });
 
   test('I dispatch the validation error from the server when the creation failed', async () => {
-    const errors = [
-      createFakeError('some error'),
-    ];
+    const errors = [createFakeError('some error')];
     create.mockImplementation(() => Promise.resolve(errors));
 
     const assetFamily = createFakeAssetFamily(false, false);
@@ -88,12 +86,14 @@ describe('', () => {
 
     expect(dispatch).toHaveBeenCalledWith(lineCreationStartAction(line));
     let asset = createAssetsFromLines([line], assetFamily)[0];
-    expect(dispatch).toHaveBeenCalledWith(assetCreationFailAction(asset, [
-      {
-        ...createFakeError(),
-        message: 'Internal server error',
-        invalidValue: asset,
-      }
-    ]));
+    expect(dispatch).toHaveBeenCalledWith(
+      assetCreationFailAction(asset, [
+        {
+          ...createFakeError(),
+          message: 'Internal server error',
+          invalidValue: asset,
+        },
+      ])
+    );
   });
 });
