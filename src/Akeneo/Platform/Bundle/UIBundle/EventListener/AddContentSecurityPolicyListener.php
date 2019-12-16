@@ -33,7 +33,7 @@ class AddContentSecurityPolicyListener implements EventSubscriberInterface
     public function addCspHeaders(FilterResponseEvent $event): void
     {
         $policy = sprintf(
-            "default-src 'self' *.akeneo.com 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'nonce-%s'; img-src 'self' data:",
+            "default-src 'self' *.akeneo.com 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'nonce-%s'; img-src 'self' data: ; frame-src * ; font-src 'self' data:",
             $this->generatedNonce
         );
 
