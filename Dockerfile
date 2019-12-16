@@ -126,6 +126,7 @@ COPY bin bin
 COPY config config
 COPY public public
 COPY frontend/build frontend/build
+COPY frontend/types.d.ts frontend/types.d.ts
 COPY src src
 COPY upgrades upgrades
 COPY composer.json package.json yarn.lock .env tsconfig.json .
