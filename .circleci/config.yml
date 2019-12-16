@@ -243,7 +243,7 @@ jobs:
             name: Front integration tests
             command: make integration-front
 
-  back_performance:
+  test_back_performance:
     machine:
         image: ubuntu-1604:201903-01
     steps:
@@ -318,8 +318,8 @@ jobs:
           - set_gcloud_config
           - prepare_terraform
           - run:
-              name: Deploy PIM on kubernetes
-              command: IMAGE_TAG=$CIRCLE_SHA1 make test-pim-connection
+              name: Production tests
+              command: IMAGE_TAG=$CIRCLE_SHA1 make test-prod
           - run:
               name: Delete FAILED validation env
               when: on_fail
@@ -445,7 +445,7 @@ workflows:
                     - test_back_data_migrations
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
-          - back_performance:
+          - test_back_performance:
                 requires:
                     - test_back_data_migrations
                     - test_back_missing_structure_migrations
@@ -478,7 +478,7 @@ workflows:
           - back_behat_legacy:
                 requires:
                     - test_back_phpunit
-          - back_performance:
+          - test_back_performance:
                 requires:
                     - back_behat_legacy
   deployment:
@@ -518,12 +518,20 @@ workflows:
           - back_behat_legacy:
                 requires:
                     - build_dev
+          - test_back_data_migrations:
+                requires:
+                    - build_dev
+          - test_back_performance:
+                requires:
+                    - build_dev
           - release:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
                     - test_back_phpunit
+                    - test_back_performance
                     - back_behat_legacy
+                    - test_back_data_migrations
                     - destroy_new_environment
 
 

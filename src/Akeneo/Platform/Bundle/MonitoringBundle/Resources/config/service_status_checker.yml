@@ -15,6 +15,7 @@ services:
             - '@oneup_flysystem.mount_manager'
 
     Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\Controller:
+        public: true
         class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\Controller'
         arguments:
             - '@Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\MysqlChecker'

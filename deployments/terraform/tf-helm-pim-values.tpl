@@ -24,3 +24,5 @@ pim:
   storage:
     bucketName: ${bucketName}
     serviceAccountKey: ${pimStoragekey}
+  monitoring:
+    authenticationToken: ${monitoring_authentication_token}
