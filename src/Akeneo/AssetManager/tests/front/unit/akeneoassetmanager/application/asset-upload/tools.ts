@@ -4,7 +4,7 @@ import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {NormalizedValidationError} from 'akeneoassetmanager/domain/model/validation-error';
-import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
+import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
 
 export const createFakeAssetFamily = (valuePerLocale: boolean, valuePerChannel: boolean): AssetFamily => {
   return Object.freeze({

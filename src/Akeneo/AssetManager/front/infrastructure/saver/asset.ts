@@ -4,7 +4,7 @@ import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
+import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
 
 const routing = require('routing');
 

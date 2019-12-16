@@ -1,4 +1,4 @@
-import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
+import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import assetSaver from 'akeneoassetmanager/infrastructure/saver/asset';
 import {addQueueSupport} from 'akeneoassetmanager/tools/queue';

@@ -3,7 +3,7 @@ import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamily, getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import sanitize from 'akeneoassetmanager/tools/sanitize';
-import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
+import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
 import {NormalizedMinimalValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {createUUIDV4} from 'akeneoassetmanager/application/asset-upload/utils/uuid';

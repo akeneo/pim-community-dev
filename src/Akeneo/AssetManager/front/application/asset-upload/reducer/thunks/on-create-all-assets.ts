@@ -9,7 +9,7 @@ import {
   assetCreationSuccessAction,
   lineCreationStartAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
-import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/asset';
+import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
 import {create} from 'akeneoassetmanager/application/asset-upload/saver/asset';
 
 export const onCreateAllAsset = (assetFamily: AssetFamily, lines: Line[], dispatch: (action: any) => void) => {
