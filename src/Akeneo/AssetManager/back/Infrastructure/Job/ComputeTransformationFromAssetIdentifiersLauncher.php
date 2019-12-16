@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Job;
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationFromAssetIdentifiersLauncherInterface;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Webmozart\Assert\Assert;
 
 class ComputeTransformationFromAssetIdentifiersLauncher implements ComputeTransformationFromAssetIdentifiersLauncherInterface
@@ -23,9 +24,13 @@ class ComputeTransformationFromAssetIdentifiersLauncher implements ComputeTransf
     /** @var PublishJobToQueue */
     private $publishJobToQueue;
 
-    public function __construct(PublishJobToQueue $publishJobToQueue)
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
+    public function __construct(PublishJobToQueue $publishJobToQueue, TokenStorageInterface $tokenStorage)
     {
         $this->publishJobToQueue = $publishJobToQueue;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -41,9 +46,13 @@ class ComputeTransformationFromAssetIdentifiersLauncher implements ComputeTransf
             }, $assetIdentifiers),
         ];
 
+        $token = $this->tokenStorage->getToken();
+
         $this->publishJobToQueue->publish(
             'asset_manager_compute_transformations',
-            $config
+            $config,
+            false,
+            null !== $token ? $token->getUsername() : null
         );
     }
 }

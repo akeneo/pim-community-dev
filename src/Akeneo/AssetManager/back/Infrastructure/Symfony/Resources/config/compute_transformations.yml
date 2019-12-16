@@ -60,15 +60,11 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@validator'
 
-    akeneo_assetmanager.infrastructure.transformation.compute_transformations.executor:
-        class: Akeneo\AssetManager\Infrastructure\Transformation\ComputeTransformationsExecutor
+    Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor:
         arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
-            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations'
-            - '@akeneo_assetmanager.infrastructure.transformation.get_outdated_variation_source'
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader'
             - '@akeneo_assetmanager.infrastructure.transformation.file_transformer'
             - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@akeneo_assetmanager.application.asset.edit_asset_handler'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'

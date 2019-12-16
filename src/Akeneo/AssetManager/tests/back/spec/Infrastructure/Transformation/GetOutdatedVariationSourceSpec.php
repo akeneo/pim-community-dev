@@ -15,31 +15,39 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class GetOutdatedVariationSourceSpec extends ObjectBehavior
 {
     function let(
         AttributeRepositoryInterface $attributeRepository,
+        ValidatorInterface $validator,
         MediaFileAttribute $mainImage,
         MediaFileAttribute $targetImage
     ) {
-        $mainImage->getIdentifier()->willReturn(AttributeIdentifier::fromString('packshot_main_image_123456'));
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('packshot');
         $attributeRepository->getByCodeAndAssetFamilyIdentifier(
             AttributeCode::fromString('main_image'),
-            AssetFamilyIdentifier::fromString('packshot')
+            $assetFamilyIdentifier
         )->willReturn($mainImage);
-        $targetImage->getIdentifier()->willReturn(AttributeIdentifier::fromString('packshot_target_image_123456'));
+
         $attributeRepository->getByCodeAndAssetFamilyIdentifier(
             AttributeCode::fromString('target_image'),
-            AssetFamilyIdentifier::fromString('packshot')
+            $assetFamilyIdentifier
         )->willReturn($targetImage);
 
-        $this->beConstructedWith($attributeRepository);
+        $validator->validate(
+            ['normalized_transformation_without_errors'],
+            Argument::type(\Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation::class)
+        )->willReturn(new ConstraintViolationList());
+        $this->beConstructedWith($attributeRepository, $validator);
     }
 
     function it_is_initializable()
@@ -47,129 +55,65 @@ class GetOutdatedVariationSourceSpec extends ObjectBehavior
         $this->shouldHaveType(GetOutdatedVariationSource::class);
     }
 
-    function it_returns_the_source_file_data_for_a_target_value_older_than_source(
-        Asset $asset,
+    function it_throws_an_exception_if_the_transformation_is_not_valid(
+        ValidatorInterface $validator,
         Transformation $transformation,
-        Value $sourceValue,
-        FileData $sourceFileData,
-        Value $targetValue,
-        FileData $targetFileData
+        Asset $asset,
+        ConstraintViolationInterface $violation
     ) {
+        $transformation->normalize()->willReturn(['normalized_transformation_with_errors']);
         $asset->getAssetFamilyIdentifier()->willReturn(AssetFamilyIdentifier::fromString('packshot'));
-        $transformation->getSource()->willReturn(
-            Source::createFromNormalized(
-                [
-                    'attribute' => 'main_image',
-                    'channel' => null,
-                    'locale' => null,
-                ]
-            )
-        );
-        $sourceFileData->getUpdatedAt()->willReturn(
-            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-30T00:00:21+0000')
-        );
-        $sourceValue->getData()->willReturn($sourceFileData);
-        $asset->findValue(
-            ValueKey::create(
-                AttributeIdentifier::fromString('packshot_main_image_123456'),
-                ChannelReference::noReference(),
-                LocaleReference::noReference()
-            )
-        )->willReturn($sourceValue);
+        $violation->getMessage()->willReturn('validation error message');
+        $validator->validate(
+            ['normalized_transformation_with_errors'],
+            Argument::type(\Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation::class)
+        )->willReturn(new ConstraintViolationList([$violation->getWrappedObject()]));
 
-        $transformation->getTarget()->willReturn(
-            Target::createFromNormalized(
-                [
-                    'attribute' => 'target_image',
-                    'channel' => null,
-                    'locale' => null,
-                ]
-            )
+        $this->shouldThrow(new NonApplicableTransformationException('validation error message'))->during(
+            'forAssetAndTransformation',
+            [$asset, $transformation]
         );
-
-        $targetFileData->getUpdatedAt()->willReturn(
-            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-22T15:16:21+0000')
-        );
-        $targetValue->getData()->willReturn($targetFileData);
-        $asset->findValue(
-            ValueKey::create(
-                AttributeIdentifier::fromString('packshot_target_image_123456'),
-                ChannelReference::noReference(),
-                LocaleReference::noReference()
-            )
-        )->willReturn($targetValue);
-
-        $this->forAssetAndTransformation($asset, $transformation)->shouldReturn($sourceFileData);
     }
 
-    function it_returns_null_for_a_target_value_older_than_transformation_setup(
+    function it_throws_an_exception_if_the_source_file_is_empty(
         Asset $asset,
         Transformation $transformation,
-        Value $sourceValue,
-        FileData $sourceFileData,
-        Value $targetValue,
-        FileData $targetFileData
+        MediaFileAttribute $mainImage
     ) {
+        $transformation->normalize()->willReturn(['normalized_transformation_without_errors']);
         $asset->getAssetFamilyIdentifier()->willReturn(AssetFamilyIdentifier::fromString('packshot'));
+
         $transformation->getSource()->willReturn(
-            Source::createFromNormalized(
-                [
-                    'attribute' => 'main_image',
-                    'channel' => null,
-                    'locale' => null,
-                ]
-            )
+            Source::createFromNormalized([
+                'attribute' => 'main_image',
+                'channel' => null,
+                'locale' => null,
+            ])
         );
-        $sourceFileData->getUpdatedAt()->willReturn(
-            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-01T00:00:21+0000')
-        );
-        $sourceValue->getData()->willReturn($sourceFileData);
-        $asset->findValue(
-            ValueKey::create(
-                AttributeIdentifier::fromString('packshot_main_image_123456'),
-                ChannelReference::noReference(),
-                LocaleReference::noReference()
-            )
-        )->willReturn($sourceValue);
+        $mainImageIdentifier = AttributeIdentifier::fromString('packshot-main_image-123456');
+        $mainImage->getIdentifier()->willReturn($mainImageIdentifier);
 
-        $transformation->getTarget()->willReturn(
-            Target::createFromNormalized(
-                [
-                    'attribute' => 'target_image',
-                    'channel' => null,
-                    'locale' => null,
-                ]
-            )
-        );
+        $asset->findValue(ValueKey::createFromNormalized('packshot-main_image-123456'))->willReturn(null);
 
-        $targetFileData->getUpdatedAt()->willReturn(
-            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-02T15:16:21+0000')
+        $this->shouldThrow(
+            new NonApplicableTransformationException('The source file for attribute "main_image" is missing')
+        )->during(
+            'forAssetAndTransformation',
+            [$asset, $transformation]
         );
-        $targetValue->getData()->willReturn($targetFileData);
-        $asset->findValue(
-            ValueKey::create(
-                AttributeIdentifier::fromString('packshot_target_image_123456'),
-                ChannelReference::noReference(),
-                LocaleReference::noReference()
-            )
-        )->willReturn($targetValue);
-        $transformation->getUpdatedAt()->willReturn(
-            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-03T11:14:49+0000')
-        );
-
-
-        $this->forAssetAndTransformation($asset, $transformation)->shouldReturn($sourceFileData);
     }
 
-    function it_returns_null_for_a_non_outdated_target_value(
+    function it_returns_null_if_the_target_file_is_newer_than_the_source_file_and_the_transformation(
         Asset $asset,
         Transformation $transformation,
-        Value $sourceValue,
-        FileData $sourceFileData,
-        Value $targetValue,
-        FileData $targetFileData
+        MediaFileAttribute $mainImage,
+        FileData $sourceFile,
+        MediaFileAttribute $targetImage,
+        FileData $targetFile
     ) {
+        $transformation->normalize()->willReturn(['normalized_transformation_without_errors']);
         $asset->getAssetFamilyIdentifier()->willReturn(AssetFamilyIdentifier::fromString('packshot'));
+
         $transformation->getSource()->willReturn(
             Source::createFromNormalized(
                 [
@@ -179,17 +123,14 @@ class GetOutdatedVariationSourceSpec extends ObjectBehavior
                 ]
             )
         );
-        $sourceFileData->getUpdatedAt()->willReturn(
-            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-01T00:00:21+0000')
-        );
-        $sourceValue->getData()->willReturn($sourceFileData);
-        $asset->findValue(
-            ValueKey::create(
-                AttributeIdentifier::fromString('packshot_main_image_123456'),
-                ChannelReference::noReference(),
-                LocaleReference::noReference()
-            )
-        )->willReturn($sourceValue);
+        $mainImageIdentifier = AttributeIdentifier::fromString('packshot-main_image-123456');
+        $mainImage->getIdentifier()->willReturn($mainImageIdentifier);
+        $asset->findValue(ValueKey::createFromNormalized('packshot-main_image-123456'))->willReturn(Value::create(
+            $mainImageIdentifier,
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            $sourceFile->getWrappedObject()
+        ));
 
         $transformation->getTarget()->willReturn(
             Target::createFromNormalized(
@@ -200,58 +141,41 @@ class GetOutdatedVariationSourceSpec extends ObjectBehavior
                 ]
             )
         );
-
-        $targetFileData->getUpdatedAt()->willReturn(
-            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-02T15:16:21+0000')
-        );
-        $targetValue->getData()->willReturn($targetFileData);
-        $asset->findValue(
-            ValueKey::create(
-                AttributeIdentifier::fromString('packshot_target_image_123456'),
+        $targetImageIdentifier = AttributeIdentifier::fromString('packshot-target_image-789012');
+        $targetImage->getIdentifier()->willReturn($targetImageIdentifier);
+        $asset->findValue(ValueKey::createFromNormalized('packshot-target_image-789012'))->willReturn(
+            Value::create(
+                $targetImageIdentifier,
                 ChannelReference::noReference(),
-                LocaleReference::noReference()
+                LocaleReference::noReference(),
+                $targetFile->getWrappedObject()
             )
-        )->willReturn($targetValue);
-        $transformation->getUpdatedAt()->willReturn(
-            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-10-01T11:14:49+0000')
         );
 
+        $sourceFile->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-30T00:00:00+0000')
+        );
+        $targetFile->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-12-05T00:00:00+0000')
+        );
+        $transformation->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-15T00:00:00+0000')
+        );
 
         $this->forAssetAndTransformation($asset, $transformation)->shouldReturn(null);
     }
 
-    function it_throws_an_exception_if_the_source_attribute_is_not_a_media(
-        AttributeRepositoryInterface $attributeRepository,
+    function it_returns_the_source_file_if_target_file_is_older_than_the_source_file(
         Asset $asset,
         Transformation $transformation,
-        TextAttribute $mainSource
+        MediaFileAttribute $mainImage,
+        FileData $sourceFile,
+        MediaFileAttribute $targetImage,
+        FileData $targetFile
     ) {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('packshot');
-        $asset->getAssetFamilyIdentifier()->willReturn($assetFamilyIdentifier);
-        $transformation->getSource()->willReturn(
-            Source::createFromNormalized(
-                [
-                    'attribute' => 'main_source',
-                    'channel' => null,
-                    'locale' => null,
-                ]
-            )
-        );
-        $attributeRepository->getByCodeAndAssetFamilyIdentifier(
-            AttributeCode::fromString('main_source'),
-            $assetFamilyIdentifier
-        )->willReturn($mainSource);
-
-        $this->shouldThrow(
-            new NonApplicableTransformationException('source should be a media file')
-        )->during('forAssetAndTransformation', [$asset->getWrappedObject(), $transformation->getWrappedObject()]);
-    }
-
-    function it_throws_an_exception_if_the_source_value_is_empty(
-        Asset $asset,
-        Transformation $transformation
-    ) {
+        $transformation->normalize()->willReturn(['normalized_transformation_without_errors']);
         $asset->getAssetFamilyIdentifier()->willReturn(AssetFamilyIdentifier::fromString('packshot'));
+
         $transformation->getSource()->willReturn(
             Source::createFromNormalized(
                 [
@@ -261,61 +185,154 @@ class GetOutdatedVariationSourceSpec extends ObjectBehavior
                 ]
             )
         );
-
-        $asset->findValue(
-            ValueKey::create(
-                AttributeIdentifier::fromString('packshot_main_image_123456'),
+        $mainImageIdentifier = AttributeIdentifier::fromString('packshot-main_image-123456');
+        $mainImage->getIdentifier()->willReturn($mainImageIdentifier);
+        $asset->findValue(ValueKey::createFromNormalized('packshot-main_image-123456'))->willReturn(
+            Value::create(
+                $mainImageIdentifier,
                 ChannelReference::noReference(),
-                LocaleReference::noReference()
-            )
-        )->willReturn(null);
-
-        $this->shouldThrow(
-            new NonApplicableTransformationException('source is empty')
-        )->during('forAssetAndTransformation', [$asset->getWrappedObject(), $transformation->getWrappedObject()]);
-    }
-
-    function it_throws_an_exception_if_the_target_is_no_a_media(
-        AttributeRepositoryInterface $attributeRepository,
-        Asset $asset,
-        Transformation $transformation,
-        Value $sourceValue,
-        TextAttribute $targetAttribute
-    ) {
-        $asset->getAssetFamilyIdentifier()->willReturn(AssetFamilyIdentifier::fromString('packshot'));
-        $transformation->getSource()->willReturn(
-            Source::createFromNormalized(
-                [
-                    'attribute' => 'main_image',
-                    'channel' => null,
-                    'locale' => null,
-                ]
+                LocaleReference::noReference(),
+                $sourceFile->getWrappedObject()
             )
         );
-        $asset->findValue(
-            ValueKey::create(
-                AttributeIdentifier::fromString('packshot_main_image_123456'),
-                ChannelReference::noReference(),
-                LocaleReference::noReference()
-            )
-        )->willReturn($sourceValue);
 
         $transformation->getTarget()->willReturn(
             Target::createFromNormalized(
                 [
-                    'attribute' => 'target_attribute',
+                    'attribute' => 'target_image',
                     'channel' => null,
                     'locale' => null,
                 ]
             )
         );
-        $attributeRepository->getByCodeAndAssetFamilyIdentifier(
-            AttributeCode::fromString('target_attribute'),
-            AssetFamilyIdentifier::fromString('packshot')
-        )->willReturn($targetAttribute);
+        $targetImageIdentifier = AttributeIdentifier::fromString('packshot-target_image-789012');
+        $targetImage->getIdentifier()->willReturn($targetImageIdentifier);
+        $asset->findValue(ValueKey::createFromNormalized('packshot-target_image-789012'))->willReturn(
+            Value::create(
+                $targetImageIdentifier,
+                ChannelReference::noReference(),
+                LocaleReference::noReference(),
+                $targetFile->getWrappedObject()
+            )
+        );
 
-        $this->shouldThrow(
-            new NonApplicableTransformationException('target should be a media file')
-        )->during('forAssetAndTransformation', [$asset->getWrappedObject(), $transformation->getWrappedObject()]);
+        $sourceFile->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-30T00:00:00+0000')
+        );
+        $targetFile->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-28T00:00:00+0000')
+        );
+
+        $this->forAssetAndTransformation($asset, $transformation)->shouldReturn($sourceFile);
+    }
+
+    function it_returns_the_source_file_if_target_file_is_older_than_transformation(
+        Asset $asset,
+        Transformation $transformation,
+        MediaFileAttribute $mainImage,
+        FileData $sourceFile,
+        MediaFileAttribute $targetImage,
+        FileData $targetFile
+    ) {
+        $transformation->normalize()->willReturn(['normalized_transformation_without_errors']);
+        $asset->getAssetFamilyIdentifier()->willReturn(AssetFamilyIdentifier::fromString('packshot'));
+
+        $transformation->getSource()->willReturn(
+            Source::createFromNormalized(
+                [
+                    'attribute' => 'main_image',
+                    'channel' => null,
+                    'locale' => null,
+                ]
+            )
+        );
+        $mainImageIdentifier = AttributeIdentifier::fromString('packshot-main_image-123456');
+        $mainImage->getIdentifier()->willReturn($mainImageIdentifier);
+        $asset->findValue(ValueKey::createFromNormalized('packshot-main_image-123456'))->willReturn(
+            Value::create(
+                $mainImageIdentifier,
+                ChannelReference::noReference(),
+                LocaleReference::noReference(),
+                $sourceFile->getWrappedObject()
+            )
+        );
+
+        $transformation->getTarget()->willReturn(
+            Target::createFromNormalized(
+                [
+                    'attribute' => 'target_image',
+                    'channel' => null,
+                    'locale' => null,
+                ]
+            )
+        );
+        $targetImageIdentifier = AttributeIdentifier::fromString('packshot-target_image-789012');
+        $targetImage->getIdentifier()->willReturn($targetImageIdentifier);
+        $asset->findValue(ValueKey::createFromNormalized('packshot-target_image-789012'))->willReturn(
+            Value::create(
+                $targetImageIdentifier,
+                ChannelReference::noReference(),
+                LocaleReference::noReference(),
+                $targetFile->getWrappedObject()
+            )
+        );
+
+        $sourceFile->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-30T00:00:00+0000')
+        );
+        $targetFile->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-12-02T00:00:00+0000')
+        );
+        $transformation->getUpdatedAt()->willReturn(
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-12-05T00:00:00+0000')
+        );
+
+        $this->forAssetAndTransformation($asset, $transformation)->shouldReturn($sourceFile);
+    }
+
+    function it_returns_the_source_file_if_the_target_is_missing(
+        Asset $asset,
+        Transformation $transformation,
+        MediaFileAttribute $mainImage,
+        FileData $sourceFile,
+        MediaFileAttribute $targetImage
+    ) {
+        $transformation->normalize()->willReturn(['normalized_transformation_without_errors']);
+        $asset->getAssetFamilyIdentifier()->willReturn(AssetFamilyIdentifier::fromString('packshot'));
+
+        $transformation->getSource()->willReturn(
+            Source::createFromNormalized(
+                [
+                    'attribute' => 'main_image',
+                    'channel' => null,
+                    'locale' => null,
+                ]
+            )
+        );
+        $mainImageIdentifier = AttributeIdentifier::fromString('packshot-main_image-123456');
+        $mainImage->getIdentifier()->willReturn($mainImageIdentifier);
+        $asset->findValue(ValueKey::createFromNormalized('packshot-main_image-123456'))->willReturn(
+            Value::create(
+                $mainImageIdentifier,
+                ChannelReference::noReference(),
+                LocaleReference::noReference(),
+                $sourceFile->getWrappedObject()
+            )
+        );
+
+        $transformation->getTarget()->willReturn(
+            Target::createFromNormalized(
+                [
+                    'attribute' => 'target_image',
+                    'channel' => null,
+                    'locale' => null,
+                ]
+            )
+        );
+        $targetImageIdentifier = AttributeIdentifier::fromString('packshot-target_image-789012');
+        $targetImage->getIdentifier()->willReturn($targetImageIdentifier);
+        $asset->findValue(ValueKey::createFromNormalized('packshot-target_image-789012'))->willReturn(null);
+
+        $this->forAssetAndTransformation($asset, $transformation)->shouldReturn($sourceFile);
     }
 }
