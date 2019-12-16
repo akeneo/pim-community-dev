@@ -24,7 +24,8 @@ class AppWithCredentialsSpec extends ObjectBehavior
             'my_custom_client_id',
             'my_secret',
             'my_username',
-            'my_password'
+            'my_password',
+            'a/b/c/the_path.jpg'
         );
     }
 
@@ -68,12 +69,32 @@ class AppWithCredentialsSpec extends ObjectBehavior
         $this->password()->shouldReturn('my_password');
     }
 
+    public function it_returns_null_if_there_is_no_image()
+    {
+        $this->beConstructedWith(
+            'magento',
+            'Magento Connector',
+            FlowType::DATA_DESTINATION,
+            'my_custom_client_id',
+            'my_secret',
+            'my_username',
+            'my_password'
+        );
+        $this->image()->shouldBeNull();
+    }
+
+    public function it_returns_the_image()
+    {
+        $this->image()->shouldReturn('a/b/c/the_path.jpg');
+    }
+
     public function it_normalizes_an_app_with_credentials()
     {
         $this->normalize()->shouldReturn([
             'code' => 'magento',
             'label' => 'Magento Connector',
             'flow_type' => FlowType::DATA_DESTINATION,
+            'image' => 'a/b/c/the_path.jpg',
             'client_id' => 'my_custom_client_id',
             'secret' => 'my_secret',
             'username' => 'my_username',

@@ -28,22 +28,13 @@ class MediaController
     /** @var PathGeneratorInterface */
     protected $pathGenerator;
 
-    /** @var string */
-    protected $uploadDir;
-
     /** @var FileStorer */
     private $fileStorer;
 
-    /**
-     * @param ValidatorInterface     $validator
-     * @param PathGeneratorInterface $pathGenerator
-     * @param string                 $uploadDir
-     */
-    public function __construct(ValidatorInterface $validator, PathGeneratorInterface $pathGenerator, $uploadDir, FileStorer $fileStorer)
+    public function __construct(ValidatorInterface $validator, PathGeneratorInterface $pathGenerator, FileStorer $fileStorer)
     {
         $this->validator = $validator;
         $this->pathGenerator = $pathGenerator;
-        $this->uploadDir = $uploadDir;
         $this->fileStorer = $fileStorer;
     }
 

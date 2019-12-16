@@ -22,7 +22,7 @@ class CodeMustBeUniqueValidator extends ConstraintValidator
         $this->repository = $repository;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (null !== $this->repository->findOneByCode($value)) {
             $this->context->buildViolation($constraint->message)->addViolation();

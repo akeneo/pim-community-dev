@@ -15,6 +15,7 @@ pim_apps:
         code: Code
         label: Label
         flow_type: Flow type
+        image: Image
     flow_type:
         data_source: Data source | Data sources
         data_destination: Data destination | Data destinations
@@ -28,6 +29,13 @@ pim_apps:
         message: Wondering what flow type is?
         link: We can help you right here!
         link_url: https://www.akeneo.com/
+    edit_image:
+        upload_helper: Change your image, drag and drop or
+        remove_helper: Remove the image
+        click_here: click here
+        flash:
+            extension_not_allowed: Sorry, the file you are trying to upload has an extension not allowed.
+
     app_count: '{{ count }} app | {{ count }} apps'
     no_app:
         title: No app declared yet.
@@ -57,14 +65,20 @@ akeneo_apps:
             code:
                 required: App code is required.
                 invalid: App code may contain only letters, numbers and underscores.
+                too_short: App code is too short. It should have 3 characters or more.
                 too_long: App code is too long. It should have 100 characters or less.
                 must_be_unique: App code must be unique.
             label:
                 required: App label is required.
+                too_short: App label is too short. It should have 3 characters or more.
                 too_long: App label is too long. It should have 100 characters or less.
             flow_type:
                 invalid: App flow type can only be 'data_source', 'data_destination' or 'other'.
+            image:
+                must_exist: The image you trying to update App with must exist.
     edit_app:
+        image_uploader:
+            extension_not_allowed: Sorry, the file you are trying to upload has an extension not allowed.
         credentials:
             title: Credentials
             helper: Lorem ipsum dolor sit amet, consectetur adipiscing elit
@@ -94,8 +108,20 @@ akeneo_apps:
             error: Sorry, an error occurred while regenerating the app secret.
     delete_app:
         title: Confirm deletion
-        description: Are you sure you want to delete the app? Not sure about the impacts? 
+        description: Are you sure you want to delete the app? Not sure about the impacts?
         link: Here is what will happen.
         link_url: https://www.akeneo.com/
         flash:
             success: App successfully deleted.
+    dashboard:
+        helper:
+            title: 👋 Welcome in your app dashboard!
+            description: Here, you will be able to track all the data flows that are collected into your PIM via your apps, as well as all the data flows that are distributed to your channels via your apps.
+            link: Wanna know more? Here you go!
+            link_url: https://www.akeneo.com/
+        charts:
+            number_of_products_created: Number of products created
+            number_of_product_updated: Number of products updated
+            legend:
+                during_the_last_seven_days: During the last seven days
+                today: Today

@@ -163,7 +163,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-rockstar.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-rockstar.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-rockstar.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'color-option'     => [
@@ -366,7 +374,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-grey.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-grey.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-grey.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -409,7 +425,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-blue.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-blue.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-blue.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -452,7 +476,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-red.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-red.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-red.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -695,7 +727,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-grey.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-grey.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-grey.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -752,7 +792,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-grey.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-grey.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-grey.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -809,7 +857,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-grey.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-grey.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-grey.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -866,7 +922,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-grey.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-grey.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-grey.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -924,7 +988,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-blue.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-blue.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-blue.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -981,7 +1053,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-blue.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-blue.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-blue.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -1038,7 +1118,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-blue.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-blue.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-blue.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -1095,7 +1183,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-blue.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-blue.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-blue.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -1153,7 +1249,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-red.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-red.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-red.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -1210,7 +1314,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-red.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-red.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-red.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -1267,7 +1379,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-red.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-red.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-red.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -1324,7 +1444,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-red.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-red.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-red.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'material-option'  => [
@@ -1378,7 +1506,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-rockstar.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-rockstar.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-rockstar.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'color-option'     => [
@@ -1425,7 +1561,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-rockstar.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-rockstar.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-rockstar.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'color-option'     => [
@@ -1472,7 +1616,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-rockstar.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-rockstar.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-rockstar.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'color-option'     => [
@@ -1519,7 +1671,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-rockstar.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-rockstar.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-rockstar.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'color-option'     => [
@@ -1709,7 +1869,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-unique-size-blue.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-unique-size-blue.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-unique-size-blue.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'size-option'      => [
@@ -1758,7 +1926,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-unique-size-red.jpg',
+                            '<all_locales>' => [
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-unique-size-red.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-unique-size-red.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'size-option'      => [
@@ -1807,7 +1983,15 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                     ],
                     'image-media'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'tshirt-unique-size-yellow.jpg',
+                            '<all_locales>' =>[
+                                'extension' => 'jpg',
+                                'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_tshirt-unique-size-yellow.jpg',
+                                'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                                'mime_type' => 'image/jpeg',
+                                'original_filename' => 'tshirt-unique-size-red.jpg',
+                                'size' => 10584,
+                                'storage' => 'catalogStorage',
+                            ],
                         ],
                     ],
                     'size-option'      => [

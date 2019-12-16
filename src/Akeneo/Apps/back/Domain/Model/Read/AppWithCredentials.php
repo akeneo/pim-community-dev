@@ -25,14 +25,25 @@ class AppWithCredentials
     private $username;
     /** @var string */
     private $password;
+    /** @var string|null */
+    private $image;
 
-    public function __construct(string $code, string $label, string $flowType, string $clientId, string $secret, string $username, ?string $password = null)
-    {
+    public function __construct(
+        string $code,
+        string $label,
+        string $flowType,
+        string $clientId,
+        string $secret,
+        string $username,
+        ?string $password = null,
+        ?string $image = null
+    ) {
         $this->code = $code;
         $this->label = $label;
         $this->flowType = $flowType;
         $this->clientId = $clientId;
         $this->secret = $secret;
+        $this->image = $image;
         $this->username = $username;
         $this->password = $password;
     }
@@ -72,12 +83,18 @@ class AppWithCredentials
         return $this->password;
     }
 
+    public function image(): ?string
+    {
+        return $this->image;
+    }
+
     public function normalize(): array
     {
         return [
             'code' => $this->code,
             'label' => $this->label,
             'flow_type' => $this->flowType,
+            'image' => $this->image,
             'client_id' => $this->clientId,
             'secret' => $this->secret,
             'username' => $this->username,

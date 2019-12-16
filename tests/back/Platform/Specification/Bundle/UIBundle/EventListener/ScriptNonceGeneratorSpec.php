@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Platform\Bundle\UIBundle\EventListener;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -13,28 +14,14 @@ class ScriptNonceGeneratorSpec extends ObjectBehavior
     function let(RequestStack $requestStack, Request $request)
     {
         $requestStack->getCurrentRequest()->willReturn($request);
-        $this->beConstructedWith($requestStack);
+        $this->beConstructedWith($requestStack, 'my_secret');
     }
 
-    function it_generate_a_new_nonce_on_first_request(Request $request, SessionInterface $session)
+    function it_gets_the_nonce_from_bapid_cookie(Request $request, ParameterBag $cookies)
     {
-        $request->isXmlHttpRequest()->willReturn(false);
-        $request->getSession()->willReturn($session);
-        $session->set('nonce', null)->shouldBeCalledTimes(1);
-        $session->get('nonce', null)->willReturn(null);
-        $session->set('nonce', Argument::type('string'))->shouldBeCalledTimes(1);
+        $cookies->get('BAPID')->willReturn('my_bap_id');
+        $request->cookies = $cookies;
 
-        $this->getGeneratedNonce()->shouldMatch('/\w{8}-\w{4}-\w{4}-\w{4}-\w{8}/');
-    }
-
-    function it_get_the_nonce_from_session_for_xmlhttprequest(Request $request, SessionInterface $session)
-    {
-        $request->isXmlHttpRequest()->willReturn(true);
-        $request->getSession()->willReturn($session);
-        $session->set('nonce', null)->shouldNotBeCalled();
-        $session->get('nonce', null)->willReturn('session_nonce');
-        $session->set('nonce', Argument::type('string'))->shouldNotBeCalled();
-
-        $this->getGeneratedNonce()->shouldReturn('session_nonce');
+        $this->getGeneratedNonce()->shouldReturn('94d18804ef7db19a4654c6be2e9a581fb1551dbf');
     }
 }

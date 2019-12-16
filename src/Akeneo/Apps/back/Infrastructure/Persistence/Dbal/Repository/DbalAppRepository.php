@@ -45,7 +45,7 @@ SQL;
     public function findOneByCode(string $code): ?App
     {
         $selectQuery = <<<SQL
-SELECT code, label, flow_type, client_id, user_id
+SELECT code, label, flow_type, image, client_id, user_id
 FROM akeneo_app
 WHERE code = :code
 SQL;
@@ -58,7 +58,8 @@ SQL;
                 $dataRow['label'],
                 $dataRow['flow_type'],
                 (int) $dataRow['client_id'],
-                new UserId((int) $dataRow['user_id'])
+                new UserId((int) $dataRow['user_id']),
+                $dataRow['image']
             ) : null;
     }
 
@@ -66,16 +67,18 @@ SQL;
     {
         $updateQuery = <<<SQL
 UPDATE akeneo_app
-SET label = :label, flow_type = :flow_type
+SET label = :label, flow_type = :flow_type, image = :image
 WHERE code = :code
 SQL;
-
-        $stmt = $this->dbalConnection->prepare($updateQuery);
-        $stmt->execute([
+        $params = [
             'code' => (string) $app->code(),
             'label' => (string) $app->label(),
             'flow_type' => (string) $app->flowType(),
-        ]);
+            'image' => null !== $app->image() ? (string) $app->image() : null,
+        ];
+
+        $stmt = $this->dbalConnection->prepare($updateQuery);
+        $stmt->execute($params);
     }
 
     public function delete(App $app): void

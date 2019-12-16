@@ -11,6 +11,9 @@ datagrid:
                     - u.lastName
                 from:
                     - { table: '%pim_user.entity.user.class%', alias: u }
+                where:
+                    and:
+                        - u.type = '%pim_user.entity.user.class%::TYPE_USER'
 
         columns: []
 

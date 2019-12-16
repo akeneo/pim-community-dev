@@ -46,7 +46,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
             $filterManager,
             $attributeRepository,
             self::TEMPLATE_NAME,
-            '/tmp/',
             $attributeOptionRepository,
             null
         );

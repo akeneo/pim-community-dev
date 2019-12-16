@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Domain\Model\Write;
 
 use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
+use Akeneo\Apps\Domain\Model\ValueObject\AppImage;
 use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
@@ -32,18 +33,23 @@ class App
     /** @var UserId */
     private $userId;
 
+    /** @var AppImage|null */
+    private $image;
+
     public function __construct(
         string $code,
         string $label,
         string $flowType,
         int $clientId,
-        UserId $userId
+        UserId $userId,
+        ?string $image = null
     ) {
         $this->code = new AppCode($code);
         $this->label = new AppLabel($label);
         $this->flowType = new FlowType($flowType);
         $this->clientId = new ClientId($clientId);
         $this->userId = $userId;
+        $this->image = null !== $image ? new AppImage($image) : null;
     }
 
     public function code(): AppCode
@@ -59,6 +65,11 @@ class App
     public function flowType(): FlowType
     {
         return $this->flowType;
+    }
+
+    public function image(): ?AppImage
+    {
+        return $this->image;
     }
 
     public function clientId(): ClientId
@@ -79,5 +90,10 @@ class App
     public function setFlowType(FlowType $flowType): void
     {
         $this->flowType = $flowType;
+    }
+
+    public function setImage(?AppImage $image): void
+    {
+        $this->image = $image;
     }
 }

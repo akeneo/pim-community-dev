@@ -2,7 +2,6 @@
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
-use Akeneo\Platform\Bundle\InstallerBundle\PimDirectoriesRegistry;
 use Akeneo\Platform\CommunityVersion;
 use Akeneo\Platform\Requirements;
 use Symfony\Component\Console\Command\Command;
@@ -21,27 +20,19 @@ class CheckRequirementsCommand extends Command
 {
     protected static $defaultName = 'pim:installer:check-requirements';
 
-    /** @var PimDirectoriesRegistry */
-    private $pimDirectoriesRegistry;
-
     /** @var string */
     private $pimVersion;
 
     /** @var string */
     private $env;
 
-    /** @var string */
-    private $rootDirectory;
-
     public function __construct(
-        PimDirectoriesRegistry $pimDirectoriesRegistry,
         string $pimVersion,
         string $env,
         string $rootDirectory
     ) {
         parent::__construct();
 
-        $this->pimDirectoriesRegistry = $pimDirectoriesRegistry;
         $this->pimVersion = $pimVersion;
         $this->env = $env;
         $this->rootDirectory = $rootDirectory;
@@ -62,17 +53,11 @@ class CheckRequirementsCommand extends Command
     {
         $output->writeln('<info>Akeneo PIM requirements check:</info>');
 
-        $this->renderRequirements($input, $output, $this->getRequirements());
-    }
-
-    protected function getRequirements(): Requirements
-    {
-        $directories = [];
-        if ($this->env !== 'behat') {
-            $directories = $this->pimDirectoriesRegistry->getDirectories();
-        }
-
-        return new Requirements($this->rootDirectory, $directories);
+        $this->renderRequirements(
+            $input,
+            $output,
+            new Requirements($this->rootDirectory)
+        );
     }
 
     /**

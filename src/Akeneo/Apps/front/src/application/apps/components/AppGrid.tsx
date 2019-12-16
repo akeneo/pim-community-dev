@@ -31,7 +31,7 @@ export const AppGrid = ({apps, title}: Props) => (
         </Section>
         <Grid>
             {apps.map((app: AppInterface) => (
-                <App code={app.code} label={app.label} key={app.code} />
+                <App code={app.code} label={app.label} image={app.image} key={app.code} />
             ))}
         </Grid>
     </>

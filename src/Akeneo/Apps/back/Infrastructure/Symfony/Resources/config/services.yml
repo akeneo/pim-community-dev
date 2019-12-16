@@ -28,3 +28,8 @@ services:
         arguments:
             - '@fos_oauth_server.client_manager.default'
             - '@database_connection'
+
+    akeneo_app.service.file_info.does_image_exist:
+        class: Akeneo\Apps\Infrastructure\FileInfo\Internal\DoesImageExistQuery
+        arguments:
+            - '@database_connection'

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Application\Command;
 
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
+use Akeneo\Apps\Domain\Model\ValueObject\AppImage;
 use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
@@ -19,6 +20,7 @@ class UpdateAppHandler
 {
     /** @var ValidatorInterface */
     private $validator;
+
     /** @var AppRepository */
     private $repository;
 
@@ -44,6 +46,8 @@ class UpdateAppHandler
 
         $app->setLabel(new AppLabel($command->label()));
         $app->setFlowType(new FlowType($command->flowType()));
+        $app->setImage(null !== $command->image() ? new AppImage($command->image()) : null);
+
         $this->repository->update($app);
     }
 }

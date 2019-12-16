@@ -51,9 +51,6 @@ class ProductPdfRenderer implements RendererInterface
     /** @var string */
     protected $template;
 
-    /** @var string */
-    protected $uploadDirectory;
-
     /** @var string|null */
     protected $customFont;
 
@@ -68,7 +65,6 @@ class ProductPdfRenderer implements RendererInterface
         FilterManager $filterManager,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         string $template,
-        string $uploadDirectory,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository,
         ?string $customFont = null
     ) {
@@ -79,7 +75,6 @@ class ProductPdfRenderer implements RendererInterface
         $this->filterManager = $filterManager;
         $this->attributeRepository = $attributeRepository;
         $this->template = $template;
-        $this->uploadDirectory = $uploadDirectory;
         $this->attributeOptionRepository = $attributeOptionRepository;
         $this->customFont = $customFont;
         $this->attributeOptionRepository = $attributeOptionRepository;

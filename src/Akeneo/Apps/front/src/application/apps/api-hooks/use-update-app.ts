@@ -27,18 +27,15 @@ export const useUpdateApp = (code: string) => {
                 code: app.code,
                 label: app.label,
                 flow_type: app.flowType,
+                image: app.image,
             }),
         });
         if (isErr(result)) {
-            if (!result.error.errors) {
+            if (result.error.errors) {
+                result.error.errors.forEach(({reason}) => notify(NotificationLevel.ERROR, translate(reason)));
+            } else {
                 notify(NotificationLevel.ERROR, translate('pim_apps.edit_app.flash.error'));
-
-                return result;
             }
-
-            result.error.errors
-                .filter(({name}) => name !== 'label')
-                .forEach(({reason}) => notify(NotificationLevel.ERROR, translate(reason)));
 
             return result;
         }

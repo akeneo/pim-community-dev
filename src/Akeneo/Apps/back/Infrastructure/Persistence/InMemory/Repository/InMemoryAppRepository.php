@@ -28,6 +28,7 @@ class InMemoryAppRepository implements AppRepository
             'user_id' => $app->userId()->id(),
             'random_id' => uniqid(),
             'secret' => uniqid(),
+            'image' => null,
         ];
     }
 
@@ -43,7 +44,8 @@ class InMemoryAppRepository implements AppRepository
             $dataRow['label'],
             $dataRow['flow_type'],
             $dataRow['client_id'],
-            new UserId($dataRow['user_id'])
+            new UserId($dataRow['user_id']),
+            $dataRow['image']
         );
     }
 
@@ -55,6 +57,7 @@ class InMemoryAppRepository implements AppRepository
 
         $this->dataRows[(string) $app->code()]['label'] = (string) $app->label();
         $this->dataRows[(string) $app->code()]['flow_type'] = (string) $app->flowType();
+        $this->dataRows[(string) $app->code()]['image'] = null !== $app->image() ? (string) $app->image() : null;
     }
 
     public function delete(App $app): void
