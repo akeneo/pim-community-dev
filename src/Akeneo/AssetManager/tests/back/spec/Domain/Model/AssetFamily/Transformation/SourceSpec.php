@@ -225,6 +225,54 @@ class SourceSpec extends ObjectBehavior
         $this->shouldBeLike($comparedSource);
     }
 
+    function it_provides_a_string_key_with_neither_channel_nor_locale()
+    {
+        $normalizedSource = [
+            'attribute' => 'my_source',
+            'channel' => null,
+            'locale' => null,
+        ];
+        $this->beConstructedThrough('createFromNormalized', [$normalizedSource]);
+
+        $this->getKey()->shouldReturn('my_source');
+    }
+
+    function it_provides_a_key_with_channel()
+    {
+        $normalizedSource = [
+            'attribute' => 'my_source',
+            'channel' => 'ecommerce',
+            'locale' => null,
+        ];
+        $this->beConstructedThrough('createFromNormalized', [$normalizedSource]);
+
+        $this->getKey()->shouldReturn('my_source-ecommerce');
+    }
+
+    function it_provides_a_key_with_locale()
+    {
+        $normalizedSource = [
+            'attribute' => 'my_source',
+            'channel' => null,
+            'locale' => 'fr_FR',
+        ];
+        $this->beConstructedThrough('createFromNormalized', [$normalizedSource]);
+
+        $this->getKey()->shouldReturn('my_source-fr_FR');
+    }
+
+    function it_provides_a_string_key_with_channel_and_locale()
+    {
+        $normalizedSource = [
+            'attribute' => 'my_source',
+            'channel' => 'ecommerce',
+            'locale' => 'en_US',
+        ];
+        $this->beConstructedThrough('createFromNormalized', [$normalizedSource]);
+
+        $this->getKey()->shouldReturn('my_source-ecommerce-en_US');
+    }
+
     private function createMediaFileAttribute(bool $scopable, bool $localizable): MediaFileAttribute
     {
         return MediaFileAttribute::create(

@@ -207,4 +207,69 @@ class TransformationCollectionSpec extends ObjectBehavior
             $updatedTransformation->normalize(),
         ]);
     }
+
+    function it_can_be_sorted_by_source() {
+        $operation = ThumbnailOperation::create(['width' => 100, 'height' => 80]);
+
+        $transformation1 = Transformation::create(
+            TransformationLabel::fromString('label1'),
+            Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => 'fr_FR']),
+            Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => 'fr_FR']),
+            OperationCollection::create([$operation]),
+            null,
+            '_1',
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-22T15:16:21+0000')
+        );
+        $transformation2 = Transformation::create(
+            TransformationLabel::fromString('label2'),
+            Source::createFromNormalized(['attribute' => 'source', 'channel' => null, 'locale' => 'en_US']),
+            Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => 'en_US']),
+            OperationCollection::create([$operation]),
+            null,
+            '_2',
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-22T15:16:21+0000')
+        );
+        $transformation3 = Transformation::create(
+            TransformationLabel::fromString('label3'),
+            Source::createFromNormalized(['attribute' => 'image', 'channel' => null, 'locale' => null]),
+            Target::createFromNormalized(['attribute' => 'othertarget', 'channel' => null, 'locale' => 'en_US']),
+            OperationCollection::create([$operation]),
+            null,
+            '_3',
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-22T15:16:21+0000')
+        );
+        $transformation4 = Transformation::create(
+            TransformationLabel::fromString('label4'),
+            Source::createFromNormalized(['attribute' => 'image', 'channel' => null, 'locale' => null]),
+            Target::createFromNormalized(['attribute' => 'othertarget', 'channel' => null, 'locale' => 'fr_FR']),
+            OperationCollection::create([$operation]),
+            null,
+            '_4',
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-22T15:16:21+0000')
+        );
+
+        $this->beConstructedThrough('create', [[
+            $transformation1, $transformation2, $transformation3, $transformation4
+        ]]);
+
+        $newCollection = $this->sortBySource();
+        $newCollection->shouldNotBe($this);
+        $newCollection->getIterator()->getArrayCopy()->shouldReturn(
+            [
+                $transformation3,
+                $transformation4,
+                $transformation2,
+                $transformation1
+            ]
+        );
+
+        $this->getIterator()->getArrayCopy()->shouldReturn(
+            [
+                $transformation1,
+                $transformation2,
+                $transformation3,
+                $transformation4,
+            ]
+        );
+    }
 }
