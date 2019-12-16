@@ -109,7 +109,6 @@ const denormalizeAssetFamily = (
   normalizedAssetFamily: AssetManagerAssetFamily,
   attributes: (NormalizedAttribute & any)[]
 ): AssetFamily => {
-  debugger;
   return {
     ...normalizedAssetFamily,
     attributes,

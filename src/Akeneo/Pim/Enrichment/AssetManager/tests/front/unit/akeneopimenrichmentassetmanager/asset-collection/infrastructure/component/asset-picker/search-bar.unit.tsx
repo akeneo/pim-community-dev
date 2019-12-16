@@ -76,6 +76,46 @@ test('It triggers the onSearchChange when the search field changes', async () =>
   expect(actualValue).toEqual(expectedValue);
 });
 
+test('It triggers the onSearchChange when the search field is emptied', async () => {
+  jest.useFakeTimers();
+
+  let actualValue = '';
+  await act(async () => {
+    ReactDOM.render(
+      <ThemeProvider theme={akeneoTheme}>
+        <SearchBar
+          dataProvider={emptyDataProvider}
+          searchValue={''}
+          context={{}}
+          resultCount={0}
+          onSearchChange={newValue => {
+            actualValue = newValue;
+          }}
+          onContextChange={() => {}}
+        />
+      </ThemeProvider>,
+      container
+    );
+  });
+
+  const expectedValue = 'SOME NEW SEARCH CRITERIA';
+  const searchInput = container.querySelector('input');
+  await act(async () => {
+    await userEvent.type(searchInput, expectedValue);
+    jest.runAllTimers();
+  });
+
+  expect(actualValue).toEqual(expectedValue);
+
+  await act(async () => {
+    // https://github.com/testing-library/user-event/issues/182
+    await userEvent.type(searchInput, '', {allAtOnce: true});
+    jest.runAllTimers();
+  });
+
+  expect(actualValue).toEqual('');
+});
+
 test('It displays a result count', () => {
   const expectedResultCount = 10;
   const {getByText} = render(

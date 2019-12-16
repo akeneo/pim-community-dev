@@ -38,7 +38,7 @@ const SearchField = ({value, onChange}: SearchFieldProps) => {
   }, []);
 
   useEffect(() => {
-    '' !== debouncedUserSearch && onChange(debouncedUserSearch);
+    onChange(debouncedUserSearch);
   }, [debouncedUserSearch]);
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
