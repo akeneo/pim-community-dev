@@ -191,6 +191,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindIdentifiersByAssetFamily
+        arguments:
+            - '@database_connection'
+
     akeneo_assetmanager.infrastructure.persistence.query.find_codes_by_identifiers:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindCodesByIdentifiers
         arguments:

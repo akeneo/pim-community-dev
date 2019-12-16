@@ -13,8 +13,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
-use Akeneo\AssetManager\Domain\Query\Asset\FindSearchableAssetsInterface;
-use Akeneo\AssetManager\Domain\Query\Asset\SearchableAssetItem;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Job\ComputeTransformations;
@@ -29,7 +28,7 @@ use Prophecy\Argument;
 class ComputeTransformationsSpec extends ObjectBehavior
 {
     function let(
-        FindSearchableAssetsInterface $findSearchableAssets,
+        FindIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
         GetTransformations $getTransformations,
         AssetRepositoryInterface $assetRepository,
         GetOutdatedVariationSource $getOutdatedVariationSource,
@@ -39,7 +38,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $this->beConstructedWith(
-            $findSearchableAssets,
+            $findIdentifiersByAssetFamily,
             $getTransformations,
             $assetRepository,
             $getOutdatedVariationSource,
@@ -114,7 +113,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
     }
 
     function it_executes_the_compute_transformations_from_asset_family_identifier(
-        FindSearchableAssetsInterface $findSearchableAssets,
+        FindIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
         GetTransformations $getTransformations,
         AssetRepositoryInterface $assetRepository,
         GetOutdatedVariationSource $getOutdatedVariationSource,
@@ -131,15 +130,15 @@ class ComputeTransformationsSpec extends ObjectBehavior
         $jobParameters->has('asset_family_identifier')->willReturn(true);
         $jobParameters->get('asset_family_identifier')->willReturn('packshot');
 
-        $searchableAssetItem1 = new SearchableAssetItem();
-        $searchableAssetItem1->identifier = 'assetIdentifier1';
-        $searchableAssetItem2 = new SearchableAssetItem();
-        $searchableAssetItem2->identifier = 'assetIdentifier2';
-
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('packshot');
 
-        $findSearchableAssets->byAssetFamilyIdentifier(AssetFamilyIdentifier::fromString('packshot'))->willReturn(
-            new \ArrayIterator([$searchableAssetItem1, $searchableAssetItem2])
+        $findIdentifiersByAssetFamily->find(AssetFamilyIdentifier::fromString('packshot'))->willReturn(
+            new \ArrayIterator(
+                [
+                    AssetIdentifier::fromString('assetIdentifier1'),
+                    AssetIdentifier::fromString('assetIdentifier2'),
+                ]
+            )
         );
 
         $thumbnail->getLabel()->willReturn(TransformationLabel::fromString('thumbnail'));

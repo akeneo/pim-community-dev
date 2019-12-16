@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Application\AssetFamily\Transformation\Exception\NonAppl
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
-use Akeneo\AssetManager\Domain\Query\Asset\FindSearchableAssetsInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
@@ -35,8 +35,8 @@ class ComputeTransformations implements TaskletInterface
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var FindSearchableAssetsInterface */
-    private $findSearchableAssets;
+    /** @var FindIdentifiersByAssetFamilyInterface */
+    private $findIdentifiersByAssetFamily;
 
     /** @var GetTransformations */
     private $getTransformations;
@@ -57,14 +57,14 @@ class ComputeTransformations implements TaskletInterface
     private $transformationsPerAssetFamily = [];
 
     public function __construct(
-        FindSearchableAssetsInterface $findSearchableAssets,
+        FindIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
         GetTransformations $getTransformations,
         AssetRepositoryInterface $assetRepository,
         GetOutdatedVariationSource $getOutdatedVariationSource,
         TransformationExecutor $transformationExecutor,
         EditAssetHandler $editAssetHandler
     ) {
-        $this->findSearchableAssets = $findSearchableAssets;
+        $this->findIdentifiersByAssetFamily = $findIdentifiersByAssetFamily;
         $this->getTransformations = $getTransformations;
         $this->assetRepository = $assetRepository;
         $this->getOutdatedVariationSource = $getOutdatedVariationSource;
@@ -82,35 +82,39 @@ class ComputeTransformations implements TaskletInterface
         $assetIdentifiers = [];
 
         if ($this->stepExecution->getJobParameters()->has('asset_family_identifier')) {
-            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(
-                $this->stepExecution->getJobParameters()->get('asset_family_identifier')
+            $assetIdentifiers = $this->findIdentifiersByAssetFamily->find(
+                AssetFamilyIdentifier::fromString(
+                    $this->stepExecution->getJobParameters()->get('asset_family_identifier')
+                )
             );
-            foreach ($this->findSearchableAssets->byAssetFamilyIdentifier($assetFamilyIdentifier) as $asset) {
-                $assetIdentifiers[] = $asset->identifier;
-            }
         } elseif ($this->stepExecution->getJobParameters()->has('asset_identifiers')) {
-            $assetIdentifiers = $this->stepExecution->getJobParameters()->get('asset_identifiers');
+            $assetIdentifiers = array_map(
+                function (string $assetIdentifier): AssetIdentifier {
+                    return AssetIdentifier::fromString($assetIdentifier);
+                },
+                $this->stepExecution->getJobParameters()->get('asset_identifiers')
+            );
         }
 
         $this->doExecute($assetIdentifiers);
     }
 
     /**
-     * @param string[] $assetIdentifiers
+     * @param AssetIdentifier[] $assetIdentifiers
      */
-    private function doExecute(array $assetIdentifiers): void
+    private function doExecute(iterable $assetIdentifiers): void
     {
         foreach ($assetIdentifiers as $assetIdentifier) {
             $commands = [];
             $transformedFilesCount = 0;
 
             try {
-                $asset = $this->assetRepository->getByIdentifier(Assetidentifier::fromString($assetIdentifier));
+                $asset = $this->assetRepository->getByIdentifier($assetIdentifier);
             } catch (AssetNotFoundException $e) {
                 $this->stepExecution->addWarning(
-                    sprintf('Asset %s does not exist', $assetIdentifier),
+                    sprintf('Asset %s does not exist', (string) $assetIdentifier),
                     [],
-                    new DataInvalidItem(['asset_identifier' => $assetIdentifier])
+                    new DataInvalidItem(['asset_identifier' => (string) $assetIdentifier])
                 );
                 continue;
             }
@@ -143,12 +147,14 @@ class ComputeTransformations implements TaskletInterface
                         );
                         $transformedFilesCount++;
                     } catch (TransformationFailedException $e) {
-                        $this->stepExecution->addError(sprintf(
-                            'Could not apply transformation "%s" on asset "%s": %s',
-                            $transformation->getLabel()->toString(),
-                            $asset->getCode(),
-                            $e->getMessage()
-                        ));
+                        $this->stepExecution->addError(
+                            sprintf(
+                                'Could not apply transformation "%s" on asset "%s": %s',
+                                $transformation->getLabel()->toString(),
+                                $asset->getCode(),
+                                $e->getMessage()
+                            )
+                        );
                         continue;
                     }
                 } else {
@@ -170,8 +176,10 @@ class ComputeTransformations implements TaskletInterface
 
     private function getTransformations(AssetFamilyidentifier $assetFamilyidentifier): TransformationCollection
     {
-        if (!isset($this->transformationsPerAssetFamily[(string) $assetFamilyidentifier])) {
-            $this->transformationsPerAssetFamily[(string)$assetFamilyidentifier] = $this->getTransformations->fromAssetFamilyIdentifier($assetFamilyidentifier);
+        if (!isset($this->transformationsPerAssetFamily[(string)$assetFamilyidentifier])) {
+            $this->transformationsPerAssetFamily[(string)$assetFamilyidentifier] = $this->getTransformations->fromAssetFamilyIdentifier(
+                $assetFamilyidentifier
+            );
         }
 
         return $this->transformationsPerAssetFamily[(string)$assetFamilyidentifier];
