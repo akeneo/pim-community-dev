@@ -1,8 +1,13 @@
 # 3.2.x
 
+## Bug fixes:
+
 - PIM-9021: Fix input displaying when selecting empty/not empty filter operator
+- PIM-9027: Translations missing on metrics
 
 # 3.2.25 (2019-12-11)
+
+## Bug fixes:
 
 - PIM-9020: Add missing attribute group code validation message translation key
 
