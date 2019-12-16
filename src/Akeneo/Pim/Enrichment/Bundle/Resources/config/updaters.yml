@@ -125,6 +125,7 @@ services:
     pim_catalog.updater.setter.abstract:
         class: '%pim_catalog.updater.setter.abstract.class%'
         public: false
+        abstract: true
         arguments:
             - '@pim_catalog.builder.entity_with_values'
 
@@ -255,6 +256,7 @@ services:
     pim_catalog.updater.copier.abstract:
         class: '%pim_catalog.updater.copier.abstract.class%'
         public: false
+        abstract: true
         arguments:
             - '@pim_catalog.builder.entity_with_values'
             - '@pim_catalog.validator.helper.attribute'
