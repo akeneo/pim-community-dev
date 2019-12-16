@@ -1,11 +1,8 @@
 oneup_flysystem:
     adapters:
         catalog_storage_adapter:
-            local:
-                directory: '%kernel.project_dir%/var/file_storage/catalog'
+            nulladapter: ~
         jobs_storage_adapter:
-            local:
-                directory: '%kernel.project_dir%/var/file_storage/jobs'
+            nulladapter: ~
         archivist_adapter:
-            local:
-                directory: '%kernel.project_dir%/var/file_storage/archive'
+            nulladapter: ~
