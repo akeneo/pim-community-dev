@@ -221,7 +221,7 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
         {
           ...lines.A,
           file: file,
-          isSending: false,
+          isFileUploading: false,
         },
         lines.B,
       ],
@@ -245,7 +245,7 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
         {
           ...lines.A,
           uploadProgress: 0.4,
-          isSending: true,
+          isFileUploading: true,
         },
         lines.B,
       ],

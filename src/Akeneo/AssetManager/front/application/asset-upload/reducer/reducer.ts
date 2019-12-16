@@ -68,14 +68,14 @@ export const reducer = (
     case FILE_UPLOAD_SUCCESS:
       return {
         ...state,
-        lines: updateLine(state.lines, action.payload.line.id, {file: action.payload.file, isSending: false}),
+        lines: updateLine(state.lines, action.payload.line.id, {file: action.payload.file, isFileUploading: false}),
       };
     case FILE_UPLOAD_PROGRESS:
       return {
         ...state,
         lines: updateLine(state.lines, action.payload.line.id, {
           uploadProgress: action.payload.progress,
-          isSending: true,
+          isFileUploading: true,
         }),
       };
     case LINE_CREATION_START:

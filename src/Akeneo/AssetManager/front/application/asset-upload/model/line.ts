@@ -20,7 +20,7 @@ export default interface Line {
   thumbnail: Thumbnail;
   assetCreated: boolean;
   isAssetCreating: boolean;
-  isSending: boolean;
+  isFileUploading: boolean;
   file: FileModel;
   filename: string;
   code: string;

@@ -28,7 +28,7 @@ describe('', () => {
         filePath: 'a.png',
         originalFilename: 'a.png',
       },
-      isSending: false,
+      isFileUploading: false,
     };
     const dispatch = jest.fn();
 
@@ -52,7 +52,7 @@ describe('', () => {
         filePath: 'a.png',
         originalFilename: 'a.png',
       },
-      isSending: false,
+      isFileUploading: false,
     };
     const dispatch = jest.fn();
 
@@ -77,7 +77,7 @@ describe('', () => {
         filePath: 'a.png',
         originalFilename: 'a.png',
       },
-      isSending: false,
+      isFileUploading: false,
     };
     const dispatch = jest.fn();
 

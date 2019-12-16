@@ -16,7 +16,7 @@ export const createLineFromFilename = (filename: string, assetFamily: AssetFamil
     thumbnail: null,
     assetCreated: false,
     isAssetCreating: false,
-    isSending: false,
+    isFileUploading: false,
     file: null,
     filename: filename,
     code: sanitize(info.code),
@@ -151,7 +151,7 @@ export const assetCreationSucceeded = (lines: Line[], asset: CreationAsset): Lin
 };
 
 export const selectLinesToSend = (lines: Line[]): Line[] =>
-  lines.filter((line: Line) => !line.assetCreated && null !== line.file && !line.isSending);
+  lines.filter((line: Line) => !line.assetCreated && null !== line.file && !line.isFileUploading);
 
 export const getStatusFromLine = (line: Line, localizable: boolean, scopable: boolean): LineStatus => {
   const errorsCount = Object.values(line.errors).reduce((count: number, errors: ValidationError[]) => {
@@ -163,7 +163,7 @@ export const getStatusFromLine = (line: Line, localizable: boolean, scopable: bo
   if (errorsCount > 0) {
     return LineStatus.Invalid;
   }
-  if (line.isSending) {
+  if (line.isFileUploading) {
     return LineStatus.UploadInProgress;
   }
   if (line.assetCreated) {

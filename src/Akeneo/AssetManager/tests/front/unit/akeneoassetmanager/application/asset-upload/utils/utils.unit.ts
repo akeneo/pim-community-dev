@@ -369,7 +369,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
       getStatusFromLine(
         {
           ...createFakeLine('foo.jpg', assetFamily),
-          isSending: true,
+          isFileUploading: true,
         },
         valuePerLocale,
         valuePerChannel
@@ -617,7 +617,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
           filePath: 'foo.jpg',
           originalFilename: 'foo.jpg',
         },
-        isSending: true,
+        isFileUploading: true,
       },
       {
         ...createFakeLine('foo.jpg', assetFamily),
@@ -627,14 +627,14 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
           filePath: 'foo.jpg',
           originalFilename: 'foo.jpg',
         },
-        isSending: true,
+        isFileUploading: true,
       },
       {
         ...createFakeLine('foo.jpg', assetFamily),
         id: '3',
         assetCreated: true,
         file: null,
-        isSending: true,
+        isFileUploading: true,
       },
       {
         ...createFakeLine('foo.jpg', assetFamily),
@@ -644,7 +644,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
           filePath: 'foo.jpg',
           originalFilename: 'foo.jpg',
         },
-        isSending: false,
+        isFileUploading: false,
       },
       {
         ...createFakeLine('foo.jpg', assetFamily),
@@ -654,7 +654,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
           filePath: 'foo.jpg',
           originalFilename: 'foo.jpg',
         },
-        isSending: false,
+        isFileUploading: false,
       },
     ];
 
@@ -667,7 +667,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
           filePath: 'foo.jpg',
           originalFilename: 'foo.jpg',
         },
-        isSending: false,
+        isFileUploading: false,
       },
     ]);
   });
