@@ -9,6 +9,10 @@ import {
   fileUploadSuccessAction,
   linesAddedAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
+import {addQueueSupport} from 'akeneoassetmanager/tools/queue';
+
+const MAX_QUEUE_SIZE = 5;
+const queuedUploadFile = addQueueSupport(uploadFile, MAX_QUEUE_SIZE);
 
 export const onFileDrop = (files: File[], assetFamily: AssetFamily, dispatch: (action: any) => void) => {
   if (null === files || 0 === files.length) {
@@ -23,7 +27,7 @@ export const onFileDrop = (files: File[], assetFamily: AssetFamily, dispatch: (a
       dispatch(fileThumbnailGenerationDoneAction(thumbnail, line))
     );
 
-    uploadFile(file, line, (line: Line, progress: number) => {
+    queuedUploadFile(file, line, (line: Line, progress: number) => {
       dispatch(fileUploadProgressAction(line, progress));
     }).then((file: FileModel) => {
       dispatch(fileUploadSuccessAction(line, file));
