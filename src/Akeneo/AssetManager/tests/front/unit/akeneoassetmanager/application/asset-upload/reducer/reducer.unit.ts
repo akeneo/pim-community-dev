@@ -268,7 +268,7 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
       lines: [
         {
           ...lines.A,
-          isCreating: true,
+          isAssetCreating: true,
         },
         lines.B,
       ],
@@ -294,7 +294,7 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
         {
           ...lines.A,
           assetCreated: true,
-          isCreating: false,
+          isAssetCreating: false,
         },
         lines.B,
       ],
@@ -321,7 +321,7 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
         {
           ...lines.A,
           assetCreated: false,
-          isCreating: false,
+          isAssetCreating: false,
           errors: {
             back: errors,
           },

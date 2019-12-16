@@ -15,7 +15,7 @@ export const createLineFromFilename = (filename: string, assetFamily: AssetFamil
     id: createUUIDV4(),
     thumbnail: null,
     assetCreated: false,
-    isCreating: false,
+    isAssetCreating: false,
     isSending: false,
     file: null,
     filename: filename,
@@ -146,7 +146,7 @@ export const assetCreationFailed = (lines: Line[], asset: CreationAsset, errors:
 
 export const assetCreationSucceeded = (lines: Line[], asset: CreationAsset): Line[] => {
   return lines.map((line: Line) =>
-    line.code === asset.code ? {...line, assetCreated: true, isCreating: false} : line
+    line.code === asset.code ? {...line, assetCreated: true, isAssetCreating: false} : line
   );
 };
 
