@@ -13,20 +13,25 @@ import {
   saveAssetFamily,
 } from 'akeneoassetmanager/application/action/asset-family/edit';
 import Ajv from 'ajv';
+import {getErrorsView} from "akeneoassetmanager/application/component/app/validation-error";
+import ValidationError from "akeneoassetmanager/domain/model/validation-error";
 const ajv = new Ajv({allErrors: true, verbose: true});
 const schema = require('akeneoassetmanager/infrastructure/model/asset-family-transformations.schema.json');
 
 interface StateProps {
   assetFamily: AssetFamily;
+  errors: ValidationError[];
 }
 
 type AssetFamilyTransformationEditorProps = {
   transformations: TransformationCollection;
+  errors: ValidationError[];
   onAssetFamilyTransformationsChange: (transformations: TransformationCollection) => void;
 };
 
 const AssetFamilyTransformationEditor = ({
   transformations,
+  errors,
   onAssetFamilyTransformationsChange,
 }: AssetFamilyTransformationEditorProps) => {
   //https://github.com/vankop/jsoneditor-react/blob/HEAD/src/Editor.jsx
@@ -41,6 +46,9 @@ const AssetFamilyTransformationEditor = ({
         schema={schema}
         ajv={ajv}
       />
+      {getErrorsView(errors, 'transformations', (field: string) => (error: ValidationError) =>
+        error.propertyPath.indexOf(field) === 0
+      )}
     </div>
   );
 };
@@ -102,6 +110,7 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
           <div className="AknFormContainer AknFormContainer--wide">
             <AssetFamilyTransformationEditor
               transformations={this.props.assetFamily.transformations}
+              errors={this.props.errors}
               onAssetFamilyTransformationsChange={(transformations: TransformationCollection) => {
                 this.props.events.onAssetFamilyTransformationsUpdated(transformations);
               }}
@@ -117,6 +126,7 @@ export default connect(
   (state: EditState): StateProps => {
     return {
       assetFamily: state.form.data,
+      errors: state.form.errors
     };
   },
   (dispatch: any): DispatchProps => {

@@ -15,9 +15,17 @@
 
 // Overrides the default jsoneditor-react/es/editor.min.css
 .AknJsonEditor {
+  margin-bottom: 40px;
+  min-height: 330px;
+  height: calc(100vh - 416px);
+  display: flex;
+  flex-direction: column;
+
+  > *:first-child {
+    flex-grow: 1;
+  }
+
   .jsoneditor {
-    min-height: 330px;
-    height: calc(100vh - 410px);
     border-color: @AknBorderColor;
     border-radius: 2px;
     color: @AknDefaultFontColor;
