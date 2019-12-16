@@ -11,12 +11,15 @@ set -e
 DEV_DISTRIB_DIR=$(dirname $0)/..
 STANDARD_DISTRIB_DIR=./
 
+[ -d $STANDARD_DISTRIB_DIR/src ] && echo "src/ directory already exists. Not preparing the directory content." && exit 0
+
 # Required directories
 mkdir -p $STANDARD_DISTRIB_DIR/src \
          $STANDARD_DISTRIB_DIR/bin \
          $STANDARD_DISTRIB_DIR/config/packages/dev \
          $STANDARD_DISTRIB_DIR/config/services \
-         $STANDARD_DISTRIB_DIR/docker
+         $STANDARD_DISTRIB_DIR/docker \
+         $STANDARD_DISTRIB_DIR/public
 
 # Provides the Apache and FPM configuration to run the PIM from Docker
 cp $DEV_DISTRIB_DIR/docker/akeneo.conf $STANDARD_DISTRIB_DIR/docker/
