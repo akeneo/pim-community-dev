@@ -31,11 +31,11 @@ export const createLineFromFilename = (filename: string, assetFamily: AssetFamil
 
 const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily) => {
   const attribute = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
-  const localizable = attribute.value_per_locale;
-  const scopable = attribute.value_per_channel;
+  const valuePerLocale = attribute.value_per_locale;
+  const valuePerChannel = attribute.value_per_channel;
   let matches;
 
-  if (localizable && scopable && (matches = filename.match(/^(\w+)-(\w*)-(\w*)/))) {
+  if (valuePerLocale && valuePerChannel && (matches = filename.match(/^(\w+)-(\w*)-(\w*)/))) {
     return {
       code: matches[1],
       locale: matches[2] ? matches[2] : null,
@@ -43,7 +43,7 @@ const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily) => 
     };
   }
 
-  if (localizable && !scopable && (matches = filename.match(/^(\w+)-(\w+)/))) {
+  if (valuePerLocale && !valuePerChannel && (matches = filename.match(/^(\w+)-(\w+)/))) {
     return {
       code: matches[1],
       locale: matches[2],
@@ -51,7 +51,7 @@ const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily) => 
     };
   }
 
-  if (!localizable && scopable && (matches = filename.match(/^(\w+)-(\w+)/))) {
+  if (!valuePerLocale && valuePerChannel && (matches = filename.match(/^(\w+)-(\w+)/))) {
     return {
       code: matches[1],
       locale: null,
@@ -153,12 +153,12 @@ export const assetCreationSucceeded = (lines: Line[], asset: CreationAsset): Lin
 export const selectLinesToSend = (lines: Line[]): Line[] =>
   lines.filter((line: Line) => !line.assetCreated && null !== line.file && !line.isFileUploading);
 
-export const getStatusFromLine = (line: Line, localizable: boolean, scopable: boolean): LineStatus => {
+export const getStatusFromLine = (line: Line, valuePerLocale: boolean, valuePerChannel: boolean): LineStatus => {
   const errorsCount = Object.values(line.errors).reduce((count: number, errors: ValidationError[]) => {
     return count + errors.length;
   }, 0);
   const isComplete: boolean =
-    (!localizable || (localizable && line.locale !== null)) && (!scopable || (scopable && line.channel !== null));
+    (!valuePerLocale || (valuePerLocale && line.locale !== null)) && (!valuePerChannel || (valuePerChannel && line.channel !== null));
 
   if (errorsCount > 0) {
     return LineStatus.Invalid;
