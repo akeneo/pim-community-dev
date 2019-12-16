@@ -43,9 +43,7 @@ $output->setVerbosity($verbosity);
 $kernel = new Kernel('dev', false);
 $kernel->boot();
 
-$container = getContainerBuilder($kernel);
-
-$exitStatus = checkServicesInstantiability($container, $output, $ignoreServiceIds);
+$exitStatus = checkServicesInstantiability($kernel->getContainer(), $output, $ignoreServiceIds);
 
 exit ($exitStatus);
 
@@ -54,7 +52,6 @@ function checkServicesInstantiability(ContainerInterface $container, ConsoleOutp
     $serviceIds = $container->getServiceIds();
 
     $nonInstantiableServices = [];
-    $skippedServices = [];
 
     foreach ($serviceIds as $serviceId) {
 
@@ -71,24 +68,6 @@ function checkServicesInstantiability(ContainerInterface $container, ConsoleOutp
             if ($service instanceof \ProxyManager\Proxy\VirtualProxyInterface) {
                 $service->initializeProxy();
             }
-        } catch (\Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException $snfe) {
-            // Service not found, certainly inlined
-            $skippedServices[$serviceId] = ["error_type" => get_class($snfe), "error_message" => $snfe->getMessage()];
-        } catch (\Doctrine\ORM\ORMException $oe) {
-            // Doctrine ORM magic... Unable to instantiate a repository
-            $skippedServices[$serviceId] = ["error_type" => get_class($oe), "error_message" => $oe->getMessage()];
-        } catch (\Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException $pnfe) {
-            if ('container.build_id' === $pnfe->getKey()) {
-                $skippedServices[$serviceId] = ["error_type" => get_class($pnfe), "error_message" => $pnfe->getMessage()];
-            } else {
-                $nonInstantiableServices[$serviceId] = ["error_type" => get_class($pnfe), "error_message" => $pnfe->getMessage()];
-            }
-        } catch (Symfony\Component\DependencyInjection\Exception\RuntimeException $re) {
-            if ('You have requested a synthetic service ("kernel"). The DIC does not know how to construct this service.' === $re->getMessage()) {
-                $skippedServices[$serviceId] = ["error_type" => get_class($re), "error_message" => $re->getMessage()];
-            } else {
-                $nonInstantiableServices[$serviceId] = ["error_type" => get_class($re), "error_message" => $re->getMessage()];
-            }
         } catch (\Throwable $t) {
             $nonInstantiableServices[$serviceId] = ["error_type" => get_class($t), "error_message" => $t->getMessage()];
         }
@@ -97,9 +76,8 @@ function checkServicesInstantiability(ContainerInterface $container, ConsoleOutp
     if (0 === count($nonInstantiableServices)) {
         $output->writeln(
             sprintf(
-                "<info>All %s services are instantiable (%s skipped).</info>",
-                count($serviceIds),
-                count($skippedServices)
+                "<info>All %s services are instantiable.</info>",
+                count($serviceIds)
             )
         );
 
@@ -107,10 +85,9 @@ function checkServicesInstantiability(ContainerInterface $container, ConsoleOutp
     } else {
         $output->writeln(
             sprintf(
-                "<comment>Found %s non instantiable services on a total of %s (%s skipped).</comment>",
+                "<comment>Found %s non instantiable services on a total of %s.</comment>",
                 count($nonInstantiableServices),
                 count($serviceIds),
-                count($skippedServices)
             )
         );
         foreach ($nonInstantiableServices as $nonInstantiableServiceId => $nonInstantiableServiceReason) {
@@ -127,20 +104,3 @@ function checkServicesInstantiability(ContainerInterface $container, ConsoleOutp
     }
 }
 
-/**
- * Loads the ContainerBuilder from the cache.
- *
- * @throws \LogicException
- */
-function getContainerBuilder(Kernel $kernel)
-{
-    if (!$kernel->isDebug() || !(new ConfigCache($kernel->getContainer()->getParameter('debug.container.dump'), true))->isFresh()) {
-        $buildContainer = \Closure::bind(function () { return $this->buildContainer(); }, $kernel, \get_class($kernel));
-        $container = $buildContainer();
-        $container->compile();
-    } else {
-        (new XmlFileLoader($container = new ContainerBuilder(), new FileLocator()))->load($kernel->getContainer()->getParameter('debug.container.dump'));
-    }
-
-    return $container;
-}
