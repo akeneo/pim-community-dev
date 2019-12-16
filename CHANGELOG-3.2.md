@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.26 (2019-12-16)
+
 - PIM-9021: Fix input displaying when selecting empty/not empty filter operator
 
 ## Technical improvement
