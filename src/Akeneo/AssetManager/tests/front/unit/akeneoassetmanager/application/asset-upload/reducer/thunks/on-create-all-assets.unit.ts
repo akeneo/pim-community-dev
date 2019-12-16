@@ -23,7 +23,7 @@ describe('', () => {
     const assetFamily = createFakeAssetFamily(false, false);
     const line = {
       ...createFakeLine('a.png', assetFamily),
-      created: false,
+      assetCreated: false,
       file: {
         filePath: 'a.png',
         originalFilename: 'a.png',
@@ -47,7 +47,7 @@ describe('', () => {
     const assetFamily = createFakeAssetFamily(false, false);
     const line = {
       ...createFakeLine('a.png', assetFamily),
-      created: false,
+      assetCreated: false,
       file: {
         filePath: 'a.png',
         originalFilename: 'a.png',
@@ -72,7 +72,7 @@ describe('', () => {
     const assetFamily = createFakeAssetFamily(false, false);
     const line = {
       ...createFakeLine('a.png', assetFamily),
-      created: false,
+      assetCreated: false,
       file: {
         filePath: 'a.png',
         originalFilename: 'a.png',

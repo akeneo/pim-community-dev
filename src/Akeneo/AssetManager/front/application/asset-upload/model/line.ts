@@ -18,7 +18,7 @@ export type LineIdentifier = string;
 export default interface Line {
   id: LineIdentifier;
   thumbnail: Thumbnail;
-  created: boolean;
+  assetCreated: boolean;
   isCreating: boolean;
   isSending: boolean;
   file: FileModel;

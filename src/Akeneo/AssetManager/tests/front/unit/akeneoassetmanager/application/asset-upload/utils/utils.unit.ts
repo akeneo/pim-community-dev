@@ -435,7 +435,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
       getStatusFromLine(
         {
           ...createFakeLine('foo.jpg', assetFamily),
-          created: true,
+          assetCreated: true,
         },
         valuePerLocale,
         valuePerChannel
@@ -612,7 +612,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
       {
         ...createFakeLine('foo.jpg', assetFamily),
         id: '1',
-        created: true,
+        assetCreated: true,
         file: {
           filePath: 'foo.jpg',
           originalFilename: 'foo.jpg',
@@ -622,7 +622,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
       {
         ...createFakeLine('foo.jpg', assetFamily),
         id: '2',
-        created: false,
+        assetCreated: false,
         file: {
           filePath: 'foo.jpg',
           originalFilename: 'foo.jpg',
@@ -632,14 +632,14 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
       {
         ...createFakeLine('foo.jpg', assetFamily),
         id: '3',
-        created: true,
+        assetCreated: true,
         file: null,
         isSending: true,
       },
       {
         ...createFakeLine('foo.jpg', assetFamily),
         id: '4',
-        created: true,
+        assetCreated: true,
         file: {
           filePath: 'foo.jpg',
           originalFilename: 'foo.jpg',
@@ -649,7 +649,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
       {
         ...createFakeLine('foo.jpg', assetFamily),
         id: '5',
-        created: false,
+        assetCreated: false,
         file: {
           filePath: 'foo.jpg',
           originalFilename: 'foo.jpg',
@@ -662,7 +662,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
       {
         ...createFakeLine('foo.jpg', assetFamily),
         id: '5',
-        created: false,
+        assetCreated: false,
         file: {
           filePath: 'foo.jpg',
           originalFilename: 'foo.jpg',

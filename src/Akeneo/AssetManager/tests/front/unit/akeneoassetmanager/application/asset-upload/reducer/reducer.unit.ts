@@ -293,7 +293,7 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
       lines: [
         {
           ...lines.A,
-          created: true,
+          assetCreated: true,
           isCreating: false,
         },
         lines.B,
@@ -320,7 +320,7 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
       lines: [
         {
           ...lines.A,
-          created: false,
+          assetCreated: false,
           isCreating: false,
           errors: {
             back: errors,
