@@ -83,6 +83,39 @@ describe('Test row component', () => {
     });
   });
 
+  test('It renders a row with the code non-editable during asset creation', async () => {
+    const valuePerLocale = false;
+    const valuePerChannel = false;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const line = {
+      ...createFakeLine('foo.png', assetFamily),
+      isAssetCreating: true,
+    };
+    const onLineChange = jest.fn();
+
+    await act(async () => {
+      ReactDOM.render(
+        <ThemeProvider theme={akeneoTheme}>
+          <table>
+            <tbody>
+              <Row
+                line={line}
+                onLineRemove={() => {}}
+                onLineChange={onLineChange}
+                valuePerLocale={valuePerLocale}
+                valuePerChannel={valuePerChannel}
+              />
+            </tbody>
+          </table>
+        </ThemeProvider>,
+        container
+      );
+    });
+
+    const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.code') as HTMLInputElement;
+    expect(input.readOnly).toEqual(true);
+  });
+
   test('It renders a row with the locale editable', async () => {
     const valuePerLocale = true;
     const valuePerChannel = false;
@@ -119,6 +152,39 @@ describe('Test row component', () => {
     });
   });
 
+  test('It renders a row with the locale non-editable during asset creation', async () => {
+    const valuePerLocale = true;
+    const valuePerChannel = false;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const line = {
+      ...createFakeLine('foo-en_US.png', assetFamily),
+      isAssetCreating: true,
+    };
+    const onLineChange = jest.fn();
+
+    await act(async () => {
+      ReactDOM.render(
+        <ThemeProvider theme={akeneoTheme}>
+          <table>
+            <tbody>
+              <Row
+                line={line}
+                onLineRemove={() => {}}
+                onLineChange={onLineChange}
+                valuePerLocale={valuePerLocale}
+                valuePerChannel={valuePerChannel}
+              />
+            </tbody>
+          </table>
+        </ThemeProvider>,
+        container
+      );
+    });
+
+    const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.locale') as HTMLInputElement;
+    expect(input.readOnly).toEqual(true);
+  });
+
   test('It renders a row with the channel editable', async () => {
     const valuePerLocale = false;
     const valuePerChannel = true;
@@ -153,6 +219,39 @@ describe('Test row component', () => {
       ...line,
       channel: 'mobile',
     });
+  });
+
+  test('It renders a row with the channel non-editable during asset creation', async () => {
+    const valuePerLocale = false;
+    const valuePerChannel = true;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const line = {
+      ...createFakeLine('foo-ecommerce.png', assetFamily),
+      isAssetCreating: true,
+    };
+    const onLineChange = jest.fn();
+
+    await act(async () => {
+      ReactDOM.render(
+        <ThemeProvider theme={akeneoTheme}>
+          <table>
+            <tbody>
+              <Row
+                line={line}
+                onLineRemove={() => {}}
+                onLineChange={onLineChange}
+                valuePerLocale={valuePerLocale}
+                valuePerChannel={valuePerChannel}
+              />
+            </tbody>
+          </table>
+        </ThemeProvider>,
+        container
+      );
+    });
+
+    const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.channel') as HTMLInputElement;
+    expect(input.readOnly).toEqual(true);
   });
 
   test('It renders a row and I can remove it', async () => {
