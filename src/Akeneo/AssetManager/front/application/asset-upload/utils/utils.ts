@@ -103,7 +103,7 @@ const addAsset = (assets: CreationAsset[], asset: CreationAsset): CreationAsset[
   return [...assets, asset];
 };
 
-export const createAssetsFromLines = (lines: Line[], assetFamily: AssetFamily): CreationAsset[] => {
+export const createCreationAssetsFromLines = (lines: Line[], assetFamily: AssetFamily): CreationAsset[] => {
   return lines.reduce((assets: CreationAsset[], line: Line) => {
     const updatedAssets = assetExists(assets, line.code)
       ? assets

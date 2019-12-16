@@ -7,7 +7,7 @@ import {
   assetCreationSuccessAction,
   lineCreationStartAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
-import {createAssetsFromLines} from 'akeneoassetmanager/application/asset-upload/utils/utils';
+import {createCreationAssetsFromLines} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {create} from 'akeneoassetmanager/application/asset-upload/saver/asset';
 
 const flushPromises = () => new Promise(setImmediate);
@@ -36,7 +36,7 @@ describe('', () => {
     await flushPromises();
 
     expect(dispatch).toHaveBeenCalledWith(lineCreationStartAction(line));
-    let asset = createAssetsFromLines([line], assetFamily)[0];
+    let asset = createCreationAssetsFromLines([line], assetFamily)[0];
     expect(dispatch).toHaveBeenCalledWith(assetCreationSuccessAction(asset));
   });
 
@@ -60,7 +60,7 @@ describe('', () => {
     await flushPromises();
 
     expect(dispatch).toHaveBeenCalledWith(lineCreationStartAction(line));
-    let asset = createAssetsFromLines([line], assetFamily)[0];
+    let asset = createCreationAssetsFromLines([line], assetFamily)[0];
     expect(dispatch).toHaveBeenCalledWith(assetCreationFailAction(asset, errors));
   });
 
@@ -85,7 +85,7 @@ describe('', () => {
     await flushPromises();
 
     expect(dispatch).toHaveBeenCalledWith(lineCreationStartAction(line));
-    let asset = createAssetsFromLines([line], assetFamily)[0];
+    let asset = createCreationAssetsFromLines([line], assetFamily)[0];
     expect(dispatch).toHaveBeenCalledWith(
       assetCreationFailAction(asset, [
         {

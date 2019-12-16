@@ -4,7 +4,7 @@ import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-fa
 import {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {
   addLines,
-  createAssetsFromLines,
+  createCreationAssetsFromLines,
   createLineFromFilename,
   getStatusFromLine,
   selectLinesToSend,
@@ -208,7 +208,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> addLines
   });
 });
 
-describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createAssetsFromLines', () => {
+describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCreationAssetsFromLines', () => {
   const createUploadedLineFromFilename = (filename: string, assetFamily: AssetFamily) => {
     return {
       ...createLineFromFilename(filename, assetFamily),
@@ -228,7 +228,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createAs
       createUploadedLineFromFilename('foo-fr_FR-mobile.jpg', assetFamily),
     ];
 
-    expect(createAssetsFromLines(lines, assetFamily)).toEqual([
+    expect(createCreationAssetsFromLines(lines, assetFamily)).toEqual([
       {
         assetFamilyIdentifier: 'packshot',
         code: 'foo',
@@ -271,7 +271,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createAs
 
     const lines = [createUploadedLineFromFilename('foo.jpg', assetFamily)];
 
-    expect(createAssetsFromLines(lines, assetFamily)).toEqual([
+    expect(createCreationAssetsFromLines(lines, assetFamily)).toEqual([
       {
         assetFamilyIdentifier: 'packshot',
         code: 'foo',
@@ -301,7 +301,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createAs
       createUploadedLineFromFilename('bar-fr_FR-ecommerce.jpg', assetFamily),
     ];
 
-    expect(createAssetsFromLines(lines, assetFamily)).toEqual([
+    expect(createCreationAssetsFromLines(lines, assetFamily)).toEqual([
       {
         assetFamilyIdentifier: 'packshot',
         code: 'foo',
