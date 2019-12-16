@@ -96,7 +96,7 @@ pim_measure:
     CENTIAMPERE: Senttiampeeri
     DECIAMPERE: Desiampeeri
     AMPERE: Ampeeri
-    DEKAAMPERE: Deka-ampeeri
+    DEKAMPERE: Deka-ampeeri
     HECTOAMPERE: Hehtoampeeri
     KILOAMPERE: Kiloampeeri
     MEGAAMPERE: Mega-ampeeri
