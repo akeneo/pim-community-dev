@@ -1,15 +1,16 @@
 @import '../base/variables';
 
 .AknBadge {
-  line-height: 22px;
-  height: 22px;
-  min-width: 22px;
+  line-height: 18px;
+  height: 18px;
+  min-width: 18px;
   font-size: @AknDefaultFontSize;
-  background: @AknMediumGrey;
-  color: @AknDefaultFontColor;
+  background: @AknWhite;
+  border: solid 1px @AknGrey100;
+  color: @AknGrey140;
   display: inline-block;
-  border-radius: 100px;
-  padding: 0 8px;
+  border-radius: 2px;
+  padding: 0 6px;
   transition: background 0.15s ease-in, opacity 0.4s ease-in;
   white-space: nowrap;
   margin: 2px 0 -2px 0;
@@ -22,78 +23,82 @@
 
   &--enabled,
   &--success {
-    background: @AknGreen;
-    color: white;
+    border: solid 1px @AknGreen100;
+    color: @AknGreen140;
 
     &:hover {
-      background: darken(@AknGreen, 10%);
+      background: @AknGreen20;
     }
   }
 
   &--enabled &-icon,
   &--success &-icon {
-    color: white;
+    color: @AknGreen140;
   }
 
   &--disabled,
   &--important,
   &--invalid {
-    background: @AknRed;
-    color: white;
+    border: solid 1px @AknRed100;
+    color: @AknRed140;
 
     &:hover {
-      background: darken(@AknRed, 10%);
+      background: @AknRed20;
     }
   }
 
-  &--disabled &-icon,
+  &--disabled &-icon {
+    color: @AknGrey100;
+  }
+
   &--important &-icon,
   &--invalid &-icon {
-    color: white;
+    color: @AknRed140;
   }
 
   &--warning {
-    background: @AknOrange;
-    color: white;
+    border: solid 1px @AknYellow100;
+    color: @AknYellow140;
 
     &:hover {
-      background: @AknOrange;
+      background: @AknYellow120;
     }
   }
 
   &--warning &-icon {
-    color: white;
+    color: @AknYellow140;
   }
 
   &--grey {
-    background: @AknGrey;
-    color: white;
+    border: solid 1px @AknGrey100;
+    color: @AknGrey140;
 
     &:hover {
-      background: darken(@AknGrey, 10%);
+      background: @AknGrey20;
     }
   }
 
   &--info {
-    background: @AknBlue;
-    color: white;
+    border: solid 1px @AknBlue100;
+    color: @AknBlue140;
 
     &:hover {
-      background: darken(@AknBlue, 10%);
+      background: @AknBlue20;
     }
   }
 
   &--active {
-    background: @AknLightPurple;
-    color: white;
+    border: solid 1px @AknPurple100;
+    color: @AknPurple140;
 
     &:hover {
-      background: darken(@AknLightPurple, 10%);
+      background: @AknPurple20;
     }
   }
 
   &--highlight {
-    background: @AknOrange;
+    border: solid 1px @AknYellow100;
+    color: @AknYellow140;
   }
 
   &--light {
@@ -101,7 +106,7 @@
   }
 
   &--grey &-icon {
-    color: white;
+    color: @AknGrey140;
   }
 
   &--hidden {
