@@ -25,8 +25,8 @@ interface JobExecutionQueueInterface
      * This method loops until there is a message to consume into the queue.
      *
      * @param string $consumer name of the consumer
-     * @param string[] $whitelistedJobInstanceCodes name of the whitelisted job instances
-     * @param string[] $blacklistedJobInstanceCodes name of the blacklisted job instances
+     * @param string[] $whitelistedJobInstanceCodes codes of the whitelisted job instances
+     * @param string[] $blacklistedJobInstanceCodes codes of the blacklisted job instances
      *
      * @return JobExecutionMessage
      */

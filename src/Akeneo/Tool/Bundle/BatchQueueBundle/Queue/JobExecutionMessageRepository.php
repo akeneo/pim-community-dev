@@ -161,10 +161,6 @@ SQL;
     /**
      * Gets a job execution message which is not blacklisted and that has not been consumed yet
      * If there is no job execution available, it returns null.
-     *
-     * @param array $blacklistedJobInstanceCodes
-     *
-     * @return JobExecutionMessage|null
      */
     public function getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes(array $blacklistedJobInstanceCodes): ?JobExecutionMessage
     {

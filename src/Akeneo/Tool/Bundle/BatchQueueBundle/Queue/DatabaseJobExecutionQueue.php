@@ -46,7 +46,7 @@ class DatabaseJobExecutionQueue implements JobExecutionQueueInterface
         $jobExecutionMessage = null;
 
         if (!empty($whitelistedJobInstanceCodes) && !empty($blacklistedJobInstanceCodes)) {
-            throw new \InvalidArgumentException('You can not use a whitelist filter and a blacklist filter at the same time');
+            throw new \InvalidArgumentException('You cannot use a whitelist filter and a blacklist filter at the same time');
         }
 
         do {

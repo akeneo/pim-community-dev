@@ -70,7 +70,7 @@ class DatabaseJobExecutionQueueSpec extends ObjectBehavior
         $this->consume('consumer_name', [], ['csv_export_product'])->shouldReturn($jobExecutionMessage);
     }
 
-    function it_consumes_a_job_execution_message_with_both_whitelist_and_blacklist_filters(
+    function it_throws_an_exception_when_trying_to_consume_a_job_execution_message_with_both_whitelist_and_blacklist_filters(
         $jobExecutionMessageRepository,
         JobExecutionMessage $jobExecutionMessage
     ) {
