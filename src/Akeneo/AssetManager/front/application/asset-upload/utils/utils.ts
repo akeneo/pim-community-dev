@@ -19,7 +19,7 @@ export const createLineFromFilename = (filename: string, assetFamily: AssetFamil
     isFileUploading: false,
     file: null,
     filename: filename,
-    code: sanitize(info.code),
+    code: info.code,
     locale: info.locale,
     channel: info.channel,
     uploadProgress: null,
@@ -37,30 +37,30 @@ const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily) => 
 
   if (valuePerLocale && valuePerChannel && (matches = filename.match(/^(\w+)-(\w*)-(\w*)/))) {
     return {
-      code: matches[1],
-      locale: matches[2] ? matches[2] : null,
-      channel: matches[3] ? matches[3] : null,
+      code: sanitize(matches[1]),
+      locale: matches[2] ? sanitize(matches[2]) : null,
+      channel: matches[3] ? sanitize(matches[3]) : null,
     };
   }
 
   if (valuePerLocale && !valuePerChannel && (matches = filename.match(/^(\w+)-(\w+)/))) {
     return {
-      code: matches[1],
-      locale: matches[2],
+      code: sanitize(matches[1]),
+      locale: sanitize(matches[2]),
       channel: null,
     };
   }
 
   if (!valuePerLocale && valuePerChannel && (matches = filename.match(/^(\w+)-(\w+)/))) {
     return {
-      code: matches[1],
+      code: sanitize(matches[1]),
       locale: null,
-      channel: matches[2],
+      channel: sanitize(matches[2]),
     };
   }
 
   return {
-    code: filename.replace(/\.[^/.]+$/, ''),
+    code: sanitize(filename.replace(/\.[^/.]+$/, '')),
     locale: null,
     channel: null,
   };
