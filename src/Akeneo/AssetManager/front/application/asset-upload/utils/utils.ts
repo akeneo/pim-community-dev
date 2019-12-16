@@ -38,15 +38,15 @@ const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily) => 
   if (valuePerLocale && valuePerChannel && (matches = filename.match(/^(\w+)-(\w*)-(\w*)/))) {
     return {
       code: sanitize(matches[1]),
-      locale: matches[2] ? sanitize(matches[2]) : null,
-      channel: matches[3] ? sanitize(matches[3]) : null,
+      locale: matches[2] ? matches[2] : null,
+      channel: matches[3] ? matches[3] : null,
     };
   }
 
   if (valuePerLocale && !valuePerChannel && (matches = filename.match(/^(\w+)-(\w+)/))) {
     return {
       code: sanitize(matches[1]),
-      locale: sanitize(matches[2]),
+      locale: matches[2],
       channel: null,
     };
   }
@@ -55,7 +55,7 @@ const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily) => 
     return {
       code: sanitize(matches[1]),
       locale: null,
-      channel: sanitize(matches[2]),
+      channel: matches[2],
     };
   }
 
