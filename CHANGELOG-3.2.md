@@ -2,8 +2,17 @@
 
 ## Bug fixes:
 
-- PIM-9021: Fix input displaying when selecting empty/not empty filter operator
 - PIM-9027: Translations missing on metrics
+
+# 3.2.26 (2019-12-16)
+
+## Bug fixes:
+
+- PIM-9021: Fix input displaying when selecting empty/not empty filter operator
+
+## Technical improvement
+
+- DAPI-691: Add a blacklist option to the CE job queue daemon command
 
 # 3.2.25 (2019-12-11)
 
