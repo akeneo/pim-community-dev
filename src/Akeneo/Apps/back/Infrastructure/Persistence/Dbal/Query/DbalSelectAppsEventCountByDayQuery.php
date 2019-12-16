@@ -31,12 +31,11 @@ class DbalSelectAppsEventCountByDayQuery implements SelectAppsEventCountByDayQue
         $endDateTime = new \DateTime($endDate, new \DateTimeZone('UTC'));
 
         $sqlQuery = <<<SQL
-SELECT app.code, app.label, JSON_OBJECTAGG(au.event_date, au.event_count) as event_count
+SELECT app_code, JSON_OBJECTAGG(au.event_date, au.event_count) as event_count
 FROM akeneo_app_audit au
-INNER JOIN akeneo_app app ON app.code = au.app_code
 WHERE event_date BETWEEN :start_date AND :end_date
 AND event_type = :event_type
-GROUP BY app.code, app.label
+GROUP BY app_code
 SQL;
         $sqlParams = [
             'start_date' => $startDateTime->format('Y-m-d'),
@@ -56,7 +55,7 @@ SQL;
 
     private function hydrateRow(array $dataRow): AppEventCounts
     {
-        $eventCountByApp = new AppEventCounts($dataRow['label']);
+        $eventCountByApp = new AppEventCounts($dataRow['app_code']);
         foreach (json_decode($dataRow['event_count'], true) as $eventDate => $eventCount) {
             $eventCountByApp->addDailyEventCount(
                 new DailyEventCount($eventCount, new \DateTime($eventDate, new \DateTimeZone('UTC')))

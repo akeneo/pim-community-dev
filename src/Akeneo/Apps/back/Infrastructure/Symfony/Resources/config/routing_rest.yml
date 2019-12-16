@@ -35,3 +35,10 @@ akeneo_apps_regenerate_secret_rest:
     methods: [POST]
     requirements:
         code: '[a-zA-Z0-9_]+'
+
+akeneo_apps_audit_source_apps_event:
+    path: '/rest/apps/audit/source-apps-event'
+    defaults: { _controller: akeneo_app.internal_api.controller.audit:sourceAppsEvent }
+    methods: [GET]
+    requirements:
+        event_type: '[a-zA-Z_]+'

@@ -6,6 +6,7 @@ namespace Akeneo\Apps\back\tests\Integration\Fixtures;
 
 use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\Application\Command\CreateAppHandler;
+use Akeneo\Apps\Domain\Model\Read\AppWithCredentials;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -22,9 +23,9 @@ class AppLoader
         $this->createAppHandler = $createAppHandler;
     }
 
-    public function createApp(string $code, string $label, string $flowType)
+    public function createApp(string $code, string $label, string $flowType): AppWithCredentials
     {
         $command = new CreateAppCommand($code, $label, $flowType);
-        $this->createAppHandler->handle($command);
+        return $this->createAppHandler->handle($command);
     }
 }
