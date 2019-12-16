@@ -134,16 +134,19 @@ export const fileUploadProgressAction = (line: Line, progress: number): OnFileUp
   },
 });
 
-export const FILE_THUMBNAIL_GENERATION = 'asset-upload/THUMBNAIL_GENERATED';
-export type OnFileThumbnailGenerationAction = {
-  type: typeof FILE_THUMBNAIL_GENERATION;
+export const FILE_THUMBNAIL_GENERATION_DONE = 'asset-upload/FILE_THUMBNAIL_GENERATION_DONE';
+export type OnFileThumbnailGenerationDoneAction = {
+  type: typeof FILE_THUMBNAIL_GENERATION_DONE;
   payload: {
     thumbnail: Thumbnail;
     line: Line;
   };
 };
-export const fileThumbnailGenerationAction = (thumbnail: Thumbnail, line: Line): OnFileThumbnailGenerationAction => ({
-  type: FILE_THUMBNAIL_GENERATION,
+export const fileThumbnailGenerationDoneAction = (
+  thumbnail: Thumbnail,
+  line: Line
+): OnFileThumbnailGenerationDoneAction => ({
+  type: FILE_THUMBNAIL_GENERATION_DONE,
   payload: {
     thumbnail,
     line,

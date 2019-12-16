@@ -1,6 +1,9 @@
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
-import {createCreationAssetsFromLines, selectLinesToSend} from 'akeneoassetmanager/application/asset-upload/utils/utils';
+import {
+  createCreationAssetsFromLines,
+  selectLinesToSend,
+} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {
   assetCreationFailAction,
   assetCreationSuccessAction,

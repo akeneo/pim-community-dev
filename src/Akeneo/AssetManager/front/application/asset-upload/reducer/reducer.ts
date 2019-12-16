@@ -1,32 +1,32 @@
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {
   addLines,
-  removeLine,
-  assetCreationSucceeded,
   assetCreationFailed,
+  assetCreationSucceeded,
+  removeLine,
   updateLine,
 } from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {
-  OnAddLineAction,
-  OnFileThumbnailGenerationAction,
-  OnRemoveLineAction,
-  OnFileUploadSuccessAction,
-  OnFileUploadProgressAction,
-  OnLineCreationStartAction,
-  OnAssetCreationSuccessAction,
-  OnAssetCreationFailAction,
-  OnEditLineAction,
-  OnRemoveAllLinesAction,
   ADD_LINES,
-  REMOVE_LINE,
-  REMOVE_ALL_LINES,
-  FILE_THUMBNAIL_GENERATION,
-  EDIT_LINE,
-  FILE_UPLOAD_SUCCESS,
-  FILE_UPLOAD_PROGRESS,
-  LINE_CREATION_START,
-  ASSET_CREATION_SUCCESS,
   ASSET_CREATION_FAIL,
+  ASSET_CREATION_SUCCESS,
+  EDIT_LINE,
+  FILE_THUMBNAIL_GENERATION_DONE,
+  FILE_UPLOAD_PROGRESS,
+  FILE_UPLOAD_SUCCESS,
+  LINE_CREATION_START,
+  OnAddLineAction,
+  OnAssetCreationFailAction,
+  OnAssetCreationSuccessAction,
+  OnEditLineAction,
+  OnFileThumbnailGenerationDoneAction,
+  OnFileUploadProgressAction,
+  OnFileUploadSuccessAction,
+  OnLineCreationStartAction,
+  OnRemoveAllLinesAction,
+  OnRemoveLineAction,
+  REMOVE_ALL_LINES,
+  REMOVE_LINE,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 
 export type State = {
@@ -37,7 +37,7 @@ export const reducer = (
   state: State,
   action:
     | OnAddLineAction
-    | OnFileThumbnailGenerationAction
+    | OnFileThumbnailGenerationDoneAction
     | OnRemoveLineAction
     | OnFileUploadSuccessAction
     | OnFileUploadProgressAction
@@ -54,7 +54,7 @@ export const reducer = (
       return {...state, lines: removeLine(state.lines, action.payload.line)};
     case REMOVE_ALL_LINES:
       return {...state, lines: []};
-    case FILE_THUMBNAIL_GENERATION:
+    case FILE_THUMBNAIL_GENERATION_DONE:
       return {...state, lines: updateLine(state.lines, action.payload.line.id, {thumbnail: action.payload.thumbnail})};
     case EDIT_LINE:
       return {

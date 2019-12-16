@@ -4,7 +4,7 @@ import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 import {getThumbnailFromFile, uploadFile} from 'akeneoassetmanager/application/asset-upload/utils/file';
 import {
-  fileThumbnailGenerationAction,
+  fileThumbnailGenerationDoneAction,
   fileUploadProgressAction,
   fileUploadSuccessAction,
   linesAddedAction,
@@ -20,7 +20,7 @@ export const onFileDrop = (files: File[], assetFamily: AssetFamily, dispatch: (a
 
     const line = createLineFromFilename(filename, assetFamily);
     getThumbnailFromFile(file, line).then(({thumbnail, line}) =>
-      dispatch(fileThumbnailGenerationAction(thumbnail, line))
+      dispatch(fileThumbnailGenerationDoneAction(thumbnail, line))
     );
 
     uploadFile(file, line, (line: Line, progress: number) => {

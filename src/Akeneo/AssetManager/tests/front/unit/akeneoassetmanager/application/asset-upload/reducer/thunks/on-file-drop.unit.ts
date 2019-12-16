@@ -2,7 +2,7 @@
 
 import {createFakeAssetFamily} from '../../tools';
 import {
-  fileThumbnailGenerationAction,
+  fileThumbnailGenerationDoneAction,
   fileUploadProgressAction,
   fileUploadSuccessAction,
   linesAddedAction,
@@ -58,7 +58,7 @@ describe('', () => {
     await flushPromises();
 
     const line = createLineFromFilename(file.name, assetFamily);
-    expect(dispatch).toHaveBeenCalledWith(fileThumbnailGenerationAction('/tmb/foo.png', line));
+    expect(dispatch).toHaveBeenCalledWith(fileThumbnailGenerationDoneAction('/tmb/foo.png', line));
   });
 
   test('The upload progress is dispatched', async () => {

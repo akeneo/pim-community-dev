@@ -5,7 +5,7 @@ import {
   assetCreationFailAction,
   assetCreationSuccessAction,
   editLineAction,
-  fileThumbnailGenerationAction,
+  fileThumbnailGenerationDoneAction,
   fileUploadProgressAction,
   fileUploadSuccessAction,
   lineCreationStartAction,
@@ -106,7 +106,7 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
       lines: [lines.A, lines.B],
     });
 
-    const action = fileThumbnailGenerationAction('foo_tmb.png', lines.A);
+    const action = fileThumbnailGenerationDoneAction('foo_tmb.png', lines.A);
     const newState = reducer(state, action);
 
     const expectedState = {

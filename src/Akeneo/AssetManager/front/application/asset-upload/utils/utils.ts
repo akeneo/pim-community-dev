@@ -158,7 +158,8 @@ export const getStatusFromLine = (line: Line, valuePerLocale: boolean, valuePerC
     return count + errors.length;
   }, 0);
   const isComplete: boolean =
-    (!valuePerLocale || (valuePerLocale && line.locale !== null)) && (!valuePerChannel || (valuePerChannel && line.channel !== null));
+    (!valuePerLocale || (valuePerLocale && line.locale !== null)) &&
+    (!valuePerChannel || (valuePerChannel && line.channel !== null));
 
   if (errorsCount > 0) {
     return LineStatus.Invalid;
