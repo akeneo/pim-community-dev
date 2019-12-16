@@ -8,6 +8,10 @@ coupling-back: structure-coupling-back user-management-coupling-back channel-cou
 check-pullup:
 	${PHP_RUN} bin/check-pullup
 
+.PHONY: check-sf-services
+check-sf-services:
+	$(PHP_RUN) bin/check-services-instantiability
+
 ### Lint tests
 .PHONY: lint-back
 lint-back:
