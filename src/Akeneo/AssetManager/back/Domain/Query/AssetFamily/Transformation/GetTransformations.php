@@ -13,17 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation;
 
-use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 
 interface GetTransformations
 {
     /**
-     * Returns an indexed array with asset string identifier as key
-     * and an instance of TransformationCollection in value.
+     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      *
-     * @param AssetIdentifier[] $assetIdentifiers
-     * @return TransformationCollection[]
+     * @return TransformationCollection
+     *
+     * @throws AssetFamilyNotFoundException
      */
-    public function fromAssetIdentifiers(array $assetIdentifiers): array;
+    public function fromAssetFamilyIdentifier(AssetFamilyIdentifier$assetFamilyIdentifier): TransformationCollection;
 }

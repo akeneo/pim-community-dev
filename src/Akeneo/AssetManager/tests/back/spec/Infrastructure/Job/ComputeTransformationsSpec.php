@@ -74,35 +74,24 @@ class ComputeTransformationsSpec extends ObjectBehavior
         $jobParameters->has('asset_identifiers')->willReturn(true);
         $jobParameters->get('asset_identifiers')->willReturn(['assetIdentifier1', 'assetIdentifier2']);
 
+        $packshotIdentifier = AssetFamilyIdentifier::fromString('packshot');
+
+        $asset1->getAssetFamilyIdentifier()->willReturn($packshotIdentifier);
+        $asset1->getCode()->willReturn(AssetCode::fromString('asset_code_1'));
+        $assetRepository->getByIdentifier(AssetIdentifier::fromString('assetIdentifier1'))->willReturn($asset1);
+        $asset2->getAssetFamilyIdentifier()->willReturn($packshotIdentifier);
+        $assetRepository->getByIdentifier(AssetIdentifier::fromString('assetIdentifier2'))->willReturn($asset2);
+
         $thumbnail->getLabel()->willReturn(TransformationLabel::fromString('thumbnail'));
         $transformations = TransformationCollection::create([$thumbnail->getWrappedObject()]);
-        $getTransformations->fromAssetIdentifiers(
-            [
-                AssetIdentifier::fromString('assetIdentifier1'),
-                AssetIdentifier::fromString('assetIdentifier2'),
-            ]
-        )->willReturn(
-            [
-                'assetIdentifier1' => $transformations,
-                'assetIdentifier2' => $transformations,
-            ]
-        );
 
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('packshot');
-
-        $asset1->getCode()->willReturn(AssetCode::fromString('asset_code_1'));
-        $asset1->getAssetFamilyIdentifier()->willReturn($assetFamilyIdentifier);
-        $assetRepository->getByIdentifier(AssetIdentifier::fromString('assetIdentifier1'))->willReturn($asset1);
-
-        $asset2->getCode()->willReturn(AssetCode::fromString('asset_code_2'));
-        $asset2->getAssetFamilyIdentifier()->willReturn($assetFamilyIdentifier);
-        $assetRepository->getByIdentifier(AssetIdentifier::fromString('assetIdentifier2'))->willReturn($asset2);
+        $getTransformations->fromAssetFamilyIdentifier($packshotIdentifier)
+                           ->shouldBeCalledOnce()->willReturn($transformations);
 
         $getOutdatedVariationSource->forAssetAndTransformation($asset1, $thumbnail)->willReturn($sourceFileData);
         $getOutdatedVariationSource->forAssetAndTransformation($asset2, $thumbnail)->willReturn(null);
         $stepExecution->incrementSummaryInfo('skipped')->shouldBeCalled();
-        $transformationExecutor->execute($sourceFileData, $assetFamilyIdentifier, $thumbnail)
-                                              ->willReturn($command);
+        $transformationExecutor->execute($sourceFileData, $packshotIdentifier, $thumbnail)->willReturn($command);
 
         $editAssetHandler->__invoke(
             new EditAssetCommand(
@@ -147,25 +136,16 @@ class ComputeTransformationsSpec extends ObjectBehavior
         $searchableAssetItem2 = new SearchableAssetItem();
         $searchableAssetItem2->identifier = 'assetIdentifier2';
 
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('packshot');
+
         $findSearchableAssets->byAssetFamilyIdentifier(AssetFamilyIdentifier::fromString('packshot'))->willReturn(
             new \ArrayIterator([$searchableAssetItem1, $searchableAssetItem2])
         );
 
         $thumbnail->getLabel()->willReturn(TransformationLabel::fromString('thumbnail'));
         $transformations = TransformationCollection::create([$thumbnail->getWrappedObject()]);
-        $getTransformations->fromAssetIdentifiers(
-            [
-                AssetIdentifier::fromString('assetIdentifier1'),
-                AssetIdentifier::fromString('assetIdentifier2'),
-            ]
-        )->willReturn(
-            [
-                'assetIdentifier1' => $transformations,
-                'assetIdentifier2' => $transformations,
-            ]
-        );
-
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('packshot');
+        $getTransformations->fromAssetFamilyIdentifier($assetFamilyIdentifier)
+            ->shouldBeCalledOnce()->willReturn($transformations);
 
         $asset1->getCode()->willReturn(AssetCode::fromString('asset_code_1'));
         $asset1->getAssetFamilyIdentifier()->willReturn($assetFamilyIdentifier);

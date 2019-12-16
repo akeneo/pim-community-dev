@@ -53,6 +53,9 @@ class ComputeTransformations implements TaskletInterface
     /** @var EditAssetHandler */
     private $editAssetHandler;
 
+    /** @var TransformationCollection[] */
+    private $transformationsPerAssetFamily = [];
+
     public function __construct(
         FindSearchableAssetsInterface $findSearchableAssets,
         GetTransformations $getTransformations,
@@ -97,15 +100,6 @@ class ComputeTransformations implements TaskletInterface
      */
     private function doExecute(array $assetIdentifiers): void
     {
-        $transformationsPerAssetIdentifier = $this->getTransformations->fromAssetIdentifiers(
-            array_map(
-                function (string $assetIdentifier): AssetIdentifier {
-                    return AssetIdentifier::fromString($assetIdentifier);
-                },
-                $assetIdentifiers
-            )
-        );
-
         foreach ($assetIdentifiers as $assetIdentifier) {
             $commands = [];
             $transformedFilesCount = 0;
@@ -121,7 +115,7 @@ class ComputeTransformations implements TaskletInterface
                 continue;
             }
 
-            $transformations = $transformationsPerAssetIdentifier[$assetIdentifier] ?? TransformationCollection::noTransformation();
+            $transformations = $this->getTransformations($asset->getAssetFamilyIdentifier());
 
             foreach ($transformations as $transformation) {
                 try {
@@ -172,5 +166,14 @@ class ComputeTransformations implements TaskletInterface
                 $this->stepExecution->incrementSummaryInfo('transformations', $transformedFilesCount);
             }
         }
+    }
+
+    private function getTransformations(AssetFamilyidentifier $assetFamilyidentifier): TransformationCollection
+    {
+        if (!isset($this->transformationsPerAssetFamily[(string) $assetFamilyidentifier])) {
+            $this->transformationsPerAssetFamily[(string)$assetFamilyidentifier] = $this->getTransformations->fromAssetFamilyIdentifier($assetFamilyidentifier);
+        }
+
+        return $this->transformationsPerAssetFamily[(string)$assetFamilyidentifier];
     }
 }

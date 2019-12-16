@@ -13,15 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
-use Akeneo\AssetManager\Domain\Model\Asset\Asset;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ScaleOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
@@ -30,91 +25,71 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
-use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use PHPUnit\Framework\Assert;
 
 class SqlGetTransformationsTest extends SqlIntegrationTestCase
 {
     /** @var SqlGetTransformations */
-    private $sqlFindTransformationsForAsset;
+    private $getTransformations;
 
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    public function test_it_throws_an_excetion_if_the_asset_family_was_not_found()
+    {
+        $this->expectException(AssetFamilyNotFoundException::class);
+
+        $this->getTransformations->fromAssetFamilyIdentifier(AssetFamilyIdentifier::fromString('unknown'));
+    }
+
+    public function test_it_returns_a_transformation_collection()
+    {
+        $assetFamilyIdentifier1 = AssetFamilyIdentifier::fromString('family1');
+        $transformationCollection1 = TransformationCollection::noTransformation();
+        $this->createAssetFamily((string)$assetFamilyIdentifier1, $transformationCollection1);
+
+        $assetFamilyIdentifier2 = AssetFamilyIdentifier::fromString('family2');
+        $transformation = Transformation::create(
+            TransformationLabel::fromString('label'),
+            Source::createFromNormalized(['attribute' => 'main', 'channel' => null, 'locale' => null]),
+            Target::createFromNormalized(['attribute' => 'target1', 'channel' => null, 'locale' => null]),
+            OperationCollection::create(
+                [
+                    ThumbnailOperation::create(['width' => 100, 'height' => 80]),
+                    ColorspaceOperation::create(['colorspace' => 'grey']),
+                ]
+            ),
+            '1_',
+            '_2',
+            new \DateTime()
+        );
+        $transformationCollection2 = TransformationCollection::create([$transformation]);
+        $this->createAssetFamily((string)$assetFamilyIdentifier2, $transformationCollection2);
+
+        $this->assertCollectionEqualsCollection(
+            $transformationCollection1,
+            $this->getTransformations->fromAssetFamilyIdentifier($assetFamilyIdentifier1)
+        );
+        $this->assertCollectionEqualsCollection(
+            $transformationCollection2,
+            $this->getTransformations->fromAssetFamilyIdentifier($assetFamilyIdentifier2)
+        );
+    }
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->sqlFindTransformationsForAsset = $this->get(SqlGetTransformations::class);
-        $this->assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
-        $this->assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        $this->getTransformations = $this->get(SqlGetTransformations::class);
+        $this->assetFamilyRepository = $this->get(
+            'akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+        );
         $this->resetDB();
-    }
-
-    public function test_it_returns_list_of_transformation_collection_for_a_list_of_asset_identifiers()
-    {
-        $transformationCollectionForAssetFamily1 = TransformationCollection::create([
-            Transformation::create(
-                TransformationLabel::fromString('label1'),
-                Source::createFromNormalized(['attribute' => 'attr1', 'channel'=> null, 'locale' => null]),
-                Target::createFromNormalized(['attribute' => 'attr2', 'channel'=> null, 'locale' => null]),
-                OperationCollection::create([
-                    ThumbnailOperation::create(['width' => 100, 'height' => 80]),
-                    ColorspaceOperation::create(['colorspace' => 'grey']),
-                ]),
-                '1_',
-                '_2',
-                new \DateTime('1990-01-01')
-            ),
-        ]);
-        $this->createAssetFamily('family1', $transformationCollectionForAssetFamily1);
-        $this->createAsset('asset1', 'family1');
-        $this->createAsset('asset2', 'family1');
-        $this->createAsset('asset3', 'family1');
-
-        $transformationCollectionForAssetFamily2 = TransformationCollection::create([
-            Transformation::create(
-                TransformationLabel::fromString('label2'),
-                Source::createFromNormalized(['attribute' => 'attr1', 'channel'=> null, 'locale' => null]),
-                Target::createFromNormalized(['attribute' => 'attr3', 'channel'=> null, 'locale' => null]),
-                OperationCollection::create([
-                    ScaleOperation::create(['ratio' => 80]),
-                ]),
-                '1_',
-                '_2',
-                new \DateTime('1990-01-01')
-            ),
-        ]);
-        $this->createAssetFamily('family2', $transformationCollectionForAssetFamily2);
-        $this->createAsset('asset4', 'family2');
-
-        $results = $this->sqlFindTransformationsForAsset->fromAssetIdentifiers([
-            AssetIdentifier::fromString('asset1'),
-            AssetIdentifier::fromString('asset3'),
-            AssetIdentifier::fromString('asset4'),
-            AssetIdentifier::fromString('unknown'),
-        ]);
-
-        $this->assertCount(3, $results);
-        $this->assertArrayHasKey('asset1', $results);
-        $this->assertArrayHasKey('asset3', $results);
-        $this->assertArrayHasKey('asset4', $results);
-
-        $this->assertEquals($transformationCollectionForAssetFamily1, $results['asset1']);
-        $this->assertEquals($transformationCollectionForAssetFamily1, $results['asset3']);
-        $this->assertEquals($transformationCollectionForAssetFamily2, $results['asset4']);
-    }
-
-    public function test_it_returns_an_empty_collection()
-    {
-        $results = $this->sqlFindTransformationsForAsset->fromAssetIdentifiers([]);
-        $this->assertEmpty($results);
     }
 
     private function resetDB(): void
@@ -124,15 +99,13 @@ class SqlGetTransformationsTest extends SqlIntegrationTestCase
 
     private function createAssetFamily(string $rawIdentifier, TransformationCollection $transformationCollection): void
     {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($rawIdentifier);
-
         $imageInfo = new FileInfo();
         $imageInfo
             ->setOriginalFilename(sprintf('image_%s', $rawIdentifier))
             ->setKey(sprintf('test/image_%s.jpg', $rawIdentifier));
 
         $assetFamily = AssetFamily::create(
-            $assetFamilyIdentifier,
+            AssetFamilyIdentifier::fromString($rawIdentifier),
             ['en_US' => $rawIdentifier],
             Image::fromFileInfo($imageInfo),
             RuleTemplateCollection::empty()
@@ -142,15 +115,15 @@ class SqlGetTransformationsTest extends SqlIntegrationTestCase
         $this->assetFamilyRepository->create($assetFamily);
     }
 
-    private function createAsset(string $rawIdentifier, string $rawFamilyIdentifier): void
-    {
-        $this->assetRepository->create(
-            Asset::create(
-                AssetIdentifier::fromString($rawIdentifier),
-                AssetFamilyIdentifier::fromString($rawFamilyIdentifier),
-                AssetCode::fromString($rawIdentifier),
-                ValueCollection::fromValues([])
-            )
-        );
+    private function assertCollectionEqualsCollection(
+        TransformationCollection $expected,
+        TransformationCollection $actual
+    ): void {
+        Assert::assertSame($expected->getIterator()->count(), $actual->getIterator()->count());
+        foreach ($expected as $expectedTransformation) {
+            $actualTransformation = $actual->getByTarget($expectedTransformation->getTarget());
+            Assert::assertNotNull($actualTransformation);
+            Assert::assertTrue($expectedTransformation->equals($actualTransformation));
+        }
     }
 }
