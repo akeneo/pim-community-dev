@@ -6,6 +6,8 @@ namespace Akeneo\Apps\back\tests\EndToEnd;
 
 use Akeneo\Test\Integration\TestCase;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -20,12 +22,18 @@ abstract class WebTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->client = self::$container->get('test.client');
     }
 
-    protected function createClient(): KernelBrowser
+    protected function authenticate($username, $password)
     {
-        return self::$container->get('test.client');
+        $token = new UsernamePasswordToken('admin', 'admin', 'main', ['ROLE_ADMINISTRATOR']);
+
+        $session = $this->get('session');
+        $session->set('_security_main', serialize($token));
+        $session->save();
+
+        $cookie = new Cookie($session->getName(), $session->getId());
+        $this->client->getCookieJar()->set($cookie);
     }
 }

@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\back\tests\EndToEnd\Audit;
 
-use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
-use Akeneo\UserManagement\Component\Model\User;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -31,12 +26,11 @@ class CountDailyEventsByAppEndToEnd extends WebTestCase
         $this->client->request('GET', '/rest/apps/audit/source-apps-event', ['event_type' => 'product_created']);
         $response = $this->client->getResponse();
 
-        Assert::assertTrue(true);
-//        Assert::assertTrue($response->isOk());
-//        Assert::assertJsonStringNotEqualsJsonFile(
-//            realpath(__DIR__.'/../Resources/json_response/count_daily_events_by_app.json'),
-//            $response->getContent()
-//        );
+        Assert::assertTrue($response->isOk());
+        Assert::assertJsonStringNotEqualsJsonFile(
+            realpath(__DIR__.'/../Resources/json_response/count_daily_events_by_app.json'),
+            $response->getContent()
+        );
     }
 
     private function loadAuditData(): void
