@@ -2,13 +2,13 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Adds the job to compute transformations (for assets manager)
  */
-class Version_4_0_201911219142157_asset_manager_add_job_compute_transformations extends AbstractMigration
+final class Version_4_0_201911219142157_asset_manager_add_job_compute_transformations extends AbstractMigration
 {
     /**
      * @param Schema $schema
