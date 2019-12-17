@@ -36,7 +36,7 @@ export const EventChart: FC<Props> = ({title, eventType}) => {
         const chartData = Object.entries(appsData[selectedAppCode]).map(([date, value], index) => ({
             x: index,
             y: value,
-            xLabel: date,
+            xLabel: new Intl.DateTimeFormat('en-US', {weekday: 'long', month: 'short', day: 'numeric'}).format(new Date(date)),
             yLabel: value.toString(),
         }));
 
