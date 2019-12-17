@@ -28,7 +28,7 @@ yarn.lock: package.json
 
 node_modules: yarn.lock
 	$(YARN_RUN) install --frozen-lockfile
-	$(YARN_RUN) check --integrity --verbose
+	$(YARN_RUN) check --integrity
 
 .PHONY: assets
 assets:
