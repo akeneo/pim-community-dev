@@ -10,6 +10,6 @@ services:
 
     akeneo_asset_manager.normalizer.exception.violation:
         public: false
-        class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
+        class: Akeneo\AssetManager\Infrastructure\Normalizer\ConstraintViolationListNormalizer
         tags:
             - { name: asset_manager_serializer.normalizer }
