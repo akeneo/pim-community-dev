@@ -34,8 +34,7 @@ class ConstraintViolationListNormalizer implements NormalizerInterface, Cacheabl
         $normalizedViolations = [];
 
         /** @var ConstraintViolationInterface $constraintViolation */
-        foreach ($constraintViolationList as $constraintViolation)
-        {
+        foreach ($constraintViolationList as $constraintViolation) {
             $normalizedViolations[] = [
                 'messageTemplate' => $constraintViolation->getMessageTemplate(),
                 'parameters' => $constraintViolation->getParameters(),
