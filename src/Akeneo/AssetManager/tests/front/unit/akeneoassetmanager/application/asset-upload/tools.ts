@@ -38,6 +38,7 @@ export const createFakeAssetFamily = (valuePerLocale: boolean, valuePerChannel: 
         value_per_channel: valuePerChannel,
       },
     ],
+    transformations: '[]',
   });
 };
 

@@ -27,6 +27,7 @@ export const onCreateAllAsset = (assetFamily: AssetFamily, lines: Line[], dispat
         dispatch(assetCreationSuccessAction(asset));
       }
     } catch (e) {
+      // !TODO dispatch a better error message
       dispatch(
         assetCreationFailAction(asset, [
           {
