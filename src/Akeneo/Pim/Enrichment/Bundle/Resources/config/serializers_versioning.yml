@@ -41,6 +41,8 @@ services:
 
     pim_versioning.serializer.normalizer.flat.datetime:
         class: '%pim_serializer.normalizer.flat.datetime.class%'
+        arguments:
+            - 'c'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 

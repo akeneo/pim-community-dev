@@ -34,17 +34,17 @@ class DateValueFactory extends AbstractValueFactory
             );
         }
 
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
+            $this->throwsInvalidDateException($attribute, $data);
+        }
+
         try {
-            if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
-                $this->throwsInvalidDateException($attribute, $data);
-            }
             $date = new \DateTime($data);
-            $utcDate = \DateTime::createFromFormat('U', $date->format('U'));
         } catch (\Exception $e) {
             $this->throwsInvalidDateException($attribute, $data);
         }
 
-        return $utcDate;
+        return $date;
     }
 
     /**
