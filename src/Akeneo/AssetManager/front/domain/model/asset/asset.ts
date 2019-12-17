@@ -1,4 +1,4 @@
-import {createEmptyFile, File} from 'akeneoassetmanager/domain/model/file';
+import {createEmptyFile, File, createFileFromNormalized} from 'akeneoassetmanager/domain/model/file';
 import AssetFamilyIdentifier, {
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
@@ -12,7 +12,7 @@ import AssetIdentifier, {
   assetidentifiersAreEqual,
 } from 'akeneoassetmanager/domain/model/asset/identifier';
 import ValueCollection, {getValueFilter} from 'akeneoassetmanager/domain/model/asset/value-collection';
-import Value, {NormalizedValue, NormalizedMinimalValue} from 'akeneoassetmanager/domain/model/asset/value';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import Completeness, {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
@@ -21,8 +21,9 @@ import AttributeIdentifier, {
 } from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import {MEDIA_LINK_ATTRIBUTE_TYPE, MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
-import {createFile} from 'akeneoreferenceentity/domain/model/file';
+import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import {mediaLinkDataStringValue, isMediaLinkData} from 'akeneoassetmanager/domain/model/asset/data/media-link';
+import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 
 interface CommonNormalizedAsset {
   identifier: AssetIdentifier;
@@ -33,19 +34,19 @@ interface CommonNormalizedAsset {
 }
 
 export interface NormalizedAsset extends CommonNormalizedAsset {
-  image: NormalizedValue[];
-  values: NormalizedValue[];
+  image: Value[];
+  values: Value[];
 }
 
 export interface NormalizedItemAsset extends CommonNormalizedAsset {
   image: [{filePath: string; originalFilename: string}];
-  values: NormalizedValue[];
+  values: Value[];
   completeness: NormalizedCompleteness;
 }
 
 export interface NormalizedMinimalAsset extends CommonNormalizedAsset {
-  image: NormalizedValue[];
-  values: NormalizedMinimalValue[];
+  image: Value[];
+  values: Value[];
 }
 
 export enum NormalizeFormat {
@@ -75,23 +76,34 @@ export const getAssetImage = (
   locale: LocaleCode
 ): File => {
   const imageValue = values.find(getValueFilter(attributeAsMainMedia, channel, locale));
-  if (undefined === imageValue || '' === imageValue.data.normalize()) {
+  if (undefined === imageValue || null === imageValue.data) {
     return createEmptyFile();
   }
 
-  return MEDIA_LINK_ATTRIBUTE_TYPE === imageValue.attribute.type
-    ? createFileFromMediaLinkValue(imageValue)
-    : imageValue.data.normalize();
+  if (isMediaLinkData(imageValue.data)) {
+    return createFileFromMediaLinkValue(imageValue);
+  }
+
+  if (isMediaFileData(imageValue.data)) {
+    return imageValue.data;
+  }
+
+  throw Error('The value as main image should be either a MediaLink or a MediaFile');
 };
 
-const createFileFromMediaLinkValue = (value: Value) => {
-  const attribute = value.attribute as MediaLinkAttribute;
-  const prefix = null !== attribute.prefix ? attribute.prefix : '';
-  const suffix = null !== attribute.suffix ? attribute.suffix : '';
-  const filePath = `${prefix}${value.data.normalize()}${suffix}`;
-  const originalFilename = value.data.normalize();
+const createFileFromMediaLinkValue = (value: Value): File => {
+  if (!isMediaLinkData(value.data)) {
+    throw new Error('the value should be a MediaLink value');
+  }
+  if (!isMediaLinkAttribute(value.attribute)) {
+    throw new Error('the value should be a MediaLink attribute');
+  }
+  const prefix = null !== value.attribute.prefix ? value.attribute.prefix : '';
+  const suffix = null !== value.attribute.suffix ? value.attribute.suffix : '';
+  const filePath = `${prefix}${value.data}${suffix}`;
+  const originalFilename = mediaLinkDataStringValue(value.data);
 
-  return createFile(filePath, originalFilename);
+  return createFileFromNormalized({filePath, originalFilename});
 };
 
 class InvalidArgumentError extends Error {}
@@ -176,7 +188,7 @@ class AssetImplementation implements Asset {
       attribute_as_main_media_identifier: this.getAttributeAsMainMediaIdentifier(),
       code: assetCodeStringValue(this.code),
       labels: this.getLabelCollection(),
-      image: this.getImage().map((value: Value) => value.normalize()),
+      image: this.getImage(),
       values: this.valueCollection.normalize(),
     };
   }
@@ -188,7 +200,7 @@ class AssetImplementation implements Asset {
       attribute_as_main_media_identifier: this.getAttributeAsMainMediaIdentifier(),
       code: assetCodeStringValue(this.code),
       labels: this.getLabelCollection(),
-      image: this.getImage().map((value: Value) => value.normalize()),
+      image: this.getImage(),
       values: this.valueCollection.normalizeMinimal(),
     };
   }

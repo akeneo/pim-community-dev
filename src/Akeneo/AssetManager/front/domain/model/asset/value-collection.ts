@@ -1,4 +1,4 @@
-import Value, {NormalizedValue, NormalizedMinimalValue} from 'akeneoassetmanager/domain/model/asset/value';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
 import ChannelReference, {
   channelReferenceIsEmpty,
   channelReferenceAreEqual,
@@ -12,8 +12,6 @@ import LocaleReference, {
 import AttributeIdentifier, {
   attributeIdentifierStringValue,
 } from 'akeneoassetmanager/domain/model/attribute/identifier';
-
-class InvalidTypeError extends Error {}
 
 export const getValueForChannelAndLocaleFilter = (channel: ChannelReference, locale: LocaleReference) => (
   value: Value
@@ -37,12 +35,6 @@ export const getValueFilter = (
 
 export default class ValueCollection {
   private constructor(readonly values: Value[]) {
-    values.forEach((value: Value) => {
-      if (!(value instanceof Value)) {
-        throw new InvalidTypeError('ValueCollection expect only Value objects as argument');
-      }
-    });
-
     Object.freeze(this);
   }
 
@@ -54,12 +46,12 @@ export default class ValueCollection {
     return this.values.filter(getValueForChannelAndLocaleFilter(channel, locale));
   }
 
-  public normalize(): NormalizedValue[] {
-    return this.values.map((value: Value) => value.normalize());
+  public normalize(): Value[] {
+    return this.values;
   }
 
-  public normalizeMinimal(): NormalizedMinimalValue[] {
-    return this.values.map((value: Value) => value.normalizeMinimal());
+  public normalizeMinimal(): Value[] {
+    return this.values;
   }
 }
 

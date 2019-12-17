@@ -2,7 +2,7 @@ import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import formState, {FormState} from 'akeneoassetmanager/application/reducer/state';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {combineReducers} from 'redux';
-import {NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
+import Value, {areValueEqual} from 'akeneoassetmanager/domain/model/asset/value';
 
 export interface EditionFormState {
   state: FormState;
@@ -35,7 +35,7 @@ const dataReducer = (
     label: string;
     locale: string;
     image: [];
-    value: NormalizedValue;
+    value: Value;
   }
 ) => {
   switch (type) {
@@ -51,13 +51,8 @@ const dataReducer = (
     case 'ASSET_EDITION_VALUE_UPDATED':
       state = {
         ...state,
-        values: state.values.map((currentValue: NormalizedValue) => {
-          if (
-            currentValue.channel === value.channel &&
-            currentValue.locale === value.locale &&
-            currentValue.attribute.identifier === value.attribute.identifier &&
-            currentValue.data !== value.data
-          ) {
+        values: state.values.map((currentValue: Value) => {
+          if (areValueEqual(currentValue, value) && currentValue.data !== value.data) {
             return value;
           }
 

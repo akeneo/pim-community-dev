@@ -1,4 +1,4 @@
-import Value from 'akeneoassetmanager/domain/model/asset/value';
+import Value, {isValueRequired, isValueComplete} from 'akeneoassetmanager/domain/model/asset/value';
 
 export type NormalizedCompleteness = {complete: number; required: number};
 
@@ -15,11 +15,11 @@ class Completeness {
     const normalizedCompleteness = values.reduce(
       (completeness: NormalizedCompleteness, currentValue: Value) => {
         const newCompleteness = {...completeness};
-        if (currentValue.isComplete()) {
+        if (isValueComplete(currentValue)) {
           newCompleteness.complete++;
         }
 
-        if (currentValue.isRequired()) {
+        if (isValueRequired(currentValue)) {
           newCompleteness.required++;
         }
 

@@ -13,7 +13,7 @@ config:
             media_file:
                 denormalize: '@akeneoassetmanager/domain/model/asset/data/media-file'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/file.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/image.tsx'
+                cell: '@akeneoassetmanager/application/component/asset/index/cell/media-file.tsx'
             text:
                 denormalize: '@akeneoassetmanager/domain/model/asset/data/text'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/text.tsx'
@@ -26,16 +26,6 @@ config:
                 denormalize: '@akeneoassetmanager/domain/model/asset/data/number'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/number.tsx'
                 cell: '@akeneoassetmanager/application/component/asset/index/cell/number.tsx'
-            asset:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/asset'
-                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/asset.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/asset.tsx'
-                filter: '@akeneoassetmanager/application/component/asset/index/filter/asset.tsx'
-            asset_collection:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/asset-collection'
-                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/asset-collection.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/asset-collection.tsx'
-                filter: '@akeneoassetmanager/application/component/asset/index/filter/asset.tsx'
             option:
                 denormalize: '@akeneoassetmanager/domain/model/asset/data/option'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/option.tsx'
@@ -63,17 +53,6 @@ config:
                 denormalize: '@akeneoassetmanager/domain/model/attribute/type/number'
                 reducer: '@akeneoassetmanager/application/reducer/attribute/type/number'
                 view: '@akeneoassetmanager/application/component/attribute/edit/number.tsx'
-            # Will be activated again when we will do the link to reference entity
-            # asset:
-            #     icon: bundles/pimui/images/attribute/icon-asset-family.svg
-            #     denormalize: '@akeneoassetmanager/domain/model/attribute/type/asset'
-            #     reducer: '@akeneoassetmanager/application/reducer/attribute/type/asset'
-            #     view: '@akeneoassetmanager/application/component/attribute/edit/asset.tsx'
-            # asset_collection:
-            #     icon: bundles/pimui/images/attribute/icon-asset-family-multiple.svg
-            #     denormalize: '@akeneoassetmanager/domain/model/attribute/type/asset-collection'
-            #     reducer: '@akeneoassetmanager/application/reducer/attribute/type/asset'
-            #     view: '@akeneoassetmanager/application/component/attribute/edit/asset.tsx'
             option:
                 icon: bundles/pimui/images/attribute/icon-select.svg
                 denormalize: '@akeneoassetmanager/domain/model/attribute/type/option'

@@ -37,7 +37,12 @@ export default (
 
   return visibleValues.map((value: Value) => {
     const DataView = getDataFieldView(value);
-    const attributeLabel = getLabelInCollection(value.attribute.labels, localeReferenceStringValue(locale));
+    const attributeLabel = getLabelInCollection(
+      value.attribute.labels,
+      localeReferenceStringValue(locale),
+      true,
+      value.attribute.code
+    );
 
     const canEditData = value.attribute.value_per_locale ? rights.asset.edit && rights.locale.edit : rights.asset.edit;
     return (
