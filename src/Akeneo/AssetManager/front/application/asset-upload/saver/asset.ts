@@ -1,11 +1,11 @@
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import assetSaver from 'akeneoassetmanager/infrastructure/saver/asset';
-import {addQueueSupport} from 'akeneoassetmanager/tools/queue';
+import createQueue from 'p-limit'
 
-const MAX_QUEUE_SIZE = 5;
-const createWithQueue = addQueueSupport(assetSaver.create, MAX_QUEUE_SIZE);
+const CONCURRENCY = 5;
+const queue = createQueue(CONCURRENCY);
 
 export const create = (asset: CreationAsset): Promise<ValidationError[] | null> => {
-  return createWithQueue(asset);
+  return queue(() => assetSaver.create(asset));
 };
