@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Webmozart\Assert\Assert;
 
@@ -21,17 +22,12 @@ class TransformationCollection implements \IteratorAggregate
     /** @var Transformation[] */
     private $transformations = [];
 
-    /**
-     * @param Transformation[] $transformations
-     */
     private function __construct(array $transformations)
     {
         Assert::allIsInstanceOf($transformations, Transformation::class);
         foreach ($transformations as $transformation) {
             $this->add($transformation);
         }
-
-        $this->transformations = $transformations;
     }
 
     public static function create(array $transformations): self
@@ -41,17 +37,28 @@ class TransformationCollection implements \IteratorAggregate
 
     public function normalize(): array
     {
-        return array_map(
+        return array_values(array_map(
             function (Transformation $transformation) {
                 return $transformation->normalize();
             },
             $this->transformations
-        );
+        ));
     }
 
     public static function noTransformation(): self
     {
         return new self([]);
+    }
+
+    public function getByTarget(Target $target): ?Transformation
+    {
+        foreach ($this->transformations as $transformation) {
+            if ($transformation->getTarget()->equals($target)) {
+                return $transformation;
+            }
+        }
+
+        return null;
     }
 
     private function add(Transformation $transformation)
@@ -75,5 +82,41 @@ class TransformationCollection implements \IteratorAggregate
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->transformations);
+    }
+
+    public function update(TransformationCollection $transformationCollection): void
+    {
+        foreach ($this->transformations as $index => $currentTransformation) {
+            $findInNewCollection = $transformationCollection->getByTarget(
+                $currentTransformation->getTarget()
+            );
+            if (null === $findInNewCollection) {
+                $this->removeTransformation($index);
+                continue;
+            }
+
+            if ($currentTransformation->equals($findInNewCollection)) {
+                continue;
+            }
+
+            $this->updateTransformation($index, $findInNewCollection);
+        }
+
+        /** @var Transformation $newTransformation */
+        foreach ($transformationCollection as $newTransformation) {
+            if (null === $this->getByTarget($newTransformation->getTarget())) {
+                $this->add($newTransformation);
+            }
+        }
+    }
+
+    private function updateTransformation(int $index, Transformation $transformation): void
+    {
+        $this->transformations[$index] = $transformation;
+    }
+
+    private function removeTransformation(int $index): void
+    {
+        unset($this->transformations[$index]);
     }
 }

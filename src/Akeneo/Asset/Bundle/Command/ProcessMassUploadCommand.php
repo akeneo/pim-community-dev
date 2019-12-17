@@ -32,16 +32,10 @@ class ProcessMassUploadCommand extends Command
     /** @var MassUploadProcessor */
     private $massUploadProcessor;
 
-    /** @var string */
-    private $tmpStorageDir;
-
-    public function __construct(
-        MassUploadProcessor $massUploadProcessor,
-        string $tmpStorageDir
-    ) {
+    public function __construct(MassUploadProcessor $massUploadProcessor)
+    {
         parent::__construct();
 
-        $this->tmpStorageDir = $tmpStorageDir;
         $this->massUploadProcessor = $massUploadProcessor;
     }
 
@@ -65,7 +59,7 @@ class ProcessMassUploadCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $sourceDir = $input->getOption('user');
-        $context = new UploadContext($this->tmpStorageDir, $sourceDir);
+        $context = new UploadContext(sys_get_temp_dir(), $sourceDir);
         $processedList = $this->massUploadProcessor->applyMassUpload($context);
 
         foreach ($processedList as $item) {

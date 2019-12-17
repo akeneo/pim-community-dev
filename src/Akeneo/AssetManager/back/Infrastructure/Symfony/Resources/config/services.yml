@@ -109,3 +109,6 @@ services:
     Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory:
         arguments:
             - '%asset_manager_transformation_operation%'
+
+    # Clock
+    Akeneo\AssetManager\Infrastructure\Clock: ~

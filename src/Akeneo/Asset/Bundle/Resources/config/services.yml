@@ -64,15 +64,12 @@ services:
             - { name: console.command }
 
     Akeneo\Asset\Bundle\Command\CopyAssetFilesCommand:
-        arguments:
-            - '%tmp_storage_dir%'
         tags:
             - { name: console.command }
 
     Akeneo\Asset\Bundle\Command\ProcessMassUploadCommand:
         arguments:
             - '@pimee_product_asset.mass_upload_processor'
-            - '%tmp_storage_dir%'
         tags:
             - { name: console.command }
 

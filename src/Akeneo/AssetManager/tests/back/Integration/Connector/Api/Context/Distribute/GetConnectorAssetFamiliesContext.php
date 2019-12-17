@@ -23,11 +23,12 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\Thumbn
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformation;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
@@ -79,7 +80,7 @@ class GetConnectorAssetFamiliesContext implements Context
                 ->setKey(sprintf('test/image_%s.jpg', $rawIdentifier));
 
             $productLinkRules = [];
-            $transformationCollection = TransformationCollection::create([]);
+            $connectorTransformations = new ConnectorTransformationCollection([]);
             if (1 === $i) {
                 $productLinkRules = [
                     [
@@ -100,8 +101,9 @@ class GetConnectorAssetFamiliesContext implements Context
                         ],
                     ],
                 ];
-                $transformationCollection = TransformationCollection::create([
-                    Transformation::create(
+                $connectorTransformations = new ConnectorTransformationCollection([
+                    new ConnectorTransformation(
+                        TransformationLabel::fromString('label'),
                         Source::createFromNormalized(['attribute' => 'main', 'channel' => null, 'locale' => null]),
                         Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => null]),
                         OperationCollection::create([ThumbnailOperation::create(['width' => 100, 'height' => 80])]),
@@ -116,7 +118,7 @@ class GetConnectorAssetFamiliesContext implements Context
                 LabelCollection::fromArray(['fr_FR' => 'Marque']),
                 Image::fromFileInfo($imageInfo),
                 $productLinkRules,
-                $transformationCollection
+                $connectorTransformations
             );
 
             $this->findConnectorAssetFamily->save(

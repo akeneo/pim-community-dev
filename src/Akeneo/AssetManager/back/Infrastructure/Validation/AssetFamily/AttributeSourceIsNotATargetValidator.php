@@ -20,7 +20,6 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Webmozart\Assert\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -54,9 +53,9 @@ class AttributeSourceIsNotATargetValidator extends ConstraintValidator
                     $this->context->buildViolation(
                         AttributeSourceIsNotATarget::ERROR_MESSAGE,
                         [
-                            '%attribute_code%' => $source->getAttributeCode(),
+                            '%attribute_code%' => (string) $source->getAttributeCode(),
                         ]
-                    )->addViolation();
+                    )->atPath('transformations')->addViolation();
                 }
             }
         }

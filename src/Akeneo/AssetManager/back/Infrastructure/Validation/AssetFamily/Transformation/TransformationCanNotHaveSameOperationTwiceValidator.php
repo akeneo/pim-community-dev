@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Validation;
 
 class TransformationCanNotHaveSameOperationTwiceValidator extends ConstraintValidator
 {
@@ -27,12 +26,9 @@ class TransformationCanNotHaveSameOperationTwiceValidator extends ConstraintVali
             throw new UnexpectedTypeException($constraint, TransformationCanNotHaveSameOperationTwice::class);
         }
 
-        $validator = Validation::createValidator();
-        $violations = $validator->validate($operations, new Assert\Type('array'));
-        foreach ($violations as $violation) {
-            $this->context->addViolation($violation->getMessage(), $violation->getParameters());
-            return;
-        }
+        $context = $this->context;
+        $validator = $context->getValidator()->inContext($context);
+        $validator->validate($operations, new Assert\Type('array'));
 
         $definedOperationTypes = [];
         foreach ($operations as $operation) {

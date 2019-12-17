@@ -8,11 +8,13 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationFromAssetIdentifiersLauncher
         arguments:
             - '@akeneo_batch_queue.queue.publish_job_to_queue'
+            - '@security.token_storage'
 
     akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_family_identifier_launcher:
         class: Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationFromAssetFamilyIdentifierLauncher
         arguments:
             - '@akeneo_batch_queue.queue.publish_job_to_queue'
+            - '@security.token_storage'
 
     akeneo_assetmanager.infrastructure.job.provider.link_assets_to_products:
         class: 'Akeneo\AssetManager\Infrastructure\Job\Provider\LinkAssetsToProducts'
@@ -77,6 +79,10 @@ services:
     akeneo_assetmanager.tasklet.compute_transformations:
         class: 'Akeneo\AssetManager\Infrastructure\Job\ComputeTransformations'
         arguments:
-            - '@akeneo_assetmanager.infrastructure.transformation.compute_transformations.executor'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_searchable_assets'
+            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.transformation.get_outdated_variation_source'
+            - '@Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor'
+            - '@akeneo_assetmanager.application.asset.edit_asset_handler'
         public: false

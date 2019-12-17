@@ -16,30 +16,13 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\OperationShouldBeInstantiable;
-use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawSourceExist;
-use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawTargetExist;
-use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\TransformationCanNotHaveSameOperationTwice;
-use Akeneo\AssetManager\Infrastructure\Validation\Channel\RawChannelShouldExist;
-use Akeneo\AssetManager\Infrastructure\Validation\Locale\RawLocaleShouldBeActivated;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TransformationCollectionValidator extends ConstraintValidator
 {
-    private const FILENAME_REGEX = '/^[\w\-\. ]*$/';
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    public function __construct(ValidatorInterface $validator)
-    {
-        $this->validator = $validator;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -50,59 +33,16 @@ class TransformationCollectionValidator extends ConstraintValidator
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($command->identifier);
 
-        $constraint = [
+        $nestedConstraints = [
             new Assert\Type('array'),
-            new Assert\All([
-                new Assert\Collection([
-                    'source' => [
-                        new Assert\Collection([
-                            'attribute' => new Assert\NotNull(),
-                            'locale' => new RawLocaleShouldBeActivated(),
-                            'channel' => new RawChannelShouldExist(),
-                        ]),
-                        new RawSourceExist($assetFamilyIdentifier),
-                    ],
-                    'target' => [
-                        new Assert\Collection([
-                            'attribute' => new Assert\NotNull(),
-                            'locale' => new RawLocaleShouldBeActivated(),
-                            'channel' => new RawChannelShouldExist(),
-                        ]),
-                        new RawTargetExist($assetFamilyIdentifier),
-                    ],
-                    'operations' => [
-                        new Assert\Type('array'),
-                        new Assert\All([
-                            new Assert\Collection([
-                                'type' => new Assert\NotNull(),
-                                'parameters' => new Assert\Type('array'),
-                            ]),
-                            new OperationShouldBeInstantiable(),
-                        ]),
-                        new TransformationCanNotHaveSameOperationTwice($assetFamilyIdentifier),
-                    ],
-                    'filename_prefix' => new Assert\Optional([
-                        new Assert\Type('string'),
-                        new Assert\Regex([
-                            'pattern' => self::FILENAME_REGEX,
-                            'message' => "Filename prefix contains illegal character. Allowed characters are alphanumerics, '_', '-', '.', and space.",
-                        ]),
-                    ]),
-                    'filename_suffix' =>  new Assert\Optional([
-                        new Assert\Type('string'),
-                        new Assert\Regex([
-                            'pattern' => self::FILENAME_REGEX,
-                            'message' => "Filename prefix contains illegal character. Allowed characters are alphanumerics, '_', '-', '.', and space.",
-                        ]),
-                    ]),
-                ]),
-            ]),
+            new Assert\All(new Transformation($assetFamilyIdentifier)),
         ];
 
-        $violations = $this->validator->validate($command->transformations, $constraint);
-        foreach ($violations as $violation) {
-            $this->context->addViolation($violation->getMessage(), $violation->getParameters());
-        }
+        $context = $this->context;
+        $validator = $context->getValidator()->inContext($context);
+        $validator
+            ->atPath('transformations')
+            ->validate($command->transformations, $nestedConstraints, Constraint::DEFAULT_GROUP);
     }
 
     /**

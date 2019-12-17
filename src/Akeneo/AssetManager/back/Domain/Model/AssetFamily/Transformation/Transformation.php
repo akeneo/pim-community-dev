@@ -17,6 +17,9 @@ use Webmozart\Assert\Assert;
 
 class Transformation
 {
+    /** @var TransformationLabel */
+    private $label;
+
     /** @var Source */
     private $source;
 
@@ -32,12 +35,17 @@ class Transformation
     /** @var ?string */
     private $filenameSuffix;
 
+    /** @var \DateTimeInterface */
+    private $updatedAt;
+
     private function __construct(
+        TransformationLabel $label,
         Source $source,
         Target $target,
         OperationCollection $operations,
         ?string $filenamePrefix,
-        ?string $filenameSuffix
+        ?string $filenameSuffix,
+        \DateTimeInterface $updatedAt
     ) {
         Assert::false($source->equals($target), 'A transformation can not have the same source and target');
 
@@ -46,21 +54,30 @@ class Transformation
             'A transformation must have at least a filename prefix or a filename suffix'
         );
 
+        $this->label = $label;
         $this->source = $source;
         $this->target = $target;
         $this->operations = $operations;
         $this->filenamePrefix = $filenamePrefix;
         $this->filenameSuffix = $filenameSuffix;
+        $this->updatedAt = $updatedAt;
     }
 
     public static function create(
+        TransformationLabel $label,
         Source $source,
         Target $target,
         OperationCollection $operations,
         ?string $filenamePrefix,
-        ?string $filenameSuffix
+        ?string $filenameSuffix,
+        \DateTimeInterface $updatedAt
     ): self {
-        return new self($source, $target, $operations, $filenamePrefix, $filenameSuffix);
+        return new self($label, $source, $target, $operations, $filenamePrefix, $filenameSuffix, $updatedAt);
+    }
+
+    public function getLabel(): TransformationLabel
+    {
+        return $this->label;
     }
 
     public function getTarget(): Target
@@ -89,19 +106,47 @@ class Transformation
         ]);
     }
 
+    public function getFilenamePrefix(): ?string
+    {
+        return $this->filenamePrefix;
+    }
+
+    public function getFilenameSuffix(): ?string
+    {
+        return $this->filenameSuffix;
+    }
+
+    public function getUpdatedAt(): \DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
     public function normalize(): array
     {
         return array_filter(
             [
+                'label' => $this->label->normalize(),
                 'source' => $this->source->normalize(),
                 'target' => $this->target->normalize(),
                 'operations' => $this->operations->normalize(),
                 'filename_prefix' => $this->filenamePrefix,
                 'filename_suffix' => $this->filenameSuffix,
+                'updated_at' => $this->updatedAt->format(\DateTimeInterface::ISO8601),
             ],
             function ($value) {
                 return null !== $value;
             }
         );
+    }
+
+    public function equals(Transformation $transformation): bool
+    {
+        return $this->label->equals($transformation->getLabel())
+            && $this->source->equals($transformation->getSource())
+            && $this->target->equals($transformation->getTarget())
+            && $this->operations->equals($transformation->getOperationCollection())
+            && $this->filenamePrefix === $transformation->getFilenamePrefix()
+            && $this->filenameSuffix === $transformation->getFilenameSuffix()
+            ;
     }
 }

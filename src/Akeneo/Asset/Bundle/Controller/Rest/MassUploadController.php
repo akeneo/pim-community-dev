@@ -52,21 +52,9 @@ class MassUploadController
     /** @var IdentifiableObjectRepositoryInterface */
     protected $jobInstanceRepo;
 
-    /** @var string */
-    protected $tmpStorageDir;
-
     /** @var FilesystemProvider */
     private $filesystemProvider;
 
-    /**
-     * @param AssetRepositoryInterface              $assetRepository
-     * @param UploadCheckerInterface                $uploadChecker
-     * @param ImporterInterface                     $importer
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param JobLauncherInterface                  $jobLauncher
-     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
-     * @param string                                $tmpStorageDir
-     */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
         UploadCheckerInterface $uploadChecker,
@@ -74,7 +62,6 @@ class MassUploadController
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
         IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        $tmpStorageDir,
         FilesystemProvider $filesystemProvider
     ) {
         $this->assetRepository = $assetRepository;
@@ -83,7 +70,6 @@ class MassUploadController
         $this->tokenStorage = $tokenStorage;
         $this->jobLauncher = $jobLauncher;
         $this->jobInstanceRepo = $jobInstanceRepository;
-        $this->tmpStorageDir = $tmpStorageDir;
         $this->filesystemProvider = $filesystemProvider;
     }
 
@@ -294,7 +280,7 @@ class MassUploadController
 
         $username = $this->tokenStorage->getToken()->getUsername();
 
-        return new UploadContext($this->tmpStorageDir, $username);
+        return new UploadContext(sys_get_temp_dir(), $username);
     }
 
     /**

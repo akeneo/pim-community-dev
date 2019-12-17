@@ -46,3 +46,5 @@ if (is_array($env = @include dirname(__DIR__).'/.env.local.php')) {
         }
     }
 }
+
+$_SERVER += $_ENV;

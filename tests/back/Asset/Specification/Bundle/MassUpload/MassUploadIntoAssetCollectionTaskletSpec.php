@@ -39,8 +39,7 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $massUploadToProductProcessor,
-            $massUploadToProductModelProcessor,
-            '/tmp/pim/file_storage'
+            $massUploadToProductModelProcessor
         );
         $this->setStepExecution($stepExecution);
     }
@@ -79,7 +78,7 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('imported_file_names')->willReturn(['car.png']);
 
         $massUploadToProductProcessor->applyMassUpload(
-            new UploadContext('/tmp/pim/file_storage', 'username'),
+            new UploadContext(sys_get_temp_dir(), 'username'),
             new EntityToAddAssetsInto('foobar', 'asset_collection'),
             ['car.png']
         )->willReturn($processedItemList);
@@ -116,7 +115,7 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
 
         $massUploadToProductProcessor->applyMassUpload(Argument::cetera())->shouldNotBeCalled();
         $massUploadToProductModelProcessor->applyMassUpload(
-            new UploadContext('/tmp/pim/file_storage', 'username'),
+            new UploadContext(sys_get_temp_dir(), 'username'),
             new EntityToAddAssetsInto('foobar', 'asset_collection'),
             ['car.png']
         )->willReturn($processedItemList);
@@ -150,7 +149,7 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('imported_file_names')->willReturn(['car.png']);
 
         $massUploadToProductProcessor->applyMassUpload(
-            new UploadContext('/tmp/pim/file_storage', 'username'),
+            new UploadContext(sys_get_temp_dir(), 'username'),
             new EntityToAddAssetsInto('foobar', 'asset_collection'),
             ['car.png']
         )->willReturn($processedItemList);
@@ -190,7 +189,7 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('imported_file_names')->willReturn(['car.png']);
 
         $massUploadToProductProcessor->applyMassUpload(
-            new UploadContext('/tmp/pim/file_storage', 'username'),
+            new UploadContext(sys_get_temp_dir(), 'username'),
             new EntityToAddAssetsInto('foobar', 'asset_collection'),
             ['car.png']
         )->willReturn($processedItemList);
@@ -226,7 +225,7 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('imported_file_names')->willReturn(['car.png']);
 
         $massUploadToProductProcessor->applyMassUpload(
-            new UploadContext('/tmp/pim/file_storage', 'username'),
+            new UploadContext(sys_get_temp_dir(), 'username'),
             new EntityToAddAssetsInto('foobar', 'asset_collection'),
             ['car.png']
         )->willReturn($processedItemList);
@@ -257,7 +256,7 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('imported_file_names')->willReturn(['car.png']);
 
         $massUploadToProductProcessor->applyMassUpload(
-            new UploadContext('/tmp/pim/file_storage', 'username'),
+            new UploadContext(sys_get_temp_dir(), 'username'),
             new EntityToAddAssetsInto('foobar', 'asset_collection'),
             ['car.png']
         )->willReturn($processedItemList);

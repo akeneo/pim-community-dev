@@ -17,11 +17,11 @@ use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetFamilyIt
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyQuery;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PHPUnit\Framework\TestCase;
 
@@ -49,7 +49,7 @@ class InMemoryFindConnectorAssetFamilyItemsTest extends TestCase
                 LabelCollection::fromArray(['en_US' => sprintf('asset_family_%s', $i)]),
                 Image::createEmpty(),
                 [],
-                TransformationCollection::noTransformation()
+                new ConnectorTransformationCollection([])
             );
             $assetFamilies[] = $connectorAssetFamily;
             $this->findConnectorAssetFamilyItems->save($assetFamily->getIdentifier(), $connectorAssetFamily);
@@ -85,7 +85,7 @@ class InMemoryFindConnectorAssetFamilyItemsTest extends TestCase
                 LabelCollection::fromArray(['en_US' => sprintf('asset_family_%s', $i)]),
                 Image::createEmpty(),
                 [],
-                TransformationCollection::noTransformation()
+                new ConnectorTransformationCollection([])
             );
             $assetFamilies[] = $connectorAssetFamily;
             $this->findConnectorAssetFamilyItems->save($assetFamily->getIdentifier(), $connectorAssetFamily);

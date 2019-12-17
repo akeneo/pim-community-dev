@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Domain\Query\AssetFamily\Connector;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 
@@ -36,21 +35,21 @@ class ConnectorAssetFamily
     /** @var array */
     private $productLinkRules;
 
-    /** @var TransformationCollection */
-    private $transformationCollection;
+    /** @var ConnectorTransformationCollection */
+    private $transformations;
 
     public function __construct(
         AssetFamilyIdentifier $identifier,
         LabelCollection $labelCollection,
         Image $image,
         array $productLinkRules,
-        TransformationCollection $transformationCollection
+        ConnectorTransformationCollection $transformations
     ) {
         $this->identifier = $identifier;
         $this->labelCollection = $labelCollection;
         $this->image = $image;
         $this->productLinkRules = $productLinkRules;
-        $this->transformationCollection = $transformationCollection;
+        $this->transformations = $transformations;
     }
 
     public function normalize(): array
@@ -62,7 +61,7 @@ class ConnectorAssetFamily
             'labels' => empty($normalizedLabels) ? (object) [] : $normalizedLabels,
             'image' => $this->image->isEmpty() ? null : $this->image->getKey(),
             'product_link_rules' => $this->productLinkRules,
-            'transformations' => $this->transformationCollection->normalize(),
+            'transformations' => $this->transformations->normalize(),
         ];
     }
 

@@ -51,6 +51,7 @@
             ],
             "transformations": [
               {
+                "label": "label",
                 "source": {
                   "attribute": "main",
                   "channel": null,

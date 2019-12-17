@@ -8,6 +8,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
@@ -15,6 +16,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
+use Akeneo\AssetManager\Domain\Query\ClockInterface;
 use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
@@ -29,9 +31,11 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         GetAttributeIdentifierInterface $getAttributeIdentifier,
         FileStorerInterface $storer,
         FileExistsInterface $fileExists,
-        TransformationCollectionFactory $transformationCollectionFactory
+        TransformationCollectionFactory $transformationCollectionFactory,
+        ClockInterface $clock
     ) {
-        $this->beConstructedWith($repository, $getAttributeIdentifier, $storer, $fileExists, $transformationCollectionFactory);
+        $this->beConstructedWith($repository, $getAttributeIdentifier, $storer, $fileExists, $transformationCollectionFactory, $clock);
+        $clock->now()->willReturn(new \DateTime('2000-01-01'));
     }
 
     function it_is_initializable()
@@ -280,10 +284,12 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         TransformationCollectionFactory $transformationCollectionFactory,
         AssetFamily $assetFamily,
         Image $image,
-        TransformationCollection $transformations
+        TransformationCollection $currentTransformationCollection,
+        TransformationCollection $newTransformationCollection
     ) {
         $normalizedTransformations = [
             [
+                'label' => 'label',
                 'source' => [
                     'attribute' => 'main',
                     'locale' => null,
@@ -332,8 +338,15 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
 
         $assetFamily->updateRuleTemplateCollection(Argument::type(RuleTemplateCollection::class))
             ->shouldBeCalled();
-        $transformationCollectionFactory->fromNormalized($normalizedTransformations)->willReturn($transformations);
-        $assetFamily->withTransformationCollection($transformations)->willReturn($assetFamily);
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('id');
+        $assetFamily->getIdentifier()->willReturn($assetFamilyIdentifier);
+        foreach ($normalizedTransformations as &$normalizedTransformation) {
+            $normalizedTransformation['updated_at'] = (new \DateTime('2000-01-01'))->format(\DateTimeInterface::ISO8601);
+        }
+        $transformationCollectionFactory->fromNormalized($normalizedTransformations)
+            ->willReturn($newTransformationCollection);
+        $assetFamily->getTransformationCollection()->willReturn($currentTransformationCollection);
+        $currentTransformationCollection->update($newTransformationCollection)->shouldBeCalledOnce();
 
         $repository->update($assetFamily)->shouldBeCalled();
 

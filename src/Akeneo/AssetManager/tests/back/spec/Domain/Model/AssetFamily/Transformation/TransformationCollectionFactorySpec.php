@@ -30,6 +30,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
         $transformationCollection = $this->fromNormalized(
             [
                 [
+                    'label' =>'label1',
                     'source' => [
                         'attribute' => 'source',
                         'channel' => null,
@@ -56,8 +57,10 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                     ],
                     'filename_prefix' => 'pre',
                     'filename_suffix' => '_2',
+                    'updated_at' => '1970-01-01',
                 ],
                 [
+                    'label' =>'label2',
                     'source' => [
                         'attribute' => 'source',
                         'channel' => null,
@@ -79,6 +82,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                     ],
                     'filename_prefix' => 'pre',
                     'filename_suffix' => '_2',
+                    'updated_at' => '1970-01-01',
                 ],
             ]
         );
@@ -86,18 +90,44 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
         $transformationCollection->shouldBeAnInstanceOf(TransformationCollection::class);
     }
 
-    function it_throws_an_exception_if_source_is_missing()
+    function it_throws_an_exception_if_code_is_missing()
     {
         $transformationCollection = [
             [
+                'source' => [
+                    'attribute' => 'source',
+                    'channel' => null,
+                    'locale' => null,
+                ],
                 'target' => [
                     'attribute' => 'target',
                     'channel' => null,
                     'locale' => null,
                 ],
-                'operations' => [],
+                'operations' => [['type' => 'thumbnail', 'parameters' => ['width' => 200, 'height' => 200]]],
                 'filename_prefix' => '',
                 'filename_suffix' => '_2',
+                'updated_at' => '1970-01-01',
+            ],
+        ];
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fromNormalized', [$transformationCollection]);
+    }
+
+    function it_throws_an_exception_if_source_is_missing()
+    {
+        $transformationCollection = [
+            [
+                'label' =>'label',
+                'target' => [
+                    'attribute' => 'target',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'operations' => [['type' => 'thumbnail', 'parameters' => ['width' => 200, 'height' => 200]]],
+                'filename_prefix' => '',
+                'filename_suffix' => '_2',
+                'updated_at' => '1970-01-01',
             ],
         ];
 
@@ -108,14 +138,16 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
+                'label' =>'label',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
                     'locale' => null,
                 ],
-                'operations' => [],
+                'operations' => [['type' => 'thumbnail', 'parameters' => ['width' => 200, 'height' => 200]]],
                 'filename_prefix' => '',
                 'filename_suffix' => '_2',
+                'updated_at' => '1970-01-01',
             ],
         ];
 
@@ -126,6 +158,31 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
+                'label' =>'label',
+                'source' => [
+                    'attribute' => 'source',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'target' => [
+                    'attribute' => 'target',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'filename_prefix' => '',
+                'filename_suffix' => '_2',
+                'updated_at' => '1970-01-01',
+            ],
+        ];
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fromNormalized', [$transformationCollection]);
+    }
+
+    function it_throws_an_exception_if_updated_at_is_missing()
+    {
+        $transformationCollection = [
+            [
+                'label' =>'label',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -148,15 +205,17 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
+                'label' =>'label',
                 'source' => 'foo',
                 'target' => [
                     'attribute' => 'target',
                     'channel' => null,
                     'locale' => null,
                 ],
-                'operations' => [],
+                'operations' => [['type' => 'thumbnail', 'parameters' => ['width' => 200, 'height' => 200]]],
                 'filename_prefix' => '',
                 'filename_suffix' => '_2',
+                'updated_at' => '1970-01-01',
             ],
         ];
 
@@ -167,6 +226,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = $this->fromNormalized([
             [
+                'label' =>'label',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -177,8 +237,9 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                     'channel' => null,
                     'locale' => null,
                 ],
-                'operations' => [],
+                'operations' => [['type' => 'thumbnail', 'parameters' => ['width' => 200, 'height' => 200]]],
                 'filename_suffix' => '_2',
+                'updated_at' => '1970-01-01',
             ],
         ]);
 
@@ -189,6 +250,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = $this->fromNormalized([
             [
+                'label' =>'label',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -199,9 +261,10 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                     'channel' => null,
                     'locale' => null,
                 ],
-                'operations' => [],
+                'operations' => [['type' => 'thumbnail', 'parameters' => ['width' => 200, 'height' => 200]]],
                 'filename_prefix' => 'prefix_',
                 'filename_suffix' => null,
+                'updated_at' => '1970-01-01',
             ],
         ]);
 
@@ -212,6 +275,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
+                'label' =>'label',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -222,8 +286,9 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                     'channel' => null,
                     'locale' => null,
                 ],
-                'operations' => [],
+                'operations' => [['type' => 'thumbnail', 'parameters' => ['width' => 200, 'height' => 200]]],
                 'filename_prefix' => [],
+                'updated_at' => '1970-01-01',
             ],
         ];
 
@@ -234,6 +299,7 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
     {
         $transformationCollection = [
             [
+                'label' =>'label',
                 'source' => [
                     'attribute' => 'source',
                     'channel' => null,
@@ -244,8 +310,9 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                     'channel' => null,
                     'locale' => null,
                 ],
-                'operations' => [],
+                'operations' => [['type' => 'thumbnail', 'parameters' => ['width' => 200, 'height' => 200]]],
                 'filename_suffix' => new \stdClass(),
+                'updated_at' => '1970-01-01',
             ],
         ];
 

@@ -28,16 +28,6 @@ class CopyAssetFilesCommand extends Command
 
     protected static $defaultName = self::NAME;
 
-    /** @var string */
-    private $tmpStorageDir;
-
-    public function __construct(string $tmpStorageDir)
-    {
-        parent::__construct();
-
-        $this->tmpStorageDir = $tmpStorageDir;
-    }
-
     /**
      * @inheritdoc}
      */
@@ -80,7 +70,7 @@ class CopyAssetFilesCommand extends Command
         }
 
         $uploadContext = new UploadContext(
-            $this->tmpStorageDir,
+            sys_get_temp_dir(),
             $input->getOption('user')
         );
 

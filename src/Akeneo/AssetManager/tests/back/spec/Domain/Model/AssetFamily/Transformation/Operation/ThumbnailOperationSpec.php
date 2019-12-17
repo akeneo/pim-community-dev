@@ -63,7 +63,7 @@ class ThumbnailOperationSpec extends ObjectBehavior
     function it_can_not_be_constructed_without_parameter()
     {
         $this->beConstructedThrough('create', [[]]);
-        $this->shouldThrow(new \LogicException("No parameter is provided for 'thumbnail' operation."))
+        $this->shouldThrow(new \InvalidArgumentException('No parameter is provided for "thumbnail" operation. At least one of parameter "width" and "height" must be defined.'))
             ->duringInstantiation();
     }
 
@@ -73,13 +73,13 @@ class ThumbnailOperationSpec extends ObjectBehavior
             'width' => '200px',
             'height' => 100,
         ]]);
-        $this->shouldThrow(new \LogicException("Parameter 'width' must be an integer."))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException("Parameter \"width\" must be an integer."))->duringInstantiation();
 
         $this->beConstructedThrough('create', [[
             'width' => 200,
             'height' => '100cm',
         ]]);
-        $this->shouldThrow(new \LogicException("Parameter 'height' must be an integer."))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException("Parameter \"height\" must be an integer."))->duringInstantiation();
     }
 
     function it_can_not_be_constructed_with_zero_values()
@@ -88,12 +88,12 @@ class ThumbnailOperationSpec extends ObjectBehavior
             'width' => 0,
             'height' => 100,
         ]]);
-        $this->shouldThrow(new \LogicException("Parameter 'width' must be greater than 0, '0' given."))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException("Parameter \"width\" must be greater than 0, \"0\" given."))->duringInstantiation();
 
         $this->beConstructedThrough('create', [[
             'width' => 200,
             'height' => -10,
         ]]);
-        $this->shouldThrow(new \LogicException("Parameter 'height' must be greater than 0, '-10' given."))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException("Parameter \"height\" must be greater than 0, \"-10\" given."))->duringInstantiation();
     }
 }

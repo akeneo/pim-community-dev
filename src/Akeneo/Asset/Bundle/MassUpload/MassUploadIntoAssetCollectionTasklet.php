@@ -42,22 +42,12 @@ class MassUploadIntoAssetCollectionTasklet implements TaskletInterface
     /** @var MassUploadIntoAssetCollectionProcessor */
     protected $massUploadToProductModelProcessor;
 
-    /** @var string */
-    protected $tmpStorageDir;
-
-    /**
-     * @param MassUploadIntoAssetCollectionProcessor $massUploadToProductProcessor
-     * @param MassUploadIntoAssetCollectionProcessor $massUploadToProductModelProcessor
-     * @param string                                 $tmpStorageDir
-     */
     public function __construct(
         MassUploadIntoAssetCollectionProcessor $massUploadToProductProcessor,
-        MassUploadIntoAssetCollectionProcessor $massUploadToProductModelProcessor,
-        string $tmpStorageDir
+        MassUploadIntoAssetCollectionProcessor $massUploadToProductModelProcessor
     ) {
         $this->massUploadToProductProcessor = $massUploadToProductProcessor;
         $this->massUploadToProductModelProcessor = $massUploadToProductModelProcessor;
-        $this->tmpStorageDir = $tmpStorageDir;
     }
 
     /**
@@ -76,7 +66,7 @@ class MassUploadIntoAssetCollectionTasklet implements TaskletInterface
         $jobExecution = $this->stepExecution->getJobExecution();
 
         $username = $jobExecution->getUser();
-        $uploadContext = new UploadContext($this->tmpStorageDir, $username);
+        $uploadContext = new UploadContext(sys_get_temp_dir(), $username);
 
         $jobParameters = $jobExecution->getJobParameters();
         $entityType = $jobParameters->get('entity_type');

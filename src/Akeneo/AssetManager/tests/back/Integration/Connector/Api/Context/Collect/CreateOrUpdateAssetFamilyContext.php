@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryClock;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeAdapter;
@@ -30,6 +31,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollect
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
@@ -180,6 +182,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
      */
     public function theBrandAssetFamilyExistingInTheErpAndInThePimWithDifferentProperties()
     {
+        InMemoryClock::$actualDateTime = new \DateTime('1990-01-01');
         $this->findAssetCollectionTypeACL->stubWith('brand');
         $this->requestContract = 'successful_brand_asset_family_update.json';
 
@@ -251,13 +254,15 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
         $expectedBrand = $expectedBrand->withTransformationCollection(TransformationCollection::create([
             Transformation::create(
+                TransformationLabel::fromString('thumbnail_100x80'),
                 Source::createFromNormalized(['attribute' => 'main_image', 'channel'=> null, 'locale' => null]),
                 Target::createFromNormalized(['attribute' => 'thumbnail', 'channel'=> null, 'locale' => null]),
                 OperationCollection::create([
                     ThumbnailOperation::create(['width' => 100, 'height' => 80]),
                 ]),
                 '1_',
-                '_2'
+                '_2',
+                InMemoryClock::$actualDateTime
             ),
         ]));
 
@@ -284,6 +289,45 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
 
         $this->assetFamilyRepository->create($assetFamily);
+    }
+
+    /**
+     * @Given some asset families with media file attributes
+     */
+    public function someAssetFamiliesWithMediaFileAttribute()
+    {
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->channelExists->save(ChannelIdentifier::fromCode('print'));
+        $this->channelExists->save(ChannelIdentifier::fromCode('other'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('de_DE'));
+
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand'),
+            [
+                'en_US' => 'It is an english label'
+            ],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
+
+        $this->assetFamilyRepository->create($assetFamily);
+        $this->loadMediaFileAttribute('brand', 'main_image', 'Main image', 2);
+        $this->loadMediaFileAttribute('brand', 'thumbnail', 'Thumbnail image', 3);
+        $this->attributeRepository->create(MediaFileAttribute::create(
+            AttributeIdentifier::create('brand', 'test_scopable_localizable', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('brand'),
+            AttributeCode::fromString('test_scopable_localizable'),
+            LabelCollection::fromArray(['en_US' => 'label']),
+            AttributeOrder::fromInteger(4),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxFileSize::fromString('120'),
+            AttributeAllowedExtensions::fromList(['jpg']),
+            MediaType::fromString(MediaType::IMAGE)
+        ));
     }
 
     /**
@@ -322,6 +366,18 @@ class CreateOrUpdateAssetFamilyContext implements Context
     }
 
     /**
+     * @When the connector collects an asset family whose transformations do not comply with the business rules
+     */
+    public function theConnectorCollectsAAssetFamilyWhoseTransformationsDoNotComplyWithTheBusinessRules()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_transformation_for_invalid_data.json'
+        );
+    }
+
+    /**
      * @Then the PIM notifies the connector about an error indicating that the asset family has data that does not comply with the business rules
      */
     public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheAssetFamilyHasDataThatDoesNotComplyWithTheBusinessRules()
@@ -329,6 +385,17 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_for_invalid_data.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about errors indicating that the asset family has transformations that do not comply with the business rules
+     */
+    public function thePimNotifiesTheConnectorAboutErrorsIndicatingThatTheAssetFamilyHasTransformationsThatDoNotComplyWithTheBusinessRules()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_transformation_for_invalid_data.json'
         );
     }
 

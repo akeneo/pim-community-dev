@@ -28,16 +28,12 @@ final class FileStorageChecker
         'tmpAssetUpload'
     ];
 
-    /** @var string */
-    private $tmpStorageDir;
-
     /** @var MountManager */
     private $mountManager;
 
-    public function __construct(MountManager $mountManager, string $tmpStorageDir)
+    public function __construct(MountManager $mountManager)
     {
         $this->mountManager = $mountManager;
-        $this->tmpStorageDir =$tmpStorageDir;
     }
 
     public function status(): ServiceStatus
@@ -77,7 +73,7 @@ final class FileStorageChecker
      */
     private function isTemporaryStorageAvailable(): bool
     {
-        $path = $this->tmpStorageDir . DIRECTORY_SEPARATOR . Uuid::uuid4();
+        $path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . Uuid::uuid4();
         $isCreationOk = file_put_contents($path, 'monitoring');
         $contentInFile = file_get_contents($path);
         $isDeletionOk = unlink($path);

@@ -107,6 +107,7 @@ class AssetFamilyValidator
                     'items' => [
                         'type' => 'object',
                         'properties' => [
+                            'label' => ['type' => 'string'],
                             'source' => [
                                 'type' => 'object',
                                 'properties' => [
@@ -148,7 +149,7 @@ class AssetFamilyValidator
                                             'type' => 'string',
                                         ],
                                         'parameters' => [
-                                            'type' => 'object',
+                                            'type' => ['object', 'null', 'array'],
                                         ],
                                         'required' => ['type'],
                                         'additionalProperties' => false,

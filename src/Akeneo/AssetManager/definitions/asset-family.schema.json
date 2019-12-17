@@ -38,38 +38,7 @@
         },
         "attribute_as_label": { "type": "string" },
         "attribute_as_main_media": { "type": "string" },
-        "transformations": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "source": {
-                        "type": "object",
-                        "properties": {
-                            "attribute": { "type": "string" },
-                            "channel": { "type": ["string", "null"] },
-                            "locale": { "type": ["string", "null"] }
-                        }
-                    },
-                    "target": {
-                        "type": "object",
-                        "properties": {
-                            "attribute": { "type": "string" },
-                            "channel": { "type": ["string", "null"] },
-                            "locale": { "type": ["string", "null"] }
-                        }
-                    },
-                    "operations": {
-                        "type": "array",
-                        "items": {
-                            "type": "object"
-                        }
-                    },
-                    "filename_prefix": { "type": "string" },
-                    "filename_suffix": { "type": "string" }
-                }
-            }
-        }
+        "transformations": { "$ref": "asset-family-transformations.schema.json" }
     },
     "required": [
         "identifier",

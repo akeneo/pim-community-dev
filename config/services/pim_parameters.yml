@@ -3,9 +3,6 @@
 parameters:
     session_handler:      ~
 
-    asset_storage_dir:         '%kernel.project_dir%/var/file_storage/asset'
-    asset_manager_storage_dir: '%kernel.project_dir%/var/file_storage/asset_manager'
-
     # Files used as configuration for the Elasticsearch index
     elasticsearch_index_configuration_files:
         - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'

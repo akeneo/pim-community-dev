@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
@@ -35,17 +34,17 @@ class ConnectorAssetFamilyHydrator
     /** @var ConnectorProductLinkRulesHydrator */
     private $productLinkRulesHydrator;
 
-    /** @var TransformationCollectionFactory */
-    private $transformationCollectionFactory;
+    /** @var ConnectorTransformationCollectionHydrator */
+    private $transformationCollectionHydrator;
 
     public function __construct(
         Connection $connection,
         ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
-        TransformationCollectionFactory $transformationCollectionFactory
+        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator
     ) {
         $this->platform = $connection->getDatabasePlatform();
         $this->productLinkRulesHydrator = $productLinkRulesHydrator;
-        $this->transformationCollectionFactory = $transformationCollectionFactory;
+        $this->transformationCollectionHydrator = $transformationCollectionHydrator;
     }
 
     public function hydrate(array $row): ConnectorAssetFamily
@@ -72,16 +71,19 @@ class ConnectorAssetFamilyHydrator
             $image = Image::fromFileInfo($file);
         }
 
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($identifier);
         $productLinkRules = $this->productLinkRulesHydrator->hydrate($ruleTemplates);
+        $readTransformations = $this->transformationCollectionHydrator->hydrate(
+            $transformations,
+            $assetFamilyIdentifier
+        );
 
-        $connectorAssetFamily = new ConnectorAssetFamily(
-            AssetFamilyIdentifier::fromString($identifier),
+        return new ConnectorAssetFamily(
+            $assetFamilyIdentifier,
             LabelCollection::fromArray($labels),
             $image,
             $productLinkRules,
-            $this->transformationCollectionFactory->fromNormalized($transformations)
+            $readTransformations
         );
-
-        return $connectorAssetFamily;
     }
 }
