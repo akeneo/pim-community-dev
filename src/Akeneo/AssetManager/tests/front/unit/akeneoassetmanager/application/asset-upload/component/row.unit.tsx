@@ -113,7 +113,7 @@ describe('Test row component', () => {
     });
 
     const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.code') as HTMLInputElement;
-    expect(input.readOnly).toEqual(true);
+    expect(input.disabled).toEqual(true);
   });
 
   test('It renders a row with the locale editable', async () => {
@@ -182,7 +182,7 @@ describe('Test row component', () => {
     });
 
     const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.locale') as HTMLInputElement;
-    expect(input.readOnly).toEqual(true);
+    expect(input.disabled).toEqual(true);
   });
 
   test('It renders a row with the channel editable', async () => {
@@ -251,7 +251,7 @@ describe('Test row component', () => {
     });
 
     const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.channel') as HTMLInputElement;
-    expect(input.readOnly).toEqual(true);
+    expect(input.disabled).toEqual(true);
   });
 
   test('It renders a row and I can remove it', async () => {

@@ -24,7 +24,7 @@ const RemoveLineButton = styled.button`
   background: none;
   cursor: pointer;
 `;
-const Input = styled.input`
+const Input = styled.input<{readOnly?: boolean}>`
   border-radius: 2px;
   border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
   height: 40px;
@@ -52,7 +52,7 @@ const Row = ({line, onLineRemove, onLineChange, valuePerLocale, valuePerChannel}
         <Input
           type="text"
           value={line.code}
-          readOnly={line.isAssetCreating}
+          disabled={line.isAssetCreating}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             onLineChange({...line, code: event.target.value});
           }}
@@ -64,7 +64,7 @@ const Row = ({line, onLineRemove, onLineChange, valuePerLocale, valuePerChannel}
           <Input
             type="text"
             value={null === line.locale ? '' : line.locale}
-            readOnly={line.isAssetCreating}
+            disabled={line.isAssetCreating}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               onLineChange({...line, locale: event.target.value});
             }}
@@ -77,7 +77,7 @@ const Row = ({line, onLineRemove, onLineChange, valuePerLocale, valuePerChannel}
           <Input
             type="text"
             value={null === line.channel ? '' : line.channel}
-            readOnly={line.isAssetCreating}
+            disabled={line.isAssetCreating}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               onLineChange({...line, channel: event.target.value});
             }}
