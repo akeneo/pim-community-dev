@@ -83,6 +83,11 @@ class ProductIntegration extends TestCase
         $expected = $this->sanitizeMediaAttributeData($expected, $mediaAttributes);
 
         $this->assertEquals($expected, $flatProduct);
+
+        $this->assertEquals(
+            $product->getRawValues()['a_date']['<all_channels>']['<all_locales>'],
+            $flatProduct['a_date']
+        );
     }
 
     /**
