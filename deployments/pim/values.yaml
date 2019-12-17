@@ -184,7 +184,7 @@ mysql:
   image:
     mysql:
       repository: mysql
-      tag: "8.0.16"
+      tag: "8.0.18"
       pullPolicy: Always
   common:
     class: ssd-retain
