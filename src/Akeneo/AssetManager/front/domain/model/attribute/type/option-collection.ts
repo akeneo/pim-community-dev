@@ -10,10 +10,17 @@ import {Attribute, ConcreteAttribute, NormalizedAttribute} from 'akeneoassetmana
 import {Option, createOptionFromNormalized} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import {AttributeWithOptions} from './option';
 
+export const OPTION_COLLECTION_ATTRIBUTE_TYPE = 'option_collection';
+
 export interface NormalizedOptionCollectionAttribute extends NormalizedAttribute {
-  type: 'option_collection';
+  type: typeof OPTION_COLLECTION_ATTRIBUTE_TYPE;
   options: Option[];
 }
+
+export const isOptionCollectionAttribute = (
+  optionCollectionAttribute: NormalizedAttribute
+): optionCollectionAttribute is NormalizedOptionCollectionAttribute =>
+  optionCollectionAttribute.type === OPTION_COLLECTION_ATTRIBUTE_TYPE;
 
 export type NormalizedOptionCollectionAdditionalProperty = Option;
 export type OptionCollectionAdditionalProperty = Option;

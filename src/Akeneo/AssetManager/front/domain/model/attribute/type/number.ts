@@ -14,12 +14,17 @@ export type DecimalsAllowed = boolean;
 export type NumberAdditionalProperty = DecimalsAllowed | MinValue | MaxValue;
 export type NormalizedNumberAdditionalProperty = DecimalsAllowed | NormalizedMinValue | NormalizedMaxValue;
 
+export const NUMBER_ATTRIBUTE_TYPE = 'number';
+
 export interface NormalizedNumberAttribute extends NormalizedAttribute {
-  type: 'number';
+  type: typeof NUMBER_ATTRIBUTE_TYPE;
   decimals_allowed: DecimalsAllowed;
   min_value: NormalizedMinValue;
   max_value: NormalizedMaxValue;
 }
+
+export const isNumberAttribute = (numberAttribute: NormalizedAttribute): numberAttribute is NormalizedNumberAttribute =>
+  NUMBER_ATTRIBUTE_TYPE === numberAttribute.type;
 
 export interface NumberAttribute extends Attribute {
   decimalsAllowed: DecimalsAllowed;

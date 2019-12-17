@@ -1,78 +1,13 @@
-import ValueData from 'akeneoassetmanager/domain/model/asset/data';
-import OptionCode, {
-  optioncodesAreEqual,
-  optionCodeStringValue,
-} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
-import {OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
-import {isString} from 'akeneoassetmanager/domain/model/utils';
+import OptionCode from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
 
-class InvalidTypeError extends Error {}
-
-type NormalizedOptionData = string | null;
-
-/**
- * Data representing an Option, used for Asset Values for Attribute with type "Option"
- *
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- */
-class OptionData extends ValueData {
-  private constructor(private optionData: OptionCode | null) {
-    super();
-    Object.freeze(this);
-
-    if (null === optionData) {
-      return;
-    }
-
-    if (!isString(optionData)) {
-      throw new InvalidTypeError('OptionData expects an OptionCode as parameter to be created');
-    }
-  }
-
-  public static create(optionData: OptionCode): OptionData {
-    return new OptionData(optionData);
-  }
-
-  public static createFromNormalized(optionData: NormalizedOptionData, attribute: OptionAttribute): OptionData {
-    // We have to handle the case where the previous value has an option not in the attribute anymore
-    if (null === optionData || !attribute.hasOption(optionData)) {
-      return new OptionData(null);
-    }
-
-    return new OptionData(optionData);
-  }
-
-  public isEmpty(): boolean {
-    return null === this.optionData;
-  }
-
-  public getCode(): OptionCode {
-    if (this.isEmpty()) {
-      throw new Error('Cannot get the option code on an empty OptionData');
-    }
-
-    return this.optionData as OptionCode;
-  }
-
-  public equals(data: ValueData): boolean {
-    return (
-      data instanceof OptionData &&
-      ((null === this.optionData && null === data.optionData) ||
-        (null !== this.optionData && null !== data.optionData && optioncodesAreEqual(this.optionData, data.optionData)))
-    );
-  }
-
-  public stringValue(): string {
-    return null !== this.optionData ? optionCodeStringValue(this.optionData) : '';
-  }
-
-  public normalize(): string | null {
-    return null !== this.optionData ? this.optionData.normalize() : null;
-  }
-}
+type OptionData = OptionCode | null;
+export type NormalizedOptionData = string | null;
 
 export default OptionData;
-export {NormalizedOptionData};
-export const create = OptionData.create;
-export const denormalize = OptionData.createFromNormalized;
+
+export const isOptionData = (optionData: any): optionData is OptionData =>
+  typeof optionData === 'string' || null === optionData;
+export const areOptionDataEqual = (first: OptionData, second: OptionData): boolean =>
+  isOptionData(first) && isOptionData(second) && first === second;
+export const optionDataStringValue = (optionData: OptionData) => (null === optionData ? '' : optionData);
+export const optionDataFromString = (optionData: string): OptionData => (0 === optionData.length ? null : optionData);

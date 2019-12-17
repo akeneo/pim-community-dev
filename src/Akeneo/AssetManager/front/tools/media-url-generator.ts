@@ -2,8 +2,11 @@ import {identifierStringValue} from 'akeneoassetmanager/domain/model/identifier'
 
 const routing = require('routing');
 import {File, isFileEmpty} from 'akeneoassetmanager/domain/model/file';
-import MediaLinkData from 'akeneoassetmanager/domain/model/asset/data/media-link';
-import {MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import MediaLinkData, {mediaLinkDataStringValue} from 'akeneoassetmanager/domain/model/asset/data/media-link';
+import {
+  MediaLinkAttribute,
+  NormalizedMediaLinkAttribute,
+} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {suffixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 import {prefixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
@@ -84,16 +87,21 @@ export const getMediaDownloadUrl = (filePath: string): string => {
 export const getMediaLinkPreviewUrl = (
   type: string,
   mediaLink: MediaLinkData,
-  attribute: MediaLinkAttribute
+  attribute: NormalizedMediaLinkAttribute | MediaLinkAttribute // TODO: use the attribute light model but for now I don't want to break the whole world
 ): string => {
-  const data = btoa(mediaLink.stringValue());
+  const data = btoa(mediaLinkDataStringValue(mediaLink));
   const attributeIdentifier = attribute.identifier;
 
   return routing.generate('akeneo_asset_manager_image_preview', {type, attributeIdentifier, data});
 };
 
-export const getMediaLinkUrl = (mediaLink: MediaLinkData, attribute: MediaLinkAttribute): string => {
-  return prefixStringValue(attribute.prefix) + mediaLink.stringValue() + suffixStringValue(attribute.suffix);
+export const getMediaLinkUrl = (
+  mediaLink: MediaLinkData,
+  attribute: MediaLinkAttribute | NormalizedMediaLinkAttribute // TODO: use the attribute light model but for now I don't want to break the whole world
+): string => {
+  return `${prefixStringValue(attribute.prefix)}${mediaLinkDataStringValue(mediaLink)}${suffixStringValue(
+    attribute.suffix
+  )}`;
 };
 
 // The asset any is temporary and should be fixed when we create unified models
