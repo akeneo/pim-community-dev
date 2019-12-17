@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    DomainTuple,
     VictoryAxis,
     VictoryChart,
     VictoryLine,
@@ -7,7 +8,7 @@ import {
     VictoryStyleObject,
     VictoryThemeDefinition,
 } from 'victory';
-import {lightGreyStroke, purple, grey, darkGrey, lightGrey} from '../../apps/EventChartThemes';
+import {darkGrey, grey, lightGrey, lightGreyStroke, purple} from '../../apps/EventChartThemes';
 
 interface VictoryStyle {
     [property: string]: VictoryStyleObject;
@@ -64,13 +65,18 @@ export const Chart = ({data, theme}: {data: ChartData[]; theme: VictoryThemeDefi
 
     const yLabels = ({datum}: {datum: ChartData}) => datum.yLabel;
 
+    const domain: {x: DomainTuple; y: DomainTuple} = {
+        x: [0.5, 7.5],
+        y: [yMinDomain, yMaxDomain + 1],
+    };
+
     // The rendering order is based on the elements order. Axes must be first to be draw in background.
     return (
         <VictoryChart
             height={300}
             width={1000}
             padding={0}
-            domain={{x: [0.5, 7.5], y: [yMinDomain, yMaxDomain]}}
+            domain={domain}
             theme={theme}
             style={{
                 parent: {
