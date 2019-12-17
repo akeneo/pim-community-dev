@@ -121,8 +121,8 @@ pim_asset_manager:
           render_edit: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
     module:
       delete:
-        button: Delete entity
-        confirm: Are you sure you want to delete this entity?
+        button: Delete asset family
+        confirm: Are you sure you want to delete this asset family?
     index:
       grid:
         count: '{0} No Asset Family|{1} {{ count }} Asset Family|]1,Inf] {{ count }} Asset Families'
