@@ -38,7 +38,7 @@ class AkeneoAssetManagerBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new RegisterSerializerPass('asset_family_serializer'));
+        $container->addCompilerPass(new RegisterSerializerPass('asset_manager_serializer'));
         $container->addCompilerPass(new RegisterCreateAttributeCommandFactoryPass());
         $container->addCompilerPass(new RegisterEditAttributeCommandFactoryPass());
         $container->addCompilerPass(new RegisterAttributeFactoryPass());

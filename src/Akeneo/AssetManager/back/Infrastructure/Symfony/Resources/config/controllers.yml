@@ -7,7 +7,7 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\CreateAction
         arguments:
             - '@akeneo_assetmanager.application.asset_family.create_asset_family_handler'
-            - '@asset_family_serializer'
+            - '@asset_manager_serializer'
             - '@validator'
             - '@oro_security.security_facade'
             - '@pim_user.context.user'
@@ -36,7 +36,7 @@ services:
             - '@akeneo_assetmanager.application.asset_family.edit_asset_family_handler'
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@security.token_storage'
-            - '@asset_family_serializer'
+            - '@asset_manager_serializer'
             - '@validator'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
@@ -117,7 +117,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@security.token_storage'
-            - '@asset_family_serializer'
+            - '@asset_manager_serializer'
             - '@validator'
             - '@oro_security.security_facade'
             - '@akeneo_assetmanager.application.factory.asset.edit_asset_command_factory'
