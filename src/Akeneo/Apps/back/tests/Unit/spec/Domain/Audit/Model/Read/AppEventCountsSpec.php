@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Apps\Domain\Audit\Model\Read;
 
-use Akeneo\Apps\Domain\Audit\Model\Read\AppEventCounts;
+use Akeneo\Apps\Domain\Audit\Model\Read\WeeklyEventCounts;
 use Akeneo\Apps\Domain\Audit\Model\Read\DailyEventCount;
 use PhpSpec\ObjectBehavior;
 
@@ -22,7 +22,7 @@ class AppEventCountsSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf(AppEventCounts::class);
+        $this->shouldBeAnInstanceOf(WeeklyEventCounts::class);
     }
 
     function it_normalizes_an_app()

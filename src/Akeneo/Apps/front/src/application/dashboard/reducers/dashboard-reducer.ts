@@ -16,7 +16,6 @@ export type State = {
 };
 
 export const reducer: Reducer<State, Actions> = (state, action) => {
-    console.log(action);
     switch (action.type) {
         case SOURCE_APPS_FETCHED:
             return {
