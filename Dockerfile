@@ -33,7 +33,9 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         php7.3-imagick \
         php7.3-apcu \
         php7.3-exif \
-        php-memcached && \
+        php-memcached \
+        aspell \
+        aspell-en aspell-es aspell-de aspell-fr && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/sbin/php-fpm7.3 /usr/local/sbin/php-fpm && \
