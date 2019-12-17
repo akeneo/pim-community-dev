@@ -8,6 +8,10 @@ coupling-back: twa-coupling-back asset-coupling-back franklin-insights-coupling-
 check-pullup:
 	${PHP_RUN} vendor/akeneo/pim-community-dev/bin/check-pullup
 
+.PHONY: check-sf-services
+check-sf-services:
+	${PHP_RUN} vendor/akeneo/pim-community-dev/bin/check-services-instantiability
+
 ### Lint tests
 .PHONY: lint-back
 lint-back:
