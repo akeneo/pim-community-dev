@@ -1,7 +1,7 @@
 import * as React from 'react';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
-import Value from 'akeneoassetmanager/domain/model/asset/value';
+import Value, {isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import Asset from 'akeneoassetmanager/domain/model/asset/asset';
 import {getDataFieldView} from 'akeneoassetmanager/application/configuration/value';
@@ -11,6 +11,7 @@ import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-bo
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 
 export default (
   asset: Asset,
@@ -36,33 +37,34 @@ export default (
 
   return visibleValues.map((value: Value) => {
     const DataView = getDataFieldView(value);
+    const attributeLabel = getLabelInCollection(value.attribute.labels, localeReferenceStringValue(locale));
 
-    const canEditData = value.attribute.valuePerLocale ? rights.asset.edit && rights.locale.edit : rights.asset.edit;
+    const canEditData = value.attribute.value_per_locale ? rights.asset.edit && rights.locale.edit : rights.asset.edit;
     return (
       <div
-        key={attributeIdentifierStringValue(value.attribute.getIdentifier())}
+        key={attributeIdentifierStringValue(value.attribute.identifier)}
         className="AknFieldContainer"
-        data-code={value.attribute.getCode()}
+        data-code={value.attribute.code}
       >
         <div className="AknFieldContainer-header AknFieldContainer-header--light AknFieldContainer-header AknFieldContainer-header--light--small">
           <label
-            title={value.attribute.getLabel(localeReferenceStringValue(locale))}
+            title={attributeLabel}
             className="AknFieldContainer-label"
-            htmlFor={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
+            htmlFor={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
           >
             <span
               className={`AknBadge AknBadge--small AknBadge--highlight AknBadge--floating ${
-                value.attribute.isRequired && value.data.isEmpty() ? '' : 'AknBadge--hidden'
+                value.attribute.is_required && isValueEmpty(value) ? '' : 'AknBadge--hidden'
               }`}
             />
-            {value.attribute.getLabel(localeReferenceStringValue(locale))}
+            {attributeLabel}
           </label>
           <span className="AknFieldContainer-fieldInfo">
             <span>
-              <span>{value.attribute.valuePerChannel ? channelReferenceStringValue(value.channel) : null}</span>
+              <span>{value.attribute.value_per_channel ? channelReferenceStringValue(value.channel) : null}</span>
               &nbsp;
               <span>
-                {value.attribute.valuePerLocale ? (
+                {value.attribute.value_per_locale ? (
                   <Flag
                     locale={createLocaleFromCode(localeReferenceStringValue(value.locale))}
                     displayLanguage={true}
@@ -75,7 +77,7 @@ export default (
         <div className="AknFieldContainer-inputContainer">
           <ErrorBoundary
             errorMessage={__('pim_asset_manager.asset.error.value', {
-              fieldName: value.attribute.getLabel(localeReferenceStringValue(locale)),
+              fieldName: attributeLabel,
             })}
           >
             <DataView

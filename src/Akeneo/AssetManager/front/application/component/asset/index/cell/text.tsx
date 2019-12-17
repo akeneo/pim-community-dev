@@ -1,14 +1,15 @@
 import * as React from 'react';
-import {NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {CellView} from 'akeneoassetmanager/application/configuration/value';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
+import {textDataStringValue, isTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 const memo = (React as any).memo;
 
-const TextCellView: CellView = memo(({value}: {value: NormalizedValue}) => {
-  const text = undefined === value ? '' : value.data;
+const TextCellView: CellView = memo(({value}: {value: Value}) => {
+  if (!isTextData(value.data)) return null;
 
   return (
-    <div className="AknGrid-bodyCellContainer" title={text}>
-      {text}
+    <div className="AknGrid-bodyCellContainer" title={textDataStringValue(value.data)}>
+      {textDataStringValue(value.data)}
     </div>
   );
 });

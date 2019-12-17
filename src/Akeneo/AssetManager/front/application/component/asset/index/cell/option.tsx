@@ -1,19 +1,20 @@
 import * as React from 'react';
-import {NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {CellView} from 'akeneoassetmanager/application/configuration/value';
 import {Column} from 'akeneoassetmanager/application/reducer/grid';
 import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
-import {NormalizedOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
+import {isOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {getLabel} from 'pimui/js/i18n';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
+import {isOptionData} from 'akeneoassetmanager/domain/model/asset/data/option';
 
 const memo = (React as any).memo;
 
-const OptionCellView: CellView = memo(({column, value}: {column: Column; value: NormalizedValue}) => {
+const OptionCellView: CellView = memo(({column, value}: {column: Column; value: Value}) => {
+  if (!isOptionData(value.data)) return null;
+  if (!isOptionAttribute(column.attribute)) return null;
+
   const selectedOptionCode = value.data;
-  const normalizedOptionAttribute = column.attribute as NormalizedOptionAttribute;
-  const selectedOption = normalizedOptionAttribute.options.filter(
-    (option: Option) => option.code === selectedOptionCode
-  );
+  const selectedOption = column.attribute.options.filter((option: Option) => option.code === selectedOptionCode);
 
   if (0 === selectedOption.length) {
     return null;

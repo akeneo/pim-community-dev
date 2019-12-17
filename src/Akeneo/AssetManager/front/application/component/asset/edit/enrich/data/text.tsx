@@ -6,7 +6,7 @@ import {
   textDataStringValue,
   textDataFromString,
 } from 'akeneoassetmanager/domain/model/asset/data/text';
-import {ConcreteTextAttribute, isTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import {isTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import RichTextEditor from 'akeneoassetmanager/application/component/app/rich-text-editor';
 import Key from 'akeneoassetmanager/tools/key';
 
