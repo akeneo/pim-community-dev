@@ -65,6 +65,6 @@ export const AppRegenerateSecret = () => {
 };
 
 const Link = styled.a`
-    color: ${({theme}: PropsWithTheme) => theme.color.blue};
+    color: ${({theme}: PropsWithTheme) => theme.color.blue100};
     text-decoration: underline;
 `;

@@ -1,51 +1,59 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, ReactNode, FC} from 'react';
 import {Chart} from './Chart';
 import {AppSelect} from './AppSelect';
-import {useAppsState} from '../../dashboard/app-state-context';
+import {useDashboardState} from '../dashboard-state-context';
 import {Section} from '../../common';
-import {Translate} from '../../shared/translate';
+import {AuditEventType} from '../../../domain/audit/audit-event-type.enum';
+import {useFetchSourceAppsEvent} from '../api-hooks/use-fetch-source-apps-event';
 
-export const EventChart = () => {
-    const [apps] = useAppsState();
-    const [code, setCode] = useState();
+type Props = {
+    title: ReactNode;
+    eventType: AuditEventType;
+};
 
+export const EventChart: FC<Props> = ({title, eventType}) => {
+    const [state] = useDashboardState();
+
+    const [selectedAppCode, setSelectedAppCode] = useState();
     useEffect(() => {
-        if (0 === Object.keys(apps).length) {
-            setCode(undefined);
-        } else if (Object.keys(apps).length > 0 && undefined === code) {
-            setCode(Object.values(apps)[0].code);
+        if (0 === Object.keys(state.sourceApps).length) {
+            setSelectedAppCode(undefined);
+        } else if (Object.keys(state.sourceApps).length > 0 && undefined === selectedAppCode) {
+            setSelectedAppCode(Object.values(state.sourceApps)[0].code);
         }
-    }, [apps]);
+    }, [state.sourceApps]);
 
-    const [data, setData] = useState();
+    const appsData = useFetchSourceAppsEvent(eventType);
 
+    const [chartData, setChartData] = useState();
     useEffect(() => {
-        const appData = [
-            {date: 'Tuesday, Nov. 26', value: Math.round(Math.random() * 1000)},
-            {date: 'Wednesday, Nov. 27', value: Math.round(Math.random() * 1000)},
-            {date: 'Thursday, Nov. 28', value: Math.round(Math.random() * 1000)},
-            {date: 'Friday, Nov. 29', value: Math.round(Math.random() * 1000)},
-            {date: 'Saturday, Nov. 30', value: Math.round(Math.random() * 1000)},
-            {date: 'Sunday, Dec. 1', value: Math.round(Math.random() * 1000)},
-            {date: 'Today', value: Math.round(Math.random() * 1000)},
-        ];
+        setChartData(undefined);
 
-        const chartData = appData.map(({date, value}, index) => ({
+        if (undefined === appsData[selectedAppCode]) {
+            return;
+        }
+
+        const chartData = Object.entries(appsData[selectedAppCode]).map(([date, value], index) => ({
             x: index,
             y: value,
             xLabel: date,
             yLabel: value.toString(),
         }));
 
-        setData(chartData);
-    }, [code]);
+        setChartData(chartData);
+    }, [appsData, selectedAppCode]);
 
     return (
         <>
-            <Section title={<Translate id='akeneo_apps.dashboard.charts.number_of_products_created' />} />
+            <Section title={title}>
+                <AppSelect
+                    apps={Object.values(state.sourceApps)}
+                    code={selectedAppCode}
+                    onChange={code => setSelectedAppCode(code)}
+                />
+            </Section>
 
-            <AppSelect apps={Object.values(apps)} code={code} onChange={code => setCode(code)} />
-            {data ? <Chart data={data} /> : <>Loading...</>}
+            {chartData ? <Chart data={chartData} /> : <>...</>}
         </>
     );
 };

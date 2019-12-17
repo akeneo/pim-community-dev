@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Persistence\Dbal\Query;
 
-use Akeneo\Apps\Domain\Audit\Model\Read\AppEventCounts;
+use Akeneo\Apps\Domain\Audit\Model\Read\WeeklyEventCounts;
 use Akeneo\Apps\Domain\Audit\Model\Read\DailyEventCount;
 use Akeneo\Apps\Domain\Audit\Persistence\Query\SelectAppsEventCountByDayQuery;
 use Doctrine\DBAL\Connection;
@@ -53,9 +53,9 @@ SQL;
         return $eventCountByApps;
     }
 
-    private function hydrateRow(array $dataRow): AppEventCounts
+    private function hydrateRow(array $dataRow): WeeklyEventCounts
     {
-        $eventCountByApp = new AppEventCounts($dataRow['app_code']);
+        $eventCountByApp = new WeeklyEventCounts($dataRow['app_code']);
         foreach (json_decode($dataRow['event_count'], true) as $eventDate => $eventCount) {
             $eventCountByApp->addDailyEventCount(
                 new DailyEventCount($eventCount, new \DateTime($eventDate, new \DateTimeZone('UTC')))
