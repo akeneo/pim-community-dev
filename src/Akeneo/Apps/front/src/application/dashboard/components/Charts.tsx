@@ -13,9 +13,15 @@ export const Charts = () => {
     }
 
     return (
-        <EventChart
-            eventType={AuditEventType.PRODUCT_CREATED}
-            title={<Translate id='akeneo_apps.dashboard.charts.number_of_products_created' />}
-        />
+        <>
+            <EventChart
+                eventType={AuditEventType.PRODUCT_CREATED}
+                title={<Translate id='akeneo_apps.dashboard.charts.number_of_products_created' />}
+            />
+            <EventChart
+                eventType={AuditEventType.PRODUCT_UPDATED}
+                title={<Translate id='akeneo_apps.dashboard.charts.number_of_products_updated' />}
+            />
+        </>
     );
 };
