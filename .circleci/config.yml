@@ -86,6 +86,9 @@ jobs:
                 command: make check-pullup
                 when: always
           - run:
+                name: Check that all defined services are instantiable
+                command: make check-sf-services
+          - run:
                 name: Analyzes source code to flag programming errors, bugs, stylistic errors, and suspicious constructs
                 command: make lint-back
           - run:

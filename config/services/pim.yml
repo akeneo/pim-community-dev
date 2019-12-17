@@ -23,13 +23,9 @@ services:
          class: Twig_Extensions_Extension_Intl
          tags:
              - { name: twig.extension }
-    doctrine.dbal.default.wrapped_connection:
-        class: PDO
-        factory: 'doctrine.dbal.session_connection:getWrappedConnection'
 
     session.handler.pdo:
-        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         arguments:
-            - '@doctrine.dbal.default.wrapped_connection'
-            -
-                db_table: pim_session
+            - 'mysql:dbname=%env(APP_DATABASE_NAME)%; host=%env(APP_DATABASE_HOST)%; port=%env(APP_DATABASE_PORT)%'
+            - { db_table: 'pim_session', db_username: '%env(APP_DATABASE_USER)%', db_password: '%env(APP_DATABASE_PASSWORD)%' }
