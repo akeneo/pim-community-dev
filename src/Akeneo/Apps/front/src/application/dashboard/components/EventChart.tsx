@@ -36,12 +36,13 @@ export const EventChart: FC<Props> = ({title, eventType}) => {
         if (undefined === appsData[selectedAppCode]) {
             return;
         }
-
-        const chartData = Object.entries(appsData[selectedAppCode]).map(([date, value], index) => ({
+        const selectedApp = appsData[selectedAppCode];
+        const numberOfData = Object.keys(selectedApp).length;
+        const chartData = Object.entries(selectedApp).map(([date, value], index) => ({
             x: index,
             y: value,
             xLabel:
-                index + 1 !== appsData[selectedAppCode].length
+                index + 1 !== numberOfData
                     ? formatDate(date, {weekday: 'long', month: 'short', day: 'numeric'})
                     : translate('akeneo_apps.dashboard.charts.legend.today'),
             yLabel: value.toString(),
