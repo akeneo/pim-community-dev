@@ -24,7 +24,6 @@ export const fetchAssetCollection = async (
     assetFetcher.fetchByCodes(assetFamilyIdentifier, codes.map(denormalizeAssetCode), context),
     assetFamilyFetcher.fetch(assetFamilyIdentifier),
   ]);
-
   return denormalizeAssetCollection(assetsResult, assetFamilyResult);
 };
 
@@ -36,7 +35,6 @@ export const searchAssetCollection = async (
     assetFetcher.search(query),
     assetFamilyFetcher.fetch(denormalizeAssetFamilyIdentifier(assetFamilyIdentifier)),
   ]);
-
   return {...searchResult, items: denormalizeAssetCollection(searchResult.items, assetFamilyResult)};
 };
 
@@ -109,7 +107,6 @@ const denormalizeAssetFamily = (
   normalizedAssetFamily: AssetManagerAssetFamily,
   attributes: (NormalizedAttribute & any)[]
 ): AssetFamily => {
-  debugger;
   return {
     ...normalizedAssetFamily,
     attributes,

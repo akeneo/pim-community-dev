@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -83,6 +84,7 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         $assetDetails = new AssetDetails(
             AssetIdentifier::fromString($assetIdentifier),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeIdentifier::fromString($attributeAsMainMedia),
             AssetCode::fromString($assetCode),
             LabelCollection::fromArray($labels),
             $assetImage,
@@ -124,36 +126,6 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         );
     }
 
-    private function getImage($valueCollection, AbstractAttribute $attributeAsMainMedia): Image
-    {
-        $imageValue = array_filter(
-            $valueCollection,
-            function (array $value) use ($attributeAsMainMedia) {
-                return $value['attribute'] === $attributeAsMainMedia->getIdentifier()->normalize();
-            }
-        );
-
-        $result = Image::createEmpty();
-        if (!empty($imageValue)) {
-            $imageValue = current($imageValue);
-
-            if (MediaLinkAttribute::ATTRIBUTE_TYPE === $attributeAsMainMedia->getType()) {
-                $url = sprintf('%s%s%s', $attributeAsMainMedia->getPrefix()->normalize(), $imageValue['data'], $attributeAsMainMedia->getSuffix()->normalize());
-                $imageValue['data'] = [
-                    'filePath'         => $imageValue['data'],
-                    'originalFilename' => basename($url)
-                ];
-            }
-
-            $file = new FileInfo();
-            $file->setKey($imageValue['data']['filePath']);
-            $file->setOriginalFilename($imageValue['data']['originalFilename']);
-            $result = Image::fromFileInfo($file);
-        }
-
-        return $result;
-    }
-
     private function hydrateValues(ValueKeyCollection $valueKeyCollection, array $attributes, $valueCollection): array
     {
         $hydratedValues = [];
@@ -173,5 +145,22 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         }
 
         return $hydratedValues;
+    }
+
+    private function getImage(array $valueCollection, AbstractAttribute $attributeAsMainMedia): array
+    {
+        $imageValues = array_filter(
+            $valueCollection,
+            function (array $value) use ($attributeAsMainMedia) {
+                return $value['attribute'] === $attributeAsMainMedia->getIdentifier()->normalize();
+            }
+        );
+
+        $result = array_map(function (array $value) use ($attributeAsMainMedia) {
+            $value['attribute'] = $attributeAsMainMedia->normalize();
+            return $value;
+        }, $imageValues);
+
+        return array_values($result);
     }
 }

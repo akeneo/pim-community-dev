@@ -252,6 +252,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
                   <CommonRows
                     assets={grid.assets}
                     locale={locale}
+                    channel={channel}
                     placeholder={placeholder}
                     onRedirectToAsset={onRedirectToAsset}
                     assetCount={assetCount}

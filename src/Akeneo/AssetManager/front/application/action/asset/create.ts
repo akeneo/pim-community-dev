@@ -8,7 +8,6 @@ import {
 import {createAsset as assetFactory} from 'akeneoassetmanager/domain/model/asset/asset';
 import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import assetSaver from 'akeneoassetmanager/infrastructure/saver/asset';
-import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
 import {redirectToAsset} from 'akeneoassetmanager/application/action/asset/router';
 import {updateAssetResults} from 'akeneoassetmanager/application/action/asset/search';
@@ -23,9 +22,10 @@ export const createAsset = (createAnother: boolean) => async (
   const asset = assetFactory(
     code,
     assetFamily.identifier,
+    assetFamily.attributeAsMainMedia,
     denormalizeAssetCode(code),
     labels,
-    createEmptyFile(),
+    [],
     createValueCollection([])
   );
 

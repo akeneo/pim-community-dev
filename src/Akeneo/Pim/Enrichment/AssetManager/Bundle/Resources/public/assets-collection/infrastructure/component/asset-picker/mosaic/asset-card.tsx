@@ -73,7 +73,7 @@ const AssetCard = ({
     <Container data-asset={asset.code} data-selected={isSelected} isDisabled={isDisabled}>
       <ImageContainer>
         <Thumbnail
-          src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail)}
+          src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail, context)}
           isSelected={isSelected}
           onClick={() => (!isDisabled ? onSelectionChange(asset.code, !isSelected) : null)}
         />

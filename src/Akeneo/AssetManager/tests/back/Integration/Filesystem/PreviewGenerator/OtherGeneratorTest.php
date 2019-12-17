@@ -34,7 +34,7 @@ final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_can_support_only_media_type_other_of_an_url_attribute()
     {
-        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $isSupported = $this->otherGenerator->supports(self::IMAGE_FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
     }
@@ -44,19 +44,19 @@ final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_can_support_only_supported_type_image_of_an_url_attribute()
     {
-        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $isSupported = $this->otherGenerator->supports(self::IMAGE_FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE);
+        $isSupported = $this->otherGenerator->supports(self::IMAGE_FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::PREVIEW_TYPE);
+        $isSupported = $this->otherGenerator->supports(self::IMAGE_FILENAME, $this->attribute, PreviewGeneratorRegistry::PREVIEW_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, 'wrong_type');
+        $isSupported = $this->otherGenerator->supports(self::IMAGE_FILENAME, $this->attribute, 'wrong_type');
 
         $this->assertFalse($isSupported);
     }

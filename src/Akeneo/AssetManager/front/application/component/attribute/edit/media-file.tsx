@@ -67,13 +67,14 @@ const MediaFileView = ({
               if (Key.Enter === event.key) onSubmit();
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              if (!isValidMaxFileSize(event.currentTarget.value)) {
+              let newMaxFileSize = event.currentTarget.value;
+              if (!isValidMaxFileSize(newMaxFileSize)) {
                 event.currentTarget.value = maxFileSizeStringValue(attribute.maxFileSize);
                 event.preventDefault();
                 return;
               }
 
-              onAdditionalPropertyUpdated('max_file_size', createMaxFileSizeFromString(event.currentTarget.value));
+              onAdditionalPropertyUpdated('max_file_size', createMaxFileSizeFromString(newMaxFileSize));
             }}
             readOnly={!rights.attribute.edit}
           />

@@ -10,9 +10,9 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
   it('It creates a asset', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/asset_manager/designer/asset' === interceptedRequest.url() &&
-        'POST' === interceptedRequest.method() &&
-        'designer_starck_1' === JSON.parse(interceptedRequest.postData()).identifier
+          'http://pim.com/rest/asset_manager/designer/asset' === interceptedRequest.url() &&
+          'POST' === interceptedRequest.method() &&
+          'designer_starck_1' === JSON.parse(interceptedRequest.postData()).identifier
       ) {
         interceptedRequest.respond({
           status: 204,
@@ -23,17 +23,17 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
     const response = await page.evaluate(async () => {
       const createAsset = require('akeneoassetmanager/domain/model/asset/asset').createAsset;
       const createValueCollection = require('akeneoassetmanager/domain/model/asset/value-collection')
-        .createValueCollection;
-      const createEmptyFile = require('akeneoassetmanager/domain/model/file').createEmptyFile;
+          .createValueCollection;
       const saver = require('akeneoassetmanager/infrastructure/saver/asset').default;
 
       const assetCreated = createAsset(
-        'designer_starck_1',
-        'designer',
-        'starck',
-        {en_US: 'Stylist', fr_FR: 'Styliste'},
-        createEmptyFile(),
-        createValueCollection([])
+          'designer_starck_1',
+          'designer',
+          'image_designer_1234124',
+          'starck',
+          {en_US: 'Stylist', fr_FR: 'Styliste'},
+          [],
+          createValueCollection([])
       );
 
       return await saver.create(assetCreated);
@@ -73,9 +73,9 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
 
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/asset_manager/designer/asset' === interceptedRequest.url() &&
-        'POST' === interceptedRequest.method() &&
-        'invalid/identifier' === JSON.parse(interceptedRequest.postData()).identifier
+          'http://pim.com/rest/asset_manager/designer/asset' === interceptedRequest.url() &&
+          'POST' === interceptedRequest.method() &&
+          'invalid/identifier' === JSON.parse(interceptedRequest.postData()).identifier
       ) {
         interceptedRequest.respond({
           status: 400,
@@ -87,18 +87,18 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
 
     const response = await page.evaluate(async () => {
       const createAsset = require('akeneoassetmanager/domain/model/asset/asset').createAsset;
-      const createEmptyFile = require('akeneoassetmanager/domain/model/file').createEmptyFile;
       const createValueCollection = require('akeneoassetmanager/domain/model/asset/value-collection')
-        .createValueCollection;
+          .createValueCollection;
       const saver = require('akeneoassetmanager/infrastructure/saver/asset').default;
 
       const assetCreated = createAsset(
-        'invalid/identifier',
-        'designer',
-        'invalid/identifier',
-        {en_US: 'Stylist', fr_FR: 'Styliste'},
-        createEmptyFile(),
-        createValueCollection([])
+          'invalid/identifier',
+          'designer',
+          'image_designer_1234124',
+          'invalid/identifier',
+          {en_US: 'Stylist', fr_FR: 'Styliste'},
+          [],
+          createValueCollection([])
       );
 
       return await saver.create(assetCreated);

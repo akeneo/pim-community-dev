@@ -1,3 +1,5 @@
+import {identifierStringValue} from 'akeneoassetmanager/domain/model/identifier';
+
 const routing = require('routing');
 import {File, isFileEmpty} from 'akeneoassetmanager/domain/model/file';
 import MediaLinkData from 'akeneoassetmanager/domain/model/asset/data/media-link';
@@ -5,6 +7,8 @@ import {MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type
 import {suffixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 import {prefixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
+import {getValueForChannelAndLocaleFilter} from 'akeneoassetmanager/domain/model/asset/value-collection';
 
 export enum MediaPreviewTypes {
   Preview = 'preview',
@@ -23,6 +27,24 @@ export const getImageShowUrl = (image: File, filter: string): string => {
   const filename = encodeURIComponent(path);
 
   return routing.generate('pim_enrich_media_show', {filename, filter});
+};
+
+export const getFilePreviewUrl = (type: string, file: File, attributeIdentifier: AttributeIdentifier): string => {
+  if (file === null) return getDefaultImagePreviewUrl(type, attributeIdentifier);
+
+  const stringIdentifier = identifierStringValue(attributeIdentifier);
+
+  const data = btoa(file.filePath);
+  return routing.generate('akeneo_asset_manager_image_preview', {type, attributeIdentifier: stringIdentifier, data});
+};
+
+const getDefaultImagePreviewUrl = (type: string, attributeIdentifier: AttributeIdentifier): string => {
+  const stringIdentifier = identifierStringValue(attributeIdentifier);
+  return routing.generate('akeneo_asset_manager_image_preview', {
+    type,
+    attributeIdentifier: stringIdentifier,
+    data: '',
+  });
 };
 
 export const getImageDownloadUrl = (image: File): string => {
@@ -75,8 +97,8 @@ export const getMediaLinkUrl = (mediaLink: MediaLinkData, attribute: MediaLinkAt
 };
 
 // The asset any is temporary and should be fixed when we create unified models
-export const getAssetPreview = (asset: any, type: MediaPreviewTypes): string => {
-  const image = asset.image[0]; //This should be changed when we will display localisable/scopable images
+export const getAssetPreview = (asset: any, type: MediaPreviewTypes, {locale, channel}: Context): string => {
+  const image = asset.image.find(getValueForChannelAndLocaleFilter(channel, locale));
 
   if (undefined === image || '' === image.attribute) return '';
 

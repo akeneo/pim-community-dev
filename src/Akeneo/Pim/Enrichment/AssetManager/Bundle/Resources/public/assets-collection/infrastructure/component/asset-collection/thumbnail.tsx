@@ -160,7 +160,7 @@ export const Thumbnail = ({
           )}
         </Overlay>
       )}
-      <Img src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail)} />
+      <Img src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail,{locale: context.locale, channel: context.channel}) } />
     </Container>
   );
 };

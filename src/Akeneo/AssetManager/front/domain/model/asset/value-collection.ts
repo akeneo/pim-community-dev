@@ -15,8 +15,28 @@ import AttributeIdentifier, {
 
 class InvalidTypeError extends Error {}
 
+export const getValueForChannelAndLocaleFilter = (channel: ChannelReference, locale: LocaleReference) => (
+  value: Value
+): boolean =>
+  (channelReferenceIsEmpty(value.channel) || channelReferenceAreEqual(value.channel, channel)) &&
+  (localeReferenceIsEmpty(value.locale) || localeReferenceAreEqual(value.locale, locale));
+
+export const getValueForAttributeIdentifierFilter = (attributeIdentifier: AttributeIdentifier) => (value: Value) =>
+  value.attribute.identifier === attributeIdentifier;
+
+export const getValueFilter = (
+  attributeIdentifier: AttributeIdentifier,
+  channel: ChannelReference,
+  locale: LocaleReference
+) => {
+  const attributeFilter = getValueForAttributeIdentifierFilter(attributeIdentifier);
+  const channelAndLocaleFilter = getValueForChannelAndLocaleFilter(channel, locale);
+
+  return (value: Value) => attributeFilter(value) && channelAndLocaleFilter(value);
+};
+
 export default class ValueCollection {
-  private constructor(private values: Value[]) {
+  private constructor(readonly values: Value[]) {
     values.forEach((value: Value) => {
       if (!(value instanceof Value)) {
         throw new InvalidTypeError('ValueCollection expect only Value objects as argument');
@@ -31,11 +51,7 @@ export default class ValueCollection {
   }
 
   public getValuesForChannelAndLocale(channel: ChannelReference, locale: LocaleReference): Value[] {
-    return this.values.filter(
-      (value: Value) =>
-        (channelReferenceIsEmpty(value.channel) || channelReferenceAreEqual(value.channel, channel)) &&
-        (localeReferenceIsEmpty(value.locale) || localeReferenceAreEqual(value.locale, locale))
-    );
+    return this.values.filter(getValueForChannelAndLocaleFilter(channel, locale));
   }
 
   public normalize(): NormalizedValue[] {

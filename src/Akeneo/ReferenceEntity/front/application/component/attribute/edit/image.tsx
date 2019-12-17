@@ -54,13 +54,14 @@ const ImageView = ({
               if (Key.Enter === event.key) onSubmit();
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              if (!MaxFileSize.isValid(event.currentTarget.value)) {
+              let newMaxFileSize = event.currentTarget.value;
+              if (!MaxFileSize.isValid(newMaxFileSize)) {
                 event.currentTarget.value = attribute.maxFileSize.stringValue();
                 event.preventDefault();
                 return;
               }
 
-              onAdditionalPropertyUpdated('max_file_size', MaxFileSize.createFromString(event.currentTarget.value));
+              onAdditionalPropertyUpdated('max_file_size', MaxFileSize.createFromString(newMaxFileSize));
             }}
             readOnly={!rights.attribute.edit}
           />

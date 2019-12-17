@@ -18,22 +18,22 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 
 /**
- * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class BinaryImageGenerator extends AbstractPreviewGenerator
+class BinaryPdfGenerator extends AbstractPreviewGenerator
 {
     private const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image';
     public const SUPPORTED_TYPES = [
-        PreviewGeneratorRegistry::THUMBNAIL_TYPE        => 'am_binary_image_thumbnail',
-        PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE  => 'am_binary_image_thumbnail',
-        PreviewGeneratorRegistry::PREVIEW_TYPE          => 'am_binary_image_preview'
+        PreviewGeneratorRegistry::THUMBNAIL_TYPE        => 'am_binary_pdf_thumbnail',
+        PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE  => 'am_binary_pdf_thumbnail',
+        PreviewGeneratorRegistry::PREVIEW_TYPE          => 'am_binary_pdf_preview'
     ];
 
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
         return $attribute instanceof MediaFileAttribute
-            && $attribute->getMediaType()->normalize() === MediaType::IMAGE
+            && $attribute->getMediaType()->normalize() === MediaType::PDF
             && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 

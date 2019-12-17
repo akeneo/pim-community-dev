@@ -1,5 +1,5 @@
-import {create, denormalize} from 'akeneoassetmanager/domain/model/asset/data/file';
-import File, {createFileFromNormalized} from 'akeneoassetmanager/domain/model/file';
+import {create, denormalize} from 'akeneoassetmanager/domain/model/asset/data/media-file';
+import {createFileFromNormalized} from 'akeneoassetmanager/domain/model/file';
 
 describe('akeneo > asset family > domain > model > asset > data --- file', () => {
   test('I can create a new FileData with a File value', () => {

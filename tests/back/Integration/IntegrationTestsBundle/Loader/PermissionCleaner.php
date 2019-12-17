@@ -23,7 +23,7 @@ class PermissionCleaner
     {
         $sql = <<<SQL
             DELETE FROM pimee_security_attribute_group_access WHERE user_group_id IN (
-                SELECT id FROM akeneo_pim.oro_access_group WHERE name = :group_name
+                SELECT id FROM oro_access_group WHERE name = :group_name
             );
         SQL;
 
@@ -31,7 +31,7 @@ class PermissionCleaner
 
         $sql = <<<SQL
             DELETE FROM pimee_security_asset_category_access WHERE user_group_id IN (
-                SELECT id FROM akeneo_pim.oro_access_group WHERE name = :group_name
+                SELECT id FROM oro_access_group WHERE name = :group_name
             );
         SQL;
 
@@ -39,7 +39,7 @@ class PermissionCleaner
 
         $sql = <<<SQL
             DELETE FROM pimee_security_product_category_access WHERE user_group_id IN (
-                SELECT id FROM akeneo_pim.oro_access_group WHERE name = :group_name
+                SELECT id FROM oro_access_group WHERE name = :group_name
             );
         SQL;
 

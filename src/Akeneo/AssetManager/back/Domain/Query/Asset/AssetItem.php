@@ -53,13 +53,13 @@ class AssetItem
     public function normalize(): array
     {
         return [
-            self::IDENTIFIER                  => $this->identifier,
-            self::ASSET_FAMILY_IDENTIFIER     => $this->assetFamilyIdentifier,
-            self::CODE                        => $this->code,
-            self::LABELS                      => $this->labels,
-            self::IMAGE                       => $this->image,
-            self::VALUES                      => $this->values,
-            self::COMPLETENESS                => $this->completeness,
+            self::IDENTIFIER              => $this->identifier,
+            self::ASSET_FAMILY_IDENTIFIER => $this->assetFamilyIdentifier,
+            self::CODE                    => $this->code,
+            self::LABELS                  => $this->labels,
+            self::IMAGE                   => $this->image,
+            self::VALUES                  => $this->values,
+            self::COMPLETENESS            => $this->completeness,
         ];
     }
 }

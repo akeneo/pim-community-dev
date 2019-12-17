@@ -11,7 +11,7 @@ config:
 
         akeneoassetmanager/application/configuration/value:
             media_file:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/file'
+                denormalize: '@akeneoassetmanager/domain/model/asset/data/media-file'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/file.tsx'
                 cell: '@akeneoassetmanager/application/component/asset/index/cell/image.tsx'
             text:

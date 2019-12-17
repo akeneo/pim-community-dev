@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Domain\Query\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 
@@ -29,6 +30,7 @@ class AssetDetails
 {
     private const IDENTIFIER = 'identifier';
     private const ASSET_FAMILY_IDENTIFIER = 'asset_family_identifier';
+    private const ATTRIBUTE_AS_MAIN_MEDIA_IDENTIFIER = 'attribute_as_main_media_identifier';
     private const CODE = 'code';
     private const LABELS = 'labels';
     private const IMAGE = 'image';
@@ -42,13 +44,16 @@ class AssetDetails
     /** @var AssetFamilyIdentifier */
     public $assetFamilyIdentifier;
 
+    /** * @var AttributeIdentifier */
+    private $attributeAsMainMediaIdentifier;
+
     /** @var AssetCode */
     public $code;
 
     /** @var LabelCollection */
     public $labels;
 
-    /** @var Image */
+    /** @var array */
     public $image;
 
     /** @var array */
@@ -60,14 +65,16 @@ class AssetDetails
     public function __construct(
         AssetIdentifier $identifier,
         AssetFamilyIdentifier $assetFamilyIdentifier,
+        AttributeIdentifier $attributeAsMainMediaIdentifier,
         AssetCode $code,
         LabelCollection $labels,
-        Image $image,
+        array $image,
         array $values,
         bool $isAllowedToEdit
     ) {
         $this->identifier = $identifier;
         $this->assetFamilyIdentifier = $assetFamilyIdentifier;
+        $this->attributeAsMainMediaIdentifier = $attributeAsMainMediaIdentifier;
         $this->code = $code;
         $this->labels = $labels;
         $this->values = $values;
@@ -80,9 +87,10 @@ class AssetDetails
         return [
             self::IDENTIFIER                  => $this->identifier->normalize(),
             self::ASSET_FAMILY_IDENTIFIER => $this->assetFamilyIdentifier->normalize(),
+            self::ATTRIBUTE_AS_MAIN_MEDIA_IDENTIFIER => $this->attributeAsMainMediaIdentifier->normalize(),
             self::CODE                        => $this->code->normalize(),
             self::LABELS                      => $this->labels->normalize(),
-            self::IMAGE                       => $this->image->normalize(),
+            self::IMAGE                       => $this->image,
             self::VALUES                      => $this->values,
             self::PERMISSION                  => [
                 self::EDIT_PERMISSION => $this->isAllowedToEdit,

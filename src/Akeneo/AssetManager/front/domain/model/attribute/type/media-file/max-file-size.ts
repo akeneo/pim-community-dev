@@ -3,7 +3,7 @@ export type MaxFileSize = string | null;
 export const isValidMaxFileSize = (maxFileSize: string | null): maxFileSize is MaxFileSize => {
   return (
     isNullMaxFileSize(maxFileSize) ||
-    (typeof maxFileSize === 'string' && maxFileSize.length > 0 && null !== maxFileSize.match(/^[0-9]*\.?[0-9]*$/))
+    (typeof maxFileSize === 'string' && null !== maxFileSize.match(/^[0-9]*\.?[0-9]*$/))
   );
 };
 
