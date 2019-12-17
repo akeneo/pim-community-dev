@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\back\tests\EndToEnd\Audit;
 
-use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
-use Akeneo\UserManagement\Component\Model\User;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
