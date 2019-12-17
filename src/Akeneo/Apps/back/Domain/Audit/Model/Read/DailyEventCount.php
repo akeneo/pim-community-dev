@@ -26,8 +26,7 @@ final class DailyEventCount
     public function normalize(): array
     {
         return [
-            'date' => $this->date->format('Y-m-d'),
-            'value' => $this->count
+            $this->date->format('Y-m-d') => $this->count
         ];
     }
 }
