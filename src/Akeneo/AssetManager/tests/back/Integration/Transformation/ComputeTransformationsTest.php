@@ -44,19 +44,19 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader;
+use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class ComputeTransformationsTest extends KernelTestCase
+class ComputeTransformationsTest extends TestCase
 {
     protected const FILENAME = __DIR__ . '/../../Common/TestFixtures/lardon.png';
 
@@ -107,13 +107,17 @@ class ComputeTransformationsTest extends KernelTestCase
      */
     public function it_applies_a_resolution_operation()
     {
-        $this->setFamilyTransformations([
-            ResolutionOperation::create([
-                'resolution-unit' => 'ppi',
-                'resolution-x' => 72,
-                'resolution-y' => 72,
-            ])
-        ]);
+        $this->setFamilyTransformations(
+            [
+                ResolutionOperation::create(
+                    [
+                        'resolution-unit' => 'ppi',
+                        'resolution-x' => 72,
+                        'resolution-y' => 72,
+                    ]
+                ),
+            ]
+        );
         $asset = $this->getAsset('starck');
         $this->launchTransformationJob($asset->getIdentifier());
 
@@ -142,10 +146,10 @@ class ComputeTransformationsTest extends KernelTestCase
 
         // empty the source value
         $sourceAttribute = self::$container->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
-            ->getByCodeAndAssetFamilyIdentifier(
-                AttributeCode::fromString('main_image'),
-                AssetFamilyIdentifier::fromString('designer')
-            );
+                                           ->getByCodeAndAssetFamilyIdentifier(
+                                               AttributeCode::fromString('main_image'),
+                                               AssetFamilyIdentifier::fromString('designer')
+                                           );
 
         $editAssetCommand = new EditAssetCommand(
             'designer',
@@ -203,11 +207,15 @@ class ComputeTransformationsTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        static::bootKernel(['debug' => false]);
         parent::setUp();
+        $this->fixturesLoader = $this->get('akeneoasset_manager.tests.helper.fixtures_loader');
         $this->resetDB();
-        $this->fixturesLoader = $this->getFixturesLoader();
         $this->loadFixtures();
+    }
+
+    protected function getConfiguration()
+    {
+        return $this->catalog->useMinimalCatalog();
     }
 
     private function loadFixtures(): void
@@ -353,11 +361,6 @@ class ComputeTransformationsTest extends KernelTestCase
     private function getFileDownloader(): FileDownloader
     {
         return static::$container->get('Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader');
-    }
-
-    private function getFixturesLoader(): FixturesLoader
-    {
-        return static::$container->get('akeneoasset_manager.tests.helper.fixtures_loader');
     }
 
     private function getAssetFamilyRepository(): AssetFamilyRepositoryInterface

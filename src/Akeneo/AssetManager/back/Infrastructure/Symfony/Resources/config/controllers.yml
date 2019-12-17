@@ -28,6 +28,7 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\ComputeTransformationsAction
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_details'
+            - '@akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_family_identifier_launcher'
 
     akeneo_assetmanager.infrastructure.action.asset_family.edit:
         class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\EditAction
