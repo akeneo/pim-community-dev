@@ -12,6 +12,7 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
@@ -27,16 +28,16 @@ class CountDailyEventsByAppEndToEnd extends WebTestCase
         $this->get('akeneo_app.fixtures.app_loader')->createApp('erp', 'ERP', FlowType::DATA_SOURCE);
         $this->loadAuditData();
         $this->createAdminUser();
+        $this->authenticateClient();
 
         $this->client->request('GET', '/rest/apps/audit/source-apps-event', ['event_type' => 'product_created']);
         $response = $this->client->getResponse();
 
-        Assert::assertTrue(true);
-//        Assert::assertTrue($response->isOk());
-//        Assert::assertJsonStringNotEqualsJsonFile(
-//            realpath(__DIR__.'/../Resources/json_response/count_daily_events_by_app.json'),
-//            $response->getContent()
-//        );
+        Assert::assertTrue($response->isOk());
+        Assert::assertJsonStringNotEqualsJsonFile(
+            realpath(__DIR__.'/../Resources/json_response/count_daily_events_by_app.json'),
+            $response->getContent()
+        );
     }
 
     private function loadAuditData(): void
@@ -63,5 +64,17 @@ class CountDailyEventsByAppEndToEnd extends WebTestCase
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function authenticateClient(): void
+    {
+        $token = new UsernamePasswordToken('admin', null, 'main', ['ROLE_ADMIN']);
+
+        $session = $this->get('session');
+        $session->set('_security_main', serialize($token));
+        $session->save();
+
+        $cookie = new Cookie($session->getName(), $session->getId());
+        $this->client->getCookieJar()->set($cookie);
     }
 }
