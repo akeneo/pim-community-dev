@@ -33,7 +33,7 @@ class DateTimeNormalizerSpec extends ObjectBehavior
 
         $this
             ->normalize($date, null, ['field_name' => 'release_date'])
-            ->shouldReturn(['release_date' => $date->format('Y-m-d')]);
+            ->shouldReturn(['release_date' => $date->format('c')]);
     }
 
     function it_normalizes_date_value_using_the_context_format()
