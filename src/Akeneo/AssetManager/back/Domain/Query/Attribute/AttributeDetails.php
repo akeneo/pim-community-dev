@@ -41,7 +41,7 @@ class AttributeDetails
     /** @var string */
     public $code;
 
-    /** @var array */
+    /** @var iterable */
     public $labels;
 
     /** @var int */

@@ -27,7 +27,9 @@ export default class Tags extends React.Component<TagsProps & any> {
 
     if (undefined !== $el.select2) {
       $el.val(this.props.values.join(',')).select2(this.getConfiguration());
-      $el.on('change', (event: any) => this.props.onChange(event.val));
+      $el.on('change', (event: any) => {
+        this.props.onChange(event.val);
+      });
     }
   }
 
@@ -35,10 +37,17 @@ export default class Tags extends React.Component<TagsProps & any> {
     if (null === this.tags.current) {
       return;
     }
+
+    const {values} = this.props;
     const $el = $(this.tags.current) as any;
 
+    if (values.length === 0) {
+      return;
+    }
+
     if (undefined !== $el.select2) {
-      $el.select2(this.getConfiguration());
+      $('#select2-drop-mask, #select2-drop').remove();
+      $el.val(this.props.values.join(',')).select2(this.getConfiguration());
     }
   }
 

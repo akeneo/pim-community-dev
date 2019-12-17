@@ -75,7 +75,9 @@ const MediaLinkView = ({
 
               onAdditionalPropertyUpdated(
                 'prefix',
-                wrapNormalizableAdditionalProperty<NormalizedPrefix>(createPrefixFromString(event.currentTarget.value))
+                wrapNormalizableAdditionalProperty<NormalizedPrefix>(
+                  createPrefixFromString(event.currentTarget.value)
+                ).normalize()
               );
             }}
           />
@@ -109,7 +111,9 @@ const MediaLinkView = ({
 
               onAdditionalPropertyUpdated(
                 'suffix',
-                wrapNormalizableAdditionalProperty<NormalizedSuffix>(createSuffixFromString(event.currentTarget.value))
+                wrapNormalizableAdditionalProperty<NormalizedSuffix>(
+                  createSuffixFromString(event.currentTarget.value)
+                ).normalize()
               );
             }}
           />
