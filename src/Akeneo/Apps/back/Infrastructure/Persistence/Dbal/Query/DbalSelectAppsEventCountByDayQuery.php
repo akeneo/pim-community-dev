@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Persistence\Dbal\Query;
 
-use Akeneo\Apps\Domain\Audit\Model\Read\WeeklyEventCounts;
 use Akeneo\Apps\Domain\Audit\Model\Read\DailyEventCount;
+use Akeneo\Apps\Domain\Audit\Model\Read\WeeklyEventCounts;
 use Akeneo\Apps\Domain\Audit\Persistence\Query\SelectAppsEventCountByDayQuery;
 use Doctrine\DBAL\Connection;
 
@@ -31,37 +31,94 @@ class DbalSelectAppsEventCountByDayQuery implements SelectAppsEventCountByDayQue
         $endDateTime = new \DateTime($endDate, new \DateTimeZone('UTC'));
 
         $sqlQuery = <<<SQL
-SELECT app_code, JSON_OBJECTAGG(au.event_date, au.event_count) as event_count
-FROM akeneo_app_audit au
-WHERE event_date BETWEEN :start_date AND :end_date
-AND event_type = :event_type
-GROUP BY app_code
+SELECT app.code, audit.event_date, audit.event_count
+FROM akeneo_app app
+LEFT JOIN akeneo_app_audit audit ON audit.app_code = app.code 
+AND audit.event_date BETWEEN :start_date AND :end_date
+AND audit.event_type = :event_type
+GROUP BY app.code, audit.event_date, audit.event_count
 SQL;
         $sqlParams = [
             'start_date' => $startDateTime->format('Y-m-d'),
-            'end_date'   => $endDateTime->format('Y-m-d'),
-            'event_type' => $eventType
+            'end_date' => $endDateTime->format('Y-m-d'),
+            'event_type' => $eventType,
         ];
 
-        $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
+        $result = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
 
-        $eventCountByApps = [];
-        foreach ($dataRows as $dataRow) {
-            $eventCountByApps[] = $this->hydrateRow($dataRow);
-        }
+        $eventCountsDataPerApp = $this->fillMissingDates(
+            $startDateTime,
+            $endDateTime,
+            $this->normalizeEventCountsDataPerApp($result)
+        );
 
-        return $eventCountByApps;
+        return $this->hydrateWeeklyEventCountsPerApp($eventCountsDataPerApp);
     }
 
-    private function hydrateRow(array $dataRow): WeeklyEventCounts
+    private function normalizeEventCountsDataPerApp(array $dataRows): array
     {
-        $eventCountByApp = new WeeklyEventCounts($dataRow['app_code']);
-        foreach (json_decode($dataRow['event_count'], true) as $eventDate => $eventCount) {
-            $eventCountByApp->addDailyEventCount(
-                new DailyEventCount($eventCount, new \DateTime($eventDate, new \DateTimeZone('UTC')))
-            );
+        return array_reduce(
+            $dataRows,
+            function (array $data, array $row) {
+                if (!isset($data[$row['code']])) {
+                    $data[$row['code']] = [];
+                }
+                if (null !== $row['event_date']) {
+                    $data[$row['code']][$row['event_date']] = (int)$row['event_count'];
+                }
+
+                return $data;
+            },
+            []
+        );
+    }
+
+    private function fillMissingDates(
+        \DateTime $start,
+        \DateTime $end,
+        array $eventCountsDataPerApp
+    ): array {
+        $period = new \DatePeriod(
+            $start,
+            new \DateInterval('P1D'),
+            $end->modify('+1 day')
+        );
+
+        $days = [];
+        foreach ($period as $date) {
+            $days[] = $date->format('Y-m-d');
         }
 
-        return $eventCountByApp;
+        foreach ($eventCountsDataPerApp as $appCode => $eventCounts) {
+            foreach ($days as $day) {
+                if (!isset($eventCounts[$day])) {
+                    $eventCountsDataPerApp[$appCode][$day] = 0;
+                }
+            }
+        }
+
+        return $eventCountsDataPerApp;
+    }
+
+    private function hydrateWeeklyEventCountsPerApp(array $eventCountsDataPerApp): array
+    {
+        $weeklyEventCountsPerApp = [];
+
+        foreach ($eventCountsDataPerApp as $appCode => $eventCounts) {
+            $weeklyEventCounts = new WeeklyEventCounts($appCode);
+
+            foreach ($eventCounts as $eventDate => $eventCount) {
+                $weeklyEventCounts->addDailyEventCount(
+                    new DailyEventCount(
+                        $eventCount,
+                        new \DateTimeImmutable($eventDate, new \DateTimeZone('UTC'))
+                    )
+                );
+            }
+
+            $weeklyEventCountsPerApp[] = $weeklyEventCounts;
+        }
+
+        return $weeklyEventCountsPerApp;
     }
 }

@@ -28,8 +28,8 @@ class AuditController
     public function sourceAppsEvent(Request $request): JsonResponse
     {
         $eventType = $request->get('event_type', '');
+        $startPeriod = new \DateTime('-7 days', new \DateTimeZone('UTC'));
         $today = new \DateTime('now', new \DateTimeZone('UTC'));
-        $startPeriod = new \DateTime('1 week ago', new \DateTimeZone('UTC'));
 
         $query = new CountDailyEventsByAppQuery($eventType, $startPeriod->format('Y-m-d'), $today->format('Y-m-d'));
         $countDailyEventsByApp = $this->countDailyEventsByAppHandler->handle($query);
