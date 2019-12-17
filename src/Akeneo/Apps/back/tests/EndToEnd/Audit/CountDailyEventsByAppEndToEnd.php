@@ -31,12 +31,11 @@ class CountDailyEventsByAppEndToEnd extends WebTestCase
         $this->client->request('GET', '/rest/apps/audit/source-apps-event', ['event_type' => 'product_created']);
         $response = $this->client->getResponse();
 
-        Assert::assertTrue(true);
-//        Assert::assertTrue($response->isOk());
-//        Assert::assertJsonStringNotEqualsJsonFile(
-//            realpath(__DIR__.'/../Resources/json_response/count_daily_events_by_app.json'),
-//            $response->getContent()
-//        );
+        Assert::assertTrue($response->isOk());
+        Assert::assertJsonStringNotEqualsJsonFile(
+            realpath(__DIR__.'/../Resources/json_response/count_daily_events_by_app.json'),
+            $response->getContent()
+        );
     }
 
     private function loadAuditData(): void
