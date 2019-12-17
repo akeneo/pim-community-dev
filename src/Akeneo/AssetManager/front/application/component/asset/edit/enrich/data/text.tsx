@@ -1,7 +1,12 @@
 import * as React from 'react';
-import Value from 'akeneoassetmanager/domain/model/asset/value';
-import TextData, {create} from 'akeneoassetmanager/domain/model/asset/data/text';
-import {ConcreteTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import Value, {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
+import {
+  isTextData,
+  areTextDataEqual,
+  textDataStringValue,
+  textDataFromString,
+} from 'akeneoassetmanager/domain/model/asset/data/text';
+import {ConcreteTextAttribute, isTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import RichTextEditor from 'akeneoassetmanager/application/component/app/rich-text-editor';
 import Key from 'akeneoassetmanager/tools/key';
 
@@ -16,33 +21,33 @@ const View = ({
   onSubmit: () => void;
   canEditData: boolean;
 }) => {
-  if (!(value.data instanceof TextData && value.attribute instanceof ConcreteTextAttribute)) {
+  if (!isTextData(value.data) || !isTextAttribute(value.attribute)) {
     return null;
   }
 
   const onValueChange = (text: string) => {
-    const newData = create(text);
-    if (newData.equals(value.data)) {
+    const newData = textDataFromString(text);
+    if (areTextDataEqual(newData, value.data)) {
       return;
     }
 
-    const newValue = value.setData(newData);
+    const newValue = setValueData(value, newData);
 
     onChange(newValue);
   };
 
   return (
     <React.Fragment>
-      {value.attribute.isTextarea ? (
-        value.attribute.isRichTextEditor ? (
-          <RichTextEditor value={value.data.stringValue()} onChange={onValueChange} readOnly={!canEditData} />
+      {value.attribute.is_textarea ? (
+        value.attribute.is_rich_text_editor ? (
+          <RichTextEditor value={textDataStringValue(value.data)} onChange={onValueChange} readOnly={!canEditData} />
         ) : (
           <textarea
-            id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
+            id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
             className={`AknTextareaField AknTextareaField--light
-            ${value.attribute.valuePerLocale ? 'AknTextareaField--localizable' : ''}
+            ${value.attribute.value_per_locale ? 'AknTextareaField--localizable' : ''}
             ${!canEditData ? 'AknTextField--disabled' : ''}`}
-            value={value.data.stringValue()}
+            value={textDataStringValue(value.data)}
             onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
               onValueChange(event.currentTarget.value);
             }}
@@ -51,12 +56,12 @@ const View = ({
         )
       ) : (
         <input
-          id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
+          id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
           autoComplete="off"
           className={`AknTextField AknTextField--narrow AknTextField--light
-          ${value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''}
+          ${value.attribute.value_per_locale ? 'AknTextField--localizable' : ''}
           ${!canEditData ? 'AknTextField--disabled' : ''}`}
-          value={value.data.stringValue()}
+          value={textDataStringValue(value.data)}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             onValueChange(event.currentTarget.value);
           }}
