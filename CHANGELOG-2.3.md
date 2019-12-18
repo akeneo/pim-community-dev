@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Technical improvement
+
+- Update composer dependencies to fix PhpSpec Prohecy version to 1.9.*
+
 # 2.3.74 (2019-12-12)
 
 - PIM-9017: Remove "Add an attribute to a product" ACL
