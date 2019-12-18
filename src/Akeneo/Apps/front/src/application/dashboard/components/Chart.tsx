@@ -1,27 +1,17 @@
 import React from 'react';
-import {VictoryAxis, VictoryChart, VictoryLine, VictoryScatter, VictoryStyleObject} from 'victory';
+import {
+    VictoryAxis,
+    VictoryChart,
+    VictoryLine,
+    VictoryScatter,
+    VictoryStyleObject,
+    VictoryThemeDefinition,
+} from 'victory';
+import {lightGreyStroke, purple, grey, darkGrey} from '../../apps/EventChartThemes';
 
 interface VictoryStyle {
     [property: string]: VictoryStyleObject;
 }
-export enum AvailableColors {
-    BLUE = 'blue',
-    PURPLE = 'purple',
-}
-
-const purple = '#52267d';
-const lightPurple = '#ded5e4';
-
-const blue = '#3b438c';
-const lightBlue = '#dee0ef';
-
-const darkGrey = '#11324d';
-const grey = '#67768a';
-const lightGrey = '#e8ebee';
-const lightGreyStroke: React.CSSProperties = {
-    strokeWidth: 1,
-    stroke: lightGrey,
-};
 
 const yAxeTheme: VictoryStyle = {
     tickLabels: {
@@ -53,30 +43,10 @@ const gridYAxesTheme: VictoryStyle = {
     },
     axis: lightGreyStroke,
 };
-const scatterTheme: (color: AvailableColors) => VictoryStyle = color => {
-    return {
-        labels: {
-            fontSize: 13,
-            fontWeight: 'normal',
-            fill: ({index}: any) => (0 === index ? 'none' : AvailableColors.PURPLE === color ? purple : blue),
-            padding: 10,
-        },
-        data: {
-            fill: 'purple' === color ? purple : blue,
-        },
-    };
-};
-const lineTheme: (color: AvailableColors) => VictoryStyle = color => {
-    return {
-        data: {
-            stroke: AvailableColors.PURPLE === color ? lightPurple : lightBlue,
-        },
-    };
-};
 
 type ChartData = {x: number; y: number; xLabel: string; yLabel: string};
 
-export const Chart = ({data, color}: {data: ChartData[]; color: AvailableColors}) => {
+export const Chart = ({data, theme}: {data: ChartData[]; theme: VictoryThemeDefinition}) => {
     const yMax = data.reduce((maxY, {y}) => (y > maxY ? y : maxY), 0);
     const yMin = data.reduce((minY, {y}) => (y < minY ? y : minY), yMax);
     const step = (yMax - yMin) / 5;
@@ -101,19 +71,20 @@ export const Chart = ({data, color}: {data: ChartData[]; color: AvailableColors}
             width={1000}
             padding={0}
             domain={{x: [0.5, 7.5], y: [yMinDomain, yMaxDomain]}}
+            theme={theme}
             style={{
                 parent: {
                     borderBottom: `1px solid ${darkGrey}`,
                 },
             }}
         >
-            <VictoryAxis padding={0} offsetY={40} tickValues={xDaysValues} style={daysAxeTheme} />
+            <VictoryAxis padding={0} offsetY={25} tickValues={xDaysValues} style={daysAxeTheme} />
             <VictoryAxis dependentAxis tickValues={yGridAxes} style={yAxeTheme} />
             {[1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5].map((value, index) => {
                 return <VictoryAxis dependentAxis key={index} style={gridYAxesTheme} axisValue={value} />;
             })}
-            <VictoryLine data={data} interpolation='monotoneX' style={lineTheme(color)} />
-            <VictoryScatter data={data} labels={yLabels} size={7} style={scatterTheme(color)} />
+            <VictoryLine data={data} interpolation='monotoneX' />
+            <VictoryScatter data={data} labels={yLabels} size={7} />
         </VictoryChart>
     );
 };
