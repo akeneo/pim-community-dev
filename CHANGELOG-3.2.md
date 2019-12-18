@@ -4,6 +4,10 @@
 
 - PIM-9027: Translations missing on metrics
 
+## Technical improvement
+
+- Update composer dependencies
+
 # 3.2.26 (2019-12-16)
 
 ## Bug fixes:
