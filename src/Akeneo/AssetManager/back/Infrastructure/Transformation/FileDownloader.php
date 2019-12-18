@@ -16,7 +16,6 @@ namespace Akeneo\AssetManager\Infrastructure\Transformation;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
-use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Downloads a file from filesystem and put it in the temporary folder
@@ -35,11 +34,18 @@ class FileDownloader
         $this->fileFetcher = $fileFetcher;
     }
 
-    public function get(string $key): File
+    public function get(string $key, string $destinationDir, string $originalFilename): string
     {
         $filesystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
-        $file = $this->fileFetcher->fetch($filesystem, $key);
+        $file = $this->fileFetcher->fetch(
+            $filesystem,
+            $key,
+            [
+                'filePath' => $destinationDir,
+                'filename' => $originalFilename,
+            ]
+        );
 
-        return new File($file->getPathname(), false);
+        return $file->getPathname();
     }
 }

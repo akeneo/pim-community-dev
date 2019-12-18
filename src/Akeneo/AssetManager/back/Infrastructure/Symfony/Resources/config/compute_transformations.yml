@@ -8,7 +8,7 @@ services:
     Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader:
         arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@akeneo_file_storage.file_storage.file.file_fetcher'
+            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
 
     # operation appliers:
     Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplierRegistry:
