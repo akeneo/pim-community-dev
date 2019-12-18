@@ -24,7 +24,6 @@ class EditMediaFileValueCommand extends Constraint
     public const FILE_EXTENSION_NOT_ALLOWED_MESSAGE = 'pim_asset_manager.asset.validation.file.extension_not_allowed';
     public const FILE_SIZE_EXCEEDED_MESSAGE = 'pim_asset_manager.asset.validation.file.file_size_exceeded';
     public const FILE_SHOULD_EXIST = 'pim_asset_manager.asset.validation.file.should_exist';
-    public const TARGET_READONLY = 'pim_asset_manager.asset.validation.file.target_readonly';
 
     public function getTargets()
     {
