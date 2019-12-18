@@ -26,7 +26,7 @@ class EditAssetCommand
     /** @var string */
     public $code;
 
-    /** @var array */
+    /** @var AbstractEditValueCommand[] */
     public $editAssetValueCommands = [];
 
     public function __construct(

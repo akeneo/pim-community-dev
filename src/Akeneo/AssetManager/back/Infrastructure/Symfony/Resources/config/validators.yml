@@ -218,6 +218,7 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaFileValueCommandValidator
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_media_file_value_command' }
 

@@ -14,8 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaFileValueCommand as EditMediaFileValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
@@ -36,9 +42,15 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
     /** @var FileExistsInterface */
     private $fileExists;
 
-    public function __construct(FileExistsInterface $fileExists)
-    {
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
+
+    public function __construct(
+        FileExistsInterface $fileExists,
+        AssetFamilyRepositoryInterface $assetFamilyRepository
+    ) {
         $this->fileExists = $fileExists;
+        $this->assetFamilyRepository = $assetFamilyRepository;
     }
 
     public function validate($command, Constraint $constraint)
@@ -87,6 +99,13 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
             );
         }
 
+        if ($this->attributeIsTargetOfATransformation($command)) {
+            $this->context->buildViolation(EditMediaFileValueCommandConstraint::TARGET_READONLY)
+                ->atPath((string) $attribute->getCode())
+                ->addViolation();
+            return;
+        }
+
         if (is_string($command->filePath) && '' !== $command->filePath && !$this->fileExists->exists($command->filePath)) {
             $this->context->buildViolation(EditMediaFileValueCommandConstraint::FILE_SHOULD_EXIST)
                 ->atPath((string) $attribute->getCode())
@@ -111,6 +130,34 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
                     ->addViolation();
             }
         }
+    }
+
+    private function attributeIsTargetOfATransformation(EditMediaFileValueCommand $command): bool
+    {
+        $commandLocaleReference = $command->locale !== null ?
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($command->locale)) :
+            LocaleReference::noReference();
+        $commandChannelReference = $command->channel !== null ?
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode($command->channel)) :
+            ChannelReference::noReference();
+
+        $transformations = $this->assetFamilyRepository
+            ->getByIdentifier($command->attribute->getAssetFamilyIdentifier())
+            ->getTransformationCollection();
+
+        foreach ($transformations as $transformation) {
+            /** @var $transformation Transformation */
+            $target = $transformation->getTarget();
+
+            if ($target->getAttributeCode()->equals($command->attribute->getCode()) &&
+                $target->getLocaleReference()->equals($commandLocaleReference) &&
+                $target->getChannelReference()->equals($commandChannelReference)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function checkPropertyTypes(EditMediaFileValueCommand $command): ConstraintViolationListInterface

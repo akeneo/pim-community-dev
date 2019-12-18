@@ -29,6 +29,7 @@ use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ComputeTransformations implements TaskletInterface
 {
@@ -56,13 +57,17 @@ class ComputeTransformations implements TaskletInterface
     /** @var TransformationCollection[] */
     private $cachedTransformationsPerAssetFamily = [];
 
+    /** @var ValidatorInterface */
+    private $validator;
+
     public function __construct(
         FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
         GetTransformations $getTransformations,
         AssetRepositoryInterface $assetRepository,
         GetOutdatedVariationSource $getOutdatedVariationSource,
         TransformationExecutor $transformationExecutor,
-        EditAssetHandler $editAssetHandler
+        EditAssetHandler $editAssetHandler,
+        ValidatorInterface $validator
     ) {
         $this->findIdentifiersByAssetFamily = $findIdentifiersByAssetFamily;
         $this->getTransformations = $getTransformations;
@@ -70,6 +75,7 @@ class ComputeTransformations implements TaskletInterface
         $this->getOutdatedVariationSource = $getOutdatedVariationSource;
         $this->transformationExecutor = $transformationExecutor;
         $this->editAssetHandler = $editAssetHandler;
+        $this->validator = $validator;
     }
 
     public function setStepExecution(StepExecution $stepExecution)
@@ -140,20 +146,32 @@ class ComputeTransformations implements TaskletInterface
 
                 if (null !== $sourceFile) {
                     try {
-                        $commands[] = $this->transformationExecutor->execute(
+                        $command = $this->transformationExecutor->execute(
                             $sourceFile,
                             $asset->getAssetFamilyIdentifier(),
                             $transformation
                         );
+
+                        $violations = $this->validator->validate($command);
+                        if (count($violations) > 0) {
+                            $errorMessages = [];
+                            foreach ($violations as $violation) {
+                                $errorMessages[] = $violation->getMessage();
+                            }
+                            throw new TransformationFailedException(join(', ', $errorMessages));
+                        }
+                        $commands[] = $command;
                         $transformedFilesCount++;
                     } catch (TransformationFailedException $e) {
-                        $this->stepExecution->addError(
+                        $this->stepExecution->addWarning(
                             sprintf(
                                 'Could not apply transformation "%s" on asset "%s": %s',
                                 $transformation->getLabel()->toString(),
                                 $asset->getCode(),
                                 $e->getMessage()
-                            )
+                            ),
+                            [],
+                            new DataInvalidItem($transformation->normalize())
                         );
                         continue;
                     }
@@ -162,13 +180,11 @@ class ComputeTransformations implements TaskletInterface
                 }
             }
             if (!empty($commands)) {
-                ($this->editAssetHandler)(
-                    new EditAssetCommand(
-                        (string)$asset->getAssetFamilyIdentifier(),
-                        (string)$asset->getCode(),
-                        $commands
-                    )
-                );
+                ($this->editAssetHandler)(new EditAssetCommand(
+                    (string)$asset->getAssetFamilyIdentifier(),
+                    (string)$asset->getCode(),
+                    $commands
+                ));
                 $this->stepExecution->incrementSummaryInfo('transformations', $transformedFilesCount);
             }
         }
