@@ -27,6 +27,7 @@ use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationFa
 use Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource;
 use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -110,6 +111,8 @@ class ComputeTransformations implements TaskletInterface
      */
     private function doExecute(iterable $assetIdentifiers): void
     {
+        $workingDirectory = $this->stepExecution->getJobExecution()->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
+
         foreach ($assetIdentifiers as $assetIdentifier) {
             $commands = [];
             $transformedFilesCount = 0;
@@ -149,7 +152,8 @@ class ComputeTransformations implements TaskletInterface
                         $command = $this->transformationExecutor->execute(
                             $sourceFile,
                             $asset->getAssetFamilyIdentifier(),
-                            $transformation
+                            $transformation,
+                            $workingDirectory
                         );
 
                         $violations = $this->validator->validate($command);

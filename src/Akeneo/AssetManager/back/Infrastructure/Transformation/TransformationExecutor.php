@@ -19,15 +19,20 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
+use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationException;
 use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationFailedException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
-use Liip\ImagineBundle\Exception\ExceptionInterface as LiipImagineException;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 
 class TransformationExecutor
 {
+    /** @var Filesystem */
+    private $filesystem;
+
     /** @var FileDownloader */
     private $fileDownloader;
 
@@ -40,12 +45,20 @@ class TransformationExecutor
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var array */
+    private $currentSourceFile = [
+        'key' => null,
+        'path' => null,
+    ];
+
     public function __construct(
+        Filesystem $filesystem,
         FileDownloader $fileDownloader,
         FileTransformer $fileTransformer,
         FileStorerInterface $fileStorer,
         AttributeRepositoryInterface $attributeRepository
     ) {
+        $this->filesystem = $filesystem;
         $this->fileDownloader = $fileDownloader;
         $this->fileTransformer = $fileTransformer;
         $this->fileStorer = $fileStorer;
@@ -55,24 +68,25 @@ class TransformationExecutor
     public function execute(
         FileData $sourceFileData,
         AssetFamilyIdentifier $assetFamilyIdentifier,
-        Transformation $transformation
+        Transformation $transformation,
+        string $workingDirectory
     ): EditMediaFileTargetValueCommand {
         try {
-            $sourceFile = $this->getSourceFile($sourceFileData->getKey());
-            $transformedFile = $this->fileTransformer->transform(
-                $sourceFile,
-                $transformation->getOperationCollection()
+            $sourceFile = $this->getSourceFile(
+                $sourceFileData->getKey(),
+                $workingDirectory,
+                $sourceFileData->getOriginalFilename()
             );
-            $renamedFile = $this->rename($transformedFile, $sourceFileData->getOriginalFilename(), $transformation);
-            $storedFile = $this->fileStorer->store($renamedFile, Storage::FILE_STORAGE_ALIAS, true);
+            $transformedFile = $this->fileTransformer->transform($sourceFile, $transformation);
+            $storedFile = $this->fileStorer->store($transformedFile, Storage::FILE_STORAGE_ALIAS, true);
 
             $target = $transformation->getTarget();
             $targetAttribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
                 $target->getAttributeCode(),
                 $assetFamilyIdentifier
             );
-        } catch (FileTransferException | LiipImagineException | FileRemovalException $e) {
-            throw new TransformationFailedException($e->getMessage(), $e->getCocde());
+        } catch (FileTransferException | TransformationException | FileRemovalException | IOExceptionInterface $e) {
+            throw new TransformationFailedException($e->getMessage(), $e->getCode());
         }
 
         return new EditMediaFileTargetValueCommand(
@@ -88,13 +102,18 @@ class TransformationExecutor
         );
     }
 
-    private function getSourceFile($fileKey): File
+    private function getSourceFile(string $fileKey, string $workingDirectory, string $originalFilename): File
     {
-        return $this->fileDownloader->get($fileKey);
-    }
+        if ($fileKey !== $this->currentSourceFile['key']) {
+            if (null !== $this->currentSourceFile['path'] && $this->filesystem->exists($this->currentSourceFile['path'])) {
+                $this->filesystem->remove($this->currentSourceFile['path']);
+            }
+            $this->currentSourceFile = [
+                'key' => $fileKey,
+                'path' => $this->fileDownloader->get($fileKey, $workingDirectory, $originalFilename),
+            ];
+        }
 
-    private function rename(File $file, string $originalFilename, Transformation $transformation): File
-    {
-        return $file->move($file->getPath(), $transformation->getTargetFilename($originalFilename));
+        return new File($this->currentSourceFile['path'], false);
     }
 }
