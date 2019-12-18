@@ -34,13 +34,12 @@ class DateValueFactory extends AbstractValueFactory
             );
         }
 
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
+            $this->throwsInvalidDateException($attribute, $data);
+        }
 
         try {
             $date = new \DateTime($data);
-
-            if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
-                $this->throwsInvalidDateException($attribute, $data);
-            }
         } catch (\Exception $e) {
             $this->throwsInvalidDateException($attribute, $data);
         }
