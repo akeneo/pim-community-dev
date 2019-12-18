@@ -13,7 +13,7 @@ export const createFileFromNormalized = (file: any): File => {
     ? null
     : {
         ...file,
-      }; // should do the check later, we will see how to handle it in the future
+      }; // TODO should do the check later, we will see how to handle it in the future
 };
 export const isFileEmpty = (file: File): file is null => null === file;
 export const areFilesEqual = (first: File, second: File) =>

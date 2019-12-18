@@ -5,7 +5,7 @@ import Value, {isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import Asset from 'akeneoassetmanager/domain/model/asset/asset';
 import {getDataFieldView} from 'akeneoassetmanager/application/configuration/value';
-import {getErrorsView} from 'akeneoassetmanager/application/component/asset/edit/validaton-error';
+import {getErrorsView} from 'akeneoassetmanager/application/component/asset/edit/validation-error';
 import __ from 'akeneoassetmanager/tools/translator';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import Flag from 'akeneoassetmanager/tools/component/flag';

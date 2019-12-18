@@ -5,8 +5,8 @@ import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import {Option, getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import {
   isOptionCollectionData,
-  optionCollectionArrayValue,
-  optionCollectionFromArray,
+  optionCollectionDataArrayValue,
+  optionCollectionDataFromArray,
 } from 'akeneoassetmanager/domain/model/asset/data/option-collection';
 import {isOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import __ from 'akeneoassetmanager/tools/translator';
@@ -41,7 +41,7 @@ const View = ({
         id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
         className="AknSelectField"
         data={formatedOptions}
-        value={optionCollectionArrayValue(value.data)}
+        value={optionCollectionDataArrayValue(value.data)}
         multiple={true}
         readOnly={!canEditData}
         configuration={{
@@ -50,7 +50,7 @@ const View = ({
         }}
         onChange={(optionCodes: string[]) => {
           //TODO: remove old options
-          const newData = optionCollectionFromArray(optionCodes);
+          const newData = optionCollectionDataFromArray(optionCodes);
           const newValue = setValueData(value, newData);
 
           onChange(newValue);

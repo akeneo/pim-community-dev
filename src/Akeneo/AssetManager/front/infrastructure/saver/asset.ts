@@ -25,7 +25,7 @@ export class AssetSaverImplementation implements AssetSaver {
         assetCode: assetCodeStringValue(asset.getCode()),
       }),
       {
-        //TODO: temporary fix to make the value light model work
+        //TODO: temporary fix to make the value light model work https://akeneo.atlassian.net/browse/AST-183
         ...normalizedAsset,
         values: normalizedAsset.values.map((value: Value) => ({...value, attribute: value.attribute.identifier})),
       }

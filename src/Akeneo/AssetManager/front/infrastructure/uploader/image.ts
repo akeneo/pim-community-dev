@@ -41,6 +41,7 @@ export class ConcreteImageUploader implements Uploader<Image> {
         })
         .then((file: File) => {
           //TODO: Should be BackendFile instead of File. We will rework this after the JSON schema merge
+          // https://akeneo.atlassian.net/browse/AST-183
           resolve(createFileFromNormalized(file));
         })
         .fail((response: any) => {

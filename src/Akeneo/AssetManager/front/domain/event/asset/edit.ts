@@ -20,7 +20,7 @@ export const assetEditionImageUpdated = (image: File) => {
 };
 
 export const assetEditionValueUpdated = (value: Value) => {
-  return {type: 'ASSET_EDITION_VALUE_UPDATED', value: value};
+  return {type: 'ASSET_EDITION_VALUE_UPDATED', value};
 };
 
 export const assetEditionSubmission = () => {

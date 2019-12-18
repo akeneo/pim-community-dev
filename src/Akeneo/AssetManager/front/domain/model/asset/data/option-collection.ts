@@ -13,7 +13,7 @@ export const areOptionCollectionDataEqual = (first: OptionCollectionData, second
     !first.some((optionCode: OptionCode, index: number) => !optionCodesAreEqual(second[index], optionCode))) ||
   (first === null && null === second);
 
-export const optionCollectionArrayValue = (optionCollectionData: OptionCollectionData): OptionCode[] =>
+export const optionCollectionDataArrayValue = (optionCollectionData: OptionCollectionData): OptionCode[] =>
   null === optionCollectionData ? [] : optionCollectionData;
-export const optionCollectionFromArray = (optionCollectionData: OptionCode[]): OptionCollectionData =>
+export const optionCollectionDataFromArray = (optionCollectionData: OptionCode[]): OptionCollectionData =>
   0 === optionCollectionData.length ? null : optionCollectionData;
