@@ -1,4 +1,11 @@
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import {
+  setValueData,
+  isValueEmpty,
+  isValueComplete,
+  areValuesEqual,
+  normalizeValue,
+} from 'akeneoassetmanager/domain/model/asset/value';
 
 const normalizedDescription = {
   identifier: 'description_1234',
@@ -32,12 +39,51 @@ const normalizedWebsite = {
   validation_rule: 'url',
   regular_expression: null,
 };
-const description = denormalizeTextAttribute(normalizedDescription);
-const website = denormalizeTextAttribute(normalizedWebsite);
-const ecommerce = 'ecommerce';
-const enUS = 'en_US';
-const data = 'a nice description';
+
+const value = {
+  attribute: normalizedDescription,
+  channel: null,
+  locale: null,
+  data: 'toto',
+};
 
 describe('akeneo > asset family > domain > model > asset --- value', () => {
-  test('it can set a Data to a Value', () => {});
+  test('it can set a Data to a Value', () => {
+    expect(setValueData(value, 'titi')).toEqual({
+      attribute: normalizedDescription,
+      channel: null,
+      locale: null,
+      data: 'titi',
+    });
+  });
+
+  test('it can tell if a Value is empty', () => {
+    expect(isValueEmpty(value)).toEqual(false);
+    expect(isValueEmpty({...value, data: null})).toEqual(true);
+  });
+
+  test('it can tell if a Value is complete', () => {
+    const valueComplete = value;
+    const valueIncomplete = {...value, data: null};
+    expect(isValueComplete(valueComplete)).toEqual(true);
+    expect(isValueComplete(valueIncomplete)).toEqual(false);
+  });
+
+  test('it can tell if a Value is required', () => {
+    const valueRequired = value;
+    const valueNotRequired = {...value, attribute: normalizedWebsite};
+    expect(isValueComplete(valueRequired)).toEqual(true);
+    expect(isValueComplete(valueNotRequired)).toEqual(false);
+  });
+
+  test('it can tell if a Value is equal to another', () => {
+    const firstValue = value;
+    const secondValue = {...value, channel: 'en_US'};
+    expect(areValuesEqual(firstValue, firstValue)).toEqual(true);
+    expect(areValuesEqual(firstValue, secondValue)).toEqual(false);
+  });
+
+  test('it can normalize a Value', () => {
+    expect(normalizeValue(value)).toEqual(value);
+  });
 });

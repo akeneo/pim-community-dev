@@ -1,4 +1,8 @@
-import {createValueCollection, generateKey} from 'akeneoassetmanager/domain/model/asset/value-collection';
+import {
+  createValueCollection,
+  generateKey,
+  getValueFilter,
+} from 'akeneoassetmanager/domain/model/asset/value-collection';
 import {denormalizeAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 
@@ -90,12 +94,24 @@ describe('akeneo > asset family > domain > model > asset --- value collection', 
   //   }).toThrowError('ValueCollection expect only Value objects as argument');
   // });
 
-  // test('I can normalize a new value collection', () => {
-  //   expect(createValueCollection([descriptionEnUsValue, descriptionFrFrValue]).normalizeMinimal()).toEqual([
-  //     {attribute: 'description_1234', channel: null, data: 'nice description', locale: 'en_US'},
-  //     {attribute: 'description_1234', channel: null, data: 'nice description', locale: 'fr_FR'},
-  //   ]);
-  // });
+  test('I can get a Value filter for an identifier and a locale & scope', () => {
+    const filter = getValueFilter('description_1234', null, 'en_US');
+    expect(filter(descriptionEnUsValue)).toBe(true);
+  });
+
+  test('I can minimal normalize a new value collection', () => {
+    expect(createValueCollection([descriptionEnUsValue, descriptionFrFrValue]).normalizeMinimal()).toEqual([
+      descriptionEnUsValue,
+      descriptionFrFrValue,
+    ]);
+  });
+
+  test('I can normalize a new value collection', () => {
+    expect(createValueCollection([descriptionEnUsValue, descriptionFrFrValue]).normalize()).toEqual([
+      descriptionEnUsValue,
+      descriptionFrFrValue,
+    ]);
+  });
 
   test('I can generate a value key', () => {
     expect(generateKey(denormalizeAttributeIdentifier('description'), 'ecommerce', 'en_US')).toEqual(

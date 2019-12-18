@@ -57,4 +57,10 @@ describe('akeneo > attribute > domain > model > attribute > type --- OptionAttri
     expect(isOptionAttribute(normalizedFavoriteColor)).toBe(true);
     expect(isOptionAttribute({...normalizedFavoriteColor, type: 'noice'})).toBe(false);
   });
+
+  test('I can test if it has an option', () => {
+    const option = ConcreteOptionAttribute.createFromNormalized(normalizedFavoriteColor);
+    expect(option.hasOption('red')).toEqual(true);
+    expect(option.hasOption('unknown')).toEqual(false);
+  });
 });
