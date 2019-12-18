@@ -8,8 +8,14 @@ import CreateAssetModal from 'akeneoassetmanager/application/component/asset/cre
 import __ from 'akeneoassetmanager/tools/translator';
 import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
 import Key from 'akeneoassetmanager/tools/key';
+import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {assetUploadCancel} from 'akeneoassetmanager/domain/event/asset/upload';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 interface StateProps {
+  locale: LocaleCode;
+  assetFamily: AssetFamily;
   sidebar: {
     tabs: Tab[];
     currentTab: string;
@@ -17,11 +23,15 @@ interface StateProps {
   createAsset: {
     active: boolean;
   };
+  uploadAsset: {
+    active: boolean;
+  };
 }
 
 interface DispatchProps {
   events: {
     backToAssetFamilyList: () => void;
+    cancelMassUpload: () => void;
   };
 }
 
@@ -70,7 +80,15 @@ class AssetFamilyEditView extends React.Component<EditProps> {
           </div>
         </div>
         <Sidebar backButton={this.backToAssetFamilyList} />
-        {this.props.createAsset.active ? <CreateAssetModal /> : null}
+        {this.props.createAsset.active && <CreateAssetModal />}
+        {this.props.uploadAsset.active && (
+          <UploadModal
+            locale={this.props.locale}
+            assetFamily={this.props.assetFamily}
+            onCancel={this.props.events.cancelMassUpload}
+            onAssetCreated={() => {}}
+          />
+        )}
       </div>
     );
   }
@@ -82,12 +100,17 @@ export default connect(
     const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
 
     return {
+      locale: state.user.catalogLocale,
+      assetFamily: state.form.data,
       sidebar: {
         tabs,
         currentTab,
       },
       createAsset: {
         active: state.createAsset.active,
+      },
+      uploadAsset: {
+        active: state.uploadAsset.active,
       },
     };
   },
@@ -96,6 +119,9 @@ export default connect(
       events: {
         backToAssetFamilyList: () => {
           dispatch(redirectToAssetFamilyListItem());
+        },
+        cancelMassUpload: () => {
+          dispatch(assetUploadCancel());
         },
       },
     };

@@ -4,6 +4,7 @@ const initialState = {
   data: {
     attributeAsLabel: '',
     attributeAsMainMedia: '',
+    attributes: [],
     identifier: '',
     code: '',
     labels: {},

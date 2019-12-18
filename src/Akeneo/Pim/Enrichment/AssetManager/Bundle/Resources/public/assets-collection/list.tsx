@@ -29,7 +29,9 @@ import {
   LocaleLabel,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/context';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {Pill, Separator, Spacer} from 'akeneopimenrichmentassetmanager/platform/component/common';
+import {Pill} from 'akeneoassetmanager/application/component/app/pill';
+import {Separator} from 'akeneoassetmanager/application/component/app/separator';
+import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
 import {hasValues, isValueComplete} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {Family} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';

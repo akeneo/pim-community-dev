@@ -33,13 +33,7 @@ import {OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/op
 import {OptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import {AssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
 import {AssetCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset-collection';
-import {
-  Modal,
-  Header,
-  Title,
-  SubTitle,
-  ConfirmButton,
-} from 'akeneopimenrichmentassetmanager/platform/component/common/modal';
+import {Modal, Header, Title, SubTitle, ConfirmButton} from 'akeneoassetmanager/application/component/app/modal';
 import {
   fetchAssetCollection,
   searchAssetCollection,

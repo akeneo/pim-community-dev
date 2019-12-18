@@ -72,6 +72,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset-family', () => {
       assetFamily: {
         attributeAsMainMedia: '',
         attributeAsLabel: '',
+        attributes: [],
         identifier: 'sofa',
         code: 'sofa',
         labels: {

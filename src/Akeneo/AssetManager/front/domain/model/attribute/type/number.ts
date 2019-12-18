@@ -13,6 +13,7 @@ import {MaxValue, NormalizedMaxValue} from 'akeneoassetmanager/domain/model/attr
 export type DecimalsAllowed = boolean;
 export type NumberAdditionalProperty = DecimalsAllowed | MinValue | MaxValue;
 export type NormalizedNumberAdditionalProperty = DecimalsAllowed | NormalizedMinValue | NormalizedMaxValue;
+export const NUMBER_ATTRIBUTE_TYPE = 'number';
 
 export const NUMBER_ATTRIBUTE_TYPE = 'number';
 

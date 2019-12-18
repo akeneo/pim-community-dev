@@ -16,11 +16,11 @@ use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyC
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,6 +59,9 @@ class EditAction
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
 
+    /** @var SecurityFacade */
+    private $securityFacade;
+
     public function __construct(
         EditAssetFamilyHandler $editAssetFamilyHandler,
         CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
@@ -66,7 +69,8 @@ class EditAction
         Serializer $serializer,
         ValidatorInterface $validator,
         AttributeRepositoryInterface $attributeRepository,
-        AssetFamilyRepositoryInterface $assetFamilyRepository
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        SecurityFacade $securityFacade
     ) {
         $this->editAssetFamilyHandler = $editAssetFamilyHandler;
         $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
@@ -75,6 +79,7 @@ class EditAction
         $this->validator = $validator;
         $this->attributeRepository = $attributeRepository;
         $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request): Response
@@ -137,9 +142,9 @@ class EditAction
             $assetFamilyIdentifier,
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
-        $isAllowedToEdit = ($this->canEditAssetFamilyQueryHandler)($query);
 
-        return $isAllowedToEdit; // && add Check of ACLs
+        return $this->securityFacade->isGranted('akeneo_assetmanager_asset_family_edit')
+            && ($this->canEditAssetFamilyQueryHandler)($query);
     }
 
     /**

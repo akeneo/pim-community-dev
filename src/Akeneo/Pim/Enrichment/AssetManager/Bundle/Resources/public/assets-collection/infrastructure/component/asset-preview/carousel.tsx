@@ -6,7 +6,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import {Attribute, getAttributeLabel} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {Spacer} from 'akeneopimenrichmentassetmanager/platform/component/common';
+import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
 import {getAssetPreview, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
 import {ResultCounter} from 'akeneopimenrichmentassetmanager/platform/component/common/result-counter';
 

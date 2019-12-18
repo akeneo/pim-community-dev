@@ -34,6 +34,9 @@ import {restoreFilters} from 'akeneoassetmanager/application/action/asset/search
 import {gridStateStoragePath} from 'akeneoassetmanager/infrastructure/middleware/grid';
 import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import Key from 'akeneoassetmanager/tools/key';
+import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import {ThemeProvider} from 'styled-components';
+
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -91,7 +94,9 @@ class AssetFamilyEditController extends BaseController {
 
         ReactDOM.render(
           <Provider store={this.store}>
-            <AssetFamilyView />
+            <ThemeProvider theme={akeneoTheme}>
+              <AssetFamilyView />
+            </ThemeProvider>
           </Provider>,
           this.el
         );

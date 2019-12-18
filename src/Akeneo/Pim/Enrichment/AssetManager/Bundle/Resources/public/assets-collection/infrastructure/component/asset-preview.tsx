@@ -12,7 +12,7 @@ import {
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
-import {Modal, SubTitle, Title} from 'akeneopimenrichmentassetmanager/platform/component/common/modal';
+import {Modal, SubTitle, Title} from 'akeneoassetmanager/application/component/app/modal';
 import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {Carousel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview/carousel';
 import {Preview} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview/preview';

@@ -12,7 +12,7 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
       if (
           'http://pim.com/rest/asset_manager/designer/asset' === interceptedRequest.url() &&
           'POST' === interceptedRequest.method() &&
-          'designer_starck_1' === JSON.parse(interceptedRequest.postData()).identifier
+          'starck' === JSON.parse(interceptedRequest.postData()).code
       ) {
         interceptedRequest.respond({
           status: 204,
@@ -39,7 +39,7 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
       return await saver.create(assetCreated);
     });
 
-    expect(response).toEqual(undefined);
+    expect(response).toEqual(null);
   });
 
   it('It returns errors when we create an invalid asset', async () => {
@@ -75,7 +75,7 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
       if (
           'http://pim.com/rest/asset_manager/designer/asset' === interceptedRequest.url() &&
           'POST' === interceptedRequest.method() &&
-          'invalid/identifier' === JSON.parse(interceptedRequest.postData()).identifier
+          'invalid/identifier' === JSON.parse(interceptedRequest.postData()).code
       ) {
         interceptedRequest.respond({
           status: 400,

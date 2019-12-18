@@ -12,6 +12,8 @@ import OptionCode, {optionCodesAreEqual} from 'akeneoassetmanager/domain/model/a
 
 export const OPTION_ATTRIBUTE_TYPE = 'option';
 
+export const OPTION_ATTRIBUTE_TYPE = 'option';
+
 export interface NormalizedOptionAttribute extends NormalizedAttribute {
   type: typeof OPTION_ATTRIBUTE_TYPE;
   options: Option[];

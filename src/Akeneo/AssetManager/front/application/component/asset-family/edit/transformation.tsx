@@ -12,15 +12,22 @@ import {
   assetFamilyTransformationsUpdated,
   saveAssetFamily,
 } from 'akeneoassetmanager/application/action/asset-family/edit';
+import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import Ajv from 'ajv';
 import {getErrorsView} from "akeneoassetmanager/application/component/app/validation-error";
 import ValidationError from "akeneoassetmanager/domain/model/validation-error";
 const ajv = new Ajv({allErrors: true, verbose: true});
 const schema = require('akeneoassetmanager/infrastructure/model/asset-family-transformations.schema.json');
+const securityContext = require('pim/security-context');
 
 interface StateProps {
   assetFamily: AssetFamily;
   errors: ValidationError[];
+  rights: {
+    assetFamily: {
+      edit: boolean;
+    };
+  };
 }
 
 type AssetFamilyTransformationEditorProps = {
@@ -69,15 +76,17 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
         <Header
           label={__('pim_asset_manager.asset_family.tab.transformations')}
           image={null}
-          primaryAction={(defaultFocus: React.RefObject<any>) => (
-            <button
-              className="AknButton AknButton--apply"
-              onClick={this.props.events.onSaveEditForm}
-              ref={defaultFocus}
-            >
-              {__('pim_asset_manager.asset_family.button.save')}
-            </button>
-          )}
+          primaryAction={(defaultFocus: React.RefObject<any>) => {
+            return this.props.rights.assetFamily.edit ? (
+              <button
+                className="AknButton AknButton--apply"
+                onClick={this.props.events.onSaveEditForm}
+                ref={defaultFocus}
+              >
+                {__('pim_asset_manager.asset_family.button.save')}
+              </button>
+            ) : null;
+          }}
           secondaryActions={() => {
             return null;
           }}
@@ -126,7 +135,14 @@ export default connect(
   (state: EditState): StateProps => {
     return {
       assetFamily: state.form.data,
-      errors: state.form.errors
+      errors: state.form.errors,
+      rights: {
+        assetFamily: {
+          edit:
+            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
+        },
+      },
     };
   },
   (dispatch: any): DispatchProps => {

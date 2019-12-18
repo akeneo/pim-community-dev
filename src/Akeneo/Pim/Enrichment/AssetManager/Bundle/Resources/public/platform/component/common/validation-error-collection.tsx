@@ -3,9 +3,12 @@ import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import styled from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {AttributeCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
-import {ValidationError, getValidationErrorsForAttribute} from 'akeneopimenrichmentassetmanager/platform/model/validation-error';
+import {
+  ValidationError,
+  getValidationErrorsForAttribute,
+} from 'akeneopimenrichmentassetmanager/platform/model/validation-error';
 import ErrorIcon from 'akeneopimenrichmentassetmanager/platform/component/visual/icon/error';
-import {Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
+import {Separator} from 'akeneoassetmanager/application/component/app/separator';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 
 type ValidationErrorCollectionProps = {
@@ -43,7 +46,7 @@ export const ValidationErrorCollection = ({attributeCode, context, errors}: Vali
     <React.Fragment>
       {errorCollection.map(({message}: ValidationError, index: number) => (
         <ErrorSection key={index}>
-          <ErrorIcon color={akeneoTheme.color.red100}/>
+          <ErrorIcon color={akeneoTheme.color.red100} />
           <ErrorSperator />
           <ErrorText>{message}</ErrorText>
         </ErrorSection>

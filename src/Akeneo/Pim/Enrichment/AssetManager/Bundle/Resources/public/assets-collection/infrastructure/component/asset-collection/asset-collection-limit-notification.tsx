@@ -3,7 +3,7 @@ import {
   NotificationSection,
   NotificationText,
 } from 'akeneopimenrichmentassetmanager/platform/component/common/notification';
-import {Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
+import {Separator} from 'akeneoassetmanager/application/component/app/separator';
 import IconInfoIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/icon/info';
 import __ from 'akeneoassetmanager/tools/translator';
 import styled from 'styled-components';

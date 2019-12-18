@@ -40,6 +40,7 @@ services:
             - '@validator'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@oro_security.security_facade'
 
     akeneo_assetmanager.infrastructure.action.asset_family.delete:
         class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\DeleteAction

@@ -3,6 +3,7 @@ import right, {RightState} from 'akeneoassetmanager/application/reducer/right';
 import sidebar, {SidebarState} from 'akeneoassetmanager/application/reducer/sidebar';
 import grid, {GridState} from 'akeneoassetmanager/application/reducer/grid';
 import createAsset, {CreateState as CreateAssetState} from 'akeneoassetmanager/application/reducer/asset/create';
+import uploadAsset, {UploadState as UploadAssetState} from 'akeneoassetmanager/application/reducer/asset/upload';
 import form, {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import createAttribute, {
@@ -24,6 +25,7 @@ export interface EditState {
   sidebar: SidebarState;
   grid: GridState<NormalizedAsset>;
   createAsset: CreateAssetState;
+  uploadAsset: UploadAssetState;
   createAttribute: CreateAttributeState;
   attributes: ListState;
   attribute: EditAttributeState;
@@ -44,6 +46,7 @@ export default {
   createAttribute,
   attributes,
   attribute,
+  uploadAsset,
   structure,
   permission,
   options,

@@ -3,15 +3,7 @@ import {createAssetFamilyFromNormalized} from 'akeneoassetmanager/domain/model/a
 
 describe('akeneo > asset family > application > hydrator --- asset family', () => {
   test('I can hydrate a new asset family', () => {
-    const hydrate = hydrator(({identifier, labels, image, attribute_as_label, attribute_as_main_media}) => {
-      expect(identifier).toEqual('designer');
-      expect(image).toEqual(null);
-      expect(labels).toEqual({en_US: 'Designer'});
-      expect(attribute_as_label).toEqual('name');
-      expect(attribute_as_main_media).toEqual('picture');
-
-      return createAssetFamilyFromNormalized({identifier, labels, image, attribute_as_label, attribute_as_main_media});
-    });
+    const hydrate = hydrator();
 
     expect(
       hydrate({
@@ -20,6 +12,9 @@ describe('akeneo > asset family > application > hydrator --- asset family', () =
         image: null,
         attribute_as_label: 'name',
         attribute_as_main_media: 'picture',
+        asset_count: 0,
+        attributes: [],
+        permission: {},
       })
     );
   });
