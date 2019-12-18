@@ -1,0 +1,8 @@
+oneup_flysystem:
+    adapters:
+        catalog_storage_adapter:
+            nulladapter: ~
+        jobs_storage_adapter:
+            nulladapter: ~
+        archivist_adapter:
+            nulladapter: ~

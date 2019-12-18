@@ -42,7 +42,7 @@ unit-front: apps-unit-front
 ### Acceptance tests
 .PHONY: acceptance-back
 acceptance-back: apps-acceptance-back
-	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
+	APP_ENV=behat ${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 
 .PHONY: acceptance-front
 acceptance-front:
