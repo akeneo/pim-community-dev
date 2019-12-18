@@ -6,7 +6,7 @@ type Props = {
     onClose: () => void;
 };
 
-export const Dropdown: FC<Props> = ({children, onClose}) => {
+export const Dropdown: FC<Props> = ({children, onClose}: Props) => {
     const ref = useRef<HTMLDivElement>(null);
 
     const handleMouseDown = (event: MouseEvent) => {

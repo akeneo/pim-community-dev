@@ -18,7 +18,7 @@ const EventChartContainer = styled.div`
     padding-bottom: 25px;
 `;
 
-const getChartColor: (eventType: AuditEventType) => AvailableColors = (eventType) => {
+const getChartColor: (eventType: AuditEventType) => AvailableColors = eventType => {
     switch (eventType) {
         case AuditEventType.PRODUCT_CREATED:
             return AvailableColors.PURPLE;
@@ -32,7 +32,7 @@ const getChartColor: (eventType: AuditEventType) => AvailableColors = (eventType
     return AvailableColors.PURPLE;
 };
 
-export const EventChart: FC<Props> = ({title, eventType}) => {
+export const EventChart: FC<Props> = ({title, eventType}: Props) => {
     const [state] = useDashboardState();
     const formatDate = useDateFormatter();
     const translate = useTranslate();
@@ -80,7 +80,7 @@ export const EventChart: FC<Props> = ({title, eventType}) => {
                 />
             </Section>
 
-            {chartData ? <Chart data={chartData} color={getChartColor(eventType)}/> : <>...</>}
+            {chartData ? <Chart data={chartData} color={getChartColor(eventType)} /> : <>...</>}
         </EventChartContainer>
     );
 };
