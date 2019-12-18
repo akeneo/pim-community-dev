@@ -228,6 +228,18 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCr
       createUploadedLineFromFilename('foo-fr_FR-mobile.jpg', assetFamily),
     ];
 
+    const pictureAttribute = {
+      identifier: 'picture_fingerprint',
+      asset_family_identifier: 'packshot',
+      code: 'picture',
+      type: 'media_file',
+      labels: {en_US: 'Picture'},
+      order: 0,
+      is_required: true,
+      value_per_locale: true,
+      value_per_channel: true,
+    };
+
     expect(createCreationAssetsFromLines(lines, assetFamily)).toEqual([
       {
         assetFamilyIdentifier: 'packshot',
@@ -235,7 +247,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCr
         labels: {},
         values: [
           {
-            attribute: 'picture_fingerprint',
+            attribute: pictureAttribute,
             channel: 'ecommerce',
             locale: 'en_US',
             data: {
@@ -244,7 +256,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCr
             },
           },
           {
-            attribute: 'picture_fingerprint',
+            attribute: pictureAttribute,
             channel: 'ecommerce',
             locale: 'fr_FR',
             data: {
@@ -253,7 +265,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCr
             },
           },
           {
-            attribute: 'picture_fingerprint',
+            attribute: pictureAttribute,
             channel: 'mobile',
             locale: 'fr_FR',
             data: {
@@ -271,6 +283,18 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCr
 
     const lines = [createUploadedLineFromFilename('foo.jpg', assetFamily)];
 
+    const pictureAttribute = {
+      identifier: 'picture_fingerprint',
+      asset_family_identifier: 'packshot',
+      code: 'picture',
+      type: 'media_file',
+      labels: {en_US: 'Picture'},
+      order: 0,
+      is_required: true,
+      value_per_locale: true,
+      value_per_channel: true,
+    };
+
     expect(createCreationAssetsFromLines(lines, assetFamily)).toEqual([
       {
         assetFamilyIdentifier: 'packshot',
@@ -278,7 +302,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCr
         labels: {},
         values: [
           {
-            attribute: 'picture_fingerprint',
+            attribute: pictureAttribute,
             channel: null,
             locale: null,
             data: {
@@ -300,6 +324,17 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCr
       createUploadedLineFromFilename('bar-en_US-ecommerce.jpg', assetFamily),
       createUploadedLineFromFilename('bar-fr_FR-ecommerce.jpg', assetFamily),
     ];
+    const pictureAttribute = {
+      identifier: 'picture_fingerprint',
+      asset_family_identifier: 'packshot',
+      code: 'picture',
+      type: 'media_file',
+      labels: {en_US: 'Picture'},
+      order: 0,
+      is_required: true,
+      value_per_locale: true,
+      value_per_channel: true,
+    };
 
     expect(createCreationAssetsFromLines(lines, assetFamily)).toEqual([
       {
@@ -308,7 +343,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCr
         labels: {},
         values: [
           {
-            attribute: 'picture_fingerprint',
+            attribute: pictureAttribute,
             channel: 'ecommerce',
             locale: 'en_US',
             data: {
@@ -317,7 +352,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCr
             },
           },
           {
-            attribute: 'picture_fingerprint',
+            attribute: pictureAttribute,
             channel: 'ecommerce',
             locale: 'fr_FR',
             data: {
@@ -333,7 +368,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCr
         labels: {},
         values: [
           {
-            attribute: 'picture_fingerprint',
+            attribute: pictureAttribute,
             channel: 'ecommerce',
             locale: 'en_US',
             data: {
@@ -342,7 +377,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCr
             },
           },
           {
-            attribute: 'picture_fingerprint',
+            attribute: pictureAttribute,
             channel: 'ecommerce',
             locale: 'fr_FR',
             data: {

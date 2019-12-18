@@ -15,8 +15,6 @@ export type NumberAdditionalProperty = DecimalsAllowed | MinValue | MaxValue;
 export type NormalizedNumberAdditionalProperty = DecimalsAllowed | NormalizedMinValue | NormalizedMaxValue;
 export const NUMBER_ATTRIBUTE_TYPE = 'number';
 
-export const NUMBER_ATTRIBUTE_TYPE = 'number';
-
 export interface NormalizedNumberAttribute extends NormalizedAttribute {
   type: typeof NUMBER_ATTRIBUTE_TYPE;
   decimals_allowed: DecimalsAllowed;

@@ -12,13 +12,12 @@ const routing = require('routing');
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import LabelCollection from 'akeneoassetmanager/domain/model/label-collection';
-import {NormalizedMinimalValue} from 'akeneoassetmanager/domain/model/asset/value';
 
 type BackendCreationAsset = {
   asset_family_identifier: AssetFamilyIdentifier;
   code: AssetCode;
   labels: LabelCollection;
-  values: NormalizedMinimalValue[];
+  values: Value[];
 };
 export const normalizeCreationAsset = (asset: CreationAsset): BackendCreationAsset => ({
   asset_family_identifier: asset.assetFamilyIdentifier,

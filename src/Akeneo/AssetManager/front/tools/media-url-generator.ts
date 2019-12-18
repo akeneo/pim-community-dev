@@ -118,10 +118,12 @@ export const getAssetPreview = (asset: any, type: MediaPreviewTypes, {locale, ch
       ? 'UNKNOWN'
       : asset.image[0].attribute;
 
+  const data = undefined !== image ? btoa(typeof image.data === 'string' ? image.data : image.data.filePath) : '';
+
   return routing.generate('akeneo_asset_manager_image_preview', {
     type,
     attributeIdentifier,
-    data: undefined !== image ? btoa(image.data.filePath) : '',
+    data,
   });
 };
 
