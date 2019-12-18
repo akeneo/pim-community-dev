@@ -18,7 +18,6 @@ const normalizedDescription = {
   validation_rule: 'email',
   regular_expression: null,
 };
-const description = denormalizeTextAttribute(normalizedDescription);
 const normalizedWebsite = {
   identifier: 'website_1234',
   asset_family_identifier: 'designer',
@@ -35,7 +34,6 @@ const normalizedWebsite = {
   validation_rule: 'url',
   regular_expression: null,
 };
-const website = denormalizeTextAttribute(normalizedWebsite);
 
 const normalizedNickname = {
   identifier: 'nickname_1234',
@@ -53,24 +51,23 @@ const normalizedNickname = {
   validation_rule: 'url',
   regular_expression: null,
 };
-const nickname = denormalizeTextAttribute(normalizedNickname);
 const descriptionData = 'a nice description';
 const descriptionValue = {
-  attribute: description,
+  attribute: normalizedDescription,
   channel: 'ecommerce',
   locale: 'en_US',
   data: descriptionData,
 };
-const websiteData = '';
+const websiteData = null;
 const websiteValue = {
-  attribute: website,
+  attribute: normalizedWebsite,
   channel: 'ecommerce',
   locale: 'en_US',
   data: websiteData,
 };
 const nicknameData = 'Pedro';
 const nicknameValue = {
-  attribute: nickname,
+  attribute: normalizedNickname,
   channel: 'ecommerce',
   locale: 'en_US',
   data: nicknameData,
