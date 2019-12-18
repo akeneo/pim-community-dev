@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    VictoryAxis,
-    VictoryChart,
-    VictoryLine,
-    VictoryScatter,
-    VictoryStyleObject
-} from 'victory';
+import {VictoryAxis, VictoryChart, VictoryLine, VictoryScatter, VictoryStyleObject} from 'victory';
 
 interface VictoryStyle {
     [property: string]: VictoryStyleObject;
@@ -59,24 +53,24 @@ const gridYAxesTheme: VictoryStyle = {
     },
     axis: lightGreyStroke,
 };
-const scatterTheme: (color: AvailableColors) => VictoryStyle = (color) => {
+const scatterTheme: (color: AvailableColors) => VictoryStyle = color => {
     return {
         labels: {
             fontSize: 13,
-                fontWeight: 'normal',
-                fill: ({index}: any) => (0 === index ? 'none' : AvailableColors.PURPLE === color ? purple : blue),
-                padding: 10,
+            fontWeight: 'normal',
+            fill: ({index}: any) => (0 === index ? 'none' : AvailableColors.PURPLE === color ? purple : blue),
+            padding: 10,
         },
         data: {
             fill: 'purple' === color ? purple : blue,
         },
     };
 };
-const lineTheme: (color: AvailableColors) => VictoryStyle = (color) => {
+const lineTheme: (color: AvailableColors) => VictoryStyle = color => {
     return {
         data: {
             stroke: AvailableColors.PURPLE === color ? lightPurple : lightBlue,
-        }
+        },
     };
 };
 
@@ -110,7 +104,7 @@ export const Chart = ({data, color}: {data: ChartData[]; color: AvailableColors}
             style={{
                 parent: {
                     borderBottom: `1px solid ${darkGrey}`,
-                }
+                },
             }}
         >
             <VictoryAxis padding={0} offsetY={40} tickValues={xDaysValues} style={daysAxeTheme} />
@@ -118,8 +112,8 @@ export const Chart = ({data, color}: {data: ChartData[]; color: AvailableColors}
             {[1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5].map((value, index) => {
                 return <VictoryAxis dependentAxis key={index} style={gridYAxesTheme} axisValue={value} />;
             })}
-            <VictoryLine data={data} interpolation='monotoneX' style={lineTheme(color)}/>
-            <VictoryScatter data={data} labels={yLabels} size={7} style={scatterTheme(color)}/>
+            <VictoryLine data={data} interpolation='monotoneX' style={lineTheme(color)} />
+            <VictoryScatter data={data} labels={yLabels} size={7} style={scatterTheme(color)} />
         </VictoryChart>
     );
 };
