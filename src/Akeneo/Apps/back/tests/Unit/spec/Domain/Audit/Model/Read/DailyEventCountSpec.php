@@ -14,22 +14,23 @@ use PhpSpec\ObjectBehavior;
  */
 class DailyEventCountSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
         $eventDate = new \DateTime('2019-12-03', new \DateTimeZone('UTC'));
         $this->beConstructedWith(5, $eventDate);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(DailyEventCount::class);
     }
 
-    function it_normalizes_the_event_count()
+    public function it_normalizes_the_event_count(): void
     {
-        $this->normalize()->shouldReturn([
-            'date' => '2019-12-03',
-            'value' => 5
-        ]);
+        $this->normalize()->shouldReturn(
+            [
+                '2019-12-03' => 5,
+            ]
+        );
     }
 }
