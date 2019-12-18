@@ -27,3 +27,6 @@ export const areFilesEqual = (first: File, second: File) =>
     first.extension === second.extension);
 
 export const isFileInStorage = (file: File) => !isFileEmpty(file) && -1 === file.filePath.indexOf('/tmp/');
+export const isFile = (file: any): file is File =>
+  null === file ||
+  (typeof file === 'object' && typeof file.originalFilename === 'string' && typeof file.filePath === 'string');

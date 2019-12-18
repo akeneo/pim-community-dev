@@ -11,28 +11,22 @@ config:
 
         akeneoassetmanager/application/configuration/value:
             media_file:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/media-file'
-                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/file.tsx'
+                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/media-file.tsx'
                 cell: '@akeneoassetmanager/application/component/asset/index/cell/media-file.tsx'
             text:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/text'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/text.tsx'
                 cell: '@akeneoassetmanager/application/component/asset/index/cell/text.tsx'
             media_link:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/media-link'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/media-link.tsx'
                 cell: '@akeneoassetmanager/application/component/asset/index/cell/media-link.tsx'
             number:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/number'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/number.tsx'
                 cell: '@akeneoassetmanager/application/component/asset/index/cell/number.tsx'
             option:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/option'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/option.tsx'
                 cell: '@akeneoassetmanager/application/component/asset/index/cell/option.tsx'
                 filter: '@akeneoassetmanager/application/component/asset/index/filter/option.tsx'
             option_collection:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/option-collection'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/option-collection.tsx'
                 cell: '@akeneoassetmanager/application/component/asset/index/cell/option-collection.tsx'
                 filter: '@akeneoassetmanager/application/component/asset/index/filter/option.tsx'

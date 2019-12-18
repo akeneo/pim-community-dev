@@ -106,7 +106,7 @@ class EditAction
             $parameters['labels'],
             $parameters['image'],
             $parameters['attributeAsMainMedia'],
-            $parameters['productLinkRules'],
+            isset($parameters['productLinkRules']) ? $parameters['productLinkRules'] : null,
             $transformations
         );
 

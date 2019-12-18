@@ -20,6 +20,6 @@ export const hydrator = (denormalize: (normalizedAttribute: NormalizedAttribute)
   return denormalize(normalizedAttribute);
 };
 
-const hydrateAttribute = hydrator(denormalize);
+const hydrateAttribute = (normalizedAttribute: NormalizedAttribute) => hydrator(denormalize)(normalizedAttribute);
 
 export default hydrateAttribute;
