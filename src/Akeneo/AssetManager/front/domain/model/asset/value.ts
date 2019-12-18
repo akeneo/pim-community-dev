@@ -19,7 +19,7 @@ export const isValueComplete = (value: Value): boolean => value.attribute.is_req
 
 export const isValueRequired = (value: Value): boolean => value.attribute.is_required;
 
-export const areValueEqual = (first: Value, second: Value): boolean =>
+export const areValuesEqual = (first: Value, second: Value): boolean =>
   channelReferenceAreEqual(first.channel, second.channel) &&
   localeReferenceAreEqual(first.locale, second.locale) &&
   first.attribute.identifier === second.attribute.identifier;

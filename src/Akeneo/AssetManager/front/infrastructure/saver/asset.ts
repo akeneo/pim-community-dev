@@ -5,6 +5,7 @@ import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
 
 const routing = require('routing');
 
@@ -23,7 +24,11 @@ export class AssetSaverImplementation implements AssetSaver {
         assetFamilyIdentifier: assetFamilyIdentifierStringValue(asset.getAssetFamilyIdentifier()),
         assetCode: assetCodeStringValue(asset.getCode()),
       }),
-      normalizedAsset
+      {
+        //TODO: temporary fix to make the value light model work
+        ...normalizedAsset,
+        values: normalizedAsset.values.map((value: Value) => ({...value, attribute: value.attribute.identifier})),
+      }
     ).catch(handleError);
   }
 

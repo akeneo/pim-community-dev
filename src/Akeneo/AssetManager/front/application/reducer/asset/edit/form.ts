@@ -2,7 +2,7 @@ import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import formState, {FormState} from 'akeneoassetmanager/application/reducer/state';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {combineReducers} from 'redux';
-import Value, {areValueEqual} from 'akeneoassetmanager/domain/model/asset/value';
+import Value, {areValuesEqual} from 'akeneoassetmanager/domain/model/asset/value';
 
 export interface EditionFormState {
   state: FormState;
@@ -52,7 +52,7 @@ const dataReducer = (
       state = {
         ...state,
         values: state.values.map((currentValue: Value) => {
-          if (areValueEqual(currentValue, value) && currentValue.data !== value.data) {
+          if (areValuesEqual(currentValue, value) && currentValue.data !== value.data) {
             return value;
           }
 
