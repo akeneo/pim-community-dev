@@ -37,6 +37,7 @@ LEFT JOIN akeneo_app_audit audit ON audit.app_code = app.code
 AND audit.event_date BETWEEN :start_date AND :end_date
 AND audit.event_type = :event_type
 GROUP BY app.code, audit.event_date, audit.event_count
+ORDER BY audit.event_date
 SQL;
         $sqlParams = [
             'start_date' => $startDateTime->format('Y-m-d'),
