@@ -1,5 +1,5 @@
 import React, {FC, ReactNode, useEffect, useState} from 'react';
-import {AvailableColors, Chart} from './Chart';
+import {Chart} from './Chart';
 import {AppSelect} from './AppSelect';
 import {useDashboardState} from '../dashboard-state-context';
 import {Section} from '../../common';
@@ -8,31 +8,19 @@ import {AuditEventType} from '../../../domain/audit/audit-event-type.enum';
 import {useFetchSourceAppsEvent} from '../api-hooks/use-fetch-source-apps-event';
 import {useDateFormatter} from '../../shared/date-formatter/use-date-formatter';
 import styled from 'styled-components';
+import {VictoryThemeDefinition} from 'victory';
 
 type Props = {
     title: ReactNode;
     eventType: AuditEventType;
+    theme: VictoryThemeDefinition;
 };
 
 const EventChartContainer = styled.div`
     padding-bottom: 25px;
 `;
 
-const getChartColor: (eventType: AuditEventType) => AvailableColors = eventType => {
-    switch (eventType) {
-        case AuditEventType.PRODUCT_CREATED:
-            return AvailableColors.PURPLE;
-            break;
-
-        case AuditEventType.PRODUCT_UPDATED:
-            return AvailableColors.BLUE;
-            break;
-    }
-
-    return AvailableColors.PURPLE;
-};
-
-export const EventChart: FC<Props> = ({title, eventType}: Props) => {
+export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
     const [state] = useDashboardState();
     const formatDate = useDateFormatter();
     const translate = useTranslate();
@@ -64,7 +52,7 @@ export const EventChart: FC<Props> = ({title, eventType}: Props) => {
                 index + 1 !== numberOfData
                     ? formatDate(date, {weekday: 'long', month: 'short', day: 'numeric'})
                     : translate('akeneo_apps.dashboard.charts.legend.today'),
-            yLabel: value.toString(),
+            yLabel: 0 === index ? '' : value.toString(),
         }));
 
         setChartData(chartData);
@@ -80,7 +68,7 @@ export const EventChart: FC<Props> = ({title, eventType}: Props) => {
                 />
             </Section>
 
-            {chartData ? <Chart data={chartData} color={getChartColor(eventType)} /> : <>...</>}
+            {chartData ? <Chart data={chartData} theme={theme} /> : <>...</>}
         </EventChartContainer>
     );
 };
