@@ -18,7 +18,7 @@ const Container = styled.div`
 `;
 
 const Image = styled.img`
-    width: 256px;
+    width: 200px;
 `;
 
 const Title = styled.div`
