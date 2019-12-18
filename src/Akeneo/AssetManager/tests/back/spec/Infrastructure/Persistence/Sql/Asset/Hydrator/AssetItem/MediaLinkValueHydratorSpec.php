@@ -53,10 +53,7 @@ class MediaLinkValueHydratorSpec extends ObjectBehavior
                 'attribute' => 'front_picture_finrgerprint',
                 'locale'    => null,
                 'channel'   => null,
-                'data'      => [
-                    'filePath' => 'house',
-                    'originalFilename' => 'house.png'
-                ],
+                'data'      => 'house',
             ]
         );
     }
