@@ -25,7 +25,12 @@ const View = ({
     <FileComponent
       id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
       alt={__('pim_asset_manager.asset.value.file', {
-        '{{ attribute_code }}': getLabelInCollection(value.attribute.labels, localeReferenceStringValue(value.locale)),
+        '{{ attribute_code }}': getLabelInCollection(
+          value.attribute.labels,
+          localeReferenceStringValue(value.locale),
+          true,
+          value.attribute.code
+        ),
       })}
       image={value.data}
       attribute={value.attribute.identifier}

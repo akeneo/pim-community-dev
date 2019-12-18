@@ -61,7 +61,14 @@ export class AssetSaverImplementation implements AssetSaver {
       routing.generate('akeneo_asset_manager_asset_create_rest', {
         assetFamilyIdentifier: assetFamilyIdentifierStringValue(asset.assetFamilyIdentifier),
       }),
-      normalizedAsset
+      {
+        //TODO: temporary fix to make the value light model work https://akeneo.atlassian.net/browse/AST-183
+        ...normalizedAsset,
+        values:
+          undefined === normalizedAsset.values
+            ? []
+            : normalizedAsset.values.map((value: Value) => ({...value, attribute: value.attribute.identifier})),
+      }
     ).catch(handleError);
 
     return undefined === result ? null : result;
