@@ -22,9 +22,7 @@ import {assetFamilyPermissionChanged} from 'akeneoassetmanager/domain/event/user
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import TransformationCollection from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
-import {getColumns} from 'akeneoassetmanager/application/action/attribute/list';
-import {updateColumns} from 'akeneoassetmanager/application/event/search';
-import denormalizeAttributes from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
+import {updateAttributesColumns} from 'akeneoassetmanager/application/action/attribute/list';
 
 export const saveAssetFamily = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const assetFamily = getState().form.data;
@@ -82,13 +80,9 @@ export const attributeAsMainMediaUpdated = (attributeAsMainMedia: AttributeIdent
 ) => {
   dispatch(assetFamilyEditionAttributeAsMainMediaUpdated(attributeAsMainMedia));
   dispatch(assetFamilyEditionUpdated(getState().form.data));
-  const attributes = getState().attributes.attributes;
-  if (null === attributes) return;
-  const assetFamily = getState().form.data;
-  const columnsToExclude = [assetFamily.attributeAsMainMedia, assetFamily.attributeAsLabel];
-  dispatch(
-    updateColumns(getColumns(attributes.map(denormalizeAttributes), getState().structure.channels, columnsToExclude))
-  );
+  // The attributes thumbnails are not updated until after saving
+  // TODO check if thumbnail preview is fixed after attributeAsMainMedia preview generation rework
+  dispatch(updateAttributesColumns());
 };
 
 export const assetFamilyTransformationsUpdated = (transformations: TransformationCollection) => (

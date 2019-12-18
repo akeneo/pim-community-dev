@@ -19,6 +19,7 @@ import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getAttributeTypes, AttributeType} from 'akeneoassetmanager/application/configuration/attribute';
 import {hasDataCellView} from 'akeneoassetmanager/application/configuration/value';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import denormalizeAttributes from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 
 export class InvalidArgument extends Error {}
 
@@ -34,16 +35,19 @@ export const updateAttributeList = () => async (dispatch: any, getState: () => E
   }
 };
 
-export const attributeListGotUpdated = (attributes: Attribute[]) => (
-  dispatch: any,
-  getState: () => EditState
-): void => {
+export const attributeListGotUpdated = (attributes: Attribute[]) => (dispatch: any): void => {
   dispatch(attributeListUpdated(attributes));
+  dispatch(updateAttributesColumns());
+};
 
+export const updateAttributesColumns = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+  const attributes = getState().attributes.attributes;
+  if (null === attributes) return;
   const assetFamily = getState().form.data;
   const columnsToExclude = [assetFamily.attributeAsMainMedia, assetFamily.attributeAsLabel];
-
-  dispatch(updateColumns(getColumns(attributes, getState().structure.channels, columnsToExclude)));
+  dispatch(
+    updateColumns(getColumns(attributes.map(denormalizeAttributes), getState().structure.channels, columnsToExclude))
+  );
 };
 
 const getColumn = (attribute: Attribute, channel: ChannelReference, locale: LocaleReference): Column => {
