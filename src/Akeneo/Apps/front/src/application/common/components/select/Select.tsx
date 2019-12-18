@@ -11,7 +11,7 @@ type Props = {
     dropdownTitle?: ReactNode;
 };
 
-export const Select: FC<Props> = ({data, onChange, dropdownTitle}) => {
+export const Select: FC<Props> = ({data, onChange, dropdownTitle}: Props) => {
     const [opened, setOpened] = useState(false);
     const [selectedValue, setSelectedValue] = useState(
         (Object.keys(data).length > 0 && Object.keys(data)[0]) || undefined

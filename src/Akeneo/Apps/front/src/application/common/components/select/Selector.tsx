@@ -8,7 +8,7 @@ type Props = {
     onClick: () => void;
 };
 
-export const Selector: FC<Props> = ({children, onClick}) => (
+export const Selector: FC<Props> = ({children, onClick}: Props) => (
     <Container tabIndex={0} onClick={onClick}>
         <Value>{children}</Value>
         <DropdownArrow>

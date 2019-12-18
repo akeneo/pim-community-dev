@@ -42,5 +42,6 @@ export const initialState: State = {
     sourceApps: {},
     events: {
         [AuditEventType.PRODUCT_CREATED]: {},
+        [AuditEventType.PRODUCT_UPDATED]: {},
     },
 };

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, ReactNode, FC} from 'react';
+import React, {FC, ReactNode, useEffect, useState} from 'react';
 import {Chart} from './Chart';
 import {AppSelect} from './AppSelect';
 import {useDashboardState} from '../dashboard-state-context';
@@ -7,13 +7,20 @@ import {useTranslate} from '../../shared/translate';
 import {AuditEventType} from '../../../domain/audit/audit-event-type.enum';
 import {useFetchSourceAppsEvent} from '../api-hooks/use-fetch-source-apps-event';
 import {useDateFormatter} from '../../shared/date-formatter/use-date-formatter';
+import styled from 'styled-components';
+import {VictoryThemeDefinition} from 'victory';
 
 type Props = {
     title: ReactNode;
     eventType: AuditEventType;
+    theme: VictoryThemeDefinition;
 };
 
-export const EventChart: FC<Props> = ({title, eventType}) => {
+const EventChartContainer = styled.div`
+    padding-bottom: 25px;
+`;
+
+export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
     const [state] = useDashboardState();
     const formatDate = useDateFormatter();
     const translate = useTranslate();
@@ -45,14 +52,14 @@ export const EventChart: FC<Props> = ({title, eventType}) => {
                 index + 1 !== numberOfData
                     ? formatDate(date, {weekday: 'long', month: 'short', day: 'numeric'})
                     : translate('akeneo_apps.dashboard.charts.legend.today'),
-            yLabel: value.toString(),
+            yLabel: 0 === index ? '' : value.toString(),
         }));
 
         setChartData(chartData);
     }, [appsData, selectedAppCode]);
 
     return (
-        <>
+        <EventChartContainer>
             <Section title={title}>
                 <AppSelect
                     apps={Object.values(state.sourceApps)}
@@ -61,7 +68,7 @@ export const EventChart: FC<Props> = ({title, eventType}) => {
                 />
             </Section>
 
-            {chartData ? <Chart data={chartData} /> : <>...</>}
-        </>
+            {chartData ? <Chart data={chartData} theme={theme} /> : <>...</>}
+        </EventChartContainer>
     );
 };

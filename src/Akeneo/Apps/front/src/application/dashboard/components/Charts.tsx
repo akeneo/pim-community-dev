@@ -4,6 +4,7 @@ import {EventChart} from './EventChart';
 import {NoApp} from './NoApp';
 import {Translate} from '../../shared/translate';
 import {AuditEventType} from '../../../domain/audit/audit-event-type.enum';
+import {EventChartThemes} from "../../apps/EventChartThemes";
 
 export const Charts = () => {
     const sourceApps = useFetchSourceApps();
@@ -13,9 +14,17 @@ export const Charts = () => {
     }
 
     return (
-        <EventChart
-            eventType={AuditEventType.PRODUCT_CREATED}
-            title={<Translate id='akeneo_apps.dashboard.charts.number_of_products_created' />}
-        />
+        <>
+            <EventChart
+                eventType={AuditEventType.PRODUCT_CREATED}
+                theme={EventChartThemes.purple}
+                title={<Translate id='akeneo_apps.dashboard.charts.number_of_products_created' />}
+            />
+            <EventChart
+                eventType={AuditEventType.PRODUCT_UPDATED}
+                theme={EventChartThemes.blue}
+                title={<Translate id='akeneo_apps.dashboard.charts.number_of_products_updated' />}
+            />
+        </>
     );
 };
