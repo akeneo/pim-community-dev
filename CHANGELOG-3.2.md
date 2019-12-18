@@ -3,6 +3,7 @@
 ## Bug fixes:
 
 - PIM-9027: Translations missing on metrics
+- PIM-9028: Fix error on JSON_EXTRACT where a_image.code is numerical
 
 # 3.2.26 (2019-12-16)
 
