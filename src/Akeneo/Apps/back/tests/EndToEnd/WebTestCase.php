@@ -27,7 +27,7 @@ abstract class WebTestCase extends TestCase
 
     protected function authenticate($username, $password)
     {
-        $token = new UsernamePasswordToken('admin', 'admin', 'main', ['ROLE_ADMINISTRATOR']);
+        $token = new UsernamePasswordToken($username, $password, 'main', ['ROLE_ADMINISTRATOR']);
 
         $session = $this->get('session');
         $session->set('_security_main', serialize($token));
