@@ -26,7 +26,7 @@ const Link = styled.a`
 `;
 
 const Image = styled.img`
-    width: 256px;
+    width: 200px;
 `;
 
 export const NoApp = ({onCreate}: {onCreate: () => void}) => (
