@@ -14,7 +14,7 @@ class UserRepositorySpec extends ObjectBehavior
 {
     function let(EntityManager $entityManager, ClassMetadata $classMetadata)
     {
-        $entityManager->getClassMetadata()->willReturn($classMetadata);
+        $entityManager->getClassMetadata('user')->willReturn($classMetadata);
 
         $this->beConstructedWith($entityManager, 'user');
     }

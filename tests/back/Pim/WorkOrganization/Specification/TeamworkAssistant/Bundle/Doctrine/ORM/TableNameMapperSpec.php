@@ -37,8 +37,8 @@ class TableNameMapperSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_it_cannot_find_the_table($tableNameBuilder)
     {
-        $tableNameBuilder->getTableName('model.value', null)->willThrow(\Exception::class);
+        $tableNameBuilder->getTableName('model.value.class', null)->willThrow(\Exception::class);
 
-        $this->shouldThrow(\LogicException::class)->during('getTableName', ['model.value']);
+        $this->shouldThrow(\LogicException::class)->during('getTableName', ['model.value', null]);
     }
 }
