@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\AssetFamily;
 
+use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -38,6 +39,9 @@ class EditActionTest extends ControllerIntegrationTestCase
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var SecurityFacadeStub */
+    private $securityFacade;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -46,6 +50,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
+        $this->securityFacade = $this->get('oro_security.security_facade');
     }
 
     /**
@@ -53,6 +58,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_an_asset_family_details(): void
     {
+        $this->allowEditRights();
         $attributeIdentifier = $this->getIdentifierForAttribute(
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('image')
@@ -142,8 +148,36 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_access_denied_if_the_user_does_not_have_permissions(): void
     {
+        $this->allowEditRights();
         $this->client->followRedirects(false);
         $this->forbidsEdit();
+        $postContent = [
+            'identifier' => 'designer',
+            'labels'     => [
+                'en_US' => 'foo',
+            ],
+        ];
+
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::ASSET_FAMILY_EDIT_ROUTE,
+            ['identifier' => 'designer'],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            $postContent
+        );
+        $response = $this->client->getResponse();
+        Assert::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
+    /** @test */
+    public function it_returns_an_access_denied_when_the_user_does_not_have_the_acl_permission()
+    {
+        $this->client->followRedirects(false);
+        $this->revokeEditRights();
         $postContent = [
             'identifier' => 'designer',
             'labels'     => [
@@ -175,6 +209,16 @@ class EditActionTest extends ControllerIntegrationTestCase
     {
         $this->get('akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler')
             ->forbid();
+    }
+
+    private function revokeEditRights(): void
+    {
+        $this->securityFacade->setIsGranted('akeneo_assetmanager_asset_family_edit', false);
+    }
+
+    private function allowEditRights(): void
+    {
+        $this->securityFacade->setIsGranted('akeneo_assetmanager_asset_family_edit', true);
     }
 
     private function loadFixtures(): void
