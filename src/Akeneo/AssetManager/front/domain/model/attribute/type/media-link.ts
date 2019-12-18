@@ -35,7 +35,7 @@ export type MediaLinkAdditionalProperty = Prefix | Suffix | MediaType;
 export const MEDIA_LINK_ATTRIBUTE_TYPE = 'media_link';
 
 export interface NormalizedMediaLinkAttribute extends NormalizedAttribute {
-  type: 'media_link';
+  type: typeof MEDIA_LINK_ATTRIBUTE_TYPE;
   prefix: NormalizedPrefix;
   suffix: NormalizedSuffix;
   media_type: NormalizedMediaType;

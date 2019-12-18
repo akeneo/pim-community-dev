@@ -183,6 +183,7 @@ pim_asset_manager:
     button:
       save: Save
       create: Add new
+      mass_upload: Mass upload
       delete: Delete
       delete_all: Delete all assets
       back: Back to list
@@ -220,6 +221,29 @@ pim_asset_manager:
         code: Code (required)
         create_another: Create another asset
       confirm: Save
+    upload:
+      line_count: '[0,1]{{ count }} file|]1,Inf] {{ count }} files'
+      title: Upload assets
+      lines: Files
+      remove: Remove
+      remove_all: Remove all
+      confirm: Create
+      drop_or_click_here: Drag and drop your files or click here
+      will_appear_here: Upload assets and they will appear just here!
+      list:
+        asset: Asset
+        filename: Filename
+        code: Code (required)
+        locale: Locale (required)
+        channel: Channel (required)
+        status: Status
+      status:
+        waiting_for_upload: not uploaded
+        upload_in_progress: in progress
+        uploaded: uploaded
+        valid: ready to create
+        invalid: error
+        created: created
     delete:
       message: Are you sure you want to delete the asset "{{ assetLabel }}"? If it's linked to products or assets, the links will be removed.
       title: Asset

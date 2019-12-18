@@ -5,7 +5,11 @@ import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {redirectToAsset} from 'akeneoassetmanager/application/action/asset/router';
 import __ from 'akeneoassetmanager/tools/translator';
-import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {
+  getAssetFamilyLabel,
+  getAttributeAsMainMedia,
+  AssetFamily,
+} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {assetCreationStart} from 'akeneoassetmanager/domain/event/asset/create';
 import {deleteAllAssetFamilyAssets, deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
@@ -38,6 +42,8 @@ import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
+import {assetUploadStart} from 'akeneoassetmanager/domain/event/asset/upload';
+import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 
 const securityContext = require('pim/security-context');
 
@@ -59,6 +65,7 @@ interface StateProps {
   attributes: NormalizedAttribute[] | null;
   rights: {
     asset: {
+      upload: boolean;
       create: boolean;
       edit: boolean;
       deleteAll: boolean;
@@ -86,6 +93,7 @@ interface DispatchProps {
     onAssetCreationStart: () => void;
     onFirstLoad: () => void;
     onOpenDeleteAllAssetsModal: () => void;
+    onAssetUploadStart: () => void;
     onOpenDeleteAssetModal: (assetCode: AssetCode, label: string) => void;
     onCancelDeleteModal: () => void;
   };
@@ -102,19 +110,40 @@ export type FilterViews = {
   };
 };
 
-const SecondaryAction = ({onOpenDeleteAllAssetsModal}: {onOpenDeleteAllAssetsModal: () => void}) => {
+const SecondaryActions = ({
+  canDeleteAllAssets,
+  canUploadAsset,
+  onOpenDeleteAllAssetsModal,
+  onStartMassUpload,
+}: {
+  onOpenDeleteAllAssetsModal: () => void;
+  onStartMassUpload: () => void;
+  canDeleteAllAssets: boolean;
+  canUploadAsset: boolean;
+}) => {
+  if (!canDeleteAllAssets && !canUploadAsset) return null;
+
   return (
-    <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-      <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
-      <div className="AknDropdown-menu AknDropdown-menu--right">
-        <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
-        <div>
-          <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onOpenDeleteAllAssetsModal()}>
-            {__('pim_asset_manager.asset.button.delete_all')}
-          </button>
+    <>
+      <div className="AknSecondaryActions AknDropdown AknButtonList-item">
+        <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
+        <div className="AknDropdown-menu AknDropdown-menu--right">
+          <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
+          <div>
+            {canDeleteAllAssets && (
+              <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onOpenDeleteAllAssetsModal()}>
+                {__('pim_asset_manager.asset.button.delete_all')}
+              </button>
+            )}
+            {canUploadAsset && (
+              <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onStartMassUpload()}>
+                {__('pim_asset_manager.asset.button.mass_upload')}
+              </button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -186,13 +215,18 @@ class Assets extends React.Component<StateProps & DispatchProps, {cellViews: Cel
             ) : null;
           }}
           secondaryActions={() => {
-            return rights.asset.deleteAll ? (
-              <SecondaryAction
+            return (
+              <SecondaryActions
                 onOpenDeleteAllAssetsModal={() => {
                   events.onOpenDeleteAllAssetsModal();
                 }}
+                onStartMassUpload={() => {
+                  events.onAssetUploadStart();
+                }}
+                canDeleteAllAssets={rights.asset.deleteAll}
+                canUploadAsset={rights.asset.upload}
               />
-            ) : null;
+            );
           }}
           withLocaleSwitcher={true}
           withChannelSwitcher={true}
@@ -273,6 +307,12 @@ export default connect(
     const matchesCount =
       undefined === state.grid || undefined === state.grid.matchesCount ? 0 : state.grid.matchesCount;
 
+    const canCreateAsset =
+      securityContext.isGranted('akeneo_assetmanager_asset_create') &&
+      canEditAssetFamily(state.right.assetFamily, state.form.data.identifier);
+    const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily);
+    const canUploadAsset = canCreateAsset && attributeAsMainMedia.type === MEDIA_FILE_ATTRIBUTE_TYPE;
+
     return {
       context: {
         locale: state.user.catalogLocale,
@@ -291,9 +331,8 @@ export default connect(
       attributes: state.attributes.attributes,
       rights: {
         asset: {
-          create:
-            securityContext.isGranted('akeneo_assetmanager_asset_create') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
+          upload: canUploadAsset,
+          create: canCreateAsset,
           edit:
             securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
@@ -340,6 +379,9 @@ export default connect(
         },
         onAssetCreationStart: () => {
           dispatch(assetCreationStart());
+        },
+        onAssetUploadStart: () => {
+          dispatch(assetUploadStart());
         },
         onDeleteAllAssets: (assetFamily: AssetFamily) => {
           dispatch(deleteAllAssetFamilyAssets(assetFamily));

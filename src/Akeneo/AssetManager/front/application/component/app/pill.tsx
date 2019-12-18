@@ -1,0 +1,14 @@
+import styled from 'styled-components';
+import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+
+export const Pill = styled.div`
+  background-color: ${(props: ThemedProps<void>) => props.theme.color.yellow100};
+  width: 8px;
+  min-width: 8px; // to fix a glitch on chrome when the pill is smashed
+  height: 8px;
+  border-radius: 8px;
+  margin: 0 6px;
+  align-self: center;
+`;
+
+export default Pill;
