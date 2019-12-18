@@ -22,6 +22,7 @@ class CountDailyEventsByAppEndToEnd extends WebTestCase
         $this->get('akeneo_app.fixtures.app_loader')->createApp('erp', 'ERP', FlowType::DATA_SOURCE);
         $this->loadAuditData();
         $this->createAdminUser();
+        $this->authenticate('admin', 'admin');
 
         $this->client->request('GET', '/rest/apps/audit/source-apps-event', ['event_type' => 'product_created']);
         $response = $this->client->getResponse();
