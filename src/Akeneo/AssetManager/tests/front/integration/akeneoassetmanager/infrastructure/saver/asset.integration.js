@@ -22,8 +22,7 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
 
     const response = await page.evaluate(async () => {
       const createAsset = require('akeneoassetmanager/domain/model/asset/asset').createAsset;
-      const createValueCollection = require('akeneoassetmanager/domain/model/asset/value-collection')
-          .createValueCollection;
+
       const saver = require('akeneoassetmanager/infrastructure/saver/asset').default;
 
       const assetCreated = createAsset(
@@ -33,7 +32,7 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
           'starck',
           {en_US: 'Stylist', fr_FR: 'Styliste'},
           [],
-          createValueCollection([])
+          []
       );
 
       return await saver.create(assetCreated);
@@ -87,8 +86,7 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
 
     const response = await page.evaluate(async () => {
       const createAsset = require('akeneoassetmanager/domain/model/asset/asset').createAsset;
-      const createValueCollection = require('akeneoassetmanager/domain/model/asset/value-collection')
-          .createValueCollection;
+
       const saver = require('akeneoassetmanager/infrastructure/saver/asset').default;
 
       const assetCreated = createAsset(
@@ -98,7 +96,7 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
           'invalid/identifier',
           {en_US: 'Stylist', fr_FR: 'Styliste'},
           [],
-          createValueCollection([])
+          []
       );
 
       return await saver.create(assetCreated);

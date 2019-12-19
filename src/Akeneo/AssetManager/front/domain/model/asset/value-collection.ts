@@ -33,27 +33,15 @@ export const getValueFilter = (
   return (value: Value) => attributeFilter(value) && channelAndLocaleFilter(value);
 };
 
-export default class ValueCollection {
-  private constructor(readonly values: Value[]) {
-    Object.freeze(this);
-  }
+type ValueCollection = Value[];
 
-  public static create(values: Value[]): ValueCollection {
-    return new ValueCollection(values);
-  }
+export const getValuesForChannelAndLocale = (
+  values: ValueCollection,
+  channel: ChannelReference,
+  locale: LocaleReference
+) => values.filter(getValueForChannelAndLocaleFilter(channel, locale));
 
-  public getValuesForChannelAndLocale(channel: ChannelReference, locale: LocaleReference): Value[] {
-    return this.values.filter(getValueForChannelAndLocaleFilter(channel, locale));
-  }
-
-  public normalize(): Value[] {
-    return this.values;
-  }
-
-  public normalizeMinimal(): Value[] {
-    return this.values;
-  }
-}
+export default ValueCollection;
 
 export const generateKey = (
   attributeIdentifier: AttributeIdentifier,
@@ -66,5 +54,3 @@ export const generateKey = (
 
   return key;
 };
-
-export const createValueCollection = ValueCollection.create;

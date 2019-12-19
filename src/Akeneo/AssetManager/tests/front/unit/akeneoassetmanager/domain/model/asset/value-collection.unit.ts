@@ -1,5 +1,5 @@
 import {
-  createValueCollection,
+  getValuesForChannelAndLocale,
   generateKey,
   getValueFilter,
 } from 'akeneoassetmanager/domain/model/asset/value-collection';
@@ -63,7 +63,7 @@ const nameEcommerceValue = {
 describe('akeneo > asset family > domain > model > asset --- value collection', () => {
   // TODO fix these when unify models are here https://github.com/akeneo/pim-enterprise-dev/pull/7557
   // test('I can create a new value collection', () => {
-  //   expect(createValueCollection([descriptionEnUsValue]).normalize()).toEqual([
+  //   expect(([descriptionEnUsValue]).normalize()).toEqual([
   //     {
   //       attribute: {
   //         code: 'description',
@@ -90,7 +90,7 @@ describe('akeneo > asset family > domain > model > asset --- value collection', 
 
   // test('I cannot create an invalid value collection', () => {
   //   expect(() => {
-  //     createValueCollection([descriptionEnUsValue, 'name']);
+  //     ([descriptionEnUsValue, 'name']);
   //   }).toThrowError('ValueCollection expect only Value objects as argument');
   // });
 
@@ -100,17 +100,11 @@ describe('akeneo > asset family > domain > model > asset --- value collection', 
   });
 
   test('I can minimal normalize a new value collection', () => {
-    expect(createValueCollection([descriptionEnUsValue, descriptionFrFrValue]).normalizeMinimal()).toEqual([
-      descriptionEnUsValue,
-      descriptionFrFrValue,
-    ]);
+    expect([descriptionEnUsValue, descriptionFrFrValue]).toEqual([descriptionEnUsValue, descriptionFrFrValue]);
   });
 
   test('I can normalize a new value collection', () => {
-    expect(createValueCollection([descriptionEnUsValue, descriptionFrFrValue]).normalize()).toEqual([
-      descriptionEnUsValue,
-      descriptionFrFrValue,
-    ]);
+    expect([descriptionEnUsValue, descriptionFrFrValue]).toEqual([descriptionEnUsValue, descriptionFrFrValue]);
   });
 
   test('I can generate a value key', () => {
@@ -126,12 +120,11 @@ describe('akeneo > asset family > domain > model > asset --- value collection', 
 
   test('I cannot create an invalid value collection', () => {
     expect(
-      createValueCollection([
-        descriptionEnUsValue,
-        descriptionFrFrValue,
-        nameMobileValue,
-        nameEcommerceValue,
-      ]).getValuesForChannelAndLocale(ecommerce, enUS)
+      getValuesForChannelAndLocale(
+        [descriptionEnUsValue, descriptionFrFrValue, nameMobileValue, nameEcommerceValue],
+        ecommerce,
+        enUS
+      )
     ).toEqual([descriptionEnUsValue, nameEcommerceValue]);
   });
 });

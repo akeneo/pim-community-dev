@@ -12,6 +12,7 @@ import Flag from 'akeneoassetmanager/tools/component/flag';
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {getValuesForChannelAndLocale} from 'akeneoassetmanager/domain/model/asset/value-collection';
 
 export default (
   asset: Asset,
@@ -30,10 +31,9 @@ export default (
     };
   }
 ) => {
-  const visibleValues = asset
-    .getValueCollection()
-    .getValuesForChannelAndLocale(channel, locale)
-    .sort((firstValue: Value, secondValue: Value) => firstValue.attribute.order - secondValue.attribute.order);
+  const visibleValues = getValuesForChannelAndLocale(asset.getValueCollection(), channel, locale).sort(
+    (firstValue: Value, secondValue: Value) => firstValue.attribute.order - secondValue.attribute.order
+  );
 
   return visibleValues.map((value: Value) => {
     const DataView = getDataFieldView(value);

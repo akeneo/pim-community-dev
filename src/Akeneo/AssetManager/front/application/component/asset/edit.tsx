@@ -147,7 +147,7 @@ class AssetEditView extends React.Component<EditProps> {
                   <FileComponent
                     alt={__('pim_asset_manager.asset.img', {'{{ label }}': label})}
                     image={getAssetImage(
-                      asset.getValueCollection().values,
+                      asset.getValueCollection(),
                       asset.getAttributeAsMainMediaIdentifier(),
                       this.props.context.channel,
                       this.props.context.locale

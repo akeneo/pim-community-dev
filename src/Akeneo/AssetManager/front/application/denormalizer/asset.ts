@@ -1,7 +1,6 @@
 import Asset, {NormalizedAsset, createAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
 import denormalizeValue from 'akeneoassetmanager/application/denormalizer/asset/value';
 import {denormalizeAssetIdentifier} from 'akeneoassetmanager/domain/model/asset/identifier';
 import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
@@ -15,8 +14,8 @@ const denormalizeAsset = (normalizedAsset: NormalizedAsset): Asset => {
     normalizedAsset.attribute_as_main_media_identifier
   );
   const labelCollection = denormalizeLabelCollection(normalizedAsset.labels);
-  const valueCollection = createValueCollection(normalizedAsset.values.map(denormalizeValue));
-  const image = createValueCollection(normalizedAsset.image.map(denormalizeValue)).values;
+  const valueCollection = normalizedAsset.values.map(denormalizeValue);
+  const image = normalizedAsset.image.map(denormalizeValue);
 
   return createAsset(
     identifier,
