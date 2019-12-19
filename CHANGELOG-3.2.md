@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.27 (2019-12-19)
+
 # 3.2.26 (2019-12-16)
 
 - PIM-9019: Fix proposal counter not updating when approving changes
