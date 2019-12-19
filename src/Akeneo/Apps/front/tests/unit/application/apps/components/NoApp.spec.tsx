@@ -1,11 +1,17 @@
+import {mount} from 'enzyme';
 import * as React from 'react';
 import {create} from 'react-test-renderer';
+import {ThemeProvider} from 'styled-components';
 import {NoApp} from '../../../../../src/application/apps/components/NoApp';
-import {mount} from 'enzyme';
+import {theme} from '../../../../../src/application/common/theme';
 
 describe('NoApp', () => {
     it('should render', () => {
-        const component = create(<NoApp onCreate={() => undefined} />);
+        const component = create(
+            <ThemeProvider theme={theme}>
+                <NoApp onCreate={() => undefined} />
+            </ThemeProvider>
+        );
 
         expect(component.toJSON()).toMatchSnapshot();
     });
@@ -13,7 +19,11 @@ describe('NoApp', () => {
     it('should call `onCreate` when the create app shortcut is clicked', () => {
         const handleCreate = jest.fn();
 
-        const component = mount(<NoApp onCreate={handleCreate} />);
+        const component = mount(
+            <ThemeProvider theme={theme}>
+                <NoApp onCreate={handleCreate} />
+            </ThemeProvider>
+        );
 
         component.find('a').simulate('click');
         expect(handleCreate).toBeCalled();

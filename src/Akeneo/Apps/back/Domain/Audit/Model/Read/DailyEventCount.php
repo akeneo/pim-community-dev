@@ -17,7 +17,7 @@ final class DailyEventCount
     /** @var \Datetime */
     private $date;
 
-    public function __construct(int $count, \DateTime $date)
+    public function __construct(int $count, \DateTimeInterface $date)
     {
         $this->count = $count;
         $this->date = $date;
@@ -26,8 +26,7 @@ final class DailyEventCount
     public function normalize(): array
     {
         return [
-            'date' => $this->date->format('Y-m-d'),
-            'value' => $this->count
+            $this->date->format('Y-m-d') => $this->count
         ];
     }
 }

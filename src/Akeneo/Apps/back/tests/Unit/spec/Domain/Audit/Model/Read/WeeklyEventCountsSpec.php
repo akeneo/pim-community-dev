@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Apps\Domain\Audit\Model\Read;
 
-use Akeneo\Apps\Domain\Audit\Model\Read\AppEventCounts;
 use Akeneo\Apps\Domain\Audit\Model\Read\DailyEventCount;
+use Akeneo\Apps\Domain\Audit\Model\Read\WeeklyEventCounts;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -13,26 +13,28 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AppEventCountsSpec extends ObjectBehavior
+class WeeklyEventCountsSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
         $this->beConstructedWith('magento');
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(AppEventCounts::class);
+        $this->shouldBeAnInstanceOf(WeeklyEventCounts::class);
     }
 
-    function it_normalizes_an_app()
+    public function it_normalizes_an_app(): void
     {
-        $this->normalize()->shouldReturn([
-            'magento' => [],
-        ]);
+        $this->normalize()->shouldReturn(
+            [
+                'magento' => [],
+            ]
+        );
     }
 
-    function it_normalizes_an_app_with_event_counts()
+    public function it_normalizes_an_app_with_event_counts(): void
     {
         $eventDate1 = $eventDate = new \DateTime('2019-12-12', new \DateTimeZone('UTC'));
         $eventCount1 = new DailyEventCount(153, $eventDate1);
@@ -51,10 +53,10 @@ class AppEventCountsSpec extends ObjectBehavior
         $this->normalize()->shouldReturn(
             [
                 'magento' => [
-                    ['date' => '2019-12-12', 'value' => 153],
-                    ['date' => '2019-12-13', 'value' => 231],
-                    ['date' => '2019-12-14', 'value' => 127],
-                ]
+                    '2019-12-12' => 153,
+                    '2019-12-13' => 231,
+                    '2019-12-14' => 127,
+                ],
             ]
         );
     }

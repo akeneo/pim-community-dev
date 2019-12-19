@@ -18,18 +18,6 @@ doctrine:
                 server_version: '8.0'
                 mapping_types:
                     json: string
-            session:
-                driver: 'pdo_mysql'
-                dbname: '%env(APP_DATABASE_NAME)%'
-                host: '%env(APP_DATABASE_HOST)%'
-                port: '%env(APP_DATABASE_PORT)%'
-                user: '%env(APP_DATABASE_USER)%'
-                password: '%env(APP_DATABASE_PASSWORD)%'
-                charset: utf8mb4
-                default_table_options:
-                        charset: utf8mb4
-                        collate: utf8mb4_unicode_ci
-                        row_format: DYNAMIC
         types:
             datetime: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType
     orm:

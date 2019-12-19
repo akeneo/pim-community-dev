@@ -3,7 +3,6 @@ NODE_RUN = $(DOCKER_COMPOSE) run -u node --rm node
 YARN_RUN = $(NODE_RUN) yarn
 PHP_RUN = $(DOCKER_COMPOSE) run -u www-data --rm php php
 PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data fpm php
-IMAGE_TAG ?= master
 
 .DEFAULT_GOAL := help
 
@@ -142,21 +141,6 @@ pim-prod:
 	$(MAKE) javascript-prod
 	docker/wait_docker_up.sh
 	APP_ENV=prod $(MAKE) database
-
-##
-## Docker
-##
-
-.PHONY: php-image-dev
-php-image-dev:
-	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag akeneo/pim-dev/php:7.3 --target dev .
-
-.PHONY: php-image-prod
-php-image-prod:
-	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag eu.gcr.io/akeneo-cloud:${IMAGE_TAG} --target prod .
-
-.PHONY: php-images
-php-images: php-image-dev php-image-prod
 
 .PHONY: up
 up:

@@ -10,3 +10,9 @@ services:
             - '@akeneo_app.application.handler.delete_app'
             - '@akeneo_app.application.handler.regenerate_app_secret'
             - '@oro_security.security_facade'
+
+    akeneo_app.internal_api.controller.audit:
+        public: true
+        class: 'Akeneo\Apps\Infrastructure\InternalApi\Controller\AuditController'
+        arguments:
+            - '@akeneo_app.application.audit.handler.count_daily_events_by_app'

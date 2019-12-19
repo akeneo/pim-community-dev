@@ -3,3 +3,8 @@ services:
         class: 'Akeneo\Apps\back\tests\Integration\Fixtures\AppLoader'
         arguments:
             - '@akeneo_app.application.handler.create_app'
+
+    akeneo_app.fixtures.audit_loader:
+        class: 'Akeneo\Apps\back\tests\Integration\Fixtures\AuditLoader'
+        arguments:
+            - '@database_connection'

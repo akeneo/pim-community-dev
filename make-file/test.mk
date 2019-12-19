@@ -8,6 +8,10 @@ coupling-back: structure-coupling-back user-management-coupling-back channel-cou
 check-pullup:
 	${PHP_RUN} bin/check-pullup
 
+.PHONY: check-sf-services
+check-sf-services:
+	$(PHP_RUN) bin/check-services-instantiability
+
 ### Lint tests
 .PHONY: lint-back
 lint-back:
@@ -38,7 +42,7 @@ unit-front: apps-unit-front
 ### Acceptance tests
 .PHONY: acceptance-back
 acceptance-back: apps-acceptance-back
-	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
+	APP_ENV=behat ${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 
 .PHONY: acceptance-front
 acceptance-front:

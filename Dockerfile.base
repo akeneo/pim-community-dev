@@ -1,0 +1,44 @@
+FROM debian:buster-slim
+
+ENV PHP_CONF_DATE_TIMEZONE=UTC \
+    PHP_CONF_MAX_EXECUTION_TIME=60 \
+    PHP_CONF_MEMORY_LIMIT=512M \
+    PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=0 \
+    PHP_CONF_MAX_INPUT_VARS=1000 \
+    PHP_CONF_UPLOAD_LIMIT=40M \
+    PHP_CONF_MAX_POST_SIZE=40M \
+    XDEBUG_ENABLED=0
+
+RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/apt.conf.d/01-no-recommended && \
+    echo 'path-exclude=/usr/share/man/*' > /etc/dpkg/dpkg.cfg.d/path_exclusions && \
+    echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/path_exclusions && \
+    apt-get update && \
+    apt-get --yes install imagemagick \
+        ghostscript \
+        php7.3-fpm \
+        php7.3-cli \
+        php7.3-intl \
+        php7.3-opcache \
+        php7.3-mysql \
+        php7.3-zip \
+        php7.3-xml \
+        php7.3-gd \
+        php7.3-curl \
+        php7.3-mbstring \
+        php7.3-bcmath \
+        php7.3-imagick \
+        php7.3-apcu \
+        php7.3-exif \
+        php-memcached \
+        aspell \
+        aspell-en aspell-es aspell-de aspell-fr && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    ln -s /usr/sbin/php-fpm7.3 /usr/local/sbin/php-fpm && \
+    usermod --uid 1000 www-data && groupmod --gid 1000 www-data && \
+    mkdir /srv/pim && \
+    sed -i "s#listen = /run/php/php7.3-fpm.sock#listen = 9000#g" /etc/php/7.3/fpm/pool.d/www.conf && \
+    mkdir -p /run/php
+
+COPY docker/build/akeneo.ini /etc/php/7.3/cli/conf.d/99-akeneo.ini
+COPY docker/build/akeneo.ini /etc/php/7.3/fpm/conf.d/99-akeneo.ini
