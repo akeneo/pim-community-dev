@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9029: Use Catalog locale in variant families datagrid
+
 # 3.2.27 (2019-12-19)
 
 ## Bug fixes:

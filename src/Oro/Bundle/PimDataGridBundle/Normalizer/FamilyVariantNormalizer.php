@@ -33,16 +33,12 @@ class FamilyVariantNormalizer implements NormalizerInterface
      */
     public function normalize($familyVariant, $format = null, array $context = array()): array
     {
-        $labels = $this->translationNormalizer->normalize($familyVariant, 'standard', $context);
-
         // We need to initialize the levels because of the grid.
         $normalizedFamilyVariant = [
             'id'                => $familyVariant->getId(),
             'familyCode'        => $familyVariant->getFamily()->getCode(),
             'familyVariantCode' => $familyVariant->getCode(),
-            'label'             => isset($context['localeCode']) &&isset($labels[$context['localeCode']]) ?
-                $labels[$context['localeCode']] :
-                $familyVariant->getCode(),
+            'label'             => $familyVariant->getTranslation()->getLabel(),
             'level_1'           => '',
             'level_2'           => ''
         ];
