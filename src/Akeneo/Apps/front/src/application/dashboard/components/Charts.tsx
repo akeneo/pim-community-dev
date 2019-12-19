@@ -4,7 +4,7 @@ import {EventChart} from './EventChart';
 import {NoApp} from './NoApp';
 import {Translate} from '../../shared/translate';
 import {AuditEventType} from '../../../domain/audit/audit-event-type.enum';
-import {EventChartThemes} from "../../apps/EventChartThemes";
+import {EventChartThemes} from '../../apps/EventChartThemes';
 
 export const Charts = () => {
     const sourceApps = useFetchSourceApps();

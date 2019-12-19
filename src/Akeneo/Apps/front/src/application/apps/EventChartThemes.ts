@@ -17,7 +17,7 @@ export const lightGreyStroke: React.CSSProperties = {
 
 const themeBaseProps: {width: number; height: number; colorScale: string[]} = {
     width: 1000,
-    height: 347,
+    height: 300,
     colorScale: [],
 };
 
