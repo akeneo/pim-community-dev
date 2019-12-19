@@ -85,4 +85,5 @@ services:
             - '@akeneo_assetmanager.infrastructure.transformation.get_outdated_variation_source'
             - '@Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor'
             - '@akeneo_assetmanager.application.asset.edit_asset_handler'
+            - '@validator'
         public: false

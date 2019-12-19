@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileTargetValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
@@ -53,10 +55,13 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
      */
     private function checkCommandType($command): void
     {
-        if (!$command instanceof EditMediaFileValueCommand) {
+        if (!$command instanceof EditMediaFileValueCommand && !$command instanceof EditMediaFileTargetValueCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be of class "%s", "%s" given', EditMediaFileValueCommand::class,
+                    'Expected argument to be one of these classes "%s", "%s" given', join(', ', [
+                        EditMediaFileValueCommand::class,
+                        EditMediaFileTargetValueCommand::class
+                    ]),
                     get_class($command)
                 )
             );
@@ -73,7 +78,7 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
         }
     }
 
-    private function validateCommand(EditMediaFileValueCommand $command): void
+    private function validateCommand(AbstractEditValueCommand $command): void
     {
         /** @var MediaFileAttribute $attribute */
         $attribute = $command->attribute;
@@ -113,7 +118,7 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
         }
     }
 
-    private function checkPropertyTypes(EditMediaFileValueCommand $command): ConstraintViolationListInterface
+    private function checkPropertyTypes(AbstractEditValueCommand $command): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
         $violations = $validator->validate($command->originalFilename, [new Constraints\Type('string')]);
@@ -125,7 +130,7 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
         return $violations;
     }
 
-    private function checkFile(EditMediaFileValueCommand $command, MediaFileAttribute $attribute): ConstraintViolationListInterface
+    private function checkFile(AbstractEditValueCommand $command, MediaFileAttribute $attribute): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
         $violations = new ConstraintViolationList();

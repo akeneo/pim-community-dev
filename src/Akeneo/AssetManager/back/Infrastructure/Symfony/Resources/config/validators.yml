@@ -280,6 +280,12 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
 
+    Akeneo\AssetManager\Infrastructure\Validation\Asset\EditTargetValueValidator:
+        arguments:
+            - '@Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\CheckIfTransformationTarget'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_target_value_command' }
+
     Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCollectionValidator:
         tags:
             - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCollectionValidator' }

@@ -13,6 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Transformation\Exception;
 
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+
 class TransformationFailedException extends \RuntimeException
 {
+    public static function createFromViolationList(ConstraintViolationListInterface $violations): self
+    {
+        $errorMessages = [];
+        foreach ($violations as $violation) {
+            $errorMessages[] = $violation->getMessage();
+        }
+
+        return new self(join(', ', $errorMessages));
+    }
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Transformation;
 
-use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileTargetValueCommand;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
@@ -56,7 +56,7 @@ class TransformationExecutor
         FileData $sourceFileData,
         AssetFamilyIdentifier $assetFamilyIdentifier,
         Transformation $transformation
-    ): EditMediaFileValueCommand {
+    ): EditMediaFileTargetValueCommand {
         try {
             $sourceFile = $this->getSourceFile($sourceFileData->getKey());
             $transformedFile = $this->fileTransformer->transform(
@@ -75,7 +75,7 @@ class TransformationExecutor
             throw new TransformationFailedException($e->getMessage(), $e->getCocde());
         }
 
-        return new EditMediaFileValueCommand(
+        return new EditMediaFileTargetValueCommand(
             $targetAttribute,
             $target->getChannelReference()->normalize(),
             $target->getLocaleReference()->normalize(),
