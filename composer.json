@@ -69,6 +69,7 @@
         "pdepend/pdepend": "2.1.*",
         "phpmd/phpmd": "1.*",
         "phpspec/phpspec": "~3.4.2",
+        "phpspec/prophecy": "1.9.*",
         "phpunit/phpunit": "6.5.3",
         "sebastian/exporter": "~3.1.0",
         "sensiolabs/behat-page-object-extension": "2.1.0",
