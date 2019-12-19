@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Transformation;
 
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileTargetValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -96,10 +97,10 @@ class TransformationExecutorSpec extends ObjectBehavior
 
         $command = $this->execute($sourceFileData, $assetFamilyIdentifier, $transformation);
 
-        $command->shouldBeAnInstanceOf(EditMediaFileValueCommand::class);
+        $command->shouldBeAnInstanceOf(EditMediaFileTargetValueCommand::class);
         $command->updatedAt = null;
         $command->shouldBeLike(
-            new EditMediaFileValueCommand(
+            new EditMediaFileTargetValueCommand(
                 $thumbnailAttribute->getWrappedObject(),
                 'ecommerce',
                 'en_US',

@@ -282,7 +282,7 @@ services:
 
     Akeneo\AssetManager\Infrastructure\Validation\Asset\EditTargetValueValidator:
         arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\CheckIfTransformationTarget'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_target_value_command' }
 

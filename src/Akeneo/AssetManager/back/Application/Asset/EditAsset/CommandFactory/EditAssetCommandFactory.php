@@ -12,16 +12,10 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
-use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
-use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
-use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\CheckIfTransformationTarget;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
-use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -35,17 +29,17 @@ class EditAssetCommandFactory
     /** @var EditValueCommandFactoryRegistryInterface */
     private $editValueCommandFactoryRegistry;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    /** @var CheckIfTransformationTarget */
+    private $checkIfTransformationTarget;
 
     public function __construct(
         EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
         FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier,
-        AssetFamilyRepositoryInterface $assetFamilyRepository
+        CheckIfTransformationTarget $checkIfTransformationTarget
     ) {
         $this->sqlFindAttributesIndexedByIdentifier = $sqlFindAttributesIndexedByIdentifier;
         $this->editValueCommandFactoryRegistry = $editValueCommandFactoryRegistry;
-        $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->checkIfTransformationTarget = $checkIfTransformationTarget;
     }
 
     public function create(array $normalizedCommand): EditAssetCommand
@@ -106,29 +100,10 @@ class EditAssetCommandFactory
 
     private function isAttributeTargetOrATransformation(AbstractAttribute $attribute, array $normalizedValue)
     {
-        $commandLocaleReference = isset($normalizedValue['locale']) && $normalizedValue['locale'] !== null ?
-            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($normalizedValue['locale'])) :
-            LocaleReference::noReference();
-        $commandChannelReference = isset($normalizedValue['channel']) && $normalizedValue['channel'] !== null ?
-            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode($normalizedValue['channel'])) :
-            ChannelReference::noReference();
-
-        $transformations = $this->assetFamilyRepository
-            ->getByIdentifier($attribute->getAssetFamilyIdentifier())
-            ->getTransformationCollection();
-
-        foreach ($transformations as $transformation) {
-            /** @var $transformation Transformation */
-            $target = $transformation->getTarget();
-
-            if ($target->getAttributeCode()->equals($attribute->getCode()) &&
-                $target->getLocaleReference()->equals($commandLocaleReference) &&
-                $target->getChannelReference()->equals($commandChannelReference)
-            ) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->checkIfTransformationTarget->forAttribute(
+            $attribute,
+            $normalizedValue['locale'] ?? null,
+            $normalizedValue['channel'] ?? null
+        );
     }
 }

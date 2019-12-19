@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\CheckIfTransformationTarget;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesIndexedByIdentifier;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -32,9 +33,14 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
 {
     function let(
         EditValueCommandFactoryRegistryInterface $editAssetValueCommandFactoryRegistry,
-        SqlFindAttributesIndexedByIdentifier $sqlFindAttributesIndexedByIdentifier
+        SqlFindAttributesIndexedByIdentifier $sqlFindAttributesIndexedByIdentifier,
+        CheckIfTransformationTarget $checkIfTransformationTarget
     ) {
-        $this->beConstructedWith($editAssetValueCommandFactoryRegistry, $sqlFindAttributesIndexedByIdentifier);
+        $this->beConstructedWith(
+            $editAssetValueCommandFactoryRegistry,
+            $sqlFindAttributesIndexedByIdentifier,
+            $checkIfTransformationTarget
+        );
     }
 
     function it_is_initializable()
@@ -45,6 +51,7 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
     function it_creates_an_edit_asset_command_by_recursively_calling_other_edit_asset_value_factories(
         SqlFindAttributesIndexedByIdentifier $sqlFindAttributesIndexedByIdentifier,
         EditValueCommandFactoryRegistryInterface $editAssetValueCommandFactoryRegistry,
+        CheckIfTransformationTarget $checkIfTransformationTarget,
         EditValueCommandFactoryInterface $textValueCommandFactory,
         EditTextValueCommand $editDescriptionCommand
     ) {
@@ -76,6 +83,8 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
         $sqlFindAttributesIndexedByIdentifier->find(Argument::type(AssetFamilyIdentifier::class))->willReturn([
             'desginer_description_fingerprint' => $descriptionAttribute
         ]);
+
+        $checkIfTransformationTarget->forAttribute($descriptionAttribute, 'en_US', 'ecommerce')->willReturn(false);
 
         $editAssetValueCommandFactoryRegistry->getFactory($descriptionAttribute, $normalizedCommand['values'][0])->willReturn($textValueCommandFactory);
         $textValueCommandFactory->create($descriptionAttribute, $normalizedCommand['values'][0])->willReturn($editDescriptionCommand);

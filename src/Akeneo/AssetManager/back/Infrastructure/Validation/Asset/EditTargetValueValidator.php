@@ -14,24 +14,19 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
-use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
-use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
-use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\CheckIfTransformationTarget;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class EditTargetValueValidator extends ConstraintValidator
 {
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    /** @var CheckIfTransformationTarget */
+    private $checkIfTransformationTarget;
 
-    public function __construct(AssetFamilyRepositoryInterface $assetFamilyRepository)
+    public function __construct(CheckIfTransformationTarget $checkIfTransformationTarget)
     {
-        $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->checkIfTransformationTarget = $checkIfTransformationTarget;
     }
 
     public function validate($command, Constraint $constraint)
@@ -68,39 +63,11 @@ class EditTargetValueValidator extends ConstraintValidator
 
     private function validateCommand(AbstractEditValueCommand $command): void
     {
-        if ($this->attributeIsTargetOfATransformation($command)) {
+        if ($this->checkIfTransformationTarget->forAttribute($command->attribute, $command->locale, $command->channel)) {
             $this->context->buildViolation(EditTargetValue::TARGET_READONLY)
                 ->atPath((string) $command->attribute->getCode())
                 ->setParameter('%attribute_code%', (string) $command->attribute->getCode())
                 ->addViolation();
         }
-    }
-
-    private function attributeIsTargetOfATransformation(AbstractEditValueCommand $command): bool
-    {
-        $commandLocaleReference = $command->locale !== null ?
-            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($command->locale)) :
-            LocaleReference::noReference();
-        $commandChannelReference = $command->channel !== null ?
-            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode($command->channel)) :
-            ChannelReference::noReference();
-
-        $transformations = $this->assetFamilyRepository
-            ->getByIdentifier($command->attribute->getAssetFamilyIdentifier())
-            ->getTransformationCollection();
-
-        foreach ($transformations as $transformation) {
-            /** @var $transformation Transformation */
-            $target = $transformation->getTarget();
-
-            if ($target->getAttributeCode()->equals($command->attribute->getCode()) &&
-                $target->getLocaleReference()->equals($commandLocaleReference) &&
-                $target->getChannelReference()->equals($commandChannelReference)
-            ) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

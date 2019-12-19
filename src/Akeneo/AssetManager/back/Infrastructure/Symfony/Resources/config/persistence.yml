@@ -556,6 +556,10 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\CheckIfTransformationTarget:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+
     # Reference entities permissions queries
     akeneoassetmanager.infrastructure.persistence.query.find_asset_family_permissions_details:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamilyPermission\SqlFindAssetFamilyPermissionsDetails

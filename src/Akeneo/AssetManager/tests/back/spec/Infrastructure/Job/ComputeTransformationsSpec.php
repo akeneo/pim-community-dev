@@ -3,7 +3,7 @@
 namespace spec\Akeneo\AssetManager\Infrastructure\Job;
 
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
-use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileTargetValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -24,6 +24,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ComputeTransformationsSpec extends ObjectBehavior
 {
@@ -35,7 +36,8 @@ class ComputeTransformationsSpec extends ObjectBehavior
         TransformationExecutor $transformationExecutor,
         EditAssetHandler $editAssetHandler,
         StepExecution $stepExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        ValidatorInterface $validator
     ) {
         $this->beConstructedWith(
             $findIdentifiersByAssetFamily,
@@ -43,7 +45,8 @@ class ComputeTransformationsSpec extends ObjectBehavior
             $assetRepository,
             $getOutdatedVariationSource,
             $transformationExecutor,
-            $editAssetHandler
+            $editAssetHandler,
+            $validator
         );
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $this->setStepExecution($stepExecution);
@@ -61,13 +64,14 @@ class ComputeTransformationsSpec extends ObjectBehavior
         GetOutdatedVariationSource $getOutdatedVariationSource,
         TransformationExecutor $transformationExecutor,
         EditAssetHandler $editAssetHandler,
+        ValidatorInterface $validator,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         Transformation $thumbnail,
         Asset $asset1,
         Asset $asset2,
         FileData $sourceFileData,
-        EditMediaFileValueCommand $command
+        EditMediaFileTargetValueCommand $command
     ) {
         $jobParameters->has('asset_family_identifier')->willReturn(false);
         $jobParameters->has('asset_identifiers')->willReturn(true);
@@ -91,6 +95,8 @@ class ComputeTransformationsSpec extends ObjectBehavior
         $getOutdatedVariationSource->forAssetAndTransformation($asset2, $thumbnail)->willReturn(null);
         $stepExecution->incrementSummaryInfo('skipped')->shouldBeCalled();
         $transformationExecutor->execute($sourceFileData, $packshotIdentifier, $thumbnail)->willReturn($command);
+
+        $validator->validate($command)->willReturn([]);
 
         $editAssetHandler->__invoke(
             new EditAssetCommand(
@@ -119,13 +125,14 @@ class ComputeTransformationsSpec extends ObjectBehavior
         GetOutdatedVariationSource $getOutdatedVariationSource,
         TransformationExecutor $transformationExecutor,
         EditAssetHandler $editAssetHandler,
+        ValidatorInterface $validator,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         Transformation $thumbnail,
         Asset $asset1,
         Asset $asset2,
         FileData $sourceFileData,
-        EditMediaFileValueCommand $command
+        EditMediaFileTargetValueCommand $command
     ) {
         $jobParameters->has('asset_family_identifier')->willReturn(true);
         $jobParameters->get('asset_family_identifier')->willReturn('packshot');
@@ -159,6 +166,8 @@ class ComputeTransformationsSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skipped')->shouldBeCalled();
         $transformationExecutor->execute($sourceFileData, $assetFamilyIdentifier, $thumbnail)
                                        ->willReturn($command);
+
+        $validator->validate($command)->willReturn([]);
 
         $editAssetHandler->__invoke(
             new EditAssetCommand(
