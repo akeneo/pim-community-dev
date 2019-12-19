@@ -7,7 +7,7 @@ const mediator = require('oro/mediator');
 
 class DashboardController extends ReactController {
   reactElementToMount() {
-    return <Dashboard {...dependencies} />;
+    return <Dashboard dependencies={dependencies} />;
   }
 
   routeGuardToUnmount() {

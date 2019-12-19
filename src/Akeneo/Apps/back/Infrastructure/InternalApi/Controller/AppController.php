@@ -72,10 +72,6 @@ class AppController
 
     public function list(): JsonResponse
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
-            throw new AccessDeniedException();
-        }
-
         $apps = $this->fetchAppsHandler->query();
 
         return new JsonResponse(

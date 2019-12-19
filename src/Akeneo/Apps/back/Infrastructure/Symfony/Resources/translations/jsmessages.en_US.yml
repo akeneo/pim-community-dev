@@ -127,3 +127,12 @@ akeneo_apps:
             legend:
                 during_the_last_seven_days: During the last seven days
                 today: Today
+        no_app:
+            title: No connection declared yet.
+            message_with_permission:
+                link: Create one here!
+                link_url: https://www.akeneo.com/
+            message_without_permission:
+                message: Ask your administrator to create one.
+                link: Learn more about connections here...
+                link_url: https://www.akeneo.com/
