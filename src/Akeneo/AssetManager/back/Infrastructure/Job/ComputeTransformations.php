@@ -154,12 +154,9 @@ class ComputeTransformations implements TaskletInterface
 
                         $violations = $this->validator->validate($command);
                         if (count($violations) > 0) {
-                            $errorMessages = [];
-                            foreach ($violations as $violation) {
-                                $errorMessages[] = $violation->getMessage();
-                            }
-                            throw new TransformationFailedException(join(', ', $errorMessages));
+                            throw TransformationFailedException::createFromViolationList($violations);
                         }
+
                         $commands[] = $command;
                         $transformedFilesCount++;
                     } catch (TransformationFailedException $e) {
