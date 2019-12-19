@@ -52,6 +52,11 @@ services:
     akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_by_asset_family_and_code:
         class: Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetByAssetFamilyAndCode
 
+    akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryFindAssetIdentifiersByAssetFamily
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+
     akeneo_assetmanager.infrastructure.persistence.query.find_connector_assets_by_identifiers:
         class: Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetsByIdentifiers
 
@@ -110,12 +115,6 @@ services:
         class: Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeType
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
-
-    Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations:
-        class: Akeneo\AssetManager\Common\Fake\InMemoryGetTransformations
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_attribute_next_order:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindAttributeNextOrder
