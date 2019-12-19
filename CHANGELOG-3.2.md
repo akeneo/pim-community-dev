@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.27 (2019-12-19)
+
 ## Bug fixes:
 
 - PIM-9027: Translations missing on metrics
