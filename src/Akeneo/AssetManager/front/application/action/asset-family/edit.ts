@@ -22,6 +22,7 @@ import {assetFamilyPermissionChanged} from 'akeneoassetmanager/domain/event/user
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import TransformationCollection from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
+import {updateAttributesColumns} from 'akeneoassetmanager/application/action/attribute/list';
 
 export const saveAssetFamily = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const assetFamily = getState().form.data;
@@ -79,6 +80,9 @@ export const attributeAsMainMediaUpdated = (attributeAsMainMedia: AttributeIdent
 ) => {
   dispatch(assetFamilyEditionAttributeAsMainMediaUpdated(attributeAsMainMedia));
   dispatch(assetFamilyEditionUpdated(getState().form.data));
+  // The attributes thumbnails are not updated until after saving
+  // TODO check if thumbnail preview is fixed after attributeAsMainMedia preview generation rework
+  dispatch(updateAttributesColumns());
 };
 
 export const assetFamilyTransformationsUpdated = (transformations: TransformationCollection) => (
