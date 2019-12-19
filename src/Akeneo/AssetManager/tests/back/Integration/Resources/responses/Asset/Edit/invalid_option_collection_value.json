@@ -38,63 +38,7 @@
               "parameters": {
                   "%option_code%": "red"
               },
-              "plural": null,
               "message": "The option with code \"red\" does not exist for this attribute",
-              "root": {
-                  "assetFamilyIdentifier": "designer",
-                  "code": "starck",
-                  "labels": {
-                    "fr_FR": "Philippe Starck"
-                },
-                  "image": null,
-                  "editAssetValueCommands": [
-                      {
-                          "attribute": {
-                              "attributeOptions": [
-                                  {
-                                      "code": []
-                                  }
-                              ],
-                              "identifier": [],
-                              "assetFamilyIdentifier": [],
-                              "code": [],
-                              "labelCodes": [
-                                  "en_US"
-                              ],
-                              "order": [],
-                              "valuePerChannel": false,
-                              "valuePerLocale": true
-                          },
-                          "optionCode": ["red"],
-                          "channel": null,
-                          "locale": "en_US"
-                      },
-                      {
-                          "attribute": {
-                              "attributeOptions": [
-                                  {
-                                      "code": []
-                                  },
-                                  {
-                                      "code": []
-                                  }
-                              ],
-                              "identifier": [],
-                              "assetFamilyIdentifier": [],
-                              "code": [],
-                              "labelCodes": [
-                                  "en_US"
-                              ],
-                              "order": [],
-                              "valuePerChannel": false,
-                              "valuePerLocale": true
-                          },
-                          "optionCode": ["red"],
-                          "channel": null,
-                          "locale": "fr_FR"
-                      }
-                  ]
-              },
               "propertyPath": "values.option_collection",
               "invalidValue": {
                   "attribute": {
@@ -116,15 +60,7 @@
                   "optionCode": ["red"],
                   "channel": null,
                   "locale": "en_US"
-              },
-              "constraint": {
-                  "targets": "class",
-                  "defaultOption": null,
-                  "requiredOptions": [],
-                  "payload": null
-              },
-              "cause": null,
-              "code": null
+              }
           }
       ]
   }

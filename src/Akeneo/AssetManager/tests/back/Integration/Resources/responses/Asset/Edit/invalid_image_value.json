@@ -39,53 +39,7 @@
         "parameters":{
           "%file_path%":"\/a\/b\/c\/philou.gif"
         },
-        "plural":null,
         "message":"The file \u0022\/a\/b\/c\/philou.gif\u0022 was not found.",
-        "root":{
-          "assetFamilyIdentifier":"designer",
-          "code":"starck",
-          "editAssetValueCommands":[
-            {
-              "filePath":"\/a\/b\/c\/philou.gif",
-              "originalFilename":null,
-              "size":null,
-              "mimeType":null,
-              "extension":null,
-              "updatedAt":"2019-11-22T15:16:21+0000",
-              "attribute":{
-                "maxFileSizeLimit":false,
-                "type": "media_file",
-                "maxFileSize":{
-                  "limit":false
-                },
-                "allowedExtensions":{
-                  "allAllowed":false
-                },
-                "mediaType": [],
-                "identifier":[
-
-                ],
-                "assetFamilyIdentifier":[
-
-                ],
-                "code":[
-
-                ],
-                "labelCodes":[
-                  "fr_FR",
-                  "en_US"
-                ],
-                "order":[
-
-                ],
-                "valuePerChannel":false,
-                "valuePerLocale":false
-              },
-              "channel":null,
-              "locale":null
-            }
-          ]
-        },
         "propertyPath":"values.portrait",
         "invalidValue":{
           "filePath":"\/a\/b\/c\/philou.gif",
@@ -125,17 +79,7 @@
           },
           "channel":null,
           "locale":null
-        },
-        "constraint":{
-          "targets":"class",
-          "defaultOption":null,
-          "requiredOptions":[
-
-          ],
-          "payload":null
-        },
-        "cause":null,
-        "code":null
+        }
       }
     ]
   }

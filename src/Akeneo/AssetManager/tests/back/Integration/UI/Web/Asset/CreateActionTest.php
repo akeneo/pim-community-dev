@@ -291,7 +291,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_asset_manager.asset.validation.code.should_be_unique","parameters":{"%code%":[]},"plural":null,"message":"An asset already exists with code \u0022starck\u0022","root":{"assetFamilyIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"code","invalidValue":{"assetFamilyIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]');
+            '[{"messageTemplate":"pim_asset_manager.asset.validation.code.should_be_unique","parameters":{"%code%":{}},"message":"An asset already exists with code \u0022starck\u0022","propertyPath":"code","invalidValue":{"assetFamilyIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}}}]');
     }
 
     /** @test */
@@ -403,14 +403,14 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'invalid-code',
                 'brand',
                 'brand',
-                '[{"messageTemplate":"pim_asset_manager.asset.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"assetFamilyIdentifier":"brand","code":"invalid-code","labels":[]},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
+                '[{"messageTemplate":"pim_asset_manager.asset.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"message":"This field may only contain letters, numbers and underscores.","propertyPath":"code","invalidValue":"invalid-code"}]'            ],
             'Asset Identifier is 256 characters long'                                                   => [
                 $longIdentifier,
                 'brand',
                 'brand',
                 sprintf(
-                    '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"assetFamilyIdentifier":"brand","code":"%s","labels":[]},"propertyPath":"code","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-                    $longIdentifier, $longIdentifier, $longIdentifier
+                    '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"message":"This value is too long. It should have 255 characters or less.","propertyPath":"code","invalidValue":"%s"}]',
+                    $longIdentifier, $longIdentifier
                 ),
             ],
         ];
