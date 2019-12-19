@@ -285,10 +285,11 @@ SQL
 
         $file = $this->getFileDownloader()->get($targetData->getKey(), $this->workingDir, 'resulting_file.png');
 
-        $metadata = getimagesize($file);
+        $metadata = getimagesize($file->getPathname());
         Assert::assertSame($width, $metadata[0]);
         Assert::assertSame($height, $metadata[1]);
         Assert::assertSame('image/png', $metadata['mime']);
+        $this->get('filesystem')->remove($this->workingDir);
     }
 
     private function setFamilyTransformations(

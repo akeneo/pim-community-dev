@@ -128,7 +128,7 @@ class ComputeTransformations implements TaskletInterface
                 continue;
             }
 
-            $transformations = $this->getTransformations($asset->getAssetFamilyIdentifier())->sortedBySource();
+            $transformations = $this->getTransformations($asset->getAssetFamilyIdentifier());
 
             foreach ($transformations as $transformation) {
                 try {

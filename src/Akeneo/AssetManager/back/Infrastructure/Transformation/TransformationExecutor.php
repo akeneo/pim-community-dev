@@ -25,14 +25,9 @@ use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\File;
 
 class TransformationExecutor
 {
-    /** @var Filesystem */
-    private $filesystem;
-
     /** @var FileDownloader */
     private $fileDownloader;
 
@@ -45,20 +40,12 @@ class TransformationExecutor
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /** @var array */
-    private $currentSourceFile = [
-        'key' => null,
-        'path' => null,
-    ];
-
     public function __construct(
-        Filesystem $filesystem,
         FileDownloader $fileDownloader,
         FileTransformer $fileTransformer,
         FileStorerInterface $fileStorer,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->filesystem = $filesystem;
         $this->fileDownloader = $fileDownloader;
         $this->fileTransformer = $fileTransformer;
         $this->fileStorer = $fileStorer;
@@ -72,7 +59,7 @@ class TransformationExecutor
         string $workingDirectory
     ): EditMediaFileTargetValueCommand {
         try {
-            $sourceFile = $this->getSourceFile(
+            $sourceFile = $this->fileDownloader->get(
                 $sourceFileData->getKey(),
                 $workingDirectory,
                 $sourceFileData->getOriginalFilename()
@@ -100,20 +87,5 @@ class TransformationExecutor
             $storedFile->getExtension(),
             (new \DateTimeImmutable())->format(\DateTimeInterface::ISO8601)
         );
-    }
-
-    private function getSourceFile(string $fileKey, string $workingDirectory, string $originalFilename): File
-    {
-        if ($fileKey !== $this->currentSourceFile['key']) {
-            if (null !== $this->currentSourceFile['path'] && $this->filesystem->exists($this->currentSourceFile['path'])) {
-                $this->filesystem->remove($this->currentSourceFile['path']);
-            }
-            $this->currentSourceFile = [
-                'key' => $fileKey,
-                'path' => $this->fileDownloader->get($fileKey, $workingDirectory, $originalFilename),
-            ];
-        }
-
-        return new File($this->currentSourceFile['path'], false);
     }
 }

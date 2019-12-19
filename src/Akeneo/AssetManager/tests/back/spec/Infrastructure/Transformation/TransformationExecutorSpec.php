@@ -31,14 +31,12 @@ use Symfony\Component\HttpFoundation\File\File;
 class TransformationExecutorSpec extends ObjectBehavior
 {
     function let(
-        Filesystem $filesystem,
         FileDownloader $fileDownloader,
         FileTransformer $fileTransformer,
         FileStorer $fileStorer,
         AttributeRepositoryInterface $attributeRepository
     ) {
         $this->beConstructedWith(
-            $filesystem,
             $fileDownloader,
             $fileTransformer,
             $fileStorer,
@@ -109,90 +107,6 @@ class TransformationExecutorSpec extends ObjectBehavior
                 'png',
                 null
             )
-        );
-    }
-
-    function it_does_not_download_the_same_source_file_twice(
-        FileDownloader $fileDownloader,
-        FileTransformer $fileTransformer,
-        FileData $sourceFileData,
-        Transformation $transformation1,
-        Transformation $transformation2
-    ) {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('test');
-        $sourceFileData->getOriginalFilename()->willReturn('jambon.jpg');
-        $sourceFileData->getKey()->willReturn('stored_file_key');
-        $fileTransformer->transform(Argument::cetera())->shouldBeCalledTimes(2)->willThrow(
-            new TransformationException()
-        );
-
-        $fileDownloader->get('stored_file_key', '/temporary/dir', 'jambon.jpg')->shouldBeCalledOnce();
-
-        $this->shouldThrow(TransformationFailedException::class)->during(
-            'execute',
-            [
-                $sourceFileData,
-                $assetFamilyIdentifier,
-                $transformation1,
-                '/temporary/dir',
-            ]
-        );
-        $this->shouldThrow(TransformationFailedException::class)->during(
-            'execute',
-            [
-                $sourceFileData,
-                $assetFamilyIdentifier,
-                $transformation2,
-                '/temporary/dir'
-            ]
-        );
-    }
-
-    function it_removes_the_previous_source_file(
-        Filesystem $filesystem,
-        FileDownloader $fileDownloader,
-        FileTransformer $fileTransformer,
-        FileData $sourceFileData1,
-        FileData $sourceFileData2,
-        Transformation $transformation1,
-        Transformation $transformation2
-    ) {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('test');
-
-        $sourceFileData1->getOriginalFilename()->willReturn('jambon.jpg');
-        $sourceFileData1->getKey()->willReturn('stored_file_key');
-        $sourceFile1 = new File('/temporary/dir/jambon.jpg', false);
-        $fileDownloader->get('stored_file_key', '/temporary/dir', 'jambon.jpg')->willReturn($sourceFile1);
-
-        $sourceFileData2->getOriginalFilename()->willReturn('lardons.jpg');
-        $sourceFileData2->getKey()->willReturn('other_stored_file_key');
-        $sourceFile2 = new File('/temporary/dir/lardons.jpg', false);
-        $fileDownloader->get('other_stored_file_key', '/temporary/dir', 'lardons.jpg')->willReturn($sourceFile2);
-
-        $fileTransformer->transform(Argument::cetera())->shouldBeCalledTimes(2)->willThrow(
-            new TransformationException()
-        );
-
-        $filesystem->exists('/temporary/dir/jambon.jpg')->willReturn(true);
-        $filesystem->remove('/temporary/dir/jambon.jpg')->shouldBeCalled();
-
-        $this->shouldThrow(TransformationFailedException::class)->during(
-            'execute',
-            [
-                $sourceFileData1,
-                $assetFamilyIdentifier,
-                $transformation1,
-                '/temporary/dir',
-            ]
-        );
-        $this->shouldThrow(TransformationFailedException::class)->during(
-            'execute',
-            [
-                $sourceFileData2,
-                $assetFamilyIdentifier,
-                $transformation2,
-                '/temporary/dir'
-            ]
         );
     }
 }

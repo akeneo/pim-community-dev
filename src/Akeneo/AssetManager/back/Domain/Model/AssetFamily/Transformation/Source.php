@@ -107,14 +107,6 @@ class Source implements TransformationReference
             $this->getLocaleReference()->equals($reference->getLocaleReference());
     }
 
-    public function getKey(): string
-    {
-        $channelKey = $this->channelReference->isEmpty() ? '' : sprintf('-%s', $this->channelReference->normalize());
-        $localeKey = $this->localeReference->isEmpty() ? '' : sprintf('-%s', $this->localeReference->normalize());
-
-        return sprintf('%s%s%s', $this->attributeCode->__toString(), $channelKey, $localeKey);
-    }
-
     public function normalize(): array
     {
         return [
