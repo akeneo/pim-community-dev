@@ -261,3 +261,14 @@ mappings:
                 path_match: 'in_group.*'
                 mapping:
                     type: 'boolean'
+        -
+            rates_structure:
+                path_match: 'rates.*'
+                match_mapping_type: 'object'
+                mapping:
+                    type: 'object'
+        -
+            rates:
+                path_match: 'rates.*'
+                mapping:
+                    type: 'keyword'
