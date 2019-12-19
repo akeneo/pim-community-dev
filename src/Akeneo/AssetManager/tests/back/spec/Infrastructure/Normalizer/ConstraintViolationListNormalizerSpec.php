@@ -5,11 +5,17 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Infrastructure\Normalizer;
 
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 class ConstraintViolationListNormalizerSpec extends ObjectBehavior
 {
+    public function let(NormalizerInterface $normalizer)
+    {
+        $this->beConstructedWith($normalizer);
+    }
+
     public function it_supports_normalization_of_constraint_violation_list(
         ConstraintViolationList $constraintViolationList
     ) {
@@ -18,6 +24,7 @@ class ConstraintViolationListNormalizerSpec extends ObjectBehavior
     }
 
     public function it_normalizes_a_constraint_violation_list(
+        NormalizerInterface $normalizer,
         ConstraintViolationInterface $constraintViolationA,
         ConstraintViolationInterface $constraintViolationB
     ) {
@@ -31,7 +38,10 @@ class ConstraintViolationListNormalizerSpec extends ObjectBehavior
         $constraintViolationB->getParameters()->willReturn(['parameters_b']);
         $constraintViolationB->getMessage()->willReturn('The message B');
         $constraintViolationB->getPropertyPath()->willReturn('property.path.b');
-        $constraintViolationB->getInvalidValue()->willReturn('toto');
+        $constraintViolationB->getInvalidValue()->willReturn('tata');
+
+        $normalizer->normalize('toto')->willReturn('toto_normalized');
+        $normalizer->normalize('tata')->willReturn('tata_normalized');
 
         $constraintViolationList = [$constraintViolationA, $constraintViolationB];
 
@@ -42,14 +52,14 @@ class ConstraintViolationListNormalizerSpec extends ObjectBehavior
                     'parameters' => ['parameters_a'],
                     'message' => 'The message A',
                     'propertyPath' => 'property.path.a',
-                    'invalidValue' => 'toto',
+                    'invalidValue' => 'toto_normalized',
                 ],
                 [
                     'messageTemplate' => 'the_message_template_b',
                     'parameters' => ['parameters_b'],
                     'message' => 'The message B',
                     'propertyPath' => 'property.path.b',
-                    'invalidValue' => 'toto',
+                    'invalidValue' => 'tata_normalized',
                 ],
             ]
         );

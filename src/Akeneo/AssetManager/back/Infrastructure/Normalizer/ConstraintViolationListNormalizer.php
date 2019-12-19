@@ -24,6 +24,14 @@ use Symfony\Component\Validator\ConstraintViolationList;
  */
 class ConstraintViolationListNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
+    /** * @var NormalizerInterface */
+    private $normalizer;
+
+    public function __construct(NormalizerInterface $normalizer)
+    {
+        $this->normalizer = $normalizer;
+    }
+
     public function hasCacheableSupportsMethod(): bool
     {
         return true;
@@ -40,7 +48,7 @@ class ConstraintViolationListNormalizer implements NormalizerInterface, Cacheabl
                 'parameters' => $constraintViolation->getParameters(),
                 'message' => $constraintViolation->getMessage(),
                 'propertyPath' => $constraintViolation->getPropertyPath(),
-                'invalidValue' => $constraintViolation->getInvalidValue(),
+                'invalidValue' => $this->normalizer->normalize($constraintViolation->getInvalidValue()),
             ];
         }
 

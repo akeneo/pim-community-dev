@@ -11,5 +11,7 @@ services:
     akeneo_asset_manager.normalizer.exception.violation:
         public: false
         class: Akeneo\AssetManager\Infrastructure\Normalizer\ConstraintViolationListNormalizer
+        arguments:
+            - '@serializer'
         tags:
             - { name: asset_manager_serializer.normalizer }
