@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Persistence\Dbal\Query;
 
+use Akeneo\Apps\Domain\Audit\Model\Write\DailyEventCount;
 use Akeneo\Apps\Domain\Audit\Persistence\Query\ExtractAppsEventCountQuery;
 use Akeneo\Apps\Domain\Audit\Persistence\Query\SelectVersioningProductEventCountByDayQuery;
 use Doctrine\DBAL\Connection;
@@ -24,57 +25,6 @@ class DbalExtractAppsEventCountQuery implements ExtractAppsEventCountQuery
     {
         $this->dbalConnection = $dbalConnection;
         $this->productClass = $productClass;
-    }
-
-    public function extractCreated(string $date)
-    {
-        $datetime = new \Datetime($date);
-
-        $sqlQuery = <<<SQL
-SELECT author, COUNT(resource_id) 
-FROM (
-    SELECT author, resource_id 
-    FROM pim_versioning_version USE INDEX(logged_at_idx) 
-    WHERE logged_at >= :start_time AND logged_at < :end_time 
-    AND resource_name = :resource_name
-    AND version = 1 
-    GROUP BY author, resource_id
-) as tmp_table 
-GROUP BY author;
-SQL;
-        $sqlParams = [
-            'start_time' => $datetime->format('Y-m-d H:i:s'),
-            'end_time'   => $datetime->modify('+1 day')->format('Y-m-d H:i:s'),
-            'resource_name' => $this->productClass
-        ];
-
-        $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
-
-    }
-
-    public function extractUpdated(string $date)
-    {
-        $datetime = new \Datetime($date);
-
-        $sqlQuery = <<<SQL
-SELECT author, COUNT(resource_id) 
-FROM (
-    SELECT author, resource_id 
-    FROM pim_versioning_version USE INDEX(logged_at_idx) 
-    WHERE logged_at >= :start_time AND logged_at < :end_time 
-    AND resource_name = :resource_name
-    AND version != 1 
-    GROUP BY author, resource_id
-) as tmp_table 
-GROUP BY author;
-SQL;
-        $sqlParams = [
-            'start_time' => $datetime->format('Y-m-d H:i:s'),
-            'end_time'   => $datetime->modify('+1 day')->format('Y-m-d H:i:s'),
-            'resource_name' => $this->productClass
-        ];
-
-        $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
     }
 
     public function extractCreatedProducts(\DateTime $dateTime): array
@@ -100,8 +50,17 @@ SQL;
         ];
 
         $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
+        $dailyEventCount = [];
+        foreach ($dataRows as $dataRow) {
+            $dailyEventCount[] = new DailyEventCount(
+                $dataRow['author'],
+                $dateTime->format('Y-m-d'),
+                (int) $dataRow['event_count'],
+                'product_created'
+            );
+        }
 
-        return $dataRows;
+        return $dailyEventCount;
     }
 
     public function extractUpdatedProducts(\DateTime $dateTime): array
@@ -109,7 +68,7 @@ SQL;
         $dateTime->setTime(0, 0, 0, 0);
 
         $sqlQuery = <<<SQL
-SELECT author, COUNT(resource_id) 
+SELECT author, COUNT(resource_id) as event_count
 FROM (
     SELECT author, resource_id 
     FROM pim_versioning_version USE INDEX(logged_at_idx) 
@@ -127,7 +86,16 @@ SQL;
         ];
 
         $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
+        $dailyEventCount = [];
+        foreach ($dataRows as $dataRow) {
+            $dailyEventCount[] = new DailyEventCount(
+                $dataRow['author'],
+                $dateTime->format('Y-m-d'),
+                (int) $dataRow['event_count'],
+                'product_updated'
+            );
+        }
 
-        return $dataRows;
+        return $dailyEventCount;
     }
 }
