@@ -37,7 +37,7 @@ export const Dashboard = () => {
                     <p>
                         <Translate id='akeneo_apps.dashboard.helper.description' />
                     </p>
-                    <HelperLink href={translate('akeneo_apps.dashboard.helper.link_url')}>
+                    <HelperLink href={translate('akeneo_apps.dashboard.helper.link_url')} target='_blank'>
                         <Translate id='akeneo_apps.dashboard.helper.link' />
                     </HelperLink>
                 </Helper>

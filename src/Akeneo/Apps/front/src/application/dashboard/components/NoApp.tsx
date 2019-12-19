@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
 import {PageError} from '../../common';
 import {PropsWithTheme} from '../../common/theme';
 import {SecurityGuard} from '../../shared/security';
 import {Translate, useTranslate} from '../../shared/translate';
+import {RouterContext} from '../../shared/router';
 
 export const NoApp = () => {
     const translate = useTranslate();
+    const {redirect} = useContext(RouterContext);
 
     return (
         <PageError title={<Translate id='akeneo_apps.dashboard.no_app.title' />}>
@@ -16,13 +18,16 @@ export const NoApp = () => {
                     <>
                         <Translate id='akeneo_apps.dashboard.no_app.message_without_permission.message' />
                         &nbsp;
-                        <Link href={translate('akeneo_apps.dashboard.no_app.message_without_permission.link_url')}>
+                        <Link
+                            href={translate('akeneo_apps.dashboard.no_app.message_without_permission.link_url')}
+                            target='_blank'
+                        >
                             <Translate id='akeneo_apps.dashboard.no_app.message_without_permission.link' />
                         </Link>
                     </>
                 }
             >
-                <Link href={translate('akeneo_apps.dashboard.no_app.message_with_permission.link_url')}>
+                <Link onClick={() => redirect('/apps')}>
                     <Translate id='akeneo_apps.dashboard.no_app.message_with_permission.link' />
                 </Link>
             </SecurityGuard>

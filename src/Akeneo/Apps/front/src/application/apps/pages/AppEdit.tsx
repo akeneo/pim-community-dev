@@ -128,7 +128,7 @@ export const AppEdit = () => {
                             <AppEditForm app={app} />
                         </div>
                         <div>
-                            <AppCredentials code={app.code} credentials={app} />
+                            <AppCredentials code={app.code} label={app.label} credentials={app} />
                         </div>
                     </Layout>
                 </PageContent>

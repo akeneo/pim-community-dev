@@ -44,6 +44,7 @@ const Thumbnail = styled.img`
     border: 1px solid ${({theme}: PropsWithTheme) => theme.color.grey80};
     object-fit: cover;
     width: 28px;
+    height: 28px;
 `;
 
 const Label = styled.div`

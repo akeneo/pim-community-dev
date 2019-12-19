@@ -81,7 +81,10 @@ akeneo_apps:
             extension_not_allowed: Sorry, the file you are trying to upload has an extension not allowed.
         credentials:
             title: Credentials
-            helper: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+            helper:
+                message: 'Here are the credentials to use in your {{ label }} connector.'
+                link: Learn more here...
+                link_url: https://www.akeneo.com/
             password_placeholder: ••••••••
             password_helper:
                 message: If you forgot your password, you can generate a new one here.
@@ -131,7 +134,6 @@ akeneo_apps:
             title: No connection declared yet.
             message_with_permission:
                 link: Create one here!
-                link_url: https://www.akeneo.com/
             message_without_permission:
                 message: Ask your administrator to create one.
                 link: Learn more about connections here...
