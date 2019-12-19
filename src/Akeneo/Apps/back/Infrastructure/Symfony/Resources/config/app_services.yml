@@ -1,0 +1,6 @@
+services:
+    akeneo_app.application.audit.service.update_product_event_count:
+        class: Akeneo\Apps\Application\Audit\Service\UpdateProductEventCountService
+        arguments:
+            - '@akeneo_app.persistence.query.extract_apps_event_count'
+            - '@akeneo_app.persistence.repository.event_count'

@@ -13,3 +13,9 @@ services:
         class: 'Akeneo\Apps\Infrastructure\Persistence\Dbal\Query\DbalSelectAppsEventCountByDayQuery'
         arguments:
             - '@database_connection'
+
+    akeneo_app.persistence.query.extract_apps_event_count:
+        class: Akeneo\Apps\Infrastructure\Persistence\Dbal\Query\DbalExtractAppsEventCountQuery
+        arguments:
+            - '@database_connection'
+            - '%pim_catalog.entity.product.class%'

@@ -14,3 +14,10 @@ services:
             - '@akeneo_app.application.handler.delete_app'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Apps\Infrastructure\Cli\UpdateAuditDataCommand:
+        class: Akeneo\Apps\Infrastructure\Cli\UpdateAuditDataCommand
+        arguments:
+            - '@akeneo_app.application.audit.service.update_product_event_count'
+        tags:
+            - { name: 'console.command' }
