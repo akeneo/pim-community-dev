@@ -61,42 +61,10 @@ const nameEcommerceValue = {
 };
 
 describe('akeneo > asset family > domain > model > asset --- value collection', () => {
-  // TODO fix these when unify models are here https://github.com/akeneo/pim-enterprise-dev/pull/7557
-  // test('I can create a new value collection', () => {
-  //   expect(([descriptionEnUsValue]).normalize()).toEqual([
-  //     {
-  //       attribute: {
-  //         code: 'description',
-  //         asset_family_identifier: 'designer',
-  //         identifier: 'description_1234',
-  //         is_required: true,
-  //         is_rich_text_editor: false,
-  //         is_textarea: false,
-  //         labels: {en_US: 'Description'},
-  //         max_length: 0,
-  //         order: 0,
-  //         regular_expression: null,
-  //         type: 'text',
-  //         validation_rule: 'email',
-  //         value_per_channel: false,
-  //         value_per_locale: true,
-  //       },
-  //       channel: null,
-  //       data: 'nice description',
-  //       locale: 'en_US',
-  //     },
-  //   ]);
-  // });
-
-  // test('I cannot create an invalid value collection', () => {
-  //   expect(() => {
-  //     ([descriptionEnUsValue, 'name']);
-  //   }).toThrowError('ValueCollection expect only Value objects as argument');
-  // });
-
   test('I can get a Value filter for an identifier and a locale & scope', () => {
     const filter = getValueFilter('description_1234', null, 'en_US');
     expect(filter(descriptionEnUsValue)).toBe(true);
+    expect(filter(descriptionFrFrValue)).toBe(false);
   });
 
   test('I can minimal normalize a new value collection', () => {
