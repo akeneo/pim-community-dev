@@ -1,6 +1,5 @@
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
-import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
+import {getValuesForChannelAndLocale} from 'akeneoassetmanager/domain/model/asset/value-collection';
 
 const normalizedDescription = {
   identifier: 'description_1234',
@@ -72,10 +71,10 @@ const nicknameValue = {
   locale: 'en_US',
   data: nicknameData,
 };
-const valueCollection = createValueCollection([descriptionValue, websiteValue]);
-const valueCollectionWithNoRequired = createValueCollection([nicknameValue]);
-const valueCollectionIncomplete = createValueCollection([websiteValue]);
-const valueCollectionComplete = createValueCollection([descriptionValue]);
+const valueCollection = [descriptionValue, websiteValue];
+const valueCollectionWithNoRequired = [nicknameValue];
+const valueCollectionIncomplete = [websiteValue];
+const valueCollectionComplete = [descriptionValue];
 const channelEcommerce = 'ecommerce';
 const localeEnUs = 'en_US';
 
@@ -88,7 +87,7 @@ describe('akeneo > asset > domain > model --- completeness', () => {
 
   test('I can create the completeness from the values', () => {
     const completeness = Completeness.createFromValues(
-      valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollection, channelEcommerce, localeEnUs)
     );
     expect(completeness.getCompleteAttributeCount()).toBe(1);
     expect(completeness.getRequiredAttributeCount()).toBe(2);
@@ -96,7 +95,7 @@ describe('akeneo > asset > domain > model --- completeness', () => {
 
   test('I can get the ratio', () => {
     const completeness = Completeness.createFromValues(
-      valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollection, channelEcommerce, localeEnUs)
     );
     expect(completeness.getRatio()).toBe(50);
   });
@@ -108,36 +107,36 @@ describe('akeneo > asset > domain > model --- completeness', () => {
 
   test('I can know if there is no required attribute', () => {
     const completeness = Completeness.createFromValues(
-      valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollection, channelEcommerce, localeEnUs)
     );
     expect(!completeness.hasRequiredAttribute()).toBe(false);
 
     const completenessWithNoRequired = Completeness.createFromValues(
-      valueCollectionWithNoRequired.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollectionWithNoRequired, channelEcommerce, localeEnUs)
     );
     expect(!completenessWithNoRequired.hasRequiredAttribute()).toBe(true);
   });
 
   test('I can know if there is no complete attribute', () => {
     const completeness = Completeness.createFromValues(
-      valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollection, channelEcommerce, localeEnUs)
     );
     expect(completeness.hasCompleteAttribute()).toBe(true);
 
     const completenessWithNoComplete = Completeness.createFromValues(
-      valueCollectionIncomplete.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollectionIncomplete, channelEcommerce, localeEnUs)
     );
     expect(completenessWithNoComplete.hasCompleteAttribute()).toBe(false);
   });
 
   test('I can know if the completeness is complete', () => {
     const completeness = Completeness.createFromValues(
-      valueCollectionComplete.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollectionComplete, channelEcommerce, localeEnUs)
     );
     expect(completeness.isComplete()).toBe(true);
 
     const completenessWithNoComplete = Completeness.createFromValues(
-      valueCollectionIncomplete.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollectionIncomplete, channelEcommerce, localeEnUs)
     );
     expect(completenessWithNoComplete.isComplete()).toBe(false);
   });

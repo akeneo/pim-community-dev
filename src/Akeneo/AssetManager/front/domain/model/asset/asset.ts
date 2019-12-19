@@ -11,7 +11,10 @@ import AssetIdentifier, {
   denormalizeAssetIdentifier,
   assetidentifiersAreEqual,
 } from 'akeneoassetmanager/domain/model/asset/identifier';
-import ValueCollection, {getValueFilter} from 'akeneoassetmanager/domain/model/asset/value-collection';
+import ValueCollection, {
+  getValueFilter,
+  getValuesForChannelAndLocale,
+} from 'akeneoassetmanager/domain/model/asset/value-collection';
 import Value from 'akeneoassetmanager/domain/model/asset/value';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
@@ -106,8 +109,6 @@ const createFileFromMediaLinkValue = (value: Value): File => {
   return createFileFromNormalized({filePath, originalFilename});
 };
 
-class InvalidArgumentError extends Error {}
-
 class AssetImplementation implements Asset {
   private constructor(
     private identifier: AssetIdentifier,
@@ -118,10 +119,6 @@ class AssetImplementation implements Asset {
     private image: Value[],
     private valueCollection: ValueCollection
   ) {
-    if (!(valueCollection instanceof ValueCollection)) {
-      throw new InvalidArgumentError('Asset expects a ValueCollection as valueCollection argument');
-    }
-
     Object.freeze(this);
   }
 
@@ -189,7 +186,7 @@ class AssetImplementation implements Asset {
       code: assetCodeStringValue(this.code),
       labels: this.getLabelCollection(),
       image: this.getImage(),
-      values: this.valueCollection.normalize(),
+      values: this.valueCollection,
     };
   }
 
@@ -201,12 +198,12 @@ class AssetImplementation implements Asset {
       code: assetCodeStringValue(this.code),
       labels: this.getLabelCollection(),
       image: this.getImage(),
-      values: this.valueCollection.normalizeMinimal(),
+      values: this.valueCollection,
     };
   }
 
   public getCompleteness(channel: ChannelReference, locale: LocaleReference): Completeness {
-    const values = this.getValueCollection().getValuesForChannelAndLocale(channel, locale);
+    const values = getValuesForChannelAndLocale(this.getValueCollection(), channel, locale);
 
     return Completeness.createFromValues(values);
   }

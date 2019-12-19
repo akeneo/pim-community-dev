@@ -30,6 +30,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -44,7 +45,6 @@ class RefreshAssetLinksTest extends SqlIntegrationTestCase
         parent::setUp();
 
         $this->resetDB();
-        $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
     }
 
     /**
@@ -88,6 +88,9 @@ class RefreshAssetLinksTest extends SqlIntegrationTestCase
     private function resetDB(): void
     {
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
+        /** @var Client $esClient */
+        $esClient = $this->get('akeneo_assetmanager.client.asset');
+        $esClient->resetIndex();
     }
 
     private function runRefreshAssetsCommand(): void
@@ -100,7 +103,8 @@ class RefreshAssetLinksTest extends SqlIntegrationTestCase
         $commandTester->execute([
             'command' => $command->getName(),
             '--all'   => true,
-        ]);
+        ]
+        );
     }
 
     private function loadAssetFamily(string $assetFamilyIdentifier)
@@ -249,6 +253,7 @@ class RefreshAssetLinksTest extends SqlIntegrationTestCase
     private function clearCache(): void
     {
         $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection')->clearCache();
-        $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier')->clearCache();
+        $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier')
+             ->clearCache();
     }
 }
