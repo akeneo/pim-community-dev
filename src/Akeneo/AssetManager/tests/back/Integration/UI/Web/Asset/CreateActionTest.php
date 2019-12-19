@@ -410,7 +410,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'brand',
                 sprintf(
                     '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"message":"This value is too long. It should have 255 characters or less.","propertyPath":"code","invalidValue":"%s"}]',
-                    $longIdentifier, $longIdentifier, $longIdentifier
+                    $longIdentifier, $longIdentifier
                 ),
             ],
         ];
