@@ -1,30 +1,30 @@
-import React, {useEffect} from 'react';
-import {App} from '../../../domain/apps/app.interface';
-import {FlowType} from '../../../domain/apps/flow-type.enum';
-import {fetchResult} from '../../shared/fetch-result';
-import {isOk} from '../../shared/fetch-result/result';
-import {useRoute} from '../../shared/router';
-import {appsFetched} from '../actions/apps-actions';
-import {useAppsState} from '../app-state-context';
-import {SourceApp} from '../model/source-app';
+import React from 'react';
+import {useFetchSourceApps} from '../api-hooks/use-fetch-source-apps';
+import {EventChart} from './EventChart';
+import {NoApp} from './NoApp';
+import {Translate} from '../../shared/translate';
+import {AuditEventType} from '../../../domain/audit/audit-event-type.enum';
+import {EventChartThemes} from '../../apps/EventChartThemes';
 
 export const Charts = () => {
-    const [apps, dispatch] = useAppsState();
+    const sourceApps = useFetchSourceApps();
 
-    const route = useRoute('akeneo_apps_list_rest');
-    useEffect(() => {
-        fetchResult<App[], never>(route).then(result => {
-            if (isOk(result)) {
-                dispatch(
-                    appsFetched(result.value.filter((app): app is SourceApp => FlowType.DATA_SOURCE === app.flowType))
-                );
-            }
-        });
-    }, [route]);
-
-    if (0 === Object.keys(apps).length) {
-        return <>No app</>;
+    if (0 === Object.keys(sourceApps).length) {
+        return <NoApp />;
     }
 
-    return <>{/* <EventChart /> */}</>;
+    return (
+        <>
+            <EventChart
+                eventType={AuditEventType.PRODUCT_CREATED}
+                theme={EventChartThemes.purple}
+                title={<Translate id='akeneo_apps.dashboard.charts.number_of_products_created' />}
+            />
+            <EventChart
+                eventType={AuditEventType.PRODUCT_UPDATED}
+                theme={EventChartThemes.blue}
+                title={<Translate id='akeneo_apps.dashboard.charts.number_of_products_updated' />}
+            />
+        </>
+    );
 };

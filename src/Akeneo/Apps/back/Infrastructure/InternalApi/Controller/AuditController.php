@@ -6,7 +6,7 @@ namespace Akeneo\Apps\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Apps\Application\Audit\Query\CountDailyEventsByAppHandler;
 use Akeneo\Apps\Application\Audit\Query\CountDailyEventsByAppQuery;
-use Akeneo\Apps\Domain\Audit\Model\Read\AppEventCounts;
+use Akeneo\Apps\Domain\Audit\Model\Read\WeeklyEventCounts;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -28,16 +28,20 @@ class AuditController
     public function sourceAppsEvent(Request $request): JsonResponse
     {
         $eventType = $request->get('event_type', '');
+        $startPeriod = new \DateTime('-7 days', new \DateTimeZone('UTC'));
         $today = new \DateTime('now', new \DateTimeZone('UTC'));
-        $startPeriod = new \DateTime('1 week ago', new \DateTimeZone('UTC'));
 
         $query = new CountDailyEventsByAppQuery($eventType, $startPeriod->format('Y-m-d'), $today->format('Y-m-d'));
         $countDailyEventsByApp = $this->countDailyEventsByAppHandler->handle($query);
 
-        return new JsonResponse(
-            \array_map(function (AppEventCounts $appEventCounts) {
-                return $appEventCounts->normalize();
-            }, $countDailyEventsByApp)
+        $data = \array_reduce(
+            $countDailyEventsByApp,
+            function (array $data, WeeklyEventCounts $appEventCounts) {
+                return array_merge($data, $appEventCounts->normalize());
+            },
+            []
         );
+
+        return new JsonResponse($data);
     }
 }

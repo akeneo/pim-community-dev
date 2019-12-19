@@ -9,7 +9,7 @@ namespace Akeneo\Apps\Domain\Audit\Model\Read;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class AppEventCounts
+final class WeeklyEventCounts
 {
     /** @var string */
     private $appCode;
@@ -30,9 +30,13 @@ final class AppEventCounts
     public function normalize()
     {
         return [
-            $this->appCode => \array_map(function (DailyEventCount $dailyEventCount) {
-                return $dailyEventCount->normalize();
-            }, $this->dailyEventCounts)
+            $this->appCode => \array_reduce(
+                $this->dailyEventCounts,
+                function (array $weeklyEventCounts, DailyEventCount $dailyEventCount) {
+                    return array_merge($weeklyEventCounts, $dailyEventCount->normalize());
+                },
+                []
+            ),
         ];
     }
 }

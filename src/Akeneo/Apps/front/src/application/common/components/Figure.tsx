@@ -7,7 +7,7 @@ export const Figure = styled.div`
 `;
 
 const ImageContainer = styled.div`
-    border: 1px solid ${({theme}: PropsWithTheme) => theme.color.grey};
+    border: 1px solid ${({theme}: PropsWithTheme) => theme.color.grey100};
     height: 140px;
     overflow: hidden;
     display: flex;
@@ -27,7 +27,7 @@ const Mask = styled.div`
         width: 100%;
         height: 100%;
         top: 0;
-        background-color: #11324d;
+        background-color: ${({theme}: PropsWithTheme) => theme.color.grey140};
         opacity: 0;
         box-sizing: border-box;
         transition: opacity 0.2s ease-in-out;

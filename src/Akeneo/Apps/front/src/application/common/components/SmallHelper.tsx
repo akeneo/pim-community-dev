@@ -21,7 +21,7 @@ const HintIcon = styled.div`
 `;
 
 const HintTitle = styled.div`
-    border-left: 1px solid ${({theme}: PropsWithTheme) => theme.color.mediumGrey};
+    border-left: 1px solid ${({theme}: PropsWithTheme) => theme.color.grey80};
     flex-grow: 1;
     font-weight: 600;
     padding-left: 16px;

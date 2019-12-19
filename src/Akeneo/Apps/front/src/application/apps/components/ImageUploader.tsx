@@ -16,7 +16,7 @@ interface Props {
 }
 
 const HelperLink = styled.a`
-    color: ${({theme}: PropsWithTheme) => theme.color.blue};
+    color: ${({theme}: PropsWithTheme) => theme.color.blue100};
     text-decoration: underline;
     font-weight: 700;
 `;
