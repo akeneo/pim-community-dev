@@ -2,8 +2,11 @@ import {identifierStringValue} from 'akeneoassetmanager/domain/model/identifier'
 
 const routing = require('routing');
 import {File, isFileEmpty} from 'akeneoassetmanager/domain/model/file';
-import MediaLinkData from 'akeneoassetmanager/domain/model/asset/data/media-link';
-import {MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import MediaLinkData, {mediaLinkDataStringValue} from 'akeneoassetmanager/domain/model/asset/data/media-link';
+import {
+  MediaLinkAttribute,
+  NormalizedMediaLinkAttribute,
+} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {suffixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 import {prefixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
@@ -18,8 +21,6 @@ export enum MediaPreviewTypes {
 
 export const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
 
-// TODO remove this comment when using typescript ^3.4
-// @ts-ignore eslint-disable-next-line flowtype/no-flow-fix-me-comments
 export const copyToClipboard = (text: string) => canCopyToClipboard() && navigator.clipboard.writeText(text);
 
 export const getImageShowUrl = (image: File, filter: string): string => {
@@ -84,32 +85,50 @@ export const getMediaDownloadUrl = (filePath: string): string => {
 export const getMediaLinkPreviewUrl = (
   type: string,
   mediaLink: MediaLinkData,
-  attribute: MediaLinkAttribute
+  // TODO: use the attribute light model but for now I don't want to break the whole world
+  // https://akeneo.atlassian.net/browse/AST-183
+  attribute: NormalizedMediaLinkAttribute | MediaLinkAttribute
 ): string => {
-  const data = btoa(mediaLink.stringValue());
+  const data = btoa(mediaLinkDataStringValue(mediaLink));
   const attributeIdentifier = attribute.identifier;
 
   return routing.generate('akeneo_asset_manager_image_preview', {type, attributeIdentifier, data});
 };
 
-export const getMediaLinkUrl = (mediaLink: MediaLinkData, attribute: MediaLinkAttribute): string => {
-  return prefixStringValue(attribute.prefix) + mediaLink.stringValue() + suffixStringValue(attribute.suffix);
+export const getMediaLinkUrl = (
+  mediaLink: MediaLinkData,
+  // TODO: use the attribute light model but for now I don't want to break the whole world
+  // https://akeneo.atlassian.net/browse/AST-183
+  attribute: MediaLinkAttribute | NormalizedMediaLinkAttribute
+): string => {
+  return `${prefixStringValue(attribute.prefix)}${mediaLinkDataStringValue(mediaLink)}${suffixStringValue(
+    attribute.suffix
+  )}`;
 };
 
 // The asset any is temporary and should be fixed when we create unified models
 export const getAssetPreview = (asset: any, type: MediaPreviewTypes, {locale, channel}: Context): string => {
   const image = asset.image.find(getValueForChannelAndLocaleFilter(channel, locale));
 
-  if (undefined === image || '' === image.attribute) return '';
+  //TODO unify models https://akeneo.atlassian.net/browse/AST-183
+  const attributeIdentifier =
+    undefined !== asset.assetFamily
+      ? asset.assetFamily.attributeAsMainMedia
+      : 0 === asset.image.length
+      ? 'UNKNOWN'
+      : asset.image[0].attribute;
+
+  const data = undefined !== image ? btoa(typeof image.data === 'string' ? image.data : image.data.filePath) : '';
 
   return routing.generate('akeneo_asset_manager_image_preview', {
     type,
-    attributeIdentifier: undefined !== image ? image.attribute : '',
-    data: undefined !== image ? btoa(image.data.filePath) : '',
+    attributeIdentifier,
+    data,
   });
 };
 
 // The asset any is temporary and should be fixed when we create unified models
+// https://akeneo.atlassian.net/browse/AST-183
 export const getAssetEditUrl = (asset: any): string => {
   const assetFamilyIdentifier = asset.assetFamily.identifier;
   const assetCode = asset.code;

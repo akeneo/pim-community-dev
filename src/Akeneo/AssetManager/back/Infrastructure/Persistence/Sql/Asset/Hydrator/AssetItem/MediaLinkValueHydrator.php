@@ -32,11 +32,13 @@ class MediaLinkValueHydrator implements ValueHydratorInterface
 
     public function hydrate($normalizedValue, AbstractAttribute $attribute, array $context = []): array
     {
-        $url = sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $normalizedValue['data'], $attribute->getSuffix()->normalize());
-        $normalizedValue['data'] = [
-            'filePath'         => $normalizedValue['data'],
-            'originalFilename' => basename($url)
-        ];
+//        TODO unify models
+//        https://akeneo.atlassian.net/browse/AST-183
+//        $url = sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $normalizedValue['data'], $attribute->getSuffix()->normalize());
+//        $normalizedValue['data'] = [
+//            'filePath'         => $normalizedValue['data'],
+//            'originalFilename' => basename($url)
+//        ];
 
         return $normalizedValue;
     }

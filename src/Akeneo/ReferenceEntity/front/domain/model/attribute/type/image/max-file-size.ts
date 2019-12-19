@@ -18,9 +18,7 @@ export class MaxFileSize implements NormalizableAdditionalProperty {
     // 123. -> match
     // 123.344. -> no match
     // 12e3.45 -> no match
-    return (
-      null === value || (typeof value === 'string' && null !== value.match(/^[0-9]*\.?[0-9]*$/))
-    );
+    return null === value || (typeof value === 'string' && null !== value.match(/^[0-9]*\.?[0-9]*$/));
   }
 
   public static createFromNormalized(normalizedMaxFileSize: NormalizedMaxFileSize) {

@@ -1,4 +1,7 @@
-import {ConcreteMediaFileAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
+import {
+  ConcreteMediaFileAttribute,
+  isMediaFileAttribute,
+} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 
 const normalizedFrontView = {
   identifier: 'front_view',
@@ -19,5 +22,10 @@ describe('akeneo > attribute > domain > model > attribute > type --- MediaFileAt
     expect(ConcreteMediaFileAttribute.createFromNormalized(normalizedFrontView).normalize()).toEqual(
       normalizedFrontView
     );
+  });
+
+  test('I can check if it is a media-file attribute', () => {
+    expect(isMediaFileAttribute(normalizedFrontView)).toBe(true);
+    expect(isMediaFileAttribute({...normalizedFrontView, type: 'noice'})).toBe(false);
   });
 });

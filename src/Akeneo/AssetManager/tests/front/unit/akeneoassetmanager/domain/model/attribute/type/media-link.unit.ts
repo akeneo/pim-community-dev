@@ -1,4 +1,7 @@
-import {ConcreteMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import {
+  ConcreteMediaLinkAttribute,
+  isMediaLinkAttribute,
+} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
 const normalizedMediaLink = {
   identifier: 'url',
@@ -43,5 +46,10 @@ describe('akeneo > attribute > domain > model > attribute > type --- MediaLinkAt
         'google.com'
       );
     }).toThrow('Attribute expects a valid MediaType as mediaType');
+  });
+
+  test('I can check if it is a media-link attribute', () => {
+    expect(isMediaLinkAttribute(normalizedMediaLink)).toBe(true);
+    expect(isMediaLinkAttribute({...normalizedMediaLink, type: 'noice'})).toBe(false);
   });
 });

@@ -1,22 +1,24 @@
 import * as React from 'react';
-import {NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {CellView} from 'akeneoassetmanager/application/configuration/value';
 import {Column} from 'akeneoassetmanager/application/reducer/grid';
-import {NormalizedFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
-import {getFileThumbnailUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {getMediaLinkPreviewUrl, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
+import {isMediaLinkData, mediaLinkDataStringValue} from 'akeneoassetmanager/domain/model/asset/data/media-link';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
+import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
 const memo = (React as any).memo;
 
-const MediaLinkCellView: CellView = memo(({value, column}: {value: NormalizedValue; column: Column}) => {
-  const file = value.data as NormalizedFileData;
+const MediaLinkCellView: CellView = memo(({value, column}: {value: Value; column: Column}) => {
+  if (!isMediaLinkData(value.data)) return null;
+  if (!isMediaLinkAttribute(column.attribute)) return null;
 
   return (
-    <div className="AknGrid-bodyCellContainer" title={file ? file.originalFilename : ''}>
+    <div className="AknGrid-bodyCellContainer" title={mediaLinkDataStringValue(value.data)}>
       <img
         className="AknGrid-image AknLoadingPlaceHolder"
         width="44"
         height="44"
-        src={getFileThumbnailUrl(column.attribute.identifier, file)}
+        src={getMediaLinkPreviewUrl(MediaPreviewTypes.Thumbnail, value.data, column.attribute)}
       />
     </div>
   );

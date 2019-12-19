@@ -53,6 +53,9 @@ export interface NormalizedTextAttribute extends NormalizedAttribute {
   regular_expression: RegularExpression;
 }
 
+export const isTextAttribute = (textAttribute: NormalizedAttribute): textAttribute is NormalizedTextAttribute =>
+  textAttribute.type === TEXT_ATTRIBUTE_TYPE;
+
 export interface TextAttribute extends Attribute {
   maxLength: MaxLength;
   isTextarea: IsTextarea;

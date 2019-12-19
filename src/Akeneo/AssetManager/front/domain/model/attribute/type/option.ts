@@ -8,7 +8,7 @@ import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/do
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {Attribute, ConcreteAttribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {Option, createOptionFromNormalized} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
-import OptionCode, {optioncodesAreEqual} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
+import OptionCode, {optionCodesAreEqual} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
 
 export const OPTION_ATTRIBUTE_TYPE = 'option';
 
@@ -16,6 +16,9 @@ export interface NormalizedOptionAttribute extends NormalizedAttribute {
   type: typeof OPTION_ATTRIBUTE_TYPE;
   options: Option[];
 }
+
+export const isOptionAttribute = (optionAttribute: NormalizedAttribute): optionAttribute is NormalizedOptionAttribute =>
+  optionAttribute.type === OPTION_ATTRIBUTE_TYPE;
 
 export type NormalizedOptionAdditionalProperty = Option;
 export type OptionAdditionalProperty = Option;
@@ -74,7 +77,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
   }
 
   public hasOption(optionCode: OptionCode) {
-    return this.options.some((option: Option) => optioncodesAreEqual(option.code, optionCode));
+    return this.options.some((option: Option) => optionCodesAreEqual(option.code, optionCode));
   }
 
   public normalize(): NormalizedOptionAttribute {

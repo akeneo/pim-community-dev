@@ -1,4 +1,4 @@
-import {ConcreteOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
+import {ConcreteOptionAttribute, isOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {createOptionFromNormalized} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 
 const normalizedFavoriteColor = {
@@ -51,5 +51,16 @@ describe('akeneo > attribute > domain > model > attribute > type --- OptionAttri
       code: 'green',
       labels: {en_US: 'Green'},
     });
+  });
+
+  test('I can check if it is a option attribute', () => {
+    expect(isOptionAttribute(normalizedFavoriteColor)).toBe(true);
+    expect(isOptionAttribute({...normalizedFavoriteColor, type: 'noice'})).toBe(false);
+  });
+
+  test('I can test if it has an option', () => {
+    const option = ConcreteOptionAttribute.createFromNormalized(normalizedFavoriteColor);
+    expect(option.hasOption('red')).toEqual(true);
+    expect(option.hasOption('unknown')).toEqual(false);
   });
 });

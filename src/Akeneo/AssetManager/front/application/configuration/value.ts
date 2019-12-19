@@ -1,4 +1,4 @@
-import Value, {NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
@@ -8,7 +8,6 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 export class InvalidArgument extends Error {}
 
-export type Denormalizer = (normalizedValue: NormalizedValue, attribute: Attribute) => Value;
 export type ViewGenerator = React.SFC<{
   value: Value;
   channel: ChannelReference;
@@ -20,7 +19,7 @@ export type ViewGenerator = React.SFC<{
 /**
  * @api
  */
-export type CellView = React.SFC<{column: Column; value: NormalizedValue}>;
+export type CellView = React.SFC<{column: Column; value: Value}>;
 export type FilterViewProps = {
   attribute: Attribute;
   filter: Filter | undefined;
@@ -35,9 +34,6 @@ export type FilterView = React.SFC<FilterViewProps>;
 
 type ValueConfig = {
   [type: string]: {
-    denormalize: {
-      denormalize: Denormalizer;
-    };
     view: {
       view: ViewGenerator;
     };
@@ -58,45 +54,8 @@ export const hasFilterView = (config: ValueConfig) => (attributeType: string): b
   return undefined !== config[attributeType] && undefined !== config[attributeType].filter;
 };
 
-export const getDenormalizer = (config: ValueConfig) => (normalizedValue: NormalizedValue): Denormalizer => {
-  const typeConfiguration = config[normalizedValue.attribute.type];
-
-  if (undefined === typeConfiguration || undefined === typeConfiguration.denormalize) {
-    const expectedConfiguration = `config:
-    config:
-        akeneoassetmanager/application/configuration/value:
-            ${normalizedValue.attribute.type}:
-                denormalize: '@my_value_denormalizer'`;
-
-    throw new InvalidArgument(
-      `Cannot get the value denormalizer for type "${
-        normalizedValue.attribute.type
-      }". The configuration should look like this:
-${expectedConfiguration}
-
-Actual conf: ${JSON.stringify(config)}`
-    );
-  }
-
-  if (undefined === typeConfiguration.denormalize.denormalize) {
-    const moduleExample = `
-export const denormalize = (normalizedBooleanData: boolean) => {
-  return new BooleanData(normalizedBooleanData);
-};
-`;
-
-    throw new InvalidArgument(
-      `The module you are exposing to denormalize a value of type "${normalizedValue.attribute.type}" needs to
-export a "denormalize" property. Here is an example of a valid denormalize es6 module:
-${moduleExample}`
-    );
-  }
-
-  return typeConfiguration.denormalize.denormalize;
-};
-
 export const getFieldView = (config: ValueConfig) => (value: Value): ViewGenerator => {
-  const attributeType = value.attribute.getType();
+  const attributeType = value.attribute.type;
   const typeConfiguration = config[attributeType];
 
   if (undefined === typeConfiguration || undefined === typeConfiguration.view) {
@@ -210,7 +169,6 @@ ${moduleExample}`
  * This loader looks at the requirejs.yml file and find every configuration related to this module. It transform it
  * into a javascript object and add it automatically to the file on the fly.
  */
-export const getDataDenormalizer = getDenormalizer(__moduleConfig as ValueConfig);
 export const getDataFieldView = getFieldView(__moduleConfig as ValueConfig);
 export const getDataCellView = getCellView(__moduleConfig as ValueConfig);
 export const hasDataCellView = hasCellView(__moduleConfig as ValueConfig);

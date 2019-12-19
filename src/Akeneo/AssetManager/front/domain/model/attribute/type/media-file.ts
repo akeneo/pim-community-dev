@@ -20,6 +20,10 @@ export interface NormalizedMediaFileAttribute extends NormalizedAttribute {
   media_type: MediaType;
 }
 
+export const isMediaFileAttribute = (
+  mediaFileAttribute: NormalizedAttribute
+): mediaFileAttribute is NormalizedMediaFileAttribute => MEDIA_FILE_ATTRIBUTE_TYPE === mediaFileAttribute.type;
+
 export type NormalizedMediaFileAdditionalProperty = MaxFileSize | AllowedExtensions | MediaType;
 
 export type MediaFileAdditionalProperty = MaxFileSize | AllowedExtensions | MediaType;

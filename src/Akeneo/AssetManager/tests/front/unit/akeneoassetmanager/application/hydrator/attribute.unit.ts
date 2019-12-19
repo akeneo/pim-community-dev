@@ -1,4 +1,4 @@
-import {hydrator} from 'akeneoassetmanager/application/hydrator/attribute';
+import hydrateAttribute, {hydrator} from 'akeneoassetmanager/application/hydrator/attribute';
 
 describe('akeneo > asset family > application > hydrator --- attribute', () => {
   test('I can hydrate a new attribute', () => {

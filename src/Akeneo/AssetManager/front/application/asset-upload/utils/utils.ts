@@ -4,9 +4,9 @@ import {AssetFamily, getAttributeAsMainMedia} from 'akeneoassetmanager/domain/mo
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import sanitize from 'akeneoassetmanager/tools/sanitize';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
-import {NormalizedMinimalValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {createUUIDV4} from 'akeneoassetmanager/application/asset-upload/utils/uuid';
+import Value from 'akeneoassetmanager/domain/model/asset/value';
 
 export const createLineFromFilename = (filename: string, assetFamily: AssetFamily): Line => {
   const info = extractInfoFromFilename(filename, assetFamily);
@@ -83,16 +83,16 @@ const createEmptyAssetFromLine = (line: Line, assetFamily: AssetFamily): Creatio
   };
 };
 
-const createAssetValueFromLine = (line: Line, assetFamily: AssetFamily): NormalizedMinimalValue => {
+const createAssetValueFromLine = (line: Line, assetFamily: AssetFamily): Value => {
   return {
-    attribute: assetFamily.attributeAsMainMedia,
+    attribute: getAttributeAsMainMedia(assetFamily),
     channel: line.channel,
     locale: line.locale,
     data: line.file,
   };
 };
 
-const addAssetValueToAsset = (asset: CreationAsset, value: NormalizedMinimalValue): CreationAsset => {
+const addAssetValueToAsset = (asset: CreationAsset, value: Value): CreationAsset => {
   return {
     ...asset,
     values: [...asset.values, value],

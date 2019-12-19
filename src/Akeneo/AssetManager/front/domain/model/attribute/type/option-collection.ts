@@ -17,6 +17,11 @@ export interface NormalizedOptionCollectionAttribute extends NormalizedAttribute
   options: Option[];
 }
 
+export const isOptionCollectionAttribute = (
+  optionCollectionAttribute: NormalizedAttribute
+): optionCollectionAttribute is NormalizedOptionCollectionAttribute =>
+  optionCollectionAttribute.type === OPTION_COLLECTION_ATTRIBUTE_TYPE;
+
 export type NormalizedOptionCollectionAdditionalProperty = Option;
 export type OptionCollectionAdditionalProperty = Option;
 

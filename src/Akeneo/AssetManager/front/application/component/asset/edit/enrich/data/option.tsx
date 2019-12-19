@@ -1,9 +1,13 @@
 import * as React from 'react';
-import Value from 'akeneoassetmanager/domain/model/asset/value';
+import Value, {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
-import {OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
-import OptionData, {denormalize as denormalizeOptionData} from 'akeneoassetmanager/domain/model/asset/data/option';
+import {isOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
+import {
+  isOptionData,
+  optionDataStringValue,
+  optionDataFromString,
+} from 'akeneoassetmanager/domain/model/asset/data/option';
 import {Option, getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import __ from 'akeneoassetmanager/tools/translator';
 
@@ -18,13 +22,11 @@ const View = ({
   onChange: (value: Value) => void;
   canEditData: boolean;
 }) => {
-  if (!(value.data instanceof OptionData)) {
+  if (!isOptionData(value.data) || !isOptionAttribute(value.attribute)) {
     return null;
   }
-  const data = value.data as OptionData;
 
-  const attribute = value.attribute as OptionAttribute;
-  const availableOptions = attribute.options.reduce(
+  const availableOptions = value.attribute.options.reduce(
     (availableOptions: {[choiceValue: string]: string}, option: Option) => {
       availableOptions[option.code] = getOptionLabel(option, locale);
 
@@ -36,10 +38,10 @@ const View = ({
   return (
     <div className="option-selector-container">
       <Select2
-        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
+        id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
         className="AknSelectField"
         data={availableOptions}
-        value={data.stringValue()}
+        value={optionDataStringValue(value.data)}
         multiple={false}
         readOnly={!canEditData}
         configuration={{
@@ -47,8 +49,9 @@ const View = ({
           placeholder: __('pim_asset_manager.attribute.options.no_value'),
         }}
         onChange={(optionCode: string) => {
-          const newData = denormalizeOptionData(optionCode, attribute);
-          const newValue = value.setData(newData);
+          //TODO remove old options
+          const newData = optionDataFromString(optionCode);
+          const newValue = setValueData(value, newData);
 
           onChange(newValue);
         }}

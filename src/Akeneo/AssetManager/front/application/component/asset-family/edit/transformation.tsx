@@ -14,8 +14,8 @@ import {
 } from 'akeneoassetmanager/application/action/asset-family/edit';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import Ajv from 'ajv';
-import {getErrorsView} from "akeneoassetmanager/application/component/app/validation-error";
-import ValidationError from "akeneoassetmanager/domain/model/validation-error";
+import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
+import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 const ajv = new Ajv({allErrors: true, verbose: true});
 const schema = require('akeneoassetmanager/infrastructure/model/asset-family-transformations.schema.json');
 const securityContext = require('pim/security-context');

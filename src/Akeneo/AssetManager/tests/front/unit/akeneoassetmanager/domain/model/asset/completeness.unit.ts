@@ -1,7 +1,5 @@
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
-import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
 
 const normalizedDescription = {
@@ -20,7 +18,6 @@ const normalizedDescription = {
   validation_rule: 'email',
   regular_expression: null,
 };
-const description = denormalizeTextAttribute(normalizedDescription);
 const normalizedWebsite = {
   identifier: 'website_1234',
   asset_family_identifier: 'designer',
@@ -37,7 +34,6 @@ const normalizedWebsite = {
   validation_rule: 'url',
   regular_expression: null,
 };
-const website = denormalizeTextAttribute(normalizedWebsite);
 
 const normalizedNickname = {
   identifier: 'nickname_1234',
@@ -55,13 +51,27 @@ const normalizedNickname = {
   validation_rule: 'url',
   regular_expression: null,
 };
-const nickname = denormalizeTextAttribute(normalizedNickname);
-const descriptionData = denormalizeTextData('a nice description');
-const descriptionValue = createValue(description, 'ecommerce', 'en_US', descriptionData);
-const websiteData = denormalizeTextData('');
-const websiteValue = createValue(website, 'ecommerce', 'en_US', websiteData);
-const nicknameData = denormalizeTextData('Pedro');
-const nicknameValue = createValue(nickname, 'ecommerce', 'en_US', nicknameData);
+const descriptionData = 'a nice description';
+const descriptionValue = {
+  attribute: normalizedDescription,
+  channel: 'ecommerce',
+  locale: 'en_US',
+  data: descriptionData,
+};
+const websiteData = null;
+const websiteValue = {
+  attribute: normalizedWebsite,
+  channel: 'ecommerce',
+  locale: 'en_US',
+  data: websiteData,
+};
+const nicknameData = 'Pedro';
+const nicknameValue = {
+  attribute: normalizedNickname,
+  channel: 'ecommerce',
+  locale: 'en_US',
+  data: nicknameData,
+};
 const valueCollection = createValueCollection([descriptionValue, websiteValue]);
 const valueCollectionWithNoRequired = createValueCollection([nicknameValue]);
 const valueCollectionIncomplete = createValueCollection([websiteValue]);

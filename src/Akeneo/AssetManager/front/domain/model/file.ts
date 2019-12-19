@@ -13,7 +13,7 @@ export const createFileFromNormalized = (file: any): File => {
     ? null
     : {
         ...file,
-      }; // should do the check later, we will see how to handle it in the future
+      }; // TODO should do the check later, we will see how to handle it in the future
 };
 export const isFileEmpty = (file: File): file is null => null === file;
 export const areFilesEqual = (first: File, second: File) =>
@@ -27,3 +27,6 @@ export const areFilesEqual = (first: File, second: File) =>
     first.extension === second.extension);
 
 export const isFileInStorage = (file: File) => !isFileEmpty(file) && -1 === file.filePath.indexOf('/tmp/');
+export const isFile = (file: any): file is File =>
+  null === file ||
+  (typeof file === 'object' && typeof file.originalFilename === 'string' && typeof file.filePath === 'string');

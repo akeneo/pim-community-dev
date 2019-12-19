@@ -1,7 +1,4 @@
-import denormalize, {getValueDenormalizer} from 'akeneoassetmanager/application/denormalizer/asset/value';
-import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
-import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
+import valueDenormalizer from 'akeneoassetmanager/application/denormalizer/asset/value';
 
 const normalizedDescription = {
   identifier: 'description_1234',
@@ -19,22 +16,17 @@ const normalizedDescription = {
   validation_rule: 'email',
   regular_expression: null,
 };
-const description = denormalizeTextAttribute(normalizedDescription);
-const data = denormalizeTextData('a nice description');
-const descriptionenUS = createValue(description, null, 'en_US', data).normalize();
+
+const descriptionenUS = 'en_US';
 
 describe('akeneo > asset family > application > denormalizer > asset --- value', () => {
   test('I can denormalize a value', () => {
-    const denormalizeValue = getValueDenormalizer(
-      () => () => {
-        return denormalizeTextData('a nice description');
-      },
-      () => denormalizeTextAttribute
-    );
-    expect(denormalizeValue(descriptionenUS).normalize()).toEqual(descriptionenUS);
-  });
-
-  test('I can execute the denormalizer', () => {
-    expect(() => denormalize('a nice description').normalize()).toThrow();
+    const denormalizeValue = valueDenormalizer({
+      attribute: normalizedDescription,
+      channel: null,
+      locale: descriptionenUS,
+      data: normalizedDescription,
+    });
+    expect(denormalizeValue).toEqual(denormalizeValue);
   });
 });

@@ -22,6 +22,9 @@ export interface NormalizedNumberAttribute extends NormalizedAttribute {
   max_value: NormalizedMaxValue;
 }
 
+export const isNumberAttribute = (numberAttribute: NormalizedAttribute): numberAttribute is NormalizedNumberAttribute =>
+  NUMBER_ATTRIBUTE_TYPE === numberAttribute.type;
+
 export interface NumberAttribute extends Attribute {
   decimalsAllowed: DecimalsAllowed;
   minValue: MinValue;

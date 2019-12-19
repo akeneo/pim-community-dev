@@ -1,8 +1,6 @@
 import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
-import Value from 'akeneoassetmanager/domain/model/asset/value';
-import MediaLinkData, {create} from 'akeneoassetmanager/domain/model/asset/data/media-link';
-import {ConcreteMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import Value, {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 import Key from 'akeneoassetmanager/tools/key';
 import {
   copyToClipboard,
@@ -14,6 +12,13 @@ import styled, {ThemeProvider} from 'styled-components';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import DownloadIcon from 'akeneoassetmanager/application/component/app/icon/download';
 import LinkIcon from 'akeneoassetmanager/application/component/app/icon/link';
+import {
+  isMediaLinkData,
+  mediaLinkDataFromString,
+  areMediaLinkDataEqual,
+  mediaLinkDataStringValue,
+} from 'akeneoassetmanager/domain/model/asset/data/media-link';
+import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
 const Container = styled.div`
   align-items: center;
@@ -68,17 +73,17 @@ const View = ({
   onSubmit: () => void;
   canEditData: boolean;
 }) => {
-  if (!(value.data instanceof MediaLinkData && value.attribute instanceof ConcreteMediaLinkAttribute)) {
+  if (!isMediaLinkData(value.data) || !isMediaLinkAttribute(value.attribute)) {
     return null;
   }
 
   const onValueChange = (text: string) => {
-    const newData = create(text);
-    if (newData.equals(value.data)) {
+    const newData = mediaLinkDataFromString(text);
+    if (areMediaLinkDataEqual(newData, value.data)) {
       return;
     }
 
-    const newValue = value.setData(newData);
+    const newValue = setValueData(value, newData);
 
     onChange(newValue);
   };
@@ -92,12 +97,12 @@ const View = ({
       <Container>
         <Thumbnail src={mediaPreviewUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
         <input
-          id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
+          id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
           autoComplete="off"
           className={`AknTextField AknTextField--light
-        ${value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''}
+        ${value.attribute.value_per_locale ? 'AknTextField--localizable' : ''}
         ${!canEditData ? 'AknTextField--disabled' : ''}`}
-          value={value.data.stringValue()}
+          value={mediaLinkDataStringValue(value.data)}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             onValueChange(event.currentTarget.value);
           }}

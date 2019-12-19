@@ -1,4 +1,7 @@
-import {ConcreteOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
+import {
+  ConcreteOptionCollectionAttribute,
+  isOptionCollectionAttribute,
+} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import {createOptionFromNormalized} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 
 const normalizedFavoriteColor = {
@@ -51,5 +54,10 @@ describe('akeneo > attribute > domain > model > attribute > type --- OptionColle
       code: 'green',
       labels: {en_US: 'Green'},
     });
+  });
+
+  test('I can check if it is a option collection attribute', () => {
+    expect(isOptionCollectionAttribute(normalizedFavoriteColor)).toBe(true);
+    expect(isOptionCollectionAttribute({...normalizedFavoriteColor, type: 'noice'})).toBe(false);
   });
 });

@@ -41,6 +41,10 @@ export interface NormalizedMediaLinkAttribute extends NormalizedAttribute {
   media_type: NormalizedMediaType;
 }
 
+export const isMediaLinkAttribute = (
+  mediaLinkAttribute: NormalizedAttribute
+): mediaLinkAttribute is NormalizedMediaLinkAttribute => MEDIA_LINK_ATTRIBUTE_TYPE === mediaLinkAttribute.type;
+
 export interface MediaLinkAttribute extends Attribute {
   prefix: Prefix;
   suffix: Suffix;
