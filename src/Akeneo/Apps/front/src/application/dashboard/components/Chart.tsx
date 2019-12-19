@@ -7,7 +7,7 @@ import {
     VictoryStyleObject,
     VictoryThemeDefinition,
 } from 'victory';
-import {lightGreyStroke, purple, grey, darkGrey} from '../../apps/EventChartThemes';
+import {lightGreyStroke, purple, grey, darkGrey, lightGrey} from '../../apps/EventChartThemes';
 
 interface VictoryStyle {
     [property: string]: VictoryStyleObject;
@@ -67,7 +67,7 @@ export const Chart = ({data, theme}: {data: ChartData[]; theme: VictoryThemeDefi
     // The rendering order is based on the elements order. Axes must be first to be draw in background.
     return (
         <VictoryChart
-            height={347}
+            height={300}
             width={1000}
             padding={0}
             domain={{x: [0.5, 7.5], y: [yMinDomain, yMaxDomain]}}
@@ -75,6 +75,8 @@ export const Chart = ({data, theme}: {data: ChartData[]; theme: VictoryThemeDefi
             style={{
                 parent: {
                     borderBottom: `1px solid ${darkGrey}`,
+                    borderLeft: `1px solid ${lightGrey}`,
+                    borderRight: `1px solid ${lightGrey}`,
                 },
             }}
         >
