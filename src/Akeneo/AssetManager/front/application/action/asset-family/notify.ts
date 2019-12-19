@@ -9,6 +9,14 @@ export const notifyAssetFamilySaveFailed = () => {
   return notify('error', 'pim_asset_manager.asset_family.notification.save.fail');
 };
 
+export const notifyLaunchComputeTransformationsFailed = () => {
+  return notify('error', 'pim_asset_manager.asset_family.notification.compute_transformations.fail');
+};
+
+export const notifyLaunchComputeTransformationsSucceeded = () => {
+  return notify('success', 'pim_asset_manager.asset_family.notification.compute_transformations.success');
+};
+
 export const notifyAssetFamilyWellCreated = () => {
   return notify('success', 'pim_asset_manager.asset_family.notification.create.success');
 };

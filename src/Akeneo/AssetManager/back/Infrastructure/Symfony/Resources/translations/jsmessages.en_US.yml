@@ -155,6 +155,9 @@ pim_asset_manager:
       delete:
         success: Asset family successfully deleted.
         fail: An error occured during the deletion of the asset family
+      compute_transformations:
+        success: The transformations are going to be computed. Wait for it.
+        fail: An error occured when trying to compute the transformations
   permission:
     notification:
       save:
