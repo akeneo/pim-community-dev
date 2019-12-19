@@ -5,6 +5,10 @@
 - PIM-9027: Translations missing on metrics
 - PIM-9028: Fix error on JSON_EXTRACT where a_image.code is numerical
 
+## Technical improvement
+
+- Update composer dependencies
+
 # 3.2.26 (2019-12-16)
 
 ## Bug fixes:
