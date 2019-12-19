@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Domain\Query\Asset;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
-interface FindIdentifiersByAssetFamilyInterface
+interface FindAssetIdentifiersByAssetFamilyInterface
 {
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier): \Iterator;
 }

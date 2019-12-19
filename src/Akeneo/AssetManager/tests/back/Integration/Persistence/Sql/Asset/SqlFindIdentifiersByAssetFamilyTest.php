@@ -19,13 +19,13 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindIdentifiersByAssetFamily;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetIdentifiersByAssetFamily;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 class SqlFindIdentifiersByAssetFamilyTest extends SqlIntegrationTestCase
 {
-    /** @var SqlFindIdentifiersByAssetFamily */
+    /** @var SqlFindAssetIdentifiersByAssetFamily */
     private $findIdentifiersByAssetFamily;
 
     /** @var AssetRepositoryInterface */

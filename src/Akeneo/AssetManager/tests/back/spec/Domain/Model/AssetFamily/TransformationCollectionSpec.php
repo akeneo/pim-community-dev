@@ -252,7 +252,7 @@ class TransformationCollectionSpec extends ObjectBehavior
             $transformation1, $transformation2, $transformation3, $transformation4
         ]]);
 
-        $newCollection = $this->sortBySource();
+        $newCollection = $this->sortedBySource();
         $newCollection->shouldNotBe($this);
         $newCollection->getIterator()->getArrayCopy()->shouldReturn(
             [

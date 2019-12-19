@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Application\AssetFamily\Transformation\Exception\NonAppl
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
-use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetIdentifiersByAssetFamilyInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
@@ -35,7 +35,7 @@ class ComputeTransformations implements TaskletInterface
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var FindIdentifiersByAssetFamilyInterface */
+    /** @var FindAssetIdentifiersByAssetFamilyInterface */
     private $findIdentifiersByAssetFamily;
 
     /** @var GetTransformations */
@@ -54,10 +54,10 @@ class ComputeTransformations implements TaskletInterface
     private $editAssetHandler;
 
     /** @var TransformationCollection[] */
-    private $transformationsPerAssetFamily = [];
+    private $cachedTransformationsPerAssetFamily = [];
 
     public function __construct(
-        FindIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
+        FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
         GetTransformations $getTransformations,
         AssetRepositoryInterface $assetRepository,
         GetOutdatedVariationSource $getOutdatedVariationSource,
@@ -119,7 +119,7 @@ class ComputeTransformations implements TaskletInterface
                 continue;
             }
 
-            $transformations = $this->getTransformations($asset->getAssetFamilyIdentifier())->sortBySource();
+            $transformations = $this->getTransformations($asset->getAssetFamilyIdentifier())->sortedBySource();
 
             foreach ($transformations as $transformation) {
                 try {
@@ -176,12 +176,12 @@ class ComputeTransformations implements TaskletInterface
 
     private function getTransformations(AssetFamilyidentifier $assetFamilyidentifier): TransformationCollection
     {
-        if (!isset($this->transformationsPerAssetFamily[(string)$assetFamilyidentifier])) {
-            $this->transformationsPerAssetFamily[(string)$assetFamilyidentifier] = $this->getTransformations->fromAssetFamilyIdentifier(
+        if (!isset($this->cachedTransformationsPerAssetFamily[(string)$assetFamilyidentifier])) {
+            $this->cachedTransformationsPerAssetFamily[(string)$assetFamilyidentifier] = $this->getTransformations->fromAssetFamilyIdentifier(
                 $assetFamilyidentifier
             );
         }
 
-        return $this->transformationsPerAssetFamily[(string)$assetFamilyidentifier];
+        return $this->cachedTransformationsPerAssetFamily[(string)$assetFamilyidentifier];
     }
 }

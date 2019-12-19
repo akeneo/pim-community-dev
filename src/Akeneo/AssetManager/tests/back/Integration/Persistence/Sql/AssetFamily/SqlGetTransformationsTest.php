@@ -40,7 +40,7 @@ class SqlGetTransformationsTest extends SqlIntegrationTestCase
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
 
-    public function test_it_throws_an_excetion_if_the_asset_family_was_not_found()
+    public function test_it_throws_an_exception_if_the_asset_family_was_not_found()
     {
         $this->expectException(AssetFamilyNotFoundException::class);
 

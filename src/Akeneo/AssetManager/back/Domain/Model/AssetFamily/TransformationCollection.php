@@ -84,7 +84,7 @@ class TransformationCollection implements \IteratorAggregate
         return new \ArrayIterator($this->transformations);
     }
 
-    public function sortBySource(): self
+    public function sortedBySource(): self
     {
         $transformations = $this->transformations;
         usort($transformations, function (Transformation $a, Transformation $b): int {

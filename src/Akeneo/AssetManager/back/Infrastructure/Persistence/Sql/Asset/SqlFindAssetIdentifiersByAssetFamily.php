@@ -15,12 +15,12 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetIdentifiersByAssetFamilyInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 
-class SqlFindIdentifiersByAssetFamily implements FindIdentifiersByAssetFamilyInterface
+class SqlFindAssetIdentifiersByAssetFamily implements FindAssetIdentifiersByAssetFamilyInterface
 {
     /** @var Connection */
     private $connection;

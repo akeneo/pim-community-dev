@@ -13,7 +13,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
-use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetIdentifiersByAssetFamilyInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Job\ComputeTransformations;
@@ -28,7 +28,7 @@ use Prophecy\Argument;
 class ComputeTransformationsSpec extends ObjectBehavior
 {
     function let(
-        FindIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
+        FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
         GetTransformations $getTransformations,
         AssetRepositoryInterface $assetRepository,
         GetOutdatedVariationSource $getOutdatedVariationSource,
@@ -113,7 +113,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
     }
 
     function it_executes_the_compute_transformations_from_asset_family_identifier(
-        FindIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
+        FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
         GetTransformations $getTransformations,
         AssetRepositoryInterface $assetRepository,
         GetOutdatedVariationSource $getOutdatedVariationSource,

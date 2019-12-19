@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Common\Fake;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyInterface;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetIdentifiersByAssetFamilyInterface;
 
-class InMemoryFindIdentifiersByAssetFamily implements FindIdentifiersByAssetFamilyInterface
+class InMemoryFindAssetIdentifiersByAssetFamily implements FindAssetIdentifiersByAssetFamilyInterface
 {
     /** @var InMemoryAssetRepository */
     private $assetRepository;

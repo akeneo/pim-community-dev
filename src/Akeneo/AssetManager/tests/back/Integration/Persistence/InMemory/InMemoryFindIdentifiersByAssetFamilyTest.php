@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository;
-use Akeneo\AssetManager\Common\Fake\InMemoryFindIdentifiersByAssetFamily;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindAssetIdentifiersByAssetFamily;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryFindIdentifiersByAssetFamilyTest extends TestCase
 {
-    /** @var InMemoryFindIdentifiersByAssetFamily */
+    /** @var InMemoryFindAssetIdentifiersByAssetFamily */
     private $query;
 
     /** @var InMemoryAssetRepository */
@@ -62,7 +62,7 @@ class InMemoryFindIdentifiersByAssetFamilyTest extends TestCase
     {
         parent::setUp();
         $this->assetRepository = new InMemoryAssetRepository(new EventDispatcher());
-        $this->query = new InMemoryFindIdentifiersByAssetFamily(
+        $this->query = new InMemoryFindAssetIdentifiersByAssetFamily(
             $this->assetRepository
         );
     }
