@@ -24,7 +24,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 interface FindAttributesIndexedByIdentifierInterface
 {
     /**
-     * @return AttributeDetails[]
+     * @return AbstractAttribute[]
      */
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array;
 }
