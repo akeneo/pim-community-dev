@@ -14,12 +14,3 @@ services:
             - '@akeneo_app.application.handler.delete_app'
         tags:
             - { name: 'console.command' }
-
-    PopulateAuditTableCommand:
-        class: Akeneo\Apps\Infrastructure\Cli\PopulateAuditTableCommand
-        arguments:
-            - '@database_connection'
-            - '@akeneo_app.application.handler.fetch_apps'
-            - '@akeneo_app.application.audit.handler.count_daily_events_by_app'
-        tags:
-            - { name: 'console.command' }
