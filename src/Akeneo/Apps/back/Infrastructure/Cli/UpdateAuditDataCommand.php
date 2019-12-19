@@ -31,6 +31,7 @@ class UpdateAuditDataCommand extends Command
     {
         $datetime = new \DateTime('now', new \DateTimeZone('UTC'));
         $datetime->setTime(0, 0, 0, 0);
-        $this->updateProductEventCountService->execute($datetime);
+
+        $this->updateProductEventCountService->execute($datetime->format('Y-m-d'));
     }
 }

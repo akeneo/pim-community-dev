@@ -27,12 +27,13 @@ class DbalExtractAppsEventCountQuery implements ExtractAppsEventCountQuery
         $this->productClass = $productClass;
     }
 
-    public function extractCreatedProducts(\DateTime $dateTime): array
+    public function extractCreatedProducts(string $date): array
     {
+        $dateTime = new \DateTime($date, new \DateTimeZone('UTC'));
         $dateTime->setTime(0, 0, 0, 0);
 
         $sqlQuery = <<<SQL
-SELECT author, COUNT(resource_id) 
+SELECT app.code, COUNT(resource_id) as event_count
 FROM (
     SELECT author, resource_id 
     FROM pim_versioning_version USE INDEX(logged_at_idx) 
@@ -40,8 +41,10 @@ FROM (
     AND resource_name = :resource_name
     AND version = 1 
     GROUP BY author, resource_id
-) as tmp_table 
-GROUP BY author;
+) AS tmp_table
+INNER JOIN oro_user u ON u.username = author AND u.user_type = "app"
+INNER JOIN akeneo_app app ON app.user_id = u.id
+GROUP BY app.code;
 SQL;
         $sqlParams = [
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
@@ -53,7 +56,7 @@ SQL;
         $dailyEventCount = [];
         foreach ($dataRows as $dataRow) {
             $dailyEventCount[] = new DailyEventCount(
-                $dataRow['author'],
+                $dataRow['code'],
                 $dateTime->format('Y-m-d'),
                 (int) $dataRow['event_count'],
                 'product_created'
@@ -63,12 +66,13 @@ SQL;
         return $dailyEventCount;
     }
 
-    public function extractUpdatedProducts(\DateTime $dateTime): array
+    public function extractUpdatedProducts(string $date): array
     {
+        $dateTime = new \DateTime($date, new \DateTimeZone('UTC'));
         $dateTime->setTime(0, 0, 0, 0);
 
         $sqlQuery = <<<SQL
-SELECT author, COUNT(resource_id) as event_count
+SELECT app.code, COUNT(resource_id) as event_count
 FROM (
     SELECT author, resource_id 
     FROM pim_versioning_version USE INDEX(logged_at_idx) 
@@ -76,8 +80,10 @@ FROM (
     AND resource_name = :resource_name
     AND version != 1 
     GROUP BY author, resource_id
-) as tmp_table 
-GROUP BY author;
+) AS tmp_table
+INNER JOIN oro_user u ON u.username = author AND u.user_type = "app"
+INNER JOIN akeneo_app app ON app.user_id = u.id
+GROUP BY app.code;
 SQL;
         $sqlParams = [
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
@@ -89,7 +95,7 @@ SQL;
         $dailyEventCount = [];
         foreach ($dataRows as $dataRow) {
             $dailyEventCount[] = new DailyEventCount(
-                $dataRow['author'],
+                $dataRow['code'],
                 $dateTime->format('Y-m-d'),
                 (int) $dataRow['event_count'],
                 'product_updated'

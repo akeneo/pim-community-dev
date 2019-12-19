@@ -6,7 +6,6 @@ namespace Akeneo\Apps\Application\Audit\Service;
 
 use Akeneo\Apps\Domain\Audit\Persistence\Query\ExtractAppsEventCountQuery;
 use Akeneo\Apps\Domain\Audit\Persistence\Repository\EventCountRepository;
-use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -26,18 +25,21 @@ class UpdateProductEventCountService
         $this->eventCountRepository = $eventCountRepository;
     }
 
-    public function execute(\DateTime $dateTime): void
+    public function execute(string $date): void
     {
         // 1. List app source with user
 
         // 2. Extract events query
-        $createdProductsCount = $this->extractAppsEventCountQuery->extractCreatedProducts($dateTime);
-        $updatedProductsCount = $this->extractAppsEventCountQuery->extractUpdatedProducts($dateTime);
 
         // 3. Transform into write models?
 
         // 4. Insert audit data
+
+
+        $createdProductsCount = $this->extractAppsEventCountQuery->extractCreatedProducts($date);
         $this->eventCountRepository->bulkInsert($createdProductsCount);
+
+        $updatedProductsCount = $this->extractAppsEventCountQuery->extractUpdatedProducts($date);
         $this->eventCountRepository->bulkInsert($updatedProductsCount);
     }
 }

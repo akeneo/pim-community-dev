@@ -11,7 +11,7 @@ namespace Akeneo\Apps\Domain\Audit\Persistence\Query;
  */
 interface ExtractAppsEventCountQuery
 {
-    public function extractCreatedProducts(\DateTime $dateTime): array;
+    public function extractCreatedProducts(string $date): array;
 
-    public function extractUpdatedProducts(\DateTime $dateTime): array;
+    public function extractUpdatedProducts(string $date): array;
 }
