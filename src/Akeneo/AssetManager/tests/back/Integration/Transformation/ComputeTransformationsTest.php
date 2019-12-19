@@ -42,9 +42,8 @@ use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
-use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -56,12 +55,9 @@ use Symfony\Component\HttpFoundation\File\File;
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class ComputeTransformationsTest extends TestCase
+class ComputeTransformationsTest extends SqlIntegrationTestCase
 {
     protected const FILENAME = __DIR__ . '/../../Common/TestFixtures/lardon.png';
-
-    /** @var FixturesLoader */
-    private $fixturesLoader;
 
     /** @var AttributeIdentifier */
     private $targetAttributeIdentifier;
@@ -162,7 +158,7 @@ class ComputeTransformationsTest extends TestCase
                 ),
             ]
         );
-        $violations = static::$container->get('validator')->validate($editAssetCommand);
+        $violations = $this->get('validator')->validate($editAssetCommand);
         Assert::assertEmpty($violations);
         ($this->getEditAssetHandler())($editAssetCommand);
 
@@ -210,12 +206,8 @@ class ComputeTransformationsTest extends TestCase
         parent::setUp();
         $this->fixturesLoader = $this->get('akeneoasset_manager.tests.helper.fixtures_loader');
         $this->resetDB();
+        $this->get('akeneo_assetmanager.client.asset')->resetIndex();
         $this->loadFixtures();
-    }
-
-    protected function getConfiguration()
-    {
-        return $this->catalog->useMinimalCatalog();
     }
 
     private function loadFixtures(): void
@@ -233,6 +225,21 @@ class ComputeTransformationsTest extends TestCase
             ->load();
 
         $this->setMediaFileValue('designer', 'starck', $mainImageAttribute);
+
+        $this->get('database_connection')->executeUpdate(
+            <<<SQL
+REPLACE INTO akeneo_batch_job_instance (code, label, job_name, status, connector, raw_parameters, type)
+VALUES (
+    'asset_manager_compute_transformations',
+    'asset_manager_compute_transformations',
+    'asset_manager_compute_transformations',
+    0,
+    'internal',
+    'a:0:{}',
+    'asset_manager_compute_transformations'
+);
+SQL
+        );
     }
 
     private function assertTransformationSuccess(string $assetCode, int $width, int $height): void
@@ -337,7 +344,7 @@ class ComputeTransformationsTest extends TestCase
             $assetCode,
             [$editValueCommand]
         );
-        $violations = static::$container->get('validator')->validate($editAssetCommand);
+        $violations = $this->get('validator')->validate($editAssetCommand);
         Assert::assertEmpty($violations);
 
         ($this->getEditAssetHandler())($editAssetCommand);
@@ -345,41 +352,41 @@ class ComputeTransformationsTest extends TestCase
 
     private function resetDB(): void
     {
-        static::$container->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     private function getFileStorer(): FileStorer
     {
-        return static::$container->get('akeneo_file_storage.file_storage.file.file_storer');
+        return $this->get('akeneo_file_storage.file_storage.file.file_storer');
     }
 
     private function getAssetRepository(): AssetRepositoryInterface
     {
-        return static::$container->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        return $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
     }
 
     private function getFileDownloader(): FileDownloader
     {
-        return static::$container->get('Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader');
+        return $this->get('Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader');
     }
 
     private function getAssetFamilyRepository(): AssetFamilyRepositoryInterface
     {
-        return static::$container->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        return $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
     }
 
     private function getEditAssetHandler(): EditAssetHandler
     {
-        return static::$container->get('akeneo_assetmanager.application.asset.edit_asset_handler');
+        return $this->get('akeneo_assetmanager.application.asset.edit_asset_handler');
     }
 
     private function launchTransformationJob(AssetIdentifier $assetIdentifier): void
     {
-        static::$container->get(
+        $this->get(
             'akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher'
         )->launch([$assetIdentifier]);
 
-        $jobLauncher = static::$container->get('akeneo_integration_tests.launcher.job_launcher');
+        $jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         Assert::assertTrue($jobLauncher->hasJobInQueue());
         $jobLauncher->launchConsumerOnce();
     }
@@ -387,7 +394,7 @@ class ComputeTransformationsTest extends TestCase
     private function getLastExecution(): ?JobExecution
     {
         /** @var JobInstance $jobInstance */
-        $jobInstance = static::$container->get('akeneo_batch.job.job_instance_repository')->findOneByIdentifier(
+        $jobInstance = $this->get('akeneo_batch.job.job_instance_repository')->findOneByIdentifier(
             'asset_manager_compute_transformations'
         );
 
