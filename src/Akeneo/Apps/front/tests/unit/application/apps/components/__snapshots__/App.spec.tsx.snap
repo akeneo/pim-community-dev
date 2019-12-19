@@ -13,7 +13,7 @@ exports[`App should render 1`] = `
     >
       <img
         alt="Google Shopping"
-        className="sc-bxivhb jXeAXC AknImage-display"
+        className="sc-bxivhb fHwuCK AknImage-display"
         src="pim_enrich_media_show"
       />
     </div>

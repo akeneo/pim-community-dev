@@ -17,6 +17,7 @@ const Image = styled.img`
     width: 100%;
     display: block;
     box-sizing: border-box;
+    object-fit: cover;
 `;
 
 const Mask = styled.div`
