@@ -1,3 +1,4 @@
+import useFetchDqiDashboardData from "./useFetchDqiDashboardData";
 import useFetchProductDataQualityEvaluation from "./useFetchProductDataQualityEvaluation";
 import useFetchProductFamilyInformation from "./useFetchProductFamilyInformation";
 import useCatalogContext from "./useCatalogContext";
@@ -6,6 +7,7 @@ import useFetchProductAxisRates from "./useFetchProductAxisRates";
 import usePageContext from "./usePageContext";
 
 export {
+  useFetchDqiDashboardData,
   useFetchProductDataQualityEvaluation,
   useFetchProductFamilyInformation,
   useCatalogContext,

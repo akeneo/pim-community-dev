@@ -1,5 +1,13 @@
 akeneo_data_quality_insights:
     title: Data Quality Insights
+
+    dqi_dashboard:
+        menu: Data Quality Insights
+#        section_title:
+#            overview: Data Quality Overview
+#            categories: Categories
+#            families: Families
+
     product_evaluation:
         criteria:
             completeness_of_required_attributes:
@@ -30,3 +38,4 @@ akeneo_data_quality_insights:
         attribute_filter:
             all_missing_attributes: All missing attributes
             all_improvable_attributes: All improvable attributes
+
