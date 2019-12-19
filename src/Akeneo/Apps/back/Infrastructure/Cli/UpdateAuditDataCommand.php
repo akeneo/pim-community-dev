@@ -29,6 +29,7 @@ class UpdateAuditDataCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
+        // TODO: To calculate from refresh date
         $datetime = new \DateTime('now', new \DateTimeZone('UTC'));
         $datetime->setTime(0, 0, 0, 0);
 

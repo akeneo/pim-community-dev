@@ -35,6 +35,7 @@ class DbalEventCountRepository implements EventCountRepository
 
     private function insert(DailyEventCount $dailyEventCount): void
     {
+        // TODO: Deal with duplication
         $insertQuery = <<<SQL
 INSERT INTO akeneo_app_audit (app_code, event_date, event_count, event_type)
 VALUES(:app_code, :event_date, :event_count, :event_type)
