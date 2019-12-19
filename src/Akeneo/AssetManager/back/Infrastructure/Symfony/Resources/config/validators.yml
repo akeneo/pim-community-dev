@@ -221,13 +221,6 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_media_file_value_command' }
 
-    akeneo_assetmanager.infrastructure.validation.asset.edit_read_only_value_validator:
-        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditReadOnlyValueValidator
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
-        tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_read_only_value_command' }
-
     akeneo_assetmanager.infrastructure.validation.attribute.attribute_option_should_exist:
         class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeOptionShouldExistValidator
         arguments:
@@ -286,6 +279,12 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\GetAssetCollectionTypeAdapter
         arguments:
             - '@pim_catalog.repository.attribute'
+
+    Akeneo\AssetManager\Infrastructure\Validation\Asset\EditTargetValueValidator:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_target_value_command' }
 
     Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCollectionValidator:
         tags:

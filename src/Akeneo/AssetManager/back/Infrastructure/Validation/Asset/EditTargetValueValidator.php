@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class EditReadOnlyValueValidator extends ConstraintValidator
+class EditTargetValueValidator extends ConstraintValidator
 {
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
@@ -61,15 +61,15 @@ class EditReadOnlyValueValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof EditReadOnlyValue) {
-            throw new UnexpectedTypeException($constraint, EditReadOnlyValue::class);
+        if (!$constraint instanceof EditTargetValue) {
+            throw new UnexpectedTypeException($constraint, EditTargetValue::class);
         }
     }
 
     private function validateCommand(AbstractEditValueCommand $command): void
     {
         if ($this->attributeIsTargetOfATransformation($command)) {
-            $this->context->buildViolation(EditReadOnlyValue::TARGET_READONLY)
+            $this->context->buildViolation(EditTargetValue::TARGET_READONLY)
                 ->atPath((string) $command->attribute->getCode())
                 ->setParameter('%attribute_code%', (string) $command->attribute->getCode())
                 ->addViolation();

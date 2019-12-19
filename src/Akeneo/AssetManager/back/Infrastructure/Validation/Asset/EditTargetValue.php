@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
 use Symfony\Component\Validator\Constraint;
 
-class EditReadOnlyValue extends Constraint
+class EditTargetValue extends Constraint
 {
     public const TARGET_READONLY = 'pim_asset_manager.asset.validation.file.target_readonly';
 
@@ -26,6 +26,6 @@ class EditReadOnlyValue extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_assetmanager.validator.asset.edit_read_only_value_command';
+        return 'akeneo_assetmanager.validator.asset.edit_target_value_command';
     }
 }
