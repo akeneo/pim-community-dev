@@ -175,11 +175,16 @@ class AssetCategoryTreeController
             $grantedTrees = $this->categoryRepository->getGrantedTrees($grantedCategoryIds);
         }
 
+        $selectedTreeId = null;
+        if ($selectNode instanceof CategoryInterface) {
+            $selectedTreeId = $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot();
+        }
+
         return new Response($this->engine->render(
             'AkeneoAssetBundle:CategoryTree:listTree.json.twig',
             [
             'trees'          => $grantedTrees,
-            'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
+            'selectedTreeId' => $selectedTreeId,
             'include_sub'    => (bool) $request->get('include_sub', false),
             'item_count'     => (bool) $request->get('with_items_count', true),
             'related_entity' => $this->rawConfiguration['related_entity'],

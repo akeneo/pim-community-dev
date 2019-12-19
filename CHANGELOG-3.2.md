@@ -1,5 +1,24 @@
 # 3.2.x
 
+# 3.2.26 (2019-12-16)
+
+- PIM-9019: Fix proposal counter not updating when approving changes
+- PIM-9026: Fix Asset categories settings page title
+
+# 3.2.25 (2019-12-11)
+
+# 3.2.24 (2019-12-10)
+
+## Bug fixes
+
+- AST-158: use the type "media_file" to create image attributes in the connector API.
+- PIM-8998: Avoid error 500 on asset list & product list when a user has no permission on categories & asset categories
+- PIM-7273: Hide proposal changes that are already reviewed
+
+# 3.2.23 (2019-12-05)
+
+# 3.2.22 (2019-12-03)
+
 # 3.2.21 (2019-11-22)
 
 # 3.2.20 (2019-11-20)

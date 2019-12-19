@@ -76,6 +76,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $productCursor->count()->willReturn(0);
 
         $family = new Family();
+        $family->setCode('family_code');
         $event->getSubject()->willReturn($family);
 
         $this
@@ -117,6 +118,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $productCursor->count()->willReturn(0);
 
         $attribute = new Attribute();
+        $attribute->setCode('attribute_code');
         $event->getSubject()->willReturn($attribute);
 
         $this

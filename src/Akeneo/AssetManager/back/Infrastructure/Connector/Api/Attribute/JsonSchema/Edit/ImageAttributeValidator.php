@@ -44,6 +44,10 @@ class ImageAttributeValidator implements AttributeValidatorInterface
                 'type' => [
                     'type' => ['string'],
                 ],
+                'media_type' => [
+                    'type' => ['string'],
+                    'enum' => ['image'],
+                ],
                 'labels' => [
                     'type' => 'object',
                     'patternProperties' => [

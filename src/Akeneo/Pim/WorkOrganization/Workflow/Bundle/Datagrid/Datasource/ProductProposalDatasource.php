@@ -78,7 +78,7 @@ class ProductProposalDatasource implements DatasourceInterface, ParameterizableI
                 $rows['data'][] = new ResultRecord($normalizedItem);
             }
         }
-        $rows['totalRecords'] = $entitiesWithValues->count();
+        $rows['totalRecords'] = count($rows['data']);
 
         return $rows;
     }

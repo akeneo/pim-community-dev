@@ -16,7 +16,8 @@ use JsonSchema\Validator;
 
 class ImageAttributeValidator implements AttributeValidatorInterface
 {
-    private const API_IMAGE_ATTRIBUTE_TYPE = 'image';
+    private const API_IMAGE_ATTRIBUTE_TYPE_OLD = 'image';
+    private const API_IMAGE_ATTRIBUTE_TYPE_NEW = 'media_file';
 
     public function validate(array $normalizedAttribute): array
     {
@@ -30,7 +31,7 @@ class ImageAttributeValidator implements AttributeValidatorInterface
 
     public function forAttributeTypes(): array
     {
-        return [self::API_IMAGE_ATTRIBUTE_TYPE];
+        return [self::API_IMAGE_ATTRIBUTE_TYPE_OLD, self::API_IMAGE_ATTRIBUTE_TYPE_NEW];
     }
 
     private function getJsonSchema(): array
@@ -44,6 +45,10 @@ class ImageAttributeValidator implements AttributeValidatorInterface
                 ],
                 'type' => [
                     'type' => ['string'],
+                ],
+                'media_type' => [
+                    'type' => ['string'],
+                    'enum' => ['image'],
                 ],
                 'labels' => [
                     'type' => 'object',

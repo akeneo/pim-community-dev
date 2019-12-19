@@ -15,6 +15,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -104,6 +105,10 @@ class ProductProposalNormalizer implements NormalizerInterface
         foreach ($changes['values'] as $code => $changeset) {
             $attribute = $this->attributeRepository->findOneByIdentifier($code);
             foreach ($changeset as $index => $change) {
+                if (false === $this->changeNeedsReview($proposal, $code, $change['locale'], $change['scope'])) {
+                    continue;
+                }
+
                 $value = $this->valueFactory->create(
                     $attribute,
                     $change['scope'],
@@ -115,5 +120,14 @@ class ProductProposalNormalizer implements NormalizerInterface
         }
 
         return $valueCollection;
+    }
+
+    private function changeNeedsReview(
+        ProductDraft $proposal,
+        string $code,
+        ?string $localeCode,
+        ?string $channelCode
+    ): bool {
+        return EntityWithValuesDraftInterface::CHANGE_TO_REVIEW === $proposal->getReviewStatusForChange($code, $localeCode, $channelCode);
     }
 }

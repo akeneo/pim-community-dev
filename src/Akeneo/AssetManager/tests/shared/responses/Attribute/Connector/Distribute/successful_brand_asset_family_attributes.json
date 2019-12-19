@@ -36,7 +36,8 @@
           "en_US": "Photo",
           "fr_FR": "Photo"
         },
-        "type": "image",
+        "type": "media_file",
+        "media_type": "image",
         "value_per_locale": false,
         "value_per_channel": false,
         "is_required_for_completeness": true,
