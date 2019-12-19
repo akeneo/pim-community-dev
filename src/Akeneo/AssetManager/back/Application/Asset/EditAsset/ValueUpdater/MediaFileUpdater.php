@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileTargetValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
@@ -35,7 +36,7 @@ class MediaFileUpdater implements ValueUpdaterInterface
 {
     public function supports(AbstractEditValueCommand $command): bool
     {
-        return $command instanceof EditMediaFileValueCommand;
+        return $command instanceof EditMediaFileValueCommand || $command instanceof EditMediaFileTargetValueCommand;
     }
 
     public function __invoke(Asset $asset, AbstractEditValueCommand $command): void
@@ -59,7 +60,7 @@ class MediaFileUpdater implements ValueUpdaterInterface
 
     private function getFileData(
         Asset $asset,
-        EditMediaFileValueCommand $command,
+        AbstractEditValueCommand $command,
         AbstractAttribute $attribute,
         ChannelReference $channelReference,
         LocaleReference $localeReference

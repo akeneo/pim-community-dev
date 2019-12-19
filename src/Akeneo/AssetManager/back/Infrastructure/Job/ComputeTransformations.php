@@ -180,6 +180,13 @@ class ComputeTransformations implements TaskletInterface
                 }
             }
             if (!empty($commands)) {
+                /**
+                 * For now, we use the EditAssetCommand to update the transformations, even if all the subcommands
+                 * are EditMediaFileTargetValueCommand. This was done this way to prevent duplication of every handlers,
+                 * validators and tests.
+                 * In the future, if the intention of this command changes regarding the original one, we should
+                 * duplicate all the logic, but this is acceptable for now.
+                 */
                 ($this->editAssetHandler)(new EditAssetCommand(
                     (string)$asset->getAssetFamilyIdentifier(),
                     (string)$asset->getCode(),

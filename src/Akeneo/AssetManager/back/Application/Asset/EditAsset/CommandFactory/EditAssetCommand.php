@@ -26,7 +26,7 @@ class EditAssetCommand
     /** @var string */
     public $code;
 
-    /** @var AbstractEditValueCommand[] */
+    /** @var EditMediaFileTargetValueCommand[] */
     public $editAssetValueCommands = [];
 
     public function __construct(

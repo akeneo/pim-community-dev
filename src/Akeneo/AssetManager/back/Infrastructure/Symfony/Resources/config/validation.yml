@@ -87,6 +87,10 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValu
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaFileValueCommand: ~
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditReadOnlyValue: ~
 
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileTargetValueCommand:
+    constraints:
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaFileValueCommand: ~
+
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetValueCommand:
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetValueCommand: ~
