@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Purger;
 
+use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlDeleteVersionsByIdsQuery;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\PreAdvisementVersionEvent;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\PrePurgeVersionEvent;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\PurgeVersionEvents;
@@ -37,25 +38,24 @@ class VersionPurger implements VersionPurgerInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var array */
+    /** @var VersionPurgerAdvisorInterface[] */
     protected $versionPurgerAdvisors = [];
 
-    /**
-     * @param VersionRepositoryInterface $versionRepository
-     * @param BulkRemoverInterface       $versionRemover
-     * @param ObjectDetacherInterface    $objectDetacher
-     * @param EventDispatcherInterface   $eventDispatcher
-     */
+    /** @var SqlDeleteVersionsByIdsQuery */
+    private $deleteVersionsByIdsQuery;
+
     public function __construct(
         VersionRepositoryInterface $versionRepository,
         BulkRemoverInterface $versionRemover,
         ObjectDetacherInterface $objectDetacher,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        SqlDeleteVersionsByIdsQuery $deleteVersionsByIdsQuery
     ) {
         $this->versionRepository = $versionRepository;
         $this->versionRemover = $versionRemover;
         $this->objectDetacher = $objectDetacher;
         $this->eventDispatcher = $eventDispatcher;
+        $this->deleteVersionsByIdsQuery = $deleteVersionsByIdsQuery;
     }
 
     /**
@@ -72,7 +72,8 @@ class VersionPurger implements VersionPurgerInterface
 
         $versionsCursor = $this->versionRepository->findPotentiallyPurgeableBy($options);
 
-        foreach ($versionsCursor as $version) {
+        while ($row = $versionsCursor->fetch()) {
+            $version = PurgeableVersion::create($row['id'], $row['version'], $row['resource_id'], $row['resource_name']);
             $this->eventDispatcher->dispatch(
                 PurgeVersionEvents::PRE_ADVISEMENT,
                 new PreAdvisementVersionEvent($version)
@@ -84,20 +85,18 @@ class VersionPurger implements VersionPurgerInterface
                     new PrePurgeVersionEvent($version)
                 );
                 $versionsPurgedCount++;
-                $versionsToPurge[] = $version;
+                $versionsToPurge[] = $version->getId();
 
                 if (count($versionsToPurge) >= $options['batch_size']) {
-                    $this->versionRemover->removeAll($versionsToPurge);
-                    $this->objectDetacher->detachAll($versionsToPurge);
+                    $this->deleteVersionsByIdsQuery->execute($versionsToPurge);
                     $versionsToPurge = [];
                 }
-            } else {
-                $this->objectDetacher->detach($version);
             }
         }
 
-        $this->versionRemover->removeAll($versionsToPurge);
-        $this->objectDetacher->detachAll($versionsToPurge);
+        if (count($versionsToPurge) > 0) {
+            $this->deleteVersionsByIdsQuery->execute($versionsToPurge);
+        }
 
         return $versionsPurgedCount;
     }
@@ -113,7 +112,7 @@ class VersionPurger implements VersionPurgerInterface
 
         $versionsCursor = $this->versionRepository->findPotentiallyPurgeableBy($options);
 
-        return $versionsCursor->count();
+        return $versionsCursor->rowCount();
     }
 
     /**
@@ -132,7 +131,7 @@ class VersionPurger implements VersionPurgerInterface
      *
      * @return bool
      */
-    protected function isVersionPurgeable(VersionInterface $version, array $options = [])
+    protected function isVersionPurgeable(PurgeableVersion $version, array $options = [])
     {
         foreach ($this->versionPurgerAdvisors as $advisor) {
             if ($advisor->supports($version) && !$advisor->isPurgeable($version, $options)) {
@@ -153,10 +152,10 @@ class VersionPurger implements VersionPurgerInterface
         $optionResolver->setDefaults(
             [
                 'resource_name' => null,
-                'days_number'   => 90,
+                'days_number' => 90,
                 'date_operator' => '<',
-                'limit_date'    => new \DateTime('now', new \DateTimeZone('UTC')),
-                'batch_size'    => 100,
+                'limit_date' => new \DateTime('now', new \DateTimeZone('UTC')),
+                'batch_size' => 100,
             ]
         );
         $optionResolver
@@ -164,7 +163,7 @@ class VersionPurger implements VersionPurgerInterface
             ->setAllowedTypes('batch_size', 'int')
             ->setAllowedValues('date_operator', ['<', '>']);
 
-        $optionResolver->setNormalizer('limit_date', function (Options $options, $value) {
+        $optionResolver->setNormalizer('limit_date', function(Options $options, $value) {
             return new \DateTime(
                 sprintf('%d days ago', $options['days_number']),
                 new \DateTimeZone('UTC')

@@ -3,7 +3,6 @@
 namespace Akeneo\Tool\Bundle\VersioningBundle\Purger;
 
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
-use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 
 /**
  * Prevents last version of an entity from being purged
@@ -28,7 +27,7 @@ class SkipLastVersionPurgerAdvisor implements VersionPurgerAdvisorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(VersionInterface $version)
+    public function supports(PurgeableVersion $version)
     {
         return true;
     }
@@ -36,7 +35,7 @@ class SkipLastVersionPurgerAdvisor implements VersionPurgerAdvisorInterface
     /**
      * {@inheritdoc}
      */
-    public function isPurgeable(VersionInterface $version, array $options)
+    public function isPurgeable(PurgeableVersion $version, array $options)
     {
         $newVersionId = $this->versionRepository->getNewestVersionIdForResource(
             $version->getResourceName(),

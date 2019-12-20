@@ -12,6 +12,7 @@ services:
             - '@pim_versioning.remover.version'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@event_dispatcher'
+            - '@pim_versioning.query.delete_versions_by_ids'
 
    # advisors
     pim_versioning.purger.advisor.skip_first_version:

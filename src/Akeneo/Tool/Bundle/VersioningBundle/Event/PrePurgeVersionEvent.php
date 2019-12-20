@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Event;
 
+use Akeneo\Tool\Bundle\VersioningBundle\Purger\PurgeableVersion;
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -17,18 +18,12 @@ class PrePurgeVersionEvent extends Event
     /** @var VersionInterface */
     protected $version;
 
-    /**
-     * @param VersionInterface $version
-     */
-    public function __construct(VersionInterface $version)
+    public function __construct(PurgeableVersion $version)
     {
         $this->version = $version;
     }
 
-    /**
-     * @return VersionInterface
-     */
-    public function getVersion()
+    public function getVersion(): PurgeableVersion
     {
         return $this->version;
     }

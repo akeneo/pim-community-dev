@@ -2,8 +2,6 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Purger;
 
-use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
-
 /**
  * Checks if a version should be purged
  *
@@ -16,19 +14,19 @@ interface VersionPurgerAdvisorInterface
     /**
      * Checks if the advisor supports the version
      *
-     * @param VersionInterface $version
+     * @param PurgeableVersion $version
      *
      * @return bool
      */
-    public function supports(VersionInterface $version);
+    public function supports(PurgeableVersion $version);
 
     /**
      * Indicates if the version needs to be purged
      *
-     * @param VersionInterface $version
-     * @param array $options
+     * @param PurgeableVersion $version
+     * @param array            $options
      *
      * @return bool
      */
-    public function isPurgeable(VersionInterface $version, array $options);
+    public function isPurgeable(PurgeableVersion $version, array $options);
 }

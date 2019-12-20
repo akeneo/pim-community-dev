@@ -88,7 +88,7 @@ interface VersionRepositoryInterface
      *
      * @param array $options
      *
-     * @return CursorInterface
+     * @return CursorInterface|\PDOStatement
      */
     public function findPotentiallyPurgeableBy(array $options = []);
 

@@ -25,3 +25,8 @@ services:
             - '%pim_versioning.doctrine.query.cursor.class%'
             - '@pim_versioning.object_manager.version'
             - '%pim_versioning.factory.version_cursor.page_size%'
+
+    pim_versioning.query.delete_versions_by_ids:
+        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlDeleteVersionsByIdsQuery
+        arguments:
+            - '@database_connection'
