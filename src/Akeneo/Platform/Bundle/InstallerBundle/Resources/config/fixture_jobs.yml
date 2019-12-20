@@ -17,26 +17,26 @@ jobs:
         configuration:
             filePath: product_category_accesses.csv
 
-    fixtures_asset_category_csv:
-        order: 30
-        connector: Data fixtures
-        alias:     fixtures_asset_category_csv
-        label:     Asset categories data fixtures
-        type:      fixtures
-        configuration:
-            filePath: asset_categories.csv
-            uploadAllowed: true
-            delimiter: ;
-            enclosure: '"'
-
-    fixtures_asset_category_access_csv:
-        order: 170
-        connector: Data fixtures
-        alias:     fixtures_asset_category_access_csv
-        label:     Asset category accesses data fixtures
-        type:      fixtures
-        configuration:
-            filePath: asset_category_accesses.csv
+#    fixtures_asset_category_csv:
+#        order: 30
+#        connector: Data fixtures
+#        alias:     fixtures_asset_category_csv
+#        label:     Asset categories data fixtures
+#        type:      fixtures
+#        configuration:
+#            filePath: asset_categories.csv
+#            uploadAllowed: true
+#            delimiter: ;
+#            enclosure: '"'
+#
+#    fixtures_asset_category_access_csv:
+#        order: 170
+#        connector: Data fixtures
+#        alias:     fixtures_asset_category_access_csv
+#        label:     Asset category accesses data fixtures
+#        type:      fixtures
+#        configuration:
+#            filePath: asset_category_accesses.csv
 
     fixtures_job_profile_access_csv:
         order:     150
@@ -65,20 +65,20 @@ jobs:
         configuration:
             filePath: rules.yml
 
-    fixtures_asset_csv:
-        order:     70
-        connector: Data fixtures
-        alias:     fixtures_asset_csv
-        label:     assets data fixtures
-        type:      fixtures
-        configuration:
-            filePath: assets.csv
-
-    fixtures_asset_channel_configurations_yml:
-        order:     60
-        connector: Data fixtures
-        alias:     fixtures_asset_channel_configurations_yml
-        label:     assets data fixtures
-        type:      fixtures
-        configuration:
-            filePath: asset_channel_configurations.yml
+#    fixtures_asset_csv:
+#        order:     70
+#        connector: Data fixtures
+#        alias:     fixtures_asset_csv
+#        label:     assets data fixtures
+#        type:      fixtures
+#        configuration:
+#            filePath: assets.csv
+#
+#    fixtures_asset_channel_configurations_yml:
+#        order:     60
+#        connector: Data fixtures
+#        alias:     fixtures_asset_channel_configurations_yml
+#        label:     assets data fixtures
+#        type:      fixtures
+#        configuration:
+#            filePath: asset_channel_configurations.yml

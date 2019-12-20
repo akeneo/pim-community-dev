@@ -57,7 +57,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         IdentifiableObjectRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
-        AssetRepositoryInterface $assetRepository,
+//        AssetRepositoryInterface $assetRepository,
         string $template,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository,
         ?string $customFont = null
@@ -78,7 +78,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         $this->filterHelper = $filterHelper;
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
-        $this->assetRepository = $assetRepository;
+//        $this->assetRepository = $assetRepository;
     }
 
     /**

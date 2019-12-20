@@ -3,8 +3,8 @@ Akeneo\UserManagement\Component\Model\User:
         properties:
             - Collection:
                   fields:
-                      default_asset_tree:
-                          - NotBlank: ~
+#                      default_asset_tree:
+#                          - NotBlank: ~
                       asset_delay_reminder:
                           - NotBlank: ~
                           - Length:

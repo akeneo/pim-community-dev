@@ -447,80 +447,80 @@ jobs:
         alias:     refuse_product_draft
         label:     Mass reject product drafts
         type:      mass_edit
-    csv_asset_import:
-        connector: Akeneo Product Asset Connector
-        alias:     csv_asset_import
-        label:     Demo CSV asset import
-        type:      import
-        configuration:
-            filePath:      /tmp/assets.csv
-            uploadAllowed: true
-            delimiter:     ;
-            enclosure:     '"'
-    csv_asset_category_export:
-        connector: Akeneo Product Asset Connector
-        alias:     csv_asset_category_export
-        label:     Demo CSV asset category export
-        type:      export
-        configuration:
-            delimiter:  ;
-            enclosure:  '"'
-            withHeader: true
-            filePath:   /tmp/asset_category.csv
-    csv_asset_category_import:
-        connector: Akeneo Product Asset Connector
-        alias:     csv_asset_category_import
-        label:     Demo CSV asset category import
-        type:      import
-        configuration:
-            filePath:      /tmp/asset_categories.csv
-            uploadAllowed: true
-            delimiter:     ;
-            enclosure:     '"'
-    csv_asset_export:
-        connector: Akeneo Product Asset Connector
-        alias:     csv_asset_export
-        label:     Demo CSV asset export
-        type:      export
-        configuration:
-            delimiter:  ;
-            enclosure:  '"'
-            withHeader: true
-            filePath:   /tmp/asset.csv
-    csv_asset_variation_export:
-        connector: Akeneo Product Asset Connector
-        alias:     csv_asset_variation_export
-        label:     Demo CSV asset variation export
-        type:      export
-        configuration:
-            delimiter:  ;
-            enclosure:  '"'
-            withHeader: true
-            filePath:   /tmp/asset_variation.csv
-    apply_assets_mass_upload:
-        connector: Akeneo Product Asset Connector
-        alias:     apply_assets_mass_upload
-        label:     Process mass uploaded assets
-        type:      mass_upload
-    apply_assets_mass_upload_into_asset_collection:
-        connector: Akeneo Product Asset Connector
-        alias:     apply_assets_mass_upload_into_asset_collection
-        label:     Process mass uploaded assets and add to product
-        type:      mass_upload
-    yml_asset_channel_configuration_import:
-        connector: Akeneo Product Asset Connector
-        alias:     yml_asset_channel_configuration_import
-        label:     Demo asset channel configuration import
-        type:      import
-        configuration:
-            uploadAllowed: true
-    yml_asset_channel_configuration_export:
-        connector: Akeneo Product Asset Connector
-        alias:     yml_asset_channel_configuration_export
-        label:     Demo asset channel configuration export
-        type:      export
-        configuration:
-            filePath: /tmp/asset_channel_configurations.yml
+#    csv_asset_import:
+#        connector: Akeneo Product Asset Connector
+#        alias:     csv_asset_import
+#        label:     Demo CSV asset import
+#        type:      import
+#        configuration:
+#            filePath:      /tmp/assets.csv
+#            uploadAllowed: true
+#            delimiter:     ;
+#            enclosure:     '"'
+#    csv_asset_category_export:
+#        connector: Akeneo Product Asset Connector
+#        alias:     csv_asset_category_export
+#        label:     Demo CSV asset category export
+#        type:      export
+#        configuration:
+#            delimiter:  ;
+#            enclosure:  '"'
+#            withHeader: true
+#            filePath:   /tmp/asset_category.csv
+#    csv_asset_category_import:
+#        connector: Akeneo Product Asset Connector
+#        alias:     csv_asset_category_import
+#        label:     Demo CSV asset category import
+#        type:      import
+#        configuration:
+#            filePath:      /tmp/asset_categories.csv
+#            uploadAllowed: true
+#            delimiter:     ;
+#            enclosure:     '"'
+#    csv_asset_export:
+#        connector: Akeneo Product Asset Connector
+#        alias:     csv_asset_export
+#        label:     Demo CSV asset export
+#        type:      export
+#        configuration:
+#            delimiter:  ;
+#            enclosure:  '"'
+#            withHeader: true
+#            filePath:   /tmp/asset.csv
+#    csv_asset_variation_export:
+#        connector: Akeneo Product Asset Connector
+#        alias:     csv_asset_variation_export
+#        label:     Demo CSV asset variation export
+#        type:      export
+#        configuration:
+#            delimiter:  ;
+#            enclosure:  '"'
+#            withHeader: true
+#            filePath:   /tmp/asset_variation.csv
+#    apply_assets_mass_upload:
+#        connector: Akeneo Product Asset Connector
+#        alias:     apply_assets_mass_upload
+#        label:     Process mass uploaded assets
+#        type:      mass_upload
+#    apply_assets_mass_upload_into_asset_collection:
+#        connector: Akeneo Product Asset Connector
+#        alias:     apply_assets_mass_upload_into_asset_collection
+#        label:     Process mass uploaded assets and add to product
+#        type:      mass_upload
+#    yml_asset_channel_configuration_import:
+#        connector: Akeneo Product Asset Connector
+#        alias:     yml_asset_channel_configuration_import
+#        label:     Demo asset channel configuration import
+#        type:      import
+#        configuration:
+#            uploadAllowed: true
+#    yml_asset_channel_configuration_export:
+#        connector: Akeneo Product Asset Connector
+#        alias:     yml_asset_channel_configuration_export
+#        label:     Demo asset channel configuration export
+#        type:      export
+#        configuration:
+#            filePath: /tmp/asset_channel_configurations.yml
     csv_family_import:
         connector: Akeneo CSV Connector
         alias:     csv_family_import
@@ -778,22 +778,22 @@ jobs:
         type:      import
         configuration:
             filePath:      /tmp/family_variant.xlsx
-    xlsx_asset_import:
-        connector: Akeneo Product Asset Connector
-        alias:     xlsx_asset_import
-        label:     Demo XLSX asset import
-        type:      import
-        configuration:
-            filePath:      /tmp/assets.xlsx
-            uploadAllowed: true
-    xlsx_asset_category_import:
-        connector: Akeneo Product Asset Connector
-        alias:     xlsx_asset_category_import
-        label:     Demo XLSX asset category import
-        type:      import
-        configuration:
-            filePath:      /tmp/asset_categories.xlsx
-            uploadAllowed: true
+#    xlsx_asset_import:
+#        connector: Akeneo Product Asset Connector
+#        alias:     xlsx_asset_import
+#        label:     Demo XLSX asset import
+#        type:      import
+#        configuration:
+#            filePath:      /tmp/assets.xlsx
+#            uploadAllowed: true
+#    xlsx_asset_category_import:
+#        connector: Akeneo Product Asset Connector
+#        alias:     xlsx_asset_category_import
+#        label:     Demo XLSX asset category import
+#        type:      import
+#        configuration:
+#            filePath:      /tmp/asset_categories.xlsx
+#            uploadAllowed: true
     xlsx_group_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_group_export
@@ -960,43 +960,43 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/association_type.xlsx
-    xlsx_asset_export:
-        connector: Akeneo Product Asset Connector
-        alias:     xlsx_asset_export
-        label:     Demo XLSX asset export
-        type:      export
-        configuration:
-            withHeader: true
-            linesPerFile: 10000
-            filePath:   /tmp/asset.xlsx
-    xlsx_asset_category_export:
-        connector: Akeneo Product Asset Connector
-        alias:     xlsx_asset_category_export
-        label:     Demo XLSX asset category export
-        type:      export
-        configuration:
-            withHeader: true
-            linesPerFile: 10000
-            filePath:   /tmp/asset_category.xlsx
-    xlsx_asset_variation_export:
-        connector: Akeneo Product Asset Connector
-        alias:     xlsx_asset_variation_export
-        label:     Demo XLSX asset variation export
-        type:      export
-        configuration:
-            withHeader: true
-            linesPerFile: 10000
-            filePath:   /tmp/asset_variation.xlsx
-    classify_assets:
-        connector: Akeneo Product Asset Connector
-        alias:     classify_assets
-        label:     Mass classify product assets
-        type:      mass_edit
-    add_tags_to_assets:
-        connector: Akeneo Product Asset Connector
-        alias:     add_tags_to_assets
-        label:     Add tags to assets
-        type:      mass_edit
+#    xlsx_asset_export:
+#        connector: Akeneo Product Asset Connector
+#        alias:     xlsx_asset_export
+#        label:     Demo XLSX asset export
+#        type:      export
+#        configuration:
+#            withHeader: true
+#            linesPerFile: 10000
+#            filePath:   /tmp/asset.xlsx
+#    xlsx_asset_category_export:
+#        connector: Akeneo Product Asset Connector
+#        alias:     xlsx_asset_category_export
+#        label:     Demo XLSX asset category export
+#        type:      export
+#        configuration:
+#            withHeader: true
+#            linesPerFile: 10000
+#            filePath:   /tmp/asset_category.xlsx
+#    xlsx_asset_variation_export:
+#        connector: Akeneo Product Asset Connector
+#        alias:     xlsx_asset_variation_export
+#        label:     Demo XLSX asset variation export
+#        type:      export
+#        configuration:
+#            withHeader: true
+#            linesPerFile: 10000
+#            filePath:   /tmp/asset_variation.xlsx
+#    classify_assets:
+#        connector: Akeneo Product Asset Connector
+#        alias:     classify_assets
+#        label:     Mass classify product assets
+#        type:      mass_edit
+#    add_tags_to_assets:
+#        connector: Akeneo Product Asset Connector
+#        alias:     add_tags_to_assets
+#        label:     Add tags to assets
+#        type:      mass_edit
     xlsx_currency_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_currency_import

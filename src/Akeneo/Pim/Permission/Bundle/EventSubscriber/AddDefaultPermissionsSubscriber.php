@@ -59,14 +59,14 @@ class AddDefaultPermissionsSubscriber implements EventSubscriberInterface
         AttributeGroupAccessManager $attributeGroupAccessManager,
         JobProfileAccessManager $jobInstanceAccessManager,
         CategoryAccessManager $productCategoryAccessManager,
-        CategoryAccessManager $productAssetCategoryAccessManager,
+//        CategoryAccessManager $productAssetCategoryAccessManager,
         LocaleAccessManager $localeAccessManager
     ) {
         $this->groupRepository = $groupRepository;
         $this->attributeGroupAccessManager = $attributeGroupAccessManager;
         $this->jobInstanceAccessManager = $jobInstanceAccessManager;
         $this->productCategoryAccessManager = $productCategoryAccessManager;
-        $this->productAssetCategoryAccessManager = $productAssetCategoryAccessManager;
+//        $this->productAssetCategoryAccessManager = $productAssetCategoryAccessManager;
         $this->localeAccessManager = $localeAccessManager;
     }
 

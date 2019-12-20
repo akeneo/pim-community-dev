@@ -4,10 +4,10 @@ services:
         arguments:
             - '%pimee_security.entity.locale_access.class%'
 
-    pimee_security.factory.asset_category_access:
-        class: '%akeneo_storage_utils.factory.simple.class%'
-        arguments:
-            - '%pimee_security.entity.asset_category_access.class%'
+#    pimee_security.factory.asset_category_access:
+#        class: '%akeneo_storage_utils.factory.simple.class%'
+#        arguments:
+#            - '%pimee_security.entity.asset_category_access.class%'
 
     pimee_security.factory.product_category_access:
         class: '%akeneo_storage_utils.factory.simple.class%'

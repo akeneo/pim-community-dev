@@ -10,12 +10,12 @@ services:
             - '@event_dispatcher'
             - '%pimee_security.entity.product_category_access.class%'
 
-    pimee_security.remover.asset_category_access:
-        class: '%akeneo_storage_utils.remover.base.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '%pimee_security.entity.asset_category_access.class%'
+#    pimee_security.remover.asset_category_access:
+#        class: '%akeneo_storage_utils.remover.base.class%'
+#        arguments:
+#            - '@doctrine.orm.entity_manager'
+#            - '@event_dispatcher'
+#            - '%pimee_security.entity.asset_category_access.class%'
 
     pimee_security.remover.product:
         class: '%pimee_security.remover.product.class%'
