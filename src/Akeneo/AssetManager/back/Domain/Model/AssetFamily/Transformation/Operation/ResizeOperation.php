@@ -21,6 +21,8 @@ use Webmozart\Assert\Assert;
  */
 class ResizeOperation implements Operation
 {
+    use OperationExtraParameterTrait;
+
     private const OPERATION_NAME = 'resize';
 
     /** @var int */
@@ -45,9 +47,11 @@ class ResizeOperation implements Operation
         Assert::isArray($parameters);
 
         foreach (['width', 'height'] as $parameter) {
-            Assert::keyExists($parameters, $parameter, sprintf("Key '%s' must exist in parameters.", $parameter));
+            Assert::keyExists($parameters, $parameter, "The parameters 'width' and 'height' are required for the resize operation.");
             Assert::integer($parameters[$parameter], sprintf("Parameter '%s' must be an integer.", $parameter));
         }
+
+        self::assertNoExtraParameters($parameters, ['width', 'height']);
 
         return new self($parameters['width'], $parameters['height']);
     }

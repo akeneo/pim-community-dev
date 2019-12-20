@@ -21,6 +21,8 @@ use Webmozart\Assert\Assert;
  */
 class ThumbnailOperation implements Operation
 {
+    use OperationExtraParameterTrait;
+
     private const OPERATION_NAME = 'thumbnail';
 
     /** @var int|null */
@@ -33,7 +35,7 @@ class ThumbnailOperation implements Operation
     {
         if (null === $width && null === $height) {
             throw new \InvalidArgumentException(
-                'No parameter is provided for "thumbnail" operation. At least one of parameter "width" and "height" must be defined.'
+                "No parameter is provided for 'thumbnail' operation. At least one of parameter 'width' and 'height' must be defined."
             );
         }
 
@@ -64,6 +66,8 @@ class ThumbnailOperation implements Operation
     {
         Assert::nullOrInteger($parameters['width'] ?? null, 'Parameter "width" must be an integer.');
         Assert::nullOrInteger($parameters['height'] ?? null, 'Parameter "height" must be an integer.');
+
+        self::assertNoExtraParameters($parameters, ['width', 'height']);
 
         return new self($parameters['width'] ?? null, $parameters['height'] ?? null);
     }

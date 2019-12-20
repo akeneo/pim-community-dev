@@ -300,11 +300,11 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimitValidator' }
 
-    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\OperationShouldBeInstantiableValidator:
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\OperationValidator:
         arguments:
             - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory'
         tags:
-            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\OperationShouldBeInstantiableValidator' }
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\OperationValidator' }
 
     Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawSourceExistValidator:
         arguments:

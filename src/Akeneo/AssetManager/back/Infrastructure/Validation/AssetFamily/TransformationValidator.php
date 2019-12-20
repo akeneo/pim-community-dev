@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
-use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\OperationShouldBeInstantiable;
+use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\Operation;
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawSourceExist;
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawTargetExist;
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\TransformationCanNotHaveSameOperationTwice;
@@ -68,14 +68,8 @@ class TransformationValidator extends ConstraintValidator
             ],
             'operations' => [
                 new Assert\Type('array'),
-                new Assert\Count(['min' => 1]),
-                new Assert\All([
-                    new Assert\Collection([
-                        'type' => new Assert\NotNull(),
-                        'parameters' => new Assert\Optional(new Assert\Type('array')),
-                    ]),
-                    new OperationShouldBeInstantiable(),
-                ]),
+                new Assert\Count(['min' => 1, 'minMessage' => Transformation::EMPTY_OPERATION_LIST_ERROR]),
+                new Assert\All(new Operation()),
                 new TransformationCanNotHaveSameOperationTwice($assetFamilyIdentifier),
             ],
             'filename_prefix' => new Assert\Optional([
@@ -98,5 +92,17 @@ class TransformationValidator extends ConstraintValidator
         $context = $this->context;
         $validator = $context->getValidator()->inContext($context);
         $validator->validate($normalizedTransformation, $constraint, Constraint::DEFAULT_GROUP);
+
+        $this->validateFilenamePrefixOrSuffixIsNotEmpty($normalizedTransformation);
+    }
+
+    private function validateFilenamePrefixOrSuffixIsNotEmpty($normalizedTransformation): void
+    {
+        $filenamePrefix = $normalizedTransformation['filename_prefix'] ?? '';
+        $filenameSuffix = $normalizedTransformation['filename_suffix'] ?? '';
+
+        if ('' === sprintf('%s%s', $filenamePrefix, $filenameSuffix)) {
+            $this->context->buildViolation(Transformation::FILENAME_PREFIX_SUFFIX_EMPTY_ERROR)->addViolation();
+        }
     }
 }

@@ -54,7 +54,9 @@ class RawLocaleShouldBeActivatedValidator extends ConstraintValidator
         $collection = new LocaleIdentifierCollection([$localeIdentifier]);
         $activatedLocaleIdentifiers = $this->findActivatedLocales->find($collection);
 
-        if ($activatedLocaleIdentifiers->isEmpty()) {
+        $foundLocale = $activatedLocaleIdentifiers->getIterator()[0] ?? null;
+
+        if (!$foundLocale instanceof LocaleIdentifier || !$localeIdentifier->equals($foundLocale)) {
             $this->context->buildViolation(RawLocaleShouldBeActivated::ERROR_MESSAGE_SINGULAR)
                 ->setParameter('locale_identifier', $localeIdentifier->normalize())
                 ->atPath('locale')

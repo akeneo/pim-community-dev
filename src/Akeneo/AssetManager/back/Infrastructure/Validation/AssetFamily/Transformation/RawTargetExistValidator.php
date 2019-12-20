@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -65,11 +66,17 @@ class RawTargetExistValidator extends ConstraintValidator
         $this->context->buildViolation(
             RawTargetExist::ATTRIBUTE_NOT_FOUND_ERROR,
             ['%attribute_code%' => $rawTarget['attribute']]
-        )->atPath('target')->addViolation();
+        )->addViolation();
     }
 
     private function validateAttribute(array $target, AbstractAttribute $attribute): void
     {
+        if (!$attribute instanceof MediaFileAttribute) {
+            $this->context->buildViolation(RawTargetExist::NOT_MEDIA_FILE_ATTRIBUTE_ERROR)->addViolation();
+
+            return;
+        }
+
         try {
             Target::create(
                 $attribute,

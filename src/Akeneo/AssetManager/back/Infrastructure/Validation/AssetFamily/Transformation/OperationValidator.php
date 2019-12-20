@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class OperationShouldBeInstantiableValidator extends ConstraintValidator
+class OperationValidator extends ConstraintValidator
 {
     /** @var OperationFactory */
     private $operationFactory;
@@ -31,13 +31,21 @@ class OperationShouldBeInstantiableValidator extends ConstraintValidator
 
     public function validate($operation, Constraint $constraint)
     {
-        if (!$constraint instanceof OperationShouldBeInstantiable) {
-            throw new UnexpectedTypeException($constraint, OperationShouldBeInstantiable::class);
+        if (!$constraint instanceof Operation) {
+            throw new UnexpectedTypeException($constraint, Operation::class);
         }
+
+        $constraints = new Assert\Collection([
+            'fields' => [
+                'type' => new Assert\NotNull(),
+                'parameters' => new Assert\Optional(new Assert\Type('array')),
+            ],
+            'extraFieldsMessage' => Operation::UNKNOWN_EXTRA_FIELD_ERROR,
+        ]);
 
         $context = $this->context;
         $validator = $context->getValidator()->inContext($context);
-        $validator->validate($operation, new Assert\Type('array'));
+        $validator->validate($operation, $constraints);
 
         try {
             $this->operationFactory->create($operation['type'], $operation['parameters'] ?? []);

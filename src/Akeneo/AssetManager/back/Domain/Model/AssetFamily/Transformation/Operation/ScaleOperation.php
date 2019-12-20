@@ -24,6 +24,8 @@ use Webmozart\Assert\Assert;
  */
 class ScaleOperation implements Operation
 {
+    use OperationExtraParameterTrait;
+
     private const OPERATION_NAME = 'scale';
 
     /** @var int|null */
@@ -39,7 +41,7 @@ class ScaleOperation implements Operation
     {
         if (null === $width && null === $height && null === $ratioPercent) {
             throw new \InvalidArgumentException(
-                'No parameter is provided for "scale" operation. At least one of parameter "width", "height" and "ratio" must be defined.'
+                "No parameter is provided for 'scale' operation. At least one of parameter 'width', 'height' and 'ratio' must be defined."
             );
         }
 
@@ -79,6 +81,8 @@ class ScaleOperation implements Operation
                 $parameterName
             ));
         }
+
+        self::assertNoExtraParameters($parameters, ['width', 'height', 'ratio']);
 
         return new self($parameters['width'] ?? null, $parameters['height'] ?? null, $parameters['ratio'] ?? null);
     }

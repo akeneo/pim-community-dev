@@ -38,11 +38,15 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -328,6 +332,8 @@ class CreateOrUpdateAssetFamilyContext implements Context
             AttributeAllowedExtensions::fromList(['jpg']),
             MediaType::fromString(MediaType::IMAGE)
         ));
+        $this->loadTextAttribute('brand', 'title', 'Title', 5);
+        $this->loadTextAttribute('brand', 'sub_title', 'Sub Title', 6);
     }
 
     /**
@@ -356,7 +362,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
     /**
      * @When the connector collects an asset family whose data does not comply with the business rules
      */
-    public function theConnectorCollectsAAssetFamilyWhoseDataDoesNotComplyWithTheBusinessRules()
+    public function theConnectorCollectsAnAssetFamilyWhoseDataDoesNotComplyWithTheBusinessRules()
     {
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
@@ -368,12 +374,24 @@ class CreateOrUpdateAssetFamilyContext implements Context
     /**
      * @When the connector collects an asset family whose transformations do not comply with the business rules
      */
-    public function theConnectorCollectsAAssetFamilyWhoseTransformationsDoNotComplyWithTheBusinessRules()
+    public function theConnectorCollectsAnAssetFamilyWhoseTransformationsDoNotComplyWithTheBusinessRules()
     {
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
             self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_transformation_for_invalid_data.json'
+        );
+    }
+
+    /**
+     * @When the connector collects an asset family whose transformation have invalid operation parameters
+     */
+    public function theConnectorCollectsAnAssetFamilyWhoseTransformationHaveInvalidOperationParameters()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_transformation_for_invalid_operation_parameters.json'
         );
     }
 
@@ -396,6 +414,17 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_transformation_for_invalid_data.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about errors indicating that the asset family has a transformation that does not have valid operation parameters
+     */
+    public function thePimNotifiesTheConnectorAboutErrorsIndicatingThatTheAssetFamilyHasATransformationThatDoesNotHaveValidOperationParameters()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_transformation_for_invalid_operation_parameters.json'
         );
     }
 
@@ -459,6 +488,25 @@ class CreateOrUpdateAssetFamilyContext implements Context
             AttributeMaxFileSize::fromString('120'),
             AttributeAllowedExtensions::fromList(self::VALID_EXTENSIONS),
             MediaType::fromString(MediaType::IMAGE)
+        );
+
+        $this->attributeRepository->create($name);
+    }
+
+    private function loadTextAttribute(string $assetFamilyIdentifier, string $code, string $label, int $order): void
+    {
+        $name = TextAttribute::createText(
+            AttributeIdentifier::create($assetFamilyIdentifier, $code, 'fingerprint'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($code),
+            LabelCollection::fromArray(['en_US' => $label]),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
         );
 
         $this->attributeRepository->create($name);

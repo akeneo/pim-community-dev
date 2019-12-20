@@ -21,6 +21,8 @@ use Webmozart\Assert\Assert;
  */
 class ColorspaceOperation implements Operation
 {
+    use OperationExtraParameterTrait;
+
     private const OPERATION_NAME = 'colorspace';
     private const COLORSPACE_CHOICES = ['grey', 'cmyk', 'rgb'];
 
@@ -45,8 +47,10 @@ class ColorspaceOperation implements Operation
 
     public static function create(array $parameters): Operation
     {
-        Assert::keyExists($parameters, 'colorspace', "Key 'colorspace' must exist in parameters.");
+        Assert::keyExists($parameters, 'colorspace', "The parameter 'colorspace' is required for the colorspace operation.");
         Assert::string($parameters['colorspace'], "Parameter 'colorspace' must be a string.");
+
+        self::assertNoExtraParameters($parameters, ['colorspace']);
 
         return new self($parameters['colorspace']);
     }

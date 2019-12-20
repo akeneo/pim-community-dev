@@ -540,7 +540,7 @@ class EditAssetFamilyTransformationsContext implements Context
     public function thereShouldBeAValidationErrorStatingThatOperationIsNotInstantiable()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            "Key 'colorspace' must exist in parameters."
+            "The parameter 'colorspace' is required for the colorspace operation."
         );
     }
 

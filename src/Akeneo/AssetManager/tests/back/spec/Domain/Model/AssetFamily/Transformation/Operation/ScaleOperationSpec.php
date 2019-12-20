@@ -105,7 +105,7 @@ class ScaleOperationSpec extends ObjectBehavior
     function it_can_not_be_constructed_without_parameter()
     {
         $this->beConstructedThrough('create', [[]]);
-        $this->shouldThrow(new \InvalidArgumentException('No parameter is provided for "scale" operation. At least one of parameter "width", "height" and "ratio" must be defined.'))
+        $this->shouldThrow(new \InvalidArgumentException("No parameter is provided for 'scale' operation. At least one of parameter 'width', 'height' and 'ratio' must be defined."))
             ->duringInstantiation();
     }
 
@@ -155,5 +155,15 @@ class ScaleOperationSpec extends ObjectBehavior
             'ratio' => -1,
         ]]);
         $this->shouldThrow(new \InvalidArgumentException("Parameter \"ratio\" must be greater than 0, \"-1\" given."))->duringInstantiation();
+    }
+
+    function it_can_not_be_constructed_with_unknown_parameter()
+    {
+        $this->beConstructedThrough('create', [[
+            'ratio' => 90,
+            'foo' => 'bar',
+        ]]);
+        $this->shouldThrow(new \InvalidArgumentException('The property "foo" is not defined and the definition does not allow additional properties.'))
+            ->duringInstantiation();
     }
 }
