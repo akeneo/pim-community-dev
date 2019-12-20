@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 
@@ -41,7 +42,10 @@ class OtherGenerator implements PreviewGeneratorInterface
 
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
-        return MediaLinkAttribute::ATTRIBUTE_TYPE === $attribute->getType()
+        return (
+                MediaLinkAttribute::ATTRIBUTE_TYPE === $attribute->getType()
+                || MediaFileAttribute::ATTRIBUTE_TYPE === $attribute->getType()
+            )
             && MediaType::OTHER === $attribute->getMediaType()->normalize()
             && array_key_exists($type, self::SUPPORTED_TYPES);
     }
