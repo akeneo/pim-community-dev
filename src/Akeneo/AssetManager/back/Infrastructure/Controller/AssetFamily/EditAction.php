@@ -100,10 +100,16 @@ class EditAction
         $parameters = json_decode($request->getContent(), true);
         $parameters = $this->replaceAttributeAsMainMediaIdentifierByCode($parameters);
 
-        $transformations = json_decode($parameters['transformations'], true);
-        if (null === $transformations) {
-            // TODO Put a real validation error to be displayed correctly
-            return new JsonResponse(sprintf('Impossible to parse %s', $parameters['transformations']), Response::HTTP_BAD_REQUEST);
+        $transformations = null;
+        if ($this->isUserAllowedToManageTransformation()) {
+            $transformations = json_decode($parameters['transformations'], true);
+            if (null === $transformations) {
+                // TODO Put a real validation error to be displayed correctly
+                return new JsonResponse(
+                    sprintf('Impossible to parse %s', $parameters['transformations']),
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
         }
 
         $command = new EditAssetFamilyCommand(
@@ -145,6 +151,11 @@ class EditAction
 
         return $this->securityFacade->isGranted('akeneo_assetmanager_asset_family_edit')
             && ($this->canEditAssetFamilyQueryHandler)($query);
+    }
+
+    private function isUserAllowedToManageTransformation(): bool
+    {
+        return $this->securityFacade->isGranted('akeneo_assetmanager_asset_family_manage_transformation');
     }
 
     /**

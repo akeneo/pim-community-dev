@@ -7,6 +7,7 @@
 #            edit: Edit the entity properties
 #            delete: Delete an entity
 #            manage_permission: Manage asset family permissions
+#            manage_transformation: Manage asset family transformations
 #        asset:
 #            create: Create a asset
 #            edit: Edit the assets

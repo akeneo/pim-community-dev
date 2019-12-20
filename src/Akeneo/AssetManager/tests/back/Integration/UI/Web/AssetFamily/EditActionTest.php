@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
@@ -59,6 +60,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function it_edits_an_asset_family_details(): void
     {
         $this->allowEditRights();
+        $this->allowManageTransformationRights();
         $attributeIdentifier = $this->getIdentifierForAttribute(
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('image')
@@ -149,6 +151,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function it_returns_an_access_denied_if_the_user_does_not_have_permissions(): void
     {
         $this->allowEditRights();
+        $this->allowManageTransformationRights();
         $this->client->followRedirects(false);
         $this->forbidsEdit();
         $postContent = [
@@ -200,6 +203,53 @@ class EditActionTest extends ControllerIntegrationTestCase
         Assert::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
+    public function it_does_not_take_in_account_transformation_if_manage_transformation_is_not_granted()
+    {
+        $this->allowEditRights();
+        $this->revokeManageTransformationRights();
+        $attributeIdentifier = $this->getIdentifierForAttribute(
+            AssetFamilyIdentifier::fromString('designer'),
+            AttributeCode::fromString('image')
+        );
+
+        $postContent = [
+            'identifier' => 'designer',
+            'labels'     => [
+                'en_US' => 'foo',
+                'fr_FR' => 'bar',
+            ],
+            'attributeAsMainMedia' => $attributeIdentifier->stringValue(),
+            'image'      => [
+                'filePath'         => '/path/image.jpg',
+                'originalFilename' => 'image.jpg'
+            ],
+            'productLinkRules' => null,
+            'transformations' => '[{"foo": "bar"}]',
+        ];
+
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::ASSET_FAMILY_EDIT_ROUTE,
+            ['identifier' => 'designer'],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            $postContent
+        );
+
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
+
+        $repository = $this->getEnrichEntityRepository();
+        $entityItem = $repository->getByIdentifier(AssetFamilyIdentifier::fromString($postContent['identifier']));
+
+        Assert::assertEquals(array_keys($postContent['labels']), $entityItem->getLabelCodes());
+        Assert::assertEquals($postContent['labels']['en_US'], $entityItem->getLabel('en_US'));
+        Assert::assertEquals($postContent['labels']['fr_FR'], $entityItem->getLabel('fr_FR'));
+        Assert::assertEquals(TransformationCollection::noTransformation(), $entityItem->getTransformationCollection());
+    }
+
     private function getEnrichEntityRepository(): AssetFamilyRepositoryInterface
     {
         return $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
@@ -219,6 +269,16 @@ class EditActionTest extends ControllerIntegrationTestCase
     private function allowEditRights(): void
     {
         $this->securityFacade->setIsGranted('akeneo_assetmanager_asset_family_edit', true);
+    }
+
+    private function allowManageTransformationRights(): void
+    {
+        $this->securityFacade->setIsGranted('akeneo_assetmanager_asset_family_manage_transformation', true);
+    }
+
+    private function revokeManageTransformationRights(): void
+    {
+        $this->securityFacade->setIsGranted('akeneo_assetmanager_asset_family_manage_transformation', false);
     }
 
     private function loadFixtures(): void

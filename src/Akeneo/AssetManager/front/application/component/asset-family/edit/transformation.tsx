@@ -34,14 +34,27 @@ type AssetFamilyTransformationEditorProps = {
   transformations: TransformationCollection;
   errors: ValidationError[];
   onAssetFamilyTransformationsChange: (transformations: TransformationCollection) => void;
+  editMode: boolean;
 };
 
 const AssetFamilyTransformationEditor = ({
   transformations,
   errors,
   onAssetFamilyTransformationsChange,
+  editMode,
 }: AssetFamilyTransformationEditorProps) => {
   //https://github.com/vankop/jsoneditor-react/blob/HEAD/src/Editor.jsx
+  if (!editMode) {
+    return (
+      <div className="AknJsonEditor">
+        <Editor
+          value={JSON.parse(transformations)}
+          mode="view"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="AknJsonEditor">
       <Editor
@@ -123,6 +136,7 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
               onAssetFamilyTransformationsChange={(transformations: TransformationCollection) => {
                 this.props.events.onAssetFamilyTransformationsUpdated(transformations);
               }}
+              editMode={this.props.rights.assetFamily.edit}
             />
           </div>
         </div>
@@ -140,6 +154,7 @@ export default connect(
         assetFamily: {
           edit:
             securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_asset_family_manage_transformation') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },
