@@ -14,7 +14,7 @@ export const notifyLaunchComputeTransformationsFailed = () => {
 };
 
 export const notifyLaunchComputeTransformationsSucceeded = () => {
-  return notify('success', 'pim_asset_manager.asset_family.notification.compute_transformations.success');
+  return notify('info', 'pim_asset_manager.asset_family.notification.compute_transformations.success');
 };
 
 export const notifyAssetFamilyWellCreated = () => {

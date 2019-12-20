@@ -93,7 +93,7 @@ const SecondaryActions = ({onLaunchComputeTransformations}: {
           <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
           <div>
             <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onLaunchComputeTransformations()}>
-              {__('pim_asset_manager.asset.button.delete_all')}
+              {__('pim_asset_manager.asset.button.launch_transformations')}
             </button>
           </div>
         </div>
