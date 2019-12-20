@@ -281,7 +281,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
             'asset_family_identifier' => 'designer',
             'code'                       => 'starck',
             'labels'                     => ['fr_FR' => 'Philippe Starck'],
-
+            'values'                     => [],
         ];
         $method = 'POST';
         $this->webClientHelper->callRoute($this->client, self::CREATE_ASSET_ROUTE, $urlParameters, $method, $headers,
