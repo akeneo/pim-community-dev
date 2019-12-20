@@ -155,6 +155,9 @@ pim_asset_manager:
       delete:
         success: Asset family successfully deleted.
         fail: An error occured during the deletion of the asset family
+      compute_transformations:
+        success: Transformations have been launched. Once this job is finished, you will see your new variations updated in your assets.
+        fail: An error occured when trying to compute the transformations
   permission:
     notification:
       save:
@@ -187,6 +190,7 @@ pim_asset_manager:
       delete: Delete
       delete_all: Delete all assets
       back: Back to list
+      launch_transformations: Launch transformations
     product:
       attribute: Product attribute
       counter: '{{ totalCount }} result|{{ totalCount }} results'

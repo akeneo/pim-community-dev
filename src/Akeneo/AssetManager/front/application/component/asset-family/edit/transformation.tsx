@@ -12,6 +12,7 @@ import {
   assetFamilyTransformationsUpdated,
   saveAssetFamily,
 } from 'akeneoassetmanager/application/action/asset-family/edit';
+import {launchComputeTransformations} from 'akeneoassetmanager/application/action/asset-family/transformation';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import Ajv from 'ajv';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
@@ -77,8 +78,29 @@ interface DispatchProps {
   events: {
     onAssetFamilyTransformationsUpdated: (transformations: TransformationCollection) => void;
     onSaveEditForm: () => void;
+    onLaunchComputeTransformations: () => void;
   };
 }
+
+const SecondaryActions = ({onLaunchComputeTransformations}: {
+  onLaunchComputeTransformations: () => void;
+}) => {
+  return (
+    <>
+      <div className="AknSecondaryActions AknDropdown AknButtonList-item">
+        <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
+        <div className="AknDropdown-menu AknDropdown-menu--right">
+          <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
+          <div>
+            <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onLaunchComputeTransformations()}>
+              {__('pim_asset_manager.asset.button.launch_transformations')}
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 class Transformation extends React.Component<StateProps & DispatchProps, Transformation> {
   props: StateProps & DispatchProps;
@@ -101,7 +123,13 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
             ) : null;
           }}
           secondaryActions={() => {
-            return null;
+            return (
+              <SecondaryActions
+                onLaunchComputeTransformations={() => {
+                  this.props.events.onLaunchComputeTransformations();
+                }}
+              />
+            );
           }}
           withLocaleSwitcher={false}
           withChannelSwitcher={false}
@@ -169,6 +197,9 @@ export default connect(
         onSaveEditForm: () => {
           dispatch(saveAssetFamily());
         },
+        onLaunchComputeTransformations: () => {
+          dispatch(launchComputeTransformations());
+        }
       },
     };
   }
