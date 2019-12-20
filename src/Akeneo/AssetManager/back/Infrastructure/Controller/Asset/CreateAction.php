@@ -113,8 +113,6 @@ class CreateAction
             );
         }
 
-        $this->createAsset($createCommand);
-
         $editCommand = $this->getEditCommand($request);
         $editionViolations = $this->validator->validate($editCommand);
 
@@ -125,6 +123,7 @@ class CreateAction
             );
         }
 
+        $this->createAsset($createCommand);
         $this->editAsset($editCommand);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
