@@ -1,6 +1,6 @@
 {
   "name": "pim-enterprise-dev",
-  "version": "3.2",
+  "version": "3.2.0",
   "description": "Akeneo PIM Enterprise Application",
   "homepage": "http://www.akeneo.com",
   "private": true,

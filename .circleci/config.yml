@@ -79,9 +79,6 @@ jobs:
           name: Install asset
           command: make assets
       - run:
-          name: Build CSS
-          command: make css
-      - run:
           name: Build Javascript
           command: |
               make javascript-test

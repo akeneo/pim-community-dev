@@ -1,15 +1,5 @@
 oneup_flysystem:
     adapters:
-        catalog_storage_adapter:
-            googlecloudstorage:
-                client: 'Google\Cloud\Storage\StorageClient'
-                bucket: 'Google\Cloud\Storage\Bucket'
-                prefix: 'catalog_storage'
-        jobs_storage_adapter:
-            googlecloudstorage:
-                client: 'Google\Cloud\Storage\StorageClient'
-                bucket: 'Google\Cloud\Storage\Bucket'
-                prefix: 'jobs_storage'
         asset_storage_adapter:
             googlecloudstorage:
                 client: 'Google\Cloud\Storage\StorageClient'
@@ -20,6 +10,19 @@ oneup_flysystem:
                 client: 'Google\Cloud\Storage\StorageClient'
                 bucket: 'Google\Cloud\Storage\Bucket'
                 prefix: 'asset_manager_storage'
+        tmp_asset_upload_adapter:
+            local:
+                directory: '%kernel.project_dir%/var/upload_tmp_dir'
+        catalog_storage_adapter:
+            googlecloudstorage:
+                client: 'Google\Cloud\Storage\StorageClient'
+                bucket: 'Google\Cloud\Storage\Bucket'
+                prefix: 'catalog_storage'
+        jobs_storage_adapter:
+            googlecloudstorage:
+                client: 'Google\Cloud\Storage\StorageClient'
+                bucket: 'Google\Cloud\Storage\Bucket'
+                prefix: 'jobs_storage'
         archivist_adapter:
             googlecloudstorage:
                 client: 'Google\Cloud\Storage\StorageClient'

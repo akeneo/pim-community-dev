@@ -69,7 +69,7 @@ services:
     volumes:
       - './:/srv/pim:ro'
       - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
-      - './docker/vhost.conf:/usr/local/apache2/conf/vhost.conf:ro'
+      - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
       - './docker/server.crt:/usr/local/apache2/conf/server.crt:ro'
       - './docker/server.key:/usr/local/apache2/conf/server.key:ro'
     networks:

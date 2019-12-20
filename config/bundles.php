@@ -81,10 +81,4 @@ return [
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Symfony\Bundle\WebServerBundle\WebServerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
-
-    // Tests related bundles
-    AcmeEnterprise\Bundle\AppBundle\AcmeEnterpriseAppBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
-    Akeneo\Test\IntegrationTestsBundle\AkeneoIntegrationTestsBundle::class => ['test' => true, 'test_fake' => true],
-    AkeneoEnterprise\Test\IntegrationTestsBundle\AkeneoEnterpriseIntegrationTestsBundle::class => ['test' => true, 'test_fake' => true],
-    FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle::class => ['test_fake' => true],
 ];
