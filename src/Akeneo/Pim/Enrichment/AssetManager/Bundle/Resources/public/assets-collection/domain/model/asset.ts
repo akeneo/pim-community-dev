@@ -17,6 +17,8 @@ import {
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {MediaTypes, YOUTUBE_WATCH_URL} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 import {getMediaDownloadUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 
 export const ASSET_COLLECTION_LIMIT = 50;
 
@@ -31,9 +33,9 @@ type ImageCollection = ImageValue[];
 
 export type ImageData = {filePath: string; originalFilename: string};
 export type ImageValue = {
-  attribute: string;
-  channel: null;
-  locale: null;
+  attribute: AttributeIdentifier;
+  channel: ChannelReference;
+  locale: LocaleReference;
   data: ImageData;
 };
 const createEmptyImage = (): ImageValue => ({

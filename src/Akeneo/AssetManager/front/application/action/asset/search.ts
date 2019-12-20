@@ -1,11 +1,11 @@
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
-import {NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import updateResultsWithFetcher from 'akeneoassetmanager/application/action/search';
 import {updateFilter, removeFilter, gridStateUpdated} from 'akeneoassetmanager/application/event/search';
 import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/index/completeness-filter';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
+import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 const stateToQuery = async (state: EditState): Promise<Query> => {
   return {
@@ -70,4 +70,4 @@ export const completenessFilterUpdated = (completenessValue: CompletenessValue) 
   dispatch(gridStateUpdated());
 };
 
-export const updateAssetResults = updateResultsWithFetcher<NormalizedItemAsset>(assetFetcher, stateToQuery);
+export const updateAssetResults = updateResultsWithFetcher<ListAsset>(assetFetcher, stateToQuery);

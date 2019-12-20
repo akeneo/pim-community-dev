@@ -2,7 +2,6 @@ import * as React from 'react';
 import $ from 'jquery';
 import AssetCode, {denormalizeAssetCode, assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {NormalizedAsset, NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
@@ -10,8 +9,9 @@ import {getLabel} from 'pimui/js/i18n';
 
 const routing = require('routing');
 import {isNull, isArray} from 'akeneoassetmanager/domain/model/utils';
+import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 
-const renderRow = (label: string, normalizedAsset: NormalizedItemAsset, withLink: boolean, compact: boolean) => {
+const renderRow = (label: string, normalizedAsset: ListAsset, withLink: boolean, compact: boolean) => {
   return `
   <img width="34" height="34" src="${normalizedAsset.image}" style="object-fit: cover;"/>
   <span class="select2-result-label-main">
@@ -24,11 +24,11 @@ const renderRow = (label: string, normalizedAsset: NormalizedItemAsset, withLink
     withLink && !compact
       ? `<a
       class="select2-result-label-link AknIconButton AknIconButton--small AknIconButton--link"
-      data-asset-family-identifier="${normalizedAsset.asset_family_identifier}"
+      data-asset-family-identifier="${normalizedAsset.assetFamilyIdentifier}"
       data-asset-code="${normalizedAsset.code}"
       target="_blank"
       href="#${routing.generate('akeneo_asset_manager_asset_edit', {
-        assetFamilyIdentifier: normalizedAsset.asset_family_identifier,
+        assetFamilyIdentifier: normalizedAsset.assetFamilyIdentifier,
         assetCode: normalizedAsset.code,
         tab: 'enrich',
       })}"></a>`
@@ -49,7 +49,7 @@ export type AssetSelectorProps = {
   onChange: (value: AssetCode[] | AssetCode | null) => void;
 };
 
-type Select2Item = {id: string; text: string; original: NormalizedItemAsset};
+type Select2Item = {id: string; text: string; original: ListAsset};
 
 export default class AssetSelector extends React.Component<AssetSelectorProps> {
   PAGE_SIZE = 200;
@@ -67,7 +67,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
     this.DOMel = React.createRef();
   }
 
-  formatItem(normalizedAsset: NormalizedItemAsset): Select2Item {
+  formatItem(normalizedAsset: ListAsset): Select2Item {
     return {
       id: normalizedAsset.code,
       text: getLabel(normalizedAsset.labels, localeReferenceStringValue(this.props.locale), normalizedAsset.code),
@@ -141,7 +141,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
 
             return JSON.stringify(searchQuery);
           },
-          results: (result: {items: NormalizedAsset[]; matchesCount: number}) => {
+          results: (result: {items: ListAsset[]; matchesCount: number}) => {
             const items = result.items.map(this.formatItem.bind(this));
 
             return {
@@ -174,7 +174,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
                 channel: channelReferenceStringValue(this.props.channel),
                 locale: localeReferenceStringValue(this.props.locale),
               })
-              .then((assets: NormalizedItemAsset[]) => {
+              .then((assets: ListAsset[]) => {
                 callback(this.formatItem(assets[0]));
               });
           }

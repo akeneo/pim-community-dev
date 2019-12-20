@@ -2,7 +2,6 @@ import CommonRows from 'akeneoassetmanager/application/component/asset/index/row
 import ActionViews from 'akeneoassetmanager/application/component/asset/index/row/action';
 import DetailsView from 'akeneoassetmanager/application/component/asset/index/row/detail';
 import NoResult from 'akeneoassetmanager/application/component/app/no-result';
-import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -18,12 +17,13 @@ import CompletenessFilter, {
 } from 'akeneoassetmanager/application/component/asset/index/completeness-filter';
 import ItemsCounter from 'akeneoassetmanager/application/component/asset/index/items-counter';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 interface TableState {
   locale: string;
   channel: string;
   grid: {
-    assets: NormalizedAsset[];
+    assets: ListAsset[];
     columns: Column[];
     matchesCount: number;
     isLoading: boolean;
@@ -56,9 +56,9 @@ const columnCollectionsAreDifferent = (firstCollumnCollection: Column[], secondC
 
 export type RowView = React.SFC<{
   isLoading: boolean;
-  asset: NormalizedAsset;
+  asset: ListAsset;
   locale: string;
-  onRedirectToAsset: (asset: NormalizedAsset) => void;
+  onRedirectToAsset: (asset: ListAsset) => void;
   onDeleteAsset: (assetCode: AssetCode, label: string) => void;
   position: number;
   columns: Column[];
@@ -66,7 +66,7 @@ export type RowView = React.SFC<{
 }>;
 
 interface TableDispatch {
-  onRedirectToAsset: (asset: NormalizedAsset) => void;
+  onRedirectToAsset: (asset: ListAsset) => void;
   onDeleteAsset: (assetCode: AssetCode, label: string) => void;
   onNeedMoreResults: () => void;
   onSearchUpdated: (userSearch: string) => void;

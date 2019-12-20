@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Value, {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue, {setValueData} from 'akeneoassetmanager/domain/model/asset/edition-value';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import {Option, getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
@@ -17,9 +17,9 @@ const View = ({
   locale,
   canEditData,
 }: {
-  value: Value;
+  value: EditionValue;
   locale: LocaleReference;
-  onChange: (value: Value) => void;
+  onChange: (value: EditionValue) => void;
   canEditData: boolean;
 }) => {
   if (!isOptionCollectionData(value.data) || !isOptionCollectionAttribute(value.attribute)) {

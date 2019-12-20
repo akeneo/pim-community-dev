@@ -1,33 +1,64 @@
-import Asset from 'akeneoassetmanager/domain/model/asset/asset';
+import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {postJSON} from 'akeneoassetmanager/tools/fetch';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
-import Value from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 
 const routing = require('routing');
 
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import LabelCollection from 'akeneoassetmanager/domain/model/label-collection';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import Data from 'akeneoassetmanager/domain/model/asset/data';
+
+type BackendValue = {
+  attribute: AttributeIdentifier;
+  channel: ChannelReference;
+  locale: LocaleReference;
+  data: Data;
+};
+
+const normalizeEditionValue = (editionValue: EditionValue): BackendValue => ({
+  ...editionValue,
+  attribute: editionValue.attribute.identifier,
+});
 
 type BackendCreationAsset = {
   asset_family_identifier: AssetFamilyIdentifier;
   code: AssetCode;
   labels: LabelCollection;
-  values: Value[];
+  values: BackendValue[];
 };
+
 export const normalizeCreationAsset = (asset: CreationAsset): BackendCreationAsset => ({
   asset_family_identifier: asset.assetFamilyIdentifier,
   code: asset.code,
   labels: asset.labels,
-  values: asset.values,
+  values: undefined === asset.values ? [] : asset.values.map(normalizeEditionValue),
+});
+
+type BackendEditionAsset = {
+  asset_family_identifier: AssetFamilyIdentifier;
+  code: AssetCode;
+  labels: LabelCollection;
+  values: BackendValue[];
+};
+
+export const normalizeEditionAsset = (asset: EditionAsset): BackendEditionAsset => ({
+  asset_family_identifier: asset.assetFamily.identifier,
+  code: asset.code,
+  labels: asset.labels,
+  values: asset.values.map(normalizeEditionValue),
 });
 
 interface AssetSaver {
-  save: (entity: Asset) => Promise<ValidationError[] | null>;
+  save: (entity: EditionAsset) => Promise<ValidationError[] | null>;
   create: (entity: CreationAsset) => Promise<ValidationError[] | null>;
 }
 
@@ -36,19 +67,15 @@ export class AssetSaverImplementation implements AssetSaver {
     Object.freeze(this);
   }
 
-  async save(asset: Asset): Promise<ValidationError[] | null> {
-    const normalizedAsset = asset.normalizeMinimal();
+  async save(asset: EditionAsset): Promise<ValidationError[] | null> {
+    const normalizedAsset = normalizeEditionAsset(asset);
 
     const result = await postJSON(
       routing.generate('akeneo_asset_manager_asset_edit_rest', {
-        assetFamilyIdentifier: assetFamilyIdentifierStringValue(asset.getAssetFamilyIdentifier()),
-        assetCode: assetCodeStringValue(asset.getCode()),
+        assetFamilyIdentifier: assetFamilyIdentifierStringValue(asset.assetFamily.identifier),
+        assetCode: assetCodeStringValue(asset.code),
       }),
-      {
-        //TODO: temporary fix to make the value light model work https://akeneo.atlassian.net/browse/AST-183
-        ...normalizedAsset,
-        values: normalizedAsset.values.map((value: Value) => ({...value, attribute: value.attribute.identifier})),
-      }
+      normalizedAsset
     ).catch(handleError);
 
     return undefined === result ? null : result;
@@ -61,14 +88,7 @@ export class AssetSaverImplementation implements AssetSaver {
       routing.generate('akeneo_asset_manager_asset_create_rest', {
         assetFamilyIdentifier: assetFamilyIdentifierStringValue(asset.assetFamilyIdentifier),
       }),
-      {
-        //TODO: temporary fix to make the value light model work https://akeneo.atlassian.net/browse/AST-183
-        ...normalizedAsset,
-        values:
-          undefined === normalizedAsset.values
-            ? []
-            : normalizedAsset.values.map((value: Value) => ({...value, attribute: value.attribute.identifier})),
-      }
+      normalizedAsset
     ).catch(handleError);
 
     return undefined === result ? null : result;

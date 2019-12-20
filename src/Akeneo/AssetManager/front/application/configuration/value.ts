@@ -1,25 +1,26 @@
-import Value from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {Column, Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import ListValue from 'akeneoassetmanager/domain/model/asset/list-value';
 
 export class InvalidArgument extends Error {}
 
 export type ViewGenerator = React.SFC<{
-  value: Value;
+  value: EditionValue;
   channel: ChannelReference;
   locale: LocaleReference;
-  onChange: (value: Value) => void;
+  onChange: (value: EditionValue) => void;
   onSubmit: () => void;
   canEditData: boolean;
 }>;
 /**
  * @api
  */
-export type CellView = React.SFC<{column: Column; value: Value}>;
+export type CellView = React.SFC<{column: Column; value: ListValue}>;
 export type FilterViewProps = {
   attribute: Attribute;
   filter: Filter | undefined;
@@ -54,7 +55,7 @@ export const hasFilterView = (config: ValueConfig) => (attributeType: string): b
   return undefined !== config[attributeType] && undefined !== config[attributeType].filter;
 };
 
-export const getFieldView = (config: ValueConfig) => (value: Value): ViewGenerator => {
+export const getFieldView = (config: ValueConfig) => (value: EditionValue): ViewGenerator => {
   const attributeType = value.attribute.type;
   const typeConfiguration = config[attributeType];
 

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {getLabel} from 'pimui/js/i18n';
 import Key from 'akeneoassetmanager/tools/key';
+import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 const router = require('pim/router');
 
 const memo = (React as any).memo;
@@ -16,7 +16,7 @@ const ActionRow = memo(
     onRedirectToAsset,
     onDeleteAsset,
   }: {
-    asset: NormalizedAsset;
+    asset: ListAsset;
     locale: string;
     placeholder?: boolean;
     rights: {
@@ -26,7 +26,7 @@ const ActionRow = memo(
       };
     };
   } & {
-    onRedirectToAsset: (asset: NormalizedAsset) => void;
+    onRedirectToAsset: (asset: ListAsset) => void;
     onDeleteAsset: (assetCode: AssetCode, label: string) => void;
   }) => {
     if (true === placeholder) {
@@ -42,7 +42,7 @@ const ActionRow = memo(
     const path =
       '' !== asset.identifier
         ? `#${router.generate('akeneo_asset_manager_asset_edit', {
-            assetFamilyIdentifier: asset.asset_family_identifier,
+            assetFamilyIdentifier: asset.assetFamilyIdentifier,
             assetCode: asset.code,
             tab: 'enrich',
           })}`
@@ -117,10 +117,10 @@ const ActionRows = memo(
     assetCount,
     rights,
   }: {
-    assets: NormalizedAsset[];
+    assets: ListAsset[];
     locale: string;
     placeholder: boolean;
-    onRedirectToAsset: (asset: NormalizedAsset) => void;
+    onRedirectToAsset: (asset: ListAsset) => void;
     onDeleteAsset: (assetCode: AssetCode, label: string) => void;
     assetCount: number;
     rights: {
@@ -155,7 +155,7 @@ const ActionRows = memo(
       ));
     }
 
-    return assets.map((asset: NormalizedAsset) => {
+    return assets.map((asset: ListAsset) => {
       return (
         <ActionRow
           placeholder={false}

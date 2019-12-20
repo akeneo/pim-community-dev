@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {getLabel} from 'pimui/js/i18n';
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
 import {getAssetPreview, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 const memo = (React as any).memo;
 
@@ -16,12 +16,12 @@ const CommonRow = memo(
     placeholder = false,
     onRedirectToAsset,
   }: {
-    asset: NormalizedItemAsset;
+    asset: ListAsset;
     locale: string;
     channel: string;
     placeholder?: boolean;
   } & {
-    onRedirectToAsset: (asset: NormalizedItemAsset) => void;
+    onRedirectToAsset: (asset: ListAsset) => void;
   }) => {
     if (true === placeholder) {
       return (
@@ -82,12 +82,12 @@ const CommonRows = memo(
     onRedirectToAsset,
     assetCount,
   }: {
-    assets: NormalizedItemAsset[];
+    assets: ListAsset[];
     assetFamily: AssetFamily;
     locale: string;
     channel: string;
     placeholder: boolean;
-    onRedirectToAsset: (asset: NormalizedItemAsset) => void;
+    onRedirectToAsset: (asset: ListAsset) => void;
     nextItemToAddPosition: number;
     assetCount: number;
   }) => {
@@ -117,7 +117,7 @@ const CommonRows = memo(
       ));
     }
 
-    return assets.map((asset: NormalizedItemAsset) => {
+    return assets.map((asset: ListAsset) => {
       return (
         <CommonRow
           placeholder={false}

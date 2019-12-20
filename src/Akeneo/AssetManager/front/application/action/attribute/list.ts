@@ -14,12 +14,12 @@ import LocaleReference, {
 import {Column} from 'akeneoassetmanager/application/reducer/grid';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
-import {generateKey} from 'akeneoassetmanager/domain/model/asset/value-collection';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getAttributeTypes, AttributeType} from 'akeneoassetmanager/application/configuration/attribute';
 import {hasDataCellView} from 'akeneoassetmanager/application/configuration/value';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import denormalizeAttributes from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
+import {generateKey} from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 export class InvalidArgument extends Error {}
 

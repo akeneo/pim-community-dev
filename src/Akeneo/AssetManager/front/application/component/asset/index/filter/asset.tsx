@@ -8,10 +8,10 @@ import AssetCode, {denormalizeAssetCode, assetCodeStringValue} from 'akeneoasset
 import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
-import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {getLabel} from 'pimui/js/i18n';
 import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
 import {assetTypeIsEmpty} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
+import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 const memo = (React as any).memo;
 const useState = (React as any).useState;
@@ -67,7 +67,7 @@ const AssetFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, c
   const hint =
     0 === value.length
       ? __('pim_asset_manager.asset.grid.filter.option.all')
-      : hydratedAssets.map((asset: NormalizedAsset) => getLabel(asset.labels, context.locale, asset.code)).join(', ');
+      : hydratedAssets.map((asset: ListAsset) => getLabel(asset.labels, context.locale, asset.code)).join(', ');
 
   const [position, setPosition] = React.useState({top: 0, left: 0});
   const labelRef = React.useRef<HTMLSpanElement>(null);

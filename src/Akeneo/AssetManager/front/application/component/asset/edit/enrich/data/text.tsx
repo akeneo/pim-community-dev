@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Value, {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue, {setValueData} from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {
   isTextData,
   areTextDataEqual,
@@ -16,8 +16,8 @@ const View = ({
   onSubmit,
   canEditData,
 }: {
-  value: Value;
-  onChange: (value: Value) => void;
+  value: EditionValue;
+  onChange: (value: EditionValue) => void;
   onSubmit: () => void;
   canEditData: boolean;
 }) => {

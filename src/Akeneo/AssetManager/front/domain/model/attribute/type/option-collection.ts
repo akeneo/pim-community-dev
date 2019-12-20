@@ -8,7 +8,7 @@ import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/do
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {Attribute, ConcreteAttribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {Option, createOptionFromNormalized} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
-import {AttributeWithOptions} from './option';
+import {AttributeWithOptions} from 'akeneoassetmanager/domain/model/attribute/type/option';
 
 export const OPTION_COLLECTION_ATTRIBUTE_TYPE = 'option_collection';
 

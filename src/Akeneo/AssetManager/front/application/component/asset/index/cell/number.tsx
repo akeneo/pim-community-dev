@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {CellView} from 'akeneoassetmanager/application/configuration/value';
-import Value from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {numberDataStringValue, isNumberData} from 'akeneoassetmanager/domain/model/asset/data/number';
 
 const UserContext = require('pim/user-context');
 const memo = (React as any).memo;
 
-const NumberCellView: CellView = memo(({value}: {value: Value}) => {
+const NumberCellView: CellView = memo(({value}: {value: EditionValue}) => {
   if (!isNumberData(value.data)) return null;
 
   return (

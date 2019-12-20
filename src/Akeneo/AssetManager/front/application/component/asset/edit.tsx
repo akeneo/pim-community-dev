@@ -7,22 +7,20 @@ import sidebarProvider from 'akeneoassetmanager/application/configuration/sideba
 import Breadcrumb from 'akeneoassetmanager/application/component/app/breadcrumb';
 import __ from 'akeneoassetmanager/tools/translator';
 import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
-import Asset, {getAssetImage, NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
-import {assetImageUpdated, backToAssetFamily, saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
+import {backToAssetFamily, saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
 import EditState from 'akeneoassetmanager/application/component/app/edit-state';
-import {File} from 'akeneoassetmanager/domain/model/file';
+import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import {channelChanged, localeChanged} from 'akeneoassetmanager/application/action/asset/user';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
-import denormalizeAsset from 'akeneoassetmanager/application/denormalizer/asset';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import Key from 'akeneoassetmanager/tools/key';
-import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
-import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
@@ -32,8 +30,16 @@ import {redirectToProductGrid} from 'akeneoassetmanager/application/event/router
 import AttributeCode from 'akeneoassetmanager/domain/model/attribute/code';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import FileComponent from 'akeneoassetmanager/application/component/app/file-component';
+import {getLabel} from 'pimui/js/i18n';
+import EditionAsset, {getEditionAssetCompleteness} from 'akeneoassetmanager/domain/model/asset/edition-asset';
+import {getValue} from 'akeneoassetmanager/domain/model/asset/value-collection';
+import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
+import {isMediaLinkData} from 'akeneoassetmanager/domain/model/asset/data/media-link';
+import {MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
+import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 
 const securityContext = require('pim/security-context');
+const routing = require('routing');
 
 interface StateProps {
   sidebar: {
@@ -53,7 +59,7 @@ interface StateProps {
       delete: boolean;
     };
   };
-  asset: NormalizedAsset;
+  asset: EditionAsset;
   structure: {
     locales: Locale[];
     channels: Channel[];
@@ -70,8 +76,7 @@ interface DispatchProps {
     onSaveEditForm: () => void;
     onLocaleChanged: (locale: Locale) => void;
     onChannelChanged: (channel: Channel) => void;
-    onImageUpdated: (image: File) => void;
-    onDelete: (asset: Asset) => void;
+    onDelete: (asset: EditionAsset) => void;
     onOpenDeleteModal: () => void;
     onCancelDeleteModal: () => void;
     backToAssetFamily: () => void;
@@ -98,7 +103,7 @@ class AssetEditView extends React.Component<EditProps> {
   );
 
   private onConfirmedDelete = () => {
-    const asset = denormalizeAsset(this.props.asset);
+    const asset = this.props.asset;
     this.props.events.onDelete(asset);
   };
 
@@ -124,13 +129,10 @@ class AssetEditView extends React.Component<EditProps> {
 
   render(): JSX.Element | JSX.Element[] {
     const editState = this.props.form.isDirty ? <EditState /> : '';
-    const asset = denormalizeAsset(this.props.asset);
-    const label = asset.getLabel(this.props.context.locale);
+    const asset = this.props.asset;
+    const label = getLabel(asset.labels, this.props.context.locale, asset.code);
     const TabView = sidebarProvider.getView('akeneo_asset_manager_asset_edit', this.props.sidebar.currentTab);
-    const completeness = asset.getCompleteness(
-      denormalizeChannelReference(this.props.context.channel),
-      denormalizeLocaleReference(this.props.context.locale)
-    );
+    const completeness = getEditionAssetCompleteness(asset, this.props.context.channel, this.props.context.locale);
     const isUsableSelectedAttributeOnTheGrid =
       null !== this.props.selectedAttribute && true === this.props.selectedAttribute.useable_as_grid_filter;
 
@@ -146,13 +148,8 @@ class AssetEditView extends React.Component<EditProps> {
                 <div className="AknTitleContainer-line">
                   <FileComponent
                     alt={__('pim_asset_manager.asset.img', {'{{ label }}': label})}
-                    image={getAssetImage(
-                      asset.getValueCollection(),
-                      asset.getAttributeAsMainMediaIdentifier(),
-                      this.props.context.channel,
-                      this.props.context.locale
-                    )}
-                    attribute={asset.getAttributeAsMainMediaIdentifier()}
+                    image={getEditionAssetMainImageLegacy(asset, this.props.context.channel, this.props.context.locale)}
+                    attribute={asset.assetFamily.attributeAsMainMedia}
                     readOnly={true}
                   />
                   <div className="AknTitleContainer-mainContainer AknTitleContainer-mainContainer--contained">
@@ -173,17 +170,17 @@ class AssetEditView extends React.Component<EditProps> {
                                   type: 'redirect',
                                   route: 'akeneo_asset_manager_asset_family_edit',
                                   parameters: {
-                                    identifier: assetFamilyIdentifierStringValue(asset.getAssetFamilyIdentifier()),
+                                    identifier: assetFamilyIdentifierStringValue(asset.assetFamily.identifier),
                                     tab: 'asset',
                                   },
                                 },
-                                label: assetFamilyIdentifierStringValue(asset.getAssetFamilyIdentifier()),
+                                label: assetFamilyIdentifierStringValue(asset.assetFamily.identifier),
                               },
                               {
                                 action: {
                                   type: 'display',
                                 },
-                                label: asset.getCode(),
+                                label: asset.code,
                               },
                             ]}
                           />
@@ -311,11 +308,11 @@ export default connect(
         asset: {
           edit:
             securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.asset_family_identifier),
+            canEditAssetFamily(state.right.assetFamily, state.form.data.assetFamily.identifier),
           delete:
             securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
             securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.asset_family_identifier),
+            canEditAssetFamily(state.right.assetFamily, state.form.data.assetFamily.identifier),
         },
       },
       confirmDelete: state.confirmDelete,
@@ -335,11 +332,8 @@ export default connect(
         onChannelChanged: (channel: Channel) => {
           dispatch(channelChanged(channel.code));
         },
-        onImageUpdated: (image: File) => {
-          dispatch(assetImageUpdated(image));
-        },
-        onDelete: (asset: Asset) => {
-          dispatch(deleteAsset(asset.getAssetFamilyIdentifier(), asset.getCode()));
+        onDelete: (asset: EditionAsset) => {
+          dispatch(deleteAsset(asset.assetFamily.identifier, asset.code));
         },
         onOpenDeleteModal: () => {
           dispatch(openDeleteModal());
@@ -357,3 +351,37 @@ export default connect(
     };
   }
 )(AssetEditView);
+
+// TODO Will be trashed when File component will be reworked
+export const getEditionAssetMainImageLegacy = (
+  asset: EditionAsset,
+  channel: ChannelReference,
+  locale: LocaleReference
+): FileModel => {
+  const attributeAsMainMediaIdentifier = asset.assetFamily.attributeAsMainMedia;
+
+  const imageValue = getValue(asset.values, attributeAsMainMediaIdentifier, channel, locale);
+
+  if (undefined === imageValue) {
+    return createEmptyFile();
+  }
+
+  if (isMediaFileData(imageValue.data)) {
+    return imageValue.data;
+  }
+
+  if (isMediaLinkData(imageValue.data)) {
+    const filePath = routing.generate('akeneo_asset_manager_image_preview', {
+      type: MediaPreviewTypes.Thumbnail,
+      attributeIdentifier: imageValue.attribute.identifier,
+      data: imageValue.data,
+    });
+    const originalFilename = '';
+    return {
+      filePath,
+      originalFilename,
+    };
+  }
+
+  throw Error('attributeAsMainMedia should be either a MediaFile or MediaLink');
+};

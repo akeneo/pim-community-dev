@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Value, {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue, {setValueData} from 'akeneoassetmanager/domain/model/asset/edition-value';
 import __ from 'akeneoassetmanager/tools/translator';
 import {File} from 'akeneoassetmanager/domain/model/file';
 import {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
@@ -13,8 +13,8 @@ const View = ({
   onChange,
   canEditData,
 }: {
-  value: Value;
-  onChange: (value: Value) => void;
+  value: EditionValue;
+  onChange: (value: EditionValue) => void;
   canEditData: boolean;
 }) => {
   if (!isMediaFileData(value.data) || !isMediaFileAttribute(value.attribute)) {

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import Table from 'akeneoassetmanager/application/component/asset/index/table';
-import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {redirectToAsset} from 'akeneoassetmanager/application/action/asset/router';
 import __ from 'akeneoassetmanager/tools/translator';
@@ -44,6 +43,7 @@ import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/at
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {assetUploadStart} from 'akeneoassetmanager/domain/event/asset/upload';
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
+import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 const securityContext = require('pim/security-context');
 
@@ -54,7 +54,7 @@ interface StateProps {
   };
   assetFamily: AssetFamily;
   grid: {
-    assets: NormalizedAsset[];
+    assets: ListAsset[];
     columns: Column[];
     matchesCount: number;
     totalCount: number;
@@ -81,7 +81,7 @@ interface StateProps {
 
 interface DispatchProps {
   events: {
-    onRedirectToAsset: (asset: NormalizedAsset) => void;
+    onRedirectToAsset: (asset: ListAsset) => void;
     onDeleteAsset: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => void;
     onNeedMoreResults: () => void;
     onSearchUpdated: (userSearch: string) => void;
@@ -354,10 +354,10 @@ export default connect(
   (dispatch: any): DispatchProps => {
     return {
       events: {
-        onRedirectToAsset: (asset: NormalizedAsset) => {
+        onRedirectToAsset: (asset: ListAsset) => {
           dispatch(
             redirectToAsset(
-              denormalizeAssetFamilyIdentifier(asset.asset_family_identifier),
+              denormalizeAssetFamilyIdentifier(asset.assetFamilyIdentifier),
               denormalizeAssetCode(asset.code)
             )
           );

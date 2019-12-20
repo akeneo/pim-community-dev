@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {CellView} from 'akeneoassetmanager/application/configuration/value';
-import Value from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {textDataStringValue, isTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 const memo = (React as any).memo;
 
-const TextCellView: CellView = memo(({value}: {value: Value}) => {
+const TextCellView: CellView = memo(({value}: {value: EditionValue}) => {
   if (!isTextData(value.data)) return null;
 
   return (

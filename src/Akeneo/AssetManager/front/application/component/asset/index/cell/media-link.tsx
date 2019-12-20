@@ -3,12 +3,12 @@ import {CellView} from 'akeneoassetmanager/application/configuration/value';
 import {Column} from 'akeneoassetmanager/application/reducer/grid';
 import {getMediaLinkPreviewUrl, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
 import {isMediaLinkData, mediaLinkDataStringValue} from 'akeneoassetmanager/domain/model/asset/data/media-link';
-import Value from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
 const memo = (React as any).memo;
 
-const MediaLinkCellView: CellView = memo(({value, column}: {value: Value; column: Column}) => {
+const MediaLinkCellView: CellView = memo(({value, column}: {value: EditionValue; column: Column}) => {
   if (!isMediaLinkData(value.data)) return null;
   if (!isMediaLinkAttribute(column.attribute)) return null;
 

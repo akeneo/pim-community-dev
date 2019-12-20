@@ -21,19 +21,14 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
     });
 
     const response = await page.evaluate(async () => {
-      const createAsset = require('akeneoassetmanager/domain/model/asset/asset').createAsset;
-
       const saver = require('akeneoassetmanager/infrastructure/saver/asset').default;
 
-      const assetCreated = createAsset(
-          'designer_starck_1',
-          'designer',
-          'image_designer_1234124',
-          'starck',
-          {en_US: 'Stylist', fr_FR: 'Styliste'},
-          [],
-          []
-      );
+      const assetCreated = {
+        code:'starck',
+        assetFamilyIdentifier:'designer',
+        labels:{'en_US':'Stylist', 'fr_FR': 'Styliste'},
+        values:[]
+      };
 
       return await saver.create(assetCreated);
     });
@@ -85,19 +80,14 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
     });
 
     const response = await page.evaluate(async () => {
-      const createAsset = require('akeneoassetmanager/domain/model/asset/asset').createAsset;
-
       const saver = require('akeneoassetmanager/infrastructure/saver/asset').default;
 
-      const assetCreated = createAsset(
-          'invalid/identifier',
-          'designer',
-          'image_designer_1234124',
-          'invalid/identifier',
-          {en_US: 'Stylist', fr_FR: 'Styliste'},
-          [],
-          []
-      );
+      const assetCreated = {
+        code:'invalid/identifier',
+        assetFamilyIdentifier:'designer',
+        labels:{'en_US':'Stylist', 'fr_FR': 'Styliste'},
+        values:[]
+      };
 
       return await saver.create(assetCreated);
     });

@@ -10,7 +10,7 @@ import sanitize from 'akeneoassetmanager/tools/sanitize';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {createUUIDV4} from 'akeneoassetmanager/application/asset-upload/utils/uuid';
-import Value from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 
 export const createLineFromFilename = (filename: string, assetFamily: AssetFamily): Line => {
   const info = extractInfoFromFilename(filename, assetFamily);
@@ -87,7 +87,7 @@ const createEmptyAssetFromLine = (line: Line, assetFamily: AssetFamily): Creatio
   };
 };
 
-const createAssetValueFromLine = (line: Line, assetFamily: AssetFamily): Value => {
+const createAssetValueFromLine = (line: Line, assetFamily: AssetFamily): EditionValue => {
   return {
     attribute: getAttributeAsMainMedia(assetFamily),
     channel: line.channel,
@@ -96,7 +96,7 @@ const createAssetValueFromLine = (line: Line, assetFamily: AssetFamily): Value =
   };
 };
 
-const addAssetValueToAsset = (asset: CreationAsset, value: Value): CreationAsset => {
+const addAssetValueToAsset = (asset: CreationAsset, value: EditionValue): CreationAsset => {
   return {
     ...asset,
     values: [...asset.values, value],

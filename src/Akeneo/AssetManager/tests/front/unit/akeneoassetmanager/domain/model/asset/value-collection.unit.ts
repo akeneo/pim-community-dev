@@ -1,9 +1,9 @@
 import {
   getValuesForChannelAndLocale,
-  generateKey,
   getValueFilter,
+  getValue,
 } from 'akeneoassetmanager/domain/model/asset/value-collection';
-import {denormalizeAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {generateValueKey} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 
 const normalizedDescription = {
@@ -22,7 +22,8 @@ const normalizedDescription = {
   validation_rule: 'email',
   regular_expression: null,
 };
-const description = denormalizeTextAttribute(normalizedDescription);
+const descriptionAttribute = denormalizeTextAttribute(normalizedDescription);
+const description = 'description';
 const ecommerce = 'ecommerce';
 const mobile = 'mobile';
 const enUS = 'en_US';
@@ -41,12 +42,7 @@ const descriptionFrFrValue = {
   locale: frFR,
   data: niceDescription,
 };
-const name = denormalizeTextAttribute({
-  ...normalizedDescription,
-  code: 'name',
-  value_per_channel: true,
-  value_per_locale: false,
-});
+const name = 'name';
 const nameMobileValue = {
   attribute: name,
   channel: mobile,
@@ -59,11 +55,30 @@ const nameEcommerceValue = {
   locale: null,
   data: awesomeName,
 };
+const nameNoChannelValue = {
+  attribute: name,
+  channel: null,
+  locale: null,
+  data: awesomeName,
+};
+const nameValue = {
+  attribute: name,
+  channel: ecommerce,
+  locale: enUS,
+  data: awesomeName,
+};
+const descriptionEditionValue = {
+  attribute: descriptionAttribute,
+  channel: null,
+  locale: enUS,
+  data: niceDescription,
+};
+const editionValueCollection = [descriptionEditionValue];
 
 describe('akeneo > asset family > domain > model > asset --- value collection', () => {
   test('I can get a Value filter for an identifier and a locale & scope', () => {
     const filter = getValueFilter('description_1234', null, 'en_US');
-    expect(filter(descriptionEnUsValue)).toBe(true);
+    expect(filter(descriptionEditionValue)).toBe(true);
     expect(filter(descriptionFrFrValue)).toBe(false);
   });
 
@@ -76,14 +91,10 @@ describe('akeneo > asset family > domain > model > asset --- value collection', 
   });
 
   test('I can generate a value key', () => {
-    expect(generateKey(denormalizeAttributeIdentifier('description'), 'ecommerce', 'en_US')).toEqual(
-      'description_ecommerce_en_US'
-    );
-    expect(generateKey(denormalizeAttributeIdentifier('description'), 'ecommerce', null)).toEqual(
-      'description_ecommerce'
-    );
-    expect(generateKey(denormalizeAttributeIdentifier('description'), null, 'en_US')).toEqual('description_en_US');
-    expect(generateKey(denormalizeAttributeIdentifier('description'), null, null)).toEqual('description');
+    expect(generateValueKey(nameValue)).toEqual('name_ecommerce_en_US');
+    expect(generateValueKey(nameEcommerceValue)).toEqual('name_ecommerce');
+    expect(generateValueKey(descriptionEnUsValue)).toEqual('description_en_US');
+    expect(generateValueKey(nameNoChannelValue)).toEqual('name');
   });
 
   test('I cannot create an invalid value collection', () => {
@@ -94,5 +105,9 @@ describe('akeneo > asset family > domain > model > asset --- value collection', 
         enUS
       )
     ).toEqual([descriptionEnUsValue, nameEcommerceValue]);
+  });
+
+  test('I can get a Value from a Value collection', () => {
+    expect(getValue(editionValueCollection, 'description_1234', null, 'en_US')).toEqual(descriptionEditionValue);
   });
 });

@@ -5,7 +5,6 @@ import grid, {GridState} from 'akeneoassetmanager/application/reducer/grid';
 import createAsset, {CreateState as CreateAssetState} from 'akeneoassetmanager/application/reducer/asset/create';
 import uploadAsset, {UploadState as UploadAssetState} from 'akeneoassetmanager/application/reducer/asset/upload';
 import form, {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
-import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import createAttribute, {
   CreateState as CreateAttributeState,
 } from 'akeneoassetmanager/application/reducer/attribute/create';
@@ -18,12 +17,13 @@ import {
   EditOptionState,
 } from 'akeneoassetmanager/application/reducer/attribute/type/option';
 import confirmDelete, {ConfirmDeleteState} from 'akeneoassetmanager/application/reducer/confirmDelete';
+import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 export interface EditState {
   user: UserState;
   right: RightState;
   sidebar: SidebarState;
-  grid: GridState<NormalizedAsset>;
+  grid: GridState<ListAsset>;
   createAsset: CreateAssetState;
   uploadAsset: UploadAssetState;
   createAttribute: CreateAttributeState;

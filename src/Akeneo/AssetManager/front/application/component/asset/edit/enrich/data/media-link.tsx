@@ -1,6 +1,6 @@
 import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
-import Value, {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue, {setValueData} from 'akeneoassetmanager/domain/model/asset/edition-value';
 import Key from 'akeneoassetmanager/tools/key';
 import {
   copyToClipboard,
@@ -68,8 +68,8 @@ const View = ({
   onSubmit,
   canEditData,
 }: {
-  value: Value;
-  onChange: (value: Value) => void;
+  value: EditionValue;
+  onChange: (value: EditionValue) => void;
   onSubmit: () => void;
   canEditData: boolean;
 }) => {

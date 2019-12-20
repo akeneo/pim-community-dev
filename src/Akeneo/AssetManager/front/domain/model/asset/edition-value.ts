@@ -3,25 +3,22 @@ import LocaleReference, {localeReferenceAreEqual} from 'akeneoassetmanager/domai
 import Data from 'akeneoassetmanager/domain/model/asset/data';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
-type Value = {
+type EditionValue = {
   attribute: NormalizedAttribute;
   channel: ChannelReference;
   locale: LocaleReference;
   data: Data;
 };
 
-export default Value;
+export default EditionValue;
 
-export const setValueData = (value: Value, data: Data): Value => ({...value, data});
-
-export const isValueEmpty = (value: Value): boolean => null === value.data;
-export const isValueComplete = (value: Value): boolean => value.attribute.is_required && !isValueEmpty(value);
-
-export const isValueRequired = (value: Value): boolean => value.attribute.is_required;
-
-export const areValuesEqual = (first: Value, second: Value): boolean =>
+export const setValueData = (value: EditionValue, data: Data): EditionValue => ({...value, data});
+export const isValueEmpty = (value: EditionValue): boolean => null === value.data;
+export const isValueComplete = (value: EditionValue): boolean => value.attribute.is_required && !isValueEmpty(value);
+export const isValueRequired = (value: EditionValue): boolean => value.attribute.is_required;
+export const areValuesEqual = (first: EditionValue, second: EditionValue): boolean =>
   channelReferenceAreEqual(first.channel, second.channel) &&
   localeReferenceAreEqual(first.locale, second.locale) &&
   first.attribute.identifier === second.attribute.identifier;
 
-export const normalizeValue = (value: Value) => value;
+export const normalizeValue = (value: EditionValue) => value;

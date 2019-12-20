@@ -1,11 +1,11 @@
 import * as React from 'react';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import __ from 'akeneoassetmanager/tools/translator';
-import Value from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {channelReferenceAreEqual} from 'akeneoassetmanager/domain/model/channel-reference';
 import {localeReferenceAreEqual} from 'akeneoassetmanager/domain/model/locale-reference';
 
-export const getErrorsView = (errors: ValidationError[], value: Value) => {
+export const getErrorsView = (errors: ValidationError[], value: EditionValue) => {
   const errorMessages = errors
     .filter(
       (error: ValidationError) =>

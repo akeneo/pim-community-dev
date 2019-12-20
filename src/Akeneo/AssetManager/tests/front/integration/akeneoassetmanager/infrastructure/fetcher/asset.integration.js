@@ -1,5 +1,6 @@
 const timeout = 5000;
 const {getRequestContract, listenRequest} = require('../../../../acceptance/cucumber/tools');
+const AssetFamilyBuilder = require('../../../../common/builder/asset-family.js');
 
 describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
   let page = global.__PAGE__;
@@ -10,8 +11,34 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
 
   it('It fetches one asset', async () => {
     const requestContract = getRequestContract('Asset/AssetDetails/ok.json');
-
     await listenRequest(page, requestContract);
+
+    page.on('request', interceptedRequest => {
+      if (
+        'http://pim.com/rest/asset_manager/designer' === interceptedRequest.url() &&
+        'GET' === interceptedRequest.method()
+      ) {
+        const assetFamily = new AssetFamilyBuilder()
+          .withIdentifier('designer')
+          .withLabels({
+            en_US: 'Designer',
+            fr_FR: 'Designer',
+          })
+          .withImage({
+            filePath: '/path/designer.jpg',
+            originalFilename: 'designer.jpg',
+          })
+          .withAttributes([])
+          .withAttributeAsMainMedia('')
+          .withAttributeAsLabel('')
+          .build();
+
+        interceptedRequest.respond({
+          contentType: 'application/json',
+          body: JSON.stringify(assetFamily),
+        });
+      }
+    });
 
     const response = await page.evaluate(async () => {
       const fetcher = require('akeneoassetmanager/infrastructure/fetcher/asset').default;
@@ -24,11 +51,23 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
       asset: {
         code: 'starck',
         identifier: 'designer_starck_a1677570-a278-444b-ab46-baa1db199392',
-        attributeAsMainMediaIdentifier: 'portrait_designer_fingerprint',
-        image: [],
-        labelCollection: {fr_FR: 'Philippe Starck'},
-        assetFamilyIdentifier: 'designer',
-        valueCollection: [
+        labels: {fr_FR: 'Philippe Starck'},
+        assetFamily: {
+          attributeAsLabel: '',
+          attributeAsMainMedia: '',
+          attributes: [],
+          code: 'designer',
+          identifier: 'designer',
+          image: {
+           filePath: '/path/designer.jpg',
+            originalFilename: 'designer.jpg',
+          },
+          labels: {
+            en_US: 'Designer',
+            fr_FR: 'Designer',
+          },
+        },
+        values: [
             {
               attribute: {
                 code: 'name',
@@ -192,7 +231,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
           code: 'dyson',
           identifier: 'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
           labels: {en_US: 'Dyson', fr_FR: 'Dyson'},
-          asset_family_identifier: 'designer',
+          assetFamilyIdentifier: 'designer',
           image: [],
           values: {
             label_designer_d00de54460082b239164135175588647_en_US: {
@@ -239,7 +278,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
           code: 'starck',
           identifier: 'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
           labels: {en_US: 'Starck'},
-          asset_family_identifier: 'designer',
+          assetFamilyIdentifier: 'designer',
           image: [],
           values: {
             'description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US': {

@@ -1,26 +1,23 @@
-import Value from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import ChannelReference, {
   channelReferenceIsEmpty,
   channelReferenceAreEqual,
-  channelReferenceStringValue,
 } from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference, {
   localeReferenceIsEmpty,
   localeReferenceAreEqual,
-  localeReferenceStringValue,
 } from 'akeneoassetmanager/domain/model/locale-reference';
-import AttributeIdentifier, {
-  attributeIdentifierStringValue,
-} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 export const getValueForChannelAndLocaleFilter = (channel: ChannelReference, locale: LocaleReference) => (
-  value: Value
+  value: EditionValue
 ): boolean =>
   (channelReferenceIsEmpty(value.channel) || channelReferenceAreEqual(value.channel, channel)) &&
   (localeReferenceIsEmpty(value.locale) || localeReferenceAreEqual(value.locale, locale));
 
-export const getValueForAttributeIdentifierFilter = (attributeIdentifier: AttributeIdentifier) => (value: Value) =>
-  value.attribute.identifier === attributeIdentifier;
+export const getValueForAttributeIdentifierFilter = (attributeIdentifier: AttributeIdentifier) => (
+  value: EditionValue
+) => value.attribute.identifier === attributeIdentifier;
 
 export const getValueFilter = (
   attributeIdentifier: AttributeIdentifier,
@@ -30,10 +27,10 @@ export const getValueFilter = (
   const attributeFilter = getValueForAttributeIdentifierFilter(attributeIdentifier);
   const channelAndLocaleFilter = getValueForChannelAndLocaleFilter(channel, locale);
 
-  return (value: Value) => attributeFilter(value) && channelAndLocaleFilter(value);
+  return (value: EditionValue) => attributeFilter(value) && channelAndLocaleFilter(value);
 };
 
-type ValueCollection = Value[];
+type ValueCollection = EditionValue[];
 
 export const getValuesForChannelAndLocale = (
   values: ValueCollection,
@@ -41,16 +38,11 @@ export const getValuesForChannelAndLocale = (
   locale: LocaleReference
 ) => values.filter(getValueForChannelAndLocaleFilter(channel, locale));
 
-export default ValueCollection;
-
-export const generateKey = (
+export const getValue = (
+  values: ValueCollection,
   attributeIdentifier: AttributeIdentifier,
   channel: ChannelReference,
   locale: LocaleReference
-) => {
-  let key = attributeIdentifierStringValue(attributeIdentifier);
-  key = !channelReferenceIsEmpty(channel) ? `${key}_${channelReferenceStringValue(channel)}` : key;
-  key = !localeReferenceIsEmpty(locale) ? `${key}_${localeReferenceStringValue(locale)}` : key;
+): EditionValue | undefined => values.find(getValueFilter(attributeIdentifier, channel, locale));
 
-  return key;
-};
+export default ValueCollection;

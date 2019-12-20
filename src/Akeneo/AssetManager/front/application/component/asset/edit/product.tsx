@@ -173,7 +173,7 @@ export default connect(
       })),
       selectedAttribute: state.products.selectedAttribute,
       assetCode: state.form.data.code,
-      assetFamilyIdentifier: state.form.data.asset_family_identifier,
+      assetFamilyIdentifier: state.form.data.assetFamily.identifier,
     };
   },
   (dispatch: any): DispatchProps => {

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
-import Value, {isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue, {isValueEmpty} from 'akeneoassetmanager/domain/model/asset/edition-value';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
-import Asset from 'akeneoassetmanager/domain/model/asset/asset';
 import {getDataFieldView} from 'akeneoassetmanager/application/configuration/value';
 import {getErrorsView} from 'akeneoassetmanager/application/component/asset/edit/validation-error';
 import __ from 'akeneoassetmanager/tools/translator';
@@ -13,13 +12,14 @@ import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {getValuesForChannelAndLocale} from 'akeneoassetmanager/domain/model/asset/value-collection';
+import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
 
 export default (
-  asset: Asset,
+  asset: EditionAsset,
   channel: ChannelReference,
   locale: LocaleReference,
   errors: ValidationError[],
-  onValueChange: (value: Value) => void,
+  onValueChange: (value: EditionValue) => void,
   onFieldSubmit: () => void,
   rights: {
     locale: {
@@ -31,11 +31,11 @@ export default (
     };
   }
 ) => {
-  const visibleValues = getValuesForChannelAndLocale(asset.getValueCollection(), channel, locale).sort(
-    (firstValue: Value, secondValue: Value) => firstValue.attribute.order - secondValue.attribute.order
+  const visibleValues = getValuesForChannelAndLocale(asset.values, channel, locale).sort(
+    (firstValue: EditionValue, secondValue: EditionValue) => firstValue.attribute.order - secondValue.attribute.order
   );
 
-  return visibleValues.map((value: Value) => {
+  return visibleValues.map((value: EditionValue) => {
     const DataView = getDataFieldView(value);
     const attributeLabel = getLabelInCollection(
       value.attribute.labels,

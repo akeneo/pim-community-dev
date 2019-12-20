@@ -4,7 +4,6 @@ import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reduc
 import AssetFamilyIdentifier, {
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {AssetFamily} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
 import {Asset, Completeness} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {isNumber, isString, isLabels} from 'akeneoassetmanager/domain/model/utils';
@@ -14,6 +13,7 @@ import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import {NormalizedAttribute, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {AssetFamily as AssetManagerAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 export const fetchAssetCollection = async (
   assetFamilyIdentifier: AssetFamilyIdentifier,
@@ -38,7 +38,7 @@ export const searchAssetCollection = async (
   return {...searchResult, items: denormalizeAssetCollection(searchResult.items, assetFamilyResult)};
 };
 
-const denormalizeAssetCollection = (assets: any, assetFamilyResult: AssetFamilyResult): Asset[] => {
+const denormalizeAssetCollection = (assets: ListAsset[], assetFamilyResult: AssetFamilyResult): Asset[] => {
   //TODO: we should move this back to asset manager
   if (!Array.isArray(assets)) {
     throw Error('not a valid asset collection');
@@ -54,7 +54,7 @@ const denormalizeAssetCollection = (assets: any, assetFamilyResult: AssetFamilyR
   );
 
   return assets.map(
-    (asset: NormalizedItemAsset): Asset => {
+    (asset: ListAsset): Asset => {
       return {
         ...denormalizeAsset(asset),
         assetFamily: assetFamily,
@@ -63,13 +63,9 @@ const denormalizeAssetCollection = (assets: any, assetFamilyResult: AssetFamilyR
   );
 };
 
-const denormalizeAsset = (asset: any): Asset => {
+const denormalizeAsset = (asset: ListAsset): ListAsset => {
   if (!isString(asset.identifier)) {
     throw Error('The identifier is not well formated');
-  }
-
-  if (!isString(asset.asset_family_identifier)) {
-    throw Error('The asset family identifier is not well formated');
   }
 
   if (!isString(asset.code)) {

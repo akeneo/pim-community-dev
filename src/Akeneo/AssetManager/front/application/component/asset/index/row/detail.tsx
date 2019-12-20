@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {Column} from 'akeneoassetmanager/application/reducer/grid';
 import {CellViews} from 'akeneoassetmanager/application/component/asset-family/edit/asset';
+import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 const memo = (React as any).memo;
 
@@ -13,13 +13,13 @@ const DetailRow = memo(
     columns,
     cellViews,
   }: {
-    asset: NormalizedAsset;
+    asset: ListAsset;
     placeholder?: boolean;
     position: number;
     columns: Column[];
     cellViews: CellViews;
   } & {
-    onRedirectToAsset: (asset: NormalizedAsset) => void;
+    onRedirectToAsset: (asset: ListAsset) => void;
   }) => {
     if (true === placeholder) {
       return (
@@ -78,10 +78,10 @@ const DetailRows = memo(
     columns,
     cellViews,
   }: {
-    assets: NormalizedAsset[];
+    assets: ListAsset[];
     locale: string;
     placeholder: boolean;
-    onRedirectToAsset: (asset: NormalizedAsset) => void;
+    onRedirectToAsset: (asset: ListAsset) => void;
     assetCount: number;
     columns: Column[];
     cellViews: CellViews;
@@ -111,7 +111,7 @@ const DetailRows = memo(
       ));
     }
 
-    return assets.map((asset: NormalizedAsset) => {
+    return assets.map((asset: ListAsset) => {
       return (
         <DetailRow
           placeholder={false}

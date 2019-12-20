@@ -88,7 +88,7 @@ it('It fetches the asset collection', async () => {
       },
       attributes: []
     },
-    asset_family_identifier: '',
+    assetFamilyIdentifier: '',
     code: 'iphone',
     completeness: {
       complete: 2,

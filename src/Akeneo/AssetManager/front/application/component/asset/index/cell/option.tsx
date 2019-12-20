@@ -4,12 +4,12 @@ import {Column} from 'akeneoassetmanager/application/reducer/grid';
 import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import {isOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {getLabel} from 'pimui/js/i18n';
-import Value from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {isOptionData} from 'akeneoassetmanager/domain/model/asset/data/option';
 
 const memo = (React as any).memo;
 
-const OptionCellView: CellView = memo(({column, value}: {column: Column; value: Value}) => {
+const OptionCellView: CellView = memo(({column, value}: {column: Column; value: EditionValue}) => {
   if (!isOptionData(value.data)) return null;
   if (!isOptionAttribute(column.attribute)) return null;
 
