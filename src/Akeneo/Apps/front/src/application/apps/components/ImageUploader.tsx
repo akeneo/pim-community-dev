@@ -23,7 +23,7 @@ const HelperLink = styled.a`
 const ImagePreview = styled.img`
     max-height: 120px;
     width: auto;
-    margin-top: 10px;
+    margin-top: 20px;
 `;
 const Container = styled.div`
     flex-basis: 100%;
@@ -89,12 +89,17 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
 
                 <div className='AknImage-uploader'>
                     <ImagePreview src={null === previewImage ? defaultImageUrl : previewImage} alt={''} />
+
                     <Helper className='AknImage-uploaderHelper'>
-                        <Translate id={'pim_apps.edit_image.upload_helper'} />{' '}
-                        <HelperLink href='#'>
-                            <Translate id={'pim_apps.edit_image.click_here'} />
-                        </HelperLink>
-                        .
+                        {null === previewImage && (
+                            <>
+                                <Translate id={'pim_apps.edit_image.upload_helper'} />{' '}
+                                <HelperLink href='#'>
+                                    <Translate id={'pim_apps.edit_image.click_here'} />
+                                </HelperLink>
+                                .
+                            </>
+                        )}
                     </Helper>
                 </div>
 
