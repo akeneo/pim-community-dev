@@ -6,6 +6,7 @@ import {
   addLines,
   createCreationAssetsFromLines,
   createLineFromFilename,
+  getAllErrorsOfLineByTarget,
   getStatusFromLine,
   selectLinesToSend,
 } from 'akeneoassetmanager/application/asset-upload/utils/utils';
@@ -705,5 +706,36 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
         isFileUploading: false,
       },
     ]);
+  });
+});
+
+describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getAllErrorsOfLineByTarget', () => {
+  test('I can group the errors by target', () => {
+    const valuePerLocale = true;
+    const valuePerChannel = true;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+
+    const fileError = {
+      ...createFakeError('Error on file size'),
+      propertyPath: 'values.file',
+    };
+    const codeError = {
+      ...createFakeError('Error on code'),
+      propertyPath: 'code',
+    };
+
+    const line = {
+      ...createFakeLine('foo.jpg', assetFamily),
+      errors: {
+        back: [fileError, fileError, codeError, codeError],
+      },
+    };
+
+    expect(getAllErrorsOfLineByTarget(line)).toEqual({
+      all: [fileError, fileError],
+      code: [codeError, codeError],
+      channel: [],
+      locale: [],
+    });
   });
 });

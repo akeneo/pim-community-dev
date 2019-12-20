@@ -12,6 +12,13 @@ export enum LineStatus {
   Created = 'created',
 }
 
+export interface LineErrorsByTarget {
+  all: ValidationError[];
+  code: ValidationError[];
+  locale: ValidationError[];
+  channel: ValidationError[];
+}
+
 export type Thumbnail = string | null;
 export type LineIdentifier = string;
 

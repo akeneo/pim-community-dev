@@ -1,4 +1,8 @@
-import Line, {LineStatus, LineIdentifier} from 'akeneoassetmanager/application/asset-upload/model/line';
+import Line, {
+  LineStatus,
+  LineIdentifier,
+  LineErrorsByTarget,
+} from 'akeneoassetmanager/application/asset-upload/model/line';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamily, getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
@@ -141,7 +145,14 @@ const addBackValidationError = (line: Line, errors: ValidationError[]): Line => 
 });
 
 export const assetCreationFailed = (lines: Line[], asset: CreationAsset, errors: ValidationError[]): Line[] => {
-  return lines.map((line: Line) => (line.code === asset.code ? addBackValidationError(line, errors) : line));
+  return lines.map((line: Line) =>
+    line.code === asset.code
+      ? {
+          ...addBackValidationError(line, errors),
+          isAssetCreating: false,
+        }
+      : line
+  );
 };
 
 export const assetCreationSucceeded = (lines: Line[], asset: CreationAsset): Line[] => {
@@ -152,6 +163,30 @@ export const assetCreationSucceeded = (lines: Line[], asset: CreationAsset): Lin
 
 export const selectLinesToSend = (lines: Line[]): Line[] =>
   lines.filter((line: Line) => !line.assetCreated && null !== line.file && !line.isFileUploading);
+
+export const getAllErrorsOfLineByTarget = (line: Line): LineErrorsByTarget => {
+  let errors: LineErrorsByTarget = {
+    all: [],
+    code: [],
+    channel: [],
+    locale: [],
+  };
+
+  for (let error of getAllErrorsOfLine(line)) {
+    switch (error.propertyPath) {
+      case 'code':
+        errors.code.push(error);
+        break;
+      default:
+        errors.all.push(error);
+        break;
+    }
+  }
+
+  return errors;
+};
+
+export const getAllErrorsOfLine = (line: Line): ValidationError[] => [].concat.apply([], Object.values(line.errors));
 
 export const getStatusFromLine = (line: Line, valuePerLocale: boolean, valuePerChannel: boolean): LineStatus => {
   const errorsCount = Object.values(line.errors).reduce((count: number, errors: ValidationError[]) => {

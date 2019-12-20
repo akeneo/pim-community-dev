@@ -6,8 +6,10 @@ import '@testing-library/jest-dom/extend-expect';
 import {act, fireEvent, getByLabelText} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import * as utils from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import Row from 'akeneoassetmanager/application/asset-upload/component/row';
-import {createFakeAssetFamily, createFakeLine} from '../tools';
+import {createFakeAssetFamily, createFakeError, createFakeLine} from '../tools';
+import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 
 describe('Test row component', () => {
   let container: HTMLElement;
@@ -30,17 +32,13 @@ describe('Test row component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <table>
-            <tbody>
-              <Row
-                line={line}
-                onLineRemove={() => {}}
-                onLineChange={() => {}}
-                valuePerLocale={valuePerLocale}
-                valuePerChannel={valuePerChannel}
-              />
-            </tbody>
-          </table>
+          <Row
+            line={line}
+            onLineRemove={() => {}}
+            onLineChange={() => {}}
+            valuePerLocale={valuePerLocale}
+            valuePerChannel={valuePerChannel}
+          />
         </ThemeProvider>,
         container
       );
@@ -57,17 +55,13 @@ describe('Test row component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <table>
-            <tbody>
-              <Row
-                line={line}
-                onLineRemove={() => {}}
-                onLineChange={onLineChange}
-                valuePerLocale={valuePerLocale}
-                valuePerChannel={valuePerChannel}
-              />
-            </tbody>
-          </table>
+          <Row
+            line={line}
+            onLineRemove={() => {}}
+            onLineChange={onLineChange}
+            valuePerLocale={valuePerLocale}
+            valuePerChannel={valuePerChannel}
+          />
         </ThemeProvider>,
         container
       );
@@ -96,17 +90,13 @@ describe('Test row component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <table>
-            <tbody>
-              <Row
-                line={line}
-                onLineRemove={() => {}}
-                onLineChange={onLineChange}
-                valuePerLocale={valuePerLocale}
-                valuePerChannel={valuePerChannel}
-              />
-            </tbody>
-          </table>
+          <Row
+            line={line}
+            onLineRemove={() => {}}
+            onLineChange={onLineChange}
+            valuePerLocale={valuePerLocale}
+            valuePerChannel={valuePerChannel}
+          />
         </ThemeProvider>,
         container
       );
@@ -126,17 +116,13 @@ describe('Test row component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <table>
-            <tbody>
-              <Row
-                line={line}
-                onLineRemove={() => {}}
-                onLineChange={onLineChange}
-                valuePerLocale={valuePerLocale}
-                valuePerChannel={valuePerChannel}
-              />
-            </tbody>
-          </table>
+          <Row
+            line={line}
+            onLineRemove={() => {}}
+            onLineChange={onLineChange}
+            valuePerLocale={valuePerLocale}
+            valuePerChannel={valuePerChannel}
+          />
         </ThemeProvider>,
         container
       );
@@ -165,17 +151,13 @@ describe('Test row component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <table>
-            <tbody>
-              <Row
-                line={line}
-                onLineRemove={() => {}}
-                onLineChange={onLineChange}
-                valuePerLocale={valuePerLocale}
-                valuePerChannel={valuePerChannel}
-              />
-            </tbody>
-          </table>
+          <Row
+            line={line}
+            onLineRemove={() => {}}
+            onLineChange={onLineChange}
+            valuePerLocale={valuePerLocale}
+            valuePerChannel={valuePerChannel}
+          />
         </ThemeProvider>,
         container
       );
@@ -195,17 +177,13 @@ describe('Test row component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <table>
-            <tbody>
-              <Row
-                line={line}
-                onLineRemove={() => {}}
-                onLineChange={onLineChange}
-                valuePerLocale={valuePerLocale}
-                valuePerChannel={valuePerChannel}
-              />
-            </tbody>
-          </table>
+          <Row
+            line={line}
+            onLineRemove={() => {}}
+            onLineChange={onLineChange}
+            valuePerLocale={valuePerLocale}
+            valuePerChannel={valuePerChannel}
+          />
         </ThemeProvider>,
         container
       );
@@ -234,17 +212,13 @@ describe('Test row component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <table>
-            <tbody>
-              <Row
-                line={line}
-                onLineRemove={() => {}}
-                onLineChange={onLineChange}
-                valuePerLocale={valuePerLocale}
-                valuePerChannel={valuePerChannel}
-              />
-            </tbody>
-          </table>
+          <Row
+            line={line}
+            onLineRemove={() => {}}
+            onLineChange={onLineChange}
+            valuePerLocale={valuePerLocale}
+            valuePerChannel={valuePerChannel}
+          />
         </ThemeProvider>,
         container
       );
@@ -264,17 +238,13 @@ describe('Test row component', () => {
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <table>
-            <tbody>
-              <Row
-                line={line}
-                onLineRemove={onLineRemove}
-                onLineChange={() => {}}
-                valuePerLocale={valuePerLocale}
-                valuePerChannel={valuePerChannel}
-              />
-            </tbody>
-          </table>
+          <Row
+            line={line}
+            onLineRemove={onLineRemove}
+            onLineChange={() => {}}
+            valuePerLocale={valuePerLocale}
+            valuePerChannel={valuePerChannel}
+          />
         </ThemeProvider>,
         container
       );
@@ -284,5 +254,137 @@ describe('Test row component', () => {
 
     fireEvent.click(button);
     expect(onLineRemove).toHaveBeenCalledWith(line);
+  });
+
+  test('It renders a row with a global error', async () => {
+    jest.spyOn(utils, 'getStatusFromLine').mockImplementation((_line: Line) => LineStatus.Invalid);
+    jest.spyOn(utils, 'getAllErrorsOfLineByTarget').mockImplementation((_line: Line) => ({
+      all: [createFakeError('Some error')],
+      code: [],
+      channel: [],
+      locale: [],
+    }));
+
+    const valuePerLocale = false;
+    const valuePerChannel = false;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const line = createFakeLine('foo.png', assetFamily);
+
+    await act(async () => {
+      ReactDOM.render(
+        <ThemeProvider theme={akeneoTheme}>
+          <Row
+            line={line}
+            onLineRemove={() => {}}
+            onLineChange={() => {}}
+            valuePerLocale={valuePerLocale}
+            valuePerChannel={valuePerChannel}
+          />
+        </ThemeProvider>,
+        container
+      );
+    });
+
+    const error = getByLabelText(container, 'Some error');
+    expect(error).not.toBeNull();
+  });
+
+  test('It renders a row with an error on code', async () => {
+    jest.spyOn(utils, 'getStatusFromLine').mockImplementation((_line: Line) => LineStatus.Invalid);
+    jest.spyOn(utils, 'getAllErrorsOfLineByTarget').mockImplementation((_line: Line) => ({
+      all: [],
+      code: [createFakeError('Some error')],
+      channel: [],
+      locale: [],
+    }));
+
+    const valuePerLocale = false;
+    const valuePerChannel = false;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const line = createFakeLine('foo.png', assetFamily);
+
+    await act(async () => {
+      ReactDOM.render(
+        <ThemeProvider theme={akeneoTheme}>
+          <Row
+            line={line}
+            onLineRemove={() => {}}
+            onLineChange={() => {}}
+            valuePerLocale={valuePerLocale}
+            valuePerChannel={valuePerChannel}
+          />
+        </ThemeProvider>,
+        container
+      );
+    });
+
+    const error = getByLabelText(container, 'Some error');
+    expect(error).not.toBeNull();
+  });
+
+  test('It renders a row with an error on channel', async () => {
+    jest.spyOn(utils, 'getStatusFromLine').mockImplementation((_line: Line) => LineStatus.Invalid);
+    jest.spyOn(utils, 'getAllErrorsOfLineByTarget').mockImplementation((_line: Line) => ({
+      all: [],
+      code: [],
+      channel: [createFakeError('Some error')],
+      locale: [],
+    }));
+
+    const valuePerLocale = false;
+    const valuePerChannel = false;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const line = createFakeLine('foo.png', assetFamily);
+
+    await act(async () => {
+      ReactDOM.render(
+        <ThemeProvider theme={akeneoTheme}>
+          <Row
+            line={line}
+            onLineRemove={() => {}}
+            onLineChange={() => {}}
+            valuePerLocale={valuePerLocale}
+            valuePerChannel={valuePerChannel}
+          />
+        </ThemeProvider>,
+        container
+      );
+    });
+
+    const error = getByLabelText(container, 'Some error');
+    expect(error).not.toBeNull();
+  });
+
+  test('It renders a row with an error on locale', async () => {
+    jest.spyOn(utils, 'getStatusFromLine').mockImplementation((_line: Line) => LineStatus.Invalid);
+    jest.spyOn(utils, 'getAllErrorsOfLineByTarget').mockImplementation((_line: Line) => ({
+      all: [],
+      code: [],
+      channel: [],
+      locale: [createFakeError('Some error')],
+    }));
+
+    const valuePerLocale = false;
+    const valuePerChannel = false;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const line = createFakeLine('foo.png', assetFamily);
+
+    await act(async () => {
+      ReactDOM.render(
+        <ThemeProvider theme={akeneoTheme}>
+          <Row
+            line={line}
+            onLineRemove={() => {}}
+            onLineChange={() => {}}
+            valuePerLocale={valuePerLocale}
+            valuePerChannel={valuePerChannel}
+          />
+        </ThemeProvider>,
+        container
+      );
+    });
+
+    const error = getByLabelText(container, 'Some error');
+    expect(error).not.toBeNull();
   });
 });
