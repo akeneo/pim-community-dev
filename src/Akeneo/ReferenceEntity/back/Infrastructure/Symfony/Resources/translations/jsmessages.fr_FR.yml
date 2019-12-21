@@ -13,6 +13,11 @@ pim_reference_entity:
         remove: Supprimer
         download: Téléchargement
         upload: Glisser et déposer pour télécharger
+  editor:
+    embedded:
+      invalid_link:
+        title: Lien incorporé suspect
+        message: Désolé, nous n'affichons pas cet élément intégré mais il sera correctement sauvegardé.
   grid:
     counter: '{{ count }} résultat |{{ count }} résultats'
   reference_entity:
