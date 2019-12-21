@@ -170,7 +170,6 @@ pim_measure:
     PSI: Libra por pulgada cuadrada
     TORR: Torr
     MMHG: milímetro de mercurio
-    #Energy
     KILOCALORIE: kilo caloría
     KILOJOULE: kilojulio
     #CaseBox

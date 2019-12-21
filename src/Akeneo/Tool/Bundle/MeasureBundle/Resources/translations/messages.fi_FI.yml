@@ -170,7 +170,6 @@ pim_measure:
     PSI: Paunaa per neliötuuma
     TORR: Torri
     MMHG: elohopeamillimetri
-    #Energy
     KILOCALORIE: Kilokalori
     KILOJOULE: kilojoule
     #CaseBox
