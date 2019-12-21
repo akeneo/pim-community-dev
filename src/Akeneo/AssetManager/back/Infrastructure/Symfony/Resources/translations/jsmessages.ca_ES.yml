@@ -35,6 +35,8 @@ pim_asset_manager:
     selector:
       no_value: Feu clic aquí per seleccionar un recurs.
     title: Recursos
+    upload:
+      remove_all: Eliminar tot
     grid:
       filter:
         completeness:
