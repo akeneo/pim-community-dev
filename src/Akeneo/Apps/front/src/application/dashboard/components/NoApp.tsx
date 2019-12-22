@@ -1,28 +1,42 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
-import imgUrl from '../../common/assets/illustrations/api.svg';
+import {PageError} from '../../common';
 import {PropsWithTheme} from '../../common/theme';
-import {Translate} from '../../shared/translate';
+import {SecurityGuard} from '../../shared/security';
+import {Translate, useTranslate} from '../../shared/translate';
+import {RouterContext} from '../../shared/router';
 
-export const NoApp = () => (
-    <Container>
-        <Image src={imgUrl} />
-        <Title>
-            <Translate id='pim_apps.no_app.title' />
-        </Title>
-    </Container>
-);
+export const NoApp = () => {
+    const translate = useTranslate();
+    const {redirect} = useContext(RouterContext);
 
-const Container = styled.div`
-    text-align: center;
-`;
+    return (
+        <PageError title={<Translate id='akeneo_apps.dashboard.no_app.title' />}>
+            <SecurityGuard
+                acl='akeneo_apps_manage_settings'
+                fallback={
+                    <>
+                        <Translate id='akeneo_apps.dashboard.no_app.message_without_permission.message' />
+                        &nbsp;
+                        <Link
+                            href={translate('akeneo_apps.dashboard.no_app.message_without_permission.link_url')}
+                            target='_blank'
+                        >
+                            <Translate id='akeneo_apps.dashboard.no_app.message_without_permission.link' />
+                        </Link>
+                    </>
+                }
+            >
+                <Link onClick={() => redirect('/apps')}>
+                    <Translate id='akeneo_apps.dashboard.no_app.message_with_permission.link' />
+                </Link>
+            </SecurityGuard>
+        </PageError>
+    );
+};
 
-const Image = styled.img`
-    width: 200px;
-`;
-
-const Title = styled.div`
-    height: 36px;
-    font-size: ${({theme}: PropsWithTheme) => theme.fontSize.title};
-    color: ${({theme}: PropsWithTheme) => theme.color.grey140};
+const Link = styled.a`
+    color: #9452ba;
+    cursor: pointer;
+    text-decoration: underline ${({theme}: PropsWithTheme) => theme.color.purple100};
 `;

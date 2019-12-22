@@ -3,32 +3,39 @@ import {ThemeProvider} from 'styled-components';
 import {theme} from '../application/common/theme';
 import {NotifyContext, NotifyInterface} from '../application/shared/notify';
 import {RouterContext, RouterInterface} from '../application/shared/router';
+import {SecurityContext} from '../application/shared/security/security-context';
+import {Security as SecurityInterface} from '../application/shared/security/security.interface';
 import {TranslateContext, TranslateInterface} from '../application/shared/translate';
+import {UserContext, UserInterface} from '../application/shared/user';
 import {LegacyContext} from './legacy-context';
 import {ViewBuilder} from './pim-view/view-builder';
-import {UserContext, UserInterface} from '../application/shared/user';
 
 interface Props {
-    router: RouterInterface;
-    translate: TranslateInterface;
-    viewBuilder: ViewBuilder;
-    notify: NotifyInterface;
-    user: UserInterface;
+    dependencies: {
+        router: RouterInterface;
+        translate: TranslateInterface;
+        viewBuilder: ViewBuilder;
+        notify: NotifyInterface;
+        user: UserInterface;
+        security: SecurityInterface;
+    };
 }
 
 export const withContexts = (Component: ElementType) => {
-    return ({router, translate, viewBuilder, notify, user, ...props}: Props) => (
-        <RouterContext.Provider value={router}>
-            <TranslateContext.Provider value={translate}>
-                <NotifyContext.Provider value={notify}>
+    return ({dependencies, ...props}: Props) => (
+        <RouterContext.Provider value={dependencies.router}>
+            <TranslateContext.Provider value={dependencies.translate}>
+                <NotifyContext.Provider value={dependencies.notify}>
                     <LegacyContext.Provider
                         value={{
-                            viewBuilder,
+                            viewBuilder: dependencies.viewBuilder,
                         }}
                     >
                         <ThemeProvider theme={theme}>
-                            <UserContext.Provider value={user}>
-                                <Component {...props} />
+                            <UserContext.Provider value={dependencies.user}>
+                                <SecurityContext.Provider value={dependencies.security}>
+                                    <Component {...props} />
+                                </SecurityContext.Provider>
                             </UserContext.Provider>
                         </ThemeProvider>
                     </LegacyContext.Provider>

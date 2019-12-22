@@ -39,7 +39,7 @@ export const AppRegenerateSecret = () => {
         <>
             <Translate id='akeneo_apps.regenerate_secret.description' />
             &nbsp;
-            <Link href={translate('akeneo_apps.regenerate_secret.link_url')}>
+            <Link href={translate('akeneo_apps.regenerate_secret.link_url')} target='_blank'>
                 <Translate id='akeneo_apps.regenerate_secret.link' />
             </Link>
         </>

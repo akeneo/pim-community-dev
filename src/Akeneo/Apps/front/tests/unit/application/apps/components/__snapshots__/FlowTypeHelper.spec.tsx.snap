@@ -6,6 +6,8 @@ Array [
   " ",
   <a
     href="pim_apps.flow_type_helper.link_url"
+    rel="noopener noreferrer"
+    target="_blank"
   >
     pim_apps.flow_type_helper.link
   </a>,
