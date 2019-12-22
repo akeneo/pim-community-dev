@@ -63,8 +63,8 @@ export const getMediaDownloadUrl = (filePath: string): string => {
   return routing.generate('pim_enrich_media_download', {filename});
 };
 
-export const getMediaPreviewUrl = (mediaUrl: MediaPreview): string =>
-  routing.generate('akeneo_asset_manager_image_preview', {...mediaUrl, data: btoa(mediaUrl.data)});
+export const getMediaPreviewUrl = (mediaPreview: MediaPreview): string =>
+  routing.generate('akeneo_asset_manager_image_preview', {...mediaPreview, data: btoa(mediaPreview.data)});
 
 // TODO The asset any is temporary and should be fixed when we create unified models
 export const getAssetPreview = (asset: any, type: MediaPreviewType, {locale, channel}: Context): string => {

@@ -4,7 +4,8 @@ import {Column} from 'akeneoassetmanager/application/reducer/grid';
 import {isMediaLinkData, mediaLinkDataStringValue} from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {MediaPreviewType, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
-import ListValue, {getListValueMediaPreview} from 'akeneoassetmanager/domain/model/asset/list-value';
+import ListValue from 'akeneoassetmanager/domain/model/asset/list-value';
+import {getValueData} from 'akeneoassetmanager/domain/model/asset/data';
 
 const memo = (React as any).memo;
 
@@ -18,9 +19,11 @@ const MediaLinkCellView: CellView = memo(({value, column}: {value: ListValue; co
         className="AknGrid-image AknLoadingPlaceHolder"
         width="44"
         height="44"
-        src={getMediaPreviewUrl(
-          getListValueMediaPreview(MediaPreviewType.Thumbnail, value, column.attribute.identifier)
-        )}
+        src={getMediaPreviewUrl({
+          type: MediaPreviewType.Thumbnail,
+          attributeIdentifier: column.attribute.identifier,
+          data: getValueData(value, column.attribute),
+        })}
       />
     </div>
   );

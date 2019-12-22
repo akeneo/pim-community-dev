@@ -1,9 +1,6 @@
 import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
-import EditionValue, {
-  setValueData,
-  getEditionValueMediaPreview,
-} from 'akeneoassetmanager/domain/model/asset/edition-value';
+import EditionValue, {setValueData} from 'akeneoassetmanager/domain/model/asset/edition-value';
 import Key from 'akeneoassetmanager/tools/key';
 import {copyToClipboard, MediaPreviewType, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import styled from 'styled-components';
@@ -18,6 +15,7 @@ import {
   getMediaLinkValueUrl,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import {getValueData} from 'akeneoassetmanager/domain/model/asset/data';
 
 const Container = styled.div`
   align-items: center;
@@ -88,9 +86,11 @@ const View = ({
   };
 
   const mediaDownloadUrl = getMediaLinkValueUrl(value);
-  const mediaPreviewUrl = getMediaPreviewUrl(
-    getEditionValueMediaPreview(MediaPreviewType.Thumbnail, value, value.attribute.identifier)
-  );
+  const mediaPreviewUrl = getMediaPreviewUrl({
+    type: MediaPreviewType.Thumbnail,
+    attributeIdentifier: value.attribute.identifier,
+    data: getValueData(value, value.attribute),
+  });
 
   return (
     <Container>

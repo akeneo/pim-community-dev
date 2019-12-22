@@ -5,7 +5,6 @@ import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/ty
 type MediaLinkData = string | null;
 export type NormalizedMediaLinkData = string | null;
 
-export default MediaLinkData;
 export const isMediaLinkData = (mediaLinkData: any): mediaLinkData is MediaLinkData =>
   typeof mediaLinkData === 'string' || null === mediaLinkData;
 export const areMediaLinkDataEqual = (first: Data, second: Data): boolean =>
@@ -20,3 +19,5 @@ export const getMediaLinkValueUrl = (editionValue: EditionValue): string => {
 
   return `${editionValue.attribute.prefix}${editionValue.data}${editionValue.attribute.suffix}`;
 };
+
+export default MediaLinkData;

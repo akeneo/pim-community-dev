@@ -3,9 +3,7 @@ import {
   isValueEmpty,
   areValuesEqual,
   normalizeValue,
-  getListValueMediaPreview,
 } from 'akeneoassetmanager/domain/model/asset/list-value';
-import {MediaPreviewType} from 'akeneoassetmanager/tools/media-url-generator';
 
 const enUS = 'en_US';
 const niceDescription = 'nice description';
@@ -26,10 +24,6 @@ const unscopedListValue = {
 const nullEditionValue = {
   ...descriptionListValue,
   data: null,
-};
-const imageListValue = {
-  ...descriptionListValue,
-  data: 'image.jpg',
 };
 
 describe('akeneo > asset family > domain > model > asset --- list-value', () => {
@@ -52,13 +46,5 @@ describe('akeneo > asset family > domain > model > asset --- list-value', () => 
 
   test('I can normalize an EditionValue', () => {
     expect(normalizeValue(descriptionListValue)).toEqual(descriptionListValue);
-  });
-
-  test('I can get the ListValue preview url', () => {
-    expect(getListValueMediaPreview(MediaPreviewType.Thumbnail, imageListValue, attributeIdentifier)).toEqual({
-      type: MediaPreviewType.Thumbnail,
-      attributeIdentifier,
-      data: 'image.jpg',
-    });
   });
 });

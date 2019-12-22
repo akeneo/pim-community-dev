@@ -7,7 +7,7 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {getValue} from 'akeneoassetmanager/domain/model/asset/value-collection';
 import {MediaPreviewType, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
-import {getEditionValueMediaPreview} from 'akeneoassetmanager/domain/model/asset/edition-value';
+import {getValueData} from 'akeneoassetmanager/domain/model/asset/data';
 
 type MainMediaThumbnailProps = {
   asset: EditionAsset;
@@ -44,9 +44,11 @@ export const getEditionAssetMainMediaUrl = (asset: EditionAsset, channel: Channe
   const mediaValue = getValue(asset.values, attributeAsMainMediaIdentifier, channel, locale);
   if (undefined === mediaValue) return '';
 
-  return getMediaPreviewUrl(
-    getEditionValueMediaPreview(MediaPreviewType.Thumbnail, mediaValue, attributeAsMainMediaIdentifier)
-  );
+  return getMediaPreviewUrl({
+    type: MediaPreviewType.Thumbnail,
+    attributeIdentifier: attributeAsMainMediaIdentifier,
+    data: getValueData(mediaValue, mediaValue.attribute),
+  });
 };
 
 export const MainMediaThumbnail = ({asset, context}: MainMediaThumbnailProps) => (
