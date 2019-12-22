@@ -16,6 +16,14 @@ class UpdateProductEventCountCommand
 
     public function __construct(string $eventDate)
     {
+        try {
+            new \DateTime($eventDate, new \DateTimeZone('UTC'));
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException(
+                sprintf('Parameter event date "%s" should be in a date format (YYYY-mm-dd).', $eventDate)
+            );
+        }
+
         $this->eventDate = $eventDate;
     }
 
