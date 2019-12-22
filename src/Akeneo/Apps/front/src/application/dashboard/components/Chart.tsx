@@ -40,8 +40,13 @@ const gridYAxesTheme: VictoryStyle = {
 type ChartData = {x: number; y: number; xLabel: string; yLabel: string};
 
 export const Chart = ({data, theme}: {data: ChartData[]; theme: VictoryThemeDefinition}) => {
-    const yMax = data.reduce((maxY, {y}) => (y > maxY ? y : maxY), 0);
-    const yMin = data.reduce((minY, {y}) => (y < minY ? y : minY), yMax);
+    let yMax = data.reduce((maxY, {y}) => (y > maxY ? y : maxY), 0);
+    let yMin = data.reduce((minY, {y}) => (y < minY ? y : minY), yMax);
+    // Adds a margin to prevent displaying the chart line at the same level than the axis when all values are 0
+    if (0 === yMax - yMin) {
+        yMax += 4;
+        yMin -= 2;
+    }
     const step = (yMax - yMin) / 5;
 
     // max and min domain focus the graph on the data.
