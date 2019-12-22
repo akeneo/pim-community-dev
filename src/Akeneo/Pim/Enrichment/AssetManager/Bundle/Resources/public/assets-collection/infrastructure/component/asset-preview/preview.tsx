@@ -15,11 +15,11 @@ import Download from 'akeneoassetmanager/application/component/app/icon/download
 import Link from 'akeneoassetmanager/application/component/app/icon/link';
 import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
 import {
-  MediaPreviewTypes,
-  getAssetPreview,
+  MediaPreviewType,
   getAssetEditUrl,
   copyToClipboard,
   canCopyToClipboard,
+  getAssetPreview,
 } from 'akeneoassetmanager/tools/media-url-generator';
 import {
   NormalizedMediaLinkAttribute,
@@ -163,7 +163,7 @@ const getMediaLinkPreviewView = (asset: Asset, context: Context) => {
 
 const PreviewImage = ({asset, context}: PreviewProps) => (
   <Image
-    src={getAssetPreview(asset, MediaPreviewTypes.Preview, context)}
+    src={getAssetPreview(asset, MediaPreviewType.Preview, context)}
     alt={getAssetLabel(asset, context.locale)}
     data-role="asset-preview"
   />

@@ -38,6 +38,7 @@ export const getValuesForChannelAndLocale = (
   locale: LocaleReference
 ) => values.filter(getValueForChannelAndLocaleFilter(channel, locale));
 
+//TODO move to EditionAsset
 export const getValue = (
   values: ValueCollection,
   attributeIdentifier: AttributeIdentifier,

@@ -168,6 +168,7 @@ pim_asset_manager:
       subtitle: To manage permission on asset family you need to have at least one user group.
       link: Click here to add your first user group
   asset:
+    img: The main media of the asset named "{{ label }}"
     validation:
       limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
       code:

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {getLabel} from 'pimui/js/i18n';
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
-import {getAssetPreview, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
+import {MediaPreviewType, getAssetPreview} from 'akeneoassetmanager/tools/media-url-generator';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 
@@ -55,7 +55,7 @@ const CommonRow = memo(
             className="AknGrid-image AknLoadingPlaceHolder"
             width="44"
             height="44"
-            src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail, {locale, channel})}
+            src={getAssetPreview(asset, MediaPreviewType.Thumbnail, {locale, channel})}
           />
         </td>
         <td className="AknGrid-bodyCell" title={label}>

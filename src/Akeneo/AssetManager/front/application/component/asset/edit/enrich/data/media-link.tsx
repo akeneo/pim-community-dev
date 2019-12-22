@@ -1,14 +1,12 @@
 import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
-import EditionValue, {setValueData} from 'akeneoassetmanager/domain/model/asset/edition-value';
+import EditionValue, {
+  setValueData,
+  getEditionValueMediaPreview,
+} from 'akeneoassetmanager/domain/model/asset/edition-value';
 import Key from 'akeneoassetmanager/tools/key';
-import {
-  copyToClipboard,
-  getMediaLinkPreviewUrl,
-  getMediaLinkUrl,
-  MediaPreviewTypes,
-} from 'akeneoassetmanager/tools/media-url-generator';
-import styled, {ThemeProvider} from 'styled-components';
+import {copyToClipboard, MediaPreviewType, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import styled from 'styled-components';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import DownloadIcon from 'akeneoassetmanager/application/component/app/icon/download';
 import LinkIcon from 'akeneoassetmanager/application/component/app/icon/link';
@@ -17,6 +15,7 @@ import {
   mediaLinkDataFromString,
   areMediaLinkDataEqual,
   mediaLinkDataStringValue,
+  getMediaLinkValueUrl,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
@@ -88,47 +87,42 @@ const View = ({
     onChange(newValue);
   };
 
-  const mediaDownloadUrl = getMediaLinkUrl(value.data, value.attribute);
-  const mediaPreviewUrl = getMediaLinkPreviewUrl(MediaPreviewTypes.ThumbnailSmall, value.data, value.attribute);
+  const mediaDownloadUrl = getMediaLinkValueUrl(value);
+  const mediaPreviewUrl = getMediaPreviewUrl(
+    getEditionValueMediaPreview(MediaPreviewType.Thumbnail, value, value.attribute.identifier)
+  );
 
-  // !TODO remove <ThemeProvider> when it will be implemented in one of the parents
   return (
-    <ThemeProvider theme={akeneoTheme}>
-      <Container>
-        <Thumbnail src={mediaPreviewUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
-        <input
-          id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
-          autoComplete="off"
-          className={`AknTextField AknTextField--light
+    <Container>
+      <Thumbnail src={mediaPreviewUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
+      <input
+        id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
+        autoComplete="off"
+        className={`AknTextField AknTextField--light
         ${value.attribute.value_per_locale ? 'AknTextField--localizable' : ''}
         ${!canEditData ? 'AknTextField--disabled' : ''}`}
-          value={mediaLinkDataStringValue(value.data)}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            onValueChange(event.currentTarget.value);
-          }}
-          onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-            if (Key.Enter === event.key) onSubmit();
-          }}
-          disabled={!canEditData}
-          readOnly={!canEditData}
-        />
-        <ActionLink href={mediaDownloadUrl} target="_blank" title={__('pim_asset_manager.media_link.download')}>
-          <DownloadIcon
-            color={akeneoTheme.color.grey100}
-            size={20}
-            title={__('pim_asset_manager.media_link.download')}
-          />
-        </ActionLink>
-        <ActionButton
-          title={__('pim_asset_manager.media_link.copy')}
-          onClick={() => {
-            copyToClipboard(mediaDownloadUrl);
-          }}
-        >
-          <LinkIcon color={akeneoTheme.color.grey100} size={20} title={__('pim_asset_manager.media_link.copy')} />
-        </ActionButton>
-      </Container>
-    </ThemeProvider>
+        value={mediaLinkDataStringValue(value.data)}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          onValueChange(event.currentTarget.value);
+        }}
+        onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+          if (Key.Enter === event.key) onSubmit();
+        }}
+        disabled={!canEditData}
+        readOnly={!canEditData}
+      />
+      <ActionLink href={mediaDownloadUrl} target="_blank" title={__('pim_asset_manager.media_link.download')}>
+        <DownloadIcon color={akeneoTheme.color.grey100} size={20} title={__('pim_asset_manager.media_link.download')} />
+      </ActionLink>
+      <ActionButton
+        title={__('pim_asset_manager.media_link.copy')}
+        onClick={() => {
+          copyToClipboard(mediaDownloadUrl);
+        }}
+      >
+        <LinkIcon color={akeneoTheme.color.grey100} size={20} title={__('pim_asset_manager.media_link.copy')} />
+      </ActionButton>
+    </Container>
   );
 };
 

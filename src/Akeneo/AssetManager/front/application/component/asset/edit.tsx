@@ -29,14 +29,14 @@ import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attri
 import {redirectToProductGrid} from 'akeneoassetmanager/application/event/router';
 import AttributeCode from 'akeneoassetmanager/domain/model/attribute/code';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import FileComponent from 'akeneoassetmanager/application/component/app/file-component';
 import {getLabel} from 'pimui/js/i18n';
 import EditionAsset, {getEditionAssetCompleteness} from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {getValue} from 'akeneoassetmanager/domain/model/asset/value-collection';
 import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 import {isMediaLinkData} from 'akeneoassetmanager/domain/model/asset/data/media-link';
-import {MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
+import {MediaPreviewType} from 'akeneoassetmanager/tools/media-url-generator';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
+import {MainMediaThumbnail} from 'akeneoassetmanager/application/component/asset/edit/main-media-thumbnail';
 
 const securityContext = require('pim/security-context');
 const routing = require('routing');
@@ -146,12 +146,7 @@ class AssetEditView extends React.Component<EditProps> {
             <div className="AknDefault-mainContent" data-tab={this.props.sidebar.currentTab}>
               <header className="AknTitleContainer">
                 <div className="AknTitleContainer-line">
-                  <FileComponent
-                    alt={__('pim_asset_manager.asset.img', {'{{ label }}': label})}
-                    image={getEditionAssetMainImageLegacy(asset, this.props.context.channel, this.props.context.locale)}
-                    attribute={asset.assetFamily.attributeAsMainMedia}
-                    readOnly={true}
-                  />
+                  <MainMediaThumbnail asset={asset} context={this.props.context} />
                   <div className="AknTitleContainer-mainContainer AknTitleContainer-mainContainer--contained">
                     <div>
                       <div className="AknTitleContainer-line">
@@ -372,7 +367,7 @@ export const getEditionAssetMainImageLegacy = (
 
   if (isMediaLinkData(imageValue.data)) {
     const filePath = routing.generate('akeneo_asset_manager_image_preview', {
-      type: MediaPreviewTypes.Thumbnail,
+      type: MediaPreviewType.Thumbnail,
       attributeIdentifier: imageValue.attribute.identifier,
       data: imageValue.data,
     });

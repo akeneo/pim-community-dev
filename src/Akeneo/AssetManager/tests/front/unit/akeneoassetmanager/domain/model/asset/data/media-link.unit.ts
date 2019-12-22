@@ -3,9 +3,32 @@ import {
   mediaLinkDataStringValue,
   areMediaLinkDataEqual,
   isMediaLinkData,
+  getMediaLinkValueUrl,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
+import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
-let mediaLinkData = 'https://my-link.com';
+const mediaLinkAttribute = {
+  identifier: 'url',
+  asset_family_identifier: 'designer',
+  code: 'url',
+  labels: {en_US: 'Url'},
+  type: MEDIA_LINK_ATTRIBUTE_TYPE,
+  order: 0,
+  value_per_locale: true,
+  value_per_channel: false,
+  is_required: true,
+  suffix: '.jpg',
+  prefix: 'https://',
+  media_type: 'image',
+};
+const mediaLinkData = 'my-link';
+const mediaLinkEditionValue = {
+  attribute: mediaLinkAttribute,
+  data: mediaLinkData,
+  channel: null,
+  locale: 'en_US',
+};
+
 describe('akeneo > asset family > domain > model > asset > data --- media-link', () => {
   test('I can create a new MediaLinkData with a string', () => {
     expect(mediaLinkDataFromString(mediaLinkData)).toEqual(mediaLinkData);
@@ -28,5 +51,12 @@ describe('akeneo > asset family > domain > model > asset > data --- media-link',
     expect(isMediaLinkData(mediaLinkData)).toBe(true);
     expect(isMediaLinkData(null)).toBe(true);
     expect(isMediaLinkData({})).toBe(false);
+  });
+
+  test('I can get the MediaLink value url', () => {
+    expect(getMediaLinkValueUrl(mediaLinkEditionValue)).toEqual('https://my-link.jpg');
+    expect(() =>
+      getMediaLinkValueUrl({...mediaLinkEditionValue, attribute: {...mediaLinkEditionValue.attribute, type: 'text'}})
+    ).toThrow();
   });
 });

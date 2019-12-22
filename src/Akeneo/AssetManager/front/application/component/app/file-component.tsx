@@ -3,8 +3,8 @@ import {File as FileModel, isFileEmpty, isFileInStorage, createEmptyFile} from '
 import {
   getImageDownloadUrl,
   getImageShowUrl,
-  getFilePreviewUrl,
-  MediaPreviewTypes,
+  MediaPreviewType,
+  getMediaPreviewUrl,
 } from 'akeneoassetmanager/tools/media-url-generator';
 import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
@@ -121,7 +121,11 @@ class FileComponent extends React.Component<
 
   render() {
     const wide = this.props.wide;
-    const url = getFilePreviewUrl(MediaPreviewTypes.ThumbnailSmall, this.props.image, this.props.attribute);
+    const url = getMediaPreviewUrl({
+      type: MediaPreviewType.ThumbnailSmall,
+      attributeIdentifier: this.props.attribute,
+      data: this.props.image?.filePath || '',
+    });
 
     // If the image is in read only mode, we return a simple version of the component
     if (undefined === this.props.onImageChange) {
