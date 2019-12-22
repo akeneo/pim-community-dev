@@ -88,6 +88,16 @@ akeneo_connectivity.connection:
         flash:
             success: Connection secret successfully regenerated.
             error: Sorry, an error occurred while regenerating the connection secret.
+    regenerate_password:
+        title: Confirm regeneration
+        description: Are you sure you want to regenerate the connection password? Not sure about the impacts?
+        link: Here is what will happen.
+        link_url: https://www.akeneo.com/
+        action:
+            regenerate: Regenerate
+        flash:
+            success: Connection password successfully regenerated.
+            error: Sorry, an error occurred while regenerating the connection password.
     delete_app:
         title: Confirm deletion
         description: Are you sure you want to delete the connection? Not sure about the impacts?

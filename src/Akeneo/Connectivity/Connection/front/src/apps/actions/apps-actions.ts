@@ -41,4 +41,19 @@ export const appDeleted = (code: string): AppDeletedAction => ({
     payload: code,
 });
 
-export type Actions = AppsFetchedAction | AppWithCredentialsFetchedAction | AppUpdatedAction | AppDeletedAction;
+export const APP_PASSWORD_REGENERATED = 'APP_PASSWORD_REGENERATED';
+type AppPasswordRegeneratedAction = {
+    type: typeof APP_PASSWORD_REGENERATED;
+    payload: {code: string; password: string};
+};
+export const appPasswordRegenerated = (code: string, password: string): AppPasswordRegeneratedAction => ({
+    type: APP_PASSWORD_REGENERATED,
+    payload: {code, password},
+});
+
+export type Actions =
+    | AppsFetchedAction
+    | AppWithCredentialsFetchedAction
+    | AppUpdatedAction
+    | AppDeletedAction
+    | AppPasswordRegeneratedAction;

@@ -36,6 +36,13 @@ akeneo_apps_regenerate_secret_rest:
     requirements:
         code: '[a-zA-Z0-9_]+'
 
+akeneo_apps_regenerate_password_rest:
+    path: '/rest/apps/{code}/regenerate-password'
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:regeneratePassword }
+    methods: [POST]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
 akeneo_apps_audit_source_apps_event:
     path: '/rest/apps/audit/source-apps-event'
     defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.audit:sourceConnectionsEvent }

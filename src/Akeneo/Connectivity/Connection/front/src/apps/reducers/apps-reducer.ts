@@ -1,7 +1,14 @@
 import {Reducer} from 'react';
 import {AppCredentials} from '../../domain/apps/app-credentials.interface';
 import {App} from '../../domain/apps/app.interface';
-import {Actions, APP_WITH_CREDENTIALS_FETCHED, APP_UPDATED, APPS_FETCHED, APP_DELETED} from '../actions/apps-actions';
+import {
+    Actions,
+    APP_WITH_CREDENTIALS_FETCHED,
+    APP_UPDATED,
+    APPS_FETCHED,
+    APP_DELETED,
+    APP_PASSWORD_REGENERATED,
+} from '../actions/apps-actions';
 
 export interface State {
     [code: string]: App & AppCredentials;
@@ -51,7 +58,14 @@ export const reducer: Reducer<State, Actions> = (state, action) => {
             delete state[action.payload];
             return state;
         }
-    }
 
-    return state;
+        case APP_PASSWORD_REGENERATED:
+            return {
+                ...state,
+                [action.payload.code]: {
+                    ...state[action.payload.code],
+                    password: action.payload.password,
+                },
+            };
+    }
 };

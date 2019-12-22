@@ -188,6 +188,15 @@ class ConnectionController
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
+    public function regeneratePassword(): JsonResponse
+    {
+        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
+            throw new AccessDeniedException();
+        }
+
+        return new JsonResponse(['password' => 'MySuperSecurePassword']);
+    }
+
     private function buildViolationResponse(ConstraintViolationListInterface $constraintViolationList): array
     {
         $errors = [];

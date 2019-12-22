@@ -1,10 +1,11 @@
 import React, {FC, useContext} from 'react';
+import {useHistory} from 'react-router';
+import {HelperLink, InlineHelper, Section, SmallHelper} from '../../common';
 import {AppCredentials as AppCredentialsInterface} from '../../domain/apps/app-credentials.interface';
-import {InlineHelper, Section, SmallHelper, HelperLink} from '../../common';
 import {Translate, TranslateContext} from '../../shared/translate';
 import {CopiableCredential} from './credentials/CopiableCredential';
 import {Credential, CredentialList} from './credentials/Credential';
-import {RegenerateSecretButton} from './RegenerateSecretButton';
+import {RegenerateButton} from './RegenerateButton';
 
 type Props = {
     code: string;
@@ -14,6 +15,7 @@ type Props = {
 
 export const AppCredentials: FC<Props> = ({code, label, credentials: credentials}: Props) => {
     const translate = useContext(TranslateContext);
+    const history = useHistory();
 
     return (
         <>
@@ -41,7 +43,7 @@ export const AppCredentials: FC<Props> = ({code, label, credentials: credentials
                 </CopiableCredential>
                 <CopiableCredential
                     label={translate('akeneo_connectivity.connection.connection.secret')}
-                    actions={<RegenerateSecretButton code={code} />}
+                    actions={<RegenerateButton onClick={() => history.push(`/apps/${code}/regenerate-secret`)} />}
                 >
                     {credentials.secret}
                 </CopiableCredential>
@@ -85,6 +87,7 @@ export const AppCredentials: FC<Props> = ({code, label, credentials: credentials
                                 </a>
                             </InlineHelper>
                         }
+                        actions={<RegenerateButton onClick={() => history.push(`/apps/${code}/regenerate-password`)} />}
                     >
                         <Translate id='akeneo_connectivity.connection.edit_app.credentials.password_placeholder' />
                     </Credential>

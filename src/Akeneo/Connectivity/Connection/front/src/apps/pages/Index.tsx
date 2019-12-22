@@ -4,6 +4,7 @@ import {AppCreate} from './AppCreate';
 import {AppDelete} from './AppDelete';
 import {AppEdit} from './AppEdit';
 import {AppList} from './AppList';
+import {AppRegeneratePassword} from './AppRegeneratePassword';
 import {AppRegenerateSecret} from './AppRegenerateSecret';
 
 export const Index = () => (
@@ -14,6 +15,9 @@ export const Index = () => (
             </Route>
             <Route path='/apps/:code/regenerate-secret'>
                 <AppRegenerateSecret />
+            </Route>
+            <Route path='/apps/:code/regenerate-password'>
+                <AppRegeneratePassword />
             </Route>
             <Route path='/apps/:code/delete'>
                 <AppDelete />
