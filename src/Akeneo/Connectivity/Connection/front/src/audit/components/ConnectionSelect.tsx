@@ -18,7 +18,7 @@ export const ConnectionSelect = ({connections, onChange}: Props) => {
     const data = connections.reduce((data, connection) => {
         data[connection.code] = {
             label: connection.label,
-            imageSrc: (connection.image && generate(connection.image)) || undefined,
+            imageSrc: (connection.image && generate(connection.image, 'dropdown_select_picture')) || undefined,
         };
         return data;
     }, {} as {[code: string]: {label: string; imageSrc?: string}});
