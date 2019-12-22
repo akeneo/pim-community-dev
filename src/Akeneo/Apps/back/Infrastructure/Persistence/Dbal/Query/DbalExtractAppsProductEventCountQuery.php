@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Infrastructure\Persistence\Dbal\Query;
 
 use Akeneo\Apps\Domain\Audit\Model\Write\DailyEventCount;
-use Akeneo\Apps\Domain\Audit\Persistence\Query\ExtractAppsEventCountQuery;
+use Akeneo\Apps\Domain\Audit\Persistence\Query\ExtractAppsProductEventCountQuery;
 use Akeneo\Apps\Domain\Audit\Persistence\Query\SelectVersioningProductEventCountByDayQuery;
 use Doctrine\DBAL\Connection;
 
@@ -14,7 +14,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DbalExtractAppsEventCountQuery implements ExtractAppsEventCountQuery
+class DbalExtractAppsProductEventCountQuery implements ExtractAppsProductEventCountQuery
 {
     /** @var Connection */
     private $dbalConnection;

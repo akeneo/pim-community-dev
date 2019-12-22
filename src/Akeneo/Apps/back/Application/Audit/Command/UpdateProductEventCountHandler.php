@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Application\Audit\Service;
+namespace Akeneo\Apps\Application\Audit\Command;
 
-use Akeneo\Apps\Domain\Audit\Persistence\Query\ExtractAppsEventCountQuery;
+use Akeneo\Apps\Domain\Audit\Persistence\Query\ExtractAppsProductEventCountQuery;
 use Akeneo\Apps\Domain\Audit\Persistence\Repository\EventCountRepository;
 
 /**
@@ -12,23 +12,21 @@ use Akeneo\Apps\Domain\Audit\Persistence\Repository\EventCountRepository;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class UpdateProductEventCountService
+class UpdateProductEventCountHandler
 {
-    /** @var ExtractAppsEventCountQuery */
+    /** @var ExtractAppsProductEventCountQuery */
     private $extractAppsEventCountQuery;
     /** @var EventCountRepository */
     private $eventCountRepository;
 
-    public function __construct(ExtractAppsEventCountQuery $extractAppsEventCountQuery, EventCountRepository $eventCountRepository)
+    public function __construct(ExtractAppsProductEventCountQuery $extractAppsEventCountQuery, EventCountRepository $eventCountRepository)
     {
         $this->extractAppsEventCountQuery = $extractAppsEventCountQuery;
         $this->eventCountRepository = $eventCountRepository;
     }
 
-    public function execute(string $date): void
+    public function handle(): void
     {
-        // 1. List app source with user
-
         // 2. Extract events query
 
         // 3. Transform into write models?

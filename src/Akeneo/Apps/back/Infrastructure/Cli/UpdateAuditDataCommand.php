@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Cli;
 
-use Akeneo\Apps\Application\Audit\Service\UpdateProductEventCountService;
+use Akeneo\Apps\Application\Audit\Service\UpdateProductEventCountHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,10 +18,10 @@ class UpdateAuditDataCommand extends Command
 {
     protected static $defaultName = 'akeneo:apps-audit:update-data';
 
-    /** @var UpdateProductEventCountService */
+    /** @var UpdateProductEventCountHandler */
     private $updateProductEventCountService;
 
-    public function __construct(UpdateProductEventCountService $updateProductEventCountService)
+    public function __construct(UpdateProductEventCountHandler $updateProductEventCountService)
     {
         parent::__construct();
         $this->updateProductEventCountService = $updateProductEventCountService;

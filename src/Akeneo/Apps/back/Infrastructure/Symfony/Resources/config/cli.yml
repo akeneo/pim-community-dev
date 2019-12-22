@@ -18,6 +18,6 @@ services:
     Akeneo\Apps\Infrastructure\Cli\UpdateAuditDataCommand:
         class: Akeneo\Apps\Infrastructure\Cli\UpdateAuditDataCommand
         arguments:
-            - '@akeneo_app.application.audit.service.update_product_event_count'
+            - '@akeneo_app.application.audit.handler.update_product_event_count'
         tags:
             - { name: 'console.command' }
