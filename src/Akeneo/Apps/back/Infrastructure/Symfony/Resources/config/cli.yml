@@ -15,11 +15,9 @@ services:
         tags:
             - { name: 'console.command' }
 
-    PopulateAuditTableCommand:
-        class: Akeneo\Apps\Infrastructure\Cli\PopulateAuditTableCommand
+    Akeneo\Apps\Infrastructure\Cli\UpdateAuditDataCommand:
+        class: Akeneo\Apps\Infrastructure\Cli\UpdateAuditDataCommand
         arguments:
-            - '@database_connection'
-            - '@akeneo_app.application.handler.fetch_apps'
-            - '@akeneo_app.application.audit.handler.count_daily_events_by_app'
+            - '@akeneo_app.application.audit.handler.update_product_event_count'
         tags:
             - { name: 'console.command' }

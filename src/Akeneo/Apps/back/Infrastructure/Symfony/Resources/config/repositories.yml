@@ -3,3 +3,8 @@ services:
         class: 'Akeneo\Apps\Infrastructure\Persistence\Dbal\Repository\DbalAppRepository'
         arguments:
             - '@database_connection'
+
+    akeneo_app.persistence.repository.event_count:
+        class: Akeneo\Apps\Infrastructure\Persistence\Dbal\Repository\DbalEventCountRepository
+        arguments:
+            - '@database_connection'
