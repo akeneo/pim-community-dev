@@ -25,19 +25,14 @@ class UpdateProductEventCountHandler
         $this->eventCountRepository = $eventCountRepository;
     }
 
-    public function handle(): void
+    public function handle(UpdateProductEventCountCommand $command): void
     {
-        // 2. Extract events query
+        // TODO: Use Read Models and transform into write models?
 
-        // 3. Transform into write models?
-
-        // 4. Insert audit data
-
-
-        $createdProductsCount = $this->extractAppsEventCountQuery->extractCreatedProducts($date);
+        $createdProductsCount = $this->extractAppsEventCountQuery->extractCreatedProducts($command->eventDate());
         $this->eventCountRepository->bulkInsert($createdProductsCount);
 
-        $updatedProductsCount = $this->extractAppsEventCountQuery->extractUpdatedProducts($date);
+        $updatedProductsCount = $this->extractAppsEventCountQuery->extractUpdatedProducts($command->eventDate());
         $this->eventCountRepository->bulkInsert($updatedProductsCount);
     }
 }
