@@ -2,7 +2,7 @@ var/tests/%:
 	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
 
 .PHONY: coupling-back
-coupling-back: twa-coupling-back asset-coupling-back franklin-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back
+coupling-back: twa-coupling-back franklin-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back
 
 .PHONY: check-pullup
 check-pullup:

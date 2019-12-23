@@ -28,8 +28,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssertionContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Context\EnterpriseAssetContext:
-                    - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseFileTransformerContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseItemPickerContext:
@@ -85,8 +83,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\TeamworkAssistant\ProjectContext:
                     - 'Context\EnterpriseFeatureContext'
-                - PimEnterprise\Behat\Context\AssetContext:
-                    - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\HookContext:
                     - 'Context\EnterpriseFeatureContext'
                     - 1280
@@ -125,11 +121,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.repository.product_model'
-                - PimEnterprise\Behat\Context\ProductAssetCollectionContext:
-                    - '@pim_catalog.updater.product'
-                    - '@pim_catalog.saver.product'
-                    - '@pim_catalog.repository.product'
-                    - '@doctrine.orm.entity_manager'
                 - PimEnterprise\Behat\Context\Proposal\ProductProposalStorageContext:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product'
@@ -213,8 +204,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssertionContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Context\EnterpriseAssetContext:
-                    - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseFileTransformerContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseItemPickerContext:
@@ -270,8 +259,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\TeamworkAssistant\ProjectContext:
                     - 'Context\EnterpriseFeatureContext'
-                - PimEnterprise\Behat\Context\AssetContext:
-                    - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\HookContext:
                     - 'Context\EnterpriseFeatureContext'
                     - 1280
@@ -310,11 +297,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.repository.product_model'
-                - PimEnterprise\Behat\Context\ProductAssetCollectionContext:
-                    - '@pim_catalog.updater.product'
-                    - '@pim_catalog.saver.product'
-                    - '@pim_catalog.repository.product'
-                    - '@doctrine.orm.entity_manager'
                 - PimEnterprise\Behat\Context\Proposal\ProductProposalStorageContext:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product'
@@ -400,8 +382,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssertionContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Context\EnterpriseAssetContext:
-                    - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseFileTransformerContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseItemPickerContext:
@@ -457,8 +437,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\TeamworkAssistant\ProjectContext:
                     - 'Context\EnterpriseFeatureContext'
-                - PimEnterprise\Behat\Context\AssetContext:
-                    - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\HookContext:
                     - 'Context\EnterpriseFeatureContext'
                     - 1280
@@ -497,11 +475,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.repository.product_model'
-                - PimEnterprise\Behat\Context\ProductAssetCollectionContext:
-                    - '@pim_catalog.updater.product'
-                    - '@pim_catalog.saver.product'
-                    - '@pim_catalog.repository.product'
-                    - '@doctrine.orm.entity_manager'
                 - PimEnterprise\Behat\Context\Proposal\ProductProposalStorageContext:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product'
@@ -520,7 +493,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
         raccoon:
             paths:
-                - tests/legacy/features/asset/
                 - vendor/akeneo/pim-community-dev/tests/legacy/features/user-management/
                 - vendor/akeneo/pim-community-dev/tests/legacy/features/channel/
                 - vendor/akeneo/pim-community-dev/tests/legacy/features/platform/
@@ -547,8 +519,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssertionContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Context\EnterpriseAssetContext:
-                    - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseFileTransformerContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseItemPickerContext:
@@ -604,8 +574,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\TeamworkAssistant\ProjectContext:
                     - 'Context\EnterpriseFeatureContext'
-                - PimEnterprise\Behat\Context\AssetContext:
-                    - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\HookContext:
                     - 'Context\EnterpriseFeatureContext'
                     - 1280
@@ -644,11 +612,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.repository.product_model'
-                - PimEnterprise\Behat\Context\ProductAssetCollectionContext:
-                    - '@pim_catalog.updater.product'
-                    - '@pim_catalog.saver.product'
-                    - '@pim_catalog.repository.product'
-                    - '@doctrine.orm.entity_manager'
                 - PimEnterprise\Behat\Context\Proposal\ProductProposalStorageContext:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product'
@@ -694,8 +657,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssertionContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Context\EnterpriseAssetContext:
-                    - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseFileTransformerContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseItemPickerContext:
@@ -751,8 +712,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\TeamworkAssistant\ProjectContext:
                     - 'Context\EnterpriseFeatureContext'
-                - PimEnterprise\Behat\Context\AssetContext:
-                    - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\HookContext:
                     - 'Context\EnterpriseFeatureContext'
                     - 1280
@@ -791,11 +750,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.repository.product_model'
-                - PimEnterprise\Behat\Context\ProductAssetCollectionContext:
-                    - '@pim_catalog.updater.product'
-                    - '@pim_catalog.saver.product'
-                    - '@pim_catalog.repository.product'
-                    - '@doctrine.orm.entity_manager'
                 - PimEnterprise\Behat\Context\Proposal\ProductProposalStorageContext:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product'
@@ -1000,9 +954,6 @@ acceptance:
                 - test.catalog_volume_limits.user_context
                 - test.catalog_volume_limits.category_in_one_category_context
                 - test.catalog_volume_limits.category_level_context
-                - test.product_asset.asset_context
-                - test.product_asset.asset_category_context
-                - test.product_asset.asset_category_tree_context
                 - test.authentication.sso_context
                 - test.catalog_volume_limits.reference_entity_context
                 - test.catalog_volume_limits.avg_max_records_per_reference_entity_context
