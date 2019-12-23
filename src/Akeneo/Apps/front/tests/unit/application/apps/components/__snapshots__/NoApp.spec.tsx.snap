@@ -2,24 +2,24 @@
 
 exports[`NoApp should render 1`] = `
 <div
-  className="sc-bdVaJa kmXoBq"
+  className="sc-htoDjs kkOYWO"
 >
   <img
-    className="sc-ifAKCX isanNQ"
+    className="sc-dnqmqq kezHrQ"
     src="test-file-stub"
   />
   <div
-    className="sc-bwzfXH fSQTvU"
+    className="sc-iwsKbI hvrcwP"
   >
     pim_apps.no_app.title
   </div>
   <div
-    className="sc-htpNat hTaSGc"
+    className="sc-gZMcBi jVpjdn"
   >
     pim_apps.no_app.message
      
     <a
-      className="sc-bxivhb goiCAm"
+      className="sc-kEYyzF hgSZNu"
       onClick={[Function]}
     >
       pim_apps.no_app.message_link

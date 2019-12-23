@@ -41,3 +41,9 @@ services:
         class: 'Akeneo\Apps\Application\Audit\Query\CountDailyEventsByAppHandler'
         arguments:
             - '@akeneo_app.persistence.query.select_apps_event_count_by_day'
+
+    akeneo_app.application.audit.handler.update_product_event_count:
+        class: Akeneo\Apps\Application\Audit\Command\UpdateProductEventCountHandler
+        arguments:
+            - '@akeneo_app.persistence.query.extract_apps_product_event_count'
+            - '@akeneo_app.persistence.repository.event_count'

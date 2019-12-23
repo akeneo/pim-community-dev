@@ -33,7 +33,7 @@ export const AppDelete = () => {
         <>
             <Translate id='akeneo_apps.delete_app.description' />
             &nbsp;
-            <Link href={translate('akeneo_apps.delete_app.link_url')}>
+            <Link href={translate('akeneo_apps.delete_app.link_url')} target='_blank'>
                 <Translate id='akeneo_apps.delete_app.link' />
             </Link>
         </>

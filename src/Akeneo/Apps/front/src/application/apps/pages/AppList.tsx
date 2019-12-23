@@ -85,7 +85,7 @@ export const AppList = () => {
                     <p>
                         <Translate id='pim_apps.helper.description' />
                     </p>
-                    <HelperLink href={translate('pim_apps.helper.link_url')}>
+                    <HelperLink href={translate('pim_apps.helper.link_url')} target='_blank'>
                         <Translate id='pim_apps.helper.link' />
                     </HelperLink>
                 </Helper>

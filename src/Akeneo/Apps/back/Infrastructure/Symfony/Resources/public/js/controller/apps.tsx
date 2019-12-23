@@ -7,7 +7,7 @@ const mediator = require('oro/mediator');
 
 class AppsController extends ReactController {
   reactElementToMount() {
-    return <Apps {...dependencies} />;
+    return <Apps dependencies={dependencies} />;
   }
 
   routeGuardToUnmount() {

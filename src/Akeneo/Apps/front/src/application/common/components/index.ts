@@ -13,11 +13,12 @@ import {Helper, HelperLink, HelperTitle} from './Helper';
 import {InlineHelper} from './InlineHelper';
 import {Modal} from './Modal';
 import {PageContent} from './PageContent';
+import {PageError} from './PageError';
 import {PageHeader} from './PageHeader';
 import {Section} from './Section';
+import {Select} from './select/Select';
 import {Select2} from './Select2';
 import {SmallHelper} from './SmallHelper';
-import {Select} from './select/Select';
 
 export {
     ApplyButton,
@@ -39,10 +40,11 @@ export {
     InlineHelper,
     Modal,
     PageContent,
+    PageError,
     PageHeader,
     SecondaryActionsDropdownButton,
     Section,
+    Select,
     Select2,
     SmallHelper,
-    Select,
 };
