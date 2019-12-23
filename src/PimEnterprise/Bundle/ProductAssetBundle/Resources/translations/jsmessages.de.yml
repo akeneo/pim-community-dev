@@ -13,8 +13,8 @@ pimee_product_asset:
         preview_title: Asset-Sammlung Vorschau
         download: Herunterladen
         remove: Entfernen
-        yes: true
-        no: false
+        yes: "Ja"
+        no: "Nein"
         assetRemoveConfirmationLabel: Sind Sie sicher, dass Sie dieses Asset löschen wollen?
     asset:
       not_empty: Code ist erforderlich. Feld darf nicht leer sein.

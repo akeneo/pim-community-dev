@@ -13,8 +13,6 @@ pimee_product_asset:
         preview_title: Vista previa de la colección de recursos
         download: Descargar
         remove: Eliminar
-        yes: true
-        no: false
         assetRemoveConfirmationLabel: '¿Está seguro de remover este recurso?'
     asset:
       not_empty: Código requerido. No puede estar vacío.

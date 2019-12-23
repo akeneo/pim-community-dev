@@ -13,8 +13,6 @@ pimee_product_asset:
         preview_title: Asset collection preview
         download: Download
         remove: Remove
-        yes: true
-        no: false
         assetRemoveConfirmationLabel: Are you sure you want to remove this asset?
     asset:
       not_empty: Code cannot be empty.
