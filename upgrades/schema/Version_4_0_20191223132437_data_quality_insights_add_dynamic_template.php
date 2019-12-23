@@ -14,6 +14,8 @@ final class Version_4_0_20191223132437_data_quality_insights_add_dynamic_templat
 
     public function up(Schema $schema) : void
     {
+        $this->disableMigrationWarning();
+
         $builder = $this->container->get('akeneo_elasticsearch.client_builder');
         $hosts = [$this->container->getParameter('index_hosts')];
 
@@ -58,5 +60,15 @@ final class Version_4_0_20191223132437_data_quality_insights_add_dynamic_templat
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+    }
+
+
+    /**
+     * Function that does a non altering operation on the DB using SQL to hide the doctrine warning stating that no
+     * sql query has been made to the db during the migration process.
+     */
+    private function disableMigrationWarning()
+    {
+        $this->addSql('SELECT * FROM oro_user LIMIT 1');
     }
 }
