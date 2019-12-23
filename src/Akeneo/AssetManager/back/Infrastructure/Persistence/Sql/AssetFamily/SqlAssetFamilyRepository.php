@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
 use Akeneo\AssetManager\Domain\Model\Image;
@@ -62,9 +63,9 @@ class SqlAssetFamilyRepository implements AssetFamilyRepositoryInterface
         $serializedLabels = $this->getSerializedLabels($assetFamily);
         $insert = <<<SQL
         INSERT INTO akeneo_asset_manager_asset_family
-            (identifier, labels, attribute_as_label, attribute_as_main_media, rule_templates, transformations)
+            (identifier, labels, attribute_as_label, attribute_as_main_media, rule_templates, transformations, naming_convention)
         VALUES
-            (:identifier, :labels, :attributeAsLabel, :attributeAsMainMedia, :ruleTemplates, :transformations);
+            (:identifier, :labels, :attributeAsLabel, :attributeAsMainMedia, :ruleTemplates, :transformations, :naming_convention);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
@@ -75,6 +76,7 @@ SQL;
                 'attributeAsMainMedia' => $assetFamily->getAttributeAsMainMediaReference()->normalize(),
                 'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize()),
                 'transformations' => json_encode($assetFamily->getTransformationCollection()->normalize()),
+                'naming_convention' => json_encode($assetFamily->getNamingConvention() ? $assetFamily->getNamingConvention()->normalize() : null)
             ]
         );
         if ($affectedRows !== 1) {
@@ -104,7 +106,8 @@ SQL;
             attribute_as_label = :attributeAsLabel,
             attribute_as_main_media = :attributeAsMainMedia,
             rule_templates = :ruleTemplates,
-            transformations = :transformations
+            transformations = :transformations,
+            naming_convention = :namingConvention
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -117,6 +120,7 @@ SQL;
                 'attributeAsMainMedia' => $assetFamily->getAttributeAsMainMediaReference()->normalize(),
                 'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize()),
                 'transformations' => json_encode($assetFamily->getTransformationCollection()->normalize()),
+                'naming_convention' => json_encode($assetFamily->getNamingConvention() ? $assetFamily->getNamingConvention()->normalize() : null)
             ]
         );
 
@@ -130,7 +134,15 @@ SQL;
     public function getByIdentifier(AssetFamilyIdentifier $identifier): AssetFamily
     {
         $fetch = <<<SQL
-        SELECT af.identifier, af.labels, fi.image, af.attribute_as_label, af.attribute_as_main_media, af.rule_templates, transformations
+        SELECT 
+            af.identifier,
+            af.labels,
+            fi.image,
+            af.attribute_as_label,
+            af.attribute_as_main_media, 
+            af.rule_templates,
+            af.transformations,
+            af.naming_convention
         FROM akeneo_asset_manager_asset_family af
         LEFT JOIN (
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
@@ -156,14 +168,22 @@ SQL;
             $result['attribute_as_label'],
             $result['attribute_as_main_media'],
             $result['rule_templates'],
-            $result['transformations']
+            $result['transformations'],
+            $result['naming_convention']
         );
     }
 
     public function all(): \Iterator
     {
         $selectAllQuery = <<<SQL
-        SELECT identifier, labels, attribute_as_label, attribute_as_main_media, rule_templates, transformations
+        SELECT 
+            identifier,
+            labels,
+            attribute_as_label,
+            attribute_as_main_media,
+            rule_templates,
+            transformations,
+            naming_convention
         FROM akeneo_asset_manager_asset_family;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
@@ -178,7 +198,8 @@ SQL;
                 $result['attribute_as_label'],
                 $result['attribute_as_main_media'],
                 $result['rule_templates'],
-                $result['transformations']
+                $result['transformations'],
+                $result['naming_convention']
             );
         }
     }
@@ -221,7 +242,8 @@ SQL;
         ?string $attributeAsLabel,
         ?string $attributeAsMainMedia,
         string $normalizedRuleTemplates,
-        string $transformationCollection
+        string $transformationCollection,
+        ?string $namingConvention
     ): AssetFamily {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
@@ -230,6 +252,7 @@ SQL;
         $entityImage = $this->hydrateImage($image);
         $ruleTemplateCollection = $this->hydrateRuleTemplates($normalizedRuleTemplates);
         $transformationCollection = $this->transformationCollectionFactory->fromNormalized(json_decode($transformationCollection, true));
+        $namingconvention = NamingConvention::createFromNormalized(json_decode($namingConvention, true));
 
         $assetFamily = AssetFamily::createWithAttributes(
             AssetFamilyIdentifier::fromString($identifier),
@@ -240,7 +263,9 @@ SQL;
             $ruleTemplateCollection
         );
 
-        return $assetFamily->withTransformationCollection($transformationCollection);
+        return $assetFamily
+            ->withTransformationCollection($transformationCollection)
+            ->withNamingConvention($namingconvention);
     }
 
     private function getSerializedLabels(AssetFamily $assetFamily): string
