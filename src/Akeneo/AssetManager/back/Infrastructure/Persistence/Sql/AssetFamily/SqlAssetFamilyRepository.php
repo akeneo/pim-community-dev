@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
 use Akeneo\AssetManager\Domain\Model\Image;
@@ -65,7 +65,7 @@ class SqlAssetFamilyRepository implements AssetFamilyRepositoryInterface
         INSERT INTO akeneo_asset_manager_asset_family
             (identifier, labels, attribute_as_label, attribute_as_main_media, rule_templates, transformations, naming_convention)
         VALUES
-            (:identifier, :labels, :attributeAsLabel, :attributeAsMainMedia, :ruleTemplates, :transformations, :naming_convention);
+            (:identifier, :labels, :attributeAsLabel, :attributeAsMainMedia, :ruleTemplates, :transformations, :namingConvention);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
@@ -76,7 +76,7 @@ SQL;
                 'attributeAsMainMedia' => $assetFamily->getAttributeAsMainMediaReference()->normalize(),
                 'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize()),
                 'transformations' => json_encode($assetFamily->getTransformationCollection()->normalize()),
-                'naming_convention' => json_encode($assetFamily->getNamingConvention() ? $assetFamily->getNamingConvention()->normalize() : null)
+                'namingConvention' => json_encode($assetFamily->getNamingConventionReference()->normalize())
             ]
         );
         if ($affectedRows !== 1) {
@@ -120,7 +120,7 @@ SQL;
                 'attributeAsMainMedia' => $assetFamily->getAttributeAsMainMediaReference()->normalize(),
                 'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize()),
                 'transformations' => json_encode($assetFamily->getTransformationCollection()->normalize()),
-                'namingConvention' => json_encode($assetFamily->getNamingConvention() ? $assetFamily->getNamingConvention()->normalize() : null)
+                'namingConvention' => json_encode($assetFamily->getNamingConventionReference()->normalize())
             ]
         );
 
@@ -243,7 +243,7 @@ SQL;
         ?string $attributeAsMainMedia,
         string $normalizedRuleTemplates,
         string $transformationCollection,
-        ?string $namingConvention
+        ?string $namingConventionReference
     ): AssetFamily {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
@@ -252,7 +252,7 @@ SQL;
         $entityImage = $this->hydrateImage($image);
         $ruleTemplateCollection = $this->hydrateRuleTemplates($normalizedRuleTemplates);
         $transformationCollection = $this->transformationCollectionFactory->fromNormalized(json_decode($transformationCollection, true));
-        $namingconvention = NamingConvention::createFromNormalized(json_decode($namingConvention, true));
+        $namingConventionReference = NamingConventionReference::createFromNormalized(json_decode($namingConventionReference, true));
 
         $assetFamily = AssetFamily::createWithAttributes(
             AssetFamilyIdentifier::fromString($identifier),
@@ -265,7 +265,7 @@ SQL;
 
         return $assetFamily
             ->withTransformationCollection($transformationCollection)
-            ->withNamingConvention($namingconvention);
+            ->withNamingConventionReference($namingConventionReference);
     }
 
     private function getSerializedLabels(AssetFamily $assetFamily): string

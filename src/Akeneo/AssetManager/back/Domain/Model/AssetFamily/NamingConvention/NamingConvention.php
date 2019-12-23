@@ -38,12 +38,8 @@ class NamingConvention
         return null;
     }
 
-    public static function createFromNormalized(?string $normalizedNamingConvention): ?NamingConvention
+    public static function createFromNormalized(array $normalizedNamingConvention): ?NamingConvention
     {
-        if (null === $normalizedNamingConvention) {
-            return self::noNamingConvention();
-        }
-
         Assert::keyExists($normalizedNamingConvention, 'source');
         Assert::isArray($normalizedNamingConvention['source']);
         Assert::keyExists($normalizedNamingConvention, 'pattern');
