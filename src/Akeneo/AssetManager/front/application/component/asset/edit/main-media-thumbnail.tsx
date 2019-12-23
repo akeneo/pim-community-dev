@@ -1,13 +1,14 @@
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
-import EditionAsset, {getEditionAssetLabel} from 'akeneoassetmanager/domain/model/asset/edition-asset';
+import EditionAsset, {
+  getEditionAssetLabel,
+  getEditionAssetMainMediaPreview,
+} from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import {getValue} from 'akeneoassetmanager/domain/model/asset/value-collection';
-import {MediaPreviewType, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
-import {getValueData} from 'akeneoassetmanager/domain/model/asset/data';
+import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 
 type MainMediaThumbnailProps = {
   asset: EditionAsset;
@@ -39,23 +40,11 @@ const Img = styled.img`
   object-fit: contain;
 `;
 
-export const getEditionAssetMainMediaUrl = (asset: EditionAsset, channel: ChannelCode, locale: LocaleCode): string => {
-  const attributeAsMainMediaIdentifier = asset.assetFamily.attributeAsMainMedia;
-  const mediaValue = getValue(asset.values, attributeAsMainMediaIdentifier, channel, locale);
-  if (undefined === mediaValue) return '';
-
-  return getMediaPreviewUrl({
-    type: MediaPreviewType.Thumbnail,
-    attributeIdentifier: attributeAsMainMediaIdentifier,
-    data: getValueData(mediaValue, mediaValue.attribute),
-  });
-};
-
 export const MainMediaThumbnail = ({asset, context}: MainMediaThumbnailProps) => (
   <Container>
     <Img
       alt={__('pim_asset_manager.asset.img', {label: getEditionAssetLabel(asset, context.locale)})}
-      src={getEditionAssetMainMediaUrl(asset, context.channel, context.locale)}
+      src={getMediaPreviewUrl(getEditionAssetMainMediaPreview(asset, context.channel, context.locale))}
     />
   </Container>
 );

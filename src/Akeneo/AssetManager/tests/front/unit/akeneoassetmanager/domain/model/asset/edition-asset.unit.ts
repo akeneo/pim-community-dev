@@ -29,4 +29,6 @@ describe('akeneo > asset family > domain > model > asset --- edition-asset', () 
   test('I can get the label for a EditionAsset', () => {
     expect(getEditionAssetLabel(editionAsset, 'en_US')).toEqual('nice label');
   });
+
+  test('I can get the EditionAsset MediaPreview', () => {});
 });

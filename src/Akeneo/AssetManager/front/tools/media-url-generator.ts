@@ -1,22 +1,8 @@
 import {File, isFileEmpty} from 'akeneoassetmanager/domain/model/file';
-import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
-import {getValueForChannelAndLocaleFilter} from 'akeneoassetmanager/domain/model/asset/value-collection';
+import {MediaPreview, MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
+import {getValueForChannelAndLocaleFilter} from 'akeneoassetmanager/domain/model/asset/value';
 const routing = require('routing');
-
-//TODO is this the right place?
-export enum MediaPreviewType {
-  Preview = 'preview',
-  Thumbnail = 'thumbnail',
-  ThumbnailSmall = 'thumbnail_small',
-}
-
-// TODO move this to right place
-export type MediaPreview = {
-  type: MediaPreviewType;
-  attributeIdentifier: AttributeIdentifier;
-  data: string;
-};
 
 export const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
 
@@ -84,7 +70,7 @@ export const getAssetPreview = (asset: any, type: MediaPreviewType, {locale, cha
 };
 
 // TODO The asset any is temporary and should be fixed when we create unified models
-export const getAssetEditUrl = (asset: any): string => {
+export const getAssetEditUrlLegacy = (asset: any): string => {
   const assetFamilyIdentifier = asset.assetFamily.identifier;
   const assetCode = asset.code;
 

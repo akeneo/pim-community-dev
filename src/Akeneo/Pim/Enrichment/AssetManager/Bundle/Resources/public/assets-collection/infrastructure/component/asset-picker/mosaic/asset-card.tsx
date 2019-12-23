@@ -11,7 +11,8 @@ import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reduc
 import Checkbox from 'akeneopimenrichmentassetmanager/platform/component/common/checkbox';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import CompletenessBadge from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/completeness-badge';
-import {MediaPreviewType, getAssetPreview} from 'akeneoassetmanager/tools/media-url-generator';
+import {getAssetPreview} from 'akeneoassetmanager/tools/media-url-generator';
+import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
 
 type ContainerProps = {isDisabled: boolean};
 const Container = styled.div<ContainerProps>`

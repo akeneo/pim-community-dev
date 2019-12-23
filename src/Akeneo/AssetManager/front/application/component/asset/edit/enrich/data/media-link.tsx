@@ -1,8 +1,8 @@
 import * as React from 'react';
-import __ from 'akeneoreferenceentity/tools/translator';
-import EditionValue, {setValueData} from 'akeneoassetmanager/domain/model/asset/edition-value';
+import __ from 'akeneoassetmanager/tools/translator';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import Key from 'akeneoassetmanager/tools/key';
-import {copyToClipboard, MediaPreviewType, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {copyToClipboard, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import styled from 'styled-components';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import DownloadIcon from 'akeneoassetmanager/application/component/app/icon/download';
@@ -12,10 +12,12 @@ import {
   mediaLinkDataFromString,
   areMediaLinkDataEqual,
   mediaLinkDataStringValue,
-  getMediaLinkValueUrl,
+  getMediaLinkUrl,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
-import {getValueData} from 'akeneoassetmanager/domain/model/asset/data';
+import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
+import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
+import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 
 const Container = styled.div`
   align-items: center;
@@ -85,11 +87,11 @@ const View = ({
     onChange(newValue);
   };
 
-  const mediaDownloadUrl = getMediaLinkValueUrl(value);
+  const mediaDownloadUrl = getMediaLinkUrl(value.data, value.attribute);
   const mediaPreviewUrl = getMediaPreviewUrl({
     type: MediaPreviewType.Thumbnail,
     attributeIdentifier: value.attribute.identifier,
-    data: getValueData(value, value.attribute),
+    data: getMediaData(value.data, value.attribute),
   });
 
   return (

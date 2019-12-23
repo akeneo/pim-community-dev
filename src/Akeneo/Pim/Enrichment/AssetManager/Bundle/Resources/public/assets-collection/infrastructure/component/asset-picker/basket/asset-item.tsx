@@ -6,7 +6,8 @@ import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reduc
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoassetmanager/tools/translator';
 import {RemoveButton} from 'akeneoassetmanager/application/component/app/remove-button';
-import {MediaPreviewType, getAssetPreview} from 'akeneoassetmanager/tools/media-url-generator';
+import {getAssetPreview} from 'akeneoassetmanager/tools/media-url-generator';
+import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
 
 const Container = styled.li`
   padding: 10px 0;

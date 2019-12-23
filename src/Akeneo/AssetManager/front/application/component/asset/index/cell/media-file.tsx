@@ -1,14 +1,15 @@
 import * as React from 'react';
 import {CellView} from 'akeneoassetmanager/application/configuration/value';
 import {Column} from 'akeneoassetmanager/application/reducer/grid';
-import {MediaPreviewType, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 import ListValue from 'akeneoassetmanager/domain/model/asset/list-value';
 import {isMediaFileAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
-import {getValueData} from 'akeneoassetmanager/domain/model/asset/data';
+import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
+import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
 const memo = (React as any).memo;
 
-const ImageCellView: CellView = memo(({value, column}: {value: ListValue; column: Column}) => {
+const MediaFileCellView: CellView = memo(({value, column}: {value: ListValue; column: Column}) => {
   if (!isMediaFileData(value.data)) return null;
   if (!isMediaFileAttribute(column.attribute)) return null;
 
@@ -21,11 +22,11 @@ const ImageCellView: CellView = memo(({value, column}: {value: ListValue; column
         src={getMediaPreviewUrl({
           type: MediaPreviewType.Thumbnail,
           attributeIdentifier: column.attribute.identifier,
-          data: getValueData(value, column.attribute),
+          data: getMediaData(value.data, column.attribute),
         })}
       />
     </div>
   );
 });
 
-export const cell = ImageCellView;
+export const cell = MediaFileCellView;

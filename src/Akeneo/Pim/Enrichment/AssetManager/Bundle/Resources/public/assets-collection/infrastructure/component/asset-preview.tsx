@@ -21,6 +21,9 @@ import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import Key from 'akeneoassetmanager/tools/key';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
+import {AssetFamily} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
+import assetFamilyFetcher, {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
 const Container = styled.div`
   position: relative;
@@ -55,6 +58,18 @@ type AssetPreviewProps = {
   onClose: () => void;
 };
 
+//TODO do not use Asset
+const useAssetFamily = (asset: Asset | undefined): AssetFamily | null => {
+  const [assetFamily, setAssetFamily] = React.useState<AssetFamily | null>(null);
+  React.useEffect(() => {
+    if (asset)
+      assetFamilyFetcher
+        .fetch(asset.assetFamily.identifier)
+        .then((result: AssetFamilyResult) => setAssetFamily(result.assetFamily));
+  }, [asset]);
+  return assetFamily;
+};
+
 export const AssetPreview = ({
   assetCollection,
   initialAssetCode,
@@ -65,15 +80,7 @@ export const AssetPreview = ({
 }: AssetPreviewProps) => {
   const [currentAssetCode, setCurrentAssetCode] = React.useState(initialAssetCode);
   const selectedAsset = getAssetByCode(assetCollection, currentAssetCode);
-
-  if (!selectedAsset) {
-    return null;
-  }
-
-  const selectedAssetLabel = getAssetLabel(selectedAsset, context.locale);
-  const assetCodeCollection = getAssetCodes(assetCollection);
-  const setPreviousAsset = () => setCurrentAssetCode(assetCode => getPreviousAssetCode(assetCodeCollection, assetCode));
-  const setNextAsset = () => setCurrentAssetCode(assetCode => getNextAssetCode(assetCodeCollection, assetCode));
+  const assetFamily = useAssetFamily(selectedAsset);
 
   React.useEffect(() => {
     const handleArrowNavigation = (event: KeyboardEvent) => {
@@ -86,6 +93,19 @@ export const AssetPreview = ({
     document.addEventListener('keydown', handleArrowNavigation);
     return () => document.removeEventListener('keydown', handleArrowNavigation);
   }, []);
+
+  if (!selectedAsset) {
+    return null;
+  }
+  if (null === assetFamily) {
+    return null;
+  }
+
+  const selectedAssetLabel = getAssetLabel(selectedAsset, context.locale);
+  const assetCodeCollection = getAssetCodes(assetCollection);
+  const setPreviousAsset = () => setCurrentAssetCode(assetCode => getPreviousAssetCode(assetCodeCollection, assetCode));
+  const setNextAsset = () => setCurrentAssetCode(assetCode => getNextAssetCode(assetCodeCollection, assetCode));
+
   return (
     <Modal data-role="asset-preview-modal">
       <Container>
@@ -99,7 +119,11 @@ export const AssetPreview = ({
           </SubTitle>
           <Title>{selectedAssetLabel}</Title>
           <PreviewContainer>
-            <Preview context={context} asset={selectedAsset} />
+            <Preview
+              context={context}
+              asset={selectedAsset}
+              attributeAsMainMedia={getAttributeAsMainMedia(assetFamily)}
+            />
           </PreviewContainer>
           <Carousel
             context={context}

@@ -1,4 +1,3 @@
-import {Labels} from 'akeneopimenrichmentassetmanager/platform/model/label';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
 import {
@@ -8,17 +7,10 @@ import {
 import {getLabel} from 'pimui/js/i18n';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {assetcodesAreEqual} from 'akeneoassetmanager/domain/model/asset/code';
-import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
-import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {
-  MEDIA_LINK_ATTRIBUTE_TYPE,
-  NormalizedMediaLinkAttribute,
-} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
-import {MediaTypes, YOUTUBE_WATCH_URL} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
-import {getMediaDownloadUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 export const ASSET_COLLECTION_LIMIT = 50;
 
@@ -51,16 +43,11 @@ export const assetHasCompleteness = (asset: Asset) => asset.completeness.require
 export const getCompletenessPercentage = (completeness: Completeness) =>
   Math.floor((completeness.complete / completeness.required) * 100);
 
-export type Asset = {
-  identifier: AssetIdentifier;
-  code: AssetCode;
-  image: ImageCollection;
+export type Asset = ListAsset & {
   assetFamily: AssetFamily;
-  labels: Labels;
-  completeness: Completeness;
 };
 
-export const isComplete = (asset: Asset) => asset.completeness.complete === asset.completeness.required;
+export const isComplete = (asset: ListAsset) => asset.completeness.complete === asset.completeness.required;
 export const emptyAsset = (assetCode?: AssetCode): Asset => ({
   identifier: '',
   code: assetCode || '',
@@ -71,9 +58,11 @@ export const emptyAsset = (assetCode?: AssetCode): Asset => ({
     complete: 0,
     required: 0,
   },
+  values: {},
+  assetFamilyIdentifier: '',
 });
 
-export const getAssetLabel = (asset: Asset, locale: LocaleCode): string => {
+export const getAssetLabel = (asset: ListAsset, locale: LocaleCode): string => {
   return getLabel(asset.labels, locale, asset.code);
 };
 
@@ -115,7 +104,7 @@ export const getNextAssetCode = (assetCollection: AssetCode[], assetCode: AssetC
 
 export const assetWillNotMoveInCollection = (
   assetCollection: AssetCode[],
-  asset: Asset,
+  asset: ListAsset,
   direction: MoveDirection
 ): boolean => {
   const currentAssetPosition = assetCollection.indexOf(asset.code);
@@ -127,13 +116,13 @@ export const assetWillNotMoveInCollection = (
   );
 };
 
-export const getAssetCodes = (assetCollection: Asset[]): AssetCode[] => {
+export const getAssetCodes = (assetCollection: ListAsset[]): AssetCode[] => {
   return assetCollection.map(asset => asset.code);
 };
 
 export const moveAssetInCollection = (
   assetCollection: AssetCode[],
-  asset: Asset,
+  asset: ListAsset,
   direction: MoveDirection
 ): AssetCode[] => {
   const currentAssetPosition = assetCollection.indexOf(asset.code);
@@ -160,64 +149,60 @@ export const moveAssetInCollection = (
       ];
 };
 
-export const getAssetByCode = (assetCollection: Asset[], assetCode: AssetCode): Asset | undefined => {
-  return assetCollection.find((asset: Asset) => asset.code === assetCode);
+export const getAssetByCode = <T extends Asset = Asset>(assetCollection: T[], assetCode: AssetCode): T | undefined => {
+  return assetCollection.find((asset: ListAsset) => asset.code === assetCode);
 };
 
-export const sortAssetCollection = (assetCollection: Asset[], assetCodes: AssetCode[]): Asset[] => {
+export const sortAssetCollection = <T extends Asset = Asset>(assetCollection: T[], assetCodes: AssetCode[]): T[] => {
   return [...assetCollection].sort((a, b) => assetCodes.indexOf(a.code) - assetCodes.indexOf(b.code));
 };
 
-const getAssetMainMedia = (asset: Asset, _context: Context): ImageValue | undefined => asset.image[0];
+// //TODO clean
+// const getAssetMainMedia = (asset: Asset, _context: Context): ImageValue | undefined => asset.image[0];
 
-export const assetHasMainMedia = (asset: Asset, context: Context): asset is Asset => {
-  const image = getAssetMainMedia(asset, context);
+// export const assetHasMainMedia = (asset: Asset, context: Context): asset is Asset => {
+//   const image = getAssetMainMedia(asset, context);
 
-  return undefined !== image && image.data.filePath !== '';
-};
+//   return undefined !== image && image.data.filePath !== '';
+// };
 
-export const getAssetMainMediaDownloadLink = (asset: Asset, context: Context): string => {
-  const imageValue = getAssetMainMedia(asset, context) as ImageValue;
-  const attribute = getAttribute(asset.assetFamily.attributes, imageValue.attribute);
+// //TODO clean
+// export const getAssetMainMediaDownloadLink = (asset: Asset, context: Context): string => {
+//   const imageValue = getAssetMainMedia(asset, context) as ImageValue;
+//   const attribute = getAttribute(asset.assetFamily.attributes, imageValue.attribute);
 
-  return MEDIA_LINK_ATTRIBUTE_TYPE === attribute.type
-    ? getMediaLinkUrl(imageValue.data, attribute as NormalizedMediaLinkAttribute)
-    : getMediaDownloadUrl(imageValue.data.filePath);
-};
+//   return MEDIA_LINK_ATTRIBUTE_TYPE === attribute.type
+//     ? getMediaLinkUrl(imageValue.data, attribute as NormalizedMediaLinkAttribute)
+//     : getMediaDownloadUrl(imageValue.data.filePath);
+// };
 
-export const getAssetMainMediaOriginalFilename = (asset: Asset, context: Context) =>
-  (getAssetMainMedia(asset, context) as ImageValue).data.originalFilename;
+// //TODO clean
+// export const getAssetMainMediaOriginalFilename = (asset: Asset, context: Context) =>
+//   (getAssetMainMedia(asset, context) as ImageValue).data.originalFilename;
 
-const getAttribute = (
-  attributes: NormalizedAttribute[],
-  attributeIdentifier: AttributeIdentifier
-): NormalizedAttribute => {
-  const attribute = attributes.find((attribute: NormalizedAttribute) => attribute.identifier === attributeIdentifier);
+// const getAttribute = (
+//   attributes: NormalizedAttribute[],
+//   attributeIdentifier: AttributeIdentifier
+// ): NormalizedAttribute => {
+//   const attribute = attributes.find((attribute: NormalizedAttribute) => attribute.identifier === attributeIdentifier);
 
-  if (undefined === attribute) {
-    throw Error(`Attribute "${attributeIdentifier}" doesn't seem to exist`);
-  }
+//   if (undefined === attribute) {
+//     throw Error(`Attribute "${attributeIdentifier}" doesn't seem to exist`);
+//   }
 
-  return attribute;
-};
+//   return attribute;
+// };
 
-export const assetMainMediaCanBeDownloaded = (asset: Asset, context: Context) => {
-  const imageValue = getAssetMainMedia(asset, context) as ImageValue;
-  const attribute = getAttribute(asset.assetFamily.attributes, imageValue.attribute);
+// // export const getAttributeAsMainMedia = (asset: Asset): NormalizedAttribute =>
+// //   getAttribute(asset.assetFamily.attributes, asset.assetFamily.attributeAsMainMedia);
 
-  return MEDIA_LINK_ATTRIBUTE_TYPE !== attribute.type;
-};
-
-export const getAttributeAsMainMedia = (asset: Asset): NormalizedAttribute =>
-  getAttribute(asset.assetFamily.attributes, asset.assetFamily.attributeAsMainMedia);
-
-export const getMediaLinkUrl = (image: ImageData, attribute: NormalizedMediaLinkAttribute): string => {
-  switch (attribute.media_type) {
-    case MediaTypes.youtube:
-      return YOUTUBE_WATCH_URL + image.originalFilename;
-    default:
-      return `${null !== attribute.prefix ? attribute.prefix : ''}${image.filePath}${
-        null !== attribute.suffix ? attribute.suffix : ''
-      }`;
-  }
-};
+// const getMediaLinkUrl = (image: ImageData, attribute: NormalizedMediaLinkAttribute): string => {
+//   switch (attribute.media_type) {
+//     case MediaTypes.youtube:
+//       return YOUTUBE_WATCH_URL + image.originalFilename;
+//     default:
+//       return `${null !== attribute.prefix ? attribute.prefix : ''}${image.filePath}${
+//         null !== attribute.suffix ? attribute.suffix : ''
+//       }`;
+//   }
+// };

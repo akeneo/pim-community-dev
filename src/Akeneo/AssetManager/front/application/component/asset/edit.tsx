@@ -10,7 +10,6 @@ import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
 import {backToAssetFamily, saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
 import EditState from 'akeneoassetmanager/application/component/app/edit-state';
-import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import {channelChanged, localeChanged} from 'akeneoassetmanager/application/action/asset/user';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
@@ -19,8 +18,6 @@ import Channel from 'akeneoassetmanager/domain/model/channel';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import Key from 'akeneoassetmanager/tools/key';
-import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
-import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
@@ -31,15 +28,8 @@ import AttributeCode from 'akeneoassetmanager/domain/model/attribute/code';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {getLabel} from 'pimui/js/i18n';
 import EditionAsset, {getEditionAssetCompleteness} from 'akeneoassetmanager/domain/model/asset/edition-asset';
-import {getValue} from 'akeneoassetmanager/domain/model/asset/value-collection';
-import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
-import {isMediaLinkData} from 'akeneoassetmanager/domain/model/asset/data/media-link';
-import {MediaPreviewType} from 'akeneoassetmanager/tools/media-url-generator';
-import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 import {MainMediaThumbnail} from 'akeneoassetmanager/application/component/asset/edit/main-media-thumbnail';
-
 const securityContext = require('pim/security-context');
-const routing = require('routing');
 
 interface StateProps {
   sidebar: {
@@ -346,37 +336,3 @@ export default connect(
     };
   }
 )(AssetEditView);
-
-// TODO Will be trashed when File component will be reworked
-export const getEditionAssetMainImageLegacy = (
-  asset: EditionAsset,
-  channel: ChannelReference,
-  locale: LocaleReference
-): FileModel => {
-  const attributeAsMainMediaIdentifier = asset.assetFamily.attributeAsMainMedia;
-
-  const imageValue = getValue(asset.values, attributeAsMainMediaIdentifier, channel, locale);
-
-  if (undefined === imageValue) {
-    return createEmptyFile();
-  }
-
-  if (isMediaFileData(imageValue.data)) {
-    return imageValue.data;
-  }
-
-  if (isMediaLinkData(imageValue.data)) {
-    const filePath = routing.generate('akeneo_asset_manager_image_preview', {
-      type: MediaPreviewType.Thumbnail,
-      attributeIdentifier: imageValue.attribute.identifier,
-      data: imageValue.data,
-    });
-    const originalFilename = '';
-    return {
-      filePath,
-      originalFilename,
-    };
-  }
-
-  throw Error('attributeAsMainMedia should be either a MediaFile or MediaLink');
-};

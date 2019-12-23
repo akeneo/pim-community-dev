@@ -5,8 +5,7 @@ import AssetFamilyIdentifier, {
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {AssetFamily} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
-import {Asset, Completeness} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
-import {isNumber, isString, isLabels} from 'akeneoassetmanager/domain/model/utils';
+import {Asset} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
@@ -56,47 +55,11 @@ const denormalizeAssetCollection = (assets: ListAsset[], assetFamilyResult: Asse
   return assets.map(
     (asset: ListAsset): Asset => {
       return {
-        ...denormalizeAsset(asset),
-        assetFamily: assetFamily,
+        ...asset,
+        assetFamily,
       };
     }
   );
-};
-
-const denormalizeAsset = (asset: ListAsset): ListAsset => {
-  if (!isString(asset.identifier)) {
-    throw Error('The identifier is not well formated');
-  }
-
-  if (!isString(asset.code)) {
-    throw Error('The code is not well formated');
-  }
-
-  if (!isCompleteness(asset.completeness)) {
-    throw Error('The completeness is not well formated');
-  }
-
-  if (!isLabels(asset.labels)) {
-    throw Error('The labels is not well formated');
-  }
-
-  return asset;
-};
-
-const isCompleteness = (completeness: any): completeness is Completeness => {
-  if (undefined === completeness || typeof completeness !== 'object') {
-    return false;
-  }
-
-  if (!isNumber(completeness.complete)) {
-    return false;
-  }
-
-  if (!isNumber(completeness.required)) {
-    return false;
-  }
-
-  return true;
 };
 
 const denormalizeAssetFamily = (

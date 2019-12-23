@@ -1,11 +1,6 @@
 import * as React from 'react';
 import {File as FileModel, isFileEmpty, isFileInStorage, createEmptyFile} from 'akeneoassetmanager/domain/model/file';
-import {
-  getImageDownloadUrl,
-  getImageShowUrl,
-  MediaPreviewType,
-  getMediaPreviewUrl,
-} from 'akeneoassetmanager/tools/media-url-generator';
+import {getImageDownloadUrl, getImageShowUrl, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
 import Trash from 'akeneoassetmanager/application/component/app/icon/trash';
@@ -15,6 +10,7 @@ import Import from 'akeneoassetmanager/application/component/app/illustration/im
 import Key from 'akeneoassetmanager/tools/key';
 import styled from 'styled-components';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
 
 const Img = styled.img`
   margin: auto;

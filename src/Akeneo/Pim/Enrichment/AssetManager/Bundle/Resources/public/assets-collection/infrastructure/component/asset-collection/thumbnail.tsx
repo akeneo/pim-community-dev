@@ -14,8 +14,9 @@ import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import Left from 'akeneoassetmanager/application/component/app/icon/left';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
-import {getAssetPreview, MediaPreviewType, getAssetEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {getAssetPreview, getAssetEditUrlLegacy} from 'akeneoassetmanager/tools/media-url-generator';
 import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
+import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
 
 const Img = styled.img`
   width: 140px;
@@ -139,7 +140,7 @@ export const Thumbnail = ({
         <Overlay onClick={handleOverlayClick} ref={overlayRef} data-testid="overlay">
           <Actions>
             <RemoveAction onClick={onRemove} data-remove={asset.code} />
-            <EditAction href={getAssetEditUrl(asset)} data-edit={asset.code} />
+            <EditAction href={getAssetEditUrlLegacy(asset)} data-edit={asset.code} />
           </Actions>
           {!assetWillNotMoveInCollection(assetCollection, asset, MoveDirection.Before) ? (
             <MoveButton

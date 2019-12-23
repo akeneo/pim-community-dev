@@ -5,7 +5,6 @@ import {
   isValueRequired,
   areValuesEqual,
   normalizeValue,
-  getEditionValueMediaPreview,
 } from 'akeneoassetmanager/domain/model/asset/edition-value';
 
 const normalizedDescription = {
