@@ -5,8 +5,8 @@ user:
         notifications:
             to_review: When new proposal to review
             state: When proposal is accepted or rejected
-            yes: Yes
-            no: No
+            yes: "Yes"
+            no: "No"
     asset_delay_reminder: Asset delay reminder (in days)
     default_published_product_grid_view:
         label: Default published product grid view
