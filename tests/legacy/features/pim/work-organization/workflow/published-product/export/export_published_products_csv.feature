@@ -7,7 +7,6 @@ Feature: Export published products
   Background:
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
-    And the missing product asset variations have been generated
 
   @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Successfully export published products
@@ -40,10 +39,6 @@ Feature: Export published products
       | jacket-white | description | A really stylish white jacket    | en_US  | mobile |
       | jacket-white | description | Ein sehr elegantes weißes Jacket | de_DE  | mobile |
       | jacket-white | gallery     | paint                            |        |        |
-    And I am on the "paint" asset page
-    And I visit the "Variations" tab
-    And I upload the reference file akeneo.jpg
-    And I save the asset
     And I edit the "jacket-white" product
     When I press the secondary action "Publish"
     And I confirm the publishing
@@ -55,9 +50,9 @@ Feature: Export published products
     And I wait for the "csv_clothing_mobile_published_product_export" job to finish
     Then exported file of "csv_clothing_mobile_published_product_export" should contain:
     """
-    sku;categories;datasheet;description-de_DE-mobile;description-en_GB-mobile;description-en_US-mobile;description-fr_FR-mobile;enabled;family;gallery;groups;handmade;length;length-unit;main_color;manufacturer;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-mobile;price-EUR;price-USD;rating;release_date-mobile;secondary_color;side_view;size;top_view;weather_conditions
-    jacket-white;jackets,winter_collection;;"Ein sehr elegantes weißes Jacket";;"A really stylish white jacket";"Un Jacket blanc élégant";1;jackets;paint;;;;;white;Volcom;"Weißes Jacket";;"White jacket";"Jacket blanc";;10.00;15.00;;;;;XL;;
-    jacket-black;jackets,winter_collection;;;;;;1;jackets;paint;;;;;black;Volcom;"Weißes Jacket";"White jacket";"White jacket";"Jacket blanc";;10.00;15.00;;;;;XL;;
+    sku;categories;datasheet;description-de_DE-mobile;description-en_GB-mobile;description-en_US-mobile;description-fr_FR-mobile;enabled;family;groups;handmade;length;length-unit;main_color;manufacturer;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-mobile;price-EUR;price-USD;rating;release_date-mobile;secondary_color;side_view;size;top_view;weather_conditions
+    jacket-white;jackets,winter_collection;;"Ein sehr elegantes weißes Jacket";;"A really stylish white jacket";"Un Jacket blanc élégant";1;jackets;;;;;white;Volcom;"Weißes Jacket";;"White jacket";"Jacket blanc";;10.00;15.00;;;;;XL;;
+    jacket-black;jackets,winter_collection;;;;;;1;jackets;;;;;black;Volcom;"Weißes Jacket";"White jacket";"White jacket";"Jacket blanc";;10.00;15.00;;;;;XL;;
     """
 
   Scenario: Export only the published products updated since the last export

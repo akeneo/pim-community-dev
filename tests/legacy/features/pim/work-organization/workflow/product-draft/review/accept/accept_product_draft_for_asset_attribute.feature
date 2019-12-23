@@ -29,14 +29,6 @@ Feature: Review a product draft
   Scenario: Successfully accept a multiselect attribute from a product draft
     Given I am logged in as "Mary"
     And I edit the "my-jacket" product
-    And I visit the "Media" group
-    And I start to manage assets for "gallery"
-    When I check the row "machine"
-    And I check the row "paint"
-    Then the item picker basket should contain paint, machine
-    When I confirm the asset modification
-    Then the "gallery" asset gallery should contain paint, machine, bridge
-    When I save the product
     And I press the "Send for approval" button
     And I press the "Send" button in the popin
     And I logout

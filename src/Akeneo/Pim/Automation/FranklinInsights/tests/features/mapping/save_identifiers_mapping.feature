@@ -101,7 +101,6 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | attribute_type                     |
       | pim_catalog_textarea               |
       | pim_catalog_price_collection       |
-      | pim_assets_collection              |
       | pim_catalog_multiselect            |
       | pim_reference_data_multiselect     |
       | pim_reference_data_simpleselect    |

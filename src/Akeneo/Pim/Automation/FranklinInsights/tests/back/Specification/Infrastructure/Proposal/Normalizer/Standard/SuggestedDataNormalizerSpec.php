@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard;
 
-use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as EnterpriseAttributeTypes;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
@@ -290,7 +289,6 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
             ['pimAttributeCode' => 'a_price', 'value' => ['25 €', '30 $']],
             ['pimAttributeCode' => 'a_simple_referencedata', 'value' => 'black'],
             ['pimAttributeCode' => 'a_multi_referencedata', 'value' => ['white', 'purple']],
-            ['pimAttributeCode' => 'an_asset_collection', 'value' => ['asset1', 'asset2']],
             ['pimAttributeCode' => 'a_simple_referenceentity', 'value' => 'philippestarck'],
             ['pimAttributeCode' => 'a_multi_referenceentity', 'value' => ['nantes', 'boston', 'telaviv', 'dusseldorf']],
         ];
@@ -303,7 +301,6 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
                 'a_price',
                 'a_simple_referencedata',
                 'a_multi_referencedata',
-                'an_asset_collection',
                 'a_simple_referenceentity',
                 'a_multi_referenceentity',
             ]
@@ -316,7 +313,6 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
                 (new AttributeBuilder())->withCode('a_price')->withType(AttributeTypes::PRICE_COLLECTION)->build(),
                 (new AttributeBuilder())->withCode('a_simple_referencedata')->withType(AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT)->build(),
                 (new AttributeBuilder())->withCode('a_multi_referencedata')->withType(AttributeTypes::REFERENCE_DATA_MULTI_SELECT)->build(),
-                (new AttributeBuilder())->withCode('an_asset_collection')->withType(EnterpriseAttributeTypes::ASSETS_COLLECTION)->build(),
                 (new AttributeBuilder())->withCode('a_simple_referenceentity')->withType(ReferenceEntityType::REFERENCE_ENTITY)->build(),
                 (new AttributeBuilder())->withCode('a_multi_referenceentity')->withType(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION)->build(),
             ]

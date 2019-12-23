@@ -1,5 +1,0 @@
-Akeneo\Pim\Structure\Component\Model\Attribute:
-    constraints:
-        - Akeneo\Asset\Bundle\Validator\Constraints\AssetsCollectionConstraint:
-            groups:
-                - pim_assets_collection

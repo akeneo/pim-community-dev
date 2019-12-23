@@ -1,10 +1,4 @@
 services:
-#    pimee_security.writer.database.asset_category_access:
-#        class: '%pim_connector.writer.database.class%'
-#        arguments:
-#            - '@pimee_security.saver.asset_category_access'
-#            - '@akeneo_storage_utils.doctrine.object_detacher'
-
     pimee_security.writer.database.locale_access:
         class: '%pim_connector.writer.database.class%'
         arguments:

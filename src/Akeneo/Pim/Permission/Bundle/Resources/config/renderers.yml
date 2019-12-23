@@ -14,7 +14,6 @@ services:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
-#            - '@pimee_product_asset.repository.asset'
             - 'AkeneoPimEnrichmentBundle:Product:renderPdf.html.twig'
             - '@pim_catalog.repository.cached_attribute_option'
             - '%pim_pdf_generator_font%'

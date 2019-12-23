@@ -31,9 +31,6 @@ class CleanCategoryAccessesCommand extends Command
     /** @var CategoryAccessRepository */
     private $accessRepository;
 
-    /** @var CategoryAccessRepository */
-    private $categoryAccessRepository;
-
     /** @var GroupRepositoryInterface */
     private $groupRepository;
 
@@ -42,14 +39,12 @@ class CleanCategoryAccessesCommand extends Command
 
     public function __construct(
         CategoryAccessRepository $accessRepository,
-//        CategoryAccessRepository $categoryAccessRepository,
         GroupRepositoryInterface $groupRepository,
         ObjectManager $objectManager
     ) {
         parent::__construct();
 
         $this->accessRepository = $accessRepository;
-//        $this->categoryAccessRepository = $categoryAccessRepository;
         $this->groupRepository = $groupRepository;
         $this->objectManager = $objectManager;
     }
@@ -71,7 +66,6 @@ class CleanCategoryAccessesCommand extends Command
         $output->writeln('Removing the group "ALL" from categories\' permissions...');
         $groupAll = $this->groupRepository->getDefaultUserGroup();
         $this->accessRepository->revokeAccessToGroups([$groupAll]);
-//        $this->categoryAccessRepository->revokeAccessToGroups([$groupAll]);
         $this->objectManager->flush();
         $output->writeln('<info>done !</info>');
     }

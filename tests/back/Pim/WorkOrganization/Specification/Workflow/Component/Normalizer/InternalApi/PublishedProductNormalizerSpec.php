@@ -12,12 +12,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi;
 
-use Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VersionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
@@ -102,7 +102,6 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
         VersionNormalizer $versionNormalizer,
         StructureVersionProviderInterface $structureVersionProvider,
         GetPublishedProductCompletenesses $getPublishedProductCompletenesses,
-        NormalizerInterface $incompleteValuesNormalizer,
         ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
         ProductNormalizer $internalApiProductNormalizer,

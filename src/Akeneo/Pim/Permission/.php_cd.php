@@ -67,7 +67,6 @@ $rules = [
         'Akeneo\Channel\Component\Model\ChannelInterface',
 
         //TODO: Link by id instead of reference
-        'Akeneo\Asset\Component\Model\CategoryInterface',
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
@@ -94,9 +93,6 @@ $rules = [
 
         //TODO: Public constants
         'Akeneo\UserManagement\Component\Model\User',
-
-        // TIP-1017: Do not use public constants of AttributeTypes
-        'Akeneo\Asset\Bundle\AttributeType\AttributeTypes',
 
         //TODO: It uses jobs (maybe ImportExportBundle is not part of the Platform)
         'Akeneo\Platform\Bundle\ImportExportBundle\Event\JobExecutionEvents',
@@ -155,9 +151,6 @@ $rules = [
         // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
 
-        // TIP-883 Fixes services to use attribute code from value
-        'Akeneo\Asset\Component\Repository\AssetRepositoryInterface',
-
         //TODO: just because we override ProductController
         'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder',
     ])->in('Akeneo\Pim\Permission\Bundle'),
@@ -168,7 +161,6 @@ $rules = [
         'Akeneo\Tool',
 
         // TIP-998: Move Access entities to component
-        'Akeneo\Pim\Permission\Bundle\Entity\AssetCategoryAccess',
         'Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess',
 
         // TIP-997: Create interfaces for Access repositories

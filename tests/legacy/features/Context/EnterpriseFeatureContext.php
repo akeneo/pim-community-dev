@@ -21,7 +21,6 @@ use Pim\Behat\Context\Domain\System\PermissionsContext;
 use Pim\Behat\Context\Domain\TreeContext;
 use Pim\Behat\Context\Storage\FileInfoStorage;
 use Pim\Behat\Context\Storage\ProductStorage;
-use PimEnterprise\Behat\Context\AssetContext;
 use PimEnterprise\Behat\Context\DashboardContext;
 use PimEnterprise\Behat\Context\HookContext;
 use PimEnterprise\Behat\Context\JobContext;
@@ -60,7 +59,6 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->contexts['domain-tree'] = $environment->getContext(TreeContext::class);
         $this->contexts['domain-secondary-actions'] = $environment->getContext(SecondaryActionsContext::class);
         $this->contexts['domain-group'] = $environment->getContext(ProductGroupContext::class);
-        $this->contexts['asset'] = $environment->getContext(EnterpriseAssetContext::class);
         $this->contexts['file_transformer'] = $environment->getContext(EnterpriseFileTransformerContext::class);
         $this->contexts['hook'] = $environment->getContext(HookContext::class);
         $this->contexts['job'] = $environment->getContext(JobContext::class);
@@ -68,7 +66,6 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->contexts['amWidget'] = $environment->getContext(WidgetContext::class);
         $this->contexts['amProject'] = $environment->getContext(ProjectContext::class);
         $this->contexts['dashboard'] = $environment->getContext(DashboardContext::class);
-        $this->contexts['asset'] = $environment->getContext(AssetContext::class);
         $this->contexts['storage-product'] = $environment->getContext(ProductStorage::class);
         $this->contexts['storage-file-info'] = $environment->getContext(FileInfoStorage::class);
         $this->contexts['attribute-validation'] = $environment->getContext(AttributeValidationContext::class);
@@ -276,26 +273,6 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->spin(function () use ($total) {
             return $total === count($this->getSession()->getPage()->findAll('css', '.entity-version[data-version]'));
         }, 'Revert failed');
-    }
-
-    /**
-     * @Given /^I start to manage assets for "(?P<field>(?:[^"]|\\")*)"$/
-     */
-    public function iStartToManageAssetsFor($field)
-    {
-        $assetCollectionPicker = $this->spin(function () use ($field) {
-            return $this->getSubcontext('navigation')->getCurrentPage()->findFieldContainer($field)->getParent();
-        }, 'Did not find the asset collection picker');
-
-        $manageAssets = $this->spin(function () use ($assetCollectionPicker) {
-            return $assetCollectionPicker->find('css', '.add-asset');
-        }, 'Did not find the manage asset button');
-        $manageAssets->click();
-
-        $this->spin(function () {
-            return $this->getSession()->getPage()
-                ->find('css', '#grid-asset-picker-grid[data-rendered="true"]');
-        }, 'Cannot find asset picker grid');
     }
 
     /**

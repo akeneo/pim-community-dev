@@ -53,39 +53,3 @@ Feature: Mass add product value to products at once via a form
     When I go on the last executed job resume of "add_attribute_value"
     Then I should see the text "skipped products 1"
 
-  Scenario: I can mass add assets to products
-    Given a "default" catalog configuration
-    And the following assets category:
-      | code               | parent | label-en_US |
-      | asset_main_catalog |        | Main        |
-    And the following attributes:
-      | label-en_US | group | type                  | code   | reference_data_name | localizable | scopable |
-      | Assets      | other | pim_assets_collection | assets | assets              | 0           | 0        |
-    And the following family:
-      | code    | attributes |
-      | megazor | assets     |
-    And the following assets:
-      | code    | categories         |
-      | video_1 | asset_main_catalog |
-      | video_2 | asset_main_catalog |
-      | video_3 | asset_main_catalog |
-    And the following products:
-      | sku         | family  | assets           |
-      | super_watch | megazor | video_1, video_2 |
-      | super_hat   | megazor |                  |
-    And I am logged in as "Julia"
-    When I am on the products grid
-    And I filter by "family" with operator "in list" and value "megazor"
-    And I select rows super_watch and super_hat
-    And I press the "Bulk actions" button
-    And I choose the "Add attributes values" operation
-    And I display the Assets attribute
-    And I start to manage assets for "Assets"
-    And I check the row "video_3"
-    And I confirm the asset modification
-    When I confirm mass edit
-    And I wait for the "add_attribute_value" job to finish
-    Then the product "super_watch" should have the following values:
-      | assets | [video_3], [video_1], [video_2] |
-    And the product "super_hat" should have the following values:
-      | assets | [video_3] |

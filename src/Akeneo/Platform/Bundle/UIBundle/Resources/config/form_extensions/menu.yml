@@ -1,24 +1,4 @@
 extensions:
-    pim-menu-asset:
-        module: pim/menu/tab
-        parent: pim-menu
-        aclResourceId: pimee_product_asset_index
-        position: 35
-        targetZone: mainMenu
-        config:
-            title: pim_menu.tab.asset
-            iconModifier: iconAsset
-            to: pimee_product_asset_index
-
-    pim-menu-enrich-asset-category:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: pimee_product_asset_category_list
-        position: 160
-        config:
-            title: pim_menu.item.asset_category
-            to: pimee_asset_categorytree_index
-
     pim-menu-enrich-rule:
         module: pim/menu/item
         parent: pim-menu-settings-navigation-block

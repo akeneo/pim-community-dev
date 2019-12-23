@@ -1,6 +1,5 @@
 parameters:
     pimee_security.updater.locale_access.class:           Akeneo\Pim\Permission\Component\Updater\LocaleAccessUpdater
-#    pimee_security.updater.asset_category_access.class:   Akeneo\Pim\Permission\Component\Updater\AssetCategoryAccessUpdater
     pimee_security.updater.product_category_access.class: Akeneo\Pim\Permission\Component\Updater\ProductCategoryAccessUpdater
     pimee_security.updater.attribute_group_access.class:  Akeneo\Pim\Permission\Component\Updater\AttributeGroupAccessUpdater
     pimee_security.updater.job_profile_access.class:      Akeneo\Pim\Permission\Component\Updater\JobProfileAccessUpdater
@@ -11,12 +10,6 @@ services:
         arguments:
             - '@pim_user.repository.group'
             - '@pim_catalog.repository.locale'
-
-#    pimee_security.updater.asset_category_access:
-#        class: '%pimee_security.updater.asset_category_access.class%'
-#        arguments:
-#            - '@pim_user.repository.group'
-#            - '@pimee_product_asset.repository.asset_category'
 
     pimee_security.updater.product_category_access:
         class: '%pimee_security.updater.product_category_access.class%'

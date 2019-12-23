@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\EventSubscriber;
 
-use Akeneo\Asset\Component\Model\CategoryInterface as ProductAssetCategoryInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
@@ -30,7 +29,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Subscriber responsible for setting default permissions on creation for attribute groups, job instances,
- * product categories, product asset categories and locales.
+ * product categories and locales.
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
@@ -48,9 +47,6 @@ class AddDefaultPermissionsSubscriber implements EventSubscriberInterface
     /** @var CategoryAccessManager */
     private $productCategoryAccessManager;
 
-    /** @var CategoryAccessManager */
-    private $productAssetCategoryAccessManager;
-
     /** @var LocaleAccessManager */
     private $localeAccessManager;
 
@@ -59,14 +55,12 @@ class AddDefaultPermissionsSubscriber implements EventSubscriberInterface
         AttributeGroupAccessManager $attributeGroupAccessManager,
         JobProfileAccessManager $jobInstanceAccessManager,
         CategoryAccessManager $productCategoryAccessManager,
-//        CategoryAccessManager $productAssetCategoryAccessManager,
         LocaleAccessManager $localeAccessManager
     ) {
         $this->groupRepository = $groupRepository;
         $this->attributeGroupAccessManager = $attributeGroupAccessManager;
         $this->jobInstanceAccessManager = $jobInstanceAccessManager;
         $this->productCategoryAccessManager = $productCategoryAccessManager;
-//        $this->productAssetCategoryAccessManager = $productAssetCategoryAccessManager;
         $this->localeAccessManager = $localeAccessManager;
     }
 
@@ -110,8 +104,6 @@ class AddDefaultPermissionsSubscriber implements EventSubscriberInterface
             $this->productCategoryAccessManager->grantAccess($subject, $defaultGroup, Attributes::OWN_PRODUCTS);
         } elseif ($subject instanceof CategoryInterface) {
             $this->productCategoryAccessManager->setAccessLikeParent($subject, ['owner' => true]);
-        } elseif ($subject instanceof ProductAssetCategoryInterface) {
-            $this->productAssetCategoryAccessManager->setAccessLikeParent($subject, ['owner' => false]);
         } elseif ($subject instanceof LocaleInterface) {
             $this->localeAccessManager->setAccess($subject, [$defaultGroup], [$defaultGroup]);
         }
