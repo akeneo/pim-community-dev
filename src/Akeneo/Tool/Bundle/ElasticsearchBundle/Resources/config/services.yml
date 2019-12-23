@@ -7,6 +7,7 @@ services:
         class: '%akeneo_elasticsearch.registry.clients.class%'
 
     akeneo_elasticsearch.client_builder:
+        public: true
         class: '%akeneo_elasticsearch.client_builder.class%'
 
     Akeneo\Tool\Bundle\ElasticsearchBundle\Command\ResetIndexesCommand:
