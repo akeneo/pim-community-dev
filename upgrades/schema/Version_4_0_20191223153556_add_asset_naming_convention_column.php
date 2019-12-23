@@ -6,7 +6,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * This migration will ad a column "transformations" to the asset family table.
+ * This migration will ad a column "naming_convention" to the asset family table.
  */
 final class Version_4_0_20191223153556_add_asset_naming_convention_column extends AbstractMigration
 {
