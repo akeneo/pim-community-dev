@@ -20,6 +20,8 @@ pim_asset_manager:
         locale_should_exist: 'El local "%locale_code%" no està activat o no existeix'
         extrapolated_attribute_type_should_not_have_one_value_per_channel: 'L''atribut "%attribute_code%" no pot utilitzar-se per l''extrapolació perquè té un valor per canal'
         extrapolated_attribute_type_should_not_have_one_value_per_locale: 'L''atribut "%attribute_code%" no pot utilitzar-se per l''extrapolació perquè té un valor per local'
+      transformation:
+        attribute_reference_should_exist: 'L''atribut "%attribute_code%" no existeix per a aquesta família de recursos fixes'
   asset:
     validation:
       code:

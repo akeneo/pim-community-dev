@@ -40,7 +40,6 @@ pim_asset_manager:
   asset_preview:
     previous: Previous asset
     next: Next asset
-    empty_main_image: This asset has no image.
     edit_asset: Edit asset
     download: Download
     copy_url: Copy URL
@@ -51,6 +50,9 @@ pim_asset_manager:
     image:
       small:
         download: Download
+  grid:
+    counter: '{{ resultCount }} results'
+    counter_empty: '0 result'
   asset_family:
     title: Assets
     tab:
@@ -61,6 +63,8 @@ pim_asset_manager:
     product:
       title: Products
     title: Assets
+    upload:
+      remove_all: Remove all
     grid:
       search: Search on label, code and text attributes
       filter:
