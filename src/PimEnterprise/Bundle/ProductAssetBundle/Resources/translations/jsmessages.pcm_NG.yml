@@ -9,8 +9,6 @@ pimee_product_asset:
           confirm: Confirm am
         title: Make you mange assets
         description: Choose de assets you wan attach to your product
-        yes: true
-        no: false
     asset:
       not_empty: E nid code. E no fit dey empty.
       alpha_numeric_plus_underscore: Na only alphanumeric or underscore de code go be.

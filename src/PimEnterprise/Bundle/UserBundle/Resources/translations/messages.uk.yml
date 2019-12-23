@@ -3,8 +3,6 @@ user:
     notifications:
       to_review: Коли нова пропозиції для розгляду
       state: Коли пропозицію прийнято або відхилено
-      yes: true
-      no: false
   asset_delay_reminder: Нагадування про затримку ресурсів (в днях)
   default_published_product_grid_view:
     label: Опубліковане табличне представлення за замовчуванням

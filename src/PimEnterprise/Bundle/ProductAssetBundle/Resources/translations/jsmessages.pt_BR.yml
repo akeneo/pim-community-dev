@@ -13,8 +13,6 @@ pimee_product_asset:
         preview_title: Prévia da coleção de mídia
         download: Baixar
         remove: Remover
-        yes: true
-        no: false
         assetRemoveConfirmationLabel: Tem certeza que deseja remover esta mídia?
     asset:
       not_empty: Código é necessário. Não pode estar vazio.

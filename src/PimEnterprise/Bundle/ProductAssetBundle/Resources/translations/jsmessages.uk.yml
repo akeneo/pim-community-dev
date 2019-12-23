@@ -9,8 +9,6 @@ pimee_product_asset:
         description: Оберіть медіафайли, які ви бажаєте прикріпити до вашого продукту
         preview_title: Попередній перегляд колекції медіафайлів
         download: Завантажити
-        yes: true
-        no: false
         assetRemoveConfirmationLabel: Ви впевнені, що хочете видалити цей медіафайл?
     asset:
       not_empty: Код має бути. Він не може бути порожнім.

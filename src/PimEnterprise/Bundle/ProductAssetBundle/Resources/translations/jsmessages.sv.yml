@@ -9,8 +9,6 @@ pimee_product_asset:
           confirm: Bekräfta
         title: Hantera tillgångar
         remove: Ta bort
-        yes: true
-        no: false
   enrich_asset:
     grid:
       edit: Redigera egenskaper för tillgången

@@ -13,8 +13,6 @@ pimee_product_asset:
         preview_title: Vista prèvia de la col·lecció de recursos
         download: Baixar
         remove: Eliminar
-        yes: true
-        no: false
         assetRemoveConfirmationLabel: Estàs segur que vols eliminar aquest recurs?
     asset:
       not_empty: Codi obligatori. No es pot deixar buit.
