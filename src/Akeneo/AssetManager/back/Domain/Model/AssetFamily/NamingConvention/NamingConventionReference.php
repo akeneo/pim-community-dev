@@ -23,7 +23,7 @@ class NamingConventionReference
         $this->namingConvention = $namingConvention;
     }
 
-    public static function createFromNormalized(?string $normalizedNamingConvention): NamingConventionReference
+    public static function createFromNormalized(?array $normalizedNamingConvention): NamingConventionReference
     {
         if (null === $normalizedNamingConvention) {
             return self::noNamingConvention();
