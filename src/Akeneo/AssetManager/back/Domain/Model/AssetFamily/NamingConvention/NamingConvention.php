@@ -33,17 +33,12 @@ class NamingConvention
         $this->strict = $strict;
     }
 
-    public static function noNamingConvention()
-    {
-        return null;
-    }
-
-    public static function createFromNormalized(array $normalizedNamingConvention): ?NamingConvention
+    public static function createFromNormalized(array $normalizedNamingConvention): self
     {
         Assert::keyExists($normalizedNamingConvention, 'source');
         Assert::isArray($normalizedNamingConvention['source']);
         Assert::keyExists($normalizedNamingConvention, 'pattern');
-        Assert::string($normalizedNamingConvention['source']);
+        Assert::string($normalizedNamingConvention['pattern']);
         Assert::keyExists($normalizedNamingConvention, 'strict');
         Assert::boolean($normalizedNamingConvention['strict']);
 

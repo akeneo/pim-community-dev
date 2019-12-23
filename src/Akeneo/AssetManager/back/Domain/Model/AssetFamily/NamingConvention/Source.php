@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention;
 
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Webmozart\Assert\Assert;
 
 class Source
 {
@@ -37,8 +38,11 @@ class Source
         $this->localeReference = $localeReference;
     }
 
-    public static function createFromNormalized($normalizedSource): self
+    public static function createFromNormalized(array $normalizedSource): self
     {
+        Assert::keyExists($normalizedSource, 'property');
+        Assert::stringNotEmpty($normalizedSource['property']);
+
         return new self(
             $normalizedSource['property'],
             ChannelReference::createfromNormalized($normalizedSource['channel'] ?? null),
@@ -46,12 +50,27 @@ class Source
         );
     }
 
+    public function getProperty(): string
+    {
+        return $this->property;
+    }
+
+    public function getChannelReference(): ChannelReference
+    {
+        return $this->channelReference;
+    }
+
+    public function getLocaleReference(): LocaleReference
+    {
+        return $this->localeReference;
+    }
+
     public function normalize(): array
     {
         return [
             'property' => $this->property,
             'channel' => $this->channelReference->normalize(),
-            'locale' => $this->localeReference->normalize()
+            'locale' => $this->localeReference->normalize(),
         ];
     }
 }
