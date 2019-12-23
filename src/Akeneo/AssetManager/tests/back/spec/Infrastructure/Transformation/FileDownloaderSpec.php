@@ -29,7 +29,7 @@ class FileDownloaderSpec extends ObjectBehavior
         $this->shouldHaveType(FileDownloader::class);
     }
 
-    function it_downloads_a_file_and_returns_a_copy_of_the_downladed_file(
+    function it_downloads_a_file_and_returns_a_copy_of_the_downloaded_file(
         FileFetcherInterface $fileFetcher,
         FilesystemInterface $storageFilesystem,
         Filesystem $filesystem

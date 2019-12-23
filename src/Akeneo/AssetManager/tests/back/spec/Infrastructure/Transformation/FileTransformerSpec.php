@@ -42,8 +42,6 @@ class FileTransformerSpec extends ObjectBehavior
     function it_throws_an_exception_if_no_applier_was_found(
         Transformation $transformation
     ) {
-
-
         $transformation->getOperationCollection()->willReturn(
             OperationCollection::create([
                 Operation\ColorspaceOperation::create(['colorspace' => 'grey'])
