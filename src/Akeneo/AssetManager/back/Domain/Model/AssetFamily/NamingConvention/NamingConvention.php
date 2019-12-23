@@ -38,7 +38,7 @@ class NamingConvention
         return null;
     }
 
-    public static function createFromNormalized(?string $normalizedNamingConvention): NamingConvention
+    public static function createFromNormalized(?string $normalizedNamingConvention): ?NamingConvention
     {
         if (null === $normalizedNamingConvention) {
             return self::noNamingConvention();

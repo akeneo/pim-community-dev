@@ -198,7 +198,7 @@ class AssetFamily
         );
     }
 
-    public function withNamingConvention(NamingConvention $namingConvention): self
+    public function withNamingConvention(?NamingConvention $namingConvention): self
     {
         return new self(
             $this->identifier,

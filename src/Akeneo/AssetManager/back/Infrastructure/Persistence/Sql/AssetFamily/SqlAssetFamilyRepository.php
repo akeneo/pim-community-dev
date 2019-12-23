@@ -120,7 +120,7 @@ SQL;
                 'attributeAsMainMedia' => $assetFamily->getAttributeAsMainMediaReference()->normalize(),
                 'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize()),
                 'transformations' => json_encode($assetFamily->getTransformationCollection()->normalize()),
-                'naming_convention' => json_encode($assetFamily->getNamingConvention() ? $assetFamily->getNamingConvention()->normalize() : null)
+                'namingConvention' => json_encode($assetFamily->getNamingConvention() ? $assetFamily->getNamingConvention()->normalize() : null)
             ]
         );
 
