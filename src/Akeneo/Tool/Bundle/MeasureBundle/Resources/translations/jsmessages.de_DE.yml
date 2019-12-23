@@ -5,7 +5,7 @@ pim_measure:
     Decibel: Dezibel
     Frequency: Frequenz
     Length: Länge
-    Power: Energie
+    Power: Leistung
     Resistance: Widerstand
     Voltage: Spannung
     Intensity: Intensität
@@ -170,7 +170,6 @@ pim_measure:
     PSI: Pfund pro Quadratzoll
     TORR: Torr
     MMHG: Millimeter Quecksilbersäule
-    #Energy
     KILOCALORIE: Kilokalorien
     KILOJOULE: Kilojoule
     #CaseBox
