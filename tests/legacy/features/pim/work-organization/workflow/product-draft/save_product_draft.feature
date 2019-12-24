@@ -10,8 +10,8 @@ Feature: Save a product draft
       | sku    | family | categories        | description-en_US-mobile |
       | tshirt | tees   | summer_collection | Can't touch this         |
     And the following product:
-      | sku    | family  | categories | gallery |
-      | jacket | jackets | jackets    | paint   |
+      | sku    | family  | categories |
+      | jacket | jackets | jackets    |
     And I am logged in as "Mary"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4604

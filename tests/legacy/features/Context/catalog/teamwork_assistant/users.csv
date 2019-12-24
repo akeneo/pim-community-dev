@@ -1,7 +1,7 @@
 username;first_name;last_name;email;password;catalog_default_locale;user_default_locale;catalog_default_scope;default_category_tree;roles;groups;enabled
 admin;John;Doe;admin@example.com;admin;en_US;en_US;ecommerce;default;ROLE_ADMINISTRATOR;Read Only;1
-Peter;Peter;Williams;Peter@example.com;Peter;en_US;en_US;ecommerce;default;ROLE_ADMINISTRATOR;Read Only
-Julia;Julia;Stark;Julia@example.com;Julia;en_US;en_US;ecommerce;default;ROLE_CATALOG_MANAGER;Marketing,Technical Clothing,Technical High-Tech,All
+Peter;Peter;Williams;Peter@example.com;Peter;en_US;en_US;ecommerce;default;ROLE_ADMINISTRATOR;Read Only;1
+Julia;Julia;Stark;Julia@example.com;Julia;en_US;en_US;ecommerce;default;ROLE_CATALOG_MANAGER;Marketing,Technical Clothing,Technical High-Tech,All;1
 Mary;Mary;Smith;Mary@example.com;Mary;en_US;en_US;ecommerce;default;ROLE_USER;Marketing;1
 Claude;Claude;Yachifeur;claude@example.com;Claude;en_US;en_US;ecommerce;default;ROLE_USER;Technical Clothing;1
 Teddy;Teddy;Ferant;teddy@example.com;Teddy;en_US;en_US;ecommerce;default;ROLE_USER;Technical High-Tech;1

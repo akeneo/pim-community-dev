@@ -49,7 +49,6 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->contexts['datagrid'] = $environment->getContext(EnterpriseDataGridContext::class);
         $this->contexts['command'] = $environment->getContext(EnterpriseCommandContext::class);
         $this->contexts['navigation'] = $environment->getContext(NavigationContext::class);
-        $this->contexts['transformations'] = $environment->getContext(EnterpriseTransformationContext::class);
         $this->contexts['assertions'] = $environment->getContext(EnterpriseAssertionContext::class);
         $this->contexts['domain-attribute-tab'] = $environment->getContext(AttributeTabContext::class);
         $this->contexts['domain-completeness'] = $environment->getContext(CompletenessContext::class);

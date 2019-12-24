@@ -31,14 +31,12 @@ Feature: Export published products
       | jacket-black | name        | White jacket                     | en_GB  |        |
       | jacket-black | name        | Jacket blanc                     | fr_FR  |        |
       | jacket-black | name        | Weißes Jacket                    | de_DE  |        |
-      | jacket-black | gallery     | paint                            |        |        |
       | jacket-white | description | A stylish white jacket           | en_US  | mobile |
       | jacket-white | description | An elegant white jacket          | en_GB  | mobile |
       | jacket-white | description | Un Jacket blanc élégant          | fr_FR  | mobile |
       | jacket-white | description | Ein elegantes weißes Jacket      | de_DE  | mobile |
       | jacket-white | description | A really stylish white jacket    | en_US  | mobile |
       | jacket-white | description | Ein sehr elegantes weißes Jacket | de_DE  | mobile |
-      | jacket-white | gallery     | paint                            |        |        |
     And I edit the "jacket-white" product
     When I press the secondary action "Publish"
     And I confirm the publishing
@@ -82,7 +80,7 @@ Feature: Export published products
     And I wait for the "csv_clothing_mobile_published_product_export" job to finish
     Then exported file of "csv_clothing_mobile_published_product_export" should contain:
       """
-      sku;categories;enabled;family;groups;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;front_view;main_color;manufacturer;name-de_DE;name-en_US;name-fr_FR;price-EUR;price-USD;rating;side_view;size
+      sku;categories;enabled;family;groups;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;;main_color;manufacturer;name-de_DE;name-en_US;name-fr_FR;price-EUR;price-USD;rating;side_view;size
       tee-white;winter_collection;1;tees;;;;;;white;;"Weiß t-shirt";"White tee";"Tshirt blanc";10.00;15.00;;;XL
       tee-black;winter_collection;1;tees;;;;;;black;;"Schwarz t-shirt";"Black tee";"Tshirt noir";10.00;15.00;;;XL
       """
@@ -96,7 +94,7 @@ Feature: Export published products
     And I wait for the "csv_clothing_mobile_published_product_export" job to finish
     Then exported file of "csv_clothing_mobile_published_product_export" should contain:
       """
-      sku;categories;enabled;family;groups;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;front_view;main_color;manufacturer;name-de_DE;name-en_US;name-fr_FR;PACK-groups;PACK-products;PACK-product_models;price-EUR;price-USD;rating;side_view;size;SUBSTITUTION-groups;SUBSTITUTION-products;SUBSTITUTION-product_models;UPSELL-groups;UPSELL-products;UPSELL-product_models;X_SELL-groups;X_SELL-products;X_SELL-product_models
+      sku;categories;enabled;family;groups;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;;main_color;manufacturer;name-de_DE;name-en_US;name-fr_FR;PACK-groups;PACK-products;PACK-product_models;price-EUR;price-USD;rating;side_view;size;SUBSTITUTION-groups;SUBSTITUTION-products;SUBSTITUTION-product_models;UPSELL-groups;UPSELL-products;UPSELL-product_models;X_SELL-groups;X_SELL-products;X_SELL-product_models
       tee-white;winter_collection;1;tees;;;;;;white;;Weiß t-shirt;Tee;Tshirt blanc;;;;10.00;15.00;;;XL;;;;;;;;;
       """
 
@@ -127,7 +125,7 @@ Feature: Export published products
     And I wait for the "csv_clothing_mobile_published_product_export" job to finish
     Then exported file of "csv_clothing_mobile_published_product_export" should contain:
       """
-      sku;categories;enabled;family;groups;description-en_US-mobile;front_view;main_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size
+      sku;categories;enabled;family;groups;description-en_US-mobile;;main_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size
       tee-white;winter_collection;1;tees;;;;white;;"White tee";10.00;15.00;;;XL
       tee-black;winter_collection;1;tees;;;;black;;"Black tee";10.00;15.00;;;XL
       """

@@ -28,14 +28,12 @@ Feature: Export published products with localized number
       | jacket-black | name        | White jacket                     | en_GB  |        |
       | jacket-black | name        | Jacket blanc                     | fr_FR  |        |
       | jacket-black | name        | Weißes Jacket                    | de_DE  |        |
-      | jacket-black | gallery     | paint                            |        |        |
       | jacket-white | description | A stylish white jacket           | en_US  | mobile |
       | jacket-white | description | An elegant white jacket          | en_GB  | mobile |
       | jacket-white | description | Un Jacket blanc élégant          | fr_FR  | mobile |
       | jacket-white | description | Ein elegantes weißes Jacket      | de_DE  | mobile |
       | jacket-white | description | A really stylish white jacket    | en_US  | mobile |
       | jacket-white | description | Ein sehr elegantes weißes Jacket | de_DE  | mobile |
-      | jacket-white | gallery     | paint                            |        |        |
     And I edit the "jacket-white" product
     When I press the secondary action "Publish"
     And I confirm the publishing
