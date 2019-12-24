@@ -1,0 +1,13 @@
+Akeneo\Apps\Application\Settings\Command\UpdateConnectionCommand:
+    group_sequence:
+      - UpdateConnectionCommand
+      - Business
+    properties:
+        label:
+            - Callback: [Akeneo\Apps\Domain\Settings\Validation\Connection\ConnectionLabelMustBeValid, validate]
+        flowType:
+            - Callback: [Akeneo\Apps\Domain\Settings\Validation\Connection\FlowTypeMustBeValid, validate]
+        image:
+            - Callback: [Akeneo\Apps\Domain\Settings\Validation\Connection\ConnectionImageMustBeValid, validate]
+            - Akeneo\Apps\Application\Settings\Validation\Connection\ImageMustExist:
+                  groups: [Business]

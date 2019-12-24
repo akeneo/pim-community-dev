@@ -12,14 +12,14 @@ namespace Akeneo\Apps\Domain\Audit\Model\Read;
 final class WeeklyEventCounts
 {
     /** @var string */
-    private $appCode;
+    private $connectionCode;
 
     /** @var DailyEventCount[] */
     private $dailyEventCounts = [];
 
-    public function __construct(string $appCode)
+    public function __construct(string $connectionCode)
     {
-        $this->appCode = $appCode;
+        $this->connectionCode = $connectionCode;
     }
 
     public function addDailyEventCount(DailyEventCount $dailyEventCount): void
@@ -30,7 +30,7 @@ final class WeeklyEventCounts
     public function normalize()
     {
         return [
-            $this->appCode => \array_reduce(
+            $this->connectionCode => \array_reduce(
                 $this->dailyEventCounts,
                 function (array $weeklyEventCounts, DailyEventCount $dailyEventCount) {
                     return array_merge($weeklyEventCounts, $dailyEventCount->normalize());

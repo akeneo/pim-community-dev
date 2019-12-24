@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\FileInfo\Fake;
 
-use Akeneo\Apps\Application\Service\DoesImageExistQueryInterface;
+use Akeneo\Apps\Application\Settings\Service\DoesImageExistQueryInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>

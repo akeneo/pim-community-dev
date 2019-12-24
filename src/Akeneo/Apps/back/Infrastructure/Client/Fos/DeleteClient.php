@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Client\Fos;
 
-use Akeneo\Apps\Application\Service\DeleteClientInterface;
-use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Application\Settings\Service\DeleteClientInterface;
+use Akeneo\Apps\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 

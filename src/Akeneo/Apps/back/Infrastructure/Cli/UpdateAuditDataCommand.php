@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class UpdateAuditDataCommand extends Command
 {
-    protected static $defaultName = 'akeneo:apps-audit:update-data';
+    protected static $defaultName = 'akeneo:connectivity-audit:update-data';
 
     /** @var UpdateProductEventCountHandler */
     private $updateProductEventCountHandler;

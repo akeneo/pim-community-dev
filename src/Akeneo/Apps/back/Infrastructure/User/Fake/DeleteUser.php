@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\User\Fake;
 
-use Akeneo\Apps\Application\Service\DeleteUserInterface;
-use Akeneo\Apps\Domain\Model\ValueObject\UserId;
+use Akeneo\Apps\Application\Settings\Service\DeleteUserInterface;
+use Akeneo\Apps\Domain\Settings\Model\ValueObject\UserId;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Client\Fos;
 
-use Akeneo\Apps\Application\Service\RegenerateClientSecret;
-use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Application\Settings\Service\RegenerateClientSecret;
+use Akeneo\Apps\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Driver\Connection as DbalConnection;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Util\Random;
 
@@ -20,10 +20,11 @@ class FosRegenerateClientSecret implements RegenerateClientSecret
 {
     /** @var ClientManagerInterface */
     private $clientManager;
-    /** @var Connection */
+
+    /** @var DbalConnection */
     private $dbalConnection;
 
-    public function __construct(ClientManagerInterface $clientManager, Connection $dbalConnection)
+    public function __construct(ClientManagerInterface $clientManager, DbalConnection $dbalConnection)
     {
         $this->clientManager = $clientManager;
         $this->dbalConnection = $dbalConnection;

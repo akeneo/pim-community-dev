@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Client\Fos;
 
-use Akeneo\Apps\Application\Service\CreateClientInterface;
-use Akeneo\Apps\Domain\Model\Read\Client;
+use Akeneo\Apps\Application\Settings\Service\CreateClientInterface;
+use Akeneo\Apps\Domain\Settings\Model\Read\Client;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 

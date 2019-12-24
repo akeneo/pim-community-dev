@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Apps\Application\Audit\Query\CountDailyEventsByAppHandler;
-use Akeneo\Apps\Application\Audit\Query\CountDailyEventsByAppQuery;
+use Akeneo\Apps\Application\Audit\Query\CountDailyEventsByConnectionHandler;
+use Akeneo\Apps\Application\Audit\Query\CountDailyEventsByConnectionQuery;
 use Akeneo\Apps\Domain\Audit\Model\Read\WeeklyEventCounts;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,27 +17,27 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AuditController
 {
-    /** @var CountDailyEventsByAppHandler */
-    private $countDailyEventsByAppHandler;
+    /** @var CountDailyEventsByConnectionHandler */
+    private $countDailyEventsByConnectionHandler;
 
-    public function __construct(CountDailyEventsByAppHandler $countDailyEventsByAppHandler)
+    public function __construct(CountDailyEventsByConnectionHandler $countDailyEventsByConnectionHandler)
     {
-        $this->countDailyEventsByAppHandler = $countDailyEventsByAppHandler;
+        $this->countDailyEventsByConnectionHandler = $countDailyEventsByConnectionHandler;
     }
 
-    public function sourceAppsEvent(Request $request): JsonResponse
+    public function sourceConnectionsEvent(Request $request): JsonResponse
     {
         $eventType = $request->get('event_type', '');
         $startPeriod = new \DateTime('-7 days', new \DateTimeZone('UTC'));
         $today = new \DateTime('now', new \DateTimeZone('UTC'));
 
-        $query = new CountDailyEventsByAppQuery($eventType, $startPeriod->format('Y-m-d'), $today->format('Y-m-d'));
-        $countDailyEventsByApp = $this->countDailyEventsByAppHandler->handle($query);
+        $query = new CountDailyEventsByConnectionQuery($eventType, $startPeriod->format('Y-m-d'), $today->format('Y-m-d'));
+        $countDailyEventsByConnection = $this->countDailyEventsByConnectionHandler->handle($query);
 
         $data = \array_reduce(
-            $countDailyEventsByApp,
-            function (array $data, WeeklyEventCounts $appEventCounts) {
-                return array_merge($data, $appEventCounts->normalize());
+            $countDailyEventsByConnection,
+            function (array $data, WeeklyEventCounts $connectionEventCounts) {
+                return array_merge($data, $connectionEventCounts->normalize());
             },
             []
         );

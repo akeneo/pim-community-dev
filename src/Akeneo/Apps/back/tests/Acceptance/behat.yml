@@ -13,7 +13,7 @@ default:
                 - 'src/Akeneo/Apps/back/tests/Acceptance/features'
                 - 'vendor/akeneo/pim-community-dev/src/Akeneo/Apps/back/tests/Acceptance/features'
             contexts:
-                - Akeneo\Apps\Tests\Acceptance\Context\AppContext:
+                - Akeneo\Apps\Tests\Acceptance\Context\ConnectionContext:
                       - '@akeneo_app.persistence.repository.app'
                       - '@akeneo_app.application.handler.fetch_apps'
                       - '@akeneo_app.application.handler.find_an_app'

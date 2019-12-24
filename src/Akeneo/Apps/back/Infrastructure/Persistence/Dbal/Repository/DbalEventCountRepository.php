@@ -6,7 +6,7 @@ namespace Akeneo\Apps\Infrastructure\Persistence\Dbal\Repository;
 
 use Akeneo\Apps\Domain\Audit\Model\Write\DailyEventCount;
 use Akeneo\Apps\Domain\Audit\Persistence\Repository\EventCountRepository;
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Connection as DbalConnection;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -15,10 +15,10 @@ use Doctrine\DBAL\Connection;
  */
 class DbalEventCountRepository implements EventCountRepository
 {
-    /** @var Connection */
+    /** @var DbalConnection */
     private $dbalConnection;
 
-    public function __construct(Connection $dbalConnection)
+    public function __construct(DbalConnection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }
@@ -42,7 +42,7 @@ VALUES(:app_code, :event_date, :event_count, :event_type)
 SQL;
         $stmt = $this->dbalConnection->prepare($insertQuery);
         $stmt->execute([
-            'app_code' => $dailyEventCount->appCode(),
+            'app_code' => $dailyEventCount->connectionCode(),
             'event_date' => $dailyEventCount->eventDate(),
             'event_count' => (int) $dailyEventCount->eventCount(),
             'event_type' => (string) $dailyEventCount->eventType(),

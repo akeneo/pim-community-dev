@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Client\Fake;
 
-use Akeneo\Apps\Application\Service\DeleteClientInterface;
-use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Application\Settings\Service\DeleteClientInterface;
+use Akeneo\Apps\Domain\Settings\Model\ValueObject\ClientId;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\back\tests\Integration\FileInfo;
 
-use Akeneo\Apps\Application\Service\DoesImageExistQueryInterface;
+use Akeneo\Apps\Application\Settings\Service\DoesImageExistQueryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;

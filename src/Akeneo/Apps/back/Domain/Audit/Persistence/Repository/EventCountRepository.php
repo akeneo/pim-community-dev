@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Domain\Audit\Persistence\Repository;
 
-use Akeneo\Apps\Domain\Audit\Model\Write\DailyEventCount;
-
 /**
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\FileInfo\Internal;
 
-use Akeneo\Apps\Application\Service\DoesImageExistQueryInterface;
-use Doctrine\DBAL\Connection;
+use Akeneo\Apps\Application\Settings\Service\DoesImageExistQueryInterface;
+use Doctrine\DBAL\Connection as DbalConnection;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -13,10 +13,10 @@ use Doctrine\DBAL\Connection;
  */
 class DoesImageExistQuery implements DoesImageExistQueryInterface
 {
-    /** @var Connection */
+    /** @var DbalConnection */
     private $dbalConnection;
 
-    public function __construct(Connection $dbalConnection)
+    public function __construct(DbalConnection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }
