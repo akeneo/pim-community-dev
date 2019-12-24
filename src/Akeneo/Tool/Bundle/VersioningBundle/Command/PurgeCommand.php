@@ -56,7 +56,7 @@ class PurgeCommand extends ContainerAwareCommand
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Purges the versions by batch',
-                100
+                1000
             )
             ->addOption(
                 'force',
