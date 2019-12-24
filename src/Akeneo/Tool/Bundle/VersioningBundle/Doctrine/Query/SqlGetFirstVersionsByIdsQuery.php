@@ -10,7 +10,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlDeleteVersionsByIdsQuery
+class SqlGetFirstVersionsByIdsQuery
 {
     /** @var Connection */
     private $dbConnection;
@@ -20,19 +20,24 @@ class SqlDeleteVersionsByIdsQuery
         $this->dbConnection = $dbConnection;
     }
 
-    /**
-     * @param int[] $versionIds
-     */
-    public function execute(array $versionIds): void
+    public function execute(array $versionIds): array
     {
-        $sql = <<<SQL
-DELETE FROM pim_versioning_version
-    WHERE id IN (:version_ids);
+        if (empty($versionIds)) {
+            return [];
+        }
+
+        $query = <<<SQL
+SELECT id 
+FROM pim_versioning_version
+WHERE id IN (:version_ids) AND version = 1; 
 SQL;
-        $this->dbConnection->executeQuery(
-            $sql,
+
+        $results = $this->dbConnection->executeQuery(
+            $query,
             ['version_ids' => $versionIds],
             ['version_ids' => Connection::PARAM_INT_ARRAY]
-        );
+        )->fetchAll(\PDO::FETCH_COLUMN);
+
+        return array_map('intval', $results);
     }
 }

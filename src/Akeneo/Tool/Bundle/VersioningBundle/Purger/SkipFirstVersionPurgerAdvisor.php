@@ -2,6 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Purger;
 
+use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetFirstVersionsByIdsQuery;
+
 /**
  * Prevents first version of an entity from being purged
  *
@@ -11,10 +13,18 @@ namespace Akeneo\Tool\Bundle\VersioningBundle\Purger;
  */
 class SkipFirstVersionPurgerAdvisor implements VersionPurgerAdvisorInterface
 {
+    /** @var SqlGetFirstVersionsByIdsQuery */
+    private $getFirstVersionsByIdsQuery;
+
+    public function __construct(SqlGetFirstVersionsByIdsQuery $getFirstVersionsByIdsQuery)
+    {
+        $this->getFirstVersionsByIdsQuery = $getFirstVersionsByIdsQuery;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function supports(PurgeableVersion $version)
+    public function supports(PurgeableVersionList $version)
     {
         return true;
     }
@@ -22,8 +32,10 @@ class SkipFirstVersionPurgerAdvisor implements VersionPurgerAdvisorInterface
     /**
      * {@inheritdoc}
      */
-    public function isPurgeable(PurgeableVersion $version, array $options)
+    public function isPurgeable(PurgeableVersionList $versionList): PurgeableVersionList
     {
-        return 1 !== $version->getVersion();
+        $firstVersionIds = $this->getFirstVersionsByIdsQuery->execute($versionList->getVersionIds());
+
+        return $versionList->remove($firstVersionIds);
     }
 }

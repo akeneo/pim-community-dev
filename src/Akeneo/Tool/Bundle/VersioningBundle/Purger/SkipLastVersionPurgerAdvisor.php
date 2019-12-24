@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Purger;
 
-use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
+use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetLatestVersionsByIdsQuery;
 
 /**
  * Prevents last version of an entity from being purged
@@ -13,35 +13,29 @@ use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
  */
 class SkipLastVersionPurgerAdvisor implements VersionPurgerAdvisorInterface
 {
-    /** @var VersionRepositoryInterface */
-    protected $versionRepository;
+    /** @var SqlGetLatestVersionsByIdsQuery */
+    private $getLatestVersionsByIdsQuery;
 
-    /**
-     * @param VersionRepositoryInterface $versionRepository
-     */
-    public function __construct(VersionRepositoryInterface $versionRepository)
+    public function __construct(SqlGetLatestVersionsByIdsQuery $getLatestVersionsByIdsQuery)
     {
-        $this->versionRepository = $versionRepository;
+        $this->getLatestVersionsByIdsQuery = $getLatestVersionsByIdsQuery;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supports(PurgeableVersion $version)
+    public function supports(PurgeableVersionList $versionList)
     {
         return true;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isPurgeable(PurgeableVersion $version, array $options)
+    public function isPurgeable(PurgeableVersionList $versionList): PurgeableVersionList
     {
-        $newVersionId = $this->versionRepository->getNewestVersionIdForResource(
-            $version->getResourceName(),
-            $version->getResourceId()
-        );
+        $latestVersionsIds = $this->getLatestVersionsByIdsQuery->execute($versionList->getVersionIds());
 
-        return null === $newVersionId || $newVersionId !== $version->getId();
+        return $versionList->remove($latestVersionsIds);
     }
 }

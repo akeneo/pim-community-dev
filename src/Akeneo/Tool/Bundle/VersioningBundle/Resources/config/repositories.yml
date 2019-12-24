@@ -30,3 +30,23 @@ services:
         class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlDeleteVersionsByIdsQuery
         arguments:
             - '@database_connection'
+
+    pim_versioning.query.get_all_resource_names:
+        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetAllResourceNamesQuery
+        arguments:
+            - '@database_connection'
+
+    pim_versioning.query.get_purgeable_version_list:
+        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetPurgeableVersionListQuery
+        arguments:
+            - '@database_connection'
+
+    pim_versioning.query.get_latest_versions_by_ids:
+        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetLatestVersionsByIdsQuery
+        arguments:
+            - '@database_connection'
+
+    pim_versioning.query.get_first_versions_by_ids:
+        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetFirstVersionsByIdsQuery
+        arguments:
+            - '@database_connection'
