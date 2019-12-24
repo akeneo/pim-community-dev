@@ -18,18 +18,6 @@ Feature: Join a document to a product
     And I am logged in as "Julia"
     And I am on the "Car" product page
 
-  Scenario: Successfully upload a document
-    When I attach file "akeneo.txt" to "Description"
-    And I save the product
-    Then I should see the text "akeneo.txt"
-
-  Scenario: Successfully remove a document
-    When I attach file "akeneo.txt" to "Description"
-    And I save the product
-    And I remove the "Description" file
-    And I save the product
-    Then I should not see the text "akeneo.txt"
-
   Scenario: Successfully replace a document
     When I attach file "akeneo.txt" to "Description"
     And I save the product

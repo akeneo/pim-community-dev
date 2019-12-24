@@ -25,21 +25,6 @@ Feature: Edit common localized attributes of many products at once
     And I switch the locale to "en_US"
 
   @critical
-  Scenario: Successfully update many price values at once
-    Given I select rows boots and sandals
-    And I press the "Actions de masse" button
-    When I choose the "Modifier les valeurs d’attributs" operation
-    And I display the Price attribute
-    And I change the "Price" to "100,50 USD"
-    And I change the "Price" to "150,75 EUR"
-    And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then the prices "Price" of products boots and sandals should be:
-      | amount | currency |
-      | 100.50 | USD      |
-      | 150.75 | EUR      |
-
-  @critical
   Scenario: Successfully update many metric values at once
     Given I select rows boots and sandals
     And I press the "Actions de masse" button
@@ -63,38 +48,6 @@ Feature: Edit common localized attributes of many products at once
       | time | 25.75 |
     And the product "sandals" should have the following value:
       | time | 25.75 |
-
-  Scenario: Successfully update many date values at once
-    Given I select rows boots and sandals
-    And I press the "Actions de masse" button
-    When I choose the "Modifier les valeurs d’attributs" operation
-    And I display the Date attribute
-    And I change the "Date" to "28/05/2015"
-    And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then the product "boots" should have the following value:
-      | date | 2015-05-28 |
-    And the product "sandals" should have the following value:
-      | date | 2015-05-28 |
-
-  Scenario: Fail to update many price values at once
-    Given I select rows boots and sandals
-    And I press the "Actions de masse" button
-    When I choose the "Modifier les valeurs d’attributs" operation
-    And I display the Price attribute
-    And I change the "Price" to "100.50 USD"
-    And I change the "Price" to "150.75 EUR"
-    And I move on to the next step
-    Then I should see validation error "Ce type de valeur attend une virgule (,) comme séparateur de décimales."
-
-  Scenario: Fail to update many metric values at once
-    Given I select rows boots and sandals
-    And I press the "Actions de masse" button
-    When I choose the "Modifier les valeurs d’attributs" operation
-    And I display the Weight attribute
-    And I change the "Weight" to "600.55"
-    And I move on to the next step
-    Then I should see validation error "Ce type de valeur attend une virgule (,) comme séparateur de décimales."
 
   Scenario: Fail to update many number values at once
     Given I select rows boots and sandals

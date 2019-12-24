@@ -65,26 +65,3 @@ Feature: Validate editing common select attributes of multiple products
       | weather_conditions |
     And the product "sneakers" should not have the following values:
       | weather_conditions |
-
-  Scenario: Successfully mass edit a simple select attribute
-    Given I select rows boots and sneakers
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I display the Manufacturer attribute
-    And I change the "Manufacturer" to "Converse"
-    And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then the option "manufacturer" of products boots and sneakers should be "Converse"
-    When I am on the products grid
-    And I select rows boots, sandals and sneakers
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I display the Manufacturer attribute
-    And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    And the product "boots" should not have the following values:
-      | Manufacturer |
-    And the product "sandals" should not have the following values:
-      | Manufacturer |
-    And the product "sneakers" should not have the following values:
-      | Manufacturer |

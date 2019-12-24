@@ -32,12 +32,3 @@ Feature: Display the product history
     Then I should see history:
       | version | property   | value | date |
       | 3       | Heel color | Green | now  |
-
-  Scenario: Add an available "multi select" reference data to a product
-    Given I visit the "Other" group
-    And I change the "Sole fabric" to "Nylon,PVC"
-    And I save the product
-    When I visit the "History" column tab
-    Then I should see history:
-      | version | property    | value     | date |
-      | 2       | Sole fabric | Nylon,PVC | now  |

@@ -15,25 +15,6 @@ Feature: Apply a mass action on all entities
     And I am logged in as "Julia"
 
   @critical
-  Scenario: Edit common attributes of all products
-    When I am on the products grid
-    And I select rows super_boots
-    And I select all entities
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I move on to the choose step
-    And I choose the "Edit attributes values" operation
-    And I display the Name attribute
-    And I change the "Name" to "Same product"
-    And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then the product "super_boots" should have the following values:
-      | name-en_US | Same product |
-    And the product "ultra_boots" should have the following values:
-      | name-en_US | Same product |
-    And the product "sandals" should have the following values:
-      | name-en_US | Same product |
-
   Scenario: Edit family of all products, filtered by category and completeness
     When I am on the products grid
     And I hide the filter "family"
@@ -53,20 +34,3 @@ Feature: Apply a mass action on all entities
     Then the family of product "super_boots" should be "sandals"
     Then the family of product "mega_boots" should be "sandals"
     And the family of product "ultra_boots" should be "boots"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-5000
-  Scenario: Not applying a mass edit operation on unchecked products after "all" was selected
-    Given I am on the products grid
-    And I select rows super_boots
-    And I select all entities
-    And I unselect row mega_boots
-    When I press the "Bulk actions" button
-    And I choose the "Change status" operation
-    And I move on to the choose step
-    And I choose the "Change status" operation
-    And I disable the products
-    And I wait for the "update_product_value" job to finish
-    Then product "super_boots" should be disabled
-    And product "ultra_boots" should be disabled
-    And product "sandals" should be disabled
-    But product "mega_boots" should be enabled
