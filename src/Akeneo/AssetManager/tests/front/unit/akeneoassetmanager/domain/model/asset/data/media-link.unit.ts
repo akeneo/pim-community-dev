@@ -3,6 +3,7 @@ import {
   mediaLinkDataStringValue,
   areMediaLinkDataEqual,
   isMediaLinkData,
+  getMediaLinkUrl,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
@@ -44,5 +45,10 @@ describe('akeneo > asset family > domain > model > asset > data --- media-link',
     expect(isMediaLinkData(mediaLinkData)).toBe(true);
     expect(isMediaLinkData(null)).toBe(true);
     expect(isMediaLinkData({})).toBe(false);
+  });
+
+  test('I can get the full URL of a media link', () => {
+    expect(getMediaLinkUrl(mediaLinkData, mediaLinkAttribute)).toEqual('https://my-link.jpg');
+    expect(() => getMediaLinkUrl(mediaLinkData, {...mediaLinkAttribute, type: 'text'})).toThrow();
   });
 });
