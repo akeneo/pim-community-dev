@@ -211,7 +211,9 @@ const PreviewView = ({
     return (
       <>
         <Image src={getMediaDataPreviewUrl('', attributeAsMainMedia)} alt={label} data-role="asset-preview" />
-        <Message>{__('pim_asset_manager.asset_preview.empty_main_media')}</Message>
+        <Message title={__('pim_asset_manager.asset_preview.empty_main_media')}>
+          {__('pim_asset_manager.asset_preview.empty_main_media')}
+        </Message>
         <Actions>
           <EditAction url={editUrl} />
         </Actions>
