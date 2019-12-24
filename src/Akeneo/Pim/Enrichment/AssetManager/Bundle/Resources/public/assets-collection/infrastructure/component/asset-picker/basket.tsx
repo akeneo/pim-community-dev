@@ -1,13 +1,6 @@
 import * as React from 'react';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
-import {
-  Asset,
-  emptyCollection,
-  getAssetByCode,
-  emptyAsset,
-  removeAssetFromCollection,
-} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
@@ -15,6 +8,12 @@ import {Button} from 'akeneoassetmanager/application/component/app/button';
 import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
 import AssetItem from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket/asset-item';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import ListAsset, {
+  creatEmptyAsset,
+  getAssetByCode,
+  removeAssetFromCollection,
+  emptyCollection,
+} from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 type BasketProps = {
   dataProvider: any;
@@ -67,7 +66,7 @@ const useLoadAssetCollection = (
   assetFamilyIdentifier: AssetFamilyIdentifier,
   context: Context
 ) => {
-  const [assetCollection, setAssetCollection] = React.useState([] as Asset[]);
+  const [assetCollection, setAssetCollection] = React.useState<ListAsset[]>([]);
 
   React.useEffect(() => {
     if (0 === selection.length) {
@@ -75,9 +74,11 @@ const useLoadAssetCollection = (
       return;
     }
 
-    dataProvider.assetFetcher.fetchByCode(assetFamilyIdentifier, selection, context).then((receivedAssets: Asset[]) => {
-      setAssetCollection(receivedAssets);
-    });
+    dataProvider.assetFetcher
+      .fetchByCode(assetFamilyIdentifier, selection, context)
+      .then((receivedAssets: ListAsset[]) => {
+        setAssetCollection(receivedAssets);
+      });
   }, [selection]);
 
   return {assetCollection, setAssetCollection};
@@ -101,7 +102,7 @@ const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onSele
           if (undefined === asset) {
             return (
               <AssetItem
-                asset={emptyAsset(assetCode)}
+                asset={creatEmptyAsset(assetCode)}
                 context={context}
                 onRemove={() => {}}
                 isLoading={true}

@@ -22,7 +22,7 @@ const MediaFileCellView: CellView = memo(({value, column}: {value: ListValue; co
         src={getMediaPreviewUrl({
           type: MediaPreviewType.Thumbnail,
           attributeIdentifier: column.attribute.identifier,
-          data: getMediaData(value.data, column.attribute),
+          data: getMediaData(value.data),
         })}
       />
     </div>

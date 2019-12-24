@@ -2,8 +2,8 @@ import * as React from 'react';
 import {getLabel} from 'pimui/js/i18n';
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
-import {AssetFamily, getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import ListAsset, {getListAssetMainMediaPreview} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import ListAsset, {getListAssetMainMediaThumbnail} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 const memo = (React as any).memo;
 
@@ -14,13 +14,11 @@ const CommonRow = memo(
     channel,
     placeholder = false,
     onRedirectToAsset,
-    assetFamily,
   }: {
     asset: ListAsset;
     locale: string;
     channel: string;
     placeholder?: boolean;
-    assetFamily: AssetFamily;
   } & {
     onRedirectToAsset: (asset: ListAsset) => void;
   }) => {
@@ -38,7 +36,6 @@ const CommonRow = memo(
     }
 
     const label = getLabel(asset.labels, locale, asset.code);
-    const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily);
 
     return (
       <tr
@@ -57,7 +54,7 @@ const CommonRow = memo(
             className="AknGrid-image AknLoadingPlaceHolder"
             width="44"
             height="44"
-            src={getMediaPreviewUrl(getListAssetMainMediaPreview(asset, attributeAsMainMedia, channel, locale))}
+            src={getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, channel, locale))}
           />
         </td>
         <td className="AknGrid-bodyCell" title={label}>

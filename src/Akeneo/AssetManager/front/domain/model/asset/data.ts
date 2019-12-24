@@ -12,9 +12,6 @@ import OptionData from 'akeneoassetmanager/domain/model/asset/data/option';
 import TextData, {NormalizedTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 import {NormalizedOptionData} from 'akeneoassetmanager/domain/model/asset/data/option';
 import {NormalizedOptionCollectionData} from 'akeneoassetmanager/domain/model/asset/data/option-collection';
-import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {isMediaFileAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
-import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
 export type NormalizedData =
   | NormalizedMediaFileData
@@ -26,10 +23,10 @@ export type NormalizedData =
 
 type Data = MediaFileData | MediaLinkData | NumberData | OptionCollectionData | OptionData | TextData;
 
-export const getMediaData = (data: Data, attribute: NormalizedAttribute): string => {
+export const getMediaData = (data: Data): string => {
   if (null === data) return '';
-  if (isMediaLinkAttribute(attribute) && isMediaLinkData(data)) return data;
-  if (isMediaFileAttribute(attribute) && isMediaFileData(data)) return data.filePath;
+  if (isMediaLinkData(data)) return data;
+  if (isMediaFileData(data)) return data.filePath;
 
   return '';
 };

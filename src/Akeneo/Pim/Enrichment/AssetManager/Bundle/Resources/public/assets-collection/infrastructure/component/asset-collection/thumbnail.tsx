@@ -1,12 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import {akeneoTheme, opacity, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {
-  Asset,
-  assetWillNotMoveInCollection,
-  getAssetLabel,
-  MoveDirection,
-} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import Close from 'akeneoassetmanager/application/component/app/icon/close';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
@@ -14,9 +8,9 @@ import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import Left from 'akeneoassetmanager/application/component/app/icon/left';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
-import {getAssetPreviewLegacy, getAssetEditUrlLegacy} from 'akeneoassetmanager/tools/media-url-generator';
+import {getAssetEditUrl, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
-import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
+import ListAsset, {getListAssetMainMediaThumbnail, MoveDirection, getAssetLabel, assetWillNotMoveInCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 const Img = styled.img`
   width: 140px;
@@ -112,7 +106,7 @@ export const Thumbnail = ({
   onMove,
   onClick,
 }: {
-  asset: Asset;
+  asset: ListAsset;
   context: ContextState;
   readonly: boolean;
   assetCollection: AssetCode[];
@@ -140,7 +134,7 @@ export const Thumbnail = ({
         <Overlay onClick={handleOverlayClick} ref={overlayRef} data-testid="overlay">
           <Actions>
             <RemoveAction onClick={onRemove} data-remove={asset.code} />
-            <EditAction href={getAssetEditUrlLegacy(asset)} data-edit={asset.code} />
+            <EditAction href={getAssetEditUrl(asset)} data-edit={asset.code} />
           </Actions>
           {!assetWillNotMoveInCollection(assetCollection, asset, MoveDirection.Before) ? (
             <MoveButton
@@ -162,12 +156,7 @@ export const Thumbnail = ({
           )}
         </Overlay>
       )}
-      <Img
-        src={getAssetPreviewLegacy(asset, MediaPreviewType.Thumbnail, {
-          locale: context.locale,
-          channel: context.channel,
-        })}
-      />
+      <Img src={getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale))} />
     </Container>
   );
 };

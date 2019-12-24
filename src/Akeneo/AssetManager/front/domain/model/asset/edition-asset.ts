@@ -45,7 +45,7 @@ export const getEditionAssetCompleteness = (
 export const getEditionAssetLabel = (editionAsset: EditionAsset, locale: LocaleCode): string =>
   getLabel(editionAsset.labels, locale, editionAsset.code);
 
-export const getEditionAssetMainMediaPreview = (
+export const getEditionAssetMainMediaThumbnail = (
   asset: EditionAsset,
   channel: ChannelCode,
   locale: LocaleCode
@@ -56,7 +56,7 @@ export const getEditionAssetMainMediaPreview = (
   return {
     type: MediaPreviewType.Thumbnail,
     attributeIdentifier,
-    data: undefined !== mediaValue ? getMediaData(mediaValue.data, mediaValue.attribute) : '',
+    data: undefined !== mediaValue ? getMediaData(mediaValue.data) : '',
   };
 };
 

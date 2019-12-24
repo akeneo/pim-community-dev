@@ -1,10 +1,8 @@
 import * as React from 'react';
-import {
-  Completeness,
-  getCompletenessPercentage,
-} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
+import {getCompletenessPercentage} from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 type BadgeProps = {
   isComplete: boolean;
@@ -21,7 +19,7 @@ const Badge = styled.div<BadgeProps>`
   padding: 0 10px;
 `;
 
-const CompletenessBadge = ({completeness}: {completeness: Completeness}) => {
+const CompletenessBadge = ({completeness}: {completeness: NormalizedCompleteness}) => {
   const completenessRatio = getCompletenessPercentage(completeness);
   const isComplete = completenessRatio === 100;
 

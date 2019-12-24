@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {Asset, getAssetLabel} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import __ from 'akeneoassetmanager/tools/translator';
@@ -10,26 +9,33 @@ import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
 import {
   copyToClipboard,
   canCopyToClipboard,
-  getAssetPreviewLegacy,
-  getAssetEditUrlLegacy,
+  getMediaPreviewUrl,
+  getImageDownloadUrl,
 } from 'akeneoassetmanager/tools/media-url-generator';
 import {
   NormalizedMediaLinkAttribute,
   MEDIA_LINK_ATTRIBUTE_TYPE,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
-import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
+import {
+  MEDIA_FILE_ATTRIBUTE_TYPE,
+  NormalizedMediaFileAttribute,
+} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {isMainMediaEmpty} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 import MediaLinkData, {
   getYouTubeWatchUrl,
   getYouTubeEmbedUrl,
   getMediaLinkUrl,
+  isMediaLinkData,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
+import MediaFileData, {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {getPreviewModel} from 'akeneoassetmanager/domain/model/asset/list-value';
+import {getLabel} from 'pimui/js/i18n';
+import Data, {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
 const routing = require('routing');
 
 const Container = styled.div`
@@ -90,9 +96,10 @@ const YouTubePlayer = styled.iframe`
 `;
 
 type PreviewProps = {
-  asset: Asset;
+  asset: ListAsset;
   context: Context;
   attributeAsMainMedia: NormalizedAttribute;
+  assetFamilyIdentifier: AssetFamilyIdentifier;
 };
 
 const DownloadAction = ({url, fileName}: {url: string; fileName: string}) => (
@@ -117,15 +124,29 @@ const EditAction = ({url}: {url: string}) => (
   </Action>
 );
 
-const getBinaryPreviewView = ({asset, context, attributeAsMainMedia}: PreviewProps) => (
-  <>
-    <PreviewImage asset={asset} context={context} attributeAsMainMedia={attributeAsMainMedia} />
-    <Actions>
-      <DownloadAction url={getAssetEditUrlLegacy(asset)} fileName={getAssetEditUrlLegacy(asset)} />
-      <EditAction url={getAssetEditUrlLegacy(asset)} />
-    </Actions>
-  </>
-);
+const MediaFilePreviewView = ({
+  label,
+  editUrl,
+  mediaFileData,
+  attribute,
+}: {
+  label: string;
+  editUrl: string;
+  mediaFileData: MediaFileData;
+  attribute: NormalizedMediaFileAttribute;
+}) => {
+  if (null === mediaFileData) throw Error('The mediaFileData should not be empty at this point');
+
+  return (
+    <>
+      <Image src={getMediaDataPreviewUrl(mediaFileData, attribute)} alt={label} data-role="asset-preview" />
+      <Actions>
+        <DownloadAction url={getImageDownloadUrl(mediaFileData)} fileName={mediaFileData.originalFilename} />
+        <EditAction url={editUrl} />
+      </Actions>
+    </>
+  );
+};
 
 //TODO clean
 const getAssetEditUrl = (assetCode: AssetCode, assetFamilyIdentifier: AssetFamilyIdentifier): string =>
@@ -136,13 +157,24 @@ const getAssetEditUrl = (assetCode: AssetCode, assetFamilyIdentifier: AssetFamil
     tab: 'enrich',
   });
 
-const getMediaLinkPreviewView = (
-  asset: Asset,
-  mediaLinkData: MediaLinkData,
-  context: Context,
-  attribute: NormalizedMediaLinkAttribute
-) => {
-  const editUrl = getAssetEditUrl(asset.code, asset.assetFamily.identifier);
+const getMediaDataPreviewUrl = (data: Data, attributeAsMainMedia: NormalizedAttribute): string =>
+  getMediaPreviewUrl({
+    type: MediaPreviewType.Preview,
+    attributeIdentifier: attributeAsMainMedia.identifier,
+    data: getMediaData(data),
+  });
+
+const MediaLinkPreviewView = ({
+  label,
+  editUrl,
+  mediaLinkData,
+  attribute,
+}: {
+  label: string;
+  editUrl: string;
+  mediaLinkData: MediaLinkData;
+  attribute: NormalizedMediaLinkAttribute;
+}) => {
   switch (attribute.media_type) {
     case MediaTypes.youtube:
       return (
@@ -158,9 +190,10 @@ const getMediaLinkPreviewView = (
     case MediaTypes.pdf:
     case MediaTypes.other:
       const url = getMediaLinkUrl(mediaLinkData, attribute);
+
       return (
         <>
-          <PreviewImage asset={asset} context={context} attributeAsMainMedia={attribute} />
+          <Image src={getMediaDataPreviewUrl(mediaLinkData, attribute)} alt={label} data-role="asset-preview" />
           <Actions>
             <DownloadAction url={url} fileName={url} />
             <CopyUrlAction url={url} />
@@ -173,43 +206,68 @@ const getMediaLinkPreviewView = (
   }
 };
 
-const PreviewImage = ({asset, context}: PreviewProps) => (
-  <Image
-    src={getAssetPreviewLegacy(asset, MediaPreviewType.Preview, context)}
-    alt={getAssetLabel(asset, context.locale)}
-    data-role="asset-preview"
-  />
-);
+const PreviewView = ({
+  asset,
+  context,
+  attributeAsMainMedia,
+  assetFamilyIdentifier,
+}: {
+  asset: ListAsset;
+  context: Context;
+  attributeAsMainMedia: NormalizedAttribute;
+  assetFamilyIdentifier: AssetFamilyIdentifier;
+}) => {
+  const editUrl = getAssetEditUrl(asset.code, assetFamilyIdentifier);
+  const label = getLabel(asset.labels, context.locale, asset.code);
+  const previewModel = getPreviewModel(asset.image, context.channel, context.locale);
 
-const getPreviewView = ({asset, context, attributeAsMainMedia}: PreviewProps) => {
-  if (isMainMediaEmpty(asset, context.channel, context.locale))
+  if (undefined === previewModel || null === previewModel.data)
     return (
       <>
-        <PreviewImage asset={asset} context={context} attributeAsMainMedia={attributeAsMainMedia} />
+        <Image src={getMediaDataPreviewUrl('', attributeAsMainMedia)} alt={label} data-role="asset-preview" />
         <Message>{__('pim_asset_manager.asset_preview.empty_main_media')}</Message>
         <Actions>
-          <EditAction url={getAssetEditUrl(asset.code, asset.assetFamily.identifier)} />
+          <EditAction url={editUrl} />
         </Actions>
       </>
     );
 
   switch (attributeAsMainMedia.type) {
     case MEDIA_LINK_ATTRIBUTE_TYPE:
-      const previewModel = getPreviewModel(asset.image, context.channel, context.locale)?.data as MediaLinkData;
-      return getMediaLinkPreviewView(
-        asset,
-        previewModel,
-        context,
-        attributeAsMainMedia as NormalizedMediaLinkAttribute
+      if (!isMediaLinkData(previewModel.data)) throw Error('The medialink data should not be empty');
+
+      return (
+        <MediaLinkPreviewView
+          label={label}
+          editUrl={editUrl}
+          mediaLinkData={previewModel.data}
+          attribute={attributeAsMainMedia as NormalizedMediaLinkAttribute}
+        />
       );
     case MEDIA_FILE_ATTRIBUTE_TYPE:
     default:
-      return getBinaryPreviewView({asset, context, attributeAsMainMedia});
+      if (!isMediaFileData(previewModel.data)) throw Error('previewModel should be a media file model');
+
+      return (
+        <MediaFilePreviewView
+          label={label}
+          editUrl={editUrl}
+          mediaFileData={previewModel.data}
+          attribute={attributeAsMainMedia as NormalizedMediaFileAttribute}
+        />
+      );
   }
 };
 
-export const Preview = ({asset, context, attributeAsMainMedia}: PreviewProps) => (
+export const Preview = ({asset, context, attributeAsMainMedia, assetFamilyIdentifier}: PreviewProps) => (
   <Container>
-    <Border>{getPreviewView({asset, context, attributeAsMainMedia})}</Border>
+    <Border>
+      <PreviewView
+        asset={asset}
+        context={context}
+        attributeAsMainMedia={attributeAsMainMedia}
+        assetFamilyIdentifier={assetFamilyIdentifier}
+      />
+    </Border>
   </Container>
 );

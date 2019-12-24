@@ -1,7 +1,6 @@
 import {File, isFileEmpty} from 'akeneoassetmanager/domain/model/file';
-import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
-import {MediaPreview, MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
-import {getValueForChannelAndLocaleFilter} from 'akeneoassetmanager/domain/model/asset/value';
+import {MediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
+import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 const routing = require('routing');
 
 export const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
@@ -36,45 +35,14 @@ export const getMediaShowUrl = (filePath: string, filter: string): string => {
   return routing.generate('pim_enrich_media_show', {filename, filter});
 };
 
-/**
- * Get the download media URL
- *
- * @param string filePath
- *
- * @return {string}
- */
-export const getMediaDownloadUrl = (filePath: string): string => {
-  const filename = encodeURIComponent(filePath);
-
-  return routing.generate('pim_enrich_media_download', {filename});
-};
-
 export const getMediaPreviewUrl = (mediaPreview: MediaPreview): string =>
   routing.generate('akeneo_asset_manager_image_preview', {
     ...mediaPreview,
     data: btoa(mediaPreview.data),
   });
 
-// TODO The asset any is temporary and should be fixed when we create unified models
-export const getAssetPreviewLegacy = (asset: any, type: MediaPreviewType, {locale, channel}: Context): string => {
-  const image = asset.image.find(getValueForChannelAndLocaleFilter(channel, locale));
-
-  //TODO unify models https://akeneo.atlassian.net/browse/AST-183
-  const attributeIdentifier =
-    undefined !== asset.assetFamily
-      ? asset.assetFamily.attributeAsMainMedia
-      : 0 === asset.image.length
-      ? 'UNKNOWN'
-      : asset.image[0].attribute;
-
-  const data = undefined !== image ? (typeof image.data === 'string' ? image.data : image.data.filePath) : '';
-
-  return getMediaPreviewUrl({type, attributeIdentifier, data});
-};
-
-// TODO The asset any is temporary and should be fixed when we create unified models
-export const getAssetEditUrlLegacy = (asset: any): string => {
-  const assetFamilyIdentifier = asset.assetFamily.identifier;
+export const getAssetEditUrl = (asset: ListAsset): string => {
+  const assetFamilyIdentifier = asset.assetFamilyIdentifier;
   const assetCode = asset.code;
 
   //TODO cleaner way?

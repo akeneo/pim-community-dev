@@ -2,7 +2,7 @@ import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import EditionAsset, {
   getEditionAssetLabel,
-  getEditionAssetMainMediaPreview,
+  getEditionAssetMainMediaThumbnail,
 } from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
@@ -44,7 +44,7 @@ export const MainMediaThumbnail = ({asset, context}: MainMediaThumbnailProps) =>
   <Container>
     <Img
       alt={__('pim_asset_manager.asset.img', {label: getEditionAssetLabel(asset, context.locale)})}
-      src={getMediaPreviewUrl(getEditionAssetMainMediaPreview(asset, context.channel, context.locale))}
+      src={getMediaPreviewUrl(getEditionAssetMainMediaThumbnail(asset, context.channel, context.locale))}
     />
   </Container>
 );
