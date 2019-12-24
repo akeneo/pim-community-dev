@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Client\Fake;
 
-use Akeneo\Apps\Application\Service\CreateClientInterface;
-use Akeneo\Apps\Domain\Model\Read\Client;
+use Akeneo\Apps\Application\Settings\Service\CreateClientInterface;
+use Akeneo\Apps\Domain\Settings\Model\Read\Client;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

@@ -1,3 +1,3 @@
 services:
     akeneo_app.persistence.repository.app:
-        class: 'Akeneo\Apps\Infrastructure\Persistence\InMemory\Repository\InMemoryAppRepository'
+        class: 'Akeneo\Apps\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository'

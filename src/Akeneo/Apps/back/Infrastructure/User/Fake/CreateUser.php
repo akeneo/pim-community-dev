@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\User\Fake;
 
-use Akeneo\Apps\Application\Service\CreateUserInterface;
-use Akeneo\Apps\Domain\Model\Read\User;
+use Akeneo\Apps\Application\Settings\Service\CreateUserInterface;
+use Akeneo\Apps\Domain\Settings\Model\Read\User;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>

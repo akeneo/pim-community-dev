@@ -12,7 +12,7 @@ namespace Akeneo\Apps\Domain\Audit\Model\Write;
 class DailyEventCount
 {
     /** @var string */
-    private $appCode;
+    private $connectionCode;
     /** @var string */
     private $eventDate;
     /** @var int */
@@ -20,17 +20,17 @@ class DailyEventCount
     /** @var string */
     private $eventType;
 
-    public function __construct(string $appCode, string $eventDate, int $eventCount, string $eventType)
+    public function __construct(string $connectionCode, string $eventDate, int $eventCount, string $eventType)
     {
-        $this->appCode = $appCode;
+        $this->connectionCode = $connectionCode;
         $this->eventDate = $eventDate;
         $this->eventCount = $eventCount;
         $this->eventType = $eventType;
     }
 
-    public function appCode(): string
+    public function connectionCode(): string
     {
-        return $this->appCode;
+        return $this->connectionCode;
     }
 
     public function eventDate():  string

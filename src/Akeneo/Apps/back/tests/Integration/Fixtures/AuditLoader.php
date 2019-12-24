@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\back\tests\Integration\Fixtures;
 
-use Akeneo\Apps\Application\Command\CreateAppCommand;
-use Akeneo\Apps\Application\Command\CreateAppHandler;
-use Doctrine\DBAL\Connection;
+use Akeneo\Apps\Application\Settings\Command\CreateConnectionCommand;
+use Akeneo\Apps\Application\Settings\Command\CreateConnectionHandler;
+use Doctrine\DBAL\Connection as DbalConnection;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -15,15 +15,15 @@ use Doctrine\DBAL\Connection;
  */
 class AuditLoader
 {
-    /** @var Connection */
+    /** @var DbalConnection */
     private $dbalConnection;
 
-    public function __construct(Connection $dbalConnection)
+    public function __construct(DbalConnection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }
 
-    public function insertData(string $appCode, \DateTime $eventDate, int $eventCount, string $eventType)
+    public function insertData(string $connectionCode, \DateTime $eventDate, int $eventCount, string $eventType)
     {
         $sqlQuery = <<<SQL
 INSERT INTO akeneo_app_audit (app_code, event_date, event_count, event_type)
@@ -32,7 +32,7 @@ SQL;
         $this->dbalConnection->executeQuery(
             $sqlQuery,
             [
-                'app_code' => $appCode,
+                'app_code' => $connectionCode,
                 'event_date' => $eventDate->format('Y-m-d'),
                 'event_count' => $eventCount,
                 'event_type' => $eventType

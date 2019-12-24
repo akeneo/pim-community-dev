@@ -6,7 +6,7 @@ Feature: Browse users
 
   Background:
     Given the "default" catalog configuration
-    And There is a "magento" app
+    And there is a "magento" connection
     And I am logged in as "Peter"
 
   Scenario: Successfully display users

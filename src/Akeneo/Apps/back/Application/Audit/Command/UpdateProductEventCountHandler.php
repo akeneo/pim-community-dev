@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Application\Audit\Command;
 
-use Akeneo\Apps\Domain\Audit\Persistence\Query\ExtractAppsProductEventCountQuery;
+use Akeneo\Apps\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQuery;
 use Akeneo\Apps\Domain\Audit\Persistence\Repository\EventCountRepository;
 
 /**
@@ -14,14 +14,15 @@ use Akeneo\Apps\Domain\Audit\Persistence\Repository\EventCountRepository;
  */
 class UpdateProductEventCountHandler
 {
-    /** @var ExtractAppsProductEventCountQuery */
-    private $extractAppsEventCountQuery;
+    /** @var ExtractConnectionsProductEventCountQuery */
+    private $extractConnectionsEventCountQuery;
+
     /** @var EventCountRepository */
     private $eventCountRepository;
 
-    public function __construct(ExtractAppsProductEventCountQuery $extractAppsEventCountQuery, EventCountRepository $eventCountRepository)
+    public function __construct(ExtractConnectionsProductEventCountQuery $extractConnectionsEventCountQuery, EventCountRepository $eventCountRepository)
     {
-        $this->extractAppsEventCountQuery = $extractAppsEventCountQuery;
+        $this->extractConnectionsEventCountQuery = $extractConnectionsEventCountQuery;
         $this->eventCountRepository = $eventCountRepository;
     }
 
@@ -29,10 +30,10 @@ class UpdateProductEventCountHandler
     {
         // TODO: Use Read Models and transform into write models?
 
-        $createdProductsCount = $this->extractAppsEventCountQuery->extractCreatedProducts($command->eventDate());
+        $createdProductsCount = $this->extractConnectionsEventCountQuery->extractCreatedProducts($command->eventDate());
         $this->eventCountRepository->bulkInsert($createdProductsCount);
 
-        $updatedProductsCount = $this->extractAppsEventCountQuery->extractUpdatedProducts($command->eventDate());
+        $updatedProductsCount = $this->extractConnectionsEventCountQuery->extractUpdatedProducts($command->eventDate());
         $this->eventCountRepository->bulkInsert($updatedProductsCount);
     }
 }

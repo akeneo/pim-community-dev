@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\User\Internal;
 
-use Akeneo\Apps\Application\Service\CreateUserInterface;
-use Akeneo\Apps\Domain\Model\Read\User;
+use Akeneo\Apps\Application\Settings\Service\CreateUserInterface;
+use Akeneo\Apps\Domain\Settings\Model\Read\User;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;

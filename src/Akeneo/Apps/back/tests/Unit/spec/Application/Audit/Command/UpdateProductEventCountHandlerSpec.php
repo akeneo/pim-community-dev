@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Apps\Application\Audit\Command;
 
 use Akeneo\Apps\Application\Audit\Command\UpdateProductEventCountHandler;
-use Akeneo\Apps\Domain\Audit\Persistence\Query\ExtractAppsProductEventCountQuery;
+use Akeneo\Apps\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQuery;
 use Akeneo\Apps\Domain\Audit\Persistence\Repository\EventCountRepository;
 use PhpSpec\ObjectBehavior;
 
@@ -16,9 +16,9 @@ use PhpSpec\ObjectBehavior;
  */
 class UpdateProductEventCountHandlerSpec extends ObjectBehavior
 {
-    function let(ExtractAppsProductEventCountQuery $extractAppsEventCountQuery, EventCountRepository $eventCountRepository)
+    function let(ExtractConnectionsProductEventCountQuery $extractConnectionsEventCountQuery, EventCountRepository $eventCountRepository)
     {
-        $this->beConstructedWith($extractAppsEventCountQuery, $eventCountRepository);
+        $this->beConstructedWith($extractConnectionsEventCountQuery, $eventCountRepository);
     }
 
     function it_is_initializable()

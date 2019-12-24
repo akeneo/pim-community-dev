@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Install;
 
-use Akeneo\Apps\Infrastructure\Install\Query\CreateAppAuditTableQuery;
-use Akeneo\Apps\Infrastructure\Install\Query\CreateAppsTableQuery;
+use Akeneo\Apps\Infrastructure\Install\Query\CreateConnectionAuditTableQuery;
+use Akeneo\Apps\Infrastructure\Install\Query\CreateConnectionsTableQuery;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Driver\Connection as DbalConnection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -19,7 +19,7 @@ class InstallSubscriber implements EventSubscriberInterface
     private $assetsInstaller;
     private $dbalConnection;
 
-    public function __construct(AssetsInstaller $assetsInstaller, Connection $dbalConnection)
+    public function __construct(AssetsInstaller $assetsInstaller, DbalConnection $dbalConnection)
     {
         $this->assetsInstaller = $assetsInstaller;
         $this->dbalConnection = $dbalConnection;
@@ -28,7 +28,7 @@ class InstallSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            InstallerEvents::POST_DB_CREATE => ['createAppsTable'],
+            InstallerEvents::POST_DB_CREATE => ['createConnectionsTable'],
             InstallerEvents::POST_SYMFONY_ASSETS_DUMP => ['installAssets'],
             InstallerEvents::POST_ASSETS_DUMP => ['installAssets']
         ];
@@ -40,9 +40,9 @@ class InstallSubscriber implements EventSubscriberInterface
         $this->assetsInstaller->installAssets($shouldSymlink);
     }
 
-    public function createAppsTable(GenericEvent $event): void
+    public function createConnectionsTable(GenericEvent $event): void
     {
-        $this->dbalConnection->exec(CreateAppsTableQuery::QUERY);
-        $this->dbalConnection->exec(CreateAppAuditTableQuery::QUERY);
+        $this->dbalConnection->exec(CreateConnectionTableQuery::QUERY);
+        $this->dbalConnection->exec(CreateConnectionAuditTableQuery::QUERY);
     }
 }

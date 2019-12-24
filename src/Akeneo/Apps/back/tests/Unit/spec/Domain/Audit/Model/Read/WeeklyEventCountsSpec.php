@@ -25,7 +25,7 @@ class WeeklyEventCountsSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(WeeklyEventCounts::class);
     }
 
-    public function it_normalizes_an_app(): void
+    public function it_normalizes_a_connection(): void
     {
         $this->normalize()->shouldReturn(
             [
@@ -34,7 +34,7 @@ class WeeklyEventCountsSpec extends ObjectBehavior
         );
     }
 
-    public function it_normalizes_an_app_with_event_counts(): void
+    public function it_normalizes_a_connection_with_event_counts(): void
     {
         $eventDate1 = $eventDate = new \DateTime('2019-12-12', new \DateTimeZone('UTC'));
         $eventCount1 = new DailyEventCount(153, $eventDate1);

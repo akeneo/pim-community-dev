@@ -1,6 +1,6 @@
 services:
     akeneo_app.application.handler.create_app:
-        class: 'Akeneo\Apps\Application\Command\CreateAppHandler'
+        class: 'Akeneo\Apps\Application\Settings\Command\CreateConnectionHandler'
         public: true
         arguments:
             - '@validator'
@@ -9,36 +9,36 @@ services:
             - '@akeneo_app.service.user.create_user'
 
     akeneo_app.application.handler.fetch_apps:
-        class: 'Akeneo\Apps\Application\Query\FetchAppsHandler'
+        class: 'Akeneo\Apps\Application\Settings\Query\FetchConnectionsHandler'
         arguments:
             - '@akeneo_app.persistence.query.select_apps'
 
     akeneo_app.application.handler.find_an_app:
-        class: 'Akeneo\Apps\Application\Query\FindAnAppHandler'
+        class: 'Akeneo\Apps\Application\Settings\Query\FindAConnectionHandler'
         arguments:
             - '@akeneo_app.persistence.query.select_app_with_credentials_by_code'
 
     akeneo_app.application.handler.update_app:
-        class: 'Akeneo\Apps\Application\Command\UpdateAppHandler'
+        class: 'Akeneo\Apps\Application\Settings\Command\UpdateConnectionHandler'
         arguments:
             - '@validator'
             - '@akeneo_app.persistence.repository.app'
 
     akeneo_app.application.handler.delete_app:
-        class: 'Akeneo\Apps\Application\Command\DeleteAppHandler'
+        class: 'Akeneo\Apps\Application\Settings\Command\DeleteConnectionHandler'
         arguments:
             - '@akeneo_app.persistence.repository.app'
             - '@akeneo_app.service.client.delete_client'
             - '@akeneo_app.service.user.delete_user'
 
     akeneo_app.application.handler.regenerate_app_secret:
-        class: 'Akeneo\Apps\Application\Command\RegenerateAppSecretHandler'
+        class: 'Akeneo\Apps\Application\Settings\Command\RegenerateConnectionSecretHandler'
         arguments:
             - '@akeneo_app.persistence.repository.app'
             - '@akeneo_app.service.client.regenerate_client_secret'
 
     akeneo_app.application.audit.handler.count_daily_events_by_app:
-        class: 'Akeneo\Apps\Application\Audit\Query\CountDailyEventsByAppHandler'
+        class: 'Akeneo\Apps\Application\Audit\Query\CountDailyEventsByConnectionHandler'
         arguments:
             - '@akeneo_app.persistence.query.select_apps_event_count_by_day'
 
