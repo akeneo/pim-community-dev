@@ -14,13 +14,19 @@ class PatternSpec extends ObjectBehavior
 
     function it_is_a_pattern_value_object()
     {
-        $this->beConstructedThrough('create', ['pattern']);
+        $this->beConstructedThrough('create', ['/(\w+)-ref/']);
         $this->shouldBeAnInstanceOf(Pattern::class);
+    }
+
+    function it_represents_a_valid_regular_expression_pattern()
+    {
+        $this->beConstructedThrough('create', ['/invalid_regexp(]']);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
     function it_can_be_normalized()
     {
-        $this->beConstructedThrough('create', ['pattern']);
-        $this->normalize()->shouldReturn('pattern');
+        $this->beConstructedThrough('create', ['/(.*)/']);
+        $this->normalize()->shouldReturn('/(.*)/');
     }
 }

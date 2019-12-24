@@ -13,6 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention;
 
+use Webmozart\Assert\Assert;
+
+/**
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ *
+ * Value object representing a regular expression pattern
+ */
 class Pattern
 {
     /** @var string */
@@ -25,6 +32,8 @@ class Pattern
 
     public static function create(string $pattern): self
     {
+        Assert::integer(@preg_match($pattern, ''));
+
         return new self($pattern);
     }
 

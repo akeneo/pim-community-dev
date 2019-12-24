@@ -15,6 +15,12 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention;
 
 use Webmozart\Assert\Assert;
 
+/**
+ * This class represents a naming convention used to automatically fill asset values at the creation step.
+ * The "source" (either the asset code or a media file attribute code -in the latter case the filename will be parsed)
+ * is parsed with the given "pattern". If the "strict" mode is activated, any failure in the parsing will result in an
+ * error, else it will silently fail.
+ */
 class NamingConvention implements NamingConventionInterface
 {
     /** @var Source */

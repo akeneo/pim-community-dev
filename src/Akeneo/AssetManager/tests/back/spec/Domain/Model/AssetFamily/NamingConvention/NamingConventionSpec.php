@@ -25,11 +25,11 @@ class NamingConventionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(NullNamingConvention::class);
     }
 
-    function it_cannot_be_constructed_wiithout_a_source()
+    function it_cannot_be_constructed_without_a_source()
     {
         $this->beConstructedThrough(
             'createFromNormalized',
-            [['pattern' => 'pattern', 'strict' => true]]
+            [['pattern' => '#(.*)#', 'strict' => true]]
         );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
@@ -47,7 +47,7 @@ class NamingConventionSpec extends ObjectBehavior
     {
         $this->beConstructedThrough(
             'createFromNormalized',
-            [['source' => ['property' => 'code'], 'pattern' => 'pattern']]
+            [['source' => ['property' => 'code'], 'pattern' => '#(<?product_ref>\w+)(<?attribute>frontview|sideview)\.\w+#']]
         );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
@@ -56,7 +56,7 @@ class NamingConventionSpec extends ObjectBehavior
     {
         $this->beConstructedThrough(
             'createFromNormalized',
-            [['source' => ['property' => 'code'], 'pattern' => 'pattern', 'strict' => false]]
+            [['source' => ['property' => 'code'], 'pattern' => '#(<?attribute>\w+)-(<?sku>w+)\.\w+#', 'strict' => false]]
         );
         $this->normalize()->shouldReturn(
             [
@@ -65,7 +65,7 @@ class NamingConventionSpec extends ObjectBehavior
                     'channel' => null,
                     'locale' => null,
                 ],
-                'pattern' => 'pattern',
+                'pattern' => '#(<?attribute>\w+)-(<?sku>w+)\.\w+#',
                 'strict' => false,
             ]
         );
