@@ -3,6 +3,8 @@
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NullNamingConvention;
 use PhpSpec\ObjectBehavior;
 
 class NamingConventionSpec extends ObjectBehavior
@@ -13,6 +15,14 @@ class NamingConventionSpec extends ObjectBehavior
             [['source' => ['property' => 'code'], 'pattern' => 'pattern', 'strict' => true]]
         ]);
         $this->shouldBeAnInstanceOf(NamingConvention::class);
+        $this->shouldImplement(NamingConventionInterface::class);
+    }
+
+    function it_instantiates_a_null_naming_convention_when_provided_with_empty_arguments()
+    {
+        $this->beConstructedThrough('createFromNormalized', [[]]);
+        $this->shouldImplement(NamingConventionInterface::class);
+        $this->shouldBeAnInstanceOf(NullNamingConvention::class);
     }
 
     function it_cannot_be_constructed_wiithout_a_source()

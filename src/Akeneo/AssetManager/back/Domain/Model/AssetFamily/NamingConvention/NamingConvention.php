@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention;
 
 use Webmozart\Assert\Assert;
 
-class NamingConvention
+class NamingConvention implements NamingConventionInterface
 {
     /** @var Source */
     private $source;
@@ -33,8 +33,12 @@ class NamingConvention
         $this->strict = $strict;
     }
 
-    public static function createFromNormalized(array $normalizedNamingConvention): self
+    public static function createFromNormalized(array $normalizedNamingConvention): NamingConventionInterface
     {
+        if ([] === $normalizedNamingConvention) {
+            return new NullNamingConvention();
+        }
+
         Assert::keyExists($normalizedNamingConvention, 'source');
         Assert::isArray($normalizedNamingConvention['source']);
         Assert::keyExists($normalizedNamingConvention, 'pattern');

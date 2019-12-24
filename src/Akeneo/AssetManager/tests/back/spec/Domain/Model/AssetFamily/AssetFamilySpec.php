@@ -15,7 +15,7 @@ namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionInterface;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
@@ -99,17 +99,15 @@ class AssetFamilySpec extends ObjectBehavior
         $this->getImage()->shouldBe($image);
     }
 
-    public function it_updates_transformation_collection(
-        TransformationCollection $transformations
-    ) {
+    public function it_updates_transformation_collection(TransformationCollection $transformations)
+    {
         $assetFamily = $this->withTransformationCollection($transformations);
         $assetFamily->getTransformationCollection()->shouldReturn($transformations);
     }
 
-    public function it_updates_naming_convention(
-        NamingConventionReference $namingConventionReference
-    ) {
-        $assetFamily = $this->withNamingConventionReference($namingConventionReference);
-        $assetFamily->getNamingConventionReference()->shouldReturn($namingConventionReference);
+    public function it_updates_naming_convention(NamingConventionInterface $namingConvention)
+    {
+        $assetFamily = $this->withNamingConvention($namingConvention);
+        $assetFamily->getNamingConvention()->shouldReturn($namingConvention);
     }
 }

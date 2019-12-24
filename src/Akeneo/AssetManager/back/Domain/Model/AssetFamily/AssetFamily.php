@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionInterface;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 
@@ -47,8 +48,8 @@ class AssetFamily
     /** @var TransformationCollection */
     private $transformationCollection;
 
-    /** @var NamingConventionReference */
-    private $namingConventionReference;
+    /** @var NamingConventionInterface */
+    private $namingConvention;
 
     private function __construct(
         AssetFamilyIdentifier $identifier,
@@ -58,7 +59,7 @@ class AssetFamily
         AttributeAsMainMediaReference $attributeAsMainMedia,
         RuleTemplateCollection $ruleTemplateCollection,
         TransformationCollection $transformationCollection,
-        ?NamingConventionReference $namingConventionReference
+        NamingConventionInterface $namingConvention
     ) {
         $this->identifier = $identifier;
         $this->labelCollection = $labelCollection;
@@ -67,7 +68,7 @@ class AssetFamily
         $this->attributeAsMainMedia = $attributeAsMainMedia;
         $this->ruleTemplateCollection = $ruleTemplateCollection;
         $this->transformationCollection = $transformationCollection;
-        $this->namingConventionReference = $namingConventionReference;
+        $this->namingConvention = $namingConvention;
     }
 
     public static function create(
@@ -86,7 +87,7 @@ class AssetFamily
             AttributeAsMainMediaReference::noReference(),
             $ruleTemplateCollection,
             TransformationCollection::noTransformation(),
-            NamingConventionReference::noNamingConvention()
+            NamingConvention::createFromNormalized([])
         );
     }
 
@@ -108,7 +109,7 @@ class AssetFamily
             $attributeAsMainMedia,
             $ruleTemplateCollection,
             TransformationCollection::noTransformation(),
-            NamingConventionReference::noNamingConvention()
+            NamingConvention::createFromNormalized([])
         );
     }
 
@@ -194,11 +195,11 @@ class AssetFamily
             $this->attributeAsMainMedia,
             $this->ruleTemplateCollection,
             $transformationCollection,
-            $this->namingConventionReference
+            $this->namingConvention
         );
     }
 
-    public function withNamingConventionReference(NamingConventionReference $namingConvention): self
+    public function withNamingConvention(NamingConventionInterface $namingConvention): self
     {
         return new self(
             $this->identifier,
@@ -212,8 +213,8 @@ class AssetFamily
         );
     }
 
-    public function getNamingConventionReference(): NamingConventionReference
+    public function getNamingConvention(): NamingConventionInterface
     {
-        return $this->namingConventionReference;
+        return $this->namingConvention;
     }
 }
