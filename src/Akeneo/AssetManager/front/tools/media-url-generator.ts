@@ -50,10 +50,13 @@ export const getMediaDownloadUrl = (filePath: string): string => {
 };
 
 export const getMediaPreviewUrl = (mediaPreview: MediaPreview): string =>
-  routing.generate('akeneo_asset_manager_image_preview', {...mediaPreview, data: btoa(mediaPreview.data)});
+  routing.generate('akeneo_asset_manager_image_preview', {
+    ...mediaPreview,
+    data: btoa(mediaPreview.data),
+  });
 
 // TODO The asset any is temporary and should be fixed when we create unified models
-export const getAssetPreview = (asset: any, type: MediaPreviewType, {locale, channel}: Context): string => {
+export const getAssetPreviewLegacy = (asset: any, type: MediaPreviewType, {locale, channel}: Context): string => {
   const image = asset.image.find(getValueForChannelAndLocaleFilter(channel, locale));
 
   //TODO unify models https://akeneo.atlassian.net/browse/AST-183
@@ -75,5 +78,12 @@ export const getAssetEditUrlLegacy = (asset: any): string => {
   const assetCode = asset.code;
 
   //TODO cleaner way?
-  return '#' + routing.generate('akeneo_asset_manager_asset_edit', {assetFamilyIdentifier, assetCode, tab: 'enrich'});
+  return (
+    '#' +
+    routing.generate('akeneo_asset_manager_asset_edit', {
+      assetFamilyIdentifier,
+      assetCode,
+      tab: 'enrich',
+    })
+  );
 };

@@ -10,7 +10,7 @@ import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
 import {
   copyToClipboard,
   canCopyToClipboard,
-  getAssetPreview,
+  getAssetPreviewLegacy,
   getAssetEditUrlLegacy,
 } from 'akeneoassetmanager/tools/media-url-generator';
 import {
@@ -129,7 +129,12 @@ const getBinaryPreviewView = ({asset, context, attributeAsMainMedia}: PreviewPro
 
 //TODO clean
 const getAssetEditUrl = (assetCode: AssetCode, assetFamilyIdentifier: AssetFamilyIdentifier): string =>
-  '#' + routing.generate('akeneo_asset_manager_asset_edit', {assetFamilyIdentifier, assetCode, tab: 'enrich'});
+  '#' +
+  routing.generate('akeneo_asset_manager_asset_edit', {
+    assetFamilyIdentifier,
+    assetCode,
+    tab: 'enrich',
+  });
 
 const getMediaLinkPreviewView = (
   asset: Asset,
@@ -170,7 +175,7 @@ const getMediaLinkPreviewView = (
 
 const PreviewImage = ({asset, context}: PreviewProps) => (
   <Image
-    src={getAssetPreview(asset, MediaPreviewType.Preview, context)}
+    src={getAssetPreviewLegacy(asset, MediaPreviewType.Preview, context)}
     alt={getAssetLabel(asset, context.locale)}
     data-role="asset-preview"
   />

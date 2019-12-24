@@ -7,7 +7,7 @@ import {Attribute, getAttributeLabel} from 'akeneopimenrichmentassetmanager/plat
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
-import {getAssetPreview} from 'akeneoassetmanager/tools/media-url-generator';
+import {getAssetPreviewLegacy} from 'akeneoassetmanager/tools/media-url-generator';
 import {ResultCounter} from 'akeneopimenrichmentassetmanager/platform/component/common/result-counter';
 import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
 
@@ -62,7 +62,7 @@ export const Carousel = ({
           data-role={`carousel-thumbnail-${asset.code}`}
           key={asset.code}
           highlighted={selectedAssetCode === asset.code}
-          src={getAssetPreview(asset, MediaPreviewType.Thumbnail, context)}
+          src={getAssetPreviewLegacy(asset, MediaPreviewType.Thumbnail, context)}
           onClick={() => onAssetChange(asset.code)}
         />
       ))}

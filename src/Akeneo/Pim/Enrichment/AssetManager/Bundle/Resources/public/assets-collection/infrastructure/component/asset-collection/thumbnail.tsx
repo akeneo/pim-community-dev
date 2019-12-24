@@ -14,7 +14,7 @@ import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import Left from 'akeneoassetmanager/application/component/app/icon/left';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
-import {getAssetPreview, getAssetEditUrlLegacy} from 'akeneoassetmanager/tools/media-url-generator';
+import {getAssetPreviewLegacy, getAssetEditUrlLegacy} from 'akeneoassetmanager/tools/media-url-generator';
 import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
 import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
 
@@ -163,7 +163,10 @@ export const Thumbnail = ({
         </Overlay>
       )}
       <Img
-        src={getAssetPreview(asset, MediaPreviewType.Thumbnail, {locale: context.locale, channel: context.channel})}
+        src={getAssetPreviewLegacy(asset, MediaPreviewType.Thumbnail, {
+          locale: context.locale,
+          channel: context.channel,
+        })}
       />
     </Container>
   );

@@ -1,6 +1,12 @@
-import ChannelReference, {channelReferenceIsEmpty, channelReferenceAreEqual} from '../channel-reference';
-import LocaleReference, {localeReferenceIsEmpty, localeReferenceAreEqual} from '../locale-reference';
-import Data from './data';
+import ChannelReference, {
+  channelReferenceIsEmpty,
+  channelReferenceAreEqual,
+} from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference, {
+  localeReferenceIsEmpty,
+  localeReferenceAreEqual,
+} from 'akeneoassetmanager/domain/model/locale-reference';
+import Data from 'akeneoassetmanager/domain/model/asset/data';
 
 type Value = {
   channel: ChannelReference;
@@ -20,6 +26,6 @@ export const getValuesForChannelAndLocale = <T extends Value = Value>(
   values: T[],
   channel: ChannelReference,
   locale: LocaleReference
-) => values.filter(getValueForChannelAndLocaleFilter(channel, locale));
+): T[] => values.filter(getValueForChannelAndLocaleFilter(channel, locale));
 
 export default Value;

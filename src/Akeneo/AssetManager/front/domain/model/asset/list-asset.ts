@@ -46,7 +46,7 @@ export const generateKey = (
   attributeIdentifier: AttributeIdentifier,
   channel: ChannelReference,
   locale: LocaleReference
-) => {
+): string => {
   let key = attributeIdentifierStringValue(attributeIdentifier);
   key = !channelReferenceIsEmpty(channel) ? `${key}_${channelReferenceStringValue(channel)}` : key;
   key = !localeReferenceIsEmpty(locale) ? `${key}_${localeReferenceStringValue(locale)}` : key;
@@ -72,7 +72,7 @@ export const getListAssetMainMediaPreview = (
   };
 };
 
-export const isMainMediaEmpty = (asset: ListAsset, channel: ChannelCode, locale: LocaleCode) => {
+export const isMainMediaEmpty = (asset: ListAsset, channel: ChannelCode, locale: LocaleCode): boolean => {
   const previewModel = getPreviewModel(asset.image, channel, locale);
   return undefined === previewModel || null === previewModel.data;
 };

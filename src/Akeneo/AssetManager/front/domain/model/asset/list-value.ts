@@ -13,20 +13,6 @@ export const areValuesEqual = (first: ListValue, second: ListValue): boolean =>
   localeReferenceAreEqual(first.locale, second.locale) &&
   first.attribute === second.attribute;
 
-// export const getValueForAttributeIdentifierFilter = (attributeIdentifier: AttributeIdentifier) => (value: ListValue) =>
-//   value.attribute === attributeIdentifier;
-
-// export const getValueFilter = (
-//   attributeIdentifier: AttributeIdentifier,
-//   channel: ChannelReference,
-//   locale: LocaleReference
-// ) => {
-//   const attributeFilter = getValueForAttributeIdentifierFilter(attributeIdentifier);
-//   const channelAndLocaleFilter = getValueForChannelAndLocaleFilter(channel, locale);
-
-//   return (value: ListValue) => attributeFilter(value) && channelAndLocaleFilter(value);
-// };
-
 export const getPreviewModel = (
   previews: PreviewCollection,
   channel: ChannelReference,

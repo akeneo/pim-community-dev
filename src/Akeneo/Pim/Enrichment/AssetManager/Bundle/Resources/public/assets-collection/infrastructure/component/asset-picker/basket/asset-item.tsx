@@ -6,7 +6,7 @@ import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reduc
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoassetmanager/tools/translator';
 import {RemoveButton} from 'akeneoassetmanager/application/component/app/remove-button';
-import {getAssetPreview} from 'akeneoassetmanager/tools/media-url-generator';
+import {getAssetPreviewLegacy} from 'akeneoassetmanager/tools/media-url-generator';
 import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
 
 const Container = styled.li`
@@ -66,7 +66,7 @@ const AssetItem = ({
       data-code={asset.code}
       className={isLoading ? 'AknLoadingPlaceHolderContainer' : ''}
     >
-      <AssetThumbnail src={getAssetPreview(asset, MediaPreviewType.Thumbnail, context)} width={44} height={44} />
+      <AssetThumbnail src={getAssetPreviewLegacy(asset, MediaPreviewType.Thumbnail, context)} width={44} height={44} />
       <AssetDetails>
         <AssetCode title={asset.code}>{asset.code}</AssetCode>
         <AssetLabel title={getAssetLabel(asset, context.locale)}>{getAssetLabel(asset, context.locale)}</AssetLabel>

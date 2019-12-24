@@ -11,7 +11,7 @@ import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reduc
 import Checkbox from 'akeneopimenrichmentassetmanager/platform/component/common/checkbox';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import CompletenessBadge from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/completeness-badge';
-import {getAssetPreview} from 'akeneoassetmanager/tools/media-url-generator';
+import {getAssetPreviewLegacy} from 'akeneoassetmanager/tools/media-url-generator';
 import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
 
 type ContainerProps = {isDisabled: boolean};
@@ -74,7 +74,7 @@ const AssetCard = ({
     <Container data-asset={asset.code} data-selected={isSelected} isDisabled={isDisabled}>
       <ImageContainer>
         <Thumbnail
-          src={getAssetPreview(asset, MediaPreviewType.Thumbnail, context)}
+          src={getAssetPreviewLegacy(asset, MediaPreviewType.Thumbnail, context)}
           isSelected={isSelected}
           onClick={() => (!isDisabled ? onSelectionChange(asset.code, !isSelected) : null)}
         />

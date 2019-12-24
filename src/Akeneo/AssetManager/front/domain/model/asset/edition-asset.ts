@@ -11,7 +11,7 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
 import {MediaPreview, MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
-import {getValuesForChannelAndLocale} from './value';
+import {getValuesForChannelAndLocale} from 'akeneoassetmanager/domain/model/asset/value';
 
 export type EditionValueCollection = EditionValue[];
 
