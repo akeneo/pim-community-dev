@@ -1,6 +1,8 @@
 import Data from 'akeneoassetmanager/domain/model/asset/data';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {suffixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
+import {prefixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
 
 const YOUTUBE_WATCH_URL = 'https://youtube.com/watch?v=';
 const YOUTUBE_EMBED_URL = 'https://youtube.com/embed/';
@@ -25,7 +27,9 @@ export const getMediaLinkUrl = (data: MediaLinkData, attribute: NormalizedAttrib
     throw Error('EditionValue should be a MediaLinkValue');
   }
 
-  return `${attribute.prefix}${data}${attribute.suffix}`;
+  return `${prefixStringValue(attribute.prefix)}${mediaLinkDataStringValue(data)}${suffixStringValue(
+    attribute.suffix
+  )}`;
 };
 
 export const getYouTubeWatchUrl = (data: MediaLinkData): string =>

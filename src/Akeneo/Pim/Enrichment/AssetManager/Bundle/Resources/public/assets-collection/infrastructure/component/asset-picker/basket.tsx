@@ -9,7 +9,7 @@ import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/componen
 import AssetItem from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket/asset-item';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import ListAsset, {
-  creatEmptyAsset,
+  createEmptyAsset,
   getAssetByCode,
   removeAssetFromCollection,
   emptyCollection,
@@ -102,7 +102,7 @@ const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onSele
           if (undefined === asset) {
             return (
               <AssetItem
-                asset={creatEmptyAsset(assetCode)}
+                asset={createEmptyAsset(assetCode)}
                 context={context}
                 onRemove={() => {}}
                 isLoading={true}

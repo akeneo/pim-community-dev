@@ -39,7 +39,7 @@ export type PreviewModel = ListValue & {
   data: MediaFileData | MediaLinkData;
 };
 
-export const creatEmptyAsset = (assetCode?: AssetCode): ListAsset => ({
+export const createEmptyAsset = (assetCode?: AssetCode): ListAsset => ({
   identifier: '',
   code: assetCode || '',
   labels: {},

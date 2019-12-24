@@ -14,7 +14,7 @@ import Key from 'akeneoassetmanager/tools/key';
 import {AssetCollectionLimitNotification} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/asset-collection-limit-notification';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import ListAsset, {
-  creatEmptyAsset,
+  createEmptyAsset,
   getAssetCodes,
   sortAssetCollection,
   canAddAssetToCollection,
@@ -134,7 +134,7 @@ export const AssetCollection = ({
               return (
                 <AssetCard key={assetCode} className="AknLoadingPlaceHolderContainer">
                   <Thumbnail
-                    asset={creatEmptyAsset()}
+                    asset={createEmptyAsset()}
                     context={context}
                     readonly={true}
                     assetCollection={[]}

@@ -119,7 +119,6 @@ export const AssetPreview = ({
               context={context}
               asset={selectedAsset}
               attributeAsMainMedia={getAttributeAsMainMedia(assetFamily)}
-              assetFamilyIdentifier={assetFamily.identifier}
             />
           </PreviewContainer>
           <Carousel

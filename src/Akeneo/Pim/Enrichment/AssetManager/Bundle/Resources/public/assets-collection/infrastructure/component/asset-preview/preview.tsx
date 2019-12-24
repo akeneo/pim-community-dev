@@ -11,6 +11,7 @@ import {
   canCopyToClipboard,
   getMediaPreviewUrl,
   getImageDownloadUrl,
+  getAssetEditUrl,
 } from 'akeneoassetmanager/tools/media-url-generator';
 import {
   NormalizedMediaLinkAttribute,
@@ -31,12 +32,9 @@ import MediaLinkData, {
   isMediaLinkData,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import MediaFileData, {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
-import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {getPreviewModel} from 'akeneoassetmanager/domain/model/asset/list-value';
 import {getLabel} from 'pimui/js/i18n';
 import Data, {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
-const routing = require('routing');
 
 const Container = styled.div`
   display: flex;
@@ -99,7 +97,6 @@ type PreviewProps = {
   asset: ListAsset;
   context: Context;
   attributeAsMainMedia: NormalizedAttribute;
-  assetFamilyIdentifier: AssetFamilyIdentifier;
 };
 
 const DownloadAction = ({url, fileName}: {url: string; fileName: string}) => (
@@ -124,6 +121,13 @@ const EditAction = ({url}: {url: string}) => (
   </Action>
 );
 
+const getMediaDataPreviewUrl = (data: Data, attributeAsMainMedia: NormalizedAttribute): string =>
+  getMediaPreviewUrl({
+    type: MediaPreviewType.Preview,
+    attributeIdentifier: attributeAsMainMedia.identifier,
+    data: getMediaData(data),
+  });
+
 const MediaFilePreviewView = ({
   label,
   editUrl,
@@ -147,22 +151,6 @@ const MediaFilePreviewView = ({
     </>
   );
 };
-
-//TODO clean
-const getAssetEditUrl = (assetCode: AssetCode, assetFamilyIdentifier: AssetFamilyIdentifier): string =>
-  '#' +
-  routing.generate('akeneo_asset_manager_asset_edit', {
-    assetFamilyIdentifier,
-    assetCode,
-    tab: 'enrich',
-  });
-
-const getMediaDataPreviewUrl = (data: Data, attributeAsMainMedia: NormalizedAttribute): string =>
-  getMediaPreviewUrl({
-    type: MediaPreviewType.Preview,
-    attributeIdentifier: attributeAsMainMedia.identifier,
-    data: getMediaData(data),
-  });
 
 const MediaLinkPreviewView = ({
   label,
@@ -210,14 +198,12 @@ const PreviewView = ({
   asset,
   context,
   attributeAsMainMedia,
-  assetFamilyIdentifier,
 }: {
   asset: ListAsset;
   context: Context;
   attributeAsMainMedia: NormalizedAttribute;
-  assetFamilyIdentifier: AssetFamilyIdentifier;
 }) => {
-  const editUrl = getAssetEditUrl(asset.code, assetFamilyIdentifier);
+  const editUrl = getAssetEditUrl(asset);
   const label = getLabel(asset.labels, context.locale, asset.code);
   const previewModel = getPreviewModel(asset.image, context.channel, context.locale);
 
@@ -259,15 +245,10 @@ const PreviewView = ({
   }
 };
 
-export const Preview = ({asset, context, attributeAsMainMedia, assetFamilyIdentifier}: PreviewProps) => (
+export const Preview = ({asset, context, attributeAsMainMedia}: PreviewProps) => (
   <Container>
     <Border>
-      <PreviewView
-        asset={asset}
-        context={context}
-        attributeAsMainMedia={attributeAsMainMedia}
-        assetFamilyIdentifier={assetFamilyIdentifier}
-      />
+      <PreviewView asset={asset} context={context} attributeAsMainMedia={attributeAsMainMedia} />
     </Border>
   </Container>
 );
