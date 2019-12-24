@@ -3,7 +3,6 @@ import {
   mediaLinkDataStringValue,
   areMediaLinkDataEqual,
   isMediaLinkData,
-  getMediaLinkValue,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
@@ -22,12 +21,6 @@ const mediaLinkAttribute = {
   media_type: 'image',
 };
 const mediaLinkData = 'my-link';
-const mediaLinkEditionValue = {
-  attribute: mediaLinkAttribute,
-  data: mediaLinkData,
-  channel: null,
-  locale: 'en_US',
-};
 
 describe('akeneo > asset family > domain > model > asset > data --- media-link', () => {
   test('I can create a new MediaLinkData with a string', () => {
@@ -51,12 +44,5 @@ describe('akeneo > asset family > domain > model > asset > data --- media-link',
     expect(isMediaLinkData(mediaLinkData)).toBe(true);
     expect(isMediaLinkData(null)).toBe(true);
     expect(isMediaLinkData({})).toBe(false);
-  });
-
-  test('I can get the MediaLink value', () => {
-    expect(getMediaLinkValue(mediaLinkEditionValue)).toEqual('https://my-link.jpg');
-    expect(() =>
-      getMediaLinkValue({...mediaLinkEditionValue, attribute: {...mediaLinkEditionValue.attribute, type: 'text'}})
-    ).toThrow();
   });
 });

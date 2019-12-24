@@ -108,7 +108,7 @@ const DownloadAction = ({url, fileName}: {url: string; fileName: string}) => (
 
 const CopyUrlAction = ({url}: {url: string}) =>
   canCopyToClipboard() ? (
-    <Action onClick={() => copyToClipboard(url)}>
+    <Action title={__('pim_asset_manager.asset_preview.copy_url')} onClick={() => copyToClipboard(url)}>
       <Link />
       <Label>{__('pim_asset_manager.asset_preview.copy_url')}</Label>
     </Action>
@@ -220,7 +220,7 @@ const PreviewView = ({
 
   switch (attributeAsMainMedia.type) {
     case MEDIA_LINK_ATTRIBUTE_TYPE:
-      if (!isMediaLinkData(previewModel.data)) throw Error('The medialink data should not be empty');
+      if (!isMediaLinkData(previewModel.data)) throw Error('The media link data is not valid');
 
       return (
         <MediaLinkPreviewView
@@ -232,7 +232,7 @@ const PreviewView = ({
       );
     case MEDIA_FILE_ATTRIBUTE_TYPE:
     default:
-      if (!isMediaFileData(previewModel.data)) throw Error('previewModel should be a media file model');
+      if (!isMediaFileData(previewModel.data)) throw Error('The media file data is not valid');
 
       return (
         <MediaFilePreviewView

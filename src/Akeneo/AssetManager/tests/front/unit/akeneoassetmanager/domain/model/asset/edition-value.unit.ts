@@ -1,11 +1,5 @@
-import {
-  setValueData,
-  isValueEmpty,
-  isValueComplete,
-  isValueRequired,
-  areValuesEqual,
-  normalizeValue,
-} from 'akeneoassetmanager/domain/model/asset/edition-value';
+import {isValueComplete, isValueRequired, areValuesEqual} from 'akeneoassetmanager/domain/model/asset/edition-value';
+import {setValueData, isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
 
 const normalizedDescription = {
   identifier: 'description_1234',
@@ -71,9 +65,5 @@ describe('akeneo > asset family > domain > model > asset --- edition-value', () 
   test('I can test if two EditionValue are equal', () => {
     expect(areValuesEqual(descriptionEditionValue, descriptionEditionValue)).toBe(true);
     expect(areValuesEqual(descriptionEditionValue, unscopedEditionValue)).toBe(false);
-  });
-
-  test('I can normalize an EditionValue', () => {
-    expect(normalizeValue(descriptionEditionValue)).toEqual(descriptionEditionValue);
   });
 });

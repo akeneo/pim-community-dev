@@ -8,7 +8,10 @@ import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/componen
 import __ from 'akeneoassetmanager/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {Thumbnail} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/thumbnail';
-import {AssetPreview} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview';
+import {
+  AssetPreview,
+  AssetPreviewDataProvider,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview';
 import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import Key from 'akeneoassetmanager/tools/key';
 import {AssetCollectionLimitNotification} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/asset-collection-limit-notification';
@@ -25,6 +28,7 @@ import ListAsset, {
   isComplete,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
+import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 
 const AssetCard = styled.div`
   display: flex;
@@ -97,6 +101,10 @@ const useLoadAssets = (
   });
 
   return assets;
+};
+
+const assetPreviewDataProvider: AssetPreviewDataProvider = {
+  assetFamilyFetcher,
 };
 
 export const AssetCollection = ({
@@ -182,6 +190,7 @@ export const AssetCollection = ({
               context={context}
               onClose={() => setPreviewModalOpen(false)}
               assetFamilyIdentifier={assetFamilyIdentifier}
+              dataProvider={assetPreviewDataProvider}
             />
           ) : null}
         </React.Fragment>

@@ -16,7 +16,6 @@ type Value = {
 
 export const setValueData = <T extends Value = Value>(value: T, data: Data): T => ({...value, data});
 export const isValueEmpty = (value: Value): boolean => null === value.data;
-export const normalizeValue = (value: Value) => value;
 export const getValueForChannelAndLocaleFilter = (channel: ChannelReference, locale: LocaleReference) => (
   value: Value
 ): boolean =>

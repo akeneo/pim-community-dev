@@ -2,8 +2,8 @@ import computeTransformationsLauncher from 'akeneoassetmanager/infrastructure/co
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
   notifyLaunchComputeTransformationsFailed,
-  notifyLaunchComputeTransformationsSucceeded
-} from "akeneoassetmanager/application/action/asset-family/notify";
+  notifyLaunchComputeTransformationsSucceeded,
+} from 'akeneoassetmanager/application/action/asset-family/notify';
 
 export const launchComputeTransformations = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const assetFamily = getState().form.data;

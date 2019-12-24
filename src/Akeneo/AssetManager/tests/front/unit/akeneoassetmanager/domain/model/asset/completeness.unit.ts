@@ -1,5 +1,5 @@
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
-import {getValuesForChannelAndLocale} from 'akeneoassetmanager/domain/model/asset/edition-asset';
+import {getValuesForChannelAndLocale} from 'akeneoassetmanager/domain/model/asset/value';
 
 const normalizedDescription = {
   identifier: 'description_1234',

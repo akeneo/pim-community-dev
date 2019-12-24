@@ -13,7 +13,7 @@ import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import Key from 'akeneoassetmanager/tools/key';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
-import assetFamilyFetcher, {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import ListAsset, {
   getAssetByCode,
@@ -49,6 +49,12 @@ const ArrowButton = styled(TransparentButton)`
   margin: 0 10px;
 `;
 
+export type AssetPreviewDataProvider = {
+  assetFamilyFetcher: {
+    fetch: (assetFamilyIdentifier: AssetFamilyIdentifier) => Promise<AssetFamilyResult>;
+  };
+};
+
 type AssetPreviewProps = {
   assetCollection: ListAsset[];
   initialAssetCode: AssetCode;
@@ -57,12 +63,16 @@ type AssetPreviewProps = {
   context: ContextState;
   assetFamilyIdentifier: AssetFamilyIdentifier;
   onClose: () => void;
+  dataProvider: AssetPreviewDataProvider;
 };
 
-const useAssetFamily = (assetFamilyIdentifier: AssetFamilyIdentifier): AssetFamily | null => {
+const useAssetFamily = (
+  dataProvider: AssetPreviewDataProvider,
+  assetFamilyIdentifier: AssetFamilyIdentifier
+): AssetFamily | null => {
   const [assetFamily, setAssetFamily] = React.useState<AssetFamily | null>(null);
   React.useEffect(() => {
-    assetFamilyFetcher
+    dataProvider.assetFamilyFetcher
       .fetch(assetFamilyIdentifier)
       .then((result: AssetFamilyResult) => setAssetFamily(result.assetFamily));
   }, [assetFamilyIdentifier]);
@@ -77,10 +87,11 @@ export const AssetPreview = ({
   assetFamilyIdentifier,
   context,
   onClose,
+  dataProvider,
 }: AssetPreviewProps) => {
   const [currentAssetCode, setCurrentAssetCode] = React.useState(initialAssetCode);
   const selectedAsset: ListAsset | undefined = getAssetByCode(assetCollection, currentAssetCode);
-  const assetFamily = useAssetFamily(assetFamilyIdentifier);
+  const assetFamily = useAssetFamily(dataProvider, assetFamilyIdentifier);
   const assetCodeCollection = getAssetCodes(assetCollection);
   const setPreviousAsset = () => setCurrentAssetCode(assetCode => getPreviousAssetCode(assetCodeCollection, assetCode));
   const setNextAsset = () => setCurrentAssetCode(assetCode => getNextAssetCode(assetCodeCollection, assetCode));
