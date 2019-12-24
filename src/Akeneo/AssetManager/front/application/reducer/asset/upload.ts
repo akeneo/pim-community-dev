@@ -12,9 +12,8 @@ export default (state: UploadState = initUploadState(), action: {type: string}) 
       state = {...initUploadState(), active: true};
       break;
 
-    case 'ASSET_UPLOAD_CANCEL':
     case 'DISMISS':
-    case 'ASSET_UPLOAD_SUCCEEDED':
+    case 'ASSET_UPLOAD_DONE':
       state = {
         ...state,
         active: false,
