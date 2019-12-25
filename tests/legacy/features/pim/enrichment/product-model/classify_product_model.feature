@@ -23,13 +23,6 @@ Feature: Classify a product model
       | nin-black-m | model-nin-black | clothing | long_sleeves | m    |
     And I am logged in as "Julia"
 
-  Scenario: Count root product model categories
-    Given I edit the "model-nin" product model
-    When I visit the "Categories" column tab
-    And I visit the "Master" tab
-    Then I should see 1 category count
-    And the category of the product model "model-nin" should be "tshirts"
-
   Scenario: Count sub product model categories
     Given I edit the "model-nin-black" product model
     When I visit the "Categories" column tab

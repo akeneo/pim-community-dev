@@ -9,23 +9,6 @@ Feature: Export products and product models
     And I am logged in as "Julia"
     And I am on the products grid
 
-  Scenario: Successfully export products to multiple channels
-    When I type "color" in the manage filter input
-    And I show the filter "color"
-    And I filter by "color" with operator "in list" and value "Crimson red"
-    And I select rows model-tshirt-divided-crimson-red, running-shoes-m-crimson-red and tshirt-unique-size-crimson-red
-    And I press "CSV (Grid context)" on the "Quick Export" dropdown button
-    And I wait for the "csv_product_grid_context_quick_export" quick export to finish
-    And I am on the dashboard page
-    When I go on the last executed job resume of "csv_product_grid_context_quick_export"
-    Then I should see the text "COMPLETED"
-    Then first exported file of "csv_product_grid_context_quick_export" should contain:
-      """
-      sku;enabled;family;image
-      tshirt-unique-size-crimson-red;1;clothing;files/tshirt-unique-size-crimson-red/image/unique-size.jpg
-      running-shoes-m-crimson-red;1;shoes;
-      """
-
   Scenario: Successfully export 2 files on quick export
     When I display in the products grid the columns ID, Label, Model description
     And I search "amor"

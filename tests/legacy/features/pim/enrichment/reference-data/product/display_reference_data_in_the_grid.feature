@@ -32,35 +32,3 @@ Feature: Display reference data in the grid
       | column      | value                    |
       | Sole color  | Red                      |
       | Sole fabric | Cashmerewool, [neoprene] |
-
-  Scenario: Successfully display reference data values of a product with scope
-    Given the following products:
-      | sku        | family |
-      | high-heels |        |
-    And the following reference data:
-      | type   | code   | label  |
-      | color  | black  | Black  |
-      | color  | purple | Purple |
-      | color  | orange |        |
-      | fabric | cotton |        |
-      | fabric | flax   | Flax   |
-      | fabric | straw  | Straw  |
-    Given the following product values:
-      | product    | attribute   | value         | scope  | locale |
-      | high-heels | lace_fabric | Cotton, Straw | tablet | en_US  |
-      | high-heels | lace_fabric | Flax, Cotton  | mobile | en_US  |
-      | high-heels | cap_color   | Purple        | tablet | en_US  |
-      | high-heels | cap_color   | Orange        | mobile | en_US  |
-    And I am on the products grid
-    And I collapse the column
-    When I display the columns SKU, Cap color and Lace fabric
-    Then the row "high-heels" should contain:
-      | column      | value           |
-      | Cap color   | Purple          |
-      | Lace fabric | [cotton], Straw |
-    And I uncollapse the column
-    When I switch the scope to "Mobile"
-    Then the row "high-heels" should contain:
-      | column      | value          |
-      | Cap color   | [orange]       |
-      | Lace fabric | [cotton], Flax |

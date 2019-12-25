@@ -40,19 +40,3 @@ Feature: Display the localized product history
       | 1       | Number      | 98,7654   |
       | 1       | Price EUR   | 20,80 €   |
       | 1       | Price USD   | 25,35 $US |
-
-  Scenario: Display english-format product history numbers
-    Given I am logged in as "Julia"
-    And I am on the products grid
-    And I click on the "boots" row
-    And I wait to be on the "boots" product page
-    When I visit the "History" column tab
-    Then there should be 1 update
-    And I should see history:
-      | version | property    | value   |
-      | 1       | SKU         | boots   |
-      | 1       | Metric      | 12.1234 |
-      | 1       | Metric unit | Gram    |
-      | 1       | Number      | 98.7654 |
-      | 1       | Price EUR   | €20.80  |
-      | 1       | Price USD   | $25.35  |

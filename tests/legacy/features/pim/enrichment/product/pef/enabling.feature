@@ -13,9 +13,3 @@ Feature: Enable and disable a product
     When I am on the "boat" product page
     And I disable the product
     Then product "boat" should be disabled
-
-  Scenario: Successfully enable a product
-    Given a disabled "boat" product
-    When I am on the "boat" product page
-    And I enable the product
-    Then product "boat" should be enabled

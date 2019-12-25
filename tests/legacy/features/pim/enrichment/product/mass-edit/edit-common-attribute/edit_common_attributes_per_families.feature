@@ -28,16 +28,6 @@ Feature: Edit common attributes of many products at once
     And I am logged in as "Julia"
     And I am on the products grid
 
-  @jira https://akeneo.atlassian.net/browse/PIM-2183
-  Scenario: Allow edition on common attributes with value not in family and no value on family
-    Given the following product values:
-      | product | attribute    | value |
-      | boots   | buckle_color | Blue  |
-    When I select rows boots and high_heels
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    Then I should see available attribute Buckle in group "Other"
-
   Scenario: Successfully update many price values at once
     Given I select rows boots and sandals
     And I press the "Bulk actions" button
