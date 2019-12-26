@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Pim\Upgrade\Schema;
+namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
