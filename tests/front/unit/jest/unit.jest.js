@@ -29,8 +29,7 @@ const eeConfig = {
     'akeneoassetmanager/application/component/app/channel-switcher.tsx',
     'akeneoassetmanager/application/component/app/locale-switcher.tsx',
     'akeneoassetmanager/application/component/app/icon/',
-    // TODO unified models https://akeneo.atlassian.net/browse/AST-183
-    'akeneoassetmanager/domain/model/asset/asset.ts',
+
     'akeneoassetmanager/application/hydrator/attribute.ts',
 
     'src/Akeneo/AssetManager/front/tools',
@@ -48,8 +47,6 @@ const eeConfig = {
     'src/Akeneo/AssetManager/front/application/component/app/channel-switcher.tsx',
     'src/Akeneo/AssetManager/front/application/component/app/locale-switcher.tsx',
     'src/Akeneo/AssetManager/front/application/component/app/icon/',
-    // TODO unified models https://akeneo.atlassian.net/browse/AST-183
-    'src/Akeneo/AssetManager/front/domain/model/asset/asset.ts',
     'src/Akeneo/AssetManager/front/application/hydrator/attribute.ts',
   ],
 };

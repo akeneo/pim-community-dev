@@ -35,6 +35,7 @@ import MediaFileData, {isMediaFileData} from 'akeneoassetmanager/domain/model/as
 import {getPreviewModel} from 'akeneoassetmanager/domain/model/asset/list-value';
 import {getLabel} from 'pimui/js/i18n';
 import Data, {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
+import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 
 const Container = styled.div`
   display: flex;
@@ -107,6 +108,7 @@ const DownloadAction = ({url, fileName}: {url: string; fileName: string}) => (
 );
 
 const CopyUrlAction = ({url}: {url: string}) =>
+  /* istanbul ignore next */
   canCopyToClipboard() ? (
     <Action title={__('pim_asset_manager.asset_preview.copy_url')} onClick={() => copyToClipboard(url)}>
       <Link />
@@ -139,6 +141,7 @@ const MediaFilePreviewView = ({
   mediaFileData: MediaFileData;
   attribute: NormalizedMediaFileAttribute;
 }) => {
+  /* istanbul ignore next */
   if (null === mediaFileData) throw Error('The mediaFileData should not be empty at this point');
 
   return (
@@ -250,7 +253,9 @@ const PreviewView = ({
 export const Preview = ({asset, context, attributeAsMainMedia}: PreviewProps) => (
   <Container>
     <Border>
-      <PreviewView asset={asset} context={context} attributeAsMainMedia={attributeAsMainMedia} />
+      <ErrorBoundary errorMessage={__('pim_asset_manager.asset_preview.error')}>
+        <PreviewView asset={asset} context={context} attributeAsMainMedia={attributeAsMainMedia} />
+      </ErrorBoundary>
     </Border>
   </Container>
 );

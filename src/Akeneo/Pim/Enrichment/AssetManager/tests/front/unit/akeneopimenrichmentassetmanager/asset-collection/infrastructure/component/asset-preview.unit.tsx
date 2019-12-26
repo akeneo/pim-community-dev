@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
-import {render, fireEvent, act} from '@testing-library/react';
+import {fireEvent, act} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {AssetPreview} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview';
-import {getAssetByCode} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
+import {mount} from 'enzyme';
 
 const context = {locale: 'en_US', channel: 'ecommerce'};
 const mediaLinkImageAttribute = {
@@ -93,7 +93,6 @@ const assetCollection = [
       attributeAsMainMedia: 'media_link_other_attribute_identifier',
     },
   },
-
   {
     identifier: 'packshot_iphone7_pack_9c35ba44-e4f9-4a48-8250-4c554e6704a4',
     labels: {en_US: 'iphone7_pack label'},
@@ -230,62 +229,6 @@ const simpleAssetCollection = [
   },
 ];
 
-// beforeEach(() => {
-//   container = document.createElement('div');
-//   document.body.appendChild(container);
-// });
-
-// afterEach(() => {
-//   document.body.removeChild(container);
-//   container = null;
-// });
-// test.each([
-//   ['Philips22PDL4906H_pack', mediaLinkImageAttribute],
-//   ['iphone8_pack', mediaLinkOtherAttribute],
-//   ['iphone7_pack', imageAttribute],
-//   ['iphone12_pack', unknownAttribute],
-// ])(
-//   'It displays the preview of the provided asset code (%s), with attribute: %j',
-//   async (assetCode: string, productAttribute: any) => {
-//     const container = document.createElement('div');
-//     document.body.appendChild(container);
-//     const initialAssetCode = 'iphone8_pack';
-//     const dataProvider = {
-//       assetFamilyFetcher: {
-//         fetch: () => {
-//           return new Promise(resolve => {
-//             resolve({
-//               assetFamily: {
-//                 attributes,
-//                 attributeAsMainMedia: 'media_link_image_attribute_identifier',
-//               },
-//             });
-//           });
-//         },
-//       },
-//     };
-
-//     await act(async () => {
-//       ReactDOM.render(
-//         <ThemeProvider theme={akeneoTheme}>
-//           <AssetPreview
-//             context={context}
-//             assetCollection={assetCollection}
-//             initialAssetCode={initialAssetCode}
-//             productAttribute={productAttribute}
-//             dataProvider={dataProvider}
-//             onClose={() => {}}
-//           />
-//         </ThemeProvider>,
-//         container
-//       );
-//     });
-
-//     expect(container.querySelector('[data-role="asset-preview"]')).toHaveAttribute('alt', `${assetCode} label`);
-//     document.body.removeChild(container);
-//   }
-// );
-
 test('It can display the previous asset in the collection', async () => {
   const container = document.createElement('div');
   document.body.appendChild(container);
@@ -325,6 +268,32 @@ test('It can display the previous asset in the collection', async () => {
 
   expect(container.querySelector('[data-role="asset-preview"]')).toHaveAttribute('alt', 'iphone7_pack label');
   document.body.removeChild(container);
+});
+
+test('It can unbind keyboard listeners', async () => {
+  const initialAssetCode = 'iphone8_pack';
+  const dataProvider = {
+    assetFamilyFetcher: {
+      fetch: () => ({
+        then: () => {
+          return {};
+        },
+      }),
+    },
+  };
+  await act(async () => {
+    const wrapper = mount(
+      <AssetPreview
+        context={context}
+        assetCollection={simpleAssetCollection}
+        initialAssetCode={initialAssetCode}
+        productAttribute={mediaLinkImageAttribute}
+        dataProvider={dataProvider}
+        onClose={() => {}}
+      />
+    );
+    wrapper.unmount();
+  });
 });
 
 test('It can display the previous asset in the collection using the left arrow', async () => {

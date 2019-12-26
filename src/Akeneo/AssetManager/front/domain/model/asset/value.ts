@@ -21,6 +21,7 @@ export const getValueForChannelAndLocaleFilter = (channel: ChannelReference, loc
 ): boolean =>
   (channelReferenceIsEmpty(value.channel) || channelReferenceAreEqual(value.channel, channel)) &&
   (localeReferenceIsEmpty(value.locale) || localeReferenceAreEqual(value.locale, locale));
+
 export const getValuesForChannelAndLocale = <T extends Value = Value>(
   values: T[],
   channel: ChannelReference,

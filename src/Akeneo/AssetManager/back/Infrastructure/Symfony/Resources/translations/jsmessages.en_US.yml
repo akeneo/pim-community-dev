@@ -56,6 +56,7 @@ pim_asset_manager:
     edit_asset: Edit asset
     download: Download
     copy_url: Copy URL
+    error: An error occured during the rendering of the preview
   close: Close the modal
   breadcrumb:
     products: Products
