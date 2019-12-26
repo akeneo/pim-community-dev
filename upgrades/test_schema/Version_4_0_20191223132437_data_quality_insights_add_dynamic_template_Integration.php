@@ -6,7 +6,7 @@ use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 use Pim\Upgrade\Schema\Tests\ExecuteMigrationTrait;
 
-final class Version_4_0_20191223132437_data_quality_insights_add_dynamic_template extends TestCase
+final class Version_4_0_20191223132437_data_quality_insights_add_dynamic_template_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
