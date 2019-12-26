@@ -48,10 +48,7 @@ const AssetFamilyTransformationEditor = ({
   if (!editMode) {
     return (
       <div className="AknJsonEditor">
-        <Editor
-          value={JSON.parse(transformations)}
-          mode="view"
-        />
+        <Editor value={JSON.parse(transformations)} mode="view" />
       </div>
     );
   }
@@ -82,9 +79,7 @@ interface DispatchProps {
   };
 }
 
-const SecondaryActions = ({onLaunchComputeTransformations}: {
-  onLaunchComputeTransformations: () => void;
-}) => {
+const SecondaryActions = ({onLaunchComputeTransformations}: {onLaunchComputeTransformations: () => void}) => {
   return (
     <>
       <div className="AknSecondaryActions AknDropdown AknButtonList-item">
@@ -199,7 +194,7 @@ export default connect(
         },
         onLaunchComputeTransformations: () => {
           dispatch(launchComputeTransformations());
-        }
+        },
       },
     };
   }

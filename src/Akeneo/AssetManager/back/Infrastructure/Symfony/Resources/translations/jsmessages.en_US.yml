@@ -56,6 +56,7 @@ pim_asset_manager:
     edit_asset: Edit asset
     download: Download
     copy_url: Copy URL
+    error: An error occured during the rendering of the preview
   close: Close the modal
   breadcrumb:
     products: Products
@@ -168,6 +169,7 @@ pim_asset_manager:
       subtitle: To manage permission on asset family you need to have at least one user group.
       link: Click here to add your first user group
   asset:
+    img: The main media of the asset named "{{ label }}"
     validation:
       limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
       code:

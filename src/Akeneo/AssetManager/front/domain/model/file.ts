@@ -8,13 +8,7 @@ export type File = {
 } | null;
 
 export const createEmptyFile = (): File => null;
-export const createFileFromNormalized = (file: any): File => {
-  return null === file
-    ? null
-    : {
-        ...file,
-      }; // TODO should do the check later, we will see how to handle it in the future
-};
+export const createFileFromNormalized = (file: any): File => file;
 export const isFileEmpty = (file: File): file is null => null === file;
 export const areFilesEqual = (first: File, second: File) =>
   (null === first && null === second) ||

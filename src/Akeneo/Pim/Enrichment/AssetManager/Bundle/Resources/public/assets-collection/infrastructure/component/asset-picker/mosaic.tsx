@@ -1,10 +1,4 @@
 import * as React from 'react';
-import {
-  Asset,
-  isAssetInCollection,
-  addAssetToCollection,
-  removeAssetFromCollection,
-} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import AssetCard from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/asset-card';
@@ -12,6 +6,11 @@ import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import EmptyResult from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/empty-result';
 import {AssetCollectionLimitNotification} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/asset-collection-limit-notification';
+import ListAsset, {
+  isAssetInCollection,
+  addAssetToCollection,
+  removeAssetFromCollection,
+} from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 const Container = styled.div`
   height: 100%;
@@ -41,7 +40,7 @@ const Mosaic = ({
   resultCount,
 }: {
   selection: AssetCode[];
-  assetCollection: Asset[];
+  assetCollection: ListAsset[];
   context: Context;
   resultCount: number | null;
   hasReachMaximumSelection: boolean;
@@ -53,7 +52,7 @@ const Mosaic = ({
       {assetCollection.length > 0 ? (
         <Container data-container="mosaic">
           <Grid>
-            {assetCollection.map((asset: Asset) => {
+            {assetCollection.map((asset: ListAsset) => {
               const isSelected = isAssetInCollection(asset.code, selection);
 
               return (

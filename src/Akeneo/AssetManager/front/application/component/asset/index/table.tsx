@@ -256,6 +256,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
                     placeholder={placeholder}
                     onRedirectToAsset={onRedirectToAsset}
                     assetCount={assetCount}
+                    assetFamily={this.props.assetFamily}
                   />
                 </tbody>
               </table>

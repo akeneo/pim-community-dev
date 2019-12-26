@@ -1,5 +1,5 @@
 import * as React from 'react';
-import EditionValue, {setValueData} from 'akeneoassetmanager/domain/model/asset/edition-value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {
   numberDataStringValue,
   numberDataFromString,
@@ -9,6 +9,7 @@ import Key from 'akeneoassetmanager/tools/key';
 import {unformatNumber, formatNumberForUILocale} from 'akeneoassetmanager/tools/format-number';
 import {isNumberData} from 'akeneoassetmanager/domain/model/asset/data/number';
 import {isNumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/number';
+import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 
 const View = ({
   value,

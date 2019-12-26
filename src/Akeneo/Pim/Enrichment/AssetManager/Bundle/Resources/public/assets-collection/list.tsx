@@ -55,13 +55,10 @@ import {ValidationError} from 'akeneopimenrichmentassetmanager/platform/model/va
 import {ValidationErrorCollection} from 'akeneopimenrichmentassetmanager/platform/component/common/validation-error-collection';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {MoreButton} from 'akeneoassetmanager/application/component/app/more-button';
-import {
-  addAssetsToCollection,
-  emptyCollection,
-} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker';
 import LockIcon from 'akeneopimenrichmentassetmanager/platform/component/visual/icon/lock';
 import {ResultCounter} from 'akeneopimenrichmentassetmanager/platform/component/common/result-counter';
+import {addAssetsToCollection, emptyCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 type ListStateProps = {
   attributes: Attribute[];

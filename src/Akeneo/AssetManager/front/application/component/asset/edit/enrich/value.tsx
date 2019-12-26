@@ -1,7 +1,7 @@
 import * as React from 'react';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
-import EditionValue, {isValueEmpty} from 'akeneoassetmanager/domain/model/asset/edition-value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {getDataFieldView} from 'akeneoassetmanager/application/configuration/value';
 import {getErrorsView} from 'akeneoassetmanager/application/component/asset/edit/validation-error';
@@ -11,8 +11,8 @@ import Flag from 'akeneoassetmanager/tools/component/flag';
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import {getValuesForChannelAndLocale} from 'akeneoassetmanager/domain/model/asset/value-collection';
 import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
+import {getValuesForChannelAndLocale, isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
 
 export default (
   asset: EditionAsset,

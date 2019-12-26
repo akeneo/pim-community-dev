@@ -1,5 +1,5 @@
 import * as React from 'react';
-import EditionValue, {setValueData} from 'akeneoassetmanager/domain/model/asset/edition-value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import __ from 'akeneoassetmanager/tools/translator';
 import {File} from 'akeneoassetmanager/domain/model/file';
 import {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
@@ -7,6 +7,7 @@ import FileComponent from 'akeneoassetmanager/application/component/app/file-com
 import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 import {isMediaFileAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 
 const View = ({
   value,
