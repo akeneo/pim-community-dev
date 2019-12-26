@@ -26,18 +26,6 @@ Feature: Edit common attributes of many products at once
       | blue_highheels | high_heels | blue  | 12 CENTIMETER |        |
     And I am logged in as "Julia"
 
-  Scenario: Allow editing all attributes on configuration screen
-    Given I am on the products grid
-    And I select rows boots, sandals and sneakers
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    Then I should see available attributes Name, Manufacturer and Description in group "Product information"
-    And I should see available attributes Price and Rating in group "Marketing"
-    And I should see available attribute Side view in group "Media"
-    And I should see available attribute Size in group "Sizes"
-    And I should see available attribute Color in group "Colors"
-    And I should see available attribute Weight in group "Other"
-
   @jira https://akeneo.atlassian.net/browse/PIM-6273
   Scenario: Successfully remove product attribute fields
     Given I am on the products grid
@@ -79,75 +67,3 @@ Feature: Edit common attributes of many products at once
       | value |
       | dry   |
       | hot   |
-
-  @critical
-  @info https://akeneo.atlassian.net/browse/PIM-3070
-  Scenario: Successfully mass edit a price not added to the product
-    Given I am on the products grid
-    And I collapse the column
-    And I create a product
-    And I fill in the following information in the popin:
-      | SKU    | Shoes |
-      | Family | Heels |
-    And I press the "Save" button in the popin
-    Then I should be on the product "Shoes" edit page
-    And I am on the products grid
-    When I select row Shoes
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I display the Price attribute
-    And I change the "Price" to "100 USD"
-    And I change the "Price" to "150 EUR"
-    And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then the prices "Price" of products Shoes should be:
-      | amount | currency |
-      | 100    | USD      |
-      | 150    | EUR      |
-
-  @critical
-  @jira https://akeneo.atlassian.net/browse/PIM-6008
-  Scenario: Successfully mass edit scoped product values with special chars
-    Given I am on the products grid
-    And I set product "pump" family to "boots"
-    When I select rows boots and pump
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I display the Description attribute
-    And I change the Description to "&$@(B°ar'<"
-    And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then the english tablet Description of "boots" should be "&$@(B°ar'<"
-    And the english tablet Description of "pump" should be "&$@(B°ar'<"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6240
-  Scenario: Allow editing all attributes on configuration screen
-    Given I am on the "tablet" channel page
-    Then I should see the Code field
-    And the field Code should be disabled
-    When I fill in the following information:
-      | English (United States) |  |
-    And I press the "Save" button
-    Then I should not see the text "My tablet"
-    And I am on the products grid
-    And I select rows boots, sandals and sneakers
-    And I press the "Bulk actions" button
-    When I choose the "Edit attributes values" operation
-    Then I should see the text "[tablet]"
-    And I should not see the text "undefined"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6274
-  Scenario: Successfully validate products with a custom validation on identifier
-    Given I am on the "SKU" attribute page
-    When I fill in the following information:
-      | Validation rule    | Regular expression |
-      | Regular expression | /^\d+$/            |
-    And I press the "Save" button
-    And I should not see the text "There are unsaved changes."
-    And I am on the products grid
-    Given I select rows boots, sandals and sneakers
-    When I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I display the Name attribute
-    And I move on to the next step
-    Then I should not see the text "There are errors in the attributes form"

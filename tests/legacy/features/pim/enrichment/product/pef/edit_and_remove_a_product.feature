@@ -23,15 +23,6 @@ Feature: Edit and remove a product
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
 
-  Scenario: Successfully edit and then delete a product from the grid
-    Given I am on the products grid
-    Then I should see product boots
-    When I click on the "Delete the product" action of the row which contains "boots"
-    Then I should see the text "Confirm deletion"
-    When I confirm the removal
-    Then I should be on the products page
-    And I should not see product boots
-
   Scenario: Successfully delete a product from the edit form
     Given I press the secondary action "Delete"
     Then I should see the text "Confirm deletion"

@@ -19,14 +19,3 @@ Feature: Create product models through CSV import
     Then I should not see the text "There are unsaved changes"
     And I visit the "Global settings" tab
     And I should see the Family variant fields
-
-  Scenario: Peter creates a new XLSX import profile to import products models
-    Given I create a new import
-    When I fill in the following information in the popin:
-      | Code  | product_model_import         |
-      | Label | Product model import in XLSX |
-      | Job   | Product model import in XLSX |
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes"
-    And I visit the "Global settings" tab
-    And I should see the Family variant fields

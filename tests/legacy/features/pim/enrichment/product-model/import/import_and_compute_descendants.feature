@@ -36,27 +36,3 @@ Feature: Create product models through CSV import and update their descendants
       | ecommerce | de_DE  | warning | 1              | 90%   |
       | ecommerce | en_US  | success | 0              | 100%  |
       | ecommerce | fr_FR  | warning | 1              | 90%   |
-
-  # to remove, should be tested in the test above
-  Scenario: Successfully compute products' indexation of the product models
-    Given I am on the products grid
-    And I show the filter "supplier"
-    And I filter by "supplier" with operator "in list" and value "zaro"
-    And I show the filter "size"
-    And I filter by "size" with operator "in list" and value "M"
-    And I show the filter "composition"
-    When I filter by "composition" with operator "contains" and value "100% cotton"
-    Then the grid should contain 0 elements
-    When I am on the "csv_catalog_modeling_product_model_import" import job page
-    And I launch the import job
-    And I wait for the "csv_catalog_modeling_product_model_import" job to finish
-    Then I should see the text "processed 1"
-    When I am on the products grid
-    And I show the filter "supplier"
-    And I filter by "supplier" with operator "in list" and value "zaro"
-    And I show the filter "size"
-    And I filter by "size" with operator "in list" and value "M"
-    And I show the filter "composition"
-    And I filter by "composition" with operator "contains" and value "100% cotton"
-    Then the grid should contain 1 elements
-    And I should see entities "tshirt-divided-navy-blue-m"

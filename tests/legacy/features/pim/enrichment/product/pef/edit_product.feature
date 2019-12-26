@@ -60,28 +60,6 @@ Feature: Edit a product
     When I am on the "sandal" product page
     Then I should not see the text "Attributes"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3615
-  Scenario: Successfully have attributes set to the default scope (For Sandra => mobile and Julia => ecommerce).
-    Given I am logged in as "Sandra"
-    And I am on the "sandal" product page
-    Then the product Description should be "My awesome description for mobile"
-    Then I logout
-    And I am logged in as "Julia"
-    When I am on the "sandal" product page
-    Then the product Description should be "My awesome description for ecommerce"
-
-  # Working well in application but scenario fails
-  @skip-pef @critical
-  Scenario: Successfully preserve channel filter between datagrid and edit form
-    Given I am logged in as "Sandra"
-    And I am on the "sandal" product page
-    And I switch the scope to "mobile"
-    Then the product Description should be "My awesome description for mobile"
-    When I am on the products grid
-    And I switch the scope to "E-commerce"
-    When I am on the "sandal" product page
-    Then the product Description should be "My awesome description for ecommerce"
-
   @critical
   Scenario: Successfully add a metric attribute to a product
     Given I am logged in as "Julia"
@@ -120,7 +98,3 @@ Feature: Edit a product
     Then I should not see the text "There are unsaved changes."
     And I edit the "sandal" product
     Then I should see the text "Sandal"
-
-  @critical @skip
-  Scenario: Successfully access the product edit form from the product datagrid
-  # TODO: this scenario is missing

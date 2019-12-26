@@ -66,9 +66,3 @@ Feature: Edit a product with localized attributes
     And I am on the "foo" product page
     And I wait 3 seconds
     Then the field Date should contain "05/28/2015"
-
-  Scenario: Successfully show datetimepicker in my UI locale
-    Given I am on the "foo" product page
-    When I click on the field Date
-    Then I should see the text "Mai"
-    And I should see the text "Lu"

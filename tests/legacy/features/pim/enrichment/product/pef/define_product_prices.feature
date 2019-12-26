@@ -14,17 +14,12 @@ Feature: Define product prices
       | bike | 50 EUR, 100 USD   | 150 EUR, 200 USD  |
     And I am logged in as "Mary"
 
-  Scenario: Successfully display english and french public prices
+  @critical
+  Scenario: Successfully edit prices in french locale
     Given I am on the "bike" product page
     Then the product Public price in USD should be "100.00"
     And the product Public price in EUR should be "50.00"
-    When I switch the locale to "fr_FR"
-    Then the product [publicPrice] in USD should be "200.00"
-    And the product [publicPrice] in EUR should be "150.00"
-
-  Scenario: Successfully update the french public prices
-    Given I am on the "bike" product page
-    And I switch the locale to "fr_FR"
+    Given I switch the locale to "fr_FR"
     When I change the "[publicPrice]" to "700.00 USD"
     And I save the product
     Then the product [publicPrice] in USD should be "700.00"
