@@ -29,8 +29,8 @@ class DbalSelectConnectionWithCredentialsByCodeQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->connectionLoader = $this->get('akeneo_app.fixtures.app_loader');
-        $this->selectConnectionWithCredentialsByCodeQuery = $this->get('akeneo_app.persistence.query.select_app_with_credentials_by_code');
+        $this->connectionLoader = $this->get('akeneo_app.fixtures.connection_loader');
+        $this->selectConnectionWithCredentialsByCodeQuery = $this->get('akeneo_app.persistence.query.select_connection_with_credentials_by_code');
     }
 
     public function test_it_finds_a_connection_with_its_credentials()

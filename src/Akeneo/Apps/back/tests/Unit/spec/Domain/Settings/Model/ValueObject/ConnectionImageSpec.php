@@ -25,7 +25,7 @@ class ConnectionImageSpec extends ObjectBehavior
     {
         $this->beConstructedWith('');
         $this
-            ->shouldThrow(new \InvalidArgumentException('akeneo_apps.app.constraint.image.not_empty'))
+            ->shouldThrow(new \InvalidArgumentException('akeneo_apps.connection.constraint.image.not_empty'))
             ->duringInstantiation();
     }
 }

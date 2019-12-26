@@ -1,14 +1,14 @@
 services:
-    akeneo_app.validators.app.code_must_be_unique:
+    akeneo_app.validators.connection.code_must_be_unique:
         class: Akeneo\Apps\Application\Settings\Validation\Connection\CodeMustBeUniqueValidator
         arguments:
-            - '@akeneo_app.persistence.repository.app'
+            - '@akeneo_app.persistence.repository.connection'
         tags:
-            - { name: validator.constraint_validator, alias: apps_code_must_be_unique }
+            - { name: validator.constraint_validator, alias: connection_code_must_be_unique }
 
-    akeneo_app.validators.app.image_must_exist:
+    akeneo_app.validators.connection.image_must_exist:
         class: Akeneo\Apps\Application\Settings\Validation\Connection\ImageMustExistValidator
         arguments:
             - '@akeneo_app.service.file_info.does_image_exist'
         tags:
-            - { name: validator.constraint_validator, alias: apps_image_must_exist }
+            - { name: validator.constraint_validator, alias: connection_image_must_exist }

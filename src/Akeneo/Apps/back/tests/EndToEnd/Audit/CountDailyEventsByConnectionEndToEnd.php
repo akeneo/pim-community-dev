@@ -18,8 +18,8 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
 {
     public function test_it_finds_connections_event_by_created_product()
     {
-        $this->get('akeneo_app.fixtures.app_loader')->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE);
-        $this->get('akeneo_app.fixtures.app_loader')->createConnection('erp', 'ERP', FlowType::DATA_SOURCE);
+        $this->get('akeneo_app.fixtures.connection_loader')->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE);
+        $this->get('akeneo_app.fixtures.connection_loader')->createConnection('erp', 'ERP', FlowType::DATA_SOURCE);
         $this->loadAuditData();
         $this->createAdminUser();
         $this->authenticate('admin', 'admin');

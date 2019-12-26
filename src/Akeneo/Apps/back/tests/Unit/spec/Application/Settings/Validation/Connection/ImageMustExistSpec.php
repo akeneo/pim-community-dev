@@ -27,6 +27,6 @@ class ImageMustExistSpec extends ObjectBehavior
 
     public function it_provides_a_tag_to_be_validated(): void
     {
-        $this->validatedBy()->shouldReturn('apps_image_must_exist');
+        $this->validatedBy()->shouldReturn('connection_image_must_exist');
     }
 }

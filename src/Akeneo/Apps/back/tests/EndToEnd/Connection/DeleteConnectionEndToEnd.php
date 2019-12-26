@@ -25,7 +25,7 @@ class DeleteConnectionEndToEnd extends ApiTestCase
     public function test_it_deletes_the_connection_and_client_and_user()
     {
         $createConnectionCommand = new CreateConnectionCommand('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
-        $connectionWithCredentials = $this->get('akeneo_app.application.handler.create_app')->handle($createConnectionCommand);
+        $connectionWithCredentials = $this->get('akeneo_app.application.handler.create_connection')->handle($createConnectionCommand);
 
         $apiClient = $this->createAuthenticatedClient(
             [],
@@ -40,7 +40,7 @@ class DeleteConnectionEndToEnd extends ApiTestCase
         $this->get('doctrine.orm.entity_manager')->clear();
 
         $deleteConnectionCommand = new DeleteConnectionCommand('magento');
-        $this->get('akeneo_app.application.handler.delete_app')->handle($deleteConnectionCommand);
+        $this->get('akeneo_app.application.handler.delete_connection')->handle($deleteConnectionCommand);
 
         $apiClient->reload();
         Assert::assertEquals(Response::HTTP_UNAUTHORIZED, $apiClient->getResponse()->getStatusCode());

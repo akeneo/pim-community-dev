@@ -1,10 +1,10 @@
 services:
-    akeneo_app.persistence.query.select_apps:
+    akeneo_app.persistence.query.select_connections:
         class: 'Akeneo\Apps\Infrastructure\Persistence\InMemory\Query\InMemorySelectConnectionsQuery'
         arguments:
-            - '@akeneo_app.persistence.repository.app'
+            - '@akeneo_app.persistence.repository.connection'
 
-    akeneo_app.persistence.query.select_app_with_credentials_by_code:
+    akeneo_app.persistence.query.select_connection_with_credentials_by_code:
         class: 'Akeneo\Apps\Infrastructure\Persistence\InMemory\Query\InMemorySelectConnectionWithCredentialsByCodeQuery'
         arguments:
-            - '@akeneo_app.persistence.repository.app'
+            - '@akeneo_app.persistence.repository.connection'

@@ -1,8 +1,8 @@
 services:
-    akeneo_app.fixtures.app_loader:
+    akeneo_app.fixtures.connection_loader:
         class: 'Akeneo\Apps\back\tests\Integration\Fixtures\ConnectionLoader'
         arguments:
-            - '@akeneo_app.application.handler.create_app'
+            - '@akeneo_app.application.handler.create_connection'
 
     akeneo_app.fixtures.audit_loader:
         class: 'Akeneo\Apps\back\tests\Integration\Fixtures\AuditLoader'

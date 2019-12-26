@@ -28,7 +28,7 @@ class ConnectionCodeMustBeValidSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
     ) {
-        $context->buildViolation('akeneo_apps.app.constraint.code.required')->willReturn($builder);
+        $context->buildViolation('akeneo_apps.connection.constraint.code.required')->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();
 
         $this->validate('', $context);

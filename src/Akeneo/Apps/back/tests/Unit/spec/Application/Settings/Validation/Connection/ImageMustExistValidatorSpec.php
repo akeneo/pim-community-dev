@@ -48,7 +48,7 @@ class ImageMustExistValidatorSpec extends ObjectBehavior
         $constraint = new ImageMustExist();
         $imageExistQuery->execute('not/a/good/path.jpg')->willReturn(false);
 
-        $context->buildViolation('akeneo_apps.app.constraint.image.must_exist')
+        $context->buildViolation('akeneo_apps.connection.constraint.image.must_exist')
             ->shouldBeCalled()
             ->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();

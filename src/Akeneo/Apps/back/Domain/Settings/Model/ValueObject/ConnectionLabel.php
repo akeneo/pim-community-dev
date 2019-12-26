@@ -11,7 +11,7 @@ namespace Akeneo\Apps\Domain\Settings\Model\ValueObject;
  */
 class ConnectionLabel
 {
-    private const CONSTRAINT_KEY = 'akeneo_apps.app.constraint.label.%s';
+    private const CONSTRAINT_KEY = 'akeneo_apps.connection.constraint.label.%s';
     private $label;
 
     public function __construct(string $label)

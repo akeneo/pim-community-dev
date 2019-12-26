@@ -11,7 +11,7 @@ namespace Akeneo\Apps\Domain\Settings\Model\ValueObject;
  */
 class ConnectionCode
 {
-    private const CONSTRAINT_KEY = 'akeneo_apps.app.constraint.code.%s';
+    private const CONSTRAINT_KEY = 'akeneo_apps.connection.constraint.code.%s';
     private $code;
 
     public function __construct(string $code)

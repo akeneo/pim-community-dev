@@ -24,7 +24,7 @@ class FlowTypeSpec extends ObjectBehavior
     {
         $this->beConstructedWith('foo');
         $this->shouldThrow(
-            new \InvalidArgumentException('akeneo_apps.app.constraint.flow_type.invalid')
+            new \InvalidArgumentException('akeneo_apps.connection.constraint.flow_type.invalid')
         )->duringInstantiation();
     }
 

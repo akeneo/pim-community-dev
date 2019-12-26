@@ -27,6 +27,6 @@ class CodeMustBeUniqueSpec extends ObjectBehavior
 
     public function it_provides_a_tag_to_be_validated(): void
     {
-        $this->validatedBy()->shouldReturn('apps_code_must_be_unique');
+        $this->validatedBy()->shouldReturn('connection_code_must_be_unique');
     }
 }

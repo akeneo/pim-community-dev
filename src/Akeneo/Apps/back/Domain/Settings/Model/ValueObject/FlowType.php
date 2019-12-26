@@ -15,7 +15,7 @@ class FlowType
     const DATA_DESTINATION = 'data_destination';
     const OTHER = 'other';
 
-    private const CONSTRAINT_KEY = 'akeneo_apps.app.constraint.flow_type.%s';
+    private const CONSTRAINT_KEY = 'akeneo_apps.connection.constraint.flow_type.%s';
     private $flowType;
 
     public function __construct(string $flowType)

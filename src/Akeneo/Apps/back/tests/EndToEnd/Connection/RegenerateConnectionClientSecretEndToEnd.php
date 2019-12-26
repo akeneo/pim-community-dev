@@ -23,7 +23,7 @@ class RegenerateConnectionClientSecretEndToEnd extends ApiTestCase
     public function test_it_disables_the_client_secret_and_tokens()
     {
         $createConnectionCommand = new CreateConnectionCommand('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
-        $connectionWithCredentials = $this->get('akeneo_app.application.handler.create_app')->handle($createConnectionCommand);
+        $connectionWithCredentials = $this->get('akeneo_app.application.handler.create_connection')->handle($createConnectionCommand);
 
         $apiClient = $this->createAuthenticatedClient(
             [],
@@ -40,7 +40,7 @@ class RegenerateConnectionClientSecretEndToEnd extends ApiTestCase
         Assert::assertEquals(Response::HTTP_OK, $apiClient->getResponse()->getStatusCode());
 
         $regenerateConnectionSecretCommand = new RegenerateConnectionSecretCommand('magento');
-        $this->get('akeneo_app.application.handler.regenerate_app_secret')->handle($regenerateConnectionSecretCommand);
+        $this->get('akeneo_app.application.handler.regenerate_connection_secret')->handle($regenerateConnectionSecretCommand);
 
         $apiClient->reload();
         Assert::assertEquals(Response::HTTP_UNAUTHORIZED, $apiClient->getResponse()->getStatusCode());

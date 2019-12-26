@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Persistence\InMemory\Repository;
 
-use Akeneo\Apps\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Apps\Domain\Settings\Model\Write\Connection;
 use Akeneo\Apps\Domain\Settings\Persistence\Repository\ConnectionRepository;

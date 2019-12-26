@@ -30,8 +30,8 @@ class DbalConnectionRepositoryIntegration extends TestCase
         parent::setUp();
 
         $this->dbalConnection = $this->get('database_connection');
-        $this->repository = $this->get('akeneo_app.persistence.repository.app');
-        $this->connectionLoader = $this->get('akeneo_app.fixtures.app_loader');
+        $this->repository = $this->get('akeneo_app.persistence.repository.connection');
+        $this->connectionLoader = $this->get('akeneo_app.fixtures.connection_loader');
     }
 
     public function test_it_finds_one_connection_by_code()

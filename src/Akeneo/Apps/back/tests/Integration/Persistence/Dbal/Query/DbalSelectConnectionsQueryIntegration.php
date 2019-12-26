@@ -29,8 +29,8 @@ class DbalSelectConnectionsQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->connectionLoader = $this->get('akeneo_app.fixtures.app_loader');
-        $this->selectConnectionsQuery = $this->get('akeneo_app.persistence.query.select_apps');
+        $this->connectionLoader = $this->get('akeneo_app.fixtures.connection_loader');
+        $this->selectConnectionsQuery = $this->get('akeneo_app.persistence.query.select_connections');
     }
 
     public function test_it_fetches_connections()
