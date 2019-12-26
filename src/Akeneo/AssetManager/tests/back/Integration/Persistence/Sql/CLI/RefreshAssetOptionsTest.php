@@ -203,6 +203,7 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
                 ])
             )
         );
+        $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
     }
 
     /**
@@ -233,6 +234,7 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
                 ])
             )
         );
+        $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
     }
 
     private function removeOptionFromAttribute(string $optionToRemove): void
