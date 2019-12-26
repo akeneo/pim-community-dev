@@ -35,6 +35,10 @@ class PurgeableVersionList implements \Countable
 
     public function remove(array $versionIds): self
     {
+        if (empty($versionIds)) {
+            return $this;
+        }
+
         $versionIds = array_values(array_diff($this->versionIds, $versionIds));
 
         return new self($this->resourceName, $versionIds);

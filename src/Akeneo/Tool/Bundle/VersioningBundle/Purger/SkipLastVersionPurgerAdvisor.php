@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Purger;
 
-use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetLatestVersionsByIdsQuery;
+use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetLatestVersionIdsByIdsQuery;
 
 /**
  * Prevents last version of an entity from being purged
@@ -13,10 +13,10 @@ use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetLatestVersionsByIds
  */
 class SkipLastVersionPurgerAdvisor implements VersionPurgerAdvisorInterface
 {
-    /** @var SqlGetLatestVersionsByIdsQuery */
+    /** @var SqlGetLatestVersionIdsByIdsQuery */
     private $getLatestVersionsByIdsQuery;
 
-    public function __construct(SqlGetLatestVersionsByIdsQuery $getLatestVersionsByIdsQuery)
+    public function __construct(SqlGetLatestVersionIdsByIdsQuery $getLatestVersionsByIdsQuery)
     {
         $this->getLatestVersionsByIdsQuery = $getLatestVersionsByIdsQuery;
     }

@@ -31,9 +31,10 @@ class SqlGetPurgeableVersionListQuery
 
         $query = <<<SQL
 SELECT id FROM pim_versioning_version 
-WHERE resource_name = :resource_name AND logged_at $dateOperator :logged_at AND id > :last_id
-ORDER BY resource_name, logged_at, id
-LIMIT :list_size
+WHERE logged_at $dateOperator :logged_at  
+  AND resource_name = :resource_name
+  AND id > :last_id 
+ORDER BY logged_at, id LIMIT :list_size
 SQL;
 
         $statement = $this->dbConnection->prepare($query);
@@ -60,7 +61,7 @@ SQL;
 
         $query = <<<SQL
 SELECT COUNT(id) FROM pim_versioning_version 
-WHERE resource_name = :resource_name AND logged_at $dateOperator :logged_at
+WHERE logged_at $dateOperator :logged_at AND resource_name = :resource_name 
 SQL;
 
         $count = $this->dbConnection->executeQuery($query, [

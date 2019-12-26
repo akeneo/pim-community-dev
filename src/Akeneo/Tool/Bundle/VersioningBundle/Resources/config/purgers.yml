@@ -16,13 +16,13 @@ services:
     pim_versioning.purger.advisor.skip_first_version:
         class: '%pim_versioning.purger.advisor.skip_first_version.class%'
         arguments:
-            - '@pim_versioning.query.get_first_versions_by_ids'
+            - '@pim_versioning.query.get_first_version_ids_by_ids'
         tags:
             - { name: pim_versioning.purger.advisor, priority: 80 }
 
     pim_versioning.purger.advisor.skip_last_version:
         class: '%pim_versioning.purger.advisor.skip_last_version.class%'
         arguments:
-            - '@pim_versioning.query.get_latest_versions_by_ids'
+            - '@pim_versioning.query.get_latest_version_ids_by_ids'
         tags:
             - { name: pim_versioning.purger.advisor, priority: 90 }

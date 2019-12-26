@@ -41,12 +41,12 @@ services:
         arguments:
             - '@database_connection'
 
-    pim_versioning.query.get_latest_versions_by_ids:
-        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetLatestVersionsByIdsQuery
+    pim_versioning.query.get_latest_version_ids_by_ids:
+        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetLatestVersionIdsByIdsQuery
         arguments:
             - '@database_connection'
 
-    pim_versioning.query.get_first_versions_by_ids:
-        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetFirstVersionsByIdsQuery
+    pim_versioning.query.get_first_version_ids_by_ids:
+        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetFirstVersionIdsByIdsQuery
         arguments:
             - '@database_connection'
