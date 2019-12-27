@@ -1,0 +1,13 @@
+Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand:
+    group_sequence:
+      - CreateConnectionCommand
+      - Business
+    properties:
+        code:
+            - Callback: [Akeneo\Connectivity\Connection\Domain\Settings\Validation\Connection\ConnectionCodeMustBeValid, validate]
+            - Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUnique:
+                groups: [Business]
+        label:
+            - Callback: [Akeneo\Connectivity\Connection\Domain\Settings\Validation\Connection\ConnectionLabelMustBeValid, validate]
+        flowType:
+            - Callback: [Akeneo\Connectivity\Connection\Domain\Settings\Validation\Connection\FlowTypeMustBeValid, validate]

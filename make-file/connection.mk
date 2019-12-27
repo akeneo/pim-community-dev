@@ -52,18 +52,18 @@
 # Make sure the tests run by the targets defined here does not run by the main targets too
 #
 
-_APPS_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Apps/front/
+_APPS_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Connectivity/Connection/front/
 
 # Tests Back
 
 apps-coupling-back:
-	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Apps/back/tests/.php_cd.php src/Akeneo/Apps/back
+	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Connectivity/Connection/back/tests/.php_cd.php src/Akeneo/Connectivity/Connection/back
 
 apps-unit-back:
-	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Apps/back/tests/Unit/spec/
+	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
 
 apps-acceptance-back: var/tests/behat/apps
-	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml --format pim --out var/tests/behat/apps --format progress --out std --colors
+	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --format pim --out var/tests/behat/apps --format progress --out std --colors
 
 apps-integration-back:
 ifeq ($(CI),true)

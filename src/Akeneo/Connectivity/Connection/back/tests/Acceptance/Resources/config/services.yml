@@ -1,0 +1,15 @@
+services:
+    akeneo_app.service.client.create_client:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fake\CreateClient
+
+    akeneo_app.service.client.delete_client:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fake\DeleteClient
+
+    akeneo_app.service.user.create_user:
+        class: Akeneo\Connectivity\Connection\Infrastructure\User\Fake\CreateUser
+
+    akeneo_app.service.user.delete_user:
+        class: Akeneo\Connectivity\Connection\Infrastructure\User\Fake\DeleteUser
+
+    akeneo_app.service.file_info.does_image_exist:
+        class: Akeneo\Connectivity\Connection\Infrastructure\FileInfo\Fake\DoesImageExistQuery

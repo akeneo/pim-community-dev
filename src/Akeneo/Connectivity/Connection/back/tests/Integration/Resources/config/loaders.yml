@@ -1,0 +1,10 @@
+services:
+    akeneo_app.fixtures.connection_loader:
+        class: 'Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader'
+        arguments:
+            - '@akeneo_app.application.handler.create_connection'
+
+    akeneo_app.fixtures.audit_loader:
+        class: 'Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditLoader'
+        arguments:
+            - '@database_connection'

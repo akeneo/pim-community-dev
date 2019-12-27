@@ -37,11 +37,11 @@
         </testsuite>
 
         <testsuite name="Akeneo_Apps_Integration">
-            <directory suffix="Integration.php">src/Akeneo/Apps/back/tests/Integration</directory>
+            <directory suffix="Integration.php">src/Akeneo/Connectivity/Connection/back/tests/Integration</directory>
         </testsuite>
 
         <testsuite name="Akeneo_Apps_EndToEnd">
-            <directory suffix="EndToEnd.php">src/Akeneo/Apps/back/tests/EndToEnd</directory>
+            <directory suffix="EndToEnd.php">src/Akeneo/Connectivity/Connection/back/tests/EndToEnd</directory>
         </testsuite>
 
         <testsuite name="End_to_End">

@@ -2,9 +2,9 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Apps\Application\Settings\Command\CreateConnectionCommand;
-use Akeneo\Apps\Application\Settings\Command\CreateConnectionHandler;
-use Akeneo\Apps\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;

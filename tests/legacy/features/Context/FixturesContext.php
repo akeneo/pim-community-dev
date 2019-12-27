@@ -4,8 +4,8 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
-use Akeneo\Apps\Application\Settings\Command\CreateConnectionCommand;
-use Akeneo\Apps\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
