@@ -41,6 +41,7 @@ class CreateAssetFamilyHandler
             $createAssetFamilyCommand->labels,
             Image::createEmpty(),
             RuleTemplateCollection::createFromProductLinkRules($createAssetFamilyCommand->productLinkRules),
+        )->withNamingConvention(
             NamingConvention::createFromNormalized($createAssetFamilyCommand->namingConvention)
         );
 

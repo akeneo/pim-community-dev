@@ -7,6 +7,7 @@ use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyH
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -353,7 +354,54 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $this->__invoke($editAssetFamilyCommand);
     }
 
-    // TODO Add test to update naming
+    function it_edits_an_asset_family_with_naming_convention(
+        AssetFamilyRepositoryInterface $repository,
+        TransformationCollectionFactory $transformationCollectionFactory,
+        AssetFamily $assetFamily,
+        Image $image,
+        TransformationCollection $currentTransformationCollection,
+        TransformationCollection $newTransformationCollection
+    ) {
+        $normalizedNamingConvention = [
+            'source' => [
+                'property' => 'code',
+                'channel' => null,
+                'locale' => null,
+            ],
+            'pattern' => '/valid_pattern/',
+            'strict' => true
+        ];
+
+        $editAssetFamilyCommand = new EditAssetFamilyCommand(
+            'packshot',
+            ['en_US' => 'Packshots'],
+            null,
+            null,
+            null,
+            null,
+            $normalizedNamingConvention
+        );
+
+        $repository->getByIdentifier(Argument::type(AssetFamilyIdentifier::class))
+            ->willReturn($assetFamily);
+
+        $assetFamily->updateLabels(Argument::type(LabelCollection::class))
+            ->shouldBeCalled();
+
+        $assetFamily->updateImage(
+            Argument::that(function ($image) {
+                return $image instanceof Image && $image->isEmpty();
+            })
+        )->shouldBeCalled();
+
+        $assetFamily->updateNamingConvention(
+            NamingConvention::createFromNormalized($normalizedNamingConvention)
+        )->shouldBeCalled();
+
+        $repository->update($assetFamily)->shouldBeCalled();
+
+        $this->__invoke($editAssetFamilyCommand);
+    }
 
     function it_does_not_edit_transformations_if_they_are_not_provided(
         AssetFamilyRepositoryInterface $repository,
