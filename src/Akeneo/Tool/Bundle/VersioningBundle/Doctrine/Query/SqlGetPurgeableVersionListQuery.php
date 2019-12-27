@@ -31,7 +31,7 @@ SELECT id FROM pim_versioning_version
 WHERE logged_at > :logged_at  
   AND resource_name = :resource_name
   AND id > :last_id 
-ORDER BY resource_name, logged_at, id LIMIT :list_size
+ORDER BY logged_at, id LIMIT :list_size
 SQL;
 
         return $this->fetchVersionIds($query, $resourceName, $date, $listSize);
@@ -47,7 +47,7 @@ SELECT id FROM pim_versioning_version
 WHERE logged_at < :logged_at  
   AND resource_name = :resource_name
   AND id > :last_id 
-ORDER BY resource_name, logged_at, id LIMIT :list_size
+ORDER BY logged_at, id LIMIT :list_size
 SQL;
 
         return $this->fetchVersionIds($query, $resourceName, $date, $listSize);
@@ -78,7 +78,7 @@ SQL;
     public function countYoungerThan(string $resourceName, \DateTime $date): int
     {
         $query = <<<SQL
-SELECT COUNT(*) FROM pim_versioning_version 
+SELECT COUNT(*) FROM pim_versioning_version USE INDEX (resource_name_logged_at_idx)
 WHERE logged_at > :logged_at AND resource_name = :resource_name 
 SQL;
 
@@ -93,7 +93,7 @@ SQL;
     public function countOlderThan(string $resourceName, \DateTime $date): int
     {
         $query = <<<SQL
-SELECT COUNT(*) FROM pim_versioning_version 
+SELECT COUNT(*) FROM pim_versioning_version USE INDEX (resource_name_logged_at_idx)
 WHERE logged_at < :logged_at AND resource_name = :resource_name 
 SQL;
 

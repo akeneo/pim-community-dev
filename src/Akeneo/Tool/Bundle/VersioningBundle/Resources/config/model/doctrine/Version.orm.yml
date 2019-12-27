@@ -10,6 +10,9 @@ Akeneo\Tool\Component\Versioning\Model\Version:
         pending_idx:
             columns:
                 - pending
+        logged_at_idx:
+            columns:
+                - logged_at
         resource_name_logged_at_idx:
             columns:
                 - resource_name

@@ -19,7 +19,6 @@ class Version_3_0_20191227141338_fix_versioning_indexes extends AbstractMigratio
 ALTER TABLE pim_versioning_version 
     DROP INDEX resource_name_idx,
     DROP INDEX version_idx,
-    DROP INDEX logged_at_idx,
     ADD INDEX resource_name_logged_at_idx (resource_name, logged_at);
 SQL;
 
