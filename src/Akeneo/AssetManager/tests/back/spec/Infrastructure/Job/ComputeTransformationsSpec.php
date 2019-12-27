@@ -19,7 +19,10 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Job\ComputeTransformations;
 use Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource;
 use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
+use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use PhpSpec\ObjectBehavior;
@@ -37,6 +40,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
         EditAssetHandler $editAssetHandler,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
+        JobExecution $jobExecution,
         ValidatorInterface $validator
     ) {
         $this->beConstructedWith(
@@ -48,6 +52,10 @@ class ComputeTransformationsSpec extends ObjectBehavior
             $editAssetHandler,
             $validator
         );
+        $executionContext = new ExecutionContext();
+        $executionContext->put(JobInterface::WORKING_DIRECTORY_PARAMETER, '/jobexecution/working/directory');
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $this->setStepExecution($stepExecution);
     }
@@ -94,7 +102,12 @@ class ComputeTransformationsSpec extends ObjectBehavior
         $getOutdatedVariationSource->forAssetAndTransformation($asset1, $thumbnail)->willReturn($sourceFileData);
         $getOutdatedVariationSource->forAssetAndTransformation($asset2, $thumbnail)->willReturn(null);
         $stepExecution->incrementSummaryInfo('skipped')->shouldBeCalled();
-        $transformationExecutor->execute($sourceFileData, $packshotIdentifier, $thumbnail)->willReturn($command);
+        $transformationExecutor->execute(
+            $sourceFileData,
+            $packshotIdentifier,
+            $thumbnail,
+            '/jobexecution/working/directory'
+        )->willReturn($command);
 
         $validator->validate($command)->willReturn([]);
 
@@ -164,8 +177,12 @@ class ComputeTransformationsSpec extends ObjectBehavior
         $getOutdatedVariationSource->forAssetAndTransformation($asset1, $thumbnail)->willReturn($sourceFileData);
         $getOutdatedVariationSource->forAssetAndTransformation($asset2, $thumbnail)->willReturn(null);
         $stepExecution->incrementSummaryInfo('skipped')->shouldBeCalled();
-        $transformationExecutor->execute($sourceFileData, $assetFamilyIdentifier, $thumbnail)
-                                       ->willReturn($command);
+        $transformationExecutor->execute(
+            $sourceFileData,
+            $assetFamilyIdentifier,
+            $thumbnail,
+            '/jobexecution/working/directory'
+        )->willReturn($command);
 
         $validator->validate($command)->willReturn([]);
 

@@ -95,17 +95,6 @@ class Transformation
         return $this->operations;
     }
 
-    public function getTargetFilename(string $originalFilename): string
-    {
-        return join('', [
-            $this->filenamePrefix ?? '',
-            pathinfo($originalFilename, PATHINFO_FILENAME),
-            $this->filenameSuffix ?? '',
-            pathinfo($originalFilename, PATHINFO_EXTENSION) === '' ? '' : '.',
-            pathinfo($originalFilename, PATHINFO_EXTENSION)
-        ]);
-    }
-
     public function getFilenamePrefix(): ?string
     {
         return $this->filenamePrefix;
@@ -146,7 +135,6 @@ class Transformation
             && $this->target->equals($transformation->getTarget())
             && $this->operations->equals($transformation->getOperationCollection())
             && $this->filenamePrefix === $transformation->getFilenamePrefix()
-            && $this->filenameSuffix === $transformation->getFilenameSuffix()
-            ;
+            && $this->filenameSuffix === $transformation->getFilenameSuffix();
     }
 }

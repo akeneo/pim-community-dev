@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
+use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationException;
 
 final class OperationApplierRegistry
 {
@@ -35,7 +36,9 @@ final class OperationApplierRegistry
             }
         }
 
-        throw new \RuntimeException(sprintf('No applier was registered to handle operation %s', get_class($operation)));
+        throw new TransformationException(
+            sprintf('No applier was registered to handle operation %s', $operation::getType())
+        );
     }
 
     private function add(OperationApplier $operationApplier): void

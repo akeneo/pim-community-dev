@@ -19,12 +19,12 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
+use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationException;
 use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationFailedException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
-use Liip\ImagineBundle\Exception\ExceptionInterface as LiipImagineException;
-use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 class TransformationExecutor
 {
@@ -55,24 +55,25 @@ class TransformationExecutor
     public function execute(
         FileData $sourceFileData,
         AssetFamilyIdentifier $assetFamilyIdentifier,
-        Transformation $transformation
+        Transformation $transformation,
+        string $workingDirectory
     ): EditMediaFileTargetValueCommand {
         try {
-            $sourceFile = $this->getSourceFile($sourceFileData->getKey());
-            $transformedFile = $this->fileTransformer->transform(
-                $sourceFile,
-                $transformation->getOperationCollection()
+            $sourceFile = $this->fileDownloader->get(
+                $sourceFileData->getKey(),
+                $workingDirectory,
+                $sourceFileData->getOriginalFilename()
             );
-            $renamedFile = $this->rename($transformedFile, $sourceFileData->getOriginalFilename(), $transformation);
-            $storedFile = $this->fileStorer->store($renamedFile, Storage::FILE_STORAGE_ALIAS, true);
+            $transformedFile = $this->fileTransformer->transform($sourceFile, $transformation);
+            $storedFile = $this->fileStorer->store($transformedFile, Storage::FILE_STORAGE_ALIAS, true);
 
             $target = $transformation->getTarget();
             $targetAttribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
                 $target->getAttributeCode(),
                 $assetFamilyIdentifier
             );
-        } catch (FileTransferException | LiipImagineException | FileRemovalException $e) {
-            throw new TransformationFailedException($e->getMessage(), $e->getCocde());
+        } catch (FileTransferException | TransformationException | FileRemovalException | IOExceptionInterface $e) {
+            throw new TransformationFailedException($e->getMessage(), $e->getCode());
         }
 
         return new EditMediaFileTargetValueCommand(
@@ -86,15 +87,5 @@ class TransformationExecutor
             $storedFile->getExtension(),
             (new \DateTimeImmutable())->format(\DateTimeInterface::ISO8601)
         );
-    }
-
-    private function getSourceFile($fileKey): File
-    {
-        return $this->fileDownloader->get($fileKey);
-    }
-
-    private function rename(File $file, string $originalFilename, Transformation $transformation): File
-    {
-        return $file->move($file->getPath(), $transformation->getTargetFilename($originalFilename));
     }
 }

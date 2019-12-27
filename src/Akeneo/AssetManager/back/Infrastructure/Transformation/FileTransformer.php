@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Transformation;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationException;
 use Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplierRegistry;
+use Liip\ImagineBundle\Exception\ExceptionInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
 class FileTransformer
@@ -27,15 +29,33 @@ class FileTransformer
         $this->operationApplierRegistry = $operationApplierRegistry;
     }
 
-    public function transform(File $file, OperationCollection $operations): File
+    public function transform(File $sourceFile, Transformation $transformation): File
     {
-        foreach ($operations as $operation) {
+        foreach ($transformation->getOperationCollection() as $operation) {
             $applier = $this->operationApplierRegistry->getApplier($operation);
-            $file = $applier->apply($file, $operation);
+            try {
+                $sourceFile = $applier->apply($sourceFile, $operation);
+            } catch (ExceptionInterface $e) {
+                throw new TransformationException($e->getMessage(), $e->getCode(), $e);
+            }
         }
         // clear PHP's internal cache for the file's metadata (filesize, etc...).
         clearstatcache();
 
-        return $file;
+        return $this->rename($sourceFile, $transformation);
+    }
+
+    private function rename(File $sourceFile, Transformation $transformation): File
+    {
+        $extension = ('' === $sourceFile->getExtension()) ? '' : '.' . $sourceFile->getExtension();
+        $newFilename = sprintf(
+            '%s%s%s%s',
+            $transformation->getFilenamePrefix() ?? '',
+            $sourceFile->getBasename($extension),
+            $transformation->getFilenameSuffix() ?? '',
+            $extension
+        );
+
+        return $sourceFile->move($sourceFile->getPath(), $newFilename);
     }
 }

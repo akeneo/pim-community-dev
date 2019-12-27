@@ -57,10 +57,13 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class ComputeTransformationsTest extends SqlIntegrationTestCase
 {
-    protected const FILENAME = __DIR__ . '/../../Common/TestFixtures/lardon.png';
+    private const FILENAME = __DIR__ . '/../../Common/TestFixtures/lardon.png';
 
     /** @var AttributeIdentifier */
     private $targetAttributeIdentifier;
+
+    /** @var string */
+    private $workingDir;
 
     /**
      * @test
@@ -141,11 +144,12 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
         $asset = $this->getAsset('starck');
 
         // empty the source value
-        $sourceAttribute = self::$container->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
-                                           ->getByCodeAndAssetFamilyIdentifier(
-                                               AttributeCode::fromString('main_image'),
-                                               AssetFamilyIdentifier::fromString('designer')
-                                           );
+        $sourceAttribute = self::$container
+            ->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->getByCodeAndAssetFamilyIdentifier(
+                AttributeCode::fromString('main_image'),
+                AssetFamilyIdentifier::fromString('designer')
+            );
 
         $editAssetCommand = new EditAssetCommand(
             'designer',
@@ -208,6 +212,16 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
         $this->resetDB();
         $this->get('akeneo_assetmanager.client.asset')->resetIndex();
         $this->loadFixtures();
+        $this->workingDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('akeneo_batch_');
+    }
+
+    protected function tearDown(): void
+    {
+        $filesystem = $this->get('filesystem');
+        if ($filesystem->exists($this->workingDir)) {
+            $filesystem->remove($this->workingDir);
+        }
+        parent::tearDown();
     }
 
     private function loadFixtures(): void
@@ -269,11 +283,13 @@ SQL
         Assert::assertSame('png', $normalized['extension']);
         Assert::assertSame('lardon_computed.png', $targetData->getOriginalFilename());
 
-        $file = $this->getFileDownloader()->get($targetData->getKey());
-        $metadata = getimagesize($file->getRealPath());
+        $file = $this->getFileDownloader()->get($targetData->getKey(), $this->workingDir, 'resulting_file.png');
+
+        $metadata = getimagesize($file->getPathname());
         Assert::assertSame($width, $metadata[0]);
         Assert::assertSame($height, $metadata[1]);
         Assert::assertSame('image/png', $metadata['mime']);
+        $this->get('filesystem')->remove($this->workingDir);
     }
 
     private function setFamilyTransformations(
