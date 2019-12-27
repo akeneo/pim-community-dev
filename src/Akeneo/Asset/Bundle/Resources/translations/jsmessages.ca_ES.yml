@@ -15,8 +15,6 @@ pimee_product_asset:
         download: Baixar
         remove: Eliminar
         upload: Carregar
-        yes: true
-        no: false
         assetRemoveConfirmationLabel: Estàs segur que vols eliminar aquest recurs?
     asset:
       not_empty: Codi obligatori. No es pot deixar buit.

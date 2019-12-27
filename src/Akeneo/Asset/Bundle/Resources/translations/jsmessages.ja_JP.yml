@@ -14,8 +14,6 @@ pimee_product_asset:
         download: ダウンロード
         remove: 削除
         upload: アップロード
-        yes: true
-        no: false
     asset:
       not_empty: コードが必要です。それは空にできません。
   enrich_asset:

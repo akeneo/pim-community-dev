@@ -15,8 +15,6 @@ pimee_product_asset:
         download: Lataa
         remove: Poista
         upload: Tuo
-        yes: true
-        no: false
         assetRemoveConfirmationLabel: Haluatko varmasti poistaa tämän assetin?
     asset:
       not_empty: Koodi vaaditaan. Se ei voi olla tyhjä.

@@ -13,8 +13,6 @@ pimee_product_asset:
         download: Ladda ner
         remove: Ta bort
         upload: Ladda upp
-        yes: true
-        no: false
     asset:
       not_empty: Koden krävs. Det kan inte vara tomt.
   enrich_asset:

@@ -14,8 +14,6 @@ pimee_product_asset:
         download: Скачать
         remove: Удалить
         upload: Загрузить
-        yes: true
-        no: false
         assetRemoveConfirmationLabel: Вы уверены, что хотите удалить этот медиафайл?
     asset:
       not_empty: Код требуется. Он не может быть пустым.
