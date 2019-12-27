@@ -64,20 +64,6 @@ class VersionPurger implements VersionPurgerInterface
     /**
      * {@inheritdoc}
      */
-    public function getVersionsToPurgeCount(array $options)
-    {
-        $optionResolver = new OptionsResolver();
-        $this->configureOptions($optionResolver);
-        $options = $optionResolver->resolve($options);
-
-        $versionsCursor = $this->versionRepository->findPotentiallyPurgeableBy($options);
-
-        return $versionsCursor->rowCount();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function addVersionPurgerAdvisor(VersionPurgerAdvisorInterface $versionPurgerAdvisor)
     {
         $this->versionPurgerAdvisors[] = $versionPurgerAdvisor;
@@ -85,23 +71,13 @@ class VersionPurger implements VersionPurgerInterface
 
     private function purgeVersionsByResourceName($resourceName, array $options, OutputInterface $output): int
     {
-        $versionsToPurgeCount = $this->getPurgeableVersionListQuery->count(
-            $resourceName,
-            $options['limit_date'],
-            $options['date_operator']
-        );
+        $versionsToPurgeCount = $this->countVersionsToPurge($resourceName, $options);
 
         if (0 === $versionsToPurgeCount) {
             return 0;
         }
 
-        $versionsToPurge = $this->getPurgeableVersionListQuery->execute(
-            $resourceName,
-            $options['limit_date'],
-            $options['date_operator'],
-            $options['batch_size']
-        );
-
+        $versionsToPurge = $this->getVersionsToPurge($resourceName, $options);
         $progressBar = new ProgressBar($output, $versionsToPurgeCount);
         $progressBar->start();
         $purgedVersionsCount = 0;
@@ -170,5 +146,19 @@ class VersionPurger implements VersionPurgerInterface
         }
 
         return $this->getAllResourceNamesQuery->execute();
+    }
+
+    private function countVersionsToPurge($resourceName, array $options): int
+    {
+        return '>' === $options['date_operator']
+            ? $this->getPurgeableVersionListQuery->countYoungerThan($resourceName, $options['limit_date'])
+            : $this->getPurgeableVersionListQuery->countOlderThan($resourceName, $options['limit_date']);
+    }
+
+    private function getVersionsToPurge($resourceName, array $options): iterable
+    {
+        return '>' === $options['date_operator']
+            ? $this->getPurgeableVersionListQuery->youngerThan($resourceName, $options['limit_date'], $options['batch_size'])
+            : $this->getPurgeableVersionListQuery->olderThan($resourceName, $options['limit_date'], $options['batch_size']);
     }
 }

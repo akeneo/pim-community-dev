@@ -19,19 +19,6 @@ interface VersionPurgerInterface
     public function purge(array $options, OutputInterface $output);
 
     /**
-     * @deprecated Will be removed in 4.0
-     *
-     * @todo merge in master: remove this method
-     *
-     * Returns the number of versions impacted by the purge configuration
-     *
-     * @param array $options
-     *
-     * @return int
-     */
-    public function getVersionsToPurgeCount(array $options);
-
-    /**
      * Registers an advisor into the purger
      *
      * @param VersionPurgerAdvisorInterface $versionPurgerAdvisor

@@ -24,18 +24,38 @@ class SqlGetPurgeableVersionListQuery
     /**
      * Returns an object PurgeableVersionList at each iteration
      */
-    public function execute(string $resourceName, \DateTime $date, string $dateOperator, int $listSize): iterable
+    public function youngerThan(string $resourceName, \DateTime $date, int $listSize): iterable
     {
-        $dateOperator = '<' !== $dateOperator ? '>' : '<';
-        $loggedAt = $date->format('Y-m-d');
-
         $query = <<<SQL
 SELECT id FROM pim_versioning_version 
-WHERE logged_at $dateOperator :logged_at  
+WHERE logged_at > :logged_at  
   AND resource_name = :resource_name
   AND id > :last_id 
-ORDER BY logged_at, id LIMIT :list_size
+ORDER BY resource_name, logged_at, id LIMIT :list_size
 SQL;
+
+        return $this->fetchVersionIds($query, $resourceName, $date, $listSize);
+    }
+
+    /**
+     * Returns an object PurgeableVersionList at each iteration
+     */
+    public function olderThan(string $resourceName, \DateTime $date, int $listSize): iterable
+    {
+$query = <<<SQL
+SELECT id FROM pim_versioning_version 
+WHERE logged_at < :logged_at  
+  AND resource_name = :resource_name
+  AND id > :last_id 
+ORDER BY resource_name, logged_at, id LIMIT :list_size
+SQL;
+
+        return $this->fetchVersionIds($query, $resourceName, $date, $listSize);
+    }
+
+    private function fetchVersionIds(string $query, string $resourceName, \DateTime $date, int $listSize): iterable
+    {
+        $loggedAt = $date->format('Y-m-d');
 
         $statement = $this->dbConnection->prepare($query);
         $statement->bindParam('resource_name', $resourceName, \PDO::PARAM_STR);
@@ -55,13 +75,26 @@ SQL;
         } while (!empty($results));
     }
 
-    public function count(string $resourceName, \DateTime $date, string $dateOperator): int
+    public function countYoungerThan(string $resourceName, \DateTime $date): int
     {
-        $dateOperator = '<' !== $dateOperator ? '>' : '<';
-
         $query = <<<SQL
-SELECT COUNT(id) FROM pim_versioning_version 
-WHERE logged_at $dateOperator :logged_at AND resource_name = :resource_name 
+SELECT COUNT(*) FROM pim_versioning_version 
+WHERE logged_at > :logged_at AND resource_name = :resource_name 
+SQL;
+
+        $count = $this->dbConnection->executeQuery($query, [
+            'resource_name' => $resourceName,
+            'logged_at' => $date->format('Y-m-d'),
+        ])->fetchColumn();
+
+        return intval($count);
+    }
+
+    public function countOlderThan(string $resourceName, \DateTime $date): int
+    {
+        $query = <<<SQL
+SELECT COUNT(*) FROM pim_versioning_version 
+WHERE logged_at < :logged_at AND resource_name = :resource_name 
 SQL;
 
         $count = $this->dbConnection->executeQuery($query, [
