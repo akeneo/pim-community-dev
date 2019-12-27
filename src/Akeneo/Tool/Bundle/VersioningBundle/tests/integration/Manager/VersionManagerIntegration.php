@@ -119,6 +119,11 @@ class VersionManagerIntegration extends TestCase
         $this->productUpdater->update($product, $updates);
         $this->productSaver->save($product);
 
+        $this->assertEquals(
+            $product->getRawValues()['a_date']['<all_channels>']['<all_locales>'],
+            '2017-02-01T00:00:00+01:00'
+        );
+
         $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId());
 
         $this->assertCount(2, $productVersions);
@@ -134,7 +139,7 @@ class VersionManagerIntegration extends TestCase
             'groups'     => 'groupB',
             'categories' => '',
             'parent'     => '',
-            'a_date'     => '2017-02-01',
+            'a_date'     => '2017-02-01T00:00:00+01:00',
             'enabled'    => 1,
         ]);
 
@@ -145,7 +150,7 @@ class VersionManagerIntegration extends TestCase
             ],
             'a_date' => [
                 'old' => '',
-                'new' => '2017-02-01',
+                'new' => '2017-02-01T00:00:00+01:00',
             ],
         ]);
     }
@@ -153,6 +158,7 @@ class VersionManagerIntegration extends TestCase
     public function testCreateProductVersionOnAttributeAndFieldDeletion()
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct('versioned-product');
+
         $updates = [
             'groups' => ['groupB'],
             'values' => [
@@ -188,7 +194,7 @@ class VersionManagerIntegration extends TestCase
         ]);
         $this->assertEquals($version->getChangeset(), [
             'a_date' => [
-                'old' => '2017-02-01',
+                'old' => '2017-02-01T00:00:00+01:00',
                 'new' => '',
             ],
         ]);
