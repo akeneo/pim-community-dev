@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
@@ -39,7 +40,8 @@ class CreateAssetFamilyHandler
             AssetFamilyIdentifier::fromString($createAssetFamilyCommand->identifier),
             $createAssetFamilyCommand->labels,
             Image::createEmpty(),
-            RuleTemplateCollection::createFromProductLinkRules($createAssetFamilyCommand->productLinkRules)
+            RuleTemplateCollection::createFromProductLinkRules($createAssetFamilyCommand->productLinkRules),
+            NamingConvention::createFromNormalized($createAssetFamilyCommand->namingConvention)
         );
 
         $this->assetFamilyRepository->create($assetFamily);

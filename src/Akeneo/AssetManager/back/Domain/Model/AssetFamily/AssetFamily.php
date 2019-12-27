@@ -75,7 +75,8 @@ class AssetFamily
         AssetFamilyIdentifier $identifier,
         array $rawLabelCollection,
         Image $image,
-        RuleTemplateCollection $ruleTemplateCollection
+        RuleTemplateCollection $ruleTemplateCollection,
+        NamingConventionInterface $namingConvention
     ): self {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
@@ -87,7 +88,7 @@ class AssetFamily
             AttributeAsMainMediaReference::noReference(),
             $ruleTemplateCollection,
             TransformationCollection::noTransformation(),
-            NamingConvention::createFromNormalized([])
+            $namingConvention
         );
     }
 
@@ -199,22 +200,13 @@ class AssetFamily
         );
     }
 
-    public function withNamingConvention(NamingConventionInterface $namingConvention): self
-    {
-        return new self(
-            $this->identifier,
-            $this->labelCollection,
-            $this->image,
-            $this->attributeAsLabel,
-            $this->attributeAsMainMedia,
-            $this->ruleTemplateCollection,
-            $this->transformationCollection,
-            $namingConvention
-        );
-    }
-
     public function getNamingConvention(): NamingConventionInterface
     {
         return $this->namingConvention;
+    }
+
+    public function updateNamingConvention(NamingConventionInterface $namingConvention): void
+    {
+        $this->namingConvention = $namingConvention;
     }
 }

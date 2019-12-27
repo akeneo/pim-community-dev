@@ -8,7 +8,6 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
@@ -318,7 +317,8 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
             null,
             null,
             [],
-            $normalizedTransformations
+            $normalizedTransformations,
+            null
         );
 
         $repository->getByIdentifier(Argument::type(AssetFamilyIdentifier::class))
@@ -353,6 +353,8 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $this->__invoke($editAssetFamilyCommand);
     }
 
+    // TODO Add test to update naming
+
     function it_does_not_edit_transformations_if_they_are_not_provided(
         AssetFamilyRepositoryInterface $repository,
         TransformationCollectionFactory $transformationCollectionFactory,
@@ -366,6 +368,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
             null,
             null,
             [],
+            null,
             null
         );
 
