@@ -14,9 +14,9 @@ default:
                 - 'vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/features'
             contexts:
                 - Akeneo\Connectivity\Connection\Tests\Acceptance\Context\ConnectionContext:
-                      - '@akeneo_app.persistence.repository.connection'
-                      - '@akeneo_app.application.handler.fetch_connections'
-                      - '@akeneo_app.application.handler.find_a_connection'
-                      - '@akeneo_app.application.handler.create_connection'
-                      - '@akeneo_app.application.handler.delete_connection'
-                      - '@akeneo_app.application.handler.update_connection'
+                      - '@akeneo_connectivity.connection.persistence.repository.connection'
+                      - '@akeneo_connectivity.connection.application.handler.fetch_connections'
+                      - '@akeneo_connectivity.connection.application.handler.find_a_connection'
+                      - '@akeneo_connectivity.connection.application.handler.create_connection'
+                      - '@akeneo_connectivity.connection.application.handler.delete_connection'
+                      - '@akeneo_connectivity.connection.application.handler.update_connection'

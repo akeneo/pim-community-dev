@@ -36,11 +36,11 @@
             <directory suffix="Integration.php">upgrades/test_schema</directory>
         </testsuite>
 
-        <testsuite name="Akeneo_Apps_Integration">
+        <testsuite name="Akeneo_Connectivity_Connection_Integration">
             <directory suffix="Integration.php">src/Akeneo/Connectivity/Connection/back/tests/Integration</directory>
         </testsuite>
 
-        <testsuite name="Akeneo_Apps_EndToEnd">
+        <testsuite name="Akeneo_Connectivity_Connection_EndToEnd">
             <directory suffix="EndToEnd.php">src/Akeneo/Connectivity/Connection/back/tests/EndToEnd</directory>
         </testsuite>
 

@@ -1,20 +1,20 @@
 services:
-    akeneo_app.persistence.query.select_connections:
+    akeneo_connectivity.connection.persistence.query.select_connections:
         class: 'Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectConnectionsQuery'
         arguments:
             - '@database_connection'
 
-    akeneo_app.persistence.query.select_connection_with_credentials_by_code:
+    akeneo_connectivity.connection.persistence.query.select_connection_with_credentials_by_code:
         class: 'Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectConnectionWithCredentialsByCodeQuery'
         arguments:
             - '@database_connection'
 
-    akeneo_app.persistence.query.select_connections_event_count_by_day:
+    akeneo_connectivity.connection.persistence.query.select_connections_event_count_by_day:
         class: 'Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectConnectionsEventCountByDayQuery'
         arguments:
             - '@database_connection'
 
-    akeneo_app.persistence.query.extract_connections_product_event_count:
+    akeneo_connectivity.connection.persistence.query.extract_connections_product_event_count:
         class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalExtractConnectionsProductEventCountQuery
         arguments:
             - '@database_connection'

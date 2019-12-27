@@ -2,22 +2,22 @@ services:
     ConnectionCommand:
         class: Akeneo\Connectivity\Connection\Infrastructure\Cli\ConnectionCommand
         arguments:
-            - '@akeneo_app.application.handler.create_connection'
-            - '@akeneo_app.application.handler.fetch_connections'
-            - '@akeneo_app.application.handler.regenerate_connection_secret'
+            - '@akeneo_connectivity.connection.application.handler.create_connection'
+            - '@akeneo_connectivity.connection.application.handler.fetch_connections'
+            - '@akeneo_connectivity.connection.application.handler.regenerate_connection_secret'
         tags:
             - { name: 'console.command' }
 
     DeleteConnectionCommand:
         class: Akeneo\Connectivity\Connection\Infrastructure\Cli\DeleteConnectionCommand
         arguments:
-            - '@akeneo_app.application.handler.delete_connection'
+            - '@akeneo_connectivity.connection.application.handler.delete_connection'
         tags:
             - { name: 'console.command' }
 
     Akeneo\Connectivity\Connection\Infrastructure\Cli\UpdateAuditDataCommand:
         class: Akeneo\Connectivity\Connection\Infrastructure\Cli\UpdateAuditDataCommand
         arguments:
-            - '@akeneo_app.application.audit.handler.update_product_event_count'
+            - '@akeneo_connectivity.connection.application.audit.handler.update_product_event_count'
         tags:
             - { name: 'console.command' }

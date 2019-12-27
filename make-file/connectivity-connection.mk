@@ -52,54 +52,54 @@
 # Make sure the tests run by the targets defined here does not run by the main targets too
 #
 
-_APPS_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Connectivity/Connection/front/
+_CONNECTIVITY_CONNECTION_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Connectivity/Connection/front/
 
 # Tests Back
 
-apps-coupling-back:
+connectivity-connection-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Connectivity/Connection/back/tests/.php_cd.php src/Akeneo/Connectivity/Connection/back
 
-apps-unit-back:
+connectivity-connection-unit-back:
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
 
-apps-acceptance-back: var/tests/behat/apps
-	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --format pim --out var/tests/behat/apps --format progress --out std --colors
+connectivity-connection-acceptance-back: var/tests/behat/connectivity/connection
+	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors
 
-apps-integration-back:
+connectivity-connection-integration-back:
 ifeq ($(CI),true)
-	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Apps_Integration
+	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Connectivity_Connection_Integration
 else
-	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Apps_Integration $(O)
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_Integration $(O)
 endif
 
-apps-e2e-back:
+connectivity-connection-e2e-back:
 ifeq ($(CI),true)
-	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Apps_EndToEnd
+	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Connectivity_Connection_EndToEnd
 else
-	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Apps_EndToEnd $(O)
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_EndToEnd $(O)
 endif
 
-apps-back:
-	make apps-coupling-back
-	make apps-unit-back
-	make apps-acceptance-back
-	make apps-integration-back
-	make apps-e2e-back
+connectivity-connection-back:
+	make connectivity-connection-coupling-back
+	make connectivity-connection-unit-back
+	make connectivity-connection-acceptance-back
+	make connectivity-connection-integration-back
+	make connectivity-connection-e2e-back
 
 # Tests Front
 
-apps-unit-front:
-	$(_APPS_YARN_RUN) jest
+connectivity-connection-unit-front:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest
 
-apps-lint-front:
-	$(_APPS_YARN_RUN) eslint
-	$(_APPS_YARN_RUN) prettier --check
+connectivity-connection-lint-front:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) prettier --check
 
 # Development
 
-apps-unit-front_watch:
-	$(_APPS_YARN_RUN) jest --watchAll --coverage
+connectivity-connection-unit-front_watch:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --watchAll --coverage
 
-apps-lint-front_fix:
-	$(_APPS_YARN_RUN) eslint --fix
-	$(_APPS_YARN_RUN) prettier --write
+connectivity-connection-lint-front_fix:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint --fix
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) prettier --write

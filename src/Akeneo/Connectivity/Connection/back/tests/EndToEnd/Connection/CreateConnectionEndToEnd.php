@@ -22,7 +22,7 @@ class CreateConnectionEndToEnd extends TestCase
     public function test_it_creates_the_connection_and_client_and_user()
     {
         $createConnectionCommand = new CreateConnectionCommand('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
-        $connectionWithCredentials = $this->get('akeneo_app.application.handler.create_connection')->handle($createConnectionCommand);
+        $connectionWithCredentials = $this->get('akeneo_connectivity.connection.application.handler.create_connection')->handle($createConnectionCommand);
 
         $this->get('doctrine.orm.entity_manager')->clear();
 
