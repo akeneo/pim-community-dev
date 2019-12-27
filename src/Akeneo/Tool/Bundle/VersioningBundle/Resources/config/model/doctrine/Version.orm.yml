@@ -7,17 +7,12 @@ Akeneo\Tool\Component\Versioning\Model\Version:
             columns:
                 - resource_name
                 - resource_id
-        resource_name_idx:
-            columns:
-                - resource_name
         pending_idx:
             columns:
                 - pending
-        version_idx:
+        resource_name_logged_at_idx:
             columns:
-                - version
-        logged_at_idx:
-            columns:
+                - resource_name
                 - logged_at
     fields:
         id:
