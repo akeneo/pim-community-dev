@@ -15,8 +15,6 @@ pimee_product_asset:
         download: Baixar
         remove: Remover
         upload: Enviar
-        yes: true
-        no: false
         assetRemoveConfirmationLabel: Tem certeza que deseja remover esta mídia?
     asset:
       not_empty: Código é necessário. Não pode estar vazio.

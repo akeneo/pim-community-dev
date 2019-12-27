@@ -15,8 +15,6 @@ pimee_product_asset:
         download: Descargar
         remove: Eliminar
         upload: Cargar
-        yes: true
-        no: false
         assetRemoveConfirmationLabel: '¿Está seguro de remover este recurso?'
     asset:
       not_empty: Código requerido. No puede estar vacío.
