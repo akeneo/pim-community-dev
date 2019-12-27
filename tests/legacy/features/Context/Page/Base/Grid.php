@@ -705,17 +705,6 @@ class Grid extends Index
     }
 
     /**
-     * Expand filter
-     *
-     * @param string $filterName
-     */
-    public function expandFilter($filterName)
-    {
-        $filter = $this->getFilter($filterName);
-        $filter->expand();
-    }
-
-    /**
      * Click on the reset button of the datagrid toolbar
      */
     public function clickOnResetButton()
@@ -730,20 +719,6 @@ class Grid extends Index
         }, 'Reset button not found');
 
         $resetBtn->click();
-    }
-
-    /**
-     * Click on the refresh button of the datagrid toolbar
-     */
-    public function clickOnRefreshButton()
-    {
-        $refreshBtn = $this->spin(function () {
-            return $this
-                ->getElement('Grid toolbar')
-                ->find('css', sprintf('a:contains("%s")', 'Refresh'));
-        }, 'Refresh button not found');
-
-        $refreshBtn->click();
     }
 
     /**
