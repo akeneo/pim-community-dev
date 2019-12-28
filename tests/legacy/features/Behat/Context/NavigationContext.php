@@ -12,6 +12,11 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class NavigationContext extends PimContext implements PageObjectAware
 {
@@ -100,12 +105,42 @@ class NavigationContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * @param string      $username
-     * @param string|null $password
+     * This function injects the cookie directly, to avoid to test the connection in every tests of the UI.
+     * It's faster this way.
      *
-     * @Given /^I am logged in as "([^"]*)"( with password (?P<password>[^"]*))?$/
+     * @param string      $username
+     *
+     * @Given /^I am logged in as "([^"]*)"$/
      */
-    public function iAmLoggedInAs($username, ?string $password = null)
+    public function iAmLoggedInAs(string $username)
+    {
+        $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
+        $this->getSession()->visit($this->locatePath('/user/logout'));
+
+        $session = $this->getService('session');
+
+        $user = $this
+            ->getService('pim_user.repository.user')
+            ->findOneBy(['username' => $username]);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $session->set('_security_main', serialize($token));
+
+        $this->getSession()->setCookie($session->getName(), $session->getId());
+
+        $request = new Request();
+        $request->setSession($session);
+
+        // it allows to set the locale in the session
+        $event = new InteractiveLoginEvent($request, $token);
+        $this->getMainContext()->getContainer()->get('event_dispatcher')->dispatch("security.interactive_login", $event);
+        $session->save();
+    }
+
+    /**
+     * @Given /^I am logged in through the UI as "([^"]*)"$/
+     */
+    public function iAmLoggedInThroughTheUi(string $username)
     {
         $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
 
@@ -115,11 +150,9 @@ class NavigationContext extends PimContext implements PageObjectAware
             return $this->getSession()->getPage()->find('css', '.AknLogin-title');
         }, 'Cannot open the login page');
 
-        $password = null !== $password ? $password : $username;
-
-        $this->spin(function () use ($username, $password) {
+        $this->spin(function () use ($username) {
             $this->getSession()->getPage()->fillField('_username', $username);
-            $this->getSession()->getPage()->fillField('_password', $password);
+            $this->getSession()->getPage()->fillField('_password', $username);
             $signInButton = $this->getSession()->getPage()->find('css', '.form-signin button');
             $signInButton->press();
 
