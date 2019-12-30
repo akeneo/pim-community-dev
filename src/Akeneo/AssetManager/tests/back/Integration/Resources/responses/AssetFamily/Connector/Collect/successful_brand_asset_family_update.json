@@ -78,7 +78,12 @@
           "filename_prefix": "1_",
           "filename_suffix": "_2"
         }
-      ]
+      ],
+      "naming_convention": {
+        "source": {"property":  "title", "locale": "en_US", "channel": null},
+        "pattern": "/the_pattern/",
+        "strict": true
+      }
     }
   },
   "response": {
