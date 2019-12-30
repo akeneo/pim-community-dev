@@ -13,10 +13,16 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Acceptance\Context;
 
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -33,19 +39,70 @@ class EditAssetFamilyNamingConventionContext implements Context
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
 
+    /** @var InMemoryFindActivatedLocalesByIdentifiers */
+    private $activatedLocales;
+
+    /** @var CreateAssetFamilyHandler */
+    private $createAssetFamilyHandler;
+
     /** @var ValidatorInterface */
     private $validator;
+
+    /** @var CreateAttributeHandler */
+    private $createAttributeHandler;
 
     public function __construct(
         EditAssetFamilyHandler $editAssetFamilyHandler,
         ConstraintViolationsContext $constraintViolationsContext,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
-        ValidatorInterface $validator
+        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
+        CreateAssetFamilyHandler $createAssetFamilyHandler,
+        ValidatorInterface $validator,
+        CreateAttributeHandler $createAttributeHandler
     ) {
         $this->editAssetFamilyHandler = $editAssetFamilyHandler;
         $this->constraintViolationsContext = $constraintViolationsContext;
         $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->activatedLocales = $activatedLocales;
+        $this->createAssetFamilyHandler = $createAssetFamilyHandler;
         $this->validator = $validator;
+        $this->createAttributeHandler = $createAttributeHandler;
+    }
+
+    /**
+     * @Given /^an asset family with a naming convention$/
+     */
+    public function anAssetFamilyWithANamingConvention()
+    {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
+        $createCommand = new CreateAssetFamilyCommand(
+            'designer',
+            [
+                'en_US' => 'Designer',
+                'fr_FR' => 'Concepteur'
+            ],
+            [],
+            null,
+            [
+                'source' => [
+                    'property' => 'code',
+                    'channel' => null,
+                    'locale' => null
+                ],
+                'pattern' => '/valid_pattern/',
+                'strict' => true
+            ]
+        );
+
+        $violations = $this->validator->validate($createCommand);
+        if ($violations->count() > 0) {
+            throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
+        }
+
+        ($this->createAssetFamilyHandler)($createCommand);
+        $this->createTextAttribute('designer', 'title', false, false);
     }
 
     /**
@@ -58,6 +115,143 @@ class EditAssetFamilyNamingConventionContext implements Context
             'pattern' => '/valid_pattern/',
             'strict' => true
         ]);
+    }
+
+    /**
+     * @When the user edits the family without naming convention
+     */
+    public function theUserEditsTheFamilyWithoutNamingConvention(): void
+    {
+        $this->editNamingConventionForAssetFamily('designer', null);
+    }
+
+    /**
+     * @When the user edits the family naming convention with an invalid property
+     */
+    public function theUserEditsTheFamilyNamingConventionWithAnInvalidProperty(): void
+    {
+        $this->editNamingConventionForAssetFamily('designer', [
+            'source' => ['property' => 'invalid_property', 'channel' => null, 'locale' => null],
+            'pattern' => '/valid_pattern/',
+            'strict' => true
+        ]);
+    }
+
+    /**
+     * @When the user edits the family naming convention with an empty source
+     */
+    public function theUserEditsTheFamilyNamingConventionWithAnEmptySource(): void
+    {
+        $this->editNamingConventionForAssetFamily('designer', [
+            'pattern' => '/valid_pattern/',
+            'strict' => true
+        ]);
+    }
+
+    /**
+     * @When the user edits the family naming convention with a localizable source
+     */
+    public function theUserEditsTheFamilyNamingConventionWithALocalizableSource(): void
+    {
+        $this->editNamingConventionForAssetFamily('designer', [
+            'source' => ['property' => 'title', 'channel' => null, 'locale' => 'en_US'],
+            'pattern' => '/valid_pattern/',
+            'strict' => true
+        ]);
+    }
+
+    /**
+     * @When the user edits the family naming convention without pattern
+     */
+    public function theUserEditsTheFamilyNamingConventionWithoutPattern(): void
+    {
+        $this->editNamingConventionForAssetFamily('designer', [
+            'source' => ['property' => 'code', 'channel' => null, 'locale' => null],
+            'strict' => true
+        ]);
+    }
+
+    /**
+     * @When the user edits the family naming convention with invalid pattern
+     */
+    public function theUserEditsTheFamilyNamingConventionWithInvalidPattern(): void
+    {
+        $this->editNamingConventionForAssetFamily('designer', [
+            'source' => ['property' => 'code', 'channel' => null, 'locale' => null],
+            'pattern' => '/invalid)',
+            'strict' => true
+        ]);
+    }
+
+    /**
+     * @When the user edits the family naming convention without strict
+     */
+    public function theUserEditsTheFamilyNamingConventionWithoutStrict(): void
+    {
+        $this->editNamingConventionForAssetFamily('designer', [
+            'source' => ['property' => 'code', 'channel' => null, 'locale' => null],
+            'pattern' => '/valid_pattern/',
+        ]);
+    }
+
+    /**
+     * @Then there should be a validation error stating that the property is not found
+     */
+    public function thereShouldBeAValidationErrorStatingThatAnAttributeIsNotFound()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            'The property "invalid_property" does not exist for this asset family'
+        );
+    }
+
+    /**
+     * @Then there should be a validation error stating that the source must be defined
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheSourceMustBeDefined()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            'This field is missing.'
+        );
+    }
+
+    /**
+     * @Then there should be a validation error stating that the source must not be localizable
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheSourceMustNotBeLocalizable()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            'Attribute "title" is not localizable, you cannot define a locale'
+        );
+    }
+
+    /**
+     * @Then there should be a validation error stating that the pattern must be defined
+     */
+    public function thereShouldBeAValidationErrorStatingThatThePatternMustBeDefined()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            'This field is missing.'
+        );
+    }
+
+    /**
+     * @Then there should be a validation error stating that the pattern is not valid
+     */
+    public function thereShouldBeAValidationErrorStatingThatThePatternIsNotValid()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            'The regular expression "/invalid)" is malformed.'
+        );
+    }
+
+    /**
+     * @Then there should be a validation error stating that the strict must be defined
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheStrictMustBeDefined()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            'This field is missing.'
+        );
     }
 
     /**
@@ -83,7 +277,7 @@ class EditAssetFamilyNamingConventionContext implements Context
         return $assetFamily;
     }
 
-    private function editNamingConventionForAssetFamily(string $familyIdentifier, array $namingConvention): void
+    private function editNamingConventionForAssetFamily(string $familyIdentifier, ?array $namingConvention): void
     {
         $command = new EditAssetFamilyCommand(
             $familyIdentifier,
@@ -103,5 +297,27 @@ class EditAssetFamilyNamingConventionContext implements Context
         if (!$this->constraintViolationsContext->hasViolations()) {
             ($this->editAssetFamilyHandler)($editCommand);
         }
+    }
+
+    private function createTextAttribute(string $familyIdentifier, string $attributeCode, bool $scopable, bool $localizable): void
+    {
+        $createCommand = new CreateTextAttributeCommand(
+            $familyIdentifier,
+            $attributeCode,
+            [],
+            false,
+            $scopable,
+            $localizable,
+            null,
+            false,
+            false,
+            'none',
+            null
+        );
+        $violations = $this->validator->validate($createCommand);
+        if ($violations->count() > 0) {
+            throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
+        }
+        ($this->createAttributeHandler)($createCommand);
     }
 }
