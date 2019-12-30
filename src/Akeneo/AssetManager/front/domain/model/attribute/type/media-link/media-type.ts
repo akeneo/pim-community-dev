@@ -1,9 +1,6 @@
 export type NormalizedMediaType = string;
 export type MediaType = 'image' | 'pdf' | 'youtube' | 'other';
 
-export const YOUTUBE_WATCH_URL = 'https://youtube.com/watch?v=';
-export const YOUTUBE_EMBED_URL = 'https://youtube.com/embed/';
-
 export enum MediaTypes {
   image = 'image',
   pdf = 'pdf',

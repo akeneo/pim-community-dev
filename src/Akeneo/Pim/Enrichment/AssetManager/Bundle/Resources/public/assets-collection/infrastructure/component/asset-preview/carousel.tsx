@@ -1,14 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {Asset} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import __ from 'akeneoassetmanager/tools/translator';
 import {Attribute, getAttributeLabel} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
-import {getAssetPreview, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
 import {ResultCounter} from 'akeneopimenrichmentassetmanager/platform/component/common/result-counter';
+import ListAsset, {getListAssetMainMediaThumbnail} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 
 const AssetThumbnail = styled.img<{highlighted: boolean}>`
   border: 2px solid
@@ -35,7 +35,7 @@ const Title = styled.div`
 `;
 
 type CarouselProps = {
-  assetCollection: Asset[];
+  assetCollection: ListAsset[];
   selectedAssetCode: AssetCode;
   productAttribute: Attribute;
   context: Context;
@@ -61,7 +61,7 @@ export const Carousel = ({
           data-role={`carousel-thumbnail-${asset.code}`}
           key={asset.code}
           highlighted={selectedAssetCode === asset.code}
-          src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail, context)}
+          src={getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale))}
           onClick={() => onAssetChange(asset.code)}
         />
       ))}

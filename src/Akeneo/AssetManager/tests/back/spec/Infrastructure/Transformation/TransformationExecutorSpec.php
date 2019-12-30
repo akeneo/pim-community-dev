@@ -8,21 +8,24 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFile
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
-use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
+use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationException;
+use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationFailedException;
 use Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader;
 use Akeneo\AssetManager\Infrastructure\Transformation\FileTransformer;
+use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 
 class TransformationExecutorSpec extends ObjectBehavior
@@ -52,17 +55,13 @@ class TransformationExecutorSpec extends ObjectBehavior
         FileStorerInterface $fileStorer,
         AttributeRepositoryInterface $attributeRepository,
         Transformation $transformation,
-        Operation $operation,
         FileData $sourceFileData,
         FileInfoInterface $storedFile,
-        File $transformedFile,
         MediaFileAttribute $thumbnailAttribute
     ) {
         $sourceFileData->getKey()->willReturn('1/2/3/source_file_key');
         $sourceFileData->getOriginalFilename()->willReturn('jambon.png');
 
-        $operations = OperationCollection::create([$operation->getWrappedObject()]);
-        $transformation->getOperationCollection()->willReturn($operations);
         $transformation->getTarget()->willReturn(
             Target::createFromNormalized(
                 [
@@ -72,7 +71,6 @@ class TransformationExecutorSpec extends ObjectBehavior
                 ]
             )
         );
-        $transformation->getTargetFilename('jambon.png')->willReturn('jambon_thumbnail.png');
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('packshot');
         $attributeRepository->getByCodeAndAssetFamilyIdentifier(
@@ -80,13 +78,11 @@ class TransformationExecutorSpec extends ObjectBehavior
             $assetFamilyIdentifier
         )->willReturn($thumbnailAttribute);
 
-        $sourceFile = new File('path/to/jambon.png', false);
-        $fileDownloader->get('1/2/3/source_file_key')->willReturn($sourceFile);
+        $sourceFile = new File('/job/source/dir/jambon.png', false);
+        $fileDownloader->get('1/2/3/source_file_key', '/job/source/dir', 'jambon.png')->willReturn($sourceFile);
 
-        $transformedFile->beConstructedWith(['path/to/jambon_transformed.png', false]);
-        $transformedFile->getPath()->willReturn('path/to/');
-        $fileTransformer->transform($sourceFile, $operations)->willReturn($transformedFile);
-        $transformedFile->move('path/to/', 'jambon_thumbnail.png')->shouldBeCalled()->willReturn($transformedFile);
+        $transformedFile = new File('/job/source/dir/jambon_transformed.png', false);
+        $fileTransformer->transform($sourceFile, $transformation)->willReturn($transformedFile);
 
         $storedFile->getKey()->willReturn('7/5/2/stored_file_key');
         $storedFile->getOriginalFilename()->willReturn('jambon_thumbnail.png');
@@ -95,7 +91,7 @@ class TransformationExecutorSpec extends ObjectBehavior
         $storedFile->getExtension()->willReturn('png');
         $fileStorer->store($transformedFile, Storage::FILE_STORAGE_ALIAS, true)->willReturn($storedFile);
 
-        $command = $this->execute($sourceFileData, $assetFamilyIdentifier, $transformation);
+        $command = $this->execute($sourceFileData, $assetFamilyIdentifier, $transformation, '/job/source/dir');
 
         $command->shouldBeAnInstanceOf(EditMediaFileTargetValueCommand::class);
         $command->updatedAt = null;

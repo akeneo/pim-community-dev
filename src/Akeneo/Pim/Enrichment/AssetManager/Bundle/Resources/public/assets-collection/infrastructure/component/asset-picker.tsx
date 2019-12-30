@@ -2,11 +2,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {Button} from 'akeneoassetmanager/application/component/app/button';
 import __ from 'akeneoassetmanager/tools/translator';
-import {
-  Asset,
-  canAddAssetToCollection,
-  addAssetsToCollection,
-} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import FilterCollection from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/filter-collection';
@@ -34,10 +29,11 @@ import {OptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribu
 import {AssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
 import {AssetCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset-collection';
 import {Modal, Header, Title, SubTitle, ConfirmButton} from 'akeneoassetmanager/application/component/app/modal';
-import {
-  fetchAssetCollection,
-  searchAssetCollection,
-} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset';
+import ListAsset, {
+  canAddAssetToCollection,
+  addAssetsToCollection,
+} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -131,10 +127,10 @@ const createQuery = (
 const dataProvider = {
   assetFetcher: {
     fetchByCode: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCodeCollection: AssetCode[], context: Context) => {
-      return fetchAssetCollection(assetFamilyIdentifier, assetCodeCollection, context);
+      return assetFetcher.fetchByCodes(assetFamilyIdentifier, assetCodeCollection, context);
     },
-    search: (assetFamilyIdentifier: AssetFamilyIdentifier, query: Query) => {
-      return searchAssetCollection(assetFamilyIdentifier, query);
+    search: (query: Query) => {
+      return assetFetcher.search(query);
     },
   },
   channelFetcher: {
@@ -159,7 +155,7 @@ const useFetchResult = (
   searchValue: string,
   excludedAssetCollection: AssetCode[],
   context: Context,
-  setResultCollection: (resultCollection: Asset[]) => void,
+  setResultCollection: (resultCollection: ListAsset[]) => void,
   setResultCount: (count: number) => void
 ) => {
   React.useEffect(() => {
@@ -179,24 +175,23 @@ const useFetchResult = (
     );
     totalRequestCount++;
 
-    dataProvider.assetFetcher.search(assetFamilyIdentifier, query).then((searchResult: any) => {
+    dataProvider.assetFetcher.search(query).then((searchResult: any) => {
       const currentRequestCount = totalRequestCount;
       setResultCollection(searchResult.items);
       setResultCount(searchResult.matchesCount);
 
       if (searchResult.matchesCount > FIRST_PAGE_SIZE) {
-        fetchMoreResult(currentRequestCount)(assetFamilyIdentifier, query, setResultCollection);
+        fetchMoreResult(currentRequestCount)(query, setResultCollection);
       }
     });
   }, [filters, searchValue, context, excludedAssetCollection, isOpen]);
 };
 
 const fetchMoreResult = (currentRequestCount: number) => (
-  assetFamilyIdentifier: AssetFamilyIdentifier,
   query: Query,
-  setResultCollection: (resultCollection: Asset[]) => void
+  setResultCollection: (resultCollection: ListAsset[]) => void
 ) => {
-  dataProvider.assetFetcher.search(assetFamilyIdentifier, {...query, size: MAX_RESULT}).then((searchResult: any) => {
+  dataProvider.assetFetcher.search({...query, size: MAX_RESULT}).then((searchResult: any) => {
     if (currentRequestCount === totalRequestCount) {
       setResultCollection(searchResult.items);
     }
@@ -232,7 +227,7 @@ export const AssetPicker = ({
   const [selection, setSelection] = React.useState<AssetCode[]>([]);
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [resultCount, setResultCount] = React.useState<number | null>(null);
-  const [resultCollection, setResultCollection] = React.useState<Asset[]>([]);
+  const [resultCollection, setResultCollection] = React.useState<ListAsset[]>([]);
   const [context, setContext] = React.useState<Context>(initialContext);
 
   const resetModal = () => {

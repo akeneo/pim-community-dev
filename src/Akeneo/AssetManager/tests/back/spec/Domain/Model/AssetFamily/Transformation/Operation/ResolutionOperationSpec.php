@@ -55,29 +55,27 @@ class ResolutionOperationSpec extends ObjectBehavior
         $this->getResolutionUnit()->shouldBe('ppi');
     }
 
-    function it_can_be_constructed_without_resolution_x()
+    function it_cannot_be_constructed_without_resolution_x()
     {
         $this->beConstructedThrough('create', [[
             'resolution-y' => 100,
             'resolution-unit' => 'ppi',
         ]]);
-        $this->getResolutionX()->shouldBe(null);
-        $this->getResolutionY()->shouldBe(100);
-        $this->getResolutionUnit()->shouldBe('ppi');
+        $this->shouldThrow(new \LogicException("The parameters 'resolution-x', 'resolution-y' and 'resolution-unit' are required for the resolution operation."))
+            ->duringInstantiation();
     }
 
-    function it_can_be_constructed_without_resolution_y()
+    function it_cannot_be_constructed_without_resolution_y()
     {
         $this->beConstructedThrough('create', [[
             'resolution-x' => 200,
             'resolution-unit' => 'ppc',
         ]]);
-        $this->getResolutionX()->shouldBe(200);
-        $this->getResolutionY()->shouldBe(null);
-        $this->getResolutionUnit()->shouldBe('ppc');
+        $this->shouldThrow(new \LogicException("The parameters 'resolution-x', 'resolution-y' and 'resolution-unit' are required for the resolution operation."))
+            ->duringInstantiation();
     }
 
-    function it_can_not_be_constructed_with_non_ppc_or_ppi_resolution_unit()
+    function it_cannot_be_constructed_with_non_ppc_or_ppi_resolution_unit()
     {
         $this->beConstructedThrough('create', [[
             'resolution-x' => 200,
@@ -88,7 +86,7 @@ class ResolutionOperationSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    function it_can_not_be_constructed_with_resolution_x_equal_to_zero()
+    function it_cannot_be_constructed_with_resolution_x_equal_to_zero()
     {
         $this->beConstructedThrough('create', [[
             'resolution-x' => 0,
@@ -110,26 +108,36 @@ class ResolutionOperationSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    function it_can_not_be_constructed_with_null_resolution_x_and_null_resolution_y()
+    function it_cannot_be_constructed_with_null_resolution_x_and_null_resolution_y()
     {
         $this->beConstructedThrough('create', [[
             'resolution-x' => null,
+            'resolution-y' => 10,
+            'resolution-unit' => 'ppi',
+        ]]);
+        $this->shouldThrow(new \LogicException("Parameter 'resolution-x' must be an integer."))
+            ->duringInstantiation();
+
+        $this->beConstructedThrough('create', [[
+            'resolution-x' => 10,
             'resolution-y' => null,
             'resolution-unit' => 'ppi',
         ]]);
-        $this->shouldThrow(new \LogicException('One resolution value must be provided.'))->duringInstantiation();
+        $this->shouldThrow(new \LogicException("Parameter 'resolution-y' must be an integer."))
+            ->duringInstantiation();
     }
 
-    function it_can_not_be_constructed_without_mandatory_keys()
+    function it_cannot_be_constructed_without_resolution_unit()
     {
         $this->beConstructedThrough('create', [[
-            'resolution-x' => null,
-            'resolution-y' => null,
+            'resolution-x' => 10,
+            'resolution-y' => 20,
         ]]);
-        $this->shouldThrow(new \LogicException("Key 'resolution-unit' must exist in parameters."))->duringInstantiation();
+        $this->shouldThrow(new \LogicException("The parameters 'resolution-x', 'resolution-y' and 'resolution-unit' are required for the resolution operation."))
+            ->duringInstantiation();
     }
 
-    function it_can_not_be_constructed_without_valid_parameter_types()
+    function it_cannot_be_constructed_without_valid_parameter_types()
     {
         $this->beConstructedThrough('create', [[
             'resolution-x' => 'test',
@@ -151,5 +159,17 @@ class ResolutionOperationSpec extends ObjectBehavior
             'resolution-unit' => 12,
         ]]);
         $this->shouldThrow(new \LogicException("Parameter 'resolution-unit' must be a string."))->duringInstantiation();
+    }
+
+    function it_cannot_be_constructed_with_unknown_parameter()
+    {
+        $this->beConstructedThrough('create', [[
+            'resolution-x' => 100,
+            'resolution-y' => 100,
+            'resolution-unit' => 'ppi',
+            'foo' => 'bar',
+        ]]);
+        $this->shouldThrow(new \InvalidArgumentException('The property "foo" is not defined and the definition does not allow additional properties.'))
+            ->duringInstantiation();
     }
 }

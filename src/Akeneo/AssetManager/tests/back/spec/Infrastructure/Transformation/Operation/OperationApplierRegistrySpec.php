@@ -3,6 +3,7 @@
 namespace spec\Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
+use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationException;
 use Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplier;
 use Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplierRegistry;
 use PhpSpec\ObjectBehavior;
@@ -35,13 +36,17 @@ class OperationApplierRegistrySpec extends ObjectBehavior
 
     function it_throws_an_exception_when_operation_applier_cannot_be_found(
         OperationApplier $colorspaceApplier,
-        OperationApplier $thumbnailApplier,
-        Operation $operation
+        OperationApplier $thumbnailApplier
     ) {
+        $operation = Operation\ResizeOperation::create([
+            'width' => 600,
+            'height' => 480,
+        ]);
+
         $this->beConstructedWith([$colorspaceApplier, $thumbnailApplier]);
         $colorspaceApplier->supports($operation)->willReturn(false);
         $thumbnailApplier->supports($operation)->willReturn(false);
 
-        $this->shouldThrow(\RuntimeException::class)->during('getApplier', [$operation]);
+        $this->shouldThrow(TransformationException::class)->during('getApplier', [$operation]);
     }
 }

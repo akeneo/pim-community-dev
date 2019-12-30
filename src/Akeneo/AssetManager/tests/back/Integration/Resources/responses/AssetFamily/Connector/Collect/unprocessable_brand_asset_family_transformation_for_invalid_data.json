@@ -57,7 +57,7 @@
                         },
                         {
                             "type": "thumbnail",
-                            "parameters": {"foo" : "bar"}
+                            "parameters": {}
                         },
                         {
                             "type": "scale"
@@ -100,13 +100,13 @@
                 {
                     "label": "thumbnail3",
                     "source": {"attribute": "main_image", "channel": null, "locale": null},
-                    "target": {"attribute": "test_scopable_localizable", "channel": "ecommerce", "locale": "en_US"},
+                    "target": {"attribute": "title", "channel": null, "locale": null},
                     "operations": [{"type": "thumbnail", "parameters": {"width": 100, "height": 80}}],
                     "filename_suffix": "_3"
                 },
                 {
                     "label": "thumbnail4",
-                    "source": {"attribute": "main_image", "channel": null, "locale": null},
+                    "source": {"attribute": "sub_title", "channel": null, "locale": null},
                     "target": {"attribute": "test_scopable_localizable", "channel": "ecommerce", "locale": "fr_FR"},
                     "operations": [{"type": "thumbnail", "parameters": {"width": 100, "height": 80}}],
                     "filename_suffix": "_4"
@@ -115,7 +115,7 @@
                     "label": "thumbnail5",
                     "source": {"attribute": "main_image", "channel": null, "locale": null},
                     "target": {"attribute": "test_scopable_localizable", "channel": "ecommerce", "locale": "de_DE"},
-                    "operations": [{"type": "thumbnail", "parameters": {"width": 100, "height": 80}}],
+                    "operations": [],
                     "filename_suffix": "_5"
                 },
                 {
@@ -150,8 +150,7 @@
                     "label": "thumbnail10",
                     "source": {"attribute": "test_scopable_localizable", "channel": "other", "locale": "en_US"},
                     "target": {"attribute": "test_scopable_localizable", "channel": "other", "locale": "fr_FR"},
-                    "operations": [{"type": "thumbnail", "parameters": {"width": 100, "height": 80}}],
-                    "filename_suffix": "_10"
+                    "operations": [{"type": "thumbnail", "parameters": {"width": 100, "height": 80}, "foo":  "bar"}]
                 }
             ]
         }
@@ -163,11 +162,11 @@
             "message": "The asset family has data that does not comply with the business rules.",
             "errors": [
                 {
-                    "property": "transformations[0][target].target",
+                    "property": "transformations[0][target]",
                     "message": "The attribute \"unknown\" does not exist for this asset family"
                 },
                 {
-                    "property": "transformations[1][source].source",
+                    "property": "transformations[1][source]",
                     "message": "Attribute \"main_image\" is not scopable, you cannot define a channel"
                 },
                 {
@@ -176,11 +175,11 @@
                 },
                 {
                     "property": "transformations[1][operations][1]",
-                    "message": "No parameter is provided for \"thumbnail\" operation. At least one of parameter \"width\" and \"height\" must be defined."
+                    "message": "No parameter is provided for 'thumbnail' operation. At least one of parameter 'width' and 'height' must be defined."
                 },
                 {
                     "property": "transformations[1][operations][2]",
-                    "message": "No parameter is provided for \"scale\" operation. At least one of parameter \"width\", \"height\" and \"ratio\" must be defined."
+                    "message": "No parameter is provided for 'scale' operation. At least one of parameter 'width', 'height' and 'ratio' must be defined."
                 },
                 {
                     "property": "transformations[1][filename_prefix]",
@@ -189,6 +188,30 @@
                 {
                     "property": "transformations[2][operations]",
                     "message": "The operation \"thumbnail\" cannot be defined twice in a single transformation"
+                },
+                {
+                    "property": "transformations[3][target]",
+                    "message": "The target attribute should be of type media file."
+                },
+                {
+                    "property": "transformations[4][source]",
+                    "message": "The source attribute should be of type media file."
+                },
+                {
+                    "property": "transformations[5][operations]",
+                    "message": "At least one transformation operation is required."
+                },
+                {
+                    "property": "transformations[10][operations][0][foo]",
+                    "message": "The property \"foo\" is not defined and the definition does not allow additional properties."
+                },
+                {
+                    "property": "transformations[10]",
+                    "message": "You should have at least either the properties filename_prefix or filename_suffix and one of them should not be empty strings."
+                },
+                {
+                    "property": "transformations",
+                    "message": "Two transformations cannot have the same target."
                 },
                 {
                     "property": "transformations",

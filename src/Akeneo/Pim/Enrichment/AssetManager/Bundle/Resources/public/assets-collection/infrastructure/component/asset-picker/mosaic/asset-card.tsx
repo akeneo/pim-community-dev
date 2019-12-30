@@ -1,9 +1,4 @@
 import * as React from 'react';
-import {
-  Asset,
-  getAssetLabel,
-  assetHasCompleteness,
-} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import styled from 'styled-components';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
@@ -11,7 +6,8 @@ import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reduc
 import Checkbox from 'akeneopimenrichmentassetmanager/platform/component/common/checkbox';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import CompletenessBadge from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/completeness-badge';
-import {MediaPreviewTypes, getAssetPreview} from 'akeneoassetmanager/tools/media-url-generator';
+import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import ListAsset, {assetHasCompleteness, getAssetLabel, getListAssetMainMediaThumbnail} from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 type ContainerProps = {isDisabled: boolean};
 const Container = styled.div<ContainerProps>`
@@ -63,7 +59,7 @@ const AssetCard = ({
   onSelectionChange,
   isDisabled,
 }: {
-  asset: Asset;
+  asset: ListAsset;
   context: Context;
   isSelected: boolean;
   isDisabled: boolean;
@@ -73,7 +69,7 @@ const AssetCard = ({
     <Container data-asset={asset.code} data-selected={isSelected} isDisabled={isDisabled}>
       <ImageContainer>
         <Thumbnail
-          src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail, context)}
+          src={getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale))}
           isSelected={isSelected}
           onClick={() => (!isDisabled ? onSelectionChange(asset.code, !isSelected) : null)}
         />

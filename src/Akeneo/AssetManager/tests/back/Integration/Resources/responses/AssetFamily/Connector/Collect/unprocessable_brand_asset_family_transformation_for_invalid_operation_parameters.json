@@ -1,0 +1,107 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_asset_manager_asset_family_rest_connector_create_or_update",
+        "query": {
+            "assetFamilyIdentifier": "brand"
+        },
+        "body": {
+            "code": "brand",
+            "labels": {
+                "en_US": "Label for an activated locale"
+            },
+            "product_link_rules": [],
+            "transformations": [
+                {
+                    "label": "thumbnail_100x80",
+                    "source": {
+                        "attribute": "main_image",
+                        "channel": null,
+                        "locale": null
+                    },
+                    "target": {
+                        "attribute": "thumbnail",
+                        "channel": null,
+                        "locale": null
+                    },
+                    "operations": [
+                        {
+                            "type": "colorspace",
+                            "parameters": {"whatever": "..."}
+                        },
+                        {
+                            "type": "resize",
+                            "parameters": {"whatever": "..."}
+                        },
+                        {
+                            "type": "resolution",
+                            "parameters": {"whatever": "..."}
+                        },
+                        {
+                            "type": "scale",
+                            "parameters": {}
+                        },
+                        {
+                            "type": "thumbnail",
+                            "parameters": {}
+                        }
+                    ],
+                    "filename_suffix": "_thumb"
+                },
+                {
+                    "label": "other",
+                    "source": {
+                        "attribute": "main_image",
+                        "channel": null,
+                        "locale": null
+                    },
+                    "target": {
+                        "attribute": "test_scopable_localizable",
+                        "channel": "ecommerce",
+                        "locale": "en_US"
+                    },
+                    "operations": [
+                        {
+                            "type": "scale",
+                            "parameters": {"foo": "bar"}
+                        }
+                    ],
+                    "filename_suffix": "_other"
+                }
+            ]
+        }
+    },
+    "response": {
+        "status": 422,
+        "body": {
+            "code": 422,
+            "message": "The asset family has data that does not comply with the business rules.",
+            "errors": [
+                {
+                    "property": "transformations[0][operations][0]",
+                    "message": "The parameter 'colorspace' is required for the colorspace operation."
+                },
+                {
+                    "property": "transformations[0][operations][1]",
+                    "message": "The parameters 'width' and 'height' are required for the resize operation."
+                },
+                {
+                    "property": "transformations[0][operations][2]",
+                    "message": "The parameters 'resolution-x', 'resolution-y' and 'resolution-unit' are required for the resolution operation."
+                },
+                {
+                    "property": "transformations[0][operations][3]",
+                    "message": "No parameter is provided for 'scale' operation. At least one of parameter 'width', 'height' and 'ratio' must be defined."
+                },
+                {
+                    "property": "transformations[0][operations][4]",
+                    "message": "No parameter is provided for 'thumbnail' operation. At least one of parameter 'width' and 'height' must be defined."
+                },
+                {
+                    "property": "transformations[1][operations][0]",
+                    "message": "The property \"foo\" is not defined and the definition does not allow additional properties."
+                }
+            ]
+        }
+    }
+}

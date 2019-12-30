@@ -1,12 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import {akeneoTheme, opacity, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {
-  Asset,
-  assetWillNotMoveInCollection,
-  getAssetLabel,
-  MoveDirection,
-} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import Close from 'akeneoassetmanager/application/component/app/icon/close';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
@@ -14,8 +8,9 @@ import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import Left from 'akeneoassetmanager/application/component/app/icon/left';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
-import {getAssetPreview, MediaPreviewTypes, getAssetEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {getAssetEditUrl, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
+import ListAsset, {getListAssetMainMediaThumbnail, MoveDirection, getAssetLabel, assetWillNotMoveInCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 const Img = styled.img`
   width: 140px;
@@ -111,7 +106,7 @@ export const Thumbnail = ({
   onMove,
   onClick,
 }: {
-  asset: Asset;
+  asset: ListAsset;
   context: ContextState;
   readonly: boolean;
   assetCollection: AssetCode[];
@@ -145,7 +140,8 @@ export const Thumbnail = ({
             <MoveButton
               title={moveBeforeLabel}
               onClick={() => onMove(MoveDirection.Before)}
-              data-move-left={asset.code}>
+              data-move-left={asset.code}
+            >
               <Left color={akeneoTheme.color.grey100} />
             </MoveButton>
           ) : (
@@ -160,7 +156,7 @@ export const Thumbnail = ({
           )}
         </Overlay>
       )}
-      <Img src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail,{locale: context.locale, channel: context.channel}) } />
+      <Img src={getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale))} />
     </Container>
   );
 };

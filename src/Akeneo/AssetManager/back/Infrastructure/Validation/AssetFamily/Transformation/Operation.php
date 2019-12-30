@@ -19,8 +19,10 @@ use Symfony\Component\Validator\Constraint;
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class OperationShouldBeInstantiable extends Constraint
+class Operation extends Constraint
 {
+    public const UNKNOWN_EXTRA_FIELD_ERROR = 'pim_asset_manager.asset_family.validation.transformation.unknown_extra_field';
+
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;
@@ -28,6 +30,6 @@ class OperationShouldBeInstantiable extends Constraint
 
     public function validatedBy()
     {
-        return OperationShouldBeInstantiableValidator::class;
+        return OperationValidator::class;
     }
 }

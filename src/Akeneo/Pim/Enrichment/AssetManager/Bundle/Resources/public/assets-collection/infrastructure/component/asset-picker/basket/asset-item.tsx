@@ -1,12 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
-import {Asset, getAssetLabel} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoassetmanager/tools/translator';
 import {RemoveButton} from 'akeneoassetmanager/application/component/app/remove-button';
-import {MediaPreviewTypes, getAssetPreview} from 'akeneoassetmanager/tools/media-url-generator';
+import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import ListAsset, {getListAssetMainMediaThumbnail, getAssetLabel} from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 const Container = styled.li`
   padding: 10px 0;
@@ -54,25 +54,31 @@ const AssetItem = ({
   onRemove,
   isLoading = false,
 }: {
-  asset: Asset;
+  asset: ListAsset;
   context: Context;
   onRemove: () => void;
   isLoading?: boolean;
 }) => {
+  const label = getAssetLabel(asset, context.locale);
+
   return (
     <Container
       data-loading={isLoading}
       data-code={asset.code}
       className={isLoading ? 'AknLoadingPlaceHolderContainer' : ''}
     >
-      <AssetThumbnail src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail, context)} width={44} height={44} />
+      <AssetThumbnail
+        src={getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale))}
+        width={44}
+        height={44}
+      />
       <AssetDetails>
         <AssetCode title={asset.code}>{asset.code}</AssetCode>
-        <AssetLabel title={getAssetLabel(asset, context.locale)}>{getAssetLabel(asset, context.locale)}</AssetLabel>
+        <AssetLabel title={label}>{label}</AssetLabel>
       </AssetDetails>
       <RemoveButton
         title={__('pim_asset_manager.asset_picker.basket.remove_one_asset', {
-          assetName: getAssetLabel(asset, context.locale),
+          assetName: label,
         })}
         onClick={onRemove}
       />

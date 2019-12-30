@@ -36,6 +36,7 @@ class TransformationCollectionValidator extends ConstraintValidator
         $nestedConstraints = [
             new Assert\Type('array'),
             new Assert\All(new Transformation($assetFamilyIdentifier)),
+            new TransformationTargetIsUnique(),
         ];
 
         $context = $this->context;

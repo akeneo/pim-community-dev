@@ -1,5 +1,5 @@
 import * as React from 'react';
-import EditionValue, {setValueData} from 'akeneoassetmanager/domain/model/asset/edition-value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {
   isTextData,
   areTextDataEqual,
@@ -9,6 +9,7 @@ import {
 import {isTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import RichTextEditor from 'akeneoassetmanager/application/component/app/rich-text-editor';
 import Key from 'akeneoassetmanager/tools/key';
+import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 
 const View = ({
   value,

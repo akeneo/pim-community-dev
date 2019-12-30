@@ -63,7 +63,7 @@ class ThumbnailOperationSpec extends ObjectBehavior
     function it_can_not_be_constructed_without_parameter()
     {
         $this->beConstructedThrough('create', [[]]);
-        $this->shouldThrow(new \InvalidArgumentException('No parameter is provided for "thumbnail" operation. At least one of parameter "width" and "height" must be defined.'))
+        $this->shouldThrow(new \InvalidArgumentException("No parameter is provided for 'thumbnail' operation. At least one of parameter 'width' and 'height' must be defined."))
             ->duringInstantiation();
     }
 
@@ -95,5 +95,16 @@ class ThumbnailOperationSpec extends ObjectBehavior
             'height' => -10,
         ]]);
         $this->shouldThrow(new \InvalidArgumentException("Parameter \"height\" must be greater than 0, \"-10\" given."))->duringInstantiation();
+    }
+
+    function it_can_not_be_constructed_with_unknown_parameter()
+    {
+        $this->beConstructedThrough('create', [[
+            'width' => 200,
+            'height' => 100,
+            'foo' => 'bar',
+        ]]);
+        $this->shouldThrow(new \InvalidArgumentException('The property "foo" is not defined and the definition does not allow additional properties.'))
+            ->duringInstantiation();
     }
 }

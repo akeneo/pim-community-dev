@@ -52,7 +52,7 @@ class ResizeOperationSpec extends ObjectBehavior
         $this->beConstructedThrough('create', [[
             'height' => 100,
         ]]);
-        $this->shouldThrow(new \InvalidArgumentException("Key 'width' must exist in parameters."))
+        $this->shouldThrow(new \InvalidArgumentException("The parameters 'width' and 'height' are required for the resize operation."))
             ->duringInstantiation();
     }
 
@@ -61,7 +61,7 @@ class ResizeOperationSpec extends ObjectBehavior
         $this->beConstructedThrough('create', [[
             'width' => 100,
         ]]);
-        $this->shouldThrow(new \InvalidArgumentException("Key 'height' must exist in parameters."))
+        $this->shouldThrow(new \InvalidArgumentException("The parameters 'width' and 'height' are required for the resize operation."))
             ->duringInstantiation();
     }
 
@@ -81,5 +81,16 @@ class ResizeOperationSpec extends ObjectBehavior
         $this->shouldThrow(new \InvalidArgumentException("Parameter 'height' must be an integer."))
             ->duringInstantiation();
 
+    }
+
+    function it_can_not_be_constructed_with_unknown_parameter()
+    {
+        $this->beConstructedThrough('create', [[
+            'width' => 200,
+            'height' => 100,
+            'foo' => 'bar',
+        ]]);
+        $this->shouldThrow(new \InvalidArgumentException('The property "foo" is not defined and the definition does not allow additional properties.'))
+            ->duringInstantiation();
     }
 }

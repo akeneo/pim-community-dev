@@ -86,7 +86,7 @@ asset-manager-acceptance-front:
 .PHONY: asset-manager-integration-back
 asset-manager-integration-back: var/tests/phpunit
 ifeq ($(CI),true)
-	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh src/Akeneo/AssetManager/tests/back vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php AssetFamily_Integration_Test
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back --log-junit var/tests/phpunit/phpunit_$$(uuidgen).xml --testsuite AssetFamily_Integration_Test
 else
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back --testsuite AssetFamily_Integration_Test $(O)
 endif

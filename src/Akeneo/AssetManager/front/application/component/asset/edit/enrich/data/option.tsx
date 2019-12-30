@@ -1,5 +1,5 @@
 import * as React from 'react';
-import EditionValue, {setValueData} from 'akeneoassetmanager/domain/model/asset/edition-value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import {isOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
@@ -10,6 +10,7 @@ import {
 } from 'akeneoassetmanager/domain/model/asset/data/option';
 import {Option, getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import __ from 'akeneoassetmanager/tools/translator';
+import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 
 const View = ({
   value,

@@ -21,19 +21,21 @@ use Webmozart\Assert\Assert;
  */
 class ResolutionOperation implements Operation
 {
+    use OperationExtraParameterTrait;
+
     private const OPERATION_NAME = 'resolution';
     private const RESOLUTION_UNIT_CHOICES = ['ppc', 'ppi'];
 
-    /** @var int|null */
+    /** @var int */
     private $resolutionX;
 
-    /** @var int|null */
+    /** @var int */
     private $resolutionY;
 
     /** @var string */
     private $resolutionUnit;
 
-    private function __construct(?int $resolutionX, ?int $resolutionY, string $resolutionUnit)
+    private function __construct(int $resolutionX, int $resolutionY, string $resolutionUnit)
     {
         Assert::oneOf($resolutionUnit, self::RESOLUTION_UNIT_CHOICES, sprintf(
             "Parameter 'resolution-unit' must be one of this values: '%s'. '%s' given.",
@@ -41,15 +43,7 @@ class ResolutionOperation implements Operation
             $resolutionUnit
         ));
 
-        if (null === $resolutionX && null === $resolutionY) {
-            throw new \InvalidArgumentException('One resolution value must be provided.');
-        }
-
         foreach (['resolution-x' => $resolutionX, 'resolution-y' => $resolutionY] as $parameterName => $resolution) {
-            if (null === $resolution) {
-                continue;
-            }
-
             if ($resolution <= 0) {
                 throw new \InvalidArgumentException(sprintf(
                     "Parameter '%s' must be an integer greater than 0. '%d' given.",
@@ -71,21 +65,25 @@ class ResolutionOperation implements Operation
 
     public static function create(array $parameters): Operation
     {
-        Assert::nullOrInteger($parameters['resolution-x'] ?? null, "Parameter 'resolution-x' must be an integer.");
-        Assert::nullOrInteger($parameters['resolution-y'] ?? null, "Parameter 'resolution-y' must be an integer.");
-
-        Assert::keyExists($parameters, 'resolution-unit', "Key 'resolution-unit' must exist in parameters.");
+        $missingParameterMessage = "The parameters 'resolution-x', 'resolution-y' and 'resolution-unit' are required for the resolution operation.";
+        Assert::keyExists($parameters, 'resolution-x', $missingParameterMessage);
+        Assert::keyExists($parameters, 'resolution-y', $missingParameterMessage);
+        Assert::keyExists($parameters, 'resolution-unit', $missingParameterMessage);
         Assert::string($parameters['resolution-unit'], "Parameter 'resolution-unit' must be a string.");
+        Assert::integer($parameters['resolution-x'], "Parameter 'resolution-x' must be an integer.");
+        Assert::integer($parameters['resolution-y'], "Parameter 'resolution-y' must be an integer.");
+
+        self::assertNoExtraParameters($parameters, ['resolution-x', 'resolution-y', 'resolution-unit']);
 
         return new self($parameters['resolution-x'] ?? null, $parameters['resolution-y'] ?? null, $parameters['resolution-unit']);
     }
 
-    public function getResolutionX(): ?int
+    public function getResolutionX(): int
     {
         return $this->resolutionX;
     }
 
-    public function getResolutionY(): ?int
+    public function getResolutionY(): int
     {
         return $this->resolutionY;
     }
@@ -99,11 +97,11 @@ class ResolutionOperation implements Operation
     {
         return [
             'type' => self::getType(),
-            'parameters' => array_filter([
+            'parameters' => [
                 'resolution-x' => $this->resolutionX,
                 'resolution-y' => $this->resolutionY,
                 'resolution-unit' => $this->resolutionUnit,
-            ]),
+            ],
         ];
     }
 }

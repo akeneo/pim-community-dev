@@ -125,6 +125,7 @@ CREATE TABLE `akeneo_asset_manager_asset_family` (
     `attribute_as_main_media` VARCHAR(255) NULL,
     `rule_templates` JSON NOT NULL,
     `transformations` JSON NOT NULL,
+    `naming_convention` JSON,
     PRIMARY KEY (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

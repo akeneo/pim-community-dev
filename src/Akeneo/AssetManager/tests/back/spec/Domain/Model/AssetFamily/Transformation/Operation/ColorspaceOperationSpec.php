@@ -84,7 +84,17 @@ class ColorspaceOperationSpec extends ObjectBehavior
         $this->beConstructedThrough('create', [[
             'whatever' => 'rgb',
         ]]);
-        $this->shouldThrow(new \InvalidArgumentException("Key 'colorspace' must exist in parameters."))
+        $this->shouldThrow(new \InvalidArgumentException("The parameter 'colorspace' is required for the colorspace operation."))
+            ->duringInstantiation();
+    }
+
+    function it_can_not_be_constructed_with_unknown_parameter()
+    {
+        $this->beConstructedThrough('create', [[
+            'colorspace' => 'rgb',
+            'foo' => 'bar',
+        ]]);
+        $this->shouldThrow(new \InvalidArgumentException('The property "foo" is not defined and the definition does not allow additional properties.'))
             ->duringInstantiation();
     }
 }

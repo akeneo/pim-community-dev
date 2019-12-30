@@ -2,14 +2,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import {AssetCode, ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
-import {
-  Asset,
-  getAssetByCode,
-  getAssetCodes,
-  getAssetLabel,
-  getNextAssetCode,
-  getPreviousAssetCode,
-} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
 import {Modal, SubTitle, Title} from 'akeneoassetmanager/application/component/app/modal';
@@ -21,6 +13,17 @@ import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import Key from 'akeneoassetmanager/tools/key';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
+import {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import ListAsset, {
+  getAssetByCode,
+  getAssetLabel,
+  getAssetCodes,
+  getPreviousAssetCode,
+  getNextAssetCode,
+} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
 const Container = styled.div`
   position: relative;
@@ -46,13 +49,34 @@ const ArrowButton = styled(TransparentButton)`
   margin: 0 10px;
 `;
 
+export type AssetPreviewDataProvider = {
+  assetFamilyFetcher: {
+    fetch: (assetFamilyIdentifier: AssetFamilyIdentifier) => Promise<AssetFamilyResult>;
+  };
+};
+
 type AssetPreviewProps = {
-  assetCollection: Asset[];
+  assetCollection: ListAsset[];
   initialAssetCode: AssetCode;
   productIdentifier: ProductIdentifier | null;
   productAttribute: Attribute;
   context: ContextState;
+  assetFamilyIdentifier: AssetFamilyIdentifier;
   onClose: () => void;
+  dataProvider: AssetPreviewDataProvider;
+};
+
+const useAssetFamily = (
+  dataProvider: AssetPreviewDataProvider,
+  assetFamilyIdentifier: AssetFamilyIdentifier
+): AssetFamily | null => {
+  const [assetFamily, setAssetFamily] = React.useState<AssetFamily | null>(null);
+  React.useEffect(() => {
+    dataProvider.assetFamilyFetcher
+      .fetch(assetFamilyIdentifier)
+      .then((result: AssetFamilyResult) => setAssetFamily(result.assetFamily));
+  }, [assetFamilyIdentifier]);
+  return assetFamily;
 };
 
 export const AssetPreview = ({
@@ -60,17 +84,14 @@ export const AssetPreview = ({
   initialAssetCode,
   productIdentifier,
   productAttribute,
+  assetFamilyIdentifier,
   context,
   onClose,
+  dataProvider,
 }: AssetPreviewProps) => {
   const [currentAssetCode, setCurrentAssetCode] = React.useState(initialAssetCode);
-  const selectedAsset = getAssetByCode(assetCollection, currentAssetCode);
-
-  if (!selectedAsset) {
-    return null;
-  }
-
-  const selectedAssetLabel = getAssetLabel(selectedAsset, context.locale);
+  const selectedAsset: ListAsset | undefined = getAssetByCode(assetCollection, currentAssetCode);
+  const assetFamily = useAssetFamily(dataProvider, assetFamilyIdentifier);
   const assetCodeCollection = getAssetCodes(assetCollection);
   const setPreviousAsset = () => setCurrentAssetCode(assetCode => getPreviousAssetCode(assetCodeCollection, assetCode));
   const setNextAsset = () => setCurrentAssetCode(assetCode => getNextAssetCode(assetCodeCollection, assetCode));
@@ -86,6 +107,12 @@ export const AssetPreview = ({
     document.addEventListener('keydown', handleArrowNavigation);
     return () => document.removeEventListener('keydown', handleArrowNavigation);
   }, []);
+
+  if (undefined === selectedAsset || null === assetFamily) {
+    return null;
+  }
+  const selectedAssetLabel = getAssetLabel(selectedAsset, context.locale);
+
   return (
     <Modal data-role="asset-preview-modal">
       <Container>
@@ -99,7 +126,11 @@ export const AssetPreview = ({
           </SubTitle>
           <Title>{selectedAssetLabel}</Title>
           <PreviewContainer>
-            <Preview context={context} asset={selectedAsset} />
+            <Preview
+              context={context}
+              asset={selectedAsset}
+              attributeAsMainMedia={getAttributeAsMainMedia(assetFamily)}
+            />
           </PreviewContainer>
           <Carousel
             context={context}
