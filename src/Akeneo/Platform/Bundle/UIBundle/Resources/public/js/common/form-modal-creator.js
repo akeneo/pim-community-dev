@@ -49,7 +49,7 @@ define(
                                 buttons: false,
                                 title: i18n.getLabel(
                                     familyVariant.labels,
-                                    UserContext.get('uiLocale'),
+                                    UserContext.get('catalogLocale'),
                                     familyVariant.code
                                 ),
                                 subtitle: __('Code')  + ': ' + familyVariant.code,
