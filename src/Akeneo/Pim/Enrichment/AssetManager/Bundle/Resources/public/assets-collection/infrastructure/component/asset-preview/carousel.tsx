@@ -2,11 +2,11 @@ import * as React from 'react';
 import styled from 'styled-components';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import __ from 'akeneoassetmanager/tools/translator';
-import {Attribute, getAttributeLabel} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
-import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
+import {Attribute, getAttributeLabel} from 'akeneoassetmanager/platform/model/structure/attribute';
+import {Context} from 'akeneoassetmanager/domain/model/context';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
-import {ResultCounter} from 'akeneopimenrichmentassetmanager/platform/component/common/result-counter';
+import {ResultCounter} from 'akeneoassetmanager/application/component/app/result-counter';
 import ListAsset, {getListAssetMainMediaThumbnail} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 

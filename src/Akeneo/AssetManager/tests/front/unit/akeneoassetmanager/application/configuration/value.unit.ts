@@ -1,10 +1,10 @@
 import {
-  getDenormalizer,
   getFieldView,
   getCellView,
   hasCellView,
   hasFilterView,
   getFilterView,
+  getFilterViews,
 } from 'akeneoassetmanager/application/configuration/value';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 
@@ -171,6 +171,37 @@ Actual conf: ${JSON.stringify({text: {}})}`);
 
     expect(getDataFilterView('text')(attribute)).toBe(true);
     expect.assertions(2);
+  });
+
+  test('I can get a filter value list of views', () => {
+    const getDataFilterViews = getFilterViews({
+      option: {
+        filter: {
+          filter: (attribute, filter, onFilterUpdated) => {
+            expect(attribute.getCode()).toEqual('color');
+
+            return true;
+          },
+        },
+      },
+    });
+
+    const attributes = [
+      {
+        type: 'option',
+        identifier: 'color_packshot_fingerprint',
+        asset_family_identifier: 'packshot',
+        code: 'color',
+        order: 0,
+        is_required: true,
+        labels: {en_US: 'Color'},
+        value_per_locale: false,
+        value_per_channel: false,
+        options: [],
+      },
+    ];
+
+    expect(getDataFilterViews(attributes)[0].attribute.code).toEqual('color');
   });
 
   test('I get an error if the configuration does not have an proper text filter view', () => {

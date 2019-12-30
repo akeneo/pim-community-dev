@@ -1,4 +1,4 @@
-import {getRulesForAttribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/rule-relation';
+import {getRulesForAttribute} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 
 test('It should get the rule codes for the impacted attribute', () => {
   const attributeCode = 'packshot';

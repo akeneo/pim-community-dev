@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {AssetCode, ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
+import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import styled from 'styled-components';
 import {Pill} from 'akeneoassetmanager/application/component/app/pill';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
-import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
+import {Label} from 'akeneoassetmanager/application/component/app/label';
+import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {Thumbnail} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/thumbnail';
@@ -12,7 +12,7 @@ import {
   AssetPreview,
   AssetPreviewDataProvider,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview';
-import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import Key from 'akeneoassetmanager/tools/key';
 import {AssetCollectionLimitNotification} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/asset-collection-limit-notification';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
@@ -29,6 +29,7 @@ import ListAsset, {
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
 const AssetCard = styled.div`
   display: flex;

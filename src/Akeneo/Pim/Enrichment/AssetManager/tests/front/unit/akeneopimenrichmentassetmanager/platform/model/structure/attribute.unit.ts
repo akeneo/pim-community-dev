@@ -1,4 +1,4 @@
-import {getAttributeLabel} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {getAttributeLabel} from 'akeneoassetmanager/platform/model/structure/attribute';
 
 test('It should get the attribute label for the locale given', () => {
   const attribute = {

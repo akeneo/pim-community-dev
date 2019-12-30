@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import {ChannelLabel as PlatformChannelLabel} from 'akeneopimenrichmentassetmanager/platform/component/channel/channel';
+import {ChannelLabel as PlatformChannelLabel} from 'akeneoassetmanager/platform/component/channel/channel';
 import {selectChannels} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {connect} from 'react-redux';
-import {LocaleLabel as PlatformLocaleLabel} from 'akeneopimenrichmentassetmanager/platform/component/channel/locale';
+import {LocaleLabel as PlatformLocaleLabel} from 'akeneoassetmanager/platform/component/channel/locale';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {selectCurrentLocale} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {selectLocales} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';

@@ -8,7 +8,6 @@ const moduleNameMapperConfig = {
   ...baseConfig.moduleNameMapper,
   ...eeModuleNameMapperConfig,
 };
-
 const eeConfig = {
   ...baseConfig,
   moduleNameMapper: moduleNameMapperConfig,
@@ -21,11 +20,11 @@ const eeConfig = {
     'akeneoassetmanager/application/component/app/pill',
     'akeneoassetmanager/application/component/app/spacer',
     'akeneoassetmanager/application/component/app/button',
-    'akeneopimenrichmentassetmanager/platform/component/common/checkbox',
+    'akeneoassetmanager/platform/component/common/checkbox',
     'akeneofranklininsights/react/application/action',
     'akeneoassetmanager/application/component/asset/index/completeness-filter',
-    'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar/search-field', // cannot trigger re-render
-    'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar', // cannot test hooks + asynchronous fetching
+    'akeneoassetmanager/application/component/asset/list/search-bar/search-field', // cannot trigger re-render
+    'akeneoassetmanager/application/component/asset/list/search-bar', // cannot test hooks + asynchronous fetching
     'akeneoassetmanager/application/component/app/channel-switcher.tsx',
     'akeneoassetmanager/application/component/app/locale-switcher.tsx',
     'akeneoassetmanager/application/component/app/icon/',
@@ -42,8 +41,8 @@ const eeConfig = {
     'src/Akeneo/AssetManager/front/application/component/app/button',
     'src/Akeneo/Pim/Automation/FranklinInsights/Infrastructure/Symfony/Resources/public/react/application/action',
     'src/Akeneo/AssetManager/front/application/component/asset/index/completeness-filter',
-    'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/component/asset-picker/search-bar/search-field', // cannot test hooks + asynchronous fetching + cannot trigger re-render
-    'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/component/asset-picker/search-bar', // cannot test hooks + asynchronous fetching
+    'src/Akeneo/AssetManager/front/application/component/asset/list/search-bar/search-field', // cannot test hooks + asynchronous fetching + cannot trigger re-render
+    'src/Akeneo/AssetManager/front/application/component/asset/list/search-bar', // cannot test hooks + asynchronous fetching
     'src/Akeneo/AssetManager/front/application/component/app/channel-switcher.tsx',
     'src/Akeneo/AssetManager/front/application/component/app/locale-switcher.tsx',
     'src/Akeneo/AssetManager/front/application/component/app/icon/',

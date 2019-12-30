@@ -1,7 +1,7 @@
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
-import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {Column, Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
@@ -22,7 +22,7 @@ export type ViewGenerator = React.SFC<{
  */
 export type CellView = React.SFC<{column: Column; value: ListValue}>;
 export type FilterViewProps = {
-  attribute: Attribute;
+  attribute: NormalizedAttribute;
   filter: Filter | undefined;
   onFilterUpdated: (filter: Filter) => void;
   context: {
@@ -130,7 +130,6 @@ ${moduleExample}`
 
 export const getFilterView = (config: ValueConfig) => (attributeType: string): FilterView => {
   const typeConfiguration = config[attributeType];
-
   if (undefined === typeConfiguration || undefined === typeConfiguration.filter) {
     const expectedConfiguration = `config:
     config:
@@ -163,6 +162,21 @@ ${moduleExample}`
   return typeConfiguration.filter.filter;
 };
 
+export type FilterViewCollection = {
+  view: FilterView;
+  attribute: NormalizedAttribute;
+}[];
+
+export const getFilterViews = (config: ValueConfig) => (attributes: NormalizedAttribute[]): FilterViewCollection => {
+  const attributesWithFilterViews = attributes.filter(({type}: NormalizedAttribute) => hasFilterView(config)(type));
+  const filterViews = attributesWithFilterViews.map((attribute: NormalizedAttribute) => ({
+    view: getFilterView(config)(attribute.type),
+    attribute: attribute,
+  }));
+
+  return filterViews;
+};
+
 /**
  * Explanation about the __moduleConfig variable:
  * It is automatically added by a webpack loader that you can check here:
@@ -175,3 +189,4 @@ export const getDataCellView = getCellView(__moduleConfig as ValueConfig);
 export const hasDataCellView = hasCellView(__moduleConfig as ValueConfig);
 export const getDataFilterView = getFilterView(__moduleConfig as ValueConfig);
 export const hasDataFilterView = hasFilterView(__moduleConfig as ValueConfig);
+export const getDataFilterViews = getFilterViews(__moduleConfig as ValueConfig);
