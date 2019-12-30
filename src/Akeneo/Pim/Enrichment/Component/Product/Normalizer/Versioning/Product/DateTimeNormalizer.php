@@ -22,7 +22,7 @@ class DateTimeNormalizer extends AbstractValueDataNormalizer
     /**
      * @param string $format see http://www.php.net/date
      */
-    public function __construct($format = 'Y-m-d')
+    public function __construct($format = 'c')
     {
         $this->format = $format;
     }
