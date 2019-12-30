@@ -45,7 +45,7 @@ FROM (
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = "app"
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
-GROUP BY connection.code;
+GROUP BY conn.code;
 SQL;
         $sqlParams = [
             'start_time' => $dateTime->format('Y-m-d H:i:s'),

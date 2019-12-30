@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection_audit(
     event_count INT NOT NULL,
     event_type ENUM('product_created', 'product_updated') NOT NULL,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FK_CONNECTIVITY_CONNECTION_AUDIT_akeneo_connection_audit_code FOREIGN KEY (connection_code) REFERENCES akeneo_connectivity_connection (code),
+    CONSTRAINT FK_CONNECTIVITY_CONNECTION_AUDIT_connection_code FOREIGN KEY (connection_code) REFERENCES akeneo_connectivity_connection (code),
     INDEX IDX_CONNECTIVITY_CONNECTION_AUDIT_id (id)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
 SQL;
