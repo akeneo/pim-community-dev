@@ -16,8 +16,6 @@ namespace Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
@@ -35,12 +33,17 @@ class ExecuteNamingConventionHandler
     /** @var AssetRepositoryInterface */
     private $assetRepository;
 
+    /** @var SourceValueExtractor */
+    private $sourceValueExtractor;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
-        AssetRepositoryInterface $assetRepository
+        AssetRepositoryInterface $assetRepository,
+        SourceValueExtractor $sourceValueExtractor
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
         $this->assetRepository = $assetRepository;
+        $this->sourceValueExtractor = $sourceValueExtractor;
     }
 
     public function __invoke(ExecuteNamingConventionCommand $command): void
@@ -52,38 +55,13 @@ class ExecuteNamingConventionHandler
         }
 
         $asset = $this->getAsset($command);
-        $sourceValue = $this->extractSourceValue($asset, $namingConvention);
+        $sourceValue = $this->sourceValueExtractor->extract($asset, $namingConvention);
         if (null === $sourceValue) {
             return;
         }
 
         // @todo: execute the split
         // @todo: save the result
-    }
-
-    /**
-     * Put this code in a dedicated class?
-     */
-    private function extractSourceValue(Asset $asset, NamingConvention $namingConvention): ?string
-    {
-        $source = $namingConvention->getSource();
-        if ($source->isAssetCode()) {
-            return $asset->getCode()->__toString();
-        }
-
-        $valueKey = ValueKey::create(
-            AttributeIdentifier::fromString($source->getProperty()),
-            $source->getChannelReference(),
-            $source->getLocaleReference()
-        );
-        $value = $asset->findValue($valueKey);
-        if (null === $value) {
-            return null;
-        }
-
-        $dataValue = $value->getData()->normalize();
-
-        return is_string($dataValue) ? $dataValue : null;
     }
 
     private function getAssetFamily(ExecuteNamingConventionCommand $command): AssetFamily
