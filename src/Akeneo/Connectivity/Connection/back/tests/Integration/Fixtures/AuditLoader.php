@@ -26,13 +26,13 @@ class AuditLoader
     public function insertData(string $connectionCode, \DateTime $eventDate, int $eventCount, string $eventType)
     {
         $sqlQuery = <<<SQL
-INSERT INTO akeneo_app_audit (app_code, event_date, event_count, event_type)
-VALUES (:app_code, :event_date, :event_count, :event_type)
+INSERT INTO akeneo_connectivity_connection_audit (connection_code, event_date, event_count, event_type)
+VALUES (:connection_code, :event_date, :event_count, :event_type)
 SQL;
         $this->dbalConnection->executeQuery(
             $sqlQuery,
             [
-                'app_code' => $connectionCode,
+                'connection_code' => $connectionCode,
                 'event_date' => $eventDate->format('Y-m-d'),
                 'event_count' => $eventCount,
                 'event_type' => $eventType

@@ -81,7 +81,7 @@ class DbalConnectionRepositoryIntegration extends TestCase
     {
         $query = <<<SQL
     SELECT code, label, flow_type, client_id, user_id, image
-    FROM akeneo_app
+    FROM akeneo_connectivity_connection
     WHERE code = :code
 SQL;
         $statement = $this->dbalConnection->executeQuery($query, ['code' => $code]);

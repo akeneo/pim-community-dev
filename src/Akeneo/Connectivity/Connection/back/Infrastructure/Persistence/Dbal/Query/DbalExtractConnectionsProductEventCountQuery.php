@@ -34,7 +34,7 @@ class DbalExtractConnectionsProductEventCountQuery implements ExtractConnections
         $dateTime->setTime(0, 0, 0, 0);
 
         $sqlQuery = <<<SQL
-SELECT app.code, COUNT(resource_id) as event_count
+SELECT conn.code, COUNT(resource_id) as event_count
 FROM (
     SELECT author, resource_id 
     FROM pim_versioning_version USE INDEX(logged_at_idx) 
@@ -44,8 +44,8 @@ FROM (
     GROUP BY author, resource_id
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = "app"
-INNER JOIN akeneo_app app ON app.user_id = u.id
-GROUP BY app.code;
+INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
+GROUP BY conn.code;
 SQL;
         $sqlParams = [
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
@@ -73,7 +73,7 @@ SQL;
         $dateTime->setTime(0, 0, 0, 0);
 
         $sqlQuery = <<<SQL
-SELECT app.code, COUNT(resource_id) as event_count
+SELECT conn.code, COUNT(resource_id) as event_count
 FROM (
     SELECT author, resource_id 
     FROM pim_versioning_version USE INDEX(logged_at_idx) 
@@ -83,8 +83,8 @@ FROM (
     GROUP BY author, resource_id
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = "app"
-INNER JOIN akeneo_app app ON app.user_id = u.id
-GROUP BY app.code;
+INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
+GROUP BY conn.code;
 SQL;
         $sqlParams = [
             'start_time' => $dateTime->format('Y-m-d H:i:s'),

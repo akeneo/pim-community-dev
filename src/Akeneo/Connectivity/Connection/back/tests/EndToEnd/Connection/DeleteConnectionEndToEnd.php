@@ -6,9 +6,6 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Connection;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionCommand;
-use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQuery;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -66,7 +63,7 @@ class DeleteConnectionEndToEnd extends ApiTestCase
     private function countConnection(string $connectionCode): int
     {
         $selectSql = <<<SQL
-SELECT count(code) FROM akeneo_app WHERE code = :code
+SELECT count(code) FROM akeneo_connectivity_connection WHERE code = :code
 SQL;
         $stmt = $this->get('database_connection')->executeQuery($selectSql, ['code' => $connectionCode]);
 
