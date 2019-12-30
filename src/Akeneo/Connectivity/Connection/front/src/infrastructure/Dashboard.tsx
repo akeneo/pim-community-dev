@@ -1,6 +1,6 @@
 import {default as React, StrictMode, useReducer} from 'react';
 import {DashboardStateContext} from '../application/dashboard/dashboard-state-context';
-import {Index} from '../application/dashboard/pages';
+import {Index} from '../application/dashboard/pages/Index';
 import {reducer, initialState} from '../application/dashboard/reducers/dashboard-reducer';
 import {withContexts} from './with-contexts';
 

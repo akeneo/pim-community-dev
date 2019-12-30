@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditTableQuery;
-use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionsTableQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionTableQuery;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\DBAL\Driver\Connection as DbalConnection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -40,7 +40,7 @@ class InstallSubscriber implements EventSubscriberInterface
         $this->assetsInstaller->installAssets($shouldSymlink);
     }
 
-    public function createConnectionsTable(GenericEvent $event): void
+    public function createConnectionsTable(): void
     {
         $this->dbalConnection->exec(CreateConnectionTableQuery::QUERY);
         $this->dbalConnection->exec(CreateConnectionAuditTableQuery::QUERY);
