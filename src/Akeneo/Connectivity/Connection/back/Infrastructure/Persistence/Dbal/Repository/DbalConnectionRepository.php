@@ -27,7 +27,7 @@ class DbalConnectionRepository implements ConnectionRepository
     public function create(Connection $connection): void
     {
         $insertSQL = <<<SQL
-INSERT INTO akeneo_app (client_id, user_id, code, label, flow_type)
+INSERT INTO akeneo_connectivity_connection (client_id, user_id, code, label, flow_type)
 VALUES (:client_id, :user_id, :code, :label, :flow_type)
 SQL;
 
@@ -45,7 +45,7 @@ SQL;
     {
         $selectQuery = <<<SQL
 SELECT code, label, flow_type, image, client_id, user_id
-FROM akeneo_app
+FROM akeneo_connectivity_connection
 WHERE code = :code
 SQL;
 
@@ -65,7 +65,7 @@ SQL;
     public function update(Connection $connection): void
     {
         $updateQuery = <<<SQL
-UPDATE akeneo_app
+UPDATE akeneo_connectivity_connection
 SET label = :label, flow_type = :flow_type, image = :image
 WHERE code = :code
 SQL;
@@ -83,7 +83,7 @@ SQL;
     public function delete(Connection $connection): void
     {
         $deleteQuery = <<<SQL
-DELETE FROM akeneo_app
+DELETE FROM akeneo_connectivity_connection
 WHERE code = :code
 SQL;
 

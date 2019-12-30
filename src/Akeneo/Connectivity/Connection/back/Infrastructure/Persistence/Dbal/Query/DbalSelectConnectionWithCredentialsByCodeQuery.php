@@ -26,10 +26,10 @@ class DbalSelectConnectionWithCredentialsByCodeQuery implements SelectConnection
     public function execute(string $code): ?ConnectionWithCredentials
     {
         $selectSQL = <<<SQL
-SELECT app.code, app.label, app.flow_type, app.image, app.client_id, client.random_id, client.secret, u.username
-FROM akeneo_app app 
-INNER JOIN pim_api_client client on app.client_id = client.id
-INNER JOIN oro_user u on app.user_id = u.id
+SELECT conn.code, conn.label, conn.flow_type, conn.image, conn.client_id, client.random_id, client.secret, u.username
+FROM akeneo_connectivity_connection conn
+INNER JOIN pim_api_client client on conn.client_id = client.id
+INNER JOIN oro_user u on conn.user_id = u.id
 WHERE code = :code
 SQL;
         $dataRow = $this->dbalConnection->executeQuery($selectSQL, ['code' => $code])->fetch();

@@ -59,7 +59,7 @@ class CreateConnectionEndToEnd extends TestCase
     private function countConnection(string $connectionCode): int
     {
         $selectSql = <<<SQL
-SELECT count(code) FROM akeneo_app WHERE code = :code
+SELECT count(code) FROM akeneo_connectivity_connection WHERE code = :code
 SQL;
         $stmt = $this->getDbalConnection()->executeQuery($selectSql, ['code' => $connectionCode]);
 
