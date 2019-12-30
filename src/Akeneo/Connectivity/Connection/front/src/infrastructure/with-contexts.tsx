@@ -1,12 +1,12 @@
 import React, {ElementType} from 'react';
 import {ThemeProvider} from 'styled-components';
-import {theme} from '../application/common/theme';
-import {NotifyContext, NotifyInterface} from '../application/shared/notify';
-import {RouterContext, RouterInterface} from '../application/shared/router';
-import {SecurityContext} from '../application/shared/security/security-context';
-import {Security as SecurityInterface} from '../application/shared/security/security.interface';
-import {TranslateContext, TranslateInterface} from '../application/shared/translate';
-import {UserContext, UserInterface} from '../application/shared/user';
+import {theme} from '../common/theme';
+import {NotifyContext, NotifyInterface} from '../shared/notify';
+import {RouterContext, RouterInterface} from '../shared/router';
+import {SecurityContext} from '../shared/security/security-context';
+import {Security as SecurityInterface} from '../shared/security/security.interface';
+import {TranslateContext, TranslateInterface} from '../shared/translate';
+import {UserContext, UserInterface} from '../shared/user';
 import {LegacyContext} from './legacy-context';
 import {ViewBuilder} from './pim-view/view-builder';
 
