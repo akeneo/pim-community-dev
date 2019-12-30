@@ -1,20 +1,4 @@
 services:
-    ConnectionCommand:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Cli\ConnectionCommand
-        arguments:
-            - '@akeneo_connectivity.connection.application.handler.create_connection'
-            - '@akeneo_connectivity.connection.application.handler.fetch_connections'
-            - '@akeneo_connectivity.connection.application.handler.regenerate_connection_secret'
-        tags:
-            - { name: 'console.command' }
-
-    DeleteConnectionCommand:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Cli\DeleteConnectionCommand
-        arguments:
-            - '@akeneo_connectivity.connection.application.handler.delete_connection'
-        tags:
-            - { name: 'console.command' }
-
     Akeneo\Connectivity\Connection\Infrastructure\Cli\UpdateAuditDataCommand:
         class: Akeneo\Connectivity\Connection\Infrastructure\Cli\UpdateAuditDataCommand
         arguments:
