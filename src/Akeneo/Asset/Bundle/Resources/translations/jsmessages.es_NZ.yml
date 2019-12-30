@@ -13,8 +13,6 @@ pimee_product_asset:
         download: Download
         remove: Remove
         upload: Upload
-        yes: true
-        no: false
         assetRemoveConfirmationLabel: Are you sure you want to remove this asset?
     asset:
       not_empty: Code is required. It can not be empty.
