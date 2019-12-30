@@ -51,7 +51,7 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
             xLabel:
                 index + 1 !== numberOfData
                     ? formatDate(date, {weekday: 'long', month: 'short', day: 'numeric'})
-                    : translate('akeneo_apps.dashboard.charts.legend.today'),
+                    : translate('akeneo_connectivity.connection.dashboard.charts.legend.today'),
             yLabel: 0 === index ? '' : value.toString(),
         }));
 

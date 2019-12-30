@@ -5,11 +5,11 @@ import {PropsWithTheme} from '../../common/theme';
 import {Translate} from '../../shared/translate';
 
 export const NoApp = ({onCreate}: {onCreate: () => void}) => (
-    <PageError title={<Translate id='pim_apps.no_app.title' />}>
-        <Translate id='pim_apps.no_app.message' />
+    <PageError title={<Translate id='akeneo_connectivity.connection.no_app.title' />}>
+        <Translate id='akeneo_connectivity.connection.no_app.message' />
         &nbsp;
         <Link onClick={onCreate}>
-            <Translate id='pim_apps.no_app.message_link' />
+            <Translate id='akeneo_connectivity.connection.no_app.message_link' />
         </Link>
     </PageError>
 );

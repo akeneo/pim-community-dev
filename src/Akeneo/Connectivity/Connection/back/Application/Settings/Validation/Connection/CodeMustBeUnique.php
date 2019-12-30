@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class CodeMustBeUnique extends Constraint
 {
-    public $message = 'akeneo_apps.connection.constraint.code.must_be_unique';
+    public $message = 'akeneo_connectivity.connection.connection.constraint.code.must_be_unique';
 
     public function getTargets()
     {

@@ -2,18 +2,18 @@ config:
     config:
         pim/controller-registry:
             controllers:
-                akeneo_apps_index:
+                akeneo_connectivity_connection_settings_index:
                     module: pim/controller/apps
                     aclResourceId: akeneo_apps_manage_settings
-                akeneo_apps_any:
+                akeneo_connectivity_connection_settings_any:
                     module: pim/controller/apps
                     aclResourceId: akeneo_apps_manage_settings
-                akeneo_apps_dashboard_index:
+                akeneo_connectivity_connection_audit_index:
                     module: pim/controller/apps/dashboard
-                akeneo_apps_dashboard_any:
+                akeneo_connectivity_connection_audit_any:
                     module: pim/controller/apps/dashboard
 
-    
+
     paths:
         pim/controller/apps: akeneoapps/js/controller/apps.tsx
         pim/controller/apps/dashboard: akeneoapps/js/controller/dashboard.tsx

@@ -18,12 +18,12 @@ export const Charts = () => {
             <EventChart
                 eventType={AuditEventType.PRODUCT_CREATED}
                 theme={EventChartThemes.purple}
-                title={<Translate id='akeneo_apps.dashboard.charts.number_of_products_created' />}
+                title={<Translate id='akeneo_connectivity.connection.dashboard.charts.number_of_products_created' />}
             />
             <EventChart
                 eventType={AuditEventType.PRODUCT_UPDATED}
                 theme={EventChartThemes.blue}
-                title={<Translate id='akeneo_apps.dashboard.charts.number_of_products_updated' />}
+                title={<Translate id='akeneo_connectivity.connection.dashboard.charts.number_of_products_updated' />}
             />
         </>
     );

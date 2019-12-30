@@ -45,7 +45,7 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
         const result = await imageUploader(file);
         if (isErr(result)) {
             if (undefined !== result.error.extension) {
-                notify(NotificationLevel.ERROR, translate('pim_apps.edit_image.flash.extension_not_allowed'));
+                notify(NotificationLevel.ERROR, translate('akeneo_connectivity.connection.edit_image.flash.extension_not_allowed'));
             } else {
                 const errors = Object.entries(result.error).reduce((errors, [propertyPath, {message}]) => {
                     return errors + `${propertyPath}: ${message}`;
@@ -93,9 +93,9 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
                     <Helper className='AknImage-uploaderHelper'>
                         {null === previewImage && (
                             <>
-                                <Translate id={'pim_apps.edit_image.upload_helper'} />{' '}
+                                <Translate id={'akeneo_connectivity.connection.edit_image.upload_helper'} />{' '}
                                 <HelperLink href='#'>
-                                    <Translate id={'pim_apps.edit_image.click_here'} />
+                                    <Translate id={'akeneo_connectivity.connection.edit_image.click_here'} />
                                 </HelperLink>
                                 .
                             </>
@@ -107,7 +107,7 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
                     <div className='AknImage-action'>
                         <span className='AknImage-actionItem' onClick={handleRemove}>
                             <Trash color='#ffffff' className='AknImage-actionItemIcon' />{' '}
-                            <Translate id={'pim_apps.edit_image.remove_helper'} />
+                            <Translate id={'akeneo_connectivity.connection.edit_image.remove_helper'} />
                         </span>
                     </div>
                 )}

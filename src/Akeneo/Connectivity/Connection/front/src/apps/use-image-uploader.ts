@@ -32,7 +32,7 @@ export const useImageUploader = () => {
         if (!allowedExtensions.includes(file.type)) {
             return err({
                 extension: {
-                    message: 'akeneo_apps.edit_app.image_uploader.extension_not_allowed',
+                    message: 'akeneo_connectivity.connection.edit_app.image_uploader.extension_not_allowed',
                     invalid_value: file.type,
                 },
             });

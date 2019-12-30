@@ -27,9 +27,9 @@ export const AppRegenerateSecret = () => {
         });
 
         if (isErr(result)) {
-            notify(NotificationLevel.ERROR, translate('akeneo_apps.regenerate_secret.flash.error'));
+            notify(NotificationLevel.ERROR, translate('akeneo_connectivity.connection.regenerate_secret.flash.error'));
         } else {
-            notify(NotificationLevel.SUCCESS, translate('akeneo_apps.regenerate_secret.flash.success'));
+            notify(NotificationLevel.SUCCESS, translate('akeneo_connectivity.connection.regenerate_secret.flash.success'));
         }
 
         handleRedirect();
@@ -37,18 +37,18 @@ export const AppRegenerateSecret = () => {
 
     const description = (
         <>
-            <Translate id='akeneo_apps.regenerate_secret.description' />
+            <Translate id='akeneo_connectivity.connection.regenerate_secret.description' />
             &nbsp;
-            <Link href={translate('akeneo_apps.regenerate_secret.link_url')} target='_blank'>
-                <Translate id='akeneo_apps.regenerate_secret.link' />
+            <Link href={translate('akeneo_connectivity.connection.regenerate_secret.link_url')} target='_blank'>
+                <Translate id='akeneo_connectivity.connection.regenerate_secret.link' />
             </Link>
         </>
     );
 
     return (
         <Modal
-            subTitle={<Translate id='pim_apps.apps' />}
-            title={<Translate id='akeneo_apps.regenerate_secret.title' />}
+            subTitle={<Translate id='akeneo_connectivity.connection.connections' />}
+            title={<Translate id='akeneo_connectivity.connection.regenerate_secret.title' />}
             description={description}
             onCancel={handleRedirect}
         >
@@ -57,7 +57,7 @@ export const AppRegenerateSecret = () => {
                     <Translate id='pim_common.cancel' />
                 </GreyButton>
                 <ImportantButton onClick={handleClick} classNames={['AknButtonList-item']}>
-                    <Translate id='akeneo_apps.regenerate_secret.action.regenerate' />
+                    <Translate id='akeneo_connectivity.connection.regenerate_secret.action.regenerate' />
                 </ImportantButton>
             </div>
         </Modal>

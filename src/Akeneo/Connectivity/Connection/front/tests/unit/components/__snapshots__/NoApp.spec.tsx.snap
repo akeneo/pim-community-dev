@@ -11,18 +11,18 @@ exports[`NoApp should render 1`] = `
   <div
     className="sc-iwsKbI hvrcwP"
   >
-    pim_apps.no_app.title
+    akeneo_connectivity.connection.no_app.title
   </div>
   <div
     className="sc-gZMcBi jVpjdn"
   >
-    pim_apps.no_app.message
-     
+    akeneo_connectivity.connection.no_app.message
+
     <a
       className="sc-kEYyzF hgSZNu"
       onClick={[Function]}
     >
-      pim_apps.no_app.message_link
+      akeneo_connectivity.connection.no_app.message_link
     </a>
   </div>
 </div>

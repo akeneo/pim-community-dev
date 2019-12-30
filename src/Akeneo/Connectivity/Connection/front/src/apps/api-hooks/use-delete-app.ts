@@ -25,7 +25,7 @@ export const useDeleteApp = (code: string) => {
             return result;
         }
 
-        notify(NotificationLevel.SUCCESS, translate('akeneo_apps.delete_app.flash.success'));
+        notify(NotificationLevel.SUCCESS, translate('akeneo_connectivity.connection.delete_app.flash.success'));
 
         return result;
     };

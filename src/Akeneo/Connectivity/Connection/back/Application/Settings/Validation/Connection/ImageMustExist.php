@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class ImageMustExist extends Constraint
 {
-    public $message = 'akeneo_apps.connection.constraint.image.must_exist';
+    public $message = 'akeneo_connectivity.connection.connection.constraint.image.must_exist';
 
     public function getTargets()
     {

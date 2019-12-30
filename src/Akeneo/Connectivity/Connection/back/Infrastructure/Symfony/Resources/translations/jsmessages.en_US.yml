@@ -1,62 +1,22 @@
-pim_menu:
-    item:
-        apps: Apps
-        apps_dashboard: App dashboard
+pim_menu.item:
+    connection_settings: Apps
+    connection_audit: App dashboard
 
 pim_title:
-    akeneo_apps_index: Apps
-    akeneo_apps_any: Apps
-    akeneo_apps_dashboard_index: App dashboard
-    akeneo_apps_dashboard_any: App dashboard
+    akeneo_connectivity_connection_settings_index: Apps
+    akeneo_connectivity_connection_settings_any: Apps
+    akeneo_connectivity_connection_audit_index: App dashboard
+    akeneo_connectivity_connection_audit_any: App dashboard
 
-pim_apps:
-    apps: Apps
-    app:
+akeneo_connectivity.connection:
+    connections: Connections
+    secondary_actions:
+        title: Other actions
+    connection:
         code: Code
         label: Label
         flow_type: Flow type
         image: Image
-    flow_type:
-        data_source: Data source | Data sources
-        data_destination: Data destination | Data destinations
-        other: Other | Others
-    helper:
-        title: 👋 Welcome in the feature that will properly connect your PIM!
-        description: A PIM without any connections is kinda useless, isn't it? Thanks to apps, you can declare all the data flows that will be pushed inside and pulled outside your PIM.
-        link: Eager to know more? Find out what is an app and how to make the most of it right here!
-        link_url: https://www.akeneo.com/
-    flow_type_helper:
-        message: Wondering what flow type is?
-        link: We can help you right here!
-        link_url: https://www.akeneo.com/
-    edit_image:
-        upload_helper: Change your image, drag and drop or
-        remove_helper: Remove the image
-        click_here: click here
-        flash:
-            extension_not_allowed: Sorry, the file you are trying to upload has an extension not allowed.
-
-    app_count: '{{ count }} app | {{ count }} apps'
-    no_app:
-        title: No app declared yet.
-        message: Add your first one by clicking on the “Create” button above or
-        message_link: click here.
-    create_app:
-        title: Create a new app
-        description: You can create up to 50 apps.
-        flash:
-            success: App successfully created.
-            error: Sorry, an error occurred while creating the App.
-    edit_app:
-        subtitle: Settings
-        flash:
-            success: App successfully updated.
-            error: Sorry, an error occurred while editing the App.
-
-akeneo_apps:
-    secondary_actions:
-        title: Other actions
-    app:
         client_id: Client ID
         secret: Secret
         username: Username
@@ -76,7 +36,26 @@ akeneo_apps:
                 invalid: App flow type can only be 'data_source', 'data_destination' or 'other'.
             image:
                 must_exist: The image you trying to update App with must exist.
+    flow_type:
+        data_source: Data source | Data sources
+        data_destination: Data destination | Data destinations
+        other: Other | Others
+    app_count: '{{ count }} app | {{ count }} apps'
+    no_app:
+        title: No app declared yet.
+        message: Add your first one by clicking on the “Create” button above or
+        message_link: click here.
+    create_app:
+        title: Create a new app
+        description: You can create up to 50 apps.
+        flash:
+            success: App successfully created.
+            error: Sorry, an error occurred while creating the App.
     edit_app:
+        subtitle: Settings
+        flash:
+            success: App successfully updated.
+            error: Sorry, an error occurred while editing the App.
         image_uploader:
             extension_not_allowed: Sorry, the file you are trying to upload has an extension not allowed.
         credentials:
@@ -116,6 +95,22 @@ akeneo_apps:
         link_url: https://www.akeneo.com/
         flash:
             success: App successfully deleted.
+    helper:
+        title: 👋 Welcome in the feature that will properly connect your PIM!
+        description: A PIM without any connections is kinda useless, isn't it? Thanks to apps, you can declare all the data flows that will be pushed inside and pulled outside your PIM.
+        link: Eager to know more? Find out what is an app and how to make the most of it right here!
+        link_url: https://www.akeneo.com/
+    flow_type_helper:
+        message: Wondering what flow type is?
+        link: We can help you right here!
+        link_url: https://www.akeneo.com/
+    edit_image:
+        upload_helper: Change your image, drag and drop or
+        remove_helper: Remove the image
+        click_here: click here
+        flash:
+            extension_not_allowed: Sorry, the file you are trying to upload has an extension not allowed.
+
     dashboard:
         helper:
             title: 👋 Welcome in your app dashboard!

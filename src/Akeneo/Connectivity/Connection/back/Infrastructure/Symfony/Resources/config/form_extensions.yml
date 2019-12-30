@@ -5,8 +5,8 @@ extensions:
         aclResourceId: akeneo_apps_manage_settings
         position: 120
         config:
-            title: pim_menu.item.apps
-            to: akeneo_apps_index
+            title: pim_menu.item.connection_settings
+            to: akeneo_connectivity_connection_settings_index
 
     pim-apps-user-navigation:
         module: pim/menu/user-navigation
@@ -19,5 +19,5 @@ extensions:
         parent: pim-menu-activity-navigation-block
         position: 105
         config:
-            title: pim_menu.item.apps_dashboard
-            to: akeneo_apps_dashboard_index
+            title: pim_menu.item.connection_audit
+            to: akeneo_connectivity_connection_audit_index

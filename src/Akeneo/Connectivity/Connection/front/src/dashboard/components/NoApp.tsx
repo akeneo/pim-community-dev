@@ -11,24 +11,24 @@ export const NoApp = () => {
     const {redirect} = useContext(RouterContext);
 
     return (
-        <PageError title={<Translate id='akeneo_apps.dashboard.no_app.title' />}>
+        <PageError title={<Translate id='akeneo_connectivity.connection.dashboard.no_app.title' />}>
             <SecurityGuard
                 acl='akeneo_apps_manage_settings'
                 fallback={
                     <>
-                        <Translate id='akeneo_apps.dashboard.no_app.message_without_permission.message' />
+                        <Translate id='akeneo_connectivity.connection.dashboard.no_app.message_without_permission.message' />
                         &nbsp;
                         <Link
-                            href={translate('akeneo_apps.dashboard.no_app.message_without_permission.link_url')}
+                            href={translate('akeneo_connectivity.connection.dashboard.no_app.message_without_permission.link_url')}
                             target='_blank'
                         >
-                            <Translate id='akeneo_apps.dashboard.no_app.message_without_permission.link' />
+                            <Translate id='akeneo_connectivity.connection.dashboard.no_app.message_without_permission.link' />
                         </Link>
                     </>
                 }
             >
                 <Link onClick={() => redirect('/apps')}>
-                    <Translate id='akeneo_apps.dashboard.no_app.message_with_permission.link' />
+                    <Translate id='akeneo_connectivity.connection.dashboard.no_app.message_with_permission.link' />
                 </Link>
             </SecurityGuard>
         </PageError>

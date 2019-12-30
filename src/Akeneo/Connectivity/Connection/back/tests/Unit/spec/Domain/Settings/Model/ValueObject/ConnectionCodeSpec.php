@@ -23,14 +23,14 @@ class ConnectionCodeSpec extends ObjectBehavior
     public function it_cannot_contains_an_empty_string()
     {
         $this->beConstructedWith('');
-        $this->shouldThrow(new \InvalidArgumentException('akeneo_apps.connection.constraint.code.required'))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.required'))->duringInstantiation();
     }
 
     public function it_cannot_contains_a_string_shorter_than_3_characters()
     {
         $this->beConstructedWith('aa');
         $this->shouldThrow(
-            new \InvalidArgumentException('akeneo_apps.connection.constraint.code.too_short')
+            new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.too_short')
         )->duringInstantiation();
     }
 
@@ -38,7 +38,7 @@ class ConnectionCodeSpec extends ObjectBehavior
     {
         $this->beConstructedWith(str_repeat('a', 103));
         $this->shouldThrow(
-            new \InvalidArgumentException('akeneo_apps.connection.constraint.code.too_long')
+            new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.too_long')
         )->duringInstantiation();
     }
 
@@ -46,7 +46,7 @@ class ConnectionCodeSpec extends ObjectBehavior
     {
         $this->beConstructedWith('magento-connector');
         $this->shouldThrow(
-            new \InvalidArgumentException('akeneo_apps.connection.constraint.code.invalid')
+            new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.invalid')
         )->duringInstantiation();
     }
 

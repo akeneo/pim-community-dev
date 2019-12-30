@@ -45,7 +45,7 @@ export const AppList = () => {
                 <Translate id='pim_menu.tab.system' />
             </BreadcrumbRouterLink>
             <BreadcrumbItem onClick={() => undefined} isLast={false}>
-                <Translate id='pim_menu.item.apps' />
+                <Translate id='pim_menu.item.connection_settings' />
             </BreadcrumbItem>
         </Breadcrumb>
     );
@@ -74,19 +74,19 @@ export const AppList = () => {
     return (
         <>
             <PageHeader breadcrumb={breadcrumb} buttons={[createButton]} userButtons={userButtons}>
-                <Translate id='pim_menu.item.apps' />
+                <Translate id='pim_menu.item.connection_settings' />
             </PageHeader>
 
             <PageContent>
                 <Helper>
                     <HelperTitle>
-                        <Translate id='pim_apps.helper.title' />
+                        <Translate id='akeneo_connectivity.connection.helper.title' />
                     </HelperTitle>
                     <p>
-                        <Translate id='pim_apps.helper.description' />
+                        <Translate id='akeneo_connectivity.connection.helper.description' />
                     </p>
-                    <HelperLink href={translate('pim_apps.helper.link_url')} target='_blank'>
-                        <Translate id='pim_apps.helper.link' />
+                    <HelperLink href={translate('akeneo_connectivity.connection.helper.link_url')} target='_blank'>
+                        <Translate id='akeneo_connectivity.connection.helper.link' />
                     </HelperLink>
                 </Helper>
 
@@ -97,7 +97,7 @@ export const AppList = () => {
                         {dataSourceApps && dataSourceApps.length > 0 && (
                             <AppGrid
                                 apps={dataSourceApps}
-                                title={<Translate id='pim_apps.flow_type.data_source' count={dataSourceApps.length} />}
+                                title={<Translate id='akeneo_connectivity.connection.flow_type.data_source' count={dataSourceApps.length} />}
                             />
                         )}
                         {dataDestinationApps && dataDestinationApps.length > 0 && (
@@ -105,7 +105,7 @@ export const AppList = () => {
                                 apps={dataDestinationApps}
                                 title={
                                     <Translate
-                                        id='pim_apps.flow_type.data_destination'
+                                        id='akeneo_connectivity.connection.flow_type.data_destination'
                                         count={dataDestinationApps.length}
                                     />
                                 }
@@ -114,7 +114,7 @@ export const AppList = () => {
                         {otherApps && otherApps.length > 0 && (
                             <AppGrid
                                 apps={otherApps}
-                                title={<Translate id='pim_apps.flow_type.other' count={otherApps.length} />}
+                                title={<Translate id='akeneo_connectivity.connection.flow_type.other' count={otherApps.length} />}
                             />
                         )}
                     </>

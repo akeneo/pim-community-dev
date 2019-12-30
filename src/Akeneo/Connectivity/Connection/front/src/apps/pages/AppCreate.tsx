@@ -9,9 +9,9 @@ export const AppCreate = () => {
 
     return (
         <Modal
-            subTitle={<Translate id='pim_apps.apps' />}
-            title={<Translate id='pim_apps.create_app.title' />}
-            description={<Translate id='pim_apps.create_app.description' />}
+            subTitle={<Translate id='akeneo_connectivity.connection.connections' />}
+            title={<Translate id='akeneo_connectivity.connection.create_app.title' />}
+            description={<Translate id='akeneo_connectivity.connection.create_app.description' />}
             onCancel={() => history.push('/apps')}
         >
             <AppCreateForm />

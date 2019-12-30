@@ -6,10 +6,10 @@ export const FlowTypeHelper = () => {
 
     return (
         <>
-            <Translate id='pim_apps.flow_type_helper.message' />
+            <Translate id='akeneo_connectivity.connection.flow_type_helper.message' />
             &nbsp;
-            <a href={translate('pim_apps.flow_type_helper.link_url')} target='_blank' rel='noopener noreferrer'>
-                <Translate id='pim_apps.flow_type_helper.link' />
+            <a href={translate('akeneo_connectivity.connection.flow_type_helper.link_url')} target='_blank' rel='noopener noreferrer'>
+                <Translate id='akeneo_connectivity.connection.flow_type_helper.link' />
             </a>
         </>
     );

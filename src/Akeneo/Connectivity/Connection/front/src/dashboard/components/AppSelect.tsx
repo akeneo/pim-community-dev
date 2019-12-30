@@ -23,12 +23,12 @@ export const AppSelect = ({apps, onChange}: Props) => {
     return (
         <>
             <Label>
-                <Translate id='akeneo_apps.dashboard.app_selector.title' />
+                <Translate id='akeneo_connectivity.connection.dashboard.app_selector.title' />
             </Label>
             <Select
                 data={data}
                 onChange={onChange}
-                dropdownTitle={<Translate id='akeneo_apps.dashboard.app_selector.title' />}
+                dropdownTitle={<Translate id='akeneo_connectivity.connection.dashboard.app_selector.title' />}
             />
         </>
     );
