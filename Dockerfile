@@ -28,7 +28,9 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         libssl-dev \
         gpg \
         gpg-agent \
-        ghostscript && \
+        ghostscript \
+        aspell \
+        aspell-en aspell-es aspell-de aspell-fr && \
     apt-get clean && \
     apt-get --yes autoremove --purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
