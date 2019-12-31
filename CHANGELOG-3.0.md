@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - PIM-9030: Fix date formatting for non UTC values
+- PIM-9041: Fix performance issue on "Add to existing product model" mass action
 
 # 3.0.60 (2019-12-13)
 
