@@ -22,7 +22,7 @@ Feature: Filter products by number field
       | family_foo  | count_is_empty,count_is_not_empty,count_is_superior,count_is_inferior,count_is_superior_or_equals,count_is_inferior_or_equals |
     And the following products:
       | sku                             | family     | count_is_empty | count_is_not_empty | count_is_superior | count_is_inferior | count_is_inferior_or_equals | count_is_superior_or_equals |
-      | ok_with_all_filter              | family_foo |                |        2           |       3           |         4         |             5               |                 6           |
+      | ok_with_all_filters             | family_foo |                |        2           |       3           |         4         |             5               |                 6           |
       | not_ok_with_empty               | family_foo |      100       |        2           |       3           |         4         |             5               |                 6           |
       | not_ok_with_not_empty           | family_foo |                |                    |       3           |         4         |             5               |                 6           |
       | not_ok_with_superior            | family_foo |                |        2           |       2           |         4         |             5               |                 6           |
@@ -35,10 +35,10 @@ Feature: Filter products by number field
     When I filter with the following filters:
       | filter                           | operator     | value |
       | count_is_empty                   | is empty     |       |
-      | count_is_not_empty               | is not empty | 200   |
+      | count_is_not_empty               | is not empty |       |
       | count_is_superior                |   >          |  2    |
       | count_is_inferior                |   <          |  5    |
       | count_is_superior_or_equals      |   >=         |  6    |
       | count_is_inferior_or_equals      |   <=         |  5    |
     Then the grid should contain 1 elements
-    And I should see products ok_with_all_filter
+    And I should see products ok_with_all_filters
