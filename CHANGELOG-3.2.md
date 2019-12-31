@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9044: Fix product proposal count on datagrid
+
 # 3.2.28 (2019-12-31)
 
 # 3.2.27 (2019-12-19)
