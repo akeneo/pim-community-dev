@@ -8,7 +8,6 @@ use Pim\Upgrade\Schema\Tests\ExecuteMigrationTrait;
 
 /**
  * This class will be removed after 4.0 version
- * @group ce
  */
 final class Version_4_0_20191223132437_data_quality_insights_add_dynamic_template_Integration extends TestCase
 {
