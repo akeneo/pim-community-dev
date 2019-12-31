@@ -4,10 +4,10 @@ config:
             controllers:
                 akeneo_connectivity_connection_settings_index:
                     module: pim/controller/apps
-                    aclResourceId: akeneo_apps_manage_settings
+                    aclResourceId: akeneo_connectivity_connection_manage_settings
                 akeneo_connectivity_connection_settings_any:
                     module: pim/controller/apps
-                    aclResourceId: akeneo_apps_manage_settings
+                    aclResourceId: akeneo_connectivity_connection_manage_settings
                 akeneo_connectivity_connection_audit_index:
                     module: pim/controller/apps/dashboard
                 akeneo_connectivity_connection_audit_any:
