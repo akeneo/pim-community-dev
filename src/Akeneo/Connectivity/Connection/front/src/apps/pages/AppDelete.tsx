@@ -31,18 +31,18 @@ export const AppDelete = () => {
 
     const description = (
         <>
-            <Translate id='akeneo_apps.delete_app.description' />
+            <Translate id='akeneo_connectivity.connection.delete_app.description' />
             &nbsp;
-            <Link href={translate('akeneo_apps.delete_app.link_url')} target='_blank'>
-                <Translate id='akeneo_apps.delete_app.link' />
+            <Link href={translate('akeneo_connectivity.connection.delete_app.link_url')} target='_blank'>
+                <Translate id='akeneo_connectivity.connection.delete_app.link' />
             </Link>
         </>
     );
 
     return (
         <Modal
-            subTitle={<Translate id='pim_apps.apps' />}
-            title={<Translate id='akeneo_apps.delete_app.title' />}
+            subTitle={<Translate id='akeneo_connectivity.connection.connections' />}
+            title={<Translate id='akeneo_connectivity.connection.delete_app.title' />}
             description={description}
             onCancel={handleCancel}
         >

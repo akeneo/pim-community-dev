@@ -47,13 +47,13 @@ export const useCreateApp = () => {
 
         if (isErr(result)) {
             if (undefined === result.error.errors) {
-                notify(NotificationLevel.ERROR, translate('pim_apps.create_app.flash.error'));
+                notify(NotificationLevel.ERROR, translate('akeneo_connectivity.connection.create_app.flash.error'));
             }
 
             return result;
         }
 
-        notify(NotificationLevel.SUCCESS, translate('pim_apps.create_app.flash.success'));
+        notify(NotificationLevel.SUCCESS, translate('akeneo_connectivity.connection.create_app.flash.success'));
         history.push(`/apps/${data.code}/edit`);
 
         return result;

@@ -15,7 +15,7 @@ export const RegenerateSecretButton: FC<Props> = ({code}: Props) => {
     return (
         <IconButton
             onClick={() => history.push(`/apps/${code}/regenerate-secret`)}
-            title={translate('akeneo_apps.edit_app.credentials.action.regenerate')}
+            title={translate('akeneo_connectivity.connection.edit_app.credentials.action.regenerate')}
         >
             <UpdateIcon />
         </IconButton>

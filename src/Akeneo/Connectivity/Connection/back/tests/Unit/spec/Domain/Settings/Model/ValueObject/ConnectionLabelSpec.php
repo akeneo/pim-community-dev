@@ -24,7 +24,7 @@ class ConnectionLabelSpec extends ObjectBehavior
     {
         $this->beConstructedWith('aa');
         $this->shouldThrow(
-            new \InvalidArgumentException('akeneo_apps.connection.constraint.label.too_short')
+            new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.label.too_short')
         )->duringInstantiation();
     }
 
@@ -32,7 +32,7 @@ class ConnectionLabelSpec extends ObjectBehavior
     {
         $this->beConstructedWith(str_repeat('a', 101));
         $this->shouldThrow(
-            new \InvalidArgumentException('akeneo_apps.connection.constraint.label.too_long')
+            new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.label.too_long')
         )->duringInstantiation();
     }
 
@@ -46,7 +46,7 @@ class ConnectionLabelSpec extends ObjectBehavior
     {
         $this->beConstructedWith('');
         $this->shouldThrow(
-            new \InvalidArgumentException('akeneo_apps.connection.constraint.label.required')
+            new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.label.required')
         )->duringInstantiation();
     }
 }

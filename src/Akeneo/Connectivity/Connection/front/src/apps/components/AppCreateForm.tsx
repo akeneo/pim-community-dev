@@ -54,13 +54,13 @@ const useFormValidation = (
                 true === state.controls[name].dirty
             ) {
                 if (input.validity.valueMissing) {
-                    dispatch(setError(name, `akeneo_apps.connection.constraint.${name}.required`));
+                    dispatch(setError(name, `akeneo_connectivity.connection.connection.constraint.${name}.required`));
                 }
                 if (input.validity.patternMismatch) {
-                    dispatch(setError(name, `akeneo_apps.connection.constraint.${name}.invalid`));
+                    dispatch(setError(name, `akeneo_connectivity.connection.connection.constraint.${name}.invalid`));
                 }
                 if (input.validity.tooShort) {
-                    dispatch(setError(name, `akeneo_apps.connection.constraint.${name}.too_short`));
+                    dispatch(setError(name, `akeneo_connectivity.connection.connection.constraint.${name}.too_short`));
                 }
             }
         });
@@ -132,7 +132,7 @@ export const AppCreateForm = () => {
 
     return (
         <Form>
-            <FormGroup controlId='label' label='pim_apps.app.label' errors={Object.keys(state.controls.label.errors)}>
+            <FormGroup controlId='label' label='akeneo_connectivity.connection.connection.label' errors={Object.keys(state.controls.label.errors)}>
                 <FormInput
                     ref={labelInputRef}
                     type='text'
@@ -145,7 +145,7 @@ export const AppCreateForm = () => {
                 />
             </FormGroup>
 
-            <FormGroup controlId='code' label='pim_apps.app.code' errors={Object.keys(state.controls.code.errors)}>
+            <FormGroup controlId='code' label='akeneo_connectivity.connection.connection.code' errors={Object.keys(state.controls.code.errors)}>
                 <FormInput
                     ref={codeInputRef}
                     type='text'
@@ -161,7 +161,7 @@ export const AppCreateForm = () => {
 
             <FormGroup
                 controlId='flow_type'
-                label='pim_apps.app.flow_type'
+                label='akeneo_connectivity.connection.connection.flow_type'
                 info={<FlowTypeHelper />}
                 required
                 errors={Object.keys(state.controls.flow_type.errors)}

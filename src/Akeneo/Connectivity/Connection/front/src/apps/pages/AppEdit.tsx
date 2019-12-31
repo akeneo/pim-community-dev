@@ -52,10 +52,10 @@ export interface FormErrors {
 const validate = ({label}: FormValues): FormErrors => {
     const errors: FormErrors = {};
     if (!label || label.trim().length === 0) {
-        errors.label = 'akeneo_apps.connection.constraint.label.required';
+        errors.label = 'akeneo_connectivity.connection.connection.constraint.label.required';
     }
     if (label.trim().length < 3) {
-        errors.label = 'akeneo_apps.connection.constraint.label.too_short';
+        errors.label = 'akeneo_connectivity.connection.connection.constraint.label.too_short';
     }
     return errors;
 };
@@ -154,7 +154,7 @@ const HeaderContent = ({app}: HeaderProps) => {
                         <Translate id='pim_menu.tab.system' />
                     </BreadcrumbRouterLink>
                     <BreadcrumbItem onClick={() => history.push('/apps')} isLast={false}>
-                        <Translate id='pim_menu.item.apps' />
+                        <Translate id='pim_menu.item.connection_settings' />
                     </BreadcrumbItem>
                 </Breadcrumb>
             }

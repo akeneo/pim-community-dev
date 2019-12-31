@@ -18,18 +18,18 @@ export const AppEditForm = ({app}: Props) => {
 
     return (
         <>
-            <Section title={<Translate id='pim_apps.edit_app.subtitle' />} />
+            <Section title={<Translate id='akeneo_connectivity.connection.edit_app.subtitle' />} />
 
             <br />
 
             <Container>
-                <FormGroup controlId='code' label='pim_apps.app.code'>
+                <FormGroup controlId='code' label='akeneo_connectivity.connection.connection.code'>
                     <FormInput type='text' defaultValue={app.code} disabled />
                 </FormGroup>
 
                 <FormGroup
                     controlId='label'
-                    label='pim_apps.app.label'
+                    label='akeneo_connectivity.connection.connection.label'
                     errors={errors.label ? [errors.label] : undefined}
                 >
                     <FormInput
@@ -42,7 +42,7 @@ export const AppEditForm = ({app}: Props) => {
                     />
                 </FormGroup>
 
-                <FormGroup controlId='flow_type' label='pim_apps.app.flow_type' info={<FlowTypeHelper />}>
+                <FormGroup controlId='flow_type' label='akeneo_connectivity.connection.connection.flow_type' info={<FlowTypeHelper />}>
                     <FlowTypeSelect
                         value={values.flowType}
                         onChange={flowType => setFieldValue('flowType', flowType)}
@@ -51,7 +51,7 @@ export const AppEditForm = ({app}: Props) => {
 
                 <FormGroup
                     controlId='image'
-                    label='pim_apps.app.image'
+                    label='akeneo_connectivity.connection.connection.image'
                     errors={errors.image ? [errors.image] : undefined}
                 >
                     <ImageUploader

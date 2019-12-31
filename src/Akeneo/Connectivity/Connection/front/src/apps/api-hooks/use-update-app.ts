@@ -34,13 +34,13 @@ export const useUpdateApp = (code: string) => {
             if (result.error.errors) {
                 result.error.errors.forEach(({reason}) => notify(NotificationLevel.ERROR, translate(reason)));
             } else {
-                notify(NotificationLevel.ERROR, translate('pim_apps.edit_app.flash.error'));
+                notify(NotificationLevel.ERROR, translate('akeneo_connectivity.connection.edit_app.flash.error'));
             }
 
             return result;
         }
 
-        notify(NotificationLevel.SUCCESS, translate('pim_apps.edit_app.flash.success'));
+        notify(NotificationLevel.SUCCESS, translate('akeneo_connectivity.connection.edit_app.flash.success'));
 
         return result;
     };

@@ -10,7 +10,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  */
 class ConnectionImage
 {
-    private const CONSTRAINT_KEY = 'akeneo_apps.connection.constraint.image.%s';
+    private const CONSTRAINT_KEY = 'akeneo_connectivity.connection.connection.constraint.image.%s';
     private $filePath;
 
     public function __construct(string $filePath)

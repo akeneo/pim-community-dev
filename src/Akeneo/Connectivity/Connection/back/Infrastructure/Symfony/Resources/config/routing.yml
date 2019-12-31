@@ -1,20 +1,19 @@
 ## Frontend
 
 # Apps Dashboard
-akeneo_apps_dashboard_index:
+akeneo_connectivity_connection_audit_index:
     path: '/apps/dashboard'
 
-akeneo_apps_dashboard_any:
+akeneo_connectivity_connection_audit_any:
     path: '/apps/dashboard/{any}'
     requirements:
         any: .*
 
 # Apps
-akeneo_apps_index:
+akeneo_connectivity_connection_settings_index:
    path: '/apps'
 
-akeneo_apps_any:
+akeneo_connectivity_connection_settings_any:
     path: '/apps/{any}'
     requirements:
         any: .*
-

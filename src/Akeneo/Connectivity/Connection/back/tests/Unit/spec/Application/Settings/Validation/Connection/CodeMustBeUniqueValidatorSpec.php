@@ -56,7 +56,7 @@ class CodeMustBeUniqueValidatorSpec extends ObjectBehavior
                 new Connection('magento', 'Magento connector', FlowType::DATA_DESTINATION, 42, new UserId(50))
             );
 
-        $context->buildViolation('akeneo_apps.connection.constraint.code.must_be_unique')
+        $context->buildViolation('akeneo_connectivity.connection.connection.constraint.code.must_be_unique')
             ->shouldBeCalled()
             ->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();

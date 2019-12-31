@@ -17,46 +17,46 @@ export const AppCredentials: FC<Props> = ({code, label, credentials: credentials
 
     return (
         <>
-            <Section title={<Translate id='akeneo_apps.edit_app.credentials.title' />} />
+            <Section title={<Translate id='akeneo_connectivity.connection.edit_app.credentials.title' />} />
             <div>
                 <SmallHelper>
-                    <Translate id='akeneo_apps.edit_app.credentials.helper.message' placeholders={{label}} />
+                    <Translate id='akeneo_connectivity.connection.edit_app.credentials.helper.message' placeholders={{label}} />
                     &nbsp;
                     <HelperLink
-                        href={translate('akeneo_apps.edit_app.credentials.helper.link_url')}
+                        href={translate('akeneo_connectivity.connection.edit_app.credentials.helper.link_url')}
                         target='_blank'
                         rel='noopener noreferrer'
                     >
-                        <Translate id='akeneo_apps.edit_app.credentials.helper.link' />
+                        <Translate id='akeneo_connectivity.connection.edit_app.credentials.helper.link' />
                     </HelperLink>
                 </SmallHelper>
             </div>
 
             <CredentialList>
-                <CopiableCredential label={translate('akeneo_apps.app.client_id')}>
+                <CopiableCredential label={translate('akeneo_connectivity.connection.connection.client_id')}>
                     {credentials.clientId}
                 </CopiableCredential>
                 <CopiableCredential
-                    label={translate('akeneo_apps.app.secret')}
+                    label={translate('akeneo_connectivity.connection.connection.secret')}
                     actions={<RegenerateSecretButton code={code} />}
                 >
                     {credentials.secret}
                 </CopiableCredential>
-                <CopiableCredential label={translate('akeneo_apps.app.username')}>
+                <CopiableCredential label={translate('akeneo_connectivity.connection.connection.username')}>
                     {credentials.username}
                 </CopiableCredential>
                 {credentials.password ? (
                     <CopiableCredential
-                        label={translate('akeneo_apps.app.password')}
+                        label={translate('akeneo_connectivity.connection.connection.password')}
                         helper={
                             <InlineHelper warning>
-                                <Translate id='akeneo_apps.edit_app.credentials.clear_password_helper.message' />{' '}
+                                <Translate id='akeneo_connectivity.connection.edit_app.credentials.clear_password_helper.message' />{' '}
                                 <a
-                                    href={translate('akeneo_apps.edit_app.credentials.clear_password_helper.link_url')}
+                                    href={translate('akeneo_connectivity.connection.edit_app.credentials.clear_password_helper.link_url')}
                                     target='_blank'
                                     rel='noopener noreferrer'
                                 >
-                                    <Translate id='akeneo_apps.edit_app.credentials.clear_password_helper.link' />
+                                    <Translate id='akeneo_connectivity.connection.edit_app.credentials.clear_password_helper.link' />
                                 </a>
                             </InlineHelper>
                         }
@@ -65,21 +65,21 @@ export const AppCredentials: FC<Props> = ({code, label, credentials: credentials
                     </CopiableCredential>
                 ) : (
                     <Credential
-                        label={translate('akeneo_apps.app.password')}
+                        label={translate('akeneo_connectivity.connection.connection.password')}
                         helper={
                             <InlineHelper info>
-                                <Translate id='akeneo_apps.edit_app.credentials.password_helper.message' />{' '}
+                                <Translate id='akeneo_connectivity.connection.edit_app.credentials.password_helper.message' />{' '}
                                 <a
-                                    href={translate('akeneo_apps.edit_app.credentials.password_helper.link_url')}
+                                    href={translate('akeneo_connectivity.connection.edit_app.credentials.password_helper.link_url')}
                                     target='_blank'
                                     rel='noopener noreferrer'
                                 >
-                                    <Translate id='akeneo_apps.edit_app.credentials.password_helper.link' />
+                                    <Translate id='akeneo_connectivity.connection.edit_app.credentials.password_helper.link' />
                                 </a>
                             </InlineHelper>
                         }
                     >
-                        <Translate id='akeneo_apps.edit_app.credentials.password_placeholder' />
+                        <Translate id='akeneo_connectivity.connection.edit_app.credentials.password_placeholder' />
                     </Credential>
                 )}
             </CredentialList>

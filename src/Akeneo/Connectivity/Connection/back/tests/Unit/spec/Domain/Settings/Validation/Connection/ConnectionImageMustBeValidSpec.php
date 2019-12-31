@@ -35,7 +35,7 @@ class ConnectionImageMustBeValidSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
     ) {
-        $context->buildViolation('akeneo_apps.connection.constraint.image.not_empty')->willReturn($builder);
+        $context->buildViolation('akeneo_connectivity.connection.connection.constraint.image.not_empty')->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();
 
         $this->validate('', $context);

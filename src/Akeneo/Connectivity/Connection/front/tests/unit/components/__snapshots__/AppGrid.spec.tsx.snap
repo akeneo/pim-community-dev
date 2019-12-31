@@ -13,7 +13,7 @@ Array [
     <div
       className="sc-kEYyzF uXDi"
     >
-      pim_apps.app_count
+      akeneo_connectivity.connection.app_count
     </div>
   </header>,
   <div

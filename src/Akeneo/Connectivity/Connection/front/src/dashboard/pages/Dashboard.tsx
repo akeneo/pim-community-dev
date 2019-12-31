@@ -26,19 +26,19 @@ export const Dashboard = () => {
     return (
         <>
             <PageHeader breadcrumb={breadcrumb} userButtons={userButtons}>
-                <Translate id='pim_menu.item.apps_dashboard' />
+                <Translate id='pim_menu.item.connection_audit' />
             </PageHeader>
 
             <PageContent>
                 <Helper>
                     <HelperTitle>
-                        <Translate id='akeneo_apps.dashboard.helper.title' />
+                        <Translate id='akeneo_connectivity.connection.dashboard.helper.title' />
                     </HelperTitle>
                     <p>
-                        <Translate id='akeneo_apps.dashboard.helper.description' />
+                        <Translate id='akeneo_connectivity.connection.dashboard.helper.description' />
                     </p>
-                    <HelperLink href={translate('akeneo_apps.dashboard.helper.link_url')} target='_blank'>
-                        <Translate id='akeneo_apps.dashboard.helper.link' />
+                    <HelperLink href={translate('akeneo_connectivity.connection.dashboard.helper.link_url')} target='_blank'>
+                        <Translate id='akeneo_connectivity.connection.dashboard.helper.link' />
                     </HelperLink>
                 </Helper>
 

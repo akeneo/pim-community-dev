@@ -231,7 +231,7 @@ class ConnectionContext implements Context
 
         foreach ($this->violations->getConstraintViolationList() as $violation) {
             if ('code' === $violation->getPropertyPath() &&
-                'akeneo_apps.connection.constraint.code.must_be_unique' === $violation->getMessage()
+                'akeneo_connectivity.connection.connection.constraint.code.must_be_unique' === $violation->getMessage()
             ) {
                 return;
             }
@@ -249,7 +249,7 @@ class ConnectionContext implements Context
 
         foreach ($this->violations->getConstraintViolationList() as $violation) {
             if ('image' === $violation->getPropertyPath() &&
-                'akeneo_apps.connection.constraint.image.must_exist' === $violation->getMessage()
+                'akeneo_connectivity.connection.connection.constraint.image.must_exist' === $violation->getMessage()
             ) {
                 return;
             }

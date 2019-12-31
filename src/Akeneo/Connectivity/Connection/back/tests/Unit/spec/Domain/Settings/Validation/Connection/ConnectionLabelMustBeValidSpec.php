@@ -28,7 +28,7 @@ class ConnectionLabelMustBeValidSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
     ) {
-        $context->buildViolation('akeneo_apps.connection.constraint.label.too_long')->willReturn($builder);
+        $context->buildViolation('akeneo_connectivity.connection.connection.constraint.label.too_long')->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();
 
         $this->validate(str_repeat('A', 103), $context);
@@ -38,7 +38,7 @@ class ConnectionLabelMustBeValidSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
     ) {
-        $context->buildViolation('akeneo_apps.connection.constraint.label.required')->willReturn($builder);
+        $context->buildViolation('akeneo_connectivity.connection.connection.constraint.label.required')->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();
 
         $this->validate('', $context);
