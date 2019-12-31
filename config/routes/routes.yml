@@ -26,6 +26,9 @@ pim_security:
 pim_franklin_insights:
     resource: "@AkeneoFranklinInsightsBundle/Resources/config/routing.yml"
 
+pim_data_quality_insights:
+    resource: "@AkeneoDataQualityInsightsBundle/Resources/config/routing.yml"
+
 # SSO
 akeneo_authentication:
     resource: "@AkeneoAuthenticationBundle/Resources/config/routing.yml"

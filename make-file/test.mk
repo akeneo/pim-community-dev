@@ -2,7 +2,7 @@ var/tests/%:
 	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
 
 .PHONY: coupling-back
-coupling-back: twa-coupling-back asset-coupling-back franklin-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back
+coupling-back: twa-coupling-back asset-coupling-back franklin-insights-coupling-back data-quality-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back
 
 .PHONY: check-pullup
 check-pullup:
@@ -18,7 +18,7 @@ lint-back:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
 	$(DOCKER_COMPOSE) run -u www-data --rm php vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
-	$(MAKE) reference-entity-lint-back asset-manager-lint-back
+	$(MAKE) data-quality-insights-lint-back reference-entity-lint-back asset-manager-lint-back
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 
@@ -54,7 +54,7 @@ integration-front:
 	$(YARN_RUN) integration
 
 .PHONY: integration-back
-integration-back: var/tests/phpunit franklin-insights-integration-back reference-entity-integration-back asset-manager-integration-back
+integration-back: var/tests/phpunit franklin-insights-integration-back data-quality-insights-integration-back reference-entity-integration-back asset-manager-integration-back
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Integration_Test
 else
@@ -64,7 +64,12 @@ endif
 ### Migration tests
 .PHONY: migration-back
 migration-back: var/tests/phpunit
+ifeq ($(CI),true)
+	cp vendor/akeneo/pim-community-dev/upgrades/schema/*.php upgrades/schema/.
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Migration_Test
+else
+	@echo This step is only compatible with CircleCI Integration as it uses some CircleCI binaries to split the tests
+endif
 
 ### End to end tests
 .PHONY: end-to-end-back

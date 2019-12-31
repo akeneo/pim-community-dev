@@ -1,0 +1,35 @@
+services:
+
+    #Jobs
+    akeneo.pim.automation.data_quality_insights.job.evaluate_products_criteria:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'data_quality_insights_evaluate_products_criteria'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.pim.automation.franklin_insights.connector.step.push_structure_and_products'
+        tags:
+            - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
+
+    #Steps
+    akeneo.pim.automation.franklin_insights.connector.step.push_structure_and_products:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'evaluate_products_criteria'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet'
+
+    #Tasklets
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
+
+    #Job parameters
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluateProductsCriteriaParameters:
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

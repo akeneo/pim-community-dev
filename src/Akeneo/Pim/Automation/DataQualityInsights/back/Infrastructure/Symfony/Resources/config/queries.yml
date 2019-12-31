@@ -1,0 +1,50 @@
+services:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdentifierFromProductIdQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetNonRequiredAttributesMasksQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLocalesByChannelQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributesByTypeFromProductQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductRawValuesByAttributeQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributeAsMainTitleValueFromProductId:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetCategoryChildrenIdsQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetRanksDistributionFromProductAxisRatesQuery:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetCategoryChildrenIdsQuery'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllFamilyCodesQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllCategoryCodesQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllActivatedLocalesQuery:
+        arguments:
+            - '@database_connection'
