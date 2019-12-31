@@ -1,4 +1,4 @@
-import {Apps} from '@akeneo-pim-ce/apps';
+import {Apps} from '@akeneo-pim-community/connectivity-connection';
 import React from 'react';
 import {dependencies} from '../dependencies';
 import ReactController from '../react/react-controller';

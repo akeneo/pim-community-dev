@@ -29,7 +29,7 @@ class FileSystemAssetsInstaller implements AssetsInstaller
     public function installAssets(bool $shouldSymlink): void
     {
         $originDir = __DIR__ . '/../../../front/src';
-        $targetDir = $this->projectDir . '/public/bundles/akeneoapps-react';
+        $targetDir = $this->projectDir . '/public/bundles/akeneoconnectivityconnection-react';
         if ($shouldSymlink) {
             $this->relativeSymlinkWithFallback($originDir, $targetDir);
         } else {
@@ -89,8 +89,12 @@ class FileSystemAssetsInstaller implements AssetsInstaller
         }
         $this->filesystem->symlink($originDir, $targetDir);
         if (!file_exists($targetDir)) {
-            throw new IOException(sprintf('Symbolic link "%s" was created but appears to be broken.', $targetDir), 0,
-                null, $targetDir);
+            throw new IOException(
+                sprintf('Symbolic link "%s" was created but appears to be broken.', $targetDir),
+                0,
+                null,
+                $targetDir
+            );
         }
     }
 

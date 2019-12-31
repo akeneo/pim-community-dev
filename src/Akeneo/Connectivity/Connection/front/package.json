@@ -1,5 +1,5 @@
 {
-    "name": "@akeneo-pim-ce/apps",
+    "name": "@akeneo-pim-community/connectivity-connection",
     "version": "1.0.0",
     "license": "OSL-3.0",
     "main": "src/index.ts",
