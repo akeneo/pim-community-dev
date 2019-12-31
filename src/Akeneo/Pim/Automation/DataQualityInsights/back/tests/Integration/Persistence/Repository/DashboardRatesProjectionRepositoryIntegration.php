@@ -90,7 +90,7 @@ INSERT INTO pimee_data_quality_insights_dashboard_rates_projection(type, code, r
 VALUES (:type, :code, :rates)
 SQL;
 
-        $stmt = $this->db->executequery($sql, [
+        $this->db->executequery($sql, [
             'type' => DashboardRatesProjectionRepository::TYPE_CATALOG_PROJECTION,
             'code' => "catalog",
             'rates' => json_encode($this->getRates()),
@@ -104,7 +104,7 @@ INSERT INTO pimee_data_quality_insights_dashboard_rates_projection(type, code, r
 VALUES (:type, :code, :rates)
 SQL;
 
-        $stmt = $this->db->executequery($sql, [
+        $this->db->executequery($sql, [
             'type' => DashboardRatesProjectionRepository::TYPE_CATEGORY_PROJECTION,
             'code' => "master",
             'rates' => json_encode($this->getRates()),
@@ -118,7 +118,7 @@ INSERT INTO pimee_data_quality_insights_dashboard_rates_projection(type, code, r
 VALUES (:type, :code, :rates)
 SQL;
 
-        $stmt = $this->db->executequery($sql, [
+        $this->db->executequery($sql, [
             'type' => DashboardRatesProjectionRepository::TYPE_FAMILY_PROJECTION,
             'code' => "scanners",
             'rates' => json_encode($this->getRates()),

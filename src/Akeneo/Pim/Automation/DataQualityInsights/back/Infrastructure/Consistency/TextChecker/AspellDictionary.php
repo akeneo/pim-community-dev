@@ -29,6 +29,12 @@ class AspellDictionary
     public function persistDictionaryToSharedFilesystem(Dictionary $dictionary, LanguageCode $languageCode)
     {
         $putStream = tmpfile();
+
+        if(!is_resource($putStream))
+        {
+            throw new \RuntimeException('Unable to create temporary file');
+        }
+
         fwrite($putStream, $this->dictionaryHeader($dictionary, $languageCode) . PHP_EOL);
 
         foreach ($dictionary as $word) {
@@ -104,9 +110,16 @@ class AspellDictionary
 
     private function downloadDictionaryFromSharedFilesystem(LanguageCode $languageCode): void
     {
+        $readStream = $this->mountManager->readStream($this->getSharedAdapterFilePath($languageCode));
+
+        if(!is_resource($readStream))
+        {
+            throw new DictionaryNotFoundException();
+        }
+
         $this->mountManager->putStream(
             $this->getLocalAdapterFilePath($languageCode),
-            $this->mountManager->readStream($this->getSharedAdapterFilePath($languageCode))
+            $readStream
         );
 
         if (false === $this->mountManager->has($this->getLocalAdapterFilePath($languageCode))) {

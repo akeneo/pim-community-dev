@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Pim\Upgrade\Schema;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\Query\InitDataQualityInsightsSchema;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version_4_0_20191023164418_data_quality_insights_create_tables extends AbstractMigration
 {

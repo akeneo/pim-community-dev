@@ -117,6 +117,8 @@ final class ConsolidateDashboardRates
 
     private function formatDashboardRanks(ConsolidationDate $day, array $rates): array
     {
+        $dashboardRanks = [];
+
         $dashboardRanks[strval($this->daily)][$day->formatByPeriodicity($this->daily)] = $rates;
 
         if ($day->isLastDayOfWeek()) {
