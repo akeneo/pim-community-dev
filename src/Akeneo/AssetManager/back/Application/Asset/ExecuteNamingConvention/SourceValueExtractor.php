@@ -15,6 +15,10 @@ namespace Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention;
 
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\MediaLinkData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\NumberData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionData;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\Source;
@@ -54,18 +58,25 @@ class SourceValueExtractor
     }
 
     /**
-     * Try to extract string value from the data value. Most of data value can be normalized in order to
-     * get the string value. If not we need to add the case manually (FileData for example).
+     * We can extract string value only if Value is FileData, TextData, NumberData, OptionData or MediaLinkData.
      */
     private function extractStringDataValue(Value $value): ?string
     {
         $valueData = $value->getData();
-        if ($valueData instanceof FileData) {
-            return $value->getData()->getOriginalFilename();
+
+        switch (get_class($valueData)) {
+            case FileData::class:
+                return $valueData->getOriginalFilename();
+
+            case TextData::class:
+            case NumberData::class:
+            case OptionData::class:
+            case MediaLinkData::class:
+                return $valueData->normalize();
+
+            default:
+                // @todo AST-205: handle error (or just return null?)
+                return null;
         }
-
-        $normalized = $valueData->normalize();
-
-        return is_string($normalized) ? $normalized : null;
     }
 }
