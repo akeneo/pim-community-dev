@@ -11,7 +11,7 @@ class DashboardController extends ReactController {
   }
 
   routeGuardToUnmount() {
-    return /^akeneo_apps_dashboard_/;
+    return /^akeneo_connectivity_connection_audit_/;
   }
 
   initialize() {

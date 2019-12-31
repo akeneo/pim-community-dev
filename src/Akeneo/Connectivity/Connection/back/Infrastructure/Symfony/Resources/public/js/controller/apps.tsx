@@ -11,7 +11,7 @@ class AppsController extends ReactController {
   }
 
   routeGuardToUnmount() {
-    return /^akeneo_apps_/;
+    return /^akeneo_connectivity_connection_settings_/;
   }
 
   initialize() {
