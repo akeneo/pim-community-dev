@@ -1,14 +1,14 @@
 import {Action} from 'redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
-import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import fetchAllChannels from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
-import {Family, FamilyCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
+import {Family, FamilyCode} from 'akeneoassetmanager/platform/model/structure/family';
 import {
   familyFetcher,
   fetchFamily,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family';
 import {fetchRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/rule-relation';
-import {RuleRelation} from 'akeneopimenrichmentassetmanager/platform/model/structure/rule-relation';
+import {RuleRelation} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 

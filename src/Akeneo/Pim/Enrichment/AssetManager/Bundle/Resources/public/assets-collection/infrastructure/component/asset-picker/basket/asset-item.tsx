@@ -1,12 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
-import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
+import {Context} from 'akeneoassetmanager/domain/model/context';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoassetmanager/tools/translator';
 import {RemoveButton} from 'akeneoassetmanager/application/component/app/remove-button';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
-import ListAsset, {getListAssetMainMediaThumbnail, getAssetLabel} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import ListAsset, {
+  getListAssetMainMediaThumbnail,
+  getAssetLabel,
+} from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 const Container = styled.li`
   padding: 10px 0;

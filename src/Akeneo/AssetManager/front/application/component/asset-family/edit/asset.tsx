@@ -39,8 +39,7 @@ import Channel from 'akeneoassetmanager/domain/model/channel';
 import {catalogChannelChanged, catalogLocaleChanged} from 'akeneoassetmanager/domain/event/user';
 import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/index/completeness-filter';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
-import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {assetUploadStart} from 'akeneoassetmanager/domain/event/asset/upload';
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
@@ -106,7 +105,7 @@ export type CellViews = {
 export type FilterViews = {
   [key: string]: {
     view: FilterView;
-    attribute: Attribute;
+    attribute: NormalizedAttribute;
   };
 };
 
@@ -173,11 +172,9 @@ class Assets extends React.Component<StateProps & DispatchProps, {cellViews: Cel
     }
 
     if (0 === Object.keys(filterViews).length && null !== props.attributes) {
-      newFilterViews = props.attributes.reduce((filters: FilterViews, normalizedAttribute: NormalizedAttribute) => {
-        const attribute = denormalizeAttribute(normalizedAttribute);
-
+      newFilterViews = props.attributes.reduce((filters: FilterViews, attribute: NormalizedAttribute) => {
         if (hasDataFilterView(attribute.type)) {
-          filters[attribute.getCode()] = {
+          filters[attribute.code] = {
             view: getDataFilterView(attribute.type),
             attribute,
           };

@@ -6,11 +6,11 @@ import __ from 'akeneoassetmanager/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import Left from 'akeneoassetmanager/application/component/app/icon/left';
-import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
 import {getAssetEditUrl, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
 import ListAsset, {getListAssetMainMediaThumbnail, MoveDirection, getAssetLabel, assetWillNotMoveInCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
 const Img = styled.img`
   width: 140px;

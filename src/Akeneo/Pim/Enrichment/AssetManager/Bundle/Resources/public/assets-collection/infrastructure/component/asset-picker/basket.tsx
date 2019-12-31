@@ -1,11 +1,10 @@
 import * as React from 'react';
-import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
-import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
+import {Context} from 'akeneoassetmanager/domain/model/context';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Button} from 'akeneoassetmanager/application/component/app/button';
-import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
+import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import AssetItem from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket/asset-item';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import ListAsset, {
@@ -14,6 +13,7 @@ import ListAsset, {
   removeAssetFromCollection,
   emptyCollection,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
 type BasketProps = {
   dataProvider: any;

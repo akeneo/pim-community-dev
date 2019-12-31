@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
+import {Context} from 'akeneoassetmanager/domain/model/context';
 import __ from 'akeneoassetmanager/tools/translator';
 import Download from 'akeneoassetmanager/application/component/app/icon/download';
 import Link from 'akeneoassetmanager/application/component/app/icon/link';

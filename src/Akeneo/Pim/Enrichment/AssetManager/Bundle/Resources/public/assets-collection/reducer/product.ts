@@ -1,8 +1,8 @@
 import {Action} from 'redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {sameValue, Value as CommonValue} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
-export type AssetCode = string;
 export type AssetCollectionData = AssetCode[];
 
 export type ProductIdentifier = string;

@@ -1,5 +1,5 @@
 import promisify from 'akeneoassetmanager/tools/promisify';
-import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {isString, isLabels} from 'akeneoassetmanager/domain/model/utils';
 const fetcherRegistry = require('pim/fetcher-registry');
 
