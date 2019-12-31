@@ -36,13 +36,13 @@ export const CopiableCredential: FC<Props> = ({label, children: value, actions, 
             label={label}
             actions={
                 <>
+                    {actions}
                     <IconButton
                         onClick={handleCopy}
                         title={translate('akeneo_connectivity.connection.edit_app.credentials.action.copy')}
                     >
                         <DuplicateIcon />
                     </IconButton>
-                    {actions}
                 </>
             }
             helper={helper}
