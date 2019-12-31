@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\Write;
 
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionImage;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionLabel;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 
