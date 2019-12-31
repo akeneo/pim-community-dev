@@ -22,6 +22,9 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 
 /**
+ * The goal of this class is to extract the string value of an asset given a naming convention.
+ * As a reminder a naming convention can represent the code of an asset or an attribute code.
+ *
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
@@ -35,11 +38,8 @@ class SourceValueExtractor
         }
 
         $value = $this->findValueInAsset($asset, $source);
-        if (null === $value) {
-            return null;
-        }
 
-        return $this->extractStringDataValue($value);
+        return null === $value ? null : $this->extractStringDataValue($value);
     }
 
     private function findValueInAsset(Asset $asset, Source $source): ?Value
@@ -53,6 +53,10 @@ class SourceValueExtractor
         return $asset->findValue($valueKey);
     }
 
+    /**
+     * Try to extract string value from the data value. Most of data value can be normalized in order to
+     * get the string value. If not we need to add the case manually (FileData for example).
+     */
     private function extractStringDataValue(Value $value): ?string
     {
         $valueData = $value->getData();

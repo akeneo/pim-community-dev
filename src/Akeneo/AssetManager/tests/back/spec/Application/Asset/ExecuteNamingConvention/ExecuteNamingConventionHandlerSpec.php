@@ -64,7 +64,7 @@ class ExecuteNamingConventionHandlerSpec extends ObjectBehavior
 
         $executeNamingConventionCommand = new ExecuteNamingConventionCommand($assetCode, $assetFamilyIdentifier);
 
-        // @todo: add later the fact that something is triggered
+        // @todo AST-203: check that something is triggered
 
         $this->__invoke($executeNamingConventionCommand);
     }
@@ -82,7 +82,7 @@ class ExecuteNamingConventionHandlerSpec extends ObjectBehavior
 
         $executeNamingConventionCommand = new ExecuteNamingConventionCommand($assetCode, $assetFamilyIdentifier);
 
-        // @todo: add later the fact that nothing is triggered
+        // @todo AST-203: check that nothing is triggered
 
         $this->__invoke($executeNamingConventionCommand);
     }
@@ -93,7 +93,6 @@ class ExecuteNamingConventionHandlerSpec extends ObjectBehavior
         SourceValueExtractor $sourceValueExtractor,
         AssetFamily $assetFamily,
         Asset $asset,
-        ExecuteNamingConventionCommand $executeNamingConventionCommand,
         NamingConvention $namingConvention
     ) {
         $assetCode = AssetCode::fromString('code');
@@ -106,7 +105,7 @@ class ExecuteNamingConventionHandlerSpec extends ObjectBehavior
 
         $executeNamingConventionCommand = new ExecuteNamingConventionCommand($assetCode, $assetFamilyIdentifier);
 
-        // @todo: add later the fact that nothing is triggered
+        // @todo AST-203: check that nothing is triggered
 
         $this->__invoke($executeNamingConventionCommand);
     }
