@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-9039: Delete export/import files with the job batch:purge-job-execution
+
 # 3.0.61 (2019-12-19)
 
 ## Bug fixes
