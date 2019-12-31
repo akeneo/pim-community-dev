@@ -34,7 +34,7 @@ Add workspace to the root `package.json` (CE or EE) with the relative path to yo
 ```json
 {
     "workspaces": [
-        "src/Akeneo/Apps/front"
+        "src/Akeneo/Connectivity/Connection/front"
     ]
 }
 ```

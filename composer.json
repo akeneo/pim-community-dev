@@ -17,7 +17,7 @@
             "Pim\\Upgrade\\": "upgrades/",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/back",
-            "Akeneo\\Apps\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Apps/back"
+            "Akeneo\\Connectivity\\Connection\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back"
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
