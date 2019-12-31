@@ -450,7 +450,9 @@ define(
                 if (_.has(displayedAttributes, event.attribute)) {
                     const field = displayedAttributes[event.attribute];
                     // TODO: the manager shouldn't be stateful, access the field by another way
-                    _.defer(field.setFocus.bind(field));
+                    setTimeout(() => {
+                        field.setFocus();
+                    }, 1000);
                 }
             },
 
