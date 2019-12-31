@@ -13,7 +13,6 @@ config:
                 akeneo_connectivity_connection_audit_any:
                     module: pim/controller/apps/dashboard
 
-
     paths:
         pim/controller/apps: akeneoconnectivityconnection/js/controller/apps.tsx
         pim/controller/apps/dashboard: akeneoconnectivityconnection/js/controller/dashboard.tsx

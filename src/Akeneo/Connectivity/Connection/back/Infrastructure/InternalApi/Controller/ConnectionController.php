@@ -83,7 +83,7 @@ class ConnectionController
 
     public function create(Request $request): JsonResponse
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
+        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 
@@ -110,7 +110,7 @@ class ConnectionController
 
     public function get(Request $request): JsonResponse
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
+        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 
@@ -126,7 +126,7 @@ class ConnectionController
 
     public function update(Request $request): JsonResponse
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
+        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 
@@ -158,7 +158,7 @@ class ConnectionController
 
     public function delete(Request $request): JsonResponse
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
+        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 
@@ -174,7 +174,7 @@ class ConnectionController
 
     public function regenerateSecret(Request $request): JsonResponse
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
+        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 

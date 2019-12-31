@@ -13,7 +13,7 @@ export const NoApp = () => {
     return (
         <PageError title={<Translate id='akeneo_connectivity.connection.dashboard.no_app.title' />}>
             <SecurityGuard
-                acl='akeneo_apps_manage_settings'
+                acl='akeneo_connectivity_connection_manage_settings'
                 fallback={
                     <>
                         <Translate id='akeneo_connectivity.connection.dashboard.no_app.message_without_permission.message' />
