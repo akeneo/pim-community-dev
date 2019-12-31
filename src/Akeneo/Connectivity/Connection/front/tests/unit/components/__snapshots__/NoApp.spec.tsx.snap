@@ -17,7 +17,7 @@ exports[`NoApp should render 1`] = `
     className="sc-gZMcBi jVpjdn"
   >
     akeneo_connectivity.connection.no_app.message
-
+     
     <a
       className="sc-kEYyzF hgSZNu"
       onClick={[Function]}
