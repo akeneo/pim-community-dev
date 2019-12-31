@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
@@ -23,5 +24,5 @@ interface TextChecker
      * @param string $locale
      * @return TextCheckResultCollection
      */
-    public function check(string $text, string $locale): TextCheckResultCollection;
+    public function check(string $text, LocaleCode $locale): TextCheckResultCollection;
 }

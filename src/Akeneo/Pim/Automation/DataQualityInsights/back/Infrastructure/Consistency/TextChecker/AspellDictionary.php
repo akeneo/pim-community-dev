@@ -30,8 +30,7 @@ class AspellDictionary
     {
         $putStream = tmpfile();
 
-        if(!is_resource($putStream))
-        {
+        if (!is_resource($putStream)) {
             throw new \RuntimeException('Unable to create temporary file');
         }
 
@@ -95,6 +94,10 @@ class AspellDictionary
 
     private function isDictionaryUpToDate(LanguageCode $languageCode): bool
     {
+        if (false === $this->mountManager->has($this->getLocalAdapterFilePath($languageCode))) {
+            return false;
+        }
+
         $localDictionaryTimestamp = $this->mountManager->getTimestamp($this->getLocalAdapterFilePath($languageCode));
 
         $fileDate = $this->clock->fromTimestamp(intval($localDictionaryTimestamp));
@@ -105,15 +108,22 @@ class AspellDictionary
             return true;
         }
 
+        if (false === $this->mountManager->has($this->getSharedAdapterFilePath($languageCode))) {
+            return false;
+        }
+
         return ! ($this->mountManager->getTimestamp($this->getSharedAdapterFilePath($languageCode)) > $localDictionaryTimestamp);
     }
 
     private function downloadDictionaryFromSharedFilesystem(LanguageCode $languageCode): void
     {
+        if (false === $this->mountManager->has($this->getSharedAdapterFilePath($languageCode))) {
+            throw new DictionaryNotFoundException();
+        }
+
         $readStream = $this->mountManager->readStream($this->getSharedAdapterFilePath($languageCode));
 
-        if(!is_resource($readStream))
-        {
+        if (!is_resource($readStream)) {
             throw new DictionaryNotFoundException();
         }
 

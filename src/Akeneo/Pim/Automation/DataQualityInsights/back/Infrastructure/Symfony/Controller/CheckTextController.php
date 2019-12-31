@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Contr
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,16 +44,16 @@ class CheckTextController
         if (!$this->featureFlag->isEnabled()) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
-        
+
         $text = $request->request->get('text');
-        $locale = $request->request->get('locale');
+        $localeCode = new LocaleCode($request->request->get('locale'));
 
         // @todo[DAPI-601] can we use a more appropriate response ?
-        if (empty($text) || !$this->supportedLocaleChecker->isSupported($locale)) {
+        if (empty($text) || !$this->supportedLocaleChecker->isSupported($localeCode)) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
-        $analysis = $this->textChecker->check($text, $locale);
+        $analysis = $this->textChecker->check($text, $localeCode);
 
         return new JsonResponse($analysis->normalize());
     }

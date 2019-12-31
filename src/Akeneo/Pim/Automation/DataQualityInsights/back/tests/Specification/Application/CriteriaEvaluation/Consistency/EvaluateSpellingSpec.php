@@ -101,9 +101,9 @@ class EvaluateSpellingSpec extends ObjectBehavior
             ],
         ]);
 
-        $supportedLocaleChecker->isSupported('en_US')->willReturn(true);
-        $supportedLocaleChecker->isSupported('fr_FR')->willReturn(true);
-        $supportedLocaleChecker->isSupported('it_IT')->willReturn(true);
+        $supportedLocaleChecker->isSupported(new LocaleCode('en_US'))->willReturn(true);
+        $supportedLocaleChecker->isSupported(new LocaleCode('fr_FR'))->willReturn(true);
+        $supportedLocaleChecker->isSupported(new LocaleCode('it_IT'))->willReturn(true);
 
         $textCheckResultCollection1->count()->willReturn(1);
         $textCheckResultCollection2->count()->willReturn(1);

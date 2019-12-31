@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
@@ -22,15 +23,15 @@ class SupportedPrefixLocaleChecker implements SupportedLocaleChecker
 {
     const AVAILABLE_LANGUAGE_CODE = ['en', 'es', 'de', 'fr'];
 
-    public function isSupported(string $locale): bool
+    public function isSupported(LocaleCode $localeCode): bool
     {
-        return array_reduce(self::AVAILABLE_LANGUAGE_CODE, function ($previous, $localePrefix) use ($locale) {
+        return array_reduce(self::AVAILABLE_LANGUAGE_CODE, function ($previous, $localePrefix) use ($localeCode) {
             $pattern = sprintf(
                 '~^%s_[A-Z]{2}$~',
                 $localePrefix
             );
 
-            return $previous || (preg_match($pattern, $locale) === 1);
+            return $previous || (preg_match($pattern, $localeCode->__toString()) === 1);
         }, false);
     }
 }

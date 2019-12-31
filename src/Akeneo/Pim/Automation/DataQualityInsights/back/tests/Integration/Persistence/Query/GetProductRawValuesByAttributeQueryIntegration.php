@@ -43,6 +43,15 @@ class GetProductRawValuesByAttributeQueryIntegration extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
+    public function test_it_returns_empty_array_if_product_do_not_exists()
+    {
+        $result = $this
+            ->get(GetProductRawValuesByAttributeQuery::class)
+            ->execute(new ProductId(1418), ['a_text', 'a_yes_no']);
+
+        $this->assertSame([], $result);
+    }
+
     private function createProduct(): ProductId
     {
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')

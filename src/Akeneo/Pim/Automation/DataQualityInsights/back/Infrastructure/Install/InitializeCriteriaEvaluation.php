@@ -128,8 +128,7 @@ final class InitializeCriteriaEvaluation
 
         $user = $this->tokenStorage->getToken()->getUser();
 
-        if(! $user instanceof UserInterface)
-        {
+        if (! $user instanceof UserInterface) {
             throw new \RuntimeException('User must be an instance of UserInterface');
         }
 

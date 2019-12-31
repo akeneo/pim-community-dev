@@ -14,7 +14,10 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionary;
 use Mekras\Speller\Aspell\Aspell;
+use Mekras\Speller\Dictionary;
 use Mekras\Speller\Issue;
 use PhpSpec\ObjectBehavior;
 
@@ -23,16 +26,19 @@ use PhpSpec\ObjectBehavior;
  */
 class AspellCheckerSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(AspellDictionary $aspellDictionary)
     {
-        $this->beConstructedWith('aspell');
+        $this->beConstructedWith('aspell', $aspellDictionary, '/an/absolute/path');
     }
 
     public function it_checks_test(
-        Aspell $speller
+        Aspell $speller,
+        $aspellDictionary
     ) {
         $text = 'Typos hapen.';
         $locale = 'en_US';
+
+        $aspellDictionary->getUpToDateLocalDictionaryRelativeFilePath(new LocaleCode($locale))->willReturn('a/relative/filepath.pws');
 
         $aspellCheckResult = [
             new Issue('hapen', 'ANY_ASPELL_RETURN_CODE'),
@@ -40,23 +46,26 @@ class AspellCheckerSpec extends ObjectBehavior
 
         $speller->checkText($text, [$locale])->willReturn($aspellCheckResult);
 
-        $result = $this->check($text, $locale);
+        $result = $this->check($text, new LocaleCode($locale));
 
         $result->shouldBeAnInstanceOf(TextCheckResultCollection::class);
         $result->count()->shouldBe(1);
     }
 
     public function it_checks_test_without_issue(
-        Aspell $speller
+        Aspell $speller,
+        $aspellDictionary
     ) {
         $text = 'Typos happen.';
         $locale = 'en_US';
+
+        $aspellDictionary->getUpToDateLocalDictionaryRelativeFilePath(new LocaleCode($locale))->willReturn('a/relative/filepath.pws');
 
         $aspellCheckResult = [];
 
         $speller->checkText($text, [$locale])->willReturn($aspellCheckResult);
 
-        $result = $this->check($text, $locale);
+        $result = $this->check($text, new LocaleCode($locale));
 
         $result->shouldBeAnInstanceOf(TextCheckResultCollection::class);
         $result->count()->shouldBe(0);

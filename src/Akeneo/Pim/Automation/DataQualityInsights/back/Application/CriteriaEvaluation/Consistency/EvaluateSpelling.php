@@ -84,12 +84,13 @@ class EvaluateSpelling implements EvaluateCriterionInterface
 
         foreach ($localesByChannel as $channelCode => $localeCodes) {
             foreach ($localeCodes as $localeCode) {
+                $localeCode = new LocaleCode($localeCode);
                 if (!$this->supportedLocaleChecker->isSupported($localeCode)) {
                     continue;
                 }
 
                 foreach ($productValues as $attributeCode => $productValueByChannelAndLocale) {
-                    $productValue = $productValueByChannelAndLocale[$channelCode][$localeCode];
+                    $productValue = $productValueByChannelAndLocale[$channelCode][$localeCode->__toString()];
 
                     if ($productValue === null) {
                         continue;
@@ -97,7 +98,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
 
                     $result = $this->textChecker->check($productValue, $localeCode);
 
-                    $evaluatedValues[$channelCode][$localeCode][$attributeCode] = $this->computeProductValueRate($result);
+                    $evaluatedValues[$channelCode][$localeCode->__toString()][$attributeCode] = $this->computeProductValueRate($result);
                 }
             }
         }
