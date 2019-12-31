@@ -54,7 +54,7 @@ return [
     Akeneo\Platform\Bundle\NotificationBundle\PimNotificationBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\UIBundle\PimUIBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle::class => ['all' => true],
-    Akeneo\Connectivity\Connection\Infrastructure\Symfony\AkeneoAppsBundle::class => ['all' => true],
+    Akeneo\Connectivity\Connection\Infrastructure\Symfony\AkeneoConnectivityConnectionBundle::class => ['all' => true],
 
     // Dev related bundles
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true, 'behat' => true],

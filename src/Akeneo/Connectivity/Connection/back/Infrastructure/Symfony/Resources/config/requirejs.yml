@@ -15,5 +15,5 @@ config:
 
 
     paths:
-        pim/controller/apps: akeneoapps/js/controller/apps.tsx
-        pim/controller/apps/dashboard: akeneoapps/js/controller/dashboard.tsx
+        pim/controller/apps: akeneoconnectivityconnection/js/controller/apps.tsx
+        pim/controller/apps/dashboard: akeneoconnectivityconnection/js/controller/dashboard.tsx
