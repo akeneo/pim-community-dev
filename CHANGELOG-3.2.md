@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.28 (2019-12-31)
+
 ## Bug fixes:
 
 - PIM-9043: Do not filter archivable jobs to be able to download all logs
