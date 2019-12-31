@@ -1,2 +1,2 @@
 akeneo_connectivity.connection:
-    acl.manage_settings: Manage apps settings
+    acl.manage_settings: Manage connections settings
