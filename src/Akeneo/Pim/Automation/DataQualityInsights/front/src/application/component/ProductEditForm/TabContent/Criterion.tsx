@@ -32,7 +32,7 @@ const Criterion: FunctionComponent<CriterionProps> = ({recommendation, rate}) =>
         </span>
         <span>
           {isSuccess(rate) ? (
-            <Attribute isClickable={false}>
+            <Attribute isClickable={false} code={''}>
               {__(`akeneo_data_quality_insights.product_evaluation.messages.success.criterion`)}
             </Attribute>
           ) : (

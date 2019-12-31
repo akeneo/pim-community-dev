@@ -7,17 +7,17 @@ interface RecommendationAttributesListProps {
   attributes: string[];
 }
 
-const getAttributeLabel = (attribute: string, productFamilyInformation: any, locale: string) => {
+const getAttributeLabel = (attributeCode: string, productFamilyInformation: any, locale: string) => {
   if (!productFamilyInformation.attributes) {
-    return attribute;
+    return attributeCode;
   }
 
   const attributeItem = productFamilyInformation.attributes.find((item: any) => {
-    return item.code === attribute;
+    return item.code === attributeCode;
   });
 
   if (!attributeItem || !attributeItem.labels || !attributeItem.labels[locale]) {
-    return attribute;
+    return attributeCode;
   }
 
   return attributeItem.labels[locale];
@@ -29,11 +29,11 @@ const RecommendationAttributesList: FunctionComponent<RecommendationAttributesLi
 
   return (
     <>
-      {locale && productFamilyInformation && attributes.map((attribute: string, index) => {
+      {locale && productFamilyInformation && attributes.map((attributeCode: string, index) => {
         return (
           <Fragment key={`attribute-${criterion}-${index}`}>
-            <Attribute isClickable={true}>
-              {getAttributeLabel(attribute, productFamilyInformation, locale)}
+            <Attribute isClickable={true} code={attributeCode}>
+              {getAttributeLabel(attributeCode, productFamilyInformation, locale)}
             </Attribute>
             {(index < (attributes.length -1)) && ', '}
             {(index === (attributes.length -1)) && '.'}

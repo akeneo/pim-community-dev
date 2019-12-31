@@ -7,9 +7,11 @@ import {
   getDataQualityInsightsFeature,
   ProductEditFormApp
 } from 'akeneodataqualityinsights-react';
+import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from "akeneodataqualityinsights-react";
 
 const UserContext = require('pim/user-context');
 const BaseView = require('pimui/js/view/base');
+const FieldManager = require('pim/field-manager');
 
 interface LocaleEvent {
   localeCode: string;
@@ -19,6 +21,10 @@ interface LocaleEvent {
 interface ScopeEvent {
   scopeCode: string;
   context: string;
+}
+
+interface ShowAttributeEvent {
+  code: boolean;
 }
 
 class DataQualityInsightsApp extends BaseView {
@@ -46,6 +52,26 @@ class DataQualityInsightsApp extends BaseView {
         context: event.context
       }}));
     });
+
+    window.addEventListener(DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, ((event: CustomEvent<ShowAttributeEvent>) => {
+      this.getRoot().trigger('column-tab:change-tab', {
+        currentTarget: {
+          dataset: {
+            tab: 'pim-product-edit-form-attributes'
+          }
+        },
+        target: {
+          dataset: {
+            tab: 'pim-product-edit-form-attributes'
+          }
+        }
+      });
+      this.listenTo(this.getRoot(), 'pim_enrich:form:attributes:render:after', (_: ScopeEvent) => {
+        FieldManager.getField(event.detail.code).then(function (field: any) {
+          field.setFocus();
+        });
+      });
+    }) as EventListener);
 
     return super.configure();
   }

@@ -8,6 +8,8 @@ interface ProductContextProviderProps {
   product: Product;
 }
 
+export const DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE = 'data-quality:product:show_attribute';
+
 const ProductContextProvider: FunctionComponent<ProductContextProviderProps> = ({product, children}) => {
   const dispatchAction = useDispatch();
 
