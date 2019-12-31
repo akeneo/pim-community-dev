@@ -20,7 +20,10 @@ export const AppCredentials: FC<Props> = ({code, label, credentials: credentials
             <Section title={<Translate id='akeneo_connectivity.connection.edit_app.credentials.title' />} />
             <div>
                 <SmallHelper>
-                    <Translate id='akeneo_connectivity.connection.edit_app.credentials.helper.message' placeholders={{label}} />
+                    <Translate
+                        id='akeneo_connectivity.connection.edit_app.credentials.helper.message'
+                        placeholders={{label}}
+                    />
                     &nbsp;
                     <HelperLink
                         href={translate('akeneo_connectivity.connection.edit_app.credentials.helper.link_url')}
@@ -52,7 +55,9 @@ export const AppCredentials: FC<Props> = ({code, label, credentials: credentials
                             <InlineHelper warning>
                                 <Translate id='akeneo_connectivity.connection.edit_app.credentials.clear_password_helper.message' />{' '}
                                 <a
-                                    href={translate('akeneo_connectivity.connection.edit_app.credentials.clear_password_helper.link_url')}
+                                    href={translate(
+                                        'akeneo_connectivity.connection.edit_app.credentials.clear_password_helper.link_url'
+                                    )}
                                     target='_blank'
                                     rel='noopener noreferrer'
                                 >
@@ -70,7 +75,9 @@ export const AppCredentials: FC<Props> = ({code, label, credentials: credentials
                             <InlineHelper info>
                                 <Translate id='akeneo_connectivity.connection.edit_app.credentials.password_helper.message' />{' '}
                                 <a
-                                    href={translate('akeneo_connectivity.connection.edit_app.credentials.password_helper.link_url')}
+                                    href={translate(
+                                        'akeneo_connectivity.connection.edit_app.credentials.password_helper.link_url'
+                                    )}
                                     target='_blank'
                                     rel='noopener noreferrer'
                                 >

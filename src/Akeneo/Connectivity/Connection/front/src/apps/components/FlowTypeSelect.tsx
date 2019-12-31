@@ -15,8 +15,14 @@ export const FlowTypeSelect = ({value, onChange}: Props) => {
         () => ({
             minimumResultsForSearch: -1,
             data: [
-                {id: FlowType.DATA_SOURCE, text: translate('akeneo_connectivity.connection.flow_type.data_source', undefined, 1)},
-                {id: FlowType.DATA_DESTINATION, text: translate('akeneo_connectivity.connection.flow_type.data_destination', undefined, 1)},
+                {
+                    id: FlowType.DATA_SOURCE,
+                    text: translate('akeneo_connectivity.connection.flow_type.data_source', undefined, 1),
+                },
+                {
+                    id: FlowType.DATA_DESTINATION,
+                    text: translate('akeneo_connectivity.connection.flow_type.data_destination', undefined, 1),
+                },
                 {id: FlowType.OTHER, text: translate('akeneo_connectivity.connection.flow_type.other', undefined, 1)},
             ],
         }),

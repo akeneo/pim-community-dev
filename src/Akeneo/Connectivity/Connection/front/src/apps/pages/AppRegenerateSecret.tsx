@@ -29,7 +29,10 @@ export const AppRegenerateSecret = () => {
         if (isErr(result)) {
             notify(NotificationLevel.ERROR, translate('akeneo_connectivity.connection.regenerate_secret.flash.error'));
         } else {
-            notify(NotificationLevel.SUCCESS, translate('akeneo_connectivity.connection.regenerate_secret.flash.success'));
+            notify(
+                NotificationLevel.SUCCESS,
+                translate('akeneo_connectivity.connection.regenerate_secret.flash.success')
+            );
         }
 
         handleRedirect();

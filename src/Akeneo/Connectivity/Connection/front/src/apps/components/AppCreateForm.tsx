@@ -132,7 +132,11 @@ export const AppCreateForm = () => {
 
     return (
         <Form>
-            <FormGroup controlId='label' label='akeneo_connectivity.connection.connection.label' errors={Object.keys(state.controls.label.errors)}>
+            <FormGroup
+                controlId='label'
+                label='akeneo_connectivity.connection.connection.label'
+                errors={Object.keys(state.controls.label.errors)}
+            >
                 <FormInput
                     ref={labelInputRef}
                     type='text'
@@ -145,7 +149,11 @@ export const AppCreateForm = () => {
                 />
             </FormGroup>
 
-            <FormGroup controlId='code' label='akeneo_connectivity.connection.connection.code' errors={Object.keys(state.controls.code.errors)}>
+            <FormGroup
+                controlId='code'
+                label='akeneo_connectivity.connection.connection.code'
+                errors={Object.keys(state.controls.code.errors)}
+            >
                 <FormInput
                     ref={codeInputRef}
                     type='text'

@@ -42,7 +42,11 @@ export const AppEditForm = ({app}: Props) => {
                     />
                 </FormGroup>
 
-                <FormGroup controlId='flow_type' label='akeneo_connectivity.connection.connection.flow_type' info={<FlowTypeHelper />}>
+                <FormGroup
+                    controlId='flow_type'
+                    label='akeneo_connectivity.connection.connection.flow_type'
+                    info={<FlowTypeHelper />}
+                >
                     <FlowTypeSelect
                         value={values.flowType}
                         onChange={flowType => setFieldValue('flowType', flowType)}

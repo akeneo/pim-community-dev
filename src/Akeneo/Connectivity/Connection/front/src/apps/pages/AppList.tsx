@@ -97,7 +97,12 @@ export const AppList = () => {
                         {dataSourceApps && dataSourceApps.length > 0 && (
                             <AppGrid
                                 apps={dataSourceApps}
-                                title={<Translate id='akeneo_connectivity.connection.flow_type.data_source' count={dataSourceApps.length} />}
+                                title={
+                                    <Translate
+                                        id='akeneo_connectivity.connection.flow_type.data_source'
+                                        count={dataSourceApps.length}
+                                    />
+                                }
                             />
                         )}
                         {dataDestinationApps && dataDestinationApps.length > 0 && (
@@ -114,7 +119,12 @@ export const AppList = () => {
                         {otherApps && otherApps.length > 0 && (
                             <AppGrid
                                 apps={otherApps}
-                                title={<Translate id='akeneo_connectivity.connection.flow_type.other' count={otherApps.length} />}
+                                title={
+                                    <Translate
+                                        id='akeneo_connectivity.connection.flow_type.other'
+                                        count={otherApps.length}
+                                    />
+                                }
                             />
                         )}
                     </>

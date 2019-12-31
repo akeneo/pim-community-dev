@@ -27,7 +27,11 @@ export const AppGrid = ({apps, title}: Props) => (
     <>
         <Section title={title}>
             <AppCount>
-                <Translate id='akeneo_connectivity.connection.app_count' count={apps.length} placeholders={{count: apps.length}} />
+                <Translate
+                    id='akeneo_connectivity.connection.app_count'
+                    count={apps.length}
+                    placeholders={{count: apps.length}}
+                />
             </AppCount>
         </Section>
         <Grid>

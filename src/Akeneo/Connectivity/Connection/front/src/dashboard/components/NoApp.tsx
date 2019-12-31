@@ -19,7 +19,9 @@ export const NoApp = () => {
                         <Translate id='akeneo_connectivity.connection.dashboard.no_app.message_without_permission.message' />
                         &nbsp;
                         <Link
-                            href={translate('akeneo_connectivity.connection.dashboard.no_app.message_without_permission.link_url')}
+                            href={translate(
+                                'akeneo_connectivity.connection.dashboard.no_app.message_without_permission.link_url'
+                            )}
                             target='_blank'
                         >
                             <Translate id='akeneo_connectivity.connection.dashboard.no_app.message_without_permission.link' />

@@ -8,7 +8,11 @@ export const FlowTypeHelper = () => {
         <>
             <Translate id='akeneo_connectivity.connection.flow_type_helper.message' />
             &nbsp;
-            <a href={translate('akeneo_connectivity.connection.flow_type_helper.link_url')} target='_blank' rel='noopener noreferrer'>
+            <a
+                href={translate('akeneo_connectivity.connection.flow_type_helper.link_url')}
+                target='_blank'
+                rel='noopener noreferrer'
+            >
                 <Translate id='akeneo_connectivity.connection.flow_type_helper.link' />
             </a>
         </>

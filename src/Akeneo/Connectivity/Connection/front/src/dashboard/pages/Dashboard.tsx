@@ -37,7 +37,10 @@ export const Dashboard = () => {
                     <p>
                         <Translate id='akeneo_connectivity.connection.dashboard.helper.description' />
                     </p>
-                    <HelperLink href={translate('akeneo_connectivity.connection.dashboard.helper.link_url')} target='_blank'>
+                    <HelperLink
+                        href={translate('akeneo_connectivity.connection.dashboard.helper.link_url')}
+                        target='_blank'
+                    >
                         <Translate id='akeneo_connectivity.connection.dashboard.helper.link' />
                     </HelperLink>
                 </Helper>

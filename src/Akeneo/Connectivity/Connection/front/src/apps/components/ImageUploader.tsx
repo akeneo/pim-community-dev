@@ -45,7 +45,10 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
         const result = await imageUploader(file);
         if (isErr(result)) {
             if (undefined !== result.error.extension) {
-                notify(NotificationLevel.ERROR, translate('akeneo_connectivity.connection.edit_image.flash.extension_not_allowed'));
+                notify(
+                    NotificationLevel.ERROR,
+                    translate('akeneo_connectivity.connection.edit_image.flash.extension_not_allowed')
+                );
             } else {
                 const errors = Object.entries(result.error).reduce((errors, [propertyPath, {message}]) => {
                     return errors + `${propertyPath}: ${message}`;

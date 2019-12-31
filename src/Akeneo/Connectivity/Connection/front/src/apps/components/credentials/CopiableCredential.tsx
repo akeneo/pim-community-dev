@@ -25,7 +25,10 @@ export const CopiableCredential: FC<Props> = ({label, children: value, actions, 
         }
         copyTextToClipboard(ref.current);
 
-        notify(NotificationLevel.INFO, translate('akeneo_connectivity.connection.edit_app.credentials.flash.copied', {name: label}));
+        notify(
+            NotificationLevel.INFO,
+            translate('akeneo_connectivity.connection.edit_app.credentials.flash.copied', {name: label})
+        );
     };
 
     return (
@@ -33,7 +36,10 @@ export const CopiableCredential: FC<Props> = ({label, children: value, actions, 
             label={label}
             actions={
                 <>
-                    <IconButton onClick={handleCopy} title={translate('akeneo_connectivity.connection.edit_app.credentials.action.copy')}>
+                    <IconButton
+                        onClick={handleCopy}
+                        title={translate('akeneo_connectivity.connection.edit_app.credentials.action.copy')}
+                    >
                         <DuplicateIcon />
                     </IconButton>
                     {actions}
