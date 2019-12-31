@@ -45,8 +45,7 @@ SQL;
         $query = <<<SQL
 SELECT id, logged_at FROM pim_versioning_version 
 WHERE resource_name = :resource_name  
-  AND logged_at < :logged_at
-  AND id < :last_id 
+  AND ((logged_at = :logged_at AND id < :last_id) OR logged_at < :logged_at) 
 ORDER BY logged_at DESC, id DESC LIMIT :list_size
 SQL;
 
@@ -60,7 +59,7 @@ SQL;
         $statement = $this->dbConnection->prepare($query);
         $statement->bindParam('resource_name', $resourceName, \PDO::PARAM_STR);
         $statement->bindParam('list_size', $listSize, \PDO::PARAM_INT);
-        $lastId = 999999999999;
+        $lastId = PHP_INT_MAX;
 
         do {
             $statement->bindParam('logged_at', $loggedAt, \PDO::PARAM_STR);
