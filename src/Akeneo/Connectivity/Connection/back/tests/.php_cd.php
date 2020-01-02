@@ -42,7 +42,13 @@ $rules = [
             'Akeneo\Connectivity\Connection\Application',
             'Akeneo\Connectivity\Connection\Domain',
             'Akeneo\Tool\Component\StorageUtils',
+
+            'Akeneo\UserManagement\Bundle\Manager\UserManager',
+            'Akeneo\UserManagement\Component\Model\UserInterface',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
+
+            'Doctrine\DBAL\Driver\Connection',
+
             'Symfony\Component\Validator\Validator\ValidatorInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\User'),
