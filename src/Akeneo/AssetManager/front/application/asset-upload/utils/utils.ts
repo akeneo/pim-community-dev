@@ -1,7 +1,7 @@
 import Line, {
-  LineStatus,
-  LineIdentifier,
   LineErrorsByTarget,
+  LineIdentifier,
+  LineStatus,
 } from 'akeneoassetmanager/application/asset-upload/model/line';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamily, getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -213,4 +213,14 @@ export const getStatusFromLine = (line: Line, valuePerLocale: boolean, valuePerC
   }
 
   return LineStatus.WaitingForUpload;
+};
+
+export const hasAnUnsavedLine = (lines: Line[], valuePerLocale: boolean, valuePerChannel: boolean): boolean => {
+  return lines.reduce((isDirty: boolean, line: Line) => {
+    if (isDirty) {
+      return isDirty;
+    }
+
+    return LineStatus.Created !== getStatusFromLine(line, valuePerLocale, valuePerChannel);
+  }, false);
 };
