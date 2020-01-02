@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NullNamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
@@ -106,7 +107,8 @@ class SqlFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends SqlIntegrat
             LabelCollection::fromArray(['en_US' => 'designer', 'fr_FR' => 'designer']),
             Image::createEmpty(),
             [],
-            $connectorTransformations
+            $connectorTransformations,
+            new NullNamingConvention()
         );
 
         $assetFamilyFound = $this->findConnectorAssetFamilyQuery->find(AssetFamilyIdentifier::fromString('designer'));

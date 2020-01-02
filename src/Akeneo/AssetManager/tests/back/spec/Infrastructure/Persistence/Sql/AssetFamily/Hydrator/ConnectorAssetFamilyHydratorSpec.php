@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NullNamingConvention;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
@@ -61,6 +63,7 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
                 ]
             ]),
             'transformations' => json_encode([['fake_transformation']]),
+            'naming_convention' => '{}',
         ];
 
         $file = new FileInfo();
@@ -97,7 +100,8 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
                     'assign_assets_to' => 'FAKE',
                 ]
             ],
-            new ConnectorTransformationCollection([])
+            new ConnectorTransformationCollection([]),
+            new NullNamingConvention()
         );
 
         $this->hydrate($row)->shouldBeLike($expectedAssetFamily);
@@ -117,6 +121,7 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
             ]),
             'rule_templates' => json_encode([]),
             'transformations' => json_encode([['fake_transformation']]),
+            'naming_convention' => '{}',
         ];
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
@@ -131,7 +136,60 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
             ]),
             Image::createEmpty(),
             [],
-            new ConnectorTransformationCollection([])
+            new ConnectorTransformationCollection([]),
+            new NullNamingConvention()
+        );
+
+        $productLinkRulesHydrator->hydrate([])->willReturn([]);
+
+        $this->hydrate($row)->shouldBeLike($expectedAssetFamily);
+    }
+
+    function it_hydrates_a_connector_asset_family_with_a_naming_convention(
+        ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
+        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator
+    ) {
+        $normalizedNamingConvention = [
+            'source' => [
+                'property' => 'code',
+                'channel' => null,
+                'locale' => null,
+            ],
+            'pattern' => '/(pattern).jpg/',
+            'strict' => false,
+        ];
+
+        $row = [
+            'identifier' => 'designer',
+            'image_file_key' => null,
+            'image_original_filename' => null,
+            'labels' => json_encode(
+                [
+                    'en_US' => 'Designer',
+                    'fr_FR' => 'Designer',
+                ]
+            ),
+            'rule_templates' => json_encode([]),
+            'transformations' => json_encode([['fake_transformation']]),
+            'naming_convention' => json_encode($normalizedNamingConvention),
+        ];
+
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $transformationCollectionHydrator->hydrate([['fake_transformation']], $assetFamilyIdentifier)
+                                         ->willReturn(new ConnectorTransformationCollection([]));
+
+        $expectedAssetFamily = new ConnectorAssetFamily(
+            $assetFamilyIdentifier,
+            LabelCollection::fromArray(
+                [
+                    'en_US' => 'Designer',
+                    'fr_FR' => 'Designer',
+                ]
+            ),
+            Image::createEmpty(),
+            [],
+            new ConnectorTransformationCollection([]),
+            NamingConvention::createFromNormalized($normalizedNamingConvention)
         );
 
         $productLinkRulesHydrator->hydrate([])->willReturn([]);

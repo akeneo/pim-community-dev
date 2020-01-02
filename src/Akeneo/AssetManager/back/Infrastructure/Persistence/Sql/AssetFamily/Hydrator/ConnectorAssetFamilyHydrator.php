@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
@@ -21,6 +22,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
@@ -49,18 +51,20 @@ class ConnectorAssetFamilyHydrator
 
     public function hydrate(array $row): ConnectorAssetFamily
     {
-        $labels = Type::getType(Type::JSON_ARRAY)
+        $labels = Type::getType(Types::JSON)
             ->convertToPHPValue($row['labels'], $this->platform);
-        $identifier = Type::getType(Type::STRING)
+        $identifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
-        $imageKey = Type::getType(Type::STRING)
+        $imageKey = Type::getType(Types::STRING)
             ->convertToPHPValue($row['image_file_key'], $this->platform);
-        $imageFilename = Type::getType(Type::STRING)
+        $imageFilename = Type::getType(Types::STRING)
             ->convertToPHPValue($row['image_original_filename'], $this->platform);
-        $ruleTemplates = Type::getType(Type::JSON_ARRAY)
+        $ruleTemplates = Type::getType(Types::JSON)
             ->convertToPHPValue($row['rule_templates'], $this->platform);
-        $transformations = Type::getType(Type::JSON_ARRAY)
+        $transformations = Type::getType(Types::JSON)
             ->convertToPHPValue($row['transformations'], $this->platform);
+        $namingConvention = Type::getType(Types::JSON)
+            ->convertToPHPValue($row['naming_convention'], $this->platform);
 
         $image = Image::createEmpty();
 
@@ -83,7 +87,8 @@ class ConnectorAssetFamilyHydrator
             LabelCollection::fromArray($labels),
             $image,
             $productLinkRules,
-            $readTransformations
+            $readTransformations,
+            NamingConvention::createFromNormalized($namingConvention)
         );
     }
 }
