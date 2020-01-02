@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-6386: Add exception when trying to update the same product value on the "a_metric" attribute twice, with the same scope and locale
 - PIM-7971: Fix filters being incorrectly disabled in the attributes grid
 
 # 2.3.75 (2020-01-03)

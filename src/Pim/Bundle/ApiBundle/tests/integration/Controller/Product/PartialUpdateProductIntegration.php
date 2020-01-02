@@ -237,6 +237,38 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
+    public function testProductUpdateWithDuplicatedValues()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "identifier": "product_family",
+        "values": {
+            "a_metric": [
+                {"locale": null, "scope": null, "data": {"amount": "10", "unit": "KILOWATT"}},
+                {"locale": null, "scope": null, "data": {"amount": "20", "unit": "KILOWATT"}}
+            ]
+        }
+    }
+JSON;
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'You cannot update the same product value on the "a_metric" attribute twice, with the same scope and locale. Check the expected format on the API documentation.',
+            '_links' => [
+                'documentation' => ['href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'],
+            ],
+        ];
+
+        $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+    }
+
     public function testProductPartialUpdateWithIdenticalIdentifiers()
     {
         $client = $this->createAuthenticatedClient();

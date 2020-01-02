@@ -84,6 +84,8 @@ class EntityWithValuesUpdater implements ObjectUpdaterInterface
             throw InvalidPropertyTypeException::arrayExpected('values', static::class, $entityWithValues);
         }
 
+        $alreadyDefinedKeys = [];
+
         foreach ($entityWithValues as $code => $values) {
             if (!is_array($values)) {
                 throw InvalidPropertyTypeException::arrayExpected($code, static::class, $values);
@@ -134,7 +136,28 @@ class EntityWithValuesUpdater implements ObjectUpdaterInterface
                         InvalidPropertyTypeException::STRING_EXPECTED_CODE
                     );
                 }
+
+                $newKey = $this->generateKey($code, $value['scope'], $value['locale']);
+                if (isset($alreadyDefinedKeys[$newKey])) {
+                    throw new InvalidPropertyTypeException(
+                        $code,
+                        $newKey,
+                        static::class,
+                        sprintf('You cannot update the same product value on the "%s" attribute twice, with the same scope and locale.', $code)
+                    );
+                }
+
+                $alreadyDefinedKeys[$newKey] = true;
             }
         }
+    }
+
+    private function generateKey(string $attributeCode, ?string $channelCode, ?string $localeCode): string
+    {
+        $channelCode = null !== $channelCode ? $channelCode : '<all_channels>';
+        $localeCode = null !== $localeCode ? $localeCode : '<all_locales>';
+        $key = sprintf('%s-%s-%s', $attributeCode, $channelCode, $localeCode);
+
+        return $key;
     }
 }
