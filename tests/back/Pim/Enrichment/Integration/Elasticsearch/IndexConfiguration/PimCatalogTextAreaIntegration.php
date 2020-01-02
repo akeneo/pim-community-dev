@@ -54,6 +54,26 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
         $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_7']);
     }
 
+    public function testContainsOperatorInAVeryLongString()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'query_string' => [
+                            'default_field' => 'values.description-textarea.<all_channels>.<all_locales>.preprocessed',
+                            'query'         => '*TextAtTheMiddleOfTheString*',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertDocument($productsFound, ['product_7']);
+    }
+
     public function testDoesNotContainOperator()
     {
         $query = [
