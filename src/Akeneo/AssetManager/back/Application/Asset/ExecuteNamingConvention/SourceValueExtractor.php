@@ -77,25 +77,16 @@ class SourceValueExtractor
     }
 
     /**
-     * We can extract string value only if Value is FileData, TextData, NumberData, OptionData or MediaLinkData.
+     * We can extract string value only from "FileData" attribute.
      */
     private function extractStringDataValue(Value $value): ?string
     {
         $valueData = $value->getData();
-
-        switch (get_class($valueData)) {
-            case FileData::class:
-                return $valueData->getOriginalFilename();
-
-            case TextData::class:
-            case NumberData::class:
-            case OptionData::class:
-            case MediaLinkData::class:
-                return $valueData->normalize();
-
-            default:
-                // @todo AST-205: handle error (or just return null?)
-                return null;
+        if ($valueData instanceof FileData) {
+            return $valueData->getOriginalFilename();
         }
+
+        // @todo AST-205: handle error (or just return null?)
+        return null;
     }
 }

@@ -55,37 +55,6 @@ class SourceValueExtractorSpec extends ObjectBehavior
         $this->extract($asset, $namingConvention)->shouldReturn('the_code');
     }
 
-    function it_returns_the_asset_data_value_if_naming_convention_is_based_a_text_value(
-        AttributeRepositoryInterface $attributeRepository,
-        Asset $asset,
-        AbstractAttribute $attribute,
-        NamingConvention $namingConvention,
-        Source $source,
-        Value $value
-    ) {
-        $namingConvention->getSource()->willReturn($source);
-        $source->isAssetCode()->willReturn(false);
-        $asset->getAssetFamilyIdentifier()->willReturn(AssetFamilyIdentifier::fromString('family'));
-
-        $attributeIdentifier = AttributeIdentifier::fromString('attribute_id');
-        $attributeRepository->getByCodeAndAssetFamilyIdentifier(
-            AttributeCode::fromString('property'),
-            AssetFamilyIdentifier::fromString('family')
-        )->willReturn($attribute);
-        $attribute->getIdentifier()->willReturn($attributeIdentifier);
-        $source->getProperty()->willReturn('property');
-        $channelReference = ChannelReference::noReference();
-        $localeReference = LocaleReference::noReference();
-        $source->getChannelReference()->willReturn($channelReference);
-        $source->getLocaleReference()->willReturn($localeReference);
-        $valueKey = ValueKey::create($attributeIdentifier, $channelReference, $localeReference);
-        $asset->findValue($valueKey)->willReturn($value);
-
-        $value->getData()->willReturn(TextData::fromString('the_value'));
-
-        $this->extract($asset, $namingConvention)->shouldReturn('the_value');
-    }
-
     function it_returns_the_original_filename_if_naming_convention_is_based_on_a_file_value(
         AttributeRepositoryInterface $attributeRepository,
         Asset $asset,
@@ -122,6 +91,37 @@ class SourceValueExtractorSpec extends ObjectBehavior
         $value->getData()->willReturn($fileData);
 
         $this->extract($asset, $namingConvention)->shouldReturn('my_file.png');
+    }
+
+    function it_returns_null_if_naming_convention_is_based_a_text_value(
+        AttributeRepositoryInterface $attributeRepository,
+        Asset $asset,
+        AbstractAttribute $attribute,
+        NamingConvention $namingConvention,
+        Source $source,
+        Value $value
+    ) {
+        $namingConvention->getSource()->willReturn($source);
+        $source->isAssetCode()->willReturn(false);
+        $asset->getAssetFamilyIdentifier()->willReturn(AssetFamilyIdentifier::fromString('family'));
+
+        $attributeIdentifier = AttributeIdentifier::fromString('attribute_id');
+        $attributeRepository->getByCodeAndAssetFamilyIdentifier(
+            AttributeCode::fromString('property'),
+            AssetFamilyIdentifier::fromString('family')
+        )->willReturn($attribute);
+        $attribute->getIdentifier()->willReturn($attributeIdentifier);
+        $source->getProperty()->willReturn('property');
+        $channelReference = ChannelReference::noReference();
+        $localeReference = LocaleReference::noReference();
+        $source->getChannelReference()->willReturn($channelReference);
+        $source->getLocaleReference()->willReturn($localeReference);
+        $valueKey = ValueKey::create($attributeIdentifier, $channelReference, $localeReference);
+        $asset->findValue($valueKey)->willReturn($value);
+
+        $value->getData()->willReturn(TextData::fromString('the_value'));
+
+        $this->extract($asset, $namingConvention)->shouldReturn(null);
     }
 
     function it_returns_null_when_naming_convention_is_based_on_unknown_value(
