@@ -324,6 +324,9 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
                 this._updateCriteriaSelectorPosition();
                 this.selectWidget.multiselect('refresh');
             }
+
+            const label = this.$(this.buttonSelector).find('.filter-criteria-hint');
+            label.attr('title', label.html());
         },
 
         /**
@@ -331,6 +334,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          */
         _writeDOMValue: function(value) {
             this._setInputValue(this.inputSelector, value.value);
+
             return this;
         },
 
