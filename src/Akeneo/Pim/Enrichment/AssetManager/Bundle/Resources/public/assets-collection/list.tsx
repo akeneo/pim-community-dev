@@ -7,7 +7,6 @@ import {
   selectRuleRelations,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {
-  AssetCode,
   LabelCollection,
   ProductIdentifier,
   selectCurrentValues,
@@ -21,8 +20,8 @@ import {
 import {selectContext} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
-import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
-import {Attribute, getAttributeLabel} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {Label} from 'akeneoassetmanager/application/component/app/label';
+import {Attribute, getAttributeLabel} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {
   ChannelLabel,
   ContextLabel,
@@ -34,31 +33,28 @@ import {Separator} from 'akeneoassetmanager/application/component/app/separator'
 import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
 import {hasValues, isValueComplete} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
-import {Family} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
-import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
+import {Family} from 'akeneoassetmanager/platform/model/structure/family';
+import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import {
   HelperIcon,
   HelperSection,
   HelperSeparator,
   HelperText,
   HelperTitle,
-} from 'akeneopimenrichmentassetmanager/platform/component/common/helper';
-import {
-  NoDataSection,
-  NoDataText,
-  NoDataTitle,
-} from 'akeneopimenrichmentassetmanager/platform/component/common/no-data';
-import {RuleRelation} from 'akeneopimenrichmentassetmanager/platform/model/structure/rule-relation';
-import {RuleNotification} from 'akeneopimenrichmentassetmanager/platform/component/rule-notification';
+} from 'akeneoassetmanager/platform/component/common/helper';
+import {NoDataSection, NoDataText, NoDataTitle} from 'akeneoassetmanager/platform/component/common/no-data';
+import {RuleRelation} from 'akeneoassetmanager/platform/model/structure/rule-relation';
+import {RuleNotification} from 'akeneoassetmanager/platform/component/rule-notification';
 import {selectErrors} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/errors';
-import {ValidationError} from 'akeneopimenrichmentassetmanager/platform/model/validation-error';
-import {ValidationErrorCollection} from 'akeneopimenrichmentassetmanager/platform/component/common/validation-error-collection';
-import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
+import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
+import {ValidationErrorCollection} from 'akeneoassetmanager/platform/component/common/validation-error-collection';
+import {Context} from 'akeneoassetmanager/domain/model/context';
 import {MoreButton} from 'akeneoassetmanager/application/component/app/more-button';
 import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker';
-import LockIcon from 'akeneopimenrichmentassetmanager/platform/component/visual/icon/lock';
-import {ResultCounter} from 'akeneopimenrichmentassetmanager/platform/component/common/result-counter';
+import LockIcon from 'akeneoassetmanager/platform/component/visual/icon/lock';
+import {ResultCounter} from 'akeneoassetmanager/application/component/app/result-counter';
 import {addAssetsToCollection, emptyCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
 type ListStateProps = {
   attributes: Attribute[];

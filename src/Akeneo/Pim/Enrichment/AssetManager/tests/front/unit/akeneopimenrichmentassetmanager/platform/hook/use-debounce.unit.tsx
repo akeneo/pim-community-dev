@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, getByTestId} from '@testing-library/react';
 import {act} from 'react-dom/test-utils';
-import useDebounce from 'akeneopimenrichmentassetmanager/platform/hook/use-debounce';
+import useDebounce from 'akeneoassetmanager/platform/hook/use-debounce';
 
 let container;
 beforeEach(() => {

@@ -1,0 +1,24 @@
+akeneo_data_quality_insights_product_axis_rates:
+    path: /data-quality-insights/product-axes-rates/{productId}
+    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductAxesRatesController }
+    methods: [GET]
+
+akeneo_data_quality_insights_product_evaluation:
+    path: /data-quality-insights/product-evaluation/{productId}
+    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductEvaluationController }
+    methods: [GET]
+
+akeneo_data_quality_insights_dashboard:
+    path: /data-quality-insights/dashboard/{channel}/{locale}
+    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardController }
+    methods: [GET]
+
+akeneo_data_quality_insights_feature_flag:
+    path: /data-quality-insights/feature-flag
+    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\FeatureFlagController }
+    methods: [GET]
+
+akeneo_data_quality_insights_check_text:
+    path: /data-quality-insights/check-text
+    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckTextController }
+    methods: [POST]

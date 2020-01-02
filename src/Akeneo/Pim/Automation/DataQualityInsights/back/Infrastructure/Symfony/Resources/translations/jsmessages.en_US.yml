@@ -1,0 +1,29 @@
+akeneo_data_quality_insights:
+    title: Data Quality Insights
+    product_evaluation:
+        criteria:
+            completeness_of_required_attributes:
+                recommendation: Required attributes with missing values
+            completeness_of_non_required_attributes:
+                recommendation: Non required attributes with missing values
+            consistency_textarea_uppercase_words:
+                recommendation: Attributes with upper cases issues
+            consistency_text_title_formatting:
+                recommendation: We found a suggestion to improve the title
+            consistency_spelling:
+                recommendation: Attributes with spelling issues
+        axis:
+            enrichment:
+                title: Enrichment
+                attributes_link: Display missing attributes
+                success: Your product data is fully enriched. Congratulations!
+            consistency:
+                title: Consistency
+                attributes_link: Display all improvable attributes
+                success: Your product data is fully consistent. Congratulations!
+        messages:
+            error:
+                no_evaluation_for_axis: The rate could not be calculated. Please try again later.
+            success:
+                criterion: None
+

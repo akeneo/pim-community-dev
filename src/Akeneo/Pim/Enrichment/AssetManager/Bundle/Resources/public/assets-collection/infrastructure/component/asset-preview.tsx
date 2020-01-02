@@ -1,11 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
-import {AssetCode, ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
+import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
 import {Modal, SubTitle, Title} from 'akeneoassetmanager/application/component/app/modal';
-import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {Carousel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview/carousel';
 import {Preview} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview/preview';
 import Left from 'akeneoassetmanager/application/component/app/icon/left';
@@ -24,6 +24,7 @@ import ListAsset, {
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
 const Container = styled.div`
   position: relative;

@@ -212,10 +212,10 @@ export default class Table extends React.Component<TableProps, {columns: Column[
 
                 return (
                   <div
-                    key={attribute.getCode()}
+                    key={attribute.code}
                     className="AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin"
-                    data-attribute={attribute.getCode()}
-                    data-type={attribute.getType()}
+                    data-attribute={attribute.code}
+                    data-type={attribute.type}
                   >
                     <View
                       attribute={attribute}

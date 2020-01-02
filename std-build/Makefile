@@ -18,7 +18,7 @@ yarn.lock: package.json
 	$(YARN_RUN) install
 
 node_modules: yarn.lock
-	$(YARN_RUN) install --frozen-lockfile
+	$(YARN_RUN) install
 
 .PHONY: assets
 assets:
@@ -79,7 +79,7 @@ endif
 	$(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) javascript-prod
-	APP_ENV=prod $(MAKE) database
+	APP_ENV=prod $(MAKE) database O="--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal"
 
 .PHONY: pim-dev
 pim-dev:

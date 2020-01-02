@@ -18,3 +18,9 @@ oneup_flysystem:
         archivist_adapter:
             local:
                 directory: '%kernel.project_dir%/var/file_storage/archive'
+        data_quality_insights_shared_adapter:
+            local:
+                directory: '%kernel.project_dir%/var/file_storage/data_quality_insights_shared'
+        data_quality_insights_local_adapter:
+            local:
+                directory: '%kernel.project_dir%/var/file_storage/data_quality_insights_local'

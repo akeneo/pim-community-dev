@@ -25,7 +25,7 @@ import {LegacyValue} from 'akeneopimenrichmentassetmanager/enrich/domain/model/p
 import {
   isValidErrorCollection,
   denormalizeErrorCollection,
-} from 'akeneopimenrichmentassetmanager/platform/model/validation-error';
+} from 'akeneoassetmanager/platform/model/validation-error';
 
 const Form = require('pim/form');
 const UserContext = require('pim/user-context');

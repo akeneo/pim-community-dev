@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {render, getByText} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
-import {RuleNotification} from 'akeneopimenrichmentassetmanager/platform/component/rule-notification';
+import {RuleNotification} from 'akeneoassetmanager/platform/component/rule-notification';
 
 test('It should render the rule notification when the attribute can be updated by a rule', () => {
   const attributeCode = 'packshot';

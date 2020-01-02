@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {render} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
-import {ChannelLabel} from 'akeneopimenrichmentassetmanager/platform/component/channel/channel';
+import {ChannelLabel} from 'akeneoassetmanager/platform/component/channel/channel';
 
 test('It should render the channel label', () => {
   const channelCode = 'ecommerce';
