@@ -19,4 +19,4 @@ Feature: Browse jobs
     And I am on the exports page
     Then I should see export profiles Clothing attribute export, Clothing option export
     When I am on the imports page
-    Then I should see import profiles Clothing product import, Clothing asset category import
+    Then I should see import profiles Clothing product import

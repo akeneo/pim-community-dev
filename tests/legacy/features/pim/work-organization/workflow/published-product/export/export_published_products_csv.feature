@@ -80,9 +80,9 @@ Feature: Export published products
     And I wait for the "csv_clothing_mobile_published_product_export" job to finish
     Then exported file of "csv_clothing_mobile_published_product_export" should contain:
       """
-      sku;categories;enabled;family;groups;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;;main_color;manufacturer;name-de_DE;name-en_US;name-fr_FR;price-EUR;price-USD;rating;side_view;size
-      tee-white;winter_collection;1;tees;;;;;;white;;"Weiß t-shirt";"White tee";"Tshirt blanc";10.00;15.00;;;XL
-      tee-black;winter_collection;1;tees;;;;;;black;;"Schwarz t-shirt";"Black tee";"Tshirt noir";10.00;15.00;;;XL
+      sku;categories;enabled;family;groups;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;main_color;manufacturer;name-de_DE;name-en_US;name-fr_FR;price-EUR;price-USD;rating;side_view;size
+      tee-white;winter_collection;1;tees;;;;;white;;"Weiß t-shirt";"White tee";"Tshirt blanc";10.00;15.00;;;XL
+      tee-black;winter_collection;1;tees;;;;;black;;"Schwarz t-shirt";"Black tee";"Tshirt noir";10.00;15.00;;;XL
       """
     When I edit the "tee-white" product
     And I change the "Name" to "Tee"
@@ -94,8 +94,8 @@ Feature: Export published products
     And I wait for the "csv_clothing_mobile_published_product_export" job to finish
     Then exported file of "csv_clothing_mobile_published_product_export" should contain:
       """
-      sku;categories;enabled;family;groups;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;;main_color;manufacturer;name-de_DE;name-en_US;name-fr_FR;PACK-groups;PACK-products;PACK-product_models;price-EUR;price-USD;rating;side_view;size;SUBSTITUTION-groups;SUBSTITUTION-products;SUBSTITUTION-product_models;UPSELL-groups;UPSELL-products;UPSELL-product_models;X_SELL-groups;X_SELL-products;X_SELL-product_models
-      tee-white;winter_collection;1;tees;;;;;;white;;Weiß t-shirt;Tee;Tshirt blanc;;;;10.00;15.00;;;XL;;;;;;;;;
+      sku;categories;enabled;family;groups;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;main_color;manufacturer;name-de_DE;name-en_US;name-fr_FR;PACK-groups;PACK-products;PACK-product_models;price-EUR;price-USD;rating;side_view;size;SUBSTITUTION-groups;SUBSTITUTION-products;SUBSTITUTION-product_models;UPSELL-groups;UPSELL-products;UPSELL-product_models;X_SELL-groups;X_SELL-products;X_SELL-product_models
+      tee-white;winter_collection;1;tees;;;;;white;;Weiß t-shirt;Tee;Tshirt blanc;;;;10.00;15.00;;;XL;;;;;;;;;
       """
 
   Scenario: Export only the published products updated since a defined date
@@ -125,9 +125,9 @@ Feature: Export published products
     And I wait for the "csv_clothing_mobile_published_product_export" job to finish
     Then exported file of "csv_clothing_mobile_published_product_export" should contain:
       """
-      sku;categories;enabled;family;groups;description-en_US-mobile;;main_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size
-      tee-white;winter_collection;1;tees;;;;white;;"White tee";10.00;15.00;;;XL
-      tee-black;winter_collection;1;tees;;;;black;;"Black tee";10.00;15.00;;;XL
+      sku;categories;enabled;family;groups;description-en_US-mobile;main_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size
+      tee-white;winter_collection;1;tees;;;white;;"White tee";10.00;15.00;;;XL
+      tee-black;winter_collection;1;tees;;;black;;"Black tee";10.00;15.00;;;XL
       """
     When the following job "csv_clothing_mobile_published_product_export" configuration:
       | filters | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": "<", "value": "2016-04-25 00:00:00"}]} |
