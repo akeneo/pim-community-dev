@@ -1,4 +1,4 @@
-import {Apps} from './infrastructure/Apps';
-import {Dashboard} from './infrastructure/Dashboard';
+import {Settings} from './infrastructure/Settings';
+import {Audit} from './infrastructure/Audit';
 
-export {Apps, Dashboard};
+export {Settings, Audit};
