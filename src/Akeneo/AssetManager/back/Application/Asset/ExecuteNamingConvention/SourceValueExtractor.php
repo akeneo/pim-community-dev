@@ -22,8 +22,10 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\Source;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 
 /**
  * The goal of this class is to extract the string value of an asset given a naming convention.
@@ -34,6 +36,14 @@ use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
  */
 class SourceValueExtractor
 {
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
+    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
+
     public function extract(Asset $asset, NamingConvention $namingConvention): ?string
     {
         $source = $namingConvention->getSource();
@@ -48,8 +58,17 @@ class SourceValueExtractor
 
     private function findValueInAsset(Asset $asset, Source $source): ?Value
     {
+        try {
+            $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+                AttributeCode::fromString($source->getProperty()),
+                $asset->getAssetFamilyIdentifier()
+            );
+        } catch (AttributeNotFoundException $e) {
+            return null;
+        }
+
         $valueKey = ValueKey::create(
-            AttributeIdentifier::fromString($source->getProperty()),
+            $attribute->getIdentifier(),
             $source->getChannelReference(),
             $source->getLocaleReference()
         );

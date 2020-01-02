@@ -128,4 +128,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
             - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\SourceValueExtractor'
 
-    Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\SourceValueExtractor: ~
+    Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\SourceValueExtractor:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
