@@ -8,6 +8,8 @@ use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnection
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionCommand;
@@ -49,6 +51,8 @@ class ConnectionController
     /** @var RegenerateConnectionSecretHandler */
     private $regenerateConnectionSecretHandler;
 
+    private $regenerateConnectionPasswordHandler;
+
     /** @var SecurityFacade */
     private $securityFacade;
 
@@ -59,6 +63,7 @@ class ConnectionController
         UpdateConnectionHandler $updateConnectionHandler,
         DeleteConnectionHandler $deleteConnectionHandler,
         RegenerateConnectionSecretHandler $regenerateConnectionSecretHandler,
+        RegenerateConnectionPasswordHandler $regenerateConnectionPasswordHandler,
         SecurityFacade $securityFacade
     ) {
         $this->createConnectionHandler = $createConnectionHandler;
@@ -67,6 +72,7 @@ class ConnectionController
         $this->updateConnectionHandler = $updateConnectionHandler;
         $this->deleteConnectionHandler = $deleteConnectionHandler;
         $this->regenerateConnectionSecretHandler = $regenerateConnectionSecretHandler;
+        $this->regenerateConnectionPasswordHandler = $regenerateConnectionPasswordHandler;
         $this->securityFacade = $securityFacade;
     }
 
@@ -188,13 +194,20 @@ class ConnectionController
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function regeneratePassword(): JsonResponse
+    public function regeneratePassword(Request $request): JsonResponse
     {
         if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 
-        return new JsonResponse(['password' => 'MySuperSecurePassword']);
+        $command = new RegenerateConnectionPasswordCommand($request->get('code', ''));
+        try {
+            $password = $this->regenerateConnectionPasswordHandler->handle($command);
+        } catch (\Exception $e) {
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse(['password' => $password]);
     }
 
     private function buildViolationResponse(ConstraintViolationListInterface $constraintViolationList): array
