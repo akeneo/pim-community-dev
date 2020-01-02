@@ -9,6 +9,9 @@ import {getAllErrorsOfLineByTarget, getStatusFromLine} from 'akeneoassetmanager/
 import Spacer from 'akeneoassetmanager/application/component/app/spacer';
 import {ColumnWidths} from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import WarningIcon from 'akeneoassetmanager/application/component/app/icon/warning';
+import Channel, {getChannelLabel} from 'akeneoassetmanager/domain/model/channel';
+import Select2 from 'akeneoassetmanager/application/component/app/select2';
+import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 const Container = styled.div<{status?: LineStatus}>`
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
@@ -29,6 +32,7 @@ const Cells = styled.div`
 const Cell = styled.div<{width?: number}>`
   color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
   display: flex;
+  flex-direction: column;
   flex-grow: 0;
   flex-shrink: 0;
   padding: 0 15px;
@@ -97,10 +101,62 @@ const StyledError = styled.div`
 
 type RowProps = {
   line: Line;
+  locale: LocaleCode;
+  channels: Channel[];
+  locales: Locale[];
   onLineRemove: (line: Line) => void;
   onLineChange: (line: Line) => void;
   valuePerLocale: boolean;
   valuePerChannel: boolean;
+};
+
+type OptionsSelect2 = {
+  [value: string]: string;
+}
+
+const getChannelsOptions = (channels: Channel[], locale: LocaleCode): OptionsSelect2 => {
+  return channels.reduce((results: OptionsSelect2, channel: Channel) => {
+    results[channel.code] = getChannelLabel(channel, locale);
+    return results;
+  }, {});
+};
+
+const getAllLocalesOptions = (locales: Locale[]): OptionsSelect2 => {
+  return locales.reduce((results: OptionsSelect2, locale: Locale) => {
+    results[locale.code] = locale.label;
+    return results;
+  }, {});
+};
+
+const getLocalesOptions = (channels: Channel[], locales: Locale[], line: Line): OptionsSelect2 => {
+  if(null === line.channel){
+    return getAllLocalesOptions(locales);
+  }
+
+  const channel = channels.find((channel: Channel) => channel.code === line.channel);
+  if(undefined === channel){
+    throw Error('Invalid channel in asset creation line: ' + line.channel);
+  }
+
+  return channel.locales.reduce((results: OptionsSelect2, locale: Locale) => {
+    results[locale.code] = locale.label;
+    return results;
+  }, {});
+};
+
+const formatLocaleOption = (state: any): string => {
+  if (!state.id) return state.text;
+
+  const info = state.id.split('_');
+  const flag = info[1].toLowerCase();
+  const language = state.text;
+
+  return `
+<span class="flag-language">
+  <i class="flag flag-${flag}"></i>
+  <span class="language">${language}</span>
+</span>
+`;
 };
 
 const Error = ({message, ...props}: {message: string} & any) => (
@@ -110,9 +166,20 @@ const Error = ({message, ...props}: {message: string} & any) => (
   </StyledError>
 );
 
-const Row = ({line, onLineRemove, onLineChange, valuePerLocale, valuePerChannel}: RowProps) => {
+const Row = ({
+  line,
+  locale,
+  channels,
+  locales,
+  onLineRemove,
+  onLineChange,
+  valuePerLocale,
+  valuePerChannel,
+}: RowProps) => {
   const status = getStatusFromLine(line, valuePerLocale, valuePerChannel);
   const errors = getAllErrorsOfLineByTarget(line);
+  const channelsOptions = getChannelsOptions(channels, locale);
+  const localesOptions = getLocalesOptions(channels, locales, line);
 
   return (
     <Container status={status}>
@@ -128,38 +195,46 @@ const Row = ({line, onLineRemove, onLineChange, valuePerLocale, valuePerChannel}
             type="text"
             value={line.code}
             isValid={errors.code.length === 0}
-            disabled={line.isAssetCreating}
+            disabled={line.isAssetCreating || line.assetCreated}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               onLineChange({...line, code: event.target.value});
             }}
             aria-label={__('pim_asset_manager.asset.upload.list.code')}
           />
         </Cell>
-        {valuePerLocale && (
-          <Cell width={ColumnWidths.locale}>
-            <Input
-              type="text"
-              value={null === line.locale ? '' : line.locale}
-              isValid={errors.locale.length === 0}
-              disabled={line.isAssetCreating}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onLineChange({...line, locale: event.target.value});
+        {valuePerChannel && (
+          <Cell width={ColumnWidths.channel}>
+            <Select2
+              data={channelsOptions}
+              value={null === line.channel ? '' : line.channel}
+              multiple={false}
+              readOnly={line.isAssetCreating || line.assetCreated}
+              configuration={{
+                allowClear: true,
               }}
-              aria-label={__('pim_asset_manager.asset.upload.list.locale')}
+              onChange={(value: string) => {
+                onLineChange({...line, channel: value ? value : null});
+              }}
+              aria-label={__('pim_asset_manager.asset.upload.list.channel')}
             />
           </Cell>
         )}
-        {valuePerChannel && (
-          <Cell width={ColumnWidths.channel}>
-            <Input
-              type="text"
-              value={null === line.channel ? '' : line.channel}
-              isValid={errors.channel.length === 0}
-              disabled={line.isAssetCreating}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onLineChange({...line, channel: event.target.value});
+        {valuePerLocale && (
+          <Cell width={ColumnWidths.locale}>
+            <Select2
+              data={localesOptions}
+              value={null === line.locale ? '' : line.locale}
+              multiple={false}
+              readOnly={line.isAssetCreating || line.assetCreated}
+              configuration={{
+                allowClear: true,
+                formatResult: formatLocaleOption,
+                formatSelection: formatLocaleOption,
               }}
-              aria-label={__('pim_asset_manager.asset.upload.list.channel')}
+              onChange={(value: string) => {
+                onLineChange({...line, locale: value ? value : null});
+              }}
+              aria-label={__('pim_asset_manager.asset.upload.list.locale')}
             />
           </Cell>
         )}

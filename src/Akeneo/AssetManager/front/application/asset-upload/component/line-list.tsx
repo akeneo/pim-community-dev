@@ -7,6 +7,8 @@ import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import Row from 'akeneoassetmanager/application/asset-upload/component/row';
 import AssetBox from 'akeneoassetmanager/application/component/app/icon/asset-box';
+import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import Channel from 'akeneoassetmanager/domain/model/channel';
 
 export const ColumnWidths = {
   asset: 78,
@@ -75,6 +77,9 @@ const PlaceholderHelper = styled.div`
 
 type LineListProps = {
   lines: Line[];
+  locale: LocaleCode;
+  channels: Channel[];
+  locales: Locale[];
   onLineRemove: (line: Line) => void;
   onLineRemoveAll: () => void;
   onLineChange: (line: Line) => void;
@@ -84,6 +89,9 @@ type LineListProps = {
 
 const LineList = ({
   lines,
+  locale,
+  channels,
+  locales,
   onLineRemove,
   onLineRemoveAll,
   onLineChange,
@@ -110,14 +118,14 @@ const LineList = ({
           <ListColumnHeader width={ColumnWidths.code}>
             {__('pim_asset_manager.asset.upload.list.code')}
           </ListColumnHeader>
-          {valuePerLocale && (
-            <ListColumnHeader width={ColumnWidths.locale}>
-              {__('pim_asset_manager.asset.upload.list.locale')}
-            </ListColumnHeader>
-          )}
           {valuePerChannel && (
             <ListColumnHeader width={ColumnWidths.channel}>
               {__('pim_asset_manager.asset.upload.list.channel')}
+            </ListColumnHeader>
+          )}
+          {valuePerLocale && (
+            <ListColumnHeader width={ColumnWidths.locale}>
+              {__('pim_asset_manager.asset.upload.list.locale')}
             </ListColumnHeader>
           )}
           <Spacer />
@@ -131,6 +139,9 @@ const LineList = ({
             <Row
               key={line.id}
               line={line}
+              locale={locale}
+              channels={channels}
+              locales={locales}
               onLineChange={onLineChange}
               onLineRemove={onLineRemove}
               valuePerLocale={valuePerLocale}

@@ -11,9 +11,26 @@ import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/c
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {createUUIDV4} from 'akeneoassetmanager/application/asset-upload/utils/uuid';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
+import Locale from 'akeneoassetmanager/domain/model/locale';
+import Channel from 'akeneoassetmanager/domain/model/channel';
 
-export const createLineFromFilename = (filename: string, assetFamily: AssetFamily): Line => {
-  const info = extractInfoFromFilename(filename, assetFamily);
+type FilenameInfo = {
+  code: string;
+  locale: string | null;
+  channel: string | null;
+}
+
+export const createLineFromFilename = (
+  filename: string,
+  assetFamily: AssetFamily,
+  channels: Channel[],
+  locales: Locale[],
+): Line => {
+  let info = extractInfoFromFilename(filename, assetFamily);
+
+  if (!isFilenameInfoValid(info, channels, locales)) {
+    info = extractInfoWithOnlyCodeFromFilename(filename);
+  }
 
   return {
     id: createUUIDV4(),
@@ -33,7 +50,10 @@ export const createLineFromFilename = (filename: string, assetFamily: AssetFamil
   };
 };
 
-const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily) => {
+const extractInfoFromFilename = (
+  filename: string,
+  assetFamily: AssetFamily,
+): FilenameInfo => {
   const attribute = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
   const valuePerLocale = attribute.value_per_locale;
   const valuePerChannel = attribute.value_per_channel;
@@ -63,11 +83,40 @@ const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily) => 
     };
   }
 
+  return extractInfoWithOnlyCodeFromFilename(filename);
+};
+
+const extractInfoWithOnlyCodeFromFilename = (filename: string): FilenameInfo => {
   return {
     code: sanitize(filename.replace(/\.[^/.]+$/, '')),
     locale: null,
     channel: null,
   };
+};
+
+const isFilenameInfoValid = (
+  info: FilenameInfo,
+  channels: Channel[],
+  locales: Locale[],
+): boolean => {
+  if (null === info.locale && null === info.channel) {
+    return true;
+  }
+
+  if (null !== info.locale && null === info.channel) {
+    return undefined !== locales.find((locale: Locale) => locale.code === info.locale);
+  }
+
+  if (null === info.locale && null !== info.channel) {
+    return undefined !== channels.find((channel: Channel) => channel.code === info.channel);
+  }
+
+  const channel = channels.find((channel: Channel) => channel.code === info.channel);
+  if (undefined === channel) {
+    return false;
+  }
+
+  return undefined !== channel.locales.find((locale: Locale) => locale.code === info.locale);
 };
 
 const findAssetByCode = (assets: CreationAsset[], code: AssetCode): CreationAsset | null => {
@@ -173,13 +222,14 @@ export const getAllErrorsOfLineByTarget = (line: Line): LineErrorsByTarget => {
   };
 
   for (let error of getAllErrorsOfLine(line)) {
-    switch (error.propertyPath) {
-      case 'code':
-        errors.code.push(error);
-        break;
-      default:
-        errors.all.push(error);
-        break;
+    if (error.propertyPath === 'code') {
+      errors.code.push(error);
+    } else if (error.propertyPath.endsWith('channel')) {
+      errors.channel.push(error);
+    } else if (error.propertyPath.endsWith('locale')) {
+      errors.locale.push(error);
+    } else {
+      errors.all.push(error);
     }
   }
 
