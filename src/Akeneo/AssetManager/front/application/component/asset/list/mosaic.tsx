@@ -38,6 +38,7 @@ const Mosaic = ({
   assetCollection,
   hasReachMaximumSelection,
   resultCount,
+  onAssetClick,
 }: {
   selection: AssetCode[];
   assetCollection: ListAsset[];
@@ -45,6 +46,7 @@ const Mosaic = ({
   resultCount: number | null;
   hasReachMaximumSelection: boolean;
   onSelectionChange: (selection: AssetCode[]) => void;
+  onAssetClick?: (asset: AssetCode) => void;
 }) => {
   return (
     <React.Fragment>
@@ -68,6 +70,7 @@ const Mosaic = ({
                       : removeAssetFromCollection(selection, code);
                     onSelectionChange(newSelection);
                   }}
+                  onClick={onAssetClick}
                 />
               );
             })}

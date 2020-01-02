@@ -62,12 +62,14 @@ const AssetCard = ({
   isSelected,
   onSelectionChange,
   isDisabled,
+  onClick,
 }: {
   asset: ListAsset;
   context: Context;
   isSelected: boolean;
   isDisabled: boolean;
   onSelectionChange: (code: AssetCode, value: boolean) => void;
+  onClick?: (code: AssetCode) => void;
 }) => {
   return (
     <Container data-asset={asset.code} data-selected={isSelected} isDisabled={isDisabled}>
@@ -75,7 +77,13 @@ const AssetCard = ({
         <Thumbnail
           src={getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale))}
           isSelected={isSelected}
-          onClick={() => (!isDisabled ? onSelectionChange(asset.code, !isSelected) : null)}
+          onClick={() => {
+            if (onClick) {
+              onClick(asset.code);
+            } else if (!isDisabled) {
+              onSelectionChange(asset.code, !isSelected);
+            }
+          }}
         />
       </ImageContainer>
       {assetHasCompleteness(asset) && (
@@ -84,11 +92,13 @@ const AssetCard = ({
         </AssetCompleteness>
       )}
       <Title>
-        <Checkbox
-          value={isSelected}
-          onChange={(value: boolean) => onSelectionChange(asset.code, value)}
-          readOnly={isDisabled}
-        />
+        {!onClick && (
+          <Checkbox
+            value={isSelected}
+            onChange={(value: boolean) => onSelectionChange(asset.code, value)}
+            readOnly={isDisabled}
+          />
+        )}
         <Label color={isSelected ? akeneoTheme.color.blue100 : undefined}>{getAssetLabel(asset, context.locale)}</Label>
       </Title>
     </Container>

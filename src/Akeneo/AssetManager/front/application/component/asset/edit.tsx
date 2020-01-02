@@ -7,7 +7,7 @@ import sidebarProvider from 'akeneoassetmanager/application/configuration/sideba
 import Breadcrumb from 'akeneoassetmanager/application/component/app/breadcrumb';
 import __ from 'akeneoassetmanager/tools/translator';
 import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
-import {backToAssetFamily, saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
+import {saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
 import EditState from 'akeneoassetmanager/application/component/app/edit-state';
 import Locale from 'akeneoassetmanager/domain/model/locale';
@@ -29,6 +29,7 @@ import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/
 import {getLabel} from 'pimui/js/i18n';
 import EditionAsset, {getEditionAssetCompleteness} from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {MainMediaThumbnail} from 'akeneoassetmanager/application/component/asset/edit/main-media-thumbnail';
+import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -69,7 +70,7 @@ interface DispatchProps {
     onDelete: (asset: EditionAsset) => void;
     onOpenDeleteModal: () => void;
     onCancelDeleteModal: () => void;
-    backToAssetFamily: () => void;
+    backToAssetFamilyList: () => void;
     onRedirectToProductGrid: (selectedAttribute: AttributeCode, assetCode: AssetCode) => void;
   };
 }
@@ -78,14 +79,14 @@ interface EditProps extends StateProps, DispatchProps {}
 
 class AssetEditView extends React.Component<EditProps> {
   public props: EditProps;
-  private backToAssetFamily = () => (
+  private backToAssetFamilyList = () => (
     <span
       role="button"
       tabIndex={0}
       className="AknColumn-navigationLink"
-      onClick={this.props.events.backToAssetFamily}
+      onClick={this.props.events.backToAssetFamilyList}
       onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (Key.Space === event.key) this.props.events.backToAssetFamily();
+        if (Key.Space === event.key) this.props.events.backToAssetFamilyList();
       }}
     >
       {__('pim_asset_manager.asset.button.back')}
@@ -251,7 +252,7 @@ class AssetEditView extends React.Component<EditProps> {
               </div>
             </div>
           </div>
-          <Sidebar backButton={this.backToAssetFamily} />
+          <Sidebar backButton={this.backToAssetFamilyList} />
         </div>
         {this.props.confirmDelete.isActive && (
           <DeleteModal
@@ -326,8 +327,8 @@ export default connect(
         onCancelDeleteModal: () => {
           dispatch(cancelDeleteModal());
         },
-        backToAssetFamily: () => {
-          dispatch(backToAssetFamily());
+        backToAssetFamilyList: () => {
+          dispatch(redirectToAssetFamilyListItem());
         },
         onRedirectToProductGrid: (selectedAttribute: AttributeCode, assetCode: AssetCode) => {
           dispatch(redirectToProductGrid(selectedAttribute, assetCode));

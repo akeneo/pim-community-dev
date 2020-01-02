@@ -15,7 +15,6 @@ import assetSaver from 'akeneoassetmanager/infrastructure/saver/asset';
 import assetFetcher, {AssetResult} from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
-import {redirectToAssetIndex} from 'akeneoassetmanager/application/action/asset/router';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 
 export const saveAsset = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
@@ -48,9 +47,4 @@ export const saveAsset = () => async (dispatch: any, getState: () => EditState):
 export const assetValueUpdated = (value: EditionValue) => (dispatch: any, getState: any) => {
   dispatch(assetEditionValueUpdated(value));
   dispatch(assetEditionUpdated(getState().form.data));
-};
-
-export const backToAssetFamily = () => (dispatch: any, getState: any) => {
-  const asset = getState().form.data;
-  dispatch(redirectToAssetIndex(asset.assetFamily.identifier));
 };
