@@ -29,7 +29,7 @@ export default class Select2 extends React.Component<Select2Props & any> {
     const $el = $(this.select.current) as any;
 
     if (undefined !== $el.select2) {
-      $el.val(this.props.value).select2(this.props.configuration);
+      $el.val(this.props.value).select2(this.props.configuration || {});
       $el.on('change', (event: any) => {
         this.props.onChange(event.val);
       });
@@ -50,7 +50,7 @@ export default class Select2 extends React.Component<Select2Props & any> {
 
     if (undefined !== $el.select2) {
       $('#select2-drop-mask, #select2-drop').remove();
-      $el.val(value).select2(this.props.configuration);
+      $el.val(value).select2(this.props.configuration || {});
     }
   }
 
