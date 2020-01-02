@@ -18,7 +18,7 @@ yarn.lock: package.json
 	$(YARN_RUN) install
 
 node_modules: yarn.lock
-	$(YARN_RUN) install --frozen-lockfile
+	$(YARN_RUN) install
 
 .PHONY: assets
 assets:
@@ -64,6 +64,11 @@ dependencies: vendor node_modules
 dev:
 	$(MAKE) dependencies
 	$(MAKE) pim-dev
+
+.PHONY: prod
+prod:
+	$(MAKE) dependencies
+	$(MAKE) pim-prod
 
 .PHONY: pim-prod
 pim-prod:
