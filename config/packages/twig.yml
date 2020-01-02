@@ -1,2 +1,0 @@
-twig:
-    form_theme: ['AkeneoAssetBundle:Form:pimee-fields.html.twig']

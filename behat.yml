@@ -24,6 +24,8 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseCommandContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseTransformationContext:
+                    - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssertionContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseFileTransformerContext:
@@ -195,6 +197,8 @@ legacy:
                 - Context\EnterpriseDataGridContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseCommandContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseTransformationContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssertionContext:
                     - 'Context\EnterpriseFeatureContext'
@@ -370,6 +374,8 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseCommandContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseTransformationContext:
+                    - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssertionContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseFileTransformerContext:
@@ -502,6 +508,8 @@ legacy:
                 - Context\EnterpriseDataGridContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseCommandContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseTransformationContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssertionContext:
                     - 'Context\EnterpriseFeatureContext'
@@ -636,6 +644,8 @@ legacy:
                 - Context\EnterpriseDataGridContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseCommandContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseTransformationContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssertionContext:
                     - 'Context\EnterpriseFeatureContext'
