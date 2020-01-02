@@ -21,7 +21,7 @@ final class ConsistencySorter extends BaseFieldSorter
 {
     public function addFieldSorter($field, $direction, $locale = null, $channel = null)
     {
-        $field .= sprintf('.consistency.%s.%s', $channel, $locale);
+        $field = sprintf('rates.consistency.%s.%s', $channel, $locale);
 
         switch ($direction) {
             case Directions::ASCENDING:

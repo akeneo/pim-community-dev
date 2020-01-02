@@ -21,7 +21,7 @@ final class EnrichmentSorter extends BaseFieldSorter
 {
     public function addFieldSorter($field, $direction, $locale = null, $channel = null)
     {
-        $field .= sprintf('.enrichment.%s.%s', $channel, $locale);
+        $field = sprintf('rates.enrichment.%s.%s', $channel, $locale);
 
         switch ($direction) {
             case Directions::ASCENDING:
