@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+set -eox pipefail
 
 TEST_SUITE=$1
 

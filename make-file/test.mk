@@ -87,8 +87,8 @@ endif
 .PHONY: end-to-end-legacy
 end-to-end-legacy: var/tests/behat
 ifeq ($(CI),true)
-	.circleci/run_behat.sh $(SUITE)
 	.circleci/run_behat.sh critical
+	.circleci/run_behat.sh $(SUITE)
 else
 	${PHP_RUN} vendor/bin/behat -p legacy -s all ${0}
 endif
