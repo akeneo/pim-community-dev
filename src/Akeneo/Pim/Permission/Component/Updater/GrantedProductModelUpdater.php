@@ -97,7 +97,7 @@ class GrantedProductModelUpdater implements ObjectUpdaterInterface
 
             if (!empty($updatedProductModel)) {
                 throw new ResourceAccessDeniedException($productModel, sprintf(
-                    'Product model "%s" cannot be updated. You are only allowed to suggest proposals on this product model.',
+                    'Product model "%s" cannot be updated. You only have a view right on this product model.',
                     $productModel->getCode()
                 ));
             }
