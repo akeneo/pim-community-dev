@@ -222,14 +222,13 @@ export const getAllErrorsOfLineByTarget = (line: Line): LineErrorsByTarget => {
   };
 
   for (let error of getAllErrorsOfLine(line)) {
-    if (error.propertyPath === 'code') {
-      errors.code.push(error);
-    } else if (error.propertyPath.endsWith('channel')) {
-      errors.channel.push(error);
-    } else if (error.propertyPath.endsWith('locale')) {
-      errors.locale.push(error);
-    } else {
-      errors.all.push(error);
+    switch (error.propertyPath) {
+      case 'code':
+        errors.code.push(error);
+        break;
+      default:
+        errors.all.push(error);
+        break;
     }
   }
 

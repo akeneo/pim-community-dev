@@ -56,8 +56,6 @@ class EditAssetValueCommandsValidator extends ConstraintValidator
                     ->addViolation();
             }
         }
-
-        $this->checkUniqueCompositeKey($editAssetValueCommands);
     }
 
     private function isArray($editAssetValueCommands): bool
@@ -100,36 +98,6 @@ class EditAssetValueCommandsValidator extends ConstraintValidator
                     get_class($command)
                 )
             );
-        }
-    }
-
-    private function checkUniqueCompositeKey(array $editAssetValueCommands)
-    {
-        $keys = [];
-
-        foreach($editAssetValueCommands as $i => $editAssetValueCommand) {
-            $channel = $editAssetValueCommand->channel;
-            $locale = $editAssetValueCommand->locale;
-            $key = sprintf('%s-%s', $channel, $locale);
-
-            if (in_array($key, $keys)) {
-                if (null !== $channel) {
-                    // @todo translate
-                    $this->context->buildViolation('collision on channel')
-                        ->atPath(sprintf('values.%s.channel', $i))
-                        ->setInvalidValue($channel)
-                        ->addViolation();
-                }
-                if (null !== $locale) {
-                    // @todo translate
-                    $this->context->buildViolation('collision on locale')
-                        ->atPath(sprintf('values.%s.locale', $i))
-                        ->setInvalidValue($locale)
-                        ->addViolation();
-                }
-            }
-
-            $keys[] = $key;
         }
     }
 }
