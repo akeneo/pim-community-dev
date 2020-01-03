@@ -20,7 +20,7 @@ Feature: Edit sequentially some products
     Then I should see the text "Divided crimson red"
     And I should see the text "Save and next"
 
-  Scenario: Successfully sequentially edit some product modelsGiven I type "color" in the manage filter input
+  Scenario: Successfully sequentially edit some product models
     Given I type "color" in the manage filter input
     And I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"

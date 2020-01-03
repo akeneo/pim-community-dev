@@ -34,16 +34,3 @@ Feature: Mass edit common attributes for reference data
       | heel_color | [Light green] |
     And the product "platform_shoes" should have the following values:
       | heel_color | [Light green] |
-
-  Scenario: Successfully update multi-valued reference data at once
-    Given I select rows heels and platform_shoes
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I display the Sole fabric attribute
-    And I change the "Sole fabric" to "Wool, Kevlar, Jute"
-    And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then the product "heels" should have the following values:
-      | sole_fabric | [Jute], [Kevlar], [Wool]|
-    Then the product "platform_shoes" should have the following values:
-      | sole_fabric | [Jute], [Kevlar], [Wool]|

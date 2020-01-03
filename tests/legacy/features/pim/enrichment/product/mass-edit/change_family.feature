@@ -27,14 +27,3 @@ Feature: Change family of many products at once
     And I wait for the "update_product_value" job to finish
     Then the family of product "coffee" should be "Food"
     And the family of product "hamburger" should be "Food"
-
-  Scenario: Remove many products from a product family
-    Given I select rows coffee, hamburger and jeans
-    And I press the "Bulk actions" button
-    And I choose the "Change family" operation
-    And I change the Family to "None"
-    And I confirm mass edit
-    And I wait for the "update_product_value" job to finish
-    Then the family of product "coffee" should be ""
-    And the family of product "hamburger" should be ""
-    And the family of product "jeans" should be ""

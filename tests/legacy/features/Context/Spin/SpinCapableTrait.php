@@ -32,7 +32,7 @@ trait SpinCapableTrait
 
         do {
             if ($looping) {
-                sleep(1);
+                usleep(300000);
             }
             try {
                 $result = $callable($this);

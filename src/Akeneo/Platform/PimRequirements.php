@@ -96,6 +96,13 @@ class PimRequirements
             'Install the <strong>Ghostscript</strong> executable at least ' . self::REQUIRED_GHOSTSCRIPT_VERSION . ' version'
         );
 
+        $isAspellInstalled = !empty(shell_exec('which aspell'));
+        $requirements[] = new Requirement(
+            $isAspellInstalled,
+            'Aspell executable must be available',
+            'Install the <strong>Aspell</strong> executable'
+        );
+
         $requirements[] = new Requirement(
             null !== $icuVersion && version_compare($icuVersion, self::REQUIRED_ICU_VERSION, '>='),
             'icu library must be at least ' . self::REQUIRED_ICU_VERSION,
