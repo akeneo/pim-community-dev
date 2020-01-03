@@ -9,7 +9,9 @@ import {
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {onFileDrop} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-file-drop';
-import Line from 'src/Akeneo/AssetManager/front/application/asset-upload/model/line';
+import Line from 'akeneoassetmanager/application/asset-upload/model/line';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import Locale from 'akeneoassetmanager/domain/model/locale';
 
 const flushPromises = () => new Promise(setImmediate);
 
@@ -39,10 +41,12 @@ jest.mock('akeneoassetmanager/application/asset-upload/utils/uuid', () => ({
 describe('', () => {
   test('Nothing happens if I try to dispatch 0 files', async () => {
     const assetFamily = createFakeAssetFamily(false, false);
-    const files = [];
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const files: File[] = [];
     const dispatch = jest.fn();
 
-    onFileDrop(files, assetFamily, dispatch);
+    onFileDrop(files, assetFamily, channels, locales, dispatch);
     await flushPromises();
 
     expect(dispatch).not.toHaveBeenCalled();
@@ -51,40 +55,46 @@ describe('', () => {
   test('A thumbnail is created when I upload a file', async () => {
     const assetFamily = createFakeAssetFamily(false, false);
     const file = new File(['foo'], 'foo.png', {type: 'image/png'});
-    const files = [file];
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const files: File[] = [file];
     const dispatch = jest.fn();
 
-    onFileDrop(files, assetFamily, dispatch);
+    onFileDrop(files, assetFamily, channels, locales, dispatch);
     await flushPromises();
 
-    const line = createLineFromFilename(file.name, assetFamily);
+    const line = createLineFromFilename(file.name, assetFamily, channels, locales);
     expect(dispatch).toHaveBeenCalledWith(fileThumbnailGenerationDoneAction('/tmb/foo.png', line));
   });
 
   test('The upload progress is dispatched', async () => {
     const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
     const file = new File(['foo'], 'foo.png', {type: 'image/png'});
     const files = [file];
     const dispatch = jest.fn();
 
-    onFileDrop(files, assetFamily, dispatch);
+    onFileDrop(files, assetFamily, channels, locales, dispatch);
     await flushPromises();
 
-    const line = createLineFromFilename(file.name, assetFamily);
+    const line = createLineFromFilename(file.name, assetFamily, channels, locales);
     expect(dispatch).toHaveBeenCalledWith(fileUploadProgressAction(line, 0));
     expect(dispatch).toHaveBeenCalledWith(fileUploadProgressAction(line, 1));
   });
 
   test('The upload success is dispatched', async () => {
     const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
     const file = new File(['foo'], 'foo.png', {type: 'image/png'});
     const files = [file];
     const dispatch = jest.fn();
 
-    onFileDrop(files, assetFamily, dispatch);
+    onFileDrop(files, assetFamily, channels, locales, dispatch);
     await flushPromises();
 
-    const line = createLineFromFilename(file.name, assetFamily);
+    const line = createLineFromFilename(file.name, assetFamily, channels, locales);
     expect(dispatch).toHaveBeenCalledWith(
       fileUploadSuccessAction(line, {
         filePath: 'foo.png',

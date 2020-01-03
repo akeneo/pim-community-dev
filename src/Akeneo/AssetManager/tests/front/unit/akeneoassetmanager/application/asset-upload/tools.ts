@@ -5,6 +5,8 @@ import {createLineFromFilename} from 'akeneoassetmanager/application/asset-uploa
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {NormalizedValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import Locale from 'akeneoassetmanager/domain/model/locale';
 
 export const createFakeAssetFamily = (valuePerLocale: boolean, valuePerChannel: boolean): AssetFamily => {
   return Object.freeze({
@@ -42,8 +44,13 @@ export const createFakeAssetFamily = (valuePerLocale: boolean, valuePerChannel: 
   });
 };
 
-export const createFakeLine = (filename: string, assetFamily: AssetFamily): Line => {
-  return Object.freeze(createLineFromFilename(filename, assetFamily));
+export const createFakeLine = (
+  filename: string,
+  assetFamily: AssetFamily,
+  channels: Channel[],
+  locales: Locale[]
+): Line => {
+  return Object.freeze(createLineFromFilename(filename, assetFamily, channels, locales));
 };
 
 export const createFakeError = (message: string = 'error'): NormalizedValidationError => {
@@ -62,5 +69,22 @@ export const createFakeCreationAsset = (code: string, assetFamily: AssetFamily):
     code: code,
     labels: {},
     values: [],
+  });
+};
+
+export const createFakeLocale = (code: string, label?: string): Locale => {
+  return Object.freeze({
+    code: code,
+    label: label || code,
+    language: code,
+    region: code,
+  });
+};
+
+export const createFakeChannel = (code: string, locales: string[] = []): Channel => {
+  return Object.freeze({
+    code: code,
+    labels: {en_US: code},
+    locales: locales.map(locale => createFakeLocale(locale)),
   });
 };

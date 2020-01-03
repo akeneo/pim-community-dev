@@ -8,6 +8,10 @@ import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import LineList from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import {createFakeAssetFamily, createFakeLine} from '../tools';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import Locale from 'akeneoassetmanager/domain/model/locale';
+
+jest.mock('akeneoassetmanager/application/component/app/select2');
 
 describe('Test line-list component', () => {
   let container: HTMLElement;
@@ -24,12 +28,17 @@ describe('Test line-list component', () => {
   test('It renders without errors', async () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <LineList
             lines={[]}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineRemoveAll={() => {}}
             onLineChange={() => {}}
@@ -45,12 +54,17 @@ describe('Test line-list component', () => {
   test('It renders the placeholder when empty', async () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <LineList
             lines={[]}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineRemoveAll={() => {}}
             onLineChange={() => {}}
@@ -70,6 +84,8 @@ describe('Test line-list component', () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
     const lines = [
       createFakeLine('a.png', assetFamily),
       createFakeLine('b.png', assetFamily),
@@ -81,6 +97,9 @@ describe('Test line-list component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <LineList
             lines={lines}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineRemoveAll={() => {}}
             onLineChange={() => {}}
@@ -100,6 +119,8 @@ describe('Test line-list component', () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
     const lines = [
       createFakeLine('a.png', assetFamily),
       createFakeLine('b.png', assetFamily),
@@ -112,6 +133,9 @@ describe('Test line-list component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <LineList
             lines={lines}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineRemoveAll={removeAll}
             onLineChange={() => {}}
@@ -132,6 +156,8 @@ describe('Test line-list component', () => {
     const valuePerLocale = true;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
     const lines = [
       createFakeLine('a.png', assetFamily),
       createFakeLine('b.png', assetFamily),
@@ -143,6 +169,9 @@ describe('Test line-list component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <LineList
             lines={lines}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineRemoveAll={() => {}}
             onLineChange={() => {}}
@@ -162,6 +191,8 @@ describe('Test line-list component', () => {
     const valuePerLocale = false;
     const valuePerChannel = true;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
     const lines = [
       createFakeLine('a.png', assetFamily),
       createFakeLine('b.png', assetFamily),
@@ -173,6 +204,9 @@ describe('Test line-list component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <LineList
             lines={lines}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineRemoveAll={() => {}}
             onLineChange={() => {}}

@@ -70,6 +70,7 @@ export default class Select2 extends React.Component<Select2Props & any> {
       <select
         {...props}
         ref={this.select}
+        value={value}
         multiple={props.multiple}
         disabled={props.readOnly}
         onChange={event => {

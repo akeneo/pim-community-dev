@@ -9,9 +9,14 @@ import {getAllErrorsOfLineByTarget, getStatusFromLine} from 'akeneoassetmanager/
 import Spacer from 'akeneoassetmanager/application/component/app/spacer';
 import {ColumnWidths} from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import WarningIcon from 'akeneoassetmanager/application/component/app/icon/warning';
-import Channel, {getChannelLabel} from 'akeneoassetmanager/domain/model/channel';
+import Channel from 'akeneoassetmanager/domain/model/channel';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import {
+  getOptionsFromChannels,
+  getOptionsFromLocales,
+  formatLocaleOption,
+} from 'akeneoassetmanager/application/asset-upload/utils/select2';
 
 const Container = styled.div<{status?: LineStatus}>`
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
@@ -110,55 +115,6 @@ type RowProps = {
   valuePerChannel: boolean;
 };
 
-type OptionsSelect2 = {
-  [value: string]: string;
-};
-
-const getChannelsOptions = (channels: Channel[], locale: LocaleCode): OptionsSelect2 => {
-  return channels.reduce((results: OptionsSelect2, channel: Channel) => {
-    results[channel.code] = getChannelLabel(channel, locale);
-    return results;
-  }, {});
-};
-
-const getAllLocalesOptions = (locales: Locale[]): OptionsSelect2 => {
-  return locales.reduce((results: OptionsSelect2, locale: Locale) => {
-    results[locale.code] = locale.label;
-    return results;
-  }, {});
-};
-
-const getLocalesOptions = (channels: Channel[], locales: Locale[], line: Line): OptionsSelect2 => {
-  if (null === line.channel) {
-    return getAllLocalesOptions(locales);
-  }
-
-  const channel = channels.find((channel: Channel) => channel.code === line.channel);
-  if (undefined === channel) {
-    throw Error('Invalid channel in asset creation line: ' + line.channel);
-  }
-
-  return channel.locales.reduce((results: OptionsSelect2, locale: Locale) => {
-    results[locale.code] = locale.label;
-    return results;
-  }, {});
-};
-
-const formatLocaleOption = (state: any): string => {
-  if (!state.id) return state.text;
-
-  const info = state.id.split('_');
-  const flag = info[1].toLowerCase();
-  const language = state.text;
-
-  return `
-<span class="flag-language">
-  <i class="flag flag-${flag}"></i>
-  <span class="language">${language}</span>
-</span>
-`;
-};
-
 const Error = ({message, ...props}: {message: string} & any) => (
   <StyledError {...props} aria-label={message}>
     <WarningIcon color={akeneoTheme.color.red100} size={16} />
@@ -178,8 +134,8 @@ const Row = ({
 }: RowProps) => {
   const status = getStatusFromLine(line, valuePerLocale, valuePerChannel);
   const errors = getAllErrorsOfLineByTarget(line);
-  const channelsOptions = getChannelsOptions(channels, locale);
-  const localesOptions = getLocalesOptions(channels, locales, line);
+  const channelsOptions = getOptionsFromChannels(channels, locale);
+  const localesOptions = getOptionsFromLocales(channels, locales, line);
 
   return (
     <Container status={status}>
