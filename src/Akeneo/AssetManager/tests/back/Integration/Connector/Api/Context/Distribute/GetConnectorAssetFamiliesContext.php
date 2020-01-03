@@ -123,7 +123,7 @@ class GetConnectorAssetFamiliesContext implements Context
                             'channel' => null,
                             'locale' => null,
                         ],
-                        'pattern' => '/^(<?productref>\w+)-(<?attribute>\w+).jpeg$/',
+                        'pattern' => '/^(?P<productref>\w+)-(?P<attribute>\w+).jpeg$/',
                         'strict' => true,
                     ]
                 );

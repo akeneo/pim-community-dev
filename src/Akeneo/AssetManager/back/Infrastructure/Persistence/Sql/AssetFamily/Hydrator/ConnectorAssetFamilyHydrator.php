@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
@@ -39,14 +38,19 @@ class ConnectorAssetFamilyHydrator
     /** @var ConnectorTransformationCollectionHydrator */
     private $transformationCollectionHydrator;
 
+    /** @var ConnectorNamingConventionHydrator */
+    private $namingConventionHydrator;
+
     public function __construct(
         Connection $connection,
         ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
-        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator
+        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
+        ConnectorNamingConventionHydrator $namingConventionHydrator
     ) {
         $this->platform = $connection->getDatabasePlatform();
         $this->productLinkRulesHydrator = $productLinkRulesHydrator;
         $this->transformationCollectionHydrator = $transformationCollectionHydrator;
+        $this->namingConventionHydrator = $namingConventionHydrator;
     }
 
     public function hydrate(array $row): ConnectorAssetFamily
@@ -81,6 +85,7 @@ class ConnectorAssetFamilyHydrator
             $transformations,
             $assetFamilyIdentifier
         );
+        $readNamingConvention = $this->namingConventionHydrator->hydrate($namingConvention, $assetFamilyIdentifier);
 
         return new ConnectorAssetFamily(
             $assetFamilyIdentifier,
@@ -88,7 +93,7 @@ class ConnectorAssetFamilyHydrator
             $image,
             $productLinkRules,
             $readTransformations,
-            NamingConvention::createFromNormalized($namingConvention)
+            $readNamingConvention
         );
     }
 }

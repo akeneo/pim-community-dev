@@ -15,7 +15,8 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NullNamingConvention;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionInterface;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
@@ -85,8 +86,18 @@ class SqlFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends SqlIntegrat
             new \DateTime('1990-01-01')
         );
         $transformationCollection = TransformationCollection::create([$transformation]);
-
-        $assetFamily = $this->createDesignerAssetFamily($transformationCollection);
+        $namingConvention = NamingConvention::createFromNormalized(
+            [
+                'source' => [
+                    'property' => 'main',
+                    'locale' => null,
+                    'channel' => null,
+                ],
+                'pattern' => '/(pattern)/',
+                'strict' => false,
+            ]
+        );
+        $assetFamily = $this->createDesignerAssetFamily($transformationCollection, $namingConvention);
 
         $connectorTransformations = new ConnectorTransformationCollection([
             new ConnectorTransformation(
@@ -108,7 +119,7 @@ class SqlFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends SqlIntegrat
             Image::createEmpty(),
             [],
             $connectorTransformations,
-            new NullNamingConvention()
+            $namingConvention
         );
 
         $assetFamilyFound = $this->findConnectorAssetFamilyQuery->find(AssetFamilyIdentifier::fromString('designer'));
@@ -135,8 +146,10 @@ class SqlFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends SqlIntegrat
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function createDesignerAssetFamily(TransformationCollection $transformationCollection): AssetFamily
-    {
+    private function createDesignerAssetFamily(
+        TransformationCollection $transformationCollection,
+        NamingConventionInterface $namingConvention
+    ): AssetFamily {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
         $imageInfo = new FileInfo();
@@ -150,7 +163,8 @@ class SqlFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends SqlIntegrat
             Image::fromFileInfo($imageInfo),
             RuleTemplateCollection::empty()
         );
-        $assetFamily = $assetFamily->withTransformationCollection($transformationCollection);
+        $assetFamily = $assetFamily->withTransformationCollection($transformationCollection)
+                                   ->withNamingConvention($namingConvention);
 
         $this->assetFamilyRepository->create($assetFamily);
         $this->createMediaFileAttribute('main', 'designer', 2);

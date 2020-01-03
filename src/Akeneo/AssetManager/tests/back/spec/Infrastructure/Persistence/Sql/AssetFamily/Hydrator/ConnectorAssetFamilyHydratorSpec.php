@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorAssetFamilyHydrator;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorNamingConventionHydrator;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorProductLinkRulesHydrator;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
@@ -33,10 +34,16 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
     function let(
         Connection $connection,
         ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
-        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator
+        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
+        ConnectorNamingConventionHydrator $namingConventionHydrator
     ) {
         $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
-        $this->beConstructedWith($connection, $productLinkRulesHydrator, $transformationCollectionHydrator);
+        $this->beConstructedWith(
+            $connection,
+            $productLinkRulesHydrator,
+            $transformationCollectionHydrator,
+            $namingConventionHydrator
+        );
     }
 
     function it_is_initializable()
@@ -46,7 +53,8 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
 
     function it_hydrates_a_connector_asset_family(
         ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
-        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator
+        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
+        ConnectorNamingConventionHydrator $namingConventionHydrator
     ) {
         $row = [
             'identifier'                  => 'designer',
@@ -86,6 +94,7 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $transformationCollectionHydrator->hydrate([['fake_transformation']], $assetFamilyIdentifier)
             ->willReturn(new ConnectorTransformationCollection([]));
+        $namingConventionHydrator->hydrate([], $assetFamilyIdentifier)->willReturn(new NullNamingConvention());
 
         $expectedAssetFamily = new ConnectorAssetFamily(
             $assetFamilyIdentifier,
@@ -109,7 +118,8 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
 
     function it_hydrates_an_asset_family_without_image(
         ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
-        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator
+        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
+        ConnectorNamingConventionHydrator $namingConventionHydrator
     ) {
         $row = [
             'identifier'                  => 'designer',
@@ -127,6 +137,7 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $transformationCollectionHydrator->hydrate([['fake_transformation']], $assetFamilyIdentifier)
             ->willReturn(new ConnectorTransformationCollection([]));
+        $namingConventionHydrator->hydrate([], $assetFamilyIdentifier)->willReturn(new NullNamingConvention());
 
         $expectedAssetFamily = new ConnectorAssetFamily(
             $assetFamilyIdentifier,
@@ -147,7 +158,8 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
 
     function it_hydrates_a_connector_asset_family_with_a_naming_convention(
         ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
-        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator
+        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
+        ConnectorNamingConventionHydrator $namingConventionHydrator
     ) {
         $normalizedNamingConvention = [
             'source' => [
@@ -177,6 +189,8 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $transformationCollectionHydrator->hydrate([['fake_transformation']], $assetFamilyIdentifier)
                                          ->willReturn(new ConnectorTransformationCollection([]));
+        $namingConvention = NamingConvention::createFromNormalized($normalizedNamingConvention);
+        $namingConventionHydrator->hydrate($normalizedNamingConvention, $assetFamilyIdentifier)->willReturn($namingConvention);
 
         $expectedAssetFamily = new ConnectorAssetFamily(
             $assetFamilyIdentifier,
@@ -189,7 +203,7 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
             Image::createEmpty(),
             [],
             new ConnectorTransformationCollection([]),
-            NamingConvention::createFromNormalized($normalizedNamingConvention)
+            $namingConvention
         );
 
         $productLinkRulesHydrator->hydrate([])->willReturn([]);
