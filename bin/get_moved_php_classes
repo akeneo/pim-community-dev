@@ -7,18 +7,41 @@ require dirname(__DIR__).'/vendor/autoload.php';
 
 class RenamedClass
 {
-    private $originalFilePath;
+    private $oldFilePath;
     private $newFilePath;
 
-    private $originalNamespace;
+    private $oldNamespace;
     private $newNamespace;
 
-    public function __construct(string $originalFilePath, string $newFilePath, string $originalNamespace, string $newNamespace)
-    {
-        $this->originalFilePath = $originalFilePath;
+    private $oldClassname;
+    private $newClassname;
+
+    public function __construct(
+        string $oldFilePath,
+        string $newFilePath,
+        ?string $oldNamespace,
+        ?string $newNamespace,
+        ?string $oldClassname,
+        ?string $newClassname
+    ) {
+        if ($oldNamespace === $newNamespace && $oldClassname === $newClassname) {
+            throw new \LogicException(
+                sprintf(
+                    'File moved from %s to %s, but no changes on namespace and classname detected',
+                    $oldFilePath,
+                    $newFilePath
+                )
+            );
+        }
+
+        $this->oldFilePath = $oldFilePath;
         $this->newFilePath = $newFilePath;
-        $this->originalNamespace = $originalNamespace;
+
+        $this->oldNamespace = $oldNamespace;
         $this->newNamespace = $newNamespace;
+
+        $this->oldClassname = $oldClassname;
+        $this->newClassname = $newClassname;
     }
 }
 
@@ -36,16 +59,55 @@ $stream = fopen('php://memory','r+');
 fwrite($stream, $processOutput);
 rewind($stream);
 
-$renamedFrom = "";
-$renamedTo = "";
+$oldFilePath = null;
+$newFilePath = null;
+
+$oldNamespace = null;
+$newNamespace = null;
+
+$oldClassname = null;
+$newClassname = null;
+
 $renamedClasses = [];
+
+$inRenameDiff = false;
 
 while ($line = fgets($stream)) {
     if (preg_match('#^rename from (src/.*\.php)$#', $line, $matches)) {
-        $renamedFrom = $matches[1];
-    } else if (preg_match('#^rename to (src/.*\.php)$#', $line, $matches)) {
-        $renamedTo = $matches[1];
-        $renamedClasses[] = new RenamedClass($renamedFrom, $renamedTo, "na", "na");
+        if ((strpos($line, 'spec/') === false) && (strpos($line, 'tests/') === false)) {
+            $oldFilePath = $matches[1];
+            $oldClassname = preg_replace('#.*/([^/]+)$#', '$1', $oldFilePath);
+
+            $inRenameDiff = true;
+        }
+    } else if ($inRenameDiff && preg_match('#^rename to (src/.*\.php)$#', $line, $matches)) {
+        if ((strpos($line, 'spec/') === false) && (strpos($line, 'tests/') === false)) {
+            $newFilePath = $matches[1];
+            $newClassname = preg_replace('#.*/([^/]+)$#', '$1', $newFilePath);
+        }
+    }
+
+    if ($inRenameDiff && preg_match('#-namespace ([^;]+);$#', $line, $matches)) {
+        $oldNamespace = $matches[1];
+    }
+
+    if ($inRenameDiff && preg_match('#\+namespace ([^;]+);$#', $line, $matches)) {
+        $newNamespace = $matches[1];
+    }
+
+    if ($inRenameDiff && strpos($line, 'diff --git') === 0) {
+        $inRenameDiff = false;
+        if ($oldNamespace !== $newNamespace || $oldClassname !== $newClassname) {
+            $renamedClasses[] = new RenamedClass($oldFilePath, $newFilePath, $oldNamespace, $newNamespace, $oldClassname, $newClassname);
+        }
+        $oldFilePath = null;
+        $newFilePath = null;
+
+        $oldNamespace = null;
+        $newNamespace = null;
+
+        $oldClassname = null;
+        $newClassname = null;
     }
 }
 
