@@ -1,0 +1,52 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Process\Process;
+
+require dirname(__DIR__).'/vendor/autoload.php';
+
+class RenamedClass
+{
+    private $originalFilePath;
+    private $newFilePath;
+
+    private $originalNamespace;
+    private $newNamespace;
+
+    public function __construct(string $originalFilePath, string $newFilePath, string $originalNamespace, string $newNamespace)
+    {
+        $this->originalFilePath = $originalFilePath;
+        $this->newFilePath = $newFilePath;
+        $this->originalNamespace = $originalNamespace;
+        $this->newNamespace = $newNamespace;
+    }
+}
+
+$tag = $argv[1];
+
+$movedFiles = [];
+
+$process = new Process(['git', '-c', 'diff.renameLimit=10000', 'diff', $tag]);
+
+$process->run();
+
+$processOutput = $process->getOutput();
+
+$stream = fopen('php://memory','r+');
+fwrite($stream, $processOutput);
+rewind($stream);
+
+$renamedFrom = "";
+$renamedTo = "";
+$renamedClasses = [];
+
+while ($line = fgets($stream)) {
+    if (preg_match('#^rename from (src/.*\.php)$#', $line, $matches)) {
+        $renamedFrom = $matches[1];
+    } else if (preg_match('#^rename to (src/.*\.php)$#', $line, $matches)) {
+        $renamedTo = $matches[1];
+        $renamedClasses[] = new RenamedClass($renamedFrom, $renamedTo, "na", "na");
+    }
+}
+
+print_r($renamedClasses);
