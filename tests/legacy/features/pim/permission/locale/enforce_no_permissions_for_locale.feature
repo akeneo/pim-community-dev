@@ -61,27 +61,3 @@ Feature: Enforce no permissions for a locale
     When I visit the "Content" tab
     Then I should see the text "German (Germany) English (United States)"
     And I should not see the text "French (France)"
-
-  Scenario: display the next accessible locale
-    Given the following product:
-      | sku | name-en_US | name-en_GB |
-      | bar | Name       | Name       |
-    And the following locale accesses:
-      | locale | user group | access |
-      | en_US  | Manager    | edit   |
-      | en_GB  | Manager    | view   |
-    And I am logged in as "Julia"
-    When I edit the "bar" product
-    And I switch the locale to "en_GB"
-    Then the field Name should be read only
-    When I switch the locale to "en_US"
-    And I change the "Name" to "My custom name"
-    And I switch the locale to "en_GB"
-    And I save the product
-    Given the following locale accesses:
-      | locale | user group | access |
-      | en_GB  | Manager    | none   |
-    And I refresh current page
-    Then the locale "en_US" should be selected
-    And the product "bar" should have the following values:
-      | name-en_US               | My custom name             |
