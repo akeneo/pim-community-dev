@@ -23,6 +23,7 @@ import {Reducer} from 'redux';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {onFileDrop} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-file-drop';
 import {onCreateAllAsset} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-create-all-assets';
+import {hasAnUnsavedLine} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 
 const Subtitle = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
@@ -51,11 +52,24 @@ type UploadModalProps = {
 const UploadModal = ({assetFamily, locale, onCancel}: UploadModalProps) => {
   const [state, dispatch] = React.useReducer<Reducer<State>>(reducer, {lines: []});
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
+  const valuePerLocale = attributeAsMainMedia.value_per_locale;
+  const valuePerChannel = attributeAsMainMedia.value_per_channel;
+
+  const canClose = (): boolean => {
+    const message = __('pim_asset_manager.asset.upload.discard_changes');
+    return hasAnUnsavedLine(state.lines, valuePerLocale, valuePerChannel) ? confirm(message) : true;
+  };
+
+  const onClose = (): void => {
+    if (canClose()) {
+      onCancel();
+    }
+  };
 
   return (
     <Modal>
       <Header>
-        <CloseButton title={__('pim_asset_manager.close')} onClick={onCancel} />
+        <CloseButton title={__('pim_asset_manager.close')} onClick={onClose} />
         <Subtitle>{getAssetFamilyLabel(assetFamily, locale, true)}</Subtitle>
         <Title>{__('pim_asset_manager.asset.upload.title')}</Title>
         <ConfirmButton
@@ -88,8 +102,8 @@ const UploadModal = ({assetFamily, locale, onCancel}: UploadModalProps) => {
         onLineRemoveAll={() => {
           dispatch(removeAllLinesAction());
         }}
-        valuePerLocale={attributeAsMainMedia.value_per_locale}
-        valuePerChannel={attributeAsMainMedia.value_per_locale}
+        valuePerLocale={valuePerLocale}
+        valuePerChannel={valuePerChannel}
       />
     </Modal>
   );
