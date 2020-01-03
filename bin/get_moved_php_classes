@@ -112,3 +112,17 @@ while ($line = fgets($stream)) {
 }
 
 print_r($renamedClasses);
+
+/* Use
+Rector\Renaming\Rector\Class_\RenameClassRector:
+        $oldToNewClasses:
+            'Symfony\Component\Validator\Tests\Constraints\AbstractConstraintValidatorTest': 'Symfony\Component\Validator\Test\ConstraintValidatorTestCase'
+            'Symfony\Component\Process\ProcessBuilder': 'Symfony\Component\Process\Process'
+*/
+
+/*
+  - Handle deleted class (from git history as well => get the list of them
+  - Uses Backward compatibility check for changes (but ignore deleted and moved class
+  - Uses PHPParser from Nikola to check existing custom code and check what is broken from that list ?
+  - Runs Psalm or PHPStan afterwards to check how things are going ?
+*/
