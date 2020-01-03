@@ -5,6 +5,5 @@
         "noEmit": true,
         "esModuleInterop": true
     },
-    "include": [
-        "src", "types.d.ts"]
+    "include": ["src", "types.d.ts"]
 }

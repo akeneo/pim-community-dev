@@ -3,16 +3,16 @@ config:
         pim/controller-registry:
             controllers:
                 akeneo_connectivity_connection_settings_index:
-                    module: pim/controller/apps
+                    module: pim/controller/connectivity/connection/settings
                     aclResourceId: akeneo_connectivity_connection_manage_settings
                 akeneo_connectivity_connection_settings_any:
-                    module: pim/controller/apps
+                    module: pim/controller/connectivity/connection/settings
                     aclResourceId: akeneo_connectivity_connection_manage_settings
                 akeneo_connectivity_connection_audit_index:
-                    module: pim/controller/apps/dashboard
+                    module: pim/controller/connectivity/connection/audit
                 akeneo_connectivity_connection_audit_any:
-                    module: pim/controller/apps/dashboard
+                    module: pim/controller/connectivity/connection/audit
 
     paths:
-        pim/controller/apps: akeneoconnectivityconnection/js/controller/apps.tsx
-        pim/controller/apps/dashboard: akeneoconnectivityconnection/js/controller/dashboard.tsx
+        pim/controller/connectivity/connection/settings: akeneoconnectivityconnection/js/controller/settings.tsx
+        pim/controller/connectivity/connection/audit: akeneoconnectivityconnection/js/controller/audit.tsx
