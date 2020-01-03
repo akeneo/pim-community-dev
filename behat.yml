@@ -26,6 +26,8 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseTransformationContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Enrich\ItemPickerContext:
+                    - 'Context\FeatureContext'
                 - Context\EnterpriseAssertionContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseFileTransformerContext:
@@ -204,6 +206,8 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseFileTransformerContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseItemPickerContext:
+                    - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseSecurityContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\AttributeValidationContext:
@@ -380,6 +384,8 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseFileTransformerContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseItemPickerContext:
+                    - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseSecurityContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\AttributeValidationContext:
@@ -514,6 +520,8 @@ legacy:
                 - Context\EnterpriseAssertionContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseFileTransformerContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseItemPickerContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseSecurityContext:
                     - 'Context\EnterpriseFeatureContext'
@@ -650,6 +658,8 @@ legacy:
                 - Context\EnterpriseAssertionContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseFileTransformerContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseItemPickerContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseSecurityContext:
                     - 'Context\EnterpriseFeatureContext'
