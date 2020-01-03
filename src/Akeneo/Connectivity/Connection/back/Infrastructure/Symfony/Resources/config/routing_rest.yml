@@ -1,50 +1,50 @@
-akeneo_apps_list_rest:
-    path: '/rest/apps'
+list:
+    path: ''
     defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:list }
     methods: [GET]
 
-akeneo_apps_create_rest:
-    path: '/rest/apps'
+create:
+    path: ''
     defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:create }
     methods: [POST]
 
-akeneo_apps_get_rest:
-    path: '/rest/apps/{code}'
+get:
+    path: '/{code}'
     defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:get }
     methods: [GET]
     requirements:
         code: '[a-zA-Z0-9_]+'
 
-akeneo_apps_update_rest:
-    path: '/rest/apps/{code}'
+update:
+    path: '/{code}'
     defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:update }
     methods: [POST]
     requirements:
         code: '[a-zA-Z0-9_]+'
 
-akeneo_apps_delete_rest:
-    path: '/rest/apps/{code}'
+delete:
+    path: '/{code}'
     defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:delete }
     methods: [DELETE]
     requirements:
         code: '[a-zA-Z0-9_]+'
 
-akeneo_apps_regenerate_secret_rest:
-    path: '/rest/apps/{code}/regenerate-secret'
+regenerate_secret:
+    path: '/{code}/regenerate-secret'
     defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:regenerateSecret }
     methods: [POST]
     requirements:
         code: '[a-zA-Z0-9_]+'
 
-akeneo_apps_regenerate_password_rest:
-    path: '/rest/apps/{code}/regenerate-password'
+regenerate_password:
+    path: '/{code}/regenerate-password'
     defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:regeneratePassword }
     methods: [POST]
     requirements:
         code: '[a-zA-Z0-9_]+'
 
-akeneo_apps_audit_source_apps_event:
-    path: '/rest/apps/audit/source-apps-event'
+audit_source_connections_event:
+    path: '/audit/source-connections-event'
     defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.audit:sourceConnectionsEvent }
     methods: [GET]
     requirements:

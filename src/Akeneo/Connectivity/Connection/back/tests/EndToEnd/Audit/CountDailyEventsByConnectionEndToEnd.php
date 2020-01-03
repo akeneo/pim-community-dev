@@ -24,7 +24,7 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
         $this->createAdminUser();
         $this->authenticate('admin', 'admin');
 
-        $this->client->request('GET', '/rest/apps/audit/source-apps-event', ['event_type' => 'product_created']);
+        $this->client->request('GET', '/rest/connections/audit/source-connections-event', ['event_type' => 'product_created']);
         $response = $this->client->getResponse();
 
         Assert::assertTrue($response->isOk());
