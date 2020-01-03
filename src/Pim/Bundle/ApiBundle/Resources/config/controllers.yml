@@ -166,6 +166,7 @@ services:
             - '@pim_api.filter.product_attribute_filter'
             - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
             - '%pim_api.configuration%'
+            - '@pim_api.checker.duplicate_value'
 
     pim_api.controller.product_model:
         class: '%pim_api.controller.product_model.class%'

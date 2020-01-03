@@ -57,7 +57,7 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
                 'a_date'   => [
                     ['data' => '2016-06-13T00:00:00+02:00', 'locale' => null, 'scope' => null],
                 ],
-                'a_simple_select'                    => [
+                'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
             ],
@@ -244,11 +244,11 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_family",
+        "identifier": "complete",
         "values": {
-            "a_metric": [
-                {"locale": null, "scope": null, "data": {"amount": "10", "unit": "KILOWATT"}},
-                {"locale": null, "scope": null, "data": {"amount": "20", "unit": "KILOWATT"}}
+            "a_simple_select": [
+                {"locale": null, "scope": null, "data": "optionB"},
+                {"locale": null, "scope": null, "data": "optionA"}
             ]
         }
     }
@@ -256,13 +256,13 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'You cannot update the same product value on the "a_metric" attribute twice, with the same scope and locale. Check the expected format on the API documentation.',
+            'message' => 'You cannot update the same product value on the "a_simple_select" attribute twice, with the same scope and locale. Check the expected format on the API documentation.',
             '_links' => [
                 'documentation' => ['href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'],
             ],
         ];
 
-        $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/products/complete', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\ApiBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
@@ -11,6 +12,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
+use Pim\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -121,31 +123,9 @@ class ProductController
     /** @var AddParent */
     protected $addParent;
 
-    /**
-     * @param ProductQueryBuilderFactoryInterface   $searchAfterPqbFactory
-     * @param NormalizerInterface                   $normalizer
-     * @param IdentifiableObjectRepositoryInterface $channelRepository
-     * @param QueryParametersCheckerInterface       $queryParametersChecker
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param PaginatorInterface                    $offsetPaginator
-     * @param PaginatorInterface                    $searchAfterPaginator
-     * @param ParameterValidatorInterface           $parameterValidator
-     * @param ValidatorInterface                    $productValidator
-     * @param ProductBuilderInterface               $productBuilder
-     * @param RemoverInterface                      $remover
-     * @param ObjectUpdaterInterface                $updater
-     * @param SaverInterface                        $saver
-     * @param UrlGeneratorInterface                 $router
-     * @param FilterInterface                       $emptyValuesFilter
-     * @param StreamResourceResponse                $partialUpdateStreamResource
-     * @param PrimaryKeyEncrypter                   $primaryKeyEncrypter
-     * @param ProductQueryBuilderFactoryInterface   $fromSizePqbFactory
-     * @param ProductBuilderInterface               $variantProductBuilder
-     * @param AttributeFilterInterface              $productAttributeFilter
-     * @param AddParent                             $addParent
-     * @param array                                 $apiConfiguration
-     */
+    /** @var DuplicateValueChecker */
+    protected $duplicateValueChecker;
+
     public function __construct(
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         NormalizerInterface $normalizer,
@@ -169,7 +149,8 @@ class ProductController
         ProductBuilderInterface $variantProductBuilder,
         AttributeFilterInterface $productAttributeFilter,
         AddParent $addParent,
-        array $apiConfiguration
+        array $apiConfiguration,
+        DuplicateValueChecker $duplicateValueChecker = null // TODO @merge Remove this null parameter and the conditions
     ) {
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
         $this->normalizer = $normalizer;
@@ -194,6 +175,7 @@ class ProductController
         $this->apiConfiguration = $apiConfiguration;
         $this->productAttributeFilter = $productAttributeFilter;
         $this->addParent = $addParent;
+        $this->duplicateValueChecker = $duplicateValueChecker;
     }
 
     /**
@@ -288,6 +270,18 @@ class ProductController
     {
         $data = $this->getDecodedContent($request->getContent());
 
+        if (null !== $this->duplicateValueChecker) {
+            try {
+                $this->duplicateValueChecker->check($data);
+            } catch (InvalidPropertyTypeException $e) {
+                throw new DocumentedHttpException(
+                    Documentation::URL . 'patch_products__code_',
+                    sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
+                    $e
+                );
+            }
+        }
+
         $data = $this->populateIdentifierProductValue($data);
         $data = $this->orderData($data);
 
@@ -317,6 +311,18 @@ class ProductController
     public function partialUpdateAction(Request $request, $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
+
+        if (null !== $this->duplicateValueChecker) {
+            try {
+                $this->duplicateValueChecker->check($data);
+            } catch (InvalidPropertyTypeException $e) {
+                throw new DocumentedHttpException(
+                    Documentation::URL . 'patch_products__code_',
+                    sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
+                    $e
+                );
+            }
+        }
 
         $product = $this->productRepository->findOneByIdentifier($code);
         $isCreation = null === $product;

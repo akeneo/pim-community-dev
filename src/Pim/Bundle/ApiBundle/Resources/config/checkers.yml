@@ -9,6 +9,7 @@ services:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.cached_category'
             - ['enabled', 'code']
+
     pim_api.checker.query_parameters_product:
         class: '%pim_api.checker.query_parameters.class%'
         arguments:
@@ -24,3 +25,6 @@ services:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.cached_category'
             - ['family', 'categories', 'completeness', 'identifier', 'created', 'updated']
+
+    pim_api.checker.duplicate_value:
+        class: 'Pim\Bundle\ApiBundle\Checker\DuplicateValueChecker'
