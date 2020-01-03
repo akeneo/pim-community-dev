@@ -107,38 +107,35 @@ Feature: Notify users after a project creation
     And I should see notification:
       | type    | message                                                                                     |
       | success | The project 2016 summer collection is ready and the contributors are notified. Let's start! |
-    When I logout
     And I am logged in as "admin"
     # John has only read on categories and attribute groups. He can't edit, so he's not notified.
-    Then I am on the homepage
+    And I am on the homepage
     And I should have 0 new notification
-    When I logout
     And I am logged in as "Teddy"
     # Teddy doesn't see Clothing category.
-    Then I am on the homepage
+    And I am on the homepage
     And I should have 0 new notification
-    When I logout
     And I am logged in as "Kathy"
     # Kathy can edit Clothing category but she can't edit an attribute group of the selection.
-    Then I am on the homepage
+    And I am on the homepage
     And I should have 0 new notification
-    When I logout
     And I am logged in as "Mary"
     # Mary can edit Clothing category and edit on Marketing and Others attribute groups.
+    And I am on the homepage
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
       | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
-    When I logout
     And I am logged in as "Claude"
     # Claude can edit Clothing category and edit on Technical and Others attribute groups.
+    And I am on the homepage
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
       | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
-    When I logout
     And I am logged in as "Marc"
     # Marc can edit Clothing category and edit on Technical and Others attribute groups.
+    And I am on the homepage
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
@@ -165,40 +162,38 @@ Feature: Notify users after a project creation
     And I should see notification:
       | type    | message                                                                                     |
       | success | The project 2016 summer collection is ready and the contributors are notified. Let's start! |
-    When I logout
     And I am logged in as "admin"
     # John has only read on categories and attribute groups. He can't edit, so he's not notified.
-    Then I am on the homepage
+    And I am on the homepage
     And I should have 0 new notification
-    When I logout
     And I am logged in as "Kathy"
     # Kathy can edit Clothing and High-Tech categories but she can't edit an attribute group of the selection.
-    Then I am on the homepage
+    And I am on the homepage
     And I should have 0 new notification
-    When I logout
     And I am logged in as "Mary"
     # Mary can edit Clothing category and edit on Marketing and Others attribute groups.
+    And I am on the homepage
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
       | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
-    When I logout
     And I am logged in as "Claude"
     # Claude can edit Clothing category and edit on Technical and Others attribute groups.
+    And I am on the homepage
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
       | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
-    When I logout
     And I am logged in as "Marc"
     # Marc can edit Clothing category and edit on Technical and Others attribute groups.
+    And I am on the homepage
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
       | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
-    When I logout
     And I am logged in as "Teddy"
     # Teddy can edit High-Tech category and edit on Technical and Others attribute groups.
+    And I am on the homepage
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
@@ -228,38 +223,35 @@ Feature: Notify users after a project creation
     And I should see notification:
       | type    | message                                                                                     |
       | success | The project 2016 summer collection is ready and the contributors are notified. Let's start! |
-    When I logout
     And I am logged in as "admin"
     # John has only read on categories and attribute groups. He can't edit, so he's not notified.
-    Then I am on the homepage
+    And I am on the homepage
     And I should have 0 new notification
-    When I logout
     And I am logged in as "Claude"
     # Claude can only read High-Tech category.
-    Then I am on the homepage
+    And I am on the homepage
     And I should have 0 new notification
-    When I logout
     And I am logged in as "Kathy"
     # Kathy can edit High-Tech category but she can't edit an attribute group of the selection.
-    Then I am on the homepage
+    And I am on the homepage
     And I should have 0 new notification
-    When I logout
     And I am logged in as "Mary"
     # Mary can edit High-Tech category and edit on Marketing and Others attribute groups.
+    And I am on the homepage
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
       | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
-    When I logout
     And I am logged in as "Teddy"
     # Teddy can edit High-Tech category and edit on Technical and Others attribute groups.
+    And I am on the homepage
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
       | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
-    When I logout
     And I am logged in as "Julia"
     # Julia has edit on all categories and attribute groups.
+    And I am on the homepage
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
@@ -285,36 +277,32 @@ Feature: Notify users after a project creation
     And I should see notification:
       | type    | message                                                                                     |
       | success | The project 2016 summer collection is ready and the contributors are notified. Let's start! |
-    When I logout
     And I am logged in as "admin"
     # John has only read on categories and attribute groups. He can't edit, so he's not notified.
-    Then I am on the homepage
+    And I am on the homepage
     And I should have 0 new notification
-    When I logout
     And I am logged in as "Claude"
     # Claude can't see Decoration category.
-    Then I am on the homepage
+    And I am on the homepage
     And I should have 0 new notification
-    When I logout
     And I am logged in as "Marc"
     # Marc can't see Decoration category.
-    Then I am on the homepage
+    And I am on the homepage
     And I should have 0 new notification
-    When I logout
     And I am logged in as "Teddy"
     # Teddy can't see Decoration category.
-    Then I am on the homepage
+    And I am on the homepage
     And I should have 0 new notification
-    When I logout
     And I am logged in as "Mary"
     # Mary can edit Decoration category and edit Marketing attribute group.
+    And I am on the homepage
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
       | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
-    When I logout
     And I am logged in as "Kathy"
     # Kathy can edit Decoration category and edit Picture attribute group.
+    And I am on the homepage
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
@@ -336,8 +324,8 @@ Feature: Notify users after a project creation
     And I should be on the products page
     And I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
-    When I logout
     And I am logged in as "Julia"
+    And I am on the homepage
     And I should have 0 new notification
 
   Scenario: Successfully notify users if the project is not 100% done at project creation
@@ -356,8 +344,8 @@ Feature: Notify users after a project creation
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
-    When I logout
     And I am logged in as "Julia"
+    And I am on the homepage
     Then I should have 1 new notification
 
   Scenario: Successfully notify users
@@ -381,7 +369,6 @@ Feature: Notify users after a project creation
     Then I should have 1 new notification
     Then I open the notification panel
     And I should see the text "The project 2016 summer collection is ready and the contributors are notified. Let's start!"
-    When I logout
     And I am logged in as "Julia"
     And I am on the homepage
     # Is notified because she has products to enrich
