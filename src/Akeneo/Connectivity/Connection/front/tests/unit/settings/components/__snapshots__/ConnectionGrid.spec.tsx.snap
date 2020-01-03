@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConnectionGrid should render 1`] = `
+Array [
+  <header
+    className="sc-VigVT bqWYVJ"
+  >
+    <div
+      className="sc-jTzLTM gnUsfy"
+    >
+      others
+    </div>
+    <div
+      className="sc-kEYyzF uXDi"
+    >
+      akeneo_connectivity.connection.connection_count
+    </div>
+  </header>,
+  <div
+    className="sc-kkGfuU fGwjgM"
+  />,
+]
+`;

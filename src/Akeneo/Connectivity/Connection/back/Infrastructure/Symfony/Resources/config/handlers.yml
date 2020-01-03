@@ -37,6 +37,12 @@ services:
             - '@akeneo_connectivity.connection.persistence.repository.connection'
             - '@akeneo_connectivity.connection.service.client.regenerate_client_secret'
 
+    akeneo_connectivity.connection.application.handler.regenerate_connection_password:
+        class: 'Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler'
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@akeneo_connectivity.connection.service.client.regenerate_user_password'
+
     akeneo_connectivity.connection.application.audit.handler.count_daily_events_by_connection:
         class: 'Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler'
         arguments:

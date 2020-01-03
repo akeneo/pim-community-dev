@@ -40,18 +40,18 @@ akeneo_connectivity.connection:
         data_source: Data source | Data sources
         data_destination: Data destination | Data destinations
         other: Other | Others
-    app_count: '{{ count }} connection | {{ count }} connection'
-    no_app:
+    connection_count: '{{ count }} connection | {{ count }} connections'
+    no_connection:
         title: No connection declared yet.
         message: Add your first one by clicking on the “Create” button above or
         message_link: click here.
-    create_app:
+    create_connection:
         title: Create a new connection
         description: You can create up to 50 connections.
         flash:
             success: Connection successfully created.
             error: Sorry, an error occurred while creating the connection.
-    edit_app:
+    edit_connection:
         subtitle: Settings
         flash:
             success: Connection successfully updated.
@@ -63,16 +63,16 @@ akeneo_connectivity.connection:
             helper:
                 message: 'Here are the credentials to use in your {{ label }} connector.'
                 link: Learn more here...
-                link_url: https://www.akeneo.com/
+                link_url: https://help.akeneo.com/pim/articles/manage-your-connections.html#grab-your-credentials
             password_placeholder: ••••••••
             password_helper:
                 message: If you forgot your password, you can generate a new one here.
                 link: More info…
-                link_url: https://www.akeneo.com/
+                link_url: https://help.akeneo.com/pim/articles/manage-your-connections.html#grab-your-credentials
             clear_password_helper:
                 message: Make sure to save this password somewhere as we won’t show it to you twice.
                 link: More info…
-                link_url: https://www.akeneo.com/
+                link_url: https://help.akeneo.com/pim/articles/manage-your-connections.html#grab-your-credentials
             action:
                 copy: Copy to clipboard
                 regenerate: Regenerate
@@ -82,28 +82,38 @@ akeneo_connectivity.connection:
         title: Confirm regeneration
         description: Are you sure you want to regenerate the connection secret? Not sure about the impacts?
         link: Here is what will happen.
-        link_url: https://www.akeneo.com/
+        link_url: https://help.akeneo.com/pim/articles/manage-your-connections.html#revokeregenerate-your-connection-secret
         action:
             regenerate: Regenerate
         flash:
             success: Connection secret successfully regenerated.
             error: Sorry, an error occurred while regenerating the connection secret.
-    delete_app:
+    regenerate_password:
+        title: Confirm regeneration
+        description: Are you sure you want to regenerate the connection password? Not sure about the impacts?
+        link: Here is what will happen.
+        link_url: https://help.akeneo.com/pim/articles/manage-your-connections.html#regenerate-your-connection-password
+        action:
+            regenerate: Regenerate
+        flash:
+            success: Connection password successfully regenerated.
+            error: Sorry, an error occurred while regenerating the connection password.
+    delete_connection:
         title: Confirm deletion
         description: Are you sure you want to delete the connection? Not sure about the impacts?
         link: Here is what will happen.
-        link_url: https://www.akeneo.com/
+        link_url: https://help.akeneo.com/pim/articles/manage-your-connections.html#delete-a-connection
         flash:
             success: Connection successfully deleted.
     helper:
         title: 👋 Welcome in the feature that will properly connect your PIM!
         description: A PIM without any third-party integrations is kinda useless, isn't it? Thanks to connections, you can declare all the data flows that will be pushed inside and pulled outside your PIM.
         link: Eager to know more? Find out what is a connection and how to make the most of it right here!
-        link_url: https://www.akeneo.com/
+        link_url: https://help.akeneo.com/pim/articles/what-is-a-connection.html
     flow_type_helper:
         message: Wondering what flow type is?
         link: We can help you right here!
-        link_url: https://www.akeneo.com/
+        link_url: https://help.akeneo.com/pim/articles/manage-your-connections.html#choose-your-flow-type
     edit_image:
         upload_helper: Change your image, drag and drop or
         remove_helper: Remove the image
@@ -115,9 +125,9 @@ akeneo_connectivity.connection:
         helper:
             title: 👋 Welcome in your connection dashboard!
             description: Here, you will be able to track all the data flows that are collected into your PIM via your connections, as well as all the data flows that are distributed to your channels via your connections.
-            link: Wanna know more? Here you go!
-            link_url: https://www.akeneo.com/
-        app_selector:
+            link: Want to know more? Here you go!
+            link_url: https://help.akeneo.com/pim/articles/connection-dashboard.html
+        connection_selector:
             title: Source connections
         charts:
             number_of_products_created: Number of products created
@@ -125,11 +135,11 @@ akeneo_connectivity.connection:
             legend:
                 during_the_last_seven_days: During the last seven days
                 today: Today
-        no_app:
+        no_connection:
             title: No connection declared yet.
             message_with_permission:
                 link: Create one here!
             message_without_permission:
                 message: Ask your administrator to create one.
                 link: Learn more about connections here...
-                link_url: https://www.akeneo.com/
+                link_url: https://help.akeneo.com/pim/articles/what-is-a-connection.html

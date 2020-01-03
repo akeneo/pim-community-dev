@@ -29,6 +29,12 @@ services:
             - '@fos_oauth_server.client_manager.default'
             - '@database_connection'
 
+    akeneo_connectivity.connection.service.client.regenerate_user_password:
+        class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\RegenerateUserPassword
+        arguments:
+            - '@pim_user.manager'
+            - '@database_connection'
+
     akeneo_connectivity.connection.service.file_info.does_image_exist:
         class: Akeneo\Connectivity\Connection\Infrastructure\FileInfo\Internal\DoesImageExistQuery
         arguments:

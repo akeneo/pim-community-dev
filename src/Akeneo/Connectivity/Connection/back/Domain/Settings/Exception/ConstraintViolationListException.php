@@ -13,7 +13,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class ConstraintViolationListException extends \InvalidArgumentException
 {
-    const MESSAGE = 'akeneo.apps.exception';
+    const MESSAGE = 'akeneo_connectivity.connection.constraint_violation_list_exception';
 
     /** @var ConstraintViolationListInterface */
     private $constraintViolationList;

@@ -36,17 +36,7 @@ class FosRegenerateClientSecret implements RegenerateClientSecret
         $fosClient->setSecret(Random::generateToken());
         $this->clientManager->updateClient($fosClient);
 
-        $deleteSqlAccessToken = <<<SQL
-DELETE FROM pim_api_access_token WHERE client = :client_id
-SQL;
-        $stmt = $this->dbalConnection->prepare($deleteSqlAccessToken);
-        $stmt->execute(['client_id' => $clientId->id()]);
-
-        $deleteSqlRefreshToken = <<<SQL
-DELETE FROM pim_api_refresh_token WHERE client = :client_id
-SQL;
-        $stmt = $this->dbalConnection->prepare($deleteSqlRefreshToken);
-        $stmt->execute(['client_id' => $clientId->id()]);
+        $this->deleteApiToken($clientId);
     }
 
     private function findClient(ClientId $clientId): Client
@@ -59,5 +49,20 @@ SQL;
         }
 
         return $fosClient;
+    }
+
+    private function deleteApiToken(ClientId $clientId)
+    {
+        $deleteSqlAccessToken = <<<SQL
+DELETE FROM pim_api_access_token WHERE client = :client_id
+SQL;
+        $stmt = $this->dbalConnection->prepare($deleteSqlAccessToken);
+        $stmt->execute(['client_id' => $clientId->id()]);
+
+        $deleteSqlRefreshToken = <<<SQL
+DELETE FROM pim_api_refresh_token WHERE client = :client_id
+SQL;
+        $stmt = $this->dbalConnection->prepare($deleteSqlRefreshToken);
+        $stmt->execute(['client_id' => $clientId->id()]);
     }
 }

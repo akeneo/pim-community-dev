@@ -11,9 +11,6 @@ akeneo_pim_enrichment:
 akeneo_connectivity_connection:
     resource: "@AkeneoConnectivityConnectionBundle/Resources/config/routing.yml"
 
-akeneo_connectivity_connection_rest:
-    resource: "@AkeneoConnectivityConnectionBundle/Resources/config/routing_rest.yml"
-
 # PIM
 pim_analytics:
     resource: "@PimAnalyticsBundle/Resources/config/routing.yml"
