@@ -67,4 +67,19 @@ class NamingConvention implements NamingConventionInterface
             'strict' => $this->strict
         ];
     }
+
+    public function getSource(): Source
+    {
+        return $this->source;
+    }
+
+    public function getPattern(): Pattern
+    {
+        return $this->pattern;
+    }
+
+    public function isStrict(): bool
+    {
+        return $this->strict;
+    }
 }
