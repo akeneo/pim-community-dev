@@ -37,7 +37,7 @@ class RegenerateUserPassword implements RegenerateUserPasswordService
         $password = $this->generatePassword();
         $user->setPlainPassword($password);
 
-        $this->userManager->updatePassword($user);
+        $this->userManager->updateUser($user);
         $this->deleteApiToken($userId);
 
         return $password;
