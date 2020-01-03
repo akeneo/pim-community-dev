@@ -27,6 +27,12 @@ liip_imagine:
             filters:
                 thumbnail:    { size: [280, 280], mode: outbound }
                 strip:        ~
+        dropdown_select_picture:
+            quality:          95
+            format:           png
+            filters:
+                thumbnail:    { size: [28, 28], mode: outbound }
+                strip:        ~
         pdf_thumbnail:
             quality:          95
             format:           png
