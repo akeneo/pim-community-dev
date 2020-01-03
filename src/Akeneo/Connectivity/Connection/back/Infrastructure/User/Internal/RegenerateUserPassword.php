@@ -69,7 +69,7 @@ SQL;
         $stmt->execute(['user_id' => $userId->id()]);
 
         $deleteSqlRefreshToken = <<<SQL
-DELETE FROM pim_api_refresh_token WHERE client = :user_id
+DELETE FROM pim_api_refresh_token WHERE user = :user_id
 SQL;
         $stmt = $this->dbalConnection->prepare($deleteSqlRefreshToken);
         $stmt->execute(['user_id' => $userId->id()]);
