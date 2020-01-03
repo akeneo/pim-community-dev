@@ -333,3 +333,21 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
         tags:
             - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\Channel\RawChannelShouldExistValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConventionValidator:
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NullableNamingConventionValidator:
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConvention\PatternValidator:
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConvention\RawSourceExistValidator:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+        tags:
+            - { name: 'validator.constraint_validator' }
