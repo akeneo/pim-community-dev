@@ -34,6 +34,9 @@ interface AttributeRepositoryInterface
      */
     public function getByIdentifier(AttributeIdentifier $identifier): AbstractAttribute;
 
+    /**
+     * @throws AttributeNotFoundException
+     */
     public function getByCodeAndAssetFamilyIdentifier(AttributeCode $code, AssetFamilyIdentifier $assetFamilyIdentifier): AbstractAttribute;
 
     /**

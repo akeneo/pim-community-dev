@@ -51,7 +51,8 @@
             }
           ]
         }
-      ]
+      ],
+      "naming_convention": {}
     }
   },
   "response": {

@@ -11,14 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation;
+namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConvention;
 
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -29,6 +27,8 @@ use Symfony\Component\Validator\Validation;
 
 class RawSourceExistValidator extends ConstraintValidator
 {
+    private const ASSET_CODE_PROPERTY = 'code';
+
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
@@ -43,6 +43,10 @@ class RawSourceExistValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, RawSourceExist::class);
         }
 
+        if (self::ASSET_CODE_PROPERTY === $rawSource['property']) {
+            return;
+        }
+
         $validator = Validation::createValidator();
         $violations = $validator->validate($rawSource, new Assert\Type('array'));
         foreach ($violations as $violation) {
@@ -52,13 +56,13 @@ class RawSourceExistValidator extends ConstraintValidator
 
         try {
             $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
-                AttributeCode::fromString($rawSource['attribute']),
+                AttributeCode::fromString($rawSource['property']),
                 $constraint->getAssetFamilyIdentifier()
             );
         } catch (AttributeNotFoundException $e) {
             $this->context->buildViolation(
                 RawSourceExist::ATTRIBUTE_NOT_FOUND_ERROR,
-                ['%attribute_code%' => $rawSource['attribute']]
+                ['%property%' => $rawSource['property']]
             )->addViolation();
 
             return;
@@ -69,20 +73,29 @@ class RawSourceExistValidator extends ConstraintValidator
 
     private function validateAttribute(array $source, AbstractAttribute $attribute): void
     {
-        if (!$attribute instanceof MediaFileAttribute) {
-            $this->context->buildViolation(RawSourceExist::NOT_MEDIA_FILE_ATTRIBUTE_ERROR)->addViolation();
+        $channelReference = ChannelReference::createfromNormalized($source['channel']);
+        $localeReference = LocaleReference::createFromNormalized($source['locale']);
 
-            return;
-        }
-
-        try {
-            Source::create(
-                $attribute,
-                ChannelReference::createfromNormalized($source['channel']),
-                LocaleReference::createFromNormalized($source['locale'])
+        $attribute->hasValuePerChannel() ?
+            (
+                $channelReference->isEmpty() && $this->context->buildViolation(
+                    sprintf('Attribute "%s" is scopable, you must define a channel', (string) $attribute->getCode())
+                )->addViolation()
+            ) : (
+                !$channelReference->isEmpty() && $this->context->buildViolation(
+                    sprintf('Attribute "%s" is not scopable, you cannot define a channel', (string) $attribute->getCode())
+                )->addViolation()
             );
-        } catch (\Exception $e) {
-            $this->context->buildViolation($e->getMessage())->addViolation();
-        }
+
+        $attribute->hasValuePerLocale() ?
+            (
+                $localeReference->isEmpty() && $this->context->buildViolation(
+                    sprintf('Attribute "%s" is localizable, you must define a locale', (string) $attribute->getCode())
+                )->addViolation()
+            ) : (
+                !$localeReference->isEmpty() && $this->context->buildViolation(
+                    sprintf('Attribute "%s" is not localizable, you cannot define a locale', (string) $attribute->getCode())
+                )->addViolation()
+            );
     }
 }

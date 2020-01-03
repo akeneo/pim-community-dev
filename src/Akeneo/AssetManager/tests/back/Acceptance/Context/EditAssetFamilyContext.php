@@ -157,7 +157,7 @@ final class EditAssetFamilyContext implements Context
         $updates = $updateTable->getRowsHash();
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily($identifier);
         $command = new EditAssetFamilyCommand(
-            $identifier, json_decode($updates['labels'], true), null, $attributeAsMainMedia, [], []
+            $identifier, json_decode($updates['labels'], true), null, $attributeAsMainMedia, [], [], null
         );
         ($this->editAssetFamilyHandler)($command);
     }
@@ -287,7 +287,8 @@ final class EditAssetFamilyContext implements Context
             ],
             null,
             [],
-            []
+            [],
+            null
         );
         $this->editAssetFamily($editAssetFamilyCommand);
     }
@@ -301,7 +302,7 @@ final class EditAssetFamilyContext implements Context
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily($identifier);
 
         $editAssetFamilyCommand = new EditAssetFamilyCommand(
-            $identifier, [$localCode => $label], null, $attributeAsMainMedia, [], []
+            $identifier, [$localCode => $label], null, $attributeAsMainMedia, [], [], null
         );
         $this->editAssetFamily($editAssetFamilyCommand);
     }
@@ -312,7 +313,7 @@ final class EditAssetFamilyContext implements Context
     public function theUserUpdatesTheAssetFamilyWithAnEmptyImage(string $identifier)
     {
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily($identifier);
-        $editAssetFamilyCommand = new EditAssetFamilyCommand($identifier, [], null, $attributeAsMainMedia, [], []);
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($identifier, [], null, $attributeAsMainMedia, [], [], null);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 
@@ -366,7 +367,7 @@ final class EditAssetFamilyContext implements Context
     {
         $ruleTemplate = $this->getRuleTemplate();
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily($code);
-        $editAssetFamilyCommand = new EditAssetFamilyCommand($code, [], null, $attributeAsMainMedia, [$ruleTemplate], []);
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($code, [], null, $attributeAsMainMedia, [$ruleTemplate], [], null);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 
@@ -383,7 +384,7 @@ final class EditAssetFamilyContext implements Context
         }
 
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily($code);
-        $editAssetFamilyCommand = new EditAssetFamilyCommand($code, ['en_US' => ucfirst($code)], null, $attributeAsMainMedia, $ruleTemplates, []);
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($code, ['en_US' => ucfirst($code)], null, $attributeAsMainMedia, $ruleTemplates, [], null);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 
@@ -430,7 +431,7 @@ final class EditAssetFamilyContext implements Context
         $this->ruleEngineValidatorACLStub->stubWithViolationMessage(self::RULE_ENGINE_VALIDATION_MESSAGE);
         $invalidProductLinkRules = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
         $editAssetFamilyCommand = new EditAssetFamilyCommand(
-            self::ASSET_FAMILY_IDENTIFIER, [], null, null, $invalidProductLinkRules, []
+            self::ASSET_FAMILY_IDENTIFIER, [], null, null, $invalidProductLinkRules, [], null
         );
         $this->editAssetFamily($editAssetFamilyCommand);
     }
@@ -441,7 +442,7 @@ final class EditAssetFamilyContext implements Context
     public function theUserUpdatesAnAssetFamilyWithNoProductSelections(string $assetFamilyCode): void
     {
         $noProductSelection = [['product_selections' => [], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
-        $editAssetFamilyCommand = new EditAssetFamilyCommand($assetFamilyCode, [], null, null, $noProductSelection, []);
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($assetFamilyCode, [], null, null, $noProductSelection, [], null);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 
@@ -451,7 +452,7 @@ final class EditAssetFamilyContext implements Context
     public function theUserUpdatesAnAssetFamilyWithNoProductAssignment(string $assetFamilyCode): void
     {
         $noProductAssignment = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => []]];
-        $editAssetFamilyCommand = new EditAssetFamilyCommand($assetFamilyCode, [], null, null, $noProductAssignment, []);
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($assetFamilyCode, [], null, null, $noProductAssignment, [], null);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 
@@ -521,7 +522,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -559,7 +560,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -588,7 +589,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -628,7 +629,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -668,7 +669,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -697,7 +698,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -726,7 +727,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -755,7 +756,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -784,7 +785,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -834,7 +835,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -873,7 +874,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -912,7 +913,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -941,7 +942,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -980,7 +981,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1019,7 +1020,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1058,7 +1059,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1087,7 +1088,7 @@ final class EditAssetFamilyContext implements Context
             ],
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1126,7 +1127,7 @@ final class EditAssetFamilyContext implements Context
             ],
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1154,7 +1155,7 @@ final class EditAssetFamilyContext implements Context
             ],
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1183,7 +1184,7 @@ final class EditAssetFamilyContext implements Context
             ],
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1212,7 +1213,7 @@ final class EditAssetFamilyContext implements Context
             ],
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1248,7 +1249,7 @@ final class EditAssetFamilyContext implements Context
             ],
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1275,7 +1276,7 @@ final class EditAssetFamilyContext implements Context
             ],
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1302,7 +1303,7 @@ final class EditAssetFamilyContext implements Context
             ],
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1337,7 +1338,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1363,7 +1364,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1389,7 +1390,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1474,7 +1475,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1500,7 +1501,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand($assetFamilyIdentifier, [], null, $assetFamilyIdentifier, [$productLinkRule], []);
+        $command = new EditAssetFamilyCommand($assetFamilyIdentifier, [], null, $assetFamilyIdentifier, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1526,7 +1527,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand($assetFamilyIdentifier, [], null, $attributeAsMainMedia, [$productLinkRule], []);
+        $command = new EditAssetFamilyCommand($assetFamilyIdentifier, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1552,7 +1553,7 @@ final class EditAssetFamilyContext implements Context
             ]
         ];
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], []);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1610,7 +1611,7 @@ final class EditAssetFamilyContext implements Context
      */
     public function theUserUpdatesTheAttributeAsMainMediaToBe($attributeAsMainMedia)
     {
-        $editCommand = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [], []);
+        $editCommand = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [], [], null);
 
         $this->editAssetFamily($editCommand);
     }

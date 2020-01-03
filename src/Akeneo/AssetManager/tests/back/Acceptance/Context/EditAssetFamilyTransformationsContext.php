@@ -608,7 +608,8 @@ class EditAssetFamilyTransformationsContext implements Context
             null,
             null,
             [],
-            $transformations
+            $transformations,
+            null
         );
         $this->editAssetFamily($command);
     }

@@ -32,7 +32,7 @@ class Pattern
 
     public static function create(string $pattern): self
     {
-        Assert::integer(@preg_match($pattern, ''));
+        Assert::integer(@preg_match($pattern, ''), sprintf('The regular expression "%s" is malformed.', $pattern));
 
         return new self($pattern);
     }
