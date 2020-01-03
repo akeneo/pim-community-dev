@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9039: Delete export/import files with the job batch:purge-job-execution
+- PIM-9035: Fix search in the textarea for the very long texts
 
 # 3.0.61 (2019-12-19)
 
