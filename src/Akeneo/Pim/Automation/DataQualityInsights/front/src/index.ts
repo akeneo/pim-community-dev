@@ -9,13 +9,19 @@ import {
   getDataQualityInsightsFeature
 } from './infrastructure/fetcher/data-quality-insights-feature';
 
+import fetchProductDataQualityEvaluation from './infrastructure/fetcher/fetchProductDataQualityEvaluation';
+
 import {
   CATALOG_CONTEXT_CHANNEL_CHANGED,
   CATALOG_CONTEXT_LOCALE_CHANGED,
   DATA_QUALITY_INSIGHTS_TAB_CONTENT_VISIBILITY_CHANGED
 } from './infrastructure/context-provider';
 
-import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from "./infrastructure/context-provider";
+import {
+  DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
+  DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
+  DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES
+} from "./infrastructure/context-provider/ProductContextProvider";
 
 export {
   ProductEditFormApp,
@@ -27,5 +33,8 @@ export {
   DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID,
   DATA_QUALITY_INSIGHTS_AXIS_RATES_OVERVIEW_SIDEBAR_CONTAINER_ELEMENT_ID,
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
-  Rate
+  DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
+  DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
+  Rate,
+  fetchProductDataQualityEvaluation
 };

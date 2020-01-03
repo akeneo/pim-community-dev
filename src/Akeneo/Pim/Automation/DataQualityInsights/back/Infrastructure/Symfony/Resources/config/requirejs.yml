@@ -7,3 +7,6 @@ config:
         akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-app: akeneodataqualityinsights/js/infrastructure/pim-view/product-edit-form/data-quality-insights-app.tsx
 
         oro/datagrid/rate-badge-cell: akeneodataqualityinsights/js/infrastructure/datagrid/cell/rate-badge-cell.tsx
+
+        pim/product-edit-form/attribute-filter-all-missing-attributes: akeneodataqualityinsights/js/infrastructure/product-edit-form/attribute-filter-all-missing-attributes.ts
+        pim/product-edit-form/attribute-filter-all-improvable-attributes: akeneodataqualityinsights/js/infrastructure/product-edit-form/attribute-filter-all-improvable-attributes.ts
