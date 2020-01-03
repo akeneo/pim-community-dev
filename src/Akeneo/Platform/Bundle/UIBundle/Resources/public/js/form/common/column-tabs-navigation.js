@@ -56,6 +56,7 @@ define(
 
                 this.listenTo(this.getRoot(), 'column-tab:register', this.registerTab);
                 this.listenTo(this.getRoot(), 'column-tab:select-tab', this.setCurrentTab);
+                this.listenTo(this.getRoot(), 'column-tab:change-tab', this.selectTab);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
