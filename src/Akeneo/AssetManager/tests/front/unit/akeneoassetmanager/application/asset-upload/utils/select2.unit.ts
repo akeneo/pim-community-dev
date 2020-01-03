@@ -1,6 +1,6 @@
 'use strict';
 
-import {createFakeAssetFamily, createFakeChannel, createFakeLine, createFakeLocale} from '../tools';
+import {createFakeChannel, createFakeLocale} from '../tools';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import {
@@ -47,10 +47,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/select2.ts -> getOpt
       createFakeLocale('fr_FR', 'French'),
       createFakeLocale('de_DE', 'German'),
     ];
-    const assetFamily = createFakeAssetFamily(true, true);
-    const line = createFakeLine('foo.png', assetFamily, channels, locales);
 
-    expect(getOptionsFromLocales(channels, locales, line)).toEqual({
+    expect(getOptionsFromLocales(channels, locales, null)).toEqual({
       en_US: 'English',
       fr_FR: 'French',
       de_DE: 'German',
@@ -69,10 +67,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/select2.ts -> getOpt
       createFakeLocale('fr_FR', 'French'),
       createFakeLocale('de_DE', 'German'),
     ];
-    const assetFamily = createFakeAssetFamily(true, true);
-    const line = createFakeLine('foo-en_US-ecommerce.png', assetFamily, channels, locales);
 
-    expect(getOptionsFromLocales(channels, locales, line)).toEqual({
+    expect(getOptionsFromLocales(channels, locales, 'ecommerce')).toEqual({
       en_US: 'English',
       fr_FR: 'French',
     });

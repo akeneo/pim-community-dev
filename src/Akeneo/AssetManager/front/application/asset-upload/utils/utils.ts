@@ -13,11 +13,13 @@ import {createUUIDV4} from 'akeneoassetmanager/application/asset-upload/utils/uu
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 
 type FilenameInfo = {
   code: string;
-  locale: string | null;
-  channel: string | null;
+  locale: LocaleReference;
+  channel: ChannelReference;
 };
 
 export const createLineFromFilename = (

@@ -134,8 +134,9 @@ const Row = ({
 }: RowProps) => {
   const status = getStatusFromLine(line, valuePerLocale, valuePerChannel);
   const errors = getAllErrorsOfLineByTarget(line);
-  const channelsOptions = getOptionsFromChannels(channels, locale);
-  const localesOptions = getOptionsFromLocales(channels, locales, line);
+  const channelOptions = getOptionsFromChannels(channels, locale);
+  const localeOptions = getOptionsFromLocales(channels, locales, line.channel);
+  const isReadOnly = line.isAssetCreating || line.assetCreated;
 
   return (
     <Container status={status}>
@@ -151,7 +152,7 @@ const Row = ({
             type="text"
             value={line.code}
             isValid={errors.code.length === 0}
-            disabled={line.isAssetCreating || line.assetCreated}
+            disabled={isReadOnly}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               onLineChange({...line, code: event.target.value});
             }}
@@ -161,10 +162,10 @@ const Row = ({
         {valuePerChannel && (
           <Cell width={ColumnWidths.channel}>
             <Select2
-              data={channelsOptions}
+              data={channelOptions}
               value={null === line.channel ? '' : line.channel}
               multiple={false}
-              readOnly={line.isAssetCreating || line.assetCreated}
+              readOnly={isReadOnly}
               configuration={{
                 allowClear: true,
               }}
@@ -178,10 +179,10 @@ const Row = ({
         {valuePerLocale && (
           <Cell width={ColumnWidths.locale}>
             <Select2
-              data={localesOptions}
+              data={localeOptions}
               value={null === line.locale ? '' : line.locale}
               multiple={false}
-              readOnly={line.isAssetCreating || line.assetCreated}
+              readOnly={isReadOnly}
               configuration={{
                 allowClear: true,
                 formatResult: formatLocaleOption,

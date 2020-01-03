@@ -1,10 +1,12 @@
 import * as React from 'react';
 import $ from 'jquery';
 
+export type Select2Options = {
+  [value: string]: string;
+};
+
 export interface Select2Props {
-  data: {
-    [choiceValue: string]: string;
-  };
+  data: Select2Options;
   value: string[] | string;
   multiple: boolean;
   readOnly: boolean;
