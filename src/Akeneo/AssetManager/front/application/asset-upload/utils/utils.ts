@@ -18,13 +18,13 @@ type FilenameInfo = {
   code: string;
   locale: string | null;
   channel: string | null;
-}
+};
 
 export const createLineFromFilename = (
   filename: string,
   assetFamily: AssetFamily,
   channels: Channel[],
-  locales: Locale[],
+  locales: Locale[]
 ): Line => {
   let info = extractInfoFromFilename(filename, assetFamily);
 
@@ -50,10 +50,7 @@ export const createLineFromFilename = (
   };
 };
 
-const extractInfoFromFilename = (
-  filename: string,
-  assetFamily: AssetFamily,
-): FilenameInfo => {
+const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily): FilenameInfo => {
   const attribute = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
   const valuePerLocale = attribute.value_per_locale;
   const valuePerChannel = attribute.value_per_channel;
@@ -94,11 +91,7 @@ const extractInfoWithOnlyCodeFromFilename = (filename: string): FilenameInfo => 
   };
 };
 
-const isFilenameInfoValid = (
-  info: FilenameInfo,
-  channels: Channel[],
-  locales: Locale[],
-): boolean => {
+const isFilenameInfoValid = (info: FilenameInfo, channels: Channel[], locales: Locale[]): boolean => {
   if (null === info.locale && null === info.channel) {
     return true;
   }

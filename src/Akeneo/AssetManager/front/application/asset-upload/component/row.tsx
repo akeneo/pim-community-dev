@@ -112,7 +112,7 @@ type RowProps = {
 
 type OptionsSelect2 = {
   [value: string]: string;
-}
+};
 
 const getChannelsOptions = (channels: Channel[], locale: LocaleCode): OptionsSelect2 => {
   return channels.reduce((results: OptionsSelect2, channel: Channel) => {
@@ -129,12 +129,12 @@ const getAllLocalesOptions = (locales: Locale[]): OptionsSelect2 => {
 };
 
 const getLocalesOptions = (channels: Channel[], locales: Locale[], line: Line): OptionsSelect2 => {
-  if(null === line.channel){
+  if (null === line.channel) {
     return getAllLocalesOptions(locales);
   }
 
   const channel = channels.find((channel: Channel) => channel.code === line.channel);
-  if(undefined === channel){
+  if (undefined === channel) {
     throw Error('Invalid channel in asset creation line: ' + line.channel);
   }
 
