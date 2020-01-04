@@ -118,6 +118,8 @@ pim_enrich.entity.product:
       header_reply: '{{ user }} contesta al comentario'
       delete_confirm: '¿Está seguro que desea eliminar este comentario?'
       removed_author: Usuario eliminado
+    asset:
+      title: Recursos
 pim_enrich.entity.product_model:
   label: modelo del producto
   uppercase_label: Modelo de producto
@@ -173,6 +175,13 @@ pim_enrich.entity.group:
       button: Crear grupo
     delete:
       confirm: '¿Está seguro que desea eliminar este grupo?'
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: '¿Seguro que quieres eliminar este rol?'
+  flash:
+    delete:
+      success: Rol eliminado correctamente
 pim_enrich.entity.category:
   label: categoría
   uppercase_label: Categoría
@@ -333,6 +342,7 @@ pim_datagrid:
     delete:
       confirm_content: '¿Está seguro que quiere borrar los productos seleccionados?'
       success: Productos seleccionados eliminados exitosamente.
+      error: Se ha producido un error al intentar eliminar los recursos seleccionados, por favor, inténtalo de nuevo.
     quick_export:
       csv_all: CSV (todos los atributos)
       csv_grid_context: CSV (contexto de la grilla)

@@ -148,7 +148,6 @@ pim_measure:
     GALLON: Galón
     LITER: Litro
     MILLILITER: Mililitro
-    OUNCE: Onza
     PINT: Pinta
     #Weight
     DENIER: Denier
@@ -159,6 +158,7 @@ pim_measure:
     MARC: Marc
     MILLIGRAM: Miligramo
     ONCE: Onza
+    OUNCE: Onza
     POUND: Libra
     TON: Tonelada
     #Pressure

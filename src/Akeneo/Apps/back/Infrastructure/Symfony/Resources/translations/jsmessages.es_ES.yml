@@ -1,0 +1,105 @@
+pim_menu:
+  item:
+    apps: Aplicaciones
+pim_title:
+  akeneo_apps_index: Aplicaciones
+  akeneo_apps_any: Aplicaciones
+pim_apps:
+  apps: Aplicaciones
+  app:
+    code: Código
+    label: Etiqueta
+    flow_type: Tipo de flujo
+    image: Imagen
+  flow_type:
+    data_source: Fuente de datos | Fuentes de datos
+    data_destination: Destino de datos | Destinos de datos
+    other: Otro | Otros
+  helper:
+    title: '¡Bienvenido a la característica que conectará correctamente tu PIM!'
+    link_url: https://www.akeneo.com/
+  flow_type_helper:
+    link: '¡Podemos ayudarte aquí mismo!'
+    link_url: https://www.akeneo.com/
+  edit_image:
+    remove_helper: Eliminar la imagen
+    click_here: haz clic aquí
+    flash:
+      extension_not_allowed: Lo sentimos, el archivo que estás intentando subir no tiene una extensión permitida.
+  app_count: '{{ count }} aplicación | {{ count }} aplicaciones'
+  no_app:
+    title: Ninguna aplicación declarada aún.
+    message_link: pulse aquí.
+  create_app:
+    title: Crear una nueva aplicación
+    description: Puede crear hasta 50 aplicaciones.
+    flash:
+      success: Aplicación creada satisfactoriamente.
+      error: Ha ocurrido un error durante la creación de la aplicación.
+  edit_app:
+    subtitle: Configuración
+    flash:
+      success: Aplicación actualizada satisfactoriamente.
+      error: Ha ocurrido un error durante la edición de la aplicación.
+akeneo_apps:
+  secondary_actions:
+    title: Otras acciones
+  app:
+    client_id: ID de cliente
+    secret: Secreto
+    username: Nombre de usuario
+    password: Contraseña
+    constraint:
+      code:
+        required: Código de la aplicación requerida.
+        invalid: El código de la aplicación sólo puede contener letras, números y guiones bajos.
+        too_short: El código de la aplicación es demasiado corto. Debe tener 3 caracteres o más.
+        too_long: El código de la aplicación es demasiado largo. Debe tener 100 caracteres o menos.
+        must_be_unique: El código de la aplicación debe ser único.
+      label:
+        required: Etiqueta de la aplicación requerida.
+        too_short: La etiqueta de la aplicación es demasiado corta. Debe tener 3 caracteres o más.
+        too_long: La etiqueta de la aplicación es demasiado larga. Debe tener 100 caracteres o menos.
+      flow_type:
+        invalid: El tipo de flujo de aplicaciones sólo puede ser 'data_source', 'data_destination' u 'otro'.
+  edit_app:
+    credentials:
+      title: Credenciales
+      password_placeholder: '••••••••'
+      password_helper:
+        link: Más información…
+        link_url: https://www.akeneo.com/
+      clear_password_helper:
+        link: Más información…
+        link_url: https://www.akeneo.com/
+      action:
+        copy: Copiar en el portapapeles
+        regenerate: Regenera
+      flash:
+        copied: '{{ name }} copiado al portapapeles'
+  regenerate_secret:
+    title: Confirmar regeneración
+    description: '¿Estás seguro de que quieres regenerar el secreto de la aplicación? ¿No estás seguro de los impactos?'
+    link: Esto es lo que sucederá.
+    link_url: https://www.akeneo.com/
+    action:
+      regenerate: Regenera
+    flash:
+      success: El secreto de la aplicación se ha regenerado correctamente.
+      error: Lo sentimos, se ha producido un error al regenerar el secreto de la aplicación.
+  delete_app:
+    title: Confirmar la eliminación
+    link: Esto es lo que sucederá.
+    link_url: https://www.akeneo.com/
+    flash:
+      success: Aplicación eliminada correctamente.
+  dashboard:
+    helper:
+      title: '👋 ¡Bienvenido al panel de control de tu aplicación!'
+      link: '¿Quieres saber más? ¡Aquí vas!'
+      link_url: https://www.akeneo.com/
+    charts:
+      number_of_products_created: Número de productos creados
+      legend:
+        during_the_last_seven_days: Durante los últimos siete días
+        today: Hoy
