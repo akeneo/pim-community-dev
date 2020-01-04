@@ -333,6 +333,7 @@ pim_datagrid:
     delete:
       confirm_content: '¿Está seguro que quiere borrar los productos seleccionados?'
       success: Productos seleccionados eliminados exitosamente.
+      error: Se ha producido un error al intentar eliminar los recursos seleccionados, por favor, inténtalo de nuevo.
     quick_export:
       csv_all: CSV (todos los atributos)
       csv_grid_context: CSV (contexto de la grilla)
