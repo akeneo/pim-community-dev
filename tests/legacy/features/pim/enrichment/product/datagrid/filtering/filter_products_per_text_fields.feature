@@ -11,68 +11,35 @@ Feature: Filter products by text field
   @critical
   Scenario: Successfully filter products with special characters value for text attribute
     Given the following attribute:
-      | label-en_US | type             | useable_as_grid_filter | localizable | group | code |
-      | name        | pim_catalog_text | 1                      | 1           | other | name |
+      | code                  | type             | useable_as_grid_filter | localizable | scopable | group |
+      | text_contains         | pim_catalog_text | 1                      | 1           | 1        | other |
+      | text_starts_with      | pim_catalog_text | 1                      | 0           | 0        | other |
+      | text_does_not_contain | pim_catalog_text | 1                      | 0           | 0        | other |
+      | text_equals           | pim_catalog_text | 1                      | 0           | 0        | other |
+      | text_empty            | pim_catalog_text | 1                      | 0           | 0        | other |
+      | text_is_not_empty     | pim_catalog_text | 1                      | 0           | 0        | other |
+    And the following family:
+      | code       | attributes |
+      | family_foo | text_contains,text_starts_with,text_does_not_contain,text_equals,text_empty,text_is_not_empty |
     And the following products:
-      | sku      | name-en_US                     |
-      | 11026270 | HP LA2206xc + WF722A           |
-      | 13605290 | Canon 5D + EF 24-105 F4L IS    |
-      | 13378171 | Canon 5D + EF 24-105mm f/4L IS |
-      | 13572541 | Canon 5D + EF 24-105 F5L IS    |
-      | 135-2541 | Canon 5D + EF 25-15 FL         |
-    When I am on the products grid
-    And I collapse the column
-    And I display the columns SKU, Name, Family, Complete, Created at and Updated at
-    Then I should see products "HP LA2206xc + WF722A", "Canon 5D + EF 24-105 F4L IS", "Canon 5D + EF 24-105mm f/4L IS" and "Canon 5D + EF 24-105 F5L IS"
-    And the grid should contain 5 elements
-    And I uncollapse the column
-    And I should be able to use the following filters:
-      | filter | operator         | value                | result                                                                                      |
-      | name   | contains         | HP LA2206xc + WF     | HP LA2206xc + WF722A                                                                        |
-
-  Scenario: Successfully filter products with special characters value for text attribute
-    Given the following attribute:
-      | label-en_US | type             | useable_as_grid_filter | localizable | group | code |
-      | name        | pim_catalog_text | 1                      | 1           | other | name |
-    And the following products:
-      | sku      | name-en_US                     |
-      | 11026270 | HP LA2206xc + WF722A           |
-      | 13605290 | Canon 5D + EF 24-105 F4L IS    |
-      | 13378171 | Canon 5D + EF 24-105mm f/4L IS |
-      | 13572541 | Canon 5D + EF 24-105 F5L IS    |
-      | 135-2541 | Canon 5D + EF 25-15 FL         |
-    When I am on the products grid
-    And I collapse the column
-    And I display the columns SKU, Name, Family, Complete, Created at and Updated at
-    Then I should see products "HP LA2206xc + WF722A", "Canon 5D + EF 24-105 F4L IS", "Canon 5D + EF 24-105mm f/4L IS" and "Canon 5D + EF 24-105 F5L IS"
-    And the grid should contain 5 elements
-    And I uncollapse the column
-    And I should be able to use the following filters:
-      | filter | operator         | value                | result                                                                                      |
-      | name   | contains         | HP LA2206xc + WF     | HP LA2206xc + WF722A                                                                        |
-      | name   | contains         | Canon 5D + EF 24-105 | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
-      | name   | starts with      | 5D + EF 24-105 F     |                                                                                             |
-      | name   | starts with      | HP                   | HP LA2206xc + WF722A                                                                        |
-      | name   | does not contain | Canon                | HP LA2206xc + WF722A                                                                        |
-      | name   | is equal to      | Canon 5D + EF 24-105 |                                                                                             |
-      | name   | contains         | f/4L                 | Canon 5D + EF 24-105mm f/4L IS                                                              |
-      | sku    | is equal to      | 135-2541             | 135-2541                                                                                    |
-      | sku    | in list          | 135-2541, 13572541   | 135-2541, 13572541                                                                          |
-
-  @critical
-  Scenario: Successfully filter products by empty value for scopable text attribute
-    Given the following attributes:
-      | label-en_US | type             | localizable | scopable | useable_as_grid_filter | group | code |
-      | name        | pim_catalog_text | 0           | 1        | 1                      | other | name |
-    And the following products:
-      | sku    | name-ecommerce | name-mobile |
-      | postit | MyPostit       | MyPostit    |
-      | book   |                | MyBook      |
-      | mug    |                |             |
+      | sku                            | family     | text_contains-en_US-ecommerce |   text_starts_with   | text_does_not_contain | text_equals | text_empty | text_is_not_empty |
+      | ok_with_all_filters            | family_foo | HP LA2206xc + WF722A          | HP LA2206xc + WF722A |    foo                |  bar        |            |   not_empty       |
+      | not_ok_with_contains           | family_foo | HP LA2206xc + WF666A          | HP LA2206xc + WF722A |    foo                |  bar        |            |   not_empty       |
+      | not_ok_with_starts_with        | family_foo | HP LA2206xc + WF722A          | YY LA2206xc + HP     |    foo                |  bar        |            |   not_empty       |
+      | not_ok_with_does_not_contain   | family_foo | HP LA2206xc + WF722A          | HP LA2206xc + WF722A |    baz                |  bar        |            |   not_empty       |
+      | not_ok_with_equals             | family_foo | HP LA2206xc + WF722A          | HP LA2206xc + WF722A |    foo                |  zoo        |            |   not_empty       |
+      | not_ok_with_empty              | family_foo | HP LA2206xc + WF722A          | HP LA2206xc + WF722A |    foo                |  bar        |    foo     |   not_empty       |
+      | not_ok_with_not_empty          | family_foo | HP LA2206xc + WF722A          | HP LA2206xc + WF722A |    foo                |  bar        |            |                   |
+      | not_ok_with_empty_as_no_family |            | HP LA2206xc + WF722A          | HP LA2206xc + WF722A |    foo                |  bar        |            |   not_empty       |
     And I am on the products grid
-    Then the grid should contain 3 elements
-    And I should see products postit, book and mug
-    And I should be able to use the following filters:
-      | filter | operator     | value | result |
-      | name   | is empty     |       |        |
-      | name   | is not empty |       | postit |
+    Then the grid should contain 8 elements
+    When I filter with the following filters:
+      | filter                | operator         | value             |
+      | text_empty            | is empty         |                   |
+      | text_is_not_empty     | is not empty     |                   |
+      | text_contains         | contains         | LA2206xc + WF722A |
+      | text_does_not_contain | does not contain | ba                |
+      | text_equals           | is equal to      | bar               |
+      | text_starts_with      | starts with      | HP                |
+    Then the grid should contain 1 elements
+    And I should see products ok_with_all_filters
