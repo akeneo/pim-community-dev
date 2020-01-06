@@ -26,7 +26,7 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 class AssetFamily
 {
     public const DEFAULT_ATTRIBUTE_AS_LABEL_CODE = 'label';
-    public const DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE = 'image';
+    public const DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE = 'media';
 
     /** @var AssetFamilyIdentifier */
     private $identifier;
