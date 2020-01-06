@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Settings\Command;
 
+use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQuery;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateClientInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
@@ -18,7 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class CreateConnectionHandler
+final class CreateConnectionHandler
 {
     /** @var ConnectionRepository */
     private $repository;
@@ -32,16 +34,21 @@ class CreateConnectionHandler
     /** @var CreateUserInterface */
     private $createUser;
 
+    /** @var FindAConnectionHandler */
+    private $findAConnectionHandler;
+
     public function __construct(
         ValidatorInterface $validator,
         ConnectionRepository $repository,
         CreateClientInterface $createClient,
-        CreateUserInterface $createUser
+        CreateUserInterface $createUser,
+        FindAConnectionHandler $findAConnectionHandler
     ) {
         $this->validator = $validator;
         $this->repository = $repository;
         $this->createClient = $createClient;
         $this->createUser = $createUser;
+        $this->findAConnectionHandler = $findAConnectionHandler;
     }
 
     public function handle(CreateConnectionCommand $command): ConnectionWithCredentials
@@ -63,14 +70,11 @@ class CreateConnectionHandler
         );
         $this->repository->create($connection);
 
-        return new ConnectionWithCredentials(
-            $command->code(),
-            $command->label(),
-            $command->flowType(),
-            $client->clientId(),
-            $client->secret(),
-            $user->username(),
-            $user->password()
+        $connectionDTO = $this->findAConnectionHandler->handle(
+            new FindAConnectionQuery((string) $connection->code())
         );
+        $connectionDTO->setPassword($user->password());
+
+        return $connectionDTO;
     }
 }

@@ -1,17 +1,19 @@
 import $ from 'jquery';
 import React, {useEffect, useRef} from 'react';
 
-export interface Props {
-    configuration: {
-        placeholder?: string;
-        data: Array<{id: string; text: string}>;
-        allowClear?: boolean;
-        dropdownCssClass?: string;
-        formatResult?: (item: {id: string}) => string;
-    };
+export type Select2Configuration = {
+    placeholder?: string;
+    data: Array<{id: string; text: string}>;
+    allowClear?: boolean;
+    dropdownCssClass?: string;
+    formatResult?: (item: {id: string}) => string;
+};
+
+type Props = {
+    configuration: Select2Configuration;
     value?: string;
     onChange: (value?: string) => void;
-}
+};
 
 export const Select2 = ({configuration, value, onChange}: Props) => {
     const ref = useRef<HTMLInputElement>(null);

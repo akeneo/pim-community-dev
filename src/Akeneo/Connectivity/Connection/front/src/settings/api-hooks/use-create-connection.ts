@@ -1,13 +1,16 @@
 import {useContext} from 'react';
 import {useHistory} from 'react-router';
+import {Connection} from '../../model/connection';
+import {ConnectionCredentials} from '../../model/connection-credentials';
+import {ConnectionUserPermissions} from '../../model/connection-user-permissions';
 import {FlowType} from '../../model/flow-type.enum';
 import {fetchResult} from '../../shared/fetch-result';
-import {isErr} from '../../shared/fetch-result/result';
+import {isErr, ok} from '../../shared/fetch-result/result';
 import {NotificationLevel, useNotify} from '../../shared/notify';
 import {useRoute} from '../../shared/router';
 import {TranslateContext} from '../../shared/translate';
 
-export interface CreateConnectionData {
+interface RequestData {
     code: string;
     label: string;
     flow_type: FlowType;
@@ -22,6 +25,8 @@ interface ResultValue {
     secret: string;
     username: string;
     password: string;
+    user_role_id: string;
+    user_group_id: string;
 }
 
 interface ResultError {
@@ -38,7 +43,7 @@ export const useCreateConnection = () => {
     const translate = useContext(TranslateContext);
     const history = useHistory();
 
-    return async (data: CreateConnectionData) => {
+    return async (data: RequestData) => {
         const result = await fetchResult<ResultValue, ResultError>(url, {
             method: 'POST',
             headers: [['Content-type', 'application/json']],
@@ -59,6 +64,14 @@ export const useCreateConnection = () => {
         notify(NotificationLevel.SUCCESS, translate('akeneo_connectivity.connection.create_connection.flash.success'));
         history.push(`/connections/${data.code}/edit`);
 
-        return result;
+        const connection: Connection & ConnectionCredentials & ConnectionUserPermissions = {
+            ...result.value,
+            flowType: result.value.flow_type,
+            clientId: result.value.client_id,
+            userRoleId: result.value.user_role_id,
+            userGroupId: result.value.user_group_id,
+        };
+
+        return ok(connection);
     };
 };

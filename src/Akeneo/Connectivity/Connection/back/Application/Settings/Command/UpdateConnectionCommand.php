@@ -9,7 +9,7 @@ namespace Akeneo\Connectivity\Connection\Application\Settings\Command;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class UpdateConnectionCommand
+final class UpdateConnectionCommand
 {
     /** @var string */
     private $code;
@@ -20,15 +20,29 @@ class UpdateConnectionCommand
     /** @var string */
     private $flowType;
 
-    /** @var string|null */
+    /** @var ?string */
     private $image;
 
-    public function __construct(string $code, string $label, string $flowType, ?string $image = null)
-    {
+    /** @var string */
+    private $userRoleId;
+
+    /** @var ?string */
+    private $userGroupId;
+
+    public function __construct(
+        string $code,
+        string $label,
+        string $flowType,
+        ?string $image,
+        string $userRoleId,
+        ?string $userGroupId
+    ) {
         $this->code = $code;
         $this->label = $label;
         $this->flowType = $flowType;
         $this->image = $image;
+        $this->userRoleId = $userRoleId;
+        $this->userGroupId = $userGroupId;
     }
 
     public function code(): string
@@ -49,5 +63,15 @@ class UpdateConnectionCommand
     public function image(): ?string
     {
         return $this->image;
+    }
+
+    public function userRoleId(): string
+    {
+        return $this->userRoleId;
+    }
+
+    public function userGroupId(): ?string
+    {
+        return $this->userGroupId;
     }
 }

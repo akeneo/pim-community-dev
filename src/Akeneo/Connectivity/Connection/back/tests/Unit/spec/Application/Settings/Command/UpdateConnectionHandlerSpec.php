@@ -1,12 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Settings\Command;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Settings\Service\UpdateUserPermissionsInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
@@ -21,9 +22,10 @@ class UpdateConnectionHandlerSpec extends ObjectBehavior
 {
     public function let(
         ValidatorInterface $validator,
-        ConnectionRepository $repository
+        ConnectionRepository $repository,
+        UpdateUserPermissionsInterface $updateUserPermissions
     ): void {
-        $this->beConstructedWith($validator, $repository);
+        $this->beConstructedWith($validator, $repository, $updateUserPermissions);
     }
 
     public function it_is_initializable(): void
@@ -35,7 +37,14 @@ class UpdateConnectionHandlerSpec extends ObjectBehavior
         $validator,
         $repository
     ): void {
-        $command = new UpdateConnectionCommand('magento', 'Pimgento', FlowType::DATA_DESTINATION);
+        $command = new UpdateConnectionCommand(
+            'magento',
+            'Pimgento',
+            FlowType::DATA_DESTINATION,
+            null,
+            '1',
+            '2'
+        );
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($command)->willReturn($violations);
@@ -52,7 +61,14 @@ class UpdateConnectionHandlerSpec extends ObjectBehavior
         $repository,
         ConstraintViolationInterface $violation
     ): void {
-        $command = new UpdateConnectionCommand('magento', 'Pimgento', 'Wrong flow type');
+        $command = new UpdateConnectionCommand(
+            'magento',
+            'Pimgento',
+            'Wrong flow type',
+            null,
+            '1',
+            '2'
+        );
 
         $violations = new ConstraintViolationList([$violation->getWrappedObject()]);
         $validator->validate($command)->willReturn($violations);

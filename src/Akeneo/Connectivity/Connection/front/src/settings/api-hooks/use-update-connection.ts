@@ -5,29 +5,34 @@ import {isErr} from '../../shared/fetch-result/result';
 import {NotificationLevel, useNotify} from '../../shared/notify';
 import {useRoute} from '../../shared/router';
 import {TranslateContext} from '../../shared/translate';
+import {ConnectionUserPermissions} from '../../model/connection-user-permissions';
 
-interface ResultError {
+type RequestData = Connection & ConnectionUserPermissions;
+
+type ResultError = {
     message: string;
     errors: Array<{
         name: string;
         reason: string;
     }>;
-}
+};
 
 export const useUpdateConnection = (code: string) => {
     const url = useRoute('akeneo_connectivity_connection_rest_update', {code});
     const notify = useNotify();
     const translate = useContext(TranslateContext);
 
-    return async (connection: Connection) => {
+    return async (data: RequestData) => {
         const result = await fetchResult<never, ResultError>(url, {
             method: 'POST',
             headers: [['Content-type', 'application/json']],
             body: JSON.stringify({
-                code: connection.code,
-                label: connection.label,
-                flow_type: connection.flowType,
-                image: connection.image,
+                code: data.code,
+                label: data.label,
+                flow_type: data.flowType,
+                image: data.image,
+                user_role_id: data.userRoleId,
+                user_group_id: data.userGroupId,
             }),
         });
         if (isErr(result)) {

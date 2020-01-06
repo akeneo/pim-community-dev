@@ -1,5 +1,6 @@
 import {ConnectionCredentials} from '../../model/connection-credentials';
 import {Connection} from '../../model/connection';
+import {ConnectionUserPermissions} from '../../model/connection-user-permissions';
 
 export const CONNECTIONS_FETCHED = 'CONNECTIONS_FETCHED';
 interface ConnectionsFetchedAction {
@@ -11,24 +12,24 @@ export const connectionsFetched = (payload: Connection[]): ConnectionsFetchedAct
     payload,
 });
 
-export const CONNECTION_WITH_CREDENTIALS_FETCHED = 'CONNECTION_WITH_CREDENTIALS_FETCHED';
-interface ConnectionWithCredentialsFetchedAction {
-    type: typeof CONNECTION_WITH_CREDENTIALS_FETCHED;
-    payload: Connection & ConnectionCredentials;
+export const CONNECTION_FETCHED = 'CONNECTION_FETCHED';
+interface ConnectionFetchedAction {
+    type: typeof CONNECTION_FETCHED;
+    payload: Connection & ConnectionCredentials & ConnectionUserPermissions;
 }
-export const connectionWithCredentialsFetched = (
-    payload: Connection & ConnectionCredentials
-): ConnectionWithCredentialsFetchedAction => ({
-    type: CONNECTION_WITH_CREDENTIALS_FETCHED,
+export const connectionFetched = (
+    payload: Connection & ConnectionCredentials & ConnectionUserPermissions
+): ConnectionFetchedAction => ({
+    type: CONNECTION_FETCHED,
     payload,
 });
 
 export const CONNECTION_UPDATED = 'CONNECTION_UPDATED';
 interface ConnectionUpdatedAction {
     type: typeof CONNECTION_UPDATED;
-    payload: Connection;
+    payload: Connection & ConnectionUserPermissions;
 }
-export const connectionUpdated = (payload: Connection): ConnectionUpdatedAction => ({
+export const connectionUpdated = (payload: Connection & ConnectionUserPermissions): ConnectionUpdatedAction => ({
     type: CONNECTION_UPDATED,
     payload,
 });
@@ -55,7 +56,7 @@ export const connectionPasswordRegenerated = (code: string, password: string): C
 
 export type Actions =
     | ConnectionsFetchedAction
-    | ConnectionWithCredentialsFetchedAction
+    | ConnectionFetchedAction
     | ConnectionUpdatedAction
     | ConnectionDeletedAction
     | ConnectionPasswordRegeneratedAction;

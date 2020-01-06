@@ -2,8 +2,6 @@ import {Formik, FormikHelpers, useFormikContext} from 'formik';
 import React, {useEffect} from 'react';
 import {useHistory, useParams} from 'react-router';
 import styled from 'styled-components';
-import {FlowType} from '../../model/flow-type.enum';
-import {PimView} from '../../infrastructure/pim-view/PimView';
 import {
     ApplyButton,
     Breadcrumb,
@@ -14,33 +12,27 @@ import {
     SecondaryActionsDropdownButton,
 } from '../../common';
 import defaultImageUrl from '../../common/assets/illustrations/api.svg';
-import {fetchResult} from '../../shared/fetch-result';
-import {isOk, isErr} from '../../shared/fetch-result/result';
-import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
+import {PimView} from '../../infrastructure/pim-view/PimView';
+import {Connection} from '../../model/connection';
+import {FlowType} from '../../model/flow-type.enum';
+import {isErr, isOk} from '../../shared/fetch-result/result';
+import {BreadcrumbRouterLink} from '../../shared/router';
 import {Translate} from '../../shared/translate';
-import {connectionUpdated, connectionWithCredentialsFetched} from '../actions/connections-actions';
+import {connectionFetched, connectionUpdated} from '../actions/connections-actions';
+import {useFetchConnection} from '../api-hooks/use-fetch-connection';
 import {useUpdateConnection} from '../api-hooks/use-update-connection';
-import {useConnectionsState, useConnectionsDispatch} from '../connections-context';
 import {ConnectionCredentials} from '../components/ConnectionCredentials';
 import {ConnectionEditForm} from '../components/ConnectionEditForm';
+import {ConnectionPermissionsForm} from '../components/permissions/ConnectionPermissionsForm';
+import {useConnectionsDispatch, useConnectionsState} from '../connections-context';
 import {useMediaUrlGenerator} from '../use-media-url-generator';
-import {Connection} from '../../model/connection';
-
-type ResultValues = {
-    code: string;
-    label: string;
-    flow_type: FlowType;
-    image: string | null;
-    secret: string;
-    client_id: string;
-    username: string;
-    password: string;
-};
 
 export type FormValues = {
     label: string;
     flowType: FlowType;
     image: string | null;
+    userRoleId: string;
+    userGroupId: string | null;
 };
 
 export type FormErrors = {
@@ -68,31 +60,30 @@ export const EditConnection = () => {
     const {code} = useParams<{code: string}>();
     const connection = connections[code];
 
-    const route = useRoute('akeneo_connectivity_connection_rest_get', {code});
+    const fetchConnection = useFetchConnection(code);
     useEffect(() => {
-        fetchResult<ResultValues, unknown>(route).then(result => {
+        fetchConnection().then(result => {
             if (isErr(result)) {
                 history.push('/connections');
                 return;
             }
 
-            dispatch(
-                connectionWithCredentialsFetched({
-                    ...result.value,
-                    flowType: result.value.flow_type,
-                    clientId: result.value.client_id,
-                })
-            );
+            dispatch(connectionFetched(result.value));
         });
-    }, [dispatch, route, history]);
+    }, [fetchConnection, dispatch, history]);
 
     const updateConnection = useUpdateConnection(code);
-    const handleSubmit = async ({label, flowType, image}: FormValues, {setSubmitting}: FormikHelpers<FormValues>) => {
+    const handleSubmit = async (
+        {label, flowType, image, userRoleId, userGroupId}: FormValues,
+        {setSubmitting}: FormikHelpers<FormValues>
+    ) => {
         const result = await updateConnection({
             code,
             label,
             flowType,
             image,
+            userRoleId,
+            userGroupId,
         });
         setSubmitting(false);
 
@@ -103,6 +94,8 @@ export const EditConnection = () => {
                     label,
                     flowType,
                     image,
+                    userRoleId,
+                    userGroupId,
                 })
             );
         }
@@ -116,6 +109,8 @@ export const EditConnection = () => {
         label: connection.label,
         flowType: connection.flowType,
         image: connection.image,
+        userRoleId: connection.userRoleId,
+        userGroupId: connection.userGroupId,
     };
 
     return (
@@ -134,6 +129,8 @@ export const EditConnection = () => {
                                 label={connection.label}
                                 credentials={connection}
                             />
+                            <br />
+                            <ConnectionPermissionsForm label={connection.label} />
                         </div>
                     </Layout>
                 </PageContent>

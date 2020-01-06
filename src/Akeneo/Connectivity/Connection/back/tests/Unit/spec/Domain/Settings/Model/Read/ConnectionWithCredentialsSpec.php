@@ -21,11 +21,12 @@ class ConnectionWithCredentialsSpec extends ObjectBehavior
             'magento',
             'Magento Connector',
             FlowType::DATA_DESTINATION,
+            'a/b/c/the_path.jpg',
             'my_custom_client_id',
             'my_secret',
             'my_username',
-            'my_password',
-            'a/b/c/the_path.jpg'
+            '1',
+            '2'
         );
     }
 
@@ -64,8 +65,17 @@ class ConnectionWithCredentialsSpec extends ObjectBehavior
         $this->username()->shouldReturn('my_username');
     }
 
-    public function it_returns_the_password()
+    public function it_returns_null_when_the_password_is_not_set()
     {
+        $this->password()->shouldReturn(null);
+    }
+
+    public function it_sets_the_password()
+    {
+        $this->password()->shouldReturn(null);
+
+        $this->setPassword('my_password');
+
         $this->password()->shouldReturn('my_password');
     }
 
@@ -75,10 +85,12 @@ class ConnectionWithCredentialsSpec extends ObjectBehavior
             'magento',
             'Magento Connector',
             FlowType::DATA_DESTINATION,
+            null,
             'my_custom_client_id',
             'my_secret',
             'my_username',
-            'my_password'
+            '1',
+            '2'
         );
         $this->image()->shouldBeNull();
     }
@@ -88,8 +100,20 @@ class ConnectionWithCredentialsSpec extends ObjectBehavior
         $this->image()->shouldReturn('a/b/c/the_path.jpg');
     }
 
+    public function it_returns_the_user_role_id()
+    {
+        $this->userRoleId()->shouldReturn('1');
+    }
+
+    public function it_returns_the_user_group_id()
+    {
+        $this->userGroupId()->shouldReturn('2');
+    }
+
     public function it_normalizes_a_connection_with_credentials()
     {
+        $this->setPassword('my_password');
+
         $this->normalize()->shouldReturn([
             'code' => 'magento',
             'label' => 'Magento Connector',
@@ -99,19 +123,8 @@ class ConnectionWithCredentialsSpec extends ObjectBehavior
             'secret' => 'my_secret',
             'username' => 'my_username',
             'password' => 'my_password',
+            'user_role_id' => '1',
+            'user_group_id' => '2'
         ]);
-    }
-
-    public function it_creates_a_connection_with_credentials_without_password()
-    {
-        $this->beConstructedWith(
-            'magento',
-            'Magento Connector',
-            FlowType::DATA_DESTINATION,
-            'my_custom_client_id',
-            'my_secret',
-            'my_username'
-        );
-        $this->password()->shouldBeNull();
     }
 }

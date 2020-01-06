@@ -124,7 +124,7 @@ class ConnectionController
         $connection = $this->findAConnectionHandler->handle($query);
 
         if (null === $connection) {
-            return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
         return new JsonResponse($connection->normalize());
@@ -143,7 +143,9 @@ class ConnectionController
             $request->get('code', ''),
             $data['label'],
             $data['flow_type'],
-            $data['image']
+            $data['image'],
+            $data['user_role_id'],
+            $data['user_group_id']
         );
 
         try {

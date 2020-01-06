@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Settings\Command;
 
+use Akeneo\Connectivity\Connection\Application\Settings\Service\UpdateUserPermissionsInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionImage;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionLabel;
@@ -16,7 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class UpdateConnectionHandler
+final class UpdateConnectionHandler
 {
     /** @var ValidatorInterface */
     private $validator;
@@ -24,10 +25,17 @@ class UpdateConnectionHandler
     /** @var ConnectionRepository */
     private $repository;
 
-    public function __construct(ValidatorInterface $validator, ConnectionRepository $repository)
-    {
+    /** @var UpdateUserPermissionsInterface */
+    private $updateUserPermissions;
+
+    public function __construct(
+        ValidatorInterface $validator,
+        ConnectionRepository $repository,
+        UpdateUserPermissionsInterface $updateUserPermissions
+    ) {
         $this->validator = $validator;
         $this->repository = $repository;
+        $this->updateUserPermissions = $updateUserPermissions;
     }
 
     public function handle(UpdateConnectionCommand $command): void
@@ -47,6 +55,14 @@ class UpdateConnectionHandler
         $connection->setLabel(new ConnectionLabel($command->label()));
         $connection->setFlowType(new FlowType($command->flowType()));
         $connection->setImage(null !== $command->image() ? new ConnectionImage($command->image()) : null);
+
+
+
+        $this->updateUserPermissions->execute(
+            $connection->userId(),
+            (int) $command->userRoleId(),
+            null === $command->userGroupId() ? null : (int) $command->userGroupId()
+        );
 
         $this->repository->update($connection);
     }

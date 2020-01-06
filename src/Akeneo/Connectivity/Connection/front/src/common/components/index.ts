@@ -17,7 +17,7 @@ import {PageError} from './PageError';
 import {PageHeader} from './PageHeader';
 import {Section} from './Section';
 import {Select} from './select/Select';
-import {Select2} from './Select2';
+import {Select2, Select2Configuration} from './Select2';
 import {SmallHelper} from './SmallHelper';
 
 export {
@@ -46,5 +46,6 @@ export {
     Section,
     Select,
     Select2,
+    Select2Configuration,
     SmallHelper,
 };

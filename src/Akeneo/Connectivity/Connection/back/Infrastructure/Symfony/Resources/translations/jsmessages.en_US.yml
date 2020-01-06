@@ -21,6 +21,8 @@ akeneo_connectivity.connection:
         secret: Secret
         username: Username
         password: Password
+        user_role_id: Role
+        user_group_id: Group
         constraint:
             code:
                 required: Connection code is required.
@@ -78,6 +80,20 @@ akeneo_connectivity.connection:
                 regenerate: Regenerate
             flash:
                 copied: '{{ name }} copied to clipboard'
+        permissions:
+            title: Permissions
+            helper:
+                message: 'In this section, you can define permissions for your {{ label }} connection.'
+                link: Learn more about connection permissions...
+                link_url: https://help.akeneo.com/pim/articles/manage-your-connections.html#set-the-permissions
+            user_role_helper:
+                message: The default `{{ role }}` role is not the best choice for your connection. We strongly recommend you to choose a role tailored for your connection needs.
+                link: More information here...
+                link_url: https://help.akeneo.com/pim/articles/manage-your-connections.html#set-the-permissions
+            user_group_helper:
+                message: We strongly recommend you to choose a group tailored for your connection needs.
+                link: More information here...
+                link_url: https://help.akeneo.com/pim/articles/manage-your-connections.html#set-the-permissions
     regenerate_secret:
         title: Confirm regeneration
         description: Are you sure you want to regenerate the connection secret? Not sure about the impacts?

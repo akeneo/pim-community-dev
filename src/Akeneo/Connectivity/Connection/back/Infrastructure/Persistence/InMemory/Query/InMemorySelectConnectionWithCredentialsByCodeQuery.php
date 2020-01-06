@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Que
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository;
+use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryUserPermissionsRepository;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -18,9 +19,15 @@ class InMemorySelectConnectionWithCredentialsByCodeQuery implements SelectConnec
     /** @var InMemoryConnectionRepository */
     private $connectionRepository;
 
-    public function __construct(InMemoryConnectionRepository $connectionRepository)
-    {
+    /** @var InMemoryUserPermissionsRepository */
+    private $inMemoryUserPermissionsRepository;
+
+    public function __construct(
+        InMemoryConnectionRepository $connectionRepository,
+        InMemoryUserPermissionsRepository $inMemoryUserPermissionsRepository
+    ) {
         $this->connectionRepository = $connectionRepository;
+        $this->inMemoryUserPermissionsRepository = $inMemoryUserPermissionsRepository;
     }
 
     public function execute(string $code): ?ConnectionWithCredentials
@@ -33,15 +40,18 @@ class InMemorySelectConnectionWithCredentialsByCodeQuery implements SelectConnec
 
         $dataRow = $dataRows[$code];
 
+        $permissions = $this->inMemoryUserPermissionsRepository->getByUserId($dataRow['user_id']);
+
         return new ConnectionWithCredentials(
             $dataRow['code'],
             $dataRow['label'],
             $dataRow['flow_type'],
-            $dataRow['client_id'] .'_'. $dataRow['random_id'],
-            $dataRow['secret'],
-            $dataRow['code'] .'_app',
-            null,
             $dataRow['image'],
+            $dataRow['client_id'] . '_' . $dataRow['random_id'],
+            $dataRow['secret'],
+            $dataRow['code'] . '_app',
+            (string) $permissions['role']['id'],
+            (string) $permissions['group']['id']
         );
     }
 }

@@ -30,7 +30,17 @@ class FindAConnectionHandlerSpec extends ObjectBehavior
 
     public function it_returns_a_connection($selectConnectionWithCredentialsByCodeQuery)
     {
-        $connection = new ConnectionWithCredentials('bynder', 'Bynder DAM', FlowType::OTHER, 'client_id', 'secret', 'username');
+        $connection = new ConnectionWithCredentials(
+            'bynder',
+            'Bynder DAM',
+            FlowType::OTHER,
+            null,
+            'client_id',
+            'secret',
+            'username',
+            'user_role_id',
+            'user_group_id'
+        );
 
         $selectConnectionWithCredentialsByCodeQuery->execute('bynder')->willReturn($connection);
 

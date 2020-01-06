@@ -17,7 +17,14 @@ class UpdateConnectionCommandSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
+        $this->beConstructedWith(
+            'magento',
+            'Magento Connector',
+            FlowType::DATA_DESTINATION,
+            null,
+            '1',
+            '2',
+        );
     }
 
     public function it_is_initializable()
@@ -45,14 +52,27 @@ class UpdateConnectionCommandSpec extends ObjectBehavior
         $this->image()->shouldReturn(null);
     }
 
+
     public function it_returns_the_image()
     {
         $this->beConstructedWith(
             'magento',
             'Magento Connector',
             FlowType::DATA_DESTINATION,
-            'a/b/c/the_path.jpg'
+            'a/b/c/the_path.jpg',
+            '1',
+            '2',
         );
         $this->image()->shouldReturn('a/b/c/the_path.jpg');
+    }
+
+    public function it_returns_the_user_role_id()
+    {
+        $this->userRoleId()->shouldReturn('1');
+    }
+
+    public function it_returns_the_user_group_id()
+    {
+        $this->userGroupId()->shouldReturn('2');
     }
 }
