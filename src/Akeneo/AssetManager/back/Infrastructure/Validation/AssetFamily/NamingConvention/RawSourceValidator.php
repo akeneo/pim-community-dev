@@ -15,8 +15,10 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConven
 
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsMainMediaInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -25,54 +27,53 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
-class RawSourceExistValidator extends ConstraintValidator
+class RawSourceValidator extends ConstraintValidator
 {
     private const ASSET_CODE_PROPERTY = 'code';
+    private const ATTRIBUTE_AS_MAIN_MEDIA_PROPERTY = 'attribute_as_main_media';
+
+    /** @var FindAssetFamilyAttributeAsMainMediaInterface */
+    private $findAttributeAsMainMedia;
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
-    {
+    public function __construct(
+        FindAssetFamilyAttributeAsMainMediaInterface $findAttributeAsMainMedia,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
+        $this->findAttributeAsMainMedia = $findAttributeAsMainMedia;
         $this->attributeRepository = $attributeRepository;
     }
 
     public function validate($rawSource, Constraint $constraint)
     {
-        if (!$constraint instanceof RawSourceExist) {
-            throw new UnexpectedTypeException($constraint, RawSourceExist::class);
+        if (!$constraint instanceof RawSource) {
+            throw new UnexpectedTypeException($constraint, RawSource::class);
         }
 
         if (self::ASSET_CODE_PROPERTY === $rawSource['property']) {
             return;
-        }
-
-        $validator = Validation::createValidator();
-        $violations = $validator->validate($rawSource, new Assert\Type('array'));
-        foreach ($violations as $violation) {
-            $this->context->addViolation($violation->getMessage(), $violation->getParameters());
-            return;
-        }
-
-        try {
-            $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
-                AttributeCode::fromString($rawSource['property']),
-                $constraint->getAssetFamilyIdentifier()
-            );
-        } catch (AttributeNotFoundException $e) {
+        } elseif (self::ATTRIBUTE_AS_MAIN_MEDIA_PROPERTY !== $rawSource['property']) {
             $this->context->buildViolation(
-                RawSourceExist::ATTRIBUTE_NOT_FOUND_ERROR,
-                ['%property%' => $rawSource['property']]
+                RawSource::INVALID_PROPERTY_ERROR,
+                [
+                    '%property%' => $rawSource['property'],
+                    '%expected_properties%' => implode('", "', [self::ASSET_CODE_PROPERTY, self::ATTRIBUTE_AS_MAIN_MEDIA_PROPERTY])
+                ]
             )->addViolation();
 
             return;
         }
 
-        $this->validateAttribute($rawSource, $attribute);
+        $this->validateAttributeAsMainMedia($rawSource, $constraint->getAssetFamilyIdentifier());
     }
 
-    private function validateAttribute(array $source, AbstractAttribute $attribute): void
+    private function validateAttributeAsMainMedia(array $source, AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
+        $attributeAsMainMedia = $this->findAttributeAsMainMedia->find($assetFamilyIdentifier);
+        $attribute = $this->attributeRepository->getByIdentifier($attributeAsMainMedia->getIdentifier());
+
         $channelReference = ChannelReference::createfromNormalized($source['channel']);
         $localeReference = LocaleReference::createFromNormalized($source['locale']);
 

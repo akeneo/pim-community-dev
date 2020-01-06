@@ -45,7 +45,7 @@ pim_asset_manager:
                 empty_operation_list: 'At least one transformation operation is required.'
                 unknown_extra_field: 'The property {{ field }} is not defined and the definition does not allow additional properties.'
             naming_convention:
-                property_should_exist: 'The property "%property%" does not exist for this asset family'
+                invalid_property: 'Invalid property "%property%". It should be either one of "%expected_properties%"'
     asset:
         validation:
             code:

@@ -20,9 +20,9 @@ use Symfony\Component\Validator\Constraint;
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class RawSourceExist extends Constraint
+class RawSource extends Constraint
 {
-    public const ATTRIBUTE_NOT_FOUND_ERROR = 'pim_asset_manager.asset_family.validation.naming_convention.property_should_exist';
+    public const INVALID_PROPERTY_ERROR = 'pim_asset_manager.asset_family.validation.naming_convention.invalid_property';
 
     /** @var AssetFamilyIdentifier */
     private $assetFamilyIdentifier;
@@ -46,6 +46,6 @@ class RawSourceExist extends Constraint
 
     public function validatedBy()
     {
-        return RawSourceExistValidator::class;
+        return RawSourceValidator::class;
     }
 }

@@ -31,14 +31,17 @@ class SourceSpec extends ObjectBehavior
 
     function it_can_be_constructed_without_channel_nor_locale()
     {
-        $this->beConstructedThrough('createFromNormalized', [['property' => 'image']]);
+        $this->beConstructedThrough('createFromNormalized', [['property' => 'code']]);
         $this->getChannelReference()->shouldBeLike(ChannelReference::noReference());
         $this->getLocaleReference()->shouldBeLike(LocaleReference::noReference());
     }
 
     function it_can_be_constructed_with_a_channel()
     {
-        $this->beConstructedThrough('createFromNormalized', [['property' => 'image', 'channel' => 'ecommerce']]);
+        $this->beConstructedThrough(
+            'createFromNormalized',
+            [['property' => 'attribute_as_main_media', 'channel' => 'ecommerce']]
+        );
         $this->getChannelReference()->shouldBeLike(
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce'))
         );
@@ -47,7 +50,10 @@ class SourceSpec extends ObjectBehavior
 
     function it_can_be_constructed_with_a_locale()
     {
-        $this->beConstructedThrough('createFromNormalized', [['property' => 'image', 'locale' => 'en_US']]);
+        $this->beConstructedThrough(
+            'createFromNormalized',
+            [['property' => 'attribute_as_main_media', 'locale' => 'en_US']]
+        );
         $this->getLocaleReference()->shouldBeLike(
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US'))
         );
@@ -58,7 +64,7 @@ class SourceSpec extends ObjectBehavior
     {
         $this->beConstructedThrough(
             'createFromNormalized',
-            [['property' => 'image', 'channel' => 'mobile', 'locale' => 'fr_FR']]
+            [['property' => 'attribute_as_main_media', 'channel' => 'mobile', 'locale' => 'fr_FR']]
         );
         $this->getChannelReference()->shouldBeLike(
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile'))
@@ -70,10 +76,13 @@ class SourceSpec extends ObjectBehavior
 
     function it_can_be_normalized()
     {
-        $this->beConstructedThrough('createFromNormalized', [['property' => 'image', 'locale' => 'en_US']]);
+        $this->beConstructedThrough(
+            'createFromNormalized',
+            [['property' => 'attribute_as_main_media', 'locale' => 'en_US']]
+        );
         $this->normalize()->shouldReturn(
             [
-                'property' => 'image',
+                'property' => 'attribute_as_main_media',
                 'channel' => null,
                 'locale' => 'en_US',
             ]
@@ -86,9 +95,9 @@ class SourceSpec extends ObjectBehavior
         $this->isAssetCode()->shouldReturn(true);
     }
 
-    function it_does_not_represent_an_asset_code()
+    function it_represents_the_attribute_as_main_media()
     {
-        $this->beConstructedThrough('createFromNormalized', [['property' => 'image', 'locale' => 'en_US']]);
+        $this->beConstructedThrough('createFromNormalized', [['property' => 'attribute_as_main_media', 'locale' => 'en_US']]);
         $this->isAssetCode()->shouldReturn(false);
     }
 }

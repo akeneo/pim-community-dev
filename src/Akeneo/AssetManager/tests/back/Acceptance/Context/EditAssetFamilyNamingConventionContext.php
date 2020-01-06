@@ -154,7 +154,7 @@ class EditAssetFamilyNamingConventionContext implements Context
     public function theUserEditsTheFamilyNamingConventionWithALocalizableSource(): void
     {
         $this->editNamingConventionForAssetFamily('designer', [
-            'source' => ['property' => 'title', 'channel' => null, 'locale' => 'en_US'],
+            'source' => ['property' => 'attribute_as_main_media', 'channel' => null, 'locale' => 'en_US'],
             'pattern' => '/valid_pattern/',
             'strict' => true
         ]);
@@ -195,12 +195,12 @@ class EditAssetFamilyNamingConventionContext implements Context
     }
 
     /**
-     * @Then there should be a validation error stating that the property is not found
+     * @Then there should be a validation error stating that the property is invalid
      */
-    public function thereShouldBeAValidationErrorStatingThatAnAttributeIsNotFound()
+    public function thereShouldBeAValidationErrorStatingThatAnAttributeIsInvalid()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'The property "invalid_property" does not exist for this asset family'
+            'Invalid property "invalid_property". It should be either one of "code", "attribute_as_main_media"'
         );
     }
 
@@ -220,7 +220,7 @@ class EditAssetFamilyNamingConventionContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheSourceMustNotBeLocalizable()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'Attribute "title" is not localizable, you cannot define a locale'
+            'Attribute "media" is not localizable, you cannot define a locale'
         );
     }
 

@@ -19,7 +19,7 @@ Feature: Edit the naming convention of an asset family
   Scenario: Cannot update naming convention if the property is invalid
     Given an asset family with a naming convention
     When the user edits the family naming convention with an invalid property
-    Then there should be a validation error stating that the property is not found
+    Then there should be a validation error stating that the property is invalid
 
   @acceptance-back
   Scenario: Cannot update naming convention if the source is missing
