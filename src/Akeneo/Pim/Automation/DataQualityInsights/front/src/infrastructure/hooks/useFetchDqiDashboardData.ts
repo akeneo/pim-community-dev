@@ -9,7 +9,6 @@ const useFetchDqiDashboardData = (channel: string, locale: string) => {
     (async () => {
       const data = await fetchDqiDashboardData(channel, locale);
       setDqiDashboardData(data);
-      console.log(data);
     })();
     }, [channel, locale]);
 

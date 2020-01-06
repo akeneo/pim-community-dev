@@ -1,42 +1,64 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { useState } from 'react';
 import {VictoryBar, VictoryChart, VictoryAxis, VictoryStack} from 'victory';
 import {useFetchDqiDashboardData} from "../../../../infrastructure/hooks";
 
-const transformData = (dataset: any[]) => {
+type Ranks = {
+  [rank: string]: number;
+}
 
-  if (dataset.length < 1) {
-    return [];
-  }
-
-  const totals = dataset[0].map((data: any, i:number) => {
-    console.log(data);
-    return dataset.reduce((memo: any, curr: any) => {
-      return memo + curr[i].y;
-    }, 0);
-  });
-
-  return dataset.map((data: any) => {
-    return data.map((datum: any, i: any) => {
-      return { x: datum.x, y: (datum.y / totals[i]) * 100 };
-    });
-  });
+type AxisRates = {
+  [date: string]: Ranks;
 };
 
+type Dataset = {
+  [axisName: string]: AxisRates;
+};
 
+const transformData = (dataset: Dataset, axisName: string) => {
+  if (Object.keys(dataset).length === 0) {
+    return {};
+  }
 
+  let ranks: {[rank: string]: any[]} = {
+    'rank_1': [],
+    'rank_2': [],
+    'rank_3': [],
+    'rank_4': [],
+    'rank_5': [],
+  };
+
+  Object.entries(dataset[axisName]).map(([date, ranksByDay]) => {
+    Object.entries(ranksByDay).map(([rank, distribution]) => {
+      ranks[rank].push({x: date, y: distribution});
+    });
+  });
+
+  return ranks;
+};
 
 interface DataQualityOverviewChartProps {
   catalogLocale: string;
   catalogChannel: string;
 }
 
-const DataQualityOverviewChart: FunctionComponent<DataQualityOverviewChartProps> = ({catalogChannel, catalogLocale}) => {
+const DataQualityOverviewChart = ({catalogChannel, catalogLocale}: DataQualityOverviewChartProps) => {
   const myDataset = useFetchDqiDashboardData(catalogChannel, catalogLocale);
   const [isVisible, setIsVisible] = useState(false);
-  const dataset = transformData(myDataset);
+  const dataset = transformData(myDataset, 'consistency');
+
+  let days: any[] = [];
+  if(Object.entries(dataset).length > 0) {
+    days = Object.values(dataset['rank_1']).map((rate: any) => rate.x);
+  }
+
+  let i = 0;
+
+  if (Object.entries(dataset).length === 0) {
+    return (<></>);
+  }
 
   return (
-      <div className='AknDataQualityInsights-chart'>
+    <div className='AknDataQualityInsights-chart'>
         <VictoryChart
           height={264}
           width={1000}
@@ -51,7 +73,8 @@ const DataQualityOverviewChart: FunctionComponent<DataQualityOverviewChartProps>
               "rgb(82, 143, 92)"
             ]}
           >
-            {dataset.map((data: any, i: any) => {
+            {Object.values(dataset).map((data: any) => {
+              i++;
               return <VictoryBar
                 name={`bar-${i}`}
                 data={data} key={i}
@@ -84,7 +107,7 @@ const DataQualityOverviewChart: FunctionComponent<DataQualityOverviewChartProps>
             })}
           </VictoryStack>
           <VictoryAxis
-            tickFormat={["day1", "day2", "day3", "day4", "day5", "day6", "day7"]}
+            tickFormat={days}
             style={{ axis: {stroke: "none"} }}
           />
         </VictoryChart>

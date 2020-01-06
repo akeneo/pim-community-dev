@@ -8,7 +8,7 @@ const fetchDqiDashboardData = async (channel: string, locale: string) => {
     locale: locale
   }));
   const json =  await response.json();
-  return Array.from(json);
+  return json;
 };
 
 export default fetchDqiDashboardData;

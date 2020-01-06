@@ -66,11 +66,11 @@ final class DashboardRates
     private function computeRatesNumberByRank($axisProjection): array
     {
         $ranks = [
-            "1" => 0,
-            "2" => 0,
-            "3" => 0,
-            "4" => 0,
-            "5" => 0,
+            "rank_1" => 0,
+            "rank_2" => 0,
+            "rank_3" => 0,
+            "rank_4" => 0,
+            "rank_5" => 0,
         ];
 
         return array_replace($ranks, $axisProjection[$this->channelCode][$this->localeCode]);
