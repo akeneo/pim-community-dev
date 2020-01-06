@@ -96,7 +96,7 @@ class FixturesContext extends BaseFixturesContext
     public function thereIsAConnection($connectionCode)
     {
         $createConnectionCommand = new CreateConnectionCommand($connectionCode, $connectionCode, FlowType::DATA_SOURCE);
-        $this->getContainer()->get('akeneo_app.application.handler.create_app')->handle($createConnectionCommand);
+        $this->getContainer()->get('akeneo_connectivity.connection.application.handler.create_connection')->handle($createConnectionCommand);
     }
 
     /**
