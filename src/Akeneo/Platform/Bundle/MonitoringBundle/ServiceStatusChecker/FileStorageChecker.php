@@ -24,7 +24,7 @@ final class FileStorageChecker
         'catalogStorage',
         'archivist',
         'jobsStorage',
-        'assetManagerStorage',
+        'assetStorage',
         'tmpAssetUpload'
     ];
 

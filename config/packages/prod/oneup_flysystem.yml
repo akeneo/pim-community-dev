@@ -5,11 +5,6 @@ oneup_flysystem:
                 client: 'Google\Cloud\Storage\StorageClient'
                 bucket: 'Google\Cloud\Storage\Bucket'
                 prefix: 'asset_storage'
-        asset_manager_storage_adapter:
-            googlecloudstorage:
-                client: 'Google\Cloud\Storage\StorageClient'
-                bucket: 'Google\Cloud\Storage\Bucket'
-                prefix: 'asset_manager_storage'
         catalog_storage_adapter:
             googlecloudstorage:
                 client: 'Google\Cloud\Storage\StorageClient'
