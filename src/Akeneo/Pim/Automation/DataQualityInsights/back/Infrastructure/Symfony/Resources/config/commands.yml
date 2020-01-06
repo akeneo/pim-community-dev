@@ -1,0 +1,22 @@
+services:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\EvaluatePendingCriteriaCommand:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\ConsolidateDashboardRatesCommand:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateDashboardRates'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\GenerateAspellDictionaryFromProductValuesCommand:
+        arguments:
+            $productValueInDatabaseDictionarySource: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\ProductValueInDatabaseDictionarySource'
+            $aspellDictionary: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionary'
+            $aspellDictionaryGenerator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryGenerator'
+            $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllActivatedLocalesQuery'
+        tags:
+            - { name: 'console.command' }

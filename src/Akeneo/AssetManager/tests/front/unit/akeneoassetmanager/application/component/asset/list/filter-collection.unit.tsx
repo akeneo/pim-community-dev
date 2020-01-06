@@ -1,0 +1,213 @@
+import * as React from 'react';
+import '@testing-library/jest-dom/extend-expect';
+import {act, fireEvent} from '@testing-library/react';
+import {ThemeProvider} from 'styled-components';
+import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import FilterCollection, {
+  useFilterViews,
+  sortFilterViewsByAttributeOrder,
+} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
+import {denormalize} from 'akeneoassetmanager/domain/model/attribute/type/option';
+import * as ReactDOM from 'react-dom';
+import {renderHook} from '@testing-library/react-hooks';
+
+const attributes = [
+  {
+    type: 'option',
+    identifier: 'shooted_by_packshot_fingerprint',
+    asset_family_identifier: 'packshot',
+    code: 'shooted_by',
+    order: 1,
+    is_required: true,
+    labels: {en_US: 'Shooted By'},
+    value_per_locale: false,
+    value_per_channel: false,
+    options: [],
+  },
+  {
+    type: 'option',
+    identifier: 'created_by_packshot_fingerprint',
+    asset_family_identifier: 'packshot',
+    code: 'created_by',
+    order: 0,
+    is_required: true,
+    labels: {en_US: 'Created by'},
+    value_per_locale: false,
+    value_per_channel: false,
+    options: [],
+  },
+];
+const dataProvider = {
+  assetAttributesFetcher: {
+    fetchAll: assetFamilyIdentifier => {
+      return new Promise(resolve => {
+        act(() => {
+          resolve(attributes);
+        });
+      });
+    },
+  },
+};
+
+let container;
+describe('Tests filter collection', () => {
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(container);
+    container = null;
+  });
+
+  it('It displays a filter collection in order of the attribute order', async () => {
+    const FilterView = ({attribute}) => <div data-code={attribute.code}></div>;
+
+    await act(async () => {
+      ReactDOM.render(
+        <ThemeProvider theme={akeneoTheme}>
+          <FilterCollection
+            orderedFilterViews={[
+              {view: FilterView, attribute: denormalize(attributes[1])},
+              {view: FilterView, attribute: denormalize(attributes[0])},
+            ]}
+            dataProvider={dataProvider}
+            filterViewsProvider={{}}
+            filterCollection={[]}
+            assetFamilyIdentifier={'packshot'}
+            context={{channel: 'ecommerce', locale: 'locale'}}
+            onFilterCollectionChange={filterCollection => {}}
+          />
+        </ThemeProvider>,
+        container
+      );
+    });
+    const filters = [].slice.call(container.querySelectorAll('[data-code]'));
+    expect(filters.map(({dataset}) => dataset.code)).toEqual(['created_by', 'shooted_by']);
+  });
+
+  it('It displays an empty filter collection', async () => {
+    await act(async () => {
+      ReactDOM.render(
+        <ThemeProvider theme={akeneoTheme}>
+          <FilterCollection
+            orderedFilterViews={[]}
+            dataProvider={dataProvider}
+            filterViewsProvider={{getFilterViews: () => []}}
+            filterCollection={[]}
+            assetFamilyIdentifier={'packshot'}
+            context={{channel: 'ecommerce', locale: 'locale'}}
+            onFilterCollectionChange={filterCollection => {}}
+          />
+        </ThemeProvider>,
+        container
+      );
+    });
+
+    expect(container.childNodes.length).toEqual(0);
+  });
+
+  it('It updates the filter collection', async () => {
+    const filterContent = 'MY_FILTER';
+    const expectedFilterCollection = [{field: attributes[0].code, operator: '=', value: 'nice'}];
+    const ClickableFilterView = ({onFilterUpdated}) => (
+      <div
+        className="my-filter"
+        onClick={() => {
+          onFilterUpdated(expectedFilterCollection[0]);
+        }}
+      >
+        {filterContent}
+      </div>
+    );
+
+    let actualFilterCollection = [{field: attributes[0].code, operator: 'IN', value: []}];
+    await act(async () => {
+      ReactDOM.render(
+        <ThemeProvider theme={akeneoTheme}>
+          <FilterCollection
+            orderedFilterViews={[{view: ClickableFilterView, attribute: denormalize(attributes[0])}]}
+            dataProvider={dataProvider}
+            filterViewsProvider={{}}
+            filterCollection={actualFilterCollection}
+            assetFamilyIdentifier={'packshot'}
+            context={{channel: 'ecommerce', locale: 'locale'}}
+            onFilterCollectionChange={filterCollection => {
+              actualFilterCollection = filterCollection;
+            }}
+          />
+        </ThemeProvider>,
+        container
+      );
+    });
+
+    fireEvent.click(container.querySelector('.my-filter'));
+
+    expect(actualFilterCollection).toEqual(expectedFilterCollection);
+  });
+
+  test('I get a null collection view if there is no attributes', async () => {
+    const {result, waitForNextUpdate} = renderHook(() =>
+      useFilterViews('notice', {
+        assetAttributesFetcher: {
+          fetchAll: () =>
+            new Promise(async resolve => {
+              act(() => resolve([]));
+            }),
+        },
+      })
+    );
+
+    expect(result.current).toBe(null);
+    await waitForNextUpdate();
+
+    expect(result.current).toEqual([]);
+  });
+
+  test('I get an empty collection view if there is no attributes', async () => {
+    const {result, waitForNextUpdate} = renderHook(() => useFilterViews('notice', dataProvider));
+
+    expect(result.current).toBe(null);
+    await waitForNextUpdate();
+
+    expect(result.current).toEqual([]);
+  });
+
+  test('I can sort attributes in the collection', () => {
+    const sortedAttributes = sortFilterViewsByAttributeOrder(attributes.map(attribute => ({attribute, view: null})));
+
+    expect(sortedAttributes).toEqual([
+      {
+        attribute: {
+          type: 'option',
+          identifier: 'created_by_packshot_fingerprint',
+          asset_family_identifier: 'packshot',
+          code: 'created_by',
+          order: 0,
+          is_required: true,
+          labels: {en_US: 'Created by'},
+          value_per_locale: false,
+          value_per_channel: false,
+          options: [],
+        },
+        view: null,
+      },
+      {
+        attribute: {
+          type: 'option',
+          identifier: 'shooted_by_packshot_fingerprint',
+          asset_family_identifier: 'packshot',
+          code: 'shooted_by',
+          order: 1,
+          is_required: true,
+          labels: {en_US: 'Shooted By'},
+          value_per_locale: false,
+          value_per_channel: false,
+          options: [],
+        },
+        view: null,
+      },
+    ]);
+  });
+});

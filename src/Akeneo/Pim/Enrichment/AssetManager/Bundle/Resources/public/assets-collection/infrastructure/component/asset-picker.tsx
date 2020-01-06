@@ -2,15 +2,12 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {Button} from 'akeneoassetmanager/application/component/app/button';
 import __ from 'akeneoassetmanager/tools/translator';
-import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
+import {Context} from 'akeneoassetmanager/domain/model/context';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
-import FilterCollection from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/filter-collection';
-import MosaicResult from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic';
+import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import Basket from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket';
-import {hasDataFilterView, getDataFilterView, FilterView} from 'akeneoassetmanager/application/configuration/value';
-import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import SearchBar from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar';
+import SearchBar from 'akeneoassetmanager/application/component/asset/list/search-bar';
 import fetchAllChannels from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
@@ -20,20 +17,14 @@ import {CloseButton} from 'akeneoassetmanager/application/component/app/close-bu
 import Key from 'akeneoassetmanager/tools/key';
 import {LabelCollection} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {getLabel} from 'pimui/js/i18n';
-import {
-  getAttributeLabel,
-  Attribute as ProductAttribute,
-} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
-import {OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
-import {OptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
-import {AssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
-import {AssetCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset-collection';
+import {getAttributeLabel, Attribute as ProductAttribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {Modal, Header, Title, SubTitle, ConfirmButton} from 'akeneoassetmanager/application/component/app/modal';
 import ListAsset, {
   canAddAssetToCollection,
   addAssetsToCollection,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
+import MosaicResult from 'akeneoassetmanager/application/component/asset/list/mosaic';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -58,32 +49,6 @@ const Grid = styled.div`
   height: 100%;
   margin: 0 40px;
 `;
-
-export type FilterViewCollection = {
-  view: FilterView;
-  attribute: Attribute;
-}[];
-export type FilterableAttribute =
-  | OptionAttribute
-  | OptionCollectionAttribute
-  | AssetAttribute
-  | AssetCollectionAttribute;
-
-export const sortFilterViewsByAttributeOrder = (filterViewCollection: FilterViewCollection) => {
-  return [...filterViewCollection].sort(
-    (filterViewA, filterviewB) => filterViewA.attribute.order - filterviewB.attribute.order
-  );
-};
-
-const getFilterViews = (attributes: Attribute[]): FilterViewCollection => {
-  const attributesWithFilterViews = attributes.filter(({type}: Attribute) => hasDataFilterView(type));
-  const filterViews = attributesWithFilterViews.map((attribute: Attribute) => ({
-    view: getDataFilterView(attribute.type),
-    attribute: attribute,
-  }));
-
-  return filterViews;
-};
 
 const createQuery = (
   assetFamilyIdentifier: AssetFamilyIdentifier,
@@ -198,22 +163,6 @@ const fetchMoreResult = (currentRequestCount: number) => (
   });
 };
 
-const useFilterViews = (
-  assetFamilyIdentifier: AssetFamilyIdentifier,
-  dataProvider: any,
-  getFilterViews: (attributes: Attribute[]) => FilterViewCollection
-): FilterViewCollection | null => {
-  const [filterViews, setFilterViews] = React.useState<FilterViewCollection | null>(null);
-
-  React.useEffect(() => {
-    dataProvider.assetAttributesFetcher.fetchAll(assetFamilyIdentifier).then((attributes: Attribute[]) => {
-      setFilterViews(sortFilterViewsByAttributeOrder(getFilterViews(attributes)));
-    });
-  }, [assetFamilyIdentifier]);
-
-  return filterViews;
-};
-
 export const AssetPicker = ({
   assetFamilyIdentifier,
   initialContext,
@@ -253,7 +202,7 @@ export const AssetPicker = ({
     setResultCollection,
     setResultCount
   );
-  const filterViews = useFilterViews(assetFamilyIdentifier, dataProvider, getFilterViews);
+  const filterViews = useFilterViews(assetFamilyIdentifier, dataProvider);
 
   React.useEffect(() => {
     const cancelModalOnEscape = (event: KeyboardEvent) => (Key.Escape === event.code ? cancelModal() : null);

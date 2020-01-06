@@ -167,6 +167,24 @@ class AssetFamilyValidator
                         'additionalProperties' => false,
                     ],
                 ],
+                'naming_convention' => [
+                    'type' => ['object', 'array'],
+                    'properties' => [
+                        'source' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'property' => ['type' => 'string'],
+                                'channel' => ['type' => ['string', 'null']],
+                                'locale' => ['type' => ['string', 'null']],
+                            ],
+                            'required' => ['property', 'channel', 'locale'],
+                            'additionalProperties' => false,
+                        ],
+                        'pattern' => ['type' => 'string'],
+                        'strict' => ['type' => 'boolean'],
+                    ],
+                    'additionalProperties' => false,
+                ],
                 '_links' => [
                     'type' => 'object'
                 ]

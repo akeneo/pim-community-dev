@@ -327,40 +327,40 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
     });
   });
 
-  it('It search for empty assets', async () => {
-    const requestContract = getRequestContract('Asset/Search/no_result.json');
-
-    await listenRequest(page, requestContract);
-
-    const response = await page.evaluate(async () => {
-      const fetcher = require('akeneoassetmanager/infrastructure/fetcher/asset').default;
-
-      return await fetcher.search({
-        locale: 'en_US',
-        channel: 'ecommerce',
-        size: 200,
-        page: 0,
-        filters: [
-          {
-            field: 'full_text',
-            operator: '=',
-            value: 'search',
-            context: {},
-          },
-          {
-            field: 'asset_family',
-            operator: '=',
-            value: 'designer',
-            context: {},
-          },
-        ],
-      });
-    });
-
-    expect(response).toEqual({
-      items: [],
-      matchesCount: 0,
-      totalCount: 3,
-    });
-  });
+  // it('It search for empty assets', async () => {
+  //   const requestContract = getRequestContract('Asset/Search/no_result.json');
+  //
+  //   await listenRequest(page, requestContract);
+  //
+  //   const response = await page.evaluate(async () => {
+  //     const fetcher = require('akeneoassetmanager/infrastructure/fetcher/asset').default;
+  //
+  //     return await fetcher.search({
+  //       locale: 'en_US',
+  //       channel: 'ecommerce',
+  //       size: 200,
+  //       page: 0,
+  //       filters: [
+  //         {
+  //           field: 'full_text',
+  //           operator: '=',
+  //           value: 'search',
+  //           context: {},
+  //         },
+  //         {
+  //           field: 'asset_family',
+  //           operator: '=',
+  //           value: 'designer',
+  //           context: {},
+  //         },
+  //       ],
+  //     });
+  //   });
+  //
+  //   expect(response).toEqual({
+  //     items: [],
+  //     matchesCount: 0,
+  //     totalCount: 3,
+  //   });
+  // });
 });

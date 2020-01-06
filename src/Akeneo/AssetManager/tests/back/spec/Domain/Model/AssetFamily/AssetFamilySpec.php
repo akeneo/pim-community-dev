@@ -15,7 +15,9 @@ namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NullNamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
@@ -31,7 +33,16 @@ class AssetFamilySpec extends ObjectBehavior
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur'
         ];
-        $this->beConstructedThrough('create', [$identifier, $labelCollection, Image::createEmpty(), RuleTemplateCollection::empty()]);
+        $this->beConstructedThrough(
+            'create',
+            [
+                $identifier,
+                $labelCollection,
+                Image::createEmpty(),
+                RuleTemplateCollection::empty(),
+                new NullNamingConvention()
+            ]
+        );
     }
 
     public function it_is_initializable()
@@ -52,7 +63,8 @@ class AssetFamilySpec extends ObjectBehavior
             $sameIdentifier,
             [],
             Image::createEmpty(),
-            RuleTemplateCollection::empty()
+            RuleTemplateCollection::empty(),
+            new NullNamingConvention()
         );
         $this->equals($sameAssetFamily)->shouldReturn(true);
 
@@ -61,7 +73,8 @@ class AssetFamilySpec extends ObjectBehavior
             $anotherIdentifier,
             [],
             Image::createEmpty(),
-            RuleTemplateCollection::empty()
+            RuleTemplateCollection::empty(),
+            new NullNamingConvention()
         );
         $this->equals($sameAssetFamily)->shouldReturn(false);
     }
@@ -103,11 +116,5 @@ class AssetFamilySpec extends ObjectBehavior
     {
         $assetFamily = $this->withTransformationCollection($transformations);
         $assetFamily->getTransformationCollection()->shouldReturn($transformations);
-    }
-
-    public function it_updates_naming_convention(NamingConventionInterface $namingConvention)
-    {
-        $assetFamily = $this->withNamingConvention($namingConvention);
-        $assetFamily->getNamingConvention()->shouldReturn($namingConvention);
     }
 }

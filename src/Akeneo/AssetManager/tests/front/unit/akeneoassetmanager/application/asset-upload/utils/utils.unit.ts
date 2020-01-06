@@ -9,6 +9,7 @@ import {
   getAllErrorsOfLineByTarget,
   getStatusFromLine,
   selectLinesToSend,
+  hasAnUnsavedLine,
 } from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {createFakeAssetFamily, createFakeError, createFakeLine} from '../tools';
 
@@ -737,5 +738,53 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getAllEr
       channel: [],
       locale: [],
     });
+  });
+});
+
+describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> hasAnUnsavedLine', () => {
+  test('I can check if there is an unsaved line', () => {
+    const valuePerLocale = true;
+    const valuePerChannel = true;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+
+    const lines = [
+      {
+        ...createFakeLine('a.jpg', assetFamily),
+        assetCreated: true,
+      },
+      {
+        ...createFakeLine('b.jpg', assetFamily),
+        assetCreated: false,
+      },
+      {
+        ...createFakeLine('c.jpg', assetFamily),
+        assetCreated: true,
+      },
+    ];
+
+    expect(hasAnUnsavedLine(lines, valuePerLocale, valuePerChannel)).toEqual(true);
+  });
+
+  test('I can check if all the lines are saved', () => {
+    const valuePerLocale = true;
+    const valuePerChannel = true;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+
+    const lines = [
+      {
+        ...createFakeLine('a.jpg', assetFamily),
+        assetCreated: true,
+      },
+      {
+        ...createFakeLine('b.jpg', assetFamily),
+        assetCreated: true,
+      },
+      {
+        ...createFakeLine('c.jpg', assetFamily),
+        assetCreated: true,
+      },
+    ];
+
+    expect(hasAnUnsavedLine(lines, valuePerLocale, valuePerChannel)).toEqual(false);
   });
 });

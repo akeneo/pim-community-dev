@@ -1,0 +1,7 @@
+akeneo_data_quality_insights:
+    axis:
+        consistency: Consistency
+        enrichment: Enrichment
+
+Consistency: Consistency
+Enrichment: Enrichment

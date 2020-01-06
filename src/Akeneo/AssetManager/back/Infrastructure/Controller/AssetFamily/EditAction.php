@@ -118,7 +118,8 @@ class EditAction
             $parameters['image'],
             $parameters['attributeAsMainMedia'],
             isset($parameters['productLinkRules']) ? $parameters['productLinkRules'] : null,
-            $transformations
+            $transformations,
+            null // TODO  $parameters['namingConvention'] Update this when user will be allowed to update through UI.
         );
 
         $violations = $this->validator->validate($command);

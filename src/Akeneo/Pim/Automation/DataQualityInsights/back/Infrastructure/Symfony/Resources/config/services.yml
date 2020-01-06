@@ -1,0 +1,115 @@
+services:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock: ~
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeCriteriaEvaluation:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@pim_user.factory.user'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry:
+        arguments:
+            - !tagged akeneo.pim.automation.data_quality_insights.evaluate_criterion
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry'
+            - '@logger'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Axis\ComputeEnrichmentRates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Axis\ComputeConsistencyRates'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductEvaluation:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery'
+
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TitleFormattingService:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Client\Franklin'
+            - '@logger'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates:
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Axis\ComputeEnrichmentRates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Axis\ComputeConsistencyRates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateDashboardRates:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetRanksDistributionFromProductAxisRatesQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllCategoryCodesQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllFamilyCodesQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository'
+
+# PIM enrichment BC anti-corruption layers
+    akeneo.pim.automation.calculate_completeness_of_required_attributes:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\CalculateProductCompleteness
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdentifierFromProductIdQuery'
+            - '@pim_catalog.completeness.calculator'
+
+    akeneo.pim.automation.calculate_completeness_of_non_required_attributes:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\CalculateProductCompleteness
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdentifierFromProductIdQuery'
+            - '@akeneo.pim.automation.completeness.non_required_attributes.calculator'
+
+    akeneo.pim.automation.completeness.non_required_attributes.calculator:
+        class: Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator
+        arguments:
+            - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetNonRequiredAttributesMasksQuery'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\BuildProductValues:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductRawValuesByAttributeQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributesByTypeFromProductQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLocalesByChannelQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributeAsMainTitleValueFromProductId'
+
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellChecker'
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellChecker:
+        arguments:
+            $binaryPath: '%env(ASPELL_BINARY_PATH)%'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedPrefixLocaleChecker'
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedPrefixLocaleChecker: ~
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\ProductValueInDatabaseDictionarySource:
+        arguments:
+            $db: '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionary:
+        arguments:
+            $mountManager: '@oneup_flysystem.mount_manager'
+            $clock: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryGenerator:
+        arguments:
+            $aspellDictionary: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionary'
+            $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllActivatedLocalesQuery'
+            $clock: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'

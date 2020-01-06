@@ -33,7 +33,8 @@
               "fr_FR": "Marque"
             },
             "product_link_rules": [],
-            "transformations": []
+            "transformations": [],
+            "naming_convention": {}
           },
           {
             "_links": {
@@ -46,7 +47,8 @@
               "fr_FR": "Marque"
             },
             "product_link_rules": [],
-            "transformations": []
+            "transformations": [],
+            "naming_convention": {}
           },
           {
             "_links": {
@@ -59,7 +61,8 @@
               "fr_FR": "Marque"
             },
             "product_link_rules": [],
-            "transformations": []
+            "transformations": [],
+            "naming_convention": {}
           }
         ]
       }

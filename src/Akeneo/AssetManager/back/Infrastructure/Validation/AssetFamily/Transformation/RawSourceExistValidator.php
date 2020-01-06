@@ -17,7 +17,9 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -48,25 +50,21 @@ class RawSourceExistValidator extends ConstraintValidator
             return;
         }
 
-        $attributes = $this->attributeRepository->findByAssetFamily($constraint->getAssetFamilyIdentifier());
-        $foundAttribute = null;
-        foreach ($attributes as $attribute) {
-            if ($attribute->getCode()->__toString() === $rawSource['attribute']) {
-                $foundAttribute = $attribute;
+        try {
+            $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+                AttributeCode::fromString($rawSource['attribute']),
+                $constraint->getAssetFamilyIdentifier()
+            );
+        } catch (AttributeNotFoundException $e) {
+            $this->context->buildViolation(
+                RawSourceExist::ATTRIBUTE_NOT_FOUND_ERROR,
+                ['%attribute_code%' => $rawSource['attribute']]
+            )->addViolation();
 
-                break;
-            }
-        }
-
-        if ($foundAttribute instanceof AbstractAttribute) {
-            $this->validateAttribute($rawSource, $foundAttribute);
             return;
         }
 
-        $this->context->buildViolation(
-            RawSourceExist::ATTRIBUTE_NOT_FOUND_ERROR,
-            ['%attribute_code%' => $rawSource['attribute']]
-        )->addViolation();
+        $this->validateAttribute($rawSource, $attribute);
     }
 
     private function validateAttribute(array $source, AbstractAttribute $attribute): void

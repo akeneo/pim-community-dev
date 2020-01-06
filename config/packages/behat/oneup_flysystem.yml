@@ -4,10 +4,6 @@ oneup_flysystem:
             awss3v3:
                 client: 'Aws\S3\S3Client'
                 bucket: 'asset'
-        asset_manager_storage_adapter:
-            awss3v3:
-                client: 'Aws\S3\S3Client'
-                bucket: 'assetmanager'
         tmp_asset_upload_adapter:
             local:
                 directory: '%kernel.project_dir%/var/upload_tmp_dir'
@@ -23,3 +19,10 @@ oneup_flysystem:
             awss3v3:
                 client: 'Aws\S3\S3Client'
                 bucket: 'archive'
+        data_quality_insights_shared_adapter:
+            awss3v3:
+                client: 'Aws\S3\S3Client'
+                bucket: 'dataqualityinsights'
+        data_quality_insights_local_adapter:
+            local:
+                directory: '%kernel.project_dir%/var/data_quality_insights'

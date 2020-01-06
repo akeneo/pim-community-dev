@@ -15,7 +15,7 @@ import {
   AttributeGroupPermission,
   LocalePermission,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
-import {AttributeCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {AttributeCode} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {CategoryCode} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 
 jest.mock('pim/fetcher-registry', () => {});

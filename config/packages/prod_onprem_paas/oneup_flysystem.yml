@@ -3,9 +3,6 @@ oneup_flysystem:
         asset_storage_adapter:
             local:
                 directory: '%kernel.project_dir%/var/file_storage/asset'
-        asset_manager_storage_adapter:
-            local:
-                directory: '%kernel.project_dir%/var/file_storage/asset_manager'
         tmp_asset_upload_adapter:
             local:
                 directory: '%kernel.project_dir%/var/upload_tmp_dir'
@@ -18,3 +15,9 @@ oneup_flysystem:
         archivist_adapter:
             local:
                 directory: '%kernel.project_dir%/var/file_storage/archive'
+        data_quality_insights_shared_adapter:
+            local:
+                directory: '%kernel.project_dir%/var/file_storage/data_quality_insights_shared'
+        data_quality_insights_local_adapter:
+            local:
+                directory: '%kernel.project_dir%/var/file_storage/data_quality_insights_local'

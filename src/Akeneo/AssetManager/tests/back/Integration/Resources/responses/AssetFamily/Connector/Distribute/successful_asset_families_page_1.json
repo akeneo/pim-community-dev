@@ -74,7 +74,16 @@
                 "filename_prefix": "1_",
                 "filename_suffix": "_2"
               }
-            ]
+            ],
+            "naming_convention": {
+              "source": {
+                "property": "code",
+                "channel": null,
+                "locale": null
+              },
+              "pattern": "/^(?P<productref>\\w+)-(?P<attribute>\\w+).jpeg$/",
+              "strict": true
+            }
           },
           {
             "_links": {
@@ -87,7 +96,8 @@
               "fr_FR": "Marque"
             },
             "product_link_rules": [],
-            "transformations": []
+            "transformations": [],
+            "naming_convention": {}
           },
           {
             "_links": {
@@ -100,7 +110,8 @@
               "fr_FR": "Marque"
             },
             "product_link_rules": [],
-            "transformations": []
+            "transformations": [],
+            "naming_convention": {}
           }
         ]
       }

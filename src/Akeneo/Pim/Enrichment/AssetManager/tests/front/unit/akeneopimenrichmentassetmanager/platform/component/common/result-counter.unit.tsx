@@ -2,7 +2,7 @@ import * as React from 'react';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {ThemeProvider} from 'styled-components';
 import {render} from '@testing-library/react';
-import {ResultCounter} from 'akeneopimenrichmentassetmanager/platform/component/common/result-counter';
+import {ResultCounter} from 'akeneoassetmanager/application/component/app/result-counter';
 import '@testing-library/jest-dom/extend-expect';
 
 test('It displays no count', () => {

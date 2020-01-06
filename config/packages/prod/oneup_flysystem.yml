@@ -5,11 +5,6 @@ oneup_flysystem:
                 client: 'Google\Cloud\Storage\StorageClient'
                 bucket: 'Google\Cloud\Storage\Bucket'
                 prefix: 'asset_storage'
-        asset_manager_storage_adapter:
-            googlecloudstorage:
-                client: 'Google\Cloud\Storage\StorageClient'
-                bucket: 'Google\Cloud\Storage\Bucket'
-                prefix: 'asset_manager_storage'
         tmp_asset_upload_adapter:
             local:
                 directory: '%kernel.project_dir%/var/upload_tmp_dir'
@@ -28,3 +23,11 @@ oneup_flysystem:
                 client: 'Google\Cloud\Storage\StorageClient'
                 bucket: 'Google\Cloud\Storage\Bucket'
                 prefix: 'archivist'
+        data_quality_insights_shared_adapter:
+            googlecloudstorage:
+                client: 'Google\Cloud\Storage\StorageClient'
+                bucket: 'Google\Cloud\Storage\Bucket'
+                prefix: 'data_quality_insights'
+        data_quality_insights_local_adapter:
+            local:
+                directory: '%kernel.project_dir%/var/data_quality_insights'

@@ -1,5 +1,5 @@
 import promisify from 'akeneoassetmanager/tools/promisify';
-import {AttributeGroupCollection} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute-group';
+import {AttributeGroupCollection} from 'akeneoassetmanager/platform/model/structure/attribute-group';
 const fetcherRegistry = require('pim/fetcher-registry');
 
 export const attributeGroupFetcher = () => fetcherRegistry.getFetcher('attribute-group');

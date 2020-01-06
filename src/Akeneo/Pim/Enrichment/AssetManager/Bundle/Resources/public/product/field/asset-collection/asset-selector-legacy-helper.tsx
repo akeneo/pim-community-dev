@@ -1,11 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import IconInfoIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/icon/info';
+import IconInfoIllustration from 'akeneoassetmanager/platform/component/visual/icon/info';
 import {Separator} from 'akeneoassetmanager/application/component/app/separator';
-import {
-  NotificationSection,
-  NotificationText,
-} from 'akeneopimenrichmentassetmanager/platform/component/common/notification';
+import {NotificationSection, NotificationText} from 'akeneoassetmanager/platform/component/common/notification';
 import __ from 'akeneoassetmanager/tools/translator';
 
 const Container = styled.div`

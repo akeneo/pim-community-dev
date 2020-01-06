@@ -58,6 +58,7 @@
   },
   "workspaces": [
     "vendor/akeneo/pim-community-dev",
-    "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/front"
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/front",
+    "src/Akeneo/Pim/Automation/DataQualityInsights/front"
   ]
 }

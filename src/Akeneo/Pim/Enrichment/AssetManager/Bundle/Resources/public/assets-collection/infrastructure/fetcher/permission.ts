@@ -1,5 +1,5 @@
 import promisify from 'akeneoassetmanager/tools/promisify';
-import {AttributeGroupCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {AttributeGroupCode} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {CategoryCode} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {isObject, isArray, isString, isBoolean} from 'akeneoassetmanager/domain/model/utils';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';

@@ -66,7 +66,7 @@ type FileDropZoneProps = {
   onDrop: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const FileDropZone = ({onDrop}: FileDropZoneProps) => {
+const FileDropZone = React.memo(({onDrop}: FileDropZoneProps) => {
   return (
     <Container>
       <FileInput
@@ -81,6 +81,6 @@ const FileDropZone = ({onDrop}: FileDropZoneProps) => {
       </Uploader>
     </Container>
   );
-};
+});
 
 export default FileDropZone;

@@ -1,0 +1,6 @@
+parameters:
+    level: 1
+    paths:
+        - %rootDir%/../../../src/Akeneo/Pim/Automation/DataQualityInsights/back
+    excludes_analyse:
+        - %rootDir%/../../../src/Akeneo/Pim/Automation/DataQualityInsights/back/tests/*

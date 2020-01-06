@@ -79,4 +79,16 @@ class SourceSpec extends ObjectBehavior
             ]
         );
     }
+
+    function it_represents_an_asset_code()
+    {
+        $this->beConstructedThrough('createFromNormalized', [['property' => 'code']]);
+        $this->isAssetCode()->shouldReturn(true);
+    }
+
+    function it_does_not_represent_an_asset_code()
+    {
+        $this->beConstructedThrough('createFromNormalized', [['property' => 'image', 'locale' => 'en_US']]);
+        $this->isAssetCode()->shouldReturn(false);
+    }
 }

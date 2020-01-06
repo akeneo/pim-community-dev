@@ -18,6 +18,11 @@
 
 ## BC breaks
 
+### PHP Server
+- Install the GNU Aspell spell-checker package: `aspell`
+  Install the dictionaries for Aspell: `aspell-en`, `aspell-es`, `aspell-de`, `aspell-fr`
+  Define the binary path for Aspell in the ENV variable: `ASPELL_BINARY_PATH`. (The default path is `aspell`)
+
 ### Storage configuration
 - Removes the "%tmp_storage_dir%" parameter. Please use "sys_get_temp_dir()" in your code instead.
 - Removes all the directories parameter. Please use the associated Flysystem filesystem in your code instead.

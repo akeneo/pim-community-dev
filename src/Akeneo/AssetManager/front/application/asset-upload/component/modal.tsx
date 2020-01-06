@@ -23,6 +23,7 @@ import {Reducer} from 'redux';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {onFileDrop} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-file-drop';
 import {onCreateAllAsset} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-create-all-assets';
+import {hasAnUnsavedLine} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 
 const Subtitle = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
@@ -44,6 +45,7 @@ const Title = styled.div`
 type UploadModalProps = {
   assetFamily: AssetFamily;
   locale: LocaleCode;
+  // @TODO merge this two callbacks into one onClose()
   onCancel: () => void;
   onAssetCreated: () => void;
 };
@@ -51,32 +53,51 @@ type UploadModalProps = {
 const UploadModal = ({assetFamily, locale, onCancel}: UploadModalProps) => {
   const [state, dispatch] = React.useReducer<Reducer<State>>(reducer, {lines: []});
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
+  const valuePerLocale = attributeAsMainMedia.value_per_locale;
+  const valuePerChannel = attributeAsMainMedia.value_per_channel;
+
+  // Close automatically the modal if there is lines and they are all created
+  // This is a workaround because but we haven't found a proper way to do it directly after a successful onCreateAllAsset
+  React.useEffect(() => {
+    if (state.lines.length > 0 && !hasAnUnsavedLine(state.lines, valuePerLocale, valuePerChannel)) {
+      onCancel();
+    }
+  }, [state.lines, valuePerLocale, valuePerChannel, onCancel]);
+
+  const handleClose = React.useCallback(() => {
+    const isDirty = hasAnUnsavedLine(state.lines, valuePerLocale, valuePerChannel);
+
+    if (!isDirty || confirm(__('pim_asset_manager.asset.upload.discard_changes'))) {
+      onCancel();
+    }
+  }, [state.lines, valuePerLocale, valuePerChannel, onCancel]);
+
+  const handleConfirm = React.useCallback(() => {
+    onCreateAllAsset(assetFamily, state.lines, dispatch);
+  }, [assetFamily, state.lines, dispatch]);
+
+  const handleDrop = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const files = event.target.files ? Object.values(event.target.files) : [];
+      onFileDrop(files, assetFamily, dispatch);
+    },
+    [assetFamily, dispatch]
+  );
 
   return (
     <Modal>
       <Header>
-        <CloseButton title={__('pim_asset_manager.close')} onClick={onCancel} />
+        <CloseButton title={__('pim_asset_manager.close')} onClick={handleClose} />
         <Subtitle>{getAssetFamilyLabel(assetFamily, locale, true)}</Subtitle>
         <Title>{__('pim_asset_manager.asset.upload.title')}</Title>
-        <ConfirmButton
-          title={__('pim_asset_manager.asset.upload.confirm')}
-          color="green"
-          onClick={() => {
-            onCreateAllAsset(assetFamily, state.lines, dispatch);
-          }}
-        >
+        <ConfirmButton title={__('pim_asset_manager.asset.upload.confirm')} color="green" onClick={handleConfirm}>
           {__('pim_asset_manager.asset.upload.confirm')}
         </ConfirmButton>
       </Header>
-      <FileDropZone
-        onDrop={(event: React.ChangeEvent<HTMLInputElement>) => {
-          event.preventDefault();
-          event.stopPropagation();
-
-          const files = event.target.files ? Object.values(event.target.files) : [];
-          onFileDrop(files, assetFamily, dispatch);
-        }}
-      />
+      <FileDropZone onDrop={handleDrop} />
       <LineList
         lines={state.lines}
         onLineChange={(line: Line) => {
@@ -88,8 +109,8 @@ const UploadModal = ({assetFamily, locale, onCancel}: UploadModalProps) => {
         onLineRemoveAll={() => {
           dispatch(removeAllLinesAction());
         }}
-        valuePerLocale={attributeAsMainMedia.value_per_locale}
-        valuePerChannel={attributeAsMainMedia.value_per_locale}
+        valuePerLocale={valuePerLocale}
+        valuePerChannel={valuePerChannel}
       />
     </Modal>
   );

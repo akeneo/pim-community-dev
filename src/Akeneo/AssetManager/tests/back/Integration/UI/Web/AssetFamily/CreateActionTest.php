@@ -143,7 +143,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_asset_manager.asset_family.validation.code.should_be_unique","parameters":{"%asset_family_identifier%":"designer"},"message":"An asset family already exists with code \u0022designer\u0022","propertyPath":"identifier","invalidValue":{"identifier":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"},"productLinkRules":[],"transformations":[]}}]'
+            '[{"messageTemplate":"pim_asset_manager.asset_family.validation.code.should_be_unique","parameters":{"%asset_family_identifier%":"designer"},"message":"An asset family already exists with code \u0022designer\u0022","propertyPath":"identifier","invalidValue":{"identifier":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"},"productLinkRules":[],"transformations":[],"namingConvention":[]}}]'
         );
     }
 

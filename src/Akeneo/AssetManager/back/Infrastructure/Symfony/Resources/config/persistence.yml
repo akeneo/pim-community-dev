@@ -403,6 +403,7 @@ services:
             - '@database_connection'
             - '@akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_product_link_rules'
             - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator'
+            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorNamingConventionHydrator'
 
     akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_product_link_rules:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorProductLinkRulesHydrator
@@ -411,6 +412,10 @@ services:
         arguments:
             - '@validator'
             - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory'
+
+    Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorNamingConventionHydrator:
+        arguments:
+            - '@validator'
 
     akeneo_assetmanager.infrastructure.persistence.asset.hydrator.value:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydrator
