@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Domain\Query\AssetFamily\Connector;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionInterface;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 
@@ -38,23 +39,29 @@ class ConnectorAssetFamily
     /** @var ConnectorTransformationCollection */
     private $transformations;
 
+    /** @var NamingConventionInterface */
+    private $namingConvention;
+
     public function __construct(
         AssetFamilyIdentifier $identifier,
         LabelCollection $labelCollection,
         Image $image,
         array $productLinkRules,
-        ConnectorTransformationCollection $transformations
+        ConnectorTransformationCollection $transformations,
+        NamingConventionInterface $namingConvention
     ) {
         $this->identifier = $identifier;
         $this->labelCollection = $labelCollection;
         $this->image = $image;
         $this->productLinkRules = $productLinkRules;
         $this->transformations = $transformations;
+        $this->namingConvention = $namingConvention;
     }
 
     public function normalize(): array
     {
         $normalizedLabels = $this->labelCollection->normalize();
+        $normalizedNamingConvention = $this->namingConvention->normalize();
 
         return [
             'code' => $this->identifier->normalize(),
@@ -62,6 +69,7 @@ class ConnectorAssetFamily
             'image' => $this->image->isEmpty() ? null : $this->image->getKey(),
             'product_link_rules' => $this->productLinkRules,
             'transformations' => $this->transformations->normalize(),
+            'naming_convention' => empty($normalizedNamingConvention) ? (object) [] : $normalizedNamingConvention,
         ];
     }
 
