@@ -180,6 +180,8 @@ define(
                     return this;
                 }
 
+                this.getRoot().trigger('pim_enrich:form:attributes:render:before');
+
                 this.rendering = true;
                 this.$el.html(this.template({}));
 
@@ -238,6 +240,9 @@ define(
                             this.delegateEvents();
 
                             _.defer(this.sticky.bind(this));
+                        })
+                        .then(() => {
+                            this.getRoot().trigger('pim_enrich:form:attributes:render:after');
                         });
                     });
 
