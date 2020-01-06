@@ -178,7 +178,7 @@ class ClassifyCategoryOnProductModelIntegration extends AbstractSecurityTestCase
     public function testFailToUpdateACategoryOnAProductModelOnlyViewable()
     {
         $this->expectException(ResourceAccessDeniedException::class);
-        $this->expectExceptionMessage('Product model "product_model" cannot be updated. You are only allowed to suggest proposals on this product model.');
+        $this->expectExceptionMessage('Product model "product_model" cannot be updated. You only have a view right on this product model.');
 
         $productModel = $this->saveProductModel('product_model', [
             'categories' => ['categoryA1'],
@@ -193,7 +193,7 @@ class ClassifyCategoryOnProductModelIntegration extends AbstractSecurityTestCase
     public function testFailToUpdateValuesOnAProductModelOnlyViewable()
     {
         $this->expectException(ResourceAccessDeniedException::class);
-        $this->expectExceptionMessage('Product model "product_model" cannot be updated. You are only allowed to suggest proposals on this product model.');
+        $this->expectExceptionMessage('Product model "product_model" cannot be updated. You only have a view right on this product model.');
 
         $productModel = $this->saveProductModel('product_model', [
             'categories' => ['categoryA1'],

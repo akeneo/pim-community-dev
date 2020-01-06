@@ -300,7 +300,7 @@ JSON;
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $message = 'Product "%s" cannot be updated. You are only allowed to suggest proposals on this product.';
+        $message = 'Product "%s" cannot be updated. You only have a view right on this product.';
         $data = '{"categories": ["own_category"]}';
 
         $this->assertUnauthorized('colored_sized_shoes_view', $data, sprintf($message, 'colored_sized_shoes_view'));
