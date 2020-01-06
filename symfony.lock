@@ -235,6 +235,9 @@
     "jean85/pretty-package-versions": {
         "version": "1.2"
     },
+    "lcobucci/jwt": {
+        "version": "3.3.1"
+    },
     "league/flysystem": {
         "version": "1.0.40"
     },
