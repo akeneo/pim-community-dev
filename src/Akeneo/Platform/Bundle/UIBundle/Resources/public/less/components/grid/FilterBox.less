@@ -136,6 +136,13 @@
     color: @AknDarkBlue;
     font-size: @AknDefaultFontSize;
 
+    & .filter-criteria-hint {
+      max-width: 300px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
     &.ui-multiselect {
       // jQuery select adds style for the button, we need to remove it for the filters.
       width: auto !important;

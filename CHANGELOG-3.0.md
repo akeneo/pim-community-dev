@@ -1,10 +1,18 @@
 # 3.0.x
 
+# 3.0.62 (2020-01-03)
+
+## Bug fixes
+
+- PIM-9039: Delete export/import files with the job batch:purge-job-execution
+- PIM-9035: Fix search in the textarea for the very long texts
+
 # 3.0.61 (2019-12-19)
 
 ## Bug fixes
 
 - PIM-9030: Fix date formatting for non UTC values
+- PIM-9041: Fix performance issue on "Add to existing product model" mass action
 
 # 3.0.60 (2019-12-13)
 
