@@ -3,4 +3,4 @@ src/**/DataGridBundle/**/*.js
 src/Oro/**/**/*.js
 src/Akeneo/ReferenceEntity/tests/front
 src/Akeneo/Pim/Enrichment/AssetManager/tests/front
-src/Akeneo/Apps
+src/Akeneo/Connectivity/Connection

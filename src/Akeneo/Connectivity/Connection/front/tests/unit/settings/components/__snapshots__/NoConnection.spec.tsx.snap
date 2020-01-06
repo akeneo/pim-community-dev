@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NoConnection should render 1`] = `
+<div
+  className="sc-htoDjs kkOYWO"
+>
+  <img
+    className="sc-dnqmqq kezHrQ"
+    src="test-file-stub"
+  />
+  <div
+    className="sc-iwsKbI hvrcwP"
+  >
+    akeneo_connectivity.connection.no_connection.title
+  </div>
+  <div
+    className="sc-gZMcBi jVpjdn"
+  >
+    akeneo_connectivity.connection.no_connection.message
+     
+    <a
+      className="sc-kEYyzF hgSZNu"
+      onClick={[Function]}
+    >
+      akeneo_connectivity.connection.no_connection.message_link
+    </a>
+  </div>
+</div>
+`;

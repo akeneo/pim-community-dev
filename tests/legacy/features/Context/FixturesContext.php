@@ -4,10 +4,10 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
-use Akeneo\Apps\Application\Command\CreateAppCommand;
-use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\Comment;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
@@ -91,12 +91,12 @@ class FixturesContext extends BaseFixturesContext
     protected $username;
 
     /**
-     * @Given There is a :appCode app
+     * @Given There is a :connectionCode connection
      */
-    public function thereIsAApp($appCode)
+    public function thereIsAConnection($connectionCode)
     {
-        $createAppCommand = new CreateAppCommand($appCode, $appCode, FlowType::DATA_SOURCE);
-        $this->getContainer()->get('akeneo_app.application.handler.create_app')->handle($createAppCommand);
+        $createConnectionCommand = new CreateConnectionCommand($connectionCode, $connectionCode, FlowType::DATA_SOURCE);
+        $this->getContainer()->get('akeneo_connectivity.connection.application.handler.create_connection')->handle($createConnectionCommand);
     }
 
     /**

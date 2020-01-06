@@ -1,0 +1,51 @@
+list:
+    path: ''
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:list }
+    methods: [GET]
+
+create:
+    path: ''
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:create }
+    methods: [POST]
+
+get:
+    path: '/{code}'
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:get }
+    methods: [GET]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+update:
+    path: '/{code}'
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:update }
+    methods: [POST]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+delete:
+    path: '/{code}'
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:delete }
+    methods: [DELETE]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+regenerate_secret:
+    path: '/{code}/regenerate-secret'
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:regenerateSecret }
+    methods: [POST]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+regenerate_password:
+    path: '/{code}/regenerate-password'
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.connection:regeneratePassword }
+    methods: [POST]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+audit_source_connections_event:
+    path: '/audit/source-connections-event'
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.audit:sourceConnectionsEvent }
+    methods: [GET]
+    requirements:
+        event_type: '[a-zA-Z_]+'

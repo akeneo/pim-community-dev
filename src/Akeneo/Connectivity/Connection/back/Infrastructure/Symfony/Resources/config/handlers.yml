@@ -1,0 +1,55 @@
+services:
+    akeneo_connectivity.connection.application.handler.create_connection:
+        class: 'Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
+        public: true
+        arguments:
+            - '@validator'
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@akeneo_connectivity.connection.service.client.create_client'
+            - '@akeneo_connectivity.connection.service.user.create_user'
+
+    akeneo_connectivity.connection.application.handler.fetch_connections:
+        class: 'Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsHandler'
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.query.select_connections'
+
+    akeneo_connectivity.connection.application.handler.find_a_connection:
+        class: 'Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler'
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.query.select_connection_with_credentials_by_code'
+
+    akeneo_connectivity.connection.application.handler.update_connection:
+        class: 'Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler'
+        arguments:
+            - '@validator'
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
+
+    akeneo_connectivity.connection.application.handler.delete_connection:
+        class: 'Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionHandler'
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@akeneo_connectivity.connection.service.client.delete_client'
+            - '@akeneo_connectivity.connection.service.user.delete_user'
+
+    akeneo_connectivity.connection.application.handler.regenerate_connection_secret:
+        class: 'Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretHandler'
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@akeneo_connectivity.connection.service.client.regenerate_client_secret'
+
+    akeneo_connectivity.connection.application.handler.regenerate_connection_password:
+        class: 'Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler'
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@akeneo_connectivity.connection.service.client.regenerate_user_password'
+
+    akeneo_connectivity.connection.application.audit.handler.count_daily_events_by_connection:
+        class: 'Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler'
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.query.select_connections_event_count_by_day'
+
+    akeneo_connectivity.connection.application.audit.handler.update_product_event_count:
+        class: Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountHandler
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.query.extract_connections_product_event_count'
+            - '@akeneo_connectivity.connection.persistence.repository.event_count'

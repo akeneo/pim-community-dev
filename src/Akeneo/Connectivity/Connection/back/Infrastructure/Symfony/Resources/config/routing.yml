@@ -1,0 +1,26 @@
+
+# Internal API
+
+akeneo_connectivity_connection_rest:
+    resource: ./routing_rest.yml
+    name_prefix: akeneo_connectivity_connection_rest_
+    prefix: /rest/connections
+    trailing_slash_on_root: false
+
+# Frontend
+
+akeneo_connectivity_connection_audit_index:
+    path: '/connection/dashboard'
+
+akeneo_connectivity_connection_audit_any:
+    path: '/connection/dashboard/{any}'
+    requirements:
+        any: .*
+
+akeneo_connectivity_connection_settings_index:
+   path: '/connections'
+
+akeneo_connectivity_connection_settings_any:
+    path: '/connections/{any}'
+    requirements:
+        any: .*

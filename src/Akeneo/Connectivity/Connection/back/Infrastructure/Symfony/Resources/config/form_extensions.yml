@@ -1,0 +1,23 @@
+extensions:
+    pim-menu-system-connection-settings:
+        module: pim/menu/item
+        parent: pim-menu-system-navigation-block
+        aclResourceId: akeneo_connectivity_connection_manage_settings
+        position: 120
+        config:
+            title: pim_menu.item.connection_settings
+            to: akeneo_connectivity_connection_settings_index
+
+    pim-menu-activity-connection-audit:
+        module: pim/menu/item
+        parent: pim-menu-activity-navigation-block
+        position: 105
+        config:
+            title: pim_menu.item.connection_audit
+            to: akeneo_connectivity_connection_audit_index
+
+    pim-connectivity-connection-user-navigation:
+        module: pim/menu/user-navigation
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
