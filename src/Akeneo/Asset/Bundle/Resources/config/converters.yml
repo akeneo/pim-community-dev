@@ -1,8 +1,0 @@
-services:
-    pimee_product_asset.converter.mass_operation:
-        class: 'Akeneo\Asset\Component\Converter\MassOperationConverter'
-        decorates: 'pim_enrich.converter.mass_operation'
-        decoration_inner_name: 'pim_enrich.converter.mass_operation.base'
-        arguments:
-            - '@pim_enrich.converter.mass_operation.base'
-            - '@oro_security.security_facade'

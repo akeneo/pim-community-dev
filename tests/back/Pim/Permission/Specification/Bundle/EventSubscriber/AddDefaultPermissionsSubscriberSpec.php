@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\Permission\Bundle\EventSubscriber;
 
-use Akeneo\Asset\Component\Model\CategoryInterface as ProductAssetCategoryInterface;
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
@@ -27,7 +26,6 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
         AttributeGroupAccessManager $attributeGroupAccessManager,
         JobProfileAccessManager $jobInstanceAccessManager,
         CategoryAccessManager $productCategoryAccessManager,
-        CategoryAccessManager $assetCategoryAccessManager,
         LocaleAccessManager $localeAccessManager
     ) {
         $this->beConstructedWith(
@@ -35,7 +33,6 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
             $attributeGroupAccessManager,
             $jobInstanceAccessManager,
             $productCategoryAccessManager,
-            $assetCategoryAccessManager,
             $localeAccessManager
         );
     }
@@ -141,31 +138,6 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
         $productCategoryAccessManager->setAccessLikeParent(
             $category,
             ['owner' => true]
-        )->shouldBeCalled();
-
-        $this->setDefaultPermissions($event);
-    }
-
-    function it_set_default_permissions_on_product_asset_category(
-        $groupRepository,
-        $assetCategoryAccessManager,
-        Group $defaultGroup,
-        ProductAssetCategoryInterface $category,
-        GenericEvent $event
-    ) {
-        $event->hasArgument('is_new')->willReturn(true);
-        $event->getArgument('is_new')->willReturn(true);
-
-        $event->hasArgument('is_installation')->willReturn(false);
-
-        $event->getSubject()->willReturn($category);
-        $category->isRoot()->willReturn(false);
-
-        $groupRepository->getDefaultUserGroup()->willReturn($defaultGroup);
-
-        $assetCategoryAccessManager->setAccessLikeParent(
-            $category,
-            ['owner' => false]
         )->shouldBeCalled();
 
         $this->setDefaultPermissions($event);

@@ -89,4 +89,4 @@ services:
         class: 'Liip\ImagineBundle\Binary\Loader\FlysystemLoader'
         arguments:
             - '@liip_imagine.extension_guesser'
-            - '@oneup_flysystem.asset_manager_storage_filesystem'
+            - '@oneup_flysystem.asset_storage_filesystem'

@@ -19,5 +19,5 @@ namespace Akeneo\AssetManager\Infrastructure\Filesystem;
  */
 class Storage
 {
-    public const FILE_STORAGE_ALIAS = 'assetManagerStorage';
+    public const FILE_STORAGE_ALIAS = 'assetStorage';
 }

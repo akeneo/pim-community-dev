@@ -10,8 +10,9 @@ import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/acti
 import Key from 'akeneoassetmanager/tools/key';
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {assetUploadCancel} from 'akeneoassetmanager/domain/event/asset/upload';
+import {assetUploadDone} from 'akeneoassetmanager/domain/event/asset/upload';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import {updateAssetResults} from 'akeneoassetmanager/application/action/asset/search';
 
 interface StateProps {
   locale: LocaleCode;
@@ -31,7 +32,7 @@ interface StateProps {
 interface DispatchProps {
   events: {
     backToAssetFamilyList: () => void;
-    cancelMassUpload: () => void;
+    closeMassUpload: () => void;
   };
 }
 
@@ -85,8 +86,8 @@ class AssetFamilyEditView extends React.Component<EditProps> {
           <UploadModal
             locale={this.props.locale}
             assetFamily={this.props.assetFamily}
-            onCancel={this.props.events.cancelMassUpload}
-            onAssetCreated={() => {}}
+            onCancel={this.props.events.closeMassUpload}
+            onAssetCreated={this.props.events.closeMassUpload}
           />
         )}
       </div>
@@ -120,8 +121,9 @@ export default connect(
         backToAssetFamilyList: () => {
           dispatch(redirectToAssetFamilyListItem());
         },
-        cancelMassUpload: () => {
-          dispatch(assetUploadCancel());
+        closeMassUpload: () => {
+          dispatch(assetUploadDone());
+          dispatch(updateAssetResults(false));
         },
       },
     };

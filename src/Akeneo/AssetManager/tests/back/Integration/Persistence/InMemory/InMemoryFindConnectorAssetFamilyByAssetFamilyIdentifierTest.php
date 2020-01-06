@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
 use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NullNamingConvention;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
@@ -54,7 +55,8 @@ class InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends TestCa
             LabelCollection::fromArray([]),
             Image::createEmpty(),
             [],
-            new ConnectorTransformationCollection([])
+            new ConnectorTransformationCollection([]),
+            new NullNamingConvention()
         );
 
         $this->query->save(

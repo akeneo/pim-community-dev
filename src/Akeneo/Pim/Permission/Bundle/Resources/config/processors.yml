@@ -8,15 +8,6 @@ services:
             - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
-    pimee_security.processor.denormalization.asset_category_access:
-        class: '%pim_connector.processor.denormalization.class%'
-        arguments:
-            - '@pimee_product_asset.repository.asset_category_access'
-            - '@pimee_security.factory.asset_category_access'
-            - '@pimee_security.updater.asset_category_access'
-            - '@validator'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-
     pimee_security.processor.denormalization.product_category_access:
         class: '%pim_connector.processor.denormalization.class%'
         arguments:

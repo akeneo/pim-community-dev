@@ -12,7 +12,6 @@ services:
     Akeneo\Platform\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand:
         arguments:
             - '@pimee_security.repository.category_access'
-            - '@pimee_product_asset.repository.asset_category_access'
             - '@pim_user.repository.group'
             - '@doctrine.orm.default_entity_manager'
         tags:

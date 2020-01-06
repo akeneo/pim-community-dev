@@ -19,6 +19,8 @@ use Webmozart\Assert\Assert;
 
 class Source
 {
+    private const ASSET_CODE_PROPERTY = 'code';
+
     /** @var string */
     private $property;
 
@@ -72,5 +74,10 @@ class Source
             'channel' => $this->channelReference->normalize(),
             'locale' => $this->localeReference->normalize(),
         ];
+    }
+
+    public function isAssetCode(): bool
+    {
+        return self::ASSET_CODE_PROPERTY === $this->property;
     }
 }

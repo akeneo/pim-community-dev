@@ -598,12 +598,12 @@ Feature: Read a single product by applying rules
     When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values | ratio |
-      | tablet  | de_DE  | warning | 9              | 10%   |
-      | tablet  | en_US  | warning | 8              | 20%   |
-      | tablet  | fr_FR  | warning | 8              | 20%   |
-      | mobile  | de_DE  | warning | 5              | 16%   |
-      | mobile  | en_US  | warning | 4              | 33%   |
-      | mobile  | fr_FR  | warning | 4              | 33%   |
+      | tablet  | de_DE  | warning | 8              | 11%   |
+      | tablet  | en_US  | warning | 7              | 22%   |
+      | tablet  | fr_FR  | warning | 7              | 22%   |
+      | mobile  | de_DE  | warning | 4              | 20%   |
+      | mobile  | en_US  | warning | 3              | 40%   |
+      | mobile  | fr_FR  | warning | 3              | 40%   |
     And the following product rule definitions:
       """
       set_name:
@@ -625,12 +625,12 @@ Feature: Read a single product by applying rules
     When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values | ratio |
-      | tablet  | de_DE  | warning | 9              | 10%   |
-      | tablet  | en_US  | warning | 7              | 30%   |
-      | tablet  | fr_FR  | warning | 8              | 20%   |
-      | mobile  | de_DE  | warning | 5              | 16%   |
-      | mobile  | en_US  | warning | 4              | 33%   |
-      | mobile  | fr_FR  | warning | 4              | 33%   |
+      | tablet  | de_DE  | warning | 8              | 11%   |
+      | tablet  | en_US  | warning | 6              | 33%   |
+      | tablet  | fr_FR  | warning | 7              | 22%   |
+      | mobile  | de_DE  | warning | 4              | 20%   |
+      | mobile  | en_US  | warning | 3              | 40%   |
+      | mobile  | fr_FR  | warning | 3              | 40%   |
 
   Scenario: Successfully execute a rule with a "remove" action on a single category
     Given the following products:

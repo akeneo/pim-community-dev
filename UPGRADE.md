@@ -24,6 +24,3 @@ The mapping of the index of the product proposals has changed. So you must rebui
 bin/console akeneo:elasticsearch:reset-indexes -i akeneo_pim_product_proposal --env=prod
 bin/console pimee:product-proposal:index --env=prod
 ```
-
-## Notes
-A new FlySystem storage adapter has been added for Asset Manager (`asset_manager_storage_adapter`)

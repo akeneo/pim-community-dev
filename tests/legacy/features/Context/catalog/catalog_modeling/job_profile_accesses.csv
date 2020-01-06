@@ -25,8 +25,6 @@ csv_product_model_export;All;All;
 csv_published_product_grid_context_quick_export;All;
 xlsx_product_grid_context_quick_export;All;
 xlsx_published_product_grid_context_quick_export;All;
-classify_assets;All;
-add_tags_to_assets;All;
 project_calculation;All;All
 refresh_project_completeness_calculation;All;
 csv_catalog_modeling_product_model_import;All;All;

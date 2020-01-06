@@ -37,6 +37,5 @@ class PimEnterpriseInstallerExtension extends BasePimInstallerExtension
         $loader->load('jobs.yml');
         $loader->load('services.yml');
         $loader->load('steps.yml');
-        $loader->load('event_subscribers.yml');
     }
 }

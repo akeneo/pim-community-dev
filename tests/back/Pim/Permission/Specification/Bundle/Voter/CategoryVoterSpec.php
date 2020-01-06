@@ -2,12 +2,12 @@
 
 namespace Specification\Akeneo\Pim\Permission\Bundle\Voter;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Voter\CategoryVoter;
-use Akeneo\Asset\Component\Model\Category;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

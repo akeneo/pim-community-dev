@@ -2,9 +2,6 @@
 
 namespace Context;
 
-use Akeneo\Asset\Bundle\Command\GenerateMissingVariationFilesCommand;
-use Akeneo\Pim\Enrichment\Bundle\Command\GetProductCommand;
-use Akeneo\Pim\Enrichment\Bundle\Command\UpdateProductCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\ApproveProposalCommand;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\CreateDraftCommand;
@@ -49,36 +46,6 @@ class EnterpriseCommandContext extends CommandContext
 
         if (null === $publishedProduct) {
             throw new \LogicException(sprintf('Product "%s" not published.', $productIdentifier));
-        }
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @Given /^I generate missing variations(?: for asset (\S+))?$/
-     */
-    public function iGenerateMissingVariations($assetCode = null)
-    {
-        $application = new Application($this->getKernel());
-
-        $command = $application->find('pim:asset:generate-missing-variation-files');
-        $commandTester = new CommandTester($command);
-
-        $commandOptions = ['command' => $command->getName()];
-
-        if (null !== $assetCode) {
-            $commandOptions['-a'] = $assetCode;
-        }
-
-        $commandResult = $commandTester->execute($commandOptions);
-
-        if (0 !== $commandResult) {
-            throw new \Exception(
-                sprintf(
-                    'An error occurred during the execution of the generate variations command : %s',
-                    $commandTester->getDisplay()
-                )
-            );
         }
     }
 

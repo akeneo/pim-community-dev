@@ -44,8 +44,6 @@ csv_product_grid_context_quick_export;All;
 csv_published_product_grid_context_quick_export;All;
 xlsx_product_grid_context_quick_export;All;
 xlsx_published_product_grid_context_quick_export;All;
-classify_assets;All;
-add_tags_to_assets;All;
 csv_footwear_currency_export;All;All
 csv_footwear_channel_export;All;All
 csv_footwear_locale_export;All;All

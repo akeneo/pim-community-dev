@@ -15,6 +15,8 @@ import {
   FILE_UPLOAD_PROGRESS,
   FILE_UPLOAD_SUCCESS,
   LINE_CREATION_START,
+  REMOVE_ALL_LINES,
+  REMOVE_LINE,
   OnAddLineAction,
   OnAssetCreationFailAction,
   OnAssetCreationSuccessAction,
@@ -25,8 +27,6 @@ import {
   OnLineCreationStartAction,
   OnRemoveAllLinesAction,
   OnRemoveLineAction,
-  REMOVE_ALL_LINES,
-  REMOVE_LINE,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 
 export type State = {

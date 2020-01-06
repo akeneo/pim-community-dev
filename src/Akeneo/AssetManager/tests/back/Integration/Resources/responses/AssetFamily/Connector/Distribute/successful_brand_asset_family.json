@@ -56,7 +56,8 @@
           ],
           "filename_suffix": "_2"
         }
-      ]
+      ],
+      "naming_convention": {}
     }
   }
 }

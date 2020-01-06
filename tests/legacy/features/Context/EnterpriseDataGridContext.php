@@ -33,29 +33,10 @@ class EnterpriseDataGridContext extends BaseDataGridContext
      * @throws ExpectationException
      *
      * @Then /^I should see published products? (.*)$/
-     * @Then /^I should see assets? (.+)$/
      */
     public function iShouldSeeEntities($elements)
     {
         parent::iShouldSeeEntities($elements);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @Given /^I filter by "asset category" with value "([^"]*)"$/
-     */
-    public function iFilterByAssetCategory($code)
-    {
-        $this->wait();
-        if (strtolower($code) === 'unclassified') {
-            $this->getCurrentPage()->clickUnclassifiedCategoryFilterLink();
-        } else {
-            $category = $this->getFixturesContext()->getAssetCategory($code);
-            $this->getCurrentPage()->clickCategoryFilterLink($category);
-        }
-
-        $this->wait();
     }
 
     /**
@@ -83,21 +64,6 @@ class EnterpriseDataGridContext extends BaseDataGridContext
     {
         $image = $this->getDatagrid()->getCellImage('thumbnail', $code);
         $this->checkCellThumbnail($image, $code, $channelCode, $localeCode);
-    }
-
-    /**
-     * @Then /^the cell "([^"]+)" in row "([^"]+)" should contain the thumbnail for asset "([^"]+)" with channel "([^"]+)" and locale "([^"]+)"?$/
-     *
-     * @param string      $column
-     * @param string      $row
-     * @param string      $asset
-     * @param string      $channelCode
-     * @param string|null $localeCode
-     */
-    public function theCellInRowShouldContainThumbnailForAsset($column, $row, $asset, $channelCode, $localeCode = null)
-    {
-        $image = $this->getDatagrid()->getCellImage($column, $row);
-        $this->checkCellThumbnail($image, $asset, $channelCode, $localeCode);
     }
 
     /**

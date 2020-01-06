@@ -15,48 +15,6 @@ use Context\AssertionContext as BaseAssertionContext;
 class EnterpriseAssertionContext extends BaseAssertionContext
 {
     /**
-     * @Then /^the "([^"]*)" asset gallery should contain (.*)$/
-     */
-    public function theAssetGalleryShouldContains($field, $entities)
-    {
-        $fieldContainer = $this->getCurrentPage()->findFieldContainer($field);
-
-        $entities = $this->getMainContext()->listToArray($entities);
-        foreach ($entities as $entity) {
-            $this->getAssetGalleryItem($entity, $fieldContainer);
-        }
-
-        if (count($fieldContainer->findAll('css', '.AknAssetCollectionField-listItem')) !== count($entities)) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Incorrect item count in asset gallery (expected: %s, current: %s',
-                    count($entities),
-                    count($fieldContainer->findAll('css', '.AknAssetCollectionField li'))
-                )
-            );
-        }
-    }
-
-    /**
-     * @Then /^the "([^"]*)" asset gallery should not contain (.*)$/
-     */
-    public function theAssetGalleryShouldNotContains($field, $entities)
-    {
-        $fieldContainer = $this->getCurrentPage()->findFieldContainer($field);
-        $entities = $this->getMainContext()->listToArray($entities);
-
-        $elements = $fieldContainer->findAll('css', '.AknAssetCollectionField-listItem');
-        foreach ($elements as $item) {
-            $assetCode = $item->getAttribute('data-asset');
-            if (in_array($assetCode, $entities)) {
-                throw $this->createExpectationException(
-                    sprintf('Incorrect asset "%s" found in asset gallery', $assetCode)
-                );
-            }
-        }
-    }
-
-    /**
      * @param $version
      *
      * @Then /^the version (\d+) should be marked as published$/
@@ -74,25 +32,6 @@ class EnterpriseAssertionContext extends BaseAssertionContext
                 sprintf('Expecting to see version %d marked as published, but is not', $version)
             );
         }
-    }
-
-    /**
-     * @Then /^the "([^"]*)" asset gallery item "([^"]*)" should contain the thumbnail for channel "([^"]+)"(?: and locale "([^"]+)")?$/
-     *
-     * @param string      $field
-     * @param string      $code
-     * @param string      $channelCode
-     * @param string|null $localeCode
-     *
-     * @throws ExpectationException
-     */
-    public function theAssetGalleryItemShouldContainThumbnailForContext($field, $code, $channelCode, $localeCode = null)
-    {
-        $fieldContainer = $this->getCurrentPage()->findFieldContainer($field);
-        $galleryItem    = $this->getAssetGalleryItem($code, $fieldContainer);
-        $thumbnail      = $galleryItem->find('css', '.AknAssetCollectionField-assetThumbnail');
-
-        $this->checkThumbnailUrlForContext($thumbnail, $code, $channelCode, $localeCode);
     }
 
     /**
@@ -160,60 +99,6 @@ class EnterpriseAssertionContext extends BaseAssertionContext
                     $expectedErrorMessage
                 )
             );
-        }
-    }
-
-    /**
-     * @param string      $code
-     * @param NodeElement $fieldContainer
-     *
-     * @throws \Exception
-     *
-     * @return NodeElement
-     */
-    protected function getAssetGalleryItem($code, NodeElement $fieldContainer)
-    {
-        return $this->spin(function () use ($code, $fieldContainer) {
-            return $fieldContainer->find('css', sprintf('.AknAssetCollectionField-listItem[data-asset="%s"]', $code));
-        }, sprintf('Cannot find the gallery item "%s"', $code));
-    }
-
-    /**
-     * @param NodeElement $thumbnail
-     * @param string      $code
-     * @param string      $channelCode
-     * @param string|null $localeCode
-     *
-     * @throws ExpectationException
-     */
-    public function checkThumbnailUrlForContext(NodeElement $thumbnail, $code, $channelCode, $localeCode = null)
-    {
-        $rawStyle = $thumbnail->getAttribute('style');
-
-        if (!preg_match('`url\(\'(.*)\'\)`', $rawStyle, $matches)) {
-            throw $this->createExpectationException(sprintf(
-                'Expecting thumbnail of asset "%s" to contain a valid url.',
-                $code
-            ));
-        }
-        $thumbnailUrl = $matches[1];
-
-        if (false === strpos($thumbnailUrl, sprintf('/%s/', $channelCode))) {
-            throw $this->createExpectationException(sprintf(
-                'Expecting thumbnail url of asset "%s" to contain scope "%s", full url is "%s".',
-                $code,
-                $channelCode,
-                $thumbnailUrl
-            ));
-        }
-
-        if (null !== $localeCode && false === strpos($thumbnailUrl, sprintf('/%s', $localeCode))) {
-            throw $this->createExpectationException(sprintf(
-                'Expecting thumbnail url of asset "%s" to contain locale code "%s", full url is "%s".',
-                $code,
-                $localeCode,
-                $thumbnailUrl
-            ));
         }
     }
 }

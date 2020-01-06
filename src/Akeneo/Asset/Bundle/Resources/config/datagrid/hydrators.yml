@@ -1,6 +1,0 @@
-parameters:
-    pimee_product_asset.datasource.result_record.hydrator.asset.class: Akeneo\Asset\Bundle\Datagrid\Datasource\ResultRecord\ORM\AssetHydrator
-
-services:
-    pimee_product_asset.datasource.result_record.hydrator.asset:
-        class: '%pimee_product_asset.datasource.result_record.hydrator.asset.class%'

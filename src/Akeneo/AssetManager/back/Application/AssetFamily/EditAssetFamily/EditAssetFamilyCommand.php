@@ -36,13 +36,17 @@ class EditAssetFamilyCommand
     /** @var array|null */
     public $transformations;
 
+    /** @var array|null */
+    public $namingConvention;
+
     public function __construct(
         string $identifier,
         array $labels,
         ?array $image,
         ?string $attributeAsMainMedia,
         ?array $productLinkRules,
-        ?array $transformations
+        ?array $transformations,
+        ?array $namingConvention
     ) {
         $this->identifier = $identifier;
         $this->labels = $labels;
@@ -50,5 +54,6 @@ class EditAssetFamilyCommand
         $this->attributeAsMainMedia = $attributeAsMainMedia;
         $this->productLinkRules = $productLinkRules;
         $this->transformations = $transformations;
+        $this->namingConvention = $namingConvention;
     }
 }

@@ -24,8 +24,7 @@ final class FileStorageChecker
         'catalogStorage',
         'archivist',
         'jobsStorage',
-        'assetManagerStorage',
-        'tmpAssetUpload'
+        'assetStorage'
     ];
 
     /** @var MountManager */

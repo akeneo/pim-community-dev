@@ -21,6 +21,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
@@ -37,30 +38,37 @@ class ConnectorAssetFamilyHydrator
     /** @var ConnectorTransformationCollectionHydrator */
     private $transformationCollectionHydrator;
 
+    /** @var ConnectorNamingConventionHydrator */
+    private $namingConventionHydrator;
+
     public function __construct(
         Connection $connection,
         ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
-        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator
+        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
+        ConnectorNamingConventionHydrator $namingConventionHydrator
     ) {
         $this->platform = $connection->getDatabasePlatform();
         $this->productLinkRulesHydrator = $productLinkRulesHydrator;
         $this->transformationCollectionHydrator = $transformationCollectionHydrator;
+        $this->namingConventionHydrator = $namingConventionHydrator;
     }
 
     public function hydrate(array $row): ConnectorAssetFamily
     {
-        $labels = Type::getType(Type::JSON_ARRAY)
+        $labels = Type::getType(Types::JSON)
             ->convertToPHPValue($row['labels'], $this->platform);
-        $identifier = Type::getType(Type::STRING)
+        $identifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
-        $imageKey = Type::getType(Type::STRING)
+        $imageKey = Type::getType(Types::STRING)
             ->convertToPHPValue($row['image_file_key'], $this->platform);
-        $imageFilename = Type::getType(Type::STRING)
+        $imageFilename = Type::getType(Types::STRING)
             ->convertToPHPValue($row['image_original_filename'], $this->platform);
-        $ruleTemplates = Type::getType(Type::JSON_ARRAY)
+        $ruleTemplates = Type::getType(Types::JSON)
             ->convertToPHPValue($row['rule_templates'], $this->platform);
-        $transformations = Type::getType(Type::JSON_ARRAY)
+        $transformations = Type::getType(Types::JSON)
             ->convertToPHPValue($row['transformations'], $this->platform);
+        $namingConvention = Type::getType(Types::JSON)
+            ->convertToPHPValue($row['naming_convention'], $this->platform);
 
         $image = Image::createEmpty();
 
@@ -77,13 +85,15 @@ class ConnectorAssetFamilyHydrator
             $transformations,
             $assetFamilyIdentifier
         );
+        $readNamingConvention = $this->namingConventionHydrator->hydrate($namingConvention, $assetFamilyIdentifier);
 
         return new ConnectorAssetFamily(
             $assetFamilyIdentifier,
             LabelCollection::fromArray($labels),
             $image,
             $productLinkRules,
-            $readTransformations
+            $readTransformations,
+            $readNamingConvention
         );
     }
 }
