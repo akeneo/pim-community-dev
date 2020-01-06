@@ -47,12 +47,6 @@ class FixturesLoader implements FixturesLoaderInterface
     /** @var Filesystem */
     private $archivistFilesystem;
 
-    /**
-     * @param KernelInterface         $kernel
-     * @param DatabaseSchemaHandler   $databaseSchemaHandler
-     * @param SystemUserAuthenticator $systemUserAuthenticator
-     * @param Configuration           $configuration
-     */
     public function __construct(
         KernelInterface $kernel,
         DatabaseSchemaHandler $databaseSchemaHandler,

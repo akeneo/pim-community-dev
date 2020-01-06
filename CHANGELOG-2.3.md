@@ -1,5 +1,11 @@
 # 2.3.x
 
+# 2.3.75 (2020-01-03)
+
+## Bug fixes
+
+- PIM-7699: Fix multi-select filter design with a lot of filtered items
+
 ## Technical improvement
 
 - Update composer dependencies to fix PhpSpec Prohecy version to 1.9.*
