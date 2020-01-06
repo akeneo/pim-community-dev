@@ -26,8 +26,8 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseTransformationContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Pim\Behat\Context\Domain\Enrich\ItemPickerContext:
-                    - 'Context\FeatureContext'
+                - Context\EnterpriseItemPickerContext:
+                    - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssertionContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseFileTransformerContext:
