@@ -109,7 +109,6 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
                 case AttributeTypes::REFERENCE_DATA_MULTI_SELECT:
                 case AttributeTypes::REFERENCE_ENTITY_COLLECTION:
                 case AttributeTypes::ASSET_COLLECTION:
-                case AttributeTypes::ASSETS_COLLECTION:
                     $nullValue = [];
                     break;
                 default:

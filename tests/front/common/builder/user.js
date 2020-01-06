@@ -20,7 +20,6 @@ class UserBuilder {
       proposals_state_notifications: null,
       display_proposals_to_review_notification: null,
       proposals_to_review_notification: null,
-      default_asset_tree: null,
       avatar: {
         filePath: ''
       },
