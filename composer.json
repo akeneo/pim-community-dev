@@ -42,7 +42,7 @@
             "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/back/tests",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/tests/back",
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back",
-            "Akeneo\\Apps\\Tests\\Acceptance\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Apps/back/tests/Acceptance",
+            "Akeneo\\Connectivity\\Connection\\Tests\\Acceptance\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance",
             "Pim\\Upgrade\\Schema\\Tests\\": "vendor/akeneo/pim-community-dev/upgrades/test_schema/",
             "Pimee\\Upgrade\\Schema\\Tests\\": "upgrades/test_schema/"
         }

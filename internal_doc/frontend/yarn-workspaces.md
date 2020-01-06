@@ -42,7 +42,7 @@ Add workspace to the root `package.json` (CE or EE) with the relative path to yo
 Workspaces are symlinked by Yarn into the `node_modules` folder, so you can use them as standard dependencies with import in other parts of the project (and have a working auto-completion and Intellisense):
 
 ```js
-import {Apps} from '@akeneo-pim-community/connectivity-connection';
+import {Settings} from '@akeneo-pim-community/connectivity-connection';
 ```
 
 Note that for this to work at runtime you need to update the build process by declaring the path in `frontend/webpack/requirejs-utils.js` (`getModulePaths` function) to where the module will be resolved by webpack:
