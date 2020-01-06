@@ -168,6 +168,7 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/upgrades upgrades
 COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/prod
 COPY --from=builder --chown=www-data:www-data /srv/pim/vendor vendor
 COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php .
+COPY --from=builder --chown=www-data:www-data /srv/pim/composer.lock .
 
 # Prepare the application
 RUN mkdir -p public/media && chown -R www-data:www-data public/media var && \

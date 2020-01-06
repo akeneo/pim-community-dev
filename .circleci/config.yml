@@ -348,14 +348,17 @@ jobs:
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
 
   release:
+      environment:
+          <<: *envVarsDeploy
       machine:
           image: ubuntu-1604:201903-01
       steps:
           -   attach_workspace:
                   at: ~/
+          - set_gcloud_config
           - run:
               name: make release
-              command: make release
+              command: OLD_IMAGE_TAG=$CIRCLE_SHA1 IMAGE_TAG=v$(date +%Y%m%d%H%M%S) make release
 
   test_back_missing_structure_migrations:
       machine:
