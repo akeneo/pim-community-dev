@@ -23,15 +23,15 @@ final class DashboardRatesSpec extends ObjectBehavior
     public function it_get_rates_by_channel_locale_and_periodicity()
     {
         $rates = [
-            "consistency" => [
-                "daily" => [
-                    "2019-12-17" => [
+            "daily" => [
+                "2019-12-17" => [
+                    "consistency" => [
                         "ecommerce" => [
                             "en_US" => [
                                 "1" => 12,
                                 "2" => 28,
                                 "3" => 10,
-                                "4" => 50,
+                                "4" => 40,
                                 "5" => 10
                             ],
                             "fr_FR" => [
@@ -47,7 +47,7 @@ final class DashboardRatesSpec extends ObjectBehavior
                                 "1" => 12,
                                 "2" => 28,
                                 "3" => 10,
-                                "4" => 50,
+                                "4" => 40,
                                 "5" => 10
                             ],
                             "fr_FR" => [
@@ -57,9 +57,45 @@ final class DashboardRatesSpec extends ObjectBehavior
                                 "4" => 20,
                                 "5" => 20
                             ]
-                        ]
+                        ],
                     ],
-                    "2019-12-16" => [
+                    "enrichment" => [
+                        "ecommerce" => [
+                            "en_US" => [
+                                "1" => 10,
+                                "2" => 40,
+                                "3" => 10,
+                                "4" => 28,
+                                "5" => 12
+                            ],
+                            "fr_FR" => [
+                                "1" => 20,
+                                "2" => 20,
+                                "3" => 20,
+                                "4" => 10,
+                                "5" => 30
+                            ]
+                        ],
+                        "mobile" => [
+                            "en_US" => [
+                                "1" => 12,
+                                "2" => 28,
+                                "3" => 10,
+                                "4" => 40,
+                                "5" => 10
+                            ],
+                            "fr_FR" => [
+                                "1" => 30,
+                                "2" => 10,
+                                "3" => 20,
+                                "4" => 20,
+                                "5" => 20
+                            ]
+                        ],
+                    ]
+                ],
+                "2019-12-16" => [
+                    "consistency" => [
                         "ecommerce" => [
                             "en_US" => [
                                 "1" => 5,
@@ -81,45 +117,7 @@ final class DashboardRatesSpec extends ObjectBehavior
                                 "1" => 12,
                                 "2" => 28,
                                 "3" => 10,
-                                "4" => 50,
-                                "5" => 10
-                            ],
-                            "fr_FR" => [
-                                "1" => 30,
-                                "2" => 10,
-                                "3" => 20,
-                                "4" => 20,
-                                "5" => 20
-                            ]
-                        ]
-                    ]
-                ]
-            ],
-            "enrichment" => [
-                "daily" => [
-                    "2019-12-17" => [
-                        "ecommerce" => [
-                            "en_US" => [
-                                "1" => 10,
-                                "2" => 50,
-                                "3" => 10,
-                                "4" => 28,
-                                "5" => 12
-                            ],
-                            "fr_FR" => [
-                                "1" => 20,
-                                "2" => 20,
-                                "3" => 20,
-                                "4" => 10,
-                                "5" => 30
-                            ]
-                        ],
-                        "mobile" => [
-                            "en_US" => [
-                                "1" => 12,
-                                "2" => 28,
-                                "3" => 10,
-                                "4" => 50,
+                                "4" => 40,
                                 "5" => 10
                             ],
                             "fr_FR" => [
@@ -131,7 +129,7 @@ final class DashboardRatesSpec extends ObjectBehavior
                             ]
                         ]
                     ],
-                    "2019-12-16" => [
+                    'enrichment' => [
                         "ecommerce" => [
                             "en_US" => [
                                 "1" => 25,
@@ -164,19 +162,19 @@ final class DashboardRatesSpec extends ObjectBehavior
                                 "5" => 30
                             ]
                         ]
-                    ]
-                ]
-            ],
+                    ],
+                ],
+            ]
         ];
 
         $this->beConstructedWith($rates, new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'));
-        $this->jsonSerialize()->shouldReturn([
+        $this->toArray()->shouldBeLike([
             "consistency" => [
                 "2019-12-17" => [
                     "1" => 12,
                     "2" => 28,
                     "3" => 10,
-                    "4" => 50,
+                    "4" => 40,
                     "5" => 10
                 ],
                 "2019-12-16" => [
@@ -190,7 +188,7 @@ final class DashboardRatesSpec extends ObjectBehavior
             "enrichment" => [
                 "2019-12-17" => [
                     "1" => 10,
-                    "2" => 50,
+                    "2" => 40,
                     "3" => 10,
                     "4" => 28,
                     "5" => 12

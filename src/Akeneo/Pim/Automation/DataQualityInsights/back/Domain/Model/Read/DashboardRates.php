@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
 
-final class DashboardRates implements \JsonSerializable
+final class DashboardRates
 {
     /** @var array */
     private $rates;
@@ -39,26 +39,49 @@ final class DashboardRates implements \JsonSerializable
         $this->periodicity = strval($periodicity);
     }
 
-    public function jsonSerialize()
+    public function toArray()
     {
+        if (! array_key_exists($this->periodicity, $this->rates)) {
+            return [];
+        }
+
         $result = [];
-
-        foreach ($this->rates as $axisName => $projectionByPeriodicity) {
-            $result[$axisName] = [];
-            if (! array_key_exists($this->periodicity, $projectionByPeriodicity)) {
-                continue;
-            }
-
-            foreach ($projectionByPeriodicity[$this->periodicity] as $day => $projectionByDay) {
-                $result[$axisName][$day] = [];
-                if (! isset($projectionByDay[$this->channelCode][$this->localeCode])) {
+        foreach ($this->rates['daily'] as $date => $projectionByDate) {
+            foreach ($projectionByDate as $axisName => $axisProjection) {
+                if (! isset($axisProjection[$this->channelCode][$this->localeCode])) {
+                    $result[$axisName][$date] = [];
                     continue;
                 }
 
-                $result[$axisName][$day] = $projectionByDay[$this->channelCode][$this->localeCode];
+                $ratesNumberByRank = $this->computeRatesNumberByRank($axisProjection);
+                $ratesRepartition = $this->computeRatesRepartition($ratesNumberByRank);
+
+                $result[$axisName][$date] = $ratesRepartition;
             }
         }
 
         return $result;
+    }
+
+    private function computeRatesNumberByRank($axisProjection): array
+    {
+        $ranks = [
+            "1" => 0,
+            "2" => 0,
+            "3" => 0,
+            "4" => 0,
+            "5" => 0,
+        ];
+
+        return array_replace($ranks, $axisProjection[$this->channelCode][$this->localeCode]);
+    }
+
+    private function computeRatesRepartition(array $ratesNumberByRank): array
+    {
+        $totalRates = array_sum($ratesNumberByRank);
+
+        return array_map(function ($rate) use ($totalRates) {
+            return round($rate / $totalRates * 100);
+        }, $ratesNumberByRank);
     }
 }
