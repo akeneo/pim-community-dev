@@ -63,7 +63,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->allowManageTransformationRights();
         $attributeIdentifier = $this->getIdentifierForAttribute(
             AssetFamilyIdentifier::fromString('designer'),
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
 
         $postContent = [
@@ -209,7 +209,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->revokeManageTransformationRights();
         $attributeIdentifier = $this->getIdentifierForAttribute(
             AssetFamilyIdentifier::fromString('designer'),
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
 
         $postContent = [
