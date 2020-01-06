@@ -42,7 +42,7 @@ class CreateUserSpec extends ObjectBehavior
         $validator->validate($user)->willReturn($violations);
         $userSaver->save($user)->shouldBeCalled();
         $user->getId()->willReturn(1);
-        $user->defineAsUserApp()->shouldBeCalled();
+        $user->defineAsUserApi()->shouldBeCalled();
 
         $readUser = $this->execute('foo', 'bar', 'baz');
         $readUser->shouldBeAnInstanceOf(ReadUser::class);

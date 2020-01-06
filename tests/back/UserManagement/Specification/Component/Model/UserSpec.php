@@ -21,12 +21,12 @@ class UserSpec extends ObjectBehavior
 
     function it_initializes_the_user_as_a_non_app()
     {
-        $this->isAUserApp()->shouldReturn(false);
+        $this->isAUserApi()->shouldReturn(false);
     }
 
     function it_defines_the_user_as_a_user_app()
     {
-        $this->defineAsUserApp();
-        $this->isAUserApp()->shouldReturn(true);
+        $this->defineAsUserApi();
+        $this->isAUserApi()->shouldReturn(true);
     }
 }

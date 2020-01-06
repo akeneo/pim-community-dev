@@ -23,7 +23,7 @@ class User implements UserInterface
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
     const DEFAULT_TIMEZONE = 'UTC';
     const TYPE_USER = 'user';
-    const TYPE_APP = 'app';
+    const TYPE_API = 'api';
 
     /** @var int|string */
     protected $id;
@@ -1092,14 +1092,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function isAUserApp(): bool
+    public function isAUserApi(): bool
     {
-        return self::TYPE_APP === $this->type;
+        return self::TYPE_API === $this->type;
     }
 
-    public function defineAsUserApp(): void
+    public function defineAsUserApi(): void
     {
-        $this->type = self::TYPE_APP;
+        $this->type = self::TYPE_API;
     }
 
     /**
