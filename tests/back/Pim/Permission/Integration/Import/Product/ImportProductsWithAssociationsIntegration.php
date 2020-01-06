@@ -51,7 +51,7 @@ CSV;
 
         $expectedWarnings = [
             'Property "associations" expects a valid product identifier. The product does not exist, "productB" given.',
-            'Product "productC" cannot be updated. You are only allowed to suggest proposals on this product.',
+            'Product "productC" cannot be updated. You only have a view right on this product.',
             'You cannot update the field "associations". You should at least own this product to do it.',
         ];
 
