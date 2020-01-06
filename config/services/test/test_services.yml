@@ -8,8 +8,8 @@ parameters:
     akeneo_integration_tests.launcher.job_execution_observer.class: Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver
 
 imports:
-    # Akeneo/Apps
-    - { resource: ../../../src/Akeneo/Apps/back/tests/Integration/Resources/config/loaders.yml }
+    # Akeneo/Connectivity/Connection
+    - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Integration/Resources/config/loaders.yml }
 
 services:
 

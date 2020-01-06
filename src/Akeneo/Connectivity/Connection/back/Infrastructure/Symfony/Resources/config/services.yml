@@ -1,0 +1,41 @@
+services:
+    akeneo_connectivity.connection.service.client.create_client:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\CreateClient
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
+
+    akeneo_connectivity.connection.service.client.delete_client:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\DeleteClient
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
+
+    akeneo_connectivity.connection.service.user.create_user:
+        class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@pim_user.saver.user'
+
+    akeneo_connectivity.connection.service.user.delete_user:
+        class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUser
+        arguments:
+            - '@pim_user.repository.user'
+            - '@pim_user.remover.user'
+
+    akeneo_connectivity.connection.service.client.regenerate_client_secret:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\FosRegenerateClientSecret
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
+            - '@database_connection'
+
+    akeneo_connectivity.connection.service.client.regenerate_user_password:
+        class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\RegenerateUserPassword
+        arguments:
+            - '@pim_user.manager'
+            - '@database_connection'
+
+    akeneo_connectivity.connection.service.file_info.does_image_exist:
+        class: Akeneo\Connectivity\Connection\Infrastructure\FileInfo\Internal\DoesImageExistQuery
+        arguments:
+            - '@database_connection'

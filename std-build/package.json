@@ -16,6 +16,6 @@
   },
   "workspaces": [
     "vendor/akeneo/pim-community-dev",
-    "vendor/akeneo/pim-community-dev/src/Akeneo/Apps/front"
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/front"
   ]
 }

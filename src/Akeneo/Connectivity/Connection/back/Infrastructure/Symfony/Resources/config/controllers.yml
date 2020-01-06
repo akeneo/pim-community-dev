@@ -1,0 +1,19 @@
+services:
+    akeneo_connectivity.connection.internal_api.controller.connection:
+        public: true
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\ConnectionController'
+        arguments:
+            - '@akeneo_connectivity.connection.application.handler.create_connection'
+            - '@akeneo_connectivity.connection.application.handler.fetch_connections'
+            - '@akeneo_connectivity.connection.application.handler.find_a_connection'
+            - '@akeneo_connectivity.connection.application.handler.update_connection'
+            - '@akeneo_connectivity.connection.application.handler.delete_connection'
+            - '@akeneo_connectivity.connection.application.handler.regenerate_connection_secret'
+            - '@akeneo_connectivity.connection.application.handler.regenerate_connection_password'
+            - '@oro_security.security_facade'
+
+    akeneo_connectivity.connection.internal_api.controller.audit:
+        public: true
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\AuditController'
+        arguments:
+            - '@akeneo_connectivity.connection.application.audit.handler.count_daily_events_by_connection'
