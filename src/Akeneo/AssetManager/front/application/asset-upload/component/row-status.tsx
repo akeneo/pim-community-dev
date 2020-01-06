@@ -53,7 +53,7 @@ type LineStatusProps = {
   progress: number | null;
 };
 
-const RowStatus = ({status, progress}: LineStatusProps) => {
+const RowStatus = React.memo(({status, progress}: LineStatusProps) => {
   switch (status) {
     case LineStatus.WaitingForUpload:
       return (
@@ -92,6 +92,6 @@ const RowStatus = ({status, progress}: LineStatusProps) => {
     default:
       throw Error('unsupported line status');
   }
-};
+});
 
 export default RowStatus;

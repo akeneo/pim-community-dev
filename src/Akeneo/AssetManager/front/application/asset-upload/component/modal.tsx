@@ -45,6 +45,7 @@ const Title = styled.div`
 type UploadModalProps = {
   assetFamily: AssetFamily;
   locale: LocaleCode;
+  // @TODO merge this two callbacks into one onClose()
   onCancel: () => void;
   onAssetCreated: () => void;
 };
@@ -55,42 +56,48 @@ const UploadModal = ({assetFamily, locale, onCancel}: UploadModalProps) => {
   const valuePerLocale = attributeAsMainMedia.value_per_locale;
   const valuePerChannel = attributeAsMainMedia.value_per_channel;
 
-  const canClose = (): boolean => {
-    const message = __('pim_asset_manager.asset.upload.discard_changes');
-    return hasAnUnsavedLine(state.lines, valuePerLocale, valuePerChannel) ? confirm(message) : true;
-  };
-
-  const onClose = (): void => {
-    if (canClose()) {
+  // Close automatically the modal if there is lines and they are all created
+  // This is a workaround because but we haven't found a proper way to do it directly after a successful onCreateAllAsset
+  React.useEffect(() => {
+    if (state.lines.length > 0 && !hasAnUnsavedLine(state.lines, valuePerLocale, valuePerChannel)) {
       onCancel();
     }
-  };
+  }, [state.lines, valuePerLocale, valuePerChannel, onCancel]);
+
+  const handleClose = React.useCallback(() => {
+    const isDirty = hasAnUnsavedLine(state.lines, valuePerLocale, valuePerChannel);
+
+    if (!isDirty || confirm(__('pim_asset_manager.asset.upload.discard_changes'))) {
+      onCancel();
+    }
+  }, [state.lines, valuePerLocale, valuePerChannel, onCancel]);
+
+  const handleConfirm = React.useCallback(() => {
+    onCreateAllAsset(assetFamily, state.lines, dispatch);
+  }, [assetFamily, state.lines, dispatch]);
+
+  const handleDrop = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const files = event.target.files ? Object.values(event.target.files) : [];
+      onFileDrop(files, assetFamily, dispatch);
+    },
+    [assetFamily, dispatch]
+  );
 
   return (
     <Modal>
       <Header>
-        <CloseButton title={__('pim_asset_manager.close')} onClick={onClose} />
+        <CloseButton title={__('pim_asset_manager.close')} onClick={handleClose} />
         <Subtitle>{getAssetFamilyLabel(assetFamily, locale, true)}</Subtitle>
         <Title>{__('pim_asset_manager.asset.upload.title')}</Title>
-        <ConfirmButton
-          title={__('pim_asset_manager.asset.upload.confirm')}
-          color="green"
-          onClick={() => {
-            onCreateAllAsset(assetFamily, state.lines, dispatch);
-          }}
-        >
+        <ConfirmButton title={__('pim_asset_manager.asset.upload.confirm')} color="green" onClick={handleConfirm}>
           {__('pim_asset_manager.asset.upload.confirm')}
         </ConfirmButton>
       </Header>
-      <FileDropZone
-        onDrop={(event: React.ChangeEvent<HTMLInputElement>) => {
-          event.preventDefault();
-          event.stopPropagation();
-
-          const files = event.target.files ? Object.values(event.target.files) : [];
-          onFileDrop(files, assetFamily, dispatch);
-        }}
-      />
+      <FileDropZone onDrop={handleDrop} />
       <LineList
         lines={state.lines}
         onLineChange={(line: Line) => {
