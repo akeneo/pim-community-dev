@@ -36,7 +36,7 @@ const canDisplayAllAttributesLink = (axis: Evaluation, attributes: string[]) => 
 
 const Title = styled.span`
   display: inline-block;
-  margin-right: 20px;
+  margin-right: 10px;
 `;
 
 const Container = styled.div`
