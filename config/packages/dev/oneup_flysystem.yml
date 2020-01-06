@@ -4,9 +4,6 @@ oneup_flysystem:
             awss3v3:
                 client: 'Aws\S3\S3Client'
                 bucket: 'asset'
-        tmp_asset_upload_adapter:
-            local:
-                directory: '%kernel.project_dir%/var/upload_tmp_dir'
         catalog_storage_adapter:
             awss3v3:
                 client: 'Aws\S3\S3Client'

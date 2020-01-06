@@ -47,13 +47,6 @@ services:
             - '@pimee_security.manager.attribute_group_access'
             - '@pimee_security.manager.category_access'
 
-    pimee_security.manager.product_asset_category:
-        class: '%pim_catalog.manager.category.class%'
-        arguments:
-            - '@pimee_product_asset.repository.category'
-            - '@pimee_security.repository.category_access'
-            - '@security.authorization_checker'
-
     pim_catalog.manager.category:
         class: '%pim_catalog.manager.category.class%'
         arguments:

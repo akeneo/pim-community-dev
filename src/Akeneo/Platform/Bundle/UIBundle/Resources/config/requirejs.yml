@@ -31,22 +31,11 @@ config:
             defaultController:
                 module: pim/controller/template
             controllers:
-                pim_enrich_attribute_create:
-                    module: pimee/controller/attribute/create
+#                pim_enrich_attribute_create:
+#                    module: pimee/controller/attribute/create
                 pimee_enrich_locale_edit:
                     module: pim/controller/form
                     aclResourceId: pimee_enrich_locale_edit_permissions
-                pimee_product_asset_edit:
-                    module: pim/controller/form
-                    aclResourceId: pimee_product_asset_index
-                pimee_product_asset_reference_delete:
-                    module: pim/controller/redirect
-                pimee_product_asset_variation_delete:
-                    module: pim/controller/redirect
-                pimee_product_asset_variation_reset:
-                    module: pim/controller/redirect
-                pimee_product_asset_variations_reset:
-                    module: pim/controller/redirect
                 pimee_workflow_product_draft_mass_approve:
                     module: pim/controller/redirect
                 teamwork_assistant_project_show:
@@ -63,22 +52,6 @@ config:
                         gridExtension: pimee-published-product-index
                         gridName: published-product-grid
                         title: Published products
-                pimee_product_asset_index:
-                    module: pimee/controller/asset/index
-                    aclResourceId: pimee_product_asset_index
-                    config:
-                        gridExtension: pimee-asset-index
-                        gridName: asset-grid
-                        title: asset_grid.label
-                pimee_product_asset_mass_upload:
-                    module: pimee/controller/asset/mass-upload
-                    aclResourceId: pimee_product_asset_mass_upload
-                    config:
-                      title: pim_menu.item.upload_asset
-
-        pim/form/common/attributes/create-button:
-            attribute_icons:
-                pim_assets_collection: assetCollection
 
     map:
         '*':
@@ -86,8 +59,6 @@ config:
 
     paths:
         pimee/controller/published-product/index: pimenterpriseui/js/controller/published-product/index
-        pimee/controller/asset/index:             pimenterpriseui/js/controller/asset/index
-        pimee/controller/asset/mass-upload:       pimenterpriseui/js/controller/asset/mass-upload
         pimee/product-view-form:                  pimenterpriseui/js/product/view-form
         pimee/product-model-view-form:            pimenterpriseui/js/product/view-form
 
@@ -95,7 +66,7 @@ config:
         pimee/rule-manager:                       pimenterpriseui/js/product/rule-manager
 
         # Controllers
-        pimee/controller/attribute/create: pimenterpriseui/js/controller/attribute/create
+#        pimee/controller/attribute/create: pimenterpriseui/js/controller/attribute/create
 
         # Form extensions
         pimee/product-edit-form/attributes/copy:                      pimenterpriseui/js/product/form/attributes/copy
@@ -111,11 +82,8 @@ config:
         pimee/product-edit-form/associations:                         pimenterpriseui/js/product/form/associations
         pimee/product-edit-form/meta/status-switcher:                 pimenterpriseui/js/product/form/meta/status-switcher
         pimee/product-edit-form/variant-navigation:                   pimenterpriseui/js/product/form/variant-navigation
-        pim/common/tab/asset-transformation:                          pimenterpriseui/js/channel/tab/asset-transformation
 
         pimee/mass-edit-form/product/publish:                         pimenterpriseui/js/mass-edit/form/product/publish
-        pimee/mass-edit-form/asset/add-tag:                           pimenterpriseui/js/mass-edit/form/asset/add-tag
-        pimee/common/select2/asset-tag:                               pimenterpriseui/js/common/select2/asset-tag
 
         # Common
         pimee/common/tab/permission:       pimenterpriseui/js/form/common/tab/permission
@@ -124,15 +92,10 @@ config:
         #Job
         pimee/job/export/edit/edit-button: pimenterpriseui/js/job/export/edit/edit-button
 
-        # Filters
-        pimee/filter/attribute/assets-collection: pimenterpriseui/js/filter/attribute/assets-collection
-
         # Templates
         pimee/template/product/meta/owner-groups:             pimenterpriseui/templates/product/meta/owner-groups.html
         pimee/template/product/tab/history/revert:            pimenterpriseui/templates/product/tab/history/revert.html
         pimee/template/product/tab/attribute/smart-attribute: pimenterpriseui/templates/product/tab/attributes/smart-attribute.html
         pimee/template/form/tab/permission:                   pimenterpriseui/templates/form/tab/permission.html
-        pimee/template/channel/tab/asset-transformation:      pimenterpriseui/templates/channel/tab/asset-transformation.html
 
         pimee/template/mass-edit/product/publish:             pimenterpriseui/templates/mass-edit/product/publish.html
-        pimee/template/mass-edit/asset/add-tag:               pimenterpriseui/templates/mass-edit/asset/add-tag.html

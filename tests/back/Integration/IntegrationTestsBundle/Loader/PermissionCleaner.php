@@ -30,14 +30,6 @@ class PermissionCleaner
         $this->connection->executeQuery($sql, ['group_name' => User::GROUP_DEFAULT]);
 
         $sql = <<<SQL
-            DELETE FROM pimee_security_asset_category_access WHERE user_group_id IN (
-                SELECT id FROM oro_access_group WHERE name = :group_name
-            );
-        SQL;
-
-        $this->connection->executeQuery($sql, ['group_name' => User::GROUP_DEFAULT]);
-
-        $sql = <<<SQL
             DELETE FROM pimee_security_product_category_access WHERE user_group_id IN (
                 SELECT id FROM oro_access_group WHERE name = :group_name
             );

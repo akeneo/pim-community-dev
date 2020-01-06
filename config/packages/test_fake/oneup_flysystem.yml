@@ -2,8 +2,6 @@ oneup_flysystem:
     adapters:
         asset_storage_adapter:
             nulladapter: ~
-        tmp_asset_upload_adapter:
-            nulladapter: ~
         catalog_storage_adapter:
             nulladapter: ~
         jobs_storage_adapter:

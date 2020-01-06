@@ -23,22 +23,6 @@ class EnterpriseSecurityContext extends SecurityContext
     }
 
     /**
-     * @When /^I make a direct authenticated DELETE call on the "([^"]*)" asset$/
-     */
-    public function iMakeADirectAuthenticatedDeleteCallOnTheAsset($assetCode)
-    {
-        $routeName = 'pimee_product_asset_remove';
-
-        $asset = $this->getService('pimee_product_asset.repository.asset')
-            ->findOneByIdentifier($assetCode);
-
-        $url = $this->getService('router')
-            ->generate($routeName, ['id' => $asset->getId()]);
-
-        $this->doCall('DELETE', $url);
-    }
-
-    /**
      * @When /^I make a direct authenticated POST call to accept the last proposal of user "([^"]*)"$/
      */
     public function iMakeADirectAuthenticatedPostCallToAcceptTheLastProposalOfUser($username)
@@ -86,17 +70,6 @@ class EnterpriseSecurityContext extends SecurityContext
         $this->doCall('POST', $url);
     }
 
-
-    /**
-     * @Then /^there should be a "([^"]*)" asset$/
-     */
-    public function thereShouldBeAAsset($assetCode)
-    {
-        $asset = $this->getService('pimee_product_asset.repository.asset')
-            ->findOneByIdentifier($assetCode);
-
-        Assert::assertNotNull($asset);
-    }
 
     /**
      * @Then /^there should be a "([^"]*)" rule$/

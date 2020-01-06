@@ -77,14 +77,6 @@ class FilterExtension extends BaseFilterExtension
             'published-product-grid' => [
                 'type'      => 'published_product_category',
                 'data_name' => 'category'
-            ],
-            'asset-grid' => [
-                'type'      => 'asset_category',
-                'data_name' => 'category'
-            ],
-            'asset-picker-grid' => [
-                'type'      => 'product_asset_category',
-                'data_name' => 'product_asset_category'
             ]
         ];
 
