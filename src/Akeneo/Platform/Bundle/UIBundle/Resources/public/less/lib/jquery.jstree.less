@@ -167,10 +167,9 @@
   }
 
   .jstree-lockeditem {
-    height: 35px;
-    display: inline-block;
-    font-size: 14px;
-    padding: 0;
+    display: inline-flex;
+    font-size: 15px;
+    padding: 14px 0 0 2px;
     color: @AknDarkBlue !important;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -178,14 +177,20 @@
     overflow: hidden;
     cursor: not-allowed;
     font-weight: bold;
+
+    .AknSelectButton--disabled {
+      width: 23px;
+      height: 23px;
+      background-size: 21px;
+    }
   }
 
   .jstree-lockedicon {
     background: url("/bundles/pimui/images/jstree/icon-folderfull.svg") no-repeat center 0;
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin: 0 4px 0 8px;
+    width: 18px;
+    height: 18px;
+    margin: 2px 5px 0 8px;
   }
 }
 

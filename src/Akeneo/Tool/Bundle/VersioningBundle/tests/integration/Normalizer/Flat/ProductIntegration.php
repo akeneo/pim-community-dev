@@ -15,6 +15,12 @@ class ProductIntegration extends TestCase
     public function testProduct()
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
+
+        $this->assertEquals(
+            $product->getRawValues()['a_date']['<all_channels>']['<all_locales>'],
+            '2016-06-13T00:00:00+02:00'
+        );
+
         $flatProduct = $this->get('pim_versioning.serializer')->normalize($product, 'flat');
         $mediaAttributes = ['a_file', 'an_image', 'a_localizable_image-en_US', 'a_localizable_image-fr_FR'];
         $flatProduct = $this->sanitizeMediaAttributeData($flatProduct, $mediaAttributes);
@@ -36,7 +42,7 @@ class ProductIntegration extends TestCase
             'PACK-groups' => '',
             'PACK-products' => 'bar,baz',
             'PACK-product_models' => '',
-            'a_date' => '2016-06-13',
+            'a_date' => '2016-06-13T00:00:00+02:00',
             'a_file' => '4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_fileA.txt',
             'a_localizable_image-en_US' => '6/2/e/3/62e376e75300d27bfec78878db4d30ff1490bc53_imageB_en_US.jpg',
             'a_localizable_image-fr_FR' => '0/f/5/0/0f5058de76f68446bb6b2371f19cd2234b245c00_imageB_fr_FR.jpg',
@@ -77,6 +83,11 @@ class ProductIntegration extends TestCase
         $expected = $this->sanitizeMediaAttributeData($expected, $mediaAttributes);
 
         $this->assertEquals($expected, $flatProduct);
+
+        $this->assertEquals(
+            $product->getRawValues()['a_date']['<all_channels>']['<all_locales>'],
+            $flatProduct['a_date']
+        );
     }
 
     /**
