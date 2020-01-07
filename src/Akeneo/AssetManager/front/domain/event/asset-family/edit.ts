@@ -1,6 +1,5 @@
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
-import {File} from 'akeneoassetmanager/domain/model/file';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import TransformationCollection from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
 
@@ -18,10 +17,6 @@ export const assetFamilyEditionUpdated = (assetFamily: AssetFamily) => {
 
 export const assetFamilyEditionLabelUpdated = (value: string, locale: string) => {
   return {type: 'ASSET_FAMILY_EDITION_LABEL_UPDATED', value, locale};
-};
-
-export const assetFamilyEditionImageUpdated = (image: File) => {
-  return {type: 'ASSET_FAMILY_EDITION_IMAGE_UPDATED', image};
 };
 
 export const assetFamilyEditionTransformationsUpdated = (transformations: TransformationCollection) => {

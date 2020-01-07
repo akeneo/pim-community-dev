@@ -12,23 +12,17 @@ config:
         akeneoassetmanager/application/configuration/value:
             media_file:
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/media-file.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/media-file.tsx'
             text:
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/text.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/text.tsx'
             media_link:
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/media-link.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/media-link.tsx'
             number:
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/number.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/number.tsx'
             option:
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/option.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/option.tsx'
                 filter: '@akeneoassetmanager/application/component/asset/index/filter/option.tsx'
             option_collection:
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/option-collection.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/option-collection.tsx'
                 filter: '@akeneoassetmanager/application/component/asset/index/filter/option.tsx'
 
         akeneoassetmanager/application/configuration/attribute:
@@ -66,9 +60,6 @@ config:
         akeneoassetmanager/application/configuration/sidebar:
             akeneo_asset_manager_asset_family_edit:
                 tabs:
-                    asset:
-                        label: '@akeneoassetmanager/application/component/asset-family/edit/asset'
-                        view: '@akeneoassetmanager/application/component/asset-family/edit/asset'
                     attribute:
                         label: pim_asset_manager.asset_family.tab.attribute
                         view: '@akeneoassetmanager/application/component/asset-family/edit/attribute'

@@ -15,8 +15,7 @@ import {channelChanged, localeChanged} from 'akeneoassetmanager/application/acti
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
-import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
+// import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import Key from 'akeneoassetmanager/tools/key';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
@@ -55,9 +54,6 @@ interface StateProps {
     locales: Locale[];
     channels: Channel[];
   };
-  confirmDelete: {
-    isActive: boolean;
-  };
   selectedAttribute: NormalizedAttribute | null;
   assetCode: AssetCode;
 }
@@ -68,8 +64,6 @@ interface DispatchProps {
     onLocaleChanged: (locale: Locale) => void;
     onChannelChanged: (channel: Channel) => void;
     onDelete: (asset: EditionAsset) => void;
-    onOpenDeleteModal: () => void;
-    onCancelDeleteModal: () => void;
     backToAssetFamilyList: () => void;
     onRedirectToProductGrid: (selectedAttribute: AttributeCode, assetCode: AssetCode) => void;
   };
@@ -93,10 +87,10 @@ class AssetEditView extends React.Component<EditProps> {
     </span>
   );
 
-  private onConfirmedDelete = () => {
-    const asset = this.props.asset;
-    this.props.events.onDelete(asset);
-  };
+  // private onConfirmedDelete = () => {
+  //   const asset = this.props.asset;
+  //   this.props.events.onDelete(asset);
+  // };
 
   private getSecondaryActions = (canDelete: boolean): JSX.Element | JSX.Element[] | null => {
     if (canDelete) {
@@ -106,7 +100,13 @@ class AssetEditView extends React.Component<EditProps> {
           <div className="AknDropdown-menu AknDropdown-menu--right">
             <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
             <div>
-              <button className="AknDropdown-menuLink" onClick={() => this.props.events.onOpenDeleteModal()}>
+              <button
+                className="AknDropdown-menuLink"
+                onClick={() => {
+                  //TODO
+                  // this.props.events.onOpenDeleteModal()
+                }}
+              >
                 {__('pim_asset_manager.asset.button.delete')}
               </button>
             </div>
@@ -254,14 +254,15 @@ class AssetEditView extends React.Component<EditProps> {
           </div>
           <Sidebar backButton={this.backToAssetFamilyList} />
         </div>
-        {this.props.confirmDelete.isActive && (
+        {/* {this.props.confirmDelete.isActive && ( //TODO
           <DeleteModal
             message={__('pim_asset_manager.asset.delete.message', {assetLabel: label})}
             title={__('pim_asset_manager.asset.delete.title')}
             onConfirm={this.onConfirmedDelete}
-            onCancel={this.props.events.onCancelDeleteModal}
+            onCancel={() => {}}
+            //TODO onCancel={this.props.events.onCancelDeleteModal}
           />
-        )}
+        )} */}
       </React.Fragment>
     );
   }
@@ -301,7 +302,6 @@ export default connect(
             canEditAssetFamily(state.right.assetFamily, state.form.data.assetFamily.identifier),
         },
       },
-      confirmDelete: state.confirmDelete,
       selectedAttribute: state.products.selectedAttribute,
       assetCode: state.form.data.code,
     };
@@ -320,12 +320,6 @@ export default connect(
         },
         onDelete: (asset: EditionAsset) => {
           dispatch(deleteAsset(asset.assetFamily.identifier, asset.code));
-        },
-        onOpenDeleteModal: () => {
-          dispatch(openDeleteModal());
-        },
-        onCancelDeleteModal: () => {
-          dispatch(cancelDeleteModal());
         },
         backToAssetFamilyList: () => {
           dispatch(redirectToAssetFamilyListItem());

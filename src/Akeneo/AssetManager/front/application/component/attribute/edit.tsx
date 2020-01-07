@@ -18,7 +18,6 @@ import {TextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text
 import {deleteAttribute} from 'akeneoassetmanager/application/action/attribute/delete';
 import AttributeIdentifier, {attributeidentifiersAreEqual} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
-import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getAttributeView} from 'akeneoassetmanager/application/configuration/attribute';
@@ -60,8 +59,6 @@ interface DispatchProps {
     onIsRequiredUpdated: (isRequired: boolean) => void;
     onAdditionalPropertyUpdated: (property: string, value: any) => void;
     onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => void;
-    onOpenDeleteModal: () => void;
-    onCancelDeleteModal: () => void;
     onCancel: () => void;
     onSubmit: () => void;
   };
@@ -267,9 +264,13 @@ class Edit extends React.Component<EditProps> {
                   className="AknButton AknButton--delete"
                   tabIndex={0}
                   onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
-                    if (Key.Space === event.key) this.props.events.onOpenDeleteModal();
+                    if (Key.Space === event.key) {
+                      //TODO this.props.events.onOpenDeleteModal();
+                    }
                   }}
-                  onClick={() => this.props.events.onOpenDeleteModal()}
+                  onClick={() => {
+                    //TODO
+                  }}
                   style={{flex: 1}}
                 >
                   <Trash color="#D4604F" className="AknButton-animatedIcon" />
@@ -312,7 +313,8 @@ class Edit extends React.Component<EditProps> {
             onConfirm={() => {
               this.props.events.onAttributeDelete(this.props.attribute.getIdentifier());
             }}
-            onCancel={this.props.events.onCancelDeleteModal}
+            // onCancel={this.props.events.onCancelDeleteModal}
+            onCancel={() => {}}
           />
         )}
       </React.Fragment>
@@ -332,7 +334,6 @@ export default connect(
       context: {
         locale: state.user.catalogLocale,
       },
-      confirmDelete: state.confirmDelete,
     } as StateProps;
   },
   (dispatch: any): DispatchProps => {
@@ -355,12 +356,6 @@ export default connect(
         },
         onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => {
           dispatch(deleteAttribute(attributeIdentifier));
-        },
-        onCancelDeleteModal: () => {
-          dispatch(cancelDeleteModal());
-        },
-        onOpenDeleteModal: () => {
-          dispatch(openDeleteModal());
         },
       },
     } as DispatchProps;

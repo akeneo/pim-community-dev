@@ -7,7 +7,6 @@ import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-fa
 import assetFamilyRemover from 'akeneoassetmanager/infrastructure/remover/asset-family';
 import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
-import {closeDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 
 export const deleteAssetFamily = (assetFamily: AssetFamily) => async (dispatch: any): Promise<void> => {
   try {
@@ -22,7 +21,6 @@ export const deleteAssetFamily = (assetFamily: AssetFamily) => async (dispatch: 
 
     dispatch(notifyAssetFamilyWellDeleted());
     dispatch(redirectToAssetFamilyListItem());
-    dispatch(closeDeleteModal());
   } catch (error) {
     dispatch(notifyAssetFamilyDeleteFailed());
 

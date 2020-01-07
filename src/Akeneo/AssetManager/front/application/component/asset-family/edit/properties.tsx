@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import Form from 'akeneoassetmanager/application/component/asset-family/edit/form';
 import {
-  assetFamilyImageUpdated,
   assetFamilyLabelUpdated,
   saveAssetFamily,
   attributeAsMainMediaUpdated,
@@ -14,13 +13,11 @@ import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-fam
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
-import {File} from 'akeneoassetmanager/domain/model/file';
-const securityContext = require('pim/security-context');
-import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
-import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
+// import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+const securityContext = require('pim/security-context');
 
 interface StateProps {
   form: EditionFormState;
@@ -37,9 +34,6 @@ interface StateProps {
       delete: boolean;
     };
   };
-  confirmDelete: {
-    isActive: boolean;
-  };
 }
 
 interface DispatchProps {
@@ -47,12 +41,9 @@ interface DispatchProps {
     form: {
       onLabelUpdated: (value: string, locale: string) => void;
       onSubmit: () => void;
-      onImageUpdated: (image: File) => void;
       onAttributeAsMainMediaUpdated: (attributeAsMainMedia: AttributeIdentifier) => void;
     };
     onDelete: (assetFamily: AssetFamily) => void;
-    onOpenDeleteModal: () => void;
-    onCancelDeleteModal: () => void;
     onSaveEditForm: () => void;
   };
 }
@@ -70,7 +61,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
             <button
               tabIndex={-1}
               className="AknDropdown-menuLink"
-              onClick={() => this.props.events.onOpenDeleteModal()}
+              // onClick={() => this.props.events.onOpenDeleteModal()} TODO
             >
               {__('pim_asset_manager.asset_family.module.delete.button')}
             </button>
@@ -82,7 +73,6 @@ class Properties extends React.Component<StateProps & DispatchProps> {
 
   render() {
     const assetFamily = this.props.form.data;
-    const label = getAssetFamilyLabel(assetFamily, this.props.context.locale);
 
     return (
       <React.Fragment>
@@ -117,7 +107,6 @@ class Properties extends React.Component<StateProps & DispatchProps> {
             <Form
               attributes={this.props.attributes}
               onLabelUpdated={this.props.events.form.onLabelUpdated}
-              onImageUpdated={this.props.events.form.onImageUpdated}
               onAttributeAsMainMediaUpdated={this.props.events.form.onAttributeAsMainMediaUpdated}
               onSubmit={this.props.events.form.onSubmit}
               locale={this.props.context.locale}
@@ -127,16 +116,18 @@ class Properties extends React.Component<StateProps & DispatchProps> {
             />
           </div>
         </div>
-        {this.props.confirmDelete.isActive && (
+        {/* {this.props.confirmDelete.isActive && ( //TODO
           <DeleteModal
             message={__('pim_asset_manager.asset_family.delete.message', {assetFamilyLabel: label})}
             title={__('pim_asset_manager.asset_family.delete.title')}
             onConfirm={() => {
               this.props.events.onDelete(assetFamily);
             }}
-            onCancel={this.props.events.onCancelDeleteModal}
+            onCancel={() => {
+              //TODO
+            }}
           />
-        )}
+        )} */}
       </React.Fragment>
     );
   }
@@ -166,7 +157,6 @@ export default connect(
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },
-      confirmDelete: state.confirmDelete,
     };
   },
   (dispatch: any): DispatchProps => {
@@ -179,21 +169,12 @@ export default connect(
           onSubmit: () => {
             dispatch(saveAssetFamily());
           },
-          onImageUpdated: (image: File) => {
-            dispatch(assetFamilyImageUpdated(image));
-          },
           onAttributeAsMainMediaUpdated: (attributeAsMainMedia: AttributeIdentifier) => {
             dispatch(attributeAsMainMediaUpdated(attributeAsMainMedia));
           },
         },
         onDelete: (assetFamily: AssetFamily) => {
           dispatch(deleteAssetFamily(assetFamily));
-        },
-        onCancelDeleteModal: () => {
-          dispatch(cancelDeleteModal());
-        },
-        onOpenDeleteModal: () => {
-          dispatch(openDeleteModal());
         },
         onSaveEditForm: () => {
           dispatch(saveAssetFamily());
