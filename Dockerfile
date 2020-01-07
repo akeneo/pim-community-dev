@@ -43,7 +43,6 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         php7.3-mysql \
         php7.3-zip \
         php7.3-xml \
-        php7.3-gd \
         php7.3-curl \
         php7.3-mbstring \
         php7.3-bcmath \
