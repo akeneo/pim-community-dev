@@ -15,6 +15,7 @@ const StatusLabel = styled.span`
   max-width: 100%;
   overflow: hidden;
   padding: 0 4px;
+  text-align: center;
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;

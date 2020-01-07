@@ -8,8 +8,12 @@ import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import * as utils from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import Row from 'akeneoassetmanager/application/asset-upload/component/row';
-import {createFakeAssetFamily, createFakeError, createFakeLine} from '../tools';
+import {createFakeAssetFamily, createFakeChannel, createFakeError, createFakeLine, createFakeLocale} from '../tools';
 import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import Locale from 'akeneoassetmanager/domain/model/locale';
+
+jest.mock('akeneoassetmanager/application/component/app/select2');
 
 describe('Test row component', () => {
   let container: HTMLElement;
@@ -27,13 +31,18 @@ describe('Test row component', () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
-    const line = createFakeLine('foo.png', assetFamily);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const line = createFakeLine('foo.png', assetFamily, channels, locales);
 
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <Row
             line={line}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineChange={() => {}}
             valuePerLocale={valuePerLocale}
@@ -49,7 +58,9 @@ describe('Test row component', () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
-    const line = createFakeLine('foo.png', assetFamily);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const line = createFakeLine('foo.png', assetFamily, channels, locales);
     const onLineChange = jest.fn();
 
     await act(async () => {
@@ -57,6 +68,9 @@ describe('Test row component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <Row
             line={line}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineChange={onLineChange}
             valuePerLocale={valuePerLocale}
@@ -81,8 +95,10 @@ describe('Test row component', () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
     const line = {
-      ...createFakeLine('foo.png', assetFamily),
+      ...createFakeLine('foo.png', assetFamily, channels, locales),
       isAssetCreating: true,
     };
     const onLineChange = jest.fn();
@@ -92,6 +108,9 @@ describe('Test row component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <Row
             line={line}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineChange={onLineChange}
             valuePerLocale={valuePerLocale}
@@ -110,7 +129,9 @@ describe('Test row component', () => {
     const valuePerLocale = true;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
-    const line = createFakeLine('foo-en_US.png', assetFamily);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [createFakeLocale('en_US'), createFakeLocale('fr_FR')];
+    const line = createFakeLine('foo-en_US.png', assetFamily, channels, locales);
     const onLineChange = jest.fn();
 
     await act(async () => {
@@ -118,6 +139,9 @@ describe('Test row component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <Row
             line={line}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineChange={onLineChange}
             valuePerLocale={valuePerLocale}
@@ -128,7 +152,7 @@ describe('Test row component', () => {
       );
     });
 
-    const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.locale') as HTMLInputElement;
+    const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.locale') as HTMLSelectElement;
     expect(input.value).toEqual('en_US');
 
     fireEvent.change(input, {target: {value: 'fr_FR'}});
@@ -138,12 +162,44 @@ describe('Test row component', () => {
     });
   });
 
+  test('It renders a row with the locale selectable from a list with flags', async () => {
+    const valuePerLocale = true;
+    const valuePerChannel = false;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [createFakeLocale('en_US'), createFakeLocale('fr_FR')];
+    const line = createFakeLine('foo-en_US.png', assetFamily, channels, locales);
+    const onLineChange = jest.fn();
+
+    await act(async () => {
+      ReactDOM.render(
+        <ThemeProvider theme={akeneoTheme}>
+          <Row
+            line={line}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
+            onLineRemove={() => {}}
+            onLineChange={onLineChange}
+            valuePerLocale={valuePerLocale}
+            valuePerChannel={valuePerChannel}
+          />
+        </ThemeProvider>,
+        container
+      );
+    });
+
+    const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.locale') as HTMLSelectElement;
+  });
+
   test('It renders a row with the locale non-editable during asset creation', async () => {
     const valuePerLocale = true;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
     const line = {
-      ...createFakeLine('foo-en_US.png', assetFamily),
+      ...createFakeLine('foo-en_US.png', assetFamily, channels, locales),
       isAssetCreating: true,
     };
     const onLineChange = jest.fn();
@@ -153,6 +209,9 @@ describe('Test row component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <Row
             line={line}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineChange={onLineChange}
             valuePerLocale={valuePerLocale}
@@ -163,7 +222,7 @@ describe('Test row component', () => {
       );
     });
 
-    const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.locale') as HTMLInputElement;
+    const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.locale') as HTMLSelectElement;
     expect(input.disabled).toEqual(true);
   });
 
@@ -171,7 +230,9 @@ describe('Test row component', () => {
     const valuePerLocale = false;
     const valuePerChannel = true;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
-    const line = createFakeLine('foo-ecommerce.png', assetFamily);
+    const channels: Channel[] = [createFakeChannel('ecommerce', ['en_US']), createFakeChannel('mobile', ['en_US'])];
+    const locales: Locale[] = [];
+    const line = createFakeLine('foo-ecommerce.png', assetFamily, channels, locales);
     const onLineChange = jest.fn();
 
     await act(async () => {
@@ -179,6 +240,9 @@ describe('Test row component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <Row
             line={line}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineChange={onLineChange}
             valuePerLocale={valuePerLocale}
@@ -189,7 +253,7 @@ describe('Test row component', () => {
       );
     });
 
-    const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.channel') as HTMLInputElement;
+    const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.channel') as HTMLSelectElement;
     expect(input.value).toEqual('ecommerce');
 
     fireEvent.change(input, {target: {value: 'mobile'}});
@@ -203,8 +267,10 @@ describe('Test row component', () => {
     const valuePerLocale = false;
     const valuePerChannel = true;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
     const line = {
-      ...createFakeLine('foo-ecommerce.png', assetFamily),
+      ...createFakeLine('foo-ecommerce.png', assetFamily, channels, locales),
       isAssetCreating: true,
     };
     const onLineChange = jest.fn();
@@ -214,6 +280,9 @@ describe('Test row component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <Row
             line={line}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineChange={onLineChange}
             valuePerLocale={valuePerLocale}
@@ -224,7 +293,7 @@ describe('Test row component', () => {
       );
     });
 
-    const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.channel') as HTMLInputElement;
+    const input = getByLabelText(container, 'pim_asset_manager.asset.upload.list.channel') as HTMLSelectElement;
     expect(input.disabled).toEqual(true);
   });
 
@@ -232,7 +301,9 @@ describe('Test row component', () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
-    const line = createFakeLine('foo.png', assetFamily);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const line = createFakeLine('foo.png', assetFamily, channels, locales);
     const onLineRemove = jest.fn();
 
     await act(async () => {
@@ -240,6 +311,9 @@ describe('Test row component', () => {
         <ThemeProvider theme={akeneoTheme}>
           <Row
             line={line}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={onLineRemove}
             onLineChange={() => {}}
             valuePerLocale={valuePerLocale}
@@ -268,13 +342,18 @@ describe('Test row component', () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
-    const line = createFakeLine('foo.png', assetFamily);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const line = createFakeLine('foo.png', assetFamily, channels, locales);
 
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <Row
             line={line}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineChange={() => {}}
             valuePerLocale={valuePerLocale}
@@ -301,13 +380,18 @@ describe('Test row component', () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
-    const line = createFakeLine('foo.png', assetFamily);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const line = createFakeLine('foo.png', assetFamily, channels, locales);
 
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <Row
             line={line}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineChange={() => {}}
             valuePerLocale={valuePerLocale}
@@ -334,13 +418,18 @@ describe('Test row component', () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
-    const line = createFakeLine('foo.png', assetFamily);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const line = createFakeLine('foo.png', assetFamily, channels, locales);
 
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <Row
             line={line}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineChange={() => {}}
             valuePerLocale={valuePerLocale}
@@ -367,13 +456,18 @@ describe('Test row component', () => {
     const valuePerLocale = false;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
-    const line = createFakeLine('foo.png', assetFamily);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const line = createFakeLine('foo.png', assetFamily, channels, locales);
 
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <Row
             line={line}
+            locale="en_US"
+            channels={channels}
+            locales={locales}
             onLineRemove={() => {}}
             onLineChange={() => {}}
             valuePerLocale={valuePerLocale}
