@@ -106,6 +106,7 @@ $rules = [
             'GuzzleHttp\Exception',
             'Mekras\Speller',
             'Lcobucci\JWT',
+            'League\Flysystem',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];

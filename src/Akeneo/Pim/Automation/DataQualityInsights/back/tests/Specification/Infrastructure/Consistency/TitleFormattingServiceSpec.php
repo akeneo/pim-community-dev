@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\TitleFormattingServiceInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\TitleFormattingTokenInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\UnableToProvideATitleSuggestion;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductTitle;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TitleFormattingService;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TitleFormattingToken;
 use GuzzleHttp\ClientInterface;
 use PhpSpec\ObjectBehavior;
 use Psr\Http\Message\ResponseInterface;
@@ -20,7 +20,7 @@ class TitleFormattingServiceSpec extends ObjectBehavior
     public function let(
         ClientInterface $client,
         LoggerInterface $logger,
-        TitleFormattingTokenInterface $titleFormattingToken
+        TitleFormattingToken $titleFormattingToken
     ) {
         $this->beConstructedWith($client, $logger, $titleFormattingToken);
     }

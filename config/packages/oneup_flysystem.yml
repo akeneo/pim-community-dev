@@ -6,6 +6,3 @@ oneup_flysystem:
         data_quality_insights_shared_adapter:
             adapter: data_quality_insights_shared_adapter
             mount: dataQualityInsightsSharedAdapter
-        data_quality_insights_local_adapter:
-            adapter: data_quality_insights_local_adapter
-            mount: dataQualityInsightsLocalAdapter

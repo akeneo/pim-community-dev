@@ -39,19 +39,18 @@ class AspellChecker implements TextChecker
      */
     private $globalOffsetCalculator;
 
-    /** @var AspellDictionary */
+    /** @var AspellDictionaryInterface */
     private $aspellDictionary;
 
     /** @var string */
     private $dictionaryLocalFilesystemPath;
 
-    public function __construct(string $binaryPath, AspellDictionary $aspellDictionary, string $dictionaryLocalFilesystemPath, GlobalOffsetCalculator $globalOffsetCalculator, $encoding = self::DEFAULT_ENCODING)
+    public function __construct(string $binaryPath, AspellDictionaryInterface $aspellDictionary, GlobalOffsetCalculator $globalOffsetCalculator, $encoding = self::DEFAULT_ENCODING)
     {
         $this->aspell = new Aspell($binaryPath);
         $this->globalOffsetCalculator = $globalOffsetCalculator;
         $this->encoding = $encoding;
         $this->aspellDictionary = $aspellDictionary;
-        $this->dictionaryLocalFilesystemPath = $dictionaryLocalFilesystemPath;
     }
 
     public function check(string $text, LocaleCode $localeCode): TextCheckResultCollection
@@ -108,8 +107,7 @@ class AspellChecker implements TextChecker
      */
     private function getDictionary(LocaleCode $localeCode): Dictionary
     {
-        $relativeDictionaryFilepath = $this->aspellDictionary->getUpToDateLocalDictionaryRelativeFilePath($localeCode);
-        $absoluteDictionaryFilepath = rtrim($this->dictionaryLocalFilesystemPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . ltrim($relativeDictionaryFilepath, DIRECTORY_SEPARATOR);
+        $absoluteDictionaryFilepath = $this->aspellDictionary->getUpToDateLocalDictionaryAbsoluteFilePath($localeCode);
 
         if (false === is_file($absoluteDictionaryFilepath)) {
             throw new DictionaryNotFoundException();

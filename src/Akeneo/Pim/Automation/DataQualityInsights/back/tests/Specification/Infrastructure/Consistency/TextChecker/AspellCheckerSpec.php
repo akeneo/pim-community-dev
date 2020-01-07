@@ -15,10 +15,9 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionary;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source\GlobalOffsetCalculator;
 use Mekras\Speller\Aspell\Aspell;
-use Mekras\Speller\Dictionary;
 use Mekras\Speller\Issue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -28,9 +27,9 @@ use Prophecy\Argument;
  */
 class AspellCheckerSpec extends ObjectBehavior
 {
-    public function let(AspellDictionary $aspellDictionary, GlobalOffsetCalculator $globalOffsetCalculator)
+    public function let(AspellDictionaryInterface $aspellDictionary, GlobalOffsetCalculator $globalOffsetCalculator)
     {
-        $this->beConstructedWith('aspell', $aspellDictionary, '/an/absolute/path', $globalOffsetCalculator);
+        $this->beConstructedWith('aspell', $aspellDictionary, $globalOffsetCalculator);
     }
 
     public function it_checks_test(
@@ -41,7 +40,7 @@ class AspellCheckerSpec extends ObjectBehavior
         $text = 'Typos hapen.';
         $locale = 'en_US';
 
-        $aspellDictionary->getUpToDateLocalDictionaryRelativeFilePath(new LocaleCode($locale))->willReturn('a/relative/filepath.pws');
+        $aspellDictionary->getUpToDateLocalDictionaryAbsoluteFilePath(new LocaleCode($locale))->willReturn('/an/absolute/filepath-en.pws');
 
         $aspellCheckResult = [
             new Issue('hapen', 'ANY_ASPELL_RETURN_CODE'),
@@ -65,7 +64,7 @@ class AspellCheckerSpec extends ObjectBehavior
         $text = 'Typos happen.';
         $locale = 'en_US';
 
-        $aspellDictionary->getUpToDateLocalDictionaryRelativeFilePath(new LocaleCode($locale))->willReturn('a/relative/filepath.pws');
+        $aspellDictionary->getUpToDateLocalDictionaryAbsoluteFilePath(new LocaleCode($locale))->willReturn('/an/absolute/filepath-en.pw');
 
         $aspellCheckResult = [];
 
