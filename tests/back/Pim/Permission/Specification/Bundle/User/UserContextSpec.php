@@ -84,7 +84,7 @@ class UserContextSpec extends ObjectBehavior
         $this->getAccessibleUserTree()->shouldReturn($thirdTree);
     }
 
-    function it_throws_an_exception_if_default_tree_is_not_accessible(
+    function it_returns_null_if_default_tree_is_not_accessible(
         $user,
         $authorizationChecker,
         $categoryRepository,
@@ -97,7 +97,7 @@ class UserContextSpec extends ObjectBehavior
         $categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS)->willReturn([1]);
         $categoryRepository->getGrantedTrees([1])->willReturn([]);
 
-        $this->shouldThrow(new \LogicException('User should have a default product tree'))->during('getAccessibleUserTree');
+        $this->getAccessibleUserTree()->shouldReturn(null);
     }
 
     function it_provides_locale_from_the_request_if_it_has_been_set(
