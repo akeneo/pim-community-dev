@@ -1,10 +1,20 @@
 version: 2
+
+aliases:
+
+    - &installLastDockerComposeVersion
+          name: Install last docker-compose version allowing to pull in parallel docker images
+          command: |
+              sudo curl -L "https://github.com/docker/compose/releases/download/1.25.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+
 jobs:
   build_dev:
     machine:
       image: ubuntu-1604:201903-01
     steps:
       - checkout
+      - run: *installLastDockerComposeVersion
       - run:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
@@ -28,6 +38,9 @@ jobs:
               sudo chown -R 1000:1000 ../project
               sudo chown -R 1000:1000 ~/.composer
               sudo chown -R 1000:1000 ~/.cache/yarn
+      - run:
+           name: Pull docker images in parallel
+           command:  docker-compose pull elasticsearch mysql node php
       - run:
             name: Install back and front dependencies
             command: make dependencies
@@ -106,12 +119,14 @@ jobs:
       steps:
           - attach_workspace:
                 at: ~/
+          - run: *installLastDockerComposeVersion
           - run:
                 name: Change owner on project dir in order to archive the project into the workspace
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
                 command: |
+                    docker-compose pull php fpm mysql elasticsearch object-storage
                     APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
                     docker/wait_docker_up.sh
           - run:
@@ -137,6 +152,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - run: *installLastDockerComposeVersion
       - run:
             name: Get Behat Suite name to run
             command: |
@@ -152,6 +168,7 @@ jobs:
       - run:
             name: Start containers
             command: |
+                docker-compose pull php fpm mysql elasticsearch httpd object-storage selenium
                 APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium' make up
                 docker/wait_docker_up.sh
       - run:
