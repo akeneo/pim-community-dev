@@ -105,6 +105,7 @@ $rules = [
             'GuzzleHttp\ClientInterface',
             'GuzzleHttp\Exception',
             'Mekras\Speller',
+            'Lcobucci\JWT',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];

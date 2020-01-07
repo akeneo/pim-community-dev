@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\TitleFormattingServiceInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\TitleFormattingToken;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\UnableToProvideATitleSuggestion;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductTitle;
 use GuzzleHttp\ClientInterface;
@@ -19,19 +20,25 @@ final class TitleFormattingService implements TitleFormattingServiceInterface
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(ClientInterface $client, LoggerInterface $logger)
+    /** @var TitleFormattingToken */
+    private $titleFormattingToken;
+
+    public function __construct(ClientInterface $client, LoggerInterface $logger, TitleFormattingToken $titleFormattingToken)
     {
         $this->client = $client;
         $this->logger = $logger;
+        $this->titleFormattingToken = $titleFormattingToken;
     }
 
     public function format(ProductTitle $title): ProductTitle
     {
         try {
-            //TODO Add JWT token to be authenticated/identified @DAPI-710
             $response = $this->client->request('GET', 'api/data-quality-insights/title', [
                     'query' => [
                         'title' => $title->__toString()
+                    ],
+                    'headers' => [
+                        'X-AKENEO-AUTH' => $this->titleFormattingToken->getTokenAsString()
                     ]
                 ]
             );
