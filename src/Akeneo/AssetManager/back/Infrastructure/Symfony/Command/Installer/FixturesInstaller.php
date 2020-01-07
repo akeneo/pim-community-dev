@@ -264,7 +264,7 @@ SQL;
                 'tags' => [
                     ['channel' => null, 'locale' => null, 'data' => ['furniture']]
                 ],
-                'image' => [
+                AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE => [
                     [
                         'channel' => null,
                         'locale'  => null,
@@ -287,7 +287,7 @@ SQL;
         $this->fixturesLoader
             ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'absorb_packshot_2')
             ->withValues([
-                'image' => [
+                AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE => [
                     [
                         'channel' => null,
                         'locale'  => null,
@@ -310,7 +310,7 @@ SQL;
         $this->fixturesLoader
             ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'absorb_packshot_3')
             ->withValues([
-                'image' => [
+                AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE => [
                     [
                         'channel' => null,
                         'locale'  => null,
@@ -333,7 +333,7 @@ SQL;
         $this->fixturesLoader
             ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'absorb_packshot_4')
             ->withValues([
-                'image' => [
+                AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE => [
                     [
                         'channel' => null,
                         'locale'  => null,
@@ -356,7 +356,7 @@ SQL;
         $this->fixturesLoader
             ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'admete_packshot_1')
             ->withValues([
-                'image' => [
+                AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE => [
                     [
                         'channel' => null,
                         'locale'  => null,
@@ -379,7 +379,7 @@ SQL;
         $this->fixturesLoader
             ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'admete_packshot_2')
             ->withValues([
-                'image' => [
+                AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE => [
                     [
                         'channel' => null,
                         'locale'  => null,
@@ -402,7 +402,7 @@ SQL;
         $this->fixturesLoader
             ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'admete_packshot_3')
             ->withValues([
-                'image' => [
+                AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE => [
                     [
                         'channel' => null,
                         'locale'  => null,
@@ -425,7 +425,7 @@ SQL;
         $this->fixturesLoader
             ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'admete_packshot_4')
             ->withValues([
-                'image' => [
+                AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE => [
                     [
                         'channel' => null,
                         'locale'  => null,
@@ -1158,7 +1158,7 @@ SQL;
         $attributes = $this->attributeRepository->findByAssetFamily($atmosphereAssetFamilyIdentifier);
         $attributeAsMainMedia = current(array_filter($attributes,
             function (AbstractAttribute $attribute) {
-                return $attribute->getCode()->equals(AttributeCode::fromString('image'));
+                return $attribute->getCode()->equals(AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE));
             }
         ));
 
