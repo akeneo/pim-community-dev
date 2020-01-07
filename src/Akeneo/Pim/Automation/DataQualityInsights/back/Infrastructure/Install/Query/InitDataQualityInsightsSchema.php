@@ -45,5 +45,11 @@ CREATE TABLE pimee_data_quality_insights_dashboard_rates_projection (
     rates JSON NOT NULL,
     PRIMARY KEY (type, code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE pimee_data_quality_insights_text_checker_dictionary (
+    locale_code VARCHAR(20) NOT NULL,
+    word VARCHAR(250) NOT NULL,
+    INDEX pimee_data_quality_insights_text_checker_dictionary_word_index (word)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
 }
