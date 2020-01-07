@@ -1,6 +1,6 @@
 import React, {Fragment, FunctionComponent} from 'react';
 import Attribute from "./Attribute";
-import {useCatalogContext, useFetchProductFamilyInformation} from "../../../../infrastructure/hooks";
+import {useCatalogContext, useFetchProductFamilyInformation} from "../../../../../infrastructure/hooks";
 
 interface RecommendationAttributesListProps {
   criterion: string;

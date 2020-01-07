@@ -1,27 +1,27 @@
 import React, {FunctionComponent} from 'react';
 import {createPortal} from 'react-dom';
-import DataQualityInsightsTabContent from "./DataQualityInsightsTabContent";
+import AttributesTabContent from "./AttributesTabContent";
 import {usePageContext} from "../../../../infrastructure/hooks";
-import {DATA_QUALITY_INSIGHTS_TAB_NAME} from "../../../constant";
+import {ATTRIBUTES_TAB_NAME} from "../../../constant";
 
-export const CONTAINER_ELEMENT_ID = 'data-quality-insights-product-tab-content';
+export const CONTAINER_ELEMENT_ID = 'attributes-product-tab-content-dqi';
 
 const isVisible = (currentTab: string) => {
-  return currentTab === DATA_QUALITY_INSIGHTS_TAB_NAME;
+  return currentTab === ATTRIBUTES_TAB_NAME;
 };
 
-const DataQualityInsightsTabContentPortal: FunctionComponent = () => {
+const AttributesTabContentPortal: FunctionComponent = () => {
   const portalContainer = document.getElementById(CONTAINER_ELEMENT_ID);
   const {currentTab} = usePageContext();
 
   return portalContainer && createPortal(
     <>
       {isVisible(currentTab) && (
-        <DataQualityInsightsTabContent />
+        <AttributesTabContent />
       )}
     </>,
     portalContainer
   );
 };
 
-export default DataQualityInsightsTabContentPortal;
+export default AttributesTabContentPortal;

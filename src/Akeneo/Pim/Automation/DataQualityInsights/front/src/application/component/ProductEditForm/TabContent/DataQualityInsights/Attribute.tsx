@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import styled from "styled-components";
-import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from "../../../../infrastructure/context-provider";
+import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from "../../../../../infrastructure/context-provider";
 
 interface AttributeProps {
   isClickable: boolean;

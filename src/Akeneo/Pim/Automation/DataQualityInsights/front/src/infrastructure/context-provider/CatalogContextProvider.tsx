@@ -16,13 +16,12 @@ interface ChannelEvent {
 interface CatalogContextProviderProps {
   catalogChannel: string;
   catalogLocale: string;
-  children: any;
 }
 
 export const CATALOG_CONTEXT_LOCALE_CHANGED = 'data-quality:catalog-context:locale:changed';
 export const CATALOG_CONTEXT_CHANNEL_CHANGED = 'data-quality:catalog-context:channel:changed';
 
-const CatalogContextProvider: FunctionComponent<CatalogContextProviderProps> = ({catalogChannel, catalogLocale, children}) => {
+const CatalogContextProvider: FunctionComponent<CatalogContextProviderProps> = ({catalogChannel, catalogLocale}) => {
   const dispatchAction = useDispatch();
 
   useEffect(() => {
@@ -38,7 +37,7 @@ const CatalogContextProvider: FunctionComponent<CatalogContextProviderProps> = (
   }, []);
 
   return (
-    <>{children}</>
+    <></>
   )
 };
 

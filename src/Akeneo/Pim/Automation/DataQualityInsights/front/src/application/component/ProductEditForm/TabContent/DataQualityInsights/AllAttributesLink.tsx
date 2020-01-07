@@ -2,7 +2,7 @@ import React, {FunctionComponent} from 'react';
 import {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES
-} from "../../../../infrastructure/context-provider/ProductContextProvider";
+} from "../../../../../infrastructure/context-provider";
 
 const __ = require('oro/translator');
 

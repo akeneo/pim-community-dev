@@ -16,24 +16,27 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionary;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source\GlobalOffsetCalculator;
 use Mekras\Speller\Aspell\Aspell;
 use Mekras\Speller\Dictionary;
 use Mekras\Speller\Issue;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  */
 class AspellCheckerSpec extends ObjectBehavior
 {
-    public function let(AspellDictionary $aspellDictionary)
+    public function let(AspellDictionary $aspellDictionary, GlobalOffsetCalculator $globalOffsetCalculator)
     {
-        $this->beConstructedWith('aspell', $aspellDictionary, '/an/absolute/path');
+        $this->beConstructedWith('aspell', $aspellDictionary, '/an/absolute/path', $globalOffsetCalculator);
     }
 
     public function it_checks_test(
         Aspell $speller,
-        $aspellDictionary
+        $aspellDictionary,
+        GlobalOffsetCalculator $globalOffsetCalculator
     ) {
         $text = 'Typos hapen.';
         $locale = 'en_US';
@@ -46,6 +49,8 @@ class AspellCheckerSpec extends ObjectBehavior
 
         $speller->checkText($text, [$locale])->willReturn($aspellCheckResult);
 
+        $globalOffsetCalculator->compute(Argument::cetera())->shouldBeCalled();
+
         $result = $this->check($text, new LocaleCode($locale));
 
         $result->shouldBeAnInstanceOf(TextCheckResultCollection::class);
@@ -54,7 +59,8 @@ class AspellCheckerSpec extends ObjectBehavior
 
     public function it_checks_test_without_issue(
         Aspell $speller,
-        $aspellDictionary
+        $aspellDictionary,
+        GlobalOffsetCalculator $globalOffsetCalculator
     ) {
         $text = 'Typos happen.';
         $locale = 'en_US';
@@ -64,6 +70,8 @@ class AspellCheckerSpec extends ObjectBehavior
         $aspellCheckResult = [];
 
         $speller->checkText($text, [$locale])->willReturn($aspellCheckResult);
+
+        $globalOffsetCalculator->compute(Argument::cetera())->shouldNotBeCalled();
 
         $result = $this->check($text, new LocaleCode($locale));
 

@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import Criterion from "./Criterion";
-import {Rate, Recommendation} from "../../../../domain";
+import {Rate, Recommendation} from "../../../../../domain";
 import CriterionError from "./CriterionError";
 
 interface CriteriaListProps {

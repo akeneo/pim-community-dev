@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import RecommendationAttributesList from "./RecommendationAttributesList";
 import Attribute from './Attribute';
-import {Rate, RANK_1, Recommendation} from "../../../../domain";
+import {Rate, RANK_1, Recommendation} from "../../../../../domain";
 
 const __ = require('oro/translator');
 

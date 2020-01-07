@@ -2,9 +2,9 @@ import React, {FunctionComponent} from 'react';
 import styled from 'styled-components';
 import {uniq as _uniq} from 'lodash';
 
-import Rate from "../../Rate";
+import Rate from "../../../Rate";
 import AllAttributesLink from "./AllAttributesLink";
-import {Evaluation, RANK_1, Recommendation} from "../../../../domain";
+import {Evaluation, RANK_1, Recommendation} from "../../../../../domain";
 import CriteriaList from "./CriteriaList";
 import AxisEvaluationSucces from "./AxisEvaluationSuccess";
 

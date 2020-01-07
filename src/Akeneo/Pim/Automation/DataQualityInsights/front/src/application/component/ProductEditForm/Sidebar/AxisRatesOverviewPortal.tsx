@@ -7,11 +7,7 @@ export const CONTAINER_ELEMENT_ID = 'data-quality-insights-product-overview';
 const AxisRatesOverviewPortal: FunctionComponent = () => {
   const portalContainer = document.getElementById(CONTAINER_ELEMENT_ID);
 
-  if (!portalContainer) {
-    return null;
-  }
-
-  return createPortal(
+  return portalContainer && createPortal(
     <AxisRatesOverview />,
     portalContainer
   );

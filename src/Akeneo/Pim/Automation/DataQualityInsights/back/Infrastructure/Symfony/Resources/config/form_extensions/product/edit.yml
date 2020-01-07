@@ -26,3 +26,8 @@ extensions:
         module: pim/product-edit-form/attribute-filter-all-improvable-attributes
         parent: pim-product-edit-form-attribute-filter
         position: 140
+
+    pim-product-edit-form-attributes-tab-content-spellcheck:
+        module: akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/attributes-tab-content
+        parent: pim-product-edit-form-attributes
+        position: 100
