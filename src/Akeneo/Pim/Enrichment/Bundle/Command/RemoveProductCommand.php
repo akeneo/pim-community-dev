@@ -65,7 +65,7 @@ class RemoveProductCommand extends ContainerAwareCommand
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion(
             sprintf('You are going to remove %s products. Are you sure ? (Y|n)', $nbProducts),
-            false
+            true
         );
 
         if (!$helper->ask($input, $output, $question)) {
