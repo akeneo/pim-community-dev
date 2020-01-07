@@ -168,7 +168,7 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
                 'locale' => null,
             ],
             'pattern' => '/(pattern).jpg/',
-            'strict' => false,
+            'abort_asset_creation_on_error' => false,
         ];
 
         $row = [

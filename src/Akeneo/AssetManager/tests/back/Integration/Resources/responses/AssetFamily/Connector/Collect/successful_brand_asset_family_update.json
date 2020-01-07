@@ -82,7 +82,7 @@
       "naming_convention": {
         "source": {"property":  "attribute_as_main_media", "locale": null, "channel": null},
         "pattern": "/the_pattern/",
-        "strict": true
+        "abort_asset_creation_on_error": true
       }
     }
   },

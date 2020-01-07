@@ -124,7 +124,7 @@ class GetConnectorAssetFamiliesContext implements Context
                             'locale' => null,
                         ],
                         'pattern' => '/^(?P<productref>\w+)-(?P<attribute>\w+).jpeg$/',
-                        'strict' => true,
+                        'abort_asset_creation_on_error' => true,
                     ]
                 );
             }

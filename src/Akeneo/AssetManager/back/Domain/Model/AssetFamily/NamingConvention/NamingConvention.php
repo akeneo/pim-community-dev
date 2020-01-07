@@ -18,8 +18,8 @@ use Webmozart\Assert\Assert;
 /**
  * This class represents a naming convention used to automatically fill asset values at the creation step.
  * The "source" (either the asset code or a media file attribute code -in the latter case the filename will be parsed)
- * is parsed with the given "pattern". If the "strict" mode is activated, any failure in the parsing will result in an
- * error, else it will silently fail.
+ * is parsed with the given "pattern". If the "strict" mode is activated (abort_asset_creation_on_error parameter), any
+ * failure in the parsing will result in an error, else it will silently fail.
  */
 class NamingConvention implements NamingConventionInterface
 {
@@ -30,13 +30,13 @@ class NamingConvention implements NamingConventionInterface
     private $pattern;
 
     /** @var bool */
-    private $strict;
+    private $abortAssetCreationOnError;
 
-    private function __construct(Source $source, Pattern $pattern, bool $strict)
+    private function __construct(Source $source, Pattern $pattern, bool $abortAssetCreationOnError)
     {
         $this->source = $source;
         $this->pattern = $pattern;
-        $this->strict = $strict;
+        $this->abortAssetCreationOnError = $abortAssetCreationOnError;
     }
 
     public static function createFromNormalized(array $normalizedNamingConvention): NamingConventionInterface
@@ -49,13 +49,13 @@ class NamingConvention implements NamingConventionInterface
         Assert::isArray($normalizedNamingConvention['source']);
         Assert::keyExists($normalizedNamingConvention, 'pattern');
         Assert::string($normalizedNamingConvention['pattern']);
-        Assert::keyExists($normalizedNamingConvention, 'strict');
-        Assert::boolean($normalizedNamingConvention['strict']);
+        Assert::keyExists($normalizedNamingConvention, 'abort_asset_creation_on_error');
+        Assert::boolean($normalizedNamingConvention['abort_asset_creation_on_error']);
 
         return new self(
             Source::createFromNormalized($normalizedNamingConvention['source']),
             Pattern::create($normalizedNamingConvention['pattern']),
-            $normalizedNamingConvention['strict']
+            $normalizedNamingConvention['abort_asset_creation_on_error']
         );
     }
 
@@ -64,7 +64,7 @@ class NamingConvention implements NamingConventionInterface
         return [
             'source' => $this->source->normalize(),
             'pattern' => $this->pattern->normalize(),
-            'strict' => $this->strict
+            'abort_asset_creation_on_error' => $this->abortAssetCreationOnError,
         ];
     }
 
@@ -78,8 +78,8 @@ class NamingConvention implements NamingConventionInterface
         return $this->pattern;
     }
 
-    public function isStrict(): bool
+    public function abortAssetCreationOnError(): bool
     {
-        return $this->strict;
+        return $this->abortAssetCreationOnError;
     }
 }

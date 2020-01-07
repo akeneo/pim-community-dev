@@ -33,7 +33,7 @@ class ConnectorNamingConventionHydratorSpec extends ObjectBehavior
                 'locale' => null,
             ],
             'pattern' => '/^(?P<product>\w+)-(.*)_(?P<attr>\w+)\.png$/',
-            'strict' => false,
+            'abort_asset_creation_on_error' => false,
         ];
 
         $validator->validate($normalizedNamingConvention, Argument::type(NamingConvention::class))->willReturn(
@@ -55,7 +55,7 @@ class ConnectorNamingConventionHydratorSpec extends ObjectBehavior
                 'locale' => null,
             ],
             'pattern' => '/^(?P<product>\w+)-(.*)_(?P<attr>\w+)\.png$/',
-            'strict' => false,
+            'abort_asset_creation_on_error' => false,
         ];
 
         $violations->count()->willReturn(1);

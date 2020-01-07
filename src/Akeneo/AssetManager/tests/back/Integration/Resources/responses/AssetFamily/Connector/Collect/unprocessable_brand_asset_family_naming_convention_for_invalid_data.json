@@ -33,7 +33,7 @@
                     "message": "The regular expression \"/invalid_pattern)\" is malformed."
                 },
                 {
-                    "property": "naming_convention[strict]",
+                    "property": "naming_convention[abort_asset_creation_on_error]",
                     "message": "This field is missing."
                 }
             ]
