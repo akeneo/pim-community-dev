@@ -16,16 +16,11 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConven
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsMainMediaInterface;
-use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Validation;
 
 class RawSourceValidator extends ConstraintValidator
 {
@@ -72,6 +67,16 @@ class RawSourceValidator extends ConstraintValidator
     private function validateAttributeAsMainMedia(array $source, AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
         $attributeAsMainMedia = $this->findAttributeAsMainMedia->find($assetFamilyIdentifier);
+        if ($attributeAsMainMedia->isEmpty()) {
+            $this->context->buildViolation(
+                RawSource::NO_ATTRIBUTE_AS_MAIN_MEDIA,
+                [
+                    '%asset_family%' => $assetFamilyIdentifier->__toString(),
+                ]
+            )->addViolation();
+
+            return;
+        }
         $attribute = $this->attributeRepository->getByIdentifier($attributeAsMainMedia->getIdentifier());
 
         $channelReference = ChannelReference::createfromNormalized($source['channel']);

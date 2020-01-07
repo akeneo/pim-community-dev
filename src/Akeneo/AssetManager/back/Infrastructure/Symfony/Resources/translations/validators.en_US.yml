@@ -46,6 +46,7 @@ pim_asset_manager:
                 unknown_extra_field: 'The property {{ field }} is not defined and the definition does not allow additional properties.'
             naming_convention:
                 invalid_property: 'Invalid property "%property%". It should be either one of "%expected_properties%"'
+                no_attribute_as_main_media: 'No attribute as main media was defined for family "%asset_family%"'
     asset:
         validation:
             code:

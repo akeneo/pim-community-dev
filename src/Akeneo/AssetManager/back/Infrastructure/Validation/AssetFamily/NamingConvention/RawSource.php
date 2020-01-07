@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraint;
 class RawSource extends Constraint
 {
     public const INVALID_PROPERTY_ERROR = 'pim_asset_manager.asset_family.validation.naming_convention.invalid_property';
+    public const NO_ATTRIBUTE_AS_MAIN_MEDIA = 'pim_asset_manager.asset_family.validation.naming_convention.no_attribute_as_main_media';
 
     /** @var AssetFamilyIdentifier */
     private $assetFamilyIdentifier;
