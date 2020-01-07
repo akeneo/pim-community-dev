@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
+import {VictoryAxis, VictoryBar, VictoryChart, VictoryStack, VictoryContainer} from "victory";
 
 type RankDistribution = {
   x: string;
@@ -27,9 +27,9 @@ const AxisChart = ({dataset}: AxisChartProps) => {
 
   return (
     <VictoryChart
-      height={264}
-      width={1000}
-      // containerComponent={<VictoryContainer responsive={true}/>}
+       height={220}
+       padding={{top: 0, bottom: 65, left: 71, right: 71}}
+       width={1000}
     >
       <VictoryStack
         colorScale={[
@@ -78,7 +78,7 @@ const AxisChart = ({dataset}: AxisChartProps) => {
         tickFormat={days}
         style={{
           axis: {stroke: "none"},
-          tickLabels: {fontSize: 11, fill: "#67768a"}
+          tickLabels: {fontSize: 11, fill: "#67768a", padding: 27}
         }}
       />
     </VictoryChart>
