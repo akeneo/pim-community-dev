@@ -15,7 +15,7 @@ class CountUsersIntegration extends QueryTestCase
     {
         $query = $this->get('pim_volume_monitoring.persistence.query.count_users');
         $this->createUsers(4, User::TYPE_USER);
-        $this->createUsers(2, User::TYPE_APP);
+        $this->createUsers(2, User::TYPE_API);
 
         $volume = $query->fetch();
 
@@ -57,8 +57,8 @@ class CountUsersIntegration extends QueryTestCase
         $user = $this->get('pim_user.factory.user')->create();
         $this->get('pim_user.updater.user')->update($user, $data, []);
 
-        if ($type === User::TYPE_APP) {
-            $user->defineAsUserApp();
+        if ($type === User::TYPE_API) {
+            $user->defineAsApiUser();
         }
 
         $validation = $this->get('validator')->validate($user);

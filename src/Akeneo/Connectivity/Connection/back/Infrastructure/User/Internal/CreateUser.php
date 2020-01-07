@@ -48,7 +48,7 @@ class CreateUser implements CreateUserInterface
         $username = $this->generateUsername($username);
 
         $user = $this->userFactory->create();
-        $user->defineAsUserApp();
+        $user->defineAsApiUser();
         $this->userUpdater->update(
             $user,
             [
