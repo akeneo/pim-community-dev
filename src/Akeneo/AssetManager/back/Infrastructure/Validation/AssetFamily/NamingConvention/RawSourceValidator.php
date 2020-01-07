@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConven
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsMainMediaInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -78,6 +79,14 @@ class RawSourceValidator extends ConstraintValidator
             return;
         }
         $attribute = $this->attributeRepository->getByIdentifier($attributeAsMainMedia->getIdentifier());
+
+        if (!$attribute instanceof MediaFileAttribute) {
+            $this->context->buildViolation(
+                RawSource::NO_MEDIA_LINK_AS_MAIN_MEDIA
+            )->addViolation();
+
+            return;
+        }
 
         $channelReference = ChannelReference::createfromNormalized($source['channel']);
         $localeReference = LocaleReference::createFromNormalized($source['locale']);
