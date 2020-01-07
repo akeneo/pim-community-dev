@@ -106,15 +106,12 @@ const Panel = styled.div`
   min-width: 180px;
 `;
 
-const StyledMultipleButton = styled(Button)`
+const Container = styled.div`
   position: relative;
-  display: flex;
-  align-items: center;
-  padding: 0;
 `;
 
-const MultipleButtonTitle = styled.span`
-  padding-left: 15px;
+const StyledMultipleButton = styled(Button)`
+  display: flex;
 `;
 
 const Item = styled.div`
@@ -122,12 +119,16 @@ const Item = styled.div`
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
   text-transform: none;
   text-align: left;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 `;
 
 const DownButton = styled.span`
-  padding: 0 15px;
   display: flex;
   align-items: center;
+  padding-left: 15px;
 `;
 
 type MultipleButtonProps = {
@@ -135,31 +136,32 @@ type MultipleButtonProps = {
     label: string;
     action: () => void;
   }[];
+  children: React.ReactNode;
 } & ButtonProps;
 
-export const MultipleButton = ({items, ...props}: MultipleButtonProps) => {
-  if (0 === items.length) return null;
+export const MultipleButton = ({items, children, ...props}: MultipleButtonProps) => {
   const [isOpen, setOpen] = React.useState(false);
-  const [firstItem, setFirstItem] = React.useState(0);
+  if (0 === items.length) return null;
 
   return (
-    <StyledMultipleButton {...props}>
-      <MultipleButtonTitle onClick={items[firstItem].action}>{items[firstItem].label}</MultipleButtonTitle>
-      {1 < items.length && (
+    <Container>
+      {1 < items.length ? (
         <>
-          <DownButton onClick={() => setOpen(true)}>
-            <Down size={18} color={akeneoTheme.color.white} />
-          </DownButton>
+          <StyledMultipleButton {...props} onClick={() => setOpen(true)}>
+            <span>{children}</span>
+            <DownButton>
+              <Down size={18} color={akeneoTheme.color.white} />
+            </DownButton>
+          </StyledMultipleButton>
           {isOpen && (
             <>
               <Backdrop onClick={() => setOpen(false)} />
               <Panel>
-                {items.map((item, index) => (
+                {items.map(item => (
                   <Item
                     key={item.label}
                     onClick={() => {
                       setOpen(false);
-                      setFirstItem(index);
                       item.action();
                     }}
                   >
@@ -170,7 +172,11 @@ export const MultipleButton = ({items, ...props}: MultipleButtonProps) => {
             </>
           )}
         </>
+      ) : (
+        <Button {...props} onClick={items[0].action}>
+          {items[0].label}
+        </Button>
       )}
-    </StyledMultipleButton>
+    </Container>
   );
 };

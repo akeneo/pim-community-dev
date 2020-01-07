@@ -286,7 +286,9 @@ const Library = ({initialContext}: LibraryProps) => {
                         action: () => setCreateAssetFamilyModalOpen(true),
                       },
                     ]}
-                  />
+                  >
+                    {__('pim_common.create')}
+                  </MultipleButton>
                 )}
               </Buttons>
             )}
