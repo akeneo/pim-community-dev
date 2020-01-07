@@ -102,7 +102,6 @@ class ProductDraftController
     /** @var Client */
     private $elasticSearchClient;
 
-    /** @todo merge master: remove $elasticSearchClient being nullable */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         EntityWithValuesDraftRepositoryInterface $repository,
@@ -119,7 +118,7 @@ class ProductDraftController
         ListAttributesUseableInProductGrid $attributesUseableInGrid,
         ConfiguratorInterface $filtersConfigurator,
         FilterExtension $filterExtension,
-        Client $elasticSearchClient = null
+        Client $elasticSearchClient
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->repository = $repository;
@@ -225,9 +224,7 @@ class ProductDraftController
                 $channel,
                 ['comment' => $request->query->get('comment')]
             );
-            if (null !== $this->elasticSearchClient) {
-                $this->elasticSearchClient->refreshIndex();
-            }
+            $this->elasticSearchClient->refreshIndex();
         } catch (ValidatorException $e) {
             return new JsonResponse(['message' => $e->getMessage()], 400);
         }
@@ -276,9 +273,7 @@ class ProductDraftController
 
         try {
             $this->manager->$action($productDraft, ['comment' => $request->request->get('comment')]);
-            if (null !== $this->elasticSearchClient) {
-                $this->elasticSearchClient->refreshIndex();
-            }
+            $this->elasticSearchClient->refreshIndex();
         } catch (ValidatorException $e) {
             return new JsonResponse(['message' => $e->getMessage()], 400);
         }
