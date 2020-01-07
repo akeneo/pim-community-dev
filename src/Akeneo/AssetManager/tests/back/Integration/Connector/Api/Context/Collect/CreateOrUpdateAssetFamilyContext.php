@@ -272,7 +272,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
             ),
         ]));
         $expectedBrand->updateNamingConvention(NamingConvention::createFromNormalized([
-            'source' => ['property' => 'title', 'locale' => 'en_US', 'channel' => null],
+            'source' => ['property' => 'attribute_as_main_media', 'locale' => null, 'channel' => null],
             'pattern' => '/the_pattern/',
             'strict' => true,
         ]));
