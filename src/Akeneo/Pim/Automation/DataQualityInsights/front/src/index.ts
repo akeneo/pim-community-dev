@@ -23,14 +23,14 @@ import {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES
 } from "./infrastructure/context-provider/ProductContextProvider";
 
-import {DataQualityOverviewChart} from "./application/component/DqiDashboard";
+import {DataQualityOverviewCharts} from "./application/component/DqiDashboard";
 import {DataQualityOverviewHeader} from "./application/component/DqiDashboard";
 import {DataQualityOverviewChartHeader} from "./application/component/DqiDashboard";
 
 export {
   DataQualityOverviewChartHeader,
   DataQualityOverviewHeader,
-  DataQualityOverviewChart,
+  DataQualityOverviewCharts,
   ProductEditFormApp,
   DataQualityInsightsFeature,
   getDataQualityInsightsFeature,
