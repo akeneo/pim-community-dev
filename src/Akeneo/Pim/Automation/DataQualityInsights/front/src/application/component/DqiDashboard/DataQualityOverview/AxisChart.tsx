@@ -27,7 +27,7 @@ const AxisChart = ({dataset}: AxisChartProps) => {
 
   return (
     <VictoryChart
-       height={220}
+       height={268}
        padding={{top: 0, bottom: 65, left: 71, right: 71}}
        width={1000}
     >
@@ -37,7 +37,8 @@ const AxisChart = ({dataset}: AxisChartProps) => {
           "rgb(212, 96, 79)",
           "rgb(249, 181, 63)",
           "rgb(103, 179, 115)",
-          "rgb(82, 143, 92)"
+          "rgb(82, 143, 92)",
+          "rgb(217, 221, 226)"
         ]}
       >
         {Object.values(dataset).map((data: any) => {
@@ -83,6 +84,6 @@ const AxisChart = ({dataset}: AxisChartProps) => {
       />
     </VictoryChart>
   )
-}
+};
 
 export default AxisChart;

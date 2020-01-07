@@ -60,7 +60,7 @@ final class DashboardRates
             }
         }
 
-        return $result;
+        return $this->ensureResultAlwaysContains7Days($result);
     }
 
     private function computeRatesNumberByRank($axisProjection): array
@@ -83,5 +83,18 @@ final class DashboardRates
         return array_map(function ($rate) use ($totalRates) {
             return round($rate / $totalRates * 100);
         }, $ratesNumberByRank);
+    }
+
+    private function ensureResultAlwaysContains7Days(array $result): array
+    {
+        $lastSevenDays = [];
+        for ($i = 7; $i >= 1; $i--) {
+            $lastSevenDays[(new \DateTime('-' . $i . 'DAY'))->format('Y-m-d')] = [];
+        }
+        foreach ($result as $axisName => $ranksByDay) {
+            $result[$axisName] = array_replace($lastSevenDays, $ranksByDay);
+        }
+
+        return $result;
     }
 }

@@ -26,12 +26,22 @@ const transformData = (dataset: Dataset, axisName: string): any => {
     'rank_3': [],
     'rank_4': [],
     'rank_5': [],
+    'rank_6': []
   };
 
   Object.entries(dataset[axisName]).map(([date, ranksByDay]) => {
-    Object.entries(ranksByDay).map(([rank, distribution]) => {
-      ranks[rank].push({x: date, y: distribution});
-    });
+    if (Object.keys(ranksByDay).length === 0) {
+      ranks['rank_1'].push({x: date, y: 0});
+      ranks['rank_2'].push({x: date, y: 0});
+      ranks['rank_3'].push({x: date, y: 0});
+      ranks['rank_4'].push({x: date, y: 0});
+      ranks['rank_5'].push({x: date, y: 0});
+      ranks['rank_6'].push({x: date, y: 100});
+    } else {
+      Object.entries(ranksByDay).map(([rank, distribution]) => {
+        ranks[rank].push({x: date, y: distribution});
+      });
+    }
   });
 
   return ranks;
@@ -75,6 +85,6 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale}: DataQualityO
       }
     </>
   )
-}
+};
 
 export default DataQualityOverviewCharts;
