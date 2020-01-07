@@ -239,7 +239,7 @@ SQL;
                 a_image.is_scopable,
                 JSON_EXTRACT(
                     pm_child.raw_values,
-                    CONCAT('$.', a_image.code, '.', IF(is_scopable = 1, '":channel_code"', '"<all_channels>"'), '.', IF(is_localizable = 1, '":locale_code"', '"<all_locales>"'))
+                    CONCAT('$."', a_image.code, '".', IF(is_scopable = 1, '":channel_code"', '"<all_channels>"'), '.', IF(is_localizable = 1, '":locale_code"', '"<all_locales>"'))
                 ) as image_value
             FROM
                 pim_catalog_product_model pm_root
@@ -320,7 +320,7 @@ SQL;
                 product_child.raw_values,
                 JSON_EXTRACT(
                     product_child.raw_values,
-                    CONCAT('$.', a_image.code, '.', IF(is_scopable = 1, '":channel_code"', '"<all_channels>"'), '.', IF(is_localizable = 1, '":locale_code"', '"<all_locales>"'))
+                    CONCAT('$."', a_image.code, '".', IF(is_scopable = 1, '":channel_code"', '"<all_channels>"'), '.', IF(is_localizable = 1, '":locale_code"', '"<all_locales>"'))
                 ) as image_value
             FROM
                 pim_catalog_product_model pm_root

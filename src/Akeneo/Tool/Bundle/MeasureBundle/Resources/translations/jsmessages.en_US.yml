@@ -96,7 +96,7 @@ pim_measure:
     CENTIAMPERE: Centiampere
     DECIAMPERE: Deciampere
     AMPERE: Ampere
-    DEKAAMPERE: Dekaampere
+    DEKAMPERE: Dekaampere
     HECTOAMPERE: Hectoampere
     KILOAMPERE: Kiloampere
     MEGAAMPERE: Megaampere
@@ -171,7 +171,9 @@ pim_measure:
     TORR: Torr
     MMHG: millimeter of Mercury
   # Energy
+    CALORIE: calorie
     KILOCALORIE: kilocalorie
+    JOULE: joule
     KILOJOULE: kilojoule
   # CaseBox
     PIECE: Piece

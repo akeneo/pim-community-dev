@@ -68,12 +68,17 @@ pim_user_management:
                 new_password_repeat: New password (repeat)
                 password: Password
                 password_repeat: Password (repeat)
+                last_logged_in: Last logged in
+                login_count: Login count
                 ui_locale: UI locale
                 timezone: Timezone
                 default_product_grid_view: Default product grid view
                 default_published_product_grid_view: Default published product grid view # EE Only
                 proposals_to_review_notification: When new proposal to review # EE Only
                 proposals_state_notifications: When proposal is accepted or rejected # EE Only
+            meta:
+                created: Created
+                updated: Updated
             module:
                 create:
                     button: Create user

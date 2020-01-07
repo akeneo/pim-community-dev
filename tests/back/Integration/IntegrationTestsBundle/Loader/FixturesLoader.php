@@ -12,8 +12,6 @@ use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
 use Doctrine\DBAL\Connection;
 use Elasticsearch\ClientBuilder;
 use League\Flysystem\Filesystem;

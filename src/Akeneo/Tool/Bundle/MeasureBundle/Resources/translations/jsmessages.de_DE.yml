@@ -5,7 +5,7 @@ pim_measure:
     Decibel: Dezibel
     Frequency: Frequenz
     Length: Länge
-    Power: Energie
+    Power: Leistung
     Resistance: Widerstand
     Voltage: Spannung
     Intensity: Intensität
@@ -96,7 +96,7 @@ pim_measure:
     CENTIAMPERE: Centiampere
     DECIAMPERE: Deciampere
     AMPERE: Ampere
-    DEKAAMPERE: Dekaampere
+    DEKAMPERE: Dekaampere
     HECTOAMPERE: Hectoampere
     KILOAMPERE: Kiloampere
     MEGAAMPERE: Megaampere
@@ -170,7 +170,6 @@ pim_measure:
     PSI: Pfund pro Quadratzoll
     TORR: Torr
     MMHG: Millimeter Quecksilbersäule
-    #Energy
     KILOCALORIE: Kilokalorien
     KILOJOULE: Kilojoule
     #CaseBox

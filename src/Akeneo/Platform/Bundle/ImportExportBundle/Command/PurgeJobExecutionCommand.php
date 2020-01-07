@@ -7,7 +7,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Purge Jobs Execution history
@@ -56,12 +55,9 @@ class PurgeJobExecutionCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $days = $input->getOption('days');
-        if (!(is_numeric($days) && $days >= 0)) {
+        if (!is_numeric($days)) {
             $output->writeln(
-                sprintf(
-                    '<error>Option --days must be a number greater than or equal to 0, "%s" given.</error>',
-                    $input->getOption('days')
-                )
+                sprintf('<error>Option --days must be a number, "%s" given.</error>', $input->getOption('days'))
             );
             return;
         }

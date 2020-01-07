@@ -96,7 +96,7 @@ pim_measure:
     CENTIAMPERE: Senttiampeeri
     DECIAMPERE: Desiampeeri
     AMPERE: Ampeeri
-    DEKAAMPERE: Deka-ampeeri
+    DEKAMPERE: Deka-ampeeri
     HECTOAMPERE: Hehtoampeeri
     KILOAMPERE: Kiloampeeri
     MEGAAMPERE: Mega-ampeeri
@@ -170,7 +170,6 @@ pim_measure:
     PSI: Paunaa per neliötuuma
     TORR: Torri
     MMHG: elohopeamillimetri
-    #Energy
     KILOCALORIE: Kilokalori
     KILOJOULE: kilojoule
     #CaseBox

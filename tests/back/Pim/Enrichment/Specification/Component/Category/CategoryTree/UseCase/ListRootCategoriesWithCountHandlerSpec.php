@@ -85,4 +85,12 @@ class ListRootCategoriesWithCountHandlerSpec extends ObjectBehavior
             new RootCategory(1, 'code', 'label', 10, true)
         ]);
     }
+
+    function it_handles_query_for_users_that_have_no_access_to_any_category($userContext)
+    {
+        $userContext->getAccessibleUserTree()->willReturn(null);
+
+        $query = new ListRootCategoriesWithCount(-1, false, 1, 'en_US');
+        $this->handle($query)->shouldBeLike([]);
+    }
 }
