@@ -13,14 +13,12 @@ final class CreateConnectionAuditTableQuery
 {
     const QUERY = <<<SQL
 CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection_audit(
-    id INT NOT NULL AUTO_INCREMENT,
     connection_code VARCHAR(100) NOT NULL,
     event_date DATE NOT NULL,
     event_count INT NOT NULL,
     event_type ENUM('product_created', 'product_updated') NOT NULL,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FK_CONNECTIVITY_CONNECTION_AUDIT_connection_code FOREIGN KEY (connection_code) REFERENCES akeneo_connectivity_connection (code),
-    INDEX IDX_CONNECTIVITY_CONNECTION_AUDIT_id (id)
+    PRIMARY KEY (connection_code, event_date, event_type)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
 SQL;
 }
