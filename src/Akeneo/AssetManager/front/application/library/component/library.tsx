@@ -11,13 +11,25 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
-import {useFetchResult, useStoredState} from 'akeneoassetmanager/application/library/hooks/grid';
+import {useFetchResult} from 'akeneoassetmanager/application/library/hooks/grid';
 import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoassetmanager/tools/translator';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {AssetFamilySelector} from 'akeneoassetmanager/application/library/component/asset-family-selector';
+import assetAttributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
+import {HeaderView} from 'akeneoassetmanager/application/component/asset-family/edit/header';
+import {getLabel} from 'pimui/js/i18n';
+import {MultipleButton, Button} from 'akeneoassetmanager/application/component/app/button';
+import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
+import {useAssetFamily} from 'akeneoassetmanager/application/library/hooks/asset-family';
+import {CreateModal} from 'akeneoassetmanager/application/component/asset/create';
+import {useNotify} from 'akeneoassetmanager/application/library/hooks/notify';
+import {CreateAssetFamilyModal} from 'akeneoassetmanager/application/component/asset-family/create';
+import {useRedirect} from 'akeneoassetmanager/application/library/hooks/router';
+import {useAssetFamilyRights} from 'akeneoassetmanager/application/library/hooks/rights';
+import {useStoredState} from 'akeneoassetmanager/application/library/hooks/state';
 
 const Column = styled.div`
   padding: 30px;
@@ -34,6 +46,11 @@ const Column = styled.div`
   overflow: hidden;
 `;
 
+const Header = styled.div`
+  padding-left: 40px;
+  padding-right: 40px;
+`;
+
 const ColumnTitle = styled.div`
   display: block;
   color: ${(props: ThemedProps<void>) => props.theme.color.grey100};
@@ -46,12 +63,13 @@ const ColumnTitle = styled.div`
 const Content = styled.div`
   flex: 1;
 `;
-const Header = styled.div``;
+
 const Container = styled.div`
   display: flex;
   flex: 1;
   height: 100%;
 `;
+
 const Grid = styled.div`
   display: flex;
   flex-direction: column;
@@ -59,12 +77,23 @@ const Grid = styled.div`
   height: 100%;
   margin: 0 40px;
 `;
+
+const Buttons = styled.div`
+  display: flex;
+  > :not(:first-child) {
+    margin-left: 10px;
+  }
+`;
+
 const dataProvider = {
   assetFetcher,
   channelFetcher: {
     fetchAll: fetchAllChannels,
   },
   assetFamilyFetcher,
+  assetAttributesFetcher: {
+    fetchAll: (assetFamilyIdentifier: AssetFamilyIdentifier) => assetAttributeFetcher.fetchAll(assetFamilyIdentifier),
+  },
 };
 
 const createQuery = (
@@ -76,37 +105,80 @@ const createQuery = (
   locale: LocaleCode,
   page: number,
   size: number
-): Query => {
-  return {
-    locale,
-    channel,
-    size,
-    page,
-    filters: [
-      ...filters,
-      {
-        field: 'asset_family',
-        operator: '=',
-        value: assetFamilyIdentifier,
-        context: {},
-      },
-      {
-        field: 'full_text',
-        operator: '=',
-        value: searchValue,
-        context: {},
-      },
-    ],
-  };
-};
+): Query => ({
+  locale,
+  channel,
+  size,
+  page,
+  filters: [
+    ...filters,
+    {
+      field: 'asset_family',
+      operator: '=',
+      value: assetFamilyIdentifier,
+      context: {},
+    },
+    {
+      field: 'full_text',
+      operator: '=',
+      value: searchValue,
+      context: {},
+    },
+  ],
+});
 
 type LibraryProps = {
   initialContext: Context;
-  redirectToAsset: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => void;
 };
 
-const Library = ({initialContext, redirectToAsset}: LibraryProps) => {
-  const [currentAssetFamily, setCurrentAssetFamily] = useStoredState<AssetFamilyIdentifier | null>(
+const SecondaryActions = ({
+  canDeleteAllAssets,
+  onOpenDeleteAllAssetsModal,
+}: {
+  onOpenDeleteAllAssetsModal: () => void;
+  canDeleteAllAssets: boolean;
+}) => {
+  if (!canDeleteAllAssets) return null;
+
+  return (
+    <div className="AknSecondaryActions AknDropdown AknButtonList-item">
+      <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
+      <div className="AknDropdown-menu AknDropdown-menu--right">
+        <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
+        <div>
+          <button tabIndex={-1} className="AknDropdown-menuLink" onClick={onOpenDeleteAllAssetsModal}>
+            {__('pim_asset_manager.asset.button.delete_all')}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const useRoute = () => {
+  const redirect = useRedirect();
+  const redirectToAsset = React.useCallback(
+    (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) =>
+      redirect('akeneo_asset_manager_asset_edit', {
+        assetCode,
+        assetFamilyIdentifier,
+        tab: 'enrich',
+      }),
+    []
+  );
+  const redirectToAssetFamily = React.useCallback(
+    (identifier: AssetFamilyIdentifier) =>
+      redirect('akeneo_asset_manager_asset_family_edit', {
+        identifier,
+        tab: 'attribute',
+      }),
+    []
+  );
+  return {redirectToAsset, redirectToAssetFamily};
+};
+
+const Library = ({initialContext}: LibraryProps) => {
+  const [currentAssetFamilyIdentifier, setCurrentAssetFamilyIdentifier] = useStoredState<AssetFamilyIdentifier | null>(
     'akeneo.asset_manager.grid.current_asset_family',
     null,
     newAssetFamily => {
@@ -117,20 +189,28 @@ const Library = ({initialContext, redirectToAsset}: LibraryProps) => {
     }
   );
   const [filterCollection, setFilterCollection, loadFilterCollectionFromStorage] = useStoredState<Filter[]>(
-    `akeneo.asset_manager.grid.filter_collection_${currentAssetFamily}`,
+    `akeneo.asset_manager.grid.filter_collection_${currentAssetFamilyIdentifier}`,
     []
   );
   const [excludedAssetCollection] = React.useState<AssetCode[]>([]);
   const [selection, setSelection] = React.useState<AssetCode[]>([]);
   const [searchValue, setSearchValue] = useStoredState<string>('akeneo.asset_manager.grid.search_value', '');
-  const [resultCount, setResultCount] = React.useState<number | null>(null);
+  const [resultCount, setResultCount] = React.useState<number>(0);
   const [resultCollection, setResultCollection] = React.useState<ListAsset[]>([]);
   const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext);
+  const [isCreateAssetModalOpen, setCreateAssetModalOpen] = React.useState<boolean>(false);
+  const [isUploadModalOpen, setUploadModalOpen] = React.useState<boolean>(false);
+  const [isCreateAssetFamilyModalOpen, setCreateAssetFamilyModalOpen] = React.useState<boolean>(false);
+  const currentAssetFamily = useAssetFamily(dataProvider, currentAssetFamilyIdentifier);
+  const currentAssetFamilyLabel =
+    null === currentAssetFamily
+      ? ''
+      : getLabel(currentAssetFamily.labels, context.locale, currentAssetFamily.identifier);
 
-  useFetchResult(createQuery)(
+  const updateResults = useFetchResult(createQuery)(
     true,
     dataProvider,
-    currentAssetFamily,
+    currentAssetFamilyIdentifier,
     filterCollection,
     searchValue,
     excludedAssetCollection,
@@ -138,29 +218,104 @@ const Library = ({initialContext, redirectToAsset}: LibraryProps) => {
     setResultCollection,
     setResultCount
   );
-  const filterViews = useFilterViews(currentAssetFamily, dataProvider);
+  const filterViews = useFilterViews(currentAssetFamilyIdentifier, dataProvider);
+  const notify = useNotify();
+  const rights = useAssetFamilyRights(currentAssetFamilyIdentifier);
+  const {redirectToAsset, redirectToAssetFamily} = useRoute();
+
+  const familyBreadcrumbConfiguration =
+    null === currentAssetFamilyIdentifier
+      ? []
+      : [
+          {
+            action: {
+              type: 'redirect',
+              route: 'akeneo_asset_manager_asset_family_edit',
+              parameters: {
+                identifier: currentAssetFamilyIdentifier,
+                tab: 'property',
+              },
+            },
+            label: currentAssetFamilyLabel,
+          },
+        ];
 
   return (
     <Container>
       <Column>
         <ColumnTitle>{__('pim_asset_manager.asset_family.column_title')}</ColumnTitle>
         <AssetFamilySelector
-          assetFamilyIdentifier={currentAssetFamily}
+          assetFamilyIdentifier={currentAssetFamilyIdentifier}
           locale={context.locale}
           dataProvider={dataProvider}
-          onChange={setCurrentAssetFamily}
+          onChange={setCurrentAssetFamilyIdentifier}
         />
         <FilterCollection
           filterCollection={filterCollection}
           context={context}
-          onFilterCollectionChange={(filterCollection: Filter[]) => {
-            setFilterCollection(filterCollection);
-          }}
+          onFilterCollectionChange={setFilterCollection}
           orderedFilterViews={null === filterViews ? [] : filterViews}
         />
       </Column>
       <Content>
-        <Header></Header>
+        <Header>
+          <HeaderView
+            label={__('pim_asset_manager.result_counter', {count: resultCount}, resultCount)}
+            image={null}
+            primaryAction={() => (
+              <Buttons>
+                {null !== currentAssetFamilyIdentifier && (
+                  <Button color="outline" onClick={() => redirectToAssetFamily(currentAssetFamilyIdentifier)}>
+                    {__(`pim_asset_manager.asset_family.button.${rights.assetFamily.edit ? 'edit' : 'view'}`)}
+                  </Button>
+                )}
+                {rights.asset.create && rights.asset.upload && rights.assetFamily.create && (
+                  <MultipleButton
+                    color="green"
+                    items={[
+                      {
+                        label: __('pim_asset_manager.asset.button.create'),
+                        action: () => setCreateAssetModalOpen(true),
+                      },
+                      {
+                        label: __('pim_asset_manager.asset.upload.title'),
+                        action: () => setUploadModalOpen(true),
+                      },
+                      {
+                        label: __('pim_asset_manager.asset_family.button.create'),
+                        action: () => setCreateAssetFamilyModalOpen(true),
+                      },
+                    ]}
+                  />
+                )}
+              </Buttons>
+            )}
+            context={context}
+            secondaryActions={() => (
+              <SecondaryActions
+                onOpenDeleteAllAssetsModal={() => {
+                  //TODO events.onOpenDeleteAllAssetsModal();
+                }}
+                canDeleteAllAssets={rights.asset.deleteAll}
+              />
+            )}
+            withLocaleSwitcher={true}
+            withChannelSwitcher={true}
+            isDirty={false}
+            isLoading={false}
+            breadcrumbConfiguration={[
+              {
+                action: {
+                  type: 'redirect',
+                  route: 'akeneo_asset_manager_asset_family_index',
+                },
+                label: __('pim_asset_manager.asset_family.breadcrumb'),
+              },
+              ...familyBreadcrumbConfiguration,
+            ]}
+            displayActions={true}
+          />
+        </Header>
         <Grid>
           <SearchBar
             dataProvider={dataProvider}
@@ -178,13 +333,46 @@ const Library = ({initialContext, redirectToAsset}: LibraryProps) => {
             hasReachMaximumSelection={false}
             onSelectionChange={setSelection}
             onAssetClick={(assetCode: AssetCode) => {
-              if (null !== currentAssetFamily) {
-                redirectToAsset(currentAssetFamily, assetCode);
+              if (null !== currentAssetFamilyIdentifier) {
+                redirectToAsset(currentAssetFamilyIdentifier, assetCode);
               }
             }}
           />
         </Grid>
       </Content>
+      {isCreateAssetModalOpen && null !== currentAssetFamily && (
+        <CreateModal
+          locale={context.locale}
+          assetFamily={currentAssetFamily}
+          onClose={() => setCreateAssetModalOpen(false)}
+          onAssetCreated={(assetCode: AssetCode, createAnother: boolean) => {
+            notify('success', 'pim_asset_manager.asset.notification.create.success');
+            if (createAnother) {
+              updateResults();
+            } else {
+              redirectToAsset(currentAssetFamily.identifier, assetCode);
+            }
+          }}
+        />
+      )}
+      {isUploadModalOpen && null !== currentAssetFamily && (
+        <UploadModal
+          locale={context.locale}
+          assetFamily={currentAssetFamily}
+          onCancel={() => setUploadModalOpen(false)}
+          onAssetCreated={updateResults}
+        />
+      )}
+      {isCreateAssetFamilyModalOpen && (
+        <CreateAssetFamilyModal
+          locale={context.locale}
+          onClose={() => setCreateAssetFamilyModalOpen(false)}
+          onAssetFamilyCreated={(assetFamilyIdentifier: AssetFamilyIdentifier) => {
+            notify('success', 'pim_asset_manager.asset_family.notification.create.success');
+            redirectToAssetFamily(assetFamilyIdentifier);
+          }}
+        />
+      )}
     </Container>
   );
 };

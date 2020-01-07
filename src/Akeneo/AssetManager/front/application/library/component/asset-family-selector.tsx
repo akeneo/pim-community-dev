@@ -1,10 +1,10 @@
 import * as React from 'react';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {AssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/list';
 import {getLabel} from 'pimui/js/i18n';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import {AssetFamilyFetcher} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 type AssetFamilySelectorProps = {
   assetFamilyIdentifier: AssetFamilyIdentifier | null;
@@ -14,12 +14,12 @@ type AssetFamilySelectorProps = {
   };
   onChange: (assetFamilyIdentifier: AssetFamilyIdentifier | null) => void;
 };
-export const AssetFamilySelector = ({
-  assetFamilyIdentifier,
-  locale,
-  dataProvider,
-  onChange,
-}: AssetFamilySelectorProps) => {
+
+export const useAssetFamily = (
+  currentAssetFamilyIdentifier: AssetFamilyIdentifier | null,
+  dataProvider: any,
+  onChange: (assetFamily: AssetFamilyIdentifier | null) => void
+): [AssetFamilyListItem[], boolean] => {
   const [assetFamilyList, setAssetFamilyList] = React.useState<AssetFamilyListItem[]>([]);
   const [isFetching, setIsFetching] = React.useState(true);
 
@@ -31,7 +31,9 @@ export const AssetFamilySelector = ({
       onChange(null);
     } else if (
       //If we cannot find the asset family, we set the first asset family
-      !assetFamilyList.some(assetFamily => assetFamily.identifier === assetFamilyIdentifier)
+      !assetFamilyList.some(
+        assetFamily => null !== currentAssetFamilyIdentifier && assetFamily.identifier === currentAssetFamilyIdentifier
+      )
     ) {
       onChange(assetFamilyList[0].identifier);
     }
@@ -43,6 +45,17 @@ export const AssetFamilySelector = ({
       setIsFetching(false);
     });
   }, []);
+
+  return [assetFamilyList, isFetching];
+};
+
+export const AssetFamilySelector = ({
+  assetFamilyIdentifier,
+  locale,
+  dataProvider,
+  onChange,
+}: AssetFamilySelectorProps) => {
+  const [assetFamilyList, isFetching] = useAssetFamily(assetFamilyIdentifier, dataProvider, onChange);
 
   const data = assetFamilyList.reduce(
     (result, assetFamily) => ({
@@ -61,9 +74,7 @@ export const AssetFamilySelector = ({
           multiple={false}
           readOnly={false}
           configuration={{}}
-          onChange={(assetFamilyIdentifier: AssetFamilyIdentifier) => {
-            onChange(assetFamilyIdentifier);
-          }}
+          onChange={onChange}
         />
       )}
     </>

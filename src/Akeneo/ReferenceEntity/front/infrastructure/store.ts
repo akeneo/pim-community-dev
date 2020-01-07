@@ -27,5 +27,5 @@ export default (debug: boolean = true) => (reducer: any): Store<any> => {
           gridMiddleware(),
           userContextMiddleware()
         )
-  );
+  ) as any;
 };

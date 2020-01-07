@@ -53,7 +53,7 @@ export const Carousel = ({
     <React.Fragment>
       <Header>
         <Title>{getAttributeLabel(productAttribute, context.locale)}</Title>
-        <ResultCounter count={assetCollection.length} labelKey={'pim_asset_manager.asset_collection.asset_counter'} />
+        <ResultCounter count={assetCollection.length} labelKey={'pim_asset_manager.asset_counter'} />
         <Spacer />
       </Header>
       {assetCollection.map(asset => (

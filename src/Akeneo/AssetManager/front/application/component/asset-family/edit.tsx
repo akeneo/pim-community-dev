@@ -4,7 +4,6 @@ import {EditState as State} from 'akeneoassetmanager/application/reducer/asset-f
 import Sidebar from 'akeneoassetmanager/application/component/app/sidebar';
 import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
 import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
-import CreateAssetModal from 'akeneoassetmanager/application/component/asset/create';
 import __ from 'akeneoassetmanager/tools/translator';
 import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
 import Key from 'akeneoassetmanager/tools/key';
@@ -84,7 +83,6 @@ class AssetFamilyEditView extends React.Component<EditProps> {
           </div>
         </div>
         <Sidebar backButton={this.backToAssetFamilyList} />
-        {this.props.createAsset.active && <CreateAssetModal />}
         {this.props.uploadAsset.active && (
           <UploadModal
             locale={this.props.locale}

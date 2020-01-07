@@ -13,7 +13,6 @@ import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import Key from 'akeneoassetmanager/tools/key';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
-import {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import ListAsset, {
   getAssetByCode,
@@ -23,8 +22,9 @@ import ListAsset, {
   getNextAssetCode,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import {useAssetFamily, AssetFamilyDataProvider} from 'akeneoassetmanager/application/library/hooks/asset-family';
+import {useShortcut} from 'akeneoassetmanager/application/library/hooks/input';
 
 const Container = styled.div`
   position: relative;
@@ -50,12 +50,6 @@ const ArrowButton = styled(TransparentButton)`
   margin: 0 10px;
 `;
 
-export type AssetPreviewDataProvider = {
-  assetFamilyFetcher: {
-    fetch: (assetFamilyIdentifier: AssetFamilyIdentifier) => Promise<AssetFamilyResult>;
-  };
-};
-
 type AssetPreviewProps = {
   assetCollection: ListAsset[];
   initialAssetCode: AssetCode;
@@ -64,20 +58,7 @@ type AssetPreviewProps = {
   context: ContextState;
   assetFamilyIdentifier: AssetFamilyIdentifier;
   onClose: () => void;
-  dataProvider: AssetPreviewDataProvider;
-};
-
-const useAssetFamily = (
-  dataProvider: AssetPreviewDataProvider,
-  assetFamilyIdentifier: AssetFamilyIdentifier
-): AssetFamily | null => {
-  const [assetFamily, setAssetFamily] = React.useState<AssetFamily | null>(null);
-  React.useEffect(() => {
-    dataProvider.assetFamilyFetcher
-      .fetch(assetFamilyIdentifier)
-      .then((result: AssetFamilyResult) => setAssetFamily(result.assetFamily));
-  }, [assetFamilyIdentifier]);
-  return assetFamily;
+  dataProvider: AssetFamilyDataProvider;
 };
 
 export const AssetPreview = ({
@@ -97,17 +78,8 @@ export const AssetPreview = ({
   const setPreviousAsset = () => setCurrentAssetCode(assetCode => getPreviousAssetCode(assetCodeCollection, assetCode));
   const setNextAsset = () => setCurrentAssetCode(assetCode => getNextAssetCode(assetCodeCollection, assetCode));
 
-  React.useEffect(() => {
-    const handleArrowNavigation = (event: KeyboardEvent) => {
-      if (Key.ArrowLeft === event.key) {
-        setPreviousAsset();
-      } else if (Key.ArrowRight === event.key) {
-        setNextAsset();
-      }
-    };
-    document.addEventListener('keydown', handleArrowNavigation);
-    return () => document.removeEventListener('keydown', handleArrowNavigation);
-  }, []);
+  useShortcut(Key.ArrowLeft, setPreviousAsset);
+  useShortcut(Key.ArrowRight, setNextAsset);
 
   if (undefined === selectedAsset || null === assetFamily) {
     return null;

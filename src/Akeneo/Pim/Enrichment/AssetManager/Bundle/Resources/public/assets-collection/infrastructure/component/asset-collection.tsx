@@ -8,10 +8,7 @@ import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illu
 import __ from 'akeneoassetmanager/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {Thumbnail} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/thumbnail';
-import {
-  AssetPreview,
-  AssetPreviewDataProvider,
-} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview';
+import {AssetPreview} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview';
 import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import Key from 'akeneoassetmanager/tools/key';
 import {AssetCollectionLimitNotification} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/asset-collection-limit-notification';
@@ -30,6 +27,8 @@ import ListAsset, {
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/library/hooks/asset-family';
+import {useShortcut} from 'akeneoassetmanager/application/library/hooks/input';
 
 const AssetCard = styled.div`
   display: flex;
@@ -104,7 +103,7 @@ const useLoadAssets = (
   return assets;
 };
 
-const assetPreviewDataProvider: AssetPreviewDataProvider = {
+const assetPreviewDataProvider: AssetFamilyDataProvider = {
   assetFamilyFetcher,
 };
 
@@ -122,13 +121,7 @@ export const AssetCollection = ({
   const [isPreviewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false);
   const [initialPreviewAssetCode, setInitialPreviewAssetCode] = React.useState<AssetCode | null>(null);
 
-  React.useEffect(() => {
-    const closeModalOnEscape = (event: KeyboardEvent) =>
-      Key.Escape === event.code ? setPreviewModalOpen(false) : null;
-    document.addEventListener('keydown', closeModalOnEscape);
-
-    return () => document.removeEventListener('keydown', closeModalOnEscape);
-  }, []);
+  useShortcut(Key.Escape, () => setPreviewModalOpen(false));
 
   return (
     <Container>

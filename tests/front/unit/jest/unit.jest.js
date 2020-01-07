@@ -20,6 +20,8 @@ const eeConfig = {
     'akeneoassetmanager/application/component/app/pill',
     'akeneoassetmanager/application/component/app/spacer',
     'akeneoassetmanager/application/component/app/button',
+    'akeneoassetmanager/infrastructure/fetcher',
+    'akeneoassetmanager/application/component/app/select2',
     'akeneoassetmanager/platform/component/common/checkbox',
     'akeneofranklininsights/react/application/action',
     'akeneoassetmanager/application/component/asset/index/completeness-filter',
@@ -39,6 +41,8 @@ const eeConfig = {
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/application/component/app/spacer',
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/platform/component/common/checkbox',
     'src/Akeneo/AssetManager/front/application/component/app/button',
+    'src/Akeneo/AssetManager/front/infrastructure/fetcher',
+    'src/Akeneo/AssetManager/front/application/component/app/select2',
     'src/Akeneo/Pim/Automation/FranklinInsights/Infrastructure/Symfony/Resources/public/react/application/action',
     'src/Akeneo/AssetManager/front/application/component/asset/index/completeness-filter',
     'src/Akeneo/AssetManager/front/application/component/asset/list/search-bar/search-field', // cannot test hooks + asynchronous fetching + cannot trigger re-render

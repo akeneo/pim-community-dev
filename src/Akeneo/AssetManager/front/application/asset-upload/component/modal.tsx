@@ -25,6 +25,8 @@ import {onCreateAllAsset} from 'akeneoassetmanager/application/asset-upload/redu
 import {hasAnUnsavedLine} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
+import {useShortcut} from 'akeneoassetmanager/application/library/hooks/input';
+import Key from 'akeneoassetmanager/tools/key';
 
 const Subtitle = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
@@ -89,6 +91,8 @@ const UploadModal = ({assetFamily, locale, channels, locales, onCancel}: UploadM
     },
     [assetFamily, dispatch]
   );
+
+  useShortcut(Key.Escape, handleClose);
 
   return (
     <Modal>

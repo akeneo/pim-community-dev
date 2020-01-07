@@ -148,7 +148,7 @@ const DisplayValues = ({
               </IncompleteIndicator>
             ) : null}
             <Spacer />
-            <ResultCounter count={value.data.length} labelKey={'pim_asset_manager.asset_collection.asset_counter'} />
+            <ResultCounter count={value.data.length} labelKey={'pim_asset_manager.asset_counter'} />
             <Separator />
             {value.channel !== null || value.locale !== null ? (
               <React.Fragment>

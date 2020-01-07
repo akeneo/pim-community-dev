@@ -43,6 +43,7 @@ type AkeneoTheme = {
     yellow100: string;
     yellow120: string;
     yellow140: string;
+    white: string;
   };
   fontSize: {
     title: string;
@@ -104,6 +105,7 @@ export const akeneoTheme: AkeneoTheme = {
     yellow100: '#f9b53f',
     yellow120: '#c79032',
     yellow140: '#956c25',
+    white: '#ffffff',
   },
   fontSize: {
     title: '28px',

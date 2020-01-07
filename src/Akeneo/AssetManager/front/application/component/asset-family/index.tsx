@@ -8,7 +8,7 @@ import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
 import {redirectToAssetFamily} from 'akeneoassetmanager/application/action/asset-family/router';
 import {IndexState} from 'akeneoassetmanager/application/reducer/asset-family/index';
 import {assetFamilyCreationStart} from 'akeneoassetmanager/domain/event/asset-family/create';
-import CreateAssetFamilyModal from 'akeneoassetmanager/application/component/asset-family/create';
+import {CreateAssetFamilyModal} from 'akeneoassetmanager/application/component/asset-family/create';
 
 const securityContext = require('pim/security-context');
 
@@ -162,7 +162,15 @@ class AssetFamilyListView extends React.Component<StateProps & DispatchProps> {
             </div>
           </div>
         </div>
-        {create.active ? <CreateAssetFamilyModal /> : null}
+        {create.active ? (
+          <CreateAssetFamilyModal
+            locale={context.locale}
+            onClose={() => this.setState({create: false})}
+            onAssetFamilyCreated={() => {
+              //TODO remove this entire file
+            }}
+          />
+        ) : null}
       </div>
     );
   }

@@ -9,8 +9,8 @@ pim_asset_manager:
         title: Suspicious embedded link
         message: Sorry, we do not display this embed item but it will be correctly saved
   result_counter: '{0} No result|{1} {{ count }} result|]1,Inf] {{ count }} results'
+  asset_counter: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
   asset_collection:
-    asset_counter: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
     add_asset: 'Add asset'
     add_asset_title: 'Open the asset picker to add assets to the collection'
     no_asset_in_collection: 'Sorry, there is no asset in this collection.'
@@ -91,7 +91,9 @@ pim_asset_manager:
     button:
       save: Save
       save_permission: Save
-      create: Create
+      create: Create an asset family
+      edit: Edit family
+      view: View family
     permission:
       title: Asset family permissions
     title: Assets
@@ -188,7 +190,7 @@ pim_asset_manager:
         value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
     button:
       save: Save
-      create: Add new
+      create: Create an asset
       mass_upload: Mass upload
       delete: Delete
       delete_all: Delete all assets

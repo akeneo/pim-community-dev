@@ -27,6 +27,7 @@ import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import MosaicResult from 'akeneoassetmanager/application/component/asset/list/mosaic';
 import {useFetchResult} from 'akeneoassetmanager/application/library/hooks/grid';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import {useShortcut} from 'akeneoassetmanager/application/library/hooks/input';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -171,15 +172,9 @@ export const AssetPicker = ({
     setResultCount
   );
   const filterViews = useFilterViews(assetFamilyIdentifier, dataProvider);
-
-  React.useEffect(() => {
-    const cancelModalOnEscape = (event: KeyboardEvent) => (Key.Escape === event.code ? cancelModal() : null);
-    document.addEventListener('keydown', cancelModalOnEscape);
-
-    return () => document.removeEventListener('keydown', cancelModalOnEscape);
-  }, []);
-
   const canAddAsset = canAddAssetToCollection(addAssetsToCollection(excludedAssetCollection, selection));
+
+  useShortcut(Key.Escape, cancelModal);
 
   return (
     <React.Fragment>
