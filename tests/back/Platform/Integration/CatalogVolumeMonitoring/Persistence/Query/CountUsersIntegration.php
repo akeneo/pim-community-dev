@@ -58,7 +58,7 @@ class CountUsersIntegration extends QueryTestCase
         $this->get('pim_user.updater.user')->update($user, $data, []);
 
         if ($type === User::TYPE_API) {
-            $user->defineAsUserApi();
+            $user->defineAsApiUser();
         }
 
         $validation = $this->get('validator')->validate($user);
