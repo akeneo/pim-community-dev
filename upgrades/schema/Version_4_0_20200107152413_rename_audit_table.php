@@ -18,10 +18,23 @@ final class Version_4_0_20200107152413_rename_audit_table extends AbstractMigrat
 {
     public function up(Schema $schema) : void
     {
+        $this->renameAuditTable();
+        $this->dropAuditFk();
+    }
+
+    private function renameAuditTable(): void
+    {
         $alterTableQuery = <<<SQL
 ALTER TABLE akeneo_app_audit RENAME TO akeneo_connectivity_connection_audit
 SQL;
+        $this->addSql($alterTableQuery);
+    }
 
+    private function dropAuditFk(): void
+    {
+        $alterTableQuery = <<<SQL
+ALTER TABLE akeneo_connectivity_connection_audit DROP KEY FK_AUDIT_akeneo_app_audit_code
+SQL;
         $this->addSql($alterTableQuery);
     }
 
