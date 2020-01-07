@@ -162,7 +162,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
         $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
         $ruleTemplate = $this->getExpectedRuleTemplate();
 
@@ -242,7 +242,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
         $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
         $ruleTemplate = $this->getExpectedRuleTemplate();
 

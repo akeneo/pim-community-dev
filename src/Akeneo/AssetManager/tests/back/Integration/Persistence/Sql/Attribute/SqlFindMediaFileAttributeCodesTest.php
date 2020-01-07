@@ -69,7 +69,7 @@ class SqlFindMediaFileAttributeCodesTest extends SqlIntegrationTestCase
 
         $mediaFileAttributeCodes = $this->findMediaFileAttributeCodes->find(AssetFamilyIdentifier::fromString('designer'));
         $expectedCodes = [
-            AttributeCode::fromString('image'),
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE),
             AttributeCode::fromString('main_image'),
             AttributeCode::fromString('second_image')
         ];
@@ -107,7 +107,7 @@ class SqlFindMediaFileAttributeCodesTest extends SqlIntegrationTestCase
     private function loadAttributesWithMediaFileType(): void
     {
         $mediaFileAttribute = MediaFileAttribute::create(
-            AttributeIdentifier::create('designer', 'image', 'test'),
+            AttributeIdentifier::create('designer', AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE, 'test'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('main_image'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
