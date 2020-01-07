@@ -3,7 +3,7 @@ akeneo_franklin_insights:
     franklin_insights:
       index: Abonnement de produits à Franklin Insights
     franklin:
-      title: Gérer la connection à Franklin Insights
+      title: Gérer la connexion à Franklin Insights
     settings:
       mapping: Gérer les paramètres de Franklin Insights
   acl_group:

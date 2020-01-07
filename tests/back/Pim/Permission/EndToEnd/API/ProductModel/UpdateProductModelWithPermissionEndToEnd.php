@@ -178,7 +178,7 @@ SQL;
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $message = 'Product model "%s" cannot be updated. You are only allowed to suggest proposals on this product model.';
+        $message = 'Product model "%s" cannot be updated. You only have a view right on this product model.';
         $data = '{"categories": ["own_category"]}';
 
         $this->assertUnauthorized('colored_shoes_view', $data, sprintf($message, 'colored_shoes_view'));

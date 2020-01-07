@@ -169,7 +169,7 @@ JSON;
         $expected = <<<JSON
 {
     "code": 403,
-    "message": "Product \"product_viewable_by_everybody_1\" cannot be updated. You are only allowed to suggest proposals on this product."
+    "message": "Product \"product_viewable_by_everybody_1\" cannot be updated. You only have a view right on this product."
 }
 JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
