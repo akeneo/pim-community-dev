@@ -57,7 +57,7 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
         setChartData(chartData);
     }, [formatDate, translate, connectionsAuditData, selectedConnectionCode]);
 
-    let connections = Object.values(state.sourceConnections);
+    const connections = Object.values(state.sourceConnections);
     connections.unshift({
         code: '<all>',
         label: translate('akeneo_connectivity.connection.dashboard.connection_selector.all'),
