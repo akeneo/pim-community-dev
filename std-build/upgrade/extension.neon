@@ -1,0 +1,11 @@
+parameters:
+    customRulesetUsed: true
+
+rules:
+    - PHPStan\Rules\Methods\ExistingClassesInTypehintsRule
+    - PHPStan\Rules\Functions\ExistingClassesInArrowFunctionTypehintsRule
+    - PHPStan\Rules\Functions\ExistingClassesInClosureTypehintsRule
+    - PHPStan\Rules\Functions\ExistingClassesInTypehintsRule
+    - PHPStan\Rules\Methods\ExistingClassesInTypehintsRule
+    - PHPStan\Rules\Functions\IncompatibleDefaultParameterTypeRule
+    - PHPStan\Rules\Methods\IncompatibleDefaultParameterTypeRule
