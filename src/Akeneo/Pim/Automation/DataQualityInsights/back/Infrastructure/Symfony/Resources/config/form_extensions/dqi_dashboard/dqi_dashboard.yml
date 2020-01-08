@@ -37,7 +37,7 @@ extensions:
             logout: pim_menu.user.logout
 
     akeneo-data-quality-insights-dqi-dashboard-scope-switcher:
-        module: pim/product-edit-form/scope-switcher
+        module: akeneo/data-quality-insights/view/dqi-dashboard/channel-switcher
         parent: akeneo-data-quality-insights-dqi-dashboard-index
         targetZone: context
         position: 100
@@ -46,53 +46,12 @@ extensions:
             localeContext: base_product
 
     akeneo-data-quality-insights-dqi-dashboard-locale-switcher:
-        module: pim/product-edit-form/locale-switcher
+        module: akeneo/data-quality-insights/view/dqi-dashboard/locale-switcher
         parent: akeneo-data-quality-insights-dqi-dashboard-index
         targetZone: context
         position: 110
-        config:
-            context: base_product
-
-#    akeneo-data-quality-insights-dqi-dashboard-overview:
-#        module: akeneo/data-quality-insights/view/dqi-dashboard/section-header
-#        parent: akeneo-data-quality-insights-dqi-dashboard-index
-#        targetZone: content
-#        position: 200
-#        config:
-#            title: akeneo_data_quality_insights.dqi_dashboard.section_title.overview
 
     akeneo-data-quality-insights-dqi-dashboard-overview-content:
         module: akeneo/data-quality-insights/view/dqi-dashboard/section
         parent: akeneo-data-quality-insights-dqi-dashboard-index
         targetZone: content
-
-#    akeneo-data-quality-insights-dqi-dashboard-categories:
-#        module: akeneo/data-quality-insights/view/dqi-dashboard/section-header
-#        parent: akeneo-data-quality-insights-dqi-dashboard-index
-#        targetZone: content
-#        position: 310
-#        config:
-#            title: akeneo_data_quality_insights.dqi_dashboard.section_title.categories
-#
-#    akeneo-data-quality-insights-dqi-dashboard-categories-content:
-#        module: akeneo/data-quality-insights/view/dqi-dashboard/section
-#        parent: akeneo-data-quality-insights-dqi-dashboard-categories
-#        targetZone: content
-#
-#    akeneo-data-quality-insights-dqi-dashboard-families:
-#        module: akeneo/data-quality-insights/view/dqi-dashboard/section-header
-#        parent: akeneo-data-quality-insights-dqi-dashboard-index
-#        targetZone: content
-#        position: 320
-#        config:
-#            title: akeneo_data_quality_insights.dqi_dashboard.section_title.families
-#
-#    akeneo-data-quality-insights-dqi-dashboard-families-content:
-#        module: akeneo/data-quality-insights/view/dqi-dashboard/section
-#        parent: akeneo-data-quality-insights-dqi-dashboard-families
-#        targetZone: content
-
-#    akeneo-data-quality-insights-dqi-dashboard-overview-filters:
-#        module: akeneo/data-quality-insights/view/dqi-dashboard/filters
-#        parent: akeneo-data-quality-insights-dqi-dashboard-overview
-#        targetZone: content
