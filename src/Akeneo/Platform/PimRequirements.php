@@ -39,6 +39,7 @@ class PimRequirements
         'exif',
         'imagick',
         'mbstring',
+        'openssl',
     ];
 
     /** @var string */

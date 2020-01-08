@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f115848267f6cdce9e98ff776ae0105a",
+    "content-hash": "dabddf39a689677066ee1f18ce5d3dfe",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -1590,16 +1590,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.13",
+            "version": "2.1.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "834593d5900615639208417760ba6a17299e2497"
+                "reference": "c4b8d12921999d8a561004371701dbc2e05b5ece"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/834593d5900615639208417760ba6a17299e2497",
-                "reference": "834593d5900615639208417760ba6a17299e2497",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/c4b8d12921999d8a561004371701dbc2e05b5ece",
+                "reference": "c4b8d12921999d8a561004371701dbc2e05b5ece",
                 "shasum": ""
             },
             "require": {
@@ -1643,7 +1643,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-12-30T08:14:25+00:00"
+            "time": "2020-01-05T14:11:20+00:00"
         },
         {
             "name": "elasticsearch/elasticsearch",
@@ -7955,16 +7955,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.131.0",
+            "version": "3.132.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "371ca02855c92c13e36fa5f6d38e68211354c979"
+                "reference": "d1ea3332539a07d122e5cf397c0eb3a1fb75eede"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/371ca02855c92c13e36fa5f6d38e68211354c979",
-                "reference": "371ca02855c92c13e36fa5f6d38e68211354c979",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d1ea3332539a07d122e5cf397c0eb3a1fb75eede",
+                "reference": "d1ea3332539a07d122e5cf397c0eb3a1fb75eede",
                 "shasum": ""
             },
             "require": {
@@ -8035,7 +8035,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2020-01-06T19:10:20+00:00"
+            "time": "2020-01-07T19:13:51+00:00"
         },
         {
             "name": "behat/behat",
@@ -10786,16 +10786,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "8.5.1",
+            "version": "8.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "7870c78da3c5e4883eaef36ae47853ebb3cb86f2"
+                "reference": "018b6ac3c8ab20916db85fa91bf6465acb64d1e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/7870c78da3c5e4883eaef36ae47853ebb3cb86f2",
-                "reference": "7870c78da3c5e4883eaef36ae47853ebb3cb86f2",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/018b6ac3c8ab20916db85fa91bf6465acb64d1e0",
+                "reference": "018b6ac3c8ab20916db85fa91bf6465acb64d1e0",
                 "shasum": ""
             },
             "require": {
@@ -10865,7 +10865,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-12-25T14:49:39+00:00"
+            "time": "2020-01-08T08:49:49+00:00"
         },
         {
             "name": "psr/http-message",
@@ -12115,7 +12115,8 @@
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "ext-xml": "*",
-        "ext-zip": "*"
+        "ext-zip": "*",
+        "ext-openssl": "*"
     },
     "platform-dev": []
 }
