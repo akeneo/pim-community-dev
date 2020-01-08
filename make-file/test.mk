@@ -28,7 +28,7 @@ lint-front: franklin-insights-lint-front
 
 ### Unit tests
 .PHONY: unit-back
-unit-back: var/tests/phpspec reference-entity-unit-back asset-manager-unit-back
+unit-back: var/tests/phpspec reference-entity-unit-back asset-manager-unit-back data-quality-insights-unit-back
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
