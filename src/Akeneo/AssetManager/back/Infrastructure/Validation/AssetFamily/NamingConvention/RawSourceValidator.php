@@ -67,7 +67,7 @@ class RawSourceValidator extends ConstraintValidator
         }
 
         $attributeAsMainMedia = $this->findAttributeAsMainMedia->find($constraint->getAssetFamilyIdentifier());
-        if ($attributeAsMainMedia->isEmpty() ||!$attributeAsMainMedia->getIdentifier()->equals($attribute->getIdentifier())) {
+        if ($attributeAsMainMedia->isEmpty() || !$attributeAsMainMedia->getIdentifier()->equals($attribute->getIdentifier())) {
             $this->context->buildViolation(
                 RawSource::ATTRIBUTE_IS_NOT_MAIN_MEDIA,
                 ['%property%' => $rawSource['property']]
