@@ -23,8 +23,8 @@ import ListAsset, {
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {useAssetFamily, AssetFamilyDataProvider} from 'akeneoassetmanager/application/library/hooks/asset-family';
-import {useShortcut} from 'akeneoassetmanager/application/library/hooks/input';
+import {useAssetFamily, AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
+import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 
 const Container = styled.div`
   position: relative;

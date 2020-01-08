@@ -25,7 +25,7 @@ import {onCreateAllAsset} from 'akeneoassetmanager/application/asset-upload/redu
 import {hasAnUnsavedLine} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import {useShortcut} from 'akeneoassetmanager/application/library/hooks/input';
+import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import Key from 'akeneoassetmanager/tools/key';
 
 const Subtitle = styled.div`

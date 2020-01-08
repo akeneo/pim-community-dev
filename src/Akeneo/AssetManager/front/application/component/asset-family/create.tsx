@@ -8,7 +8,7 @@ import {Asset} from 'akeneoassetmanager/application/component/app/illustration/a
 import sanitize from 'akeneoassetmanager/tools/sanitize';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import assetFamilySaver from 'akeneoassetmanager/infrastructure/saver/asset-family';
-import {useFocus, useShortcut} from 'akeneoassetmanager/application/library/hooks/input';
+import {useFocus, useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import Key from 'akeneoassetmanager/tools/key';
 
 const submitCreateAssetFamily = async (

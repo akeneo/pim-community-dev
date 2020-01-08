@@ -25,9 +25,9 @@ import ListAsset, {
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import MosaicResult from 'akeneoassetmanager/application/component/asset/list/mosaic';
-import {useFetchResult} from 'akeneoassetmanager/application/library/hooks/grid';
+import {useFetchResult} from 'akeneoassetmanager/application/hooks/grid';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {useShortcut} from 'akeneoassetmanager/application/library/hooks/input';
+import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {

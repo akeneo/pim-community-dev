@@ -11,7 +11,7 @@ import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import sanitize from 'akeneoassetmanager/tools/sanitize';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import assetSaver from 'akeneoassetmanager/infrastructure/saver/asset';
-import {useFocus, useShortcut} from 'akeneoassetmanager/application/library/hooks/input';
+import {useFocus, useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import Key from 'akeneoassetmanager/tools/key';
 
 const submitCreateAsset = async (

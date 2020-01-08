@@ -27,8 +27,8 @@ import ListAsset, {
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/library/hooks/asset-family';
-import {useShortcut} from 'akeneoassetmanager/application/library/hooks/input';
+import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
+import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 
 const AssetCard = styled.div`
   display: flex;

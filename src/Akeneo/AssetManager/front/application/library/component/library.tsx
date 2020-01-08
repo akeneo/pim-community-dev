@@ -11,7 +11,7 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
-import {useFetchResult} from 'akeneoassetmanager/application/library/hooks/grid';
+import {useFetchResult} from 'akeneoassetmanager/application/hooks/grid';
 import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
@@ -23,13 +23,15 @@ import {HeaderView} from 'akeneoassetmanager/application/component/asset-family/
 import {getLabel} from 'pimui/js/i18n';
 import {MultipleButton, Button} from 'akeneoassetmanager/application/component/app/button';
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
-import {useAssetFamily} from 'akeneoassetmanager/application/library/hooks/asset-family';
+import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {CreateModal} from 'akeneoassetmanager/application/component/asset/create';
-import {useNotify} from 'akeneoassetmanager/application/library/hooks/notify';
+import {useNotify} from 'akeneoassetmanager/application/hooks/notify';
 import {CreateAssetFamilyModal} from 'akeneoassetmanager/application/component/asset-family/create';
-import {useRedirect} from 'akeneoassetmanager/application/library/hooks/router';
-import {useAssetFamilyRights} from 'akeneoassetmanager/application/library/hooks/rights';
-import {useStoredState} from 'akeneoassetmanager/application/library/hooks/state';
+import {useRedirect} from 'akeneoassetmanager/application/hooks/router';
+import {useAssetFamilyRights} from 'akeneoassetmanager/application/hooks/rights';
+import {useStoredState} from 'akeneoassetmanager/application/hooks/state';
+import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
+import {useChannels} from 'akeneoassetmanager/application/hooks/channel';
 
 const Column = styled.div`
   padding: 30px;
@@ -201,6 +203,8 @@ const Library = ({initialContext}: LibraryProps) => {
   const [isCreateAssetModalOpen, setCreateAssetModalOpen] = React.useState<boolean>(false);
   const [isUploadModalOpen, setUploadModalOpen] = React.useState<boolean>(false);
   const [isCreateAssetFamilyModalOpen, setCreateAssetFamilyModalOpen] = React.useState<boolean>(false);
+  const channels = useChannels(dataProvider.channelFetcher);
+  const locales = getLocales(channels, context.channel);
   const currentAssetFamily = useAssetFamily(dataProvider, currentAssetFamilyIdentifier);
   const currentAssetFamilyLabel =
     null === currentAssetFamily
@@ -360,6 +364,8 @@ const Library = ({initialContext}: LibraryProps) => {
       {isUploadModalOpen && null !== currentAssetFamily && (
         <UploadModal
           locale={context.locale}
+          channels={channels}
+          locales={locales}
           assetFamily={currentAssetFamily}
           onCancel={() => setUploadModalOpen(false)}
           onAssetCreated={updateResults}
