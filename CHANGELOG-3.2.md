@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-8923: Avoid product edit form tab switching when going from product model to products
 - PIM-9052: Display errors thrown by file upload
 
 # 3.2.29 (2020-01-03)

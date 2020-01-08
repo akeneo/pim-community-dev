@@ -54,7 +54,7 @@ define(
                 this.listenTo(root, 'pim_enrich:form:proposal:post_remove:success', this.onPostRemoveSuccess);
 
                 this.trigger('tab:register', {
-                    code: this.code,
+                    code: this.config.tabCode ? this.config.tabCode : this.code,
                     isVisible: function () {
                         return _.result(
                             _.result(this.getFormData(), 'meta', {}),
