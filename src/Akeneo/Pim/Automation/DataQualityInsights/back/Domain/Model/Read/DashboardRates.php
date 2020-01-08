@@ -45,8 +45,24 @@ final class DashboardRates
             return [];
         }
 
+        $result = $this->convertRatesByPeriodicity($this->periodicity);
+
+        $actions = [
+            Periodicity::DAILY => function(array $rates) {
+                return $this->ensureRatesAlwaysContains7Days($rates);
+            },
+            Periodicity::WEEKLY => function(array $rates) {
+                return $this->ensureRatesAlwaysContains4Weeks($rates);
+            },
+        ];
+
+        return $actions[$this->periodicity]($result);
+    }
+
+    private function convertRatesByPeriodicity(string $periodicity): array
+    {
         $result = [];
-        foreach ($this->rates['daily'] as $date => $projectionByDate) {
+        foreach ($this->rates[$periodicity] as $date => $projectionByDate) {
             foreach ($projectionByDate as $axisName => $axisProjection) {
                 if (! isset($axisProjection[$this->channelCode][$this->localeCode])) {
                     $result[$axisName][$date] = [];
@@ -60,7 +76,7 @@ final class DashboardRates
             }
         }
 
-        return $this->ensureResultAlwaysContains7Days($result);
+        return $result;
     }
 
     private function computeRatesNumberByRank($axisProjection): array
@@ -85,7 +101,7 @@ final class DashboardRates
         }, $ratesNumberByRank);
     }
 
-    private function ensureResultAlwaysContains7Days(array $result): array
+    private function ensureRatesAlwaysContains7Days(array $result): array
     {
         $lastSevenDays = [];
         for ($i = 7; $i >= 1; $i--) {
@@ -95,6 +111,21 @@ final class DashboardRates
             $ranksByDay = array_intersect_key($ranksByDay, $lastSevenDays);
             $ranksByDay = array_replace($lastSevenDays, $ranksByDay);
             $result[$axisName] = $ranksByDay;
+        }
+
+        return $result;
+    }
+
+    private function ensureRatesAlwaysContains4Weeks(array $result): array
+    {
+        $lastFourWeeks = [];
+        for ($i = 4; $i >= 1; $i--) {
+            $lastFourWeeks[(new \DateTime('-' . $i . 'WEEK'))->format('Y-W')] = [];
+        }
+        foreach ($result as $axisName => $ranksByWeek) {
+            $ranksByWeek = array_intersect_key($ranksByWeek, $lastFourWeeks);
+            $ranksByWeek = array_replace($lastFourWeeks, $ranksByWeek);
+            $result[$axisName] = $ranksByWeek;
         }
 
         return $result;

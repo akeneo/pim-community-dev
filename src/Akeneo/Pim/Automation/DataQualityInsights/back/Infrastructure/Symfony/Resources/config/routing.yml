@@ -9,11 +9,12 @@ akeneo_data_quality_insights_product_evaluation:
     methods: [GET]
 
 akeneo_data_quality_insights_dashboard:
-    path: /data-quality-insights/dashboard/{channel}/{locale}
+    path: /data-quality-insights/dashboard/{channel}/{locale}/{periodicity}
     defaults:
         _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardController
         channel: null
         locale: null
+        periodicity: null
     methods: [GET]
 
 akeneo_data_quality_insights_feature_flag:
