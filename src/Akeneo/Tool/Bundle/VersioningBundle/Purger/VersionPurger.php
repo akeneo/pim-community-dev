@@ -86,7 +86,8 @@ class VersionPurger implements VersionPurgerInterface
             $purgeableVersionList = $this->filterPurgeableVersionList($purgeableVersionList);
 
             if (!empty($purgeableVersionList)) {
-                $this->deleteVersionsByIdsQuery->execute($purgeableVersionList->getVersionIds());
+                printf(PHP_EOL . 'Deleting %d versions' . PHP_EOL, count($purgeableVersionList));
+                //$this->deleteVersionsByIdsQuery->execute($purgeableVersionList->getVersionIds());
                 $purgedVersionsCount += count($purgeableVersionList);
             }
 
