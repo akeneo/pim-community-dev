@@ -64,7 +64,7 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
                 ],
             ],
             'naming_convention' => [
-                'source' => ['property' => 'attribute_as_main_media', 'locale' => 'en_US', 'channel' => null],
+                'source' => ['property' => 'title', 'locale' => 'en_US', 'channel' => null],
                 'pattern' => '/the_pattern/',
                 'abort_asset_creation_on_error' => true,
             ],
@@ -366,7 +366,7 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
             'code' => 'starck',
             'product_link_rules' => [],
             'naming_convention' => [
-                'source' => ['property' => 'code', 'locale' => null, 'channel' => null],
+                'source' => ['property' => 'title', 'locale' => 'en_US', 'channel' => null],
                 'pattern' => '/the_pattern/',
                 'abort_asset_creation_on_error' => true,
                 'foo' => 'bar',
