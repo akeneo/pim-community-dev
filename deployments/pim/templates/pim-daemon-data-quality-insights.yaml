@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pim-daemon
+  name: pim-daemon-data-quality-insights
   labels:
     app: {{ template "pim.fullName" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
@@ -9,22 +9,22 @@ metadata:
     heritage: "{{ .Release.Service }}"
     component: {{ template "pim.fullName" . }}
     {{ include "pim.extraLabels" . | indent 4 }}
-    role: pim-daemon
+    role: pim-daemon-data-quality-insights
 
 spec:
-  replicas: {{ .Values.pim.numDaemon }}
+  replicas: {{ .Values.pim.numDataQualityDaemon }}
   minReadySeconds: 30
   selector:
     matchLabels:
       component: {{ template "pim.fullName" . }}
-      role: pim-daemon
+      role: pim-daemon-data-quality-insights
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
         component: {{ template "pim.fullName" . }}
-        role: pim-daemon
+        role: pim-daemon-data-quality-insights
         {{ include "pim.extraLabels" . | indent 8 }}
     spec:
       affinity:
@@ -37,12 +37,12 @@ spec:
                 matchLabels:
                   app: "{{ template "pim.fullName" . }}"
                   release: "{{ .Release.Name }}"
-                  role: pim-daemon
+                  role: pim-daemon-data-quality-insights
       containers:
         - name: php
           image: {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'cd /srv/pim && su www-data -s /bin/bash -c "php bin/console akeneo:batch:job-queue-consumer-daemon -b data_quality_insights_evaluate_products_criteria -b data_quality_insights_periodic_tasks"']
+          command: ['sh', '-c', 'cd /srv/pim && su www-data -s /bin/bash -c "php bin/console akeneo:batch:job-queue-consumer-daemon -j data_quality_insights_evaluate_products_criteria -j data_quality_insights_periodic_tasks"']
           resources:
 {{ toYaml .Values.pim.resources | indent 12 }}
           volumeMounts:

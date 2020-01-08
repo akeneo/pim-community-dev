@@ -48,7 +48,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-data-quality-insights-2",
+        "akeneo/pim-community-dev": "dev-data-quality-insights-2@dev",
         "guzzlehttp/guzzle": "6.3.3",
         "hslavich/oneloginsaml-bundle": "1.4.0",
         "justinrainbow/json-schema": "^5.2",
