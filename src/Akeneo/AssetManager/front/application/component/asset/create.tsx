@@ -59,8 +59,8 @@ export const useSubmit = (
     submitCreateAsset(
       code,
       label,
-      assetFamilyIdentifier,
       locale,
+      assetFamilyIdentifier,
       () => {
         onSuccess();
         setCreating(false);
