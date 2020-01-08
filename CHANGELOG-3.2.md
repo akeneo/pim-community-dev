@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9052: Display errors thrown by file upload
+
 # 3.2.29 (2020-01-03)
 
 ## Bug fixes
