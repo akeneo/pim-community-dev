@@ -19,9 +19,6 @@ Akeneo\Tool\Component\Versioning\Model\Version:
         logged_at_idx:
             columns:
                 - logged_at
-        author_idx:
-            columns:
-                - author
     fields:
         id:
             type: integer

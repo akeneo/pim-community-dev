@@ -57,6 +57,9 @@ class ListRootCategoriesWithCountHandler
 
         if (null === $categorySelectedAsFilter) {
             $categorySelectedAsFilter = $this->userContext->getAccessibleUserTree();
+            if ($categorySelectedAsFilter === null) {
+                return [];
+            }
         }
         $rootCategoryIdToExpand = $categorySelectedAsFilter->getRoot();
 

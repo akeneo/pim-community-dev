@@ -38,6 +38,12 @@ extensions:
         config:
             field: username
 
+    pim-user-edit-form-login-details:
+        module: pim/form/user/login-details
+        parent: pim-user-edit-form
+        targetZone: meta
+        position: 110
+
     pim-user-edit-form-save-buttons:
         module: pim/form/common/save-buttons
         parent: pim-user-edit-form

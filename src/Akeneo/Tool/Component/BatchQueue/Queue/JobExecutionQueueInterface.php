@@ -25,9 +25,10 @@ interface JobExecutionQueueInterface
      * This method loops until there is a message to consume into the queue.
      *
      * @param string $consumer name of the consumer
-     * @param string[] $jobInstanceCodes name of the job instances
+     * @param string[] $whitelistedJobInstanceCodes codes of the whitelisted job instances
+     * @param string[] $blacklistedJobInstanceCodes codes of the blacklisted job instances
      *
      * @return JobExecutionMessage
      */
-    public function consume(string $consumer, array $jobInstanceCodes = []): JobExecutionMessage;
+    public function consume(string $consumer, array $whitelistedJobInstanceCodes = [], array $blacklistedJobInstanceCodes = []): JobExecutionMessage;
 }

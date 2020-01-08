@@ -28,42 +28,11 @@ final class Version_4_0_20191031124707_update_from_clients_to_apps
 
     public function up(Schema $schema) : void
     {
-        try {
-            $this->migrateToConnections();
-        } catch (\Exception $e) {
-            $this->down($schema);
-            throw $e;
-        }
+        $this->migrateToConnections();
     }
 
     public function down(Schema $schema) : void
     {
-        $getConnectionsDataToClean = <<< SQL
-        SELECT code, user_id
-        FROM akeneo_app
-SQL;
-        $statement = $this->dbalConnection()->executeQuery($getConnectionsDataToClean);
-        $dataToClean = $statement->fetchAll();
-
-        $deleteConnections = <<< SQL
-        DELETE FROM akeneo_app
-        WHERE code IN (:apps)
-SQL;
-        $this->dbalConnection()->executeQuery(
-            $deleteConnections,
-            ['apps' => array_column($dataToClean, 'code')],
-            ['apps' => Connection::PARAM_STR_ARRAY]
-        );
-
-        $removeGeneratedUsers = <<< SQL
-        DELETE FROM oro_user
-        WHERE id IN (:users)
-SQL;
-        $this->dbalConnection()->executeQuery(
-            $removeGeneratedUsers,
-            ['users' => array_column($dataToClean, 'user_id')],
-            ['users' => Connection::PARAM_STR_ARRAY]
-        );
     }
 
     private function migrateToConnections(): void

@@ -38,7 +38,6 @@
         "ext-curl": ">=7.0",
         "ext-exif": "*",
         "ext-fileinfo": "*",
-        "ext-gd": ">=2.0",
         "ext-imagick": "*",
         "ext-intl": "*",
         "ext-mbstring": "*",

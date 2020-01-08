@@ -40,15 +40,22 @@ class DatabaseJobExecutionQueue implements JobExecutionQueueInterface
     /**
      * {@inheritdoc}
      */
-    public function consume(string $consumer, array $jobInstanceCodes = []): JobExecutionMessage
+    public function consume(string $consumer, array $whitelistedJobInstanceCodes = [], array $blacklistedJobInstanceCodes = []): JobExecutionMessage
     {
         $hasBeenUpdated = false;
+        $jobExecutionMessage = null;
+
+        if (!empty($whitelistedJobInstanceCodes) && !empty($blacklistedJobInstanceCodes)) {
+            throw new \InvalidArgumentException('You cannot use a whitelist filter and a blacklist filter at the same time');
+        }
 
         do {
-            if (empty($jobInstanceCodes)) {
+            if (empty($whitelistedJobInstanceCodes) && empty($blacklistedJobInstanceCodes)) {
                 $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessage();
-            } else {
-                $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessageFilteredByCodes($jobInstanceCodes);
+            } elseif ($whitelistedJobInstanceCodes) {
+                $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessageFilteredByCodes($whitelistedJobInstanceCodes);
+            } elseif ($blacklistedJobInstanceCodes) {
+                $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes($blacklistedJobInstanceCodes);
             }
 
             if (null !== $jobExecutionMessage) {

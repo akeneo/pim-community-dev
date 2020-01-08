@@ -67,7 +67,7 @@ define(
                         this.config.gridName,
                         {
                             family_id: this.getFormData().meta.id,
-                            localeCode: UserContext.get('uiLocale')
+                            localeCode: UserContext.get('catalogLocale')
                         }
                     );
                 }

@@ -72,7 +72,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             - NotBlank: ~
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
-                message: Attribute code may contain only letters, numbers and underscores
+                message: Attribute code may contain only letters, numbers and underscore
             - Length:
                 max: 255
             - Regex:

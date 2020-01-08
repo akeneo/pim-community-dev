@@ -215,7 +215,7 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
         $violations = $this->validateAttribute($attribute);
 
         $this->assertCount(1, $violations);
-        $this->assertSame('Attribute code may contain only letters, numbers and underscores', $violations->get(0)->getMessage());
+        $this->assertSame('Attribute code may contain only letters, numbers and underscore', $violations->get(0)->getMessage());
         $this->assertSame('code', $violations->get(0)->getPropertyPath());
     }
 
