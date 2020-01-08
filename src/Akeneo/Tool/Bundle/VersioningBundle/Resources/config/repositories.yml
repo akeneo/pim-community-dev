@@ -42,7 +42,7 @@ services:
             - '@database_connection'
 
     pim_versioning.query.get_latest_version_ids_by_ids:
-        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetLatestVersionIdsByIdsQuery
+        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetAllButLastVersionIdsByIdsQuery
         arguments:
             - '@database_connection'
 
