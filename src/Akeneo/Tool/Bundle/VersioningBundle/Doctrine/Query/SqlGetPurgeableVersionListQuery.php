@@ -109,4 +109,15 @@ SQL;
 
         return intval($count);
     }
+
+    public function countByResource(string $resourceName): int
+    {
+        $query = 'SELECT COUNT(*) FROM pim_versioning_version WHERE resource_name = :resource_name';
+
+        $count = $this->dbConnection->executeQuery($query, [
+            'resource_name' => $resourceName,
+        ])->fetchColumn();
+
+        return intval($count);
+    }
 }

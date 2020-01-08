@@ -151,9 +151,7 @@ class VersionPurger implements VersionPurgerInterface
 
     private function countVersionsToPurge($resourceName, array $options): int
     {
-        return '>' === $options['date_operator']
-            ? $this->getPurgeableVersionListQuery->countYoungerThan($resourceName, $options['limit_date'])
-            : $this->getPurgeableVersionListQuery->countOlderThan($resourceName, $options['limit_date']);
+        return $this->getPurgeableVersionListQuery->countByResource($resourceName);
     }
 
     private function getVersionsToPurge($resourceName, array $options): iterable
