@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {VictoryAxis, VictoryBar, VictoryChart, VictoryStack, VictoryContainer} from "victory";
+import {VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
 
 type RankDistribution = {
   x: string;
@@ -14,7 +14,7 @@ interface AxisChartProps {
   dataset: Dataset;
 }
 
-const AxisChart = ({dataset}: AxisChartProps) => {
+const DailyAxisChart = ({dataset}: AxisChartProps) => {
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -22,7 +22,6 @@ const AxisChart = ({dataset}: AxisChartProps) => {
   if(Object.entries(dataset).length > 0) {
     days = Object.values(dataset['rank_1']).map((rate: any) => rate.x);
   }
-
   let i = 0;
 
   return (
@@ -57,7 +56,7 @@ const AxisChart = ({dataset}: AxisChartProps) => {
                     return {
                       mutation: () => {
                         setIsVisible(true);
-                        // console.log(isVisible)
+                         console.log(isVisible)
                       }
                     }
                   },
@@ -65,7 +64,7 @@ const AxisChart = ({dataset}: AxisChartProps) => {
                     return {
                       mutation: () => {
                         setIsVisible(false);
-                        // console.log(isVisible)
+                         console.log(isVisible)
                       }
                     }
                   }
@@ -86,4 +85,4 @@ const AxisChart = ({dataset}: AxisChartProps) => {
   )
 };
 
-export default AxisChart;
+export default DailyAxisChart;

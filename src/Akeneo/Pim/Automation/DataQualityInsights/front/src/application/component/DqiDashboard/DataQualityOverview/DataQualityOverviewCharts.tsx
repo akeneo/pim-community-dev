@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import {useFetchDqiDashboardData} from "../../../../infrastructure/hooks";
-import AxisChart from "./AxisChart";
+import DailyAxisChart from "./DailyAxisChart";
 import {DataQualityOverviewChartHeader} from "../index";
 
 type Ranks = {
@@ -30,6 +30,7 @@ const transformData = (dataset: Dataset, axisName: string): any => {
   };
 
   Object.entries(dataset[axisName]).map(([date, ranksByDay]) => {
+
     if (Object.keys(ranksByDay).length === 0) {
       ranks['rank_1'].push({x: date, y: 0});
       ranks['rank_2'].push({x: date, y: 0});
@@ -56,35 +57,42 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale}: DataQualityO
   const myDataset = useFetchDqiDashboardData(catalogChannel, catalogLocale);
 
   if (Object.entries(myDataset).length === 0) {
-    return (<></>);
+
+    return (
+      <>
+        <div className="AknAssetPreview-imageContainer">
+          <img src="bundles/pimui/images/illustrations/Project.svg" alt="illustrations/Project.svg"/>
+        </div>
+        <div className="AknInfoBlock">
+            <p>Sorry, we don't have enough data yet to show the data quality overview.</p>
+            <p>Please come back later.</p>
+        </div>
+      </>
+    )
+  } else {
+
+    let i = 0;
+
+    return (
+      <>
+        {
+          Object.keys(myDataset).map((axisName: string) => {
+            const dataset = transformData(myDataset, axisName);
+            i++;
+            return (
+              <Fragment key={i}>
+                <DataQualityOverviewChartHeader axisName={axisName} displayLegend={i === 1}/>
+                <div className='AknDataQualityInsights-chart'>
+                  <DailyAxisChart dataset={dataset}/>
+                  {/*{isVisible && (<CustomTooltip/>)}*/}
+                </div>
+              </Fragment>
+            )
+          })
+        }
+      </>
+    )
   }
-
-
-  // if (Object.entries(dataset).length === 0) {
-  //   return (<></>);
-  // }
-
-  let i = 0;
-
-  return (
-    <>
-      {
-        Object.keys(myDataset).map((axisName: string) => {
-          const dataset = transformData(myDataset, axisName);
-          i++;
-          return (
-            <Fragment key={i}>
-              <DataQualityOverviewChartHeader axisName={axisName} displayLegend={i === 1}/>
-              <div className='AknDataQualityInsights-chart'>
-                <AxisChart dataset={dataset}/>
-                {/*{isVisible && (<CustomTooltip/>)}*/}
-              </div>
-            </Fragment>
-          )
-        })
-      }
-    </>
-  )
 };
 
 export default DataQualityOverviewCharts;
