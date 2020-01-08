@@ -10,7 +10,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlGetLatestVersionIdsByIdsQuery
+class SqlGetAllButLastVersionIdsByIdsQuery
 {
     /** @var Connection */
     private $dbConnection;
@@ -30,7 +30,7 @@ class SqlGetLatestVersionIdsByIdsQuery
 SELECT current.id 
 FROM pim_versioning_version AS current
 WHERE current.id IN (:version_ids)
-AND NOT EXISTS(
+AND EXISTS(
     SELECT 1 FROM pim_versioning_version AS latest 
     WHERE latest.resource_name = current.resource_name
         AND latest.resource_id = current.resource_id

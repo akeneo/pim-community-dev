@@ -28,10 +28,9 @@ class SqlGetPurgeableVersionListQuery
     {
         $query = <<<SQL
 SELECT id FROM pim_versioning_version 
-WHERE logged_at > :logged_at  
-  AND resource_name = :resource_name
-  AND id > :last_id 
-ORDER BY logged_at, id LIMIT :list_size
+WHERE resource_name = :resource_name  
+  AND ((logged_at = :logged_at AND id > :last_id) OR logged_at > :logged_at) 
+ORDER BY logged_at ASC, id ASC LIMIT :list_size
 SQL;
 
         return $this->fetchVersionIds($query, $resourceName, $date, $listSize);

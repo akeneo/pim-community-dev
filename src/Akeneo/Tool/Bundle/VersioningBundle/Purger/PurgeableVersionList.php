@@ -43,4 +43,15 @@ class PurgeableVersionList implements \Countable
 
         return new self($this->resourceName, $versionIds);
     }
+
+    public function keep(array $versionIds): self
+    {
+        if (empty($versionIds)) {
+            return $this;
+        }
+
+        $versionIds = array_values(array_intersect($this->versionIds, $versionIds));
+
+        return new self($this->resourceName, $versionIds);
+    }
 }

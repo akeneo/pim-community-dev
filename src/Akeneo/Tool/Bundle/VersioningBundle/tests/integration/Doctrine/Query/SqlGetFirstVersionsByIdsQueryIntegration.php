@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetFirstVersionIdsByIdsQuery;
-use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetLatestVersionIdsByIdsQuery;
+use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetAllButLastVersionIdsByIdsQuery;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 
 /**

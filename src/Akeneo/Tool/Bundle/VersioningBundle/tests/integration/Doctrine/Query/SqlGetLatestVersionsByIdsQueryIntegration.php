@@ -7,7 +7,7 @@ namespace Akeneo\Tool\Bundle\VersioningBundle\tests\integration\Doctrine\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetLatestVersionIdsByIdsQuery;
+use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetAllButLastVersionIdsByIdsQuery;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 
 /**
@@ -87,7 +87,7 @@ class SqlGetLatestVersionsByIdsQueryIntegration extends TestCase
         $this->get('database_connection')->executeQuery('DELETE FROM pim_versioning_version');
     }
 
-    private function getQuery(): SqlGetLatestVersionIdsByIdsQuery
+    private function getQuery(): SqlGetAllButLastVersionIdsByIdsQuery
     {
         return $this->get('pim_versioning.query.get_latest_version_ids_by_ids');
     }
