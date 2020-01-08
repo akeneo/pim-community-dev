@@ -20,10 +20,11 @@ import FileDropZone from 'akeneoassetmanager/application/asset-upload/component/
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {Reducer} from 'redux';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {onFileDrop} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-file-drop';
 import {onCreateAllAsset} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-create-all-assets';
 import {hasAnUnsavedLine} from 'akeneoassetmanager/application/asset-upload/utils/utils';
+import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import Channel from 'akeneoassetmanager/domain/model/channel';
 
 const Subtitle = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
@@ -45,12 +46,14 @@ const Title = styled.div`
 type UploadModalProps = {
   assetFamily: AssetFamily;
   locale: LocaleCode;
+  channels: Channel[];
+  locales: Locale[];
   // @TODO merge this two callbacks into one onClose()
   onCancel: () => void;
   onAssetCreated: () => void;
 };
 
-const UploadModal = ({assetFamily, locale, onCancel}: UploadModalProps) => {
+const UploadModal = ({assetFamily, locale, channels, locales, onCancel}: UploadModalProps) => {
   const [state, dispatch] = React.useReducer<Reducer<State>>(reducer, {lines: []});
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
   const valuePerLocale = attributeAsMainMedia.value_per_locale;
@@ -82,7 +85,7 @@ const UploadModal = ({assetFamily, locale, onCancel}: UploadModalProps) => {
       event.stopPropagation();
 
       const files = event.target.files ? Object.values(event.target.files) : [];
-      onFileDrop(files, assetFamily, dispatch);
+      onFileDrop(files, assetFamily, channels, locales, dispatch);
     },
     [assetFamily, dispatch]
   );
@@ -100,6 +103,9 @@ const UploadModal = ({assetFamily, locale, onCancel}: UploadModalProps) => {
       <FileDropZone onDrop={handleDrop} />
       <LineList
         lines={state.lines}
+        locale={locale}
+        channels={channels}
+        locales={locales}
         onLineChange={(line: Line) => {
           dispatch(editLineAction(line));
         }}

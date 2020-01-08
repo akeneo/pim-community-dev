@@ -60,6 +60,7 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         ];
         $datagridNormalizer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01');
 
+        $productProposal->getReviewStatusForChange('text', null, null)->willReturn('to_review');
         $productProposal->getId()->willReturn(1);
         $productProposal->getAuthor()->willReturn('Mary');
         $productProposal->getAuthorLabel()->willReturn('Mary Smith');

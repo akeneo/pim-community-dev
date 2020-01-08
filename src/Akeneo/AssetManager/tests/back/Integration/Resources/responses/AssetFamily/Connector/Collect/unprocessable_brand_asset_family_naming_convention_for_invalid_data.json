@@ -13,7 +13,7 @@
             "product_link_rules": [],
             "transformations": [],
             "naming_convention": {
-                "source": {"property":  "unknown", "locale": "en_US", "channel": null},
+                "source": {"property":  "attribute_as_main_media", "locale": "en_US", "channel": null},
                 "pattern": "/invalid_pattern)"
             }
         }
@@ -26,14 +26,14 @@
             "errors": [
                 {
                     "property": "naming_convention[source]",
-                    "message": "The property \"unknown\" does not exist for this asset family"
+                    "message": "Attribute \"media\" is not localizable, you cannot define a locale"
                 },
                 {
                     "property": "naming_convention[pattern]",
                     "message": "The regular expression \"/invalid_pattern)\" is malformed."
                 },
                 {
-                    "property": "naming_convention[strict]",
+                    "property": "naming_convention[abort_asset_creation_on_error]",
                     "message": "This field is missing."
                 }
             ]

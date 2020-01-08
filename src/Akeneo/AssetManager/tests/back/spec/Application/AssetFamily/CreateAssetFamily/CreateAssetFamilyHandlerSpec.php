@@ -57,7 +57,7 @@ class CreateAssetFamilyHandlerSpec extends ObjectBehavior
                     'locale' => null,
                 ],
                 'pattern' => '/valid_pattern/',
-                'strict' => true
+                'abort_asset_creation_on_error' => true
             ]
         );
 

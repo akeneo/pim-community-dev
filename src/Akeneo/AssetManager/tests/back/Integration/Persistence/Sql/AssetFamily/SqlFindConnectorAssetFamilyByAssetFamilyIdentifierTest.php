@@ -89,12 +89,12 @@ class SqlFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends SqlIntegrat
         $namingConvention = NamingConvention::createFromNormalized(
             [
                 'source' => [
-                    'property' => 'main',
+                    'property' => 'attribute_as_main_media',
                     'locale' => null,
                     'channel' => null,
                 ],
                 'pattern' => '/(pattern)/',
-                'strict' => false,
+                'abort_asset_creation_on_error' => false,
             ]
         );
         $assetFamily = $this->createDesignerAssetFamily($transformationCollection, $namingConvention);

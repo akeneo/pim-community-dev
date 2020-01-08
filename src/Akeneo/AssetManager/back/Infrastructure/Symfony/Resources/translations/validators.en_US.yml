@@ -45,7 +45,9 @@ pim_asset_manager:
                 empty_operation_list: 'At least one transformation operation is required.'
                 unknown_extra_field: 'The property {{ field }} is not defined and the definition does not allow additional properties.'
             naming_convention:
-                property_should_exist: 'The property "%property%" does not exist for this asset family'
+                invalid_property: 'Invalid property "%property%". It should be either one of "%expected_properties%".'
+                no_attribute_as_main_media: 'No attribute as main media was defined for family "%asset_family%".'
+                no_media_link_as_main_media: 'Cannot apply a naming convention on the attribute as main media if it is not a media file attribute.'
     asset:
         validation:
             code:

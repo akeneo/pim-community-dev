@@ -18,10 +18,12 @@ use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFam
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaLinkAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -92,7 +94,7 @@ class EditAssetFamilyNamingConventionContext implements Context
                     'locale' => null
                 ],
                 'pattern' => '/valid_pattern/',
-                'strict' => true
+                'abort_asset_creation_on_error' => true
             ]
         );
 
@@ -106,6 +108,17 @@ class EditAssetFamilyNamingConventionContext implements Context
     }
 
     /**
+     * @Given an asset family with a media link as attribute as main media
+     */
+    public function anAssetFamilyWithAMediaLinkAsAttributeAsMainMedia()
+    {
+        $this->anAssetFamilyWithANamingConvention();
+        $this->createMediaLinkAttribute('designer', 'external_image', false, false);
+        $editFamilyCommand = new EditAssetFamilyCommand('designer', [], null, 'external_image', null, null, null);
+        $this->editAssetFamily($editFamilyCommand);
+    }
+
+    /**
      * @When the user edits the family to set a valid naming convention
      */
     public function theUserEditsTheFamilyToAddAValidNamingConvention(): void
@@ -113,8 +126,23 @@ class EditAssetFamilyNamingConventionContext implements Context
         $this->editNamingConventionForAssetFamily('designer', [
             'source' => ['property' => 'code', 'channel' => null, 'locale' => null],
             'pattern' => '/valid_pattern/',
-            'strict' => true
+            'abort_asset_creation_on_error' => true
         ]);
+    }
+
+    /**
+     * @When the user edits the family to set a naming convention with attribute as main media
+     */
+    public function theUserEditsTheFamilyToSetNamingConventionWithAttributeAsMainMedia(): void
+    {
+        $this->editNamingConventionForAssetFamily(
+            'designer',
+            [
+                'source' => ['property' => 'attribute_as_main_media', 'channel' => null, 'locale' => null],
+                'pattern' => '/valid_pattern/',
+                'strict' => true
+            ]
+        );
     }
 
     /**
@@ -133,7 +161,7 @@ class EditAssetFamilyNamingConventionContext implements Context
         $this->editNamingConventionForAssetFamily('designer', [
             'source' => ['property' => 'invalid_property', 'channel' => null, 'locale' => null],
             'pattern' => '/valid_pattern/',
-            'strict' => true
+            'abort_asset_creation_on_error' => true
         ]);
     }
 
@@ -144,7 +172,7 @@ class EditAssetFamilyNamingConventionContext implements Context
     {
         $this->editNamingConventionForAssetFamily('designer', [
             'pattern' => '/valid_pattern/',
-            'strict' => true
+            'abort_asset_creation_on_error' => true
         ]);
     }
 
@@ -154,9 +182,9 @@ class EditAssetFamilyNamingConventionContext implements Context
     public function theUserEditsTheFamilyNamingConventionWithALocalizableSource(): void
     {
         $this->editNamingConventionForAssetFamily('designer', [
-            'source' => ['property' => 'title', 'channel' => null, 'locale' => 'en_US'],
+            'source' => ['property' => 'attribute_as_main_media', 'channel' => null, 'locale' => 'en_US'],
             'pattern' => '/valid_pattern/',
-            'strict' => true
+            'abort_asset_creation_on_error' => true
         ]);
     }
 
@@ -167,7 +195,7 @@ class EditAssetFamilyNamingConventionContext implements Context
     {
         $this->editNamingConventionForAssetFamily('designer', [
             'source' => ['property' => 'code', 'channel' => null, 'locale' => null],
-            'strict' => true
+            'abort_asset_creation_on_error' => true
         ]);
     }
 
@@ -179,12 +207,12 @@ class EditAssetFamilyNamingConventionContext implements Context
         $this->editNamingConventionForAssetFamily('designer', [
             'source' => ['property' => 'code', 'channel' => null, 'locale' => null],
             'pattern' => '/invalid)',
-            'strict' => true
+            'abort_asset_creation_on_error' => true
         ]);
     }
 
     /**
-     * @When the user edits the family naming convention without strict
+     * @When the user edits the family naming convention without abort_asset_creation_on_error parameter
      */
     public function theUserEditsTheFamilyNamingConventionWithoutStrict(): void
     {
@@ -195,12 +223,12 @@ class EditAssetFamilyNamingConventionContext implements Context
     }
 
     /**
-     * @Then there should be a validation error stating that the property is not found
+     * @Then there should be a validation error stating that the property is invalid
      */
-    public function thereShouldBeAValidationErrorStatingThatAnAttributeIsNotFound()
+    public function thereShouldBeAValidationErrorStatingThatAnAttributeIsInvalid()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'The property "invalid_property" does not exist for this asset family'
+            'Invalid property "invalid_property". It should be either one of "code", "attribute_as_main_media".'
         );
     }
 
@@ -220,7 +248,7 @@ class EditAssetFamilyNamingConventionContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheSourceMustNotBeLocalizable()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'Attribute "title" is not localizable, you cannot define a locale'
+            'Attribute "media" is not localizable, you cannot define a locale'
         );
     }
 
@@ -245,12 +273,22 @@ class EditAssetFamilyNamingConventionContext implements Context
     }
 
     /**
-     * @Then there should be a validation error stating that the strict must be defined
+     * @Then there should be a validation error stating that the abort_asset_creation_on_error parameter must be defined
      */
     public function thereShouldBeAValidationErrorStatingThatTheStrictMustBeDefined()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
             'This field is missing.'
+        );
+    }
+
+    /**
+     * @Then there should be a validation error stating that the source cannot be the attribute as main media
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheSourceCannotBeTheAttributeAsMainMedia()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            'Cannot apply a naming convention on the attribute as main media if it is not a media file attribute.'
         );
     }
 
@@ -264,7 +302,7 @@ class EditAssetFamilyNamingConventionContext implements Context
         $namingConvention = $assetFamily->getNamingConvention()->normalize();
         Assert::keyExists($namingConvention, 'source');
         Assert::keyExists($namingConvention, 'pattern');
-        Assert::keyExists($namingConvention, 'strict');
+        Assert::keyExists($namingConvention, 'abort_asset_creation_on_error');
     }
 
     private function getAssetFamily(string $familyIdentifier): AssetFamily
@@ -317,6 +355,30 @@ class EditAssetFamilyNamingConventionContext implements Context
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
             throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
+        }
+        ($this->createAttributeHandler)($createCommand);
+    }
+
+    private function createMediaLinkAttribute(
+        string $familyIdentifier,
+        string $attributeCode,
+        bool $scopable,
+        bool $localizable
+    ): void {
+        $createCommand = new CreateMediaLinkAttributeCommand(
+            $familyIdentifier,
+            $attributeCode,
+            [],
+            false,
+            $scopable,
+            $localizable,
+            MediaType::IMAGE,
+            null,
+            null
+        );
+        $violations = $this->validator->validate($createCommand);
+        if ($violations->count() > 0) {
+            throw new \LogicException(sprintf('Cannot create asset family attribute: %s', $violations->get(0)->getMessage()));
         }
         ($this->createAttributeHandler)($createCommand);
     }

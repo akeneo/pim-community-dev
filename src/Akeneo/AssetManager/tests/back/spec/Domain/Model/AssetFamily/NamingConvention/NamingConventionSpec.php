@@ -12,7 +12,7 @@ class NamingConventionSpec extends ObjectBehavior
     function it_is_a_naming_convention()
     {
         $this->beConstructedThrough('createFromNormalized', [
-            [['source' => ['property' => 'code'], 'pattern' => 'pattern', 'strict' => true]]
+            [['source' => ['property' => 'code'], 'pattern' => 'pattern', 'abort_asset_creation_on_error' => true]]
         ]);
         $this->shouldBeAnInstanceOf(NamingConvention::class);
         $this->shouldImplement(NamingConventionInterface::class);
@@ -29,7 +29,7 @@ class NamingConventionSpec extends ObjectBehavior
     {
         $this->beConstructedThrough(
             'createFromNormalized',
-            [['pattern' => '#(.*)#', 'strict' => true]]
+            [['pattern' => '#(.*)#', 'abort_asset_creation_on_error' => true]]
         );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
@@ -38,12 +38,12 @@ class NamingConventionSpec extends ObjectBehavior
     {
         $this->beConstructedThrough(
             'createFromNormalized',
-            [['source' => ['property' => 'code'], 'strict' => true]]
+            [['source' => ['property' => 'code'], 'abort_asset_creation_on_error' => true]]
         );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_constructed_without_a_strict_option()
+    function it_cannot_be_constructed_without_a_abort_asset_creation_on_error_option()
     {
         $this->beConstructedThrough(
             'createFromNormalized',
@@ -56,7 +56,7 @@ class NamingConventionSpec extends ObjectBehavior
     {
         $this->beConstructedThrough(
             'createFromNormalized',
-            [['source' => ['property' => 'code'], 'pattern' => '#(<?attribute>\w+)-(<?sku>w+)\.\w+#', 'strict' => false]]
+            [['source' => ['property' => 'code'], 'pattern' => '#(<?attribute>\w+)-(<?sku>w+)\.\w+#', 'abort_asset_creation_on_error' => false]]
         );
         $this->normalize()->shouldReturn(
             [
@@ -66,7 +66,7 @@ class NamingConventionSpec extends ObjectBehavior
                     'locale' => null,
                 ],
                 'pattern' => '#(<?attribute>\w+)-(<?sku>w+)\.\w+#',
-                'strict' => false,
+                'abort_asset_creation_on_error' => false,
             ]
         );
     }

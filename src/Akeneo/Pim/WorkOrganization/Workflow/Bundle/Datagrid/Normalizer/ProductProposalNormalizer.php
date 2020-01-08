@@ -16,6 +16,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -109,14 +110,20 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
         foreach ($changes['values'] as $code => $changeset) {
             $attribute = $this->getAttributesQuery->forCode($code);
             foreach ($changeset as $index => $change) {
-                if (!$this->isChangeDataNull($change['data'])) {
-                    $valueCollection->add($this->valueFactory->createByCheckingData(
-                        $attribute,
-                        $change['scope'],
-                        $change['locale'],
-                        $change['data']
-                    ));
+                if (true === $this->isChangeDataNull($change['data'])) {
+                    continue;
                 }
+
+                if (false === $this->changeNeedsReview($proposal, $code, $change['locale'], $change['scope'])) {
+                    continue;
+                }
+
+                $valueCollection->add($this->valueFactory->createByCheckingData(
+                    $attribute,
+                    $change['scope'],
+                    $change['locale'],
+                    $change['data']
+                ));
             }
         }
 
@@ -150,5 +157,14 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
     private function isChangeDataNull($changeData): bool
     {
         return null === $changeData || '' === $changeData || [] === $changeData;
+    }
+
+    private function changeNeedsReview(
+        ProductDraft $proposal,
+        string $code,
+        ?string $localeCode,
+        ?string $channelCode
+    ): bool {
+        return EntityWithValuesDraftInterface::CHANGE_TO_REVIEW === $proposal->getReviewStatusForChange($code, $localeCode, $channelCode);
     }
 }

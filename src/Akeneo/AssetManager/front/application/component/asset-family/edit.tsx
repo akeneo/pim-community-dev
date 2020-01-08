@@ -11,12 +11,15 @@ import Key from 'akeneoassetmanager/tools/key';
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {assetUploadDone} from 'akeneoassetmanager/domain/event/asset/upload';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {updateAssetResults} from 'akeneoassetmanager/application/action/asset/search';
+import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import Channel from 'akeneoassetmanager/domain/model/channel';
 
 interface StateProps {
   locale: LocaleCode;
   assetFamily: AssetFamily;
+  channels: Channel[];
+  locales: Locale[];
   sidebar: {
     tabs: Tab[];
     currentTab: string;
@@ -86,6 +89,8 @@ class AssetFamilyEditView extends React.Component<EditProps> {
           <UploadModal
             locale={this.props.locale}
             assetFamily={this.props.assetFamily}
+            channels={this.props.channels}
+            locales={this.props.locales}
             onCancel={this.props.events.closeMassUpload}
             onAssetCreated={this.props.events.closeMassUpload}
           />
@@ -103,6 +108,8 @@ export default connect(
     return {
       locale: state.user.catalogLocale,
       assetFamily: state.form.data,
+      channels: state.structure.channels,
+      locales: state.structure.locales,
       sidebar: {
         tabs,
         currentTab,

@@ -55,7 +55,7 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
                 'channel' => null,
             ],
             'pattern' => '/^(<?product_ref>\w+)-(<?attribute>\w+).png$/',
-            'strict' => false,
+            'abort_asset_creation_on_error' => false,
         ]);
 
         $this->beConstructedWith(
@@ -147,7 +147,7 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
                     'locale' => null,
                 ],
                 'pattern' => '/^(<?product_ref>\w+)-(<?attribute>\w+).png$/',
-                'strict' => false,
+                'abort_asset_creation_on_error' => false,
             ],
         ]);
     }

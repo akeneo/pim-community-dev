@@ -20,6 +20,7 @@ use Webmozart\Assert\Assert;
 class Source
 {
     private const ASSET_CODE_PROPERTY = 'code';
+    private const ATTRIBUTE_AS_MAIN_MEDIA_PROPERTY = 'attribute_as_main_media';
 
     /** @var string */
     private $property;
@@ -43,7 +44,10 @@ class Source
     public static function createFromNormalized(array $normalizedSource): self
     {
         Assert::keyExists($normalizedSource, 'property');
-        Assert::stringNotEmpty($normalizedSource['property']);
+        Assert::oneOf($normalizedSource['property'], [
+            self::ASSET_CODE_PROPERTY,
+            self::ATTRIBUTE_AS_MAIN_MEDIA_PROPERTY
+        ]);
 
         return new self(
             $normalizedSource['property'],

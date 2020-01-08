@@ -103,8 +103,9 @@ class ContextConfigurator extends BaseContextConfigurator
         } else {
             try {
                 $tree = $this->userContext->getAccessibleUserTree();
-
-                return $tree->getId();
+                if ($tree !== null) {
+                    return $tree->getId();
+                }
             } catch (\LogicException $e) {
                 return null;
             }

@@ -1,10 +1,12 @@
 import * as React from 'react';
 import $ from 'jquery';
 
+export type Select2Options = {
+  [value: string]: string;
+};
+
 export interface Select2Props {
-  data: {
-    [choiceValue: string]: string;
-  };
+  data: Select2Options;
   value: string[] | string;
   multiple: boolean;
   readOnly: boolean;
@@ -29,7 +31,7 @@ export default class Select2 extends React.Component<Select2Props & any> {
     const $el = $(this.select.current) as any;
 
     if (undefined !== $el.select2) {
-      $el.val(this.props.value).select2(this.props.configuration);
+      $el.val(this.props.value).select2(this.props.configuration || {});
       $el.on('change', (event: any) => {
         this.props.onChange(event.val);
       });
@@ -50,7 +52,7 @@ export default class Select2 extends React.Component<Select2Props & any> {
 
     if (undefined !== $el.select2) {
       $('#select2-drop-mask, #select2-drop').remove();
-      $el.val(value).select2(this.props.configuration);
+      $el.val(value).select2(this.props.configuration || {});
     }
   }
 
@@ -70,6 +72,7 @@ export default class Select2 extends React.Component<Select2Props & any> {
       <select
         {...props}
         ref={this.select}
+        value={value}
         multiple={props.multiple}
         disabled={props.readOnly}
         onChange={event => {

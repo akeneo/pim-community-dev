@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConvention\Pattern;
-use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConvention\RawSourceExist;
+use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConvention\RawSource;
 use Akeneo\AssetManager\Infrastructure\Validation\Channel\RawChannelShouldExist;
 use Akeneo\AssetManager\Infrastructure\Validation\Locale\RawLocaleShouldBeActivated;
 use Symfony\Component\Validator\Constraint;
@@ -41,6 +41,7 @@ class NamingConventionValidator extends ConstraintValidator
 
         $constraint = new Assert\Collection([
             'source' => [
+                new Assert\Type('array'),
                 new Assert\Collection([
                     'property' => [
                         new Assert\Type('string'),
@@ -49,10 +50,10 @@ class NamingConventionValidator extends ConstraintValidator
                     'locale' => new RawLocaleShouldBeActivated(),
                     'channel' => new RawChannelShouldExist(),
                 ]),
-                new RawSourceExist($assetFamilyIdentifier),
+                new RawSource($assetFamilyIdentifier),
             ],
             'pattern' => new Pattern(),
-            'strict' => new Assert\Type('bool'),
+            'abort_asset_creation_on_error' => new Assert\Type('bool'),
         ]);
 
         $context = $this->context;
