@@ -89,7 +89,7 @@ class SqlFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends SqlIntegrat
         $namingConvention = NamingConvention::createFromNormalized(
             [
                 'source' => [
-                    'property' => 'main',
+                    'property' => 'media',
                     'locale' => null,
                     'channel' => null,
                 ],

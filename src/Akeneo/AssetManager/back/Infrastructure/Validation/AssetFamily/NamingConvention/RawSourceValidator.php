@@ -17,40 +17,38 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsMainMediaInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Validation;
 
-class RawSourceExistValidator extends ConstraintValidator
+class RawSourceValidator extends ConstraintValidator
 {
     private const ASSET_CODE_PROPERTY = 'code';
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
-    {
+    /** @var FindAssetFamilyAttributeAsMainMediaInterface */
+    private $findAttributeAsMainMedia;
+
+    public function __construct(
+        AttributeRepositoryInterface $attributeRepository,
+        FindAssetFamilyAttributeAsMainMediaInterface $findAttributeAsMainMedia
+    ) {
         $this->attributeRepository = $attributeRepository;
+        $this->findAttributeAsMainMedia = $findAttributeAsMainMedia;
     }
 
     public function validate($rawSource, Constraint $constraint)
     {
-        if (!$constraint instanceof RawSourceExist) {
-            throw new UnexpectedTypeException($constraint, RawSourceExist::class);
+        if (!$constraint instanceof RawSource) {
+            throw new UnexpectedTypeException($constraint, RawSource::class);
         }
 
         if (self::ASSET_CODE_PROPERTY === $rawSource['property']) {
-            return;
-        }
-
-        $validator = Validation::createValidator();
-        $violations = $validator->validate($rawSource, new Assert\Type('array'));
-        foreach ($violations as $violation) {
-            $this->context->addViolation($violation->getMessage(), $violation->getParameters());
             return;
         }
 
@@ -61,7 +59,17 @@ class RawSourceExistValidator extends ConstraintValidator
             );
         } catch (AttributeNotFoundException $e) {
             $this->context->buildViolation(
-                RawSourceExist::ATTRIBUTE_NOT_FOUND_ERROR,
+                RawSource::ATTRIBUTE_NOT_FOUND_ERROR,
+                ['%property%' => $rawSource['property']]
+            )->addViolation();
+
+            return;
+        }
+
+        $attributeAsMainMedia = $this->findAttributeAsMainMedia->find($constraint->getAssetFamilyIdentifier());
+        if ($attributeAsMainMedia->isEmpty() ||!$attributeAsMainMedia->getIdentifier()->equals($attribute->getIdentifier())) {
+            $this->context->buildViolation(
+                RawSource::ATTRIBUTE_IS_NOT_MAIN_MEDIA,
                 ['%property%' => $rawSource['property']]
             )->addViolation();
 

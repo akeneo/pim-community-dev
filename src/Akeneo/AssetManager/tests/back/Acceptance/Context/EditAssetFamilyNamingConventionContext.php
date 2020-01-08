@@ -18,10 +18,12 @@ use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFam
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaLinkAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -102,7 +104,7 @@ class EditAssetFamilyNamingConventionContext implements Context
         }
 
         ($this->createAssetFamilyHandler)($createCommand);
-        $this->createTextAttribute('designer', 'title', false, false);
+        $this->createMediaLinkAttribute('designer', 'external_image', false, true);
     }
 
     /**
@@ -154,7 +156,7 @@ class EditAssetFamilyNamingConventionContext implements Context
     public function theUserEditsTheFamilyNamingConventionWithALocalizableSource(): void
     {
         $this->editNamingConventionForAssetFamily('designer', [
-            'source' => ['property' => 'title', 'channel' => null, 'locale' => 'en_US'],
+            'source' => ['property' => 'media', 'channel' => null, 'locale' => 'en_US'],
             'pattern' => '/valid_pattern/',
             'abort_asset_creation_on_error' => true
         ]);
@@ -195,6 +197,18 @@ class EditAssetFamilyNamingConventionContext implements Context
     }
 
     /**
+     * @When the user edits the family naming convention with an attribute which is not the main media
+     */
+    public function theUserEditsTheFamilyNamingConventionWithAnAttributeWhichIsNotTheMainMedia()
+    {
+        $this->editNamingConventionForAssetFamily('designer', [
+            'source' => ['property' => 'external_image', 'channel' => null, 'locale' => 'en_US'],
+            'pattern' => '/valid_pattern/',
+            'abort_asset_creation_on_error' => false,
+        ]);
+    }
+
+    /**
      * @Then there should be a validation error stating that the property is not found
      */
     public function thereShouldBeAValidationErrorStatingThatAnAttributeIsNotFound()
@@ -220,7 +234,7 @@ class EditAssetFamilyNamingConventionContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheSourceMustNotBeLocalizable()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'Attribute "title" is not localizable, you cannot define a locale'
+            'Attribute "media" is not localizable, you cannot define a locale'
         );
     }
 
@@ -251,6 +265,16 @@ class EditAssetFamilyNamingConventionContext implements Context
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
             'This field is missing.'
+        );
+    }
+
+    /**
+     * @Then there should be a validation error stating that the provided attribute code is not the attribute as main media
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProvidedAttributeCodeIsInvalid()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            'Expected property "external_image" to match the code of the attribute as main media.'
         );
     }
 
@@ -299,24 +323,22 @@ class EditAssetFamilyNamingConventionContext implements Context
         }
     }
 
-    private function createTextAttribute(string $familyIdentifier, string $attributeCode, bool $scopable, bool $localizable): void
+    private function createMediaLinkAttribute(string $familyIdentifier, string $attributeCode, bool $scopable, bool $localizable): void
     {
-        $createCommand = new CreateTextAttributeCommand(
+        $createCommand = new CreateMediaLinkAttributeCommand(
             $familyIdentifier,
             $attributeCode,
             [],
             false,
             $scopable,
             $localizable,
+            MediaType::IMAGE,
             null,
-            false,
-            false,
-            'none',
             null
         );
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
-            throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
+            throw new \LogicException(sprintf('Cannot create attribute: %s', $violations->get(0)->getMessage()));
         }
         ($this->createAttributeHandler)($createCommand);
     }

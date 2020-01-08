@@ -346,8 +346,9 @@ services:
         tags:
             - { name: 'validator.constraint_validator' }
 
-    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConvention\RawSourceExistValidator:
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConvention\RawSourceValidator:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_main_media'
         tags:
             - { name: 'validator.constraint_validator' }
