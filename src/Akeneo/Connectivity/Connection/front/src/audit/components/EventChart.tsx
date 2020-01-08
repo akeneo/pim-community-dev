@@ -28,7 +28,7 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
         if (0 === Object.keys(state.sourceConnections).length) {
             setSelectedConnectionCode(undefined);
         } else if (Object.keys(state.sourceConnections).length > 0 && undefined === selectedConnectionCode) {
-            setSelectedConnectionCode(Object.values(state.sourceConnections)[0].code);
+            setSelectedConnectionCode('<all>');
         }
     }, [state.sourceConnections, selectedConnectionCode]);
 
@@ -57,11 +57,19 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
         setChartData(chartData);
     }, [formatDate, translate, connectionsAuditData, selectedConnectionCode]);
 
+    let connections = Object.values(state.sourceConnections);
+    connections.unshift({
+        code: '<all>',
+        label: translate('akeneo_connectivity.connection.dashboard.connection_selector.all'),
+        flowType: connections[0].flowType,
+        image: null,
+    });
+
     return (
         <EventChartContainer>
             <Section title={title}>
                 <ConnectionSelect
-                    connections={Object.values(state.sourceConnections)}
+                    connections={connections}
                     code={selectedConnectionCode}
                     onChange={code => setSelectedConnectionCode(code)}
                 />

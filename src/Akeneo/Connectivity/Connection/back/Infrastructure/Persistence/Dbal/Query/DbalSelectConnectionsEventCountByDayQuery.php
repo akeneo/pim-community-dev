@@ -31,12 +31,10 @@ class DbalSelectConnectionsEventCountByDayQuery implements SelectConnectionsEven
         $endDateTime = new \DateTime($endDate, new \DateTimeZone('UTC'));
 
         $sqlQuery = <<<SQL
-SELECT conn.code, audit.event_date, audit.event_count
+SELECT audit.connection_code as code, audit.event_date, audit.event_count
 FROM akeneo_connectivity_connection conn
-LEFT JOIN akeneo_connectivity_connection_audit audit ON audit.connection_code = conn.code 
-AND audit.event_date BETWEEN :start_date AND :end_date
-AND audit.event_type = :event_type
-GROUP BY conn.code, audit.event_date, audit.event_count
+RIGHT JOIN akeneo_connectivity_connection_audit audit ON audit.connection_code = conn.code
+WHERE audit.event_type = :event_type AND audit.event_date BETWEEN :start_date AND :end_date
 ORDER BY audit.event_date
 SQL;
         $sqlParams = [

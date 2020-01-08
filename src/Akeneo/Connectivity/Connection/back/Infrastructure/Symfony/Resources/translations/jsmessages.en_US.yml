@@ -129,6 +129,7 @@ akeneo_connectivity.connection:
             link_url: https://help.akeneo.com/pim/articles/connection-dashboard.html
         connection_selector:
             title: Source connections
+            all: All
         charts:
             number_of_products_created: Number of products created
             number_of_products_updated: Number of products updated
