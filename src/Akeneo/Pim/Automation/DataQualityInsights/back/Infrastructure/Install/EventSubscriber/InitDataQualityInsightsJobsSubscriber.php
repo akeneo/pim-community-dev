@@ -13,25 +13,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeJobs;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InitDataQualityInsightsJobsSubscriber implements EventSubscriberInterface
 {
-    /** @var ObjectRepository */
-    private $jobInstanceRepository;
+    /** @var InitializeJobs */
+    private $initializeJobs;
 
-    /** @var Connection */
-    private $db;
-
-    public function __construct(ObjectRepository $jobInstanceRepository, Connection $db)
+    public function __construct(InitializeJobs $initializeJobs)
     {
-        $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->db = $db;
+        $this->initializeJobs = $initializeJobs;
     }
 
     /**
@@ -46,38 +40,6 @@ class InitDataQualityInsightsJobsSubscriber implements EventSubscriberInterface
 
     public function initJobs(InstallerEvent $event): void
     {
-        if (!$this->isJobInstanceAlreadyCreated(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME)) {
-            $this->createJobInstance(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME);
-        }
-    }
-
-    private function createJobInstance(string $jobName): void
-    {
-        $query = <<<SQL
-INSERT INTO `akeneo_batch_job_instance` (`code`, `label`, `job_name`, `status`, `connector`, `raw_parameters`, `type`)
-VALUES (
-    :job_name,
-    :job_name,
-    :job_name,
-    0,
-    'Data Quality Insights Connector',
-    'a:0:{}',
-    'data_quality_insights'
-);
-SQL;
-        $this->db->executeUpdate(
-            $query,
-            [
-                'job_name' => $jobName,
-            ],
-            [
-                'job_name' => \PDO::PARAM_STR,
-            ]
-        );
-    }
-
-    private function isJobInstanceAlreadyCreated(string $code): bool
-    {
-        return null !== $this->jobInstanceRepository->findOneBy(['code' => $code]);
+        $this->initializeJobs->initialize();
     }
 }

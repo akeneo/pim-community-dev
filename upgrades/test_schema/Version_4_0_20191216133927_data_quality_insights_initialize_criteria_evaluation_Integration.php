@@ -57,7 +57,7 @@ class Version_4_0_20191216133927_data_quality_insights_initialize_criteria_evalu
     private function addEvaluationJob()
     {
         $this->get('pim_catalog.command_launcher')->executeForeground(
-            sprintf('doctrine:migrations:execute %s --up -n', '_4_0_20191210100000_data_quality_insights_add_evaluation_job')
+            sprintf('doctrine:migrations:execute %s --up -n', '_4_0_20191210100000_data_quality_insights_add_jobs')
         );
     }
 

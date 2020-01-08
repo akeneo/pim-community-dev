@@ -22,6 +22,7 @@ final class Version_4_0_20191216133927_data_quality_insights_initialize_criteria
         $this->disableMigrationWarning();
         try
         {
+            $this->initializeDictionary();
             $initializeCriteriaEvaluation = $this->container->get('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeCriteriaEvaluation');
             $initializeCriteriaEvaluation->initialize();
         }
@@ -50,5 +51,13 @@ final class Version_4_0_20191216133927_data_quality_insights_initialize_criteria
     public function setContainer(ContainerInterface $container = null)
     {
          $this->container = $container;
+    }
+
+    private function initializeDictionary(): void
+    {
+        $dictionaryGenerator = $this->container->get('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryGenerator');
+        $dictionarySource = $this->container->get('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\ProductValueInDatabaseDictionarySource');
+
+        $dictionaryGenerator->generate($dictionarySource);
     }
 }

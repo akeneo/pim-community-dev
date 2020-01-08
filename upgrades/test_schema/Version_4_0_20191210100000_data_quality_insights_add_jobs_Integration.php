@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\E
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-class Version_4_0_20191210100000_data_quality_insights_add_evaluation_job_Integration extends TestCase
+class Version_4_0_20191210100000_data_quality_insights_add_jobs_Integration extends TestCase
 {
 
     /**
@@ -27,12 +27,16 @@ class Version_4_0_20191210100000_data_quality_insights_add_evaluation_job_Integr
         self::assertEquals(0, $resultUp->getCommandStatus(), \json_encode($resultUp->getCommandOutput()));
 
         $stmt = $this->get('database_connection')->executeQuery(
-            'SELECT code FROM akeneo_batch_job_instance WHERE code = :code',
-            ['code' => EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME]
+            "SELECT code FROM akeneo_batch_job_instance WHERE type = 'data_quality_insights'",
         );
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-        self::assertIsArray($result);
-        self::assertEquals(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME, $result['code']);
+        $result = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+
+        $expectedJobCodes = [
+            EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME,
+            'data_quality_insights_periodic_tasks',
+        ];
+
+        self::assertEqualsCanonicalizing($expectedJobCodes, $result);
     }
 
     private function getMigrationLabel(): string
