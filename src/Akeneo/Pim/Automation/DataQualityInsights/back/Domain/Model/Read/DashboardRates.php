@@ -92,7 +92,9 @@ final class DashboardRates
             $lastSevenDays[(new \DateTime('-' . $i . 'DAY'))->format('Y-m-d')] = [];
         }
         foreach ($result as $axisName => $ranksByDay) {
-            $result[$axisName] = array_replace($lastSevenDays, $ranksByDay);
+            $ranksByDay = array_intersect_key($ranksByDay, $lastSevenDays);
+            $ranksByDay = array_replace($lastSevenDays, $ranksByDay);
+            $result[$axisName] = $ranksByDay;
         }
 
         return $result;
