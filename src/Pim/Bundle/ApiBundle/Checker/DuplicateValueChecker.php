@@ -45,6 +45,12 @@ class DuplicateValueChecker
             }
 
             foreach ($values as $value) {
+                // There is already a full set of validation on values structure, it's not the role of this validator
+                // to check for this errors. We ignore invalid values.
+                if (!isset($value['data'])) {
+                    continue;
+                }
+
                 $newKey = $this->generateKey(
                     isset($value['scope']) ? $value['scope'] : null,
                     isset($value['locale']) ? $value['locale'] : null
