@@ -94,7 +94,7 @@ class SqlFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends SqlIntegrat
                     'channel' => null,
                 ],
                 'pattern' => '/(pattern)/',
-                'strict' => false,
+                'abort_asset_creation_on_error' => false,
             ]
         );
         $assetFamily = $this->createDesignerAssetFamily($transformationCollection, $namingConvention);

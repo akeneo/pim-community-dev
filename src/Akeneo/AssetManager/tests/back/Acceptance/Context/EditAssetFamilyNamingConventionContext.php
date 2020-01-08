@@ -94,7 +94,7 @@ class EditAssetFamilyNamingConventionContext implements Context
                     'locale' => null
                 ],
                 'pattern' => '/valid_pattern/',
-                'strict' => true
+                'abort_asset_creation_on_error' => true
             ]
         );
 
@@ -126,7 +126,7 @@ class EditAssetFamilyNamingConventionContext implements Context
         $this->editNamingConventionForAssetFamily('designer', [
             'source' => ['property' => 'code', 'channel' => null, 'locale' => null],
             'pattern' => '/valid_pattern/',
-            'strict' => true
+            'abort_asset_creation_on_error' => true
         ]);
     }
 
@@ -161,7 +161,7 @@ class EditAssetFamilyNamingConventionContext implements Context
         $this->editNamingConventionForAssetFamily('designer', [
             'source' => ['property' => 'invalid_property', 'channel' => null, 'locale' => null],
             'pattern' => '/valid_pattern/',
-            'strict' => true
+            'abort_asset_creation_on_error' => true
         ]);
     }
 
@@ -172,7 +172,7 @@ class EditAssetFamilyNamingConventionContext implements Context
     {
         $this->editNamingConventionForAssetFamily('designer', [
             'pattern' => '/valid_pattern/',
-            'strict' => true
+            'abort_asset_creation_on_error' => true
         ]);
     }
 
@@ -184,7 +184,7 @@ class EditAssetFamilyNamingConventionContext implements Context
         $this->editNamingConventionForAssetFamily('designer', [
             'source' => ['property' => 'attribute_as_main_media', 'channel' => null, 'locale' => 'en_US'],
             'pattern' => '/valid_pattern/',
-            'strict' => true
+            'abort_asset_creation_on_error' => true
         ]);
     }
 
@@ -195,7 +195,7 @@ class EditAssetFamilyNamingConventionContext implements Context
     {
         $this->editNamingConventionForAssetFamily('designer', [
             'source' => ['property' => 'code', 'channel' => null, 'locale' => null],
-            'strict' => true
+            'abort_asset_creation_on_error' => true
         ]);
     }
 
@@ -207,12 +207,12 @@ class EditAssetFamilyNamingConventionContext implements Context
         $this->editNamingConventionForAssetFamily('designer', [
             'source' => ['property' => 'code', 'channel' => null, 'locale' => null],
             'pattern' => '/invalid)',
-            'strict' => true
+            'abort_asset_creation_on_error' => true
         ]);
     }
 
     /**
-     * @When the user edits the family naming convention without strict
+     * @When the user edits the family naming convention without abort_asset_creation_on_error parameter
      */
     public function theUserEditsTheFamilyNamingConventionWithoutStrict(): void
     {
@@ -273,7 +273,7 @@ class EditAssetFamilyNamingConventionContext implements Context
     }
 
     /**
-     * @Then there should be a validation error stating that the strict must be defined
+     * @Then there should be a validation error stating that the abort_asset_creation_on_error parameter must be defined
      */
     public function thereShouldBeAValidationErrorStatingThatTheStrictMustBeDefined()
     {
@@ -302,7 +302,7 @@ class EditAssetFamilyNamingConventionContext implements Context
         $namingConvention = $assetFamily->getNamingConvention()->normalize();
         Assert::keyExists($namingConvention, 'source');
         Assert::keyExists($namingConvention, 'pattern');
-        Assert::keyExists($namingConvention, 'strict');
+        Assert::keyExists($namingConvention, 'abort_asset_creation_on_error');
     }
 
     private function getAssetFamily(string $familyIdentifier): AssetFamily

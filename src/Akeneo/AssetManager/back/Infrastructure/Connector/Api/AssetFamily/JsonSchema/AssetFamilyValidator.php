@@ -181,7 +181,7 @@ class AssetFamilyValidator
                             'additionalProperties' => false,
                         ],
                         'pattern' => ['type' => 'string'],
-                        'strict' => ['type' => 'boolean'],
+                        'abort_asset_creation_on_error' => ['type' => 'boolean'],
                     ],
                     'additionalProperties' => false,
                 ],

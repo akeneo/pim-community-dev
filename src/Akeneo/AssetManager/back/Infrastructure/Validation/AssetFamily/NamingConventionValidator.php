@@ -53,7 +53,7 @@ class NamingConventionValidator extends ConstraintValidator
                 new RawSource($assetFamilyIdentifier),
             ],
             'pattern' => new Pattern(),
-            'strict' => new Assert\Type('bool'),
+            'abort_asset_creation_on_error' => new Assert\Type('bool'),
         ]);
 
         $context = $this->context;
