@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7971: Fix filters being incorrectly disabled in the attributes grid
+
 # 2.3.75 (2020-01-03)
 
 ## Bug fixes
