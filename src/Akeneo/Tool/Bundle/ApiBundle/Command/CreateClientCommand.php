@@ -66,6 +66,7 @@ class CreateClientCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        //preg_replace('[^a-zA-Z0-9_]', '_', $label);
         $client = $this->clientManager->createClient();
 
         $client->setRedirectUris($input->getOption('redirect_uri'));
