@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures;
 
-use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
-use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
 use Doctrine\DBAL\Connection as DbalConnection;
 
 /**

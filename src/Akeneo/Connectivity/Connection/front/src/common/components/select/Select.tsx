@@ -1,4 +1,4 @@
-import React, {FC, useState, ReactNode} from 'react';
+import React, {FC, useState, ReactNode, useEffect} from 'react';
 import styled from 'styled-components';
 import {Dropdown} from './Dropdown';
 import {OptionWithThumbnail} from './OptionWithThumbnail';
@@ -7,7 +7,7 @@ import {Title} from './Title';
 
 type Props = {
     data: {[value: string]: {label: string; imageSrc?: string}};
-    onChange: (value: string) => void;
+    onChange: (value?: string) => void;
     dropdownTitle?: ReactNode;
 };
 
@@ -16,12 +16,13 @@ export const Select: FC<Props> = ({data, onChange, dropdownTitle}: Props) => {
     const [selectedValue, setSelectedValue] = useState(
         (Object.keys(data).length > 0 && Object.keys(data)[0]) || undefined
     );
+    useEffect(() => {
+        onChange(selectedValue);
+    }, [selectedValue]);
 
     const handleClick = (value: string) => {
         setSelectedValue(value);
         setOpened(false);
-
-        onChange(value);
     };
 
     if (!selectedValue) {
