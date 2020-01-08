@@ -3,13 +3,13 @@
 namespace Pim\Upgrade\Schema;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Create the job instance to evaluate products for Data Quality Insights
  */
-class Version_4_0_20191210100000_data_quality_insights_add_jobs extends AbstractMigration
+class Version_4_0_20191210100000_data_quality_insights_add_evaluation_job extends AbstractMigration
 {
     public function up(Schema $schema)
     {

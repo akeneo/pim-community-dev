@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\E
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-class Version_4_0_20191210100000_data_quality_insights_add_jobs_Integration extends TestCase
+class Version_4_0_20191210100000_data_quality_insights_add_evaluation_job_Integration extends TestCase
 {
 
     /**
