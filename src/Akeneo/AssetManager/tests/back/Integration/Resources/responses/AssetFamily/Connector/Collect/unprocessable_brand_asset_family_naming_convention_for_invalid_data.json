@@ -13,7 +13,7 @@
             "product_link_rules": [],
             "transformations": [],
             "naming_convention": {
-                "source": {"property":  "attribute_as_main_media", "locale": "en_US", "channel": null},
+                "source": {"property":  "unknown", "locale": "en_US", "channel": null},
                 "pattern": "/invalid_pattern)"
             }
         }
@@ -26,7 +26,7 @@
             "errors": [
                 {
                     "property": "naming_convention[source]",
-                    "message": "Attribute \"media\" is not localizable, you cannot define a locale"
+                    "message": "The property \"unknown\" does not exist for this asset family"
                 },
                 {
                     "property": "naming_convention[pattern]",

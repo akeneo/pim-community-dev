@@ -15,9 +15,10 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConven
 
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsMainMediaInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -26,20 +27,19 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class RawSourceValidator extends ConstraintValidator
 {
     private const ASSET_CODE_PROPERTY = 'code';
-    private const ATTRIBUTE_AS_MAIN_MEDIA_PROPERTY = 'attribute_as_main_media';
-
-    /** @var FindAssetFamilyAttributeAsMainMediaInterface */
-    private $findAttributeAsMainMedia;
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var FindAssetFamilyAttributeAsMainMediaInterface */
+    private $findAttributeAsMainMedia;
+
     public function __construct(
-        FindAssetFamilyAttributeAsMainMediaInterface $findAttributeAsMainMedia,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        FindAssetFamilyAttributeAsMainMediaInterface $findAttributeAsMainMedia
     ) {
-        $this->findAttributeAsMainMedia = $findAttributeAsMainMedia;
         $this->attributeRepository = $attributeRepository;
+        $this->findAttributeAsMainMedia = $findAttributeAsMainMedia;
     }
 
     public function validate($rawSource, Constraint $constraint)
@@ -50,44 +50,37 @@ class RawSourceValidator extends ConstraintValidator
 
         if (self::ASSET_CODE_PROPERTY === $rawSource['property']) {
             return;
-        } elseif (self::ATTRIBUTE_AS_MAIN_MEDIA_PROPERTY !== $rawSource['property']) {
+        }
+
+        try {
+            $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+                AttributeCode::fromString($rawSource['property']),
+                $constraint->getAssetFamilyIdentifier()
+            );
+        } catch (AttributeNotFoundException $e) {
             $this->context->buildViolation(
-                RawSource::INVALID_PROPERTY_ERROR,
-                [
-                    '%property%' => $rawSource['property'],
-                    '%expected_properties%' => implode('", "', [self::ASSET_CODE_PROPERTY, self::ATTRIBUTE_AS_MAIN_MEDIA_PROPERTY])
-                ]
+                RawSource::ATTRIBUTE_NOT_FOUND_ERROR,
+                ['%property%' => $rawSource['property']]
             )->addViolation();
 
             return;
         }
 
-        $this->validateAttributeAsMainMedia($rawSource, $constraint->getAssetFamilyIdentifier());
+        $attributeAsMainMedia = $this->findAttributeAsMainMedia->find($constraint->getAssetFamilyIdentifier());
+        if ($attributeAsMainMedia->isEmpty() || !$attributeAsMainMedia->getIdentifier()->equals($attribute->getIdentifier())) {
+            $this->context->buildViolation(
+                RawSource::ATTRIBUTE_IS_NOT_MAIN_MEDIA,
+                ['%property%' => $rawSource['property']]
+            )->addViolation();
+
+            return;
+        }
+
+        $this->validateAttribute($rawSource, $attribute);
     }
 
-    private function validateAttributeAsMainMedia(array $source, AssetFamilyIdentifier $assetFamilyIdentifier): void
+    private function validateAttribute(array $source, AbstractAttribute $attribute): void
     {
-        $attributeAsMainMedia = $this->findAttributeAsMainMedia->find($assetFamilyIdentifier);
-        if ($attributeAsMainMedia->isEmpty()) {
-            $this->context->buildViolation(
-                RawSource::NO_ATTRIBUTE_AS_MAIN_MEDIA,
-                [
-                    '%asset_family%' => $assetFamilyIdentifier->__toString(),
-                ]
-            )->addViolation();
-
-            return;
-        }
-        $attribute = $this->attributeRepository->getByIdentifier($attributeAsMainMedia->getIdentifier());
-
-        if (!$attribute instanceof MediaFileAttribute) {
-            $this->context->buildViolation(
-                RawSource::NO_MEDIA_LINK_AS_MAIN_MEDIA
-            )->addViolation();
-
-            return;
-        }
-
         $channelReference = ChannelReference::createfromNormalized($source['channel']);
         $localeReference = LocaleReference::createFromNormalized($source['locale']);
 

@@ -104,18 +104,7 @@ class EditAssetFamilyNamingConventionContext implements Context
         }
 
         ($this->createAssetFamilyHandler)($createCommand);
-        $this->createTextAttribute('designer', 'title', false, false);
-    }
-
-    /**
-     * @Given an asset family with a media link as attribute as main media
-     */
-    public function anAssetFamilyWithAMediaLinkAsAttributeAsMainMedia()
-    {
-        $this->anAssetFamilyWithANamingConvention();
-        $this->createMediaLinkAttribute('designer', 'external_image', false, false);
-        $editFamilyCommand = new EditAssetFamilyCommand('designer', [], null, 'external_image', null, null, null);
-        $this->editAssetFamily($editFamilyCommand);
+        $this->createMediaLinkAttribute('designer', 'external_image', false, true);
     }
 
     /**
@@ -128,21 +117,6 @@ class EditAssetFamilyNamingConventionContext implements Context
             'pattern' => '/valid_pattern/',
             'abort_asset_creation_on_error' => true
         ]);
-    }
-
-    /**
-     * @When the user edits the family to set a naming convention with attribute as main media
-     */
-    public function theUserEditsTheFamilyToSetNamingConventionWithAttributeAsMainMedia(): void
-    {
-        $this->editNamingConventionForAssetFamily(
-            'designer',
-            [
-                'source' => ['property' => 'attribute_as_main_media', 'channel' => null, 'locale' => null],
-                'pattern' => '/valid_pattern/',
-                'strict' => true
-            ]
-        );
     }
 
     /**
@@ -182,7 +156,7 @@ class EditAssetFamilyNamingConventionContext implements Context
     public function theUserEditsTheFamilyNamingConventionWithALocalizableSource(): void
     {
         $this->editNamingConventionForAssetFamily('designer', [
-            'source' => ['property' => 'attribute_as_main_media', 'channel' => null, 'locale' => 'en_US'],
+            'source' => ['property' => 'media', 'channel' => null, 'locale' => 'en_US'],
             'pattern' => '/valid_pattern/',
             'abort_asset_creation_on_error' => true
         ]);
@@ -223,12 +197,24 @@ class EditAssetFamilyNamingConventionContext implements Context
     }
 
     /**
-     * @Then there should be a validation error stating that the property is invalid
+     * @When the user edits the family naming convention with an attribute which is not the main media
      */
-    public function thereShouldBeAValidationErrorStatingThatAnAttributeIsInvalid()
+    public function theUserEditsTheFamilyNamingConventionWithAnAttributeWhichIsNotTheMainMedia()
+    {
+        $this->editNamingConventionForAssetFamily('designer', [
+            'source' => ['property' => 'external_image', 'channel' => null, 'locale' => 'en_US'],
+            'pattern' => '/valid_pattern/',
+            'abort_asset_creation_on_error' => false,
+        ]);
+    }
+
+    /**
+     * @Then there should be a validation error stating that the property is not found
+     */
+    public function thereShouldBeAValidationErrorStatingThatAnAttributeIsNotFound()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'Invalid property "invalid_property". It should be either one of "code", "attribute_as_main_media".'
+            'The property "invalid_property" does not exist for this asset family'
         );
     }
 
@@ -283,12 +269,12 @@ class EditAssetFamilyNamingConventionContext implements Context
     }
 
     /**
-     * @Then there should be a validation error stating that the source cannot be the attribute as main media
+     * @Then there should be a validation error stating that the provided attribute code is not the attribute as main media
      */
-    public function thereShouldBeAValidationErrorStatingThatTheSourceCannotBeTheAttributeAsMainMedia()
+    public function thereShouldBeAValidationErrorStatingThatTheProvidedAttributeCodeIsInvalid()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'Cannot apply a naming convention on the attribute as main media if it is not a media file attribute.'
+            'Expected property "external_image" to match the code of the attribute as main media.'
         );
     }
 
@@ -337,34 +323,8 @@ class EditAssetFamilyNamingConventionContext implements Context
         }
     }
 
-    private function createTextAttribute(string $familyIdentifier, string $attributeCode, bool $scopable, bool $localizable): void
+    private function createMediaLinkAttribute(string $familyIdentifier, string $attributeCode, bool $scopable, bool $localizable): void
     {
-        $createCommand = new CreateTextAttributeCommand(
-            $familyIdentifier,
-            $attributeCode,
-            [],
-            false,
-            $scopable,
-            $localizable,
-            null,
-            false,
-            false,
-            'none',
-            null
-        );
-        $violations = $this->validator->validate($createCommand);
-        if ($violations->count() > 0) {
-            throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
-        }
-        ($this->createAttributeHandler)($createCommand);
-    }
-
-    private function createMediaLinkAttribute(
-        string $familyIdentifier,
-        string $attributeCode,
-        bool $scopable,
-        bool $localizable
-    ): void {
         $createCommand = new CreateMediaLinkAttributeCommand(
             $familyIdentifier,
             $attributeCode,
@@ -378,7 +338,7 @@ class EditAssetFamilyNamingConventionContext implements Context
         );
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
-            throw new \LogicException(sprintf('Cannot create asset family attribute: %s', $violations->get(0)->getMessage()));
+            throw new \LogicException(sprintf('Cannot create attribute: %s', $violations->get(0)->getMessage()));
         }
         ($this->createAttributeHandler)($createCommand);
     }
