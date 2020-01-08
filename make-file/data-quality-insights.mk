@@ -12,7 +12,11 @@ data-quality-insights-phpstan: var/cache/dev
 
 .PHONY: data-quality-insights-unit-back
 data-quality-insights-unit-back:
+ifeq ($(CI),true)
+	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run src/Akeneo/Pim/Automation/DataQualityInsights/back/tests/Specification --format=junit > var/tests/phpspec/data-quality-insights.xml
+else
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Pim/Automation/DataQualityInsights/back/tests/Specification
+endif
 
 .PHONY: data-quality-insights-lint-back
 data-quality-insights-lint-back:
