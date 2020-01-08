@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace  Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency;
+namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency;
 
 use PhpSpec\ObjectBehavior;
 
