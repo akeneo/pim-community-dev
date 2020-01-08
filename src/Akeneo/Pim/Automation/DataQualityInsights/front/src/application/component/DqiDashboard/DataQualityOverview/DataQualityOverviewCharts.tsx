@@ -3,6 +3,8 @@ import {useFetchDqiDashboardData} from "../../../../infrastructure/hooks";
 import DailyAxisChart from "./DailyAxisChart";
 import {DataQualityOverviewChartHeader} from "../index";
 
+const __ = require('oro/translator');
+
 type Ranks = {
   [rank: string]: number;
 }
@@ -64,35 +66,34 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale}: DataQualityO
           <img src="bundles/pimui/images/illustrations/Project.svg" alt="illustrations/Project.svg"/>
         </div>
         <div className="AknInfoBlock">
-            <p>Sorry, we don't have enough data yet to show the data quality overview.</p>
-            <p>Please come back later.</p>
+          <p>{__(`akeneo_data_quality_insights.dqi_dashboard.no_data_title`)}</p>
+          <p>{__(`akeneo_data_quality_insights.dqi_dashboard.no_data_subtitle`)}</p>
         </div>
       </>
     )
-  } else {
-
-    let i = 0;
-
-    return (
-      <>
-        {
-          Object.keys(myDataset).map((axisName: string) => {
-            const dataset = transformData(myDataset, axisName);
-            i++;
-            return (
-              <Fragment key={i}>
-                <DataQualityOverviewChartHeader axisName={axisName} displayLegend={i === 1}/>
-                <div className='AknDataQualityInsights-chart'>
-                  <DailyAxisChart dataset={dataset}/>
-                  {/*{isVisible && (<CustomTooltip/>)}*/}
-                </div>
-              </Fragment>
-            )
-          })
-        }
-      </>
-    )
   }
+
+  let i = 0;
+
+  return (
+    <>
+      {
+        Object.keys(myDataset).map((axisName: string) => {
+          const dataset = transformData(myDataset, axisName);
+          i++;
+          return (
+            <Fragment key={i}>
+              <DataQualityOverviewChartHeader axisName={axisName} displayLegend={i === 1}/>
+              <div className='AknDataQualityInsights-chart'>
+                <DailyAxisChart dataset={dataset}/>
+                {/*{isVisible && (<CustomTooltip/>)}*/}
+              </div>
+            </Fragment>
+          )
+        })
+      }
+    </>
+  )
 };
 
 export default DataQualityOverviewCharts;
