@@ -1,6 +1,7 @@
 import React, {Fragment} from 'react';
 import {useFetchDqiDashboardData} from "../../../../infrastructure/hooks";
 import DailyAxisChart from "./DailyAxisChart";
+import WeeklyAxisChart from "./WeeklyAxisChart";
 import {DataQualityOverviewChartHeader} from "../index";
 
 const __ = require('oro/translator');
@@ -53,12 +54,13 @@ const transformData = (dataset: Dataset, axisName: string): any => {
 interface DataQualityOverviewChartProps {
   catalogLocale: string;
   catalogChannel: string;
+  periodicity: string;
 }
 
-const DataQualityOverviewCharts = ({catalogChannel, catalogLocale}: DataQualityOverviewChartProps) => {
-  const myDataset = useFetchDqiDashboardData(catalogChannel, catalogLocale);
+const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, periodicity}: DataQualityOverviewChartProps) => {
+  let dataset = useFetchDqiDashboardData(catalogChannel, catalogLocale, periodicity);
 
-  if (Object.entries(myDataset).length === 0) {
+  if (Object.entries(dataset).length === 0) {
 
     return (
       <>
@@ -78,14 +80,15 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale}: DataQualityO
   return (
     <>
       {
-        Object.keys(myDataset).map((axisName: string) => {
-          const dataset = transformData(myDataset, axisName);
+        Object.keys(dataset).map((axisName: string) => {
+          const axisDataset = transformData(dataset, axisName);
           i++;
           return (
             <Fragment key={i}>
               <DataQualityOverviewChartHeader axisName={axisName} displayLegend={i === 1}/>
               <div className='AknDataQualityInsights-chart'>
-                <DailyAxisChart dataset={dataset}/>
+                {periodicity === 'daily' && (<DailyAxisChart dataset={axisDataset}/>)}
+                {periodicity === 'weekly' && (<WeeklyAxisChart dataset={axisDataset}/>)}
                 {/*{isVisible && (<CustomTooltip/>)}*/}
               </div>
             </Fragment>

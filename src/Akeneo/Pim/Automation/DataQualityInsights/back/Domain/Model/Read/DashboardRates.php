@@ -14,11 +14,18 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
 
 final class DashboardRates
 {
+    private const NUMBER_OF_DAYS_TO_RETURN = 7;
+
+    private const NUMBER_OF_WEEKS_TO_RETURN = 4;
+
+    private const NUMBER_OF_MONTHS_TO_RETURN = 6;
+
     /** @var array */
     private $rates;
 
@@ -49,10 +56,10 @@ final class DashboardRates
 
         $actions = [
             Periodicity::DAILY => function(array $rates) {
-                return $this->ensureRatesAlwaysContains7Days($rates);
+                return $this->ensureRatesContainsEnoughDays($rates);
             },
             Periodicity::WEEKLY => function(array $rates) {
-                return $this->ensureRatesAlwaysContains4Weeks($rates);
+                return $this->ensureRatesContainsEnoughWeeks($rates);
             },
         ];
 
@@ -101,31 +108,39 @@ final class DashboardRates
         }, $ratesNumberByRank);
     }
 
-    private function ensureRatesAlwaysContains7Days(array $result): array
+    private function ensureRatesContainsEnoughDays(array $result): array
     {
         $lastSevenDays = [];
-        for ($i = 7; $i >= 1; $i--) {
-            $lastSevenDays[(new \DateTime('-' . $i . 'DAY'))->format('Y-m-d')] = [];
-        }
-        foreach ($result as $axisName => $ranksByDay) {
-            $ranksByDay = array_intersect_key($ranksByDay, $lastSevenDays);
-            $ranksByDay = array_replace($lastSevenDays, $ranksByDay);
-            $result[$axisName] = $ranksByDay;
+        for ($i = self::NUMBER_OF_DAYS_TO_RETURN; $i >= 1; $i--) {
+            $dailyPeriodicityDateFormat = (new ConsolidationDate(new \DateTimeImmutable()))
+                ->modify('-' . $i . 'DAY')
+                ->formatByPeriodicity(Periodicity::daily());
+
+            $lastSevenDays[$dailyPeriodicityDateFormat] = [];
         }
 
-        return $result;
+        return $this->fillMissingDates($result, $lastSevenDays);
     }
 
-    private function ensureRatesAlwaysContains4Weeks(array $result): array
+    private function ensureRatesContainsEnoughWeeks(array $result): array
     {
         $lastFourWeeks = [];
-        for ($i = 4; $i >= 1; $i--) {
-            $lastFourWeeks[(new \DateTime('-' . $i . 'WEEK'))->format('Y-W')] = [];
+        for ($i = self::NUMBER_OF_WEEKS_TO_RETURN; $i >= 1; $i--) {
+            $weeklyPeriodicityDateFormat = (new ConsolidationDate(new \DateTimeImmutable()))
+                ->modify('-' . $i . 'WEEK')
+                ->formatByPeriodicity(Periodicity::weekly());
+            $lastFourWeeks[$weeklyPeriodicityDateFormat] = [];
         }
-        foreach ($result as $axisName => $ranksByWeek) {
-            $ranksByWeek = array_intersect_key($ranksByWeek, $lastFourWeeks);
-            $ranksByWeek = array_replace($lastFourWeeks, $ranksByWeek);
-            $result[$axisName] = $ranksByWeek;
+
+        return $this->fillMissingDates($result, $lastFourWeeks);
+    }
+
+    private function fillMissingDates(array $result, array $lastDates): array
+    {
+        foreach ($result as $axisName => $ranksByPeriod) {
+            $ranksByPeriod = array_intersect_key($ranksByPeriod, $lastDates);
+            $ranksByPeriod = array_replace($lastDates, $ranksByPeriod);
+            $result[$axisName] = $ranksByPeriod;
         }
 
         return $result;

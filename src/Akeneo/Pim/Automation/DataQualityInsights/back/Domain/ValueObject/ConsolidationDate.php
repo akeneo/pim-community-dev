@@ -51,4 +51,9 @@ final class ConsolidationDate
                 throw new \InvalidArgumentException(sprintf('The periodicity %s is not supported', $periodicity));
         }
     }
+
+    public function modify(string $modify): self
+    {
+        return new self($this->dateTime->modify($modify));
+    }
 }

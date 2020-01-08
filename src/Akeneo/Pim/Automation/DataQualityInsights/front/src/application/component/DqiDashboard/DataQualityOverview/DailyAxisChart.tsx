@@ -1,17 +1,9 @@
 import React, {useState} from "react";
 import {VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
-
-type RankDistribution = {
-  x: string;
-  y: number;
-}
-
-type Dataset = {
-  [rank: string]: RankDistribution;
-}
+import {RANK_1_COLOR, RANK_2_COLOR, RANK_3_COLOR, RANK_4_COLOR, RANK_5_COLOR, NO_RATE_COLOR} from "../../../../domain";
 
 interface AxisChartProps {
-  dataset: Dataset;
+  dataset: any;
 }
 
 const DailyAxisChart = ({dataset}: AxisChartProps) => {
@@ -32,12 +24,12 @@ const DailyAxisChart = ({dataset}: AxisChartProps) => {
     >
       <VictoryStack
         colorScale={[
-          "rgb(169, 76, 63)",
-          "rgb(212, 96, 79)",
-          "rgb(249, 181, 63)",
-          "rgb(103, 179, 115)",
-          "rgb(82, 143, 92)",
-          "rgb(217, 221, 226)"
+          `${RANK_5_COLOR}`,
+          `${RANK_4_COLOR}`,
+          `${RANK_3_COLOR}`,
+          `${RANK_2_COLOR}`,
+          `${RANK_1_COLOR}`,
+          `${NO_RATE_COLOR}`
         ]}
       >
         {Object.values(dataset).map((data: any) => {

@@ -1,6 +1,9 @@
 import Axis from "./Axis.interface";
 import Rates from "./Rates.interface";
-import Rate, {RANK_1, RANK_2, RANK_3, RANK_4, RANK_5} from "./Rate.interface";
+import Rate, {
+  RANK_1, RANK_2, RANK_3, RANK_4, RANK_5,
+  RANK_1_COLOR, RANK_2_COLOR, RANK_3_COLOR, RANK_4_COLOR, RANK_5_COLOR, NO_RATE_COLOR
+} from "./Rate.interface";
 import Recommendation from "./Recommendation.interface";
 import Evaluation from "./Evaluation.interface";
 import Family from "./Family.interface";
@@ -10,6 +13,7 @@ export {
   Axis,
   Rate,
   RANK_1, RANK_2, RANK_3, RANK_4, RANK_5,
+  RANK_1_COLOR, RANK_2_COLOR, RANK_3_COLOR, RANK_4_COLOR, RANK_5_COLOR, NO_RATE_COLOR,
   Rates,
   Recommendation,
   Evaluation,

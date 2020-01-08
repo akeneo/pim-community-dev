@@ -2,7 +2,7 @@ import CatalogContextProvider, {
   CATALOG_CONTEXT_CHANNEL_CHANGED,
   CATALOG_CONTEXT_LOCALE_CHANGED
 } from "./CatalogContextProvider";
-import ProductContextProvider, {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from "./ProductContextProvider";
+import ProductContextProvider, {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY} from "./ProductContextProvider";
 import PageContextProvider, {DATA_QUALITY_INSIGHTS_TAB_CONTENT_VISIBILITY_CHANGED} from "./PageContextProvider";
 
 export {
@@ -12,5 +12,6 @@ export {
   ProductContextProvider,
   PageContextProvider,
   DATA_QUALITY_INSIGHTS_TAB_CONTENT_VISIBILITY_CHANGED,
-  DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE
+  DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
+  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY
 }

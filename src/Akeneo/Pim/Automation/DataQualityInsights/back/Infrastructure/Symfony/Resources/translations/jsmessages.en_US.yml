@@ -3,8 +3,14 @@ akeneo_data_quality_insights:
 
     dqi_dashboard:
         menu: Data Quality Insights
+        title: Data Quality Overview
         no_data_title: Sorry, we don't have enough data yet to show the data quality overview.
         no_data_subtitle: Please come back later.
+        periodicity:
+            label: Periodicity
+            daily: Daily
+            weekly: Weekly
+            monthly: Monthly
 
     product_evaluation:
         criteria:
