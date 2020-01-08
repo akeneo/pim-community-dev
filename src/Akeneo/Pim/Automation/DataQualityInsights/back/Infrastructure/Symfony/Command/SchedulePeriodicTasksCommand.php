@@ -39,7 +39,7 @@ final class SchedulePeriodicTasksCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->schedulePeriodicTasks->schedule(new \DateTimeImmutable());
+        $this->schedulePeriodicTasks->schedule(new \DateTimeImmutable('-1 DAY'));
 
         $output->writeln('Data-Quality-Insights periodic tasks have been scheduled');
     }
