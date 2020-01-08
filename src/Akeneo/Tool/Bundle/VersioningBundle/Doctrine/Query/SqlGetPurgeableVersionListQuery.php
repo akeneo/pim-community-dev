@@ -98,7 +98,7 @@ SQL;
     public function countOlderThan(string $resourceName, \DateTime $date): int
     {
         $query = <<<SQL
-SELECT COUNT(*) FROM pim_versioning_version USE INDEX (resource_name_logged_at_idx)
+SELECT COUNT(*) FROM pim_versioning_version
 WHERE logged_at < :logged_at AND resource_name = :resource_name 
 SQL;
 
