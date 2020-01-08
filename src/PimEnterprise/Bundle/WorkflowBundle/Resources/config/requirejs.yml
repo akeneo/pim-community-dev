@@ -13,6 +13,11 @@ config:
                     options:
                         urls:
                             product_index: pimee_workflow_rest_product_index
+                product_model_draft:
+                    module: pimee/product-model-draft-fetcher
+                    options:
+                        urls:
+                            product_model_index: pimee_workflow_rest_product_model_index
         pim/controller-registry:
             controllers:
                 pimee_workflow_published_product_mass_edit_action:
@@ -21,6 +26,7 @@ config:
     paths:
         pimee/published-product-manager:         pimenterpriseworkflow/js/manager/published-product-manager
         pimee/product-draft-fetcher:             pimenterpriseworkflow/js/fetcher/product-draft-fetcher
+        pimee/product-model-draft-fetcher:       pimenterpriseworkflow/js/fetcher/product-model-draft-fetcher
         pimee/proposal/partial-proposal-builder: pimenterpriseworkflow/js/datagrid/partial-proposal-builder
 
         # Form extensions

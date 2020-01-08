@@ -102,8 +102,11 @@ define(
              */
             render: function () {
                 if (this.copying && !this.otherDraftsPromise) {
-                    this.otherDraftsPromise = FetcherRegistry.getFetcher('product_draft')
-                        .fetchAllByProduct(this.getFormData().meta.id)
+                    const fetcherId = this.options && this.options.config && this.options.config.fetcher
+                      ? this.options.config.fetcher
+                      : 'product_draft';
+                    this.otherDraftsPromise = FetcherRegistry.getFetcher(fetcherId)
+                        .fetchAllById(this.getFormData().meta.id)
                         .then(function (drafts) {
                             this.otherDrafts = drafts;
                             this.sources     = mergeSourcesAndDrafts(this.sources, drafts);

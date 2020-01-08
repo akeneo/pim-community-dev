@@ -39,6 +39,10 @@ pimee_workflow_rest_product:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/rest/product.yml'
     prefix: /workflow
 
+pimee_workflow_rest_product_model:
+    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/rest/product_model.yml'
+    prefix: /workflow
+
 pimee_workflow_rest_author_draft:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/rest/author_draft.yml'
     prefix: /draft
