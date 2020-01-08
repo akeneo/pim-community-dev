@@ -1,7 +1,7 @@
 services:
     Akeneo\Tool\Bundle\ApiBundle\Command\CreateClientCommand:
         arguments:
-            - '@fos_oauth_server.client_manager.default'
+            - '@akeneo_connectivity.connection.application.handler.create_connection'
         tags:
             - { name: console.command }
 

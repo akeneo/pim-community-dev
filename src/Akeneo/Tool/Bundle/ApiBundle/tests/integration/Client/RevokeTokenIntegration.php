@@ -30,11 +30,9 @@ class RevokeTokenIntegration extends ApiTestCase
             ]
         );
 
-        $arrayClientId = explode('_', $clientId);
-
         $connection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
         $stmt = $connection->prepare('SELECT client, user, token from pim_api_refresh_token where client = :client');
-        $stmt->bindParam('client', $arrayClientId[0]);
+        $stmt->bindParam('client', $clientId);
         $stmt->execute();
         $result = $stmt->fetch();
 
@@ -42,7 +40,7 @@ class RevokeTokenIntegration extends ApiTestCase
 
         $this->revokeOAuthClient($clientId);
 
-        $stmt->bindParam('client', $arrayClientId[0]);
+        $stmt->bindParam('client', $clientId);
         $stmt->execute();
         $result = $stmt->fetch();
 
@@ -68,11 +66,9 @@ class RevokeTokenIntegration extends ApiTestCase
             ]
         );
 
-        $arrayClientId = explode('_', $clientId);
-
         $connection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
         $stmt = $connection->prepare('SELECT client, user, token from pim_api_access_token where client = :client');
-        $stmt->bindParam('client', $arrayClientId[0]);
+        $stmt->bindParam('client', $clientId);
         $stmt->execute();
         $result = $stmt->fetch();
 
@@ -80,7 +76,7 @@ class RevokeTokenIntegration extends ApiTestCase
 
         $this->revokeOAuthClient($clientId);
 
-        $stmt->bindParam('client', $arrayClientId[0]);
+        $stmt->bindParam('client', $clientId);
         $stmt->execute();
         $result = $stmt->fetch();
 
