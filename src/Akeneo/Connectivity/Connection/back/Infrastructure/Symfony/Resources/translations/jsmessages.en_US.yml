@@ -127,6 +127,10 @@ akeneo_connectivity.connection:
             description: Here, you will be able to track all the data flows that are collected into your PIM via your connections, as well as all the data flows that are distributed to your channels via your connections.
             link: Want to know more? Here you go!
             link_url: https://help.akeneo.com/pim/articles/connection-dashboard.html
+        user_survey:
+            title: Want more data on this dashboard?
+            content: Your feedback is really precious to us. Help us choose the next widget by answering this one-question survey!
+            button: Let's go!
         connection_selector:
             title: Source connections
             all: All
@@ -137,7 +141,7 @@ akeneo_connectivity.connection:
                 during_the_last_seven_days: During the last seven days
                 today: Today
         no_connection:
-            title: No connection declared yet.
+            title: No source connection declared yet.
             message_with_permission:
                 link: Create one here!
             message_without_permission:
