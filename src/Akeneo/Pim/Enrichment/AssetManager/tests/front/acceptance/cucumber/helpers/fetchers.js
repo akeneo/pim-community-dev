@@ -41,9 +41,11 @@ const answerAssetAttributes = async page => {
   await listenRequest(page, requestContract);
 };
 const answerAssetList = async page => {
+  const requestContract0 = getRequestContract('Asset/Search/asset_picker_empty_search.json');
   const requestContract1 = getRequestContract('Asset/Search/asset_picker_search.json');
   const requestContract2 = getRequestContract('Asset/Search/product_asset_collection.json');
   const requestContract3 = getRequestContract('Asset/Search/product_asset_collection_updated.json');
+  await listenRequest(page, requestContract0);
   await listenRequest(page, requestContract1);
   await listenRequest(page, requestContract2);
   await listenRequest(page, requestContract3);
