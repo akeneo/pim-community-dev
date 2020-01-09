@@ -55,7 +55,7 @@ type UploadModalProps = {
   onAssetCreated: () => void;
 };
 
-const UploadModal = ({assetFamily, locale, channels, locales, onCancel}: UploadModalProps) => {
+const UploadModal = ({assetFamily, locale, channels, locales, onCancel, onAssetCreated}: UploadModalProps) => {
   const [state, dispatch] = React.useReducer<Reducer<State>>(reducer, {lines: []});
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
   const valuePerLocale = attributeAsMainMedia.value_per_locale;
@@ -65,7 +65,7 @@ const UploadModal = ({assetFamily, locale, channels, locales, onCancel}: UploadM
   // This is a workaround because but we haven't found a proper way to do it directly after a successful onCreateAllAsset
   React.useEffect(() => {
     if (state.lines.length > 0 && !hasAnUnsavedLine(state.lines, valuePerLocale, valuePerChannel)) {
-      onCancel();
+      onAssetCreated();
     }
   }, [state.lines, valuePerLocale, valuePerChannel, onCancel]);
 

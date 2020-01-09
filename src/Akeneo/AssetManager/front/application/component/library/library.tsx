@@ -435,8 +435,14 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           channels={channels}
           locales={locales}
           assetFamily={currentAssetFamily}
-          onCancel={() => setUploadModalOpen(false)}
-          onAssetCreated={updateResults}
+          onCancel={() => {
+            setUploadModalOpen(false);
+            updateResults();
+          }}
+          onAssetCreated={() => {
+            setUploadModalOpen(false);
+            updateResults();
+          }}
         />
       )}
       {isCreateAssetFamilyModalOpen && (
