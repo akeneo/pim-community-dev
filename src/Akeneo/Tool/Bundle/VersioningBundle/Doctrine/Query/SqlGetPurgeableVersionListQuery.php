@@ -85,36 +85,6 @@ SQL;
         } while (!empty($results));
     }
 
-    public function countYoungerThan(string $resourceName, \DateTime $date): int
-    {
-        $query = <<<SQL
-SELECT COUNT(*) FROM pim_versioning_version USE INDEX (resource_name_logged_at_idx)
-WHERE logged_at > :logged_at AND resource_name = :resource_name 
-SQL;
-
-        $count = $this->dbConnection->executeQuery($query, [
-            'resource_name' => $resourceName,
-            'logged_at' => $date->format('Y-m-d'),
-        ])->fetchColumn();
-
-        return intval($count);
-    }
-
-    public function countOlderThan(string $resourceName, \DateTime $date): int
-    {
-        $query = <<<SQL
-SELECT COUNT(*) FROM pim_versioning_version
-WHERE logged_at < :logged_at AND resource_name = :resource_name 
-SQL;
-
-        $count = $this->dbConnection->executeQuery($query, [
-            'resource_name' => $resourceName,
-            'logged_at' => $date->format('Y-m-d'),
-        ])->fetchColumn();
-
-        return intval($count);
-    }
-
     public function countByResource(string $resourceName): int
     {
         $query = 'SELECT COUNT(*) FROM pim_versioning_version WHERE resource_name = :resource_name';
