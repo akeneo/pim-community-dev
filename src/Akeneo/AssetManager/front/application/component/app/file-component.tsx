@@ -118,7 +118,7 @@ class FileComponent extends React.Component<
   render() {
     const wide = this.props.wide;
     const url = getMediaPreviewUrl({
-      type: MediaPreviewType.ThumbnailSmall,
+      type: wide ? MediaPreviewType.Preview : MediaPreviewType.ThumbnailSmall,
       attributeIdentifier: this.props.attribute,
       data: this.props.image?.filePath || '',
     });
