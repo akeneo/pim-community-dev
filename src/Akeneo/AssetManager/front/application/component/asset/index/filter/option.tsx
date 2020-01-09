@@ -1,12 +1,13 @@
 import * as React from 'react';
 import {FilterView, FilterViewProps} from 'akeneoassetmanager/application/configuration/value';
-import {ConcreteOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
+import {isOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {Option, getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import __ from 'akeneoassetmanager/tools/translator';
-import {ConcreteOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
+import {isOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
 import OptionCode from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
+import {getLabel} from 'pimui/js/i18n';
 
 const memo = (React as any).memo;
 const useState = (React as any).useState;
@@ -20,20 +21,21 @@ type OptionFilterViewProps = FilterViewProps & {
 const DEFAULT_OPERATOR = 'IN';
 
 const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, context}: OptionFilterViewProps) => {
-  if (!(attribute instanceof ConcreteOptionAttribute || attribute instanceof ConcreteOptionCollectionAttribute)) {
+  if (!(isOptionAttribute(attribute) || isOptionCollectionAttribute(attribute))) {
     return null;
   }
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const availableOptions = attribute
-    .getOptions()
-    .reduce((availableOptions: {[choiceValue: string]: string}, option: Option) => {
+  const availableOptions = attribute.options.reduce(
+    (availableOptions: {[choiceValue: string]: string}, option: Option) => {
       const normalizedOption: Option = option;
       availableOptions[normalizedOption.code] = getOptionLabel(option, context.locale);
 
       return availableOptions;
-    }, {} as {[label: string]: string});
+    },
+    {} as {[label: string]: string}
+  );
 
   const emptyFilter = () => {
     setIsOpen(false);
@@ -61,7 +63,7 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
   return (
     <React.Fragment>
       <span ref={labelRef} className="AknFilterBox-filterLabel" onClick={() => openPanel}>
-        {attribute.getLabel(context.locale)}
+        {getLabel(attribute.labels, context.locale, attribute.code)}
       </span>
       <span className="AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited" onClick={openPanel}>
         <span className="AknFilterBox-filterCriteriaHint">
@@ -78,7 +80,9 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
           >
             <div className="AknFilterChoice">
               <div className="AknFilterChoice-header">
-                <div className="AknFilterChoice-title">{attribute.getLabel(context.locale)}</div>
+                <div className="AknFilterChoice-title">
+                  {getLabel(attribute.labels, context.locale, attribute.code)}
+                </div>
                 <div className="AknIconButton AknIconButton--erase" onClick={emptyFilter} />
               </div>
               <div>
