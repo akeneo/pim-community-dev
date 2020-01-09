@@ -6,7 +6,7 @@ import Evaluation from "./Evaluation.interface";
 import Family, {Attribute} from "./Family.interface";
 import Product from "./Product.interface";
 import WidgetElement, {createWidget} from "./Spellcheck/WidgetElement";
-import EditorElement, {getEditorContent} from "./Spellcheck/EditorElement";
+import EditorElement, {getEditorContent, setEditorContent} from "./Spellcheck/EditorElement";
 import HighlightElement, {createHighlight} from "./Spellcheck/HighlightElement";
 import MistakeElement from "./Spellcheck/MistakeElement";
 
@@ -21,7 +21,7 @@ export {
   Attribute,
   Product,
   WidgetElement, createWidget,
-  EditorElement, getEditorContent,
+  EditorElement, getEditorContent, setEditorContent,
   HighlightElement, createHighlight,
   MistakeElement
 };

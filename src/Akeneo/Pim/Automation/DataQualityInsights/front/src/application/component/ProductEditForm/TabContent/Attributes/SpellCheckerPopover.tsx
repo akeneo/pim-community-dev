@@ -12,14 +12,14 @@ interface PopoverStyleState {
 }
 
 const SpellCheckerPopover = () => {
-  const {isOpen, highlightRef, mistake, handleOpening, handleClosing} = useGetSpellcheckPopover();
+  const {isOpen, highlightRef, mistake, widgetId, handleOpening, handleClosing} = useGetSpellcheckPopover();
   const [style, setStyle] = useState<PopoverStyleState>({});
   const popoverRef = useRef<HTMLDivElement>(null);
   const classList = ["AknSpellCheck-popover"];
 
   const handleMouseEnter = useCallback(() => {
-    handleOpening(mistake, highlightRef);
-  }, [highlightRef, mistake, handleOpening]);
+    handleOpening(widgetId,mistake, highlightRef);
+  }, [widgetId, highlightRef, mistake, handleOpening]);
 
   const handleMouseLeave = useCallback(() => {
     handleClosing();
@@ -57,7 +57,7 @@ const SpellCheckerPopover = () => {
              style={style}
              onMouseEnter={handleMouseEnter}
              onMouseLeave={handleMouseLeave}>
-          <PopoverContent mistake={mistake}/>
+          <PopoverContent mistake={mistake} widgetId={widgetId}/>
         </div>
       )}
     </>

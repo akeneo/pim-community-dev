@@ -27,3 +27,19 @@ export const getEditorContent = (editor: EditorElement) => {
   return editor.innerHTML;
 };
 
+export const setEditorContent = (editor: EditorElement, content: string) => {
+  if (isTextArea(editor) || isTextInput(editor)) {
+    // @ts-ignore
+    editor.value = content;
+
+    editor.dispatchEvent(new Event('input', { bubbles: true }));
+    editor.dispatchEvent(new Event('change', { bubbles: true }));
+    return;
+  }
+
+  editor.innerHTML = content;
+
+  editor.dispatchEvent(new Event('input', { bubbles: true }));
+  editor.dispatchEvent(new Event('change', { bubbles: true }));
+};
+
