@@ -2,11 +2,11 @@ import React from "react";
 import {VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
 import {RANK_1_COLOR, RANK_2_COLOR, RANK_3_COLOR, RANK_4_COLOR, RANK_5_COLOR, NO_RATE_COLOR} from "../../../../domain";
 
-interface AxisChartProps {
+interface WeeklyAxisChartProps {
   dataset: any;
 }
 
-const WeeklyAxisChart = ({dataset}: AxisChartProps) => {
+const WeeklyAxisChart = ({dataset}: WeeklyAxisChartProps) => {
 
   let weeks: any[] = [];
   if(Object.entries(dataset).length > 0) {
