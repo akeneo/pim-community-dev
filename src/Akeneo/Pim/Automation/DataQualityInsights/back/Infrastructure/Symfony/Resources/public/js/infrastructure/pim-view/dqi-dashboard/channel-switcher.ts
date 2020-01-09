@@ -33,6 +33,10 @@ class ChannelSwitcher extends BaseForm
   }
 
   configure () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', (_: any) => {
+      this.render();
+    });
+
     return $.when(
       BaseForm.prototype.configure.apply(this, arguments),
       this.fetchChannels()
