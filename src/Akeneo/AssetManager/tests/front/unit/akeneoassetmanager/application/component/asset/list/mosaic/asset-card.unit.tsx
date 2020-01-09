@@ -93,3 +93,27 @@ test('it can be selected when clicking on the asset card', () => {
   expect(isSelected).toEqual(true);
   expect(selectedCode).toEqual(asset.code);
 });
+
+test('it cannot be selected if there is an on change property', () => {
+  let isSelected = false;
+  let selectedCode = null;
+  const {container} = render(
+    <ThemeProvider theme={akeneoTheme}>
+      <AssetCard
+        asset={asset}
+        context={{locale: 'en_US', channel: 'ecommerce'}}
+        isSelected={isSelected}
+        onClick={() => {}}
+        onSelectionChange={(code, value) => {
+          isSelected = value;
+          selectedCode = code;
+        }}
+      />
+    </ThemeProvider>
+  );
+
+  fireEvent.click(container.querySelector('img'));
+
+  expect(isSelected).toEqual(false);
+  expect(selectedCode).toEqual(null);
+});

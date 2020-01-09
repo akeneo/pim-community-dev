@@ -1,7 +1,7 @@
 import {Action} from 'redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
-import fetchAllChannels from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
+import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel';
 import {Family, FamilyCode} from 'akeneoassetmanager/platform/model/structure/family';
 import {
   familyFetcher,

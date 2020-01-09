@@ -4,17 +4,6 @@ import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import AssetIdentifier from 'akeneoassetmanager/domain/model/asset/identifier';
 import ListValue, {getPreviewModel} from 'akeneoassetmanager/domain/model/asset/list-value';
 import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
-import AttributeIdentifier, {
-  attributeIdentifierStringValue,
-} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import ChannelReference, {
-  channelReferenceIsEmpty,
-  channelReferenceStringValue,
-} from 'akeneoassetmanager/domain/model/channel-reference';
-import LocaleReference, {
-  localeReferenceIsEmpty,
-  localeReferenceStringValue,
-} from 'akeneoassetmanager/domain/model/locale-reference';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {MediaPreview, MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
@@ -62,20 +51,6 @@ type ListAsset = {
   values: ValueCollection;
   completeness: NormalizedCompleteness;
 };
-
-export const generateKey = (
-  attributeIdentifier: AttributeIdentifier,
-  channel: ChannelReference,
-  locale: LocaleReference
-): string => {
-  let key = attributeIdentifierStringValue(attributeIdentifier);
-  key = !channelReferenceIsEmpty(channel) ? `${key}_${channelReferenceStringValue(channel)}` : key;
-  key = !localeReferenceIsEmpty(locale) ? `${key}_${localeReferenceStringValue(locale)}` : key;
-
-  return key;
-};
-
-export const generateValueKey = (value: ListValue) => generateKey(value.attribute, value.channel, value.locale);
 
 export const getListAssetMainMediaThumbnail = (
   asset: ListAsset,

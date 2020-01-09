@@ -34,14 +34,14 @@ interface StateProps extends OwnProps {
     locale: string;
     channel: string;
   };
-  structure: {
+  structure?: {
     locales: Locale[];
     channels: Channel[];
   };
 }
 
 interface DispatchProps {
-  events: {
+  events?: {
     onLocaleChanged: (locale: Locale) => void;
     onChannelChanged: (channel: Channel) => void;
   };
@@ -49,7 +49,7 @@ interface DispatchProps {
 
 interface HeaderProps extends StateProps, DispatchProps {}
 
-class Header extends React.Component<HeaderProps> {
+export class HeaderView extends React.Component<HeaderProps> {
   private defaultFocus: React.RefObject<any>;
   static defaultProps = {
     displayActions: true,
@@ -120,7 +120,7 @@ class Header extends React.Component<HeaderProps> {
             <div>
               <div className="AknTitleContainer-line">
                 <div className="AknTitleContainer-context AknButtonList">
-                  {withChannelSwitcher ? (
+                  {withChannelSwitcher && structure && events ? (
                     <ChannelSwitcher
                       channelCode={context.channel}
                       channels={structure.channels}
@@ -129,7 +129,7 @@ class Header extends React.Component<HeaderProps> {
                       className="AknDropdown--right"
                     />
                   ) : null}
-                  {withLocaleSwitcher ? (
+                  {withLocaleSwitcher && structure && events ? (
                     <LocaleSwitcher
                       localeCode={context.locale}
                       locales={structure.locales}
@@ -181,4 +181,4 @@ export default connect(
       },
     };
   }
-)(Header);
+)(HeaderView);

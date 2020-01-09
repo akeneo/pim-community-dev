@@ -4,10 +4,11 @@ import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
-import SearchBar, {useChannels} from 'akeneoassetmanager/application/component/asset/list/search-bar';
+import SearchBar from 'akeneoassetmanager/application/component/asset/list/search-bar';
 import {act} from 'react-dom/test-utils';
 import {renderHook} from '@testing-library/react-hooks';
 import userEvent from '@testing-library/user-event';
+import {useChannels} from 'akeneoassetmanager/application/hooks/channel';
 
 const emptyDataProvider = {channelFetcher: {fetchAll: () => new Promise(() => {})}};
 

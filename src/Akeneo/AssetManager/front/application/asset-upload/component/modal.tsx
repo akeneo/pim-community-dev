@@ -25,6 +25,8 @@ import {onCreateAllAsset} from 'akeneoassetmanager/application/asset-upload/redu
 import {hasAnUnsavedLine} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
+import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
+import Key from 'akeneoassetmanager/tools/key';
 
 const Subtitle = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
@@ -53,7 +55,7 @@ type UploadModalProps = {
   onAssetCreated: () => void;
 };
 
-const UploadModal = ({assetFamily, locale, channels, locales, onCancel}: UploadModalProps) => {
+const UploadModal = ({assetFamily, locale, channels, locales, onCancel, onAssetCreated}: UploadModalProps) => {
   const [state, dispatch] = React.useReducer<Reducer<State>>(reducer, {lines: []});
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
   const valuePerLocale = attributeAsMainMedia.value_per_locale;
@@ -63,7 +65,7 @@ const UploadModal = ({assetFamily, locale, channels, locales, onCancel}: UploadM
   // This is a workaround because but we haven't found a proper way to do it directly after a successful onCreateAllAsset
   React.useEffect(() => {
     if (state.lines.length > 0 && !hasAnUnsavedLine(state.lines, valuePerLocale, valuePerChannel)) {
-      onCancel();
+      onAssetCreated();
     }
   }, [state.lines, valuePerLocale, valuePerChannel, onCancel]);
 
@@ -89,6 +91,8 @@ const UploadModal = ({assetFamily, locale, channels, locales, onCancel}: UploadM
     },
     [assetFamily, dispatch]
   );
+
+  useShortcut(Key.Escape, handleClose);
 
   return (
     <Modal>

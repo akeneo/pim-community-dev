@@ -8,7 +8,6 @@ import {attributeDeleted} from 'akeneoassetmanager/domain/event/attribute/list';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {attributeEditionCancel} from 'akeneoassetmanager/domain/event/attribute/edit';
 import {updateAttributeList} from 'akeneoassetmanager/application/action/attribute/list';
-import {closeDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 
 export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => async (
   dispatch: any,
@@ -26,7 +25,6 @@ export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => asy
     }
 
     dispatch(notifyAttributeWellDeleted());
-    dispatch(closeDeleteModal());
   } catch (error) {
     dispatch(notifyAttributeDeletionFailed());
 

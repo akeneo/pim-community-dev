@@ -38,7 +38,7 @@ const attributes = [
   },
 ];
 const dataProvider = {
-  assetAttributesFetcher: {
+  assetAttributeFetcher: {
     fetchAll: assetFamilyIdentifier => {
       return new Promise(resolve => {
         act(() => {
@@ -104,8 +104,7 @@ describe('Tests filter collection', () => {
         container
       );
     });
-
-    expect(container.childNodes.length).toEqual(0);
+    expect(container.childNodes[0].childNodes.length).toEqual(0);
   });
 
   it('It updates the filter collection', async () => {
@@ -150,7 +149,7 @@ describe('Tests filter collection', () => {
   test('I get a null collection view if there is no attributes', async () => {
     const {result, waitForNextUpdate} = renderHook(() =>
       useFilterViews('notice', {
-        assetAttributesFetcher: {
+        assetAttributeFetcher: {
           fetchAll: () =>
             new Promise(async resolve => {
               act(() => resolve([]));
@@ -172,6 +171,12 @@ describe('Tests filter collection', () => {
     await waitForNextUpdate();
 
     expect(result.current).toEqual([]);
+  });
+
+  test('I get an empty collection view if the asset family is null', () => {
+    const {result, waitForNextUpdate} = renderHook(() => useFilterViews(null, dataProvider));
+
+    expect(result.current).toBe(null);
   });
 
   test('I can sort attributes in the collection', () => {

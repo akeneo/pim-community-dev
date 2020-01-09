@@ -19,6 +19,7 @@ import Key from 'akeneoassetmanager/tools/key';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {EditOptionState} from 'akeneoassetmanager/application/reducer/attribute/type/option';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
+import {StickyHeader} from 'akeneoassetmanager/application/component/asset-family/edit/permission';
 
 const securityContext = require('pim/security-context');
 
@@ -224,9 +225,9 @@ class AttributesView extends React.Component<CreateProps> {
           displayActions={this.props.rights.attribute.create}
         />
         <div className="AknSubsection">
-          <header className="AknSubsection-title AknSubsection-title--sticky" style={{top: '192px'}}>
+          <StickyHeader>
             <span className="group-label">{__('pim_asset_manager.asset_family.attribute.title')}</span>
-          </header>
+          </StickyHeader>
           {this.props.firstLoading || 0 < this.props.attributes.length ? (
             <div className="AknSubsection-container">
               <div className="AknFormContainer AknFormContainer--withPadding">

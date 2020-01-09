@@ -9,5 +9,5 @@ export const redirectToProduct = (product: Product) => {
 };
 
 export const redirectToAttributeCreation = () => {
-  return redirectToRoute(`pim_enrich_attribute_create`, {attribute_type: 'akeneo_asset'});
+  return redirectToRoute(`pim_enrich_attribute_create`, {attribute_type: 'pim_catalog_asset_collection'});
 };

@@ -4,14 +4,10 @@ import {EditState as State} from 'akeneoassetmanager/application/reducer/asset-f
 import Sidebar from 'akeneoassetmanager/application/component/app/sidebar';
 import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
 import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
-import CreateAssetModal from 'akeneoassetmanager/application/component/asset/create';
 import __ from 'akeneoassetmanager/tools/translator';
 import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
 import Key from 'akeneoassetmanager/tools/key';
-import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {assetUploadDone} from 'akeneoassetmanager/domain/event/asset/upload';
-import {updateAssetResults} from 'akeneoassetmanager/application/action/asset/search';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 
@@ -24,18 +20,11 @@ interface StateProps {
     tabs: Tab[];
     currentTab: string;
   };
-  createAsset: {
-    active: boolean;
-  };
-  uploadAsset: {
-    active: boolean;
-  };
 }
 
 interface DispatchProps {
   events: {
     backToAssetFamilyList: () => void;
-    closeMassUpload: () => void;
   };
 }
 
@@ -84,17 +73,6 @@ class AssetFamilyEditView extends React.Component<EditProps> {
           </div>
         </div>
         <Sidebar backButton={this.backToAssetFamilyList} />
-        {this.props.createAsset.active && <CreateAssetModal />}
-        {this.props.uploadAsset.active && (
-          <UploadModal
-            locale={this.props.locale}
-            assetFamily={this.props.assetFamily}
-            channels={this.props.channels}
-            locales={this.props.locales}
-            onCancel={this.props.events.closeMassUpload}
-            onAssetCreated={this.props.events.closeMassUpload}
-          />
-        )}
       </div>
     );
   }
@@ -114,12 +92,6 @@ export default connect(
         tabs,
         currentTab,
       },
-      createAsset: {
-        active: state.createAsset.active,
-      },
-      uploadAsset: {
-        active: state.uploadAsset.active,
-      },
     };
   },
   (dispatch: any): DispatchProps => {
@@ -127,10 +99,6 @@ export default connect(
       events: {
         backToAssetFamilyList: () => {
           dispatch(redirectToAssetFamilyListItem());
-        },
-        closeMassUpload: () => {
-          dispatch(assetUploadDone());
-          dispatch(updateAssetResults(false));
         },
       },
     };

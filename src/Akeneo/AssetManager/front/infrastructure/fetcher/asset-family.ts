@@ -1,4 +1,4 @@
-import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import hydrator from 'akeneoassetmanager/application/hydrator/asset-family';
 import hydrateAll from 'akeneoassetmanager/application/hydrator/hydrator';
@@ -13,14 +13,9 @@ import {
   AssetFamilyListItem,
   createAssetFamilyListItemFromNormalized,
 } from 'akeneoassetmanager/domain/model/asset-family/list';
+import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
 
 const routing = require('routing');
-
-export interface AssetFamilyFetcher {
-  fetch: (identifier: AssetFamilyIdentifier) => Promise<AssetFamilyResult>;
-  fetchAll: () => Promise<AssetFamilyListItem[]>;
-  search: (query: Query) => Promise<SearchResult<AssetFamilyListItem>>;
-}
 
 export type AssetFamilyResult = {
   assetFamily: AssetFamily;

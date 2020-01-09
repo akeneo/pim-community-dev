@@ -3,14 +3,14 @@ import LabelCollection, {
   getLabelInCollection,
   emptyLabelCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
-import AssetIdentifier, {
+import AssetFamilyIdentifier, {
   assetFamilyidentifiersAreEqual,
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 export interface AssetFamilyCreation {
-  code: AssetIdentifier;
+  code: AssetFamilyIdentifier;
   labels: LabelCollection;
 }
 

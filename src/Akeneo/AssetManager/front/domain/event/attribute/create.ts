@@ -1,4 +1,4 @@
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 
 export const attributeCreationStart = () => {
   return {type: 'ATTRIBUTE_CREATION_START'};
@@ -41,5 +41,5 @@ export const attributeCreationSucceeded = () => {
 };
 
 export const attributeCreationErrorOccured = (errors: ValidationError[]) => {
-  return {type: 'ATTRIBUTE_CREATION_ERROR_OCCURED', errors: errors.map(error => error.normalize())};
+  return {type: 'ATTRIBUTE_CREATION_ERROR_OCCURED', errors};
 };

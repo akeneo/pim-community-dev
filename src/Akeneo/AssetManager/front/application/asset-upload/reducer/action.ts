@@ -1,7 +1,7 @@
 import Line, {Thumbnail} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
-import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 
 export const ADD_LINES = 'asset-upload/ADD_LINES';
 export type OnAddLineAction = {

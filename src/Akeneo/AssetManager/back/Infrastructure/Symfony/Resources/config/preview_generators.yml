@@ -81,12 +81,16 @@ services:
             - { name: liip_imagine.binary.loader, loader: flysystem_pdf_loader }
 
     akeneo_assetmanager.infrastructure.loader.stream_loader:
-            class: 'Liip\ImagineBundle\Binary\Loader\StreamLoader'
-            arguments:
-                - ''
+        class: 'Liip\ImagineBundle\Binary\Loader\StreamLoader'
+        arguments:
+            - ''
+        tags:
+            - { name: liip_imagine.binary.loader, loader: stream_data_loader }
 
     akeneo_assetmanager.infrastructure.loader.flysystem_loader:
         class: 'Liip\ImagineBundle\Binary\Loader\FlysystemLoader'
         arguments:
             - '@liip_imagine.extension_guesser'
             - '@oneup_flysystem.asset_storage_filesystem'
+        tags:
+            - { name: liip_imagine.binary.loader, loader: flysystem_asset_manager_data_loader }

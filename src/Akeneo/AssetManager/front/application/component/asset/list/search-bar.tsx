@@ -10,6 +10,7 @@ import {Separator} from 'akeneoassetmanager/application/component/app/separator'
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
+import {useChannels} from 'akeneoassetmanager/application/hooks/channel';
 
 type SearchProps = {
   dataProvider: any;
@@ -30,18 +31,6 @@ const Container = styled.div`
 const AdjustedSeparator = styled(Separator)`
   margin-right: 5px;
 `;
-
-export const useChannels = (channelFetcher: any) => {
-  const [channels, setChannels] = React.useState<Channel[]>([]);
-
-  React.useEffect(() => {
-    channelFetcher.fetchAll().then((channels: Channel[]) => {
-      setChannels(channels);
-    });
-  }, []);
-
-  return channels;
-};
 
 const setLocaleIfNotExists = (
   onContextChange: (context: Context) => void,

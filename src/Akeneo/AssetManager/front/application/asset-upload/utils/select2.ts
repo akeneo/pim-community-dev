@@ -14,7 +14,11 @@ export const getOptionsFromChannels = (channels: Channel[], locale: LocaleCode):
  * If there is no channel selected, fallback on all locales.
  * If there is a channel, only returns locales from this channel.
  */
-export const getOptionsFromLocales = (channels: Channel[], locales: Locale[], selectedChannelCode: ChannelReference): Select2Options => {
+export const getOptionsFromLocales = (
+  channels: Channel[],
+  locales: Locale[],
+  selectedChannelCode: ChannelReference
+): Select2Options => {
   if (null === selectedChannelCode) {
     return locales.reduce((results: Select2Options, locale: Locale) => {
       results[locale.code] = locale.label;

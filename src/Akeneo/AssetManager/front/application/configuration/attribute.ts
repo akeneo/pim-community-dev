@@ -1,5 +1,5 @@
 import {NormalizedAttribute, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 
 export class InvalidArgument extends Error {}
 

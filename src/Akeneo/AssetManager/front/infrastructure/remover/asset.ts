@@ -4,7 +4,7 @@ import AssetFamilyIdentifier, {
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {deleteJSON} from 'akeneoassetmanager/tools/fetch';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 
 const routing = require('routing');
