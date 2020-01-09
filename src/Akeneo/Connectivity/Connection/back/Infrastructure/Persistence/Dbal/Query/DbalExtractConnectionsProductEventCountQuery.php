@@ -43,14 +43,15 @@ FROM (
     AND version = 1 
     GROUP BY author, resource_id
 ) AS tmp_table
-INNER JOIN oro_user u ON u.username = author AND u.user_type = "api"
+INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
 GROUP BY conn.code;
 SQL;
         $sqlParams = [
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
             'end_time' => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
-            'resource_name' => $this->productClass
+            'resource_name' => $this->productClass,
+            'user_type' => \Akeneo\UserManagement\Component\Model\User::TYPE_API
         ];
 
         $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
@@ -82,12 +83,13 @@ FROM (
     AND version = 1 
     GROUP BY author, resource_id
 ) AS tmp_table
-INNER JOIN oro_user u ON u.username = author AND u.user_type = "api"
+INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 SQL;
         $sqlParams = [
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
             'end_time'   => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
-            'resource_name' => $this->productClass
+            'resource_name' => $this->productClass,
+            'user_type' => \Akeneo\UserManagement\Component\Model\User::TYPE_API
         ];
 
         $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
@@ -119,14 +121,15 @@ FROM (
     AND version != 1 
     GROUP BY author, resource_id
 ) AS tmp_table
-INNER JOIN oro_user u ON u.username = author AND u.user_type = "api"
+INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
 GROUP BY conn.code;
 SQL;
         $sqlParams = [
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
             'end_time'   => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
-            'resource_name' => $this->productClass
+            'resource_name' => $this->productClass,
+            'user_type' => \Akeneo\UserManagement\Component\Model\User::TYPE_API
         ];
 
         $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
@@ -158,12 +161,13 @@ FROM (
     AND version != 1 
     GROUP BY author, resource_id
 ) AS tmp_table
-INNER JOIN oro_user u ON u.username = author AND u.user_type = "api"
+INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 SQL;
         $sqlParams = [
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
             'end_time'   => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
-            'resource_name' => $this->productClass
+            'resource_name' => $this->productClass,
+            'user_type' => \Akeneo\UserManagement\Component\Model\User::TYPE_API
         ];
 
         $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
