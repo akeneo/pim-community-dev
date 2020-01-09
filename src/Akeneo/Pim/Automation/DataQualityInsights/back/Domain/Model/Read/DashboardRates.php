@@ -61,6 +61,9 @@ final class DashboardRates
             Periodicity::WEEKLY => function(array $rates) {
                 return $this->ensureRatesContainsEnoughWeeks($rates);
             },
+            Periodicity::MONTHLY => function(array $rates) {
+                return $this->ensureRatesContainsEnoughMonths($rates);
+            },
         ];
 
         return $actions[$this->periodicity]($result);
@@ -133,6 +136,19 @@ final class DashboardRates
         }
 
         return $this->fillMissingDates($result, $lastFourWeeks);
+    }
+
+    private function ensureRatesContainsEnoughMonths(array $result): array
+    {
+        $lastMonths = [];
+        for ($i = self::NUMBER_OF_MONTHS_TO_RETURN; $i >= 1; $i--) {
+            $monthlyPeriodicityDateFormat = (new ConsolidationDate(new \DateTimeImmutable()))
+                ->modify('-' . $i . 'MONTH')
+                ->formatByPeriodicity(Periodicity::monthly());
+            $lastMonths[$monthlyPeriodicityDateFormat] = [];
+        }
+
+        return $this->fillMissingDates($result, $lastMonths);
     }
 
     private function fillMissingDates(array $result, array $lastDates): array

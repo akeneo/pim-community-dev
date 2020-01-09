@@ -39,6 +39,11 @@ const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProp
                     {__('akeneo_data_quality_insights.dqi_dashboard.periodicity.weekly')}
                   </a>
                 </li>
+                <li>
+                  <a className="AknDropdown-menuLink" data-label={__('akeneo_data_quality_insights.dqi_dashboard.periodicity.monthly')} onClick={() => handlePeriodicityChange('monthly')}>
+                    {__('akeneo_data_quality_insights.dqi_dashboard.periodicity.monthly')}
+                  </a>
+                </li>
               </ul>
             </div>
             <div className="AknFilterBox-filterContainer">

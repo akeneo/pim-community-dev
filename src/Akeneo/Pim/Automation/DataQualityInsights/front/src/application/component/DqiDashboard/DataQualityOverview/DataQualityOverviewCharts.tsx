@@ -2,6 +2,7 @@ import React, {Fragment} from 'react';
 import {useFetchDqiDashboardData} from "../../../../infrastructure/hooks";
 import DailyAxisChart from "./DailyAxisChart";
 import WeeklyAxisChart from "./WeeklyAxisChart";
+import MonthlyAxisChart from "./MonthlyAxisChart";
 import {DataQualityOverviewChartHeader} from "../index";
 
 const __ = require('oro/translator');
@@ -89,6 +90,7 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, periodicity}:
               <div className='AknDataQualityInsights-chart'>
                 {periodicity === 'daily' && (<DailyAxisChart dataset={axisDataset}/>)}
                 {periodicity === 'weekly' && (<WeeklyAxisChart dataset={axisDataset}/>)}
+                {periodicity === 'monthly' && (<MonthlyAxisChart dataset={axisDataset}/>)}
                 {/*{isVisible && (<CustomTooltip/>)}*/}
               </div>
             </Fragment>
