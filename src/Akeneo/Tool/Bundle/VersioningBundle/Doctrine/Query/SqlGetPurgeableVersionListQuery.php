@@ -33,7 +33,7 @@ WHERE resource_name = :resource_name
 ORDER BY logged_at ASC, id ASC LIMIT :list_size
 SQL;
 
-        return $this->fetchVersionIds($query, $resourceName, $date, $listSize);
+        return $this->fetchVersionIds($query, $resourceName, $date, $listSize, 0);
     }
 
     /**
@@ -48,17 +48,22 @@ WHERE resource_name = :resource_name
 ORDER BY logged_at DESC, id DESC LIMIT :list_size
 SQL;
 
-        return $this->fetchVersionIds($query, $resourceName, $date, $listSize);
+        return $this->fetchVersionIds($query, $resourceName, $date, $listSize, PHP_INT_MAX);
     }
 
-    private function fetchVersionIds(string $query, string $resourceName, \DateTime $date, int $listSize): iterable
-    {
+    private function fetchVersionIds(
+        string $query,
+        string $resourceName,
+        \DateTime $date,
+        int $listSize,
+        int $startingId
+    ): iterable {
         $loggedAt = $date->format('Y-m-d');
 
         $statement = $this->dbConnection->prepare($query);
         $statement->bindParam('resource_name', $resourceName, \PDO::PARAM_STR);
         $statement->bindParam('list_size', $listSize, \PDO::PARAM_INT);
-        $lastId = PHP_INT_MAX;
+        $lastId = $startingId;
 
         do {
             $statement->bindParam('logged_at', $loggedAt, \PDO::PARAM_STR);
