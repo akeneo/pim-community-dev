@@ -30,14 +30,14 @@ class UpdateProductEventCountHandler
     {
         // TODO: Use Read Models and transform into write models?
 
-        $createdProductsCount = $this->extractConnectionsEventCountQuery->extractCreatedProductsCount($command->eventDate());
+        $createdProductsCount = $this->extractConnectionsEventCountQuery->extractCreatedProductsByConnection($command->eventDate());
         $this->eventCountRepository->bulkInsert($createdProductsCount);
-        $createdProductsAllCount = $this->extractConnectionsEventCountQuery->extractCreatedProductsAllCount($command->eventDate());
+        $createdProductsAllCount = $this->extractConnectionsEventCountQuery->extractAllCreatedProducts($command->eventDate());
         $this->eventCountRepository->bulkInsert($createdProductsAllCount);
 
-        $updatedProductsCount = $this->extractConnectionsEventCountQuery->extractUpdatedProductsCount($command->eventDate());
+        $updatedProductsCount = $this->extractConnectionsEventCountQuery->extractUpdatedProductsByConnection($command->eventDate());
         $this->eventCountRepository->bulkInsert($updatedProductsCount);
-        $updatedProductsAllCount = $this->extractConnectionsEventCountQuery->extractUpdatedProductsAllCount($command->eventDate());
+        $updatedProductsAllCount = $this->extractConnectionsEventCountQuery->extractAllUpdatedProducts($command->eventDate());
         $this->eventCountRepository->bulkInsert($updatedProductsAllCount);
     }
 }

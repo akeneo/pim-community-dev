@@ -11,11 +11,11 @@ namespace Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query;
  */
 interface ExtractConnectionsProductEventCountQuery
 {
-    public function extractCreatedProductsCount(string $date): array;
+    public function extractCreatedProductsByConnection(string $date): array;
 
-    public function extractCreatedProductsAllCount(string $date): array;
+    public function extractAllCreatedProducts(string $date): array;
 
-    public function extractUpdatedProductsCount(string $date): array;
+    public function extractUpdatedProductsByConnection(string $date): array;
 
-    public function extractUpdatedProductsAllCount(string $date): array;
+    public function extractAllUpdatedProducts(string $date): array;
 }

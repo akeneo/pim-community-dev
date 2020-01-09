@@ -28,7 +28,7 @@ class DbalExtractConnectionsProductEventCountQuery implements ExtractConnections
         $this->productClass = $productClass;
     }
 
-    public function extractCreatedProductsCount(string $date): array
+    public function extractCreatedProductsByConnection(string $date): array
     {
         $dateTime = new \DateTime($date, new \DateTimeZone('UTC'));
         $dateTime->setTime(0, 0, 0, 0);
@@ -67,7 +67,7 @@ SQL;
         return $dailyEventCount;
     }
 
-    public function extractCreatedProductsAllCount(string $date): array
+    public function extractAllCreatedProducts(string $date): array
     {
         $dateTime = new \DateTime($date, new \DateTimeZone('UTC'));
         $dateTime->setTime(0, 0, 0, 0);
@@ -104,7 +104,7 @@ SQL;
         return $dailyEventCount;
     }
 
-    public function extractUpdatedProductsCount(string $date): array
+    public function extractUpdatedProductsByConnection(string $date): array
     {
         $dateTime = new \DateTimeImmutable($date, new \DateTimeZone('UTC'));
         $dateTime->setTime(0, 0, 0, 0);
@@ -143,7 +143,7 @@ SQL;
         return $dailyEventCount;
     }
 
-    public function extractUpdatedProductsAllCount(string $date): array
+    public function extractAllUpdatedProducts(string $date): array
     {
         $dateTime = new \DateTimeImmutable($date, new \DateTimeZone('UTC'));
         $dateTime->setTime(0, 0, 0, 0);
