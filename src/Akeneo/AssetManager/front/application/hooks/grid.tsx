@@ -6,10 +6,16 @@ import {Context} from 'akeneoassetmanager/domain/model/context';
 import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 
 const MAX_RESULT = 500;
 const FIRST_PAGE_SIZE = 50;
+
+type AssetDataProvider = {
+  assetFetcher: {
+    search: (query: Query) => Promise<SearchResult<ListAsset>>;
+  };
+};
 
 let totalRequestCount = 0;
 export const useFetchResult = (
@@ -25,14 +31,13 @@ export const useFetchResult = (
   ) => Query
 ) => (
   isOpen: boolean,
-  dataProvider: any,
+  dataProvider: AssetDataProvider,
   assetFamilyIdentifier: AssetFamilyIdentifier | null,
   filters: Filter[],
   searchValue: string,
   excludedAssetCollection: AssetCode[],
   context: Context,
-  setResultCollection: (resultCollection: ListAsset[]) => void,
-  setResultCount: (count: number) => void
+  setSearchResult: (result: SearchResult<ListAsset>) => void
 ) => {
   const [askForReload, setAskForReload] = React.useState(false);
   React.useEffect(() => {
@@ -53,13 +58,11 @@ export const useFetchResult = (
     );
     totalRequestCount++;
 
-    dataProvider.assetFetcher.search(query).then((searchResult: any) => {
+    dataProvider.assetFetcher.search(query).then((searchResult: SearchResult<ListAsset>) => {
       const currentRequestCount = totalRequestCount;
-      setResultCollection(searchResult.items);
-      setResultCount(searchResult.matchesCount);
-
+      setSearchResult(searchResult);
       if (searchResult.matchesCount > FIRST_PAGE_SIZE) {
-        fetchMoreResult(currentRequestCount, dataProvider)(query, setResultCollection);
+        fetchMoreResult(currentRequestCount, dataProvider)(query, setSearchResult);
       }
     });
   }, [filters, searchValue, context, excludedAssetCollection, isOpen, assetFamilyIdentifier, askForReload]);
@@ -67,13 +70,13 @@ export const useFetchResult = (
   return () => setAskForReload(true);
 };
 
-const fetchMoreResult = (currentRequestCount: number, dataProvider: any) => (
+const fetchMoreResult = (currentRequestCount: number, dataProvider: AssetDataProvider) => (
   query: Query,
-  setResultCollection: (resultCollection: ListAsset[]) => void
+  setSearchResult: (result: SearchResult<ListAsset>) => void
 ) => {
-  dataProvider.assetFetcher.search({...query, size: MAX_RESULT}).then((searchResult: any) => {
+  dataProvider.assetFetcher.search({...query, size: MAX_RESULT}).then((searchResult: SearchResult<ListAsset>) => {
     if (currentRequestCount === totalRequestCount) {
-      setResultCollection(searchResult.items);
+      setSearchResult(searchResult);
     }
   });
 };

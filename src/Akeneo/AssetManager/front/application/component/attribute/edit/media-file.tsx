@@ -1,6 +1,6 @@
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import {

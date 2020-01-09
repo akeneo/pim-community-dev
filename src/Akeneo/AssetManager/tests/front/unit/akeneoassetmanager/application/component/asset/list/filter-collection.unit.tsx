@@ -38,7 +38,7 @@ const attributes = [
   },
 ];
 const dataProvider = {
-  assetAttributesFetcher: {
+  assetAttributeFetcher: {
     fetchAll: assetFamilyIdentifier => {
       return new Promise(resolve => {
         act(() => {
@@ -149,7 +149,7 @@ describe('Tests filter collection', () => {
   test('I get a null collection view if there is no attributes', async () => {
     const {result, waitForNextUpdate} = renderHook(() =>
       useFilterViews('notice', {
-        assetAttributesFetcher: {
+        assetAttributeFetcher: {
           fetchAll: () =>
             new Promise(async resolve => {
               act(() => resolve([]));

@@ -47,7 +47,7 @@ services:
     akeneo_assetmanager.validator.constraint.is_asset_family_configured:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints\IsAssetFamilyConfiguredValidator
         arguments:
-            - ['pim_catalog_asset_collection', 'akeneo_asset']
+            - ['pim_catalog_asset_collection']
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_details'
         tags:
             - { name: validator.constraint_validator, alias: pim_is_asset_family_configured_validator }

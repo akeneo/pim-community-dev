@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import __ from 'akeneoassetmanager/tools/translator';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
@@ -48,9 +48,6 @@ interface StateProps extends OwnProps {
   isActive: boolean;
   attribute: Attribute;
   errors: ValidationError[];
-  confirmDelete: {
-    isActive: boolean;
-  };
 }
 
 interface DispatchProps {
@@ -100,9 +97,10 @@ const getAdditionalProperty = (
 class Edit extends React.Component<EditProps> {
   private labelInput: HTMLInputElement;
   public props: EditProps;
-  public state: {previousAttribute: string | null; currentAttribute: string | null} = {
+  public state: {previousAttribute: string | null; currentAttribute: string | null; isDeleteModalOpen: boolean} = {
     previousAttribute: null,
     currentAttribute: null,
+    isDeleteModalOpen: false,
   };
 
   componentDidMount() {
@@ -264,13 +262,9 @@ class Edit extends React.Component<EditProps> {
                   className="AknButton AknButton--delete"
                   tabIndex={0}
                   onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
-                    if (Key.Space === event.key) {
-                      //TODO this.props.events.onOpenDeleteModal();
-                    }
+                    if (Key.Space === event.key) this.setState({isDeleteModalOpen: true});
                   }}
-                  onClick={() => {
-                    //TODO
-                  }}
+                  onClick={() => this.setState({isDeleteModalOpen: true})}
                   style={{flex: 1}}
                 >
                   <Trash color="#D4604F" className="AknButton-animatedIcon" />
@@ -306,15 +300,12 @@ class Edit extends React.Component<EditProps> {
             </footer>
           </div>
         </div>
-        {this.props.confirmDelete.isActive && (
+        {this.state.isDeleteModalOpen && (
           <DeleteModal
             message={__('pim_asset_manager.attribute.delete.message', {attributeLabel: label})}
             title={__('pim_asset_manager.attribute.delete.title')}
-            onConfirm={() => {
-              this.props.events.onAttributeDelete(this.props.attribute.getIdentifier());
-            }}
-            // onCancel={this.props.events.onCancelDeleteModal}
-            onCancel={() => {}}
+            onConfirm={() => this.props.events.onAttributeDelete(this.props.attribute.getIdentifier())}
+            onCancel={() => this.setState({isDeleteModalOpen: false})}
           />
         )}
       </React.Fragment>

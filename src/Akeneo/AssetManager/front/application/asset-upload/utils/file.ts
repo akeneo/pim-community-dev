@@ -1,6 +1,6 @@
 import Line, {Thumbnail} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
-import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 
 type ThumbnailForLine = {
@@ -8,6 +8,7 @@ type ThumbnailForLine = {
   line: Line;
 };
 
+/* istanbul ignore next */
 export const getThumbnailFromFile = async (file: File, line: Line): Promise<ThumbnailForLine> => {
   return new Promise((resolve: ({thumbnail, line}: ThumbnailForLine) => void) => {
     const fileReader = new FileReader();

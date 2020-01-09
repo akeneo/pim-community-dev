@@ -14,7 +14,6 @@ import {
 } from 'akeneoassetmanager/application/action/asset-family/notify';
 import assetFamilySaver from 'akeneoassetmanager/infrastructure/saver/asset-family';
 import assetFamilyFetcher, {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
-import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {assetFamilyPermissionChanged} from 'akeneoassetmanager/domain/event/user';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
@@ -26,10 +25,8 @@ export const saveAssetFamily = () => async (dispatch: any, getState: () => EditS
 
   try {
     const errors = await assetFamilySaver.save(assetFamily);
-
     if (errors) {
-      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(assetFamilyEditionErrorOccured(validationErrors));
+      dispatch(assetFamilyEditionErrorOccured(errors));
       dispatch(notifyAssetFamilySaveFailed());
 
       return;

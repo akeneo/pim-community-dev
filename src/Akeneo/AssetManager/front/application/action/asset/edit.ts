@@ -13,7 +13,6 @@ import {
 } from 'akeneoassetmanager/application/action/asset/notify';
 import assetSaver from 'akeneoassetmanager/infrastructure/saver/asset';
 import assetFetcher, {AssetResult} from 'akeneoassetmanager/infrastructure/fetcher/asset';
-import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 
@@ -23,10 +22,8 @@ export const saveAsset = () => async (dispatch: any, getState: () => EditState):
   dispatch(assetEditionSubmission());
   try {
     const errors = await assetSaver.save(asset);
-
     if (errors) {
-      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(assetEditionErrorOccured(validationErrors));
+      dispatch(assetEditionErrorOccured(errors));
       dispatch(notifyAssetSaveValidationError());
 
       return;

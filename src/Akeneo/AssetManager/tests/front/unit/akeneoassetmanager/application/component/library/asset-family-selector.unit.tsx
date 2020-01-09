@@ -1,13 +1,8 @@
 'use strict';
 
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent} from '@testing-library/react';
-import {getByLabelText} from '@testing-library/dom';
-import {ThemeProvider} from 'styled-components';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
-import {useAssetFamily} from 'akeneoassetmanager/application/library/component/asset-family-selector';
+import {act} from '@testing-library/react';
+import {useAssetFamilyList} from 'akeneoassetmanager/application/component/library/asset-family-selector';
 import {renderHook} from '@testing-library/react-hooks';
 
 describe('Test file-drop-zone component', () => {
@@ -25,7 +20,7 @@ describe('Test file-drop-zone component', () => {
   test('it provides an empty asset family list', async () => {
     let currentAssetFamily = 'notice';
     const {result, waitForNextUpdate} = renderHook(() =>
-      useAssetFamily(
+      useAssetFamilyList(
         currentAssetFamily,
         {
           assetFamilyFetcher: {
@@ -51,7 +46,7 @@ describe('Test file-drop-zone component', () => {
   test('it updates the list of asset family and current assetFamily', async () => {
     let currentAssetFamily = 'notice';
     const {result, waitForNextUpdate} = renderHook(() =>
-      useAssetFamily(
+      useAssetFamilyList(
         currentAssetFamily,
         {
           assetFamilyFetcher: {

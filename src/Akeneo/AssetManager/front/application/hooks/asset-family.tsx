@@ -1,7 +1,8 @@
 import * as React from 'react';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {AssetFamilyResult, AssetFamilyFetcher} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
 
 export type AssetFamilyDataProvider = {
   assetFamilyFetcher: AssetFamilyFetcher;

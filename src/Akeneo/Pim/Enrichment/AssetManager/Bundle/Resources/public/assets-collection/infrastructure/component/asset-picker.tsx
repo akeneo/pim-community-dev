@@ -11,7 +11,7 @@ import SearchBar from 'akeneoassetmanager/application/component/asset/list/searc
 import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
 import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
 import Key from 'akeneoassetmanager/tools/key';
@@ -125,10 +125,8 @@ const dataProvider = {
   channelFetcher: {
     fetchAll: fetchAllChannels,
   },
-  assetAttributesFetcher: {
-    fetchAll: (assetFamilyIdentifier: AssetFamilyIdentifier) => {
-      return attributeFetcher.fetchAll(assetFamilyIdentifier);
-    },
+  assetAttributeFetcher: {
+    fetchAll: attributeFetcher.fetchAllNormalized,
   },
 };
 
@@ -144,8 +142,7 @@ export const AssetPicker = ({
   const [filterCollection, setFilterCollection] = React.useState<Filter[]>([]);
   const [selection, setSelection] = React.useState<AssetCode[]>([]);
   const [searchValue, setSearchValue] = React.useState<string>('');
-  const [resultCount, setResultCount] = React.useState<number | null>(null);
-  const [resultCollection, setResultCollection] = React.useState<ListAsset[]>([]);
+  const [searchResult, setSearchResult] = React.useState<SearchResult<ListAsset> | null>(null);
   const [context, setContext] = React.useState<Context>(initialContext);
 
   const resetModal = () => {
@@ -168,8 +165,7 @@ export const AssetPicker = ({
     searchValue,
     excludedAssetCollection,
     context,
-    setResultCollection,
-    setResultCount
+    setSearchResult
   );
   const filterViews = useFilterViews(assetFamilyIdentifier, dataProvider);
   const canAddAsset = canAddAssetToCollection(addAssetsToCollection(excludedAssetCollection, selection));
@@ -187,7 +183,7 @@ export const AssetPicker = ({
       >
         {__('pim_asset_manager.asset_collection.add_asset')}
       </Button>
-      {isOpen && null !== filterViews ? (
+      {isOpen && null !== filterViews && null !== searchResult ? (
         <Modal data-container="asset-picker">
           <Header>
             <CloseButton title={__('pim_asset_manager.close')} onClick={cancelModal} />
@@ -228,15 +224,15 @@ export const AssetPicker = ({
                 dataProvider={dataProvider}
                 searchValue={searchValue}
                 context={context}
-                resultCount={resultCount}
+                resultCount={searchResult.matchesCount}
                 onSearchChange={setSearchValue}
                 onContextChange={setContext}
               />
               <MosaicResult
                 selection={selection}
-                assetCollection={resultCollection}
+                assetCollection={searchResult.items}
                 context={context}
-                resultCount={resultCount}
+                resultCount={searchResult.matchesCount}
                 hasReachMaximumSelection={!canAddAsset}
                 onSelectionChange={setSelection}
               />

@@ -90,3 +90,5 @@ services:
         arguments:
             - '@liip_imagine.extension_guesser'
             - '@oneup_flysystem.asset_storage_filesystem'
+        tags:
+            - { name: liip_imagine.binary.loader, loader: flysystem_asset_manager_data_loader }

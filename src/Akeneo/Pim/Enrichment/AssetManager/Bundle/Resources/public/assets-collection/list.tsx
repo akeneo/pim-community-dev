@@ -36,7 +36,6 @@ import {hasValues, isValueComplete} from 'akeneopimenrichmentassetmanager/enrich
 import {Family} from 'akeneoassetmanager/platform/model/structure/family';
 import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import {
-  HelperIcon,
   HelperSection,
   HelperSeparator,
   HelperText,
@@ -230,7 +229,7 @@ const List = ({
       ) : (
         <React.Fragment>
           <HelperSection>
-            <HelperIcon src="/bundles/pimui/images/illustrations/Asset.svg" />
+            <AssetIllustration size={80} />
             <HelperSeparator />
             <HelperTitle>
               👋 {__('pim_asset_manager.asset_collection.helper.title')}

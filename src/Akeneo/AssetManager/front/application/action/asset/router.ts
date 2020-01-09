@@ -12,9 +12,6 @@ export const redirectToAsset = (assetFamilyIdentifier: AssetFamilyIdentifier, as
   });
 };
 
-export const redirectToAssetIndex = (assetFamilyIdentifier: AssetFamilyIdentifier) => {
-  return redirectToRoute('akeneo_asset_manager_asset_family_edit', {
-    identifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
-    tab: 'asset',
-  });
+export const redirectToAssetIndex = () => {
+  return redirectToRoute('akeneo_asset_manager_asset_family_index');
 };

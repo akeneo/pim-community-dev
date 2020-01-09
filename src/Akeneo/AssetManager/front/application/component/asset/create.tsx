@@ -1,6 +1,6 @@
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
-import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -32,8 +32,7 @@ const submitCreateAsset = async (
   try {
     let errors = await assetSaver.create(asset);
     if (errors) {
-      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      onFailure(validationErrors);
+      onFailure(errors);
       return;
     }
   } catch (error) {
@@ -86,12 +85,15 @@ export const CreateModal = ({assetFamily, locale, onClose, onAssetCreated}: Crea
   const [createAnother, setCreateAnother] = React.useState<boolean>(false);
   const [errors, setErrors] = React.useState<ValidationError[]>([]);
 
-  const onLabelUpdate = React.useCallback((newLabel: string) => {
-    const expectedSanitizedCode = sanitize(label);
-    const newCode = expectedSanitizedCode === code ? sanitize(newLabel) : code;
-    setCode(newCode);
-    setLabel(newLabel);
-  }, []);
+  const onLabelUpdate = React.useCallback(
+    (newLabel: string) => {
+      const expectedSanitizedCode = sanitize(label);
+      const newCode = expectedSanitizedCode === code ? sanitize(newLabel) : code;
+      setCode(newCode);
+      setLabel(newLabel);
+    },
+    [code, label]
+  );
 
   const resetModal = React.useCallback(() => {
     setCode('');
@@ -100,8 +102,8 @@ export const CreateModal = ({assetFamily, locale, onClose, onAssetCreated}: Crea
   }, []);
 
   const onSuccess = React.useCallback(() => {
-    resetModal();
     onAssetCreated(code, createAnother);
+    resetModal();
   }, [code, createAnother]);
 
   const submit = useSubmit(code, label, locale, assetFamily.identifier, onSuccess, setErrors);

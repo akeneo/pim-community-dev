@@ -8,7 +8,7 @@ import {AssetFamily, getAttributeAsMainMedia} from 'akeneoassetmanager/domain/mo
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import sanitize from 'akeneoassetmanager/tools/sanitize';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
-import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {createUUIDV4} from 'akeneoassetmanager/application/asset-upload/utils/uuid';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import Locale from 'akeneoassetmanager/domain/model/locale';

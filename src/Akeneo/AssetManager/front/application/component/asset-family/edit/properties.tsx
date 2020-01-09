@@ -13,7 +13,7 @@ import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-fam
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
-// import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
+import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
@@ -49,7 +49,10 @@ interface DispatchProps {
 }
 
 class Properties extends React.Component<StateProps & DispatchProps> {
-  props: StateProps & DispatchProps;
+  public props: StateProps & DispatchProps;
+  public state: {isDeleteModalOpen: boolean} = {
+    isDeleteModalOpen: false,
+  };
 
   private getSecondaryActions = () => {
     return (
@@ -61,7 +64,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
             <button
               tabIndex={-1}
               className="AknDropdown-menuLink"
-              // onClick={() => this.props.events.onOpenDeleteModal()} TODO
+              onClick={() => this.setState({isDeleteModalOpen: true})}
             >
               {__('pim_asset_manager.asset_family.module.delete.button')}
             </button>
@@ -73,6 +76,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
 
   render() {
     const assetFamily = this.props.form.data;
+    const label = getAssetFamilyLabel(assetFamily, this.props.context.locale);
 
     return (
       <React.Fragment>
@@ -116,18 +120,14 @@ class Properties extends React.Component<StateProps & DispatchProps> {
             />
           </div>
         </div>
-        {/* {this.props.confirmDelete.isActive && ( //TODO
+        {this.state.isDeleteModalOpen && (
           <DeleteModal
             message={__('pim_asset_manager.asset_family.delete.message', {assetFamilyLabel: label})}
             title={__('pim_asset_manager.asset_family.delete.title')}
-            onConfirm={() => {
-              this.props.events.onDelete(assetFamily);
-            }}
-            onCancel={() => {
-              //TODO
-            }}
+            onConfirm={() => this.props.events.onDelete(assetFamily)}
+            onCancel={() => this.setState({isDeleteModalOpen: false})}
           />
-        )} */}
+        )}
       </React.Fragment>
     );
   }

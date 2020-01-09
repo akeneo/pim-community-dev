@@ -9,9 +9,7 @@ export const useChannels = (channelFetcher: ChannelFetcher) => {
   const [channels, setChannels] = React.useState<Channel[]>([]);
 
   React.useEffect(() => {
-    channelFetcher.fetchAll().then((channels: Channel[]) => {
-      setChannels(channels);
-    });
+    channelFetcher.fetchAll().then(setChannels);
   }, []);
 
   return channels;

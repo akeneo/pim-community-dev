@@ -1,4 +1,4 @@
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
 

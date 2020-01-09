@@ -15,7 +15,7 @@ import {channelChanged, localeChanged} from 'akeneoassetmanager/application/acti
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-// import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
+import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import Key from 'akeneoassetmanager/tools/key';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
@@ -73,6 +73,10 @@ interface EditProps extends StateProps, DispatchProps {}
 
 class AssetEditView extends React.Component<EditProps> {
   public props: EditProps;
+  public state: {isDeleteModalOpen: boolean} = {
+    isDeleteModalOpen: false,
+  };
+
   private backToAssetFamilyList = () => (
     <span
       role="button"
@@ -87,10 +91,11 @@ class AssetEditView extends React.Component<EditProps> {
     </span>
   );
 
-  // private onConfirmedDelete = () => {
-  //   const asset = this.props.asset;
-  //   this.props.events.onDelete(asset);
-  // };
+  private onConfirmedDelete = () => {
+    const asset = this.props.asset;
+    this.props.events.onDelete(asset);
+    this.setState({isDeleteModalOpen: false});
+  };
 
   private getSecondaryActions = (canDelete: boolean): JSX.Element | JSX.Element[] | null => {
     if (canDelete) {
@@ -100,13 +105,7 @@ class AssetEditView extends React.Component<EditProps> {
           <div className="AknDropdown-menu AknDropdown-menu--right">
             <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
             <div>
-              <button
-                className="AknDropdown-menuLink"
-                onClick={() => {
-                  //TODO
-                  // this.props.events.onOpenDeleteModal()
-                }}
-              >
+              <button className="AknDropdown-menuLink" onClick={() => this.setState({isDeleteModalOpen: true})}>
                 {__('pim_asset_manager.asset.button.delete')}
               </button>
             </div>
@@ -254,15 +253,14 @@ class AssetEditView extends React.Component<EditProps> {
           </div>
           <Sidebar backButton={this.backToAssetFamilyList} />
         </div>
-        {/* {this.props.confirmDelete.isActive && ( //TODO
+        {this.state.isDeleteModalOpen && (
           <DeleteModal
             message={__('pim_asset_manager.asset.delete.message', {assetLabel: label})}
             title={__('pim_asset_manager.asset.delete.title')}
             onConfirm={this.onConfirmedDelete}
-            onCancel={() => {}}
-            //TODO onCancel={this.props.events.onCancelDeleteModal}
+            onCancel={() => this.setState({isDeleteModalOpen: false})}
           />
-        )} */}
+        )}
       </React.Fragment>
     );
   }

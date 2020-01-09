@@ -3,7 +3,6 @@ import {
   attributeCreationSucceeded,
   attributeCreationErrorOccured,
 } from 'akeneoassetmanager/domain/event/attribute/create';
-import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
   notifyAttributeWellCreated,
@@ -28,10 +27,8 @@ export const createAttribute = () => async (dispatch: any, getState: () => EditS
 
   try {
     let errors = await attributeSaver.create(attribute);
-
     if (errors) {
-      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(attributeCreationErrorOccured(validationErrors));
+      dispatch(attributeCreationErrorOccured(errors));
       dispatch(notifyAttributeCreateValidationError());
 
       return;

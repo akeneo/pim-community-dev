@@ -51,7 +51,6 @@ use Doctrine\DBAL\Connection;
 class FixturesInstaller
 {
     public const ICE_CAT_DEMO_DEV_CATALOG = 'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev';
-    private const NUMBER_OF_FAKE_ASSET_TO_CREATE = 10000;
     private const ATMOSPHERE_ASSET_FAMILY_IDENTIFIER = 'atmosphere';
     private const PACKSHOT_ASSET_FAMILY_IDENTIFIER = 'packshot';
     private const NOTICE_ASSET_FAMILY_IDENTIFIER = 'notice';
@@ -197,7 +196,8 @@ SQL;
      */
     public function loadCatalog(string $catalogName): void
     {
-        if (self::ICE_CAT_DEMO_DEV_CATALOG !== $catalogName) {
+
+        if (substr($catalogName, -strlen(self::ICE_CAT_DEMO_DEV_CATALOG)) === self::ICE_CAT_DEMO_DEV_CATALOG) {
             return;
         }
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import __ from 'akeneoassetmanager/tools/translator';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {channelReferenceAreEqual} from 'akeneoassetmanager/domain/model/channel-reference';

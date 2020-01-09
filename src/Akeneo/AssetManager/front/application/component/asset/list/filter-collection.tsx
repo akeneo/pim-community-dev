@@ -11,6 +11,7 @@ import {NormalizedAssetAttribute} from 'akeneoassetmanager/domain/model/attribut
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {NormalizedAssetCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset-collection';
+import {AssetAttributeFetcher} from 'akeneoassetmanager/application/component/library/library';
 
 export type FilterableAttribute =
   | NormalizedOptionAttribute
@@ -26,7 +27,7 @@ export const sortFilterViewsByAttributeOrder = (filterViewCollection: FilterView
 
 export const useFilterViews = (
   assetFamilyIdentifier: AssetFamilyIdentifier | null,
-  dataProvider: any
+  dataProvider: {assetAttributeFetcher: AssetAttributeFetcher}
 ): FilterViewCollection | null => {
   const [filterViews, setFilterViews] = React.useState<FilterViewCollection | null>(null);
 
@@ -34,7 +35,7 @@ export const useFilterViews = (
     if (null === assetFamilyIdentifier) {
       return;
     }
-    dataProvider.assetAttributesFetcher.fetchAll(assetFamilyIdentifier).then((attributes: NormalizedAttribute[]) => {
+    dataProvider.assetAttributeFetcher.fetchAll(assetFamilyIdentifier).then((attributes: NormalizedAttribute[]) => {
       setFilterViews(sortFilterViewsByAttributeOrder(getDataFilterViews(attributes)));
     });
   }, [assetFamilyIdentifier]);

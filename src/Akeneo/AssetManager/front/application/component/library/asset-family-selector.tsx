@@ -3,21 +3,21 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {AssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/list';
 import {getLabel} from 'pimui/js/i18n';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
-import {AssetFamilyFetcher} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import __ from 'akeneoassetmanager/tools/translator';
+import {ColumnTitle} from 'akeneoassetmanager/application/component/app/column';
+import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
 
 type AssetFamilySelectorProps = {
   assetFamilyIdentifier: AssetFamilyIdentifier | null;
   locale: LocaleCode;
-  dataProvider: {
-    assetFamilyFetcher: AssetFamilyFetcher;
-  };
+  dataProvider: AssetFamilyDataProvider;
   onChange: (assetFamilyIdentifier: AssetFamilyIdentifier | null) => void;
 };
 
-export const useAssetFamily = (
+export const useAssetFamilyList = (
   currentAssetFamilyIdentifier: AssetFamilyIdentifier | null,
-  dataProvider: any,
+  dataProvider: AssetFamilyDataProvider,
   onChange: (assetFamily: AssetFamilyIdentifier | null) => void
 ): [AssetFamilyListItem[], boolean] => {
   const [assetFamilyList, setAssetFamilyList] = React.useState<AssetFamilyListItem[]>([]);
@@ -49,13 +49,14 @@ export const useAssetFamily = (
   return [assetFamilyList, isFetching];
 };
 
+/* istanbul ignore next */
 export const AssetFamilySelector = ({
   assetFamilyIdentifier,
   locale,
   dataProvider,
   onChange,
 }: AssetFamilySelectorProps) => {
-  const [assetFamilyList, isFetching] = useAssetFamily(assetFamilyIdentifier, dataProvider, onChange);
+  const [assetFamilyList, isFetching] = useAssetFamilyList(assetFamilyIdentifier, dataProvider, onChange);
 
   const data = assetFamilyList.reduce(
     (result, assetFamily) => ({
@@ -67,7 +68,8 @@ export const AssetFamilySelector = ({
 
   return (
     <>
-      {null !== assetFamilyIdentifier && !isFetching && (
+      <ColumnTitle>{__('pim_asset_manager.asset_family.column.selector.title')}</ColumnTitle>
+      {null !== assetFamilyIdentifier && !isFetching ? (
         <Select2
           data={data}
           value={assetFamilyIdentifier}
@@ -76,6 +78,8 @@ export const AssetFamilySelector = ({
           configuration={{}}
           onChange={onChange}
         />
+      ) : (
+        __('pim_asset_manager.asset_family.column.selector.no_data')
       )}
     </>
   );

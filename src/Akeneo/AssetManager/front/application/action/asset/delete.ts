@@ -2,31 +2,27 @@ import {
   notifyAssetWellDeleted,
   notifyAssetDeleteFailed,
   notifyAssetDeletionErrorOccured,
-  notifyAllAssetsWellDeleted,
-  notifyAllAssetsDeletionFailed,
 } from 'akeneoassetmanager/application/action/asset/notify';
 import assetRemover from 'akeneoassetmanager/infrastructure/remover/asset';
-import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {redirectToAssetIndex} from 'akeneoassetmanager/application/action/asset/router';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 
 export const deleteAsset = (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => async (
   dispatch: any
 ): Promise<void> => {
   try {
     const errors = await assetRemover.remove(assetFamilyIdentifier, assetCode);
-
     if (errors) {
-      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(notifyAssetDeletionErrorOccured(validationErrors));
+      dispatch(notifyAssetDeletionErrorOccured(errors));
 
       return;
     }
 
     dispatch(notifyAssetWellDeleted(assetCode));
-    dispatch(redirectToAssetIndex(assetFamilyIdentifier));
+    dispatch(redirectToAssetIndex());
   } catch (error) {
     dispatch(notifyAssetDeleteFailed());
 
@@ -34,20 +30,22 @@ export const deleteAsset = (assetFamilyIdentifier: AssetFamilyIdentifier, assetC
   }
 };
 
-export const deleteAllAssetFamilyAssets = (assetFamily: AssetFamily) => async (dispatch: any): Promise<void> => {
+export const deleteAllAssetFamilyAssets = async (
+  assetFamily: AssetFamily,
+  onSuccess: () => void,
+  onFailure: (errors: ValidationError[]) => void
+): Promise<void> => {
   try {
     const errors = await assetRemover.removeAll(assetFamily.identifier);
-
     if (errors) {
-      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(notifyAssetDeletionErrorOccured(validationErrors));
+      onFailure(errors);
 
       return;
     }
 
-    dispatch(notifyAllAssetsWellDeleted(assetFamily.identifier));
+    onSuccess();
   } catch (error) {
-    dispatch(notifyAllAssetsDeletionFailed());
+    onFailure([]);
 
     throw error;
   }

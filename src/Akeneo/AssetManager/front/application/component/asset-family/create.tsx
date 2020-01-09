@@ -1,6 +1,6 @@
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
-import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {createLocaleFromCode, LocaleCode} from 'akeneoassetmanager/domain/model/locale';
@@ -26,8 +26,7 @@ const submitCreateAssetFamily = async (
   try {
     let errors = await assetFamilySaver.create(assetFamily);
     if (errors) {
-      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      onFailure(validationErrors);
+      onFailure(errors);
       return;
     }
   } catch (error) {
@@ -76,12 +75,15 @@ export const CreateAssetFamilyModal = ({locale, onClose, onAssetFamilyCreated}: 
   const [label, setLabel] = React.useState<string>('');
   const [errors, setErrors] = React.useState<ValidationError[]>([]);
 
-  const onLabelUpdate = React.useCallback((newLabel: string) => {
-    const expectedSanitizedCode = sanitize(label);
-    const newCode = expectedSanitizedCode === code ? sanitize(newLabel) : code;
-    setCode(newCode);
-    setLabel(newLabel);
-  }, []);
+  const onLabelUpdate = React.useCallback(
+    (newLabel: string) => {
+      const expectedSanitizedCode = sanitize(label);
+      const newCode = expectedSanitizedCode === code ? sanitize(newLabel) : code;
+      setCode(newCode);
+      setLabel(newLabel);
+    },
+    [code, label]
+  );
 
   const resetModal = React.useCallback(() => {
     setCode('');
@@ -90,8 +92,8 @@ export const CreateAssetFamilyModal = ({locale, onClose, onAssetFamilyCreated}: 
   }, []);
 
   const onSuccess = React.useCallback(() => {
-    resetModal();
     onAssetFamilyCreated(code);
+    resetModal();
   }, [code]);
 
   const submit = useSubmit(code, label, locale, onSuccess, setErrors);

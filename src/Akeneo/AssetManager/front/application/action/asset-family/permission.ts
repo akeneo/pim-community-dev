@@ -9,7 +9,6 @@ import {
 } from 'akeneoassetmanager/application/action/asset-family/notify';
 import permissionSaver from 'akeneoassetmanager/infrastructure/saver/permission';
 import permissionFetcher from 'akeneoassetmanager/infrastructure/fetcher/permission';
-import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {denormalizePermissionCollection} from 'akeneoassetmanager/domain/model/asset-family/permission';
 import {refreshAssetFamily} from 'akeneoassetmanager/application/action/asset-family/edit';
@@ -20,10 +19,8 @@ export const savePermission = () => async (dispatch: any, getState: () => EditSt
 
   try {
     const errors = await permissionSaver.save(assetFamilyIdentifier, permission);
-
     if (errors) {
-      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(permissionEditionErrorOccured(validationErrors));
+      dispatch(permissionEditionErrorOccured(errors));
       dispatch(notifyPermissionSaveFailed());
 
       return;

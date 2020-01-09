@@ -75,7 +75,11 @@ pim_asset_manager:
     counter: '{{ resultCount }} results'
     counter_empty: '0 result'
   asset_family:
-    column_title: Asset navigation
+    column:
+      title: Asset navigation
+      selector:
+        title: Asset families
+        no_data: No asset family available
     validation:
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
@@ -162,6 +166,21 @@ pim_asset_manager:
       compute_transformations:
         success: Transformations have been launched. Once this job is finished, you will see your new variations updated in your assets.
         fail: An error occured when trying to compute the transformations
+    helper:
+      title: Welcome to your new asset management area!
+      no_asset:
+        text: There are no asset for the {{ family }} family!
+        link: How to add an asset?
+      no_asset_family:
+        text: There are no asset family!
+        link: How to add an asset family?
+    no_data:
+      no_asset:
+        title: Sorry, there are no asset!
+        link: Click here to add an asset
+      no_asset_family:
+        title: Sorry, there is no asset family!
+        link: Click here to add an asset family
   permission:
     notification:
       save:

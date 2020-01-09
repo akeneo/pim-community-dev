@@ -2,7 +2,7 @@ import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Flag from 'akeneoassetmanager/tools/component/flag';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import Key from 'akeneoassetmanager/tools/key';

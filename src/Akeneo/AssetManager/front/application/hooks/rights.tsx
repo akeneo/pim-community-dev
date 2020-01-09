@@ -1,10 +1,10 @@
 import * as React from 'react';
-import assetFamilyFetcher, {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {getAttributeAsMainMedia, AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
 const securityContext = require('pim/security-context');
 
 type AssetFamilyRights = {
@@ -21,16 +21,21 @@ type AssetFamilyRights = {
   };
 };
 
-export const useAssetFamilyRights = (assetFamilyIdentifier: AssetFamilyIdentifier | null): AssetFamilyRights => {
+export const useAssetFamilyRights = (
+  dataProvider: AssetFamilyDataProvider,
+  assetFamilyIdentifier: AssetFamilyIdentifier | null
+): AssetFamilyRights => {
   //TODO clean this when using permission light models
   const [assetFamily, setAssetFamily] = React.useState<(AssetFamily & {permission: AssetFamilyPermission}) | null>(
     null
   );
   React.useEffect(() => {
     if (null === assetFamilyIdentifier) return;
-    assetFamilyFetcher.fetch(assetFamilyIdentifier).then((assetFamilyResult: AssetFamilyResult) => {
-      setAssetFamily({...assetFamilyResult.assetFamily, permission: assetFamilyResult.permission});
-    });
+    dataProvider.assetFamilyFetcher
+      .fetch(assetFamilyIdentifier)
+      .then(assetFamilyResult =>
+        setAssetFamily({...assetFamilyResult.assetFamily, permission: assetFamilyResult.permission})
+      );
   }, [assetFamilyIdentifier]);
 
   const attributeAsMainMedia = assetFamily ? getAttributeAsMainMedia(assetFamily) : null;

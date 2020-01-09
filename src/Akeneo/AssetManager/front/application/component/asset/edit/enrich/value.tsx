@@ -2,7 +2,7 @@ import * as React from 'react';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getDataFieldView} from 'akeneoassetmanager/application/configuration/value';
 import {getErrorsView} from 'akeneoassetmanager/application/component/asset/edit/validation-error';
 import __ from 'akeneoassetmanager/tools/translator';
