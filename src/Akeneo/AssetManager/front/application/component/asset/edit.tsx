@@ -156,7 +156,7 @@ class AssetEditView extends React.Component<EditProps> {
                                   route: 'akeneo_asset_manager_asset_family_edit',
                                   parameters: {
                                     identifier: assetFamilyIdentifierStringValue(asset.assetFamily.identifier),
-                                    tab: 'asset',
+                                    tab: 'attribute',
                                   },
                                 },
                                 label: assetFamilyIdentifierStringValue(asset.assetFamily.identifier),
