@@ -1,5 +1,6 @@
-import React, {FunctionComponent, useEffect, useLayoutEffect, useState} from "react";
+import React, {FunctionComponent, useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {HighlightElement} from "../../../../../../../domain";
+import {useGetSpellcheckPopover} from "../../../../../../../infrastructure/hooks";
 
 interface Style {
   top: number;
@@ -28,7 +29,6 @@ const computeStyle = (domRect: DOMRect | null, editorRect: DOMRect) => {
 };
 
 const HIGHLIGHT_HOVER_CLASSNAME = "AknSpellCheck-mark--hover";
-//const HIGHLIGHT_HIDDEN_CLASSNAME = "AknSpellCheck-mark--hidden";
 const HIGHLIGHT_CLASSNAME = "AknSpellCheck-mark";
 
 interface HighlightPros {
@@ -39,6 +39,8 @@ interface HighlightPros {
 const Highlight: FunctionComponent<HighlightPros> = ({ highlight, editorRect, content}) => {
   const [highlightRect, setHighlightRect] = useState<DOMRect | null>(null);
   const [classList, setClassList] = useState<string []>([]);
+  const highlightRef = useRef<HTMLDivElement>(null);
+  const {handleOpening, handleClosing} = useGetSpellcheckPopover();
 
   useEffect(() => {
     setClassList([...highlight.classList, HIGHLIGHT_CLASSNAME]);
@@ -51,20 +53,25 @@ const Highlight: FunctionComponent<HighlightPros> = ({ highlight, editorRect, co
     })();
   }, [highlight.domRange, editorRect, content]);
 
-  const handleMouseOver = () => {
-    setClassList([
-      ...highlight.classList,
-      HIGHLIGHT_HOVER_CLASSNAME,
-      HIGHLIGHT_CLASSNAME
-    ]);
-  };
+  const handleMouseOver = useCallback(() => {
+    handleOpening(highlight.mistake, highlightRef, () => {
+      setClassList([
+        ...highlight.classList,
+        HIGHLIGHT_HOVER_CLASSNAME,
+        HIGHLIGHT_CLASSNAME
+      ]);
+    });
+  }, [handleClosing, highlight]);
 
-  const handleMouseOut = () => {
-    setClassList([...highlight.classList, HIGHLIGHT_CLASSNAME]);
-  };
+  const handleMouseOut = useCallback(() => {
+    handleClosing(() => {
+      setClassList([...highlight.classList, HIGHLIGHT_CLASSNAME]);
+    });
+  }, [handleClosing, highlight]);
 
   return (
     <div
+      ref={highlightRef}
       className={classList.join(" ")}
       style={computeStyle(highlightRect, editorRect)}
       onMouseOver={handleMouseOver}

@@ -30,3 +30,9 @@ akeneo_data_quality_insights:
         attribute_filter:
             all_missing_attributes: All missing attributes
             all_improvable_attributes: All improvable attributes
+        spellcheck_popover:
+            title: Corrections
+            original_text_title: Original
+            suggestions_title: Proposals
+            ignore_all_suggestions_button_label: Ignore
+
