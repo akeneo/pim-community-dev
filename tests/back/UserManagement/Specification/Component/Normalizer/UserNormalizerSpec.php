@@ -84,9 +84,11 @@ class UserNormalizerSpec extends ObjectBehavior
                 'originalFilename' => null,
             ],
             'meta'                      => [
-                'id'    => null,
-                'form'  => 'pim-user-show',
-                'image' => [
+                'id'      => null,
+                'created' => null,
+                'updated' => null,
+                'form'    => 'pim-user-show',
+                'image'   => [
                     'filePath' => null
                 ]
             ],

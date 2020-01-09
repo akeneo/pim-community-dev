@@ -71,10 +71,10 @@ var/cache/dev:
 cache:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
 
-composer.lock: composer.json
-	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer update
-
-vendor: composer.lock
+.PHONY: vendor
+vendor:
+    # check if composer.json is out of sync with composer.lock
+	$(PHP_RUN) /usr/local/bin/composer validate --no-check-all
 	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer install
 
 .PHONY: check-requirements

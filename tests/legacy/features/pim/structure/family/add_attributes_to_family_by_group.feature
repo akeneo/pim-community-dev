@@ -12,9 +12,9 @@ Feature: Add attributes by attribute groups to a family
   Scenario: Successfully add attributes by attribute groups to a family
     Given I am on the "Sandals" family page
     And I visit the "Attributes" tab
+    And I should see available attribute group "Product information, Marketing, Colors, Media and Other"
     And I add attributes by group "Media, Product information and Marketing"
     Then I should see attributes "Price, Rate of sale and Rating" in group "Marketing"
     And I should see attributes "SKU, Name, Manufacturer, Weather conditions and Description" in group "Product information"
     And I should see attributes "Length, Volume and Weight" in group "Product information"
     And I should see attributes "Side view and Top view" in group "Media"
-    And I should see available attribute group "Product information, Marketing, Sizes, Colors, Media and Other"

@@ -104,9 +104,11 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
                 'originalFilename' => null,
             ] : $this->fileNormalizer->normalize($user->getAvatar()),
             'meta'                      => [
-                'id'    => $user->getId(),
-                'form'  => $this->getFormName($user),
-                'image' => [
+                'id'      => $user->getId(),
+                'created' => $user->getCreatedAt() ? $user->getCreatedAt()->getTimestamp() : null,
+                'updated' => $user->getUpdatedAt() ? $user->getUpdatedAt()->getTimestamp() : null,
+                'form'    => $this->getFormName($user),
+                'image'   => [
                     'filePath' => null === $user->getAvatar() ?
                         null :
                         $this->fileNormalizer->normalize($user->getAvatar())['filePath']

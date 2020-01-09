@@ -1,0 +1,4 @@
+akeneo_connectivity_connection_manage_settings:
+    type: action
+    label: akeneo_connectivity.connection.acl.manage_settings
+    group_name: oro_config_system

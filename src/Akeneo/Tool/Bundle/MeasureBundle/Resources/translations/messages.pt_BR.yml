@@ -96,7 +96,7 @@ pim_measure:
     CENTIAMPERE: Centiampere
     DECIAMPERE: Deciampere
     AMPERE: Ampère
-    DEKAAMPERE: Dekaampere
+    DEKAMPERE: Dekaampere
     HECTOAMPERE: Hectoampere
     KILOAMPERE: Kiloampere
     MEGAAMPERE: Megaampere
@@ -170,7 +170,6 @@ pim_measure:
     PSI: Libra por polegada quadrada
     TORR: Torr
     MMHG: milímetro de mercúrio
-    #Energy
     KILOCALORIE: quilocaloria
     KILOJOULE: kilojoule
     #CaseBox

@@ -31,10 +31,6 @@ class LogArchiver implements EventSubscriberInterface
     public function archive(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
-        if (!$this->isImportOrExport($jobExecution)) {
-            return;
-        }
-
         $logPath = $jobExecution->getLogFile();
 
         if (is_file($logPath)) {
@@ -51,13 +47,5 @@ class LogArchiver implements EventSubscriberInterface
         return [
             EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'archive'
         ];
-    }
-
-    private function isImportOrExport(JobExecution $jobExecution): bool
-    {
-        return in_array(
-            $jobExecution->getJobInstance()->getType(),
-            [JobInstance::TYPE_EXPORT, JobInstance::TYPE_IMPORT]
-        );
     }
 }

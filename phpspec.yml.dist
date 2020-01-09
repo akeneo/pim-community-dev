@@ -34,10 +34,10 @@ suites:
 
     ## Apps context
     Apps:
-        namespace: Akeneo\Apps
-        psr4_prefix: Akeneo\Apps
-        spec_path: src/Akeneo/Apps/back/tests/Unit
-        src_path: src/Akeneo/Apps/back
+        namespace: Akeneo\Connectivity\Connection
+        psr4_prefix: Akeneo\Connectivity\Connection
+        spec_path: src/Akeneo/Connectivity/Connection/back/tests/Unit
+        src_path: src/Akeneo/Connectivity/Connection/back
 
     ## Akeneo Components
     Connector:

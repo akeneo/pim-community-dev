@@ -14,17 +14,17 @@
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
-            "Akeneo\\Apps\\": "src/Akeneo/Apps/back"
+            "Akeneo\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back"
         }
     },
     "autoload-dev": {
         "psr-0": {
             "Context": "tests/legacy/features/",
-            "Akeneo\\Apps\\": "src/Akeneo/Apps/back"
+            "Akeneo\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back"
         },
         "psr-4": {
             "Pim\\Behat\\": "tests/legacy/features/Behat",
-            "Akeneo\\Apps\\Tests\\Acceptance\\": "src/Akeneo/Apps/back/tests/Acceptance",
+            "Akeneo\\Connectivity\\Connection\\Tests\\Acceptance\\": "src/Akeneo/Connectivity/Connection/back/tests/Acceptance",
             "AkeneoTest\\": "tests/back",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\": "tests/back/",
@@ -38,13 +38,13 @@
         "ext-curl": ">=7.0",
         "ext-exif": "*",
         "ext-fileinfo": "*",
-        "ext-gd": ">=2.0",
         "ext-imagick": "*",
         "ext-intl": "*",
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "ext-xml": "*",
         "ext-zip": "*",
+        "ext-openssl": "*",
         "ass/xmlsecurity": "1.1.1",
         "doctrine/annotations": "1.8.0",
         "doctrine/cache": "1.9.1",

@@ -15,7 +15,7 @@ services:
     pim_catalog.validator.constraint.family_attribute_as_image:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsImageValidator'
         arguments:
-            - [ 'pim_catalog_image', 'pim_assets_collection', 'pim_catalog_asset_collection' ]
+            - [ 'pim_catalog_image', 'pim_catalog_asset_collection' ]
         tags:
             - { name: validator.constraint_validator, alias: pim_family_attribute_as_image_validator }
 
@@ -60,7 +60,7 @@ services:
     pim_catalog.validator.constraint.is_reference_data_configured:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\IsReferenceDataConfiguredValidator'
         arguments:
-            - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect', 'pim_assets_collection']
+            - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect']
             - '@?pim_reference_data.registry'
         tags:
             - { name: validator.constraint_validator, alias: pim_is_reference_data_configured_validator }
@@ -68,7 +68,7 @@ services:
     pim_catalog.validator.constraint.not_null_properties:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\NotNullPropertiesValidator'
         arguments:
-            - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect', 'pim_assets_collection']
+            - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect']
         tags:
             - { name: validator.constraint_validator, alias: pim_not_null_properties_validator }
 

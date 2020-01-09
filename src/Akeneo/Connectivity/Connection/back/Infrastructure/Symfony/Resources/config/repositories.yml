@@ -1,0 +1,10 @@
+services:
+    akeneo_connectivity.connection.persistence.repository.connection:
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository\DbalConnectionRepository'
+        arguments:
+            - '@database_connection'
+
+    akeneo_connectivity.connection.persistence.repository.event_count:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository\DbalEventCountRepository
+        arguments:
+            - '@database_connection'

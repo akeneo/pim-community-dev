@@ -1,0 +1,14 @@
+services:
+    akeneo_connectivity.connection.install.assets_installer:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Install\FileSystemAssetsInstaller
+        arguments:
+            - '@filesystem'
+            - '%kernel.project_dir%'
+
+    akeneo_connectivity.connection.install.install_subscriber:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Install\InstallSubscriber
+        arguments:
+            - '@akeneo_connectivity.connection.install.assets_installer'
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }

@@ -1,0 +1,7 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Cli\UpdateAuditDataCommand:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Cli\UpdateAuditDataCommand
+        arguments:
+            - '@akeneo_connectivity.connection.application.audit.handler.update_product_event_count'
+        tags:
+            - { name: 'console.command' }

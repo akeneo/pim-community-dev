@@ -1,6 +1,8 @@
 An identifier attribute already exists.: Un attribut identifiant existe déjà.
 Attribute code may contain only letters, numbers and underscore: Le code d'un attribut ne doit contenir que des lettres, des chiffres et des traits de soulignement
 Attribute code may contain only letters (at least one), numbers and underscores: Le code d'un attribut peut contenir uniquement des lettres (au moins une), des chiffres et des traits de soulignement
+Attribute code may not contain line-feed characters: Le code d'attribut ne doit pas contenir de caractères de saut de ligne.
+Attribute group code may contain only letters, numbers and underscores: Le code du groupe d'attributs ne doit contenir que des lettres, chiffres et tirets bas
 This attribute type can't be used as a grid filter: Ce type d'attribut ne peut pas être utilisé comme filtre dans la grille
 This code is not available: Ce code n'est pas disponible
 This attribute type must be required: Ce type d'attribut doit être requis
@@ -40,6 +42,7 @@ pim_catalog:
     cannot_have_parent: 'Le modèle de produit "%product_model%" ne peut pas avoir de parent'
     attribute_does_not_belong_to_family: 'L''attribut "%attribute%" n''appartient pas à la famille "%family%"'
     variant_product_invalid_family: 'La famille du produit variant doit être la même que son parent'
+    php_int_max_reached: 'Le nombre maximum doit être inférieur à %php_int_max%.'
     not_null_family: La famille ne peut pas être vide car votre produit avec l'identifiant "%sku%" est un produit variant.
     variant_product_has_parent: 'Le produit variant "%variant_product%" doit avoir un parent'
     invalid_variant_product_parent: 'Le produit variant "%variant_product%" ne peut pas avoir le modèle de produit "%product_model%" comme parent, (ce modèle de produit ne peut avoir que d''autres modèles de produit comme enfants)'
