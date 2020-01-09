@@ -27,14 +27,59 @@ class DbalSelectConnectionsEventCountByDayQuery implements SelectConnectionsEven
 
     public function execute(string $eventType, string $startDate, string $endDate): array
     {
+        $eventCountsDataPerConnection = $this->getPerConnection($startDate, $endDate, $eventType);
+        $eventCountsDataSum = $this->getSum($startDate, $endDate, $eventType);
+        $eventCounts = array_merge($eventCountsDataPerConnection, $eventCountsDataSum);
+
+        return $this->hydrateWeeklyEventCounts($eventCounts);
+    }
+
+    private function getSum(
+        string $startDate,
+        string $endDate,
+        string $eventType
+    ): array {
         $startDateTime = new \DateTime($startDate, new \DateTimeZone('UTC'));
         $endDateTime = new \DateTime($endDate, new \DateTimeZone('UTC'));
-
         $sqlQuery = <<<SQL
-SELECT audit.connection_code as code, audit.event_date, audit.event_count
+SELECT connection_code as code, event_date, event_count
+FROM akeneo_connectivity_connection_audit
+WHERE connection_code = '<all>'
+AND event_date BETWEEN :start_date AND :end_date
+AND event_type = :event_type
+ORDER BY event_date
+SQL;
+        $sqlParams = [
+            'start_date' => $startDateTime->format('Y-m-d'),
+            'end_date' => $endDateTime->format('Y-m-d'),
+            'event_type' => $eventType,
+        ];
+
+        $result = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
+        if (empty($result)) {
+            $result = [['code' => '<all>', 'event_date' => null, 'event_count' => null]];
+        }
+
+        return $this->fillMissingDates(
+            $startDateTime,
+            $endDateTime,
+            $this->normalizeEventCountsData($result)
+        );
+    }
+
+    private function getPerConnection(
+        string $startDate,
+        string $endDate,
+        string $eventType
+    ): array {
+        $startDateTime = new \DateTime($startDate, new \DateTimeZone('UTC'));
+        $endDateTime = new \DateTime($endDate, new \DateTimeZone('UTC'));
+        $sqlQuery = <<<SQL
+SELECT conn.code, audit.event_date, audit.event_count
 FROM akeneo_connectivity_connection conn
-RIGHT JOIN akeneo_connectivity_connection_audit audit ON audit.connection_code = conn.code
-WHERE audit.event_type = :event_type AND audit.event_date BETWEEN :start_date AND :end_date
+LEFT JOIN akeneo_connectivity_connection_audit audit ON audit.connection_code = conn.code
+AND audit.event_date BETWEEN :start_date AND :end_date
+AND audit.event_type = :event_type
 ORDER BY audit.event_date
 SQL;
         $sqlParams = [
@@ -45,16 +90,14 @@ SQL;
 
         $result = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
 
-        $eventCountsDataPerConnection = $this->fillMissingDates(
+        return $this->fillMissingDates(
             $startDateTime,
             $endDateTime,
-            $this->normalizeEventCountsDataPerConnection($result)
+            $this->normalizeEventCountsData($result)
         );
-
-        return $this->hydrateWeeklyEventCountsPerConnection($eventCountsDataPerConnection);
     }
 
-    private function normalizeEventCountsDataPerConnection(array $dataRows): array
+    private function normalizeEventCountsData(array $dataRows): array
     {
         return array_reduce(
             $dataRows,
@@ -99,7 +142,7 @@ SQL;
         return $eventCountsDataPerConnection;
     }
 
-    private function hydrateWeeklyEventCountsPerConnection(array $eventCountsDataPerConnection): array
+    private function hydrateWeeklyEventCounts(array $eventCountsDataPerConnection): array
     {
         $weeklyEventCountsPerConnection = [];
 
