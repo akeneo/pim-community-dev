@@ -46,22 +46,23 @@ class MigratePamAttributesIntoAssetManagerAttributesCommand extends Command
         $this
             ->setHidden(true)
             ->setDescription('Update the former PIM attributes from PAM to Asset Manager')
-            ->addArgument('assetFamilyCode', InputArgument::REQUIRED, 'The asset family code to link to')
-            ->addOption('attributeCodes', null, InputOption::VALUE_OPTIONAL, 'List of attribute codes to update the attributes')
+            ->addArgument('asset-family-code', InputArgument::REQUIRED, 'The asset family code to link to')
+            ->addArgument(
+                'attribute-codes',
+                InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
+                'List of attribute codes to update the attributes, separated by spaces. Keep it empty to update all attributes.'
+            )
         ;
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $attributeCodes = $input->getOption('attributeCodes');
-        if (null !== $attributeCodes) {
-            $attributeCodes = preg_split('/ *, */', $attributeCodes);
-        }
+        $attributeCodes = $input->getArgument('attribute-codes');
 
         $this->io = new SymfonyStyle($input, $output);
-        $this->assetFamilyCode = $input->getArgument('assetFamilyCode');
+        $this->assetFamilyCode = $input->getArgument('asset-family-code');
 
-        if (null === $attributeCodes) {
+        if (count($attributeCodes) === 0) {
             $count = $this->updateAll();
         } else {
             $count = $this->updateFromAttributeCodes($attributeCodes);
