@@ -42,7 +42,7 @@ VALUES(:connection_code, :event_date, :event_count, :event_type)
 SQL;
         $stmt = $this->dbalConnection->prepare($insertQuery);
         $stmt->execute([
-            'conection_code' => $dailyEventCount->connectionCode(),
+            'connection_code' => $dailyEventCount->connectionCode(),
             'event_date' => $dailyEventCount->eventDate(),
             'event_count' => (int) $dailyEventCount->eventCount(),
             'event_type' => (string) $dailyEventCount->eventType(),
