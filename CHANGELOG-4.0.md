@@ -1,7 +1,17 @@
 # 4.0.x
 
+## New features
+
+- AST-63: New Asset Manager to provide only one way to use assets in the PIM, regardless of their sources
+- DAPI-585: Data quality - Display Enrichment and Consistency grades in the PEF and Product Grid
+- DAPI-632: Data quality - Calculate spellcheck grade and make correction suggestions in the PEF
+- DAPI-633: Data quality - Add a dashboard to track data quality evolution on full catalog, families and categories
+
+
 ## Improvements
 
+- DAPI-437: Franklin Insights - Display Franklin key figures on Franklin’s added value to Julia’s catalog
+- DAPI-467: Franklin Insights - Ease Franklin/PIM mapping via suggested mapping (edited) 
 - DAPI-26: adds the enrichment progress in the widget's project drop down
 - DAPI-46: As a contributor, I would like to see my teammate progress on a project dashboard
 - PIM-8665: The SAML diagnostic logs are now stored in a dedicated table instead of a local file. This removes the burden of sharing the log directory in a multi-front setup.
