@@ -40,6 +40,7 @@ class AkeneoAssetManagerExtension extends Extension
         $loader->load('filters.yml');
         $loader->load('handlers.yml');
         $loader->load('jobs.yml');
+        $loader->load('pam-migrations.yml');
         $loader->load('parameters.yml');
         $loader->load('persistence.yml');
         $loader->load('preview_generators.yml');
