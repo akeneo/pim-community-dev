@@ -34,6 +34,7 @@ final class Version_4_0_20191216133927_data_quality_insights_initialize_criteria
 
     public function down(Schema $schema) : void
     {
+        $this->throwIrreversibleMigrationException();
     }
 
     /**
