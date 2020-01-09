@@ -28,7 +28,7 @@ class DbalExtractConnectionsProductEventCountQuery implements ExtractConnections
         $this->productClass = $productClass;
     }
 
-    public function extractCreatedProducts(string $date): array
+    public function extractCreatedProductsCount(string $date): array
     {
         $dateTime = new \DateTime($date, new \DateTimeZone('UTC'));
         $dateTime->setTime(0, 0, 0, 0);
@@ -43,7 +43,83 @@ FROM (
     AND version = 1 
     GROUP BY author, resource_id
 ) AS tmp_table
-INNER JOIN oro_user u ON u.username = author AND u.user_type = "app"
+INNER JOIN oro_user u ON u.username = author AND u.user_type = "api"
+INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
+GROUP BY conn.code;
+SQL;
+        $sqlParams = [
+            'start_time' => $dateTime->format('Y-m-d H:i:s'),
+            'end_time' => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
+            'resource_name' => $this->productClass
+        ];
+
+        $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
+        $dailyEventCount = [];
+        foreach ($dataRows as $dataRow) {
+            $dailyEventCount[] = new DailyEventCount(
+                $dataRow['code'],
+                $dateTime->format('Y-m-d'),
+                (int)$dataRow['event_count'],
+                'product_created'
+            );
+        }
+
+        return $dailyEventCount;
+    }
+
+    public function extractCreatedProductsAllCount(string $date): array
+    {
+        $dateTime = new \DateTime($date, new \DateTimeZone('UTC'));
+        $dateTime->setTime(0, 0, 0, 0);
+
+        $sqlQuery = <<<SQL
+SELECT COUNT(resource_id) as event_count
+FROM (
+    SELECT author, resource_id 
+    FROM pim_versioning_version USE INDEX(logged_at_idx) 
+    WHERE logged_at >= :start_time AND logged_at < :end_time 
+    AND resource_name = :resource_name
+    AND version = 1 
+    GROUP BY author, resource_id
+) AS tmp_table
+INNER JOIN oro_user u ON u.username = author AND u.user_type = "api"
+SQL;
+        $sqlParams = [
+            'start_time' => $dateTime->format('Y-m-d H:i:s'),
+            'end_time'   => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
+            'resource_name' => $this->productClass
+        ];
+
+        $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
+        $dailyEventCount = [];
+        foreach ($dataRows as $dataRow) {
+            $dailyEventCount[] = new DailyEventCount(
+                '<all>',
+                $dateTime->format('Y-m-d'),
+                (int) $dataRow['event_count'],
+                'product_created'
+            );
+        }
+
+        return $dailyEventCount;
+    }
+
+    public function extractUpdatedProductsCount(string $date): array
+    {
+        $dateTime = new \DateTimeImmutable($date, new \DateTimeZone('UTC'));
+        $dateTime->setTime(0, 0, 0, 0);
+
+        $sqlQuery = <<<SQL
+SELECT conn.code, COUNT(resource_id) as event_count
+FROM (
+    SELECT author, resource_id 
+    FROM pim_versioning_version USE INDEX(logged_at_idx) 
+    WHERE logged_at >= :start_time AND logged_at < :end_time 
+    AND resource_name = :resource_name
+    AND version != 1 
+    GROUP BY author, resource_id
+) AS tmp_table
+INNER JOIN oro_user u ON u.username = author AND u.user_type = "api"
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
 GROUP BY conn.code;
 SQL;
@@ -60,20 +136,20 @@ SQL;
                 $dataRow['code'],
                 $dateTime->format('Y-m-d'),
                 (int) $dataRow['event_count'],
-                'product_created'
+                'product_updated'
             );
         }
 
         return $dailyEventCount;
     }
 
-    public function extractUpdatedProducts(string $date): array
+    public function extractUpdatedProductsAllCount(string $date): array
     {
-        $dateTime = new \DateTime($date, new \DateTimeZone('UTC'));
+        $dateTime = new \DateTimeImmutable($date, new \DateTimeZone('UTC'));
         $dateTime->setTime(0, 0, 0, 0);
 
         $sqlQuery = <<<SQL
-SELECT conn.code, COUNT(resource_id) as event_count
+SELECT COUNT(resource_id) as event_count
 FROM (
     SELECT author, resource_id 
     FROM pim_versioning_version USE INDEX(logged_at_idx) 
@@ -82,9 +158,7 @@ FROM (
     AND version != 1 
     GROUP BY author, resource_id
 ) AS tmp_table
-INNER JOIN oro_user u ON u.username = author AND u.user_type = "app"
-INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
-GROUP BY conn.code;
+INNER JOIN oro_user u ON u.username = author AND u.user_type = "api"
 SQL;
         $sqlParams = [
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
@@ -96,7 +170,7 @@ SQL;
         $dailyEventCount = [];
         foreach ($dataRows as $dataRow) {
             $dailyEventCount[] = new DailyEventCount(
-                $dataRow['code'],
+                '<all>',
                 $dateTime->format('Y-m-d'),
                 (int) $dataRow['event_count'],
                 'product_updated'

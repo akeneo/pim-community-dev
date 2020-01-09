@@ -31,25 +31,30 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
         Assert::assertJsonStringNotEqualsJsonFile(
             realpath(__DIR__ . '/../Resources/json_response/count_daily_events_by_connection.json'),
             $response->getContent()
-        );
+        ); // TODO : use assertJsonStringEqualsJsonFile
     }
 
     private function loadAuditData(): void
     {
-        $eventDate = new \DateTime('now', new \DateTimeZone('UTC'));
+        $eventDate = new \DateTime('2020-01-01', new \DateTimeZone('UTC'));
         $auditLoader = $this->get('akeneo_connectivity.connection.fixtures.audit_loader');
+
         // today
+        $auditLoader->insertData('<all>', $eventDate, 51, 'product_created');
         $auditLoader->insertData('franklin', $eventDate, 11, 'product_created');
-        $auditLoader->insertData('erp', $eventDate, 28, 'product_updated');
         $auditLoader->insertData('erp', $eventDate, 37, 'product_created');
+        $auditLoader->insertData('erp', $eventDate, 28, 'product_updated');
         // yesterday
-        $auditLoader->insertData('franklin', $eventDate->modify('-1 day'), 5, 'product_created');
+        $auditLoader->insertData('<all>', $eventDate->modify('-1 day'), 5, 'product_created');
+        $auditLoader->insertData('franklin', $eventDate, 5, 'product_created');
         $auditLoader->insertData('franklin', $eventDate, 132, 'product_updated');
         // 2 days ago
-        $auditLoader->insertData('franklin', $eventDate->modify('-1 day'), 10, 'product_created');
+        $auditLoader->insertData('<all>', $eventDate->modify('-1 day'), 10, 'product_created');
+        $auditLoader->insertData('franklin', $eventDate, 10, 'product_created');
         $auditLoader->insertData('franklin', $eventDate, 7, 'product_updated');
         // 10 days ago
-        $auditLoader->insertData('franklin', $eventDate->modify('-7 day'), 15, 'product_created');
+        $auditLoader->insertData('<all>', $eventDate->modify('-7 day'), 15, 'product_created');
+        $auditLoader->insertData('franklin', $eventDate, 15, 'product_created');
     }
 
     /**
