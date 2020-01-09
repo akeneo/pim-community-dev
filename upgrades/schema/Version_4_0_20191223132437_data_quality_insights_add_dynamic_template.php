@@ -55,6 +55,7 @@ final class Version_4_0_20191223132437_data_quality_insights_add_dynamic_templat
 
     public function down(Schema $schema) : void
     {
+        $this->throwIrreversibleMigrationException();
     }
 
     public function setContainer(ContainerInterface $container = null)

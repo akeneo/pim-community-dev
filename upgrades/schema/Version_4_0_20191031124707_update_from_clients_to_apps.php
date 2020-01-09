@@ -33,6 +33,7 @@ final class Version_4_0_20191031124707_update_from_clients_to_apps
 
     public function down(Schema $schema) : void
     {
+        $this->throwIrreversibleMigrationException();
     }
 
     private function migrateToConnections(): void

@@ -79,6 +79,7 @@ final class Version_4_0_20190917080512_remove_product_model_empty_raw_values
 
     public function down(Schema $schema) : void
     {
+        $this->throwIrreversibleMigrationException();
     }
 
     private function getValueCleaner(): EmptyValuesCleaner
