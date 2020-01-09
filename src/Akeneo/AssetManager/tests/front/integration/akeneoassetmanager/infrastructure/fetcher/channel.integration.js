@@ -66,7 +66,7 @@ beforeEach(async () => {
 it('It fetches the channels', async () => {
   // It fetches the channels
   const response = await page.evaluate(async () => {
-    const fetchChannels = require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel')
+    const fetchChannels = require('akeneoassetmanager/infrastructure/fetcher/channel')
       .fetchChannels;
     const fetcherRegistry = require('pim/fetcher-registry');
     fetcherRegistry.initialize();
