@@ -13,30 +13,26 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\DictionaryGenerator;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\DictionarySource;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\PurgeOutdatedData;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PeriodicTasksParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Psr\Log\LoggerInterface;
 
-final class GenerateDictionaryTasklet implements TaskletInterface
+final class PurgeOutdatedDataTasklet implements TaskletInterface
 {
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var DictionaryGenerator */
-    private $dictionaryGenerator;
-
-    /** @var DictionarySource */
-    private $dictionarySource;
-
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(DictionaryGenerator $dictionaryGenerator, DictionarySource $dictionarySource, LoggerInterface $logger)
+    /** @var PurgeOutdatedData */
+    private $purgeOutdatedData;
+
+    public function __construct(PurgeOutdatedData $purgeOutdatedData, LoggerInterface $logger)
     {
-        $this->dictionaryGenerator = $dictionaryGenerator;
-        $this->dictionarySource = $dictionarySource;
+        $this->purgeOutdatedData = $purgeOutdatedData;
         $this->logger = $logger;
     }
 
@@ -54,10 +50,15 @@ final class GenerateDictionaryTasklet implements TaskletInterface
     public function execute()
     {
         try {
-            $this->dictionaryGenerator->generate($this->dictionarySource);
+            $jobParameters = $this->stepExecution->getJobParameters();
+            $purgeDate = \DateTimeImmutable::createFromFormat(PeriodicTasksParameters::DATE_FORMAT, $jobParameters->get(PeriodicTasksParameters::DATE_FIELD));
+
+            $this->purgeOutdatedData->purgeCriterionEvaluationsFrom($purgeDate);
+            $this->purgeOutdatedData->purgeProductAxisRatesFrom($purgeDate);
+            $this->purgeOutdatedData->purgeDashboardProjectionRatesFrom($purgeDate);
         } catch (\Exception $exception) {
             $this->stepExecution->addFailureException($exception);
-            $this->logger->error('Generate Data-Quality-Insights dictionary failed', [
+            $this->logger->error('Purge Data-Quality-Insights outdated data failed.', [
                 'step_execution_id' => $this->stepExecution->getId(),
                 'message' => $exception->getMessage()
             ]);

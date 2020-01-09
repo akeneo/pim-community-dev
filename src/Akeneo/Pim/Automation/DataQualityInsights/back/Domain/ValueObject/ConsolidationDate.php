@@ -35,7 +35,7 @@ final class ConsolidationDate
 
     public function isLastDayOfMonth(): bool
     {
-        return $this->dateTime->format('d') ===  $this->dateTime->format('t');
+        return $this->dateTime->format('d') === $this->dateTime->format('t');
     }
 
     public function formatByPeriodicity(Periodicity $periodicity): string
@@ -50,5 +50,10 @@ final class ConsolidationDate
             default:
                 throw new \InvalidArgumentException(sprintf('The periodicity %s is not supported', $periodicity));
         }
+    }
+
+    public function modify(string $modify): self
+    {
+        return new self($this->dateTime->modify($modify));
     }
 }

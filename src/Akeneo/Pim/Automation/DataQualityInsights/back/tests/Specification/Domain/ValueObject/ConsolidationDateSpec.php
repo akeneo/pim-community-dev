@@ -59,4 +59,12 @@ final class ConsolidationDateSpec extends ObjectBehavior
         $this->beConstructedWith(new \DateTimeImmutable('2019-12-09 12:43:37'));
         $this->formatByPeriodicity(Periodicity::monthly())->shouldReturn('2019-12');
     }
+
+    public function it_modifies_a_date()
+    {
+        $this->beConstructedWith(new \DateTimeImmutable('2019-12-09 12:43:37'));
+
+        $modifiedDate = $this->modify('-2 DAY');
+        $modifiedDate->formatByPeriodicity(Periodicity::daily())->shouldReturn('2019-12-07');
+    }
 }

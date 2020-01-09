@@ -136,6 +136,59 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
         $this->assertEmpty($this->repository->findPendingByProductIds([456789]));
     }
 
+    public function test_it_purges_evaluations_older_than_a_given_date()
+    {
+        $this->createEndedCriterionEvaluation(new CriterionEvaluation(
+            new CriterionEvaluationId('42_completeness_last_evaluation'),
+            new CriterionCode('completeness'),
+            new ProductId(42),
+            new \DateTimeImmutable('2019-10-28 10:41:56.123'),
+            CriterionEvaluationStatus::pending()
+        ));
+        $this->createEndedCriterionEvaluation(new CriterionEvaluation(
+            new CriterionEvaluationId('42_completeness_young_evaluation'),
+            new CriterionCode('completeness'),
+            new ProductId(42),
+            new \DateTimeImmutable('2019-10-28 10:41:57.123'),
+            CriterionEvaluationStatus::pending()
+        ));
+        $this->createEndedCriterionEvaluation(new CriterionEvaluation(
+            new CriterionEvaluationId('42_completeness_old_evaluation'),
+            new CriterionCode('completeness'),
+            new ProductId(42),
+            new \DateTimeImmutable('2019-10-27 10:41:56.123'),
+            CriterionEvaluationStatus::pending()
+        ));
+        $this->createEndedCriterionEvaluation(new CriterionEvaluation(
+            new CriterionEvaluationId('42_spelling_last_evaluation'),
+            new CriterionCode('spelling'),
+            new ProductId(42),
+            new \DateTimeImmutable('2019-10-28 11:41:56.123'),
+            CriterionEvaluationStatus::pending()
+        ));
+        $this->createEndedCriterionEvaluation(new CriterionEvaluation(
+            new CriterionEvaluationId('42_spelling_old_evaluation'),
+            new CriterionCode('spelling'),
+            new ProductId(42),
+            new \DateTimeImmutable('2019-10-27 23:59:59.999'),
+            CriterionEvaluationStatus::pending()
+        ));
+        $this->createEndedCriterionEvaluation(new CriterionEvaluation(
+            new CriterionEvaluationId('123_spelling_last_but_old_evaluation'),
+            new CriterionCode('spelling'),
+            new ProductId(123),
+            new \DateTimeImmutable('2019-09-03 10:41:57.987'),
+            CriterionEvaluationStatus::pending()
+        ));
+        $this->repository->purgeUntil(new \DateTimeImmutable('2019-10-28 23:41:56'));
+
+        $this->assertCountCriterionEvaluations(4);
+        $this->assertCriterionEvaluationExists('42_completeness_last_evaluation');
+        $this->assertCriterionEvaluationExists('42_completeness_young_evaluation');
+        $this->assertCriterionEvaluationExists('42_spelling_last_evaluation');
+        $this->assertCriterionEvaluationExists('123_spelling_last_but_old_evaluation');
+    }
+
     private function buildCollection(): CriterionEvaluationCollection
     {
         $criteria = (new CriterionEvaluationCollection)
@@ -179,5 +232,34 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function createEndedCriterionEvaluation(CriterionEvaluation $criterionEvaluation): void
+    {
+        $criteria = (new CriterionEvaluationCollection)->add($criterionEvaluation);
+        $this->repository->create($criteria);
+
+        $criterionEvaluation->end(new CriterionEvaluationResult(new CriterionRateCollection(), []));
+        $this->repository->update($criterionEvaluation);
+    }
+
+    private function assertCountCriterionEvaluations(int $expectedCount): void
+    {
+        $stmt = $this->db->executeQuery(
+            'SELECT COUNT(*) FROM pimee_data_quality_insights_criteria_evaluation'
+        );
+        $count = intval($stmt->fetchColumn());
+
+        $this->assertSame($expectedCount, $count);
+    }
+
+    private function assertCriterionEvaluationExists(string $criterionEvaluationId): void
+    {
+        $stmt = $this->db->executeQuery(
+            'SELECT 1 FROM pimee_data_quality_insights_criteria_evaluation WHERE id = :id',
+            ['id' => $criterionEvaluationId]
+        );
+
+        $this->assertTrue((bool) $stmt->fetchColumn());
     }
 }
