@@ -64,8 +64,8 @@ pim_asset_manager:
   app:
     image:
       wide:
-        remove: Remove the image
-        download: Download the image
+        remove: Remove the file
+        download: Download the file
         upload: Drag and drop to upload or click here
       small:
         remove: Remove

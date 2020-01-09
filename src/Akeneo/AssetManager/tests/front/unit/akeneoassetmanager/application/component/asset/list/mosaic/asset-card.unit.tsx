@@ -1,6 +1,6 @@
 import * as React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {render, fireEvent} from '@testing-library/react';
+import {render, fireEvent, act} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import AssetCard from 'akeneoassetmanager/application/component/asset/list/mosaic/asset-card';
@@ -13,8 +13,16 @@ const asset = {
   image: [{attribute: 'nice', locale: null, channel: null, data: {filePath: 'my_image_url', originalFilename: ''}}],
   completeness: {},
 };
+jest.mock('akeneoassetmanager/tools/image-loader', () =>
+  jest.fn().mockImplementation(
+    url =>
+      new Promise(resolve => {
+        act(() => resolve());
+      })
+  )
+);
 
-test('It displays an unselected asset card', () => {
+test('It displays an unselected asset card', async () => {
   const isSelected = false;
   const {getByText, container} = render(
     <ThemeProvider theme={akeneoTheme}>
@@ -26,12 +34,15 @@ test('It displays an unselected asset card', () => {
       />
     </ThemeProvider>
   );
+
+  await setTimeout(() => new Promise(resolve => resolve), 10);
+
   expect(container.querySelector('img').src).toEqual('');
   expect(container.querySelector('[data-checked="false"]')).toBeInTheDocument();
   expect(getByText(asset.labels.en_US)).toBeInTheDocument();
 });
 
-test('It displays selected asset card', () => {
+test('It displays selected asset card', async () => {
   const isSelected = true;
   const {getByText, container} = render(
     <ThemeProvider theme={akeneoTheme}>
@@ -43,6 +54,9 @@ test('It displays selected asset card', () => {
       />
     </ThemeProvider>
   );
+
+  await setTimeout(() => new Promise(resolve => resolve), 10);
+
   expect(container.querySelector('img').src).toEqual('');
   expect(container.querySelector('[data-checked="true"]')).toBeInTheDocument();
   expect(getByText(asset.labels.en_US)).toBeInTheDocument();
@@ -65,7 +79,9 @@ test('it can be selected when clicking on the checkbox', () => {
     </ThemeProvider>
   );
 
-  fireEvent.click(container.querySelector('[data-checked]'));
+  act(() => {
+    fireEvent.click(container.querySelector('[data-checked]'));
+  });
 
   expect(isSelected).toEqual(true);
   expect(selectedCode).toEqual(asset.code);
@@ -88,7 +104,9 @@ test('it can be selected when clicking on the asset card', () => {
     </ThemeProvider>
   );
 
-  fireEvent.click(container.querySelector('img'));
+  act(() => {
+    fireEvent.click(container.querySelector('[data-test-id="asset-card-image"]'));
+  });
 
   expect(isSelected).toEqual(true);
   expect(selectedCode).toEqual(asset.code);
@@ -111,8 +129,9 @@ test('it cannot be selected if there is an on change property', () => {
       />
     </ThemeProvider>
   );
-
-  fireEvent.click(container.querySelector('img'));
+  act(() => {
+    fireEvent.click(container.firstElementChild);
+  });
 
   expect(isSelected).toEqual(false);
   expect(selectedCode).toEqual(null);

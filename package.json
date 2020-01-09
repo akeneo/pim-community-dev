@@ -40,6 +40,7 @@
     "tslint-react": "^4.0.0"
   },
   "dependencies": {
+    "p-queue": "^6.2.1",
     "ajv": "^6.10.2",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
