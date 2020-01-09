@@ -21,6 +21,9 @@ class ExportAssetsCommand extends Command
 
     protected static $defaultName = 'pimee:migrate-pam-assets:export-assets';
 
+    /** * @var SymfonyStyle */
+    private $io;
+
     /** * @var FindAssets */
     private $findAssets;
 
@@ -50,9 +53,9 @@ class ExportAssetsCommand extends Command
         $assetsFilePath = sprintf('%s/%s', $fileDir, self::ASSETS_CSV_FILENAME);
         $variationFilePath = sprintf('%s/%s', $fileDir, self::VARIATIONS_CSV_FILENAME);
 
-        $this->io->title('Export PAM assets and their variations in CSV files.');
+        $this->io->title('Export PAM assets and their variations in CSV files from old PAM mysql tables..');
         $this->io->text([
-            sprintf('This command will export the PAM assets into 2 csv files in the "%s" directory:', $fileDir),
+            sprintf('This command will export the old PAM assets from mysql tables into 2 csv files in the "%s" directory:', $fileDir),
             sprintf('- "%s" : The assets and their information', $assetsFilePath),
             sprintf('- "%s" : The variations for each assets', $variationFilePath)
         ]);
