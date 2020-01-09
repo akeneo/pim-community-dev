@@ -3,13 +3,10 @@
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer\InternalApi;
 
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\AssetPreviewGenerator;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer as BaseImageNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
@@ -44,30 +41,40 @@ class ImageNormalizer extends BaseImageNormalizer
      */
     public function normalize(?ValueInterface $value, ?string $localeCode = null): ?array
     {
-      if (null === $value) {
-        return null;
-      }
-      $data = $value->getData();
+        if ($value instanceof AssetCollectionValue) {
+            return $this->normalizeAssetManagerFile($value);
+        }
 
-      if (empty($data)) {
-          return null;
-      }
+        return parent::normalize($value, $localeCode);
+    }
 
-      $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
-      $assetFamilyIdentifier = $attribute->getReferenceDataName();
+    private function normalizeAssetManagerFile(AssetCollectionValue $value): ?array
+    {
+        if (null === $value) {
+            return null;
+        }
 
-      $assetCode = $data[0];
-      $filepath = $this->assetPreviewGenerator->getImageUrl(
-          (string) $assetCode,
-          $assetFamilyIdentifier,
-          $value->getScopeCode(),
-          $value->getLocaleCode(),
-          'thumbnail'
-      );
+        $data = $value->getData();
 
-      return [
-          'filePath' => $filepath,
-          'originalFilename' => '',
-      ];
+        if (empty($data)) {
+            return null;
+        }
+
+        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+        $assetFamilyIdentifier = $attribute->getReferenceDataName();
+
+        $assetCode = $data[0];
+        $filepath = $this->assetPreviewGenerator->getImageUrl(
+            (string) $assetCode,
+            $assetFamilyIdentifier,
+            $value->getScopeCode(),
+            $value->getLocaleCode(),
+            'thumbnail'
+        );
+
+        return [
+            'filePath' => $filepath,
+            'originalFilename' => '',
+        ];
     }
 }
