@@ -16,7 +16,7 @@ Feature: Delete an asset family
       | entity_identifier | code   | labels                                 | required | order | value_per_channel | value_per_locale | asset_type |
       | designer          | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false    | 2     | false             | false            | designer    |
     When the user deletes the asset family "designer"
-    Then there should be a validation error on the property '' with message 'You can not delete this entity because asset family attributes are related to this family'
+    Then there should be a validation error on the property '' with message 'You can not delete this family because asset family attributes are related to this family'
     And there is an asset family "designer" with:
       | identifier | labels                                       | image |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
