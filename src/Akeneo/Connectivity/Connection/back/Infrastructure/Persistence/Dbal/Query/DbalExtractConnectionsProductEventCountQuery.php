@@ -30,7 +30,7 @@ class DbalExtractConnectionsProductEventCountQuery implements ExtractConnections
 
     public function extractCreatedProductsByConnection(string $date): array
     {
-        $dateTime = new \DateTime($date, new \DateTimeZone('UTC'));
+        $dateTime = new \DateTimeImmutable($date, new \DateTimeZone('UTC'));
         $dateTime->setTime(0, 0, 0, 0);
 
         $sqlQuery = <<<SQL
@@ -69,7 +69,7 @@ SQL;
 
     public function extractAllCreatedProducts(string $date): array
     {
-        $dateTime = new \DateTime($date, new \DateTimeZone('UTC'));
+        $dateTime = new \DateTimeImmutable($date, new \DateTimeZone('UTC'));
         $dateTime->setTime(0, 0, 0, 0);
 
         $sqlQuery = <<<SQL
