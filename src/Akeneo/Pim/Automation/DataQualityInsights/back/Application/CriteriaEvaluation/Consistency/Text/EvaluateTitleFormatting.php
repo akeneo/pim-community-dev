@@ -83,8 +83,7 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface
 
     private function isSupportedLocale(string $localeCode)
     {
-        preg_match('~en_[A-Z]{2}$~', $localeCode, $matches);
-        return count($matches) > 0;
+        return preg_match('~en_[A-Z]{2}$~', $localeCode) === 1;
     }
 
     private function computeProductValueRate(?string $originalTitle): array

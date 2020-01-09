@@ -53,6 +53,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
+            'Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository',
             'Akeneo\Tool\Component\Batch\Model\JobInstance',
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
 
@@ -70,11 +71,13 @@ $rules = [
             //Datagrid filters, columns, sorting and ES indexation needs
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\BaseFieldSorte',
-            'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException',
             'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductProperties',
             'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters',
             'Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty',
             'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductModelProperties',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions',
             'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
             'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
             'Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration',
@@ -103,6 +106,8 @@ $rules = [
             'GuzzleHttp\ClientInterface',
             'GuzzleHttp\Exception',
             'Mekras\Speller',
+            'Lcobucci\JWT',
+            'League\Flysystem',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Pim\Upgrade\Schema;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\Query\InitDataQualityInsightsSchema;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version_4_0_20191023164418_data_quality_insights_create_tables extends AbstractMigration
 {
@@ -22,5 +22,6 @@ class Version_4_0_20191023164418_data_quality_insights_create_tables extends Abs
         $this->addSql('DROP TABLE IF EXISTS pimee_data_quality_insights_criteria_evaluation');
         $this->addSql('DROP TABLE IF EXISTS pimee_data_quality_insights_product_axis_rates');
         $this->addSql('DROP TABLE IF EXISTS pimee_data_quality_insights_dashboard_rates_projection');
+        $this->addSql('DROP TABLE IF EXISTS pimee_data_quality_insights_text_checker_dictionary');
     }
 }

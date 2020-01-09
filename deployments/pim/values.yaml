@@ -101,6 +101,7 @@ pim:
     type: RollingUpdate
   replicas: 1
   numDaemon: 1
+  numDataQualityDaemon: 1
   extraLabels: {}
   secret: nil # Generate me with `uuidgen`
   resources:
@@ -162,6 +163,10 @@ pim:
       enabled: true
       pimCommand: "pimee:sso:rotate-log 30"
       schedule: "5 22 * * *"
+    data-quality-insights-periodic-tasks:
+      enabled: true
+      pimCommand: "pimee:data-quality-insights:schedule-periodic-tasks"
+      schedule: "15 0 * * *"
 
 # Onboarder
 onboarder:

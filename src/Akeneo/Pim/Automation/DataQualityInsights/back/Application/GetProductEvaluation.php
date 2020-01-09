@@ -84,7 +84,11 @@ class GetProductEvaluation
     private function computeAxisRate(array $criteriaEvaluations): array
     {
         return array_reduce($criteriaEvaluations, function (array $previous, CriterionEvaluation $criterionEvaluation) {
-            $rates = $criterionEvaluation->getResult()->getRates()->toArrayInt();
+            $evaluationResult = $criterionEvaluation->getResult();
+            $rates = [];
+            if ($evaluationResult !== null) {
+                $rates = $evaluationResult->getRates()->toArrayInt();
+            }
 
             $data = $this->compute($rates, $previous, function ($rate, $state, $channel, $locale) {
                 $previousRate = $state[$channel][$locale]['rate']['value'] ?? 0;
@@ -116,7 +120,11 @@ class GetProductEvaluation
     private function computeAxisCriteriaRates(array $criteriaEvaluations): array
     {
         return array_reduce($criteriaEvaluations, function (array $previous, CriterionEvaluation $criterionEvaluation) {
-            $rates = $criterionEvaluation->getResult()->getRates()->toArrayInt();
+            $evaluationResult = $criterionEvaluation->getResult();
+            $rates = [];
+            if ($evaluationResult !== null) {
+                $rates = $evaluationResult->getRates()->toArrayInt();
+            }
             $criterion = strval($criterionEvaluation->getCriterionCode());
 
             $data = $this->compute($rates, $previous, function ($rate, $state, $channel, $locale) use ($criterion) {
@@ -149,8 +157,12 @@ class GetProductEvaluation
     private function computeAxisRecommendations(array $criteriaEvaluations): array
     {
         return array_reduce($criteriaEvaluations, function (array $previous, CriterionEvaluation $criterionEvaluation) {
+            $evaluationResult = $criterionEvaluation->getResult();
+            $evaluationData = [];
+            if ($evaluationResult !== null) {
+                $evaluationData = $evaluationResult->getData()?? [];
+            }
             $criterion = strval($criterionEvaluation->getCriterionCode());
-            $evaluationData = $criterionEvaluation->getResult()->getData() ?? [];
             $recommendations = $evaluationData['attributes'] ?? [];
 
             $data = $this->compute($recommendations, $previous, function ($attributes, $state, $channel, $locale) use ($criterion) {

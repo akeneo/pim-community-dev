@@ -89,7 +89,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $buildProductValues->buildTextValues($product)->willReturn([
             'text_1' => [
                 'ecommerce' => [
-                    'en_US' => 'Typos hapen.',
+                    'en_US' => 'Typos happen.',
                     'fr_FR' => 'Les fautes de frape arivent',
                     'it_IT' => 'I refusi accadono.',
                 ],
@@ -101,15 +101,15 @@ class EvaluateSpellingSpec extends ObjectBehavior
             ],
         ]);
 
-        $supportedLocaleChecker->isSupported('en_US')->willReturn(true);
-        $supportedLocaleChecker->isSupported('fr_FR')->willReturn(true);
-        $supportedLocaleChecker->isSupported('it_IT')->willReturn(true);
+        $supportedLocaleChecker->isSupported(new LocaleCode('en_US'))->willReturn(true);
+        $supportedLocaleChecker->isSupported(new LocaleCode('fr_FR'))->willReturn(true);
+        $supportedLocaleChecker->isSupported(new LocaleCode('it_IT'))->willReturn(false);
 
         $textCheckResultCollection1->count()->willReturn(1);
         $textCheckResultCollection2->count()->willReturn(1);
         $textCheckResultCollection3->count()->willReturn(0);
         $textCheckResultCollection4->count()->willReturn(0);
-        $textCheckResultCollection5->count()->willReturn(1);
+        $textCheckResultCollection5->count()->willReturn(0);
         $textCheckResultCollection6->count()->willReturn(1);
         $textCheckResultCollection7->count()->willReturn(1);
         $textCheckResultCollection8->count()->willReturn(0);
@@ -118,7 +118,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $textChecker->check('<p>Les fautes de frape arivent. </p>', 'fr_FR')->willReturn($textCheckResultCollection2);
         $textChecker->check('<p>Typos happen. </p>', 'en_US')->willReturn($textCheckResultCollection3);
         $textChecker->check('<p>Les fautes de frappe arrivent. </p>', 'fr_FR')->willReturn($textCheckResultCollection4);
-        $textChecker->check('Typos hapen.', 'en_US')->willReturn($textCheckResultCollection5);
+        $textChecker->check('Typos happen.', 'en_US')->willReturn($textCheckResultCollection5);
         $textChecker->check('Les fautes de frape arivent', 'fr_FR')->willReturn($textCheckResultCollection6);
         $textChecker->check('Typos hapen.', 'en_US')->willReturn($textCheckResultCollection7);
         $textChecker->check('Les fautes de frappe arrivent', 'fr_FR')->willReturn($textCheckResultCollection8);
@@ -126,8 +126,8 @@ class EvaluateSpellingSpec extends ObjectBehavior
 
         $expectedRates = new CriterionRateCollection();
         $expectedRates
-            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(76))
-            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(76))
+            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(94))
+            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(82))
             ->addRate(new ChannelCode('print'), new LocaleCode('en_US'), new Rate(88))
             ->addRate(new ChannelCode('print'), new LocaleCode('fr_FR'), new Rate(100))
         ;
@@ -135,8 +135,8 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $expectedData =  [
             'attributes' => [
                 'ecommerce' => [
-                    'en_US' => ['textarea_1', 'text_1'],
-                    'fr_FR' => ['textarea_1', 'text_1'],
+                    'en_US' => ['textarea_1'],
+                    'fr_FR' => ['text_1', 'textarea_1'],
                 ],
                 'print' => [
                     'en_US' => ['text_1'],

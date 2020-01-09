@@ -10,5 +10,3 @@ oneup_flysystem:
             nulladapter: ~
         data_quality_insights_shared_adapter:
             nulladapter: ~
-        data_quality_insights_local_adapter:
-            nulladapter: ~

@@ -51,7 +51,7 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Sorter\ConsistencySorter:
         arguments:
-            - ['rates']
+            - ['rates_consistency']
         tags:
             - { name: pim_catalog.elasticsearch.query.sorter, priority: 30 }
 
@@ -61,6 +61,6 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Sorter\EnrichmentSorter:
         arguments:
-            - ['rates']
+            - ['rates_enrichment']
         tags:
             - { name: pim_catalog.elasticsearch.query.sorter, priority: 30 }

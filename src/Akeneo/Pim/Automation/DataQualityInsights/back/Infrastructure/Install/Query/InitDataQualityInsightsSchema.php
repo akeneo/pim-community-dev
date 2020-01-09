@@ -27,8 +27,9 @@ CREATE TABLE pimee_data_quality_insights_criteria_evaluation (
   pending tinyint NULL,
   result json DEFAULT NULL,
   PRIMARY KEY (id),
-  UNIQUE INDEX data_quality_insights_evaluation_pending_uniqueness (product_id, criterion_code, pending),
-  INDEX data_quality_insights_evaluation_status_index (status)
+  UNIQUE INDEX evaluation_pending_uniqueness (product_id, criterion_code, pending),
+  INDEX status_index (status),
+  INDEX created_at_index (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE pimee_data_quality_insights_product_axis_rates (
@@ -36,7 +37,8 @@ CREATE TABLE pimee_data_quality_insights_product_axis_rates (
     axis_code VARCHAR(40) NOT NULL,
     evaluated_at DATE NOT NULL,
     rates JSON NOT NULL,
-    PRIMARY KEY (product_id, axis_code, evaluated_at)
+    PRIMARY KEY (product_id, axis_code, evaluated_at),
+    INDEX evaluated_at_index (evaluated_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE pimee_data_quality_insights_dashboard_rates_projection (
@@ -44,6 +46,12 @@ CREATE TABLE pimee_data_quality_insights_dashboard_rates_projection (
     code VARCHAR(100) NOT NULL,
     rates JSON NOT NULL,
     PRIMARY KEY (type, code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE pimee_data_quality_insights_text_checker_dictionary (
+    locale_code VARCHAR(20) NOT NULL,
+    word VARCHAR(250) NOT NULL,
+    INDEX word_index (word)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
 }

@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParame
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Bundle\Security\SystemUserToken;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -70,7 +71,7 @@ final class InitializeCriteriaEvaluation
 
         $user = $this->impersonateSystemUser();
 
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME);
+        $jobInstance = $this->getJobInstance();
 
         $query = $this->db->executeQuery('select count(*) as nb from pim_catalog_product where product_model_id is null');
         $nb = $query->fetch();
@@ -101,7 +102,23 @@ final class InitializeCriteriaEvaluation
         }
     }
 
-    private function impersonateSystemUser()
+    private function getJobInstance(): JobInstance
+    {
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME);
+
+        if (null === $jobInstance) {
+            throw new \RuntimeException(
+                sprintf(
+                    'The job: %s was not found. Unable to initialize the criteria evaluation',
+                    EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME
+                )
+            );
+        }
+
+        return $jobInstance;
+    }
+
+    private function impersonateSystemUser(): UserInterface
     {
         $user = $this->userFactory->create();
         $user->setUsername(UserInterface::SYSTEM_USER_NAME);
@@ -109,6 +126,12 @@ final class InitializeCriteriaEvaluation
         $token = new SystemUserToken($user);
         $this->tokenStorage->setToken($token);
 
-        return $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        if (! $user instanceof UserInterface) {
+            throw new \RuntimeException('User must be an instance of UserInterface');
+        }
+
+        return $user;
     }
 }

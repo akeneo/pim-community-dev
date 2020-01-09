@@ -14,10 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\DictionaryNotFoundException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source\GlobalOffsetCalculator;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source\TextSource;
 use Mekras\Speller\Aspell\Aspell;
+use Mekras\Speller\Dictionary;
 use Mekras\Speller\Exception\PhpSpellerException;
 
 /**
@@ -30,30 +34,46 @@ class AspellChecker implements TextChecker
     private $aspell;
 
     private $encoding;
+    /**
+     * @var GlobalOffsetCalculator
+     */
+    private $globalOffsetCalculator;
 
-    public function __construct(string $binaryPath, $encoding = self::DEFAULT_ENCODING)
+    /** @var AspellDictionaryInterface */
+    private $aspellDictionary;
+
+    /** @var string */
+    private $dictionaryLocalFilesystemPath;
+
+    public function __construct(string $binaryPath, AspellDictionaryInterface $aspellDictionary, GlobalOffsetCalculator $globalOffsetCalculator, $encoding = self::DEFAULT_ENCODING)
     {
         $this->aspell = new Aspell($binaryPath);
+        $this->globalOffsetCalculator = $globalOffsetCalculator;
         $this->encoding = $encoding;
+        $this->aspellDictionary = $aspellDictionary;
     }
 
-    public function check(string $text, string $locale): TextCheckResultCollection
+    public function check(string $text, LocaleCode $localeCode): TextCheckResultCollection
     {
         $source = new TextSource($text);
 
-        // @todo[DAPI-601] handle "personal" dictionary
-        // $aspell->setPersonalDictionary(new Dictionary(__DIR__ . '/fixtures/custom.en.pws'));
+        try {
+            $this->aspell->setPersonalDictionary($this->getDictionary($localeCode));
+        } catch (DictionaryNotFoundException $e) {
+            //No dictionary generated yet or no words in dictionary. Use spell checker without custom dictionary.
+        }
 
         try {
             return $this->adaptResult(
-                $this->aspell->checkText($source, [$locale])
+                $this->aspell->checkText($source, [$localeCode->__toString()]),
+                $source->getAsString()
             );
         } catch (PhpSpellerException $e) {
             return new TextCheckResultCollection();
         }
     }
 
-    private function adaptResult(array $issues): TextCheckResultCollection
+    private function adaptResult(array $issues, string $source): TextCheckResultCollection
     {
         $results = new TextCheckResultCollection();
 
@@ -71,7 +91,8 @@ class AspellChecker implements TextChecker
 
             $results->add(new TextCheckResult(
                 $issue->word,
-                $issue->code,
+                TextCheckResult::SPELLING_ISSUE_TYPE,
+                $this->globalOffsetCalculator->compute($source, $line, $offset),
                 $offset,
                 $line,
                 $issue->suggestions
@@ -79,5 +100,19 @@ class AspellChecker implements TextChecker
         }
 
         return $results;
+    }
+
+    /**
+     * @throws DictionaryNotFoundException
+     */
+    private function getDictionary(LocaleCode $localeCode): Dictionary
+    {
+        $absoluteDictionaryFilepath = $this->aspellDictionary->getUpToDateLocalDictionaryAbsoluteFilePath($localeCode);
+
+        if (false === is_file($absoluteDictionaryFilepath)) {
+            throw new DictionaryNotFoundException();
+        }
+
+        return new Dictionary($absoluteDictionaryFilepath);
     }
 }

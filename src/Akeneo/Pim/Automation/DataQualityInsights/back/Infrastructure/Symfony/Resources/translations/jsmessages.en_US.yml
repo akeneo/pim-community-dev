@@ -26,4 +26,7 @@ akeneo_data_quality_insights:
                 no_evaluation_for_axis: The rate could not be calculated. Please try again later.
             success:
                 criterion: None
-
+    product_edit_form:
+        attribute_filter:
+            all_missing_attributes: All missing attributes
+            all_improvable_attributes: All improvable attributes

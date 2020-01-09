@@ -32,7 +32,8 @@ class EvaluateSpelling implements EvaluateCriterionInterface
 {
     const CRITERION_CODE = 'consistency_spelling';
 
-    const FAULT_WEIGHT = 24;
+    const TEXT_FAULT_WEIGHT = 24;
+    const TEXTAREA_FAULT_WEIGHT = 12;
 
     private $textChecker;
 
@@ -61,10 +62,14 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         $textareaValuesList = $this->buildProductValues->buildTextareaValues($criterionEvaluation->getProductId());
         $textValuesList = $this->buildProductValues->buildTextValues($criterionEvaluation->getProductId());
 
-        $ratesByChannelAndLocale = $this->computeAttributeRates($localesByChannel, array_merge(
-            $textareaValuesList,
-            $textValuesList
-        ));
+        $ratesByChannelAndLocaleTextarea = $this->computeAttributeRates($localesByChannel, $textareaValuesList, self::TEXTAREA_FAULT_WEIGHT);
+        $ratesByChannelAndLocaleText = $this->computeAttributeRates($localesByChannel, $textValuesList, self::TEXT_FAULT_WEIGHT);
+
+        $ratesByChannelAndLocale = array_merge_recursive(
+            $ratesByChannelAndLocaleText,
+            $ratesByChannelAndLocaleTextarea
+        );
+
         $rates = $this->buildCriterionRateCollection($ratesByChannelAndLocale);
         $attributesCodesToImprove = $this->computeAttributeCodesToImprove($ratesByChannelAndLocale);
 
@@ -78,18 +83,19 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         return new CriterionCode(self::CRITERION_CODE);
     }
 
-    private function computeAttributeRates(array $localesByChannel, array $productValues): array
+    private function computeAttributeRates(array $localesByChannel, array $productValues, int $faultWeight): array
     {
         $evaluatedValues = [];
 
         foreach ($localesByChannel as $channelCode => $localeCodes) {
             foreach ($localeCodes as $localeCode) {
+                $localeCode = new LocaleCode($localeCode);
                 if (!$this->supportedLocaleChecker->isSupported($localeCode)) {
                     continue;
                 }
 
                 foreach ($productValues as $attributeCode => $productValueByChannelAndLocale) {
-                    $productValue = $productValueByChannelAndLocale[$channelCode][$localeCode];
+                    $productValue = $productValueByChannelAndLocale[$channelCode][$localeCode->__toString()];
 
                     if ($productValue === null) {
                         continue;
@@ -97,7 +103,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
 
                     $result = $this->textChecker->check($productValue, $localeCode);
 
-                    $evaluatedValues[$channelCode][$localeCode][$attributeCode] = $this->computeProductValueRate($result);
+                    $evaluatedValues[$channelCode][$localeCode->__toString()][$attributeCode] = $this->computeProductValueRate($result, $faultWeight);
                 }
             }
         }
@@ -105,9 +111,9 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         return $evaluatedValues;
     }
 
-    private function computeProductValueRate(TextCheckResultCollection $checkTextResult): int
+    private function computeProductValueRate(TextCheckResultCollection $checkTextResult, int $faultWeight): int
     {
-        $rate = 100 - count($checkTextResult) * self::FAULT_WEIGHT;
+        $rate = 100 - count($checkTextResult) * $faultWeight;
 
         if ($rate < 0) {
             return 0;

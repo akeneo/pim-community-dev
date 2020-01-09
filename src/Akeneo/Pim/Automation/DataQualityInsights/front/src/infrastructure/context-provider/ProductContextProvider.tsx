@@ -8,7 +8,11 @@ interface ProductContextProviderProps {
   product: Product;
 }
 
-const ProductContextProvider: FunctionComponent<ProductContextProviderProps> = ({product, children}) => {
+export const DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE = 'data-quality:product:show_attribute';
+export const DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES = 'data-quality:product:filter_all_missing_attributes';
+export const DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES = 'data-quality:product:filter_all_improvable_attributes';
+
+const ProductContextProvider: FunctionComponent<ProductContextProviderProps> = ({product}) => {
   const dispatchAction = useDispatch();
 
   useEffect(() => {
@@ -26,7 +30,7 @@ const ProductContextProvider: FunctionComponent<ProductContextProviderProps> = (
   }, [product, product.family, dispatchAction]);
 
   return (
-    <>{children}</>
+    <></>
   )
 };
 

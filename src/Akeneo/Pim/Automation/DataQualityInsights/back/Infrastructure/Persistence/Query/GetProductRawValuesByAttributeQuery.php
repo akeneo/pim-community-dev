@@ -46,6 +46,10 @@ SQL;
 
         $rawValues = $statement->fetchColumn();
 
+        if (false === $rawValues) {
+            return [];
+        }
+
         return array_filter(json_decode($rawValues, true), function (string $attributeCode) use ($attributeCodes) {
             return in_array($attributeCode, $attributeCodes);
         }, ARRAY_FILTER_USE_KEY);

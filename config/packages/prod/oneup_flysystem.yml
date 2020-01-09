@@ -25,6 +25,3 @@ oneup_flysystem:
                 client: 'Google\Cloud\Storage\StorageClient'
                 bucket: 'Google\Cloud\Storage\Bucket'
                 prefix: 'data_quality_insights'
-        data_quality_insights_local_adapter:
-            local:
-                directory: '%kernel.project_dir%/var/data_quality_insights'

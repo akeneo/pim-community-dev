@@ -8,9 +8,11 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\DictionaryNotFoun
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Dictionary;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LanguageCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 
-class AspellDictionary
+final class AspellDictionary implements AspellDictionaryInterface
 {
     private const ONE_DAY = 1;
 
@@ -20,15 +22,33 @@ class AspellDictionary
     /** @var Clock */
     private $clock;
 
-    public function __construct(MountManager $mountManager, Clock $clock)
+    /** @var Filesystem */
+    private $localFilesystem;
+
+    /** @var FilesystemInterface */
+    private $sharedFilesystem;
+
+    /** @var AspellDictionaryLocalFilesystemInterface */
+    private $localFilesystemProvider;
+
+    public function __construct(MountManager $mountManager, Clock $clock, AspellDictionaryLocalFilesystemInterface $localFilesystemProvider)
     {
         $this->mountManager = $mountManager;
         $this->clock = $clock;
+
+        $this->sharedFilesystem = $mountManager->getFilesystem('dataQualityInsightsSharedAdapter');
+        $this->localFilesystem = $localFilesystemProvider->getFilesystem();
+        $this->localFilesystemProvider = $localFilesystemProvider;
     }
 
-    public function persistDictionaryToSharedFilesystem(Dictionary $dictionary, LanguageCode $languageCode)
+    public function persistDictionaryToSharedFilesystem(Dictionary $dictionary, LanguageCode $languageCode): void
     {
         $putStream = tmpfile();
+
+        if (!is_resource($putStream)) {
+            throw new \RuntimeException('Unable to create temporary file');
+        }
+
         fwrite($putStream, $this->dictionaryHeader($dictionary, $languageCode) . PHP_EOL);
 
         foreach ($dictionary as $word) {
@@ -37,7 +57,7 @@ class AspellDictionary
 
         rewind($putStream);
 
-        $this->mountManager->getFilesystem('dataQualityInsightsSharedAdapter')->putStream($this->getRelativeFilePath($languageCode), $putStream);
+        $this->sharedFilesystem->putStream($this->getRelativeFilePath($languageCode), $putStream);
 
         if (is_resource($putStream)) {
             fclose($putStream);
@@ -47,20 +67,20 @@ class AspellDictionary
     /**
      * @throws DictionaryNotFoundException
      */
-    public function getUpToDateLocalDictionaryRelativeFilePath(LocaleCode $localeCode): string
+    public function getUpToDateLocalDictionaryAbsoluteFilePath(LocaleCode $localeCode): string
     {
         $languageCode = $this->extractLanguageCode($localeCode);
 
         $this->ensureDictionaryExistsLocally($languageCode);
         $this->ensureDictionaryIsUpToDate($languageCode);
 
-        return $this->getRelativeFilePath($languageCode);
+        return rtrim($this->localFilesystemProvider->getAbsoluteRootPath(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . ltrim($this->getRelativeFilePath($languageCode), DIRECTORY_SEPARATOR);
     }
 
     public function getSharedDictionaryTimestamp(LanguageCode $languageCode): ?int
     {
-        if ($this->mountManager->has($this->getSharedAdapterFilePath($languageCode))) {
-            return intval($this->mountManager->getTimestamp($this->getSharedAdapterFilePath($languageCode)));
+        if ($this->sharedFilesystem->has($this->getRelativeFilePath($languageCode))) {
+            return intval($this->sharedFilesystem->getTimestamp($this->getRelativeFilePath($languageCode)));
         }
 
         return null;
@@ -71,8 +91,8 @@ class AspellDictionary
      */
     private function ensureDictionaryExistsLocally(LanguageCode $languageCode): void
     {
-        if (false === $this->mountManager->has($this->getLocalAdapterFilePath($languageCode))
-            && true === $this->mountManager->has($this->getSharedAdapterFilePath($languageCode))) {
+        if (false === $this->localFilesystem->has($this->getRelativeFilePath($languageCode))
+            && true === $this->sharedFilesystem->has($this->getRelativeFilePath($languageCode))) {
             $this->downloadDictionaryFromSharedFilesystem($languageCode);
         }
     }
@@ -89,7 +109,11 @@ class AspellDictionary
 
     private function isDictionaryUpToDate(LanguageCode $languageCode): bool
     {
-        $localDictionaryTimestamp = $this->mountManager->getTimestamp($this->getLocalAdapterFilePath($languageCode));
+        if (false === $this->localFilesystem->has($this->getRelativeFilePath($languageCode))) {
+            return false;
+        }
+
+        $localDictionaryTimestamp = $this->localFilesystem->getTimestamp($this->getRelativeFilePath($languageCode));
 
         $fileDate = $this->clock->fromTimestamp(intval($localDictionaryTimestamp));
         $now = $this->clock->getCurrentTime();
@@ -99,17 +123,31 @@ class AspellDictionary
             return true;
         }
 
-        return ! ($this->mountManager->getTimestamp($this->getSharedAdapterFilePath($languageCode)) > $localDictionaryTimestamp);
+        if (false === $this->sharedFilesystem->has($this->getRelativeFilePath($languageCode))) {
+            return false;
+        }
+
+        return ! ($this->sharedFilesystem->getTimestamp($this->getRelativeFilePath($languageCode)) > $localDictionaryTimestamp);
     }
 
     private function downloadDictionaryFromSharedFilesystem(LanguageCode $languageCode): void
     {
-        $this->mountManager->putStream(
-            $this->getLocalAdapterFilePath($languageCode),
-            $this->mountManager->readStream($this->getSharedAdapterFilePath($languageCode))
+        if (false === $this->sharedFilesystem->has($this->getRelativeFilePath($languageCode))) {
+            throw new DictionaryNotFoundException();
+        }
+
+        $readStream = $this->sharedFilesystem->readStream($this->getRelativeFilePath($languageCode));
+
+        if (!is_resource($readStream)) {
+            throw new DictionaryNotFoundException();
+        }
+
+        $this->localFilesystem->putStream(
+            $this->getRelativeFilePath($languageCode),
+            $readStream
         );
 
-        if (false === $this->mountManager->has($this->getLocalAdapterFilePath($languageCode))) {
+        if (false === $this->localFilesystem->has($this->getRelativeFilePath($languageCode))) {
             throw new DictionaryNotFoundException();
         }
     }
@@ -136,15 +174,5 @@ class AspellDictionary
             'consistency/text_checker/aspell/custom-dictionary-%s.pws',
             $languageCode->__toString()
         );
-    }
-
-    private function getLocalAdapterFilePath(LanguageCode $languageCode): string
-    {
-        return 'dataQualityInsightsLocalAdapter://' . $this->getRelativeFilePath($languageCode);
-    }
-
-    private function getSharedAdapterFilePath(LanguageCode $languageCode): string
-    {
-        return 'dataQualityInsightsSharedAdapter://' . $this->getRelativeFilePath($languageCode);
     }
 }

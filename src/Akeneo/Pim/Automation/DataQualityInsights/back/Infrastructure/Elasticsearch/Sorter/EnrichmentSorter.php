@@ -14,13 +14,34 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Sorter;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\BaseFieldSorter;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 
 final class EnrichmentSorter extends BaseFieldSorter
 {
     public function addFieldSorter($field, $direction, $locale = null, $channel = null)
     {
-        $field .= sprintf('.enrichment.%s.%s', $channel, $locale);
+        $field = sprintf('rates.enrichment.%s.%s', $channel, $locale);
 
-        parent::addFieldSorter($field, $direction, $locale, $channel);
+        switch ($direction) {
+            case Directions::ASCENDING:
+                $order = 'ASC';
+                break;
+            case Directions::DESCENDING:
+                $order = 'DESC';
+                break;
+            default:
+                throw InvalidDirectionException::notSupported($direction, static::class);
+        }
+
+        $sortClause = [
+            $field => [
+                'order'   => $order,
+                'missing' => '_last',
+                'unmapped_type' => 'keyword',
+            ],
+        ];
+
+        $this->searchQueryBuilder->addSort($sortClause);
     }
 }

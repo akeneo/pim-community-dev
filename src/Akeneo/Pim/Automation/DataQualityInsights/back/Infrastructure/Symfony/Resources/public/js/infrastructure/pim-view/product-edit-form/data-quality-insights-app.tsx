@@ -3,13 +3,20 @@ import ReactDOM from 'react-dom';
 import {
   CATALOG_CONTEXT_CHANNEL_CHANGED,
   CATALOG_CONTEXT_LOCALE_CHANGED,
+  DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
+  DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
+  DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
   DataQualityInsightsFeature,
   getDataQualityInsightsFeature,
+  PRODUCT_TAB_CHANGED,
+  PRODUCT_ATTRIBUTES_TAB_LOADED,
+  PRODUCT_ATTRIBUTES_TAB_LOADING,
   ProductEditFormApp
 } from 'akeneodataqualityinsights-react';
 
 const UserContext = require('pim/user-context');
 const BaseView = require('pimui/js/view/base');
+const FieldManager = require('pim/field-manager');
 
 interface LocaleEvent {
   localeCode: string;
@@ -19,6 +26,22 @@ interface LocaleEvent {
 interface ScopeEvent {
   scopeCode: string;
   context: string;
+}
+
+interface ShowAttributeEvent {
+  code: boolean;
+}
+
+interface FilterAttributesEvent{
+  attributes: string[];
+}
+
+interface TabEvent {
+  target: {
+    dataset: {
+      tab: string;
+    };
+  };
 }
 
 class DataQualityInsightsApp extends BaseView {
@@ -47,7 +70,56 @@ class DataQualityInsightsApp extends BaseView {
       }}));
     });
 
+    window.addEventListener(DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, ((event: CustomEvent<ShowAttributeEvent>) => {
+      this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'all');
+      this.redirectToProductEditForm();
+      this.listenTo(this.getRoot(), 'pim_enrich:form:attributes:render:after', (_: ScopeEvent) => {
+        FieldManager.getField(event.detail.code).then(function (field: any) {
+          field.setFocus();
+        });
+      });
+    }) as EventListener);
+
+    window.addEventListener(DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES, ((_: CustomEvent<FilterAttributesEvent>) => {
+      this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'all_missing_attributes');
+      this.redirectToProductEditForm();
+    }));
+
+    window.addEventListener(DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES, ((_: CustomEvent<FilterAttributesEvent>) => {
+      this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'all_improvable_attributes');
+      this.redirectToProductEditForm();
+    }));
+
+    this.listenTo(this.getRoot(), 'column-tab:select-tab', ({target}: TabEvent) => {
+      window.dispatchEvent(new CustomEvent(PRODUCT_TAB_CHANGED, {detail: {
+        currentTab: target.dataset.tab,
+      }}));
+    });
+
+    this.listenTo(this.getRoot(), 'pim_enrich:form:attributes:render:before', () => {
+      window.dispatchEvent(new Event(PRODUCT_ATTRIBUTES_TAB_LOADING));
+    });
+
+    this.listenTo(this.getRoot(), 'pim_enrich:form:attributes:render:after', () => {
+      window.dispatchEvent(new Event(PRODUCT_ATTRIBUTES_TAB_LOADED));
+    });
+
     return super.configure();
+  }
+
+  public redirectToProductEditForm() {
+    this.getRoot().trigger('column-tab:change-tab', {
+      currentTarget: {
+        dataset: {
+          tab: 'pim-product-edit-form-attributes'
+        }
+      },
+      target: {
+        dataset: {
+          tab: 'pim-product-edit-form-attributes'
+        }
+      }
+    });
   }
 
   public render() {

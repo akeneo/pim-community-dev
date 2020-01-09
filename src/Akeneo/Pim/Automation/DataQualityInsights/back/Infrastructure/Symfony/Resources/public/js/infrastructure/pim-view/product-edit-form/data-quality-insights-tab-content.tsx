@@ -1,23 +1,14 @@
 import {
-  DATA_QUALITY_INSIGHTS_TAB_CONTENT_VISIBILITY_CHANGED,
   DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID,
+  DATA_QUALITY_INSIGHTS_TAB_NAME,
   DataQualityInsightsFeature,
-  getDataQualityInsightsFeature
+  getDataQualityInsightsFeature,
+  PRODUCT_TAB_CHANGED
 } from 'akeneodataqualityinsights-react';
 
 const BaseView = require('pimui/js/view/base');
 
 const __ = require('oro/translator');
-
-const TAB_NAME = 'pim-product-edit-form-data-quality-insights-tab-content';
-
-interface TabEvent {
-  target: {
-    dataset: {
-      tab: string;
-    };
-  };
-}
 
 class DataQualityInsightsTabContent extends BaseView {
 
@@ -40,10 +31,6 @@ class DataQualityInsightsTabContent extends BaseView {
       }
     });
 
-    this.listenTo(this.getRoot(), 'column-tab:select-tab', ({target}: TabEvent) => {
-      this.showTabContent((target.dataset.tab === TAB_NAME));
-    });
-
     return super.configure();
   }
 
@@ -52,19 +39,13 @@ class DataQualityInsightsTabContent extends BaseView {
       <div id="${DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID}"></div>
     `);
 
-    this.showTabContent(true);
+    this.showTabContent();
     return this;
   }
 
-  public remove() {
-    this.showTabContent(false);
-
-    return super.remove();
-  }
-
-  private showTabContent(isShown: boolean) {
-    window.dispatchEvent(new CustomEvent(DATA_QUALITY_INSIGHTS_TAB_CONTENT_VISIBILITY_CHANGED, {detail: {
-      show: isShown,
+  private showTabContent() {
+    window.dispatchEvent(new CustomEvent(PRODUCT_TAB_CHANGED, {detail: {
+      currentTab: DATA_QUALITY_INSIGHTS_TAB_NAME,
     }}));
   }
 }

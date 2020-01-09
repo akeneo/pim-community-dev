@@ -3,8 +3,12 @@ import Rates from "./Rates.interface";
 import Rate, {RANK_1, RANK_2, RANK_3, RANK_4, RANK_5} from "./Rate.interface";
 import Recommendation from "./Recommendation.interface";
 import Evaluation from "./Evaluation.interface";
-import Family from "./Family.interface";
+import Family, {Attribute} from "./Family.interface";
 import Product from "./Product.interface";
+import WidgetElement, {createWidget} from "./Spellcheck/WidgetElement";
+import EditorElement, {getEditorContent} from "./Spellcheck/EditorElement";
+import HighlightElement, {createHighlight} from "./Spellcheck/HighlightElement";
+import MistakeElement from "./Spellcheck/MistakeElement";
 
 export {
   Axis,
@@ -14,5 +18,10 @@ export {
   Recommendation,
   Evaluation,
   Family,
+  Attribute,
   Product,
+  WidgetElement, createWidget,
+  EditorElement, getEditorContent,
+  HighlightElement, createHighlight,
+  MistakeElement
 };

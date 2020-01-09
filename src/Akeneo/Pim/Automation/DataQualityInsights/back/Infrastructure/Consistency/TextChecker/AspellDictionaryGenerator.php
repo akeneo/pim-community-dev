@@ -15,7 +15,7 @@ final class AspellDictionaryGenerator implements DictionaryGenerator
 {
     private const NUMBER_OF_DAYS_BETWEEN_DICTIONARY_NEW_GENERATION = 30;
 
-    /** @var AspellDictionary */
+    /** @var AspellDictionaryInterface */
     private $aspellDictionary;
 
     /** @var GetAllActivatedLocalesQueryInterface */
@@ -28,7 +28,7 @@ final class AspellDictionaryGenerator implements DictionaryGenerator
     private $ignoreCheckTimestamp;
 
     public function __construct(
-        AspellDictionary $aspellDictionary,
+        AspellDictionaryInterface $aspellDictionary,
         GetAllActivatedLocalesQueryInterface $allActivatedLocalesQuery,
         Clock $clock
     ) {

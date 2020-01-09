@@ -51,7 +51,7 @@ SQL;
         $statement = $this->connection->executeQuery($query, ['day' => $date->format('Y-m-d')], ['day' => \PDO::PARAM_STR]);
 
         $results = $statement->fetchColumn();
-        if (null === $results) {
+        if (null === $results || false === $results) {
             return [];
         }
 
@@ -96,7 +96,7 @@ SQL;
         );
 
         $results = $statement->fetchColumn();
-        if (null === $results) {
+        if (null === $results || false === $results) {
             return [];
         }
 
@@ -139,7 +139,7 @@ SQL;
         );
 
         $results = $statement->fetchColumn();
-        if (null === $results) {
+        if (null === $results || false === $results) {
             return [];
         }
 
@@ -174,13 +174,13 @@ SELECT JSON_OBJECTAGG(axis_code, channel_locale_ranks) FROM (
                     JOIN pim_catalog_locale locale ON pccl.locale_id = locale.id
                 ) channels_locales
                 WHERE JSON_CONTAINS_PATH(rates, 'one', concat('$."', channel_code ,'"."', locale_code,'"'))
-                GROUP BY axis_code, channel_code, locale_code, `rank` 
+                GROUP BY axis_code, channel_code, locale_code, `rank`
             ) ranks
             GROUP BY axis_code, channel_code, locale_code
         ) locales_ranks
         GROUP BY axis_code, channel_code
     ) channels_locales_ranks
-    GROUP BY axis_code 
+    GROUP BY axis_code
 ) axes_channels_locales_ranks
 SQL;
     }

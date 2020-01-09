@@ -12,7 +12,7 @@ import {
   ProductEvaluationState,
   productFamilyInformationReducer,
   ProductFamilyInformationState,
-  productReducer,
+  productReducer, productSpellcheckReducer, ProductSpellcheckState,
   ProductState,
 } from "../reducer";
 
@@ -23,6 +23,7 @@ export interface ProductEditFormState {
   productEvaluation: ProductEvaluationState;
   families: ProductFamilyInformationState;
   product: ProductState;
+  spellcheck: ProductSpellcheckState;
 }
 
 const composeEnhancers = composeWithDevTools({
@@ -37,6 +38,7 @@ const productEditFormStore: Store = createStore(
     productEvaluation: productEvaluationReducer,
     families: productFamilyInformationReducer,
     product: productReducer,
+    spellcheck: productSpellcheckReducer
   }),
   composeEnhancers(applyMiddleware()),
 );
