@@ -10,12 +10,16 @@ import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/acti
 import Key from 'akeneoassetmanager/tools/key';
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {assetUploadCancel} from 'akeneoassetmanager/domain/event/asset/upload';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import {assetUploadDone} from 'akeneoassetmanager/domain/event/asset/upload';
+import {updateAssetResults} from 'akeneoassetmanager/application/action/asset/search';
+import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import Channel from 'akeneoassetmanager/domain/model/channel';
 
 interface StateProps {
   locale: LocaleCode;
   assetFamily: AssetFamily;
+  channels: Channel[];
+  locales: Locale[];
   sidebar: {
     tabs: Tab[];
     currentTab: string;
@@ -31,7 +35,7 @@ interface StateProps {
 interface DispatchProps {
   events: {
     backToAssetFamilyList: () => void;
-    cancelMassUpload: () => void;
+    closeMassUpload: () => void;
   };
 }
 
@@ -85,8 +89,10 @@ class AssetFamilyEditView extends React.Component<EditProps> {
           <UploadModal
             locale={this.props.locale}
             assetFamily={this.props.assetFamily}
-            onCancel={this.props.events.cancelMassUpload}
-            onAssetCreated={() => {}}
+            channels={this.props.channels}
+            locales={this.props.locales}
+            onCancel={this.props.events.closeMassUpload}
+            onAssetCreated={this.props.events.closeMassUpload}
           />
         )}
       </div>
@@ -102,6 +108,8 @@ export default connect(
     return {
       locale: state.user.catalogLocale,
       assetFamily: state.form.data,
+      channels: state.structure.channels,
+      locales: state.structure.locales,
       sidebar: {
         tabs,
         currentTab,
@@ -120,8 +128,9 @@ export default connect(
         backToAssetFamilyList: () => {
           dispatch(redirectToAssetFamilyListItem());
         },
-        cancelMassUpload: () => {
-          dispatch(assetUploadCancel());
+        closeMassUpload: () => {
+          dispatch(assetUploadDone());
+          dispatch(updateAssetResults(false));
         },
       },
     };

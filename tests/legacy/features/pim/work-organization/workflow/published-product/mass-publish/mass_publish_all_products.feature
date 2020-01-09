@@ -48,4 +48,4 @@ Feature: Publish many products at once
     And I should see product UnionJack
     Then the row "UnionJack" should contain:
       | column   | value |
-      | complete | 20%   |
+      | complete | 22%   |

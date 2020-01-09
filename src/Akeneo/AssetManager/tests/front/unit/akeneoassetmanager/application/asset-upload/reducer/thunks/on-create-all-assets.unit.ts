@@ -9,6 +9,8 @@ import {
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 import {createCreationAssetsFromLines} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {create} from 'akeneoassetmanager/application/asset-upload/saver/asset';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import Locale from 'akeneoassetmanager/domain/model/locale';
 
 const flushPromises = () => new Promise(setImmediate);
 
@@ -21,8 +23,10 @@ describe('', () => {
     create.mockImplementation(() => Promise.resolve(null));
 
     const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
     const line = {
-      ...createFakeLine('a.png', assetFamily),
+      ...createFakeLine('a.png', assetFamily, channels, locales),
       assetCreated: false,
       file: {
         filePath: 'a.png',
@@ -45,8 +49,10 @@ describe('', () => {
     create.mockImplementation(() => Promise.resolve(errors));
 
     const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
     const line = {
-      ...createFakeLine('a.png', assetFamily),
+      ...createFakeLine('a.png', assetFamily, channels, locales),
       assetCreated: false,
       file: {
         filePath: 'a.png',
@@ -70,8 +76,10 @@ describe('', () => {
     });
 
     const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
     const line = {
-      ...createFakeLine('a.png', assetFamily),
+      ...createFakeLine('a.png', assetFamily, channels, locales),
       assetCreated: false,
       file: {
         filePath: 'a.png',

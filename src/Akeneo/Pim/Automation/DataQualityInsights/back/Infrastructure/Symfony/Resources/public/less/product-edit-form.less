@@ -1,3 +1,10 @@
+@AknSpellcheckZIndex: 2;
+@AknSpellcheckZIndexDebug: 2;
+@AknSpellcheckHighlightsZIndex: 2;
+@AknSpellcheckPopoverZIndex: 1100;
+@AknIssueMarkOpacity: 0.75;
+@AknIssueMarkBackgroundOpacity: 0.15;
+
 .AknColumn-block.AknDataQualityInsights {
     li {
         position: relative;
@@ -14,5 +21,245 @@
         &:last-child {
             margin-bottom: 0;
         }
+    }
+}
+
+
+.AknSpellCheck--box-reset,
+.AknSpellCheck--box-reset > * {
+    line-height: initial;
+    white-space: normal;
+    float: initial;
+    clear: none;
+    box-sizing: border-box;
+    vertical-align: baseline;
+    color: transparent;
+    text-align: left !important;
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+    border-width: 0 !important;
+    border-style: initial !important;
+    border-color: initial !important;
+    border-image: initial !important;
+    border-radius: 0 !important;
+    animation: 0s ease 0s 1 normal none running none !important;
+}
+
+.AknSpellCheck-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: @AknSpellcheckZIndex;
+
+    &--debug {
+        z-index: @AknSpellcheckZIndexDebug;
+    }
+}
+
+.AknSpellCheck-highlights,
+.AknSpellCheck-highlights-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+.AknSpellCheck-highlights {
+    z-index: @AknSpellcheckHighlightsZIndex;
+}
+
+.AknSpellCheck-highlights-marks-wrapper {
+    box-sizing: content-box;
+    position: relative;
+    pointer-events: none;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.AknSpellCheck-mark {
+    position: absolute !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    background: transparent !important;
+    border-width: 0 !important;
+    border-style: initial !important;
+    border-color: initial !important;
+    border-image: initial !important;
+    border-radius: 0 !important;
+    animation: 0s ease 0s 1 normal none running none !important;
+    /* @fixme mouse over, allow the pointer events to bubble up to the highlight container */
+    pointer-events: auto;
+
+    &::before {
+        visibility: hidden !important;
+        content: "" !important;
+        position: absolute !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    &::after {
+        width: 100% !important;
+        animation: 0s ease 0s 1 normal none running none !important;
+        visibility: visible !important;
+        content: "" !important;
+        position: absolute !important;
+        bottom: -2px !important;
+        height: 3px !important;
+        border-radius: 10px !important;
+        background: rgba(0, 0, 0, @AknIssueMarkOpacity);
+    }
+    &--misspelling:after {
+        background: rgba(212, 76, 96, @AknIssueMarkOpacity)
+    }
+    &--hidden {
+        display: none;
+    }
+
+    &--hover::before {
+        visibility: visible !important;
+        background: rgba(0, 0, 0, @AknIssueMarkBackgroundOpacity);
+    }
+    &--misspelling.AknSpellCheck-mark--hover::before {
+        background: rgba(212, 76, 96, @AknIssueMarkBackgroundOpacity);
+    }
+}
+
+.AknSpellCheck-popover {
+    position: absolute;
+    z-index: @AknSpellcheckPopoverZIndex;
+    width: 200px;
+    min-height: 250px;
+    padding: 0 20px 20px;
+    background: @AknWhite;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.3);
+    display: none;
+    font-size: @AknFontSizeSmall;
+    line-height: normal;
+
+    &--visible {
+        display: block;
+    }
+
+    hr {
+        color: @AknMediumGrey;
+        margin: 10px 0;
+    }
+
+    header {
+        color: @AknLightPurple;
+        text-transform: uppercase;
+        border-bottom: 1px solid @AknLightPurple;
+        line-height: 44px;
+        margin-bottom: 10px;
+    }
+
+    .AknSpellCheck-popover-original {
+        &-title {
+            color: @AknRed;
+            margin-bottom: 10px;
+        }
+        &-item {
+            margin: 5px 0;
+            height: 23px;
+            line-height: 23px;
+        }
+    }
+
+    .AknSpellCheck-popover-suggestions {
+        min-height: 80px;
+
+        &-title {
+            color: @AknGreen;
+        }
+
+        &-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        &-item {
+            white-space: nowrap;
+            font-weight: normal;
+            background: none;
+            display: block;
+            text-align: left;
+            width: 100%;
+            color: @AknSlateGrey;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            text-transform: none;
+            margin: 0;
+            height: 23px;
+            line-height: 23px;
+
+            & > span {
+                display: inline-block;
+            }
+
+            &:hover {
+                background: @AknDefaultHoverBackground;
+                color: @AknDarkFontColor;
+            }
+        }
+    }
+
+    footer {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .AknSpellCheck-popover-ignore-button {
+        width: 82px;
+        height: 13px;
+        color: @AknDarkBlue;
+        font-size: 11px;
+        font-weight: normal;
+        text-decoration: underline;
+        text-align: center;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: none;
+        }
+
+    }
+    button.AknSpellCheck-popover-ignore-button {
+        border: none;
+        background: none;
+    }
+}
+
+.AknSpellCheck-cloned-editor {
+    font-size: @AknDefaultFontSize;
+    font-family: @AknDefaultFont;
+    text-align: left;
+    border: 1px solid transparent !important;
+    color: transparent;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0 !important;
+    text-shadow: none !important;
+    white-space: pre-wrap !important;
+    overflow-wrap: break-word !important;
+    padding: 12px !important;
+    min-height: 100px !important;
+    max-height: 400px !important;
+    visibility: hidden !important;
+    overflow: auto;
+
+    .AknSpellCheck-wrapper--debug & {
+        color: red !important;
+        visibility: visible !important;
+        background: rgba(255, 165, 0, 0.25) !important;
     }
 }

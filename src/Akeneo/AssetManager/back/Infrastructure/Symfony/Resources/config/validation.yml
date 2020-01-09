@@ -16,6 +16,7 @@ Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyComma
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimit: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AttributeSourceIsNotATarget: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationFilenameIsUnique: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NullableNamingConvention: { groups: [other_constraints] }
 
 Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand:
     group_sequence:
@@ -31,6 +32,7 @@ Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyC
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyIdentifierShouldBeUnique: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessAssetFamilyThanLimit: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessRuleTemplateThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NullableNamingConvention: { groups: [other_constraints] }
 
 Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFamilyCommand:
     group_sequence:

@@ -24,7 +24,7 @@ Create a new folder with a `package.json`:
 
 ```json
 {
-    "name": "@akeneo-pim-ce/apps",
+    "name": "@akeneo-pim-community/connectivity-connection",
     "version": "1.0.0",
     "private": true
 }
@@ -34,7 +34,7 @@ Add workspace to the root `package.json` (CE or EE) with the relative path to yo
 ```json
 {
     "workspaces": [
-        "src/Akeneo/Apps/front"
+        "src/Akeneo/Connectivity/Connection/front"
     ]
 }
 ```
@@ -42,11 +42,11 @@ Add workspace to the root `package.json` (CE or EE) with the relative path to yo
 Workspaces are symlinked by Yarn into the `node_modules` folder, so you can use them as standard dependencies with import in other parts of the project (and have a working auto-completion and Intellisense):
 
 ```js
-import {Apps} from '@akeneo-pim-ce/apps';
+import {Settings} from '@akeneo-pim-community/connectivity-connection';
 ```
 
 Note that for this to work at runtime you need to update the build process by declaring the path in `frontend/webpack/requirejs-utils.js` (`getModulePaths` function) to where the module will be resolved by webpack:
 
 ```js
-'@akeneo-pim-ce/apps': path.resolve(baseDir, 'public/bundles/akeneoapps-react/index.ts'),
+'@akeneo-pim-community/connectivity-connection': path.resolve(baseDir, 'public/bundles/akeneoconnectivityconnection-react/index.ts'),
 ```

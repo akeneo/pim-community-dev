@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Domain\Query\AssetFamily\Connector;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
@@ -47,6 +48,16 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
             '_2'
         );
 
+        $namingConvention = NamingConvention::createFromNormalized([
+            'source' => [
+                'property' => 'code',
+                'locale' => null,
+                'channel' => null,
+            ],
+            'pattern' => '/^(<?product_ref>\w+)-(<?attribute>\w+).png$/',
+            'abort_asset_creation_on_error' => false,
+        ]);
+
         $this->beConstructedWith(
             $assetFamilyIdentifier,
             $labelCollection,
@@ -69,7 +80,8 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
                     ]
                 ]
             ],
-            new ConnectorTransformationCollection([$transformation])
+            new ConnectorTransformationCollection([$transformation]),
+            $namingConvention
         );
     }
 
@@ -127,6 +139,15 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
                     'filename_prefix' => '',
                     'filename_suffix' => '_2',
                 ],
+            ],
+            'naming_convention' => [
+                'source' => [
+                    'property' => 'code',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'pattern' => '/^(<?product_ref>\w+)-(<?attribute>\w+).png$/',
+                'abort_asset_creation_on_error' => false,
             ],
         ]);
     }

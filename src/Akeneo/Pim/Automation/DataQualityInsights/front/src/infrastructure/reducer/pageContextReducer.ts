@@ -1,36 +1,66 @@
-import {Reducer} from 'redux';
+import {Action, Reducer} from 'redux';
+import {ATTRIBUTES_TAB_NAME} from "../../application/constant";
 
 export interface PageContextState {
-  dqiTabContentVisibility: boolean;
+  currentTab: string;
+  attributesTabIsLoading: boolean
 }
 
-interface UpdatePageContextAction {
-  type: string;
+type UpdatePageContextAction = UpdateTabContextAction & UpdateAttributesTabContextAction;
+
+interface UpdateTabContextAction extends Action {
   payload: {
-    dqiTabContentVisibility?: boolean;
+    currentTab: string;
   }
 }
-export const CHANGE_DATA_QUALITY_INSIGHTS_TAB_CONTENT_VISIBILITY = 'CHANGE_DATA_QUALITY_INSIGHTS_TAB_CONTENT_VISIBILITY';
 
-export const changeDataQualityInsightsTabContentVisibility = (show: boolean): UpdatePageContextAction => {
+interface UpdateAttributesTabContextAction extends Action {}
+
+export const CHANGE_PRODUCT_TAB = 'CHANGE_PRODUCT_TAB';
+export const changeProductTabAction = (tabName: string): UpdatePageContextAction => {
   return {
-    type: CHANGE_DATA_QUALITY_INSIGHTS_TAB_CONTENT_VISIBILITY,
+    type: CHANGE_PRODUCT_TAB,
     payload: {
-      dqiTabContentVisibility: show
+      currentTab: tabName
     }
   };
 };
 
+export const START_PRODUCT_ATTRIBUTES_TAB_LOADING = 'START_PRODUCT_ATTRIBUTES_TAB_LOADING';
+export const startProductAttributesTabIsLoadingAction = (): UpdateAttributesTabContextAction => {
+  return {
+    type: START_PRODUCT_ATTRIBUTES_TAB_LOADING
+  };
+};
+
+export const END_PRODUCT_ATTRIBUTES_TAB_LOADING = 'END_PRODUCT_ATTRIBUTES_TAB_LOADING';
+export const endProductAttributesTabIsLoadedAction = (): UpdateAttributesTabContextAction => {
+  return {
+    type: END_PRODUCT_ATTRIBUTES_TAB_LOADING
+  };
+};
+
 const initialState: PageContextState = {
-  dqiTabContentVisibility: false,
+  currentTab: ATTRIBUTES_TAB_NAME,
+  attributesTabIsLoading: false,
 };
 
 const pageContextReducer: Reducer<PageContextState, UpdatePageContextAction> = (previousState = initialState, {type, payload}) => {
   switch(type) {
-    case CHANGE_DATA_QUALITY_INSIGHTS_TAB_CONTENT_VISIBILITY:
+    case CHANGE_PRODUCT_TAB:
       return {
         ...previousState,
-        dqiTabContentVisibility: payload.dqiTabContentVisibility || false
+        currentTab: payload.currentTab
+      };
+    case START_PRODUCT_ATTRIBUTES_TAB_LOADING:
+      return {
+        ...previousState,
+        attributesTabIsLoading: true
+      };
+    case END_PRODUCT_ATTRIBUTES_TAB_LOADING:
+      return {
+        ...previousState,
+        attributesTabIsLoading: false
       };
     default:
       return previousState;

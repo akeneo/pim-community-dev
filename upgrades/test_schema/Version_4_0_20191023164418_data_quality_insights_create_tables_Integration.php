@@ -29,6 +29,7 @@ class Version_4_0_20191023164418_data_quality_insights_create_tables_Integration
         $this->assertTableExists('pimee_data_quality_insights_criteria_evaluation');
         $this->assertTableExists('pimee_data_quality_insights_product_axis_rates');
         $this->assertTableExists('pimee_data_quality_insights_dashboard_rates_projection');
+        $this->assertTableExists('pimee_data_quality_insights_text_checker_dictionary');
     }
 
     private function assertTableExists(string $tableName)

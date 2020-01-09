@@ -320,7 +320,7 @@ class CreateOrUpdateAssetContext implements Context
         );
         $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
 
         $coverImageInfo = (new FileInfo())
@@ -527,7 +527,7 @@ class CreateOrUpdateAssetContext implements Context
         );
         $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
 
         $mainImageInfo = new FileInfo();
@@ -846,7 +846,7 @@ class CreateOrUpdateAssetContext implements Context
         );
         $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
 
         $asset = Asset::create(

@@ -48,7 +48,8 @@ class SqlFindConnectorAssetFamilyByAssetFamilyIdentifier implements FindConnecto
             fi.file_key as image_file_key,
             fi.original_filename as image_original_filename,
             re.rule_templates,
-            re.transformations
+            re.transformations,
+            re.naming_convention
         FROM akeneo_asset_manager_asset_family as re
         LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = re.image
         WHERE re.identifier = :identifier;

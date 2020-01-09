@@ -11,7 +11,26 @@ import productFamilyInformationReducer, {
   ProductFamilyInformationState
 } from "./productFamilyInformationReducer";
 import productReducer, {initializeProductAction, ProductState} from "./productReducer";
-import pageContextReducer, {changeDataQualityInsightsTabContentVisibility, PageContextState} from "./pageContextReducer";
+import pageContextReducer, {
+  changeProductTabAction,
+  endProductAttributesTabIsLoadedAction,
+  PageContextState,
+  startProductAttributesTabIsLoadingAction
+} from "./pageContextReducer";
+import productSpellcheckReducer, {
+  disableWidgetAction,
+  enableWidgetAction,
+  initializeWidgetsListAction,
+  ProductSpellcheckState,
+  showWidgetAction,
+  updateWidgetContent,
+  updateWidgetContentAnalysis,
+  updateWidgetEditorOptionsAction,
+  updateWidgetHighlightsAction,
+  initializePopoverOpeningAction,
+  showPopoverAction,
+  hidePopoverAction,
+} from "./productSpellcheckReducer";
 
 export {
   // Catalog Context Reducer
@@ -38,6 +57,22 @@ export {
   ProductState,
   // Page Context Reducer
   pageContextReducer,
-  changeDataQualityInsightsTabContentVisibility,
+  changeProductTabAction,
+  startProductAttributesTabIsLoadingAction,
+  endProductAttributesTabIsLoadedAction,
   PageContextState,
+  // Spellcheck
+  productSpellcheckReducer,
+  ProductSpellcheckState,
+  initializeWidgetsListAction,
+  showWidgetAction,
+  enableWidgetAction,
+  disableWidgetAction,
+  updateWidgetContent,
+  updateWidgetContentAnalysis,
+  updateWidgetHighlightsAction,
+  updateWidgetEditorOptionsAction,
+  initializePopoverOpeningAction,
+  showPopoverAction,
+  hidePopoverAction,
 }

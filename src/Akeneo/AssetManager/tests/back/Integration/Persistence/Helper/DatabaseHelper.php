@@ -38,7 +38,6 @@ class DatabaseHelper
         $this->insertDefaultLocales();
         $this->insertDefaultCategories();
         $this->insertDefaultChannels();
-        $this->insertDefaultAssetTree();
         $this->insertUsers();
         $this->insertImages();
     }
@@ -63,7 +62,6 @@ class DatabaseHelper
             DELETE FROM oro_user_access_group;
             DELETE FROM pim_catalog_channel;
             DELETE FROM pim_catalog_category;
-            DELETE FROM pimee_product_asset_category;
             DELETE FROM pim_catalog_locale;
             DELETE FROM akeneo_file_storage_file_info;
 
@@ -114,22 +112,12 @@ SQL;
         $this->sqlConnection->executeQuery($resetChannel);
     }
 
-    private function insertDefaultAssetTree(): void
-    {
-        $resetAssetTree = <<<SQL
-        INSERT INTO `pimee_product_asset_category` (`id`, `parent_id`, `code`, `created`, `root`, `lvl`, `lft`, `rgt`)
-        VALUES
-          (1,  NULL,  'asset_main_catalog',  '2018-09-05 22:45:32',  1,  0,  1,  2);
-SQL;
-        $this->sqlConnection->executeQuery($resetAssetTree);
-    }
-
     private function insertUsers(): void
     {
         $resetUsers = <<<SQL
 INSERT INTO `oro_user` (`id`, `file_info_id`, `ui_locale_id`, `username`, `email`, `name_prefix`, `first_name`, `middle_name`, `last_name`, `name_suffix`, `image`, `enabled`, `salt`, `password`, `confirmation_token`, `password_requested`, `last_login`, `login_count`, `createdAt`, `updatedAt`, `product_grid_filters`, `emailNotifications`, `phone`, `timezone`, `properties`, `catalogLocale_id`, `catalogScope_id`, `defaultTree_id`)
 VALUES
-        (1,NULL,2,'admin','admin@example.com',NULL,'John',NULL,'Doe',NULL,NULL,1,'9zpd00l1ijkg0s44og4wck0cwoo00c8','2S/jxiyQSBEsCWqvH3YOpelBwjfj2MhmDV8mFcrOD6pcGa9VzUlVuJ7R64fG68llfHpyjXJbvD9gnAzMDnsn8w==',NULL,NULL,NULL,0,'2018-11-26 09:58:57','2018-11-26 09:58:57','[]',0,NULL,'UTC','{\"default_asset_tree\":\"asset_main_catalog\",\"asset_delay_reminder\":5,\"proposals_to_review_notification\":true,\"proposals_state_notifications\":true}',2,3,1);
+        (1,NULL,2,'admin','admin@example.com',NULL,'John',NULL,'Doe',NULL,NULL,1,'9zpd00l1ijkg0s44og4wck0cwoo00c8','2S/jxiyQSBEsCWqvH3YOpelBwjfj2MhmDV8mFcrOD6pcGa9VzUlVuJ7R64fG68llfHpyjXJbvD9gnAzMDnsn8w==',NULL,NULL,NULL,0,'2018-11-26 09:58:57','2018-11-26 09:58:57','[]',0,NULL,'UTC','{\"proposals_to_review_notification\":true,\"proposals_state_notifications\":true}',2,3,1);
 SQL;
         $this->sqlConnection->executeQuery($resetUsers);
     }

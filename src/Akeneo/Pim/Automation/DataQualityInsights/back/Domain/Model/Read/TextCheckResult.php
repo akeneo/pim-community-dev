@@ -18,14 +18,20 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
  */
 class TextCheckResult
 {
+    const SPELLING_ISSUE_TYPE = 'misspelling';
+
     /**
      * @var string
      */
-    private $word;
+    private $text;
     /**
      * @var string
      */
     private $type;
+    /**
+     * @var int
+     */
+    private $globalOffset;
     /**
      * @var int
      */
@@ -39,10 +45,11 @@ class TextCheckResult
      */
     private $suggestions;
 
-    public function __construct(string $word, string $type, ?int $offset, ?int $line, array $suggestions)
+    public function __construct(string $text, string $type, int $globalOffset, int $offset, int $line, array $suggestions)
     {
-        $this->word = $word;
+        $this->text = $text;
         $this->type = $type;
+        $this->globalOffset = $globalOffset;
         $this->offset = $offset;
         $this->line = $line;
         $this->suggestions = $suggestions;
@@ -51,9 +58,9 @@ class TextCheckResult
     /**
      * @return string
      */
-    public function getWord(): string
+    public function getText(): string
     {
-        return $this->word;
+        return $this->text;
     }
 
     /**
@@ -62,6 +69,14 @@ class TextCheckResult
     public function getType(): string
     {
         return $this->type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGlobalOffset(): int
+    {
+        return $this->globalOffset;
     }
 
     /**
@@ -91,8 +106,9 @@ class TextCheckResult
     public function normalize(): array
     {
         return [
-            'word' =>  $this->getWord(),
+            'text' =>  $this->getText(),
             'type' => $this->getType(),
+            'globalOffset' => $this->getGlobalOffset(),
             'offset' => $this->getOffset(),
             'line' => $this->getLine(),
             'suggestions' => $this->getSuggestions(),

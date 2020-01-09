@@ -24,6 +24,4 @@ sleeve_color;pim_reference_data_simpleselect;other;0;0;1;35;Sleeve color;;;;0;0;
 zip_color;pim_reference_data_simpleselect;other;0;0;1;35;Zip color;;;;1;1;;;;;;;;;;color;
 sleeve_fabric;pim_reference_data_multiselect;other;0;0;1;40;Sleeve fabric;;;;0;0;;;;;;;;;;fabrics;
 neck_fabric;pim_reference_data_multiselect;other;0;0;1;45;Neck fabric;;;;1;1;;;;;;;;;;fabrics;
-front_view;pim_assets_collection;media;0;0;1;50;Front view;Vue de face;;Vorderansicht;0;0;;;;;;;;;;assets;
-gallery;pim_assets_collection;media;0;0;0;50;gallery;;;;0;0;;;;;;;;;;assets;
 volume;pim_catalog_metric;info;0;0;1;55;Volume;;;;0;0;;;;0;0;;;Volume;CUBIC_MILLIMETER;;

@@ -10,14 +10,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\LocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetAllActivatedLocalesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LanguageCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionary;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 final class AspellDictionaryGeneratorSpec extends ObjectBehavior
 {
     public function let(
-        AspellDictionary $aspellDictionary,
+        AspellDictionaryInterface $aspellDictionary,
         GetAllActivatedLocalesQueryInterface $allActivatedLocalesQuery,
         Clock $clock
     ) {

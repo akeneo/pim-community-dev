@@ -3,15 +3,6 @@ oneup_flysystem:
         asset_storage:
             adapter: asset_storage_adapter
             mount: assetStorage
-        asset_manager_storage:
-            adapter: asset_manager_storage_adapter
-            mount: assetManagerStorage
-        tmp_asset_upload_adapter:
-            adapter: tmp_asset_upload_adapter
-            mount: tmpAssetUpload
         data_quality_insights_shared_adapter:
             adapter: data_quality_insights_shared_adapter
             mount: dataQualityInsightsSharedAdapter
-        data_quality_insights_local_adapter:
-            adapter: data_quality_insights_local_adapter
-            mount: dataQualityInsightsLocalAdapter

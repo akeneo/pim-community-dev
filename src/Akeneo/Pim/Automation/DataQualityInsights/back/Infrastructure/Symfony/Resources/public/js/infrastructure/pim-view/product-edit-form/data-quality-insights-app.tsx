@@ -8,6 +8,9 @@ import {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
   DataQualityInsightsFeature,
   getDataQualityInsightsFeature,
+  PRODUCT_TAB_CHANGED,
+  PRODUCT_ATTRIBUTES_TAB_LOADED,
+  PRODUCT_ATTRIBUTES_TAB_LOADING,
   ProductEditFormApp
 } from 'akeneodataqualityinsights-react';
 
@@ -31,6 +34,14 @@ interface ShowAttributeEvent {
 
 interface FilterAttributesEvent{
   attributes: string[];
+}
+
+interface TabEvent {
+  target: {
+    dataset: {
+      tab: string;
+    };
+  };
 }
 
 class DataQualityInsightsApp extends BaseView {
@@ -78,6 +89,20 @@ class DataQualityInsightsApp extends BaseView {
       this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'all_improvable_attributes');
       this.redirectToProductEditForm();
     }));
+
+    this.listenTo(this.getRoot(), 'column-tab:select-tab', ({target}: TabEvent) => {
+      window.dispatchEvent(new CustomEvent(PRODUCT_TAB_CHANGED, {detail: {
+        currentTab: target.dataset.tab,
+      }}));
+    });
+
+    this.listenTo(this.getRoot(), 'pim_enrich:form:attributes:render:before', () => {
+      window.dispatchEvent(new Event(PRODUCT_ATTRIBUTES_TAB_LOADING));
+    });
+
+    this.listenTo(this.getRoot(), 'pim_enrich:form:attributes:render:after', () => {
+      window.dispatchEvent(new Event(PRODUCT_ATTRIBUTES_TAB_LOADED));
+    });
 
     return super.configure();
   }

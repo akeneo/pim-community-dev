@@ -9,6 +9,10 @@ import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {createFakeAssetFamily} from '../tools';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import Locale from 'akeneoassetmanager/domain/model/locale';
+
+jest.mock('akeneoassetmanager/application/component/app/select2');
 
 jest.mock('akeneoassetmanager/application/asset-upload/saver/asset', () => ({
   create: jest.fn().mockImplementation(() => Promise.resolve(null)),
@@ -42,11 +46,20 @@ describe('Test modal component', () => {
 
   test('It renders without errors', async () => {
     const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <UploadModal assetFamily={assetFamily} onCancel={() => {}} onAssetCreated={() => {}} locale="en_US" />
+          <UploadModal
+            locale="en_US"
+            assetFamily={assetFamily}
+            channels={channels}
+            locales={locales}
+            onCancel={() => {}}
+            onAssetCreated={() => {}}
+          />
         </ThemeProvider>,
         container
       );
@@ -55,12 +68,21 @@ describe('Test modal component', () => {
 
   test('I can close the modal', async () => {
     const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
     const onCancel = jest.fn();
 
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <UploadModal assetFamily={assetFamily} onCancel={onCancel} onAssetCreated={() => {}} locale="en_US" />
+          <UploadModal
+            locale="en_US"
+            assetFamily={assetFamily}
+            channels={channels}
+            locales={locales}
+            onCancel={onCancel}
+            onAssetCreated={() => {}}
+          />
         </ThemeProvider>,
         container
       );
@@ -73,12 +95,21 @@ describe('Test modal component', () => {
 
   test('I can drop a file and create the asset', async () => {
     const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
     const onAssetCreated = jest.fn();
 
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <UploadModal assetFamily={assetFamily} onCancel={() => {}} onAssetCreated={onAssetCreated} locale="en_US" />
+          <UploadModal
+            locale="en_US"
+            assetFamily={assetFamily}
+            channels={channels}
+            locales={locales}
+            onCancel={() => {}}
+            onAssetCreated={onAssetCreated}
+          />
         </ThemeProvider>,
         container
       );
@@ -103,11 +134,20 @@ describe('Test modal component', () => {
 
   test('I can drop a file and dispatch its code being changed', async () => {
     const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <UploadModal assetFamily={assetFamily} onCancel={() => {}} onAssetCreated={() => {}} locale="en_US" />
+          <UploadModal
+            locale="en_US"
+            assetFamily={assetFamily}
+            channels={channels}
+            locales={locales}
+            onCancel={() => {}}
+            onAssetCreated={() => {}}
+          />
         </ThemeProvider>,
         container
       );
@@ -132,11 +172,20 @@ describe('Test modal component', () => {
 
   test('I can drop a file and dispatch a line being removed', async () => {
     const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <UploadModal assetFamily={assetFamily} onCancel={() => {}} onAssetCreated={() => {}} locale="en_US" />
+          <UploadModal
+            locale="en_US"
+            assetFamily={assetFamily}
+            channels={channels}
+            locales={locales}
+            onCancel={() => {}}
+            onAssetCreated={() => {}}
+          />
         </ThemeProvider>,
         container
       );
@@ -161,11 +210,20 @@ describe('Test modal component', () => {
 
   test('I can drop a file and dispatch all the lines being removed', async () => {
     const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
-          <UploadModal assetFamily={assetFamily} onCancel={() => {}} onAssetCreated={() => {}} locale="en_US" />
+          <UploadModal
+            locale="en_US"
+            assetFamily={assetFamily}
+            channels={channels}
+            locales={locales}
+            onCancel={() => {}}
+            onAssetCreated={() => {}}
+          />
         </ThemeProvider>,
         container
       );

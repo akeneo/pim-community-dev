@@ -82,7 +82,7 @@ class ProductCategoryAccesses implements ArrayConverterInterface
     }
 
     /**
-     * Return all the group concerned by the asset category access.
+     * Return all the group concerned by the category access.
      *
      * @param array $item
      *

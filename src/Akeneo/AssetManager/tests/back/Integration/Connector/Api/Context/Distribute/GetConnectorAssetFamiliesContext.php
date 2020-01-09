@@ -18,6 +18,8 @@ use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NullNamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
@@ -81,6 +83,8 @@ class GetConnectorAssetFamiliesContext implements Context
 
             $productLinkRules = [];
             $connectorTransformations = new ConnectorTransformationCollection([]);
+            $namingConvention = new NullNamingConvention();
+
             if (1 === $i) {
                 $productLinkRules = [
                     [
@@ -111,6 +115,18 @@ class GetConnectorAssetFamiliesContext implements Context
                         '_2'
                     )
                 ]);
+
+                $namingConvention = NamingConvention::createFromNormalized(
+                    [
+                        'source' => [
+                            'property' => 'code',
+                            'channel' => null,
+                            'locale' => null,
+                        ],
+                        'pattern' => '/^(?P<productref>\w+)-(?P<attribute>\w+).jpeg$/',
+                        'abort_asset_creation_on_error' => true,
+                    ]
+                );
             }
 
             $assetFamily = new ConnectorAssetFamily(
@@ -118,7 +134,8 @@ class GetConnectorAssetFamiliesContext implements Context
                 LabelCollection::fromArray(['fr_FR' => 'Marque']),
                 Image::fromFileInfo($imageInfo),
                 $productLinkRules,
-                $connectorTransformations
+                $connectorTransformations,
+                $namingConvention
             );
 
             $this->findConnectorAssetFamily->save(

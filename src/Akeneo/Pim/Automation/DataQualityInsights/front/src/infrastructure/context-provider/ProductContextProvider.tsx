@@ -13,7 +13,7 @@ export const DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES = 'data-quality
 export const DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES = 'data-quality:product:filter_all_improvable_attributes';
 export const DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY = 'data-quality:dashboard:change_periodicity';
 
-const ProductContextProvider: FunctionComponent<ProductContextProviderProps> = ({product, children}) => {
+const ProductContextProvider: FunctionComponent<ProductContextProviderProps> = ({product}) => {
   const dispatchAction = useDispatch();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const ProductContextProvider: FunctionComponent<ProductContextProviderProps> = (
   }, [product, product.family, dispatchAction]);
 
   return (
-    <>{children}</>
+    <></>
   )
 };
 

@@ -44,6 +44,9 @@ pim_asset_manager:
                 filename_prefix_suffix_empty: 'You should have at least either the properties filename_prefix or filename_suffix and one of them should not be empty strings.'
                 empty_operation_list: 'At least one transformation operation is required.'
                 unknown_extra_field: 'The property {{ field }} is not defined and the definition does not allow additional properties.'
+            naming_convention:
+                property_should_exist: 'The property "%property%" does not exist for this asset family'
+                not_main_media_attribute_code: 'Expected property "%property%" to match the code of the attribute as main media.'
     asset:
         validation:
             code:

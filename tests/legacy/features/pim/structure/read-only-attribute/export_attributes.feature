@@ -48,8 +48,6 @@ Feature: Display available field options
     zip_color;"Zip color";;;;;;;;;;other;0;1;;;;;;;;color;1;35;pim_reference_data_simpleselect;0;1;;;
     sleeve_fabric;"Sleeve fabric";;;;;;;;;;other;0;0;;;;;;;;fabrics;0;40;pim_reference_data_multiselect;0;1;;;
     neck_fabric;"Neck fabric";;;;;;;;;;other;0;1;;;;;;;;fabrics;1;45;pim_reference_data_multiselect;0;1;;;
-    front_view;"Front view";"Vue de face";Vorderansicht;;;;;;;;media;0;0;;;;;;;;assets;0;50;pim_assets_collection;0;1;;;
-    gallery;gallery;;;;;;;;;;media;0;0;;;;;;;;assets;0;50;pim_assets_collection;0;0;;;
     volume;Volume;;;;;;;;0;CUBIC_MILLIMETER;info;0;0;;;Volume;;0;;;;0;55;pim_catalog_metric;0;1;;;
     info;Info;;;;;;;;;;other;0;0;25;;;;;;;;0;0;pim_catalog_textarea;0;0;;;1
     """

@@ -24,11 +24,6 @@ $rules = [
         // TIP-982: Rework User/Draft link
         'Akeneo\UserManagement\Component\Model\UserInterface',
 
-        // TIP-981: Workflow should not be linked to Asset
-        'Akeneo\Asset\Component\Repository\AssetRepositoryInterface',
-        'Akeneo\Asset\Component\Model\AssetInterface',
-        'Akeneo\Asset\Bundle\AttributeType\AttributeTypes',
-
         // TIP-984: Workflow should not be linked to Channel
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\Channel\Component\Model\ChannelInterface',
@@ -256,7 +251,6 @@ $rules = [
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
         // Normalization of published product
-        'Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer',
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder',
         'Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface',

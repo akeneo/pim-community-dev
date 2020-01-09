@@ -25,6 +25,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
@@ -161,7 +162,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
         $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
         $ruleTemplate = $this->getExpectedRuleTemplate();
 
@@ -205,6 +206,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
 
         $this->loadMediaFileAttribute('brand', 'main_image', 'Main image', 1);
         $this->loadMediaFileAttribute('brand', 'thumbnail', 'Thumbnail image', 2);
+        $this->loadTextAttribute('brand', 'title', 'Title', 3);
 
         $this->assetFamilyRepository->create($assetFamily);
     }
@@ -240,7 +242,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
         $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
         $ruleTemplate = $this->getExpectedRuleTemplate();
 
@@ -268,6 +270,11 @@ class CreateOrUpdateAssetFamilyContext implements Context
                 '_2',
                 InMemoryClock::$actualDateTime
             ),
+        ]));
+        $expectedBrand->updateNamingConvention(NamingConvention::createFromNormalized([
+            'source' => ['property' => 'media', 'locale' => null, 'channel' => null],
+            'pattern' => '/the_pattern/',
+            'abort_asset_creation_on_error' => true,
         ]));
 
         Assert::assertEquals($brand, $expectedBrand);
@@ -396,6 +403,18 @@ class CreateOrUpdateAssetFamilyContext implements Context
     }
 
     /**
+     * @When the connector collects an asset family whose naming convention do not comply with the business rules
+     */
+    public function theConnectorCollectsAnAssetFamilyWhoseNamingConventionDoNotComplyWithTheBusinessRules()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_naming_convention_for_invalid_data.json'
+        );
+    }
+
+    /**
      * @Then the PIM notifies the connector about an error indicating that the asset family has data that does not comply with the business rules
      */
     public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheAssetFamilyHasDataThatDoesNotComplyWithTheBusinessRules()
@@ -425,6 +444,17 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_transformation_for_invalid_operation_parameters.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about errors indicating that the asset family naming convention that do not comply with the business rules
+     */
+    public function thePimNotifiesTheConnectorAboutErrorsIndicatingThatTheAssetFamilyNamingConventionThatDoNotComplyWithTheBusinessRules()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_naming_convention_for_invalid_data.json'
         );
     }
 

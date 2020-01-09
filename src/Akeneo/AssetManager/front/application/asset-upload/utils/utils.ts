@@ -1,7 +1,7 @@
 import Line, {
-  LineStatus,
-  LineIdentifier,
   LineErrorsByTarget,
+  LineIdentifier,
+  LineStatus,
 } from 'akeneoassetmanager/application/asset-upload/model/line';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamily, getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -11,9 +11,28 @@ import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/c
 import {NormalizedValidationError as ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {createUUIDV4} from 'akeneoassetmanager/application/asset-upload/utils/uuid';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
+import Locale from 'akeneoassetmanager/domain/model/locale';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 
-export const createLineFromFilename = (filename: string, assetFamily: AssetFamily): Line => {
-  const info = extractInfoFromFilename(filename, assetFamily);
+type FilenameInfo = {
+  code: string;
+  locale: LocaleReference;
+  channel: ChannelReference;
+};
+
+export const createLineFromFilename = (
+  filename: string,
+  assetFamily: AssetFamily,
+  channels: Channel[],
+  locales: Locale[]
+): Line => {
+  let info = extractInfoFromFilename(filename, assetFamily);
+
+  if (!isFilenameInfoValid(info, channels, locales)) {
+    info = extractInfoWithOnlyCodeFromFilename(filename);
+  }
 
   return {
     id: createUUIDV4(),
@@ -33,7 +52,7 @@ export const createLineFromFilename = (filename: string, assetFamily: AssetFamil
   };
 };
 
-const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily) => {
+const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily): FilenameInfo => {
   const attribute = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
   const valuePerLocale = attribute.value_per_locale;
   const valuePerChannel = attribute.value_per_channel;
@@ -63,11 +82,36 @@ const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily) => 
     };
   }
 
+  return extractInfoWithOnlyCodeFromFilename(filename);
+};
+
+const extractInfoWithOnlyCodeFromFilename = (filename: string): FilenameInfo => {
   return {
     code: sanitize(filename.replace(/\.[^/.]+$/, '')),
     locale: null,
     channel: null,
   };
+};
+
+const isFilenameInfoValid = (info: FilenameInfo, channels: Channel[], locales: Locale[]): boolean => {
+  if (null === info.locale && null === info.channel) {
+    return true;
+  }
+
+  if (null !== info.locale && null === info.channel) {
+    return undefined !== locales.find((locale: Locale) => locale.code === info.locale);
+  }
+
+  if (null === info.locale && null !== info.channel) {
+    return undefined !== channels.find((channel: Channel) => channel.code === info.channel);
+  }
+
+  const channel = channels.find((channel: Channel) => channel.code === info.channel);
+  if (undefined === channel) {
+    return false;
+  }
+
+  return undefined !== channel.locales.find((locale: Locale) => locale.code === info.locale);
 };
 
 const findAssetByCode = (assets: CreationAsset[], code: AssetCode): CreationAsset | null => {
@@ -213,4 +257,14 @@ export const getStatusFromLine = (line: Line, valuePerLocale: boolean, valuePerC
   }
 
   return LineStatus.WaitingForUpload;
+};
+
+export const hasAnUnsavedLine = (lines: Line[], valuePerLocale: boolean, valuePerChannel: boolean): boolean => {
+  return lines.reduce((isDirty: boolean, line: Line) => {
+    if (isDirty) {
+      return isDirty;
+    }
+
+    return LineStatus.Created !== getStatusFromLine(line, valuePerLocale, valuePerChannel);
+  }, false);
 };

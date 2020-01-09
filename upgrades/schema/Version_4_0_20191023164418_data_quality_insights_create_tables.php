@@ -22,5 +22,6 @@ class Version_4_0_20191023164418_data_quality_insights_create_tables extends Abs
         $this->addSql('DROP TABLE IF EXISTS pimee_data_quality_insights_criteria_evaluation');
         $this->addSql('DROP TABLE IF EXISTS pimee_data_quality_insights_product_axis_rates');
         $this->addSql('DROP TABLE IF EXISTS pimee_data_quality_insights_dashboard_rates_projection');
+        $this->addSql('DROP TABLE IF EXISTS pimee_data_quality_insights_text_checker_dictionary');
     }
 }

@@ -1,0 +1,42 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_asset_manager_asset_family_rest_connector_create_or_update",
+        "query": {
+            "assetFamilyIdentifier": "brand"
+        },
+        "body": {
+            "code": "brand",
+            "labels": {
+                "en_US": "Label for an activated locale"
+            },
+            "product_link_rules": [],
+            "transformations": [],
+            "naming_convention": {
+                "source": {"property":  "unknown", "locale": "en_US", "channel": null},
+                "pattern": "/invalid_pattern)"
+            }
+        }
+    },
+    "response": {
+        "status": 422,
+        "body": {
+            "code": 422,
+            "message": "The asset family has data that does not comply with the business rules.",
+            "errors": [
+                {
+                    "property": "naming_convention[source]",
+                    "message": "The property \"unknown\" does not exist for this asset family"
+                },
+                {
+                    "property": "naming_convention[pattern]",
+                    "message": "The regular expression \"/invalid_pattern)\" is malformed."
+                },
+                {
+                    "property": "naming_convention[abort_asset_creation_on_error]",
+                    "message": "This field is missing."
+                }
+            ]
+        }
+    }
+}

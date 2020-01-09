@@ -53,6 +53,21 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
                     ]
                 ]
             ],
+            'transformations' => [
+                [
+                    'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
+                    'target' => ['attribute' => 'thumbnail', 'channel' => null, 'locale' => null],
+                    'operations' => [
+                        ['type' => 'colorspace'],
+                    ],
+                    'filename_suffix' => '_2',
+                ],
+            ],
+            'naming_convention' => [
+                'source' => ['property' => 'title', 'locale' => 'en_US', 'channel' => null],
+                'pattern' => '/the_pattern/',
+                'abort_asset_creation_on_error' => true,
+            ],
             '_links'  => [
                 'image_download' => [
                     'href' => 'http://localhost/api/rest/v1/asset-media-files/images/starck.png'
@@ -261,5 +276,105 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
 
         $errors->shouldBeArray();
         $errors->shouldHaveCount(3);
+    }
+
+    public function it_does_not_return_any_error_when_transformations_is_empty()
+    {
+        $assetFamily = [
+            'code' => 'starck',
+            'product_link_rules' => [],
+            'transformations' => [],
+        ];
+        $this->validate($assetFamily)->shouldReturn([]);
+    }
+
+    public function it_returns_an_error_when_a_transformation_is_invalid()
+    {
+        $assetFamily = [
+            'code' => 'starck',
+            'product_link_rules' => [],
+            'transformations' => [
+                [
+                    'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
+                    'target' => ['attribute' => ['invalid'], 'channel' => null, 'locale' => null],
+                    'operations' => [
+                        ['type' => 'colorspace'],
+                    ],
+                    'filename_suffix' => '_2',
+                ],
+            ],
+        ];
+
+        $errors = $this->validate($assetFamily);
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(1);
+    }
+
+    public function it_returns_an_error_when_a_transformation_has_additional_properties()
+    {
+        $assetFamily = [
+            'code' => 'starck',
+            'product_link_rules' => [],
+            'transformations' => [
+                [
+                    'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
+                    'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
+                    'operations' => [
+                        ['type' => 'colorspace'],
+                    ],
+                    'filename_suffix' => '_2',
+                    'foo' => 'bar',
+                ],
+            ],
+        ];
+
+        $errors = $this->validate($assetFamily);
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(1);
+    }
+
+    public function it_does_not_return_any_error_when_naming_convention_is_empty()
+    {
+        $assetFamily = [
+            'code' => 'starck',
+            'product_link_rules' => [],
+            'naming_convention' => [],
+        ];
+        $this->validate($assetFamily)->shouldReturn([]);
+    }
+
+    public function it_returns_an_error_when_naming_convention_is_invalid()
+    {
+        $assetFamily = [
+            'code' => 'starck',
+            'product_link_rules' => [],
+            'naming_convention' => [
+                'source' => [],
+                'pattern' => '/the_pattern/',
+                'abort_asset_creation_on_error' => true,
+            ],
+        ];
+
+        $errors = $this->validate($assetFamily);
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(1);
+    }
+
+    public function it_returns_an_error_when_naming_convention_has_additional_properties()
+    {
+        $assetFamily = [
+            'code' => 'starck',
+            'product_link_rules' => [],
+            'naming_convention' => [
+                'source' => ['property' => 'title', 'locale' => 'en_US', 'channel' => null],
+                'pattern' => '/the_pattern/',
+                'abort_asset_creation_on_error' => true,
+                'foo' => 'bar',
+            ],
+        ];
+
+        $errors = $this->validate($assetFamily);
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(1);
     }
 }

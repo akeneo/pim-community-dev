@@ -1,7 +1,8 @@
 import {AxisRatesOverviewPortal} from "./Sidebar";
-import {DataQualityInsightsTabContentPortal} from "./TabContent";
+import {DataQualityInsightsTabContentPortal, AttributesTabContentPortal} from "./TabContent";
 
 export {
   AxisRatesOverviewPortal,
   DataQualityInsightsTabContentPortal,
+  AttributesTabContentPortal,
 }

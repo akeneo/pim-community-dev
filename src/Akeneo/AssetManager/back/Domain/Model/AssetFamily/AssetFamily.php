@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NullNamingConvention;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 
@@ -25,7 +26,7 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 class AssetFamily
 {
     public const DEFAULT_ATTRIBUTE_AS_LABEL_CODE = 'label';
-    public const DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE = 'image';
+    public const DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE = 'media';
 
     /** @var AssetFamilyIdentifier */
     private $identifier;
@@ -87,7 +88,7 @@ class AssetFamily
             AttributeAsMainMediaReference::noReference(),
             $ruleTemplateCollection,
             TransformationCollection::noTransformation(),
-            NamingConvention::createFromNormalized([])
+            new NullNamingConvention()
         );
     }
 
@@ -199,6 +200,11 @@ class AssetFamily
         );
     }
 
+    public function getNamingConvention(): NamingConventionInterface
+    {
+        return $this->namingConvention;
+    }
+
     public function withNamingConvention(NamingConventionInterface $namingConvention): self
     {
         return new self(
@@ -213,8 +219,8 @@ class AssetFamily
         );
     }
 
-    public function getNamingConvention(): NamingConventionInterface
+    public function updateNamingConvention(NamingConventionInterface $namingConvention): void
     {
-        return $this->namingConvention;
+        $this->namingConvention = $namingConvention;
     }
 }

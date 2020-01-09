@@ -1,8 +1,8 @@
 import React, {Fragment, FunctionComponent} from 'react';
 import {get as _get} from 'lodash';
-import AxisEvaluation from "./AxisEvaluation";
+import AxisEvaluation from "./DataQualityInsights/AxisEvaluation";
 import {useCatalogContext, useFetchProductDataQualityEvaluation} from "../../../../infrastructure/hooks";
-import Evaluation from "../../../../domain/Evaluation.interface";
+import {Evaluation} from "../../../../domain";
 
 interface DataQualityInsightsTabContentProps {
 }

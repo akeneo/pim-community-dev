@@ -15,36 +15,40 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionary;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source\GlobalOffsetCalculator;
 use Mekras\Speller\Aspell\Aspell;
-use Mekras\Speller\Dictionary;
 use Mekras\Speller\Issue;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  */
 class AspellCheckerSpec extends ObjectBehavior
 {
-    public function let(AspellDictionary $aspellDictionary)
+    public function let(AspellDictionaryInterface $aspellDictionary, GlobalOffsetCalculator $globalOffsetCalculator)
     {
-        $this->beConstructedWith('aspell', $aspellDictionary, '/an/absolute/path');
+        $this->beConstructedWith('aspell', $aspellDictionary, $globalOffsetCalculator);
     }
 
     public function it_checks_test(
         Aspell $speller,
-        $aspellDictionary
+        $aspellDictionary,
+        GlobalOffsetCalculator $globalOffsetCalculator
     ) {
         $text = 'Typos hapen.';
         $locale = 'en_US';
 
-        $aspellDictionary->getUpToDateLocalDictionaryRelativeFilePath(new LocaleCode($locale))->willReturn('a/relative/filepath.pws');
+        $aspellDictionary->getUpToDateLocalDictionaryAbsoluteFilePath(new LocaleCode($locale))->willReturn('/an/absolute/filepath-en.pws');
 
         $aspellCheckResult = [
             new Issue('hapen', 'ANY_ASPELL_RETURN_CODE'),
         ];
 
         $speller->checkText($text, [$locale])->willReturn($aspellCheckResult);
+
+        $globalOffsetCalculator->compute(Argument::cetera())->shouldBeCalled();
 
         $result = $this->check($text, new LocaleCode($locale));
 
@@ -54,16 +58,19 @@ class AspellCheckerSpec extends ObjectBehavior
 
     public function it_checks_test_without_issue(
         Aspell $speller,
-        $aspellDictionary
+        $aspellDictionary,
+        GlobalOffsetCalculator $globalOffsetCalculator
     ) {
         $text = 'Typos happen.';
         $locale = 'en_US';
 
-        $aspellDictionary->getUpToDateLocalDictionaryRelativeFilePath(new LocaleCode($locale))->willReturn('a/relative/filepath.pws');
+        $aspellDictionary->getUpToDateLocalDictionaryAbsoluteFilePath(new LocaleCode($locale))->willReturn('/an/absolute/filepath-en.pw');
 
         $aspellCheckResult = [];
 
         $speller->checkText($text, [$locale])->willReturn($aspellCheckResult);
+
+        $globalOffsetCalculator->compute(Argument::cetera())->shouldNotBeCalled();
 
         $result = $this->check($text, new LocaleCode($locale));
 

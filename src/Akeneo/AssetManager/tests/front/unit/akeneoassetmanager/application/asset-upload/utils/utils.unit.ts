@@ -9,8 +9,11 @@ import {
   getAllErrorsOfLineByTarget,
   getStatusFromLine,
   selectLinesToSend,
+  hasAnUnsavedLine,
 } from 'akeneoassetmanager/application/asset-upload/utils/utils';
-import {createFakeAssetFamily, createFakeError, createFakeLine} from '../tools';
+import {createFakeAssetFamily, createFakeChannel, createFakeError, createFakeLine, createFakeLocale} from '../tools';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import Locale from 'akeneoassetmanager/domain/model/locale';
 
 describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLineFromFilename', () => {
   const line = {
@@ -19,19 +22,29 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
     channel: null,
   };
 
-  const assertLineCreatedMatchExpected = (test: {filename: string; assetFamily: AssetFamily; expected: any}) => {
-    let result = createLineFromFilename(test.filename, test.assetFamily);
+  const assertLineCreatedMatchExpected = (test: {
+    filename: string;
+    assetFamily: AssetFamily;
+    channels: Channel[];
+    locales: Locale[];
+    expected: any;
+  }) => {
+    let result = createLineFromFilename(test.filename, test.assetFamily, test.channels, test.locales);
     expect(result).toMatchObject(test.expected);
     expect(result.filename).toBe(test.filename);
   };
 
   test('I can create a line from a filename not localizable and not scopable', () => {
     const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
     [
       {
         filename: 'foo.png',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foo',
@@ -40,6 +53,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
       {
         filename: 'Foo bar%20.png',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foobar_20',
@@ -48,6 +63,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
       {
         filename: 'foo.jpg.pdf.png',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foo_jpg_pdf',
@@ -58,11 +75,15 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
 
   test('I can create a line from a filename localizable and not scopable', () => {
     const assetFamily = createFakeAssetFamily(true, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [createFakeLocale('en_US')];
 
     [
       {
         filename: 'foo-en_US.png',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foo',
@@ -72,6 +93,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
       {
         filename: 'foo-en_US',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foo',
@@ -81,6 +104,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
       {
         filename: 'foo.png',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foo',
@@ -92,11 +117,15 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
 
   test('I can create a line from a filename not localizable and scopable', () => {
     const assetFamily = createFakeAssetFamily(false, true);
+    const channels: Channel[] = [createFakeChannel('ecommerce')];
+    const locales: Locale[] = [];
 
     [
       {
         filename: 'foo-ecommerce.png',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foo',
@@ -106,6 +135,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
       {
         filename: 'foo-ecommerce',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foo',
@@ -115,6 +146,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
       {
         filename: 'foo.png',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foo',
@@ -126,11 +159,15 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
 
   test('I can create a line from a filename localizable and scopable', () => {
     const assetFamily = createFakeAssetFamily(true, true);
+    const channels: Channel[] = [createFakeChannel('ecommerce', ['en_US'])];
+    const locales: Locale[] = [createFakeLocale('en_US')];
 
     [
       {
         filename: 'foo-en_US-ecommerce.png',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foo',
@@ -141,6 +178,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
       {
         filename: 'foo-en_US-ecommerce',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foo',
@@ -151,6 +190,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
       {
         filename: 'foo--ecommerce.png',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foo',
@@ -161,6 +202,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
       {
         filename: 'foo-en_US-.png',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foo',
@@ -171,6 +214,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
       {
         filename: 'foo--.png',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foo',
@@ -181,9 +226,56 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
       {
         filename: 'foo.png',
         assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
         expected: {
           ...line,
           code: 'foo',
+          locale: null,
+          channel: null,
+        },
+      },
+    ].forEach(test => assertLineCreatedMatchExpected(test));
+  });
+
+  test('I can create a line from a filename but ignores invalid locale and channel', () => {
+    const assetFamily = createFakeAssetFamily(true, true);
+    const channels: Channel[] = [createFakeChannel('ecommerce', ['en_US'])];
+    const locales: Locale[] = [createFakeLocale('en_US')];
+
+    [
+      {
+        filename: 'foo-fr_FR-print.png',
+        assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
+        expected: {
+          ...line,
+          code: 'foo_fr_fr_print',
+          locale: null,
+          channel: null,
+        },
+      },
+      {
+        filename: 'foo-fr_FR.png',
+        assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
+        expected: {
+          ...line,
+          code: 'foo_fr_fr',
+          locale: null,
+          channel: null,
+        },
+      },
+      {
+        filename: 'foo--print.png',
+        assetFamily: assetFamily,
+        channels: channels,
+        locales: locales,
+        expected: {
+          ...line,
+          code: 'foo__print',
           locale: null,
           channel: null,
         },
@@ -210,9 +302,14 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> addLines
 });
 
 describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCreationAssetsFromLines', () => {
-  const createUploadedLineFromFilename = (filename: string, assetFamily: AssetFamily) => {
+  const createUploadedLineFromFilename = (
+    filename: string,
+    assetFamily: AssetFamily,
+    channels: Channel[] = [],
+    locales: Locale[] = []
+  ) => {
     return {
-      ...createLineFromFilename(filename, assetFamily),
+      ...createLineFromFilename(filename, assetFamily, channels, locales),
       file: {
         filePath: filename,
         originalFilename: filename,
@@ -222,11 +319,16 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCr
 
   test('I can create an asset localizable and scopable from lines with different values for each scope and locale', () => {
     const assetFamily = createFakeAssetFamily(true, true);
+    const channels: Channel[] = [
+      createFakeChannel('ecommerce', ['en_US', 'fr_FR']),
+      createFakeChannel('mobile', ['en_US', 'fr_FR']),
+    ];
+    const locales: Locale[] = [createFakeLocale('en_US'), createFakeLocale('fr_FR')];
 
     const lines = [
-      createUploadedLineFromFilename('foo-en_US-ecommerce.jpg', assetFamily),
-      createUploadedLineFromFilename('foo-fr_FR-ecommerce.jpg', assetFamily),
-      createUploadedLineFromFilename('foo-fr_FR-mobile.jpg', assetFamily),
+      createUploadedLineFromFilename('foo-en_US-ecommerce.jpg', assetFamily, channels, locales),
+      createUploadedLineFromFilename('foo-fr_FR-ecommerce.jpg', assetFamily, channels, locales),
+      createUploadedLineFromFilename('foo-fr_FR-mobile.jpg', assetFamily, channels, locales),
     ];
 
     const pictureAttribute = {
@@ -281,8 +383,13 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCr
 
   test('I can create an asset localizable and scopable from lines even without the expected filenames', () => {
     const assetFamily = createFakeAssetFamily(true, true);
+    const channels: Channel[] = [
+      createFakeChannel('ecommerce', ['en_US', 'fr_FR']),
+      createFakeChannel('mobile', ['en_US', 'fr_FR']),
+    ];
+    const locales: Locale[] = [createFakeLocale('en_US'), createFakeLocale('fr_FR')];
 
-    const lines = [createUploadedLineFromFilename('foo.jpg', assetFamily)];
+    const lines = [createUploadedLineFromFilename('foo.jpg', assetFamily, channels, locales)];
 
     const pictureAttribute = {
       identifier: 'picture_fingerprint',
@@ -318,12 +425,17 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCr
 
   test('I can create several assets localizable and scopable from lines', () => {
     const assetFamily = createFakeAssetFamily(true, true);
+    const channels: Channel[] = [
+      createFakeChannel('ecommerce', ['en_US', 'fr_FR']),
+      createFakeChannel('mobile', ['en_US', 'fr_FR']),
+    ];
+    const locales: Locale[] = [createFakeLocale('en_US'), createFakeLocale('fr_FR')];
 
     const lines = [
-      createUploadedLineFromFilename('foo-en_US-ecommerce.jpg', assetFamily),
-      createUploadedLineFromFilename('foo-fr_FR-ecommerce.jpg', assetFamily),
-      createUploadedLineFromFilename('bar-en_US-ecommerce.jpg', assetFamily),
-      createUploadedLineFromFilename('bar-fr_FR-ecommerce.jpg', assetFamily),
+      createUploadedLineFromFilename('foo-en_US-ecommerce.jpg', assetFamily, channels, locales),
+      createUploadedLineFromFilename('foo-fr_FR-ecommerce.jpg', assetFamily, channels, locales),
+      createUploadedLineFromFilename('bar-en_US-ecommerce.jpg', assetFamily, channels, locales),
+      createUploadedLineFromFilename('bar-fr_FR-ecommerce.jpg', assetFamily, channels, locales),
     ];
     const pictureAttribute = {
       identifier: 'picture_fingerprint',
@@ -737,5 +849,53 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getAllEr
       channel: [],
       locale: [],
     });
+  });
+});
+
+describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> hasAnUnsavedLine', () => {
+  test('I can check if there is an unsaved line', () => {
+    const valuePerLocale = true;
+    const valuePerChannel = true;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+
+    const lines = [
+      {
+        ...createFakeLine('a.jpg', assetFamily),
+        assetCreated: true,
+      },
+      {
+        ...createFakeLine('b.jpg', assetFamily),
+        assetCreated: false,
+      },
+      {
+        ...createFakeLine('c.jpg', assetFamily),
+        assetCreated: true,
+      },
+    ];
+
+    expect(hasAnUnsavedLine(lines, valuePerLocale, valuePerChannel)).toEqual(true);
+  });
+
+  test('I can check if all the lines are saved', () => {
+    const valuePerLocale = true;
+    const valuePerChannel = true;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+
+    const lines = [
+      {
+        ...createFakeLine('a.jpg', assetFamily),
+        assetCreated: true,
+      },
+      {
+        ...createFakeLine('b.jpg', assetFamily),
+        assetCreated: true,
+      },
+      {
+        ...createFakeLine('c.jpg', assetFamily),
+        assetCreated: true,
+      },
+    ];
+
+    expect(hasAnUnsavedLine(lines, valuePerLocale, valuePerChannel)).toEqual(false);
   });
 });

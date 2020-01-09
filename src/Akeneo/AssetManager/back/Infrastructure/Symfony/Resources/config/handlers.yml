@@ -121,3 +121,13 @@ services:
         class: Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsFromAssetFamilyIdentifierHandler
         arguments:
             - '@akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_family_identifier_launcher'
+
+    Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\ExecuteNamingConventionHandler:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\SourceValueExtractor'
+
+    Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\SourceValueExtractor:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'

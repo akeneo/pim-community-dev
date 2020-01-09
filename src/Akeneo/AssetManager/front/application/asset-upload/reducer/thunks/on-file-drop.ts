@@ -1,4 +1,3 @@
-import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
@@ -10,11 +9,20 @@ import {
   linesAddedAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 import createQueue from 'p-limit';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import Locale from 'akeneoassetmanager/domain/model/locale';
 
 const CONCURRENCY = 5;
 const queue = createQueue(CONCURRENCY);
 
-export const onFileDrop = (files: File[], assetFamily: AssetFamily, dispatch: (action: any) => void) => {
+export const onFileDrop = (
+  files: File[],
+  assetFamily: AssetFamily,
+  channels: Channel[],
+  locales: Locale[],
+  dispatch: (action: any) => void
+) => {
   if (null === files || 0 === files.length) {
     return;
   }
@@ -22,7 +30,7 @@ export const onFileDrop = (files: File[], assetFamily: AssetFamily, dispatch: (a
   const lines = files.map((file: File) => {
     const filename = file.name;
 
-    const line = createLineFromFilename(filename, assetFamily);
+    const line = createLineFromFilename(filename, assetFamily, channels, locales);
     getThumbnailFromFile(file, line).then(({thumbnail, line}) =>
       dispatch(fileThumbnailGenerationDoneAction(thumbnail, line))
     );

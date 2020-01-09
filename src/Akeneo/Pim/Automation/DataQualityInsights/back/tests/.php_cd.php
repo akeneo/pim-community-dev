@@ -53,6 +53,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
+            'Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository',
             'Akeneo\Tool\Component\Batch\Model\JobInstance',
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
 
@@ -105,6 +106,8 @@ $rules = [
             'GuzzleHttp\ClientInterface',
             'GuzzleHttp\Exception',
             'Mekras\Speller',
+            'Lcobucci\JWT',
+            'League\Flysystem',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];

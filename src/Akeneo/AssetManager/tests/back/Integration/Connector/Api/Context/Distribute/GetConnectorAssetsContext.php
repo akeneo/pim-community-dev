@@ -208,7 +208,7 @@ class GetConnectorAssetsContext implements Context
                             'data' => 'italy'
                         ]
                     ],
-                    'image' => [
+                    AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE => [
                         [
                             'locale' => null,
                             'channel' => null,
@@ -348,7 +348,7 @@ class GetConnectorAssetsContext implements Context
                             'data' => 'italy'
                         ]
                     ],
-                    'image' => [
+                    AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE => [
                         [
                             'locale' => null,
                             'channel' => null,

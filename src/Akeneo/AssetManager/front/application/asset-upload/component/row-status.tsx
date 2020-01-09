@@ -15,6 +15,7 @@ const StatusLabel = styled.span`
   max-width: 100%;
   overflow: hidden;
   padding: 0 4px;
+  text-align: center;
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
@@ -53,7 +54,7 @@ type LineStatusProps = {
   progress: number | null;
 };
 
-const RowStatus = ({status, progress}: LineStatusProps) => {
+const RowStatus = React.memo(({status, progress}: LineStatusProps) => {
   switch (status) {
     case LineStatus.WaitingForUpload:
       return (
@@ -92,6 +93,6 @@ const RowStatus = ({status, progress}: LineStatusProps) => {
     default:
       throw Error('unsupported line status');
   }
-};
+});
 
 export default RowStatus;
