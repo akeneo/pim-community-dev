@@ -51,6 +51,9 @@ class Version_4_0_20191004145507_remove_compute_model_descendant_jobs_Integratio
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         Assert::assertNull($this->getComputeProductModelDescendantJobId());
+        Assert::assertSame(0, $this->numberOfJobExecutions());
+        Assert::assertSame(0, $this->numberOfJobsInQueue());
+
         $productsFound = $this->getSearchQueryResults($ESQuery);
         Assert::assertCount(3, $productsFound);
     }
@@ -126,5 +129,15 @@ SQL;
      */
     protected function addDocuments()
     {
+    }
+
+    private function numberOfJobExecutions(): int
+    {
+        return (int) $this->getConnection()->executeQuery('SELECT COUNT(*) AS count FROM akeneo_batch_job_execution')->fetch()['count'];
+    }
+
+    private function numberOfJobsInQueue(): int
+    {
+        return (int) $this->getConnection()->executeQuery('SELECT COUNT(*) AS count FROM akeneo_batch_job_execution_queue')->fetch()['count'];
     }
 }
