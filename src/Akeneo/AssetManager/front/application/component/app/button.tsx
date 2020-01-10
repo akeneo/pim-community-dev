@@ -29,6 +29,7 @@ const StyledButton = styled.div<ButtonProps>`
   text-align: center;
   cursor: pointer;
   text-transform: uppercase;
+  white-space: nowrap;
 
   ${(props: ThemedProps<ButtonProps>) => {
     switch (props.buttonSize) {
