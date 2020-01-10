@@ -71,11 +71,61 @@
     margin-left: 18px;
 }
 
-
-
-
-
-
-
-
-
+.AknHoverBoxWithArrow {
+    width: 160px;
+}
+.AknHoverBoxArrow
+{  position: absolute;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid;
+    margin-top:30px;
+    color: #ffffff;
+}
+.AknHoverBox {
+    background-color: #ffffff;
+    border: none;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
+    width: 137px;
+    height: 234px;
+    margin-left: 10px;
+}
+.AknHoverBox-content {
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 100%;
+    .AknHoverBox-title {
+        color: rgb(148, 82, 186);
+        font-size: 11px;
+        font-weight: normal;
+        height: 44px;
+        text-transform: uppercase;
+        width: 100%;
+        border-bottom: solid 1px rgb(148, 82, 186);
+        line-height: 44px;
+    }
+    .AknMessageBox-list {
+        //border-bottom: solid 1px rgb(217, 221, 226);
+        height: 174px;
+        margin-top: 20px;
+        li {
+            height: 34px;
+            .rate-value {
+                color: rgb(103, 118, 138);
+                font-size: 13px;
+                font-weight: normal;
+                margin-left: 10px;
+            }
+        }
+    }
+    .AknHoverBox-footer {
+        height: 53px;
+        line-height: 53px;
+        .rate-value {
+            color: rgb(103, 118, 138);
+            font-size: 13px;
+            font-weight: normal;
+            margin-left: 10px;
+        }
+    }
+}
