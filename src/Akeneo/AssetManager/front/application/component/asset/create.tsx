@@ -98,6 +98,7 @@ export const CreateModal = ({assetFamily, locale, onClose, onAssetCreated}: Crea
   const resetModal = React.useCallback(() => {
     setCode('');
     setLabel('');
+    setErrors([]);
     setFocus();
   }, []);
 
