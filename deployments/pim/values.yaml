@@ -127,6 +127,10 @@ pim:
       enabled: true
       pimCommand: "akeneo:batch:purge-job-execution"
       schedule: "0 0 1 * *"
+    update-connectivity-audit-data:
+      enabled: true
+      pimCommand: "akeneo:connectivity-audit:update-data"
+      schedule: "1 * * * *"
     rule-run:
       enabled: true
       pimCommand: "akeneo:rule:run"
