@@ -10,9 +10,3 @@ services:
             - '@pim_api.repository.client'
         tags:
             - { name: console.command }
-
-    Akeneo\Tool\Bundle\ApiBundle\Command\RevokeClientCommand:
-        arguments:
-            - '@fos_oauth_server.client_manager.default'
-        tags:
-            - { name: console.command }
