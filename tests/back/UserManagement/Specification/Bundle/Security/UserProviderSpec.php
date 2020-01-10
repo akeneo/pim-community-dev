@@ -19,6 +19,7 @@ class UserProviderSpec extends ObjectBehavior
     function it_loads_a_user_by_its_username(UserRepositoryInterface $userRepository, UserInterface $julia)
     {
         $userRepository->findOneByIdentifier('julia')->willReturn($julia);
+        $julia->isApiUser()->willReturn(false);
         $this->loadUserByUsername('julia')->shouldReturn($julia);
     }
 
@@ -33,6 +34,7 @@ class UserProviderSpec extends ObjectBehavior
     {
         $userRepository->find(42)->willReturn($julia);
         $julia->getId()->willReturn(42);
+        $julia->isApiUser()->shouldBeCalled();
         $this->refreshUser($julia)->shouldReturn($julia);
     }
 
