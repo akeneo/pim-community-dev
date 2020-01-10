@@ -46,6 +46,7 @@ define(
                 var locale = UserContext.get('catalogLocale');
 
                 var values = this.getFormData().values[attributeAsLabelIdentifier];
+
                 return values.find(value => {
                     return (false === scopable || value.scope === scope)
                       && (false === localizable || value.locale === locale);
