@@ -13,24 +13,13 @@ export const getErrorsView = (errors: ValidationError[], value: EditionValue) =>
         channelReferenceAreEqual(error.invalidValue.channel, value.channel) &&
         localeReferenceAreEqual(error.invalidValue.locale, value.locale)
     )
-    .map((error: ValidationError, key: number) => {
-      return (
-        <span className="error-message" key={key}>
-          {__(error.messageTemplate, error.parameters)}
-        </span>
-      );
-    });
-
-  if (0 === errorMessages.length) {
-    return null;
-  }
-
-  return (
-    <div className="AknFieldContainer-footer AknFieldContainer-validationErrors">
-      <span className="AknFieldContainer-validationError">
-        <i className="icon-warning-sign" />
-        {errorMessages}
+    .map((error: ValidationError, key: number) => (
+      <span className="AknFieldContainer-validationError" key={key}>
+        {__(error.messageTemplate, error.parameters)}
       </span>
-    </div>
-  );
+    ));
+
+  if (0 === errorMessages.length) return null;
+
+  return <div className="AknFieldContainer-footer AknFieldContainer-validationErrors">{errorMessages}</div>;
 };

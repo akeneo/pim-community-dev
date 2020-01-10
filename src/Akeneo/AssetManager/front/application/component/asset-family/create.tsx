@@ -88,6 +88,7 @@ export const CreateAssetFamilyModal = ({locale, onClose, onAssetFamilyCreated}: 
   const resetModal = React.useCallback(() => {
     setCode('');
     setLabel('');
+    setErrors([]);
     setFocus();
   }, []);
 
