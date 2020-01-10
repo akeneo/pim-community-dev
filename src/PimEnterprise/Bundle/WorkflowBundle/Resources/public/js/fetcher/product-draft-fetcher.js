@@ -18,7 +18,7 @@ define(
                 return $.getJSON(
                     Routing.generate(this.options.urls.product_index, {productId: id})
                 ).promise();
-            },
+            }
         });
     }
 );
