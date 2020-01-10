@@ -1,5 +1,26 @@
 import * as React from 'react';
 import $ from 'jquery';
+import styled from 'styled-components';
+import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+
+const StyledSelect = styled.select<{light: boolean}>`
+  ${({light}: ThemedProps<{light: boolean}>) =>
+    light &&
+    `
+    .select2-choice {
+      border: none;
+      padding: 0;
+      width: fit-content;
+      background: inherit;
+      line-height: inherit;
+      height: initial;
+
+      .select2-arrow {
+        background-position: bottom left;
+      }
+    }
+`}
+`;
 
 export type Select2Options = {
   [value: string]: string;
@@ -69,7 +90,7 @@ export default class Select2 extends React.Component<Select2Props & any> {
     const {data, value, configuration, ...props} = this.props;
 
     return (
-      <select
+      <StyledSelect
         {...props}
         ref={this.select}
         value={value}
@@ -95,7 +116,7 @@ export default class Select2 extends React.Component<Select2Props & any> {
             </option>
           );
         })}
-      </select>
+      </StyledSelect>
     );
   }
 }

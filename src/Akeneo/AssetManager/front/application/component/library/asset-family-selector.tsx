@@ -71,6 +71,7 @@ export const AssetFamilySelector = ({
       <ColumnTitle>{__('pim_asset_manager.asset_family.column.selector.title')}</ColumnTitle>
       {null !== assetFamilyIdentifier && !isFetching ? (
         <Select2
+          light
           data={data}
           value={assetFamilyIdentifier}
           multiple={false}
