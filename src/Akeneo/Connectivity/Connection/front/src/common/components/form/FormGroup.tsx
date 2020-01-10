@@ -1,6 +1,5 @@
 import React, {cloneElement, ComponentProps, ReactElement, ReactNode} from 'react';
 import styled from 'styled-components';
-import {InlineHelper} from '../index';
 import {FormControlError} from './FormControlError';
 import {FormInput} from './FormInput';
 import {FormLabel} from './FormLabel';
@@ -11,10 +10,10 @@ interface Props {
     label?: string;
     errors?: string[];
     required?: boolean;
-    info?: ReactNode;
+    helper?: ReactNode;
 }
 
-export const FormGroup = ({children: control, controlId, label, errors, info, required = false}: Props) => (
+export const FormGroup = ({children: control, controlId, label, errors, helper, required = false}: Props) => (
     <div className='AknFieldContainer'>
         {label && (
             <div className='AknFieldContainer-header'>
@@ -24,11 +23,9 @@ export const FormGroup = ({children: control, controlId, label, errors, info, re
 
         <div className='AknFieldContainer-inputContainer'>{cloneElement(control, {id: controlId})}</div>
 
-        {info && (
+        {helper && (
             <div className='AknFieldContainer-footer'>
-                <FormControlHelper>
-                    <InlineHelper info>{info}</InlineHelper>
-                </FormControlHelper>
+                <FormControlHelper>{helper}</FormControlHelper>
             </div>
         )}
 

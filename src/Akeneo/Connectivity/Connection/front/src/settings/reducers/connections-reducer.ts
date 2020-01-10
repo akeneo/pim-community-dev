@@ -1,17 +1,18 @@
 import {Reducer} from 'react';
 import {Connection} from '../../model/connection';
 import {ConnectionCredentials} from '../../model/connection-credentials';
+import {ConnectionUserPermissions} from '../../model/connection-user-permissions';
 import {
     Actions,
     CONNECTIONS_FETCHED,
     CONNECTION_DELETED,
+    CONNECTION_FETCHED,
     CONNECTION_PASSWORD_REGENERATED,
     CONNECTION_UPDATED,
-    CONNECTION_WITH_CREDENTIALS_FETCHED,
 } from '../actions/connections-actions';
 
 export interface State {
-    [code: string]: Connection & ConnectionCredentials;
+    [code: string]: Connection & ConnectionCredentials & ConnectionUserPermissions;
 }
 
 export const reducer: Reducer<State, Actions> = (state, action) => {
@@ -35,7 +36,7 @@ export const reducer: Reducer<State, Actions> = (state, action) => {
                 ),
             };
 
-        case CONNECTION_WITH_CREDENTIALS_FETCHED:
+        case CONNECTION_FETCHED:
             return {
                 ...state,
                 [action.payload.code]: {

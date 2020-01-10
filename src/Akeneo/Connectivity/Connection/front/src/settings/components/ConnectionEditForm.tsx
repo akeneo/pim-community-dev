@@ -1,13 +1,13 @@
 import {useFormikContext} from 'formik';
 import React from 'react';
 import styled from 'styled-components';
+import {FormGroup, FormInput, InlineHelper, Section} from '../../common';
 import {Connection} from '../../model/connection';
-import {FormGroup, FormInput, Section} from '../../common';
 import {Translate} from '../../shared/translate';
 import {FormValues} from '../pages/EditConnection';
 import {FlowTypeHelper} from './FlowTypeHelper';
-import ImageUploader from './ImageUploader';
 import {FlowTypeSelect} from './FlowTypeSelect';
+import ImageUploader from './ImageUploader';
 
 interface Props {
     connection: Connection;
@@ -45,7 +45,11 @@ export const ConnectionEditForm = ({connection}: Props) => {
                 <FormGroup
                     controlId='flow_type'
                     label='akeneo_connectivity.connection.connection.flow_type'
-                    info={<FlowTypeHelper />}
+                    helper={
+                        <InlineHelper info>
+                            <FlowTypeHelper />
+                        </InlineHelper>
+                    }
                 >
                     <FlowTypeSelect
                         value={values.flowType}

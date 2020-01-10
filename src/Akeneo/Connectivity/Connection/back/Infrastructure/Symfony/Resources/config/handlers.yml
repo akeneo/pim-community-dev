@@ -7,6 +7,7 @@ services:
             - '@akeneo_connectivity.connection.persistence.repository.connection'
             - '@akeneo_connectivity.connection.service.client.create_client'
             - '@akeneo_connectivity.connection.service.user.create_user'
+            - '@akeneo_connectivity.connection.application.handler.find_a_connection'
 
     akeneo_connectivity.connection.application.handler.fetch_connections:
         class: 'Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsHandler'
@@ -23,6 +24,7 @@ services:
         arguments:
             - '@validator'
             - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@akeneo_connectivity.connection.service.user.update_user_permissions'
 
     akeneo_connectivity.connection.application.handler.delete_connection:
         class: 'Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionHandler'
@@ -41,7 +43,7 @@ services:
         class: 'Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler'
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.connection'
-            - '@akeneo_connectivity.connection.service.client.regenerate_user_password'
+            - '@akeneo_connectivity.connection.service.user.regenerate_user_password'
 
     akeneo_connectivity.connection.application.audit.handler.count_daily_events_by_connection:
         class: 'Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler'

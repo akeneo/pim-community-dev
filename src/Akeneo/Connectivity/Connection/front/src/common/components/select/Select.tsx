@@ -26,7 +26,7 @@ export const Select: FC<Props> = ({data, onChange, dropdownTitle}: Props) => {
     };
 
     if (!selectedValue) {
-        return <></>;
+        return null;
     }
     return (
         <Container>

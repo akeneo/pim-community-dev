@@ -70,7 +70,7 @@ class ConnectionContext implements Context
         $command = new CreateConnectionCommand(self::slugify($label), $label, self::defineFlowType($flowType));
         $this->createConnectionHandler->handle($command);
 
-        Assert::eq($this->connectionRepository->count(), $startCount+1);
+        Assert::eq($this->connectionRepository->count(), $startCount + 1);
     }
 
     /**
@@ -119,8 +119,18 @@ class ConnectionContext implements Context
         $newFlowType = $data['flow_type'];
         $newImage = $data['image'] ?? null;
 
+        // $data['user_role'];
+        // $data['user_group'];
+
         try {
-            $command = new UpdateConnectionCommand($code, $newLabel, $newFlowType, $newImage);
+            $command = new UpdateConnectionCommand(
+                $code,
+                $newLabel,
+                $newFlowType,
+                $newImage,
+                '1',
+                '2'
+            );
             $this->updateConnectionHandler->handle($command);
         } catch (ConstraintViolationListException $violationList) {
             $this->violations = $violationList;
@@ -213,6 +223,16 @@ class ConnectionContext implements Context
     }
 
     /**
+     * @Then the Connection :label user role id should be :expectedUserRoleId
+     */
+    public function theConnectionUserRoleIdShouldBe(string $label, string $expectedUserRoleId): void
+    {
+        $connection = $this->connectionRepository->findOneByCode(self::slugify($label));
+
+        // Assert::eq($expectedUserRoleId, (string) );
+    }
+
+    /**
      * @Then the Connection :label should not have an image
      */
     public function theConnectionShouldNotHaveAnImage(string $label): void
@@ -230,7 +250,8 @@ class ConnectionContext implements Context
         Assert::isInstanceOf($this->violations, ConstraintViolationListException::class);
 
         foreach ($this->violations->getConstraintViolationList() as $violation) {
-            if ('code' === $violation->getPropertyPath() &&
+            if (
+                'code' === $violation->getPropertyPath() &&
                 'akeneo_connectivity.connection.connection.constraint.code.must_be_unique' === $violation->getMessage()
             ) {
                 return;
@@ -248,7 +269,8 @@ class ConnectionContext implements Context
         Assert::isInstanceOf($this->violations, ConstraintViolationListException::class);
 
         foreach ($this->violations->getConstraintViolationList() as $violation) {
-            if ('image' === $violation->getPropertyPath() &&
+            if (
+                'image' === $violation->getPropertyPath() &&
                 'akeneo_connectivity.connection.connection.constraint.image.must_exist' === $violation->getMessage()
             ) {
                 return;

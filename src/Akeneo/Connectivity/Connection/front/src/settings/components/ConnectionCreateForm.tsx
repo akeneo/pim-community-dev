@@ -1,10 +1,10 @@
 import React, {ChangeEvent, Dispatch, RefObject, useEffect, useReducer, useRef} from 'react';
+import {ApplyButton, Form, FormGroup, FormInput, InlineHelper} from '../../common';
 import {FlowType} from '../../model/flow-type.enum';
-import {ApplyButton, Form, FormGroup, FormInput} from '../../common';
-import {isErr, isOk} from '../../shared/fetch-result/result';
+import {isErr} from '../../shared/fetch-result/result';
 import {sanitize} from '../../shared/sanitize';
 import {Translate} from '../../shared/translate';
-import {connectionWithCredentialsFetched} from '../actions/connections-actions';
+import {connectionFetched} from '../actions/connections-actions';
 import {
     codeGenerated,
     CreateFormAction,
@@ -13,9 +13,9 @@ import {
     inputChanged,
     setError,
 } from '../actions/create-form-actions';
+import {useCreateConnection} from '../api-hooks/use-create-connection';
 import {useConnectionsDispatch} from '../connections-context';
 import {connectionFormReducer, CreateFormState} from '../reducers/connection-form-reducer';
-import {CreateConnectionData, useCreateConnection} from '../api-hooks/use-create-connection';
 import {FlowTypeHelper} from './FlowTypeHelper';
 import {FlowTypeSelect} from './FlowTypeSelect';
 
@@ -103,25 +103,19 @@ export const ConnectionCreateForm = () => {
         if (false === state.valid) {
             return;
         }
-        const data: CreateConnectionData = {
+
+        const result = await createConnection({
             code: state.controls.code.value,
             label: state.controls.label.value,
             flow_type: state.controls.flow_type.value as FlowType,
-        };
-
-        const result = await createConnection(data);
+        });
         if (isErr(result)) {
             result.error.errors.forEach(({name, reason}) => dispatch(setError(name, reason)));
+
+            return;
         }
-        if (isOk(result)) {
-            connectionsDispatch(
-                connectionWithCredentialsFetched({
-                    ...result.value,
-                    flowType: result.value.flow_type,
-                    clientId: result.value.client_id,
-                })
-            );
-        }
+
+        connectionsDispatch(connectionFetched(result.value));
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -170,7 +164,11 @@ export const ConnectionCreateForm = () => {
             <FormGroup
                 controlId='flow_type'
                 label='akeneo_connectivity.connection.connection.flow_type'
-                info={<FlowTypeHelper />}
+                helper={
+                    <InlineHelper info>
+                        <FlowTypeHelper />
+                    </InlineHelper>
+                }
                 required
                 errors={Object.keys(state.controls.flow_type.errors)}
             >
