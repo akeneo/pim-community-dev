@@ -2,7 +2,7 @@ import {useFormikContext} from 'formik';
 import React, {FC} from 'react';
 import styled from 'styled-components';
 import {HelperLink, Section, SmallHelper} from '../../../common';
-import {Translate, useTranslate} from '../../../shared/translate';
+import {Translate} from '../../../shared/translate';
 import {FormValues} from '../../pages/EditConnection';
 import {UserGroupSelect} from './UserGroupSelect';
 import {UserRoleSelect} from './UserRoleSelect';
@@ -12,8 +12,6 @@ type Props = {
 };
 
 export const ConnectionPermissionsForm: FC<Props> = ({label}: Props) => {
-    const translate = useTranslate();
-
     const {values, setFieldValue} = useFormikContext<FormValues>();
 
     return (
@@ -26,7 +24,7 @@ export const ConnectionPermissionsForm: FC<Props> = ({label}: Props) => {
                 />
                 &nbsp;
                 <HelperLink
-                    href={translate('akeneo_connectivity.connection.edit_connection.permissions.helper.link_url')}
+                    href='https://help.akeneo.com/pim/articles/manage-your-connections.html#set-the-permissions'
                     target='_blank'
                     rel='noopener noreferrer'
                 >

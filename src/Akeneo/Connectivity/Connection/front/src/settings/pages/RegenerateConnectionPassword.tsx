@@ -54,7 +54,10 @@ export const RegenerateConnectionPassword = () => {
         <>
             <Translate id='akeneo_connectivity.connection.regenerate_password.description' />
             &nbsp;
-            <Link href={translate('akeneo_connectivity.connection.regenerate_password.link_url')} target='_blank'>
+            <Link
+                href='https://help.akeneo.com/pim/articles/manage-your-connections.html#regenerate-your-connection-password'
+                target='_blank'
+            >
                 <Translate id='akeneo_connectivity.connection.regenerate_password.link' />
             </Link>
         </>

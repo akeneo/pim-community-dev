@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {FormGroup, InlineHelper, Select2, Select2Configuration} from '../../../common';
-import {Translate, useTranslate} from '../../../shared/translate';
+import {Translate} from '../../../shared/translate';
 import {useFetchUserGroups, UserGroup} from '../../api-hooks/use-fetch-user-groups';
 
 const findUserGroup = (userGroups: UserGroup[], userGroupId: string | null) =>
@@ -18,8 +18,6 @@ type Props = {
 };
 
 export const UserGroupSelect = ({userGroupId, onChange}: Props) => {
-    const translate = useTranslate();
-
     const fetchUserGroups = useFetchUserGroups();
     const [userGroups, setUserGroups] = useState<UserGroup[]>([]);
     const [selectedUserGroup, setSelectedUserGroup] = useState<UserGroup>();
@@ -61,9 +59,7 @@ export const UserGroupSelect = ({userGroupId, onChange}: Props) => {
                         <Translate id='akeneo_connectivity.connection.edit_connection.permissions.user_group_helper.message' />
                         &nbsp;
                         <a
-                            href={translate(
-                                'akeneo_connectivity.connection.edit_connection.permissions.user_group_helper.link_url'
-                            )}
+                            href='https://help.akeneo.com/pim/articles/manage-your-connections.html#set-the-permissions'
                             target='_blank'
                             rel='noopener noreferrer'
                         >
