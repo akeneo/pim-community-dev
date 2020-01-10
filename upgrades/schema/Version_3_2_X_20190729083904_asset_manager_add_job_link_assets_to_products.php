@@ -2,13 +2,13 @@
 
 namespace Pim\Upgrade\Schema;
 
+use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Adds the job to compute transformations (for assets manager)
+ * Adds the job to link assets to products (for assets manager)
  */
-final class Version_4_0_201911219142157_asset_manager_add_job_compute_transformations extends AbstractMigration
+class Version_3_2_X_20190729083904_asset_manager_add_job_link_assets_to_products extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -18,7 +18,7 @@ final class Version_4_0_201911219142157_asset_manager_add_job_compute_transforma
         $this->addSql(<<<SQL
         INSERT INTO `akeneo_batch_job_instance` (`code`, `label`, `job_name`, `status`, `connector`, `raw_parameters`, `type`)
         VALUES
-	        ('asset_manager_compute_transformations', 'asset manager compute transformations', 'asset_manager_compute_transformations', 0, 'internal', 'a:0:{}', 'asset_manager_compute_transformations')
+	        ('asset_manager_link_assets_to_products', 'asset manager link assets to products', 'asset_manager_link_assets_to_products', 0, 'internal', 'a:0:{}', 'asset_manager_link_assets_to_products')
         ;
 SQL
         );

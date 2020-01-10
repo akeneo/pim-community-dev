@@ -36,7 +36,7 @@ final class Version_4_0_20191206083026_transform_image_attributes_to_media_file_
 
     public function down(Schema $schema) : void
     {
-        throw new IrreversibleMigrationException();
+        $this->throwIrreversibleMigrationException();
     }
 
     public function up(Schema $schema) : void

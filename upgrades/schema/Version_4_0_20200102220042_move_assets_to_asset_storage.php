@@ -30,7 +30,7 @@ final class Version_4_0_20200102220042_move_assets_to_asset_storage extends Abst
 
     public function down(Schema $schema) : void
     {
-        throw new IrreversibleMigrationException();
+        $this->throwIrreversibleMigrationException();
     }
 
     public function up(Schema $schema) : void
