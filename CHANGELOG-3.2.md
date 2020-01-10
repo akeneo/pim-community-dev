@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.30 (2020-01-10)
+
 ## Bug fixes
 
 - PIM-8923: Avoid product edit form tab switching when going from product model to products
