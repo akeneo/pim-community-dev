@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.76 (2020-01-10)
+
 ## Bug fixes
 
 - PIM-6386: Add exception when trying to update the same product value on an attribute twice, with the same scope and locale
