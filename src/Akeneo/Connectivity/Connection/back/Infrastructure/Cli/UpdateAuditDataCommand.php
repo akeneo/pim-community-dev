@@ -39,8 +39,8 @@ class UpdateAuditDataCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $datesToRefresh = $this->selectEventDatesToRefreshQuery->execute();
-        if(empty($datesToRefresh)) {
-            $datesToRefresh[] = 'now';
+        if (!in_array(date('Y-m-d'), $datesToRefresh)) {
+            $datesToRefresh[] = date('Y-m-d');
         }
 
         foreach ($datesToRefresh as $dateToRefresh) {
