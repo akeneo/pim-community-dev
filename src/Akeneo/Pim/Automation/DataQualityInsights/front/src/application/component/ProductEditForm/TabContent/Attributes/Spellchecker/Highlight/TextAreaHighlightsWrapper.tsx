@@ -44,6 +44,7 @@ const TextAreaHighlightsWrapper: FunctionComponent<TextAreaHighlightsWrapperProp
             highlight={highlight}
             editorRect={editorBoundingClientRect}
             content={widget.content}
+            widgetId={widget.id}
           />
         ))}
       </div>

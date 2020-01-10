@@ -26,6 +26,7 @@ interface PopoverState {
   placement: PopoverPlacement;
   mistake: MistakeElement | null;
   highlightRef: RefObject<Element> | null;
+  widgetId: string | null;
   handleOpening: Function;
   handleClosing: Function;
 }
@@ -56,6 +57,7 @@ interface PopoverAction extends Action {
       isOpen?: boolean;
       mistake?: MistakeElement|null;
       highlightRef?: RefObject<Element>|null;
+      widgetId?: string | null;
       handleOpening?(mistake: MistakeElement, highlightRef: RefObject<Element>, callback: Function): void;
       handleClosing?(callback: Function): void;
     }
@@ -161,11 +163,12 @@ export const updateWidgetEditorOptionsAction = (id: string, options: object) => 
 };
 
 const SHOW_POPOVER = 'SHOW_POPOVER';
-export const showPopoverAction: ActionCreator<PopoverAction> = (mistake: MistakeElement, highlightRef: RefObject<Element>) => {
+export const showPopoverAction: ActionCreator<PopoverAction> = (widgetId: string, mistake: MistakeElement, highlightRef: RefObject<Element>) => {
   return {
     type: SHOW_POPOVER,
     payload: {
       popover: {
+        widgetId,
         mistake,
         highlightRef
       }
@@ -199,6 +202,7 @@ const initialPopoverState = {
   placement: PopoverPlacement.BOTTOM,
   mistake: null,
   highlightRef: null,
+  widgetId: null,
   handleOpening: () => {},
   handleClosing: () => {},
 };
@@ -320,6 +324,7 @@ const popoverReducer: Reducer<PopoverState, PopoverAction> = (previousState =  i
         isOpen: true,
         mistake: popover.mistake || null,
         highlightRef: popover.highlightRef || null,
+        widgetId: popover.widgetId || null,
       };
     }
     case HIDE_POPOVER:
@@ -328,6 +333,7 @@ const popoverReducer: Reducer<PopoverState, PopoverAction> = (previousState =  i
         isOpen: false,
         mistake: null,
         highlightRef: null,
+        widgetId: null,
       };
     case INITIALIZE_POPOVER_OPENING: {
       const {popover} = payload;

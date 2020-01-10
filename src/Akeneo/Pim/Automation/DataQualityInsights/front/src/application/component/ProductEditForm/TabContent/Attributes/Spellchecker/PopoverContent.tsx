@@ -1,5 +1,9 @@
-import React, {FunctionComponent} from "react";
+import React, {FunctionComponent, useCallback} from "react";
 import {MistakeElement} from "../../../../../../domain";
+import {hidePopoverAction} from "../../../../../../infrastructure/reducer";
+import {useDispatch} from "react-redux";
+import {useGetSpellcheckWidget} from "../../../../../../infrastructure/hooks";
+import {setEditorContent} from "../../../../../../domain";
 
 const __ = require("oro/translator");
 
@@ -7,9 +11,36 @@ const SUGGESTIONS_LIMIT = 5;
 
 interface PopoverContentProps {
   mistake: MistakeElement | null;
+  widgetId: string | null;
 }
 
-const PopoverContent: FunctionComponent<PopoverContentProps> = ({mistake}) => {
+function replaceContentFromRange(content: string, replacement: string, start: number, end: number) {
+  const subContentStart = content.substring(0, start);
+  const subContentEnd = content.substring(end);
+
+  return `${subContentStart}${replacement}${subContentEnd}`;
+}
+
+const PopoverContent: FunctionComponent<PopoverContentProps> = ({mistake, widgetId}) => {
+  const dispatchAction = useDispatch();
+  const widget = useGetSpellcheckWidget(widgetId);
+
+  const handleSuggestionClick = useCallback((suggestion: string) => {
+
+    if (!widget || !mistake) {
+      dispatchAction(hidePopoverAction());
+      return;
+    }
+
+    const start = mistake.globalOffset;
+    const end = mistake.globalOffset + mistake.text.length;
+    const content = replaceContentFromRange(widget.content, suggestion, start, end);
+
+    setEditorContent(widget.editor, content);
+
+    dispatchAction(hidePopoverAction());
+  }, [widget, mistake]);
+
   return (
     <>
       {mistake && (
@@ -36,7 +67,7 @@ const PopoverContent: FunctionComponent<PopoverContentProps> = ({mistake}) => {
                       .map((suggestion, index) => (
                         <li key={`suggestion-${index}`}
                             className="AknSpellCheck-popover-suggestions-item"
-                            onClick={() => {alert(`handle apply suggestion ${suggestion}`)}}>
+                            onClick={() => {handleSuggestionClick(suggestion);}}>
                           <span>{suggestion}</span>
                         </li>
                       ))}

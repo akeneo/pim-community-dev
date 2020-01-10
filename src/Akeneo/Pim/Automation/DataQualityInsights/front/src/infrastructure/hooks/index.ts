@@ -11,6 +11,7 @@ import useGetEditorScroll from "./Spellcheck/useGetEditorScroll";
 import useGetHighlights from "./Spellcheck/useGetHighlights";
 import useFetchTextAnalysis from "./Spellcheck/useFetchTextAnalysis";
 import useGetPopover from "./Spellcheck/useGetPopover";
+import useGetWidget from "./Spellcheck/useGetWidget";
 
 export {
   useFetchDqiDashboardData,
@@ -25,5 +26,6 @@ export {
   useGetEditorScroll as useGetSpellcheckEditorScroll,
   useGetHighlights as useGetSpellcheckHighlights,
   useFetchTextAnalysis as useFetchSpellcheckTextAnalysis,
-  useGetPopover as useGetSpellcheckPopover
+  useGetPopover as useGetSpellcheckPopover,
+  useGetWidget as useGetSpellcheckWidget,
 }

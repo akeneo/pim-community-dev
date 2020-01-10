@@ -36,7 +36,7 @@ final class ConsolidateDashboardRatesCommand extends Command
     {
         $this
             ->setName('pimee:data-quality-insights:consolidate-dashboard-rates')
-            ->setDescription('Consolidate the DQI dashboard rates.')
+            ->setDescription('Consolidate the Data-Quality-Insights dashboard rates.')
             ->addArgument('day', InputArgument::OPTIONAL, 'Day of the consolidation "Y-m-d".', date('Y-m-d'));
     }
 

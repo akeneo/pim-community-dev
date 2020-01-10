@@ -8,7 +8,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@akeneo.pim.automation.franklin_insights.connector.step.push_structure_and_products'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_criteria'
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
 
@@ -19,13 +19,14 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@akeneo.pim.automation.franklin_insights.connector.step.generate_dictionary'
-                - '@akeneo.pim.automation.franklin_insights.connector.step.consolidate_dashboard_rates'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.generate_dictionary'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.consolidate_dashboard_rates'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.purge_outdated_data'
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
 
     #Steps
-    akeneo.pim.automation.franklin_insights.connector.step.push_structure_and_products:
+    akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_criteria:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
             - 'evaluate_products_criteria'
@@ -33,7 +34,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet'
 
-    akeneo.pim.automation.franklin_insights.connector.step.consolidate_dashboard_rates:
+    akeneo.pim.automation.data_quality_insights.connector.step.consolidate_dashboard_rates:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
             - 'consolidate_dashboard_rates'
@@ -41,13 +42,21 @@ services:
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\ConsolidateDashboardRatesTasklet'
 
-    akeneo.pim.automation.franklin_insights.connector.step.generate_dictionary:
+    akeneo.pim.automation.data_quality_insights.connector.step.generate_dictionary:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
             - 'generate_dictionary'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\GenerateDictionaryTasklet'
+
+    akeneo.pim.automation.data_quality_insights.connector.step.purge_outdated_data:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'purge_outdated_data'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PurgeOutdatedDataTasklet'
 
     #Tasklets
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet:
@@ -65,6 +74,11 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryGenerator'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\ProductValueInDatabaseDictionarySource'
+            - '@logger'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PurgeOutdatedDataTasklet:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\PurgeOutdatedData'
             - '@logger'
 
     #Job parameters

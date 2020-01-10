@@ -13,7 +13,7 @@ const useGetPopover = () => {
   const dispatchAction = useDispatch();
 
   useEffect(() => {
-    const handleOpening = debounce((mistake: MistakeElement, highlightRef: RefObject<Element>, callback?: Function) => {
+    const handleOpening = debounce((widgetId: string, mistake: MistakeElement, highlightRef: RefObject<Element>, callback?: Function) => {
       if (handleClosing && handleClosing.cancel) {
         handleClosing.cancel();
       }
@@ -22,7 +22,7 @@ const useGetPopover = () => {
         callback();
       }
 
-      dispatchAction(showPopoverAction(mistake, highlightRef));
+      dispatchAction(showPopoverAction(widgetId, mistake, highlightRef));
     }, OPENING_MILLISECONDS_DELAY);
 
     const handleClosing = debounce((callback?: Function) => {

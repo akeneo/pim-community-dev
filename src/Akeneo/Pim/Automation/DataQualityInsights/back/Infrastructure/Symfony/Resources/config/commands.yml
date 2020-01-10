@@ -37,3 +37,9 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\SchedulePeriodicTasks'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\PurgeOutdatedDataCommand:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\PurgeOutdatedData'
+        tags:
+            - { name: 'console.command' }

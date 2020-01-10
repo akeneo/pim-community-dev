@@ -34,9 +34,10 @@ const HIGHLIGHT_CLASSNAME = "AknSpellCheck-mark";
 interface HighlightPros {
   highlight: HighlightElement;
   editorRect: DOMRect;
-  content: string
+  content: string;
+  widgetId: string;
 }
-const Highlight: FunctionComponent<HighlightPros> = ({ highlight, editorRect, content}) => {
+const Highlight: FunctionComponent<HighlightPros> = ({ highlight, editorRect, content, widgetId}) => {
   const [highlightRect, setHighlightRect] = useState<DOMRect | null>(null);
   const [classList, setClassList] = useState<string []>([]);
   const highlightRef = useRef<HTMLDivElement>(null);
@@ -54,14 +55,14 @@ const Highlight: FunctionComponent<HighlightPros> = ({ highlight, editorRect, co
   }, [highlight.domRange, editorRect, content]);
 
   const handleMouseOver = useCallback(() => {
-    handleOpening(highlight.mistake, highlightRef, () => {
+    handleOpening(widgetId, highlight.mistake, highlightRef, () => {
       setClassList([
         ...highlight.classList,
         HIGHLIGHT_HOVER_CLASSNAME,
         HIGHLIGHT_CLASSNAME
       ]);
     });
-  }, [handleClosing, highlight]);
+  }, [handleClosing, highlight, widgetId]);
 
   const handleMouseOut = useCallback(() => {
     handleClosing(() => {

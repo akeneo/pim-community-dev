@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 interface ProductAxisRateRepositoryInterface
 {
-    public function save(array $productAxisRates);
+    public function save(array $productAxisRates): void;
+
+    public function purgeUntil(\DateTimeImmutable $date): void;
 }
