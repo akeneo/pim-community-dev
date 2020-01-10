@@ -5,6 +5,8 @@ security:
                 providers: [pim_user]
         pim_user:
             id: pim_user.provider.user
+        pim_user_api:
+            id: pim_user.provider.user_api
 
     encoders:
         Akeneo\UserManagement\Component\Model\User: sha512
@@ -49,7 +51,7 @@ security:
             fos_oauth:                      true
             stateless:                      true
             access_denied_handler:          pim_api.security.access_denied_handler
-            provider:                       chain_provider # TODO: check if this is the provider we want
+            provider:                       pim_user_api
 
         main:
             pattern:                        ^/

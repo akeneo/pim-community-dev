@@ -550,4 +550,8 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      * @return mixed
      */
     public function getProperty(string $propertyName);
+
+    public function isApiUser(): bool;
+
+    public function defineAsApiUser(): void;
 }
