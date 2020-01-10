@@ -10,3 +10,11 @@ services:
             - '%record_index_name%'
         tags:
             - { name: console.command }
+
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\IndexPublishedProductCommand:
+        arguments:
+            - '@pimee_workflow.repository.published_product'
+            - '@pim_catalog.elasticsearch.published_product_indexer'
+            - '@pim_connector.doctrine.cache_clearer'
+        tags:
+            - { name: console.command }
