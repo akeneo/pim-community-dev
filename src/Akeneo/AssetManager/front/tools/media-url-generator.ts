@@ -21,20 +21,6 @@ export const getImageDownloadUrl = (image: File): string => {
   return routing.generate('pim_enrich_media_download', {filename});
 };
 
-/**
- * Get the show media URL
- *
- * @param string filePath
- * @param string filter
- *
- * @return {string}
- */
-export const getMediaShowUrl = (filePath: string, filter: string): string => {
-  const filename = encodeURIComponent(filePath);
-
-  return routing.generate('pim_enrich_media_show', {filename, filter});
-};
-
 export const getMediaPreviewUrl = (mediaPreview: MediaPreview): string =>
   routing.generate('akeneo_asset_manager_image_preview', {
     ...mediaPreview,
