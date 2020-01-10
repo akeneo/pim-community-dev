@@ -23,11 +23,11 @@ class FindVariations
     {
         $this->connection->getWrappedConnection()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
         $fetchAssetsQuery = <<<SQL
-SELECT 'code', 'channel', 'locale', 'reference_file', 'variation_file'
+SELECT 'asset', 'channel', 'locale', 'reference_file', 'variation_file'
 UNION ALL
 (
     SELECT
-	a.code
+	a.code AS asset
 	,c.code AS channel
 	,l.code AS locale
 	,f_r.file_key AS reference

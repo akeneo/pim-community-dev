@@ -121,7 +121,7 @@ class ExportAssetsCommand extends Command
         $file = fopen($assetsFilePath, 'w');
         $numberOfAssets = 0;
         foreach ($this->findAssets->fetch() as $PAMAsset) {
-            fputcsv($file, $PAMAsset);
+            fputcsv($file, $PAMAsset, ';');
             $numberOfAssets++;
         }
         fclose($file);
@@ -134,7 +134,7 @@ class ExportAssetsCommand extends Command
         $file = fopen($variatonFilePath, 'w');
         $numberOfVariations = 0;
         foreach ($this->findVariations->fetch() as $variations) {
-            fputcsv($file, $variations);
+            fputcsv($file, $variations, ';');
             $numberOfVariations++;
         }
         fclose($file);
