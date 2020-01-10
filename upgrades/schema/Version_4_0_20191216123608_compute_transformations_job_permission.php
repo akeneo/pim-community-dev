@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version_4_0_201912161236080_compute_transformations_job_permission extends AbstractMigration
+final class Version_4_0_20191216123608_compute_transformations_job_permission extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {

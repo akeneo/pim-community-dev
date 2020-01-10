@@ -8,7 +8,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Adds the job to compute transformations (for assets manager)
  */
-final class Version_4_0_201911219142157_asset_manager_add_job_compute_transformations extends AbstractMigration
+final class Version_4_0_20191121914215_asset_manager_add_job_compute_transformations extends AbstractMigration
 {
     /**
      * @param Schema $schema
