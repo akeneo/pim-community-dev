@@ -50,7 +50,7 @@ const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProp
               <div className="AknFilterBox-filter">
                 <span className="AknFilterBox-filterLabel">Category</span>
                 <button type="button" className="AknFilterBox-filterCriteria ui-multiselect">
-                  <span>All</span>
+                  <span>{__('pim_common.all')}</span>
                   <span className="AknFilterBox-filterCaret"></span>
                 </button>
               </div>
@@ -59,7 +59,7 @@ const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProp
               <div className="AknFilterBox-filter">
                 <span className="AknFilterBox-filterLabel">Family</span>
                 <button type="button" className="AknFilterBox-filterCriteria ui-multiselect">
-                  <span>All</span>
+                  <span>{__('pim_common.all')}</span>
                   <span className="AknFilterBox-filterCaret"></span>
                 </button>
               </div>

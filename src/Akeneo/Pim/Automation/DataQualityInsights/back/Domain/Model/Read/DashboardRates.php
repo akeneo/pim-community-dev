@@ -107,7 +107,7 @@ final class DashboardRates
         $totalRates = array_sum($ratesNumberByRank);
 
         return array_map(function ($rate) use ($totalRates) {
-            return round($rate / $totalRates * 100);
+            return round($rate / $totalRates * 100, 2);
         }, $ratesNumberByRank);
     }
 

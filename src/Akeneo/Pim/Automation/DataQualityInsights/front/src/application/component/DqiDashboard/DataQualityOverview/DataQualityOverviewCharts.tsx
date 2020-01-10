@@ -1,8 +1,6 @@
 import React, {Fragment} from 'react';
 import {useFetchDqiDashboardData} from "../../../../infrastructure/hooks";
-import DailyAxisChart from "./DailyAxisChart";
-import WeeklyAxisChart from "./WeeklyAxisChart";
-import MonthlyAxisChart from "./MonthlyAxisChart";
+import AxisChart from "./AxisChart";
 import {DataQualityOverviewChartHeader} from "../index";
 
 const __ = require('oro/translator');
@@ -88,10 +86,9 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, periodicity}:
             <Fragment key={i}>
               <DataQualityOverviewChartHeader axisName={axisName} displayLegend={i === 1}/>
               <div className='AknDataQualityInsights-chart'>
-                {periodicity === 'daily' && (<DailyAxisChart dataset={axisDataset}/>)}
-                {periodicity === 'weekly' && (<WeeklyAxisChart dataset={axisDataset}/>)}
-                {periodicity === 'monthly' && (<MonthlyAxisChart dataset={axisDataset}/>)}
-                {/*{isVisible && (<CustomTooltip/>)}*/}
+                {periodicity === 'daily' && (<AxisChart dataset={axisDataset} padding={71} barRatio={1.49}/>)}
+                {periodicity === 'weekly' && (<AxisChart dataset={axisDataset} padding={125} barRatio={1.99}/>)}
+                {periodicity === 'monthly' && (<AxisChart dataset={axisDataset} padding={80} barRatio={1.59}/>)}
               </div>
             </Fragment>
           )
