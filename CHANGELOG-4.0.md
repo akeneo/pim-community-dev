@@ -12,10 +12,10 @@
 
 # Technical Improvements
 - TIP-1185: Use a single index "product_and_product_model_index" to search on product and product models, instead dedicated product/product model indexes
-- TIP-1159: Improve the performance of the calculation of the completeness
+- TIP-1159: Improve the performance of the calculation of the completeness for the products
 - TIP-1225: Improve the performance of the indexation of the products
 - TIP-1174: Improve the performance of the indexation of the product models
-- TIP-1176: Improve the performance of the computation of product model descendant when updating a product. The "compute product model descendant" job does not exist anymore. The computation is now done synchronously thanks the improvement done in TIP-1225 and TIP-1174.
+- TIP-1176: Improve the performance of the computation of product model descendant when updating a product model. The "compute product model descendant" job does not exist anymore. The computation is now done synchronously in the API thanks the improvement done in TIP-1225 and TIP-1174.
 
 ## BC breaks
 
