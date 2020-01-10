@@ -119,14 +119,14 @@ final class ConsolidateDashboardRates
     {
         $dashboardRanks = [];
 
-        $dashboardRanks[strval($this->daily)][$day->formatByPeriodicity($this->daily)] = $rates;
+        $dashboardRanks[strval($this->daily)][$day->format()] = $rates;
 
         if ($day->isLastDayOfWeek()) {
-            $dashboardRanks[strval($this->weekly)][$day->formatByPeriodicity($this->weekly)] = $rates;
+            $dashboardRanks[strval($this->weekly)][$day->format()] = $rates;
         }
 
         if ($day->isLastDayOfMonth()) {
-            $dashboardRanks[strval($this->monthly)][$day->formatByPeriodicity($this->monthly)] = $rates;
+            $dashboardRanks[strval($this->monthly)][$day->format()] = $rates;
         }
 
         return $dashboardRanks;

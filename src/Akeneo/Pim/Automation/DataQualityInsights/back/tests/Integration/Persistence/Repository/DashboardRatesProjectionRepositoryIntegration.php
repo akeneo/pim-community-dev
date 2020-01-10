@@ -90,25 +90,34 @@ final class DashboardRatesProjectionRepositoryIntegration extends TestCase
             'daily' => [
                 '2019-12-19' => [],
                 '2019-12-20' => [],
-                '2019-12-21' => [],
+                '2019-12-31' => [],
             ],
             'weekly' => [
-                '2019-51' => [],
-            ]
+                '2019-12-28' => [],
+            ],
+            'monthly' => [
+                '2019-12-31' => [],
+            ],
         ];
 
         $this->insertCatalogRatesProjection($rates);
         $this->insertCategoryRatesProjection($rates);
 
-        $removingDate = new ConsolidationDate(new \DateTimeImmutable('2019-12-21'));
+        $removingDate = new ConsolidationDate(new \DateTimeImmutable('2019-12-31'));
         $daily = Periodicity::daily();
+        $monthly = Periodicity::monthly();
         $this->assertCountRatesByDate(2, $daily, $removingDate);
+        $this->assertCountRatesByDate(2, $monthly, $removingDate);
 
         $this->repository->removeRates($daily, $removingDate);
 
         $this->assertCountRatesByDate(0, $daily, $removingDate);
         $this->assertCountRatesByDate(2, $daily, new ConsolidationDate(new \DateTimeImmutable('2019-12-20')));
-        $this->assertCountRatesByDate(2, Periodicity::weekly(), $removingDate);
+        $this->assertCountRatesByDate(2, Periodicity::weekly(), new ConsolidationDate(new \DateTimeImmutable('2019-12-28')));
+        $this->assertCountRatesByDate(2, $monthly, $removingDate);
+
+        $this->repository->removeRates($monthly, $removingDate);
+        $this->assertCountRatesByDate(0, $monthly, $removingDate);
     }
 
     private function insertCatalogRatesProjection(array $rates): void
@@ -206,7 +215,7 @@ SQL;
 
     private function assertCountRatesByDate(int $expectedCount, Periodicity $periodicity, ConsolidationDate $date): void
     {
-        $path = sprintf('\'$."%s"."%s"\'', $periodicity, $date->formatByPeriodicity($periodicity));
+        $path = sprintf('\'$."%s"."%s"\'', $periodicity, $date->format());
 
         $query = <<<SQL
 SELECT COUNT(*) AS nb_rates 

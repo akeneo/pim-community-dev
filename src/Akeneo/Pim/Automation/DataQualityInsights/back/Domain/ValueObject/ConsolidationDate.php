@@ -38,18 +38,9 @@ final class ConsolidationDate
         return $this->dateTime->format('d') === $this->dateTime->format('t');
     }
 
-    public function formatByPeriodicity(Periodicity $periodicity): string
+    public function format(string $format = 'Y-m-d'): string
     {
-        switch (strval($periodicity)) {
-            case Periodicity::DAILY:
-                return $this->dateTime->format('Y-m-d');
-            case Periodicity::WEEKLY:
-                return $this->dateTime->format('Y-W');
-            case Periodicity::MONTHLY:
-                return $this->dateTime->format('Y-m');
-            default:
-                throw new \InvalidArgumentException(sprintf('The periodicity %s is not supported', $periodicity));
-        }
+        return $this->dateTime->format($format);
     }
 
     public function modify(string $modify): self

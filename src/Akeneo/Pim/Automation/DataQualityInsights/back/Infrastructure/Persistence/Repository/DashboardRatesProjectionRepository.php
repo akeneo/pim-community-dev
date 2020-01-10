@@ -54,7 +54,7 @@ use Doctrine\DBAL\Driver\ResultStatement;
  *      }
  *    },
  *    "weekly": {
- *      "2019-50": {
+ *      "2019-12-28": {
  *        "enrichment": {
  *          "ecommerce": {
  *            "en_US": {
@@ -74,7 +74,7 @@ use Doctrine\DBAL\Driver\ResultStatement;
  *      }
  *    },
  *    "monthly": {
- *      "2019-12": {
+ *      "2019-12-31": {
  *        "enrichment": {
  *          "ecommerce": {
  *            "en_US": {
@@ -183,7 +183,7 @@ SQL;
 
     public function removeRates(Periodicity $periodicity, ConsolidationDate $date): void
     {
-        $pathToRemove = sprintf('\'$."%s"."%s"\'', $periodicity, $date->formatByPeriodicity($periodicity));
+        $pathToRemove = sprintf('\'$."%s"."%s"\'', $periodicity, $date->format());
 
         $query = <<<SQL
 UPDATE pimee_data_quality_insights_dashboard_rates_projection
