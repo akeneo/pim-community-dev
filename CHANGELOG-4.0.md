@@ -344,6 +344,7 @@
     - `Symfony\Component\Translation\TranslatorInterface`
     - `Symfony\Component\Serializer\SerializerInterface`
     - `Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager`
+- Update interface `src/Akeneo/UserManagement/Component/Model/UserInterface` and class `src/Akeneo/UserManagement/Component/Model/User`: add `defineAsApiUser` and `isApiUser` methods.
 
 ### CLI Commands
 
