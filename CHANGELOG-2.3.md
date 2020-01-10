@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.76 (2020-01-10)
+
 ## Bug fixes
 
 - PIM-9050: Fix the list of versions in compare/translate for product models
