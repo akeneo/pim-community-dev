@@ -87,12 +87,12 @@ $rules = [
         [
             'Akeneo\Connectivity\Connection\Domain',
             'Akeneo\UserManagement\Component\Model\User',
-
-            // Dependency on Doctrine DBAL for persistence layer
-            'Doctrine\DBAL\Connection',
-            'Doctrine\DBAL\FetchMode',
+            
             // Dependency for uuid generation
             'Ramsey\Uuid\Uuid',
+
+            // Dependency on Doctrine DBAL for persistence layer
+            'Doctrine\DBAL',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Persistence'),
 

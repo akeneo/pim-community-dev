@@ -214,51 +214,49 @@ SQL;
     private function getCompleteFilterFromProductModelCodes(array $productModelCodes): array
     {
         $query = <<<SQL
-WITH product_model_completeness_by_channel_and_locale AS (
+WITH product_model_completeness_by_channel_id_and_locale_id AS (
     SELECT
-        product_model.code AS code,
-        locale.code AS locale_code,
-        channel.code AS channel_code,
+        product_model.code AS product_model_code,
+        completeness.locale_id,
+        completeness.channel_id,
         SUM(completeness.missing_count) = 0 AS all_complete,
         MIN(completeness.missing_count) <> 0 AS all_incomplete
     FROM pim_catalog_product_model product_model
     INNER JOIN pim_catalog_product product ON product.product_model_id = product_model.id
     INNER JOIN pim_catalog_completeness completeness ON product.id = completeness.product_id
-    INNER JOIN pim_catalog_locale locale ON completeness.locale_id = locale.id
-    INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
     WHERE product_model.code IN (:productModelCodes)
-    GROUP BY code, locale_code, channel_code
+    GROUP BY product_model_code, completeness.locale_id, completeness.channel_id
 UNION ALL
     SELECT
-        root_product_model.code AS code,
-        locale.code AS locale_code,
-        channel.code AS channel_code,
+        root_product_model.code AS product_model_code,
+        completeness.locale_id,
+        completeness.channel_id,
         SUM(completeness.missing_count) = 0 AS allcomplete,
         MIN(completeness.missing_count) <> 0 AS allincomplete
     FROM pim_catalog_product_model product_model
     INNER JOIN pim_catalog_product_model root_product_model ON product_model.parent_id = root_product_model.id
     INNER JOIN pim_catalog_product product ON product.product_model_id = product_model.id
     INNER JOIN pim_catalog_completeness completeness ON product.id = completeness.product_id
-    INNER JOIN pim_catalog_locale locale ON completeness.locale_id = locale.id
-    INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
     WHERE root_product_model.code IN (:productModelCodes)
-    GROUP BY code, locale_code, channel_code
+    GROUP BY product_model_code, completeness.locale_id, completeness.channel_id
 ), 
 product_model_completeness_by_channel AS (
     SELECT
-         code,
-         channel_code,
-         JSON_OBJECTAGG(locale_code, all_complete) AS all_complete,
-         JSON_OBJECTAGG(locale_code, all_incomplete) AS all_incomplete
-    FROM product_model_completeness_by_channel_and_locale
-    GROUP BY code, channel_code
+         product_model_code,
+         channel.code AS channel_code,
+         JSON_OBJECTAGG(locale.code, all_complete) AS all_complete,
+         JSON_OBJECTAGG(locale.code, all_incomplete) AS all_incomplete
+    FROM product_model_completeness_by_channel_id_and_locale_id product_model_completeness
+    JOIN pim_catalog_channel channel ON channel.id = product_model_completeness.channel_id
+    JOIN pim_catalog_locale locale ON locale.id = product_model_completeness.locale_id
+    GROUP BY product_model_code, channel_code
 )
 SELECT
-    code,
+    product_model_code,
     JSON_OBJECTAGG(channel_code, all_complete) AS all_complete,
     JSON_OBJECTAGG(channel_code, all_incomplete) AS all_incomplete
 FROM product_model_completeness_by_channel
-GROUP BY code
+GROUP BY product_model_code
 SQL;
 
         $rows = $this->connection->fetchAll(
@@ -276,7 +274,7 @@ SQL;
         );
 
         foreach ($rows as $row) {
-            $results[$row['code']] = [
+            $results[$row['product_model_code']] = [
                 'all_complete' => json_decode($row['all_complete'], true),
                 'all_incomplete' => json_decode($row['all_incomplete'], true),
             ];

@@ -58,6 +58,7 @@ liip_imagine:
         am_binary_image_preview:
             quality:          95
             format:           jpg
+            data_loader:      flysystem_asset_manager_data_loader
             filters:
                 background:
                     color: "#ffffff"
@@ -65,6 +66,7 @@ liip_imagine:
         am_binary_image_thumbnail:
             quality:          95
             format:           jpg
+            data_loader:      flysystem_asset_manager_data_loader
             filters:
                 thumbnail:    { size: [320, 320], mode: inset }
                 background:

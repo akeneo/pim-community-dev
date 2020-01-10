@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountHandler;
+use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectEventDatesToRefreshQuery;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,19 +23,32 @@ class UpdateAuditDataCommand extends Command
     /** @var UpdateProductEventCountHandler */
     private $updateProductEventCountHandler;
 
-    public function __construct(UpdateProductEventCountHandler $updateProductEventCountHandler)
-    {
+    /** @var DbalSelectEventDatesToRefreshQuery */
+    private $selectEventDatesToRefreshQuery;
+
+    public function __construct(
+        UpdateProductEventCountHandler $updateProductEventCountHandler,
+        DbalSelectEventDatesToRefreshQuery $selectEventDatesToRefreshQuery
+    ) {
         parent::__construct();
+
         $this->updateProductEventCountHandler = $updateProductEventCountHandler;
+        $this->selectEventDatesToRefreshQuery = $selectEventDatesToRefreshQuery;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        // TODO: To calculate from refresh date
-        $datetime = new \DateTime('now', new \DateTimeZone('UTC'));
-        $datetime->setTime(0, 0, 0, 0);
+        $datesToRefresh = $this->selectEventDatesToRefreshQuery->execute();
+        if (!in_array(date('Y-m-d'), $datesToRefresh)) {
+            $datesToRefresh[] = date('Y-m-d');
+        }
 
-        $command = new UpdateProductEventCountCommand($datetime->format('Y-m-d'));
-        $this->updateProductEventCountHandler->handle($command);
+        foreach ($datesToRefresh as $dateToRefresh) {
+            $datetime = new \DateTime($dateToRefresh, new \DateTimeZone('UTC'));
+            $datetime->setTime(0, 0, 0, 0);
+
+            $command = new UpdateProductEventCountCommand($datetime->format('Y-m-d'));
+            $this->updateProductEventCountHandler->handle($command);
+        }
     }
 }

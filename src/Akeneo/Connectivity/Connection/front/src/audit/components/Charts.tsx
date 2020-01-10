@@ -12,6 +12,7 @@ import {blueTheme, purpleTheme} from '../event-chart-themes';
 import {SourceConnection} from '../model/source-connection';
 import {EventChart} from './EventChart';
 import {NoConnection} from './NoConnection';
+import {UserSurvey} from './UserSurvey';
 
 export const Charts = () => {
     const dispatch = useDashboardDispatch();
@@ -45,6 +46,13 @@ export const Charts = () => {
                 eventType={AuditEventType.PRODUCT_UPDATED}
                 theme={blueTheme}
                 title={<Translate id='akeneo_connectivity.connection.dashboard.charts.number_of_products_updated' />}
+            />
+
+            <UserSurvey
+                title={'akeneo_connectivity.connection.dashboard.user_survey.title'}
+                content={'akeneo_connectivity.connection.dashboard.user_survey.content'}
+                buttonLabel={'akeneo_connectivity.connection.dashboard.user_survey.button'}
+                link={'https://www.akeneo.com'}
             />
         </>
     );
