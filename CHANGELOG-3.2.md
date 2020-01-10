@@ -3,6 +3,7 @@
 ## Bug fixes:
 
 - PIM-9054: Fix the constraint on AttributeOption:code max length
+- PIM-9053: Update product label when locale is changed
 
 # 3.2.30 (2020-01-10)
 
