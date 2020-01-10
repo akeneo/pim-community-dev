@@ -13,6 +13,7 @@ export type Attribute = {
   isReadOnly: boolean;
   referenceDataName: ReferenceDataName;
   sort_order: number;
+  availableLocales: string[];
 };
 
 export const getAttributeLabel = (attribute: Attribute, locale: LocaleCode) => {
