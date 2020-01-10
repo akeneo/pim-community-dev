@@ -4,6 +4,8 @@
 
 - PIM-9053: Update product label when locale is changed
 
+# 3.2.30 (2020-01-10)
+
 # 3.2.29 (2020-01-03)
 
 # 3.2.28 (2019-12-31)
