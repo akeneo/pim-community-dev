@@ -2,7 +2,10 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Command;
 
-use FOS\OAuthServerBundle\Model\ClientManagerInterface;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand as CreationCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Infrastructure\Cli\CreateConnectionCommand;
 use OAuth2\OAuth2;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -23,14 +26,15 @@ class CreateClientCommand extends Command
 {
     protected static $defaultName = 'pim:oauth-server:create-client';
 
-    /** @var ClientManagerInterface */
-    private $clientManager;
+    /** @var CreateConnectionCommand */
+    private $createConnection;
 
-    public function __construct(ClientManagerInterface $clientManager)
+    public function __construct(CreateConnectionHandler $createConnection)
     {
         parent::__construct();
 
-        $this->clientManager = $clientManager;
+        $this->createConnection = $createConnection;
+
     }
 
     /**
@@ -66,25 +70,22 @@ class CreateClientCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        //preg_replace('[^a-zA-Z0-9_]', '_', $label);
-        $client = $this->clientManager->createClient();
+        $rawLabel = $input->getArgument('label');
+        if (strlen($rawLabel) < 3) {
+            $rawLabel = microtime(true);
+        }
+        $rawCode = $label = substr(trim($rawLabel), 0, 100);
+        $code = preg_replace('#[^A-Za-z0-9_]#', '_', $rawCode);
 
-        $client->setRedirectUris($input->getOption('redirect_uri'));
-        $client->setAllowedGrantTypes($input->getOption('grant_type'));
-        $client->setLabel($input->getArgument('label'));
-
-        $this->clientManager->updateClient($client);
-
+        $command = new CreationCommand($code, $label, FlowType::OTHER);
+        $connectionWithCredentials = $this->createConnection->handle($command);
         $output->writeln([
             'A new client has been added.',
-            sprintf('client_id: <info>%s</info>', $client->getPublicId()),
-            sprintf('secret: <info>%s</info>', $client->getSecret()),
+            sprintf('client_id: <info>%s</info>', $connectionWithCredentials->clientId()),
+            sprintf('secret: <info>%s</info>', $connectionWithCredentials->secret()),
         ]);
 
-        $label = $client->getLabel();
-        if (null !== $label) {
-            $output->writeln(sprintf('label: <info>%s</info>', $label));
-        }
+        $output->writeln(sprintf('label: <info>%s</info>', $connectionWithCredentials->label()));
 
         return 0;
     }
