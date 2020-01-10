@@ -123,8 +123,3 @@ services:
 
     # Clock
     Akeneo\AssetManager\Infrastructure\Clock: ~
-
-    # Migration Assets, to remove
-    akeneo.pim.asset.factory.value.reference_data_collection:
-        class: Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\AssetCollectionValueFactory
-        tags: ['akeneo.pim.enrichment.factory.product_value']
