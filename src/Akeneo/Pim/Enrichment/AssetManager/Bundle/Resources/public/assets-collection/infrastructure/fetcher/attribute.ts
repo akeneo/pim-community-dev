@@ -50,7 +50,7 @@ const denormalizeAssetAttribute = (normalizedAttribute: any): Attribute => {
     throw Error('The available_locales is not well formated');
   }
 
-  const {is_read_only = null, reference_data_name = null, ...attribute} = {
+  const {is_read_only = null, reference_data_name = null, available_locales = null, ...attribute} = {
     ...normalizedAttribute,
     isReadOnly: normalizedAttribute.is_read_only,
     referenceDataName: normalizedAttribute.reference_data_name,
