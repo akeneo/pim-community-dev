@@ -45,6 +45,12 @@ We find all the pending criteria of the product to evaluate and loop over them.
 
 Each criterion is evaluated one by one.
 
+> Special note about the spell check behavior:
+> 
+> We force the browser to ignore the browser integrated spellchecker and the grammarly plugin to avoir conflicts
+> The content of the user is evaluated by our spellchecker class on the fly when the user edit the product to have
+> immediate feedback.
+
 #Criteria
 
 ##Completeness of required attributes
@@ -68,8 +74,18 @@ Example:
 `Macbook air Azerty core I7` should be written `MacBook Air AZERTY Core i7`
 
 ##Spelling
+Scope: For attribute type textarea (without WYSIWIG) and text.
+
+Calls the Aspell linux binary to evaluate the content.  
+It uses the generated dictionary based on the catalog of the customer.  
+It uses also the words "ignored" by the users.  
+
+
+
 
 ###Commands
+
+####Commands usable in production
 
 `pimee:data-quality-insights:schedule-periodic-tasks`
 
@@ -85,11 +101,13 @@ This command line must be in the CRONTAB.
 `pimee:data-quality-insights:generate-aspell-dictionary-from-product-values`
 
 Aim:
-- Generate the dictionaries per language code each month (based on file timestamp)
+- Generate the dictionaries per language code
 
 Behavior:
 Retrieve all the product values per locale. All the words with more than 3 letters, and used more than 10 times in the catalog are considered as part of the dictionary.
 
+
+####Commands not usable in production - use with care
 
 `pimee:data-quality-insights:evaluate-pending-criteria -p <product_id>`
 
@@ -107,9 +125,24 @@ Aim:
 
 Aim:
 - Help the generation of dqi data to display a dashboard
-- NEVER RUN IT IN PRODUCTION
+- For Administration/Support/Dev purpose
+- NEVER RUN IT IN PRODUCTION IT WILL GENERATE FAKE DATA
+
 
 ###Jobs
+
+####Good to know
+In order to have a quick feedback loop on evaluation of the criteria, we recommend to add a dedicated daemon queue for 
+the _data_quality_insights__* jobs like the following command:  
+
+    bin/console akeneo:batch:job-queue-consumer-daemon -j data_quality_insights_evaluate_products_criteria -j data_quality_insights_periodic_tasks
+
+The regular daemon of the pim have to exclude them like the following command:
+  
+    bin/console akeneo:batch:job-queue-consumer-daemon -b data_quality_insights_evaluate_products_criteria -b data_quality_insights_periodic_tasks
+    
+
+####List of jobs
 
 `data_quality_insights_periodic_tasks`
 
