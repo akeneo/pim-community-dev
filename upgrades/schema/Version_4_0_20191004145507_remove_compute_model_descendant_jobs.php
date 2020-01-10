@@ -46,6 +46,7 @@ final class Version_4_0_20191004145507_remove_compute_model_descendant_jobs exte
 
     public function down(Schema $schema) : void
     {
+        $this->throwIrreversibleMigrationException();
     }
 
     private function getComputeProductModelDescendantsJobId(): ?int
