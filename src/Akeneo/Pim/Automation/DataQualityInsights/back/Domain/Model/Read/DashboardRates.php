@@ -56,13 +56,13 @@ final class DashboardRates
 
         $actions = [
             Periodicity::DAILY => function(array $rates) {
-                return $this->ensureRatesContainsEnoughDays($rates);
+                return $this->ensureRatesContainEnoughDays($rates);
             },
             Periodicity::WEEKLY => function(array $rates) {
-                return $this->ensureRatesContainsEnoughWeeks($rates);
+                return $this->ensureRatesContainEnoughWeeks($rates);
             },
             Periodicity::MONTHLY => function(array $rates) {
-                return $this->ensureRatesContainsEnoughMonths($rates);
+                return $this->ensureRatesContainEnoughMonths($rates);
             },
         ];
 
@@ -111,43 +111,47 @@ final class DashboardRates
         }, $ratesNumberByRank);
     }
 
-    private function ensureRatesContainsEnoughDays(array $result): array
+    private function ensureRatesContainEnoughDays(array $result): array
     {
-        $lastSevenDays = [];
+        $lastDays = [];
         for ($i = self::NUMBER_OF_DAYS_TO_RETURN; $i >= 1; $i--) {
             $dailyPeriodicityDateFormat = (new \DateTimeImmutable())
                 ->modify('-' . $i . 'DAY')
                 ->format('Y-m-d');
 
-            $lastSevenDays[$dailyPeriodicityDateFormat] = [];
+            $lastDays[$dailyPeriodicityDateFormat] = [];
         }
 
-        return $this->fillMissingDates($result, $lastSevenDays);
+        return $this->fillMissingDates($result, $lastDays);
     }
 
-    private function ensureRatesContainsEnoughWeeks(array $result): array
+    private function ensureRatesContainEnoughWeeks(array $result): array
     {
         $weeklyPeriodicityDateFormat = (new ConsolidationDate(new \DateTimeImmutable()))->isLastDayOfWeek() ?
             new \DateTimeImmutable() :
             new \DateTimeImmutable('next sunday');
 
-        $lastFourWeeks = [];
+        $lastWeeks = [];
         for ($i = self::NUMBER_OF_WEEKS_TO_RETURN; $i >= 1; $i--) {
             $newDate = $weeklyPeriodicityDateFormat->modify('-' . $i . 'WEEK');
-            $lastFourWeeks[$newDate->format('Y-m-d')] = [];
+            $lastWeeks[$newDate->format('Y-m-d')] = [];
         }
 
-        return $this->fillMissingDates($result, $lastFourWeeks);
+        return $this->fillMissingDates($result, $lastWeeks);
     }
 
-    private function ensureRatesContainsEnoughMonths(array $result): array
+    private function ensureRatesContainEnoughMonths(array $result): array
     {
+        $monthlyPeriodicityDateFormat = (new ConsolidationDate(new \DateTimeImmutable()))->isLastDayOfMonth() ?
+            new \DateTimeImmutable() :
+            (new \DateTimeImmutable())->setTimestamp(strtotime(date('Y-m-t')));
+
         $lastMonths = [];
         for ($i = self::NUMBER_OF_MONTHS_TO_RETURN; $i >= 1; $i--) {
-            $monthlyPeriodicityDateFormat = (new \DateTimeImmutable())
-                ->modify('-' . $i . 'MONTH')
-                ->format('Y-m');
-            $lastMonths[$monthlyPeriodicityDateFormat] = [];
+            //the modifier "-x MONTH" does not handle properly the correct number of days in a month (it's just a shortcut for -30 DAY),
+            // so I had to use another modifier to navigate through months
+            $newDate = $monthlyPeriodicityDateFormat->modify('last day of '.$i.' month ago');
+            $lastMonths[$newDate->format('Y-m-d')] = [];
         }
 
         return $this->fillMissingDates($result, $lastMonths);

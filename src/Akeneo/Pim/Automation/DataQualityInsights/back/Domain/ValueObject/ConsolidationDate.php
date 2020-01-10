@@ -47,9 +47,4 @@ final class ConsolidationDate
     {
         return new self($this->dateTime->modify($modify));
     }
-
-    public function modify(string $modify): self
-    {
-        return new self($this->dateTime->modify($modify));
-    }
 }

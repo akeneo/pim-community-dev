@@ -189,18 +189,18 @@ final class DemoHelperCommand extends Command
                 $rates['daily'][$now->modify(sprintf('-%d DAY', $i))->format('Y-m-d')] = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]);
             }
 
-            $rates['weekly'][$now->modify('-1 WEEK')->format('Y-W')] = $ratesOfTheDay;
+            $rates['weekly'][$now->modify('sunday last week')->format('Y-m-d')] = $ratesOfTheDay;
 
-            for($i=2; $i < 5; $i++)
+            for($i=1; $i < 4; $i++)
             {
-                $rates['weekly'][$now->modify(sprintf('-%d WEEK', $i))->format('Y-W')] = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]);
+                $rates['weekly'][$now->modify(sprintf('sunday %d weeks ago', $i))->format('Y-m-d')] = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]);
             }
 
-            $rates['monthly'][$now->modify('-1 MONTH')->format('Y-m')] = $ratesOfTheDay;
+            $rates['monthly'][$now->modify('-1 MONTH')->format('Y-m-t')] = $ratesOfTheDay;
 
             for($i=2; $i < 7; $i++)
             {
-                $rates['monthly'][$now->modify(sprintf('-%d MONTH', $i))->format('Y-m')] = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]);
+                $rates['monthly'][$now->modify(sprintf('-%d MONTH', $i))->format('Y-m-t')] = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]);
             }
 
             $projectionTypeAndCode = ['type' => null, 'code' => null];
