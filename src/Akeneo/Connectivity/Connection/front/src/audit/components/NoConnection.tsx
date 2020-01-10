@@ -4,10 +4,9 @@ import {PageError} from '../../common';
 import {PropsWithTheme} from '../../common/theme';
 import {RouterContext} from '../../shared/router';
 import {SecurityGuard} from '../../shared/security';
-import {Translate, useTranslate} from '../../shared/translate';
+import {Translate} from '../../shared/translate';
 
 export const NoConnection = () => {
-    const translate = useTranslate();
     const {redirect} = useContext(RouterContext);
 
     return (
@@ -18,12 +17,7 @@ export const NoConnection = () => {
                     <>
                         <Translate id='akeneo_connectivity.connection.dashboard.no_connection.message_without_permission.message' />
                         &nbsp;
-                        <Link
-                            href={translate(
-                                'akeneo_connectivity.connection.dashboard.no_connection.message_without_permission.link_url'
-                            )}
-                            target='_blank'
-                        >
+                        <Link href='https://help.akeneo.com/pim/articles/what-is-a-connection.html' target='_blank'>
                             <Translate id='akeneo_connectivity.connection.dashboard.no_connection.message_without_permission.link' />
                         </Link>
                     </>

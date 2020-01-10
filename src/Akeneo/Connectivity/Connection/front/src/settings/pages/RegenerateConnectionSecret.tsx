@@ -42,7 +42,10 @@ export const RegenerateConnectionSecret = () => {
         <>
             <Translate id='akeneo_connectivity.connection.regenerate_secret.description' />
             &nbsp;
-            <Link href={translate('akeneo_connectivity.connection.regenerate_secret.link_url')} target='_blank'>
+            <Link
+                href='https://help.akeneo.com/pim/articles/manage-your-connections.html#revokeregenerate-your-connection-secret'
+                target='_blank'
+            >
                 <Translate id='akeneo_connectivity.connection.regenerate_secret.link' />
             </Link>
         </>

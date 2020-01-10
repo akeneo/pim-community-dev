@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {FormGroup, InlineHelper, Select2, Select2Configuration} from '../../../common';
-import {Translate, useTranslate} from '../../../shared/translate';
+import {Translate} from '../../../shared/translate';
 import {useFetchUserRoles, UserRole} from '../../api-hooks/use-fetch-user-roles';
 
 type Props = {
@@ -9,8 +9,6 @@ type Props = {
 };
 
 export const UserRoleSelect = ({userRoleId, onChange}: Props) => {
-    const translate = useTranslate();
-
     const fetchUserRoles = useFetchUserRoles();
     const [userRoles, setUserRoles] = useState<UserRole[]>([]);
     const [selectedUserRole, setSelectedUserRole] = useState<UserRole>();
@@ -54,9 +52,7 @@ export const UserRoleSelect = ({userRoleId, onChange}: Props) => {
                         />
                         &nbsp;
                         <a
-                            href={translate(
-                                'akeneo_connectivity.connection.edit_connection.permissions.user_role_helper.link_url'
-                            )}
+                            href='https://help.akeneo.com/pim/articles/manage-your-connections.html#set-the-permissions'
                             target='_blank'
                             rel='noopener noreferrer'
                         >

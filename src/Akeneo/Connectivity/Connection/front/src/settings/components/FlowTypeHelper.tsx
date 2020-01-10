@@ -1,15 +1,13 @@
-import React, {useContext} from 'react';
-import {Translate, TranslateContext} from '../../shared/translate';
+import React from 'react';
+import {Translate} from '../../shared/translate';
 
 export const FlowTypeHelper = () => {
-    const translate = useContext(TranslateContext);
-
     return (
         <>
             <Translate id='akeneo_connectivity.connection.flow_type_helper.message' />
             &nbsp;
             <a
-                href={translate('akeneo_connectivity.connection.flow_type_helper.link_url')}
+                href='https://help.akeneo.com/pim/articles/manage-your-connections.html#choose-your-flow-type'
                 target='_blank'
                 rel='noopener noreferrer'
             >

@@ -1,8 +1,5 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useHistory} from 'react-router';
-import {FlowType} from '../../model/flow-type.enum';
-import {PimView} from '../../infrastructure/pim-view/PimView';
-import {NoConnection} from '../components/NoConnection';
 import {
     ApplyButton,
     Breadcrumb,
@@ -13,14 +10,17 @@ import {
     PageContent,
     PageHeader,
 } from '../../common';
+import {PimView} from '../../infrastructure/pim-view/PimView';
+import {Connection} from '../../model/connection';
+import {FlowType} from '../../model/flow-type.enum';
 import {fetchResult} from '../../shared/fetch-result';
 import {isOk} from '../../shared/fetch-result/result';
 import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
-import {Translate, TranslateContext} from '../../shared/translate';
+import {Translate} from '../../shared/translate';
 import {connectionsFetched} from '../actions/connections-actions';
-import {useConnectionsState, useConnectionsDispatch} from '../connections-context';
 import {ConnectionGrid} from '../components/ConnectionGrid';
-import {Connection} from '../../model/connection';
+import {NoConnection} from '../components/NoConnection';
+import {useConnectionsDispatch, useConnectionsState} from '../connections-context';
 
 const MAXIMUM_NUMBER_OF_ALLOWED_CONNECTIONS = 50;
 
@@ -28,7 +28,6 @@ type ResultValue = Array<Connection>;
 
 export const ListConnections = () => {
     const history = useHistory();
-    const translate = useContext(TranslateContext);
 
     const connections = useConnectionsState();
     const dispatch = useConnectionsDispatch();
@@ -92,7 +91,7 @@ export const ListConnections = () => {
                     <p>
                         <Translate id='akeneo_connectivity.connection.helper.description' />
                     </p>
-                    <HelperLink href={translate('akeneo_connectivity.connection.helper.link_url')} target='_blank'>
+                    <HelperLink href='https://help.akeneo.com/pim/articles/what-is-a-connection.html' target='_blank'>
                         <Translate id='akeneo_connectivity.connection.helper.link' />
                     </HelperLink>
                 </Helper>

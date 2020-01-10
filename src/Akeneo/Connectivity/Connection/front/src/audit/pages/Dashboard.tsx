@@ -1,13 +1,11 @@
-import React, {useContext} from 'react';
-import {PimView} from '../../infrastructure/pim-view/PimView';
+import React from 'react';
 import {Breadcrumb, Helper, HelperLink, HelperTitle, PageContent, PageHeader} from '../../common';
+import {PimView} from '../../infrastructure/pim-view/PimView';
 import {BreadcrumbRouterLink} from '../../shared/router';
-import {Translate, TranslateContext} from '../../shared/translate';
+import {Translate} from '../../shared/translate';
 import {Charts} from '../components/Charts';
 
 export const Dashboard = () => {
-    const translate = useContext(TranslateContext);
-
     const breadcrumb = (
         <Breadcrumb>
             <BreadcrumbRouterLink route={'pim_dashboard_index'} isLast={false}>
@@ -37,10 +35,7 @@ export const Dashboard = () => {
                     <p>
                         <Translate id='akeneo_connectivity.connection.dashboard.helper.description' />
                     </p>
-                    <HelperLink
-                        href={translate('akeneo_connectivity.connection.dashboard.helper.link_url')}
-                        target='_blank'
-                    >
+                    <HelperLink href='https://help.akeneo.com/pim/articles/connection-dashboard.html' target='_blank'>
                         <Translate id='akeneo_connectivity.connection.dashboard.helper.link' />
                     </HelperLink>
                 </Helper>

@@ -28,7 +28,7 @@ export const ConnectionCredentials: FC<Props> = ({code, label, credentials: cred
                     />
                     &nbsp;
                     <HelperLink
-                        href={translate('akeneo_connectivity.connection.edit_connection.credentials.helper.link_url')}
+                        href='https://help.akeneo.com/pim/articles/manage-your-connections.html#grab-your-credentials'
                         target='_blank'
                         rel='noopener noreferrer'
                     >
@@ -59,9 +59,7 @@ export const ConnectionCredentials: FC<Props> = ({code, label, credentials: cred
                             <InlineHelper warning>
                                 <Translate id='akeneo_connectivity.connection.edit_connection.credentials.clear_password_helper.message' />{' '}
                                 <a
-                                    href={translate(
-                                        'akeneo_connectivity.connection.edit_connection.credentials.clear_password_helper.link_url'
-                                    )}
+                                    href='https://help.akeneo.com/pim/articles/manage-your-connections.html#grab-your-credentials'
                                     target='_blank'
                                     rel='noopener noreferrer'
                                 >
@@ -79,9 +77,7 @@ export const ConnectionCredentials: FC<Props> = ({code, label, credentials: cred
                             <InlineHelper info>
                                 <Translate id='akeneo_connectivity.connection.edit_connection.credentials.password_helper.message' />{' '}
                                 <a
-                                    href={translate(
-                                        'akeneo_connectivity.connection.edit_connection.credentials.password_helper.link_url'
-                                    )}
+                                    href='https://help.akeneo.com/pim/articles/manage-your-connections.html#grab-your-credentials'
                                     target='_blank'
                                     rel='noopener noreferrer'
                                 >
@@ -95,7 +91,7 @@ export const ConnectionCredentials: FC<Props> = ({code, label, credentials: cred
                             />
                         }
                     >
-                        <Translate id='akeneo_connectivity.connection.edit_connection.credentials.password_placeholder' />
+                        {'••••••••'}
                     </Credential>
                 )}
             </CredentialList>

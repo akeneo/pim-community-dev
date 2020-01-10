@@ -4,14 +4,13 @@ import styled from 'styled-components';
 import {GreyButton, ImportantButton, Modal} from '../../common';
 import {PropsWithTheme} from '../../common/theme';
 import {isOk} from '../../shared/fetch-result/result';
-import {Translate, useTranslate} from '../../shared/translate';
+import {Translate} from '../../shared/translate';
 import {connectionDeleted} from '../actions/connections-actions';
 import {useDeleteConnection} from '../api-hooks/use-delete-connection';
 import {useConnectionsDispatch} from '../connections-context';
 
 export const DeleteConnection = () => {
     const history = useHistory();
-    const translate = useTranslate();
 
     const {code} = useParams<{code: string}>();
     const deleteConnection = useDeleteConnection(code);
@@ -33,7 +32,10 @@ export const DeleteConnection = () => {
         <>
             <Translate id='akeneo_connectivity.connection.delete_connection.description' />
             &nbsp;
-            <Link href={translate('akeneo_connectivity.connection.delete_connection.link_url')} target='_blank'>
+            <Link
+                href='https://help.akeneo.com/pim/articles/manage-your-connections.html#delete-a-connection'
+                target='_blank'
+            >
                 <Translate id='akeneo_connectivity.connection.delete_connection.link' />
             </Link>
         </>
