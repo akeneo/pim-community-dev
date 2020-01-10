@@ -459,6 +459,6 @@ pim_catalog_volume:
       title: Axes on asset families
       hint: If you are using the asset families, here are the axes to help you monitor your volume.
   axis:
-    count_asset_family: Reference entities
+    count_asset_family: Asset families
     average_max_assets_per_asset_family: Assets per asset family
     average_max_attributes_per_asset_family: Attributes per asset family
