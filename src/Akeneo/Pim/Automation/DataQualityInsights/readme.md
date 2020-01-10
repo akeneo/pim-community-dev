@@ -103,6 +103,12 @@ Aim:
 - Force the consolidation of the dashboard rates for a given day
 - For Administration/Support/Dev purpose
 
+`pimee:data-quality-insights:demo-helper`
+
+Aim:
+- Help the generation of dqi data to display a dashboard
+- NEVER RUN IT IN PRODUCTION
+
 ###Jobs
 
 `data_quality_insights_periodic_tasks`
