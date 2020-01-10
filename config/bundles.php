@@ -63,7 +63,6 @@ return [
     Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle::class => ['all' => true],
     Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\InstallerBundle\PimEnterpriseInstallerBundle::class => ['all' => true],
-    Akeneo\Asset\Bundle\AkeneoAssetBundle::class => ['all' => true],
     Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\AkeneoPimTeamworkAssistantBundle::class => ['all' => true],
     Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle::class => ['all' => true],
     Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle::class => ['all' => true],

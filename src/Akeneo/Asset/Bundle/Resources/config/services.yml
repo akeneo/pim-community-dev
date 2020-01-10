@@ -1,4 +1,0 @@
-services:
-    akeneo.pim.asset.factory.value.reference_data_collection:
-        class: Akeneo\Asset\Bundle\Services\AssetCollectionValueFactory
-        tags: ['akeneo.pim.enrichment.factory.product_value']

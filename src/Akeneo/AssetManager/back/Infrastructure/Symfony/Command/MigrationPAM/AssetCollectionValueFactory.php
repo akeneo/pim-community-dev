@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Asset\Bundle\Services;
+namespace Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
