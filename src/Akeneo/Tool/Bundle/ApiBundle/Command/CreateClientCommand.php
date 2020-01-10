@@ -34,7 +34,6 @@ class CreateClientCommand extends Command
         parent::__construct();
 
         $this->createConnection = $createConnection;
-
     }
 
     /**
