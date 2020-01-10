@@ -79,7 +79,7 @@ const UploadModal = ({assetFamily, locale, channels, locales, onCancel, onAssetC
 
   const handleConfirm = React.useCallback(() => {
     onCreateAllAsset(assetFamily, state.lines, dispatch);
-  }, [assetFamily, state.lines, dispatch]);
+  }, [assetFamily, state.lines]);
 
   const handleDrop = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,8 +89,20 @@ const UploadModal = ({assetFamily, locale, channels, locales, onCancel, onAssetC
       const files = event.target.files ? Object.values(event.target.files) : [];
       onFileDrop(files, assetFamily, channels, locales, dispatch);
     },
-    [assetFamily, dispatch]
+    [assetFamily, channels, locales]
   );
+
+  const handleLineChange = React.useCallback((line: Line) => {
+    dispatch(editLineAction(line));
+  }, []);
+
+  const handleLineRemove = React.useCallback((line: Line) => {
+    dispatch(removeLineAction(line));
+  }, []);
+
+  const handleLineRemoveAll = React.useCallback(() => {
+    dispatch(removeAllLinesAction());
+  }, []);
 
   useShortcut(Key.Escape, handleClose);
 
@@ -110,15 +122,9 @@ const UploadModal = ({assetFamily, locale, channels, locales, onCancel, onAssetC
         locale={locale}
         channels={channels}
         locales={locales}
-        onLineChange={(line: Line) => {
-          dispatch(editLineAction(line));
-        }}
-        onLineRemove={(line: Line) => {
-          dispatch(removeLineAction(line));
-        }}
-        onLineRemoveAll={() => {
-          dispatch(removeAllLinesAction());
-        }}
+        onLineChange={handleLineChange}
+        onLineRemove={handleLineRemove}
+        onLineRemoveAll={handleLineRemoveAll}
         valuePerLocale={valuePerLocale}
         valuePerChannel={valuePerChannel}
       />

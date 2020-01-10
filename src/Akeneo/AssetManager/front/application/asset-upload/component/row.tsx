@@ -10,7 +10,7 @@ import Spacer from 'akeneoassetmanager/application/component/app/spacer';
 import {ColumnWidths} from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import WarningIcon from 'akeneoassetmanager/application/component/app/icon/warning';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import Select2 from 'akeneoassetmanager/application/component/app/select2';
+import Select2, {Select2Options} from 'akeneoassetmanager/application/component/app/select2';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {
   getOptionsFromChannels,
@@ -122,6 +122,52 @@ const Error = ({message, ...props}: {message: string} & any) => (
   </StyledError>
 );
 
+type ChannelDropdownProps = {
+  options: Select2Options;
+  value: string | null;
+  readOnly: boolean;
+  onChange: (value: string) => void;
+};
+const ChannelDropdown = React.memo(({options, value, readOnly, onChange}: ChannelDropdownProps) => {
+  return (
+    <Select2
+      data={options}
+      value={null === value ? '' : value}
+      multiple={false}
+      readOnly={readOnly}
+      configuration={{
+        allowClear: true,
+      }}
+      onChange={onChange}
+      aria-label={__('pim_asset_manager.asset.upload.list.channel')}
+    />
+  );
+});
+
+type LocaleDropdownProps = {
+  options: Select2Options;
+  value: string | null;
+  readOnly: boolean;
+  onChange: (value: string) => void;
+};
+const LocaleDropdown = React.memo(({options, value, readOnly, onChange}: LocaleDropdownProps) => {
+  return (
+    <Select2
+      data={options}
+      value={null === value ? '' : value}
+      multiple={false}
+      readOnly={readOnly}
+      configuration={{
+        allowClear: true,
+        formatResult: formatLocaleOption,
+        formatSelection: formatLocaleOption,
+      }}
+      onChange={onChange}
+      aria-label={__('pim_asset_manager.asset.upload.list.locale')}
+    />
+  );
+});
+
 const Row = ({
   line,
   locale,
@@ -132,11 +178,48 @@ const Row = ({
   valuePerLocale,
   valuePerChannel,
 }: RowProps) => {
-  const status = getStatusFromLine(line, valuePerLocale, valuePerChannel);
-  const errors = getAllErrorsOfLineByTarget(line);
-  const channelOptions = getOptionsFromChannels(channels, locale);
-  const localeOptions = getOptionsFromLocales(channels, locales, line.channel);
+  const status = React.useMemo(() => {
+    return getStatusFromLine(line, valuePerLocale, valuePerChannel);
+  }, [line, valuePerLocale, valuePerChannel]);
+
+  const errors = React.useMemo(() => {
+    return getAllErrorsOfLineByTarget(line);
+  }, [line]);
+
+  const channelOptions = React.useMemo(() => {
+    return getOptionsFromChannels(channels, locale);
+  }, [channels, locale]);
+
+  const localeOptions = React.useMemo(() => {
+    return getOptionsFromLocales(channels, locales, line.channel);
+  }, [channels, locales, line.channel]);
+
   const isReadOnly = line.isAssetCreating || line.assetCreated;
+
+  const handleCodeChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      onLineChange({...line, code: event.target.value});
+    },
+    [line]
+  );
+
+  const handleChannelChange = React.useCallback(
+    (value: string) => {
+      onLineChange({...line, channel: value ? value : null});
+    },
+    [line]
+  );
+
+  const handleLocaleChange = React.useCallback(
+    (value: string) => {
+      onLineChange({...line, locale: value ? value : null});
+    },
+    [line]
+  );
+
+  const handleLineRemove = React.useCallback(() => {
+    onLineRemove(line);
+  }, [line, onLineRemove]);
 
   return (
     <Container status={status}>
@@ -153,45 +236,27 @@ const Row = ({
             value={line.code}
             isValid={errors.code.length === 0}
             disabled={isReadOnly}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              onLineChange({...line, code: event.target.value});
-            }}
+            onChange={handleCodeChange}
             aria-label={__('pim_asset_manager.asset.upload.list.code')}
           />
         </Cell>
         {valuePerChannel && (
           <Cell width={ColumnWidths.channel}>
-            <Select2
-              data={channelOptions}
-              value={null === line.channel ? '' : line.channel}
-              multiple={false}
+            <ChannelDropdown
+              options={channelOptions}
+              value={line.channel}
               readOnly={isReadOnly}
-              configuration={{
-                allowClear: true,
-              }}
-              onChange={(value: string) => {
-                onLineChange({...line, channel: value ? value : null});
-              }}
-              aria-label={__('pim_asset_manager.asset.upload.list.channel')}
+              onChange={handleChannelChange}
             />
           </Cell>
         )}
         {valuePerLocale && (
           <Cell width={ColumnWidths.locale}>
-            <Select2
-              data={localeOptions}
-              value={null === line.locale ? '' : line.locale}
-              multiple={false}
+            <LocaleDropdown
+              options={localeOptions}
+              value={line.locale}
               readOnly={isReadOnly}
-              configuration={{
-                allowClear: true,
-                formatResult: formatLocaleOption,
-                formatSelection: formatLocaleOption,
-              }}
-              onChange={(value: string) => {
-                onLineChange({...line, locale: value ? value : null});
-              }}
-              aria-label={__('pim_asset_manager.asset.upload.list.locale')}
+              onChange={handleLocaleChange}
             />
           </Cell>
         )}
@@ -200,7 +265,7 @@ const Row = ({
           <RowStatus status={status} progress={line.uploadProgress} />
         </Cell>
         <Cell width={ColumnWidths.remove}>
-          <RemoveLineButton onClick={() => onLineRemove(line)} aria-label={__('pim_asset_manager.asset.upload.remove')}>
+          <RemoveLineButton onClick={handleLineRemove} aria-label={__('pim_asset_manager.asset.upload.remove')}>
             <CrossIcon />
           </RemoveLineButton>
         </Cell>
