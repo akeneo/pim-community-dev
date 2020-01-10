@@ -1,5 +1,10 @@
 # 4.0.x
 
+# New features
+
+- API-649: Set up Connections
+- API-767: Audit Connections
+
 # Bug fixes
 
 - GITHUB-10247: Fix regex to compile the frontend assets. Thanks @liamjtoohey!
