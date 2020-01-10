@@ -408,101 +408,23 @@ jobs:
 
 workflows:
   version: 2
-  pull_request:
-      jobs:
-          - wait_for_user_approval:
-                type: approval
-                filters:
-                    branches:
-                        ignore:
-                            - master
-          - checkout:
-                requires:
-                    - wait_for_user_approval
-          - build_dev:
-                requires:
-                    - checkout
-          - test_back_static_and_acceptance:
-                requires:
-                    - build_dev
-          - test_front_static_acceptance_and_integration:
-                requires:
-                    - build_dev
-          - test_back_missing_structure_migrations:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-          - test_back_data_migrations:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-          - test_back_phpunit:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-          - back_behat_legacy:
-                requires:
-                    - test_back_data_migrations
-                    - test_back_missing_structure_migrations
-                    - test_back_phpunit
-          - test_back_performance:
-                requires:
-                    - test_back_data_migrations
-                    - test_back_missing_structure_migrations
-                    - test_back_phpunit
 
   nightly:
-      triggers:
-          - schedule:
-                cron: "0 2 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
       jobs:
           - checkout
-          - build_dev:
-              requires:
-                    - checkout
           - build_prod:
                 requires:
                     - checkout
           - deploy_new_environment:
                 requires:
                     - build_prod
-          - test_prod:
+          - wait_for_user_approval:
+                type: approval
                 requires:
                     - deploy_new_environment
           - destroy_new_environment:
                 requires:
-                    -  test_prod
-          - test_back_static_and_acceptance:
-                requires:
-                    - build_dev
-          - test_front_static_acceptance_and_integration:
-                requires:
-                    - build_dev
-          - test_back_phpunit:
-                requires:
-                    - build_dev
-          - back_behat_legacy:
-                requires:
-                    - build_dev
-          - test_back_data_migrations:
-                requires:
-                    - build_dev
-          - test_back_performance:
-                requires:
-                    - build_dev
-          - release:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_phpunit
-                    - test_back_performance
-                    - back_behat_legacy
-                    - test_back_data_migrations
-                    - destroy_new_environment
+                    -  wait_for_user_approval
 
 
 commands:
