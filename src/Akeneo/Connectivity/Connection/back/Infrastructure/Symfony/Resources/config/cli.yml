@@ -6,3 +6,10 @@ services:
             - '@akeneo_connectivity_connection.persistence.query.select_event_dates_to_refresh'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Cli\CreateConnectionCommand:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Cli\CreateConnectionCommand
+        arguments:
+            - '@akeneo_connectivity.connection.application.handler.create_connection'
+        tags:
+            - { name: 'console.command' }
