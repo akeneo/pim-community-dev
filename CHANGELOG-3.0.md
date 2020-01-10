@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.63 (2020-01-10)
+
 ## Bug fixes
 
 - PIM-9051: Fix cropping on assets preview
