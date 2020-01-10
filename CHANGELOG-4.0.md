@@ -185,6 +185,9 @@
     and add `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator`. Also, protected method `findFilledAttributes()` was removed.        
 - Remove class `Akeneo\Pim\Enrichment\Asset\Component\AssetCollectionValueFactory`
 - Remove class `Akeneo\Pim\Enrichment\AssetManager\Component\Factory\AssetCollectionValueFactory`
+- Update interface `src/Akeneo/UserManagement/Component/Model/UserInterface` and class `src/Akeneo/UserManagement/Component/Model/User`: add `defineAsApiUser` and `isApiUser` methods.
+
+
 ### CLI commands
 
 The following CLI commands have been deleted:

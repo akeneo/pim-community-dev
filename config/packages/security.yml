@@ -3,8 +3,13 @@ security:
         chain_provider:
             chain:
                 providers: [saml_pim_user, pim_user]
+        chain_provider_api:
+            chain:
+                providers: [saml_pim_user, pim_user_api]
         pim_user:
             id: pim_user.provider.user
+        pim_user_api:
+            id: pim_user.provider.user_api
         saml_pim_user:
             id: akeneo_authentication.sso.user.provider
 
@@ -55,7 +60,7 @@ security:
             fos_oauth:                      true
             stateless:                      true
             access_denied_handler:          pim_api.security.access_denied_handler
-            provider:                       chain_provider
+            provider:                       chain_provider_api
 
         sso:
             pattern:   ^/
