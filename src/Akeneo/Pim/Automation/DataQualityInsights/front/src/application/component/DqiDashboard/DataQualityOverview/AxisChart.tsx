@@ -7,13 +7,14 @@ interface AxisChartProps {
   dataset: any;
   padding: number;
   barRatio: number;
+  dateFormatCallback: {(date: string): string};
 }
 
-const AxisChart = ({dataset, padding, barRatio}: AxisChartProps) => {
+const AxisChart = ({dataset, padding, barRatio, dateFormatCallback}: AxisChartProps) => {
 
-  let entries: any[] = [];
+  let dates: any[] = [];
   if(Object.entries(dataset).length > 0) {
-    entries = Object.values(dataset['rank_1']).map((rate: any) => rate.x);
+    dates = Object.values(dataset['rank_1']).map((rate: any) => rate.x);
   }
 
   return (
@@ -46,7 +47,8 @@ const AxisChart = ({dataset, padding, barRatio}: AxisChartProps) => {
         })}
       </VictoryStack>
       <VictoryAxis
-        tickFormat={entries}
+        tickValues={dates}
+        tickFormat={dateFormatCallback}
         style={{
           axis: {stroke: "none"},
           tickLabels: {fontSize: 11, fill: "#67768a", padding: 27}

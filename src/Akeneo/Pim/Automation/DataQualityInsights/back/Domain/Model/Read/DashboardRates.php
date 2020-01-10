@@ -115,9 +115,9 @@ final class DashboardRates
     {
         $lastSevenDays = [];
         for ($i = self::NUMBER_OF_DAYS_TO_RETURN; $i >= 1; $i--) {
-            $dailyPeriodicityDateFormat = (new ConsolidationDate(new \DateTimeImmutable()))
+            $dailyPeriodicityDateFormat = (new \DateTimeImmutable())
                 ->modify('-' . $i . 'DAY')
-                ->formatByPeriodicity(Periodicity::daily());
+                ->format('Y-m-d');
 
             $lastSevenDays[$dailyPeriodicityDateFormat] = [];
         }
@@ -127,12 +127,14 @@ final class DashboardRates
 
     private function ensureRatesContainsEnoughWeeks(array $result): array
     {
+        $weeklyPeriodicityDateFormat = (new ConsolidationDate(new \DateTimeImmutable()))->isLastDayOfWeek() ?
+            new \DateTimeImmutable() :
+            new \DateTimeImmutable('next sunday');
+
         $lastFourWeeks = [];
         for ($i = self::NUMBER_OF_WEEKS_TO_RETURN; $i >= 1; $i--) {
-            $weeklyPeriodicityDateFormat = (new ConsolidationDate(new \DateTimeImmutable()))
-                ->modify('-' . $i . 'WEEK')
-                ->formatByPeriodicity(Periodicity::weekly());
-            $lastFourWeeks[$weeklyPeriodicityDateFormat] = [];
+            $newDate = $weeklyPeriodicityDateFormat->modify('-' . $i . 'WEEK');
+            $lastFourWeeks[$newDate->format('Y-m-d')] = [];
         }
 
         return $this->fillMissingDates($result, $lastFourWeeks);
@@ -142,9 +144,9 @@ final class DashboardRates
     {
         $lastMonths = [];
         for ($i = self::NUMBER_OF_MONTHS_TO_RETURN; $i >= 1; $i--) {
-            $monthlyPeriodicityDateFormat = (new ConsolidationDate(new \DateTimeImmutable()))
+            $monthlyPeriodicityDateFormat = (new \DateTimeImmutable())
                 ->modify('-' . $i . 'MONTH')
-                ->formatByPeriodicity(Periodicity::monthly());
+                ->format('Y-m');
             $lastMonths[$monthlyPeriodicityDateFormat] = [];
         }
 

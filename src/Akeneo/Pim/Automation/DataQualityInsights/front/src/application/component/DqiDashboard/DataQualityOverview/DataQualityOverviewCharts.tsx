@@ -4,6 +4,7 @@ import AxisChart from "./AxisChart";
 import {DataQualityOverviewChartHeader} from "../index";
 
 const __ = require('oro/translator');
+const UserContext = require('pim/user-context');
 
 type Ranks = {
   [rank: string]: number;
@@ -76,6 +77,32 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, periodicity}:
 
   let i = 0;
 
+  const weeklyCallback = (date: string) => {
+    const uiLocale = UserContext.get('uiLocale');
+
+    const endDate = new Date(date);
+    const startDate = new Date(date);
+    startDate.setDate(startDate.getDate() - 6);
+
+    return new Intl.DateTimeFormat(uiLocale.replace('_', '-')).format(startDate) + ' - ' + new Intl.DateTimeFormat(uiLocale.replace('_', '-')).format(endDate);
+  };
+
+  const dailyCallback = (date: string) => {
+    const uiLocale = UserContext.get('uiLocale');
+    return new Intl.DateTimeFormat(
+      uiLocale.replace('_', '-'),
+      {weekday: "long", month: "long", day: "numeric"}
+    ).format(new Date(date));
+  };
+
+  const monthlyCallback = (date: string) => {
+    const uiLocale = UserContext.get('uiLocale');
+    return new Intl.DateTimeFormat(
+      uiLocale.replace('_', '-'),
+      {month: "long", year: "numeric"}
+    ).format(new Date(date));
+  };
+
   return (
     <>
       {
@@ -86,9 +113,9 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, periodicity}:
             <Fragment key={i}>
               <DataQualityOverviewChartHeader axisName={axisName} displayLegend={i === 1}/>
               <div className='AknDataQualityInsights-chart'>
-                {periodicity === 'daily' && (<AxisChart dataset={axisDataset} padding={71} barRatio={1.49}/>)}
-                {periodicity === 'weekly' && (<AxisChart dataset={axisDataset} padding={125} barRatio={1.99}/>)}
-                {periodicity === 'monthly' && (<AxisChart dataset={axisDataset} padding={80} barRatio={1.59}/>)}
+                {periodicity === 'daily' && (<AxisChart dataset={axisDataset} padding={71} barRatio={1.49} dateFormatCallback={dailyCallback}/>)}
+                {periodicity === 'weekly' && (<AxisChart dataset={axisDataset} padding={125} barRatio={1.99} dateFormatCallback={weeklyCallback}/>)}
+                {periodicity === 'monthly' && (<AxisChart dataset={axisDataset} padding={80} barRatio={1.59} dateFormatCallback={monthlyCallback}/>)}
               </div>
             </Fragment>
           )
