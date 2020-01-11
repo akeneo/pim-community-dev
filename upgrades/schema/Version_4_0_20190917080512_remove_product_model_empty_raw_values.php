@@ -34,6 +34,8 @@ final class Version_4_0_20190917080512_remove_product_model_empty_raw_values
 
     public function up(Schema $schema) : void
     {
+        $this->addSql('SELECT "disable migration warning"');
+
         $productModelsToProcess = true;
         $productModelCodesToIndex = [];
         $lastProductModelCode = null;
