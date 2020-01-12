@@ -20,13 +20,9 @@ include make-file/*.mk
 ##
 ## Front
 ##
-
-yarn.lock: package.json
-	$(YARN_RUN) install
-
-node_modules: yarn.lock
+.PHONY: node_modules
+node_modules:
 	$(YARN_RUN) install --frozen-lockfile
-	$(YARN_RUN) check --integrity
 
 .PHONY: assets
 assets:
@@ -109,7 +105,6 @@ pim-behat:
 	APP_ENV=behat $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
-	$(MAKE) javascript-test
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=behat $(MAKE) database
