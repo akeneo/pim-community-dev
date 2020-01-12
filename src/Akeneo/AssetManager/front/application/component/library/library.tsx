@@ -42,6 +42,7 @@ import AssetFetcher from 'akeneoassetmanager/domain/fetcher/asset';
 import {ChannelFetcher} from 'akeneoassetmanager/application/hooks/channel';
 import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {clearImageLoadingQueue} from 'akeneoassetmanager/tools/image-loader';
 
 const Header = styled.div`
   padding-left: 40px;
@@ -175,6 +176,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
       if (null !== newAssetFamily) {
         // We need to reload the filters from local storage after changing the current asset family
         loadFilterCollectionFromStorage(`akeneo.asset_manager.grid.filter_collection_${newAssetFamily}`);
+        clearImageLoadingQueue();
       }
     }
   );

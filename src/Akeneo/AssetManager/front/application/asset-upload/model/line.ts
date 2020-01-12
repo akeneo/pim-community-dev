@@ -36,5 +36,6 @@ export default interface Line {
   uploadProgress: number | null;
   errors: {
     back: ValidationError[];
+    front: ValidationError[];
   };
 }

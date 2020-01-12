@@ -27,6 +27,8 @@ import {
   OnLineCreationStartAction,
   OnRemoveAllLinesAction,
   OnRemoveLineAction,
+  OnFileUploadFailureAction,
+  FILE_UPLOAD_FAILURE,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 
 export type State = {
@@ -40,6 +42,7 @@ export const reducer = (
     | OnFileThumbnailGenerationDoneAction
     | OnRemoveLineAction
     | OnFileUploadSuccessAction
+    | OnFileUploadFailureAction
     | OnFileUploadProgressAction
     | OnLineCreationStartAction
     | OnAssetCreationSuccessAction
@@ -69,6 +72,11 @@ export const reducer = (
       return {
         ...state,
         lines: updateLine(state.lines, action.payload.line.id, {file: action.payload.file, isFileUploading: false}),
+      };
+    case FILE_UPLOAD_FAILURE:
+      return {
+        ...state,
+        lines: updateLine(state.lines, action.payload.line.id, {isFileUploading: false}),
       };
     case FILE_UPLOAD_PROGRESS:
       return {

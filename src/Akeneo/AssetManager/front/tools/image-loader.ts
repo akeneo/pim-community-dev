@@ -1,17 +1,28 @@
-import createQueue from 'p-limit';
+import PQueue from 'p-queue';
 
-const CONCURRENCY = 4;
-const queue = createQueue(CONCURRENCY);
+const queue = new PQueue({concurrency: 4});
 
+const cache: {[imageUrl: string]: Promise<void>} = {};
 export default async (imagePath: string): Promise<void> => {
-  return queue(
-    () =>
-      new Promise<void>((resolve: any) => {
-        const downloadingImage = new Image();
-        downloadingImage.onload = () => {
-          resolve();
-        };
-        downloadingImage.src = imagePath;
-      })
-  );
+  if (undefined === cache[imagePath] || true) {
+    cache[imagePath] = queue.add(async () => {
+      await loadImage(imagePath);
+    });
+  }
+
+  return await cache[imagePath];
+};
+
+export const clearImageLoadingQueue = () => {
+  queue.clear();
+};
+
+const loadImage = (imagePath: string) => {
+  return new Promise<void>((resolve: any) => {
+    const downloadingImage = new Image();
+    downloadingImage.onload = () => {
+      resolve();
+    };
+    downloadingImage.src = imagePath;
+  });
 };
