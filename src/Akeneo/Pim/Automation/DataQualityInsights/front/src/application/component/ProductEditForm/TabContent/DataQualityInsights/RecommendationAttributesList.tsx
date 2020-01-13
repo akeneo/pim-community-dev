@@ -32,7 +32,7 @@ const RecommendationAttributesList: FunctionComponent<RecommendationAttributesLi
       {locale && productFamilyInformation && attributes.map((attributeCode: string, index) => {
         return (
           <Fragment key={`attribute-${criterion}-${index}`}>
-            <Attribute isClickable={true} code={attributeCode}>
+            <Attribute code={attributeCode}>
               {getAttributeLabel(attributeCode, productFamilyInformation, locale)}
             </Attribute>
             {(index < (attributes.length -1)) && ', '}

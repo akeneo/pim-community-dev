@@ -15,13 +15,13 @@ const handleClick = (attributes: string[], axis: string) => {
   switch (axis) {
     case 'enrichment':
       window.dispatchEvent(new CustomEvent(DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES, {detail: {
-        attributes: attributes,
-      }}));
+          attributes: attributes,
+        }}));
       break;
     case 'consistency':
       window.dispatchEvent(new CustomEvent(DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES, {detail: {
-        attributes: attributes,
-      }}));
+          attributes: attributes,
+        }}));
       break;
   }
 };
