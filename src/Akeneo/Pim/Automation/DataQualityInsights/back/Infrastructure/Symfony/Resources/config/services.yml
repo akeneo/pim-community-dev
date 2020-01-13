@@ -62,11 +62,6 @@ services:
             - '%env(AKENEO_PIM_URL)%'
             - '%kernel.project_dir%'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates:
-        arguments:
-            - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates'
-
     Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery'
