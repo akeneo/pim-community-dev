@@ -17,6 +17,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolation
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection as WriteConnection;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository;
+use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryUserPermissionsRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -35,6 +36,7 @@ class ConnectionContext implements Context
     private $deleteConnectionHandler;
     private $updateConnectionHandler;
     private $violations;
+    private $userPermissionsRepository;
 
     public function __construct(
         InMemoryConnectionRepository $connectionRepository,
@@ -42,7 +44,8 @@ class ConnectionContext implements Context
         FindAConnectionHandler $findAConnectionHandler,
         CreateConnectionHandler $createConnectionHandler,
         DeleteConnectionHandler $deleteConnectionHandler,
-        UpdateConnectionHandler $updateConnectionHandler
+        UpdateConnectionHandler $updateConnectionHandler,
+        InMemoryUserPermissionsRepository $userPermissionsRepository
     ) {
         $this->connectionRepository = $connectionRepository;
         $this->fetchConnectionsHandler = $fetchConnectionsHandler;
@@ -50,6 +53,7 @@ class ConnectionContext implements Context
         $this->createConnectionHandler = $createConnectionHandler;
         $this->deleteConnectionHandler = $deleteConnectionHandler;
         $this->updateConnectionHandler = $updateConnectionHandler;
+        $this->userPermissionsRepository = $userPermissionsRepository;
     }
 
     /**
@@ -108,19 +112,20 @@ class ConnectionContext implements Context
     /**
      * @When I modify the Connection :label with:
      */
-    public function iChangeTheOfTheConnectionBy(string $label, TableNode $table)
+    public function iModifyTheConnectionWith(string $label, TableNode $table)
     {
         $code = self::slugify($label);
+
         $data = $table->getColumnsHash()[0];
+
         $newLabel = $data['label'] ?? $label;
         if (!isset($data['flow_type']) || empty($data['flow_type'])) {
             throw new \InvalidArgumentException('You need to provide a new flow type to update the Connection.');
         }
         $newFlowType = $data['flow_type'];
         $newImage = $data['image'] ?? null;
-
-        // $data['user_role'];
-        // $data['user_group'];
+        $newRole = $this->userPermissionsRepository->getRoleIdByIdentifier($data['user_role']);
+        $newGroup = $this->userPermissionsRepository->getGroupIdByIdentifier($data['user_group']);
 
         try {
             $command = new UpdateConnectionCommand(
@@ -128,8 +133,8 @@ class ConnectionContext implements Context
                 $newLabel,
                 $newFlowType,
                 $newImage,
-                '1',
-                '2'
+                (string) $newRole,
+                (string) $newGroup
             );
             $this->updateConnectionHandler->handle($command);
         } catch (ConstraintViolationListException $violationList) {
@@ -223,13 +228,27 @@ class ConnectionContext implements Context
     }
 
     /**
-     * @Then the Connection :label user role id should be :expectedUserRoleId
+     * @Then the Connection :label user role should be :expectedUserRole
      */
-    public function theConnectionUserRoleIdShouldBe(string $label, string $expectedUserRoleId): void
+    public function theConnectionUserRoleIdShouldBe(string $label, string $expectedUserRole): void
     {
         $connection = $this->connectionRepository->findOneByCode(self::slugify($label));
 
-        // Assert::eq($expectedUserRoleId, (string) );
+        $role = $this->userPermissionsRepository->getUserRole($connection->userId()->id());
+
+        Assert::eq($expectedUserRole, $role);
+    }
+
+    /**
+     * @Then the Connection :label user group should be :expectedUserGroup
+     */
+    public function theConnectionUserGroupIdShouldBe(string $label, string $expectedUserGroup): void
+    {
+        $connection = $this->connectionRepository->findOneByCode(self::slugify($label));
+
+        $group = $this->userPermissionsRepository->getUserGroup($connection->userId()->id());
+
+        Assert::eq($expectedUserGroup, $group);
     }
 
     /**
