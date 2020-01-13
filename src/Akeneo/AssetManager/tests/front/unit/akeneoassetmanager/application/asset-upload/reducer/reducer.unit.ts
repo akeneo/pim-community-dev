@@ -302,6 +302,10 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
         {
           ...lines.A,
           isAssetCreating: true,
+          errors: {
+            back: [],
+            front: [],
+          },
         },
         lines.B,
       ],

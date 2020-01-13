@@ -87,7 +87,10 @@ export const reducer = (
         }),
       };
     case LINE_CREATION_START:
-      return {...state, lines: updateLine(state.lines, action.payload.line.id, {isAssetCreating: true, errors: {back: []}})};
+      return {
+        ...state,
+        lines: updateLine(state.lines, action.payload.line.id, {isAssetCreating: true, errors: {back: [], front: []}}),
+      };
     case ASSET_CREATION_SUCCESS:
       return {...state, lines: assetCreationSucceeded(state.lines, action.payload.asset)};
     case ASSET_CREATION_FAIL:
