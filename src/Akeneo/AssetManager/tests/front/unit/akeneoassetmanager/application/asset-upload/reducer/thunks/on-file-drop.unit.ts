@@ -5,6 +5,7 @@ import {
   fileThumbnailGenerationDoneAction,
   fileUploadProgressAction,
   fileUploadSuccessAction,
+  fileUploadFailureAction,
   linesAddedAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
@@ -12,6 +13,7 @@ import {onFileDrop} from 'akeneoassetmanager/application/asset-upload/reducer/th
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
+import {uploadFile} from 'akeneoassetmanager/application/asset-upload/utils/file';
 
 const flushPromises = () => new Promise(setImmediate);
 
@@ -19,6 +21,7 @@ jest.mock('akeneoassetmanager/application/asset-upload/utils/file', () => ({
   uploadFile: jest.fn().mockImplementation((file: File, line: Line, updateProgress) => {
     updateProgress(line, 0);
     updateProgress(line, 1);
+
     return Promise.resolve({
       filePath: file.name,
       originalFilename: file.name,
@@ -101,6 +104,23 @@ describe('', () => {
         originalFilename: 'foo.png',
       })
     );
+    expect(dispatch).toHaveBeenCalledWith(linesAddedAction([line]));
+  });
+
+  test('The upload is not dispatched on failure', async () => {
+    uploadFile.mockImplementation(() => Promise.reject());
+    const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const file = new File(['foo'], 'error', {type: 'image/png'});
+    const files = [file];
+    const dispatch = jest.fn();
+
+    onFileDrop(files, assetFamily, channels, locales, dispatch);
+    await flushPromises();
+
+    const line = createLineFromFilename(file.name, assetFamily, channels, locales);
+    expect(dispatch).toHaveBeenCalledWith(fileUploadFailureAction(line));
     expect(dispatch).toHaveBeenCalledWith(linesAddedAction([line]));
   });
 });

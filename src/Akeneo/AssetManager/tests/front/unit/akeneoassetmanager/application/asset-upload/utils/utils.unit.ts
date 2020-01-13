@@ -4,6 +4,7 @@ import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-fa
 import {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {
   addLines,
+  assetUploadFailed,
   createCreationAssetsFromLines,
   createLineFromFilename,
   getAllErrorsOfLineByTarget,
@@ -298,6 +299,22 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> addLines
     expect(addLines([A, B, C], [D, E, F])).toEqual([D, E, F, A, B, C]);
     expect(addLines([], [D, E, F])).toEqual([D, E, F]);
     expect(addLines([A, B, C], [])).toEqual([A, B, C]);
+  });
+});
+
+describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> assetUploadFailed', () => {
+  test('I can add new lines', () => {
+    const assetFamily = createFakeAssetFamily(false, false);
+
+    const A = createFakeLine('a.png', assetFamily);
+    const B = createFakeLine('b.png', assetFamily);
+    const C = createFakeLine('c.png', assetFamily);
+
+    expect(assetUploadFailed([A, B, C], B)).toEqual([
+      A,
+      {...B, errors: {...B.errors, front: []}, isFileUploading: false},
+      C,
+    ]);
   });
 });
 

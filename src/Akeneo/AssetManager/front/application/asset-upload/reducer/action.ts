@@ -118,6 +118,20 @@ export const fileUploadSuccessAction = (line: Line, file: FileModel): OnFileUplo
   },
 });
 
+export const FILE_UPLOAD_FAILURE = 'asset-upload/FILE_UPLOAD_FAILURE';
+export type OnFileUploadFailureAction = {
+  type: typeof FILE_UPLOAD_FAILURE;
+  payload: {
+    line: Line;
+  };
+};
+export const fileUploadFailureAction = (line: Line): OnFileUploadFailureAction => ({
+  type: FILE_UPLOAD_FAILURE,
+  payload: {
+    line,
+  },
+});
+
 export const FILE_UPLOAD_PROGRESS = 'asset-upload/FILE_UPLOAD_PROGRESS';
 export type OnFileUploadProgressAction = {
   type: typeof FILE_UPLOAD_PROGRESS;
