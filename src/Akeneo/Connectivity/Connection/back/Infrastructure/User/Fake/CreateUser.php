@@ -16,18 +16,22 @@ use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repositor
 class CreateUser implements CreateUserInterface
 {
     /** @var InMemoryUserPermissionsRepository */
-    private $inMemoryUserPermissionsRepository;
+    private $userPermissionsRepository;
 
-    public function __construct(InMemoryUserPermissionsRepository $inMemoryUserPermissionsRepository)
+    public function __construct(InMemoryUserPermissionsRepository $userPermissionsRepository)
     {
-        $this->inMemoryUserPermissionsRepository = $inMemoryUserPermissionsRepository;
+        $this->userPermissionsRepository = $userPermissionsRepository;
     }
 
     public function execute(string $username, string $firstname, string $lastname): User
     {
         $user = new User(42, 'magento_app', 'pwd_app');
 
-        $this->inMemoryUserPermissionsRepository->add($user, 'ROLE_USER', 'all');
+        $this->userPermissionsRepository->setUserPermissions(
+            $user->id(),
+            $this->userPermissionsRepository->getRoleIdByIdentifier('ROLE_USER'),
+            $this->userPermissionsRepository->getGroupIdByIdentifier('All')
+        );
 
         return $user;
     }
