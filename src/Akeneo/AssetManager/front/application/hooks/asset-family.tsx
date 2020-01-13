@@ -49,16 +49,14 @@ export const useAssetFamily = (
 
   const rights = {
     asset: {
-      upload: assetCreate && null !== attributeAsMainMedia && attributeAsMainMedia.type === MEDIA_FILE_ATTRIBUTE_TYPE,
       create: assetCreate,
+      upload: assetCreate && null !== attributeAsMainMedia && attributeAsMainMedia.type === MEDIA_FILE_ATTRIBUTE_TYPE,
       edit: securityContext.isGranted('akeneo_assetmanager_asset_edit') && assetFamilyEdit,
       deleteAll:
-        securityContext.isGranted('akeneo_assetmanager_asset_create') &&
         securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
         securityContext.isGranted('akeneo_assetmanager_assets_delete_all') &&
         assetFamilyEdit,
       delete:
-        securityContext.isGranted('akeneo_assetmanager_asset_create') &&
         securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
         securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
         assetFamilyEdit,
@@ -68,5 +66,6 @@ export const useAssetFamily = (
       edit: securityContext.isGranted('akeneo_assetmanager_asset_family_edit') && assetFamilyEdit,
     },
   };
+
   return {assetFamily, rights};
 };

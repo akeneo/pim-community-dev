@@ -4,7 +4,20 @@ import '@testing-library/jest-dom/extend-expect';
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {renderHook, act} from '@testing-library/react-hooks';
 
-jest.mock('akeneoassetmanager/tools/security-context', () => ({isGranted: (permission: string) => true}));
+jest.mock('akeneoassetmanager/tools/security-context', () => ({
+  isGranted: (permission: string) => {
+    switch (permission) {
+      case 'akeneo_assetmanager_asset_create':
+      case 'akeneo_assetmanager_asset_edit':
+      case 'akeneo_assetmanager_asset_delete':
+      case 'akeneo_assetmanager_asset_family_edit':
+        return true;
+      case 'akeneo_assetmanager_asset_family_create':
+      case 'akeneo_assetmanager_assets_delete_all':
+        return false;
+    }
+  },
+}));
 
 const assetFamily = {
   identifier: 'packshot',
@@ -40,33 +53,53 @@ const assetFamily = {
   transformations: '[]',
 };
 
-const dataProvider = {
+const getDataProvider = (edit: boolean) => ({
   assetFamilyFetcher: {
     fetch: assetFamilyIdentifier =>
       new Promise(resolve => {
         act(() => {
-          setTimeout(() => resolve({assetFamily, permission: {assetFamilyIdentifier: 'packshot', edit: true}}), 100);
+          setTimeout(() => resolve({assetFamily, permission: {assetFamilyIdentifier: 'packshot', edit}}), 100);
         });
       }),
   },
-};
+});
 
 describe('Test asset family hooks', () => {
+  test('It does not fetch anything if the asset family identifier is null', async () => {
+    const {result} = renderHook(() => useAssetFamily(getDataProvider(true), null));
+
+    expect(result.current.assetFamily).toEqual(null);
+    expect(result.current.rights.assetFamily.edit).toEqual(false);
+  });
+
   test('It can fetch an asset family', async () => {
-    const {result, waitForNextUpdate} = renderHook(() => useAssetFamily(dataProvider, 'packshot'));
+    const {result, waitForNextUpdate} = renderHook(() => useAssetFamily(getDataProvider(true), 'packshot'));
 
     expect(result.current.assetFamily).toEqual(null);
 
     await waitForNextUpdate();
 
     expect(result.current.assetFamily).toEqual(assetFamily);
+    expect(result.current.rights.assetFamily.create).toEqual(false);
     expect(result.current.rights.assetFamily.edit).toEqual(true);
+    expect(result.current.rights.asset.create).toEqual(true);
+    expect(result.current.rights.asset.upload).toEqual(true);
+    expect(result.current.rights.asset.delete).toEqual(true);
+    expect(result.current.rights.asset.deleteAll).toEqual(false);
   });
 
-  test('It does not fetch anything if the asset family identifier is null', async () => {
-    const {result} = renderHook(() => useAssetFamily(dataProvider, null));
+  test('It can fetch the rights of the Asset Family', async () => {
+    const {result, waitForNextUpdate} = renderHook(() => useAssetFamily(getDataProvider(false), 'packshot'));
 
     expect(result.current.assetFamily).toEqual(null);
+
+    await waitForNextUpdate();
+
+    expect(result.current.rights.assetFamily.create).toEqual(false);
     expect(result.current.rights.assetFamily.edit).toEqual(false);
+    expect(result.current.rights.asset.create).toEqual(false);
+    expect(result.current.rights.asset.upload).toEqual(false);
+    expect(result.current.rights.asset.delete).toEqual(false);
+    expect(result.current.rights.asset.deleteAll).toEqual(false);
   });
 });
