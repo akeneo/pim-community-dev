@@ -45,6 +45,25 @@ const Title = styled.div`
   width: 100%;
 `;
 
+type UploadModalHeaderProps = {
+  label: string;
+  onClose: () => void;
+  onConfirm: () => void;
+};
+
+const UploadModalHeader = React.memo(({label, onClose, onConfirm}: UploadModalHeaderProps) => {
+  return (
+    <Header>
+      <CloseButton title={__('pim_asset_manager.close')} onClick={onClose} />
+      <Subtitle>{label}</Subtitle>
+      <Title>{__('pim_asset_manager.asset.upload.title')}</Title>
+      <ConfirmButton title={__('pim_asset_manager.asset.upload.confirm')} color="green" onClick={onConfirm}>
+        {__('pim_asset_manager.asset.upload.confirm')}
+      </ConfirmButton>
+    </Header>
+  )
+});
+
 type UploadModalProps = {
   assetFamily: AssetFamily;
   locale: LocaleCode;
@@ -104,18 +123,19 @@ const UploadModal = ({assetFamily, locale, channels, locales, onCancel, onAssetC
     dispatch(removeAllLinesAction());
   }, []);
 
+  const label = React.useMemo(() => {
+    return getAssetFamilyLabel(assetFamily, locale, true);
+  }, [assetFamily, locale]);
+
   useShortcut(Key.Escape, handleClose);
 
   return (
     <Modal>
-      <Header>
-        <CloseButton title={__('pim_asset_manager.close')} onClick={handleClose} />
-        <Subtitle>{getAssetFamilyLabel(assetFamily, locale, true)}</Subtitle>
-        <Title>{__('pim_asset_manager.asset.upload.title')}</Title>
-        <ConfirmButton title={__('pim_asset_manager.asset.upload.confirm')} color="green" onClick={handleConfirm}>
-          {__('pim_asset_manager.asset.upload.confirm')}
-        </ConfirmButton>
-      </Header>
+      <UploadModalHeader
+        label={label}
+        onClose={handleClose}
+        onConfirm={handleConfirm}
+      />
       <FileDropZone onDrop={handleDrop} />
       <LineList
         lines={state.lines}
