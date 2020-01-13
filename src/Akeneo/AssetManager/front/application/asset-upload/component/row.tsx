@@ -168,7 +168,7 @@ const LocaleDropdown = React.memo(({options, value, readOnly, onChange}: LocaleD
   );
 });
 
-const Row = ({
+const Row = React.memo(({
   line,
   locale,
   channels,
@@ -295,6 +295,6 @@ const Row = ({
       </Errors>
     </Container>
   );
-};
+});
 
 export default Row;
