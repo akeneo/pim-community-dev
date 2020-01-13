@@ -14,12 +14,12 @@ use Doctrine\Migrations\AbstractMigration;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class Version_4_0_20191014111427_create_apps_table extends AbstractMigration
+final class Version_4_0_20191014111427_create_connection_table extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
         $createTableQuery = <<<SQL
-CREATE TABLE IF NOT EXISTS akeneo_app(
+CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection(
     client_id INT NOT NULL UNIQUE,
     user_id INT NOT NULL,
     code VARCHAR(100) NOT NULL,

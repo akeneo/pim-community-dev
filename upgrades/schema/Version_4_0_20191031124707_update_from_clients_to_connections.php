@@ -11,7 +11,7 @@ use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-final class Version_4_0_20191031124707_update_from_clients_to_apps
+final class Version_4_0_20191031124707_update_from_clients_to_connections
     extends AbstractMigration
     implements ContainerAwareInterface
 {
@@ -189,7 +189,7 @@ SQL;
 
     private function createConnectionHandler(): CreateConnectionHandler
     {
-        return $this->container->get('akeneo_app.application.handler.create_app');
+        return $this->container->get('akeneo_connectivity.connection.application.handler.create_connection');
     }
 
     private function slugify(string $label): string
