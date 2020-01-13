@@ -35,8 +35,8 @@ class UpdateConnectionEndToEnd extends WebTestCase
             "user_group_id" => $connection->userGroupId()
         ];
 
-        $this->createAdminUser();
-        $this->authenticate('admin', 'admin');
+
+        $this->authenticateAsAdmin();
         $this->client->request('POST', '/rest/connections/franklin', [], [], [], json_encode($data));
 
         Assert::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
@@ -60,8 +60,7 @@ class UpdateConnectionEndToEnd extends WebTestCase
             "user_group_id" => $connection->userGroupId()
         ];
 
-        $this->createAdminUser();
-        $this->authenticate('admin', 'admin');
+        $this->authenticateAsAdmin();
         $this->client->request('POST', '/rest/connections/franklin', [], [], [], json_encode($data));
 
         Assert::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode());

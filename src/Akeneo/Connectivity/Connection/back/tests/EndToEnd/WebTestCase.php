@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd;
 
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
@@ -25,15 +27,29 @@ abstract class WebTestCase extends TestCase
         $this->client = self::$container->get('test.client');
     }
 
-    protected function authenticate($username, $password)
+    protected function authenticateAsAdmin()
     {
-        $token = new UsernamePasswordToken($username, $password, 'main', ['ROLE_ADMINISTRATOR']);
+        $user = $this->createAdminUser();
 
-        $session = $this->get('session');
-        $session->set('_security_main', serialize($token));
+        $this->authenticate($user);
+    }
+
+    private function authenticate(UserInterface $user)
+    {
+        $firewallName = 'main';
+        $firewallContext = 'main';
+
+        $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
+        $session = $this->getSession();
+        $session->set('_security_' . $firewallContext, serialize($token));
         $session->save();
 
         $cookie = new Cookie($session->getName(), $session->getId());
         $this->client->getCookieJar()->set($cookie);
+    }
+
+    private function getSession(): SessionInterface
+    {
+        return $this->client->getContainer()->get('session');
     }
 }
