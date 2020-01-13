@@ -1,3 +1,4 @@
+import useFetchDqiDashboardData from "./useFetchDqiDashboardData";
 import useFetchProductDataQualityEvaluation from "./useFetchProductDataQualityEvaluation";
 import useFetchProductFamilyInformation from "./useFetchProductFamilyInformation";
 import useCatalogContext from "./useCatalogContext";
@@ -13,6 +14,7 @@ import useGetPopover from "./Spellcheck/useGetPopover";
 import useGetWidget from "./Spellcheck/useGetWidget";
 
 export {
+  useFetchDqiDashboardData,
   useFetchProductDataQualityEvaluation,
   useFetchProductFamilyInformation,
   useCatalogContext,

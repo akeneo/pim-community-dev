@@ -12,6 +12,17 @@ services:
         tags:
             - { name: 'console.command' }
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\DemoHelperCommand:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\ProductValueInDatabaseDictionarySource'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryGenerator'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeCriteriaEvaluation'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateDashboardRates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository'
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\GenerateAspellDictionaryFromProductValuesCommand:
         arguments:
             $productValueInDatabaseDictionarySource: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\ProductValueInDatabaseDictionarySource'

@@ -25,12 +25,20 @@ import {
 import {
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
-  DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES
+  DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
+  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY
 } from "./infrastructure/context-provider/ProductContextProvider";
 
 import {ATTRIBUTES_TAB_NAME, DATA_QUALITY_INSIGHTS_TAB_NAME} from './application/constant';
 
+import {DataQualityOverviewCharts} from "./application/component/DqiDashboard";
+import {DataQualityOverviewHeader} from "./application/component/DqiDashboard";
+import {DataQualityOverviewChartHeader} from "./application/component/DqiDashboard";
+
 export {
+  DataQualityOverviewChartHeader,
+  DataQualityOverviewHeader,
+  DataQualityOverviewCharts,
   ProductEditFormApp,
   DataQualityInsightsFeature,
   getDataQualityInsightsFeature,
@@ -45,6 +53,7 @@ export {
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
+  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY,
   ATTRIBUTES_TAB_NAME,
   DATA_QUALITY_INSIGHTS_TAB_NAME,
   Rate,

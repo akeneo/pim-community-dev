@@ -22,186 +22,204 @@ final class DashboardRatesSpec extends ObjectBehavior
 {
     public function it_get_rates_by_channel_locale_and_periodicity()
     {
+        $yesterday = (new \DateTime('-1 DAY'))->format('Y-m-d');
+        $twoDaysAgo = (new \DateTime('-2 DAY'))->format('Y-m-d');
+
         $rates = [
-            "consistency" => [
-                "daily" => [
-                    "2019-12-17" => [
+            "daily" => [
+                $yesterday => [
+                    "consistency" => [
                         "ecommerce" => [
                             "en_US" => [
-                                "1" => 12,
-                                "2" => 28,
-                                "3" => 10,
-                                "4" => 50,
-                                "5" => 10
+                                "rank_1" => 12,
+                                "rank_2" => 28,
+                                "rank_3" => 10,
+                                "rank_4" => 40,
+                                "rank_5" => 10,
                             ],
                             "fr_FR" => [
-                                "1" => 30,
-                                "2" => 10,
-                                "3" => 20,
-                                "4" => 20,
-                                "5" => 20
+                                "rank_1" => 30,
+                                "rank_2" => 10,
+                                "rank_3" => 20,
+                                "rank_4" => 20,
+                                "rank_5" => 20,
                             ]
                         ],
                         "mobile" => [
                             "en_US" => [
-                                "1" => 12,
-                                "2" => 28,
-                                "3" => 10,
-                                "4" => 50,
-                                "5" => 10
+                                "rank_1" => 12,
+                                "rank_2" => 28,
+                                "rank_3" => 10,
+                                "rank_4" => 40,
+                                "rank_5" => 10,
                             ],
                             "fr_FR" => [
-                                "1" => 30,
-                                "2" => 10,
-                                "3" => 20,
-                                "4" => 20,
-                                "5" => 20
+                                "rank_1" => 30,
+                                "rank_2" => 10,
+                                "rank_3" => 20,
+                                "rank_4" => 20,
+                                "rank_5" => 20,
+                            ]
+                        ],
+                    ],
+                    "enrichment" => [
+                        "ecommerce" => [
+                            "en_US" => [
+                                "rank_1" => 10,
+                                "rank_2" => 40,
+                                "rank_3" => 10,
+                                "rank_4" => 28,
+                                "rank_5" => 12,
+                            ],
+                            "fr_FR" => [
+                                "rank_1" => 20,
+                                "rank_2" => 20,
+                                "rank_3" => 20,
+                                "rank_4" => 10,
+                                "rank_5" => 30,
+                            ]
+                        ],
+                        "mobile" => [
+                            "en_US" => [
+                                "rank_1" => 12,
+                                "rank_2" => 28,
+                                "rank_3" => 10,
+                                "rank_4" => 40,
+                                "rank_5" => 10,
+                            ],
+                            "fr_FR" => [
+                                "rank_1" => 30,
+                                "rank_2" => 10,
+                                "rank_3" => 20,
+                                "rank_4" => 20,
+                                "rank_5" => 20,
+                            ]
+                        ],
+                    ]
+                ],
+                $twoDaysAgo => [
+                    "consistency" => [
+                        "ecommerce" => [
+                            "en_US" => [
+                                "rank_1" => 5,
+                                "rank_2" => 20,
+                                "rank_3" => 15,
+                                "rank_4" => 35,
+                                "rank_5" => 25,
+                            ],
+                            "fr_FR" => [
+                                "rank_1" => 30,
+                                "rank_2" => 10,
+                                "rank_3" => 20,
+                                "rank_4" => 20,
+                                "rank_5" => 20,
+                            ]
+                        ],
+                        "mobile" => [
+                            "en_US" => [
+                                "rank_1" => 12,
+                                "rank_2" => 28,
+                                "rank_3" => 10,
+                                "rank_4" => 40,
+                                "rank_5" => 10,
+                            ],
+                            "fr_FR" => [
+                                "rank_1" => 30,
+                                "rank_2" => 10,
+                                "rank_3" => 20,
+                                "rank_4" => 20,
+                                "rank_5" => 20,
                             ]
                         ]
                     ],
-                    "2019-12-16" => [
+                    'enrichment' => [
                         "ecommerce" => [
                             "en_US" => [
-                                "1" => 5,
-                                "2" => 20,
-                                "3" => 15,
-                                "4" => 35,
-                                "5" => 25
+                                "rank_1" => 25,
+                                "rank_2" => 35,
+                                "rank_3" => 15,
+                                "rank_4" => 20,
+                                "rank_5" => 5,
                             ],
                             "fr_FR" => [
-                                "1" => 30,
-                                "2" => 10,
-                                "3" => 20,
-                                "4" => 20,
-                                "5" => 20
+                                "rank_1" => 30,
+                                "rank_2" => 10,
+                                "rank_3" => 20,
+                                "rank_4" => 20,
+                                "rank_5" => 20,
                             ]
                         ],
                         "mobile" => [
                             "en_US" => [
-                                "1" => 12,
-                                "2" => 28,
-                                "3" => 10,
-                                "4" => 50,
-                                "5" => 10
+                                "rank_1" => 10,
+                                "rank_2" => 50,
+                                "rank_3" => 10,
+                                "rank_4" => 25,
+                                "rank_5" => 12,
                             ],
                             "fr_FR" => [
-                                "1" => 30,
-                                "2" => 10,
-                                "3" => 20,
-                                "4" => 20,
-                                "5" => 20
-                            ]
-                        ]
-                    ]
-                ]
-            ],
-            "enrichment" => [
-                "daily" => [
-                    "2019-12-17" => [
-                        "ecommerce" => [
-                            "en_US" => [
-                                "1" => 10,
-                                "2" => 50,
-                                "3" => 10,
-                                "4" => 28,
-                                "5" => 12
-                            ],
-                            "fr_FR" => [
-                                "1" => 20,
-                                "2" => 20,
-                                "3" => 20,
-                                "4" => 10,
-                                "5" => 30
-                            ]
-                        ],
-                        "mobile" => [
-                            "en_US" => [
-                                "1" => 12,
-                                "2" => 28,
-                                "3" => 10,
-                                "4" => 50,
-                                "5" => 10
-                            ],
-                            "fr_FR" => [
-                                "1" => 30,
-                                "2" => 10,
-                                "3" => 20,
-                                "4" => 20,
-                                "5" => 20
+                                "rank_1" => 20,
+                                "rank_2" => 20,
+                                "rank_3" => 20,
+                                "rank_4" => 10,
+                                "rank_5" => 30,
                             ]
                         ]
                     ],
-                    "2019-12-16" => [
-                        "ecommerce" => [
-                            "en_US" => [
-                                "1" => 25,
-                                "2" => 35,
-                                "3" => 15,
-                                "4" => 20,
-                                "5" => 5
-                            ],
-                            "fr_FR" => [
-                                "1" => 30,
-                                "2" => 10,
-                                "3" => 20,
-                                "4" => 20,
-                                "5" => 20
-                            ]
-                        ],
-                        "mobile" => [
-                            "en_US" => [
-                                "1" => 10,
-                                "2" => 50,
-                                "3" => 10,
-                                "4" => 25,
-                                "5" => 12
-                            ],
-                            "fr_FR" => [
-                                "1" => 20,
-                                "2" => 20,
-                                "3" => 20,
-                                "4" => 10,
-                                "5" => 30
-                            ]
-                        ]
-                    ]
-                ]
-            ],
+                ],
+            ]
         ];
 
         $this->beConstructedWith($rates, new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'));
-        $this->jsonSerialize()->shouldReturn([
+
+        $threeDaysAgo = (new \DateTime('-3 DAY'))->format('Y-m-d');
+        $fourDaysAgo = (new \DateTime('-4 DAY'))->format('Y-m-d');
+        $fiveDaysAgo = (new \DateTime('-5 DAY'))->format('Y-m-d');
+        $sixDaysAgo = (new \DateTime('-6 DAY'))->format('Y-m-d');
+        $sevenDaysAgo = (new \DateTime('-7 DAY'))->format('Y-m-d');
+
+        $this->toArray()->shouldBeLike([
             "consistency" => [
-                "2019-12-17" => [
-                    "1" => 12,
-                    "2" => 28,
-                    "3" => 10,
-                    "4" => 50,
-                    "5" => 10
+                $yesterday => [
+                    "rank_1" => 12,
+                    "rank_2" => 28,
+                    "rank_3" => 10,
+                    "rank_4" => 40,
+                    "rank_5" => 10,
                 ],
-                "2019-12-16" => [
-                    "1" => 5,
-                    "2" => 20,
-                    "3" => 15,
-                    "4" => 35,
-                    "5" => 25
-                ]
+                $twoDaysAgo => [
+                    "rank_1" => 5,
+                    "rank_2" => 20,
+                    "rank_3" => 15,
+                    "rank_4" => 35,
+                    "rank_5" => 25,
+                ],
+                $threeDaysAgo => [],
+                $fourDaysAgo => [],
+                $fiveDaysAgo => [],
+                $sixDaysAgo => [],
+                $sevenDaysAgo => [],
             ],
             "enrichment" => [
-                "2019-12-17" => [
-                    "1" => 10,
-                    "2" => 50,
-                    "3" => 10,
-                    "4" => 28,
-                    "5" => 12
+                $yesterday => [
+                    "rank_1" => 10,
+                    "rank_2" => 40,
+                    "rank_3" => 10,
+                    "rank_4" => 28,
+                    "rank_5" => 12,
                 ],
-                "2019-12-16" => [
-                    "1" => 25,
-                    "2" => 35,
-                    "3" => 15,
-                    "4" => 20,
-                    "5" => 5
-                ]
+                $twoDaysAgo => [
+                    "rank_1" => 25,
+                    "rank_2" => 35,
+                    "rank_3" => 15,
+                    "rank_4" => 20,
+                    "rank_5" => 5,
+                ],
+                $threeDaysAgo => [],
+                $fourDaysAgo => [],
+                $fiveDaysAgo => [],
+                $sixDaysAgo => [],
+                $sevenDaysAgo => [],
             ]
         ]);
     }
