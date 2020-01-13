@@ -14,11 +14,11 @@ use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetAllButLastVersionId
 class KeepLastVersionPurgerAdvisor implements VersionPurgerAdvisorInterface
 {
     /** @var SqlGetAllButLastVersionIdsByIdsQuery */
-    private $getAllButLastVersionsByIdsQuery;
+    private $sqlGetAllButLastVersionsByIdsQuery;
 
-    public function __construct(SqlGetAllButLastVersionIdsByIdsQuery $getLatestVersionsByIdsQuery)
+    public function __construct(SqlGetAllButLastVersionIdsByIdsQuery $sqlGetLatestVersionsByIdsQuery)
     {
-        $this->getAllButLastVersionsByIdsQuery = $getLatestVersionsByIdsQuery;
+        $this->sqlGetAllButLastVersionsByIdsQuery = $sqlGetLatestVersionsByIdsQuery;
     }
 
     /**
@@ -34,7 +34,7 @@ class KeepLastVersionPurgerAdvisor implements VersionPurgerAdvisorInterface
      */
     public function isPurgeable(PurgeableVersionList $versionList): PurgeableVersionList
     {
-        $allButLastVersionsIds = $this->getAllButLastVersionsByIdsQuery->execute($versionList->getVersionIds());
+        $allButLastVersionsIds = $this->sqlGetAllButLastVersionsByIdsQuery->execute($versionList->getVersionIds());
 
         return $versionList->keep($allButLastVersionsIds);
     }

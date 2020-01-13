@@ -77,7 +77,7 @@ SQL;
                 $loggedAt = $lastResult['logged_at'];
                 yield new PurgeableVersionList(
                     $resourceName,
-                    array_map(function($row) {
+                    array_map(function ($row) {
                         return intval($row['id']);
                     }, $results)
                 );

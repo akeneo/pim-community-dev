@@ -175,7 +175,7 @@ class PurgeCommand extends ContainerAwareCommand
             }
         }
 
-        $this->getVersionPurger()->purge($purgeOptions, $output);;
+        $this->getVersionPurger()->purge($purgeOptions, $output);
     }
 
     /**

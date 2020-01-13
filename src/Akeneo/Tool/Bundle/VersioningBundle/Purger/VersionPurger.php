@@ -132,7 +132,7 @@ class VersionPurger implements VersionPurgerInterface
             ->setAllowedTypes('batch_size', 'int')
             ->setAllowedValues('date_operator', ['<', '>']);
 
-        $optionResolver->setNormalizer('limit_date', function(Options $options, $value) {
+        $optionResolver->setNormalizer('limit_date', function (Options $options, $value) {
             return new \DateTime(
                 sprintf('%d days ago', $options['days_number']),
                 new \DateTimeZone('UTC')
