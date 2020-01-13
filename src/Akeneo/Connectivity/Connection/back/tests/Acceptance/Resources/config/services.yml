@@ -15,6 +15,8 @@ services:
 
     akeneo_connectivity.connection.service.user.update_user_permissions:
         class: Akeneo\Connectivity\Connection\Infrastructure\User\Fake\UpdateUserPermissions
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryUserPermissionsRepository'
 
     akeneo_connectivity.connection.service.file_info.does_image_exist:
         class: Akeneo\Connectivity\Connection\Infrastructure\FileInfo\Fake\DoesImageExistQuery
