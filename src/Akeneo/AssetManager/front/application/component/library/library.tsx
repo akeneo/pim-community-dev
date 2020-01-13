@@ -23,7 +23,6 @@ import {CreateModal} from 'akeneoassetmanager/application/component/asset/create
 import {useNotify} from 'akeneoassetmanager/application/hooks/notify';
 import {CreateAssetFamilyModal} from 'akeneoassetmanager/application/component/asset-family/create';
 import {useRedirect} from 'akeneoassetmanager/application/hooks/router';
-import {useAssetFamilyRights} from 'akeneoassetmanager/application/hooks/rights';
 import {useStoredState} from 'akeneoassetmanager/application/hooks/state';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import {useChannels} from 'akeneoassetmanager/application/hooks/channel';
@@ -198,7 +197,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const [isDeleteAllAssetsModalOpen, setDeleteAllAssetsModalOpen] = React.useState<boolean>(false);
   const channels = useChannels(dataProvider.channelFetcher);
   const locales = getLocales(channels, context.channel);
-  const currentAssetFamily = useAssetFamily(dataProvider, currentAssetFamilyIdentifier);
+  const {assetFamily: currentAssetFamily, rights} = useAssetFamily(dataProvider, currentAssetFamilyIdentifier);
   const currentAssetFamilyLabel =
     null === currentAssetFamily
       ? ''
@@ -216,7 +215,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   );
   const filterViews = useFilterViews(currentAssetFamilyIdentifier, dataProvider);
   const notify = useNotify();
-  const rights = useAssetFamilyRights(dataProvider, currentAssetFamilyIdentifier);
   const {redirectToAsset, redirectToAssetFamily} = useRoute();
 
   const familyBreadcrumbConfiguration =
