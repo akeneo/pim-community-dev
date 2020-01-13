@@ -14,7 +14,7 @@ metadata:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
     "helm.sh/hook": {{ .Values.pim.hook.upgradePim.hook | quote }}
-    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-weight": "1"
     "helm.sh/hook-delete-policy": "before-hook-creation"
 spec:
   template:
@@ -40,5 +40,16 @@ spec:
 {{- if .Values.common.phpConfCLI }}
 {{ toYaml .Values.common.phpConfCLI  | indent 12 }}
 {{- end }}
+          volumeMounts:
+            - name: google-cloud-pim-storage-key
+              mountPath: /var/secrets/google/srnt.json
+              subPath: srnt.json
+              readOnly: true
+      volumes:
+        - name: google-cloud-pim-storage-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: srntPimStorageKey
+              path: srnt.json
 {{- end }}
-

@@ -1,3 +1,9 @@
+image:
+  pim:
+    repository: eu.gcr.io/akeneo-ci/pim-enterprise-dev
+    pullPolicy: Always
+    tag: ${pimVersion}
+
 global:
   extraLabels:
     instanceName: ${instanceName}
