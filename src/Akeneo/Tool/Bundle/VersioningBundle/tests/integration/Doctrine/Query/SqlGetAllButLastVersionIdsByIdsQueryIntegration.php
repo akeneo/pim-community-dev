@@ -14,12 +14,12 @@ use Akeneo\Tool\Component\Versioning\Model\Version;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlGetLatestVersionsByIdsQueryIntegration extends TestCase
+class SqlGetAllButLastVersionIdsByIdsQueryIntegration extends TestCase
 {
     /**
      * @test
      */
-    public function it_only_returns_the_ids_of_the_latest_versions(): void
+    public function it_returns_all_ids_but_the_latest_versions(): void
     {
         $versionIds = $this->createVersions([
             'product_42_first_version' => [
@@ -62,9 +62,9 @@ class SqlGetLatestVersionsByIdsQueryIntegration extends TestCase
         unset($versionIds['product_456_not_requested_last_version']);
 
         $expectedIds = [
-            $versionIds['product_42_last_version'],
-            $versionIds['product_123_unique_version'],
-            $versionIds['attribute_25_last_version'],
+            $versionIds['product_42_first_version'],
+            $versionIds['product_42_second_version'],
+            $versionIds['attribute_25_first_version'],
         ];
 
         $latestVersionIds = $this->getQuery()->execute($versionIds);

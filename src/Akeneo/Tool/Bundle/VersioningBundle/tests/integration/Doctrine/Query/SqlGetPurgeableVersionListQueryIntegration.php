@@ -27,8 +27,8 @@ class SqlGetPurgeableVersionListQueryIntegration extends TestCase
         $this->givenProductVersionsOlderThan($limitDate, 2);
         $this->givenAttributeVersionYoungerThan($limitDate);
 
-        $purgeableVersionsIdsCount = $this->getQuery()->countYoungerThan(Product::class, $limitDate);
-        $this->assertSame(12, $purgeableVersionsIdsCount, 'There should be 12 purgeable versions');
+        $purgeableVersionsIdsCount = $this->getQuery()->countByResource(Product::class);
+        $this->assertSame(14, $purgeableVersionsIdsCount, 'There should be 14 purgeable resources');
 
         $purgeableVersionsIds = [];
         $purgeableVersionsLists = $this->getQuery()->youngerThan(Product::class, $limitDate, 10);
@@ -50,8 +50,8 @@ class SqlGetPurgeableVersionListQueryIntegration extends TestCase
         $this->givenProductVersionsAtLeastAsYoungAs($limitDate, 2);
         $this->givenAttributeVersionOlderThan($limitDate);
 
-        $purgeableVersionsIdsCount = $this->getQuery()->countOlderThan(Product::class, $limitDate);
-        $this->assertSame(12, $purgeableVersionsIdsCount, 'There should be 12 purgeable versions');
+        $purgeableVersionsIdsCount = $this->getQuery()->countByResource(Product::class);
+        $this->assertSame(14, $purgeableVersionsIdsCount, 'There should be 14 purgeable versions');
 
         $purgeableVersionsIds = [];
         $purgeableVersionsLists = $this->getQuery()->olderThan(Product::class, $limitDate, 10);
@@ -59,7 +59,14 @@ class SqlGetPurgeableVersionListQueryIntegration extends TestCase
             $purgeableVersionsIds = array_merge($purgeableVersionsIds, $purgeableVersionList->getVersionIds());
         }
 
-        $this->assertEquals($oldProductVersionIds, $purgeableVersionsIds,  'All oldest versions, and only they, should be returned');
+        $this->assertEquals(
+            $oldProductVersionIds,
+            $purgeableVersionsIds,
+            'All oldest versions, and only they, should be returned',
+            0,
+            2,
+            true
+        );
     }
 
     /**
@@ -134,11 +141,11 @@ class SqlGetPurgeableVersionListQueryIntegration extends TestCase
             'UPDATE pim_versioning_version SET logged_at = :logged_at WHERE id = :version_id',
             [
                 'logged_at' => $loggedAt->format('Y-m-d H:i:s'),
-                'version_id' => $version->getId()
+                'version_id' => $version->getId(),
             ],
             [
                 'logged_at' => \PDO::PARAM_STR,
-                'version_id' => \PDO::PARAM_INT
+                'version_id' => \PDO::PARAM_INT,
             ]
         );
 

@@ -27,7 +27,7 @@ class SqlGetPurgeableVersionListQuery
     public function youngerThan(string $resourceName, \DateTime $date, int $listSize): iterable
     {
         $query = <<<SQL
-SELECT id FROM pim_versioning_version 
+SELECT id, logged_at FROM pim_versioning_version 
 WHERE resource_name = :resource_name  
   AND ((logged_at = :logged_at AND id > :last_id) OR logged_at > :logged_at) 
 ORDER BY logged_at ASC, id ASC LIMIT :list_size
