@@ -33,7 +33,7 @@ SQL;
 
         $this->getConnection()->executeQuery($sql);
 
-        $this->reExecuteMigration('_4_0_20190916122239_remove_product_empty_raw_values');
+        $this->executeMigration('_4_0_20190916122239_remove_product_empty_raw_values');
 
         $this->assertProductRawValuesEquals('product1', '{}');
         $this->assertProductRawValuesEquals('product2', '{}');

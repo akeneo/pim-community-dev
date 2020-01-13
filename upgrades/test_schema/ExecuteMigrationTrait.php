@@ -25,13 +25,8 @@ trait ExecuteMigrationTrait
         return $this->get('pim_catalog.command_launcher');
     }
 
-    private function reExecuteMigration(string $migrationLabel): void
+    private function executeMigration(string $migrationLabel): void
     {
-        $resultDown = $this->getCommandLauncher()->executeForeground(
-            sprintf('doctrine:migrations:execute %s --down -n', $migrationLabel)
-        );
-        Assert::assertEquals(0, $resultDown->getCommandStatus(), \json_encode($resultDown->getCommandOutput()));
-
         $resultUp = $this->getCommandLauncher()->executeForeground(
             sprintf('doctrine:migrations:execute %s --up -n', $migrationLabel)
         );

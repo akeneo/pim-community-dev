@@ -21,7 +21,7 @@ final class Version_4_0_20191223132437_data_quality_insights_add_dynamic_templat
         $client = $builder->setHosts($hosts)->build()->indices();
 
         $existingMapping = $client->getMapping(['index' => $this->getParameter('product_and_product_model_index_name')]);
-        $this->reExecuteMigration('_4_0_20191223132437_data_quality_insights_add_dynamic_template');
+        $this->executeMigration('_4_0_20191223132437_data_quality_insights_add_dynamic_template');
         $migratedMapping = $client->getMapping(['index' => $this->getParameter('product_and_product_model_index_name')]);
         
         Assert::assertCount(count($this->getDynamicTemplates($existingMapping)) + 2, $this->getDynamicTemplates($migratedMapping));

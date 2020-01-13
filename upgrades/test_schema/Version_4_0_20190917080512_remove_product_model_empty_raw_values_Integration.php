@@ -35,7 +35,7 @@ INSERT INTO pim_catalog_product_model VALUES
 SQL;
         $this->getConnection()->executeQuery($sql, ['familyId' => $familyId]);
 
-        $this->reExecuteMigration('_4_0_20190917080512_remove_product_model_empty_raw_values');
+        $this->executeMigration('_4_0_20190917080512_remove_product_model_empty_raw_values');
 
         $this->assertProductModelRawValuesEquals('pm1', '{}');
         $this->assertProductModelRawValuesEquals('pm2', '{}');

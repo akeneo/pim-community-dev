@@ -47,7 +47,7 @@ class Version_4_0_20191004145507_remove_compute_model_descendant_jobs_Integratio
         $productsFound = $this->getSearchQueryResults($ESQuery);
         Assert::assertCount(0, $productsFound);
 
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->executeMigration(self::MIGRATION_LABEL);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         Assert::assertNull($this->getComputeProductModelDescendantJobId());
