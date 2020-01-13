@@ -104,6 +104,7 @@ $rules = [
             'Symfony\Component\HttpKernel',
             'Symfony\Component\Security',
             'Symfony\Component\Validator\Constraints',
+            'Symfony\Contracts\EventDispatcher',
             'GuzzleHttp\ClientInterface',
             'GuzzleHttp\Exception',
             'Mekras\Speller',
