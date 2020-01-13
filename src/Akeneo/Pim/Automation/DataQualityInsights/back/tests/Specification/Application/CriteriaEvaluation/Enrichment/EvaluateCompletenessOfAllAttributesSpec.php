@@ -28,15 +28,13 @@ final class EvaluateCompletenessOfAllAttributesSpec extends ObjectBehavior
 {
     public function let(
         CalculateProductCompletenessInterface $completenessCalculator
-    )
-    {
+    ) {
         $this->beConstructedWith($completenessCalculator);
     }
 
     public function it_evaluates_completeness_of_all_attributes(
         $completenessCalculator
-    )
-    {
+    ) {
         $rates = new CriterionRateCollection();
         $criterionEvaluation = new CriterionEvaluation(
             new CriterionEvaluationId(),

@@ -55,13 +55,13 @@ final class DashboardRates
         $result = $this->convertRatesByPeriodicity($this->periodicity);
 
         $actions = [
-            Periodicity::DAILY => function(array $rates) {
+            Periodicity::DAILY => function (array $rates) {
                 return $this->ensureRatesContainEnoughDays($rates);
             },
-            Periodicity::WEEKLY => function(array $rates) {
+            Periodicity::WEEKLY => function (array $rates) {
                 return $this->ensureRatesContainEnoughWeeks($rates);
             },
-            Periodicity::MONTHLY => function(array $rates) {
+            Periodicity::MONTHLY => function (array $rates) {
                 return $this->ensureRatesContainEnoughMonths($rates);
             },
         ];

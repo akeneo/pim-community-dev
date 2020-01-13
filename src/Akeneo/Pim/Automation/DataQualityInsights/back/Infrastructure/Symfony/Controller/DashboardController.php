@@ -54,8 +54,7 @@ final class DashboardController
             $rates = $this->dashboardRatesProjectionRepository->findCatalogProjection(new ChannelCode($channel), new LocaleCode($locale), new Periodicity($periodicity));
         }
 
-        if(empty($rates))
-        {
+        if (empty($rates)) {
             return new JsonResponse([]);
         }
 

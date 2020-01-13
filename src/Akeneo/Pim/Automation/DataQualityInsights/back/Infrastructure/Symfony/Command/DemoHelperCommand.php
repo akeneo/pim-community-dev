@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
 
-
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateDashboardRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\DictionarySource;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
@@ -50,8 +49,7 @@ final class DemoHelperCommand extends Command
         ConsolidateDashboardRates $consolidateDashboardRates,
         DashboardRatesProjectionRepository $dashboardRatesProjectionRepository,
         Connection $db
-    )
-    {
+    ) {
         $this->productValueInDatabaseDictionarySource = $productValueInDatabaseDictionarySource;
         $this->aspellDictionaryGenerator = $aspellDictionaryGenerator;
         $this->initializeCriteriaEvaluation = $initializeCriteriaEvaluation;
@@ -108,13 +106,11 @@ final class DemoHelperCommand extends Command
 
         $results = $statement->fetchAll();
 
-        foreach($results as $result)
-        {
+        foreach ($results as $result) {
             $rates = json_decode($result['rates'], true);
             $ratesOfTheDay = $rates['daily'][$now->format('Y-m-d')];
 
-            if(empty($ratesOfTheDay))
-            {
+            if (empty($ratesOfTheDay)) {
                 continue;
             }
 
@@ -184,28 +180,25 @@ final class DemoHelperCommand extends Command
 
             $rates['daily'][$now->modify('-1 DAY')->format('Y-m-d')] = $ratesOfTheDay;
 
-            for($i=2; $i < 8; $i++)
-            {
+            for ($i=2; $i < 8; $i++) {
                 $rates['daily'][$now->modify(sprintf('-%d DAY', $i))->format('Y-m-d')] = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]);
             }
 
             $rates['weekly'][$now->modify('sunday last week')->format('Y-m-d')] = $ratesOfTheDay;
 
-            for($i=1; $i < 4; $i++)
-            {
+            for ($i=1; $i < 4; $i++) {
                 $rates['weekly'][$now->modify(sprintf('sunday %d weeks ago', $i))->format('Y-m-d')] = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]);
             }
 
             $rates['monthly'][$now->modify('-1 MONTH')->format('Y-m-t')] = $ratesOfTheDay;
 
-            for($i=2; $i < 7; $i++)
-            {
+            for ($i=2; $i < 7; $i++) {
                 $rates['monthly'][$now->modify(sprintf('-%d MONTH', $i))->format('Y-m-t')] = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]);
             }
 
             $projectionTypeAndCode = ['type' => null, 'code' => null];
 
-            switch($result['type']){
+            switch ($result['type']) {
                 case 'catalog':
                     $projectionTypeAndCode['type'] = DashboardProjectionType::catalog();
                     $projectionTypeAndCode['code'] = DashboardProjectionCode::catalog();
@@ -228,8 +221,7 @@ final class DemoHelperCommand extends Command
                 )
             );
 
-            $io->writeln(sprintf('    Fake consolidation for <info>%s</info> projection type and <info>%s</info> projection code',$result['type'], $result['code']));
-
+            $io->writeln(sprintf('    Fake consolidation for <info>%s</info> projection type and <info>%s</info> projection code', $result['type'], $result['code']));
         }
 
         $io->success('Fake consolidation generated');
@@ -237,14 +229,10 @@ final class DemoHelperCommand extends Command
 
     private function generateChaos(array $rates, int $numberOfProducts, array $idealRates): array
     {
-        foreach($rates as $axe => $scope)
-        {
-            foreach($scope as $scopeCode => $locale)
-            {
-                foreach($locale as $localeCode => $ranks)
-                {
-                    foreach($idealRates as $rankCode => $percentage)
-                    {
+        foreach ($rates as $axe => $scope) {
+            foreach ($scope as $scopeCode => $locale) {
+                foreach ($locale as $localeCode => $ranks) {
+                    foreach ($idealRates as $rankCode => $percentage) {
                         $rates[$axe][$scopeCode][$localeCode][$rankCode] = ($numberOfProducts*$percentage/100) + (rand(1, intval(ceil($numberOfProducts*5/100))));
                     }
                 }
@@ -258,14 +246,10 @@ final class DemoHelperCommand extends Command
     {
         $numberOfProducts = 0;
 
-        foreach($rates as $axe => $scope)
-        {
-            foreach($scope as $scopeCode => $locale)
-            {
-                foreach($locale as $localeCode => $ranks)
-                {
-                    foreach($ranks as $rankCode => $numberOfProductsEvaluated)
-                    {
+        foreach ($rates as $axe => $scope) {
+            foreach ($scope as $scopeCode => $locale) {
+                foreach ($locale as $localeCode => $ranks) {
+                    foreach ($ranks as $rankCode => $numberOfProductsEvaluated) {
                         $numberOfProducts += intval($numberOfProductsEvaluated);
                     }
 
