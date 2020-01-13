@@ -11,6 +11,7 @@ services:
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_criteria'
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
+            - name: akeneo_batch.job.not_visible
 
     akeneo.pim.automation.data_quality_insights.job.periodic_tasks:
         class: '%pim_connector.job.simple_job.class%'
@@ -24,6 +25,7 @@ services:
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.purge_outdated_data'
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
+            - name: akeneo_batch.job.not_visible
 
     #Steps
     akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_criteria:
