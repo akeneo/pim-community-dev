@@ -12,6 +12,7 @@ import useGetHighlights from "./Spellcheck/useGetHighlights";
 import useFetchTextAnalysis from "./Spellcheck/useFetchTextAnalysis";
 import useGetPopover from "./Spellcheck/useGetPopover";
 import useGetWidget from "./Spellcheck/useGetWidget";
+import useFetchIgnoreTextIssue from "./Spellcheck/useFetchIgnoreTextIssue";
 
 export {
   useFetchDqiDashboardData,
@@ -28,4 +29,5 @@ export {
   useFetchTextAnalysis as useFetchSpellcheckTextAnalysis,
   useGetPopover as useGetSpellcheckPopover,
   useGetWidget as useGetSpellcheckWidget,
+  useFetchIgnoreTextIssue,
 }

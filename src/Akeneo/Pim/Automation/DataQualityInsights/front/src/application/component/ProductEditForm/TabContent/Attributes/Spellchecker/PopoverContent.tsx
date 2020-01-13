@@ -1,9 +1,8 @@
 import React, {FunctionComponent, useCallback} from "react";
-import {MistakeElement} from "../../../../../../domain";
+import {MistakeElement, setEditorContent} from "../../../../../../domain";
 import {hidePopoverAction} from "../../../../../../infrastructure/reducer";
 import {useDispatch} from "react-redux";
-import {useGetSpellcheckWidget} from "../../../../../../infrastructure/hooks";
-import {setEditorContent} from "../../../../../../domain";
+import {useFetchIgnoreTextIssue, useGetSpellcheckWidget} from "../../../../../../infrastructure/hooks";
 
 const __ = require("oro/translator");
 
@@ -24,6 +23,7 @@ function replaceContentFromRange(content: string, replacement: string, start: nu
 const PopoverContent: FunctionComponent<PopoverContentProps> = ({mistake, widgetId}) => {
   const dispatchAction = useDispatch();
   const widget = useGetSpellcheckWidget(widgetId);
+  const {dispatchIgnoreTextIssue} = useFetchIgnoreTextIssue();
 
   const handleSuggestionClick = useCallback((suggestion: string) => {
 
@@ -38,6 +38,16 @@ const PopoverContent: FunctionComponent<PopoverContentProps> = ({mistake, widget
 
     setEditorContent(widget.editor, content);
 
+    dispatchAction(hidePopoverAction());
+  }, [widget, mistake]);
+
+  const handleIgnoreClick = useCallback(() => {
+    if (!widget || !mistake) {
+      dispatchAction(hidePopoverAction());
+      return;
+    }
+
+    dispatchIgnoreTextIssue(mistake.text);
     dispatchAction(hidePopoverAction());
   }, [widget, mistake]);
 
@@ -78,7 +88,7 @@ const PopoverContent: FunctionComponent<PopoverContentProps> = ({mistake, widget
           </div>
           <footer>
             <button className="AknSpellCheck-popover-ignore-button"
-              onClick={()=> {alert('handle ignore suggestions');}}
+              onClick={handleIgnoreClick}
             >
               <span>{__('akeneo_data_quality_insights.product_edit_form.spellcheck_popover.ignore_all_suggestions_button_label')}</span>
             </button>
