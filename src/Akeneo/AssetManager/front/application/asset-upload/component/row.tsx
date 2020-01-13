@@ -45,7 +45,6 @@ const Cell = styled.div<{width?: number}>`
   ${props =>
     props.width !== undefined &&
     css`
-      overflow: hidden;
       width: ${props.width}px;
     `}
 `;

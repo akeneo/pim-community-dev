@@ -11,7 +11,7 @@ const StatusLabel = styled.span`
   display: inline-block;
   font-size: 11px;
   height: 18px;
-  line-height: 16px;
+  line-height: 17px;
   max-width: 100%;
   overflow: hidden;
   padding: 0 4px;
