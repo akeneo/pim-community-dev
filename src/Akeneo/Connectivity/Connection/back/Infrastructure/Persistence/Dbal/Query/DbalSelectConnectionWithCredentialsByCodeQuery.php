@@ -29,24 +29,24 @@ final class DbalSelectConnectionWithCredentialsByCodeQuery implements SelectConn
     {
         $selectSQL = <<<SQL
 SELECT
-    c.code,
-    c.label,
-    c.flow_type,
-    c.image,
-    c.client_id,
+    `connection`.code,
+    `connection`.label,
+    `connection`.flow_type,
+    `connection`.image,
+    `connection`.client_id,
     client.random_id,
     client.secret,
-    u.username,
-    urole.role_id,
-    g.id as group_id
-FROM akeneo_connectivity_connection c
-INNER JOIN pim_api_client client ON c.client_id = client.id
-INNER JOIN oro_user u ON c.user_id = u.id
-INNER JOIN oro_user_access_role urole ON u.id = urole.user_id
-INNER JOIN oro_user_access_group ugroup ON u.id = ugroup.user_id
-LEFT JOIN oro_access_group g ON ugroup.group_id = g.id
-    AND g.name <> :default_group
-WHERE code = :code
+    `user`.username,
+    user_role.role_id,
+    `group`.id as group_id
+FROM akeneo_connectivity_connection `connection`
+INNER JOIN pim_api_client client ON `connection`.client_id = client.id
+INNER JOIN oro_user `user` ON `connection`.user_id = `user`.id
+INNER JOIN oro_user_access_role user_role ON `user`.id = user_role.user_id
+INNER JOIN oro_user_access_group user_group ON `user`.id = user_group.user_id
+LEFT JOIN oro_access_group `group` ON user_group.group_id = `group`.id
+    AND `group`.name <> :default_group
+WHERE `connection`.code = :code
 SQL;
 
         $data = $this->dbalConnection->executeQuery($selectSQL, [
