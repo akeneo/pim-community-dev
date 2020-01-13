@@ -11,6 +11,9 @@ use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\FetchMode;
 
 /**
+ * Fetch a connection with credentials and permissions included. Only one `user_role` and `user_group` (not counting the
+ * default group `All`) should be defined per connection.
+ *
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
