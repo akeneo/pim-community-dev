@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
 
-
 final class DictionaryWord
 {
     /** @var string */
@@ -11,8 +10,7 @@ final class DictionaryWord
 
     public function __construct(string $word)
     {
-        if(preg_match('~^[a-zA-Z]+$~', $word) !== 1)
-        {
+        if (preg_match('~^[a-zA-Z]+$~', $word) !== 1) {
             throw new \InvalidArgumentException('A word must be contain only alphabetical characters.');
         }
 

@@ -50,7 +50,7 @@ SQL;
         $statement = $this->db->executeQuery($query, [
             'localeCode' => strval($localeCode),
         ]);
-        return array_map(function($row) {
+        return array_map(function ($row) {
             return new Read\TextCheckerDictionaryWord(
                 new LocaleCode($row['locale_code']),
                 new DictionaryWord($row['word'])
@@ -73,15 +73,12 @@ SQL;
 
         $results = $statement->fetchAll(FetchMode::ASSOCIATIVE);
 
-        if(empty($results))
-        {
+        if (empty($results)) {
             return false;
         }
 
-        foreach($results as $result)
-        {
-            if($result['word'] === strval($word))
-            {
+        foreach ($results as $result) {
+            if ($result['word'] === strval($word)) {
                 return true;
             }
         }

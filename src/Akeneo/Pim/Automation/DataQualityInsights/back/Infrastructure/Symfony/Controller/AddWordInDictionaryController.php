@@ -53,8 +53,7 @@ class AddWordInDictionaryController
         SupportedLocaleChecker $supportedLocaleChecker,
         TextCheckerDictionaryRepositoryInterface $textCheckerDictionaryRepository,
         EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->featureFlag = $featureFlag;
         $this->supportedLocaleChecker = $supportedLocaleChecker;
         $this->textCheckerDictionaryRepository = $textCheckerDictionaryRepository;
@@ -78,9 +77,7 @@ class AddWordInDictionaryController
             $this->eventDispatcher->dispatch(new WordIgnoredEvent($productId), WordIgnoredEvent::WORD_IGNORED);
 
             return new Response(null, Response::HTTP_CREATED);
-        }
-        catch(\Throwable $e)
-        {
+        } catch (\Throwable $e) {
             return new Response(null, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }

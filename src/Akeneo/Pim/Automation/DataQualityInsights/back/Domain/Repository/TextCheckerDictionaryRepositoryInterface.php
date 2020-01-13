@@ -11,11 +11,11 @@
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>

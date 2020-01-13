@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
-
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluateProductsCriteriaParameters;
@@ -44,8 +43,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
         JobInstanceRepository $jobInstanceRepository,
         TokenStorageInterface $tokenStorage,
         LoggerInterface $logger
-    )
-    {
+    ) {
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
         $this->queueJobLauncher = $queueJobLauncher;
@@ -82,8 +80,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
 
         $user = $this->tokenStorage->getToken()->getUser();
 
-        if(! $user instanceof UserInterface)
-        {
+        if (! $user instanceof UserInterface) {
             throw new \RuntimeException('Unable to schedule criterion evaluation. User is not found.');
         }
 
