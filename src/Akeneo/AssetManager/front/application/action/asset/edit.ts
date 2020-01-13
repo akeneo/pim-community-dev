@@ -23,7 +23,11 @@ export const saveAsset = () => async (dispatch: any, getState: () => EditState):
   try {
     const errors = await assetSaver.save(asset);
     if (errors) {
-      dispatch(assetEditionErrorOccured(errors));
+      if (Array.isArray(errors)) {
+        dispatch(assetEditionErrorOccured(errors));
+      } else {
+        console.error(errors);
+      }
       dispatch(notifyAssetSaveValidationError());
 
       return;

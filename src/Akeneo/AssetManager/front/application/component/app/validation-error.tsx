@@ -9,7 +9,7 @@ export const getErrorsView = (
   field: string,
   searchMethod: (field: string) => (error: ValidationError) => boolean = equalsFilter
 ) => {
-  if (errors.find(searchMethod(field)) === undefined) {
+  if (!Array.isArray(errors) || errors.find(searchMethod(field)) === undefined) {
     return null;
   }
 

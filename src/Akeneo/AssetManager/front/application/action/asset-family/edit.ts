@@ -26,7 +26,11 @@ export const saveAssetFamily = () => async (dispatch: any, getState: () => EditS
   try {
     const errors = await assetFamilySaver.save(assetFamily);
     if (errors) {
-      dispatch(assetFamilyEditionErrorOccured(errors));
+      if (Array.isArray(errors)) {
+        dispatch(assetFamilyEditionErrorOccured(errors));
+      } else {
+        console.error(errors);
+      }
       dispatch(notifyAssetFamilySaveFailed());
 
       return;

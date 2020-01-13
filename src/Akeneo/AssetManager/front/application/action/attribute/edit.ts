@@ -41,7 +41,11 @@ export const saveAttribute = (dismiss: boolean = true) => async (
   try {
     let errors = await attributeSaver.save(attribute);
     if (errors) {
-      dispatch(attributeEditionErrorOccured(errors));
+      if (Array.isArray(errors)) {
+        dispatch(attributeEditionErrorOccured(errors));
+      } else {
+        console.error(errors);
+      }
       dispatch(notifyAttributeSaveValidationError());
 
       return;
