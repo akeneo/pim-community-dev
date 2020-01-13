@@ -73,7 +73,7 @@ export const AssetPreview = ({
 }: AssetPreviewProps) => {
   const [currentAssetCode, setCurrentAssetCode] = React.useState(initialAssetCode);
   const selectedAsset: ListAsset | undefined = getAssetByCode(assetCollection, currentAssetCode);
-  const assetFamily = useAssetFamily(dataProvider, assetFamilyIdentifier);
+  const {assetFamily} = useAssetFamily(dataProvider, assetFamilyIdentifier);
   const assetCodeCollection = getAssetCodes(assetCollection);
   const setPreviousAsset = () => setCurrentAssetCode(assetCode => getPreviousAssetCode(assetCodeCollection, assetCode));
   const setNextAsset = () => setCurrentAssetCode(assetCode => getNextAssetCode(assetCodeCollection, assetCode));
