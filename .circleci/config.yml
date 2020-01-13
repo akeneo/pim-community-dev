@@ -29,22 +29,26 @@ jobs:
               sudo chown -R 1000:1000 ~/.composer
               sudo chown -R 1000:1000 ~/.cache/yarn
       - run:
-            name: Install back and front dependencies
-            command: make dependencies
+            name: Pull docker images
+            command: docker-compose pull elasticsearch mysql node php
       - run:
-            name: Check PIM requirements
+            name: Start mysql and elasticsearch
             command: |
                 C='mysql elasticsearch' make up
-                docker/wait_docker_up.sh
-                make check-requirements
+      - run:
+            name: Install back and front dependencies
+            command: make dependencies
       - run:
             name: Install asset
             command: make assets
       - run:
             name: Build Javascript
+            command: make javascript-dev
+      - run:
+            name: Check PIM requirements
             command: |
-                make javascript-test
-                make javascript-dev
+                docker/wait_docker_up.sh
+                make check-requirements
       - run:
             name: Change owner on project dir after install
             command: sudo chmod -R 777 ../project
@@ -196,6 +200,9 @@ jobs:
               name: Front unit tests
               command: make unit-front
         - run:
+              name: Build test environment for acceptance and integration tests
+              command: make javascript-test
+        - run:
               name: Front acceptance tests
               command: make acceptance-front
         - run:
@@ -305,12 +312,10 @@ workflows:
                     - build_dev
           - test_back_phpunit:
                 requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
+                    - build_dev
           - test_back_data_migrations:
                 requires:
-                  - test_back_static_and_acceptance
-                  - test_front_static_acceptance_and_integration
+                    - build_dev
           - back_behat_legacy:
                 requires:
-                    - test_back_phpunit
+                    - build_dev
