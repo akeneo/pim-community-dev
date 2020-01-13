@@ -7,6 +7,7 @@ import {
   assetFamilyAssetCountUpdated,
   assetFamilyEditionAttributeAsMainMediaUpdated,
   assetFamilyEditionTransformationsUpdated,
+  assetFamilyEditionSubmission,
 } from 'akeneoassetmanager/domain/event/asset-family/edit';
 import {
   notifyAssetFamilyWellSaved,
@@ -23,6 +24,7 @@ import TransformationCollection from 'akeneoassetmanager/domain/model/asset-fami
 export const saveAssetFamily = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const assetFamily = getState().form.data;
 
+  dispatch(assetFamilyEditionSubmission());
   try {
     const errors = await assetFamilySaver.save(assetFamily);
     if (errors) {
