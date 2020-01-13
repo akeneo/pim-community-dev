@@ -107,7 +107,7 @@
     "formik": "^2.0.6",
     "jquery": "3.4.0",
     "less": "^3.9.0",
-    "lodash": "4.17.14",
+    "lodash": "^4.17.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-router-dom": "^5.1.0",
