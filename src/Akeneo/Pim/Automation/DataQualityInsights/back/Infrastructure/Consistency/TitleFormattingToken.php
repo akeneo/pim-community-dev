@@ -18,11 +18,19 @@ class TitleFormattingToken
     /** @var string */
     private $kernelProjectDir;
 
-    public function __construct(string $jwtVerifyingKey, string $akeneoPimUrl, string $kernelProjectDir)
+    /** @var string */
+    private $papoProjectCodeTruncated;
+
+    /** @var string */
+    private $papoProjectCodeHashed;
+
+    public function __construct(string $jwtVerifyingKey, string $akeneoPimUrl, string $kernelProjectDir, string $papoProjectCodeTruncated, string $papoProjectCodeHashed)
     {
         $this->jwtVerifyingKey = $jwtVerifyingKey;
         $this->akeneoPimUrl = $akeneoPimUrl;
         $this->kernelProjectDir = $kernelProjectDir;
+        $this->papoProjectCodeTruncated = $papoProjectCodeTruncated;
+        $this->papoProjectCodeHashed = $papoProjectCodeHashed;
     }
 
     public function getTokenAsString(): string
@@ -41,6 +49,8 @@ class TitleFormattingToken
         return [
             'akeneo_pim_url' => $this->akeneoPimUrl,
             'vcs' => $this->extractAkeneoVcs(),
+            'papo_project_code_truncated' => $this->papoProjectCodeTruncated,
+            'papo_project_code_hashed' => $this->papoProjectCodeHashed,
         ];
     }
 

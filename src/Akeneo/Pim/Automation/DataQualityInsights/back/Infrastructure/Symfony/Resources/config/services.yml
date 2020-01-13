@@ -1,6 +1,8 @@
 parameters:
     env(DATA_QUALITY_INSIGHTS_JWT_VERIFYING_KEY): 'OXvfb6/iSYOgqD8w044j8PTMWDwbSKjgJDhrNu3NwAc='
     env(AKENEO_PIM_URL): ''
+    env(PAPO_PROJECT_CODE_TRUNCATED): ''
+    env(PAPO_PROJECT_CODE_HASHED): ''
 
 services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock: ~
@@ -61,6 +63,8 @@ services:
             - '%env(DATA_QUALITY_INSIGHTS_JWT_VERIFYING_KEY)%'
             - '%env(AKENEO_PIM_URL)%'
             - '%kernel.project_dir%'
+            - '%env(PAPO_PROJECT_CODE_TRUNCATED)%'
+            - '%env(PAPO_PROJECT_CODE_HASHED)%'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates:
         arguments:
