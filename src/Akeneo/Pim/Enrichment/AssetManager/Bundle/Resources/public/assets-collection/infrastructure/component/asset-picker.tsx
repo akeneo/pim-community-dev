@@ -8,10 +8,10 @@ import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/c
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import Basket from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket';
 import SearchBar from 'akeneoassetmanager/application/component/asset/list/search-bar';
-import fetchAllChannels from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
+import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
 import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
 import Key from 'akeneoassetmanager/tools/key';
@@ -25,6 +25,9 @@ import ListAsset, {
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import MosaicResult from 'akeneoassetmanager/application/component/asset/list/mosaic';
+import {useFetchResult} from 'akeneoassetmanager/application/hooks/grid';
+import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -48,6 +51,27 @@ const Grid = styled.div`
   flex: 1;
   height: 100%;
   margin: 0 40px;
+`;
+
+const FilterContainer = styled.div`
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  width: 300px;
+  padding-right: 20px;
+  padding-left: 30px;
+  border-right: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  overflow-y: auto;
+  height: 100%;
+`;
+
+const FilterTitle = styled.div`
+  padding-bottom: 10px;
+  padding-top: 4px;
+  color: ${(props: ThemedProps<void>) => props.theme.color.grey100};
+  text-transform: uppercase;
+  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
+  background-color: white;
 `;
 
 const createQuery = (
@@ -101,66 +125,9 @@ const dataProvider = {
   channelFetcher: {
     fetchAll: fetchAllChannels,
   },
-  assetAttributesFetcher: {
-    fetchAll: (assetFamilyIdentifier: AssetFamilyIdentifier) => {
-      return attributeFetcher.fetchAll(assetFamilyIdentifier);
-    },
+  assetAttributeFetcher: {
+    fetchAll: attributeFetcher.fetchAllNormalized,
   },
-};
-
-const MAX_RESULT = 500;
-const FIRST_PAGE_SIZE = 50;
-
-let totalRequestCount = 0;
-const useFetchResult = (
-  isOpen: boolean,
-  dataProvider: any,
-  assetFamilyIdentifier: AssetFamilyIdentifier,
-  filters: Filter[],
-  searchValue: string,
-  excludedAssetCollection: AssetCode[],
-  context: Context,
-  setResultCollection: (resultCollection: ListAsset[]) => void,
-  setResultCount: (count: number) => void
-) => {
-  React.useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const query = createQuery(
-      assetFamilyIdentifier,
-      filters,
-      searchValue,
-      excludedAssetCollection,
-      context.channel,
-      context.locale,
-      0,
-      FIRST_PAGE_SIZE
-    );
-    totalRequestCount++;
-
-    dataProvider.assetFetcher.search(query).then((searchResult: any) => {
-      const currentRequestCount = totalRequestCount;
-      setResultCollection(searchResult.items);
-      setResultCount(searchResult.matchesCount);
-
-      if (searchResult.matchesCount > FIRST_PAGE_SIZE) {
-        fetchMoreResult(currentRequestCount)(query, setResultCollection);
-      }
-    });
-  }, [filters, searchValue, context, excludedAssetCollection, isOpen]);
-};
-
-const fetchMoreResult = (currentRequestCount: number) => (
-  query: Query,
-  setResultCollection: (resultCollection: ListAsset[]) => void
-) => {
-  dataProvider.assetFetcher.search({...query, size: MAX_RESULT}).then((searchResult: any) => {
-    if (currentRequestCount === totalRequestCount) {
-      setResultCollection(searchResult.items);
-    }
-  });
 };
 
 export const AssetPicker = ({
@@ -175,8 +142,7 @@ export const AssetPicker = ({
   const [filterCollection, setFilterCollection] = React.useState<Filter[]>([]);
   const [selection, setSelection] = React.useState<AssetCode[]>([]);
   const [searchValue, setSearchValue] = React.useState<string>('');
-  const [resultCount, setResultCount] = React.useState<number | null>(null);
-  const [resultCollection, setResultCollection] = React.useState<ListAsset[]>([]);
+  const [searchResult, setSearchResult] = React.useState<SearchResult<ListAsset> | null>(null);
   const [context, setContext] = React.useState<Context>(initialContext);
 
   const resetModal = () => {
@@ -191,7 +157,7 @@ export const AssetPicker = ({
     resetModal();
   };
 
-  useFetchResult(
+  useFetchResult(createQuery)(
     isOpen,
     dataProvider,
     assetFamilyIdentifier,
@@ -199,19 +165,12 @@ export const AssetPicker = ({
     searchValue,
     excludedAssetCollection,
     context,
-    setResultCollection,
-    setResultCount
+    setSearchResult
   );
   const filterViews = useFilterViews(assetFamilyIdentifier, dataProvider);
-
-  React.useEffect(() => {
-    const cancelModalOnEscape = (event: KeyboardEvent) => (Key.Escape === event.code ? cancelModal() : null);
-    document.addEventListener('keydown', cancelModalOnEscape);
-
-    return () => document.removeEventListener('keydown', cancelModalOnEscape);
-  }, []);
-
   const canAddAsset = canAddAssetToCollection(addAssetsToCollection(excludedAssetCollection, selection));
+
+  useShortcut(Key.Escape, cancelModal);
 
   return (
     <React.Fragment>
@@ -224,7 +183,7 @@ export const AssetPicker = ({
       >
         {__('pim_asset_manager.asset_collection.add_asset')}
       </Button>
-      {isOpen && null !== filterViews ? (
+      {isOpen && null !== filterViews && null !== searchResult ? (
         <Modal data-container="asset-picker">
           <Header>
             <CloseButton title={__('pim_asset_manager.close')} onClick={cancelModal} />
@@ -247,32 +206,35 @@ export const AssetPicker = ({
             </ConfirmButton>
           </Header>
           <Container>
-            <FilterCollection
-              filterCollection={filterCollection}
-              context={context}
-              onFilterCollectionChange={(filterCollection: Filter[]) => {
-                setFilterCollection(filterCollection);
-              }}
-              orderedFilterViews={filterViews}
-            />
+            {filterViews.length !== 0 && (
+              <FilterContainer data-container="filter-collection">
+                <FilterTitle>{__('pim_asset_manager.asset_picker.filter.title')}</FilterTitle>
+                <FilterCollection
+                  filterCollection={filterCollection}
+                  context={context}
+                  onFilterCollectionChange={(filterCollection: Filter[]) => {
+                    setFilterCollection(filterCollection);
+                  }}
+                  orderedFilterViews={filterViews}
+                />
+              </FilterContainer>
+            )}
             <Grid>
               <SearchBar
                 dataProvider={dataProvider}
                 searchValue={searchValue}
                 context={context}
-                resultCount={resultCount}
+                resultCount={searchResult.matchesCount}
                 onSearchChange={setSearchValue}
                 onContextChange={setContext}
               />
               <MosaicResult
                 selection={selection}
-                assetCollection={resultCollection}
+                assetCollection={searchResult.items}
                 context={context}
-                resultCount={resultCount}
+                resultCount={searchResult.matchesCount}
                 hasReachMaximumSelection={!canAddAsset}
-                onSelectionChange={(assetCodeCollection: AssetCode[]) => {
-                  setSelection(assetCodeCollection);
-                }}
+                onSelectionChange={setSelection}
               />
             </Grid>
             <Basket

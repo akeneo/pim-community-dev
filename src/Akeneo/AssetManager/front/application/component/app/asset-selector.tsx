@@ -9,11 +9,23 @@ import {getLabel} from 'pimui/js/i18n';
 
 const routing = require('routing');
 import {isNull, isArray} from 'akeneoassetmanager/domain/model/utils';
-import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
+import ListAsset, {getListAssetMainMediaThumbnail} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 
-const renderRow = (label: string, normalizedAsset: ListAsset, withLink: boolean, compact: boolean) => {
+const renderRow = (
+  label: string,
+  normalizedAsset: ListAsset,
+  withLink: boolean,
+  compact: boolean,
+  channel: ChannelCode,
+  locale: LocaleCode
+) => {
   return `
-  <img width="34" height="34" src="${normalizedAsset.image}" style="object-fit: cover;"/>
+  <img width="34" height="34" src="${getMediaPreviewUrl(
+    getListAssetMainMediaThumbnail(normalizedAsset, channel, locale)
+  )}" style="object-fit: cover;"/>
   <span class="select2-result-label-main">
     <span class="select2-result-label-top">
       ${normalizedAsset.code}
@@ -191,7 +203,9 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
                   asset.text,
                   asset.original,
                   false,
-                  undefined === this.props.compact ? false : this.props.compact
+                  undefined === this.props.compact ? false : this.props.compact,
+                  channelReferenceStringValue(this.props.channel),
+                  localeReferenceStringValue(this.props.locale)
                 )
               )
             );
@@ -205,7 +219,9 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
                   asset.text,
                   asset.original,
                   false,
-                  undefined === this.props.compact ? false : this.props.compact
+                  undefined === this.props.compact ? false : this.props.compact,
+                  channelReferenceStringValue(this.props.channel),
+                  localeReferenceStringValue(this.props.locale)
                 )
               )
             );

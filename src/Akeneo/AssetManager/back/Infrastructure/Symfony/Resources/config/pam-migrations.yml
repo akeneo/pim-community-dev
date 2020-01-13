@@ -1,0 +1,21 @@
+services:
+    Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\ExportAssetsIntoCSVFiles\ExportAssetsCommand:
+        arguments:
+            - '@Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\ExportAssetsIntoCSVFiles\FindAssets'
+            - '@Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\ExportAssetsIntoCSVFiles\FindVariations'
+        tags:
+            - { name: console.command }
+
+    Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\ExportAssetsIntoCSVFiles\FindAssets:
+        arguments:
+            - '@doctrine.dbal.default_connection'
+
+    Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\ExportAssetsIntoCSVFiles\FindVariations:
+        arguments:
+            - '@doctrine.dbal.default_connection'
+
+    Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\MigratePamAttributesIntoAssetManagerAttributesCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: console.command }

@@ -11,3 +11,10 @@ services:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Validator\ConstraintGuesser\AssetMultipleLinkGuesser
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_enrich.normalizer.image:
+        class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer\InternalApi\ImageNormalizer'
+        arguments:
+            - '@pim_enrich.normalizer.file'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pimee.asset_manager.enrichment.asset_preview_generator'

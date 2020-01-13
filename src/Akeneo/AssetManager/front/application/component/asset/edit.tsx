@@ -7,7 +7,7 @@ import sidebarProvider from 'akeneoassetmanager/application/configuration/sideba
 import Breadcrumb from 'akeneoassetmanager/application/component/app/breadcrumb';
 import __ from 'akeneoassetmanager/tools/translator';
 import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
-import {backToAssetFamily, saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
+import {saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
 import EditState from 'akeneoassetmanager/application/component/app/edit-state';
 import Locale from 'akeneoassetmanager/domain/model/locale';
@@ -16,7 +16,6 @@ import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
-import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import Key from 'akeneoassetmanager/tools/key';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
@@ -29,6 +28,7 @@ import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/
 import {getLabel} from 'pimui/js/i18n';
 import EditionAsset, {getEditionAssetCompleteness} from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {MainMediaThumbnail} from 'akeneoassetmanager/application/component/asset/edit/main-media-thumbnail';
+import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -54,9 +54,6 @@ interface StateProps {
     locales: Locale[];
     channels: Channel[];
   };
-  confirmDelete: {
-    isActive: boolean;
-  };
   selectedAttribute: NormalizedAttribute | null;
   assetCode: AssetCode;
 }
@@ -67,9 +64,7 @@ interface DispatchProps {
     onLocaleChanged: (locale: Locale) => void;
     onChannelChanged: (channel: Channel) => void;
     onDelete: (asset: EditionAsset) => void;
-    onOpenDeleteModal: () => void;
-    onCancelDeleteModal: () => void;
-    backToAssetFamily: () => void;
+    backToAssetFamilyList: () => void;
     onRedirectToProductGrid: (selectedAttribute: AttributeCode, assetCode: AssetCode) => void;
   };
 }
@@ -78,14 +73,18 @@ interface EditProps extends StateProps, DispatchProps {}
 
 class AssetEditView extends React.Component<EditProps> {
   public props: EditProps;
-  private backToAssetFamily = () => (
+  public state: {isDeleteModalOpen: boolean} = {
+    isDeleteModalOpen: false,
+  };
+
+  private backToAssetFamilyList = () => (
     <span
       role="button"
       tabIndex={0}
       className="AknColumn-navigationLink"
-      onClick={this.props.events.backToAssetFamily}
+      onClick={this.props.events.backToAssetFamilyList}
       onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (Key.Space === event.key) this.props.events.backToAssetFamily();
+        if (Key.Space === event.key) this.props.events.backToAssetFamilyList();
       }}
     >
       {__('pim_asset_manager.asset.button.back')}
@@ -95,6 +94,7 @@ class AssetEditView extends React.Component<EditProps> {
   private onConfirmedDelete = () => {
     const asset = this.props.asset;
     this.props.events.onDelete(asset);
+    this.setState({isDeleteModalOpen: false});
   };
 
   private getSecondaryActions = (canDelete: boolean): JSX.Element | JSX.Element[] | null => {
@@ -105,7 +105,7 @@ class AssetEditView extends React.Component<EditProps> {
           <div className="AknDropdown-menu AknDropdown-menu--right">
             <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
             <div>
-              <button className="AknDropdown-menuLink" onClick={() => this.props.events.onOpenDeleteModal()}>
+              <button className="AknDropdown-menuLink" onClick={() => this.setState({isDeleteModalOpen: true})}>
                 {__('pim_asset_manager.asset.button.delete')}
               </button>
             </div>
@@ -156,7 +156,7 @@ class AssetEditView extends React.Component<EditProps> {
                                   route: 'akeneo_asset_manager_asset_family_edit',
                                   parameters: {
                                     identifier: assetFamilyIdentifierStringValue(asset.assetFamily.identifier),
-                                    tab: 'asset',
+                                    tab: 'attribute',
                                   },
                                 },
                                 label: assetFamilyIdentifierStringValue(asset.assetFamily.identifier),
@@ -251,14 +251,14 @@ class AssetEditView extends React.Component<EditProps> {
               </div>
             </div>
           </div>
-          <Sidebar backButton={this.backToAssetFamily} />
+          <Sidebar backButton={this.backToAssetFamilyList} />
         </div>
-        {this.props.confirmDelete.isActive && (
+        {this.state.isDeleteModalOpen && (
           <DeleteModal
             message={__('pim_asset_manager.asset.delete.message', {assetLabel: label})}
             title={__('pim_asset_manager.asset.delete.title')}
             onConfirm={this.onConfirmedDelete}
-            onCancel={this.props.events.onCancelDeleteModal}
+            onCancel={() => this.setState({isDeleteModalOpen: false})}
           />
         )}
       </React.Fragment>
@@ -300,7 +300,6 @@ export default connect(
             canEditAssetFamily(state.right.assetFamily, state.form.data.assetFamily.identifier),
         },
       },
-      confirmDelete: state.confirmDelete,
       selectedAttribute: state.products.selectedAttribute,
       assetCode: state.form.data.code,
     };
@@ -320,14 +319,8 @@ export default connect(
         onDelete: (asset: EditionAsset) => {
           dispatch(deleteAsset(asset.assetFamily.identifier, asset.code));
         },
-        onOpenDeleteModal: () => {
-          dispatch(openDeleteModal());
-        },
-        onCancelDeleteModal: () => {
-          dispatch(cancelDeleteModal());
-        },
-        backToAssetFamily: () => {
-          dispatch(backToAssetFamily());
+        backToAssetFamilyList: () => {
+          dispatch(redirectToAssetFamilyListItem());
         },
         onRedirectToProductGrid: (selectedAttribute: AttributeCode, assetCode: AssetCode) => {
           dispatch(redirectToProductGrid(selectedAttribute, assetCode));

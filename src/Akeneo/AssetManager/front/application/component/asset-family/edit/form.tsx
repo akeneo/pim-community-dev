@@ -2,11 +2,9 @@ import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Flag from 'akeneoassetmanager/tools/component/flag';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
-import {File} from 'akeneoassetmanager/domain/model/file';
-import Image from 'akeneoassetmanager/application/component/app/image';
 import Key from 'akeneoassetmanager/tools/key';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
@@ -31,7 +29,6 @@ interface FormProps {
     };
   };
   onLabelUpdated: (value: string, locale: string) => void;
-  onImageUpdated: (image: File) => void;
   onAttributeAsMainMediaUpdated: (attributeAsMainMedia: AttributeIdentifier) => void;
   onSubmit: () => void;
 }
@@ -62,7 +59,6 @@ export default class EditForm extends React.Component<FormProps> {
   render() {
     const assetFamily = this.props.data;
     const canEditLabel = this.props.rights.assetFamily.edit && this.props.rights.locale.edit;
-    const canEditImage = this.props.rights.assetFamily.edit;
     const canEditAttributeAsMainMedia = this.props.rights.assetFamily.edit;
 
     return (
@@ -120,29 +116,6 @@ export default class EditForm extends React.Component<FormProps> {
             />
           </div>
           {getErrorsView(this.props.errors, 'labels')}
-        </div>
-        <div className="AknFieldContainer" data-code="mediaFile">
-          <div className="AknFieldContainer-header AknFieldContainer-header--light">
-            <label
-              title={__('pim_asset_manager.asset_family.properties.media_file')}
-              className="AknFieldContainer-label"
-              htmlFor="pim_asset_manager.asset_family.properties.media_file"
-            >
-              {__('pim_asset_manager.asset_family.properties.media_file')}
-            </label>
-          </div>
-          <div className="AknFieldContainer-inputContainer">
-            <Image
-              alt={__('pim_asset_manager.asset_family.img', {
-                '{{ label }}': getAssetFamilyLabel(assetFamily, this.props.locale),
-              })}
-              image={assetFamily.image}
-              wide={true}
-              onImageChange={this.props.onImageUpdated}
-              readOnly={!canEditImage}
-            />
-          </div>
-          {getErrorsView(this.props.errors, 'mediaFile')}
         </div>
         <div className="AknFieldContainer" data-code="attributeAsMainMedia">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import __ from 'akeneoassetmanager/tools/translator';
@@ -18,6 +19,11 @@ import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 
 const securityContext = require('pim/security-context');
 const routing = require('routing');
+
+export const StickyHeader = styled.header.attrs(() => ({className: 'AknSubsection-title AknSubsection-title--sticky'}))`
+  top: 160px;
+  padding: 0;
+`;
 
 interface StateProps {
   assetFamily: AssetFamily;
@@ -76,9 +82,9 @@ class Permission extends React.Component<StateProps & DispatchProps> {
           breadcrumbConfiguration={breadcrumbConfiguration}
         />
         <div className="AknSubsection">
-          <header className="AknSubsection-title AknSubsection-title--sticky AknSubsection-title--withHeader">
+          <StickyHeader>
             <span className="group-label">{__('pim_asset_manager.asset_family.permission.title')}</span>
-          </header>
+          </StickyHeader>
           <div className="AknFormContainer AknFormContainer--wide">
             {!this.props.permission.data.isEmpty() ? (
               <PermissionCollectionEditor

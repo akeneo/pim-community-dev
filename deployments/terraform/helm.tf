@@ -15,8 +15,14 @@ data "template_file" "helm_pim_config" {
     bucketName          = "${google_storage_bucket.srnt_bucket.name}"
     pimStoragekey       = "${google_service_account_key.pimstorage.private_key}"
     papoProjectCode     = "${var.papo_project_code}"
+    pimVersion          = "${var.pim_version}"
     monitoring_authentication_token = "${random_string.monitoring_authentication_token.result}"
   }
+}
+
+resource "local_file" "helm_pim_config" {
+  content  = "${data.template_file.helm_pim_config.rendered}"
+  filename = "./tf-helm-pim-values.yaml"
 }
 
 data "helm_repository" "stable" {
@@ -38,16 +44,13 @@ EOF
   }
 }
 
-resource "helm_release" "pim" {
-  name      = "${local.pfid}"
-  chart     = "${path.module}/../pim/"
-  namespace = "${local.pfid}"
-  timeout   = "1501"
-  depends_on   = ["null_resource.helm_dependencies_update"]
-
-  values = [
-    "${file("values.yaml")}",
-    "${data.template_file.helm_pim_config.rendered}",
-  ]
-
+resource "null_resource" "helm_release_pim" {
+  depends_on   = ["null_resource.helm_dependencies_update","local_file.helm_pim_config"]
+  provisioner "local-exec" {
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+    command = <<EOF
+helm upgrade --wait --install --timeout 1500 ${local.pfid} --namespace ${local.pfid} ${path.module}/../pim/ -f tf-helm-pim-values.yaml -f values.yaml
+EOF
+  }
 }
+

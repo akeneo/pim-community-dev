@@ -1,7 +1,6 @@
 version: 2.1
 
 aliases:
-
   - &envVarsDeploy
       GOOGLE_PROJECT_ID: "akecld-saas-dev"
       GOOGLE_COMPUTE_ZONE: "europe-west3-a"
@@ -9,7 +8,7 @@ aliases:
 
   - &dockerCloudDeployer
       docker:
-        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:1.5
+        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:1
           auth:
             username: _json_key  # default username when using a JSON key file to authenticate
             password: $GCLOUD_SERVICE_KEY  # JSON service account you created, do not encode to base64
@@ -285,7 +284,7 @@ jobs:
               name: Push PROD PIM image on docker registry
               command: IMAGE_TAG=$CIRCLE_SHA1 make push-php-image-prod
 
-  deploy_new_environment:
+  deploy_master_environment:
       environment:
         <<: *envVarsDeploy
       <<: *dockerCloudDeployer
@@ -301,26 +300,12 @@ jobs:
               name: Deploy PIM on kubernetes
               command: IMAGE_TAG=$CIRCLE_SHA1 make deploy
           - run:
-              name: Delete FAILED validation env
-              when: on_fail
-              shell: "/bin/bash -eo pipefail"
-              command: |
-                echo "DEPLOY FAILED - Delete CI env PFID=srnt-ci-$CIRCLE_SHA1"
-                IMAGE_TAG=$CIRCLE_SHA1 make delete
-
-  test_prod:
-      environment:
-        <<: *envVarsDeploy
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config
-          - prepare_terraform
-          - run:
-              name: Production tests
+              name: Test PIM connexion on kubernetes
               command: IMAGE_TAG=$CIRCLE_SHA1 make test-prod
           - run:
+              name: Remove env on kubernetes
+              command: IMAGE_TAG=$CIRCLE_SHA1 make delete
+          - run:
               name: Delete FAILED validation env
               when: on_fail
               shell: "/bin/bash -eo pipefail"
@@ -328,18 +313,39 @@ jobs:
                 echo "DEPLOY FAILED - Delete CI env PFID=srnt-ci-$CIRCLE_SHA1"
                 IMAGE_TAG=$CIRCLE_SHA1 make delete
 
-  destroy_new_environment:
+  deploy_upgrade_pim3_environment:
       environment:
         <<: *envVarsDeploy
       <<: *dockerCloudDeployer
       steps:
           - attach_workspace:
                 at: ~/
+          - add_ssh_keys
           - set_gcloud_config
-          - prepare_terraform
           - run:
-              name: Remove PIM kubernetes resources
-              command: IMAGE_TAG=$CIRCLE_SHA1 make delete
+              name: PIM3 deployment on kubernetes
+              command: |
+                ssh-keyscan github.com >> ~/.ssh/known_hosts
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
+          - run:
+              name: Upgrade PIM3 env
+              command: |
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 DEPLOY_SHA1=$CIRCLE_SHA1 make create-tf-files
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 DEPLOY_SHA1=$CIRCLE_SHA1 make deploy
+          - run:
+              name: Production tests on upgraded env
+              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make test-prod
+          - run:
+              name: Remove upgraded env
+              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
+          - run:
+              name: Delete FAILED validation env
+              when: on_fail
+              shell: "/bin/bash -eo pipefail"
+              command: |
+                echo "DEPLOY FAILED - Delete CI env PFID=srnt-ci-$CIRCLE_SHA1"
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
 
   release:
       machine:
@@ -459,6 +465,7 @@ workflows:
                     branches:
                         only:
                             - master
+
       jobs:
           - checkout
           - build_dev:
@@ -467,15 +474,13 @@ workflows:
           - build_prod:
                 requires:
                     - checkout
-          - deploy_new_environment:
+          - deploy_upgrade_pim3_environment:
+                requires:
+                    - checkout
+                    - build_prod
+          - deploy_master_environment:
                 requires:
                     - build_prod
-          - test_prod:
-                requires:
-                    - deploy_new_environment
-          - destroy_new_environment:
-                requires:
-                    -  test_prod
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -484,7 +489,8 @@ workflows:
                     - build_dev
           - test_back_phpunit:
                 requires:
-                    - build_dev
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
                     - build_dev
@@ -501,9 +507,9 @@ workflows:
                     - test_back_phpunit
                     - test_back_performance
                     - back_behat_legacy
+                    - deploy_master_environment
+                    - deploy_upgrade_pim3_environment
                     - test_back_data_migrations
-                    - destroy_new_environment
-
 
 commands:
   set_gcloud_config:
@@ -516,6 +522,7 @@ commands:
             echo ${GCLOUD_SERVICE_KEY} | gcloud auth activate-service-account --key-file=-
             gcloud config set project ${GOOGLE_PROJECT_ID}
             gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+            gcloud container clusters get-credentials ${GOOGLE_COMPUTE_ZONE} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_COMPUTE_ZONE}
             echo ${GCLOUD_SERVICE_KEY} > ${HOME}/gcloud-service-key.json
             echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
             export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"

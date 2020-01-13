@@ -13,10 +13,7 @@ import {
   updateFamily,
   updateRuleRelations,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
-import {
-  channelFetcher,
-  fetchChannels,
-} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
+import {channelFetcher, fetchChannels} from 'akeneoassetmanager/infrastructure/fetcher/channel';
 import {
   familyFetcher,
   fetchFamily,

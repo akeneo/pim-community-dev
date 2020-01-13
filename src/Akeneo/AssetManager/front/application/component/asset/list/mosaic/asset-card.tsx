@@ -12,6 +12,7 @@ import ListAsset, {
   getListAssetMainMediaThumbnail,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import loadImage from 'akeneoassetmanager/tools/image-loader';
 
 type ContainerProps = {isDisabled: boolean};
 const Container = styled.div<ContainerProps>`
@@ -22,13 +23,12 @@ const Container = styled.div<ContainerProps>`
   justify-content: space-between;
   cursor: ${(props: ContainerProps) => (props.isDisabled ? 'not-allowed' : 'auto')};
 `;
-const Title = styled.div`
+const Title = styled.span`
   display: flex;
   align-items: center;
   min-height: 15px;
 `;
-type ThumbnailProps = {isSelected: boolean};
-const Thumbnail = styled.img<ThumbnailProps>`
+const Thumbnail = styled.img`
   object-fit: contain;
   position: absolute;
   top: 0;
@@ -43,17 +43,22 @@ const AssetCompleteness = styled.div`
   right: 10px;
 `;
 
-const ImageContainer = styled.div`
+type ImageContainerProps = {isSelected: boolean; isSelectable: boolean; isLoading: boolean};
+const ImageContainer = styled.div<ImageContainerProps>`
   width: 100%;
   padding-top: 100%; /* 1:1 Aspect Ratio */
   position: relative;
-  border-width: ${(props: ThemedProps<ThumbnailProps>) => (props.isSelected ? '2px' : '1px')};
-  width: ${(props: ThemedProps<ThumbnailProps>) => (props.isSelected ? 'calc(100% - 2px)' : '100%')};
-  border-color: ${(props: ThemedProps<ThumbnailProps>) =>
+  border-width: ${(props: ThemedProps<ImageContainerProps>) => (props.isSelected ? '2px' : '1px')};
+  width: ${(props: ThemedProps<ImageContainerProps>) => (props.isSelected ? 'calc(100% - 2px)' : '100%')};
+  border-color: ${(props: ThemedProps<ImageContainerProps>) =>
     props.isSelected ? props.theme.color.blue100 : props.theme.color.grey100};
-  border-style: solid;
+  border-style: ${(props: ThemedProps<ImageContainerProps>) => (props.isLoading ? 'none' : 'solid')};
   margin-bottom: 6px;
   min-height: 140px;
+
+  &:hover {
+    cursor: ${(props: ThemedProps<ImageContainerProps>) => (props.isSelectable ? 'auto' : 'pointer')};
+  }
 `;
 
 const AssetCard = ({
@@ -62,21 +67,47 @@ const AssetCard = ({
   isSelected,
   onSelectionChange,
   isDisabled,
+  onClick,
 }: {
   asset: ListAsset;
   context: Context;
   isSelected: boolean;
   isDisabled: boolean;
   onSelectionChange: (code: AssetCode, value: boolean) => void;
+  onClick?: (code: AssetCode) => void;
 }) => {
+  const [url, setUrl] = React.useState<null | string>(null);
+  let isDisplayed = true;
+  React.useEffect(() => {
+    const imageUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
+    loadImage(imageUrl).then(() => {
+      if (isDisplayed) {
+        setUrl(imageUrl);
+      }
+    });
+
+    return () => {
+      isDisplayed = false;
+    };
+  }, [asset, context.channel, context.locale]);
+
   return (
     <Container data-asset={asset.code} data-selected={isSelected} isDisabled={isDisabled}>
-      <ImageContainer>
-        <Thumbnail
-          src={getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale))}
-          isSelected={isSelected}
-          onClick={() => (!isDisabled ? onSelectionChange(asset.code, !isSelected) : null)}
-        />
+      <ImageContainer
+        data-test-id="asset-card-image"
+        className={null === url ? 'AknLoadingPlaceHolder' : ''}
+        isLoading={null === url}
+        isSelectable={!!onClick}
+        isSelected={isSelected}
+        onClick={() => {
+          if (onClick) {
+            onClick(asset.code);
+          } else if (!isDisabled) {
+            onSelectionChange(asset.code, !isSelected);
+          }
+        }}
+      >
+        {null !== url && <Thumbnail src={url} />}
       </ImageContainer>
       {assetHasCompleteness(asset) && (
         <AssetCompleteness>
@@ -84,11 +115,13 @@ const AssetCard = ({
         </AssetCompleteness>
       )}
       <Title>
-        <Checkbox
-          value={isSelected}
-          onChange={(value: boolean) => onSelectionChange(asset.code, value)}
-          readOnly={isDisabled}
-        />
+        {!onClick && (
+          <Checkbox
+            value={isSelected}
+            onChange={(value: boolean) => onSelectionChange(asset.code, value)}
+            readOnly={isDisabled}
+          />
+        )}
         <Label color={isSelected ? akeneoTheme.color.blue100 : undefined}>{getAssetLabel(asset, context.locale)}</Label>
       </Title>
     </Container>

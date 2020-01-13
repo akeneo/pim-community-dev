@@ -42,5 +42,6 @@ SQL
 
     public function down(Schema $schema)
     {
+        $this->throwIrreversibleMigrationException();
     }
 }

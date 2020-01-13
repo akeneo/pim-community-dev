@@ -93,7 +93,6 @@ pim:
       hook: "pre-upgrade"
     upgradeES:
       enabled: false
-      hook: "pre-upgrade"
   storage:
     bucketName: nil
     serviceAccountKey: nil
@@ -127,6 +126,10 @@ pim:
       enabled: true
       pimCommand: "akeneo:batch:purge-job-execution"
       schedule: "0 0 1 * *"
+    update-connectivity-audit-data:
+      enabled: true
+      pimCommand: "akeneo:connectivity-audit:update-data"
+      schedule: "1 * * * *"
     rule-run:
       enabled: true
       pimCommand: "akeneo:rule:run"
@@ -194,7 +197,7 @@ mysql:
   common:
     class: ssd-retain
   mysql:
-    dataDiskPath: "/var/lib/mysql/datadir/"
+    dataDiskPath: "/var/lib/mysql/"
     serviceName: pim-mysql
     defaultUser: akeneo_pim
     userPassword: nil # Generate me with `pwgen -sB 22`

@@ -49,12 +49,12 @@ const progressToWidth = (progress: number | null): number => {
   return Math.round(progress * 100);
 };
 
-type LineStatusProps = {
+type RowStatusProps = {
   status: LineStatus;
   progress: number | null;
 };
 
-const RowStatus = React.memo(({status, progress}: LineStatusProps) => {
+const RowStatus = React.memo(({status, progress}: RowStatusProps) => {
   switch (status) {
     case LineStatus.WaitingForUpload:
       return (

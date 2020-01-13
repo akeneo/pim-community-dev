@@ -1,6 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import Down from 'akeneoassetmanager/application/component/app/icon/down';
+import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 
 type ButtonProps = {
   buttonSize?: 'micro' | 'medium' | 'default';
@@ -19,7 +21,7 @@ export const TransparentButton = styled.button`
   }
 `;
 
-export const Button: React.FunctionComponent<ButtonProps & any> = props => (
+export const Button = (props: ButtonProps & any) => (
   <StyledButton {...props} onClick={props.isDisabled ? undefined : props.onClick} />
 );
 
@@ -27,6 +29,7 @@ const StyledButton = styled.div<ButtonProps>`
   text-align: center;
   cursor: pointer;
   text-transform: uppercase;
+  white-space: nowrap;
 
   ${(props: ThemedProps<ButtonProps>) => {
     switch (props.buttonSize) {
@@ -83,3 +86,98 @@ const StyledButton = styled.div<ButtonProps>`
       opacity: 0.5;
   `}
 `;
+
+const Backdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`;
+
+const Panel = styled.div`
+  position: absolute;
+  top: 32px;
+  right: 0;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
+  padding: 10px 20px;
+  min-width: 180px;
+`;
+
+const Container = styled.div`
+  position: relative;
+`;
+
+const StyledMultipleButton = styled(Button)`
+  display: flex;
+`;
+
+const Item = styled.div`
+  color: ${(props: ThemedProps<void>) => props.theme.color.grey120};
+  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
+  text-transform: none;
+  text-align: left;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const DownButton = styled.span`
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+`;
+
+type MultipleButtonProps = {
+  items: {
+    label: string;
+    action: () => void;
+  }[];
+  children: React.ReactNode;
+} & ButtonProps;
+
+export const MultipleButton = ({items, children, ...props}: MultipleButtonProps) => {
+  const [isOpen, setOpen] = React.useState(false);
+  if (0 === items.length) return null;
+
+  return (
+    <Container>
+      {1 < items.length ? (
+        <>
+          <StyledMultipleButton {...props} onClick={() => setOpen(true)}>
+            <span>{children}</span>
+            <DownButton>
+              <Down size={18} color={akeneoTheme.color.white} />
+            </DownButton>
+          </StyledMultipleButton>
+          {isOpen && (
+            <>
+              <Backdrop onClick={() => setOpen(false)} />
+              <Panel>
+                {items.map(item => (
+                  <Item
+                    key={item.label}
+                    onClick={() => {
+                      setOpen(false);
+                      item.action();
+                    }}
+                  >
+                    {item.label}
+                  </Item>
+                ))}
+              </Panel>
+            </>
+          )}
+        </>
+      ) : (
+        <Button {...props} onClick={items[0].action}>
+          {items[0].label}
+        </Button>
+      )}
+    </Container>
+  );
+};

@@ -87,6 +87,7 @@ services:
 
     pim_enrich.repository.job_instance:
         class: 'Akeneo\Pim\Permission\Bundle\Entity\Repository\JobInstanceRepository'
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%akeneo_batch.entity.job_instance.class%'

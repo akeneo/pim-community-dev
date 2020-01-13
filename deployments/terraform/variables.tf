@@ -71,3 +71,7 @@ variable "monitoring_authentication_token" {
   type    = "string"
   default = ""
 }
+
+variable "pim_version" {
+  default = ""
+}

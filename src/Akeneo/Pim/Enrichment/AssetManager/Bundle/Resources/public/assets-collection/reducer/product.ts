@@ -78,8 +78,9 @@ export const selectCurrentValues = (state: AssetCollectionState) => {
   const currentChannel = state.context.channel;
 
   return state.product.values.filter(
-    ({locale, channel}: Value) =>
-      (locale === null || locale === currentLocale) && (channel === null || currentChannel === channel)
+    ({locale, channel, attribute}: Value) =>
+        (0 === attribute.availableLocales.length || attribute.availableLocales.includes(currentLocale)) &&
+        (locale === null || locale === currentLocale) && (channel === null || currentChannel === channel)
   );
 };
 

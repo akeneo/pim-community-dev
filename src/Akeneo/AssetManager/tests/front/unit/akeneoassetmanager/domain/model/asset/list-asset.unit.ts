@@ -1,5 +1,4 @@
 import {
-  generateValueKey,
   ASSET_COLLECTION_LIMIT,
   isComplete,
   getAssetLabel,
@@ -21,18 +20,6 @@ import {
   createEmptyAsset,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {isLabels} from 'akeneoassetmanager/domain/model/utils';
-
-describe('akeneo > asset family > domain > model > asset --- list-asset', () => {
-  test('I can get a value key from a value', () => {
-    expect(
-      generateValueKey({
-        attribute: 'description_fingerprint',
-        channel: 'ecommerce',
-        locale: 'en_US',
-      })
-    ).toEqual('description_fingerprint_ecommerce_en_US');
-  });
-});
 
 test('The asset is complete', () => {
   const complete = {complete: 2, required: 2};

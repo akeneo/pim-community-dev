@@ -54,6 +54,7 @@ class PdfLoader implements LoaderInterface
 
         $imagick = new \Imagick();
         $imagick->readImageBlob($file);
+        $imagick->setIteratorIndex(0);
         $imagick->setResolution(72, 72);
         $imagick->setColorspace(\Imagick::COLORSPACE_RGB);
         $imagick->setCompression(\Imagick::COMPRESSION_JPEG);

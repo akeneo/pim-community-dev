@@ -150,7 +150,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             ]
         );
 
-        $expectedResponse = '[{"messageTemplate":"pim_asset_manager.asset_family.validation.assets.should_have_no_asset","parameters":{"%asset_family_identifier%":[]},"plural":null,"message":"You cannot delete this entity because assets exist for this entity","root":{"identifier":"brand"},"propertyPath":"","invalidValue":{"identifier":"brand"},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
+        $expectedResponse = '[{"messageTemplate":"pim_asset_manager.asset_family.validation.assets.should_have_no_asset","parameters":{"%asset_family_identifier%":[]},"plural":null,"message":"You cannot delete this family because assets exist for this family","root":{"identifier":"brand"},"propertyPath":"","invalidValue":{"identifier":"brand"},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), 400, $expectedResponse);
     }

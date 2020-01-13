@@ -25,17 +25,16 @@ import {setUpSidebar} from 'akeneoassetmanager/application/action/sidebar';
 import {updateActivatedLocales} from 'akeneoassetmanager/application/action/locale';
 import {updateCurrentTab} from 'akeneoassetmanager/application/event/sidebar';
 import {updateChannels} from 'akeneoassetmanager/application/action/channel';
-import {attributeListGotUpdated} from 'akeneoassetmanager/application/action/attribute/list';
 import {PermissionCollection} from 'akeneoassetmanager/domain/model/asset-family/permission';
 import {permissionEditionReceived} from 'akeneoassetmanager/domain/event/asset-family/permission';
 import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/locale';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
-import {restoreFilters} from 'akeneoassetmanager/application/action/asset/search';
 import {gridStateStoragePath} from 'akeneoassetmanager/infrastructure/middleware/grid';
 import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import Key from 'akeneoassetmanager/tools/key';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {ThemeProvider} from 'styled-components';
+import {attributeListUpdated} from 'akeneoassetmanager/domain/event/attribute/list';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -61,8 +60,6 @@ class AssetFamilyEditController extends BaseController {
       .fetch(denormalizeAssetFamilyIdentifier(route.params.identifier))
       .then(async (assetFamilyResult: AssetFamilyResult) => {
         this.store = createStore(true)(assetFamilyReducer);
-        const assetFamilyIdentifier = assetFamilyResult.assetFamily.identifier;
-        const filters = this.getFilters(assetFamilyIdentifier);
 
         permissionFetcher.fetch(assetFamilyResult.assetFamily.identifier).then((permissions: PermissionCollection) => {
           this.store.dispatch(permissionEditionReceived(permissions));
@@ -79,8 +76,7 @@ class AssetFamilyEditController extends BaseController {
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
         this.store.dispatch(setUpSidebar('akeneo_asset_manager_asset_family_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
-        this.store.dispatch(restoreFilters(filters) as any);
-        this.store.dispatch(attributeListGotUpdated(assetFamilyResult.attributes) as any);
+        this.store.dispatch(attributeListUpdated(assetFamilyResult.attributes) as any);
         this.store.dispatch(assetFamilyPermissionChanged(assetFamilyResult.permission));
 
         document.addEventListener('keydown', shortcutDispatcher(this.store));

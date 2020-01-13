@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import __ from 'akeneoassetmanager/tools/translator';
 
 const equalsFilter = (field: string) => (error: ValidationError) => field === error.propertyPath;

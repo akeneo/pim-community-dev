@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import __ from 'akeneoassetmanager/tools/translator';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
@@ -18,7 +18,6 @@ import {TextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text
 import {deleteAttribute} from 'akeneoassetmanager/application/action/attribute/delete';
 import AttributeIdentifier, {attributeidentifiersAreEqual} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
-import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getAttributeView} from 'akeneoassetmanager/application/configuration/attribute';
@@ -49,9 +48,6 @@ interface StateProps extends OwnProps {
   isActive: boolean;
   attribute: Attribute;
   errors: ValidationError[];
-  confirmDelete: {
-    isActive: boolean;
-  };
 }
 
 interface DispatchProps {
@@ -60,8 +56,6 @@ interface DispatchProps {
     onIsRequiredUpdated: (isRequired: boolean) => void;
     onAdditionalPropertyUpdated: (property: string, value: any) => void;
     onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => void;
-    onOpenDeleteModal: () => void;
-    onCancelDeleteModal: () => void;
     onCancel: () => void;
     onSubmit: () => void;
   };
@@ -103,9 +97,10 @@ const getAdditionalProperty = (
 class Edit extends React.Component<EditProps> {
   private labelInput: HTMLInputElement;
   public props: EditProps;
-  public state: {previousAttribute: string | null; currentAttribute: string | null} = {
+  public state: {previousAttribute: string | null; currentAttribute: string | null; isDeleteModalOpen: boolean} = {
     previousAttribute: null,
     currentAttribute: null,
+    isDeleteModalOpen: false,
   };
 
   componentDidMount() {
@@ -267,9 +262,9 @@ class Edit extends React.Component<EditProps> {
                   className="AknButton AknButton--delete"
                   tabIndex={0}
                   onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
-                    if (Key.Space === event.key) this.props.events.onOpenDeleteModal();
+                    if (Key.Space === event.key) this.setState({isDeleteModalOpen: true});
                   }}
-                  onClick={() => this.props.events.onOpenDeleteModal()}
+                  onClick={() => this.setState({isDeleteModalOpen: true})}
                   style={{flex: 1}}
                 >
                   <Trash color="#D4604F" className="AknButton-animatedIcon" />
@@ -305,14 +300,12 @@ class Edit extends React.Component<EditProps> {
             </footer>
           </div>
         </div>
-        {this.props.confirmDelete.isActive && (
+        {this.state.isDeleteModalOpen && (
           <DeleteModal
             message={__('pim_asset_manager.attribute.delete.message', {attributeLabel: label})}
             title={__('pim_asset_manager.attribute.delete.title')}
-            onConfirm={() => {
-              this.props.events.onAttributeDelete(this.props.attribute.getIdentifier());
-            }}
-            onCancel={this.props.events.onCancelDeleteModal}
+            onConfirm={() => this.props.events.onAttributeDelete(this.props.attribute.getIdentifier())}
+            onCancel={() => this.setState({isDeleteModalOpen: false})}
           />
         )}
       </React.Fragment>
@@ -332,7 +325,6 @@ export default connect(
       context: {
         locale: state.user.catalogLocale,
       },
-      confirmDelete: state.confirmDelete,
     } as StateProps;
   },
   (dispatch: any): DispatchProps => {
@@ -355,12 +347,6 @@ export default connect(
         },
         onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => {
           dispatch(deleteAttribute(attributeIdentifier));
-        },
-        onCancelDeleteModal: () => {
-          dispatch(cancelDeleteModal());
-        },
-        onOpenDeleteModal: () => {
-          dispatch(openDeleteModal());
         },
       },
     } as DispatchProps;

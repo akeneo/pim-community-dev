@@ -1,177 +1,185 @@
-import {createAssetFamily} from 'akeneoassetmanager/application/action/asset-family/create';
-import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
-import {IndexState} from 'akeneoassetmanager/application/reducer/asset-family/index';
-import {
-  assetFamilyCreationCancel,
-  assetFamilyCreationCodeUpdated,
-  assetFamilyCreationLabelUpdated,
-} from 'akeneoassetmanager/domain/event/asset-family/create';
-import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
-import Flag from 'akeneoassetmanager/tools/component/flag';
-import __ from 'akeneoassetmanager/tools/translator';
 import * as React from 'react';
-import {connect} from 'react-redux';
+import __ from 'akeneoassetmanager/tools/translator';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import Flag from 'akeneoassetmanager/tools/component/flag';
+import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
+import {createLocaleFromCode, LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import {Asset} from 'akeneoassetmanager/application/component/app/illustration/asset';
+import sanitize from 'akeneoassetmanager/tools/sanitize';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import assetFamilySaver from 'akeneoassetmanager/infrastructure/saver/asset-family';
+import {useFocus, useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import Key from 'akeneoassetmanager/tools/key';
-import {AssetFamilyCreation, getAssetFamilyCreationLabel} from 'akeneoassetmanager/domain/model/asset-family/creation';
-import {codeStringValue} from 'akeneoassetmanager/domain/model/code';
-import {AssetFamily} from 'akeneoassetmanager/application/component/app/illustration/asset-family';
 
-interface StateProps {
-  context: {
-    locale: string;
+const submitCreateAssetFamily = async (
+  code: AssetFamilyIdentifier,
+  label: string,
+  localeCode: LocaleCode,
+  onSuccess: () => void,
+  onFailure: (errors: ValidationError[]) => void
+) => {
+  const assetFamily = {
+    code,
+    labels: {[localeCode]: label},
   };
-  data: AssetFamilyCreation;
-  errors: ValidationError[];
-}
 
-interface DispatchProps {
-  events: {
-    onCodeUpdated: (value: string) => void;
-    onLabelUpdated: (value: string, locale: string) => void;
-    onCancel: () => void;
-    onSubmit: () => void;
-  };
-}
-
-interface CreateProps extends StateProps, DispatchProps {}
-
-class Create extends React.Component<CreateProps> {
-  private labelInput: HTMLInputElement;
-  public props: CreateProps;
-
-  componentDidMount() {
-    if (this.labelInput) {
-      this.labelInput.focus();
+  try {
+    let errors = await assetFamilySaver.create(assetFamily);
+    if (errors) {
+      onFailure(errors);
+      return;
     }
+  } catch (error) {
+    onFailure([]);
+    return;
   }
 
-  private onCodeUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.events.onCodeUpdated(event.target.value);
-  };
+  onSuccess();
+};
 
-  private onLabelUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.events.onLabelUpdated(event.target.value, this.props.context.locale);
-  };
+export const useSubmit = (
+  code: AssetFamilyIdentifier,
+  label: string,
+  locale: LocaleCode,
+  onSuccess: () => void,
+  onFailure: (errors: ValidationError[]) => void
+) => {
+  const [isCreating, setCreating] = React.useState(false);
+  return React.useCallback(() => {
+    if (isCreating) return;
+    setCreating(true);
+    submitCreateAssetFamily(
+      code,
+      label,
+      locale,
+      () => {
+        onSuccess();
+        setCreating(false);
+      },
+      (errors: ValidationError[]) => {
+        onFailure(errors);
+        setCreating(false);
+      }
+    );
+  }, [code, label, locale, onSuccess, onFailure, isCreating]);
+};
 
-  private onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (Key.Enter === event.key) this.props.events.onSubmit();
-  };
+type CreateAssetFamilyModalProps = {
+  locale: LocaleCode;
+  onClose: () => void;
+  onAssetFamilyCreated: (code: AssetFamilyIdentifier) => void;
+};
 
-  render(): JSX.Element | JSX.Element[] | null {
-    return (
-      <div className="modal in" aria-hidden="false" style={{zIndex: 1041}}>
-        <div>
-          <div className="AknFullPage">
-            <div className="AknFullPage-content AknFullPage-content--withIllustration">
-              <div>
-                <AssetFamily className="AknFullPage-image" />
-              </div>
-              <div>
+export const CreateAssetFamilyModal = ({locale, onClose, onAssetFamilyCreated}: CreateAssetFamilyModalProps) => {
+  const [code, setCode] = React.useState<AssetFamilyIdentifier>('');
+  const [label, setLabel] = React.useState<string>('');
+  const [errors, setErrors] = React.useState<ValidationError[]>([]);
+
+  const onLabelUpdate = React.useCallback(
+    (newLabel: string) => {
+      const expectedSanitizedCode = sanitize(label);
+      const newCode = expectedSanitizedCode === code ? sanitize(newLabel) : code;
+      setCode(newCode);
+      setLabel(newLabel);
+    },
+    [code, label]
+  );
+
+  const resetModal = React.useCallback(() => {
+    setCode('');
+    setLabel('');
+    setErrors([]);
+    setFocus();
+  }, []);
+
+  const onSuccess = React.useCallback(() => {
+    onAssetFamilyCreated(code);
+    resetModal();
+  }, [code]);
+
+  const submit = useSubmit(code, label, locale, onSuccess, setErrors);
+
+  useShortcut(Key.Enter, submit);
+  useShortcut(Key.Escape, onClose);
+  const [inputRef, setFocus] = useFocus();
+
+  return (
+    <div className="modal in" aria-hidden="false" style={{zIndex: 1041}}>
+      <div className="modal-body  creation">
+        <div className="AknFullPage">
+          <div className="AknFullPage-content AknFullPage-content--withIllustration">
+            <div>
+              <Asset className="AknFullPage-image" />
+            </div>
+            <div>
+              <div className="AknFormContainer">
                 <div className="AknFullPage-titleContainer">
                   <div className="AknFullPage-subTitle">{__('pim_asset_manager.asset_family.create.subtitle')}</div>
                   <div className="AknFullPage-title">{__('pim_asset_manager.asset_family.create.title')}</div>
                 </div>
-                <div className="AknFormContainer">
-                  <div className="AknFieldContainer" data-code="label">
-                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                      <label
-                        className="AknFieldContainer-label"
-                        htmlFor="pim_asset_manager.asset_family.create.input.label"
-                      >
-                        {__('pim_asset_manager.asset_family.create.input.label')}
-                      </label>
-                    </div>
-                    <div className="AknFieldContainer-inputContainer">
-                      <input
-                        type="text"
-                        autoComplete="off"
-                        ref={(input: HTMLInputElement) => {
-                          this.labelInput = input;
-                        }}
-                        className="AknTextField AknTextField--light"
-                        id="pim_asset_manager.asset_family.create.input.label"
-                        name="label"
-                        value={getAssetFamilyCreationLabel(this.props.data, this.props.context.locale, false)}
-                        onChange={this.onLabelUpdate}
-                        onKeyPress={this.onKeyPress}
-                      />
-                      <Flag
-                        locale={createLocaleFromCode(this.props.context.locale)}
-                        displayLanguage={false}
-                        className="AknFieldContainer-inputSides"
-                      />
-                    </div>
-                    {getErrorsView(this.props.errors, 'labels')}
+                <div className="AknFieldContainer" data-code="label">
+                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
+                    <label
+                      className="AknFieldContainer-label"
+                      htmlFor="pim_asset_manager.asset_family.create.input.label"
+                    >
+                      {__('pim_asset_manager.asset_family.create.input.label')}
+                    </label>
                   </div>
-                  <div className="AknFieldContainer" data-code="code">
-                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                      <label
-                        className="AknFieldContainer-label"
-                        htmlFor="pim_asset_manager.asset_family.create.input.code"
-                      >
-                        {__('pim_asset_manager.asset_family.create.input.code')}
-                      </label>
-                    </div>
-                    <div className="AknFieldContainer-inputContainer field-input">
-                      <input
-                        type="text"
-                        autoComplete="off"
-                        className="AknTextField AknTextField--light"
-                        id="pim_asset_manager.asset_family.create.input.code"
-                        name="code"
-                        value={codeStringValue(this.props.data.code)}
-                        onChange={this.onCodeUpdate}
-                        onKeyPress={this.onKeyPress}
-                      />
-                    </div>
-                    {getErrorsView(this.props.errors, 'code')}
+                  <div className="AknFieldContainer-inputContainer">
+                    <input
+                      ref={inputRef}
+                      autoComplete="off"
+                      type="text"
+                      className="AknTextField AknTextField--light"
+                      id="pim_asset_manager.asset_family.create.input.label"
+                      name="label"
+                      value={label}
+                      onChange={event => onLabelUpdate(event.target.value)}
+                    />
+                    <Flag
+                      locale={createLocaleFromCode(locale)}
+                      displayLanguage={false}
+                      className="AknFieldContainer-inputSides"
+                    />
                   </div>
-                  <button className="AknButton AknButton--apply ok" onClick={this.props.events.onSubmit}>
-                    {__('pim_asset_manager.asset_family.create.confirm')}
-                  </button>
+                  {getErrorsView(errors, 'labels')}
                 </div>
+                <div className="AknFieldContainer" data-code="code">
+                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
+                    <label
+                      className="AknFieldContainer-label"
+                      htmlFor="pim_asset_manager.asset_family.create.input.code"
+                    >
+                      {__('pim_asset_manager.asset_family.create.input.code')}
+                    </label>
+                  </div>
+                  <div className="AknFieldContainer-inputContainer">
+                    <input
+                      type="text"
+                      autoComplete="off"
+                      className="AknTextField AknTextField--light"
+                      id="pim_asset_manager.asset_family.create.input.code"
+                      name="code"
+                      value={code}
+                      onChange={event => setCode(event.target.value)}
+                    />
+                  </div>
+                  {getErrorsView(errors, 'code')}
+                </div>
+                <button className="AknButton AknButton--apply ok" onClick={submit}>
+                  {__('pim_asset_manager.asset_family.create.confirm')}
+                </button>
               </div>
             </div>
           </div>
         </div>
-        <div
-          title="{__('pim_asset_manager.asset_family.create.cancel')}"
-          className="AknFullPage-cancel cancel"
-          onClick={this.props.events.onCancel}
-          tabIndex={0}
-        />
       </div>
-    );
-  }
-}
-
-export default connect(
-  (state: IndexState): StateProps => {
-    return {
-      data: state.create.data,
-      errors: state.create.errors,
-      context: {
-        locale: state.user.catalogLocale,
-      },
-    } as StateProps;
-  },
-  (dispatch: any): DispatchProps => {
-    return {
-      events: {
-        onCodeUpdated: (value: string) => {
-          dispatch(assetFamilyCreationCodeUpdated(value));
-        },
-        onLabelUpdated: (value: string, locale: string) => {
-          dispatch(assetFamilyCreationLabelUpdated(value, locale));
-        },
-        onCancel: () => {
-          dispatch(assetFamilyCreationCancel());
-        },
-        onSubmit: () => {
-          dispatch(createAssetFamily());
-        },
-      },
-    } as DispatchProps;
-  }
-)(Create);
+      <div
+        title={__('pim_asset_manager.asset_family.create.cancel')}
+        className="AknFullPage-cancel cancel"
+        onClick={onClose}
+      />
+    </div>
+  );
+};

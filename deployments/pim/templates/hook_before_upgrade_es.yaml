@@ -1,0 +1,37 @@
+{{- if .Values.pim.hook.upgradeES.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: before-upgrade-es
+  labels:
+    app: {{ template "pim.fullName" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ template "pim.fullName" . }}
+    {{ include "pim.extraLabels" . | indent 4 }}
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": "pre-upgrade"
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+spec:
+  template:
+    metadata:
+      labels:
+        component: {{ template "pim.fullName" . }}
+        role: before-upgrade-es
+        {{ include "pim.extraLabels" . | indent 8 }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: before-upgrade-es
+          image: {{ template "pim.imageNameAndTag" . }}
+          imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
+          command: ["/bin/bash", "-c"]
+          args:
+          - curl -X PUT "elasticsearch-client:9200/_cluster/settings?pretty" -H 'Content-Type:application/json' -d '{"persistent":{"cluster.routing.allocation.enable":"primaries"}}';
+            curl -X POST "elasticsearch-client:9200/_flush/synced?pretty";
+            curl -X POST "elasticsearch-client:9200/_ml/set_upgrade_mode?enabled=true&pretty";
+{{- end }}
