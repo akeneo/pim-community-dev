@@ -4,6 +4,7 @@
 
 - PIM-9054: Fix the constraint on AttributeOption:code max length
 - PIM-9053: Update product label when locale is changed
+- PIM-9022: Fix behaviour of the 'Previous' button in product bulk actions modal
 
 # 3.2.30 (2020-01-10)
 
