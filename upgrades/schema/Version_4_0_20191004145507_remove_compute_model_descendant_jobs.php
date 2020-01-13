@@ -16,8 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class Version_4_0_20191004145507_remove_compute_model_descendant_jobs extends AbstractMigration implements
     ContainerAwareInterface
 {
-    private const BATCH_SIZE = 10000;
-
     /** @var ContainerInterface */
     private $container;
 
@@ -31,17 +29,12 @@ final class Version_4_0_20191004145507_remove_compute_model_descendant_jobs exte
 
     public function up(Schema $schema) : void
     {
-        $jobInstanceId = $this->getComputeProductModelDescendantsJobId();
-        if ($jobInstanceId === null) {
-            return;
+        $productModelCodes = $this->getBatchProductModelCodesForJobId();
+        foreach (array_chunk($productModelCodes, 1000) as $batchProductModelCodes) {
+            $this->computeAndIndexFromProductModelCodes($batchProductModelCodes);
         }
 
-        $batchProductModelCodes = $this->getBatchProductModelCodesForJobId($jobInstanceId);
-        foreach ($batchProductModelCodes as $productModelCodes) {
-            $this->computeAndIndexFromProductModelCodes($productModelCodes);
-        }
-
-        $this->removeComputeModelDescendantJobs($jobInstanceId);
+        $this->removeComputeModelDescendantJobs();
     }
 
     public function down(Schema $schema) : void
@@ -49,67 +42,57 @@ final class Version_4_0_20191004145507_remove_compute_model_descendant_jobs exte
         $this->throwIrreversibleMigrationException();
     }
 
-    private function getComputeProductModelDescendantsJobId(): ?int
-    {
-        $job = $this->container->get('pim_enrich.repository.job_instance')->findOneBy(
-            ['code' => 'compute_product_models_descendants']
-        );
-
-        return $job === null ? null : $job->getId();
-    }
-
-    private function getBatchProductModelCodesForJobId(int $jobInstanceId): \Generator
+    private function getBatchProductModelCodesForJobId(): array
     {
         $sql = <<<SQL
-SELECT DISTINCT product_model.id, product_model.code
-FROM
-    akeneo_batch_job_execution,
-    JSON_TABLE(raw_parameters, '$.product_model_codes[*]' COLUMNS (
-        code text PATH '$'
-    )) product_model_in_job
-    INNER JOIN pim_catalog_product_model product_model ON BINARY product_model.code = BINARY product_model_in_job.code
-WHERE job_instance_id = :jobInstanceId AND product_model.id > :formerId
-ORDER BY product_model.id
-LIMIT :limit
+            SELECT DISTINCT
+                product_model_in_job.code 
+            FROM 
+                akeneo_batch_job_instance job_instance  
+                INNER JOIN akeneo_batch_job_execution job_execution ON job_instance.id = job_execution.job_instance_id
+                INNER JOIN akeneo_batch_job_execution_queue queue ON queue.job_execution_id = job_execution.id,
+                JSON_TABLE(job_execution.raw_parameters, '$.product_model_codes[*]' COLUMNS (
+                    code text PATH '$'
+                )) product_model_in_job
+            WHERE 
+                job_instance.code = 'compute_product_models_descendants'
+                AND queue.consumer IS NULL
 SQL;
 
-        $formerId = -1;
-        while (true) {
-            $productModels = $this->connection->executeQuery(
-                $sql,
-                [
-                    'jobInstanceId' => $jobInstanceId,
-                    'formerId' => $formerId,
-                    'limit' => self::BATCH_SIZE,
-                ],
-                [
-                    'jobInstanceId' => \PDO::PARAM_INT,
-                    'formerId' => \PDO::PARAM_INT,
-                    'limit' => \PDO::PARAM_INT,
-                ]
-            )->fetchAll();
-
-            if (empty($productModels)) {
-                break;
-            }
-
-            $formerId = (int) end($productModels)['id'];
-            yield array_column($productModels, 'code');
-        }
+        return $this->connection->executeQuery($sql)->fetchAll(\PDO::FETCH_COLUMN);
     }
 
-    private function removeComputeModelDescendantJobs(int $jobInstanceId)
+    private function removeComputeModelDescendantJobs()
     {
         $sql = <<<SQL
-DELETE execution, queue
-FROM  akeneo_batch_job_execution execution
-    INNER JOIN akeneo_batch_job_execution_queue queue ON execution.id = queue.job_execution_id
-WHERE execution.job_instance_id = :jobInstanceId
-SQL;
+            DELETE queue
+            FROM 
+                akeneo_batch_job_instance job_instance
+                INNER JOIN akeneo_batch_job_execution job_execution ON job_execution.job_instance_id = job_instance.id
+                INNER JOIN akeneo_batch_job_execution_queue queue ON job_execution.id = queue.job_execution_id
+            WHERE job_instance.code = 'compute_product_models_descendants'
+        SQL;
 
-        $this->addSql($sql, ['jobInstanceId' => $jobInstanceId], ['jobInstanceId' => \PDO::PARAM_INT]);
+        $this->addSql($sql);
 
-        $this->addSql("DELETE FROM akeneo_batch_job_instance WHERE code = 'compute_product_models_descendants'");
+        $sql = <<<SQL
+            DELETE job_execution
+            FROM 
+                akeneo_batch_job_instance job_instance
+                INNER JOIN akeneo_batch_job_execution job_execution ON job_execution.job_instance_id = job_instance.id
+            WHERE job_instance.code = 'compute_product_models_descendants'
+        SQL;
+
+        $this->addSql($sql);
+
+        $sql = <<<SQL
+            DELETE job_instance
+            FROM 
+                akeneo_batch_job_instance job_instance
+            WHERE job_instance.code = 'compute_product_models_descendants'
+        SQL;
+
+        $this->addSql($sql);
     }
 
     private function computeAndIndexFromProductModelCodes(array $productModelCodes): void

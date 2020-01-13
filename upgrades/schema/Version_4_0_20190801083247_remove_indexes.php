@@ -15,6 +15,8 @@ final class Version_4_0_20190801083247_remove_indexes extends AbstractMigration 
 
     public function up(Schema $schema) : void
     {
+        $this->addSql('SELECT "disable migration warning"');
+
         $builder = $this->container->get('akeneo_elasticsearch.client_builder');
         $hosts = [$this->container->getParameter('index_hosts')];
 

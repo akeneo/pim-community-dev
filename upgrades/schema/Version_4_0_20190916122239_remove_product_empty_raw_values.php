@@ -38,6 +38,8 @@ final class Version_4_0_20190916122239_remove_product_empty_raw_values
 
     private function cleanProducts()
     {
+        $this->addSql('SELECT "disable migration warning"');
+
         $productsToProcess = true;
         $productIdentifiersToIndex = [];
         $lastProductIdentifier = null;
