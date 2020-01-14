@@ -137,7 +137,7 @@ jobs:
   back_behat_legacy:
     machine:
       image: ubuntu-1604:201903-01
-    parallelism: 20
+    parallelism: 5
     steps:
       - attach_workspace:
           at: ~/
