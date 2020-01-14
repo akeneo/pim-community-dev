@@ -3,13 +3,11 @@ Akeneo\Tool\Component\Versioning\Model\Version:
     table: pim_versioning_version
     repositoryClass: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
     indexes:
-        resource_name_resource_id_idx:
+        resource_name_resource_id_version_idx:
             columns:
                 - resource_name
                 - resource_id
-        resource_name_idx:
-            columns:
-                - resource_name
+                - version
         pending_idx:
             columns:
                 - pending
