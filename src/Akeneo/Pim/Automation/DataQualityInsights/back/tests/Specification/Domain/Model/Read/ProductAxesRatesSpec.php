@@ -110,6 +110,6 @@ final class ProductAxesRatesSpec extends ObjectBehavior
             ],
         ]);
 
-        $this->shouldThrow(\Exception::class)->during('getRanks');
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }
