@@ -23,7 +23,7 @@ use Doctrine\DBAL\Types\Types;
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class Version_4_0_201912161236080_compute_transformations_job_permission_Integration extends TestCase
+class Version_4_0_20191216123608_compute_transformations_job_permission_Integration extends TestCase
 {
     /** @var Connection */
     private $connection;

@@ -7,6 +7,7 @@ import {
   fileUploadProgressAction,
   fileUploadSuccessAction,
   linesAddedAction,
+  fileUploadFailureAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 import createQueue from 'p-limit';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -39,9 +40,13 @@ export const onFileDrop = (
       uploadFile(file, line, (line: Line, progress: number) => {
         dispatch(fileUploadProgressAction(line, progress));
       })
-    ).then((file: FileModel) => {
-      dispatch(fileUploadSuccessAction(line, file));
-    });
+    )
+      .then((file: FileModel) => {
+        dispatch(fileUploadSuccessAction(line, file));
+      })
+      .catch(() => {
+        dispatch(fileUploadFailureAction(line));
+      });
 
     return line;
   });

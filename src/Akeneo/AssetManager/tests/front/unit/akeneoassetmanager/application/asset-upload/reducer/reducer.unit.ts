@@ -8,6 +8,7 @@ import {
   fileThumbnailGenerationDoneAction,
   fileUploadProgressAction,
   fileUploadSuccessAction,
+  fileUploadFailureAction,
   lineCreationStartAction,
   linesAddedAction,
   removeAllLinesAction,
@@ -230,6 +231,38 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
     expect(newState).toEqual(expectedState);
   });
 
+  test('I can mark a line as failed to upload', () => {
+    const state = Object.freeze({
+      ...defaultState,
+      lines: [lines.A, lines.B],
+    });
+
+    const file = Object.freeze({
+      filePath: 'foobar.jpg',
+      originalFilename: 'a.jpg',
+    } as FileModel);
+
+    const action = fileUploadFailureAction(lines.A, file);
+    const newState = reducer(state, action);
+
+    const expectedState = {
+      ...defaultState,
+      lines: [
+        {
+          ...lines.A,
+          isFileUploading: false,
+          errors: {
+            back: [],
+            front: [],
+          },
+        },
+        lines.B,
+      ],
+    };
+
+    expect(newState).toEqual(expectedState);
+  });
+
   test('I can update the progress of the upload of a line', () => {
     const state = Object.freeze({
       ...defaultState,
@@ -269,6 +302,10 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
         {
           ...lines.A,
           isAssetCreating: true,
+          errors: {
+            back: [],
+            front: [],
+          },
         },
         lines.B,
       ],
@@ -324,6 +361,7 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
           isAssetCreating: false,
           errors: {
             back: errors,
+            front: [],
           },
         },
         lines.B,

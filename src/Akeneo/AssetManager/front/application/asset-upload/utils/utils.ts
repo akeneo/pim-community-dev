@@ -48,6 +48,7 @@ export const createLineFromFilename = (
     uploadProgress: null,
     errors: {
       back: [],
+      front: [],
     },
   };
 };
@@ -197,6 +198,23 @@ export const assetCreationFailed = (lines: Line[], asset: CreationAsset, errors:
         }
       : line
   );
+};
+
+export const assetUploadFailed = (lines: Line[], lineToUpdate: Line): Line[] => {
+  return lines.map((line: Line) => {
+    if (line.id === lineToUpdate.id) {
+      return {
+        ...line,
+        isFileUploading: false,
+        errors: {
+          ...line.errors,
+          front: [],
+        },
+      };
+    }
+
+    return line;
+  });
 };
 
 export const assetCreationSucceeded = (lines: Line[], asset: CreationAsset): Line[] => {

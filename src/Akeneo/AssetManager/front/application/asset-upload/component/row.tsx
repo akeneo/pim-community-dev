@@ -45,7 +45,6 @@ const Cell = styled.div<{width?: number}>`
   ${props =>
     props.width !== undefined &&
     css`
-      overflow: hidden;
       width: ${props.width}px;
     `}
 `;
@@ -168,7 +167,7 @@ const LocaleDropdown = React.memo(({options, value, readOnly, onChange}: LocaleD
   );
 });
 
-const Row = ({
+const Row = React.memo(({
   line,
   locale,
   channels,
@@ -295,6 +294,6 @@ const Row = ({
       </Errors>
     </Container>
   );
-};
+});
 
 export default Row;

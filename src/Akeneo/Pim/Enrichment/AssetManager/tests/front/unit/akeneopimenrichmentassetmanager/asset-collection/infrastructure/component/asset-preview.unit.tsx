@@ -10,6 +10,8 @@ import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribu
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import {mount} from 'enzyme';
 
+jest.mock('akeneoassetmanager/tools/security-context', () => ({isGranted: (permission: string) => true}));
+
 const context = {locale: 'en_US', channel: 'ecommerce'};
 const mediaLinkImageAttribute = {
   identifier: 'media_link_image_attribute_identifier',
@@ -228,6 +230,15 @@ const simpleAssetCollection = [
     assetFamilyIdentifier: 'packshot',
   },
 ];
+const assetFamily = {
+  identifier: 'packshot',
+  code: 'packshot',
+  labels: {en_US: 'Packshot'},
+  image: null,
+  attributeAsLabel: 'name',
+  attributes,
+  transformations: '[]',
+};
 
 test('It can display the previous asset in the collection', async () => {
   const container = document.createElement('div');
@@ -238,10 +249,8 @@ test('It can display the previous asset in the collection', async () => {
       fetch: () => {
         return new Promise(resolve => {
           resolve({
-            assetFamily: {
-              attributes,
-              attributeAsMainMedia: 'media_link_image_attribute_identifier',
-            },
+            assetFamily: {...assetFamily, attributeAsMainMedia: 'media_link_image_attribute_identifier'},
+            permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
           });
         });
       },
@@ -306,10 +315,8 @@ test('It can display the next asset in the collection', async () => {
       fetch: () => {
         return new Promise(resolve => {
           resolve({
-            assetFamily: {
-              attributes,
-              attributeAsMainMedia: 'media_link_image_attribute_identifier',
-            },
+            assetFamily: {...assetFamily, attributeAsMainMedia: 'media_link_image_attribute_identifier'},
+            permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
           });
         });
       },
@@ -348,10 +355,8 @@ test('It can select an asset from the carousel', async () => {
       fetch: () => {
         return new Promise(resolve => {
           resolve({
-            assetFamily: {
-              attributes,
-              attributeAsMainMedia: 'media_link_image_attribute_identifier',
-            },
+            assetFamily: {...assetFamily, attributeAsMainMedia: 'media_link_image_attribute_identifier'},
+            permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
           });
         });
       },
@@ -392,10 +397,8 @@ test('It should not display the modal when the provided asset code is null', asy
       fetch: () => {
         return new Promise(resolve => {
           resolve({
-            assetFamily: {
-              attributes,
-              attributeAsMainMedia: 'media_link_youtube_attribute_identifier',
-            },
+            assetFamily: {...assetFamily, attributeAsMainMedia: 'media_link_youtube_attribute_identifier'},
+            permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
           });
         });
       },
@@ -431,10 +434,8 @@ test('It should not display the modal when the provided asset code does not exis
       fetch: () => {
         return new Promise(resolve => {
           resolve({
-            assetFamily: {
-              attributes,
-              attributeAsMainMedia: 'media_link_youtube_attribute_identifier',
-            },
+            assetFamily: {...assetFamily, attributeAsMainMedia: 'media_link_youtube_attribute_identifier'},
+            permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
           });
         });
       },
@@ -470,10 +471,8 @@ test('It should display the YouTube player when the product attribute is a YouTu
       fetch: () => {
         return new Promise(resolve => {
           resolve({
-            assetFamily: {
-              attributes,
-              attributeAsMainMedia: 'media_link_youtube_attribute_identifier',
-            },
+            assetFamily: {...assetFamily, attributeAsMainMedia: 'media_link_youtube_attribute_identifier'},
+            permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
           });
         });
       },
@@ -508,10 +507,8 @@ test('I should get the YouTube link when I click on the Copy URL button on the p
       fetch: () => {
         return new Promise(resolve => {
           resolve({
-            assetFamily: {
-              attributes,
-              attributeAsMainMedia: 'media_link_youtube_attribute_identifier',
-            },
+            assetFamily: {...assetFamily, attributeAsMainMedia: 'media_link_youtube_attribute_identifier'},
+            permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
           });
         });
       },
