@@ -1,9 +1,7 @@
-import DataQualityOverviewCharts from "./DataQualityOverview/DataQualityOverviewCharts";
-import DataQualityOverviewHeader from "./DataQualityOverview/DataQualityOverviewHeader";
+import DataQualityInsightsDashboard from "./DataQualityInsightsDashboard";
 import DataQualityOverviewChartHeader from "./DataQualityOverview/DataQualityOverviewChartHeader";
 
 export {
-  DataQualityOverviewCharts,
-  DataQualityOverviewHeader,
+  DataQualityInsightsDashboard,
   DataQualityOverviewChartHeader
 }

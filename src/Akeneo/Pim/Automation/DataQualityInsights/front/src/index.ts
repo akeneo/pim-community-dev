@@ -31,14 +31,12 @@ import {
 
 import {ATTRIBUTES_TAB_NAME, DATA_QUALITY_INSIGHTS_TAB_NAME} from './application/constant';
 
-import {DataQualityOverviewCharts} from "./application/component/DqiDashboard";
-import {DataQualityOverviewHeader} from "./application/component/DqiDashboard";
+import {DataQualityInsightsDashboard} from "./application/component/DqiDashboard";
 import {DataQualityOverviewChartHeader} from "./application/component/DqiDashboard";
 
 export {
   DataQualityOverviewChartHeader,
-  DataQualityOverviewHeader,
-  DataQualityOverviewCharts,
+  DataQualityInsightsDashboard,
   ProductEditFormApp,
   DataQualityInsightsFeature,
   getDataQualityInsightsFeature,

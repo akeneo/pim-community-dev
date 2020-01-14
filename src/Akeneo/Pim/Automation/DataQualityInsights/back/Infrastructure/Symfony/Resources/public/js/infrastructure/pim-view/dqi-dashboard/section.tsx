@@ -2,8 +2,7 @@ import BaseView = require('pimui/js/view/base');
 import ReactDOM from 'react-dom';
 import React from "react";
 import {
-  DataQualityOverviewCharts,
-  DataQualityOverviewHeader,
+  DataQualityInsightsDashboard,
   DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY
 } from 'akeneodataqualityinsights-react';
 
@@ -52,13 +51,8 @@ class SectionView extends BaseView {
     const catalogChannel: string = UserContext.get('catalogScope');
 
     ReactDOM.render(
-      <>
-        <div>
-          <DataQualityOverviewHeader periodicity={this.periodicity}/>
-          <DataQualityOverviewCharts catalogLocale={catalogLocale} catalogChannel={catalogChannel} periodicity={this.periodicity}/>
-        </div>
-      </>,
-    this.el
+      <DataQualityInsightsDashboard periodicity={this.periodicity} catalogLocale={catalogLocale} catalogChannel={catalogChannel} />,
+      this.el
     );
     return this;
   }

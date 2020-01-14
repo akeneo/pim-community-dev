@@ -1,110 +1,127 @@
-.AknDataQualityInsights-chart {
-    width: 100%;
-    height: auto;
-    margin-top: 20px;
-    border-bottom: solid 1px @AknGrey60;
-
-    svg {
+#data-quality-insights-activity-dashboard {
+    .AknDataQualityInsights-chart {
         width: 100%;
         height: auto;
+        margin-top: 20px;
+        border-bottom: solid 1px @AknGrey60;
 
-        g {
+        svg {
             width: 100%;
             height: auto;
+
+            g {
+                width: 100%;
+                height: auto;
+            }
         }
     }
-}
 
-.AknSubsection-title {
-    border-bottom: 1px solid @AknGrey140;
-    color: @AknGrey140;
-}
+    .AknSubsection {
+        &-title {
+            border-bottom: 1px solid @AknGrey140;
+            color: @AknGrey140;
 
-.AknSubsection-title.AknSubsection-title--glued {
-    font-weight: normal;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
+            &.AknSubsection-title--glued {
+                font-weight: normal;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
 
-.AknFilterBox--search:not(:empty) {
-    min-height: 44px;
-    display: flex;
-    width: auto;
-    justify-content: flex-end;
-    background: none;
-    flex-wrap: wrap;
-    background: white;
-    border-bottom: none;
-}
-
-.AknFilterBox-filterLabel {
-    color: @AknGrey140;
-}
-
-.AknDataQualityOverviewChartHeader {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-.AknSubsection-AxisTitle {
-        color: @AknGrey140;
-        font-size: 15px;
-        text-transform: capitalize;
-        font-weight: normal;
-        height: 18px;
-        width: 77px;
-        border-bottom: none;
-}
-
-.AknSubsection-legend {
-    color: @AknGrey140;
-    font-size: 11px;
-    font-weight: normal;
-    height: 13px;
-    width: 45px;
-    margin-left: 10px;
-}
-
-.AknBadge {
-    margin-left: 18px;
-}
-
-.AknHoverBoxWithArrow {
-    width: 160px;
-}
-.AknHoverBoxArrow
-{  position: absolute;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-right: 10px solid;
-    margin-top:30px;
-    color: #ffffff;
-}
-.AknHoverBox {
-    background-color: #ffffff;
-    border: none;
-    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
-    width: 137px;
-    height: 234px;
-    margin-left: 10px;
-}
-.AknHoverBox-content {
-    padding-left: 20px;
-    padding-right: 20px;
-    height: 100%;
-    .AknHoverBox-title {
-        color: rgb(148, 82, 186);
-        font-size: 11px;
-        font-weight: normal;
-        height: 44px;
-        text-transform: uppercase;
-        width: 100%;
-        border-bottom: solid 1px rgb(148, 82, 186);
-        line-height: 44px;
+        &-legend {
+            color: @AknGrey140;
+            font-size: 11px;
+            font-weight: normal;
+            height: 13px;
+            width: 45px;
+            margin-left: 10px;
+        }
+        &-AxisTitle {
+            color: @AknGrey140;
+            font-size: 15px;
+            text-transform: capitalize;
+            font-weight: normal;
+            height: 18px;
+            width: 77px;
+            border-bottom: none;
+        }
     }
-    .AknMessageBox-list {
+
+    .AknFilterBox--search:not(:empty) {
+        min-height: 44px;
+        display: flex;
+        width: auto;
+        justify-content: flex-end;
+        background: none;
+        flex-wrap: wrap;
+        background: white;
+        border-bottom: none;
+    }
+
+    .AknFilterBox-filterLabel {
+        color: @AknGrey140;
+    }
+
+    .AknDataQualityOverviewChartHeader {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .AknBadge {
+        margin-left: 18px;
+    }
+
+    .AknHoverBoxWithArrow {
+        width: 160px;
+    }
+    .AknHoverBoxArrow {
+        position: absolute;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-right: 10px solid;
+        margin-top:30px;
+        color: #ffffff;
+    }
+    .AknHoverBox {
+        background-color: #ffffff;
+        border: none;
+        box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
+        width: 137px;
+        height: 234px;
+        margin-left: 10px;
+
+        &-content {
+            padding-left: 20px;
+            padding-right: 20px;
+            height: 100%;
+        }
+        &-title {
+            color: rgb(148, 82, 186);
+            font-size: 11px;
+            font-weight: normal;
+            height: 44px;
+            text-transform: uppercase;
+            width: 100%;
+            border-bottom: solid 1px rgb(148, 82, 186);
+            line-height: 44px;
+        }
+         &-footer {
+            height: 53px;
+            line-height: 53px;
+
+            .rate-value {
+                color: rgb(103, 118, 138);
+                font-size: 13px;
+                font-weight: normal;
+                margin-left: 10px;
+            }
+        }
+    }
+
+    .AknHoverBox-content .AknMessageBox-list {
         height: 174px;
         margin-top: 20px;
         li {
@@ -115,16 +132,6 @@
                 font-weight: normal;
                 margin-left: 10px;
             }
-        }
-    }
-    .AknHoverBox-footer {
-        height: 53px;
-        line-height: 53px;
-        .rate-value {
-            color: rgb(103, 118, 138);
-            font-size: 13px;
-            font-weight: normal;
-            margin-left: 10px;
         }
     }
 }

@@ -1,5 +1,7 @@
 import React, {FunctionComponent} from 'react';
 
+const __ = require('oro/translator');
+
 interface AxisChartHeaderProps {
   axisName: string;
   displayLegend: boolean;
@@ -12,16 +14,16 @@ const DataQualityOverviewChartHeader: FunctionComponent<AxisChartHeaderProps> = 
           {
             displayLegend && (
               <div className="AknSubsection-ChartLegend">
-                <span className="AknBadge AknBadge--small AknBadge--highlight--excellent"></span>
-                <span className="AknSubsection-legend">Excellent</span>
-                <span className="AknBadge AknBadge--small AknBadge--highlight--good"></span>
-                <span className="AknSubsection-legend">Good</span>
-                <span className="AknBadge AknBadge--small AknBadge--highlight--average"></span>
-                <span className="AknSubsection-legend">Average</span>
-                <span className="AknBadge AknBadge--small AknBadge--highlight--below-average"></span>
-                <span className="AknSubsection-legend">Below average</span>
-                <span className="AknBadge AknBadge--small AknBadge--highlight--to-improve"></span>
-                <span className="AknSubsection-legend">To improve</span>
+                <span className="AknBadge AknBadge--small AknBadge--highlight--excellent"/>
+                <span className="AknSubsection-legend">{__(`akeneo_data_quality_insights.dqi_dashboard.legend.excellent`)}</span>
+                <span className="AknBadge AknBadge--small AknBadge--highlight--good"/>
+                <span className="AknSubsection-legend">{__(`akeneo_data_quality_insights.dqi_dashboard.legend.good`)}</span>
+                <span className="AknBadge AknBadge--small AknBadge--highlight--average"/>
+                <span className="AknSubsection-legend">{__(`akeneo_data_quality_insights.dqi_dashboard.legend.average`)}</span>
+                <span className="AknBadge AknBadge--small AknBadge--highlight--below-average"/>
+                <span className="AknSubsection-legend">{__(`akeneo_data_quality_insights.dqi_dashboard.legend.below_average`)}</span>
+                <span className="AknBadge AknBadge--small AknBadge--highlight--to-improve"/>
+                <span className="AknSubsection-legend">{__(`akeneo_data_quality_insights.dqi_dashboard.legend.to_improve`)}</span>
               </div>
             )
           }

@@ -11,6 +11,16 @@ akeneo_data_quality_insights:
             daily: Daily
             weekly: Weekly
             monthly: Monthly
+        category:
+            label: Category
+        family:
+            label: Family
+        legend:
+            excellent: Excellent
+            good: Good
+            average: Average
+            below_average: Below average
+            to_improve: To improve
 
     product_evaluation:
         criteria:
