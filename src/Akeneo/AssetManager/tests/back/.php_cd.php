@@ -49,6 +49,7 @@ $rules = [
 
         // TODO: asset families should not depend on PIM
         'Akeneo\Pim\Enrichment\AssetManager\Component',
+        'Akeneo\Pim\Enrichment\Component\Product', // because of migration
         'Akeneo\Pim\Structure\Component'
     ])->in('Akeneo\AssetManager\Infrastructure'),
 ];
