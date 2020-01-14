@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.31 (2020-01-14)
+
 ## Bug fixes:
 
 - PIM-9054: Fix the constraint on AttributeOption:code max length
