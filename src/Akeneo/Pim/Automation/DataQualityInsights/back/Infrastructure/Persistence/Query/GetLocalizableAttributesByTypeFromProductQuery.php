@@ -32,7 +32,7 @@ class GetLocalizableAttributesByTypeFromProductQuery implements GetLocalizableAt
     public function execute(ProductId $productId, string $attributeType): array
     {
         $query = <<<SQL
-SELECT `code`
+SELECT `code`, `properties`
 FROM pim_catalog_attribute
 INNER JOIN pim_catalog_family_attribute pcfamatt on pim_catalog_attribute.id = pcfamatt.attribute_id
 INNER JOIN pim_catalog_product pcp on pcp.family_id = pcfamatt.family_id
@@ -52,8 +52,26 @@ SQL;
             ]
         );
 
-        return array_map(function (array $result) {
-            return $result['code'];
-        }, $statement->fetchAll());
+        $attributes = $this->excludeReadOnlyAttributes($statement->fetchAll());
+
+        return array_map(function (array $attribute) {
+            return $attribute['code'];
+        }, $attributes);
+    }
+
+    private function excludeReadOnlyAttributes(array $attributes): array
+    {
+        return array_filter($attributes, function ($attribute) {
+            if (empty($attribute['properties'])) {
+                return true;
+            }
+
+            $properties = unserialize($attribute['properties']);
+            if (isset($properties['is_read_only']) && $properties['is_read_only'] === true) {
+                return false;
+            }
+
+            return true;
+        });
     }
 }
