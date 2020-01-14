@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
@@ -21,13 +22,13 @@ final class IndexProductRates
     /** @var Client */
     private $esClient;
 
-    /** @var GetProductsAxesRates */
-    private $getProductAxesRates;
+    /** @var GetLatestProductAxesRatesQueryInterface */
+    private $getLatestProductAxesRatesQuery;
 
-    public function __construct(Client $esClient, GetProductsAxesRates $getProductAxesRates)
+    public function __construct(Client $esClient, GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery)
     {
         $this->esClient = $esClient;
-        $this->getProductAxesRates = $getProductAxesRates;
+        $this->getLatestProductAxesRatesQuery = $getLatestProductAxesRatesQuery;
     }
 
     public function execute(array $productIds): void
@@ -36,12 +37,10 @@ final class IndexProductRates
             return new ProductId($productId);
         }, $productIds);
 
-        $productsAxesRates = $this->getProductAxesRates->fromProductIds($productIds);
+        $productsAxesRates = $this->getLatestProductAxesRatesQuery->byProductIds($productIds);
 
         foreach ($productsAxesRates as $productId => $productAxesRates) {
-            if (! empty($productAxesRates)) {
-                $this->indexProductRates($productId, $productAxesRates);
-            }
+            $this->indexProductRates($productId, $productAxesRates->getRanks());
         }
     }
 

@@ -71,12 +71,12 @@ final class AxisRateCollectionSpec extends ObjectBehavior
 
         $this->formatForConsolidation()->shouldReturn([
             'ecommerce' => [
-                'en_US' =>  ['rank' => 2, 'rate' => 85],
-                'fr_FR' => ['rank' => 5, 'rate' => 50],
+                'en_US' =>  ['rank' => 2, 'value' => 85],
+                'fr_FR' => ['rank' => 5, 'value' => 50],
             ],
             'print' => [
-                'en_US' => ['rank' => 4, 'rate' => 67],
-                'fr_FR' => ['rank' => 3, 'rate' => 72],
+                'en_US' => ['rank' => 4, 'value' => 67],
+                'fr_FR' => ['rank' => 3, 'value' => 72],
             ],
         ]);
     }

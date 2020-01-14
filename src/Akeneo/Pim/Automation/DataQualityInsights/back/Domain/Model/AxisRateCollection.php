@@ -49,7 +49,7 @@ final class AxisRateCollection
                 $average = $this->computeChannelLocaleAverage($localeRates);
                 return [
                     'rank' => $this->convertRateToRank($average),
-                    'rate' => $average,
+                    'value' => $average,
                 ];
             }, $channelRates);
         }, $this->rates);

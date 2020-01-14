@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\back\tests\Integration\Persistence\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductAxesRatesQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository;
@@ -44,8 +45,8 @@ final class GetLatestProductAxesRatesQueryIntegration extends TestCase
                 'evaluated_at' => new \DateTime('2020-01-08'),
                 'rates' => [
                     'mobile' => [
-                        'en_US' => ['rank' => 1, 'rate' => 96],
-                        'fr_FR' => ['rank' => 5, 'rate' => 36],
+                        'en_US' => ['rank' => 1, 'value' => 96],
+                        'fr_FR' => ['rank' => 5, 'value' => 36],
                     ]
                 ]
             ],
@@ -55,8 +56,8 @@ final class GetLatestProductAxesRatesQueryIntegration extends TestCase
                 'evaluated_at' => new \DateTime('2020-01-07'),
                 'rates' => [
                     'mobile' => [
-                        'en_US' => ['rank' => 3, 'rate' => 76],
-                        'fr_FR' => ['rank' => 4, 'rate' => 67],
+                        'en_US' => ['rank' => 3, 'value' => 76],
+                        'fr_FR' => ['rank' => 4, 'value' => 67],
                     ]
                 ]
             ],
@@ -66,8 +67,8 @@ final class GetLatestProductAxesRatesQueryIntegration extends TestCase
                 'evaluated_at' => new \DateTime('2020-01-08'),
                 'rates' => [
                     'mobile' => [
-                        'en_US' => ['rank' => 2, 'rate' => 84],
-                        'fr_FR' => ['rank' => 5, 'rate' => 35],
+                        'en_US' => ['rank' => 2, 'value' => 84],
+                        'fr_FR' => ['rank' => 5, 'value' => 35],
                     ]
                 ]
             ],
@@ -77,8 +78,8 @@ final class GetLatestProductAxesRatesQueryIntegration extends TestCase
                 'evaluated_at' => new \DateTime('2020-01-09'),
                 'rates' => [
                     'mobile' => [
-                        'en_US' => ['rank' => 1, 'rate' => 100],
-                        'fr_FR' => ['rank' => 1, 'rate' => 95],
+                        'en_US' => ['rank' => 1, 'value' => 100],
+                        'fr_FR' => ['rank' => 1, 'value' => 95],
                     ]
                 ]
             ],
@@ -88,8 +89,8 @@ final class GetLatestProductAxesRatesQueryIntegration extends TestCase
                 'evaluated_at' => new \DateTime('2020-01-08'),
                 'rates' => [
                     'mobile' => [
-                        'en_US' => ['rank' => 2, 'rate' => 81],
-                        'fr_FR' => ['rank' => 1, 'rate' => 95],
+                        'en_US' => ['rank' => 2, 'value' => 81],
+                        'fr_FR' => ['rank' => 1, 'value' => 95],
                     ]
                 ]
             ],
@@ -99,8 +100,8 @@ final class GetLatestProductAxesRatesQueryIntegration extends TestCase
                 'evaluated_at' => new \DateTime('2020-01-08'),
                 'rates' => [
                     'mobile' => [
-                        'en_US' => ['rank' => 2, 'rate' => 87],
-                        'fr_FR' => ['rank' => 1, 'rate' => 95],
+                        'en_US' => ['rank' => 2, 'value' => 87],
+                        'fr_FR' => ['rank' => 1, 'value' => 95],
                     ]
                 ]
             ]
@@ -109,13 +110,13 @@ final class GetLatestProductAxesRatesQueryIntegration extends TestCase
         $repository->save(array_values($rates));
 
         $expectedRates = [
-            42 => [
+            42 => new ProductAxesRates(new ProductId(42), [
                 'consistency' => $rates['product_42_consistency_latest_rates']['rates'],
                 'enrichment' => $rates['product_42_enrichment_latest_rates']['rates'],
-            ],
-            123 => [
+            ]),
+            123 => new ProductAxesRates(new ProductId(123), [
                 'enrichment' => $rates['product_123_enrichment_latest_rates']['rates'],
-            ],
+            ]),
         ];
 
         $productAxesRates = $this->query->byProductIds([new ProductId(42), new ProductId(123), new ProductId(321)]);

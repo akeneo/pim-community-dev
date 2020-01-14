@@ -13,22 +13,23 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductAxesRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductIdsFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetProductsAxesRates;
 use PhpSpec\ObjectBehavior;
 
 final class GetRatesForProductProjectionSpec extends ObjectBehavior
 {
     public function let(
-        GetProductsAxesRates $getProductsAxesRates,
+        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
         GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery
     ) {
-        $this->beConstructedWith($getProductsAxesRates, $getProductIdsFromProductIdentifiersQuery);
+        $this->beConstructedWith($getLatestProductAxesRatesQuery, $getProductIdsFromProductIdentifiersQuery);
     }
 
     public function it_returns_product_rates_from_product_identifiers(
-        GetProductsAxesRates $getProductsAxesRates,
+        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
         GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery
     ) {
         $productId42 = new ProductId(42);
@@ -45,30 +46,30 @@ final class GetRatesForProductProjectionSpec extends ObjectBehavior
 
         $getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers)->willReturn($productIds);
 
-        $getProductsAxesRates->fromProductIds($productIds)->willReturn([
-            42 => [
+        $getLatestProductAxesRatesQuery->byProductIds($productIds)->willReturn([
+            42 => new ProductAxesRates(new ProductId(42), [
                 'enrichment' => [
                         'mobile' => [
-                            'en_US' => 'B',
-                            'fr_FR' => 'E',
+                            'en_US' => ['value' => 83, 'rank' => 2],
+                            'fr_FR' => ['value' => 9, 'rank' => 5],
                         ],
                         'ecommerce' => [
-                            'en_US' => 'C',
+                            'en_US' => ['value' => 78, 'rank' => 3],
                         ],
                     ],
                     'consistency' => [
                         'mobile' => [
-                            'en_US' => 'A',
+                            'en_US' => ['value' => 98, 'rank' => 1],
                         ],
                     ],
-            ],
-            123 => [
+            ]),
+            123 => new ProductAxesRates(new ProductId(123), [
                 'enrichment' => [
                         'mobile' => [
-                            'en_US' => 'B',
+                            'en_US' => ['value' => 67, 'rank' => 4],
                         ],
                     ],
-            ]
+            ])
         ]);
 
         $this->fromProductIdentifiers($productIdentifiers)->shouldReturn([
@@ -76,16 +77,16 @@ final class GetRatesForProductProjectionSpec extends ObjectBehavior
                 'rates' => [
                     'enrichment' => [
                         'mobile' => [
-                            'en_US' => 'B',
-                            'fr_FR' => 'E',
+                            'en_US' => 2,
+                            'fr_FR' => 5,
                         ],
                         'ecommerce' => [
-                            'en_US' => 'C',
+                            'en_US' => 3,
                         ],
                     ],
                     'consistency' => [
                         'mobile' => [
-                            'en_US' => 'A',
+                            'en_US' => 1,
                         ],
                     ],
                 ],
@@ -94,7 +95,7 @@ final class GetRatesForProductProjectionSpec extends ObjectBehavior
                 'rates' => [
                     'enrichment' => [
                         'mobile' => [
-                            'en_US' => 'B',
+                            'en_US' => 4,
                         ],
                     ],
                 ],

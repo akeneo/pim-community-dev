@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
@@ -59,8 +60,10 @@ SQL;
         );
 
         $productAxesRates = [];
-        foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-            $productAxesRates[intval($row['product_id'])] = json_decode($row['rates'], true);
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $productId = intval($row['product_id']);
+            $axesRates = json_decode($row['rates'], true);
+            $productAxesRates[$productId] = new ProductAxesRates(new ProductId($productId), $axesRates);
         }
 
         return $productAxesRates;
