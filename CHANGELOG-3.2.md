@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9056: Fix filters with numeric attribute codes for bulk actions
+
 # 3.2.31 (2020-01-14)
 
 ## Bug fixes:
