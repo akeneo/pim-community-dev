@@ -15,7 +15,7 @@ class Version_4_0_202001131458_fix_versioning_indexes extends AbstractMigration
 
     /**
      * Try to drop and create versioning indexes.
-     * Does nothing if they are already dropped/created
+     * Does nothing if they are already dropped/created, as the migration could be already applied from a patch in 3.x
      *
      * @throws DriverException
      * @throws \Doctrine\DBAL\DBALException
