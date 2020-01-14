@@ -32,6 +32,3 @@ config:
 
         akeneo/data-quality-insights/view/dqi-dashboard/locale-switcher: akeneodataqualityinsights/js/infrastructure/pim-view/dqi-dashboard/locale-switcher.ts
         akeneo/data-quality-insights/view/dqi-dashboard/channel-switcher: akeneodataqualityinsights/js/infrastructure/pim-view/dqi-dashboard/channel-switcher.ts
-
-        # Templates
-        akeneo/data-quality-insights/template/dqi-dashboard/section-container: akeneodataqualityinsights/templates/dqi-dashboard/section-container.html
