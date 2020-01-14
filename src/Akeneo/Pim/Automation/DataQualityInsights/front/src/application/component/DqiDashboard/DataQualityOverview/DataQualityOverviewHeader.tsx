@@ -25,7 +25,7 @@ const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProp
               <span className="AknFilterBox-filterLabel">{__('akeneo_data_quality_insights.dqi_dashboard.periodicity.label')}</span>
               <span className="AknActionButton-highlight">
                 <span>{__(`akeneo_data_quality_insights.dqi_dashboard.periodicity.${periodicity}`)}</span>
-                <span className="AknActionButton-caret"></span>
+                <span className="AknActionButton-caret"/>
               </span>
             </button>
             <ul className="AknDropdown-menu">
@@ -52,7 +52,6 @@ const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProp
               <span className="AknFilterBox-filterLabel">{__('akeneo_data_quality_insights.dqi_dashboard.category.label')}</span>
               <button type="button" className="AknFilterBox-filterCriteria ui-multiselect">
                 <span>{__('pim_common.all')}</span>
-                <span className="AknFilterBox-filterCaret"></span>
               </button>
             </div>
           </div>
@@ -61,7 +60,7 @@ const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProp
               <span className="AknFilterBox-filterLabel">{__('akeneo_data_quality_insights.dqi_dashboard.family.label')}</span>
               <button type="button" className="AknFilterBox-filterCriteria ui-multiselect">
                 <span>{__('pim_common.all')}</span>
-                <span className="AknFilterBox-filterCaret"></span>
+                <span className="AknFilterBox-filterCaret"/>
               </button>
             </div>
           </div>
