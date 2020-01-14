@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Client;
 
+use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretCommand;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -14,7 +15,7 @@ class RevokeTokenIntegration extends ApiTestCase
     public function testCascadeDeleteRefreshToken()
     {
         $client = static::createClient();
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('Revoke_Token_Test');
 
         $client->request('POST', 'api/oauth/v1/token',
             [
@@ -40,7 +41,7 @@ class RevokeTokenIntegration extends ApiTestCase
 
         $this->assertSame(1, $this->count($result));
 
-        $this->revokeOAuthClient($clientId);
+        $this->revokeConnection('Revoke_Token_Test');
 
         $stmt->bindParam('client', $arrayClientId[0]);
         $stmt->execute();
@@ -52,7 +53,7 @@ class RevokeTokenIntegration extends ApiTestCase
     public function testCascadeDeleteAccessToken()
     {
         $client = static::createClient();
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('Revoke_Token_Test');
 
         $client->request('POST', 'api/oauth/v1/token',
             [
@@ -78,7 +79,7 @@ class RevokeTokenIntegration extends ApiTestCase
 
         $this->assertSame(1, $this->count($result));
 
-        $this->revokeOAuthClient($clientId);
+        $this->revokeConnection('Revoke_Token_Test');
 
         $stmt->bindParam('client', $arrayClientId[0]);
         $stmt->execute();
@@ -89,7 +90,7 @@ class RevokeTokenIntegration extends ApiTestCase
 
     public function testResponseWhenUseARevokedToken()
     {
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('Revoke_Token_Test');
         list($accessToken, $refreshToken) = $this->authenticate($clientId, $secret, self::USERNAME, self::PASSWORD);
 
         $client = $this->createAuthenticatedClient(
@@ -108,7 +109,7 @@ class RevokeTokenIntegration extends ApiTestCase
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
-        $this->revokeOAuthClient($clientId);
+        $this->revokeConnection('Revoke_Token_Test');
 
         $client->request('GET', '/api/rest/v1/currencies/eur');
 
@@ -126,7 +127,7 @@ JSON;
 
     public function testRefreshTokenResponseWithRevokedToken()
     {
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('Revoke_Token_Test');
         list($accessToken, $refreshToken) = $this->authenticate($clientId, $secret, self::USERNAME, self::PASSWORD);
 
         $client = $this->createAuthenticatedClient(
@@ -155,7 +156,7 @@ JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
-        $this->revokeOAuthClient($clientId);
+        $this->revokeConnection('Revoke_Token_Test');
 
         $client->request('POST', '/api/oauth/v1/token',
             [
@@ -184,6 +185,7 @@ JSON;
     /**
      * Revoke a client using command line.
      *
+     * @deprecated
      * @param $clientId
      *
      * @return string
@@ -202,6 +204,12 @@ JSON;
         $consoleApp->run($input, $output);
 
         return $output->fetch();
+    }
+
+    private function revokeConnection(string $connectionCode): void
+    {
+        $command = new RegenerateConnectionSecretCommand($connectionCode);
+        $this->get('akeneo_connectivity.connection.application.handler.regenerate_connection_secret')->handle($command);
     }
 
     /**

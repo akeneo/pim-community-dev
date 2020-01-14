@@ -2,6 +2,9 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration;
 
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
@@ -117,21 +120,17 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function createOAuthClient(?string $label = null): array
     {
-        $consoleApp = new Application(static::$kernel);
-        $consoleApp->setAutoExit(false);
+        $label = $label ?? 'Api_test_case_client';
+        $connection = $this->createConnection($label);
 
-        $input  = new ArrayInput([
-            'command' => 'pim:oauth-server:create-client',
-            'label'   => null !== $label ? $label : 'Api test case client',
-        ]);
-        $output = new BufferedOutput();
+        return [$connection->clientId(), $connection->secret()];
+    }
 
-        $consoleApp->run($input, $output);
+    private function createConnection(string $code): ConnectionWithCredentials
+    {
+        $command = new CreateConnectionCommand($code, $code, FlowType::OTHER);
 
-        $content = $output->fetch();
-        preg_match('/client_id: (.+)\nsecret: (.+)\nlabel: (.+)$/', $content, $matches);
-
-        return [$matches[1], $matches[2]];
+        return $this->get('akeneo_connectivity.connection.application.handler.create_connection')->handle($command);
     }
 
     /**
