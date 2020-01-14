@@ -182,30 +182,6 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
-    /**
-     * Revoke a client using command line.
-     *
-     * @deprecated
-     * @param $clientId
-     *
-     * @return string
-     */
-    protected function revokeOAuthClient($clientId)
-    {
-        $consoleApp = new Application(static::$kernel);
-        $consoleApp->setAutoExit(false);
-
-        $input  = new ArrayInput([
-            'command'   => 'pim:oauth-server:revoke-client',
-            'client_id' => $clientId,
-        ]);
-        $output = new BufferedOutput();
-
-        $consoleApp->run($input, $output);
-
-        return $output->fetch();
-    }
-
     private function revokeConnection(string $connectionCode): void
     {
         $command = new RegenerateConnectionSecretCommand($connectionCode);
