@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
+namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
-interface BuildProductValuesInterface
+interface GetLocalizableAttributesByTypeFromProductQueryInterface
 {
-    public function buildForProductIdAndAttributeCodes(ProductId $productId, array $attributesCodes): array;
+    public function execute(ProductId $productId, string $attributeType): array;
 }

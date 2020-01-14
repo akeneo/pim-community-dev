@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Textarea;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCodesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
@@ -29,13 +30,18 @@ use PhpSpec\ObjectBehavior;
 
 final class EvaluateUppercaseWordsSpec extends ObjectBehavior
 {
-    public function let(BuildProductValuesInterface $buildProductValues, GetLocalesByChannelQueryInterface $localesByChannelQuery)
-    {
-        $this->beConstructedWith($buildProductValues, $localesByChannelQuery);
+    public function let(
+        BuildProductValuesInterface $buildProductValues,
+        GetProductAttributesCodesInterface $getProductAttributesCodes,
+        GetLocalesByChannelQueryInterface $localesByChannelQuery
+    ) {
+        $this->beConstructedWith($buildProductValues, $getProductAttributesCodes, $localesByChannelQuery);
     }
 
     public function it_returns_an_empty_rates_collection_when_a_product_has_no_attributes(
-        BuildProductValuesInterface $buildProductValues, GetLocalesByChannelQueryInterface $localesByChannelQuery
+        $buildProductValues,
+        $getProductAttributesCodes,
+        $localesByChannelQuery
     ) {
         $localesByChannelQuery->execute()->willReturn(
             [
@@ -44,7 +50,9 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
             ]
         );
 
-        $buildProductValues->buildTextareaValues(new ProductId(1))->willReturn([]);
+        $productId = new ProductId(1);
+        $getProductAttributesCodes->getTextarea($productId)->willReturn([]);
+        $buildProductValues->buildForProductIdAndAttributeCodes($productId, [])->willReturn([]);
 
         $this->evaluate(
             new CriterionEvaluation(
@@ -57,8 +65,11 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
         )->shouldBeLike(new CriterionEvaluationResult(new CriterionRateCollection(), ['attributes' => []]));
     }
 
-    public function it_evaluates_product_values(BuildProductValuesInterface $buildProductValues, GetLocalesByChannelQueryInterface $localesByChannelQuery)
-    {
+    public function it_evaluates_product_values(
+        $buildProductValues,
+        $getProductAttributesCodes,
+        $localesByChannelQuery
+    ) {
         $localesByChannelQuery->execute()->willReturn(
             [
                 'ecommerce' => ['en_US', 'fr_FR'],
@@ -67,7 +78,10 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
             ]
         );
 
-        $buildProductValues->buildTextareaValues(new ProductId(1))->willReturn([
+
+        $productId = new ProductId(1);
+        $getProductAttributesCodes->getTextarea($productId)->willReturn(['textarea_1', 'textarea_2']);
+        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['textarea_1', 'textarea_2'])->willReturn([
             'textarea_1' => [
                 'ecommerce' => [
                     'en_US' => '<p><br></p>',

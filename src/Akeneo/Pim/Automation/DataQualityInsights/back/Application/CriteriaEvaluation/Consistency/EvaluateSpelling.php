@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluati
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCodesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
@@ -43,24 +44,34 @@ class EvaluateSpelling implements EvaluateCriterionInterface
 
     private $supportedLocaleChecker;
 
+    /** @var GetProductAttributesCodesInterface */
+    private $getProductAttributesCodes;
+
     public function __construct(
         TextChecker $textChecker,
         BuildProductValuesInterface $buildProductValues,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        SupportedLocaleChecker $supportedLocaleChecker
+        SupportedLocaleChecker $supportedLocaleChecker,
+        GetProductAttributesCodesInterface $getProductAttributesCodes
     ) {
         $this->textChecker = $textChecker;
         $this->buildProductValues = $buildProductValues;
         $this->localesByChannelQuery = $localesByChannelQuery;
         $this->supportedLocaleChecker = $supportedLocaleChecker;
+        $this->getProductAttributesCodes = $getProductAttributesCodes;
     }
 
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation): CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->execute();
 
-        $textareaValuesList = $this->buildProductValues->buildTextareaValues($criterionEvaluation->getProductId());
-        $textValuesList = $this->buildProductValues->buildTextValues($criterionEvaluation->getProductId());
+        $productId = $criterionEvaluation->getProductId();
+
+        $textareaAttributesCodes = $this->getProductAttributesCodes->getLocalizableTextarea($productId);
+        $textareaValuesList = $this->buildProductValues->buildForProductIdAndAttributeCodes($productId, $textareaAttributesCodes);
+
+        $textAttributesCodes = $this->getProductAttributesCodes->getLocalizableText($productId);
+        $textValuesList = $this->buildProductValues->buildForProductIdAndAttributeCodes($productId, $textAttributesCodes);
 
         $ratesByChannelAndLocaleTextarea = $this->computeAttributeRates($localesByChannel, $textareaValuesList, self::TEXTAREA_FAULT_WEIGHT);
         $ratesByChannelAndLocaleText = $this->computeAttributeRates($localesByChannel, $textValuesList, self::TEXT_FAULT_WEIGHT);

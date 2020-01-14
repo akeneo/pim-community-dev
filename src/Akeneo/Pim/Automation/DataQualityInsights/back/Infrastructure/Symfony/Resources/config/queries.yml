@@ -20,6 +20,10 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLocalizableAttributesByTypeFromProductQuery:
+        arguments:
+            - '@database_connection'
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductRawValuesByAttributeQuery:
         arguments:
             - '@database_connection'

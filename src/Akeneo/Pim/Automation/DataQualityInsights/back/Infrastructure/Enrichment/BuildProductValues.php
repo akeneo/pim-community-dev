@@ -26,55 +26,23 @@ class BuildProductValues implements BuildProductValuesInterface
     /** @var GetProductRawValuesByAttributeQueryInterface */
     private $getProductRawValuesByAttributeQuery;
 
-    /** @var GetAttributesByTypeFromProductQueryInterface */
-    private $getAttributesByTypeFromProductQuery;
-
     /** @var GetLocalesByChannelQueryInterface */
     private $localesByChannelQuery;
 
-    /** @var GetAttributeAsMainTitleValueFromProductIdInterface */
-    private $getAttributeAsMainTitleValueFromProductId;
 
     public function __construct(
         GetProductRawValuesByAttributeQueryInterface $getProductRawValuesByAttributeQuery,
-        GetAttributesByTypeFromProductQueryInterface $getAttributesByTypeFromProductQuery,
-        GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        GetAttributeAsMainTitleValueFromProductIdInterface $getAttributeAsMainTitleValueFromProductId
+        GetLocalesByChannelQueryInterface $localesByChannelQuery
     ) {
         $this->getProductRawValuesByAttributeQuery = $getProductRawValuesByAttributeQuery;
-        $this->getAttributesByTypeFromProductQuery = $getAttributesByTypeFromProductQuery;
         $this->localesByChannelQuery = $localesByChannelQuery;
-        $this->getAttributeAsMainTitleValueFromProductId = $getAttributeAsMainTitleValueFromProductId;
     }
 
-    public function buildTextareaValues(ProductId $productId): array
+    public function buildForProductIdAndAttributeCodes(ProductId $productId, array $attributesCodes): array
     {
-        return $this->buildForProductIdAndAttributeType($productId, AttributeTypes::TEXTAREA);
-    }
+        $rawValues = $this->getProductRawValuesByAttributeQuery->execute($productId, $attributesCodes);
 
-    public function buildTextValues(ProductId $productId): array
-    {
-        return $this->buildForProductIdAndAttributeType($productId, AttributeTypes::TEXT);
-    }
-
-    public function buildTitleValues(ProductId $productId): array
-    {
-        $rawValues = $this->getAttributeAsMainTitleValueFromProductId->execute($productId);
-
-        $attributeCodes = [];
-        if (array_key_first($rawValues) !== null) {
-            $attributeCodes = [array_key_first($rawValues)];
-        }
-
-        return $this->buildByChannelAndLocale($attributeCodes, $rawValues);
-    }
-
-    private function buildForProductIdAndAttributeType(ProductId $productId, string $attributeType): array
-    {
-        $attributeCodes = $this->getAttributesByTypeFromProductQuery->execute($productId, $attributeType);
-        $rawValues = $this->getProductRawValuesByAttributeQuery->execute($productId, $attributeCodes);
-
-        return $this->buildByChannelAndLocale($attributeCodes, $rawValues);
+        return $this->buildByChannelAndLocale($attributesCodes, $rawValues);
     }
 
     private function buildByChannelAndLocale(array $attributeCodes, array $rawValues): array
