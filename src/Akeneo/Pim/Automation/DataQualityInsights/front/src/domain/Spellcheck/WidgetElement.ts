@@ -1,4 +1,4 @@
-import HighlightElement from "./HighlightElement";
+import {HighlightsCollection} from "./HighlightElement";
 import EditorElement, {getEditorContent, isEditableContent, isTextArea, isTextInput} from "./EditorElement";
 import MistakeElement from "./MistakeElement";
 
@@ -7,18 +7,18 @@ export default interface WidgetElement {
   editor: EditorElement;
   editorId: string;
   attribute: string;
-  shadowEditor: EditorElement | null;
   content: string;
   analysis: MistakeElement[],
-  highlights: HighlightElement[]
+  highlights: HighlightsCollection,
   isVisible: boolean;
   isActive: boolean;
-  isGrammarlyActive: boolean;
-  isNativeSpellcheckingActive: boolean;
-  isBackgroundOverlayActive: boolean;
   isTextArea: boolean;
   isTextInput: boolean;
   isEditableContent: boolean;
+}
+
+export interface WidgetsCollection {
+  [id: string]: WidgetElement;
 }
 
 export const createWidget = (identifier: string, editor: EditorElement, attribute: string) => {
@@ -27,17 +27,13 @@ export const createWidget = (identifier: string, editor: EditorElement, attribut
     editor: editor,
     editorId: editor.id,
     attribute,
-    shadowEditor: null,
     isVisible: false,
     isActive: false,
-    isGrammarlyActive: false,
-    isNativeSpellcheckingActive: false,
-    isBackgroundOverlayActive: false,
     isTextArea: isTextArea(editor),
     isTextInput: isTextInput(editor),
     isEditableContent: isEditableContent(editor),
     content: getEditorContent(editor),
     analysis: [],
-    highlights: []
+    highlights: {}
   } as WidgetElement;
 };

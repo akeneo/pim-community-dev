@@ -3,10 +3,14 @@ import {useDispatch} from "react-redux";
 import {createHighlight, EditorElement, HighlightElement, MistakeElement, WidgetElement} from "../../../domain";
 import {updateWidgetHighlightsAction} from "../../reducer";
 
-const generateHighlights = async (mistakes: MistakeElement[], element: EditorElement) => {
+const uuidV5 = require('uuid/v5');
+
+const generateHighlights = async (widgetId: string, mistakes: MistakeElement[], element: EditorElement) => {
+
   return new Promise<HighlightElement[]>((resolve) => {
     const highlights = mistakes.map(mistake => {
-      return createHighlight(mistake, element);
+      const identifier  = uuidV5(`${mistake.text}-${mistake.globalOffset}`, widgetId);
+      return createHighlight(identifier, mistake, element);
     });
 
     return resolve(highlights);
@@ -20,6 +24,7 @@ const useGetHighlights = (widget: WidgetElement, clonedEditor: EditorElement | n
   useEffect(() => {
     (async () => {
       const highlights = await generateHighlights(
+        id,
         analysis,
         clonedEditor || editor
       );

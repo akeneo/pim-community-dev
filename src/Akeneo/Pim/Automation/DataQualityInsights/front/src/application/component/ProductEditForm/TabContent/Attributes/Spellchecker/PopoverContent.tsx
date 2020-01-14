@@ -13,12 +13,6 @@ interface PopoverContentProps {
   widgetId: string | null;
 }
 
-function replaceContentFromRange(content: string, replacement: string, start: number, end: number) {
-  const subContentStart = content.substring(0, start);
-  const subContentEnd = content.substring(end);
-
-  return `${subContentStart}${replacement}${subContentEnd}`;
-}
 
 const PopoverContent: FunctionComponent<PopoverContentProps> = ({mistake, widgetId}) => {
   const dispatchAction = useDispatch();
@@ -34,9 +28,8 @@ const PopoverContent: FunctionComponent<PopoverContentProps> = ({mistake, widget
 
     const start = mistake.globalOffset;
     const end = mistake.globalOffset + mistake.text.length;
-    const content = replaceContentFromRange(widget.content, suggestion, start, end);
 
-    setEditorContent(widget.editor, content);
+    setEditorContent(widget.editor, widget.content, suggestion, start, end);
 
     dispatchAction(hidePopoverAction());
   }, [widget, mistake]);

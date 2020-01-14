@@ -3,7 +3,9 @@ import {useGetSpellcheckPopover} from "../../../../../infrastructure/hooks";
 import PopoverContent from "./Spellchecker/PopoverContent";
 
 const POPOVER_BOTTOM_PLACEMENT_OFFSET = 2;
+const POPOVER_LEFT_PLACEMENT_OFFSET = 0;
 const POPOVER_TOP_PLACEMENT_MARGE = 20;
+const POPOVER_RIGHT_PLACEMENT_MARGE = 20;
 const PEF_CONTAINER_SELECTOR = '.entity-edit-form.edit-form';
 
 interface PopoverStyleState {
@@ -12,21 +14,21 @@ interface PopoverStyleState {
 }
 
 const SpellCheckerPopover = () => {
-  const {isOpen, highlightRef, mistake, widgetId, handleOpening, handleClosing} = useGetSpellcheckPopover();
+  const {isOpen, highlight, widgetId, handleOpening, handleClosing} = useGetSpellcheckPopover();
   const [style, setStyle] = useState<PopoverStyleState>({});
   const popoverRef = useRef<HTMLDivElement>(null);
   const classList = ["AknSpellCheck-popover"];
 
   const handleMouseEnter = useCallback(() => {
-    handleOpening(widgetId,mistake, highlightRef);
-  }, [widgetId, highlightRef, mistake, handleOpening]);
+    handleOpening(widgetId, highlight);
+  }, [widgetId, highlight, handleOpening]);
 
   const handleMouseLeave = useCallback(() => {
     handleClosing();
   }, [handleClosing]);
 
   useLayoutEffect(() => {
-    const element = highlightRef && highlightRef.current ?  highlightRef.current : null;
+    const element = highlight && highlight.domRange ? highlight.domRange : null;
     const container = document.querySelector(PEF_CONTAINER_SELECTOR);
     const popoverElement = popoverRef && popoverRef.current ? popoverRef.current : null;
 
@@ -38,12 +40,17 @@ const SpellCheckerPopover = () => {
         topPosition =  highlightRect.top - POPOVER_BOTTOM_PLACEMENT_OFFSET - popoverElement.clientHeight;
       }
 
+      let leftPosition = highlightRect.left + POPOVER_LEFT_PLACEMENT_OFFSET;
+      if ((highlightRect.left + popoverElement.clientWidth + POPOVER_RIGHT_PLACEMENT_MARGE) > container.clientWidth) {
+        leftPosition =  highlightRect.right - POPOVER_LEFT_PLACEMENT_OFFSET - popoverElement.clientWidth;
+      }
+
       setStyle({
         top: topPosition,
-        left: highlightRect.left,
+        left: leftPosition,
       });
     }
-  }, [highlightRef]);
+  }, [highlight]);
 
   if (isOpen) {
     classList.push("AknSpellCheck-popover--visible");
@@ -57,7 +64,7 @@ const SpellCheckerPopover = () => {
              style={style}
              onMouseEnter={handleMouseEnter}
              onMouseLeave={handleMouseLeave}>
-          <PopoverContent mistake={mistake} widgetId={widgetId}/>
+          {highlight && highlight.mistake && <PopoverContent mistake={highlight.mistake} widgetId={widgetId}/>}
         </div>
       )}
     </>

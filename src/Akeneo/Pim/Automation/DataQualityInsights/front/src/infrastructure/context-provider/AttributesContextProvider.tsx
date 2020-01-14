@@ -1,9 +1,8 @@
 import React, {useLayoutEffect} from "react";
 import {useDispatch} from "react-redux";
 import {useFetchProductFamilyInformation, usePageContext, useProduct} from "../hooks";
-import {Attribute, createWidget, EditorElement, Family} from "../../domain";
+import {Attribute, createWidget, EditorElement, Family, WidgetsCollection} from "../../domain";
 import {initializeWidgetsListAction} from "../reducer";
-import {WidgetsCollection} from "../reducer/productSpellcheckReducer";
 
 const uuidV5 = require('uuid/v5');
 

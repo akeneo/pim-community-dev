@@ -25,11 +25,12 @@ import productSpellcheckReducer, {
   showWidgetAction,
   updateWidgetContent,
   updateWidgetContentAnalysis,
-  updateWidgetEditorOptionsAction,
   updateWidgetHighlightsAction,
   initializePopoverOpeningAction,
   showPopoverAction,
   hidePopoverAction,
+  enableWidgetHighlightAction,
+  disableWidgetHighlightAction,
 } from "./productSpellcheckReducer";
 
 export {
@@ -71,8 +72,9 @@ export {
   updateWidgetContent,
   updateWidgetContentAnalysis,
   updateWidgetHighlightsAction,
-  updateWidgetEditorOptionsAction,
   initializePopoverOpeningAction,
   showPopoverAction,
   hidePopoverAction,
+  enableWidgetHighlightAction,
+  disableWidgetHighlightAction,
 }

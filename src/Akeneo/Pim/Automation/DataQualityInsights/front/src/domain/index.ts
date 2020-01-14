@@ -8,9 +8,9 @@ import Recommendation from "./Recommendation.interface";
 import Evaluation from "./Evaluation.interface";
 import Family, {Attribute} from "./Family.interface";
 import Product from "./Product.interface";
-import WidgetElement, {createWidget} from "./Spellcheck/WidgetElement";
+import WidgetElement, {createWidget, WidgetsCollection} from "./Spellcheck/WidgetElement";
 import EditorElement, {getEditorContent, setEditorContent} from "./Spellcheck/EditorElement";
-import HighlightElement, {createHighlight} from "./Spellcheck/HighlightElement";
+import HighlightElement, {createHighlight, HighlightsCollection} from "./Spellcheck/HighlightElement";
 import MistakeElement from "./Spellcheck/MistakeElement";
 
 export {
@@ -24,8 +24,8 @@ export {
   Family,
   Attribute,
   Product,
-  WidgetElement, createWidget,
+  WidgetElement, createWidget, WidgetsCollection,
   EditorElement, getEditorContent, setEditorContent,
-  HighlightElement, createHighlight,
+  HighlightElement, createHighlight, HighlightsCollection,
   MistakeElement
 };

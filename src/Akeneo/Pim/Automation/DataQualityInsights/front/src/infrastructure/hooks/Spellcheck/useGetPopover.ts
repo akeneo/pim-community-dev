@@ -1,9 +1,15 @@
-import {RefObject, useEffect} from "react";
+import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {debounce} from "lodash";
 import {ProductEditFormState} from "../../store";
-import {hidePopoverAction, initializePopoverOpeningAction, showPopoverAction} from "../../reducer";
-import {MistakeElement} from "../../../domain";
+import {
+  disableWidgetHighlightAction,
+  enableWidgetHighlightAction,
+  hidePopoverAction,
+  initializePopoverOpeningAction,
+  showPopoverAction
+} from "../../reducer";
+import {HighlightElement} from "../../../domain";
 
 const OPENING_MILLISECONDS_DELAY = 50;
 const CLOSING_MILLISECONDS_DELAY = 300;
@@ -13,7 +19,7 @@ const useGetPopover = () => {
   const dispatchAction = useDispatch();
 
   useEffect(() => {
-    const handleOpening = debounce((widgetId: string, mistake: MistakeElement, highlightRef: RefObject<Element>, callback?: Function) => {
+    const handleOpening = debounce((widgetId: string, highlight: HighlightElement, callback?: Function) => {
       if (handleClosing && handleClosing.cancel) {
         handleClosing.cancel();
       }
@@ -22,7 +28,8 @@ const useGetPopover = () => {
         callback();
       }
 
-      dispatchAction(showPopoverAction(widgetId, mistake, highlightRef));
+      dispatchAction(enableWidgetHighlightAction(widgetId, highlight.id));
+      dispatchAction(showPopoverAction(widgetId, highlight));
     }, OPENING_MILLISECONDS_DELAY);
 
     const handleClosing = debounce((callback?: Function) => {
@@ -34,6 +41,7 @@ const useGetPopover = () => {
         callback();
       }
 
+      dispatchAction(disableWidgetHighlightAction());
       dispatchAction(hidePopoverAction());
     }, CLOSING_MILLISECONDS_DELAY);
 

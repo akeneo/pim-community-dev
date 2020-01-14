@@ -2,12 +2,18 @@ import EditorElement from "./EditorElement";
 import MistakeElement from "./MistakeElement";
 
 export default interface HighlightElement {
+  id: string;
   classList: string[];
   domRange: Range;
   mistake: MistakeElement;
+  isActive: boolean;
 }
 
-export const createHighlight = (mistake: MistakeElement, element: EditorElement) => {
+export interface HighlightsCollection {
+  [id: string]: HighlightElement;
+}
+
+export const createHighlight = (id: string, mistake: MistakeElement, element: EditorElement) => {
   const mistakeClass = `AknSpellCheck-mark--${mistake.type}`;
   const range = getTextRange(
     element,
@@ -16,9 +22,11 @@ export const createHighlight = (mistake: MistakeElement, element: EditorElement)
   );
 
   return {
+    id,
     classList: [mistakeClass],
     domRange: range,
-    mistake
+    mistake,
+    isActive: false
   };
 };
 
