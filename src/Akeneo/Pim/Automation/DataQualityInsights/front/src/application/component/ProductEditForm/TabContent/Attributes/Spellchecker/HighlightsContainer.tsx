@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from "react";
 import {WidgetElement} from "../../../../../../domain";
 import {useGetSpellcheckEditorBoundingRect} from "../../../../../../infrastructure/hooks";
-import TextAreaHighlightsWrapper from "./Highlight/TextAreaHighlightsWrapper";
+import TextHighlightsWrapper from "./Highlight/TextHighlightsWrapper";
 
 const defaultStyle = {
   top: 0,
@@ -28,7 +28,7 @@ interface HighlightsContainerProps {
 }
 
 const HighlightsContainer: FunctionComponent<HighlightsContainerProps> = ({ widget }) => {
-  const { isTextArea, editor } = widget;
+  const { isTextArea, isTextInput, editor } = widget;
   const { editorBoundingClientRect } = useGetSpellcheckEditorBoundingRect(editor);
 
   return (
@@ -36,8 +36,8 @@ const HighlightsContainer: FunctionComponent<HighlightsContainerProps> = ({ widg
       className="AknSpellCheck-highlights AknSpellCheck--box-reset"
       style={computeStyle(editorBoundingClientRect)}
     >
-      {isTextArea && (
-        <TextAreaHighlightsWrapper
+      {(isTextArea || isTextInput) && (
+        <TextHighlightsWrapper
           widget={widget}
           editorBoundingClientRect={editorBoundingClientRect}
         />

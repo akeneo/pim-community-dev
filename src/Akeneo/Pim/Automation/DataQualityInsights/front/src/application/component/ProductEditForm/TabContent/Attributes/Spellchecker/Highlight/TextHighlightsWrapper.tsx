@@ -9,8 +9,14 @@ import {
 } from "../../../../../../../infrastructure/hooks";
 
 const MOVING_MILLISECONDS_DELAY = 100;
-
 const HIGHLIGHT_INTERSECTING_MARGIN = 2;
+
+enum EditorTypes {
+  TEXT = 'text',
+  TEXTAREA = 'textarea',
+  RICHTEXT = 'richtext',
+  UNKNOWN = 'unknown',
+}
 
 const isIntersectingHighlight = (x: number, y: number, highlight: HighlightElement) => {
   const rect: DOMRect = highlight.domRange.getBoundingClientRect();
@@ -23,17 +29,30 @@ const isIntersectingHighlight = (x: number, y: number, highlight: HighlightEleme
   );
 };
 
-interface TextAreaHighlightsWrapperProps {
+const getEditorType = (widget: WidgetElement) => {
+  if (widget.isTextArea) {
+    return EditorTypes.TEXTAREA;
+  }
+
+  if (widget.isTextInput) {
+    return EditorTypes.TEXT;
+  }
+
+  return EditorTypes.UNKNOWN;
+};
+
+interface TextHighlightsWrapperProps {
   widget: WidgetElement;
   editorBoundingClientRect: DOMRect;
 }
 
-const TextAreaHighlightsWrapper: FunctionComponent<TextAreaHighlightsWrapperProps> = ({
+const TextHighlightsWrapper: FunctionComponent<TextHighlightsWrapperProps> = ({
   widget,
   editorBoundingClientRect,
 }) => {
   // @info: Add a couple of blank lines at the content end to fix the scroll height issue with the cloned editor
   const content = `${widget.content}\n\n`;
+  const editorType = getEditorType(widget);
   const wrapperStyle = {
     width: editorBoundingClientRect.width,
     height: editorBoundingClientRect.height
@@ -87,7 +106,7 @@ const TextAreaHighlightsWrapper: FunctionComponent<TextAreaHighlightsWrapperProp
   return (
     <>
       <div
-        className="AknSpellCheck-highlights-wrapper AknSpellCheck-highlights-wrapper--textarea"
+        className={`AknSpellCheck-highlights-wrapper AknSpellCheck-highlights-wrapper--${editorType}`}
         style={wrapperStyle}
       >
         {Object.values(highlights).map((highlight, index) => (
@@ -99,8 +118,8 @@ const TextAreaHighlightsWrapper: FunctionComponent<TextAreaHighlightsWrapperProp
           />
         ))}
       </div>
-      <div ref={clonedEditorRef} className="AknSpellCheck-cloned-editor" aria-hidden={true} style={wrapperStyle}>{content}</div>
+      <div ref={clonedEditorRef} className={`AknSpellCheck-cloned-editor AknSpellCheck-cloned-editor--${editorType}`} aria-hidden={true} style={wrapperStyle}>{content}</div>
     </>
   );
 };
-export default TextAreaHighlightsWrapper;
+export default TextHighlightsWrapper;
