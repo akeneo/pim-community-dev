@@ -20,7 +20,7 @@ Feature: Edit the options of a list attribute
   Scenario: Set duplicated options
     Given an asset family with an option attribute 'favorite_color' and the label 'en_US' equal to 'Favorite color'
     When the user adds the 'red' option twice
-    Then there should be a validation error on the property 'options.0' with message 'The option "red" already exists'
+    Then there should be a validation error on the property 'options.1' with message 'The option "red" already exists'
 
   @acceptance-back
   Scenario Outline: Set an option with an invalid code
