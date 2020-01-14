@@ -148,9 +148,11 @@ export const editOptionsReducer = (state: EditOptionState = initEditOptionState(
 
     case 'OPTIONS_EDITION_DELETE':
       const filteredOptions = state.options.filter((_option: Option, index: number) => index !== id);
+      const filteredErrors = state.errors.filter(error => error.propertyPath !== `options.${id}`);
       return {
         ...state,
         options: filteredOptions,
+        errors: filteredErrors,
         isDirty: isDirty(state, filteredOptions),
         currentOptionId: 1 <= id ? id - 1 : 0,
         numberOfLockedOptions:

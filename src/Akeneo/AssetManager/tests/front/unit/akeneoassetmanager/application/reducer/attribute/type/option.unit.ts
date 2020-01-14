@@ -451,6 +451,28 @@ describe('akeneo > asset family > application > reducer > attribute > type > opt
     });
   });
 
+  test('When I delete an option, its associated errors are removed as well', () => {
+    const state = {
+      isActive: true,
+      isDirty: true,
+      isSaving: true,
+      errors: [{propertyPath: 'options.1'}, {propertyPath: 'options.2'}],
+      originalData: stringifiedOptions,
+      options: normalizedOptions,
+      currentOptionId: 0,
+      numberOfLockedOptions: 1,
+    };
+    const newState = editOptionsReducer(state, {
+      type: 'OPTIONS_EDITION_DELETE',
+      id: 1,
+    });
+    expect(newState).toEqual({
+      ...state,
+      options: [normalizedOptions[0]],
+      errors: [{propertyPath: 'options.2'}],
+    });
+  });
+
   test('I submit the options and it cleans the errors', () => {
     const state = {
       isActive: true,

@@ -19,3 +19,7 @@ services:
             - '@database_connection'
         tags:
             - { name: console.command }
+
+    akeneo.pim.asset.factory.value.reference_data_collection:
+        class: Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\AssetCollectionValueFactory
+        tags: ['akeneo.pim.enrichment.factory.product_value']
