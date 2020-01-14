@@ -55,6 +55,5 @@ LEFT JOIN akeneo_batch_job_instance ON (akeneo_batch_job_execution.job_instance_
 WHERE akeneo_batch_job_instance.code='data_quality_insights_evaluate_products_criteria';
 SQL
         );
-
     }
 }
