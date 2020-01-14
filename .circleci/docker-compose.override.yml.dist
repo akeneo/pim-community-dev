@@ -5,3 +5,12 @@ services:
     tmpfs:
       - '/tmp'
       - '/var/lib/mysql'
+
+  elasticsearch:
+    tmpfs:
+      - '/tmp'
+      - '/usr/share/elasticsearch/data'
+
+  selenium:
+    tmpfs:
+      - '/tmp'

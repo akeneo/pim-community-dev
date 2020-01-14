@@ -51,6 +51,7 @@ services:
   selenium:
     image: 'selenium/standalone-firefox-debug:2.53.1-beryllium'
     volumes:
+      - '/dev/shm:/dev/shm'
       - './:/srv/pim:ro'
     ports:
       - '${DOCKER_PORT_HTTP:-5910}:5900'
