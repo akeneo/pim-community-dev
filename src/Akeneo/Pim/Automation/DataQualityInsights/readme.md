@@ -97,7 +97,6 @@ Aim:
 Note:
 This command line must be in the CRONTAB.
 
-
 `pimee:data-quality-insights:generate-aspell-dictionary-from-product-values`
 
 Aim:
@@ -105,9 +104,6 @@ Aim:
 
 Behavior:
 Retrieve all the product values per locale. All the words with more than 3 letters, and used more than 10 times in the catalog are considered as part of the dictionary.
-
-
-####Commands not usable in production - use with care
 
 `pimee:data-quality-insights:evaluate-pending-criteria -p <product_id>`
 
@@ -121,12 +117,24 @@ Aim:
 - Force the consolidation of the dashboard rates for a given day
 - For Administration/Support/Dev purpose
 
+`pimee:data-quality-insights:purge-outdated-data`
+
+Aim:
+- Purge several data use by the Data Quality Insights feature.
+- The purge is already handled by the periodic tasks but you can use this command to force the purge for a specific day
+
+####Commands not usable in production - use with care
+
 `pimee:data-quality-insights:demo-helper`
 
 Aim:
 - Help the generation of dqi data to display a dashboard
 - For Administration/Support/Dev purpose
 - NEVER RUN IT IN PRODUCTION IT WILL GENERATE FAKE DATA
+
+Note:
+Evaluate criteria for one product of each family (enough data to have a dashboard)  
+You can add the `--full-catalog-evaluation` option to evaluate all the products criteria synchronously
 
 
 ###Jobs
