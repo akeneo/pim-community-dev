@@ -307,7 +307,7 @@ final class DemoHelperCommand extends Command
         $progressBar->start();
 
         for ($i = 0; $i<$steps; $i++) {
-            $stmt = $this->db->query('select id from pim_catalog_product where product_model_id is null LIMIT ' . $i*100 . ',' . intval(100));
+            $stmt = $this->db->query('select id from pim_catalog_product where product_model_id is null LIMIT ' . $i*100 . ',100');
             $ids = array_map(function ($id) {
                 return intval($id);
             }, $stmt->fetchAll(FetchMode::COLUMN, 0));
