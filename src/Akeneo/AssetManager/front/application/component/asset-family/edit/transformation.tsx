@@ -58,7 +58,7 @@ const AssetFamilyTransformationEditor = ({
       <Editor
         value={JSON.parse(transformations)}
         onChange={(event: object) => {
-          onAssetFamilyTransformationsChange(JSON.stringify(event));
+          onAssetFamilyTransformationsChange(JSON.stringify(null === event ? [] : event));
         }}
         mode="code"
         schema={schema}
