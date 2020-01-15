@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.0 (2020-01-15)
+
 # New features
 
 - API-649: Set up Connections
