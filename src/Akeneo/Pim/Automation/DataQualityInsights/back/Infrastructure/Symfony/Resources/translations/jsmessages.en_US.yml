@@ -30,6 +30,8 @@ akeneo_data_quality_insights:
                 recommendation: Non required attributes with missing values
             consistency_textarea_uppercase_words:
                 recommendation: Attributes with upper cases issues
+            consistency_textarea_lowercase_words:
+                recommendation: Attributes with lower cases issues
             consistency_text_title_formatting:
                 recommendation: We found a suggestion to improve the title
             consistency_spelling:

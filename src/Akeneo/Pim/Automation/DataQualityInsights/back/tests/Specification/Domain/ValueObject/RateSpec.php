@@ -88,4 +88,16 @@ class RateSpec extends ObjectBehavior
         $this->beConstructedWith(0);
         $this->__toString()->shouldReturn('E');
     }
+
+    public function it_indicates_if_the_rate_is_not_perfect()
+    {
+        $this->beConstructedWith(99);
+        $this->isPerfect()->shouldReturn(false);
+    }
+
+    public function it_indicates_if_the_rate_is_perfect()
+    {
+        $this->beConstructedWith(100);
+        $this->isPerfect()->shouldReturn(true);
+    }
 }
