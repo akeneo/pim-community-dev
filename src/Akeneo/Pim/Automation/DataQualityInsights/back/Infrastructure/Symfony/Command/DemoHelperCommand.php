@@ -330,6 +330,8 @@ final class DemoHelperCommand extends Command
 
         if (count($ids) === 0) {
             $io->error('No products to evaluate');
+
+            return;
         }
 
         $io->comment(sprintf('Launch the evaluation of %d products', count($ids)));
