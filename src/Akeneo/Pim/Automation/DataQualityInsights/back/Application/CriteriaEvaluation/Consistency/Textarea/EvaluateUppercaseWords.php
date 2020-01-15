@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluati
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCodesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
@@ -31,14 +32,19 @@ final class EvaluateUppercaseWords implements EvaluateCriterionInterface
     /** @var BuildProductValuesInterface */
     private $buildProductValues;
 
+    /** @var GetProductAttributesCodesInterface */
+    private $getProductAttributesCodes;
+
     /** @var GetLocalesByChannelQueryInterface */
     private $localesByChannelQuery;
 
     public function __construct(
         BuildProductValuesInterface $buildProductValues,
+        GetProductAttributesCodesInterface $getProductAttributesCodes,
         GetLocalesByChannelQueryInterface $localesByChannelQuery
     ) {
         $this->buildProductValues = $buildProductValues;
+        $this->getProductAttributesCodes = $getProductAttributesCodes;
         $this->localesByChannelQuery = $localesByChannelQuery;
     }
 
@@ -50,7 +56,9 @@ final class EvaluateUppercaseWords implements EvaluateCriterionInterface
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation): CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->execute();
-        $productValues = $this->buildProductValues->buildTextareaValues($criterionEvaluation->getProductId());
+        $attributesCodes = $this->getProductAttributesCodes->getTextarea($criterionEvaluation->getProductId());
+
+        $productValues = $this->buildProductValues->buildForProductIdAndAttributeCodes($criterionEvaluation->getProductId(), $attributesCodes);
 
         $ratesByChannelAndLocale = $this->computeAttributeRates($localesByChannel, $productValues);
         $rates = $this->buildCriterionRateCollection($ratesByChannelAndLocale);

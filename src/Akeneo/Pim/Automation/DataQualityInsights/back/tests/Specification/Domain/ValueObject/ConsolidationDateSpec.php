@@ -42,21 +42,29 @@ final class ConsolidationDateSpec extends ObjectBehavior
         $this->isLastDayOfMonth()->shouldReturn(false);
     }
 
-    public function it_formats_a_daily_date()
+    public function it_returns_true_if_it_is_the_last_day_of_the_year()
     {
-        $this->beConstructedWith(new \DateTimeImmutable('2019-12-09 12:43:37'));
-        $this->formatByPeriodicity(Periodicity::daily())->shouldReturn('2019-12-09');
+        $this->beConstructedWith(new \DateTimeImmutable('2019-12-31'));
+        $this->isLastDayOfYear()->shouldReturn(true);
     }
 
-    public function it_formats_a_weekly_date()
+    public function it_returns_false_if_it_is_not_the_last_day_of_the_year()
     {
-        $this->beConstructedWith(new \DateTimeImmutable('2019-12-09 12:43:37'));
-        $this->formatByPeriodicity(Periodicity::weekly())->shouldReturn('2019-50');
+        $this->beConstructedWith(new \DateTimeImmutable('2019-10-31'));
+        $this->isLastDayOfYear()->shouldReturn(false);
     }
 
-    public function it_formats_a_monthly_date()
+    public function it_formats_a_date()
     {
         $this->beConstructedWith(new \DateTimeImmutable('2019-12-09 12:43:37'));
-        $this->formatByPeriodicity(Periodicity::monthly())->shouldReturn('2019-12');
+        $this->format()->shouldReturn('2019-12-09');
+    }
+
+    public function it_modifies_a_date()
+    {
+        $this->beConstructedWith(new \DateTimeImmutable('2019-12-09 12:43:37'));
+
+        $modifiedDate = $this->modify('-2 DAY');
+        $modifiedDate->format()->shouldReturn('2019-12-07');
     }
 }

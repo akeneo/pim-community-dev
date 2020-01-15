@@ -33,6 +33,7 @@ final class ProductValueInDatabaseDictionarySource implements DictionarySource
     {
         $keywords = [];
 
+        $this->db->getWrappedConnection()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
         $stmt = $this->getQuery($localeCollection);
 
         while ($result = $stmt->fetch()) {
@@ -77,13 +78,12 @@ final class ProductValueInDatabaseDictionarySource implements DictionarySource
         });
         asort($tab);
 
+        $this->db->getWrappedConnection()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
         return array_keys($tab);
     }
 
     private function getQuery(LocaleCollection $localeCollection): ResultStatement
     {
-        $this->db->getWrappedConnection()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
-
         $query = <<<SQL
 SELECT
     %s AS explodedAggregatedValues

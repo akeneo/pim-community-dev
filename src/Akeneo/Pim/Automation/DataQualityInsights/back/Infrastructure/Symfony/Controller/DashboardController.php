@@ -38,7 +38,7 @@ final class DashboardController
         $this->dashboardRatesProjectionRepository = $dashboardRatesProjectionRepository;
     }
 
-    public function __invoke(Request $request, string $channel, string $locale)
+    public function __invoke(Request $request, string $channel, string $locale, string $periodicity)
     {
         if (! $this->featureFlag->isEnabled()) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
@@ -46,14 +46,18 @@ final class DashboardController
 
         if ($request->query->has('category')) {
             $category = new CategoryCode($request->query->getAlnum('category'));
-            $rates = $this->dashboardRatesProjectionRepository->findCategoryProjection(new ChannelCode($channel), new LocaleCode($locale), new Periodicity('daily'), $category);
+            $rates = $this->dashboardRatesProjectionRepository->findCategoryProjection(new ChannelCode($channel), new LocaleCode($locale), new Periodicity($periodicity), $category);
         } elseif ($request->query->has('family')) {
             $family = new FamilyCode($request->query->getAlnum('family'));
-            $rates = $this->dashboardRatesProjectionRepository->findFamilyProjection(new ChannelCode($channel), new LocaleCode($locale), new Periodicity('daily'), $family);
+            $rates = $this->dashboardRatesProjectionRepository->findFamilyProjection(new ChannelCode($channel), new LocaleCode($locale), new Periodicity($periodicity), $family);
         } else {
-            $rates = $this->dashboardRatesProjectionRepository->findCatalogProjection(new ChannelCode($channel), new LocaleCode($locale), new Periodicity('daily'));
+            $rates = $this->dashboardRatesProjectionRepository->findCatalogProjection(new ChannelCode($channel), new LocaleCode($locale), new Periodicity($periodicity));
         }
 
-        return new JsonResponse($rates);
+        if (empty($rates)) {
+            return new JsonResponse([]);
+        }
+
+        return new JsonResponse($rates->toArray());
     }
 }

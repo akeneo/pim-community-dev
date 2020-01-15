@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInte
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCodesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
@@ -38,16 +39,18 @@ class EvaluateSpellingSpec extends ObjectBehavior
         TextChecker $textChecker,
         BuildProductValuesInterface $buildProductValues,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        SupportedLocaleChecker $supportedLocaleChecker
+        SupportedLocaleChecker $supportedLocaleChecker,
+        GetProductAttributesCodesInterface $getProductAttributesCodes
     ) {
-        $this->beConstructedWith($textChecker, $buildProductValues, $localesByChannelQuery, $supportedLocaleChecker);
+        $this->beConstructedWith($textChecker, $buildProductValues, $localesByChannelQuery, $supportedLocaleChecker, $getProductAttributesCodes);
     }
 
     public function it_evaluates_rates_for_textarea_and_text_values(
-        TextChecker $textChecker,
-        BuildProductValuesInterface $buildProductValues,
-        GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        SupportedLocaleChecker $supportedLocaleChecker,
+        $textChecker,
+        $buildProductValues,
+        $localesByChannelQuery,
+        $supportedLocaleChecker,
+        $getProductAttributesCodes,
         TextCheckResultCollection $textCheckResultCollection1,
         TextCheckResultCollection $textCheckResultCollection2,
         TextCheckResultCollection $textCheckResultCollection3,
@@ -57,11 +60,11 @@ class EvaluateSpellingSpec extends ObjectBehavior
         TextCheckResultCollection $textCheckResultCollection7,
         TextCheckResultCollection $textCheckResultCollection8
     ) {
-        $product = new ProductId(1);
+        $productId = new ProductId(1);
         $criterionEvaluation = new CriterionEvaluation(
             new CriterionEvaluationId(),
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
-            $product,
+            $productId,
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending()
         );
@@ -71,7 +74,8 @@ class EvaluateSpellingSpec extends ObjectBehavior
             'print' => ['en_US', 'fr_FR'],
         ]);
 
-        $buildProductValues->buildTextareaValues($product)->willReturn([
+        $getProductAttributesCodes->getLocalizableTextarea($productId)->willReturn(['textarea_1']);
+        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['textarea_1'])->willReturn([
             'textarea_1' => [
                 'ecommerce' => [
                     'en_US' => '<p>Typos hapen. </p>',
@@ -86,7 +90,8 @@ class EvaluateSpellingSpec extends ObjectBehavior
             ]
         ]);
 
-        $buildProductValues->buildTextValues($product)->willReturn([
+        $getProductAttributesCodes->getLocalizableText($productId)->willReturn(['text_1']);
+        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['text_1'])->willReturn([
             'text_1' => [
                 'ecommerce' => [
                     'en_US' => 'Typos happen.',

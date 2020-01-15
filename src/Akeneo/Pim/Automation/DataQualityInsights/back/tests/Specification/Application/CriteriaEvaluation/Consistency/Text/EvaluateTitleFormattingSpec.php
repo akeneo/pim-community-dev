@@ -7,6 +7,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInte
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\EvaluateTitleFormatting;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\TitleFormattingServiceInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCodesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
@@ -26,9 +27,10 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
     public function let(
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         BuildProductValuesInterface $buildProductValues,
+        GetProductAttributesCodesInterface $getProductAttributesCodes,
         TitleFormattingServiceInterface $titleFormattingService
     ) {
-        $this->beConstructedWith($localesByChannelQuery, $buildProductValues, $titleFormattingService);
+        $this->beConstructedWith($localesByChannelQuery, $buildProductValues, $getProductAttributesCodes, $titleFormattingService);
     }
 
     public function it_is_initializable()
@@ -39,7 +41,8 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
 
     public function it_returns_an_empty_rates_collection_when_a_product_has_no_attribute_has_main_title(
         $localesByChannelQuery,
-        $buildProductValues
+        $buildProductValues,
+        $getProductAttributesCodes
     ) {
         $localesByChannelQuery->execute()->willReturn(
             [
@@ -48,7 +51,9 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
             ]
         );
 
-        $buildProductValues->buildTitleValues(new ProductId(1))->willReturn([]);
+        $productId = new ProductId(1);
+        $getProductAttributesCodes->getTitle($productId)->willReturn([]);
+        $buildProductValues->buildForProductIdAndAttributeCodes($productId, [])->willReturn([]);
 
         $this->evaluate(
             new CriterionEvaluation(
@@ -64,6 +69,7 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
     public function it_evaluates_title_with_no_suggestions(
         $localesByChannelQuery,
         $buildProductValues,
+        $getProductAttributesCodes,
         $titleFormattingService
     ) {
         $localesByChannelQuery->execute()->willReturn(
@@ -74,7 +80,9 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
             ]
         );
 
-        $buildProductValues->buildTitleValues(new ProductId(1))->willReturn([
+        $productId = new ProductId(1);
+        $getProductAttributesCodes->getTitle($productId)->willReturn(['attribute_as_main_title_localizable_scopable']);
+        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['attribute_as_main_title_localizable_scopable'])->willReturn([
             'attribute_as_main_title_localizable_scopable' => [
                 'ecommerce' => [
                     'en_US' => 'MacBook Pro Retina 13"',
@@ -118,6 +126,7 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
     public function it_evaluates_title_with_suggestions(
         $localesByChannelQuery,
         $buildProductValues,
+        $getProductAttributesCodes,
         $titleFormattingService
     ) {
         $localesByChannelQuery->execute()->willReturn(
@@ -126,7 +135,10 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
             ]
         );
 
-        $buildProductValues->buildTitleValues(new ProductId(1))->willReturn([
+
+        $productId = new ProductId(1);
+        $getProductAttributesCodes->getTitle($productId)->willReturn(['attribute_as_main_title_localizable_scopable']);
+        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['attribute_as_main_title_localizable_scopable'])->willReturn([
             'attribute_as_main_title_localizable_scopable' => [
                 'ecommerce' => [
                     'en_US' => 'Macbook Pro Retina 13" Azerty',
@@ -168,6 +180,7 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
     public function it_evaluates_title_with_suggestions_with_two_en_locales(
         $localesByChannelQuery,
         $buildProductValues,
+        $getProductAttributesCodes,
         $titleFormattingService
     ) {
         $localesByChannelQuery->execute()->willReturn(
@@ -176,7 +189,9 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
             ]
         );
 
-        $buildProductValues->buildTitleValues(new ProductId(1))->willReturn([
+        $productId = new ProductId(1);
+        $getProductAttributesCodes->getTitle($productId)->willReturn(['attribute_as_main_title_localizable_scopable']);
+        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['attribute_as_main_title_localizable_scopable'])->willReturn([
             'attribute_as_main_title_localizable_scopable' => [
                 'ecommerce' => [
                     'en_US' => 'Macbook Pro Retina 13" Azerty',

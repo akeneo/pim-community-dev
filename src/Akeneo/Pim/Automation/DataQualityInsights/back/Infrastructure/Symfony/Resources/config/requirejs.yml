@@ -1,13 +1,34 @@
 config:
     config:
+        pim/controller-registry:
+            controllers:
+                akeneo_data_quality_insights_dashboard:
+                    module: akeneo-data-quality-insights-dqi-dashboard-index
+
+        # Fetchers
+        pim/fetcher-registry:
+            fetchers:
+                data-quality-insights:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: akeneo_franklin_insights_data_quality_insights_get_all
 
     paths:
+        # Controller
+        akeneo-data-quality-insights-dqi-dashboard-index: akeneodataqualityinsights/js/controller/dqi-dashboard.ts
+        # View
         akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-overview: akeneodataqualityinsights/js/infrastructure/pim-view/product-edit-form/data-quality-insights-overview.tsx
         akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-tab-content: akeneodataqualityinsights/js/infrastructure/pim-view/product-edit-form/data-quality-insights-tab-content.tsx
         akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-app: akeneodataqualityinsights/js/infrastructure/pim-view/product-edit-form/data-quality-insights-app.tsx
         akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/attributes-tab-content: akeneodataqualityinsights/js/infrastructure/pim-view/product-edit-form/attributes-tab-content.tsx
+        akeneo/data-quality-insights/view/dqi-dashboard/menu-item: akeneodataqualityinsights/js/infrastructure/pim-view/dqi-dashboard/menu-item.tsx
+        akeneo/data-quality-insights/view/dqi-dashboard/section: akeneodataqualityinsights/js/infrastructure/pim-view/dqi-dashboard/section.tsx
 
         oro/datagrid/rate-badge-cell: akeneodataqualityinsights/js/infrastructure/datagrid/cell/rate-badge-cell.tsx
 
         pim/product-edit-form/attribute-filter-all-missing-attributes: akeneodataqualityinsights/js/infrastructure/product-edit-form/attribute-filter-all-missing-attributes.ts
         pim/product-edit-form/attribute-filter-all-improvable-attributes: akeneodataqualityinsights/js/infrastructure/product-edit-form/attribute-filter-all-improvable-attributes.ts
+
+        akeneo/data-quality-insights/view/dqi-dashboard/locale-switcher: akeneodataqualityinsights/js/infrastructure/pim-view/dqi-dashboard/locale-switcher.ts
+        akeneo/data-quality-insights/view/dqi-dashboard/channel-switcher: akeneodataqualityinsights/js/infrastructure/pim-view/dqi-dashboard/channel-switcher.ts

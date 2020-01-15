@@ -57,7 +57,10 @@ final class GenerateDictionaryTasklet implements TaskletInterface
             $this->dictionaryGenerator->generate($this->dictionarySource);
         } catch (\Exception $exception) {
             $this->stepExecution->addFailureException($exception);
-            $this->logger->error('Generate DQI dictionary failed', ['step_execution_id' => $this->stepExecution->getId(), 'message' => $exception->getMessage()]);
+            $this->logger->error('Generate Data-Quality-Insights dictionary failed', [
+                'step_execution_id' => $this->stepExecution->getId(),
+                'message' => $exception->getMessage()
+            ]);
         }
     }
 }

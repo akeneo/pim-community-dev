@@ -9,8 +9,10 @@ import {
 } from "../../../../../../infrastructure/reducer";
 import {getEditorContent, WidgetElement} from "../../../../../../domain";
 import Widget from "./Widget";
-import {useCatalogContext} from "../../../../../../infrastructure/hooks";
-import useFetchTextAnalysis from "../../../../../../infrastructure/hooks/Spellcheck/useFetchTextAnalysis";
+import {
+  useCatalogContext,
+  useFetchSpellcheckTextAnalysis
+} from "../../../../../../infrastructure/hooks";
 import {debounce} from "lodash";
 
 const WIDGET_PREFIX_ID = "akeneo-spellchecker-widget";
@@ -24,7 +26,7 @@ const WidgetPortal: FunctionComponent<WidgetPortalProps> = ({ widget}) => {
   const [widgetRootElement, setWidgetRootElement] = useState();
   const {locale} = useCatalogContext();
   const dispatchAction = useDispatch();
-  const {dispatchTextAnalysis} = useFetchTextAnalysis(widget);
+  const {dispatchTextAnalysis} = useFetchSpellcheckTextAnalysis(widget);
 
   useEffect(() => {
     const element = document.createElement("div");

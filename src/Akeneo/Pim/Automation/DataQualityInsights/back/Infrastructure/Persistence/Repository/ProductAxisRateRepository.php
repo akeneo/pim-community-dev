@@ -51,7 +51,7 @@ final class ProductAxisRateRepository implements ProductAxisRateRepositoryInterf
         $this->db = $db;
     }
 
-    public function save(array $productAxisRates)
+    public function save(array $productAxisRates): void
     {
         $valuesPlaceholders = implode(',', array_fill(0, count($productAxisRates), '(?, ?, ?, ?)'));
 
@@ -69,5 +69,23 @@ SQL;
             $statement->bindValue($valuePlaceholderIndex++, json_encode($item['rates']));
         }
         $statement->execute();
+    }
+
+    public function purgeUntil(\DateTimeImmutable $date): void
+    {
+        $query = <<<SQL
+DELETE old_rates
+FROM pimee_data_quality_insights_product_axis_rates AS old_rates
+INNER JOIN pimee_data_quality_insights_product_axis_rates AS younger_rates
+    ON younger_rates.product_id = old_rates.product_id
+    AND younger_rates.axis_code = old_rates.axis_code
+    AND younger_rates.evaluated_at > old_rates.evaluated_at
+WHERE old_rates.evaluated_at < :purge_date;
+SQL;
+
+        $this->db->executeQuery(
+            $query,
+            ['purge_date' => $date->format('Y-m-d')]
+        );
     }
 }

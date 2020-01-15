@@ -22,7 +22,7 @@ final class Rate
 
     public function __construct(int $rate)
     {
-        if ($rate < 0 || $rate >100) {
+        if ($rate < 0 || $rate > 100) {
             throw new \InvalidArgumentException('A rate must be an integer between 0 and 100');
         }
 
@@ -32,6 +32,11 @@ final class Rate
     public function toInt(): int
     {
         return $this->rate;
+    }
+
+    public function isPerfect(): bool
+    {
+        return $this->rate === 100;
     }
 
     public function __toString()

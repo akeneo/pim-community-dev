@@ -141,4 +141,22 @@ SQL;
             );
         }, $results);
     }
+
+    public function purgeUntil(\DateTimeImmutable $date): void
+    {
+        $query = <<<SQL
+DELETE old_evaluations
+FROM pimee_data_quality_insights_criteria_evaluation AS old_evaluations
+INNER JOIN pimee_data_quality_insights_criteria_evaluation AS younger_evaluations
+    ON younger_evaluations.product_id = old_evaluations.product_id
+    AND younger_evaluations.criterion_code = old_evaluations.criterion_code
+    AND younger_evaluations.created_at > old_evaluations.created_at
+WHERE old_evaluations.created_at < :purge_date
+SQL;
+
+        $this->db->executeQuery(
+            $query,
+            ['purge_date' => $date->format('Y-m-d 00:00:00')]
+        );
+    }
 }

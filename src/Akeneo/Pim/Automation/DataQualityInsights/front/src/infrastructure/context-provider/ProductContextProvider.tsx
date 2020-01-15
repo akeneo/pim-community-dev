@@ -11,6 +11,8 @@ interface ProductContextProviderProps {
 export const DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE = 'data-quality:product:show_attribute';
 export const DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES = 'data-quality:product:filter_all_missing_attributes';
 export const DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES = 'data-quality:product:filter_all_improvable_attributes';
+export const DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY = 'data-quality:dashboard:change_periodicity';
+export const DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY = 'data-quality:dashboard:filter:family';
 
 const ProductContextProvider: FunctionComponent<ProductContextProviderProps> = ({product}) => {
   const dispatchAction = useDispatch();

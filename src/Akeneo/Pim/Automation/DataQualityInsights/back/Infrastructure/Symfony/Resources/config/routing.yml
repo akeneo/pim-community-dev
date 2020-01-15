@@ -9,8 +9,12 @@ akeneo_data_quality_insights_product_evaluation:
     methods: [GET]
 
 akeneo_data_quality_insights_dashboard:
-    path: /data-quality-insights/dashboard/{channel}/{locale}
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardController }
+    path: /data-quality-insights/dashboard/{channel}/{locale}/{periodicity}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardController
+        channel: null
+        locale: null
+        periodicity: null
     methods: [GET]
 
 akeneo_data_quality_insights_feature_flag:
@@ -21,4 +25,9 @@ akeneo_data_quality_insights_feature_flag:
 akeneo_data_quality_insights_check_text:
     path: /data-quality-insights/check-text
     defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckTextController }
+    methods: [POST]
+
+akeneo_data_quality_insights_check_text_ignore:
+    path: /data-quality-insights/check-text/ignore
+    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddWordInDictionaryController }
     methods: [POST]

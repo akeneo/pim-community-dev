@@ -18,11 +18,13 @@ final class Periodicity
     const DAILY = 'daily';
     const WEEKLY = 'weekly';
     const MONTHLY = 'monthly';
+    const YEARLY = 'yearly';
 
     private const ALLOWED_VALUES = [
         self::DAILY,
         self::WEEKLY,
         self::MONTHLY,
+        self::YEARLY,
     ];
 
     /** @var string */
@@ -55,5 +57,10 @@ final class Periodicity
     public static function monthly(): self
     {
         return new self(self::MONTHLY);
+    }
+
+    public static function yearly(): self
+    {
+        return new self(self::YEARLY);
     }
 }

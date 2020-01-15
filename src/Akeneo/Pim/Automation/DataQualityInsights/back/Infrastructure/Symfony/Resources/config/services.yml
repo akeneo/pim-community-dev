@@ -1,6 +1,8 @@
 parameters:
     env(DATA_QUALITY_INSIGHTS_JWT_VERIFYING_KEY): 'OXvfb6/iSYOgqD8w044j8PTMWDwbSKjgJDhrNu3NwAc='
     env(AKENEO_PIM_URL): ''
+    env(PAPO_PROJECT_CODE_TRUNCATED): ''
+    env(PAPO_PROJECT_CODE_HASHED): ''
 
 services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock: ~
@@ -61,11 +63,8 @@ services:
             - '%env(DATA_QUALITY_INSIGHTS_JWT_VERIFYING_KEY)%'
             - '%env(AKENEO_PIM_URL)%'
             - '%kernel.project_dir%'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates:
-        arguments:
-            - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates'
+            - '%env(PAPO_PROJECT_CODE_TRUNCATED)%'
+            - '%env(PAPO_PROJECT_CODE_HASHED)%'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates:
         arguments:
@@ -81,6 +80,12 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllCategoryCodesQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllFamilyCodesQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\PurgeOutdatedData:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository'
 
 # PIM enrichment BC anti-corruption layers
     akeneo.pim.automation.calculate_completeness_of_required_attributes:
@@ -104,10 +109,13 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\BuildProductValues:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductRawValuesByAttributeQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributesByTypeFromProductQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLocalesByChannelQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributeAsMainTitleValueFromProductId'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\GetProductAttributesCodes:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributesByTypeFromProductQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributeAsMainTitleValueFromProductId'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLocalizableAttributesByTypeFromProductQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellChecker'
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellChecker:
@@ -115,6 +123,7 @@ services:
             $binaryPath: '%env(ASPELL_BINARY_PATH)%'
             $aspellDictionary: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionary'
             $globalOffsetCalculator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source\GlobalOffsetCalculator'
+            $textCheckerDictionaryRepository: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedPrefixLocaleChecker'
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedPrefixLocaleChecker: ~

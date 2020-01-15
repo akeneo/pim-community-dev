@@ -57,7 +57,10 @@ final class ConsolidateDashboardRatesTasklet implements TaskletInterface
             $this->consolidateDashboardRates->consolidate(new ConsolidationDate($date));
         } catch (\Exception $exception) {
             $this->stepExecution->addFailureException($exception);
-            $this->logger->error('Consolidate DQI dashboard rates failed', ['step_execution_id' => $this->stepExecution->getId(), 'message' => $exception->getMessage()]);
+            $this->logger->error('Consolidate Data-Quality-Insights dashboard rates failed', [
+                'step_execution_id' => $this->stepExecution->getId(),
+                'message' => $exception->getMessage()
+            ]);
         }
     }
 }

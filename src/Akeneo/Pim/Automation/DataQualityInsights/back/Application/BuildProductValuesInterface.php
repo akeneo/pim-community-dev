@@ -17,9 +17,5 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 interface BuildProductValuesInterface
 {
-    public function buildTextareaValues(ProductId $productId): array;
-
-    public function buildTextValues(ProductId $productId): array;
-
-    public function buildTitleValues(ProductId $productId): array;
+    public function buildForProductIdAndAttributeCodes(ProductId $productId, array $attributesCodes): array;
 }
