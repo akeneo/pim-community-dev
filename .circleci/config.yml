@@ -1,18 +1,5 @@
 version: 2.1
 
-aliases:
-  - &envVarsDeploy
-      GOOGLE_PROJECT_ID: "akecld-saas-dev"
-      GOOGLE_COMPUTE_ZONE: "europe-west3-a"
-      CLUSTER_NAME: "europe-west3-a"
-
-  - &dockerCloudDeployer
-      docker:
-        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:1
-          auth:
-            username: _json_key  # default username when using a JSON key file to authenticate
-            password: $GCLOUD_SERVICE_KEY  # JSON service account you created, do not encode to base64
-
 jobs:
   checkout:
     docker:
@@ -268,85 +255,6 @@ jobs:
       - store_artifacts:
           path: var/logs
 
-  build_prod:
-      environment:
-        <<: *envVarsDeploy
-      machine:
-          image: ubuntu-1604:201903-01
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config
-          - run:
-              name: Build PROD PIM docker image
-              command: IMAGE_TAG=$CIRCLE_SHA1 make php-image-prod
-          - run:
-              name: Push PROD PIM image on docker registry
-              command: IMAGE_TAG=$CIRCLE_SHA1 make push-php-image-prod
-
-  deploy_master_environment:
-      environment:
-        <<: *envVarsDeploy
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config
-          - prepare_terraform
-          - run:
-              name: Prepare helm deployment on kubernetes
-              command: make helm-prepare
-          - run:
-              name: Deploy PIM on kubernetes
-              command: IMAGE_TAG=$CIRCLE_SHA1 make deploy
-          - run:
-              name: Test PIM connexion on kubernetes
-              command: IMAGE_TAG=$CIRCLE_SHA1 make test-prod
-          - run:
-              name: Remove env on kubernetes
-              command: IMAGE_TAG=$CIRCLE_SHA1 make delete
-          - run:
-              name: Delete FAILED validation env
-              when: on_fail
-              shell: "/bin/bash -eo pipefail"
-              command: |
-                echo "DEPLOY FAILED - Delete CI env PFID=srnt-ci-$CIRCLE_SHA1"
-                IMAGE_TAG=$CIRCLE_SHA1 make delete
-
-  deploy_upgrade_pim3_environment:
-      environment:
-        <<: *envVarsDeploy
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys
-          - set_gcloud_config
-          - run:
-              name: PIM3 deployment on kubernetes
-              command: |
-                ssh-keyscan github.com >> ~/.ssh/known_hosts
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
-          - run:
-              name: Upgrade PIM3 env
-              command: |
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 DEPLOY_SHA1=$CIRCLE_SHA1 make create-tf-files
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 DEPLOY_SHA1=$CIRCLE_SHA1 make deploy
-          - run:
-              name: Production tests on upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make test-prod
-          - run:
-              name: Remove upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
-          - run:
-              name: Delete FAILED validation env
-              when: on_fail
-              shell: "/bin/bash -eo pipefail"
-              command: |
-                echo "DEPLOY FAILED - Delete CI env PFID=srnt-ci-$CIRCLE_SHA1"
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
-
   release:
       machine:
           image: ubuntu-1604:201903-01
@@ -356,61 +264,6 @@ jobs:
           - run:
               name: make release
               command: make release
-
-  test_back_missing_structure_migrations:
-      machine:
-        image: ubuntu-1604:201903-01
-      steps:
-        -   attach_workspace:
-                at: ~/
-        -   run:
-                name: Load php image
-                command: |
-                    docker load -i php-pim-image.tar
-                    APP_ENV=test C='mysql elasticsearch object-storage' make up
-                    vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
-        -   run:
-                name: Restore permissions on files
-                command: git checkout -- .
-        -   run:
-                name: Restore permissions on vendor files
-                command: |
-                    cd vendor/akeneo/pim-community-dev
-                    git checkout -- .
-        -   run:
-                name: Change owner on project dir after restoring cache
-                command: sudo chown -R 1000:1000 ../project
-        -   run:
-                name: Test missing database and index structure migrations
-                command: vendor/akeneo/pim-community-dev/.circleci/detect_structure_changes.sh $CIRCLE_BRANCH
-
-  test_back_data_migrations:
-      machine:
-          image: ubuntu-1604:201903-01
-      steps:
-          - attach_workspace:
-                at: ~/
-          - run:
-                name: Change owner on project dir in order to archive the project into the workspace
-                command: sudo chown -R 1000:1000 ../project
-          - run:
-                name: Start containers
-                command: |
-                    docker load -i php-pim-image.tar
-                    APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
-                    vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
-          - run:
-                name: Install database
-                command: APP_ENV=test make database
-          - run:
-                name: PhpUnit Migration
-                command: make migration-back
-          - store_test_results:
-                path: var/tests/phpunit
-          - store_artifacts:
-                path: var/tests/phpunit
-          - store_artifacts:
-                path: var/logs
 
 workflows:
   version: 2
@@ -434,27 +287,15 @@ workflows:
           - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
-          - test_back_missing_structure_migrations:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-          - test_back_data_migrations:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
           - test_back_phpunit:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
-                    - test_back_data_migrations
-                    - test_back_missing_structure_migrations
                     - test_back_phpunit
           - test_back_performance:
                 requires:
-                    - test_back_data_migrations
-                    - test_back_missing_structure_migrations
                     - test_back_phpunit
 
   nightly:
@@ -464,23 +305,13 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - master
+                            - "4.0"
 
       jobs:
           - checkout
           - build_dev:
               requires:
                     - checkout
-          - build_prod:
-                requires:
-                    - checkout
-          - deploy_upgrade_pim3_environment:
-                requires:
-                    - checkout
-                    - build_prod
-          - deploy_master_environment:
-                requires:
-                    - build_prod
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -494,9 +325,6 @@ workflows:
           - back_behat_legacy:
                 requires:
                     - build_dev
-          - test_back_data_migrations:
-                requires:
-                    - build_dev
           - test_back_performance:
                 requires:
                     - build_dev
@@ -507,34 +335,3 @@ workflows:
                     - test_back_phpunit
                     - test_back_performance
                     - back_behat_legacy
-                    - deploy_master_environment
-                    - deploy_upgrade_pim3_environment
-                    - test_back_data_migrations
-
-commands:
-  set_gcloud_config:
-    description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."
-    steps:
-      - run:
-          name: "Set Gcloud Config."
-          shell: "/bin/bash -eo pipefail"
-          command: |
-            echo ${GCLOUD_SERVICE_KEY} | gcloud auth activate-service-account --key-file=-
-            gcloud config set project ${GOOGLE_PROJECT_ID}
-            gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-            gcloud container clusters get-credentials ${GOOGLE_COMPUTE_ZONE} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_COMPUTE_ZONE}
-            echo ${GCLOUD_SERVICE_KEY} > ${HOME}/gcloud-service-key.json
-            echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
-            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
-            gcloud auth configure-docker --quiet
-
-
-  prepare_terraform:
-    description: "Prepare terraform configuration."
-    steps:
-      - run:
-          name: "Prepare terraform configuration."
-          shell: "/bin/bash -eo pipefail"
-          command: |
-            IMAGE_TAG=$CIRCLE_SHA1 make create-tf-files
-            make get-kubeconfig
