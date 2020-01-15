@@ -72,12 +72,12 @@ final class DemoHelperCommand extends Command
         $this->consolidateDashboardRates = $consolidateDashboardRates;
         $this->dashboardRatesProjectionRepository = $dashboardRatesProjectionRepository;
         $this->db = $db;
-
-        parent::__construct();
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
         $this->consolidateProductAxisRates = $consolidateProductAxisRates;
         $this->indexProductRates = $indexProductRates;
+
+        parent::__construct();
     }
 
     protected function configure()
