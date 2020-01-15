@@ -121,7 +121,9 @@ Aim:
 
 Aim:
 - Purge several data use by the Data Quality Insights feature.
-- The purge is already handled by the periodic tasks but you can use this command to force the purge for a specific day
+
+Note:
+The purge is already handled by the periodic tasks but you can use this command to force the purge for a specific day
 
 ####Commands not usable in production - use with care
 
