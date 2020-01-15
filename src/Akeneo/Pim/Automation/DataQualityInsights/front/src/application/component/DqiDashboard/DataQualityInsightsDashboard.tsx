@@ -6,14 +6,15 @@ interface DataQualityInsightsDashboardProps {
   periodicity: string;
   catalogLocale: string;
   catalogChannel: string;
+  familyCode: string | null;
 }
 
-const DataQualityInsightsDashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({periodicity, catalogLocale, catalogChannel}) => {
+const DataQualityInsightsDashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({periodicity, catalogLocale, catalogChannel, familyCode}) => {
   return (
     <div id="data-quality-insights-activity-dashboard">
       <div className="AknSubsection">
-        <DataQualityOverviewHeader periodicity={periodicity}/>
-        <DataQualityOverviewCharts catalogLocale={catalogLocale} catalogChannel={catalogChannel} periodicity={periodicity}/>
+        <DataQualityOverviewHeader periodicity={periodicity} familyCode={familyCode}/>
+        <DataQualityOverviewCharts catalogLocale={catalogLocale} catalogChannel={catalogChannel} periodicity={periodicity} familyCode={familyCode}/>
       </div>
     </div>
   )

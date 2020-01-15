@@ -55,10 +55,11 @@ interface DataQualityOverviewChartProps {
   catalogLocale: string;
   catalogChannel: string;
   periodicity: string;
+  familyCode: string | null;
 }
 
-const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, periodicity}: DataQualityOverviewChartProps) => {
-  let dataset = useFetchDqiDashboardData(catalogChannel, catalogLocale, periodicity);
+const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, periodicity, familyCode}: DataQualityOverviewChartProps) => {
+  const dataset = useFetchDqiDashboardData(catalogChannel, catalogLocale, periodicity, familyCode);
 
   if (Object.entries(dataset).length === 0) {
 

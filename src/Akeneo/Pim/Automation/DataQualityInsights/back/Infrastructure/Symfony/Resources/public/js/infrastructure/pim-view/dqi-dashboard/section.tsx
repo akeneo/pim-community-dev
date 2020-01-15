@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import React from "react";
 import {
   DataQualityInsightsDashboard,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY
+  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY,
+  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY
 } from 'akeneodataqualityinsights-react';
 
 interface SectionConfig {
@@ -22,6 +23,10 @@ type DashboardChangePeriodicityEvent = {
   periodicity: string;
 };
 
+type DashboardFilterOnFamilyEvent = {
+  familyCode: string;
+};
+
 class SectionView extends BaseView {
   public readonly config: SectionConfig = {
     align: 'left',
@@ -29,9 +34,16 @@ class SectionView extends BaseView {
 
   private periodicity: string = 'daily';
 
+  private familyCode: string | null = null;
+
   configure(): JQueryPromise<any> {
     window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY, ((event: CustomEvent<DashboardChangePeriodicityEvent>) => {
       this.periodicity = event.detail.periodicity;
+      this.render();
+    }) as EventListener);
+
+    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY, ((event: CustomEvent<DashboardFilterOnFamilyEvent>) => {
+      this.familyCode = event.detail.familyCode;
       this.render();
     }) as EventListener);
 
@@ -51,7 +63,7 @@ class SectionView extends BaseView {
     const catalogChannel: string = UserContext.get('catalogScope');
 
     ReactDOM.render(
-      <DataQualityInsightsDashboard periodicity={this.periodicity} catalogLocale={catalogLocale} catalogChannel={catalogChannel} />,
+      <DataQualityInsightsDashboard periodicity={this.periodicity} catalogLocale={catalogLocale} catalogChannel={catalogChannel} familyCode={this.familyCode} />,
       this.el
     );
     return this;
