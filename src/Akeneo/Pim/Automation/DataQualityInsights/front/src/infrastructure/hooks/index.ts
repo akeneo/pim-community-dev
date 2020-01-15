@@ -13,6 +13,7 @@ import useFetchTextAnalysis from "./Spellcheck/useFetchTextAnalysis";
 import useGetPopover from "./Spellcheck/useGetPopover";
 import useGetWidget from "./Spellcheck/useGetWidget";
 import useFetchIgnoreTextIssue from "./Spellcheck/useFetchIgnoreTextIssue";
+import useGetChartScalingSizeRatio from "./Dashboard/useGetChartScalingSizeRatio";
 
 export {
   useFetchDqiDashboardData,
@@ -30,4 +31,5 @@ export {
   useGetPopover as useGetSpellcheckPopover,
   useGetWidget as useGetSpellcheckWidget,
   useFetchIgnoreTextIssue,
+  useGetChartScalingSizeRatio as useGetDashboardChartScalingSizeRatio,
 }

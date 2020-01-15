@@ -6,17 +6,19 @@ interface TooltipProps extends FlyoutProps{
   x?: any;
   y: any;
   data: any;
+  upScalingRatio: number,
+  downScalingRatio: number,
 }
 
-const Tooltip: FunctionComponent<TooltipProps> = ({datum, x, y, data}) => {
+const Tooltip: FunctionComponent<TooltipProps> = ({datum, x, y, data, upScalingRatio, downScalingRatio}) => {
 
   if(datum === undefined || datum._stack === 6) {
     return(<></>);
   }
 
   return (
-    <g style={{pointerEvents: 'none', fill: "none", stroke: "none"}} transform="scale(0.714, 0.714)">
-      <foreignObject x={x*1.4 - 20} y={y} width="150" height="238">
+    <g style={{pointerEvents: 'none', fill: "none", stroke: "none"}} transform={`scale(${downScalingRatio}, ${downScalingRatio})`}>
+      <foreignObject x={x*upScalingRatio - 20} y={y} width="150" height="238">
         <div className="AknHoverBoxWithArrow">
           <div className="AknHoverBoxArrow"/>
           <div className="AknHoverBox">
