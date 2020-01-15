@@ -42,6 +42,18 @@ final class ConsolidationDateSpec extends ObjectBehavior
         $this->isLastDayOfMonth()->shouldReturn(false);
     }
 
+    public function it_returns_true_if_it_is_the_last_day_of_the_year()
+    {
+        $this->beConstructedWith(new \DateTimeImmutable('2019-12-31'));
+        $this->isLastDayOfYear()->shouldReturn(true);
+    }
+
+    public function it_returns_false_if_it_is_not_the_last_day_of_the_year()
+    {
+        $this->beConstructedWith(new \DateTimeImmutable('2019-10-31'));
+        $this->isLastDayOfYear()->shouldReturn(false);
+    }
+
     public function it_formats_a_date()
     {
         $this->beConstructedWith(new \DateTimeImmutable('2019-12-09 12:43:37'));

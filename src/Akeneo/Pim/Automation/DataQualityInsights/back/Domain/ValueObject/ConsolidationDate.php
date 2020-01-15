@@ -38,6 +38,11 @@ final class ConsolidationDate
         return $this->dateTime->format('d') === $this->dateTime->format('t');
     }
 
+    public function isLastDayOfYear(): bool
+    {
+        return '12-31' === $this->dateTime->format('m-d');
+    }
+
     public function format(string $format = 'Y-m-d'): string
     {
         return $this->dateTime->format($format);

@@ -46,6 +46,9 @@ final class ConsolidateDashboardRates
     /** @var Periodicity */
     private $monthly;
 
+    /** @var Periodicity */
+    private $yearly;
+
     public function __construct(
         GetRanksDistributionFromProductAxisRatesQueryInterface $getRanksDistributionFromProductAxisRatesQuery,
         GetAllCategoryCodesQueryInterface $getAllCategoryCodesQuery,
@@ -59,6 +62,7 @@ final class ConsolidateDashboardRates
         $this->daily = Periodicity::daily();
         $this->weekly = Periodicity::weekly();
         $this->monthly = Periodicity::monthly();
+        $this->yearly = Periodicity::yearly();
     }
 
     public function consolidate(ConsolidationDate $day): void
@@ -127,6 +131,10 @@ final class ConsolidateDashboardRates
 
         if ($day->isLastDayOfMonth()) {
             $dashboardRanks[strval($this->monthly)][$day->format()] = $rates;
+        }
+
+        if ($day->isLastDayOfYear()) {
+            $dashboardRanks[strval($this->yearly)][$day->format()] = $rates;
         }
 
         return $dashboardRanks;

@@ -23,7 +23,8 @@ final class PurgeOutdatedData
 {
     public const RETENTION_DAYS = 7;
     public const RETENTION_WEEKS = 4;
-    public const RETENTION_MONTHS = 6;
+    public const RETENTION_MONTHS = 15;
+    public const RETENTION_YEARS = 3;
 
     /** @var DashboardRatesProjectionRepositoryInterface */
     private $dashboardRatesProjectionRepository;
@@ -64,6 +65,13 @@ final class PurgeOutdatedData
             $this->dashboardRatesProjectionRepository->removeRates(
                 Periodicity::monthly(),
                 $purgeDate->modify(sprintf('-%d MONTH', self::RETENTION_MONTHS))
+            );
+        }
+
+        if ($purgeDate->isLastDayOfYear()) {
+            $this->dashboardRatesProjectionRepository->removeRates(
+                Periodicity::yearly(),
+                $purgeDate->modify(sprintf('-%d YEAR', self::RETENTION_YEARS))
             );
         }
     }

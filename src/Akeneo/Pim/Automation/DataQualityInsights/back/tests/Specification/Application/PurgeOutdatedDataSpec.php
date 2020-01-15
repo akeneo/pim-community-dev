@@ -65,6 +65,24 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
     public function it_purges_daily_and_monthly_dashboard_rates_projection_at_the_last_day_of_the_month(
         DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository
     ) {
+        $purgeDate = new \DateTimeImmutable('2019-10-31');
+
+        $dashboardRatesProjectionRepository->removeRates(Periodicity::daily(), Argument::that(function ($date) use ($purgeDate) {
+            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
+            return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
+        }))->shouldBeCalled();
+
+        $dashboardRatesProjectionRepository->removeRates(Periodicity::monthly(), Argument::that(function ($date) use ($purgeDate) {
+            $purgeDate = $purgeDate->modify(sprintf('-%d MONTH', PurgeOutdatedData::RETENTION_MONTHS));
+            return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
+        }))->shouldBeCalled();
+
+        $this->purgeDashboardProjectionRatesFrom($purgeDate);
+    }
+
+    public function it_purges_daily_monthly_and_yearly_dashboard_rates_projection_at_the_last_day_of_the_year(
+        DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository
+    ) {
         $purgeDate = new \DateTimeImmutable('2019-12-31');
 
         $dashboardRatesProjectionRepository->removeRates(Periodicity::daily(), Argument::that(function ($date) use ($purgeDate) {
@@ -74,6 +92,11 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
 
         $dashboardRatesProjectionRepository->removeRates(Periodicity::monthly(), Argument::that(function ($date) use ($purgeDate) {
             $purgeDate = $purgeDate->modify(sprintf('-%d MONTH', PurgeOutdatedData::RETENTION_MONTHS));
+            return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
+        }))->shouldBeCalled();
+
+        $dashboardRatesProjectionRepository->removeRates(Periodicity::yearly(), Argument::that(function ($date) use ($purgeDate) {
+            $purgeDate = $purgeDate->modify(sprintf('-%d YEAR', PurgeOutdatedData::RETENTION_YEARS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
 
