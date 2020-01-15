@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.0 (2020-01-15)
+
 ## New features
 
 - AST-63: New Asset Manager to provide only one way to use assets in the PIM, regardless of their sources
