@@ -12,6 +12,7 @@ pim_asset_manager:
   asset_counter: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
   asset_collection:
     add_asset: 'Add asset'
+    upload_asset: 'Upload asset'
     add_asset_title: 'Open the asset picker to add assets to the collection'
     no_asset_in_collection: 'Sorry, there is no asset in this collection.'
     helper:

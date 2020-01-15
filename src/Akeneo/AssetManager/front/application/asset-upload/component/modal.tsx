@@ -22,11 +22,12 @@ import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/att
 import {Reducer} from 'redux';
 import {onFileDrop} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-file-drop';
 import {onCreateAllAsset} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-create-all-assets';
-import {hasAnUnsavedLine} from 'akeneoassetmanager/application/asset-upload/utils/utils';
+import {hasAnUnsavedLine, getCreatedAssetCodes} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import Key from 'akeneoassetmanager/tools/key';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
 const Header = styled.div`
   background: ${(props: ThemedProps<void>) => props.theme.color.white};
@@ -86,9 +87,8 @@ type UploadModalProps = {
   locale: LocaleCode;
   channels: Channel[];
   locales: Locale[];
-  // @TODO merge this two callbacks into one onClose()
   onCancel: () => void;
-  onAssetCreated: () => void;
+  onAssetCreated: (assetCodes: AssetCode[]) => void;
 };
 
 const UploadModal = ({assetFamily, locale, channels, locales, onCancel, onAssetCreated}: UploadModalProps) => {
@@ -101,7 +101,7 @@ const UploadModal = ({assetFamily, locale, channels, locales, onCancel, onAssetC
   // This is a workaround because but we haven't found a proper way to do it directly after a successful onCreateAllAsset
   React.useEffect(() => {
     if (state.lines.length > 0 && !hasAnUnsavedLine(state.lines, valuePerLocale, valuePerChannel)) {
-      onAssetCreated();
+      onAssetCreated(getCreatedAssetCodes(state.lines));
     }
   }, [state.lines, valuePerLocale, valuePerChannel, onCancel]);
 
