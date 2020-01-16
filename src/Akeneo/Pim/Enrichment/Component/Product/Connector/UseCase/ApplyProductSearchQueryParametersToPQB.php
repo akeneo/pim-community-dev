@@ -61,6 +61,7 @@ final class ApplyProductSearchQueryParametersToPQB
         }
 
         foreach ($searchParameters as $propertyCode => $filters) {
+            $propertyCode = (string) $propertyCode;
             foreach ($filters as $filter) {
                 $context['locale'] = $filter['locale'] ?? $searchLocaleCode;
 
