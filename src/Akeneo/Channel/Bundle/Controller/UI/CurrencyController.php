@@ -57,7 +57,6 @@ class CurrencyController
         try {
             $currency->toggleActivation();
             $this->currencySaver->save($currency);
-
         } catch (LinkedChannelException $e) {
             return new JsonResponse([
                 'successful' => false,
