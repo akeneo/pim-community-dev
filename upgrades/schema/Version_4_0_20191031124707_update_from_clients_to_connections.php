@@ -76,7 +76,7 @@ SQL;
     {
         $countConnectionsQuery = <<< SQL
 SELECT count(code)
-FROM akeneo_app
+FROM akeneo_connectivity_connection
 SQL;
         $countConnections = $this->dbalConnection()->executeQuery($countConnectionsQuery);
 
@@ -96,7 +96,7 @@ SQL;
     {
         $retrieveNewConnectionClientId = <<< SQL
 SELECT client_id
-FROM akeneo_app
+FROM akeneo_connectivity_connection
 WHERE code = :code
 SQL;
         $retrieveStatement = $this->dbalConnection()->executeQuery($retrieveNewConnectionClientId, ['code' => $code]);
@@ -115,7 +115,7 @@ SQL;
     private function updateConnectionWithOldClient(string $code, string $clientId): void
     {
         $updateConnectionQuery = <<< SQL
-UPDATE akeneo_app
+UPDATE akeneo_connectivity_connection
 SET client_id = :client_id
 WHERE code = :code;
 SQL;
