@@ -16,7 +16,12 @@ namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -29,6 +34,10 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
@@ -50,6 +59,15 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /** @var WebClientHelper */
     private $webClientHelper;
 
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
+
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -59,6 +77,9 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->fixturesLoader = $this->get('akeneo_assetmanager.common.helper.fixtures_loader');
         $this->fileExists = $this->get('akeneo_assetmanager.infrastructure.persistence.query.file_exists');
         $this->findFileData = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key');
+        $this->assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+        $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
+        $this->assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
 
         $this->loadFixtures();
     }
@@ -353,6 +374,252 @@ class CreateActionTest extends ControllerIntegrationTestCase
             ]
         );
         $this->webClientHelper->assert403Forbidden($this->client->getResponse());
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_asset_with_naming_convention_execution()
+    {
+        $this->fixturesLoader->assetFamily('country')
+            ->withAttributes(['title', 'length', 'image'])
+            ->withAttributeOfTypeText('country', 'title')
+            ->withAttributeOfTypeNumber('country', 'length')
+            ->withAttributeOfTypeMediaFile('country', 'image', false)
+            ->withNamingConvention(NamingConvention::createFromNormalized([
+                'source' => ['property' => 'image', 'channel' => null, 'locale' => null],
+                'pattern' => '/(?P<title>[a-zA-Z0-9\s]+)_(?P<length>\d+)/',
+                'abort_asset_creation_on_error' => true,
+            ]))
+            ->load();
+
+        $this->fileExists->save('/a/b/c/title_12.png');
+        $fileData = [
+            'originalFilename' => 'title_12.png',
+            'filePath' => '/a/b/c/title_12.png',
+            'size' => 5396,
+            'mimeType' => 'image/png',
+            'extension' => 'png',
+            'updatedAt' => '2019-11-22T15:16:21+0000',
+        ];
+        $this->findFileData->save($fileData);
+
+        $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+            AttributeCode::fromString('image'),
+            AssetFamilyIdentifier::fromString('country')
+        );
+
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_ASSET_ROUTE,
+            [
+                'assetFamilyIdentifier' => 'country',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            [
+                'identifier' => 'country_intel_a1677570-a278-444b-ab46-baa1db199392',
+                'asset_family_identifier' => 'country',
+                'code' => 'intel',
+                'labels' => [
+                    'fr_FR' => 'Intel',
+                    'en_US' => 'Intel',
+                ],
+                'values' => [
+                    [
+                        'attribute' => $attribute->getIdentifier()->__toString(),
+                        'channel' => null,
+                        'locale' => null,
+                        'data' => [
+                            'filePath' => '/a/b/c/title_12.png',
+                            'originalFilename' => 'title_12.png',
+                            'size' => 5396,
+                            'mimeType' => 'image/png',
+                            'extension' => 'png',
+                            'updatedAt' => '2020-01-03T09:52:55+0000',
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
+        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('country'),
+            AssetCode::fromString('intel')
+        );
+
+        $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+            AttributeCode::fromString('title'),
+            AssetFamilyIdentifier::fromString('country'),
+            );
+        $valueKey = ValueKey::create($attribute->getIdentifier(), ChannelReference::noReference(), LocaleReference::noReference());
+        $value = $asset->findValue($valueKey);
+        Assert::assertInstanceOf(Value::class, $value);
+        Assert::assertEquals('title', $value->getData()->normalize());
+
+        $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+            AttributeCode::fromString('length'),
+            AssetFamilyIdentifier::fromString('country'),
+            );
+        $valueKey = ValueKey::create($attribute->getIdentifier(), ChannelReference::noReference(), LocaleReference::noReference());
+        $value = $asset->findValue($valueKey);
+        Assert::assertInstanceOf(Value::class, $value);
+        Assert::assertEquals('12', $value->getData()->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_execute_naming_convention_if_a_problem_occurred()
+    {
+        $this->fixturesLoader->assetFamily('country')
+            ->withAttributes(['length', 'image'])
+            ->withAttributeOfTypeNumber('country', 'length')
+            ->withAttributeOfTypeMediaFile('country', 'image', false)
+            ->withNamingConvention(NamingConvention::createFromNormalized([
+                'source' => ['property' => 'image', 'channel' => null, 'locale' => null],
+                'pattern' => '/(?P<title>[a-zA-Z0-9\s]+)_(?P<length>\d+)/',
+                'abort_asset_creation_on_error' => false,
+            ]))
+            ->load();
+
+        $this->fileExists->save('/a/b/c/title_12.png');
+        $fileData = [
+            'originalFilename' => 'title_12.png',
+            'filePath' => '/a/b/c/title_12.png',
+            'size' => 5396,
+            'mimeType' => 'image/png',
+            'extension' => 'png',
+            'updatedAt' => '2019-11-22T15:16:21+0000',
+        ];
+        $this->findFileData->save($fileData);
+
+        $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+            AttributeCode::fromString('image'),
+            AssetFamilyIdentifier::fromString('country')
+        );
+
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_ASSET_ROUTE,
+            [
+                'assetFamilyIdentifier' => 'country',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            [
+                'identifier' => 'country_intel_a1677570-a278-444b-ab46-baa1db199392',
+                'asset_family_identifier' => 'country',
+                'code' => 'intel',
+                'labels' => [
+                    'fr_FR' => 'Intel',
+                    'en_US' => 'Intel',
+                ],
+                'values' => [
+                    [
+                        'attribute' => $attribute->getIdentifier()->__toString(),
+                        'channel' => null,
+                        'locale' => null,
+                        'data' => [
+                            'filePath' => '/a/b/c/title_12.png',
+                            'originalFilename' => 'title_12.png',
+                            'size' => 5396,
+                            'mimeType' => 'image/png',
+                            'extension' => 'png',
+                            'updatedAt' => '2020-01-03T09:52:55+0000',
+                        ]
+                    ]
+                ],
+            ]
+        );
+
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
+        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_error_when_naming_convention_fails_in_strict_mode()
+    {
+        $this->fixturesLoader->assetFamily('country')
+            ->withAttributes(['length', 'image'])
+            ->withAttributeOfTypeNumber('country', 'length')
+            ->withAttributeOfTypeMediaFile('country', 'image', true)
+            ->withNamingConvention(NamingConvention::createFromNormalized([
+                'source' => ['property' => 'image', 'channel' => null, 'locale' => null],
+                'pattern' => '/(?P<title>[a-zA-Z0-9\s]+)_(?P<length>\d+)/',
+                'abort_asset_creation_on_error' => true,
+            ]))
+            ->load();
+
+        $this->fileExists->save('/a/b/c/title_12.png');
+        $fileData = [
+            'originalFilename' => 'title_12.png',
+            'filePath' => '/a/b/c/title_12.png',
+            'size' => 5396,
+            'mimeType' => 'image/png',
+            'extension' => 'png',
+            'updatedAt' => '2019-11-22T15:16:21+0000',
+        ];
+        $this->findFileData->save($fileData);
+
+        $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+            AttributeCode::fromString('image'),
+            AssetFamilyIdentifier::fromString('country')
+        );
+
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_ASSET_ROUTE,
+            [
+                'assetFamilyIdentifier' => 'country',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            [
+                'identifier' => 'country_intel_a1677570-a278-444b-ab46-baa1db199392',
+                'asset_family_identifier' => 'country',
+                'code' => 'intel',
+                'labels' => [
+                    'fr_FR' => 'Intel',
+                    'en_US' => 'Intel',
+                ],
+                'values' => [
+                    [
+                        'attribute' => $attribute->getIdentifier()->__toString(),
+                        'channel' => null,
+                        'locale' => null,
+                        'data' => [
+                            'filePath' => '/a/b/c/title_12.png',
+                            'originalFilename' => 'title_12.png',
+                            'size' => 5396,
+                            'mimeType' => 'image/png',
+                            'extension' => 'png',
+                            'updatedAt' => '2020-01-03T09:52:55+0000',
+                        ]
+                    ]
+                ],
+            ]
+        );
+
+        $this->webClientHelper->assertResponse(
+            $this->client->getResponse(),
+            Response::HTTP_BAD_REQUEST,
+            '[{"messageTemplate":"A channel is expected for attribute \u0022image\u0022 because it has a value per channel.","parameters":{"%attribute_code%":"image"},"message":"A channel is expected for attribute \u0022image\u0022 because it has a value per channel.","propertyPath":"values.image","invalidValue":{"filePath":"\/a\/b\/c\/title_12.png","originalFilename":"title_12.png","size":5396,"mimeType":"image\/png","extension":"png","updatedAt":"2020-01-03T09:52:55+0000","attribute":{"maxFileSizeLimit":true,"type":"media_file","maxFileSize":{"limit":true},"allowedExtensions":{"allAllowed":false},"mediaType":[],"identifier":[],"assetFamilyIdentifier":[],"code":[],"labelCodes":[],"order":[],"valuePerChannel":true,"valuePerLocale":false},"channel":null,"locale":null}}]'
+        );
     }
 
     private function forbidsEdit(): void

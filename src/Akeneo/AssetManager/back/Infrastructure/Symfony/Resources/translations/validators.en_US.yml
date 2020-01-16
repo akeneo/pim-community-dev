@@ -83,6 +83,8 @@ pim_asset_manager:
                 should_be_integer: 'This field should be an integer'
                 integer_too_long: 'This integer is too big'
                 should_be_numeric: 'This field should be a numeric value with the right decimal separator'
+            main_media:
+                not_main_media_attribute: 'The expected attribute as main media is "%main_media_attribute%", "%attribute%" given.'
     attribute:
         validation:
             options:

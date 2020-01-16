@@ -9,6 +9,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionInterface;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
@@ -66,6 +67,8 @@ class FixturesLoader
     /** @var string[] */
     private $customLoadedAttributes = [];
 
+    private $namingConvention = null;
+
     /** @var string */
     private $loadedAssetFamilyOfAsset;
 
@@ -92,6 +95,7 @@ class FixturesLoader
         $this->loadedAssetFamily = $identifier;
         $this->loadedAttributes = [];
         $this->customLoadedAttributes = [];
+        $this->namingConvention = null;
 
         return $this;
     }
@@ -149,6 +153,32 @@ class FixturesLoader
         return $this;
     }
 
+    public function withAttributeOfTypeNumber(
+        string $assetFamilyIdentifier,
+        string $attributeCode,
+        bool $valuePerChannel = false,
+        bool $valuePerLocale = false
+    ): self {
+        $this->customLoadedAttributes[] = NumberAttribute::create(
+            $this->attributeRepository->nextIdentifier(
+                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+                AttributeCode::fromString($attributeCode)
+            ),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            $this->getOrderForAttribute($attributeCode),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean($valuePerChannel),
+            AttributeValuePerLocale::fromBoolean($valuePerLocale),
+            AttributeDecimalsAllowed::fromBoolean(true),
+            AttributeLimit::limitless(),
+            AttributeLimit::fromString('100')
+        );
+
+        return $this;
+    }
+
     public function withAttributeOfTypeSingleOption(string $assetFamilyIdentifier, string $attributeCode): self
     {
         $this->customLoadedAttributes[] = OptionAttribute::create(
@@ -187,8 +217,11 @@ class FixturesLoader
         return $this;
     }
 
-    public function withAttributeOfTypeMediaFile(string $assetFamilyIdentifier, string $attributeCode): self
-    {
+    public function withAttributeOfTypeMediaFile(
+        string $assetFamilyIdentifier,
+        string $attributeCode,
+        bool $scopable = true
+    ): self {
         $this->customLoadedAttributes[] = MediaFileAttribute::create(
             $this->attributeRepository->nextIdentifier(
                 AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
@@ -199,12 +232,19 @@ class FixturesLoader
             LabelCollection::fromArray([]),
             $this->getOrderForAttribute($attributeCode),
             AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean($scopable),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('1000'),
             AttributeAllowedExtensions::fromList(['png']),
             MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
         );
+
+        return $this;
+    }
+
+    public function withNamingConvention(NamingConventionInterface $namingConvention): self
+    {
+        $this->namingConvention = $namingConvention;
 
         return $this;
     }
@@ -264,6 +304,11 @@ class FixturesLoader
             Image::createEmpty(),
             RuleTemplateCollection::empty()
         );
+        if (null !== $this->namingConvention) {
+            $designer->updateNamingConvention($this->namingConvention);
+            $brand->updateNamingConvention($this->namingConvention);
+            $country->updateNamingConvention($this->namingConvention);
+        }
 
         switch ($this->loadedAssetFamily) {
             case 'designer':
@@ -285,6 +330,9 @@ class FixturesLoader
                     Image::createEmpty(),
                     RuleTemplateCollection::empty()
                 );
+                if (null !== $this->namingConvention) {
+                    $assetFamily->updateNamingConvention($this->namingConvention);
+                }
                 $this->assetFamilyRepository->create($assetFamily);
 
                 return $assetFamily;

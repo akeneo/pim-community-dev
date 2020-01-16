@@ -180,6 +180,20 @@ services:
             - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
             - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
 
+    akeneo_assetmanager.tests.back.acceptance.context.edit_asset.execute_naming_convention:
+        class: Akeneo\AssetManager\Acceptance\Context\EditAsset\ExecuteNamingConventionContext
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@validator'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.application.asset_family.create_asset_family_handler'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
+            - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory'
+            - '@akeneo_assetmanager.application.asset.edit_asset_handler'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+
     akeneo_assetmanager.tests.back.acceptance.context.delete_asset_context:
         class: Akeneo\AssetManager\Acceptance\Context\DeleteAssetContext
         arguments:
