@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8163: Display messages when toggling curencies
+
 # 3.0.63 (2020-01-10)
 
 ## Bug fixes
