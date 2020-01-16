@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd;
 
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -25,6 +27,16 @@ abstract class WebTestCase extends TestCase
     {
         parent::setUp();
         $this->client = self::$container->get('test.client');
+    }
+
+    protected function createConnection(string $code, string $label, string $flowType): ConnectionWithCredentials
+    {
+        $createConnectionCommand = new CreateConnectionCommand($code, $label, $flowType);
+
+        $connection = $this->get('akeneo_connectivity.connection.application.handler.create_connection')
+            ->handle($createConnectionCommand);
+
+        return $connection;
     }
 
     protected function authenticateAsAdmin()
