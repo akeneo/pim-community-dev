@@ -24,9 +24,10 @@ class NotGrantedParentFilterSpec extends ObjectBehavior
         $this->shouldImplement(NotGrantedDataFilterInterface::class);
     }
 
-    function it_does_not_filter_an_entity_without_family_variant(ProductInterface $product)
+    function it_does_not_filter_an_entity_without_family_variant()
     {
-        $this->filter($product)->shouldBeLike($product);
+        $entity = new \stdClass();
+        $this->filter($entity)->shouldReturn($entity);
     }
 
     function it_does_not_filter_an_entity_with_family_variant_but_no_parent(ProductInterface $product)
