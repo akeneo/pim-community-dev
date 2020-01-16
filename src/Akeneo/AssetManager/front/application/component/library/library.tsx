@@ -451,6 +451,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           onClose={() => setCreateAssetFamilyModalOpen(false)}
           onAssetFamilyCreated={(assetFamilyIdentifier: AssetFamilyIdentifier) => {
             notify('success', 'pim_asset_manager.asset_family.notification.create.success');
+            setCurrentAssetFamilyIdentifier(assetFamilyIdentifier);
             redirectToAssetFamily(assetFamilyIdentifier);
           }}
         />
