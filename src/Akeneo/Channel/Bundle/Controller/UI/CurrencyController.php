@@ -30,7 +30,7 @@ class CurrencyController
     protected $currencySaver;
 
     /**
-     * @todo @merge remove RequestStack from the constructor
+     * todo merge remove RequestStack from the constructor
      *
      * @param RequestStack    $requestStack
      * @param RouterInterface $router
