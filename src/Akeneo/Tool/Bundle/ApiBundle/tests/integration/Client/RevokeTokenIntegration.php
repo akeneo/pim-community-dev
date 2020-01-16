@@ -3,11 +3,8 @@
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Client;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretCommand;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Response;
 
 class RevokeTokenIntegration extends ApiTestCase
@@ -15,39 +12,37 @@ class RevokeTokenIntegration extends ApiTestCase
     public function testCascadeDeleteRefreshToken()
     {
         $client = static::createClient();
-        list($clientId, $secret) = $this->createOAuthClient('Revoke_Token_Test');
 
+        $apiConnection = $this->createConnection('Revoke_Token_Test');
+        // TODO: Move into an `authenticateAPI` method
         $client->request('POST', 'api/oauth/v1/token',
             [
-                'username'   => static::USERNAME,
-                'password'   => static::PASSWORD,
+                'username'   => $apiConnection->username(),
+                'password'   => $apiConnection->password(),
                 'grant_type' => 'password',
             ],
             [],
             [
-                'PHP_AUTH_USER' => $clientId,
-                'PHP_AUTH_PW'   => $secret,
+                'PHP_AUTH_USER' => $apiConnection->clientId(),
+                'PHP_AUTH_PW'   => $apiConnection->secret(),
                 'CONTENT_TYPE'  => 'application/json',
             ]
         );
 
-        $arrayClientId = explode('_', $clientId);
+        $arrayClientId = explode('_', $apiConnection->clientId());
 
-        $connection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
-        $stmt = $connection->prepare('SELECT client, user, token from pim_api_refresh_token where client = :client');
-        $stmt->bindParam('client', $arrayClientId[0]);
-        $stmt->execute();
-        $result = $stmt->fetch();
-
-        $this->assertSame(1, $this->count($result));
+        /** @var Connection $dbalConnection */
+        $dbalConnection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
+        $sqlQuery = <<<SQL
+SELECT client, user, token from pim_api_refresh_token where client = :client
+SQL;
+        $result = $dbalConnection->executeQuery($sqlQuery, ['client' => $arrayClientId[0]])->fetchAll();
+        $this->assertSame(1, count($result));
 
         $this->revokeConnection('Revoke_Token_Test');
 
-        $stmt->bindParam('client', $arrayClientId[0]);
-        $stmt->execute();
-        $result = $stmt->fetch();
-
-        $this->assertSame(false, $result);
+        $result = $dbalConnection->executeQuery($sqlQuery, ['client' => $arrayClientId[0]])->fetchAll();
+        $this->assertSame(0, count($result));
     }
 
     public function testCascadeDeleteAccessToken()

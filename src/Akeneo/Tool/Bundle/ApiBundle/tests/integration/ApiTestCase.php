@@ -114,6 +114,8 @@ abstract class ApiTestCase extends WebTestCase
     /**
      * Creates a new OAuth client and returns its client id and secret.
      *
+     * @deprecated
+     *
      * @param string|null $label
      *
      * @return string[]
@@ -126,7 +128,14 @@ abstract class ApiTestCase extends WebTestCase
         return [$connection->clientId(), $connection->secret()];
     }
 
-    private function createConnection(string $code): ConnectionWithCredentials
+    /**
+     * Creates an API Connection and returns it with its credentials
+     *
+     * @param string $code
+     *
+     * @return ConnectionWithCredentials
+     */
+    protected function createConnection(string $code = 'API_Test'): ConnectionWithCredentials
     {
         $command = new CreateConnectionCommand($code, $code, FlowType::OTHER);
 
