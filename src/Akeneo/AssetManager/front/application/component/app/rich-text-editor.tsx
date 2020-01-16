@@ -75,12 +75,15 @@ export default class RichTextEditor extends React.Component<RichTextEditorProps,
     });
   };
 
-  static getDerivedStateFromProps(props: RichTextEditorProps, state: RichTextEditorState): RichTextEditorState {
-    if (props.value !== draftToRaw(state.editorState)) {
-      return rawToEditorState(props.value);
+  static getDerivedStateFromProps(props: RichTextEditorProps, state: RichTextEditorState) {
+    const valueIsTheSame = props.value === draftToRaw(state.editorState);
+    const editorIsInFocus = state.editorState.getSelection().getHasFocus();
+
+    if (valueIsTheSame || editorIsInFocus) {
+      return null;
     }
 
-    return state;
+    return rawToEditorState(props.value);
   }
 
   render(): JSX.Element | JSX.Element[] {
