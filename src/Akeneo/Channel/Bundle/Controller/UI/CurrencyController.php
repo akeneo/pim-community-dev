@@ -52,28 +52,20 @@ class CurrencyController
      */
     public function toggleAction(Currency $currency)
     {
-        $request = $this->requestStack->getCurrentRequest();
-
         try {
             $currency->toggleActivation();
             $this->currencySaver->save($currency);
 
-            $request
-                ->getSession()
-                ->getFlashBag()
-                ->add('success', new Message('flash.currency.updated'));
         } catch (LinkedChannelException $e) {
-            $request
-                ->getSession()
-                ->getFlashBag()
-                ->add('error', new Message('flash.currency.error.linked_to_channel'));
-        } catch (\Exception $e) {
-            $request
-                ->getSession()
-                ->getFlashBag()
-                ->add('error', new Message('flash.error occurred'));
+            return new JsonResponse([
+                'successful' => false,
+                'message' => 'flash.currency.error.linked_to_channel'
+            ]);
         }
 
-        return new JsonResponse(['route' => 'pim_enrich_currency_index']);
+        return new JsonResponse([
+            'successful' => true,
+            'message' => 'flash.currency.updated'
+        ]);
     }
 }
