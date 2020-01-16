@@ -48,12 +48,12 @@ class EditValueCommandValidator extends ConstraintValidator
         $this->checkCommandType($command);
         $this->checkConstraintType($constraint);
 
-        $violations = $this->checkChannelType($command);
-        $violations->addAll($this->checkLocaleType($command));
+        $channelViolations = $this->checkChannelType($command);
+        $this->addViolations($command, $channelViolations, '.channel');
+        $localeViolations = $this->checkLocaleType($command);
+        $this->addViolations($command, $localeViolations, '.locale');
 
-        if ($violations->count() > 0) {
-            $this->addViolations($command, $violations);
-
+        if (count($channelViolations) > 0 || count($localeViolations) > 0) {
             return;
         }
 
@@ -168,13 +168,13 @@ class EditValueCommandValidator extends ConstraintValidator
         }
     }
 
-    private function addViolations(AbstractEditValueCommand $command, ConstraintViolationListInterface $violations): void
+    private function addViolations(AbstractEditValueCommand $command, ConstraintViolationListInterface $violations, ?string $path = null): void
     {
         $attributeCode = (string) $command->attribute->getCode();
         foreach ($violations as $violation) {
             $this->context->buildViolation($violation->getMessage())
                 ->setParameter('%attribute_code%', $attributeCode)
-                ->atPath($attributeCode)
+                ->atPath($attributeCode . $path)
                 ->setCode($violation->getCode())
                 ->setPlural($violation->getPlural())
                 ->setInvalidValue($violation->getInvalidValue())

@@ -16,18 +16,22 @@ import {
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 import {createFakeAssetFamily, createFakeCreationAsset, createFakeError, createFakeLine} from '../tools';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import Locale from 'akeneoassetmanager/domain/model/locale';
 
 const valuePerLocale = true;
 const valuePerChannel = true;
 const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+const channels: Channel[] = [];
+const locales: Locale[] = [];
 
 const lines = {
-  A: createFakeLine('a.jpg', assetFamily),
-  B: createFakeLine('b.jpg', assetFamily),
-  C: createFakeLine('c.jpg', assetFamily),
-  D: createFakeLine('d.jpg', assetFamily),
-  E: createFakeLine('e.jpg', assetFamily),
-  F: createFakeLine('f.jpg', assetFamily),
+  A: createFakeLine('a.jpg', assetFamily, channels, locales),
+  B: createFakeLine('b.jpg', assetFamily, channels, locales),
+  C: createFakeLine('c.jpg', assetFamily, channels, locales),
+  D: createFakeLine('d.jpg', assetFamily, channels, locales),
+  E: createFakeLine('e.jpg', assetFamily, channels, locales),
+  F: createFakeLine('f.jpg', assetFamily, channels, locales),
 };
 
 const defaultState = {
