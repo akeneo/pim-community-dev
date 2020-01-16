@@ -58,8 +58,8 @@ class SqlGetFirstVersionsByIdsQueryIntegration extends TestCase
         unset($versionIds['product_456_not_requested_first_version']);
 
         $expectedIds = [
-            $versionIds['product_42_first_version'],
             $versionIds['product_123_unique_version'],
+            $versionIds['product_42_first_version'],
             $versionIds['attribute_first_version'],
         ];
 
