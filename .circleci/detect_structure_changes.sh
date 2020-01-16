@@ -27,7 +27,7 @@ git checkout -b real40 --track origin/4.0
 if [ -d "vendor/akeneo/pim-community-dev" ]; then
     pushd vendor/akeneo/pim-community-dev
     git branch -D real40 || true
-    git checkout -b real40 --track origin/40
+    git checkout -b real40 --track origin/4.0
     popd
 fi
 
