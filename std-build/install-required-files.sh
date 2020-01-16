@@ -37,6 +37,7 @@ cp $DEV_DISTRIB_DIR/config/packages/prod_onprem_paas/oneup_flysystem.yml $STANDA
 
 # We need a console and FPM entrypoint
 cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
+chmod +x $STANDARD_DISTRIB_DIR/bin/console
 cp $DEV_DISTRIB_DIR/public/* $STANDARD_DISTRIB_DIR/public/
 
 # We provide a kernel that loads configuration from the CE dev and override it with the one in standard
