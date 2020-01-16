@@ -20,10 +20,11 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetComm
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory as NamingConventionEditAssetCommandFactory;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Exception\NamingConventionException;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetCommand;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
-use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -72,6 +73,9 @@ class CreateAction
     /** @var NamingConventionEditAssetCommandFactory */
     private $namingConventionEditAssetCommandFactory;
 
+    /** @var LinkAssetHandler */
+    private $linkAssetHandler;
+
     public function __construct(
         CreateAssetHandler $createAssetHandler,
         EditAssetHandler $editAssetHandler,
@@ -82,7 +86,8 @@ class CreateAction
         ValidatorInterface $validator,
         SecurityFacade $securityFacade,
         EditAssetCommandFactory $editAssetCommandFactory,
-        NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory
+        NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
+        LinkAssetHandler $linkAssetHandler
     ) {
         $this->createAssetHandler = $createAssetHandler;
         $this->editAssetHandler = $editAssetHandler;
@@ -94,6 +99,7 @@ class CreateAction
         $this->securityFacade = $securityFacade;
         $this->editAssetCommandFactory = $editAssetCommandFactory;
         $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
+        $this->linkAssetHandler = $linkAssetHandler;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response
@@ -162,6 +168,7 @@ class CreateAction
             $this->executeNamingConvention($namingConventionEditCommand);
         }
         $this->editAsset($editCommand);
+        $this->linkAsset($request);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
@@ -239,5 +246,16 @@ class CreateAction
     {
         ($this->editAssetHandler)($namingConventionEditCommand);
         $this->assetIndexer->refresh();
+    }
+
+    private function linkAsset(Request $request): void
+    {
+        $normalizedCommand = json_decode($request->getContent(), true);
+
+        $command = new LinkAssetCommand();
+        $command->assetFamilyIdentifier = $normalizedCommand['asset_family_identifier'];
+        $command->assetCode = $normalizedCommand['code'];
+
+        ($this->linkAssetHandler)($command);
     }
 }
