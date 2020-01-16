@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluateProductsCriteriaParameters;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\WordIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -32,7 +33,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class CreateCriteriaEvaluationsOnProductUpdateSubscriberSpec extends ObjectBehavior
+class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
 {
     public function let(
         FeatureFlag $dataQualityInsightsFeature,
@@ -57,10 +58,42 @@ class CreateCriteriaEvaluationsOnProductUpdateSubscriberSpec extends ObjectBehav
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
-    public function it_subscribes_to_post_save_and_post_save_all_events(): void
+    public function it_subscribes_to_several_events(): void
     {
+        $this::getSubscribedEvents()->shouldHaveKey(WordIgnoredEvent::WORD_IGNORED);
         $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE);
         $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE_ALL);
+    }
+
+    public function it_schedule_evaluation_when_a_word_is_ignored(
+        $dataQualityInsightsFeature,
+        $createProductsCriteriaEvaluations,
+        $jobInstanceRepository,
+        $tokenStorage,
+        $queueJobLauncher,
+        ProductInterface $product,
+        JobInstance $jobInstance,
+        TokenInterface $token,
+        UserInterface $user
+    ) {
+        $product->getId()->willReturn(12345);
+        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+        $createProductsCriteriaEvaluations->create([new ProductId(12345)])->shouldBeCalled();
+
+        $jobInstanceRepository
+            ->findOneByIdentifier(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME)
+            ->willReturn($jobInstance);
+
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+
+        $queueJobLauncher->launch(
+            $jobInstance,
+            $user,
+            [EvaluateProductsCriteriaParameters::PRODUCT_IDS => [12345]]
+        );
+
+        $this->onIgnoredWord(new WordIgnoredEvent(new ProductId(12345)));
     }
 
     public function it_does_nothing_when_the_entity_is_not_a_product($dataQualityInsightsFeature, $createProductsCriteriaEvaluations)
