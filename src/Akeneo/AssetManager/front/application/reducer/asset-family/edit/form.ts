@@ -5,6 +5,7 @@ import {combineReducers} from 'redux';
 import {File} from 'akeneoassetmanager/domain/model/file';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import TransformationCollection from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
+import NamingConvention from 'akeneoassetmanager/domain/model/asset-family/naming-convention';
 
 export interface EditionFormState {
   state: FormState;
@@ -24,6 +25,7 @@ const dataReducer = (
     image,
     attributeAsMainMedia,
     transformations,
+    namingConvention,
   }: {
     type: string;
     assetFamily: AssetFamily;
@@ -32,6 +34,7 @@ const dataReducer = (
     image: File;
     attributeAsMainMedia: AttributeIdentifier;
     transformations: TransformationCollection;
+    namingConvention: NamingConvention;
   }
 ) => {
   switch (type) {
@@ -49,6 +52,9 @@ const dataReducer = (
       break;
     case 'ASSET_FAMILY_EDITION_TRANSFORMATIONS_UPDATED':
       state = {...state, transformations};
+      break;
+    case 'ASSET_FAMILY_EDITION_NAMING_CONVENTION_UPDATED':
+      state = {...state, namingConvention};
       break;
     default:
       break;

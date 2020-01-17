@@ -8,6 +8,7 @@ akeneo_assetmanager:
            delete: Delete an asset family
            manage_permission: Manage asset family permissions
            manage_transformation: Manage asset family transformations
+           manage_product_link_rule: Manage asset family product link rules
        asset:
            create: Create an asset
            edit: Edit the assets

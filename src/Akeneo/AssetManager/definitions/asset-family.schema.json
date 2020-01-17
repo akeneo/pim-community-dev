@@ -33,7 +33,8 @@
         },
         "attribute_as_label": { "type": "string" },
         "attribute_as_main_media": { "type": "string" },
-        "transformations": { "$ref": "asset-family-transformations.schema.json" }
+        "transformations": { "$ref": "asset-family-transformations.schema.json" },
+        "naming_convention": { "$ref": "asset-family-naming-convention.schema.json" }
     },
     "required": [
         "identifier",

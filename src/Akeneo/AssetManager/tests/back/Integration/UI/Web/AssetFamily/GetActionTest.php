@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Image;
@@ -84,6 +85,11 @@ class GetActionTest extends ControllerIntegrationTestCase
         $entityItem->attributeAsMainMedia = AttributeAsMainMediaReference::createFromNormalized('designer_portrait_123456');
         $entityItem->attributeAsLabel = AttributeAsLabelReference::createFromNormalized('designer_name_123456');
         $entityItem->transformations = TransformationCollection::noTransformation();
+        $entityItem->namingConvention = NamingConvention::createFromNormalized([
+            'source' => ['property' => 'media', 'locale' => null, 'channel' => null],
+            'pattern' => '/the_pattern/',
+            'abort_asset_creation_on_error' => true,
+        ]);
 
         $name = new AttributeDetails();
         $name->identifier = 'designer_name_123456';

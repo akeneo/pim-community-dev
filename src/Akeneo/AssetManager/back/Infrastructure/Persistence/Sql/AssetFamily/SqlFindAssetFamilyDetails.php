@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
@@ -81,7 +82,8 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
             $attributesDetails,
             $result['attribute_as_label'],
             $result['attribute_as_main_media'],
-            json_decode($result['transformations'], true)
+            json_decode($result['transformations'], true),
+            json_decode($result['naming_convention'], true)
         );
     }
 
@@ -94,6 +96,7 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
             am.attribute_as_label,
             am.attribute_as_main_media,
             am.transformations,
+            COALESCE(am.naming_convention, '{}') as naming_convention,
             fi.file_key,
             fi.original_filename, (
                 SELECT count(*) FROM akeneo_asset_manager_asset WHERE asset_family_identifier = :identifier
@@ -126,7 +129,8 @@ SQL;
         array $attributesDetails,
         ?string $attributeAsLabel,
         ?string $attributeAsMainMedia,
-        array $transformations
+        array $transformations,
+        array $namingConvention
     ): AssetFamilyDetails {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $activatedLocales = $this->findActivatedLocales->findAll();
@@ -157,6 +161,7 @@ SQL;
             $transformations,
             AssetFamilyIdentifier::fromString($identifier)
         );
+        $assetFamilyItem->namingConvention = NamingConvention::createFromNormalized($namingConvention);
 
         return $assetFamilyItem;
     }

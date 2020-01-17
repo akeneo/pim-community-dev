@@ -6,6 +6,7 @@ import {createFileFromNormalized} from 'akeneoassetmanager/domain/model/file';
 import {denormalizeAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {denormalizeAssetFamilyTransformations} from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
 import {denormalizeAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {denormalizeAssetFamilyNamingConvention} from 'akeneoassetmanager/domain/model/asset-family/naming-convention';
 
 export const hydrator = () => (backendAssetFamily: BackendAssetFamily): AssetFamily => {
   return {
@@ -17,6 +18,7 @@ export const hydrator = () => (backendAssetFamily: BackendAssetFamily): AssetFam
     attributeAsLabel: denormalizeAttributeIdentifier(backendAssetFamily.attribute_as_label),
     attributes: Object.values(backendAssetFamily.attributes).map(denormalizeAttribute),
     transformations: denormalizeAssetFamilyTransformations(backendAssetFamily.transformations),
+    namingConvention: denormalizeAssetFamilyNamingConvention(backendAssetFamily.naming_convention),
   };
 };
 

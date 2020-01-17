@@ -3,14 +3,15 @@
 namespace spec\Akeneo\AssetManager\Domain\Query\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use PhpSpec\ObjectBehavior;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 
 class AssetFamilyDetailsSpec extends ObjectBehavior
 {
@@ -40,10 +41,11 @@ class AssetFamilyDetailsSpec extends ObjectBehavior
         $this->isAllowedToEdit = false;
         $this->attributeAsLabel = AttributeAsLabelReference::noReference();
         $this->attributeAsMainMedia = AttributeAsMainMediaReference::noReference();
+        $this->namingConvention = NamingConvention::createFromNormalized([]);
 
         $name->normalize()->willReturn(['code' => 'name']);
 
-        $this->normalize()->shouldReturn(
+        $this->normalize()->shouldBeLike(
             [
                 'identifier'                 => 'starck',
                 'labels'                     => [
@@ -65,7 +67,8 @@ class AssetFamilyDetailsSpec extends ObjectBehavior
                 ],
                 'attribute_as_label' => null,
                 'attribute_as_main_media' => null,
-                'transformations' => []
+                'transformations' => [],
+                'naming_convention' => new \stdClass,
             ]
         );
     }

@@ -10,6 +10,7 @@ const initialState = {
     labels: {},
     image: null,
     transformations: '[]',
+    namingConvention: '{}',
   },
   errors: [],
   state: {
@@ -148,6 +149,34 @@ describe('akeneo > asset family > application > reducer > asset-family --- edit'
         labels: {},
         image: null,
         transformations: '["new transformations"]',
+      },
+      state: {isDirty: false, originalData: ''},
+    });
+  });
+
+  test('I can update the naming convention of the asset family', () => {
+    const previousState = {
+      data: {
+        identifier: '',
+        labels: {},
+        image: null,
+        namingConvention: '{}',
+      },
+      errors: [],
+      state: {isDirty: false, originalData: ''},
+    };
+    const newState = reducer(previousState, {
+      type: 'ASSET_FAMILY_EDITION_NAMING_CONVENTION_UPDATED',
+      namingConvention: '{"new": "namingConvention"]',
+    });
+
+    expect(newState).toEqual({
+      errors: [],
+      data: {
+        identifier: '',
+        labels: {},
+        image: null,
+        namingConvention: '{"new": "namingConvention"]',
       },
       state: {isDirty: false, originalData: ''},
     });

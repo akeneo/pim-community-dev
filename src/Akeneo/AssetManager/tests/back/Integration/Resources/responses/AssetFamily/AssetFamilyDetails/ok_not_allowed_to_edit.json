@@ -158,7 +158,16 @@
             },
             "attribute_as_label": "designer_name_123456",
             "attribute_as_main_media": "designer_portrait_123456",
-            "transformations": []
+            "transformations": [],
+            "naming_convention": {
+                "source": {
+                    "property": "media",
+                    "channel": null,
+                    "locale": null
+                },
+                "pattern": "/the_pattern/",
+                "abort_asset_creation_on_error": true
+            }
         }
     }
 }
