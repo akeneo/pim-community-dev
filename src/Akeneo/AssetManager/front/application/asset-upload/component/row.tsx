@@ -263,7 +263,7 @@ const Row = React.memo(
         </Cells>
         <Errors>
           <Cell width={ColumnWidths.asset + ColumnWidths.filename}>
-            {errors.all.map(error => (
+            {errors.common.map(error => (
               <Error key={error.message} message={error.message} />
             ))}
           </Cell>
@@ -272,13 +272,13 @@ const Row = React.memo(
               <Error key={error.message} message={error.message} />
             ))}
           </Cell>
-          <Cell width={ColumnWidths.locale}>
-            {errors.locale.map(error => (
+          <Cell width={ColumnWidths.channel}>
+            {errors.channel.map(error => (
               <Error key={error.message} message={error.message} />
             ))}
           </Cell>
-          <Cell width={ColumnWidths.channel}>
-            {errors.channel.map(error => (
+          <Cell width={ColumnWidths.locale}>
+            {errors.locale.map(error => (
               <Error key={error.message} message={error.message} />
             ))}
           </Cell>

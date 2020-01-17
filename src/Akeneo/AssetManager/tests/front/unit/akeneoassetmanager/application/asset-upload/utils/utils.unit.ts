@@ -288,13 +288,15 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createLi
 describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> addLines', () => {
   test('I can add new lines', () => {
     const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
-    const A = createFakeLine('a.png', assetFamily);
-    const B = createFakeLine('b.png', assetFamily);
-    const C = createFakeLine('c.png', assetFamily);
-    const D = createFakeLine('d.png', assetFamily);
-    const E = createFakeLine('e.png', assetFamily);
-    const F = createFakeLine('f.png', assetFamily);
+    const A = createFakeLine('a.png', assetFamily, channels, locales);
+    const B = createFakeLine('b.png', assetFamily, channels, locales);
+    const C = createFakeLine('c.png', assetFamily, channels, locales);
+    const D = createFakeLine('d.png', assetFamily, channels, locales);
+    const E = createFakeLine('e.png', assetFamily, channels, locales);
+    const F = createFakeLine('f.png', assetFamily, channels, locales);
 
     expect(addLines([A, B, C], [D, E, F])).toEqual([D, E, F, A, B, C]);
     expect(addLines([], [D, E, F])).toEqual([D, E, F]);
@@ -305,10 +307,12 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> addLines
 describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> assetUploadFailed', () => {
   test('I can add new lines', () => {
     const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
-    const A = createFakeLine('a.png', assetFamily);
-    const B = createFakeLine('b.png', assetFamily);
-    const C = createFakeLine('c.png', assetFamily);
+    const A = createFakeLine('a.png', assetFamily, channels, locales);
+    const B = createFakeLine('b.png', assetFamily, channels, locales);
+    const C = createFakeLine('c.png', assetFamily, channels, locales);
 
     expect(assetUploadFailed([A, B, C], B)).toEqual([
       A,
@@ -526,14 +530,16 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     const valuePerLocale = true;
     const valuePerChannel = true;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
-    expect(getStatusFromLine(createFakeLine('foo.jpg', assetFamily), valuePerLocale, valuePerChannel)).toEqual(
-      LineStatus.WaitingForUpload
-    );
+    expect(
+      getStatusFromLine(createFakeLine('foo.jpg', assetFamily, channels, locales), valuePerLocale, valuePerChannel)
+    ).toEqual(LineStatus.WaitingForUpload);
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           isFileUploading: true,
         },
         valuePerLocale,
@@ -543,7 +549,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -556,7 +562,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -570,7 +576,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -584,7 +590,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -599,7 +605,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           assetCreated: true,
         },
         valuePerLocale,
@@ -609,9 +615,10 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           errors: {
             back: [createFakeError('some error')],
+            front: [],
           },
         },
         valuePerLocale,
@@ -624,11 +631,13 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     const valuePerLocale = true;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -641,7 +650,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -655,7 +664,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -669,7 +678,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -687,11 +696,13 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     const valuePerLocale = false;
     const valuePerChannel = true;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -704,7 +715,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -718,7 +729,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -732,7 +743,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -750,11 +761,13 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getStatu
     const valuePerLocale = false;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
     expect(
       getStatusFromLine(
         {
-          ...createFakeLine('foo.jpg', assetFamily),
+          ...createFakeLine('foo.jpg', assetFamily, channels, locales),
           file: {
             filePath: 'foo.jpg',
             originalFilename: 'foo.jpg',
@@ -772,10 +785,12 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
     const valuePerLocale = false;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
     const lines = [
       {
-        ...createFakeLine('foo.jpg', assetFamily),
+        ...createFakeLine('foo.jpg', assetFamily, channels, locales),
         id: '1',
         assetCreated: true,
         file: {
@@ -785,7 +800,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
         isFileUploading: true,
       },
       {
-        ...createFakeLine('foo.jpg', assetFamily),
+        ...createFakeLine('foo.jpg', assetFamily, channels, locales),
         id: '2',
         assetCreated: false,
         file: {
@@ -795,14 +810,14 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
         isFileUploading: true,
       },
       {
-        ...createFakeLine('foo.jpg', assetFamily),
+        ...createFakeLine('foo.jpg', assetFamily, channels, locales),
         id: '3',
         assetCreated: true,
         file: null,
         isFileUploading: true,
       },
       {
-        ...createFakeLine('foo.jpg', assetFamily),
+        ...createFakeLine('foo.jpg', assetFamily, channels, locales),
         id: '4',
         assetCreated: true,
         file: {
@@ -812,7 +827,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
         isFileUploading: false,
       },
       {
-        ...createFakeLine('foo.jpg', assetFamily),
+        ...createFakeLine('foo.jpg', assetFamily, channels, locales),
         id: '5',
         assetCreated: false,
         file: {
@@ -825,7 +840,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
 
     expect(selectLinesToSend(lines)).toEqual([
       {
-        ...createFakeLine('foo.jpg', assetFamily),
+        ...createFakeLine('foo.jpg', assetFamily, channels, locales),
         id: '5',
         assetCreated: false,
         file: {
@@ -839,30 +854,113 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> selectLi
 });
 
 describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getAllErrorsOfLineByTarget', () => {
-  test('I can group the errors by target', () => {
+  test('I can group the errors, by default, on the file', () => {
     const valuePerLocale = true;
     const valuePerChannel = true;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
-    const fileError = {
-      ...createFakeError('Error on file size'),
-      propertyPath: 'values.file',
-    };
-    const codeError = {
-      ...createFakeError('Error on code'),
-      propertyPath: 'code',
+    const error = {
+      ...createFakeError(),
+      propertyPath: 'foobar',
     };
 
     const line = {
-      ...createFakeLine('foo.jpg', assetFamily),
+      ...createFakeLine('foo.jpg', assetFamily, channels, locales),
       errors: {
-        back: [fileError, fileError, codeError, codeError],
+        back: [error],
+        front: [],
       },
     };
 
     expect(getAllErrorsOfLineByTarget(line)).toEqual({
-      all: [fileError, fileError],
-      code: [codeError, codeError],
+      common: [error],
+      code: [],
+      channel: [],
+      locale: [],
+    });
+  });
+
+  test('I can group the errors on the channel', () => {
+    const valuePerLocale = true;
+    const valuePerChannel = true;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+
+    const error = {
+      ...createFakeError(),
+      propertyPath: 'values.foo.channel',
+    };
+
+    const line = {
+      ...createFakeLine('foo.jpg', assetFamily, channels, locales),
+      errors: {
+        back: [error],
+        front: [],
+      },
+    };
+
+    expect(getAllErrorsOfLineByTarget(line)).toEqual({
+      common: [],
+      code: [],
+      channel: [error],
+      locale: [],
+    });
+  });
+
+  test('I can group the errors on the locale', () => {
+    const valuePerLocale = true;
+    const valuePerChannel = true;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+
+    const error = {
+      ...createFakeError(),
+      propertyPath: 'values.foo.locale',
+    };
+
+    const line = {
+      ...createFakeLine('foo.jpg', assetFamily, channels, locales),
+      errors: {
+        back: [error],
+        front: [],
+      },
+    };
+
+    expect(getAllErrorsOfLineByTarget(line)).toEqual({
+      common: [],
+      code: [],
+      channel: [],
+      locale: [error],
+    });
+  });
+
+  test('I can group the errors on the code', () => {
+    const valuePerLocale = true;
+    const valuePerChannel = true;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+
+    const error = {
+      ...createFakeError(),
+      propertyPath: 'code',
+    };
+
+    const line = {
+      ...createFakeLine('foo.jpg', assetFamily, channels, locales),
+      errors: {
+        back: [error],
+        front: [],
+      },
+    };
+
+    expect(getAllErrorsOfLineByTarget(line)).toEqual({
+      common: [],
+      code: [error],
       channel: [],
       locale: [],
     });
@@ -874,18 +972,20 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> hasAnUns
     const valuePerLocale = true;
     const valuePerChannel = true;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
     const lines = [
       {
-        ...createFakeLine('a.jpg', assetFamily),
+        ...createFakeLine('a.jpg', assetFamily, channels, locales),
         assetCreated: true,
       },
       {
-        ...createFakeLine('b.jpg', assetFamily),
+        ...createFakeLine('b.jpg', assetFamily, channels, locales),
         assetCreated: false,
       },
       {
-        ...createFakeLine('c.jpg', assetFamily),
+        ...createFakeLine('c.jpg', assetFamily, channels, locales),
         assetCreated: true,
       },
     ];
@@ -897,18 +997,20 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> hasAnUns
     const valuePerLocale = true;
     const valuePerChannel = true;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
 
     const lines = [
       {
-        ...createFakeLine('a.jpg', assetFamily),
+        ...createFakeLine('a.jpg', assetFamily, channels, locales),
         assetCreated: true,
       },
       {
-        ...createFakeLine('b.jpg', assetFamily),
+        ...createFakeLine('b.jpg', assetFamily, channels, locales),
         assetCreated: true,
       },
       {
-        ...createFakeLine('c.jpg', assetFamily),
+        ...createFakeLine('c.jpg', assetFamily, channels, locales),
         assetCreated: true,
       },
     ];

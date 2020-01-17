@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
+use Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
@@ -68,6 +69,9 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /** @var AssetRepositoryInterface */
     private $assetRepository;
 
+    /** @var ProductLinkRuleLauncherSpy  */
+    private $productLinkRuleLauncherSpy;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -80,6 +84,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
         $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $this->assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
+        $this->productLinkRuleLauncherSpy = $this->get('akeneo_assetmanager.infrastructure.job.product_link_rule_launcher');
 
         $this->loadFixtures();
     }
@@ -114,6 +119,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
         $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+        $this->productLinkRuleLauncherSpy->assertHasRunForAsset('brand', 'intel');
     }
 
     /**
@@ -142,6 +148,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
         $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+        $this->productLinkRuleLauncherSpy->assertHasRunForAsset('brand', 'intel');
     }
 
     /**
@@ -198,6 +205,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
         $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+        $this->productLinkRuleLauncherSpy->assertHasRunForAsset('brand', 'intel');
     }
 
     /**
@@ -448,6 +456,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
         $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+        $this->productLinkRuleLauncherSpy->assertHasRunForAsset('country', 'intel');
 
         $asset = $this->assetRepository->getByAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString('country'),
@@ -618,7 +627,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"A channel is expected for attribute \u0022image\u0022 because it has a value per channel.","parameters":{"%attribute_code%":"image"},"message":"A channel is expected for attribute \u0022image\u0022 because it has a value per channel.","propertyPath":"values.image","invalidValue":{"filePath":"\/a\/b\/c\/title_12.png","originalFilename":"title_12.png","size":5396,"mimeType":"image\/png","extension":"png","updatedAt":"2020-01-03T09:52:55+0000","attribute":{"maxFileSizeLimit":true,"type":"media_file","maxFileSize":{"limit":true},"allowedExtensions":{"allAllowed":false},"mediaType":[],"identifier":[],"assetFamilyIdentifier":[],"code":[],"labelCodes":[],"order":[],"valuePerChannel":true,"valuePerLocale":false},"channel":null,"locale":null}}]'
+            '[{"messageTemplate":"A channel is expected for attribute \u0022image\u0022 because it has a value per channel.","parameters":{"%attribute_code%":"image"},"message":"A channel is expected for attribute \u0022image\u0022 because it has a value per channel.","propertyPath":"values.image.channel","invalidValue":{"filePath":"\/a\/b\/c\/title_12.png","originalFilename":"title_12.png","size":5396,"mimeType":"image\/png","extension":"png","updatedAt":"2020-01-03T09:52:55+0000","attribute":{"maxFileSizeLimit":true,"type":"media_file","maxFileSize":{"limit":true},"allowedExtensions":{"allAllowed":false},"mediaType":[],"identifier":[],"assetFamilyIdentifier":[],"code":[],"labelCodes":[],"order":[],"valuePerChannel":true,"valuePerLocale":false},"channel":null,"locale":null}}]'
         );
     }
 

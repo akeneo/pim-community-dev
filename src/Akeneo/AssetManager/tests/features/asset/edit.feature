@@ -51,13 +51,13 @@ Feature: Edit an asset
   Scenario: Asset is not valid when enriching a localizable attribute value of an asset without specifying the locale in the value
     Given an asset family with a localizable attribute
     When the user updates the localizable attribute value of the asset without specifying the locale
-    Then there should be a validation error on the property text attribute with message "A locale is expected for attribute "name" because it has a value per locale."
+    Then there should be a validation error on the property text attribute locale with message "A locale is expected for attribute "name" because it has a value per locale."
 
   @acceptance-back
   Scenario: Asset is not valid when enriching a not localizable attribute value of an asset by specifying the locale in the value
     Given an asset family with a not localizable attribute
     When the user updates the not localizable attribute value of the asset by specifying the locale
-    Then there should be a validation error on the property text attribute with message "A locale is not expected for attribute "name" because it has not a value per locale."
+    Then there should be a validation error on the property text attribute locale with message "A locale is not expected for attribute "name" because it has not a value per locale."
 
   @acceptance-back
   Scenario: Asset is not valid when enriching a localizable attribute value of an asset by specifying a not activated locale in the value
@@ -79,14 +79,14 @@ Feature: Edit an asset
     Given an asset family with a scopable attribute
     And an asset belonging to this asset family with a value for the ecommerce channel
     When the user enriches a scopable attribute value of an asset without specifying the channel
-    Then there should be a validation error on the property text attribute with message "A channel is expected for attribute "name" because it has a value per channel."
+    Then there should be a validation error on the property text attribute channel with message "A channel is expected for attribute "name" because it has a value per channel."
 
   @acceptance-back
   Scenario: Asset is not valid when enriching a not scopable attribute value by specifying the channel in the value
     Given an asset family with a not scopable attribute
     And an asset belonging to this asset family with a value for the not scopable attribute
     When the user updates the not scopable attribute of the asset by specifying a channel
-    Then there should be a validation error on the property text attribute with message "A channel is not expected for attribute "name" because it has not a value per channel."
+    Then there should be a validation error on the property text attribute channel with message "A channel is not expected for attribute "name" because it has not a value per channel."
 
   @acceptance-back
   Scenario: Asset is not valid when enriching a scopable attribute value by specifying an unknown channel in the value

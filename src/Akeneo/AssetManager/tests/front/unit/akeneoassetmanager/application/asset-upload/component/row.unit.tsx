@@ -333,7 +333,7 @@ describe('Test row component', () => {
   test('It renders a row with a global error', async () => {
     jest.spyOn(utils, 'getStatusFromLine').mockImplementation((_line: Line) => LineStatus.Invalid);
     jest.spyOn(utils, 'getAllErrorsOfLineByTarget').mockImplementation((_line: Line) => ({
-      all: [createFakeError('Some error')],
+      common: [createFakeError('Some error')],
       code: [],
       channel: [],
       locale: [],
@@ -371,7 +371,7 @@ describe('Test row component', () => {
   test('It renders a row with an error on code', async () => {
     jest.spyOn(utils, 'getStatusFromLine').mockImplementation((_line: Line) => LineStatus.Invalid);
     jest.spyOn(utils, 'getAllErrorsOfLineByTarget').mockImplementation((_line: Line) => ({
-      all: [],
+      common: [],
       code: [createFakeError('Some error')],
       channel: [],
       locale: [],
@@ -409,7 +409,7 @@ describe('Test row component', () => {
   test('It renders a row with an error on channel', async () => {
     jest.spyOn(utils, 'getStatusFromLine').mockImplementation((_line: Line) => LineStatus.Invalid);
     jest.spyOn(utils, 'getAllErrorsOfLineByTarget').mockImplementation((_line: Line) => ({
-      all: [],
+      common: [],
       code: [],
       channel: [createFakeError('Some error')],
       locale: [],
@@ -447,7 +447,7 @@ describe('Test row component', () => {
   test('It renders a row with an error on locale', async () => {
     jest.spyOn(utils, 'getStatusFromLine').mockImplementation((_line: Line) => LineStatus.Invalid);
     jest.spyOn(utils, 'getAllErrorsOfLineByTarget').mockImplementation((_line: Line) => ({
-      all: [],
+      common: [],
       code: [],
       channel: [],
       locale: [createFakeError('Some error')],

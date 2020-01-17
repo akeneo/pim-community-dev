@@ -228,19 +228,25 @@ export const selectLinesToSend = (lines: Line[]): Line[] =>
 
 export const getAllErrorsOfLineByTarget = (line: Line): LineErrorsByTarget => {
   let errors: LineErrorsByTarget = {
-    all: [],
+    common: [],
     code: [],
     channel: [],
     locale: [],
   };
 
   for (let error of getAllErrorsOfLine(line)) {
-    switch (error.propertyPath) {
-      case 'code':
+    switch (true) {
+      case error.propertyPath === 'code':
         errors.code.push(error);
         break;
+      case error.propertyPath.endsWith('.locale'):
+        errors.locale.push(error);
+        break;
+      case error.propertyPath.endsWith('.channel'):
+        errors.channel.push(error);
+        break;
       default:
-        errors.all.push(error);
+        errors.common.push(error);
         break;
     }
   }

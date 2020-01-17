@@ -519,6 +519,30 @@ final class EditAssetContext implements Context
     }
 
     /**
+     * @Then /^there should be a validation error on the property text attribute locale with message "([^\']*)"$/
+     */
+    public function thereShouldBeAValidationErrorOnThePropertyLocaleWithMessage(string $expectedMessage)
+    {
+        $this->violationsContext->assertThereShouldBeViolations(1);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage(
+            'values.' . self::TEXT_ATTRIBUTE_CODE . '.locale',
+            $expectedMessage
+        );
+    }
+
+    /**
+     * @Then /^there should be a validation error on the property text attribute channel with message "([^\']*)"$/
+     */
+    public function thereShouldBeAValidationErrorOnThePropertyChannelWithMessage(string $expectedMessage)
+    {
+        $this->violationsContext->assertThereShouldBeViolations(1);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage(
+            'values.' . self::TEXT_ATTRIBUTE_CODE . '.channel',
+            $expectedMessage
+        );
+    }
+
+    /**
      * @Given /^an asset family with a text attribute with max length (\d+)$/
      * @throws \Exception
      */
