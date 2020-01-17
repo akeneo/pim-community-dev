@@ -1,0 +1,158 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types = 1);
+
+use Symfony\Component\Process\Process;
+
+require dirname(__DIR__).'/../vendor/autoload.php';
+
+class DeletedClass
+{
+
+    private $filePath;
+    private $namespace;
+    private $classname;
+
+    public function __construct(
+        string $filePath,
+        string $namespace,
+        string $classname
+    ) {
+        $this->filePath = $filePath;
+        $this->namespace = $namespace;
+
+        $this->classname = $classname;
+    }
+}
+
+$tag = $argv[1];
+
+$process = new Process(['git', '-c', 'diff.renameLimit=10000', 'diff', $tag]);
+
+$process->run();
+
+$processOutput = $process->getOutput();
+
+$stream = fopen('php://memory','r+');
+fwrite($stream, $processOutput);
+rewind($stream);
+
+$deletedFilePath = null;
+$deletedNamespace = null;
+$deletedClassname = null;
+
+$inDeleteDiff = false;
+
+while ($line = fgets($stream)) {
+    if (strpos($line, 'deleted file') === 0) {
+        $inDeleteDiff = true;
+    }
+
+    if ($inDeleteDiff && preg_match('#^--- a/(.*)$#', $line, $matches)) {
+        $deletedFilePath = $matches[1];
+        $deletedClassname = extractClassnameFromFilePath($deletedFilePath);
+    }
+
+    if (preg_match('#^rename from (src/.*)$#', $line, $matches)) {
+        $oldFilePath = $matches[1];
+        $oldClassname = extractClassnameFromFilePath($oldFilePath);
+
+        $inRenameDiff = true;
+    }
+
+    if ($inRenameDiff && preg_match('#^rename to (src/.*)$#', $line, $matches)) {
+        $newFilePath = $matches[1];
+        $newClassname = extractClassnameFromFilePath($newFilePath);
+    }
+
+    if (preg_match('#-namespace ([^;]+);$#', $line, $matches)) {
+        if ($inRenameDiff) {
+            $oldNamespace = $matches[1];
+        }
+        if ($inDeleteDiff) {
+            $deletedNamespace = $matches[1];
+        }
+    }
+
+    if (preg_match('#\+namespace ([^;]+);$#', $line, $matches)) {
+        if ($inRenameDiff) {
+            $newNamespace = $matches[1];
+        }
+    }
+
+    if (strpos($line, 'diff --git') === 0) {
+        if ($inRenameDiff) {
+            $inRenameDiff = false;
+            if (($oldNamespace !== $newNamespace || $oldClassname !== $newClassname) && $newClassname !== null) {
+                if (isUseablePhpClass($oldFilePath) && isUseablePhpClass($newFilePath)) {
+                    $renamedClasses[] = new RenamedClass($oldFilePath, $newFilePath, $oldNamespace, $newNamespace, $oldClassname, $newClassname);
+                }
+            }
+            $oldFilePath = null;
+            $newFilePath = null;
+
+            $oldNamespace = null;
+            $newNamespace = null;
+
+            $oldClassname = null;
+            $newClassname = null;
+        }
+
+        if ($inDeleteDiff) {
+            $inDeleteDiff = false;
+            if (($deletedFilePath !== null) && ($deletedNamespace !== null) && ($deletedClassname !== null)) {
+                if (isUseablePhpClass($deletedFilePath)) {
+                    $deletedClasses[] = new DeletedClass($deletedFilePath, $deletedNamespace, $deletedClassname);
+                }
+            }
+
+            $deletedFilePath = null;
+            $deletedNamespace = null;
+            $deletedClassname = null;
+        }
+    }
+}
+
+echo "services:\n";
+echo "\n";
+foreach($renamedClasses as $renamedClass) {
+    $renamedClass->dumpRector();
+    echo "\n";
+}
+
+//echo "DEBUG deletedClasses\n";
+//print_r($deletedClasses);
+
+function isUseablePhpClass(string $filePath): bool
+{
+    if (!preg_match('#\.php$#', $filePath)) {
+        return false;
+    }
+
+    if ((strpos($filePath, 'spec/') !== false) || (strpos($filePath, 'tests/') !== false)) {
+        return false;
+    }
+
+    return true;
+}
+
+function extractClassnameFromFilePath(string $filePath): string
+{
+    return str_replace(".php", "", preg_replace('#.*/([^/]+)$#', '$1', $filePath));
+}
+
+
+/* Use
+Rector\Renaming\Rector\Class_\RenameClassRector:
+        $oldToNewClasses:
+            'Symfony\Component\Validator\Tests\Constraints\AbstractConstraintValidatorTest': 'Symfony\Component\Validator\Test\ConstraintValidatorTestCase'
+            'Symfony\Component\Process\ProcessBuilder': 'Symfony\Component\Process\Process'
+*/
+
+/*
+  - Handle deleted class (from git history as well => get the list of them
+  - Uses Backward compatibility check for changes (but ignore deleted and moved class
+  - Uses PHPParser from Nikola to check existing custom code and check what is broken from that list ?
+  - Runs Psalm or PHPStan afterwards to check how things are going ?
+*/

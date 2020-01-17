@@ -45,24 +45,24 @@ class RenamedClass
         $this->oldClassname = $oldClassname;
         $this->newClassname = $newClassname;
     }
-}
 
-class DeletedClass
-{
+    private function getOldFqcn(): string
+    {
+        return $this->oldNamespace . "\\" . $this->oldClassname;
+    }
 
-    private $filePath;
-    private $namespace;
-    private $classname;
+    private function getNewFqcn(): string
+    {
+        return $this->newNamespace . "\\" . $this->newClassname;
+    }
 
-    public function __construct(
-        string $filePath,
-        string $namespace,
-        string $classname
-    ) {
-        $this->filePath = $filePath;
-        $this->namespace = $namespace;
-
-        $this->classname = $classname;
+    public function dumpRector(): void
+    {
+       printf(
+            "            '%s': '%s'\n",
+            $this->getOldFqcn(),
+            $this->getNewFqcn()
+        );
     }
 }
 
@@ -87,26 +87,11 @@ $newNamespace = null;
 $oldClassname = null;
 $newClassname = null;
 
-$deletedFilePath = null;
-$deletedNamespace = null;
-$deletedClassname = null;
-
 $renamedClasses = [];
-$deletedClasses = [];
 
 $inRenameDiff = false;
-$inDeleteDiff = false;
 
 while ($line = fgets($stream)) {
-    if (strpos($line, 'deleted file') === 0) {
-        $inDeleteDiff = true;
-    }
-
-    if ($inDeleteDiff && preg_match('#^--- a/(.*)$#', $line, $matches)) {
-        $deletedFilePath = $matches[1];
-        $deletedClassname = extractClassnameFromFilePath($deletedFilePath);
-    }
-
     if (preg_match('#^rename from (src/.*)$#', $line, $matches)) {
         $oldFilePath = $matches[1];
         $oldClassname = extractClassnameFromFilePath($oldFilePath);
@@ -122,9 +107,6 @@ while ($line = fgets($stream)) {
     if (preg_match('#-namespace ([^;]+);$#', $line, $matches)) {
         if ($inRenameDiff) {
             $oldNamespace = $matches[1];
-        }
-        if ($inDeleteDiff) {
-            $deletedNamespace = $matches[1];
         }
     }
 
@@ -151,26 +133,22 @@ while ($line = fgets($stream)) {
             $oldClassname = null;
             $newClassname = null;
         }
-
-        if ($inDeleteDiff) {
-            $inDeleteDiff = false;
-            if (($deletedFilePath !== null) && ($deletedNamespace !== null) && ($deletedClassname !== null)) {
-                if (isUseablePhpClass($deletedFilePath)) {
-                    $deletedClasses[] = new DeletedClass($deletedFilePath, $deletedNamespace, $deletedClassname);
-                }
-            }
-
-            $deletedFilePath = null;
-            $deletedNamespace = null;
-            $deletedClassname = null;
-        }
     }
 }
 
-echo "DEBUG renamedClasses\n";
-//print_r($renamedClasses);
-echo "DEBUG deletedClasses\n";
-print_r($deletedClasses);
+echo <<<YAML
+imports:
+    - { resource: '/home/benoit/akeneo/dev/pim-migration-aps2020/vendor/rector/rector/packages/**/config/config.yaml' }
+
+services:
+    Rector\\Renaming\\Rector\\Class_\\RenameClassRector:
+        \$oldToNewClasses:
+
+YAML;
+
+foreach ($renamedClasses as $renamedClass) {
+    $renamedClass->dumpRector();
+}
 
 function isUseablePhpClass(string $filePath): bool
 {
@@ -198,7 +176,10 @@ Rector\Renaming\Rector\Class_\RenameClassRector:
             'Symfony\Component\Process\ProcessBuilder': 'Symfony\Component\Process\Process'
 */
 
+
 /*
+  - Adds config rector for Symfony ? => /rector/rector/config/set/symfony/symfony44.yaml
+
   - Handle deleted class (from git history as well => get the list of them
   - Uses Backward compatibility check for changes (but ignore deleted and moved class
   - Uses PHPParser from Nikola to check existing custom code and check what is broken from that list ?
