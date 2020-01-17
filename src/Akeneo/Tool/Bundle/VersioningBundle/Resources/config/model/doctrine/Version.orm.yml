@@ -3,13 +3,6 @@ Akeneo\Tool\Component\Versioning\Model\Version:
     table: pim_versioning_version
     repositoryClass: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
     indexes:
-        resource_name_resource_id_idx:
-            columns:
-                - resource_name
-                - resource_id
-        resource_name_idx:
-            columns:
-                - resource_name
         pending_idx:
             columns:
                 - pending
@@ -19,6 +12,14 @@ Akeneo\Tool\Component\Versioning\Model\Version:
         logged_at_idx:
             columns:
                 - logged_at
+        # this index is useful to get the maximum version for a given entity when doing the purge
+        # it allows to do an index-only scan, which improved greatly the performance
+        # @see https://use-the-index-luke.com/sql/clustering/index-only-scan-covering-index
+        resource_name_resource_id_version_idx:
+            columns:
+                - resource_name
+                - resource_id
+                - version
     fields:
         id:
             type: integer
