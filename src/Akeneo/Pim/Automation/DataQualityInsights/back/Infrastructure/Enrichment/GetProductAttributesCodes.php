@@ -36,11 +36,6 @@ final class GetProductAttributesCodes implements GetProductAttributesCodesInterf
         return $this->getAttributesByTypeFromProductQuery->execute($productId, AttributeTypes::TEXTAREA);
     }
 
-    public function getLocalizableTextarea(ProductId $productId): array
-    {
-        return $this->getLocalizableAttributesByTypeFromProductQuery->execute($productId, AttributeTypes::TEXTAREA);
-    }
-
     public function getText(ProductId $productId): array
     {
         return $this->getAttributesByTypeFromProductQuery->execute($productId, AttributeTypes::TEXT);

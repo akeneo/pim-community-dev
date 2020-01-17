@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollecti
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -36,29 +37,38 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     const TEXT_FAULT_WEIGHT = 24;
     const TEXTAREA_FAULT_WEIGHT = 12;
 
+    /** @var TextChecker */
     private $textChecker;
 
+    /** @var BuildProductValuesInterface */
     private $buildProductValues;
 
+    /** @var GetLocalesByChannelQueryInterface */
     private $localesByChannelQuery;
 
+    /** @var SupportedLocaleChecker */
     private $supportedLocaleChecker;
 
     /** @var GetProductAttributesCodesInterface */
     private $getProductAttributesCodes;
+
+    /** @var GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface */
+    private $getTextareaAttributeCodesCompatibleWithSpellingQuery;
 
     public function __construct(
         TextChecker $textChecker,
         BuildProductValuesInterface $buildProductValues,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleChecker $supportedLocaleChecker,
-        GetProductAttributesCodesInterface $getProductAttributesCodes
+        GetProductAttributesCodesInterface $getProductAttributesCodes,
+        GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery
     ) {
         $this->textChecker = $textChecker;
         $this->buildProductValues = $buildProductValues;
         $this->localesByChannelQuery = $localesByChannelQuery;
         $this->supportedLocaleChecker = $supportedLocaleChecker;
         $this->getProductAttributesCodes = $getProductAttributesCodes;
+        $this->getTextareaAttributeCodesCompatibleWithSpellingQuery = $getTextareaAttributeCodesCompatibleWithSpellingQuery;
     }
 
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation): CriterionEvaluationResult
@@ -67,7 +77,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
 
         $productId = $criterionEvaluation->getProductId();
 
-        $textareaAttributesCodes = $this->getProductAttributesCodes->getLocalizableTextarea($productId);
+        $textareaAttributesCodes = $this->getTextareaAttributeCodesCompatibleWithSpellingQuery->byProductId($productId);
         $textareaValuesList = $this->buildProductValues->buildForProductIdAndAttributeCodes($productId, $textareaAttributesCodes);
 
         $textAttributesCodes = $this->getProductAttributesCodes->getLocalizableText($productId);
