@@ -1,4 +1,4 @@
-import React, {useContext, useRef} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import {useImageUploader} from '../use-image-uploader';
 import {useMediaUrlGenerator} from '../use-media-url-generator';
 import {Translate, TranslateContext} from '../../shared/translate';
@@ -8,6 +8,7 @@ import Trash from '../../common/assets/icons/trash';
 import {isErr} from '../../shared/fetch-result/result';
 import {NotificationLevel, useNotify} from '../../shared/notify';
 import defaultImageUrl from '../../common/assets/illustrations/api.svg';
+import {Loading} from './Loading';
 
 interface Props {
     image: string | null;
@@ -20,7 +21,10 @@ const HelperLink = styled.a`
     text-decoration: underline;
     font-weight: 700;
 `;
-const ImagePreview = styled.img`
+const Preview = styled.div`
+    position: relative;
+`;
+const Image = styled.img`
     max-height: 120px;
     width: auto;
     margin-top: 20px;
@@ -34,15 +38,43 @@ const Helper = styled.span`
 `;
 
 const ImageUploader = ({image, onChange, onError}: Props) => {
-    const containerClassName = `AknImage AknImage--editable AknImage--wide ${null === image ? 'AknImage--empty' : ''}`;
-    const imageUploader = useImageUploader();
+    const [isLoading, setIsLoading] = useState(false);
+    const [ratio, setRatio] = useState(0);
+    const [uploadingImage, setUploadingImage] = useState();
+
+    const handleDuringUpload = (e: {loaded: number; total: number}) => {
+        const currentRatio = Math.round((e.loaded / e.total) * 100);
+        setRatio(currentRatio);
+    };
+    const uploadImage = useImageUploader(handleDuringUpload);
+
     const generateMediaUrl = useMediaUrlGenerator();
     const notify = useNotify();
     const translate = useContext(TranslateContext);
     const ref = useRef<HTMLInputElement>(null);
 
+    const startUpload = (file: File) => {
+        const reader = new FileReader();
+        reader.onload = (event: ProgressEvent<FileReader>) => {
+            const target = event.target;
+            if (null !== target) {
+                setUploadingImage(target.result);
+            }
+        };
+        reader.readAsDataURL(file);
+
+        setIsLoading(true);
+    };
+    const endUpload = () => {
+        setIsLoading(false);
+        setRatio(0);
+        setUploadingImage(undefined);
+    };
     const upload = async (file: File) => {
-        const result = await imageUploader(file);
+        startUpload(file);
+        const result = await uploadImage(file);
+        endUpload();
+
         if (isErr(result)) {
             if (undefined !== result.error.extension) {
                 notify(
@@ -63,13 +95,14 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
     };
 
     const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (null !== event.target.files) {
+        if (null !== event.target.files && event.target.files[0]) {
             const mediaUrl = await upload(event.target.files[0]);
             if (null !== mediaUrl) {
                 onChange(mediaUrl);
             }
         }
     };
+
     const handleRemove = () => {
         onChange(null);
         if (null !== ref.current) {
@@ -77,7 +110,14 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
         }
     };
 
-    const previewImage = image ? generateMediaUrl(image) : null;
+    let previewImage = null;
+    if (undefined !== uploadingImage && 0 !== uploadingImage.length) {
+        previewImage = uploadingImage;
+    } else if (null !== image) {
+        generateMediaUrl(image);
+    }
+
+    const containerClassName = `AknImage AknImage--editable AknImage--wide ${null === image ? 'AknImage--empty' : ''}`;
 
     return (
         <>
@@ -91,8 +131,10 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
                 />
 
                 <div className='AknImage-uploader'>
-                    <ImagePreview src={null === previewImage ? defaultImageUrl : previewImage} alt={''} />
-
+                    <Preview>
+                        <Image src={null === previewImage ? defaultImageUrl : previewImage} alt={''} />
+                        {isLoading && <Loading ratio={ratio} />}
+                    </Preview>
                     <Helper className='AknImage-uploaderHelper'>
                         {null === previewImage && (
                             <>
