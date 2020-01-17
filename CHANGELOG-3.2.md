@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9059: Fix catalog locale on user panel
 - PIM-9058: Fix search products API with filters on numeric attribute codes
 
 # 3.2.32 (2020-01-17)
