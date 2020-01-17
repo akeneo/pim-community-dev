@@ -18,6 +18,14 @@ Feature: Connection to DAM systems
     And a job runs to automatically compute the transformations on the asset code "building" in asset family "PresentationView"
 
   @integration-back
+  Scenario: Collect an asset for a given asset family that exist in the ERP but not in the PIM and check naming convention are executed
+    Given an asset of the PresentationView asset family existing in the ERP but not in the PIM with naming convention
+    When the connector collects this asset from the ERP to synchronize it with the PIM
+    Then the asset is created in the PIM from the request "successful_building_asset_creation_with_naming_convention.json"
+    And a job runs to automatically compute the transformations on the asset code "building" in asset family "PresentationView"
+    And the asset contains values computed by naming convention
+
+  @integration-back
   Scenario: Collect some assets that exist in the ERP but not in the PIM
     Given an asset of the Frontview asset family existing in the ERP but not in the PIM
     When the connector collects this asset from the ERP to synchronize it with the PIM
@@ -41,6 +49,12 @@ Feature: Connection to DAM systems
     Given the FrontView asset family with some assets
     When the connector collects a asset whose data does not comply with the business rules
     Then the PIM notifies the connector about an error indicating that the asset has data that does not comply with the business rules
+
+  @integration-back
+  Scenario: Notify an error when naming convention can not be run during asset collecting
+    Given an asset of the PresentationView asset family existing in the ERP but not in the PIM with naming convention execution failure
+    When the connector collects this asset from the ERP to synchronize it with the PIM
+    Then the PIM notifies the connector about an error indicating that the naming convention failed because of missing attribute
 
   @integration-back
   Scenario: Collect assets for a given asset family from the ERP and automatically link them to products
