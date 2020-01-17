@@ -4,6 +4,7 @@ import PeriodicityFilter from "./Header/PeriodicityFilter";
 import CategoryFilter from "./Header/CategoryFilter";
 
 const __ = require('oro/translator');
+const SecurityContext = require('pim/security-context');
 
 interface DataQualityOverviewHeaderProps {
   periodicity: string;
@@ -21,7 +22,7 @@ const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProp
 
           <PeriodicityFilter periodicity={periodicity}/>
 
-          <CategoryFilter categoryCode={categoryCode}/>
+          {SecurityContext.isGranted('pim_enrich_product_category_list') && (<CategoryFilter categoryCode={categoryCode}/>)}
 
           <FamilyFilter familyCode={familyCode} />
 
