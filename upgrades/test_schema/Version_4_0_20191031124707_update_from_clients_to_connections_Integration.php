@@ -14,8 +14,8 @@ use Symfony\Component\Console\Output\BufferedOutput;
 /**
  * This class will be removed after 4.0 version
  *
- * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class Version_4_0_20191031124707_update_from_clients_to_connections_Integration extends AbstractPimCatalogTestCase
