@@ -14,7 +14,7 @@ final class Version_4_0_20191223153556_add_asset_naming_convention_column extend
     {
         $alterTable = <<<SQL
 ALTER TABLE akeneo_asset_manager_asset_family
-ADD COLUMN `naming_convention` json
+ADD COLUMN `naming_convention` json DEFAULT '[]'
 SQL;
 
         $this->addSql($alterTable);

@@ -14,7 +14,7 @@ final class Version_4_0_20191119142157_add_asset_transformations_column extends 
     {
         $alterTable = <<<SQL
 ALTER TABLE akeneo_asset_manager_asset_family
-ADD COLUMN `transformations` json NOT NULL
+ADD COLUMN `transformations` json NOT NULL DEFAULT '[]'
 SQL;
 
         $this->addSql($alterTable);
