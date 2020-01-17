@@ -92,6 +92,14 @@ services:
             - '@pim_catalog.repository.attribute_group'
             - '@test.attribute_group.builder'
 
+    test.attribute_validation.context:
+        public: true
+        class: 'AkeneoTest\Acceptance\Attribute\AttributeValidationContext'
+        arguments:
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+
     test.attribute_option.context:
         public: true
         class: 'Akeneo\Test\Acceptance\AttributeOption\AttributeOptionContext'
