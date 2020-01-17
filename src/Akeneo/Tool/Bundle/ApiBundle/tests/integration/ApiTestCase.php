@@ -122,7 +122,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function createOAuthClient(?string $label = null): array
     {
-        $label = $label ?? 'Api_test_case_client';
+        $label = $label ?? uniqid('Api_Test_Case_client');
         $connection = $this->createConnection($label);
 
         return [$connection->clientId(), $connection->secret()];
