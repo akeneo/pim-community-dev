@@ -23,15 +23,9 @@ const PageContextProvider: FunctionComponent<PageContextProviderProps> = () => {
   const dispatchAction = useDispatch();
 
   useEffect(() => {
-    window.addEventListener(PRODUCT_TAB_CHANGED, ((event: CustomEvent<TabEvent>) => {
+    const handleProductTabChanged = (event: CustomEvent<TabEvent>) => {
       dispatchAction(changeProductTabAction(event.detail.currentTab));
-    }) as EventListener);
-
-    const currentTab = sessionStorage.getItem('current_column_tab') || ATTRIBUTES_TAB_NAME;
-    dispatchAction(changeProductTabAction(currentTab));
-  }, []);
-
-  useEffect(() => {
+    };
     const handleProductAttributesTabLoaded: EventListener = () => {
       dispatchAction(endProductAttributesTabIsLoadedAction());
     };
@@ -39,10 +33,15 @@ const PageContextProvider: FunctionComponent<PageContextProviderProps> = () => {
       dispatchAction(startProductAttributesTabIsLoadingAction());
     };
 
+    window.addEventListener(PRODUCT_TAB_CHANGED, handleProductTabChanged as EventListener);
     window.addEventListener(PRODUCT_ATTRIBUTES_TAB_LOADED, handleProductAttributesTabLoaded);
     window.addEventListener(PRODUCT_ATTRIBUTES_TAB_LOADING, handleProductAttributesTabLoading);
 
+    const currentTab = sessionStorage.getItem('current_column_tab') || ATTRIBUTES_TAB_NAME;
+    dispatchAction(changeProductTabAction(currentTab));
+
     return (() => {
+      window.removeEventListener(PRODUCT_TAB_CHANGED, handleProductTabChanged as EventListener);
       window.removeEventListener(PRODUCT_ATTRIBUTES_TAB_LOADED, handleProductAttributesTabLoaded);
       window.removeEventListener(PRODUCT_ATTRIBUTES_TAB_LOADING, handleProductAttributesTabLoading);
     })

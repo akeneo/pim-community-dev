@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react';
-import {ContextualRate} from '../../ContextualRate';
-import {Axis} from '../../../../domain';
+import {get} from 'lodash';
 import {useCatalogContext, useFetchProductAxisRates} from "../../../../infrastructure/hooks";
+import Rate from "../../Rate";
 
 const __ = require('oro/translator');
 
@@ -11,20 +11,21 @@ interface AxisRatesOverviewProps {
 
 const AxisRatesOverview: FunctionComponent<AxisRatesOverviewProps> = () => {
   const {locale, channel} = useCatalogContext();
-  const data = useFetchProductAxisRates();
+  const productEvaluation = useFetchProductAxisRates();
 
   return (
     <>
-      {channel && locale && data && (
+      {channel && locale && productEvaluation && (
         <div className="AknColumn-block AknDataQualityInsights">
           <div className="AknColumn-subtitle">{__('akeneo_data_quality_insights.title')}</div>
           <div className="AknColumn-value">
             <ul>
-              {data && Object.values(data).map((axis: Axis) => {
+              {productEvaluation && Object.entries(productEvaluation).map(([axisCode, axisEvaluation]) => {
+                const axisRate = get(axisEvaluation, [channel, locale, 'rate']);
                 return (
-                  <li key={axis.code}>
-                    <span>{__(`akeneo_data_quality_insights.product_evaluation.axis.${axis.code}.title`)}</span>
-                    <ContextualRate rates={axis.rates} channel={channel} locale={locale}/>
+                  <li key={axisCode}>
+                    <span>{__(`akeneo_data_quality_insights.product_evaluation.axis.${axisCode}.title`)}</span>
+                    <Rate value={axisRate} />
                   </li>
                 );
               })}

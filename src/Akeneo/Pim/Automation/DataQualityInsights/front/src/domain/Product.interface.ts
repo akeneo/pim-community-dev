@@ -4,6 +4,8 @@ export default interface Product {
   family: string | null;
   identifier: string | null;
   meta: Meta;
+  created: string|null;
+  updated: string|null;
 }
 
 interface Meta {

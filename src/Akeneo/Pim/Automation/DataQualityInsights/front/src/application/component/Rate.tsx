@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react';
 
 interface RateProps {
-  value?: string;
+  value?: string|null;
 }
 
 const Rate: FunctionComponent<RateProps> = ({value}) => {
