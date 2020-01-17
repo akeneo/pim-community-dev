@@ -112,6 +112,11 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
 
+    akeneo_assetmanager.application.asset.link_assets.link_asset_handler:
+        class: Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetHandler
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
+
     akeneo_assetmanager.application.asset.compute_transformations_from_asset_identifiers.handler:
         class: Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsFromAssetIdentifiersHandler
         arguments:
@@ -121,13 +126,3 @@ services:
         class: Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsFromAssetFamilyIdentifierHandler
         arguments:
             - '@akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_family_identifier_launcher'
-
-    Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\ExecuteNamingConventionHandler:
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
-            - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\SourceValueExtractor'
-
-    Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\SourceValueExtractor:
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'

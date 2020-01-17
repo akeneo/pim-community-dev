@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
@@ -53,7 +54,7 @@ use Doctrine\DBAL\Driver\ResultStatement;
  *      }
  *    },
  *    "weekly": {
- *      "2019-50": {
+ *      "2019-12-28": {
  *        "enrichment": {
  *          "ecommerce": {
  *            "en_US": {
@@ -73,7 +74,7 @@ use Doctrine\DBAL\Driver\ResultStatement;
  *      }
  *    },
  *    "monthly": {
- *      "2019-12": {
+ *      "2019-12-31": {
  *        "enrichment": {
  *          "ecommerce": {
  *            "en_US": {
@@ -180,17 +181,15 @@ SQL;
         ]);
     }
 
-    private function getDateFormatByPeriodicity(Periodicity $periodicity): string
+    public function removeRates(Periodicity $periodicity, ConsolidationDate $date): void
     {
-        switch (strval($periodicity)) {
-            case Periodicity::DAILY:
-                return 'Y-m-d';
-            case Periodicity::WEEKLY:
-                return 'Y-W';
-            case Periodicity::MONTHLY:
-                return 'Y-m';
-            default:
-                throw new \InvalidArgumentException(sprintf('The periodicity %s is not supported', $periodicity));
-        }
+        $pathToRemove = sprintf('\'$."%s"."%s"\'', $periodicity, $date->format());
+
+        $query = <<<SQL
+UPDATE pimee_data_quality_insights_dashboard_rates_projection
+SET rates = JSON_REMOVE(rates, $pathToRemove)
+SQL;
+
+        $this->db->executeQuery($query);
     }
 }

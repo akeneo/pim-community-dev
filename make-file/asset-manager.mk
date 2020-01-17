@@ -77,7 +77,7 @@ endif
 
 .PHONY: asset-manager-acceptance-back
 asset-manager-acceptance-back: var/tests/behat/asset-manager
-	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/AssetManager/tests/back/behat.yml.dist --format pim --out var/tests/behat/asset-manager --format progress --out std --colors
+	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/AssetManager/tests/back/behat.yml.dist --format pim --out var/tests/behat/asset-manager --format progress --out std --colors $(O)
 
 .PHONY: asset-manager-acceptance-front
 asset-manager-acceptance-front:

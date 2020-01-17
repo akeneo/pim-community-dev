@@ -538,3 +538,4 @@ commands:
           command: |
             IMAGE_TAG=$CIRCLE_SHA1 make create-tf-files
             make get-kubeconfig
+            

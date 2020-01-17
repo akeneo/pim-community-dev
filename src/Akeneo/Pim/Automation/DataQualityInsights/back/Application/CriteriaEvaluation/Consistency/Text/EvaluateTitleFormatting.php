@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluati
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCodesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
@@ -25,16 +26,21 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface
     /** @var BuildProductValuesInterface */
     private $buildProductValues;
 
+    /** @var GetProductAttributesCodesInterface */
+    private $getProductAttributesCodes;
+
     /** @var TitleFormattingServiceInterface */
     private $titleFormattingService;
 
     public function __construct(
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         BuildProductValuesInterface $buildProductValues,
+        GetProductAttributesCodesInterface $getProductAttributesCodes,
         TitleFormattingServiceInterface $titleFormattingService
     ) {
         $this->localesByChannelQuery = $localesByChannelQuery;
         $this->buildProductValues = $buildProductValues;
+        $this->getProductAttributesCodes = $getProductAttributesCodes;
         $this->titleFormattingService = $titleFormattingService;
     }
 
@@ -46,7 +52,9 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation): CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->execute();
-        $productValues = $this->buildProductValues->buildTitleValues($criterionEvaluation->getProductId());
+        $attributeCodeAsMainTitle = $this->getProductAttributesCodes->getTitle($criterionEvaluation->getProductId());
+
+        $productValues = $this->buildProductValues->buildForProductIdAndAttributeCodes($criterionEvaluation->getProductId(), $attributeCodeAsMainTitle);
         $ratesAndSuggestionByChannelAndLocale = $this->computeAttributeRates($localesByChannel, $productValues);
 
         $rates = $this->buildCriterionRateCollection($ratesAndSuggestionByChannelAndLocale);
@@ -83,7 +91,7 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface
 
     private function isSupportedLocale(string $localeCode)
     {
-        return preg_match('~en_[A-Z]{2}$~', $localeCode) === 1;
+        return preg_match('~^en_[A-Z]{2}$~', $localeCode) === 1;
     }
 
     private function computeProductValueRate(?string $originalTitle): array

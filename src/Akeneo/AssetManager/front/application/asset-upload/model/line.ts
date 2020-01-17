@@ -13,7 +13,7 @@ export enum LineStatus {
 }
 
 export interface LineErrorsByTarget {
-  all: ValidationError[];
+  common: ValidationError[];
   code: ValidationError[];
   locale: ValidationError[];
   channel: ValidationError[];

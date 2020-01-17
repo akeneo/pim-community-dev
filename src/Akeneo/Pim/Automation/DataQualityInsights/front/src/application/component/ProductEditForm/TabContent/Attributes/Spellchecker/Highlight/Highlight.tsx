@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useEffect, useLayoutEffect, useState} from "react";
+import React, {FunctionComponent, useLayoutEffect, useRef, useState} from "react";
 import {HighlightElement} from "../../../../../../../domain";
 
 interface Style {
@@ -28,47 +28,41 @@ const computeStyle = (domRect: DOMRect | null, editorRect: DOMRect) => {
 };
 
 const HIGHLIGHT_HOVER_CLASSNAME = "AknSpellCheck-mark--hover";
-//const HIGHLIGHT_HIDDEN_CLASSNAME = "AknSpellCheck-mark--hidden";
 const HIGHLIGHT_CLASSNAME = "AknSpellCheck-mark";
+const HIGHLIGHT_TYPE_CLASSNAME_PREFIX = "AknSpellCheck-mark--";
 
 interface HighlightPros {
   highlight: HighlightElement;
   editorRect: DOMRect;
-  content: string
+  content: string;
 }
-const Highlight: FunctionComponent<HighlightPros> = ({ highlight, editorRect, content}) => {
-  const [highlightRect, setHighlightRect] = useState<DOMRect | null>(null);
-  const [classList, setClassList] = useState<string []>([]);
 
-  useEffect(() => {
-    setClassList([...highlight.classList, HIGHLIGHT_CLASSNAME]);
-  }, [highlight.classList]);
+const Highlight: FunctionComponent<HighlightPros> = ({ highlight, editorRect, content}) => {
+  const {isActive, domRange, mistake} = highlight;
+  const [highlightRect, setHighlightRect] = useState<DOMRect | null>(null);
+  const highlightRef = useRef<HTMLDivElement>(null);
+  const classList = [
+    HIGHLIGHT_CLASSNAME,
+    `${HIGHLIGHT_TYPE_CLASSNAME_PREFIX}${mistake.type}`
+  ];
+
+  if (isActive) {
+    classList.push(HIGHLIGHT_HOVER_CLASSNAME);
+  }
 
   useLayoutEffect(() => {
     (async () => {
-      const domRect = highlight.domRange.getBoundingClientRect();
+      const domRect = domRange.getBoundingClientRect();
       setHighlightRect(domRect);
     })();
-  }, [highlight.domRange, editorRect, content]);
+  }, [domRange, editorRect, content]);
 
-  const handleMouseOver = () => {
-    setClassList([
-      ...highlight.classList,
-      HIGHLIGHT_HOVER_CLASSNAME,
-      HIGHLIGHT_CLASSNAME
-    ]);
-  };
-
-  const handleMouseOut = () => {
-    setClassList([...highlight.classList, HIGHLIGHT_CLASSNAME]);
-  };
 
   return (
     <div
+      ref={highlightRef}
       className={classList.join(" ")}
       style={computeStyle(highlightRect, editorRect)}
-      onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}
     />
   );
 };

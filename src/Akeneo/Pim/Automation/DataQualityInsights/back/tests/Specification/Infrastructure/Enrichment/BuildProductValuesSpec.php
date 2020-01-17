@@ -25,15 +25,12 @@ class BuildProductValuesSpec extends ObjectBehavior
 {
     public function let(
         GetProductRawValuesByAttributeQueryInterface $getProductRawValuesByAttributeQuery,
-        GetAttributesByTypeFromProductQueryInterface $getAttributesByTypeFromProductQuery,
-        GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        GetAttributeAsMainTitleValueFromProductIdInterface $getAttributeAsMainTitleValueFromProductId
+        GetLocalesByChannelQueryInterface $localesByChannelQuery
     ) {
-        $this->beConstructedWith($getProductRawValuesByAttributeQuery, $getAttributesByTypeFromProductQuery, $localesByChannelQuery, $getAttributeAsMainTitleValueFromProductId);
+        $this->beConstructedWith($getProductRawValuesByAttributeQuery, $localesByChannelQuery);
     }
 
     public function it_returns_nothing_when_there_is_no_attributes(
-        $getAttributesByTypeFromProductQuery,
         $localesByChannelQuery,
         $getProductRawValuesByAttributeQuery
     ) {
@@ -43,22 +40,13 @@ class BuildProductValuesSpec extends ObjectBehavior
             ->execute(new ProductId(1), [])
             ->willReturn([]);
 
-        $getAttributesByTypeFromProductQuery
-            ->execute(new ProductId(1), AttributeTypes::TEXTAREA)
-            ->willReturn([]);
-
-        $this->buildTextareaValues(new ProductId(1))->shouldReturn([]);
+        $this->buildForProductIdAndAttributeCodes(new ProductId(1), [])->shouldReturn([]);
     }
 
     public function it_returns_product_values_by_attributes_channel_and_locale(
-        $getAttributesByTypeFromProductQuery,
         $localesByChannelQuery,
         $getProductRawValuesByAttributeQuery
     ) {
-        $getAttributesByTypeFromProductQuery
-            ->execute(new ProductId(1), AttributeTypes::TEXTAREA)
-            ->willReturn(['textarea_1', 'textarea_2', 'textarea_3', 'textarea_4', 'textarea_5']);
-
         $localesByChannelQuery->execute()->willReturn([
             'ecommerce' => ['en_US', 'fr_FR'],
             'mobile' => ['en_US', 'fr_FR'],
@@ -98,7 +86,7 @@ class BuildProductValuesSpec extends ObjectBehavior
                 ],
             ]);
 
-        $this->buildTextareaValues(new ProductId(1))->shouldReturn([
+        $this->buildForProductIdAndAttributeCodes(new ProductId(1), ['textarea_1', 'textarea_2', 'textarea_3', 'textarea_4', 'textarea_5'])->shouldReturn([
             'textarea_1' => [
                 'ecommerce' => [
                     'en_US' => 'textarea1 text',
@@ -149,37 +137,6 @@ class BuildProductValuesSpec extends ObjectBehavior
                     'fr_FR' => null,
                 ],
             ],
-        ]);
-    }
-
-    public function it_returns_title_values_by_attributes_channel_and_locale(
-        $localesByChannelQuery,
-        $getAttributeAsMainTitleValueFromProductId
-    ) {
-        $localesByChannelQuery->execute()->willReturn([
-            'ecommerce' => ['en_US', 'fr_FR'],
-            'mobile' => ['en_US', 'fr_FR'],
-        ]);
-
-        $getAttributeAsMainTitleValueFromProductId->execute(new ProductId(1))->willReturn([
-            'textarea_1' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'textarea1 text'
-                ],
-            ]
-        ]);
-
-        $this->buildTitleValues(new ProductId(1))->shouldReturn([
-            'textarea_1' => [
-                'ecommerce' => [
-                    'en_US' => 'textarea1 text',
-                    'fr_FR' => 'textarea1 text',
-                ],
-                'mobile' => [
-                    'en_US' => 'textarea1 text',
-                    'fr_FR' => 'textarea1 text',
-                ],
-            ]
         ]);
     }
 }

@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultC
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source\GlobalOffsetCalculator;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source\TextSource;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository;
 use Mekras\Speller\Aspell\Aspell;
 use Mekras\Speller\Dictionary;
 use Mekras\Speller\Exception\PhpSpellerException;
@@ -42,15 +43,16 @@ class AspellChecker implements TextChecker
     /** @var AspellDictionaryInterface */
     private $aspellDictionary;
 
-    /** @var string */
-    private $dictionaryLocalFilesystemPath;
+    /** @var TextCheckerDictionaryRepository */
+    private $textCheckerDictionaryRepository;
 
-    public function __construct(string $binaryPath, AspellDictionaryInterface $aspellDictionary, GlobalOffsetCalculator $globalOffsetCalculator, $encoding = self::DEFAULT_ENCODING)
+    public function __construct(string $binaryPath, AspellDictionaryInterface $aspellDictionary, GlobalOffsetCalculator $globalOffsetCalculator, TextCheckerDictionaryRepository $textCheckerDictionaryRepository, $encoding = self::DEFAULT_ENCODING)
     {
         $this->aspell = new Aspell($binaryPath);
         $this->globalOffsetCalculator = $globalOffsetCalculator;
         $this->encoding = $encoding;
         $this->aspellDictionary = $aspellDictionary;
+        $this->textCheckerDictionaryRepository = $textCheckerDictionaryRepository;
     }
 
     public function check(string $text, LocaleCode $localeCode): TextCheckResultCollection
@@ -66,18 +68,25 @@ class AspellChecker implements TextChecker
         try {
             return $this->adaptResult(
                 $this->aspell->checkText($source, [$localeCode->__toString()]),
-                $source->getAsString()
+                $source->getAsString(),
+                $localeCode
             );
         } catch (PhpSpellerException $e) {
             return new TextCheckResultCollection();
         }
     }
 
-    private function adaptResult(array $issues, string $source): TextCheckResultCollection
+    private function adaptResult(array $issues, string $source, LocaleCode $localeCode): TextCheckResultCollection
     {
         $results = new TextCheckResultCollection();
 
+        $userGeneratedDictionary = $this->getUserGeneratedDictionary($localeCode);
+
         foreach ($issues as $issue) {
+            if (in_array($issue->word, $userGeneratedDictionary)) {
+                continue;
+            }
+
             $offset = $issue->offset;
             $line = $issue->line;
 
@@ -100,6 +109,19 @@ class AspellChecker implements TextChecker
         }
 
         return $results;
+    }
+
+    private function getUserGeneratedDictionary(LocaleCode $localeCode): array
+    {
+        $userGeneratedDictionary = [];
+
+        $userGeneratedIgnoredWords = $this->textCheckerDictionaryRepository->findByLocaleCode($localeCode);
+
+        foreach ($userGeneratedIgnoredWords as $textCheckerDictionaryWord) {
+            $userGeneratedDictionary[] = strval($textCheckerDictionaryWord->getWord());
+        }
+
+        return $userGeneratedDictionary;
     }
 
     /**

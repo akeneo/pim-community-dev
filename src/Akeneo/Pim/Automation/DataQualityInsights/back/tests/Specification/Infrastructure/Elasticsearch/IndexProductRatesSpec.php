@@ -13,37 +13,40 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductAxesRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class IndexProductRatesSpec extends ObjectBehavior
 {
-    public function let(Client $esClient, GetProductAxesRates $getProductAxesRates)
+    public function let(Client $esClient, GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery)
     {
-        $this->beConstructedWith($esClient, $getProductAxesRates);
+        $this->beConstructedWith($esClient, $getLatestProductAxesRatesQuery);
     }
 
     public function it_indexes_product_rates(
         Client $esClient,
-        GetProductAxesRates $getProductAxesRates
+        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery
     ) {
-        $getProductAxesRates->get(new ProductId(123))->willReturn([
-            'consistency' => ['rates' => ['ecommerce' => ['en_US' => 'A']]],
-            'enrichment' => ['rates' => ['ecommerce' => ['en_US' => 'B']]],
+        $getLatestProductAxesRatesQuery->byProductIds([new ProductId(123), new ProductId(456), new ProductId(42)])->willReturn([
+            123 => new ProductAxesRates(new ProductId(123), [
+                'consistency' => ['ecommerce' => ['en_US' => ['value' => 98, 'rank' => 1]]],
+                'enrichment' => ['ecommerce' => ['en_US' => ['value' => 86, 'rank' => 2]]],
+            ]),
+            456 => new ProductAxesRates(new ProductId(456), [
+                'consistency' => ['ecommerce' => ['en_US' => ['value' => 78, 'rank' => 3]]],
+                'enrichment' => ['ecommerce' => ['en_US' => ['value' => 11, 'rank' => 5]]],
+            ])
         ]);
-        $getProductAxesRates->get(new ProductId(456))->willReturn([
-            'consistency' => ['rates' => ['ecommerce' => ['en_US' => 'C']]],
-            'enrichment' => ['rates' => ['ecommerce' => ['en_US' => 'D']]],
-        ]);
+
         $esClient->updateByQuery([
             'script' => [
                 'source' => "ctx._source.rates = params",
                 'params' => [
-                    'consistency' => ['ecommerce' => ['en_US' => 'A']],
-                    'enrichment' => ['ecommerce' => ['en_US' => 'B']],
+                    'consistency' => ['ecommerce' => ['en_US' => 1]],
+                    'enrichment' => ['ecommerce' => ['en_US' => 2]],
                 ],
             ],
             'query' => [
@@ -56,8 +59,8 @@ class IndexProductRatesSpec extends ObjectBehavior
             'script' => [
                 'source' => "ctx._source.rates = params",
                 'params' => [
-                    'consistency' => ['ecommerce' => ['en_US' => 'C']],
-                    'enrichment' => ['ecommerce' => ['en_US' => 'D']],
+                    'consistency' => ['ecommerce' => ['en_US' => 3]],
+                    'enrichment' => ['ecommerce' => ['en_US' => 5]],
                 ],
             ],
             'query' => [
@@ -67,33 +70,6 @@ class IndexProductRatesSpec extends ObjectBehavior
             ],
         ])->shouldBeCalled();
 
-        $this->execute([123, 456]);
-    }
-
-    public function it_does_not_index_empty_product_rates(
-        Client $esClient,
-        GetProductAxesRates $getProductAxesRates
-    ) {
-        $getProductAxesRates->get(new ProductId(123))->willReturn([
-            'consistency' => ['rates' => ['ecommerce' => ['en_US' => 'A']]],
-        ]);
-        $getProductAxesRates->get(new ProductId(456))->willReturn([
-            'consistency' => ['rates' => []],
-        ]);
-        $esClient->updateByQuery([
-            'script' => [
-                'source' => "ctx._source.rates = params",
-                'params' => [
-                    'consistency' => ['ecommerce' => ['en_US' => 'A']],
-                ],
-            ],
-            'query' => [
-                'term' => [
-                    'id' => 'product_123',
-                ],
-            ],
-        ])->shouldBeCalled();
-
-        $this->execute([123, 456]);
+        $this->execute([123, 456, 42]);
     }
 }

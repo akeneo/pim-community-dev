@@ -167,133 +167,126 @@ const LocaleDropdown = React.memo(({options, value, readOnly, onChange}: LocaleD
   );
 });
 
-const Row = React.memo(({
-  line,
-  locale,
-  channels,
-  locales,
-  onLineRemove,
-  onLineChange,
-  valuePerLocale,
-  valuePerChannel,
-}: RowProps) => {
-  const status = React.useMemo(() => {
-    return getStatusFromLine(line, valuePerLocale, valuePerChannel);
-  }, [line, valuePerLocale, valuePerChannel]);
+const Row = React.memo(
+  ({line, locale, channels, locales, onLineRemove, onLineChange, valuePerLocale, valuePerChannel}: RowProps) => {
+    const status = React.useMemo(() => {
+      return getStatusFromLine(line, valuePerLocale, valuePerChannel);
+    }, [line, valuePerLocale, valuePerChannel]);
 
-  const errors = React.useMemo(() => {
-    return getAllErrorsOfLineByTarget(line);
-  }, [line]);
+    const errors = React.useMemo(() => {
+      return getAllErrorsOfLineByTarget(line);
+    }, [line]);
 
-  const channelOptions = React.useMemo(() => {
-    return getOptionsFromChannels(channels, locale);
-  }, [channels, locale]);
+    const channelOptions = React.useMemo(() => {
+      return getOptionsFromChannels(channels, locale);
+    }, [channels, locale]);
 
-  const localeOptions = React.useMemo(() => {
-    return getOptionsFromLocales(channels, locales, line.channel);
-  }, [channels, locales, line.channel]);
+    const localeOptions = React.useMemo(() => {
+      return getOptionsFromLocales(channels, locales, line.channel);
+    }, [channels, locales, line.channel]);
 
-  const isReadOnly = line.isAssetCreating || line.assetCreated;
+    const isReadOnly = line.isAssetCreating || line.assetCreated;
 
-  const handleCodeChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      onLineChange({...line, code: event.target.value});
-    },
-    [line]
-  );
+    const handleCodeChange = React.useCallback(
+      (event: React.ChangeEvent<HTMLInputElement>) => {
+        onLineChange({...line, code: event.target.value});
+      },
+      [line]
+    );
 
-  const handleChannelChange = React.useCallback(
-    (value: string) => {
-      onLineChange({...line, channel: value ? value : null});
-    },
-    [line]
-  );
+    const handleChannelChange = React.useCallback(
+      (value: string) => {
+        onLineChange({...line, channel: value ? value : null});
+      },
+      [line]
+    );
 
-  const handleLocaleChange = React.useCallback(
-    (value: string) => {
-      onLineChange({...line, locale: value ? value : null});
-    },
-    [line]
-  );
+    const handleLocaleChange = React.useCallback(
+      (value: string) => {
+        onLineChange({...line, locale: value ? value : null});
+      },
+      [line]
+    );
 
-  const handleLineRemove = React.useCallback(() => {
-    onLineRemove(line);
-  }, [line, onLineRemove]);
+    const handleLineRemove = React.useCallback(() => {
+      onLineRemove(line);
+    }, [line, onLineRemove]);
 
-  return (
-    <Container status={status}>
-      <Cells>
-        <Cell width={ColumnWidths.asset}>
-          {null !== line.thumbnail && <Thumbnail src={line.thumbnail} title={line.filename} />}
-        </Cell>
-        <Cell width={ColumnWidths.filename}>
-          <StyledFilename>{line.filename}</StyledFilename>
-        </Cell>
-        <Cell width={ColumnWidths.code}>
-          <Input
-            type="text"
-            value={line.code}
-            isValid={errors.code.length === 0}
-            disabled={isReadOnly}
-            onChange={handleCodeChange}
-            aria-label={__('pim_asset_manager.asset.upload.list.code')}
-          />
-        </Cell>
-        {valuePerChannel && (
+    return (
+      <Container status={status}>
+        <Cells>
+          <Cell width={ColumnWidths.asset}>
+            {null !== line.thumbnail && <Thumbnail src={line.thumbnail} title={line.filename} />}
+          </Cell>
+          <Cell width={ColumnWidths.filename}>
+            <StyledFilename>{line.filename}</StyledFilename>
+          </Cell>
+          <Cell width={ColumnWidths.code}>
+            <Input
+              type="text"
+              value={line.code}
+              isValid={errors.code.length === 0}
+              disabled={isReadOnly}
+              onChange={handleCodeChange}
+              aria-label={__('pim_asset_manager.asset.upload.list.code')}
+            />
+          </Cell>
+          {valuePerChannel && (
+            <Cell width={ColumnWidths.channel}>
+              <ChannelDropdown
+                options={channelOptions}
+                value={line.channel}
+                readOnly={isReadOnly}
+                onChange={handleChannelChange}
+              />
+            </Cell>
+          )}
+          {valuePerLocale && (
+            <Cell width={ColumnWidths.locale}>
+              <LocaleDropdown
+                options={localeOptions}
+                value={line.locale}
+                readOnly={isReadOnly}
+                onChange={handleLocaleChange}
+              />
+            </Cell>
+          )}
+          <Spacer />
+          <Cell width={ColumnWidths.status}>
+            <RowStatus status={status} progress={line.uploadProgress} />
+          </Cell>
+          <Cell width={ColumnWidths.remove}>
+            <RemoveLineButton onClick={handleLineRemove} aria-label={__('pim_asset_manager.asset.upload.remove')}>
+              <CrossIcon />
+            </RemoveLineButton>
+          </Cell>
+        </Cells>
+        <Errors>
+          <Cell width={ColumnWidths.asset + ColumnWidths.filename}>
+            {errors.common.map(error => (
+              <Error key={error.message} message={error.message} />
+            ))}
+          </Cell>
+          <Cell width={ColumnWidths.code}>
+            {errors.code.map(error => (
+              <Error key={error.message} message={error.message} />
+            ))}
+          </Cell>
           <Cell width={ColumnWidths.channel}>
-            <ChannelDropdown
-              options={channelOptions}
-              value={line.channel}
-              readOnly={isReadOnly}
-              onChange={handleChannelChange}
-            />
+            {errors.channel.map(error => (
+              <Error key={error.message} message={error.message} />
+            ))}
           </Cell>
-        )}
-        {valuePerLocale && (
           <Cell width={ColumnWidths.locale}>
-            <LocaleDropdown
-              options={localeOptions}
-              value={line.locale}
-              readOnly={isReadOnly}
-              onChange={handleLocaleChange}
-            />
+            {errors.locale.map(error => (
+              <Error key={error.message} message={error.message} />
+            ))}
           </Cell>
-        )}
-        <Spacer />
-        <Cell width={ColumnWidths.status}>
-          <RowStatus status={status} progress={line.uploadProgress} />
-        </Cell>
-        <Cell width={ColumnWidths.remove}>
-          <RemoveLineButton onClick={handleLineRemove} aria-label={__('pim_asset_manager.asset.upload.remove')}>
-            <CrossIcon />
-          </RemoveLineButton>
-        </Cell>
-      </Cells>
-      <Errors>
-        <Cell width={ColumnWidths.asset + ColumnWidths.filename}>
-          {errors.all.map(error => (
-            <Error key={error.message} message={error.message} />
-          ))}
-        </Cell>
-        <Cell width={ColumnWidths.code}>
-          {errors.code.map(error => (
-            <Error key={error.message} message={error.message} />
-          ))}
-        </Cell>
-        <Cell width={ColumnWidths.locale}>
-          {errors.locale.map(error => (
-            <Error key={error.message} message={error.message} />
-          ))}
-        </Cell>
-        <Cell width={ColumnWidths.channel}>
-          {errors.channel.map(error => (
-            <Error key={error.message} message={error.message} />
-          ))}
-        </Cell>
-        <Spacer />
-      </Errors>
-    </Container>
-  );
-});
+          <Spacer />
+        </Errors>
+      </Container>
+    );
+  }
+);
 
 export default Row;

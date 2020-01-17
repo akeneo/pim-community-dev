@@ -17,11 +17,13 @@ import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import Ajv from 'ajv';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 const ajv = new Ajv({allErrors: true, verbose: true});
 const schema = require('akeneoassetmanager/infrastructure/model/asset-family-transformations.schema.json');
 const securityContext = require('pim/security-context');
 
 interface StateProps {
+  form: EditionFormState;
   assetFamily: AssetFamily;
   errors: ValidationError[];
   rights: {
@@ -58,7 +60,7 @@ const AssetFamilyTransformationEditor = ({
       <Editor
         value={JSON.parse(transformations)}
         onChange={(event: object) => {
-          onAssetFamilyTransformationsChange(JSON.stringify(event));
+          onAssetFamilyTransformationsChange(JSON.stringify(null === event ? [] : event));
         }}
         mode="code"
         schema={schema}
@@ -128,7 +130,7 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
           }}
           withLocaleSwitcher={false}
           withChannelSwitcher={false}
-          isDirty={false}
+          isDirty={this.props.form.state.isDirty}
           breadcrumbConfiguration={breadcrumbConfiguration}
         />
         <div className="AknDescriptionHeader AknDescriptionHeader--sticky">
@@ -171,6 +173,7 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
 export default connect(
   (state: EditState): StateProps => {
     return {
+      form: state.form,
       assetFamily: state.form.data,
       errors: state.form.errors,
       rights: {

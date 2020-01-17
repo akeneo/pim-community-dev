@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
@@ -22,45 +22,35 @@ final class IndexProductRates
     /** @var Client */
     private $esClient;
 
-    /** @var GetProductAxesRates */
-    private $getProductAxesRates;
+    /** @var GetLatestProductAxesRatesQueryInterface */
+    private $getLatestProductAxesRatesQuery;
 
-    public function __construct(Client $esClient, GetProductAxesRates $getProductAxesRates)
+    public function __construct(Client $esClient, GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery)
     {
         $this->esClient = $esClient;
-        $this->getProductAxesRates = $getProductAxesRates;
+        $this->getLatestProductAxesRatesQuery = $getLatestProductAxesRatesQuery;
     }
 
     public function execute(array $productIds): void
     {
-        foreach ($productIds as $productId) {
-            $productAxesRates = $this->getProductAxesRates->get(new ProductId($productId));
-            $formattedRates = $this->formatProductAxesRatesForIndexation($productAxesRates);
-            if (! empty($formattedRates)) {
-                $this->indexProductRates($productId, $formattedRates);
-            }
+        $productIds = array_map(function ($productId) {
+            return new ProductId($productId);
+        }, $productIds);
+
+        $productsAxesRates = $this->getLatestProductAxesRatesQuery->byProductIds($productIds);
+
+        foreach ($productsAxesRates as $productId => $productAxesRates) {
+            $this->indexProductRates($productId, $productAxesRates->getRanks());
         }
     }
 
-    private function formatProductAxesRatesForIndexation(array $productAxesRates)
-    {
-        $formattedRates = [];
-        foreach ($productAxesRates as $axisName => $rates) {
-            if (! empty($rates['rates'])) {
-                $formattedRates[$axisName] = $rates['rates'];
-            }
-        }
-
-        return $formattedRates;
-    }
-
-    private function indexProductRates(int $productId, array $formattedRates): void
+    private function indexProductRates(int $productId, array $productAxesRates): void
     {
         $this->esClient->updateByQuery(
             [
                 'script' => [
                     'source' => "ctx._source.rates = params",
-                    'params' => $formattedRates,
+                    'params' => $productAxesRates,
                 ],
                 'query' => [
                     'term' => [

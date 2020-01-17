@@ -87,9 +87,9 @@ describe('Test line-list component', () => {
     const channels: Channel[] = [];
     const locales: Locale[] = [];
     const lines = [
-      createFakeLine('a.png', assetFamily),
-      createFakeLine('b.png', assetFamily),
-      createFakeLine('c.png', assetFamily),
+      createFakeLine('a.png', assetFamily, channels, locales),
+      createFakeLine('b.png', assetFamily, channels, locales),
+      createFakeLine('c.png', assetFamily, channels, locales),
     ];
 
     await act(async () => {
@@ -122,9 +122,9 @@ describe('Test line-list component', () => {
     const channels: Channel[] = [];
     const locales: Locale[] = [];
     const lines = [
-      createFakeLine('a.png', assetFamily),
-      createFakeLine('b.png', assetFamily),
-      createFakeLine('c.png', assetFamily),
+      createFakeLine('a.png', assetFamily, channels, locales),
+      createFakeLine('b.png', assetFamily, channels, locales),
+      createFakeLine('c.png', assetFamily, channels, locales),
     ];
     const removeAll = jest.fn();
 
@@ -159,9 +159,9 @@ describe('Test line-list component', () => {
     const channels: Channel[] = [];
     const locales: Locale[] = [];
     const lines = [
-      createFakeLine('a.png', assetFamily),
-      createFakeLine('b.png', assetFamily),
-      createFakeLine('c.png', assetFamily),
+      createFakeLine('a.png', assetFamily, channels, locales),
+      createFakeLine('b.png', assetFamily, channels, locales),
+      createFakeLine('c.png', assetFamily, channels, locales),
     ];
 
     await act(async () => {
@@ -194,9 +194,9 @@ describe('Test line-list component', () => {
     const channels: Channel[] = [];
     const locales: Locale[] = [];
     const lines = [
-      createFakeLine('a.png', assetFamily),
-      createFakeLine('b.png', assetFamily),
-      createFakeLine('c.png', assetFamily),
+      createFakeLine('a.png', assetFamily, channels, locales),
+      createFakeLine('b.png', assetFamily, channels, locales),
+      createFakeLine('c.png', assetFamily, channels, locales),
     ];
 
     await act(async () => {

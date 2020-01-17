@@ -60,11 +60,11 @@ class RegisterEnrichmentFilter
                 'field_options' => [
                     'multiple' => true,
                     'choices' => [
-                        Rates::RANK_1 => Rates::RANK_1,
-                        Rates::RANK_2 => Rates::RANK_2,
-                        Rates::RANK_3 => Rates::RANK_3,
-                        Rates::RANK_4 => Rates::RANK_4,
-                        Rates::RANK_5 => Rates::RANK_5,
+                        Rates::RANK_1 => 1,
+                        Rates::RANK_2 => 2,
+                        Rates::RANK_3 => 3,
+                        Rates::RANK_4 => 4,
+                        Rates::RANK_5 => 5,
                     ],
                 ],
             ],

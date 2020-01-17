@@ -61,7 +61,7 @@ const UploadModalHeader = React.memo(({label, onClose, onConfirm}: UploadModalHe
         {__('pim_asset_manager.asset.upload.confirm')}
       </ConfirmButton>
     </Header>
-  )
+  );
 });
 
 type UploadModalProps = {
@@ -131,11 +131,7 @@ const UploadModal = ({assetFamily, locale, channels, locales, onCancel, onAssetC
 
   return (
     <Modal>
-      <UploadModalHeader
-        label={label}
-        onClose={handleClose}
-        onConfirm={handleConfirm}
-      />
+      <UploadModalHeader label={label} onClose={handleClose} onConfirm={handleConfirm} />
       <FileDropZone onDrop={handleDrop} />
       <LineList
         lines={state.lines}
