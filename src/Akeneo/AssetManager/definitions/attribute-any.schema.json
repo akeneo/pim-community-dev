@@ -9,12 +9,7 @@
         "identifier": { "type": "string" },
         "asset_family_identifier": { "type": "string" },
         "code": { "type": "string" },
-        "labels": {
-            "type": "object",
-            "patternProperties": {
-                ".+": { "type": "string" }
-            }
-        },
+        "labels": { "$ref": "labels.schema.json" },
         "is_required": { "type": "boolean" },
         "order": { "type": "integer" },
         "value_per_locale": { "type": "boolean" },

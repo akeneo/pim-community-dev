@@ -4,12 +4,7 @@
     "properties": {
         "identifier": { "type": "string" },
         "code": { "type": "string" },
-        "labels": {
-            "type": "object",
-            "patternProperties": {
-                ".+": { "type": "string" }
-            }
-        },
+        "labels": { "$ref": "labels.schema.json" },
         "image": {
             "type": ["object", "null"],
             "properties": {
