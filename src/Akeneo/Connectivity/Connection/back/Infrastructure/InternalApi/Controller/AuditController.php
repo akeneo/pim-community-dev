@@ -28,10 +28,13 @@ class AuditController
     public function sourceConnectionsEvent(Request $request): JsonResponse
     {
         $eventType = $request->get('event_type', '');
-        $startPeriod = new \DateTime('-7 days', new \DateTimeZone('UTC'));
-        $today = new \DateTime('now', new \DateTimeZone('UTC'));
+        $endDate = $request->get(
+            'end_date',
+            (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d')
+        );
+        $startDate = (new \DateTime($endDate, new \DateTimeZone('UTC')))->modify('-7 day')->format('Y-m-d');
 
-        $query = new CountDailyEventsByConnectionQuery($eventType, $startPeriod->format('Y-m-d'), $today->format('Y-m-d'));
+        $query = new CountDailyEventsByConnectionQuery($eventType, $startDate, $endDate);
         $countDailyEventsByConnection = $this->countDailyEventsByConnectionHandler->handle($query);
 
         $data = \array_reduce(
