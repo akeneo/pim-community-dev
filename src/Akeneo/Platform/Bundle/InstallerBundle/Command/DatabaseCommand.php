@@ -64,7 +64,14 @@ class DatabaseCommand extends ContainerAwareCommand
                 InputOption::VALUE_OPTIONAL,
                 'Should the command install any fixtures',
                 false
-            );
+            )
+            ->addOption(
+                'doNotDropDatabase',
+                null,
+                InputOption::VALUE_NONE,
+                'Try to use an existing database if it already exists. Beware, the database data will still be deleted'
+            )
+        ;
     }
 
     /**
@@ -92,12 +99,16 @@ class DatabaseCommand extends ContainerAwareCommand
             if (!$connection->isConnected()) {
                 $connection->connect();
             }
-            $this->commandExecutor->runCommand('doctrine:database:drop', ['--force' => true]);
+            if ($input->getOption('doNotDropDatabase')) {
+                $this->commandExecutor->runCommand('doctrine:schema:drop', ['--force' => true, '--full-database' => true]);
+            } else {
+                $this->commandExecutor->runCommand('doctrine:database:drop', ['--force' => true]);
+            }
         } catch (ConnectionException $e) {
             $output->writeln('<error>Database does not exist yet</error>');
         }
 
-        $this->commandExecutor->runCommand('doctrine:database:create');
+        $this->commandExecutor->runCommand('doctrine:database:create', ['--if-not-exists' => true]);
 
         // Needs to close connection if always open
         if ($connection->isConnected()) {
@@ -255,7 +266,7 @@ class DatabaseCommand extends ContainerAwareCommand
     private function setLatestKnownMigration(InputInterface $input): void
     {
         $latestMigration = $this->getLatestMigration($input);
-        
+
         $this->commandExecutor->runCommand(
             'doctrine:migrations:version',
             ['version' => $latestMigration, '--add' => true, '--all' => true, '-q' => true]
