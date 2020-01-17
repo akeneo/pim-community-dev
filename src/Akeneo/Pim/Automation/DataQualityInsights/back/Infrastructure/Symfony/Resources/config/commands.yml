@@ -3,6 +3,7 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeCriteriaEvaluation'
         tags:
             - { name: 'console.command' }
 

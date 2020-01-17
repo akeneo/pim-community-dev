@@ -105,10 +105,11 @@ Aim:
 Behavior:
 Retrieve all the product values per locale. All the words with more than 3 letters, and used more than 10 times in the catalog are considered as part of the dictionary.
 
-`pimee:data-quality-insights:evaluate-pending-criteria -p <product_id>`
+`pimee:data-quality-insights:evaluate-products -p <product_id> --full-catalog`
 
 Aim:
 - Force the evaluation of all the criteria of a product
+- And/Or schedule the evaluation of all the catalog
 - For Administration/Support/Dev purpose
 
 `pimee:data-quality-insights:consolidate-dashboard-rates <2020-01-10>`
