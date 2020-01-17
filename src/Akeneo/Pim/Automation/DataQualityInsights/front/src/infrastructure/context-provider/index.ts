@@ -12,12 +12,14 @@ import ProductContextProvider, {
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
 } from "./ProductContextProvider";
-import PageContextProvider from "./PageContextProvider";
-import DATA_QUALITY_INSIGHTS_TAB_CONTENT_VISIBILITY_CHANGED, {
+import PageContextProvider, {
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
   PRODUCT_TAB_CHANGED,
 } from "./PageContextProvider";
+
+import SpellcheckPopoverContextProvider from "./SpellcheckPopoverContextProvider";
+import EditorContextProvider from "./EditorContextProvider";
 
 export {
   CatalogContextProvider,
@@ -31,10 +33,11 @@ export {
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
   PRODUCT_TAB_CHANGED,
-  DATA_QUALITY_INSIGHTS_TAB_CONTENT_VISIBILITY_CHANGED,
   DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
+  SpellcheckPopoverContextProvider,
+  EditorContextProvider,
 }
