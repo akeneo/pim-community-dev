@@ -6,6 +6,15 @@ services:
         tags:
             - { name: 'console.command' }
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\HealthCheckCommand:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryLocalFilesystem'
+            - '@oneup_flysystem.mount_manager'
+        tags:
+            - { name: 'console.command' }
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\ConsolidateDashboardRatesCommand:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateDashboardRates'

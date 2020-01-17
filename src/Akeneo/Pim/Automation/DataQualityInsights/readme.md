@@ -125,6 +125,12 @@ Aim:
 Note:
 The purge is already handled by the periodic tasks but you can use this command to force the purge for a specific day
 
+`bin/console pimee:data-quality-insights:health-check --no-ansi`
+
+Aim:
+- Provide a health-check tool to understand the customer catalog and the status of criteria evaluation
+
+
 ####Commands not usable in production - use with care
 
 `pimee:data-quality-insights:demo-helper`
