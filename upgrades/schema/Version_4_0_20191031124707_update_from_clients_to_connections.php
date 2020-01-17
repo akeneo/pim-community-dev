@@ -3,7 +3,6 @@
 namespace Pim\Upgrade\Schema;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
-use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
