@@ -375,7 +375,8 @@ workflows:
       jobs:
           - checkout
           - build_dev:
-              requires:
+                is_pull_request: false
+                requires:
                     - checkout
           - test_back_static_and_acceptance:
                 requires:
