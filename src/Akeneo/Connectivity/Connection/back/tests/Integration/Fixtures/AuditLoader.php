@@ -21,8 +21,12 @@ class AuditLoader
         $this->dbalConnection = $dbalConnection;
     }
 
-    public function insertData(string $connectionCode, \DateTime $eventDate, int $eventCount, string $eventType)
-    {
+    public function insertData(
+        string $connectionCode,
+        \DateTimeInterface $eventDate,
+        int $eventCount,
+        string $eventType
+    ) {
         $sqlQuery = <<<SQL
 INSERT INTO akeneo_connectivity_connection_audit (connection_code, event_date, event_count, event_type)
 VALUES (:connection_code, :event_date, :event_count, :event_type)
