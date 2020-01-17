@@ -110,7 +110,14 @@ class DatabaseCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 'Directory of the fixtures to install',
                 'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal'
-            );
+            )
+            ->addOption(
+                'doNotDropDatabase',
+                null,
+                InputOption::VALUE_NONE,
+                'Try to use an existing database if it already exists. Beware, the database data will still be deleted'
+            )
+        ;
     }
 
     /**
@@ -137,12 +144,16 @@ class DatabaseCommand extends Command
             if (!$this->connection->isConnected()) {
                 $this->connection->connect();
             }
-            $this->commandExecutor->runCommand('doctrine:database:drop', ['--force' => true]);
+            if ($input->getOption('doNotDropDatabase')) {
+                $this->commandExecutor->runCommand('doctrine:schema:drop', ['--force' => true, '--full-database' => true]);
+            } else {
+                $this->commandExecutor->runCommand('doctrine:database:drop', ['--force' => true]);
+            }
         } catch (ConnectionException $e) {
             $output->writeln('<error>Database does not exist yet</error>');
         }
 
-        $this->commandExecutor->runCommand('doctrine:database:create');
+        $this->commandExecutor->runCommand('doctrine:database:create', ['--if-not-exists' => true]);
 
         // Needs to close connection if always open
         if ($this->connection->isConnected()) {

@@ -14,6 +14,10 @@
 - PIM-9445: Fix boolean attribute is broken on compare/translate when the attribute is localisable or scopable
 - PIM-9439: Fix PEF shakes on product with lot of simple/multi select
 
+## Technical Improvements
+
+- PIM-9055: Allow not to drop an existing database during the install proces
+
 # 4.0.56 (2020-09-09)
 
 ## Bug fixes
