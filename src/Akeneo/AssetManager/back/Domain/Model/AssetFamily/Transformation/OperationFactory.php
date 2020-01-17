@@ -32,7 +32,7 @@ class OperationFactory
     public function create(string $operationType, array $parameters): Operation
     {
         if (!array_key_exists($operationType, $this->operationClasses)) {
-            throw new \InvalidArgumentException(sprintf('Operation "%s" is unknown.', $operationType));
+            throw new UnknownOperationException(sprintf('Operation "%s" is unknown.', $operationType));
         }
 
         $class = $this->operationClasses[$operationType];

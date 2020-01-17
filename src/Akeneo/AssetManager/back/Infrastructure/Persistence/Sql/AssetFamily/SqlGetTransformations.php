@@ -60,7 +60,7 @@ SQL;
             throw AssetFamilyNotFoundException::withIdentifier($assetFamilyIdentifier);
         }
 
-        return $this->transformationCollectionFactory->fromNormalized(
+        return $this->transformationCollectionFactory->fromDatabaseNormalized(
             Type::getType(Types::JSON)->convertToPHPValue(
                 $normalizedTransformations,
                 $this->connection->getDatabasePlatform()

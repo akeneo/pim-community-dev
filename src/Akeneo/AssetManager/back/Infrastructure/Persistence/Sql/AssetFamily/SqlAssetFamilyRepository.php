@@ -251,7 +251,9 @@ SQL;
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
         $entityImage = $this->hydrateImage($image);
         $ruleTemplateCollection = $this->hydrateRuleTemplates($normalizedRuleTemplates);
-        $transformationCollection = $this->transformationCollectionFactory->fromNormalized(json_decode($transformationCollection, true));
+        $transformationCollection = $this->transformationCollectionFactory->fromDatabaseNormalized(
+            json_decode($transformationCollection, true)
+        );
         $namingConvention = NamingConvention::createFromNormalized(json_decode($namingConvention, true));
 
         $assetFamily = AssetFamily::createWithAttributes(
