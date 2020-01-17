@@ -5,6 +5,7 @@
 ## Bug fixes:
 
 - PIM-9056: Fix filters with numeric attribute codes for bulk actions
+- PIM-9058: Fix search products API with filters on numeric attribute codes
 
 # 3.2.31 (2020-01-14)
 
