@@ -43,6 +43,8 @@ import {ChannelFetcher} from 'akeneoassetmanager/application/hooks/channel';
 import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {clearImageLoadingQueue} from 'akeneoassetmanager/tools/image-loader';
+import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
 const Header = styled.div`
   padding-left: 40px;
@@ -236,6 +238,9 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           },
         ];
 
+  const hasMediaLinkAsMainMedia =
+    null !== currentAssetFamily && isMediaLinkAttribute(getAttributeAsMainMedia(currentAssetFamily));
+
   return (
     <Container>
       <Column>
@@ -280,10 +285,16 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                               },
                             ]
                           : []),
-                        ...(rights.asset.upload
+                        ...(rights.asset.upload || hasMediaLinkAsMainMedia
                           ? [
                               {
                                 label: __('pim_asset_manager.asset.upload.title'),
+                                title: __(
+                                  `pim_asset_manager.asset.upload.${
+                                    hasMediaLinkAsMainMedia ? 'disabled_for_media_link' : 'title'
+                                  }`
+                                ),
+                                isDisabled: hasMediaLinkAsMainMedia,
                                 action: () => setUploadModalOpen(true),
                               },
                             ]
