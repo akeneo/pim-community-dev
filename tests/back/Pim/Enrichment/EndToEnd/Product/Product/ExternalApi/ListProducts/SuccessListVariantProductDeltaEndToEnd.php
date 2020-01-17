@@ -16,7 +16,17 @@ class SuccessListVariantProductDeltaEndToEnd extends AbstractProductTestCase
     public function testListVariantProductDeltaWhenUpdatingProductModel()
     {
         $discriminantDatetime = $this->getDiscriminantDatetime();
-        $clientPatch = $this->createAuthenticatedClient();
+        $apiConnection = $this->createConnection('API_Test_1');
+
+        $clientPatch = $this->createAuthenticatedClient(
+            [],
+            [],
+            $apiConnection->clientId(),
+            $apiConnection->secret(),
+            $apiConnection->username(),
+            $apiConnection->password()
+        );
+
         $updates =
 <<<JSON
 {
@@ -36,7 +46,14 @@ JSON;
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
-        $client = $this->createAuthenticatedClient();
+        $client = $this->createAuthenticatedClient(
+            [],
+            [],
+            $apiConnection->clientId(),
+            $apiConnection->secret(),
+            $apiConnection->username(),
+            $apiConnection->password()
+        );
         $search = sprintf('{"updated":[{"operator":">","value":"%s"}]}', $discriminantDatetime->format('Y-m-d H:i:s'));
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
 
