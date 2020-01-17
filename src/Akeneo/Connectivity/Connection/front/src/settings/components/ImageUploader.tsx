@@ -68,7 +68,6 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
     const endUpload = () => {
         setIsLoading(false);
         setRatio(0);
-        setUploadingImage(undefined);
     };
     const upload = async (file: File) => {
         startUpload(file);
@@ -100,6 +99,7 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
             if (null !== mediaUrl) {
                 onChange(mediaUrl);
             }
+            setUploadingImage(undefined);
         }
     };
 
@@ -114,7 +114,7 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
     if (undefined !== uploadingImage && 0 !== uploadingImage.length) {
         previewImage = uploadingImage;
     } else if (null !== image) {
-        generateMediaUrl(image);
+        previewImage = generateMediaUrl(image);
     }
 
     const containerClassName = `AknImage AknImage--editable AknImage--wide ${null === image ? 'AknImage--empty' : ''}`;
