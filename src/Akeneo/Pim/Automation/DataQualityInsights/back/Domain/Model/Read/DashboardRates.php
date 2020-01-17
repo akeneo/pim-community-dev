@@ -53,6 +53,7 @@ final class DashboardRates
         }
 
         $result = $this->convertRatesByPeriodicity($this->periodicity);
+        $result = array_merge(['enrichment' => [], 'consistency' => []], $result);
 
         $actions = [
             Periodicity::DAILY => function (array $rates) {
