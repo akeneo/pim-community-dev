@@ -59,6 +59,9 @@ _CONNECTIVITY_CONNECTION_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Connectivit
 connectivity-connection-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Connectivity/Connection/back/tests/.php_cd.php src/Akeneo/Connectivity/Connection/back
 
+connectivity-connection-static-analysis-back:
+	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Connectivity/Connection/back/tests/phpstan.neon
+
 connectivity-connection-unit-back:
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
 
@@ -81,6 +84,7 @@ endif
 
 connectivity-connection-back:
 	make connectivity-connection-coupling-back
+	make connectivity-connection-static-analysis-back
 	make connectivity-connection-unit-back
 	make connectivity-connection-acceptance-back
 	make connectivity-connection-integration-back

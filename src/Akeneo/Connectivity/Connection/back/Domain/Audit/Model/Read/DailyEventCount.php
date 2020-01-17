@@ -14,7 +14,7 @@ final class DailyEventCount
     /** @var int */
     private $count;
 
-    /** @var \Datetime */
+    /** @var \DateTimeInterface */
     private $date;
 
     public function __construct(int $count, \DateTimeInterface $date)

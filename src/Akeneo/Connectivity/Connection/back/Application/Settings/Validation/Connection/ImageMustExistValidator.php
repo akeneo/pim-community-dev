@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection;
@@ -6,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Application\Settings\Validation\Connect
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DoesImageExistQueryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -24,6 +26,10 @@ class ImageMustExistValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
+        if (!$constraint instanceof ImageMustExist) {
+            throw new UnexpectedTypeException($constraint, ImageMustExist::class);
+        }
+
         if (null !== $value && !$this->doesImageExistQuery->execute($value)) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
