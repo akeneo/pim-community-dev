@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9058: Fix search products API with filters on numeric attribute codes
+
 # 3.2.32 (2020-01-17)
 
 # 3.2.31 (2020-01-14)
@@ -156,7 +160,7 @@
 
 ## Bug fixes
 
-- DAPI-366: Fix icon used for Franklin-Insights notifications 
+- DAPI-366: Fix icon used for Franklin-Insights notifications
 - GITHUB-10083: Fix proposal datagrid render when deleting values
 
 ## Technical improvement
