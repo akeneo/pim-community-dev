@@ -2,16 +2,16 @@ pim_user:
   user:
     tab:
       general.title: Yleinen
-      additional.title: Lisää
       group_and_role.title: Ryhmät ja roolit
       password.title: Salasana
       business_unit.title: Liiketoimintayksiköt
       email_synchronization.title: Sähköpostin synkronoinnin asetukset
-      interfaces.title: Käyttöliittymä
+      interfaces.title: Rajapinnat
   group:
     tab:
       general.title: Yleinen
       users.title: Käyttäjät
+#user grids
 oro.user.controller:
   group.message.saved: "Ryhmä tallennettu"
   role.message.saved: "Rooli tallennettu"
@@ -23,27 +23,16 @@ oro.user.grid.users:
     email: "Sähköpostiosoite"
     firstName: "Etunimi"
     lastName: "Sukunimi"
-    createdAt: "Luotu"
-    updatedAt: "Päivitetty"
-    enabled: "Status"
-oro.user.grid.roles:
-  columns:
-    label: "Nimike"
-oro.user.grid.groups:
-  columns:
-    name: "Nimi"
+#Page titles
 pim_title:
   user.index: Käyttäjät
   user_role.index: Roolit
-  user_group.index: Ryhmät
   system_configuration.index: Kokoonpano
+#User
 user.title: Käyttäjä
-user.overview: Käyttäjä
 Users Management: Käyttäjähallinta
 Create user: Luo käyttäjä
-btn.create.user: Luo käyttäjä
 New user: Uusi käyttäjä
-Additional: Lisää
 Groups and Roles: Ryhmät ja roolit
 Username: Käyttäjänimi
 Password: Salasana
@@ -76,7 +65,6 @@ User name: Käyttäjänimi
 Birthday: Syntymäpäivä
 API key: API-avain
 Ui locale: Käyttöliittymän kieli
-UI locale: Käyttöliittymän kieli
 User salt: Käyttäjän suola
 Current password: Nykyinen salasana
 New password: Uusi salasana
@@ -88,28 +76,21 @@ user:
   product_grid_filters: Tuoteruudukon suodattimet
   default_product_grid_view:
     label: Tuoteruudukon oletusnäkymä
-  default_grid_view:
-    none: Ei yhtään
-  timezone: Aikavyöhyke
+#Role
 Role: Rooli
 Owner: Omistaja
 General: Yleinen
-Entity: Entiteetti
 Capabilities: Ominaisuudet
 Save and close: Tallenna ja sulje
 Has role: On rooli
 role:
   title: rooli
-  overview: rooli
   edit: Muokkaa roolia
   create: Luo rooli
-btn.create.role: Luo rooli
 rights:
-  action: Käyttöoikeudet
+  action: Käyttöoikeudert
 oro_security:
   acl_group:
-    user: Käyttäjät
-    role: Roolit
     group: Käyttäjäryhmät
   acl:
     user:
@@ -127,27 +108,21 @@ oro_security:
       create: Luo käyttäjäryhmä
       edit: Muokkaa käyttäjäryhmiä
       delete: Poista käyttäjäryhmä
+#Security
 (default): Entiteettien oletusoikeudet
 VIEW: Näytä
-CREATE: Luo
-EDIT: Muokkaa
-DELETE: Poista
 ASSIGN: Määritä
 SHARE: Jaa
 oro:
   security:
     access-level:
-      BASIC: Käyttäjä
       LOCAL: Liiketoimintayksikkö
       DEEP: Divisioona
       GLOBAL: Organisaatio
-      SYSTEM: Järjestelmä
-      NONE: Ei yhtään
+#User Group
 Create group: Luo ryhmä
-btn.create.user-group: Luo ryhmä
 Has group: Ryhmä on olemassa
-Save and Close: Tallenna ja sulje
-user-group.overview: Ryhmät
+#Login page
 Log in: Kirjaudu
 Remember me on this computer: Muista minut tässä tietokoneessa
 Forgot your password?: Unohditko salasanasi?
