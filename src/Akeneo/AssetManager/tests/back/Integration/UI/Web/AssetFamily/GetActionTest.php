@@ -90,6 +90,27 @@ class GetActionTest extends ControllerIntegrationTestCase
             'pattern' => '/the_pattern/',
             'abort_asset_creation_on_error' => true,
         ]);
+        $entityItem->productLinkRules = [
+            [
+                'product_selections' => [
+                    [
+                        'field' => 'fulltext',
+                        'operator' => 'IN',
+                        'value' => 'value',
+                        'channel' => null,
+                        'locale' => null
+                    ]
+                ],
+                'assign_assets_to' => [
+                    [
+                        'attribute' => 'main',
+                        'channel' => null,
+                        'locale' => null,
+                        'mode' => 'add'
+                    ]
+                ]
+            ]
+        ];
 
         $name = new AttributeDetails();
         $name->identifier = 'designer_name_123456';

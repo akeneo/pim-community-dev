@@ -34,7 +34,8 @@
         "attribute_as_label": { "type": "string" },
         "attribute_as_main_media": { "type": "string" },
         "transformations": { "$ref": "asset-family-transformations.schema.json" },
-        "naming_convention": { "$ref": "asset-family-naming-convention.schema.json" }
+        "naming_convention": { "$ref": "asset-family-naming-convention.schema.json" },
+        "product_link_rules": { "$ref": "asset-family-product-link-rules.schema.json" }
     },
     "required": [
         "identifier",

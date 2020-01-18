@@ -164,7 +164,28 @@
                 },
                 "pattern": "/the_pattern/",
                 "abort_asset_creation_on_error": true
-            }
+            },
+            "product_link_rules": [
+                {
+                    "product_selections": [
+                        {
+                            "field": "fulltext",
+                            "operator": "IN",
+                            "value": "value",
+                            "channel": null,
+                            "locale": null
+                        }
+                    ],
+                    "assign_assets_to": [
+                        {
+                            "attribute": "main",
+                            "channel": null,
+                            "locale": null,
+                            "mode": "add"
+                        }
+                    ]
+                }
+            ]
         }
     }
 }

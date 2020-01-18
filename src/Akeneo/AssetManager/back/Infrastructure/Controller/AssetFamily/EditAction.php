@@ -117,13 +117,17 @@ class EditAction
             ? json_decode($parameters['namingConvention'], true)
             : null
             ;
+        $productLinkRules = $this->isUserAllowedToManageProductLinkRule()
+            ? json_decode($parameters['productLinkRules'], true)
+            : null
+            ;
 
         $command = new EditAssetFamilyCommand(
             $parameters['identifier'],
             $parameters['labels'],
             $parameters['image'],
             $parameters['attributeAsMainMedia'],
-            isset($parameters['productLinkRules']) ? $parameters['productLinkRules'] : null,
+            $productLinkRules,
             $transformations,
             $namingConvention
         );
@@ -204,6 +208,10 @@ class EditAction
 
         if ($this->isUserAllowedToManageProductLinkRule()) {
             $nestedConstraints['namingConvention'] = [
+                new Assert\Type(['string']),
+                new Assert\Json(),
+            ];
+            $nestedConstraints['productLinkRules'] = [
                 new Assert\Type(['string']),
                 new Assert\Json(),
             ];

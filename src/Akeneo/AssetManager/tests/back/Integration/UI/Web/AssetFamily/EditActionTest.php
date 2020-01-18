@@ -78,7 +78,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'filePath'         => '/path/image.jpg',
                 'originalFilename' => 'image.jpg'
             ],
-            'productLinkRules' => null,
+            'productLinkRules' => '[]',
             'transformations' => '[]',
             'namingConvention' => '{"source": {"property": "code", "locale": null, "channel": null}, "pattern": "/pattern/", "abort_asset_creation_on_error": true}',
         ];
@@ -104,6 +104,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         Assert::assertEquals($postContent['labels']['en_US'], $entityItem->getLabel('en_US'));
         Assert::assertEquals($postContent['labels']['fr_FR'], $entityItem->getLabel('fr_FR'));
         Assert::assertInstanceOf(NamingConvention::class, $entityItem->getNamingConvention());
+        Assert::assertInstanceOf(RuleTemplateCollection::class, $entityItem->getRuleTemplateCollection());
     }
 
     /** @test */
@@ -275,7 +276,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'filePath'         => '/path/image.jpg',
                 'originalFilename' => 'image.jpg'
             ],
-            'productLinkRules' => null,
+            'productLinkRules' => 'null',
             'transformations' => '[{"foo": "bar"}]',
             'namingConvention' => '{}',
         ];
@@ -321,7 +322,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'filePath'         => '/path/image.jpg',
                 'originalFilename' => 'image.jpg'
             ],
-            'productLinkRules' => null,
+            'productLinkRules' => 'null',
             'transformations' => '[]',
             'namingConvention' => '{"source": {"property": "code", "locale": null, "channel": null}, "pattern": "/pattern/", "abort_asset_creation_on_error": true}',
         ];

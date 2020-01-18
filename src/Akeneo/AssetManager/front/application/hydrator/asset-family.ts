@@ -7,6 +7,7 @@ import {denormalizeAttributeIdentifier} from 'akeneoassetmanager/domain/model/at
 import {denormalizeAssetFamilyTransformations} from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
 import {denormalizeAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {denormalizeAssetFamilyNamingConvention} from 'akeneoassetmanager/domain/model/asset-family/naming-convention';
+import {denormalizeAssetFamilyProductLinkRules} from 'akeneoassetmanager/domain/model/asset-family/product-link-rule-collection';
 
 export const hydrator = () => (backendAssetFamily: BackendAssetFamily): AssetFamily => {
   return {
@@ -19,6 +20,7 @@ export const hydrator = () => (backendAssetFamily: BackendAssetFamily): AssetFam
     attributes: Object.values(backendAssetFamily.attributes).map(denormalizeAttribute),
     transformations: denormalizeAssetFamilyTransformations(backendAssetFamily.transformations),
     namingConvention: denormalizeAssetFamilyNamingConvention(backendAssetFamily.naming_convention),
+    productLinkRules: denormalizeAssetFamilyProductLinkRules(backendAssetFamily.product_link_rules),
   };
 };
 

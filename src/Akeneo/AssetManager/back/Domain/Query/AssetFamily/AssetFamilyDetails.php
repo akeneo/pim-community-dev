@@ -40,6 +40,7 @@ class AssetFamilyDetails
     public const ATTRIBUTE_AS_MAIN_MEDIA = 'attribute_as_main_media';
     public const TRANSFORMATIONS = 'transformations';
     public const NAMING_CONVENTION = 'naming_convention';
+    public const PRODUCT_LINK_RULES = 'product_link_rules';
 
     /** @var AssetFamilyIdentifier */
     public $identifier;
@@ -68,6 +69,9 @@ class AssetFamilyDetails
     /** @var NamingConventionInterface */
     public $namingConvention;
 
+    /** @var array */
+    public $productLinkRules;
+
     /** @var bool */
     public $isAllowedToEdit = true;
 
@@ -90,6 +94,7 @@ class AssetFamilyDetails
             self::ATTRIBUTE_AS_MAIN_MEDIA => ($this->attributeAsMainMedia->isEmpty()) ? null : $this->attributeAsMainMedia->normalize(),
             self::TRANSFORMATIONS => $this->transformations->normalize(),
             self::NAMING_CONVENTION => $this->namingConvention->normalize(),
+            self::PRODUCT_LINK_RULES => $this->productLinkRules,
         ];
     }
 }

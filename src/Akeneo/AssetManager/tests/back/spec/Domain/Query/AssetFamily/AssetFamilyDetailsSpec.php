@@ -42,6 +42,7 @@ class AssetFamilyDetailsSpec extends ObjectBehavior
         $this->attributeAsLabel = AttributeAsLabelReference::noReference();
         $this->attributeAsMainMedia = AttributeAsMainMediaReference::noReference();
         $this->namingConvention = NamingConvention::createFromNormalized([]);
+        $this->productLinkRules = ['rule'];
 
         $name->normalize()->willReturn(['code' => 'name']);
 
@@ -69,6 +70,7 @@ class AssetFamilyDetailsSpec extends ObjectBehavior
                 'attribute_as_main_media' => null,
                 'transformations' => [],
                 'naming_convention' => new \stdClass,
+                'product_link_rules' => ['rule'],
             ]
         );
     }

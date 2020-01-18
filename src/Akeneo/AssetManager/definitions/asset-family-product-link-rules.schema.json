@@ -1,0 +1,63 @@
+{
+  "title": "BackendAssetFamilyProductLinkRules",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "product_selections": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "field": {"type": "string"},
+            "operator": {"type": "string"},
+            "value": {"type": "string"},
+            "channel": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "locale": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "field",
+            "operator",
+            "value"
+          ]
+        }
+      },
+      "assign_assets_to": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "attribute": {"type": "string"},
+            "mode": {"type": "string"},
+            "channel": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "locale": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "attribute",
+            "mode"
+          ]
+        }
+      }
+    }
+  }
+}

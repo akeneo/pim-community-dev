@@ -23,6 +23,7 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyDetailsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
 use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorProductLinkRulesHydrator;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
@@ -46,16 +47,21 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
     /** @var ConnectorTransformationCollectionHydrator */
     private $transformationCollectionHydrator;
 
+    /** @var ConnectorProductLinkRulesHydrator */
+    private $productLinkRulesHydrator;
+
     public function __construct(
         Connection $sqlConnection,
         FindAttributesDetailsInterface $findAttributesDetails,
         FindActivatedLocalesInterface $findActivatedLocales,
-        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator
+        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
+        ConnectorProductLinkRulesHydrator $productLinkRulesHydrator
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->findAttributesDetails = $findAttributesDetails;
         $this->findActivatedLocales = $findActivatedLocales;
         $this->transformationCollectionHydrator = $transformationCollectionHydrator;
+        $this->productLinkRulesHydrator = $productLinkRulesHydrator;
     }
 
     /**
@@ -83,7 +89,8 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
             $result['attribute_as_label'],
             $result['attribute_as_main_media'],
             json_decode($result['transformations'], true),
-            json_decode($result['naming_convention'], true)
+            json_decode($result['naming_convention'], true),
+            json_decode($result['rule_templates'], true)
         );
     }
 
@@ -97,6 +104,7 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
             am.attribute_as_main_media,
             am.transformations,
             COALESCE(am.naming_convention, '{}') as naming_convention,
+            am.rule_templates,
             fi.file_key,
             fi.original_filename, (
                 SELECT count(*) FROM akeneo_asset_manager_asset WHERE asset_family_identifier = :identifier
@@ -130,7 +138,8 @@ SQL;
         ?string $attributeAsLabel,
         ?string $attributeAsMainMedia,
         array $transformations,
-        array $namingConvention
+        array $namingConvention,
+        array $productLinkRules
     ): AssetFamilyDetails {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $activatedLocales = $this->findActivatedLocales->findAll();
@@ -162,6 +171,7 @@ SQL;
             AssetFamilyIdentifier::fromString($identifier)
         );
         $assetFamilyItem->namingConvention = NamingConvention::createFromNormalized($namingConvention);
+        $assetFamilyItem->productLinkRules = $this->productLinkRulesHydrator->hydrate($productLinkRules);
 
         return $assetFamilyItem;
     }

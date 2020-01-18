@@ -6,6 +6,7 @@ import {File} from 'akeneoassetmanager/domain/model/file';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import TransformationCollection from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
 import NamingConvention from 'akeneoassetmanager/domain/model/asset-family/naming-convention';
+import ProductLinkRuleCollection from 'akeneoassetmanager/domain/model/asset-family/product-link-rule-collection';
 
 export interface EditionFormState {
   state: FormState;
@@ -26,6 +27,7 @@ const dataReducer = (
     attributeAsMainMedia,
     transformations,
     namingConvention,
+    productLinkRules,
   }: {
     type: string;
     assetFamily: AssetFamily;
@@ -35,6 +37,7 @@ const dataReducer = (
     attributeAsMainMedia: AttributeIdentifier;
     transformations: TransformationCollection;
     namingConvention: NamingConvention;
+    productLinkRules: ProductLinkRuleCollection;
   }
 ) => {
   switch (type) {
@@ -55,6 +58,9 @@ const dataReducer = (
       break;
     case 'ASSET_FAMILY_EDITION_NAMING_CONVENTION_UPDATED':
       state = {...state, namingConvention};
+      break;
+    case 'ASSET_FAMILY_EDITION_PRODUCT_LINK_RULES_UPDATED':
+      state = {...state, productLinkRules};
       break;
     default:
       break;

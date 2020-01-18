@@ -8,8 +8,10 @@ import Header from 'akeneoassetmanager/application/component/asset-family/edit/h
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import NamingConvention from 'akeneoassetmanager/domain/model/asset-family/naming-convention';
+import ProductLinkRuleCollection from 'akeneoassetmanager/domain/model/asset-family/product-link-rule-collection';
 import {
   assetFamilyNamingConventionUpdated,
+  assetFamilyProductLinkRulesUpdated,
   saveAssetFamily,
 } from 'akeneoassetmanager/application/action/asset-family/edit';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
@@ -18,7 +20,8 @@ import {getErrorsViewStartedWith} from 'akeneoassetmanager/application/component
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 const ajv = new Ajv({allErrors: true, verbose: true});
-const schema = require('akeneoassetmanager/infrastructure/model/asset-family-naming-convention.schema.json');
+const namingConventionSchema = require('akeneoassetmanager/infrastructure/model/asset-family-naming-convention.schema.json');
+const productLinkRulesSchema = require('akeneoassetmanager/infrastructure/model/asset-family-product-link-rules.schema.json');
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -31,6 +34,7 @@ interface StateProps {
   rights: {
     assetFamily: {
       edit_naming_convention: boolean;
+      edit_product_link_rules: boolean;
     };
   };
 }
@@ -39,6 +43,13 @@ type AssetFamilyNamingConventionEditorProps = {
   namingConvention: NamingConvention;
   errors: ValidationError[];
   onAssetFamilyNamingConventionChange: (namingConvention: NamingConvention) => void;
+  editMode: boolean;
+};
+
+type AssetFamilyProductLinkRulesEditorProps = {
+  productLinkRules: ProductLinkRuleCollection;
+  errors: ValidationError[];
+  onAssetFamilyProductLinkRulesChange: (productLinkRules: ProductLinkRuleCollection) => void;
   editMode: boolean;
 };
 
@@ -65,7 +76,7 @@ const AssetFamilyNamingConventionEditor = ({
           onAssetFamilyNamingConventionChange(JSON.stringify(event));
         }}
         mode="code"
-        schema={schema}
+        schema={namingConventionSchema}
         ajv={ajv}
       />
       {getErrorsViewStartedWith(errors, 'naming_convention')}
@@ -73,9 +84,40 @@ const AssetFamilyNamingConventionEditor = ({
   );
 };
 
+const AssetFamilyProductLinkRulesEditor = ({
+  productLinkRules,
+  errors,
+  onAssetFamilyProductLinkRulesChange,
+  editMode,
+}: AssetFamilyProductLinkRulesEditorProps) => {
+  //https://github.com/vankop/jsoneditor-react/blob/HEAD/src/Editor.jsx
+  if (!editMode) {
+    return (
+      <div className="AknJsonEditor">
+        <Editor value={JSON.parse(productLinkRules)} mode="view" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="AknJsonEditor">
+      <Editor
+        value={JSON.parse(productLinkRules)}
+        onChange={(event: object) => {
+          onAssetFamilyProductLinkRulesChange(JSON.stringify(null === event ? [] : event));
+        }}
+        mode="code"
+        schema={productLinkRulesSchema}
+        ajv={ajv}
+      />
+      {getErrorsViewStartedWith(errors, 'product_link_rules')}    </div>
+  );
+};
+
 interface DispatchProps {
   events: {
     onAssetFamilyNamingConventionUpdated: (namingConvention: NamingConvention) => void;
+    onAssetFamilyProductLinkRulesUpdated: (productLinkRules: ProductLinkRuleCollection) => void;
     onSaveEditForm: () => void;
   };
 }
@@ -120,6 +162,21 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps, Produc
             />
           </div>
         </div>
+        <div className="AknSubsection">
+          <header className="AknSubsection-title">
+            <span className="group-label">{__('pim_asset_manager.asset_family.product_link_rules.product_link_rules_subsection')}</span>
+          </header>
+          <div className="AknFormContainer AknFormContainer--wide">
+            <AssetFamilyProductLinkRulesEditor
+              productLinkRules={this.props.assetFamily.productLinkRules}
+              errors={this.props.errors}
+              onAssetFamilyProductLinkRulesChange={(productLinkRules: ProductLinkRuleCollection) => {
+                this.props.events.onAssetFamilyProductLinkRulesUpdated(productLinkRules);
+              }}
+              editMode={this.props.rights.assetFamily.edit_product_link_rules}
+            />
+          </div>
+        </div>
       </React.Fragment>
     );
   }
@@ -140,6 +197,10 @@ export default connect(
             securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
             securityContext.isGranted('akeneo_assetmanager_asset_family_manage_product_link_rule') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
+          edit_product_link_rules:
+            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_asset_family_manage_product_link_rule') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },
     };
@@ -149,6 +210,9 @@ export default connect(
       events: {
         onAssetFamilyNamingConventionUpdated: (namingConvention: NamingConvention) => {
           dispatch(assetFamilyNamingConventionUpdated(namingConvention));
+        },
+        onAssetFamilyProductLinkRulesUpdated: (productLinkRules: ProductLinkRuleCollection) => {
+          dispatch(assetFamilyProductLinkRulesUpdated(productLinkRules));
         },
         onSaveEditForm: () => {
           dispatch(saveAssetFamily());

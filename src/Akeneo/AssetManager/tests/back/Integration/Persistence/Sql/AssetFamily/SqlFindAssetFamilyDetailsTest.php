@@ -85,6 +85,7 @@ class SqlFindAssetFamilyDetailsTest extends SqlIntegrationTestCase
             'pattern' => '/the_pattern/',
             'abort_asset_creation_on_error' => true,
         ]);
+        $designer->productLinkRules = [];
 
         $this->assertAssetFamilyItem($designer, $entity);
     }
@@ -142,5 +143,7 @@ class SqlFindAssetFamilyDetailsTest extends SqlIntegrationTestCase
         $this->assertInstanceOf(ConnectorTransformationCollection::class, $actual->transformations);
         $this->assertInstanceOf(NamingConvention::class, $actual->namingConvention);
         $this->assertEquals($expected->namingConvention->normalize(), $actual->namingConvention->normalize());
+        $this->assertIsArray($actual->productLinkRules);
+        $this->assertEquals($expected->productLinkRules, $actual->productLinkRules);
     }
 }
