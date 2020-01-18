@@ -41,7 +41,7 @@ import {
   HelperText,
   HelperTitle,
 } from 'akeneoassetmanager/platform/component/common/helper';
-import {NoDataSection, NoDataText, NoDataTitle} from 'akeneoassetmanager/platform/component/common/no-data';
+import {NoDataSection, NoDataTitle} from 'akeneoassetmanager/platform/component/common/no-data';
 import {RuleRelation} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 import {RuleNotification} from 'akeneoassetmanager/platform/component/rule-notification';
 import {selectErrors} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/errors';
@@ -54,6 +54,7 @@ import LockIcon from 'akeneoassetmanager/platform/component/visual/icon/lock';
 import {ResultCounter} from 'akeneoassetmanager/application/component/app/result-counter';
 import {addAssetsToCollection, emptyCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import {Link} from 'akeneoassetmanager/application/component/app/link';
 
 type ListStateProps = {
   attributes: Attribute[];
@@ -211,8 +212,6 @@ const List = ({
   productLabels,
   onChange,
 }: ListStateProps & ListDispatchProps) => {
-  const familyLabel = null !== family ? family.labels[context.locale] : '';
-
   return (
     <AssetCollectionList>
       {hasValues(values) ? (
@@ -234,20 +233,17 @@ const List = ({
             <HelperTitle>
               👋 {__('pim_asset_manager.asset_collection.helper.title')}
               <HelperText>
-                {__('pim_asset_manager.asset_collection.helper.text', {family: familyLabel})}
+                {__('pim_asset_manager.asset_collection.helper.text')}
                 <br />
-                <a href="#">{__('pim_asset_manager.asset_collection.helper.link')}</a>
+                <Link href="https://help.akeneo.com/" target="_blank">
+                  {__('pim_asset_manager.asset_collection.helper.link')}
+                </Link>
               </HelperText>
             </HelperTitle>
           </HelperSection>
           <NoDataSection>
             <AssetIllustration size={256} />
             <NoDataTitle>{__('pim_asset_manager.asset_collection.no_asset.title')}</NoDataTitle>
-            <NoDataText>
-              {__('pim_asset_manager.asset_collection.no_asset.text', {family: familyLabel})}
-              <Spacer />
-              <a href="#">{__('pim_asset_manager.asset_collection.helper.link')}</a>
-            </NoDataText>
           </NoDataSection>
         </React.Fragment>
       )}

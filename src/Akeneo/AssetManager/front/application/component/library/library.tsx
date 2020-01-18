@@ -352,11 +352,11 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 <HelperTitle>
                   👋 {__('pim_asset_manager.asset_family.helper.title')}
                   <HelperText>
-                    {__('pim_asset_manager.asset_family.helper.no_asset_family.text', {
-                      family: currentAssetFamilyLabel,
-                    })}
+                    {__('pim_asset_manager.asset_family.helper.no_asset_family.text')}
                     <br />
-                    <Link href="#">{__('pim_asset_manager.asset_family.helper.no_asset_family.link')}</Link>
+                    <Link href="https://help.akeneo.com/" target="_blank">
+                      {__('pim_asset_manager.asset_family.helper.no_asset_family.link')}
+                    </Link>
                   </HelperText>
                 </HelperTitle>
               </HelperSection>
@@ -364,8 +364,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 <AssetIllustration size={256} />
                 <NoDataTitle>{__('pim_asset_manager.asset_family.no_data.no_asset_family.title')}</NoDataTitle>
                 <NoDataText>
-                  {/* {__('pim_asset_manager.asset_family.no_data.no_asset_family.title')}
-                  <Spacer /> */}
                   <Link onClick={() => setCreateAssetFamilyModalOpen(true)}>
                     {__('pim_asset_manager.asset_family.no_data.no_asset_family.link')}
                   </Link>
@@ -381,8 +379,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                   👋 {__('pim_asset_manager.asset_family.helper.title')}
                   <HelperText>
                     {__('pim_asset_manager.asset_family.helper.no_asset.text', {family: currentAssetFamilyLabel})}
-                    <br />
-                    <Link href="#">{__('pim_asset_manager.asset_family.helper.no_asset.link')}</Link>
                   </HelperText>
                 </HelperTitle>
               </HelperSection>
@@ -390,8 +386,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 <AssetIllustration size={256} />
                 <NoDataTitle>{__('pim_asset_manager.asset_family.no_data.no_asset.title')}</NoDataTitle>
                 <NoDataText>
-                  {/* {__('pim_asset_manager.asset_family.helper.no_asset.text', {family: currentAssetFamilyLabel})}
-                  <Spacer /> */}
                   <Link onClick={() => setCreateAssetModalOpen(true)}>
                     {__('pim_asset_manager.asset_family.no_data.no_asset.link')}
                   </Link>

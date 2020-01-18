@@ -15,12 +15,11 @@ pim_asset_manager:
     add_asset_title: 'Open the asset picker to add assets to the collection'
     no_asset_in_collection: 'Sorry, there is no asset in this collection.'
     helper:
-      title: 'Welcome to your new product asset management area!'
-      text: 'There are no asset collection for the {{ family }} family! How to add an asset collection?'
+      title: 'Welcome to your brand new product asset management space!'
+      text: 'There is no asset collection for this family. To take part of this new experience, just add an asset collection attribute in your settings.'
       link: 'How to add an asset collection?'
     no_asset:
-      title: 'Sorry, there are no asset for this product'
-      text: 'There are no asset collection for the {{ family }} family!'
+      title: 'Sorry, there is no asset for this product.'
     notification:
       product_rule: 'This collection can be updated by a product rule:'
       limit: 'You have reached the limit of {{ limit }} assets per collection, you can no longer add assets to your collection.'
@@ -173,16 +172,15 @@ pim_asset_manager:
         success: Transformations have been launched. Once this job is finished, you will see your new variations updated in your assets.
         fail: An error occured when trying to compute the transformations
     helper:
-      title: Welcome to your new asset management area!
+      title: Welcome to the Asset Manager!
       no_asset:
-        text: There are no asset for the {{ family }} family!
-        link: How to add an asset?
+        text: There is no asset in the {{ family }} family. Click on "Create" and choose whether you want to create an empty asset or mass upload assets.
       no_asset_family:
-        text: There are no asset family!
-        link: How to add an asset family?
+        text: A library that gathers your assets (images, videos, documents...), filtered by asset families. Create your 1st asset family, set its attributes and upload assets!
+        link: For more details, we invite you to browse this article.
     no_data:
       no_asset:
-        title: Sorry, there are no asset!
+        title: Sorry, there is no asset!
         link: Click here to add an asset
       no_asset_family:
         title: Sorry, there is no asset family!
@@ -204,10 +202,10 @@ pim_asset_manager:
         pattern: 'This field may only contain letters, numbers and underscores.'
         should_be_unique: 'This code already exists for this entity.'
     no_data:
-      title: There are no asset for {{ entityLabel }}
+      title: There is no asset for {{ entityLabel }}
       subtitle: Click on the button "Add new" to create the first asset
     no_result:
-      title: There are no result for your search
+      title: There is no result for your search
       subtitle: Try again with new search criteria.
     selector:
       no_value: Click here to select an asset.
