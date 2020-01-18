@@ -61,6 +61,7 @@ pim_common:
   properties: Propiedades
   name: Nombre
   remove: Eliminar
+  code: Código
 pim_enrich:
   #ACLs
   acl:
@@ -154,8 +155,6 @@ pim_enrich:
       remove: Remover las asociaciones de un producto
     job_tracker:
       index: Visualizar los procesos ejecutados
-    api_connection:
-      manage: Gestionar las conexiones API
   acl_group:
     association_type: Tipos de asociaciones
     attribute: Atributos
@@ -202,6 +201,7 @@ flash:
     removed: Artículo eliminado
   attribute:
     identifier_not_removable: El identificador de atributo no puede ser eliminado
+    used_as_conversion_unit: Este atributo no puede eliminarse porque se utiliza como unidad de conversión en el(los) canal(es) %channelCodes%.
   category:
     removed: Categoría eliminada correctamente
   tree:
