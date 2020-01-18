@@ -45,6 +45,7 @@ import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/att
 import {clearImageLoadingQueue} from 'akeneoassetmanager/tools/image-loader';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 
 const Header = styled.div`
   padding-left: 40px;
@@ -221,23 +222,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const notify = useNotify();
   const {redirectToAsset, redirectToAssetFamily} = useRoute();
 
-  const familyBreadcrumbConfiguration =
-    null === currentAssetFamilyIdentifier
-      ? []
-      : [
-          {
-            action: {
-              type: 'redirect',
-              route: 'akeneo_asset_manager_asset_family_edit',
-              parameters: {
-                identifier: currentAssetFamilyIdentifier,
-                tab: 'property',
-              },
-            },
-            label: currentAssetFamilyLabel,
-          },
-        ];
-
   const hasMediaLinkAsMainMedia =
     null !== currentAssetFamily && isMediaLinkAttribute(getAttributeAsMainMedia(currentAssetFamily));
 
@@ -330,16 +314,11 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             withChannelSwitcher={true}
             isDirty={false}
             isLoading={false}
-            breadcrumbConfiguration={[
-              {
-                action: {
-                  type: 'redirect',
-                  route: 'akeneo_asset_manager_asset_family_index',
-                },
-                label: __('pim_asset_manager.asset_family.breadcrumb'),
-              },
-              ...familyBreadcrumbConfiguration,
-            ]}
+            breadcrumbConfiguration={breadcrumbConfiguration(
+              currentAssetFamilyIdentifier,
+              currentAssetFamilyLabel,
+              'property'
+            )}
             displayActions={true}
           />
         </Header>

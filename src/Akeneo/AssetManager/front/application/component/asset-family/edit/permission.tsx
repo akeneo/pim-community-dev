@@ -55,45 +55,42 @@ class Permission extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
 
   render() {
-    const assetFamily = this.props.assetFamily;
+    const {assetFamily, context, rights, permission, events} = this.props;
+    const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
 
     return (
       <React.Fragment>
         <Header
-          label={getAssetFamilyLabel(assetFamily, this.props.context.locale)}
+          label={__('pim_asset_manager.asset_family.tab.permission')}
           image={assetFamily.image}
-          primaryAction={(defaultFocus: React.RefObject<any>) => {
-            return this.props.rights.assetFamily.edit && !this.props.permission.data.isEmpty() ? (
+          primaryAction={(defaultFocus: React.RefObject<any>) =>
+            rights.assetFamily.edit && !permission.data.isEmpty() ? (
               <button
                 className="AknButton AknButton--apply"
-                onClick={this.props.events.onSavePermissionEditForm}
+                onClick={events.onSavePermissionEditForm}
                 ref={defaultFocus}
               >
                 {__('pim_asset_manager.asset_family.button.save_permission')}
               </button>
-            ) : null;
-          }}
-          secondaryActions={() => {
-            return null;
-          }}
+            ) : null
+          }
+          secondaryActions={() => null}
           withLocaleSwitcher={false}
           withChannelSwitcher={false}
-          isDirty={this.props.permission.state.isDirty}
-          breadcrumbConfiguration={breadcrumbConfiguration}
+          isDirty={permission.state.isDirty}
+          breadcrumbConfiguration={breadcrumbConfiguration(assetFamily.identifier, assetFamilyLabel)}
         />
         <div className="AknSubsection">
           <StickyHeader>
             <span className="group-label">{__('pim_asset_manager.asset_family.permission.title')}</span>
           </StickyHeader>
           <div className="AknFormContainer AknFormContainer--wide">
-            {!this.props.permission.data.isEmpty() ? (
+            {!permission.data.isEmpty() ? (
               <PermissionCollectionEditor
-                readOnly={!this.props.rights.assetFamily.edit}
-                value={this.props.permission.data}
+                readOnly={!rights.assetFamily.edit}
+                value={permission.data}
                 prioritizedRightLevels={[RightLevel.View, RightLevel.Edit]}
-                onChange={(newValue: PermissionCollection) => {
-                  this.props.events.onPermissionUpdated(newValue);
-                }}
+                onChange={events.onPermissionUpdated}
               />
             ) : (
               <div className="AknGridContainer-noData">
@@ -101,11 +98,11 @@ class Permission extends React.Component<StateProps & DispatchProps> {
                 <div className="AknGridContainer-noDataTitle">{__('pim_asset_manager.permission.no_data.title')}</div>
                 <div className="AknGridContainer-noDataSubtitle">
                   {__('pim_asset_manager.permission.no_data.subtitle')}{' '}
-                  {this.props.rights.userGroup.create ? (
+                  {rights.userGroup.create && (
                     <a href={`#${routing.generate('pim_user_group_index')}`} target="_blank">
                       {__('pim_asset_manager.permission.no_data.link')}
                     </a>
-                  ) : null}
+                  )}
                 </div>
               </div>
             )}

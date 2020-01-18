@@ -5,7 +5,7 @@ import 'jsoneditor-react/es/editor.min.css';
 import __ from 'akeneoassetmanager/tools/translator';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
-import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import NamingConvention from 'akeneoassetmanager/domain/model/asset-family/naming-convention';
 import {
@@ -24,6 +24,9 @@ const securityContext = require('pim/security-context');
 interface StateProps {
   form: EditionFormState;
   assetFamily: AssetFamily;
+  context: {
+    locale: string;
+  };
   errors: ValidationError[];
   rights: {
     assetFamily: {
@@ -81,40 +84,39 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps, Produc
   props: StateProps & DispatchProps;
 
   render() {
+    const {assetFamily, context, form, errors, events, rights} = this.props;
+    const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
+
     return (
       <React.Fragment>
         <Header
           label={__('pim_asset_manager.asset_family.tab.product_link_rules')}
           image={null}
-          primaryAction={(defaultFocus: React.RefObject<any>) => {
-            return this.props.rights.assetFamily.edit_naming_convention ? (
-              <button
-                className="AknButton AknButton--apply"
-                onClick={this.props.events.onSaveEditForm}
-                ref={defaultFocus}
-              >
+          primaryAction={(defaultFocus: React.RefObject<any>) =>
+            rights.assetFamily.edit_naming_convention ? (
+              <button className="AknButton AknButton--apply" onClick={events.onSaveEditForm} ref={defaultFocus}>
                 {__('pim_asset_manager.asset_family.button.save')}
               </button>
-            ) : null;
-          }}
+            ) : null
+          }
           secondaryActions={() => null}
           withLocaleSwitcher={false}
           withChannelSwitcher={false}
-          isDirty={this.props.form.state.isDirty}
-          breadcrumbConfiguration={breadcrumbConfiguration}
+          isDirty={form.state.isDirty}
+          breadcrumbConfiguration={breadcrumbConfiguration(assetFamily.identifier, assetFamilyLabel)}
         />
         <div className="AknSubsection">
           <header className="AknSubsection-title">
-            <span className="group-label">{__('pim_asset_manager.asset_family.product_link_rules.naming_convention_subsection')}</span>
+            <span className="group-label">
+              {__('pim_asset_manager.asset_family.product_link_rules.naming_convention_subsection')}
+            </span>
           </header>
           <div className="AknFormContainer AknFormContainer--wide">
             <AssetFamilyNamingConventionEditor
-              namingConvention={this.props.assetFamily.namingConvention}
-              errors={this.props.errors}
-              onAssetFamilyNamingConventionChange={(namingConvention: NamingConvention) => {
-                this.props.events.onAssetFamilyNamingConventionUpdated(namingConvention);
-              }}
-              editMode={this.props.rights.assetFamily.edit_naming_convention}
+              namingConvention={assetFamily.namingConvention}
+              errors={errors}
+              onAssetFamilyNamingConventionChange={events.onAssetFamilyNamingConventionUpdated}
+              editMode={rights.assetFamily.edit_naming_convention}
             />
           </div>
         </div>
@@ -128,6 +130,9 @@ export default connect(
     return {
       form: state.form,
       assetFamily: state.form.data,
+      context: {
+        locale: state.user.catalogLocale,
+      },
       errors: state.form.errors,
       rights: {
         assetFamily: {

@@ -5,7 +5,7 @@ import 'jsoneditor-react/es/editor.min.css';
 import __ from 'akeneoassetmanager/tools/translator';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
-import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import TransformationCollection from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
 import {
@@ -25,6 +25,9 @@ const securityContext = require('pim/security-context');
 interface StateProps {
   form: EditionFormState;
   assetFamily: AssetFamily;
+  context: {
+    locale: string;
+  };
   errors: ValidationError[];
   rights: {
     assetFamily: {
@@ -81,57 +84,46 @@ interface DispatchProps {
   };
 }
 
-const SecondaryActions = ({onLaunchComputeTransformations}: {onLaunchComputeTransformations: () => void}) => {
-  return (
-    <>
-      <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-        <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
-        <div className="AknDropdown-menu AknDropdown-menu--right">
-          <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
-          <div>
-            <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onLaunchComputeTransformations()}>
-              {__('pim_asset_manager.asset.button.launch_transformations')}
-            </button>
-          </div>
-        </div>
+const SecondaryActions = ({onLaunchComputeTransformations}: {onLaunchComputeTransformations: () => void}) => (
+  <div className="AknSecondaryActions AknDropdown AknButtonList-item">
+    <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
+    <div className="AknDropdown-menu AknDropdown-menu--right">
+      <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
+      <div>
+        <button tabIndex={-1} className="AknDropdown-menuLink" onClick={onLaunchComputeTransformations}>
+          {__('pim_asset_manager.asset.button.launch_transformations')}
+        </button>
       </div>
-    </>
-  );
-};
+    </div>
+  </div>
+);
 
 class Transformation extends React.Component<StateProps & DispatchProps, Transformation> {
   props: StateProps & DispatchProps;
 
   render() {
+    const {assetFamily, context, events, rights, form, errors} = this.props;
+    const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
+
     return (
       <React.Fragment>
         <Header
           label={__('pim_asset_manager.asset_family.tab.transformations')}
           image={null}
-          primaryAction={(defaultFocus: React.RefObject<any>) => {
-            return this.props.rights.assetFamily.edit ? (
-              <button
-                className="AknButton AknButton--apply"
-                onClick={this.props.events.onSaveEditForm}
-                ref={defaultFocus}
-              >
+          primaryAction={(defaultFocus: React.RefObject<any>) =>
+            rights.assetFamily.edit ? (
+              <button className="AknButton AknButton--apply" onClick={events.onSaveEditForm} ref={defaultFocus}>
                 {__('pim_asset_manager.asset_family.button.save')}
               </button>
-            ) : null;
-          }}
-          secondaryActions={() => {
-            return (
-              <SecondaryActions
-                onLaunchComputeTransformations={() => {
-                  this.props.events.onLaunchComputeTransformations();
-                }}
-              />
-            );
-          }}
+            ) : null
+          }
+          secondaryActions={() => (
+            <SecondaryActions onLaunchComputeTransformations={events.onLaunchComputeTransformations} />
+          )}
           withLocaleSwitcher={false}
           withChannelSwitcher={false}
-          isDirty={this.props.form.state.isDirty}
-          breadcrumbConfiguration={breadcrumbConfiguration}
+          isDirty={form.state.isDirty}
+          breadcrumbConfiguration={breadcrumbConfiguration(assetFamily.identifier, assetFamilyLabel)}
         />
         <div className="AknDescriptionHeader AknDescriptionHeader--sticky">
           <div
@@ -156,12 +148,10 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
           </header>
           <div className="AknFormContainer AknFormContainer--wide">
             <AssetFamilyTransformationEditor
-              transformations={this.props.assetFamily.transformations}
-              errors={this.props.errors}
-              onAssetFamilyTransformationsChange={(transformations: TransformationCollection) => {
-                this.props.events.onAssetFamilyTransformationsUpdated(transformations);
-              }}
-              editMode={this.props.rights.assetFamily.edit}
+              transformations={assetFamily.transformations}
+              errors={errors}
+              onAssetFamilyTransformationsChange={events.onAssetFamilyTransformationsUpdated}
+              editMode={rights.assetFamily.edit}
             />
           </div>
         </div>
@@ -175,6 +165,9 @@ export default connect(
     return {
       form: state.form,
       assetFamily: state.form.data,
+      context: {
+        locale: state.user.catalogLocale,
+      },
       errors: state.form.errors,
       rights: {
         assetFamily: {
