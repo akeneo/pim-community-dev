@@ -37,7 +37,7 @@ import {
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneoassetmanager/platform/component/common/no-data';
 import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import {Link} from 'akeneoassetmanager/application/component/app/link';
-import {ColumnTitle, Column} from 'akeneoassetmanager/application/component/app/column';
+import {Column} from 'akeneoassetmanager/application/component/app/column';
 import AssetFetcher from 'akeneoassetmanager/domain/fetcher/asset';
 import {ChannelFetcher} from 'akeneoassetmanager/application/hooks/channel';
 import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
@@ -227,8 +227,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
 
   return (
     <Container>
-      <Column>
-        <ColumnTitle>{__('pim_asset_manager.asset_family.column.title')}</ColumnTitle>
+      <Column title={__('pim_asset_manager.asset_family.column.title')}>
         <AssetFamilySelector
           assetFamilyIdentifier={currentAssetFamilyIdentifier}
           locale={context.locale}
