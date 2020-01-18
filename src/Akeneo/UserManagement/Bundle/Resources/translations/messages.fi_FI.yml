@@ -40,6 +40,13 @@ pim_user:
       has_group: Ryhmässä
       active: Aktiivinen
       inactive: Ei aktiivinen
+    fields_errors:
+      new_password:
+        minimum_length: Salasanan pitää olla vähintään 2 merkkiä
+      new_password_repeat:
+        not_match: Salasanat eivät täsmää
+      current_password:
+        wrong: Väärä salasana
     tabs:
       general:
         title: Yleinen

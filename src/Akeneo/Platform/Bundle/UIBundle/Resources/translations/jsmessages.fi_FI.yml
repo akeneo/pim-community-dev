@@ -168,6 +168,7 @@ pim_common:
   history: Historia
   label: Nimike
   label_translations: Nimikkeiden käännökset
+  Label or identifier: nimike tai tunniste
   less_than: Vähemmän kuin
   loading: Lataa...
   media_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
@@ -212,11 +213,13 @@ error:
   forbidden: Käyttö estetty. Et saa käyttää tätä sivua
 alert:
   attribute_option:
+    error_occurred_during_submission: Virhe lomakkeen lähettämisessä palvelimelle
     save_before_edit_other: Rekisteröi muiden rivien muokkauksesi ennen tämän muokkaamista
   session_storage:
     not_available: Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.
 pim_enrich.entity.fallback:
   flash:
+    generic_error: Tapahtui virhe
     update:
       fail: Päivitys epäonnistui
       success: Päivitys onnistui

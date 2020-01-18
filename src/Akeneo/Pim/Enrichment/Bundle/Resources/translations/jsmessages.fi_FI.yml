@@ -5,10 +5,13 @@ flash:
   comment:
     create:
       success: Kommentti luotu.
+      error: Kommenttia luotaessa tapahtui virhe.
     delete:
       success: Kommentti poistettu.
+      error: Kommenttia poistaessa tapahtui virhe.
     reply:
       success: Vastaus luotu.
+      error: Vastausta luotaessa tapahtui virhe.
 pim_enrich.entity.product:
   label: tuote
   uppercase_label: Tuote
@@ -19,6 +22,7 @@ pim_enrich.entity.product:
       fail: Tuotetta ei voitu päivittää.
       fields_not_ready: "Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}"
       already_in_upload: Tiedosto on jo ladattu attribuutin lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
+      file_upload: Tiedoston lataamisessa tapahtui virhe
     delete:
       success: Tuote poistettiin.
       fail: Tuotetta ei voi poistaa.
@@ -113,6 +117,7 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} kommentoi tuotetta'
       header_reply: '{{ user }} vastaa kommenttiin'
       delete_confirm: Oletko varma että haluat poistaa tämän kommentin?
+      removed_author: Poistettu käyttäjä
     asset:
       title: Assetit
 pim_enrich.entity.product_model:
@@ -269,6 +274,8 @@ pim_enrich.mass_edit.product:
       label: Muuta asetuksia
     confirm:
       label: Vahvista
+    launch_error:
+      label: Massamuokkauksen käynnistyksen yhteydessä tapahtui virhe
     launched:
       label: Massamuokkaus "{{ operation }}" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
   operation:
@@ -310,6 +317,7 @@ pim_enrich.mass_edit.product:
       label: Poista kategorioista
       label_count: "{1}Poista <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioista|]1, Inf[Poista <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioista"
       description: Tuotteet poistetaan seuraavista kategorioista.
+      no_update: Kategoriaa ei ole valittu poistettaville tuotteille.
     add_to_existing_product_model:
       label: Lisää olemassaolevaan tuotemalliin
       label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> olemassa olevaan tuotemalliin|]1, Inf[Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> olemassa olevaan tuotemalliin"
@@ -334,6 +342,7 @@ pim_datagrid:
     delete:
       confirm_content: Oletko varma, että haluat poistaa valitut tuotteet?
       success: Valitut tuotteet poistettiin.
+      error: Valittujen tuotteiden poistamisessa tapahtui virhe, yritä uudelleen.
     quick_export:
       csv_all: CSV (kaikki attribuutit)
       csv_grid_context: CSV (Ruudukon konteksti)
