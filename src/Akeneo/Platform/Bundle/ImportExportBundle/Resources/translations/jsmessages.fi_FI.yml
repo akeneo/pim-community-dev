@@ -28,6 +28,8 @@ pim_import_export:
       flash:
         create:
           success: Tuontiprofiilin tallentaminen onnistui
+        upload:
+          error: Tiedoston lataaminen ei onnistu. Sen koko ylittää maksimikokorajoituksen (PHP tai HTTP palvelimen konfiguraatio)
       page_title:
         index: "]-Inf, 1] {{ count }} tuontiprofiili|]1, Inf [{{ count }} tuontiprofiilia"
       module:
@@ -110,7 +112,7 @@ pim_import_export:
             help: Kategoriasarakkeen nimi
           escape:
             title: Koodinvaihto
-            help: Ohjausmerkki
+            help: Yhtä merkkiä käytetään kentän "poistu" määrittämiseen
           family_column:
             title: Perhesarake
             help: Perhesarakkeen nimi
@@ -118,8 +120,8 @@ pim_import_export:
             title: Ryhmäsarake
             help: Ryhmäsarakkeen nimi
           enabled:
-            title: Enabloi tuote
-            help: Pitääkö tuodun tuotteen olla enabloitu
+            title: Ota tuote käyttöön
+            help: Pitääkö tuodun tuotteen olla käytössä
           enabled_comparison:
             title: Vertaa arvoja
             help: Ota päälle alkuperäisten ja tuotujen arvojen vertailu. Voi nopeuttaa tuonti, ja tuodut arvot ovat hyvin samanlaisia kuin alkuperäiset arvot
@@ -140,10 +142,16 @@ pim_enrich:
       module:
         delete:
           confirm: Oletko varma, että haluat poistaa tämän tuontiprofiilin?
+      flash:
+        delete:
+          success: Tuontiprofiili poistettiin onnistuneesti
     export_profile:
       module:
         delete:
           confirm: Oletko varma, että haluat poistaa tämän vientiprofiilin?
+      flash:
+        delete:
+          success: Vientiprofiili poistettiin onnistuneesti
 pim_title:
   pim_importexport_export_profile_index: Vientiprofiilien hallinta
   pim_importexport_export_profile_edit: Vientiprofiili {{ job.label }} | Muokkaa

@@ -16,11 +16,11 @@ pim_user:
       roles: Roolit
       groups: Ryhmät
       password: Salasana
-      password_again: Syötä salasana uudelleen
+      password_again: Toista uusi salasana
       product_grid_filters: Tuoteruudukon suodattimet
-      catalog_locale: Katalogin lokaatio
-      catalog_scope: Katalogin laajuus
-      default_tree: Oletusarvoinen puu
+      catalog_locale: Tuotekatalogin lokaatio
+      catalog_scope: Tuotekatalogin kanava
+      default_tree: Oletuskategoria
       current_password: Nykyinen salasana
       new_password: Uusi salasana
       new_password_again: Uusi salasana (toista)
@@ -36,10 +36,17 @@ pim_user:
       updated: Päivitetty
       status: Status
       capabilities: Ominaisuudet
-      has_role: On rooli
-      has_group: Ryhmä on olemassa
+      has_role: Roolissa
+      has_group: Ryhmässä
       active: Aktiivinen
       inactive: Ei aktiivinen
+    fields_errors:
+      new_password:
+        minimum_length: Salasanan pitää olla vähintään 2 merkkiä
+      new_password_repeat:
+        not_match: Salasanat eivät täsmää
+      current_password:
+        wrong: Väärä salasana
     tabs:
       general:
         title: Yleinen
@@ -63,8 +70,8 @@ pim_user:
       log_in: Kirjaudu
       forgot_password: Unohdin salasanani
       request: Pyyntö
-      password_reset: Salasanan nollaus
-      reset: Nollaa muutokset
+      password_reset: Salasanan asettaminen
+      reset: Tallenna
       password_reset_email_sent: Sähköposti lähetettiin käyttäjälle. Se sisältää linkin salasanan vaihtamiseksi.
       homepage: Siirry etusivulle
   group:
@@ -90,8 +97,8 @@ pim_user:
 pim_datagrid:
   columns:
     user:
-      createdAt: "Luotu"
-      updatedAt: "Päivitetty"
+      createdAt: "Luontiaika"
+      updatedAt: "Päivitysaika"
     roles:
       label: "Nimike"
     groups:
@@ -126,6 +133,7 @@ oro_security:
       create: Luo käyttäjäryhmä
       edit: Muokkaa käyttäjäryhmiä
       delete: Poista käyttäjäryhmä
+#Security
 (default): Entiteettien oletusoikeudet
 VIEW: Näytä
 CREATE: Luo
