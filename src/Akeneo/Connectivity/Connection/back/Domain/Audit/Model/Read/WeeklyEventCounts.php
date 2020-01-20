@@ -17,13 +17,13 @@ final class WeeklyEventCounts
     /** @var DailyEventCount[] */
     private $dailyEventCounts = [];
 
-    public function __construct(string $connectionCode, string $startDate, string $endDate, array $data)
+    public function __construct(string $connectionCode, string $startDate, string $endDate, array $eventData)
     {
         $this->connectionCode = $connectionCode;
         $this->dailyEventCounts = $this->hydrateDailyEventCounts(
             new \DateTime($startDate, new \DateTimeZone('UTC')),
             new \DateTime($endDate, new \DateTimeZone('UTC')),
-            $data
+            $eventData
         );
     }
 
@@ -40,7 +40,7 @@ final class WeeklyEventCounts
         ];
     }
 
-    private function hydrateDailyEventCounts(\DateTime $start, \DateTime $end, $data)
+    private function hydrateDailyEventCounts(\DateTime $start, \DateTime $end, $eventData)
     {
         $period = new \DatePeriod(
             $start,
@@ -50,10 +50,10 @@ final class WeeklyEventCounts
 
         $dailyEventCounts = [];
         foreach ($period as $date) {
-            $count = $data[$date->format('Y-m-d')] ?? 0;
+            $count = $eventData[$date->format('Y-m-d')] ?? 0;
 
             $dailyEventCounts[] = new DailyEventCount(
-                $count,
+                (int) $count,
                 $date
             );
         }
