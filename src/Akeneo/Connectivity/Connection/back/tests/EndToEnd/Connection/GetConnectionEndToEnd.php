@@ -14,33 +14,31 @@ use Symfony\Component\HttpFoundation\Response;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DeleteConnectionEndToEnd extends WebTestCase
+class GetConnectionEndToEnd extends WebTestCase
 {
-    public function test_it_deletes_a_connection()
+    public function test_it_gets_a_connection(): void
     {
-        $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE);
+        $connection = $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE);
 
         $this->authenticateAsAdmin();
-        $this->client->request('DELETE', '/rest/connections/franklin');
+        $this->client->request('GET', '/rest/connections/franklin');
         $result = json_decode($this->client->getResponse()->getContent(), true);
 
-        $expectedResult = null;
+        $expectedResult = array_merge($connection->normalize(), ['password' => null]);
 
-        Assert::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
+        Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals($expectedResult, $result);
     }
 
-    public function test_it_fails_to_delete_an_unknown_connection()
+    public function test_it_fails_to_get_an_unknown_connection(): void
     {
         $this->authenticateAsAdmin();
-        $this->client->request('DELETE', '/rest/connections/unknown_connection');
+        $this->client->request('GET', '/rest/connections/unknown_connection');
         $result = json_decode($this->client->getResponse()->getContent(), true);
 
-        $expectedResult = [
-            'message' => 'Connection with code "unknown_connection" does not exist'
-        ];
+        $expectedResult = [];
 
-        Assert::assertEquals(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
+        Assert::assertEquals(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals($expectedResult, $result);
     }
 

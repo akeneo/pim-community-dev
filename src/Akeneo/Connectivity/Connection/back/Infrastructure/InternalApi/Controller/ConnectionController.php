@@ -111,7 +111,7 @@ class ConnectionController
             return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($connection->normalize());
+        return new JsonResponse($connection->normalize(), Response::HTTP_CREATED);
     }
 
     public function get(Request $request): JsonResponse

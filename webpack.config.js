@@ -160,8 +160,7 @@ const webpackConfig = {
       // Process the pim webpack files with babel
       {
         test: /\.js$/,
-        include: /(public\/bundles|webpack|spec)/,
-        exclude: /lib|node_modules/,
+        include: [/public\/bundles/, /webpack/, /spec/, /node_modules\/p\-queue/],
         use: [
           'thread-loader',
           {
