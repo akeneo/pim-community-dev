@@ -90,6 +90,19 @@ Those bounded contexts are related to two main topics which are **Automation** a
 
 ![image](images/context_map/weasel.svg)
 
+## Octopus
+
+The Octopus squad handles **Connection** bounded context.
+This bounded context is related to the *Connectivity* topic and has dependencies with *User Management* and *Platform*.
+
+### Definitions
+
+#### Connectivity
+
+> Set of features that eases connectivity with third party systems.
+
+- **Connection** : Manage connections with external systems and provides information and tools to ease connectivity.
+
 ## Do we cover all PIM code?
 
 The answer is **No**. All teams are responsible of two other things: our tools and the platform.
