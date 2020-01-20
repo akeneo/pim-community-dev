@@ -56,17 +56,44 @@ class RenamedClass
         return $this->newNamespace . "\\" . $this->newClassname;
     }
 
-    public function dumpRector(): void
+    public function getRector(): string
     {
-       printf(
-            "            '%s': '%s'\n",
+       return sprintf("'%s': '%s'",
             $this->getOldFqcn(),
             $this->getNewFqcn()
         );
     }
 }
 
+if (!isset($argv[1])) {
+    die(<<<USAGE
+        Missing argument Git ref to diff with!\n
+
+        $ get_renamed_php_classes.php <git_ref> [<additional_rector_config_file1> <additional_rector_config_file2> ...]
+
+USAGE
+);
+}
+
 $tag = $argv[1];
+
+$filesToAdd = [];
+
+$renamedClassRectors = [];
+
+if (isset($argv[2])) {
+    $filesToAdd = array_slice($argv, 2);
+
+    foreach ($filesToAdd as $fileToAdd) {
+        $lines = explode("\n", file_get_contents($fileToAdd));
+        foreach ($lines as $line) {
+            if (preg_match("/^            ('.+)$/", $line, $matches)) {
+                $renamedClassRectors[] = $matches[1];
+            }
+        }
+
+    }
+}
 
 $process = new Process(['git', '-c', 'diff.renameLimit=10000', 'diff', $tag]);
 
@@ -87,7 +114,6 @@ $newNamespace = null;
 $oldClassname = null;
 $newClassname = null;
 
-$renamedClasses = [];
 
 $inRenameDiff = false;
 
@@ -119,9 +145,16 @@ while ($line = fgets($stream)) {
     if (strpos($line, 'diff --git') === 0) {
         if ($inRenameDiff) {
             $inRenameDiff = false;
+
             if (($oldNamespace !== $newNamespace || $oldClassname !== $newClassname) && $newClassname !== null) {
-                if (isUseablePhpClass($oldFilePath) && isUseablePhpClass($newFilePath)) {
-                    $renamedClasses[] = new RenamedClass($oldFilePath, $newFilePath, $oldNamespace, $newNamespace, $oldClassname, $newClassname);
+                if (isRelevantPhpClass($oldFilePath) && isRelevantPhpClass($newFilePath)) {
+                    if (null === $oldNamespace && null === $newNamespace) {
+                        // No change in namespace, so namespace line in the diff output
+                        // So we need to get the namespace from the current file
+                        $newNamespace = $oldNamespace = extractNamespaceFromFile($newFilePath);
+                    }
+                    $renamedClass = new RenamedClass($oldFilePath, $newFilePath, $oldNamespace, $newNamespace, $oldClassname, $newClassname);
+                    $renamedClassRectors[] = $renamedClass->getRector();
                 }
             }
             $oldFilePath = null;
@@ -146,11 +179,13 @@ services:
 
 YAML;
 
-foreach ($renamedClasses as $renamedClass) {
-    $renamedClass->dumpRector();
+$renamedClassRectors = array_unique($renamedClassRectors);
+
+foreach ($renamedClassRectors as $renamedClassRector) {
+    echo '            '.$renamedClassRector."\n";
 }
 
-function isUseablePhpClass(string $filePath): bool
+function isRelevantPhpClass(string $filePath): bool
 {
     if (!preg_match('#\.php$#', $filePath)) {
         return false;
@@ -168,20 +203,28 @@ function extractClassnameFromFilePath(string $filePath): string
     return str_replace(".php", "", preg_replace('#.*/([^/]+)$#', '$1', $filePath));
 }
 
+function extractNamespaceFromFile(string $filePath): string
+{
+    preg_match("/\nnamespace ([^;]+);/", file_get_contents($filePath), $matches);
 
-/* Use
-Rector\Renaming\Rector\Class_\RenameClassRector:
-        $oldToNewClasses:
-            'Symfony\Component\Validator\Tests\Constraints\AbstractConstraintValidatorTest': 'Symfony\Component\Validator\Test\ConstraintValidatorTestCase'
-            'Symfony\Component\Process\ProcessBuilder': 'Symfony\Component\Process\Process'
-*/
+    if (!isset($matches[1])) {
+        throw new \LogicalException(
+            sprintf(
+                'Unable to extract the namespace from file %s',
+                $filePath
+            )
+        );
+
+    }
+
+    return $matches[1];
+}
 
 
 /*
+    TODO
   - Adds config rector for Symfony ? => /rector/rector/config/set/symfony/symfony44.yaml
 
   - Handle deleted class (from git history as well => get the list of them
   - Uses Backward compatibility check for changes (but ignore deleted and moved class
-  - Uses PHPParser from Nikola to check existing custom code and check what is broken from that list ?
-  - Runs Psalm or PHPStan afterwards to check how things are going ?
 */
