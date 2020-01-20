@@ -27,7 +27,7 @@ const CategoryTreeNode: FunctionComponent<CategoryTreeNodeProps> = ({categoryId,
         <ins className="jstree-icon">
           &nbsp;
         </ins>
-        <span onClick={() => onSelectCategory(categoryCode, categoryLabel)}>{categoryLabel}</span>
+        <span onClick={() => onSelectCategory(categoryCode, categoryLabel)}>{categoryLabel ? categoryLabel : '[' + categoryCode + ']'}</span>
       </a>
       {isOpen && hasChildren && (
         <ul>

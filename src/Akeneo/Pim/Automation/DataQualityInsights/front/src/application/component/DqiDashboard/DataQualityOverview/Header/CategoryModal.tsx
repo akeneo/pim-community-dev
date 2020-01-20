@@ -57,7 +57,7 @@ const CategoryModal = ({onSelectCategory, onValidate, onDismissModal, isVisible,
                       return (
                         <li key={category.code} className={`AknHorizontalNavtab-item tree-selector ${selectedCategoryTree && selectedCategoryTree.code === category.code ? 'active' : ''}`} data-code={category.code} onClick={() => setSelectedCategoryTree(getCategoryFromCode(category.code))}>
                           <div className="AknHorizontalNavtab-link">
-                            <span className="tree-label label">{category.labels[uiLocale]}</span>
+                            <span className="tree-label label">{category.labels[uiLocale] ? category.labels[uiLocale] : '[' + category.code + ']'}</span>
                           </div>
                         </li>
                       )
