@@ -53,6 +53,10 @@ final class ProductAxisRateRepository implements ProductAxisRateRepositoryInterf
 
     public function save(array $productAxisRates): void
     {
+        if (empty($productAxisRates)) {
+            return;
+        }
+
         $valuesPlaceholders = implode(',', array_fill(0, count($productAxisRates), '(?, ?, ?, ?)'));
 
         $sql = <<<SQL

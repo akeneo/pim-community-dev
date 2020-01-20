@@ -4,8 +4,7 @@ import catalogContextReducer, {
   changeCatalogContextLocale,
   initializeCatalogContext,
 } from "./catalogContextReducer";
-import productAxisRatesReducer, {AxisRatesState, getProductAxisRatesAction} from "./productAxisRatesReducer";
-import productEvaluationReducer, {getProductEvaluationAction, ProductEvaluationState} from "./productEvaluationReducer";
+import productEvaluationReducer, {getProductEvaluationAction, getProductEvaluationRatesAction, ProductEvaluationState} from "./productEvaluationReducer";
 import productFamilyInformationReducer, {
   getProductFamilyInformationAction,
   ProductFamilyInformationState
@@ -19,18 +18,18 @@ import pageContextReducer, {
 } from "./pageContextReducer";
 import productSpellcheckReducer, {
   disableWidgetAction,
+  disableWidgetHighlightAction,
   enableWidgetAction,
+  enableWidgetHighlightAction,
+  hidePopoverAction,
+  initializePopoverOpeningAction,
   initializeWidgetsListAction,
   ProductSpellcheckState,
+  showPopoverAction,
   showWidgetAction,
   updateWidgetContent,
   updateWidgetContentAnalysis,
   updateWidgetHighlightsAction,
-  initializePopoverOpeningAction,
-  showPopoverAction,
-  hidePopoverAction,
-  enableWidgetHighlightAction,
-  disableWidgetHighlightAction,
 } from "./productSpellcheckReducer";
 
 export {
@@ -40,13 +39,10 @@ export {
   changeCatalogContextChannel,
   initializeCatalogContext,
   CatalogContextState,
-  // Product Axis Rates Reducer
-  productAxisRatesReducer,
-  getProductAxisRatesAction,
-  AxisRatesState,
   // Product Evaluation Reducer
   productEvaluationReducer,
   getProductEvaluationAction,
+  getProductEvaluationRatesAction,
   ProductEvaluationState,
   // Product Evaluation Reducer
   productFamilyInformationReducer,

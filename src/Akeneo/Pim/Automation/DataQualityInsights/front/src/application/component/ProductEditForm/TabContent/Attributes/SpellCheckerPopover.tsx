@@ -1,6 +1,7 @@
-import React, {useCallback, useLayoutEffect, useRef, useState} from "react";
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {useGetSpellcheckPopover} from "../../../../../infrastructure/hooks";
 import PopoverContent from "./Spellchecker/PopoverContent";
+import {SpellcheckPopoverContextProvider} from "../../../../../infrastructure/context-provider";
 
 const POPOVER_BOTTOM_PLACEMENT_OFFSET = 2;
 const POPOVER_LEFT_PLACEMENT_OFFSET = 0;
@@ -19,13 +20,9 @@ const SpellCheckerPopover = () => {
   const popoverRef = useRef<HTMLDivElement>(null);
   const classList = ["AknSpellCheck-popover"];
 
-  const handleMouseEnter = useCallback(() => {
-    handleOpening(widgetId, highlight);
-  }, [widgetId, highlight, handleOpening]);
-
-  const handleMouseLeave = useCallback(() => {
-    handleClosing();
-  }, [handleClosing]);
+  if (isOpen) {
+    classList.push("AknSpellCheck-popover--visible");
+  }
 
   useLayoutEffect(() => {
     const element = highlight && highlight.domRange ? highlight.domRange : null;
@@ -52,18 +49,21 @@ const SpellCheckerPopover = () => {
     }
   }, [highlight]);
 
-  if (isOpen) {
-    classList.push("AknSpellCheck-popover--visible");
-  }
+  useEffect(() => {
+    return () => {
+      handleClosing()
+    };
+  }, []);
 
   return (
     <>
+      <SpellcheckPopoverContextProvider popoverRef={popoverRef} widgetId={widgetId} isOpen={isOpen} handleClosing={handleClosing}/>
       {isOpen && (
         <div ref={popoverRef}
              className={classList.join(' ')}
              style={style}
-             onMouseEnter={handleMouseEnter}
-             onMouseLeave={handleMouseLeave}>
+             onMouseEnter={() => handleOpening(widgetId, highlight)}
+             onMouseLeave={() => handleClosing()}>
           {highlight && highlight.mistake && <PopoverContent mistake={highlight.mistake} widgetId={widgetId}/>}
         </div>
       )}

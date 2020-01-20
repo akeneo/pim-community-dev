@@ -27,17 +27,29 @@ const PeriodicityFilter: FunctionComponent<PeriodicityFilterProps> = ({periodici
       <ul className="AknDropdown-menu">
         <div className="AknDropdown-menuTitle">{__('akeneo_data_quality_insights.dqi_dashboard.periodicity.daily')}</div>
         <li>
-          <a className="AknDropdown-menuLink" data-label={__('akeneo_data_quality_insights.dqi_dashboard.periodicity.daily')} onClick={() => handlePeriodicityChange('daily')}>
+          <a
+            className={`AknDropdown-menuLink ${periodicity === 'daily' ? 'AknDropdown-menuLink--active' : ''}`}
+            data-label={__('akeneo_data_quality_insights.dqi_dashboard.periodicity.daily')}
+            onClick={() => handlePeriodicityChange('daily')}
+          >
             {__('akeneo_data_quality_insights.dqi_dashboard.periodicity.daily')}
           </a>
         </li>
         <li>
-          <a className="AknDropdown-menuLink" data-label={__('akeneo_data_quality_insights.dqi_dashboard.periodicity.weekly')} onClick={() => handlePeriodicityChange('weekly')}>
+          <a
+            className={`AknDropdown-menuLink ${periodicity === 'weekly' ? 'AknDropdown-menuLink--active' : ''}`}
+            data-label={__('akeneo_data_quality_insights.dqi_dashboard.periodicity.weekly')}
+            onClick={() => handlePeriodicityChange('weekly')}
+          >
             {__('akeneo_data_quality_insights.dqi_dashboard.periodicity.weekly')}
           </a>
         </li>
         <li>
-          <a className="AknDropdown-menuLink" data-label={__('akeneo_data_quality_insights.dqi_dashboard.periodicity.monthly')} onClick={() => handlePeriodicityChange('monthly')}>
+          <a
+            className={`AknDropdown-menuLink ${periodicity === 'monthly' ? 'AknDropdown-menuLink--active' : ''}`}
+            data-label={__('akeneo_data_quality_insights.dqi_dashboard.periodicity.monthly')}
+            onClick={() => handlePeriodicityChange('monthly')}
+          >
             {__('akeneo_data_quality_insights.dqi_dashboard.periodicity.monthly')}
           </a>
         </li>

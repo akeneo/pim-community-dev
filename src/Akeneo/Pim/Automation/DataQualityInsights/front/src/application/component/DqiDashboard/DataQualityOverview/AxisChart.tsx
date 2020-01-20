@@ -68,6 +68,7 @@ const AxisChart = ({dataset, padding, barRatio, dateFormatCallback}: AxisChartPr
               fontSize: Math.ceil(11 * (downScalingRatio)),
               fill: "#67768a",
               padding: Math.ceil(27 * (downScalingRatio)),
+              fontFamily: "Lato",
             }
           }}
         />

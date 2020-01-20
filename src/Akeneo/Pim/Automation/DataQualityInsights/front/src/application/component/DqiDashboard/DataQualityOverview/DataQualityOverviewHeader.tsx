@@ -1,15 +1,18 @@
 import React, {FunctionComponent} from 'react';
 import FamilyFilter from "./Header/FamilyFilter";
 import PeriodicityFilter from "./Header/PeriodicityFilter";
+import CategoryFilter from "./Header/CategoryFilter";
 
 const __ = require('oro/translator');
+const SecurityContext = require('pim/security-context');
 
 interface DataQualityOverviewHeaderProps {
   periodicity: string;
   familyCode: string | null;
+  categoryCode: string | null;
 }
 
-const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProps> = ({periodicity, familyCode}) => {
+const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProps> = ({periodicity, familyCode, categoryCode}) => {
 
   return (
     <div className="AknSubsection-title AknSubsection-title--glued">
@@ -19,14 +22,7 @@ const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProp
 
           <PeriodicityFilter periodicity={periodicity}/>
 
-          <div className="AknFilterBox-filterContainer">
-            <div className="AknFilterBox-filter">
-              <span className="AknFilterBox-filterLabel">{__('akeneo_data_quality_insights.dqi_dashboard.category.label')}</span>
-              <button type="button" className="AknFilterBox-filterCriteria ui-multiselect">
-                <span>{__('pim_common.all')}</span>
-              </button>
-            </div>
-          </div>
+          {SecurityContext.isGranted('pim_enrich_product_category_list') && (<CategoryFilter categoryCode={categoryCode}/>)}
 
           <FamilyFilter familyCode={familyCode} />
 

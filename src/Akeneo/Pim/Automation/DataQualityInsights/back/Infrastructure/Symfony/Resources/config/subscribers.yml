@@ -5,17 +5,6 @@ services:
         tags:
             - { name: 'kernel.event_subscriber' }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\CreateCriteriaEvaluationsOnProductUpdateSubscriber:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations'
-            - '@akeneo_batch_queue.launcher.queue_job_launcher'
-            - '@akeneo_batch.job.job_instance_repository'
-            - '@security.token_storage'
-            - '@logger'
-        tags:
-            - { name: kernel.event_subscriber }
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InstallAssetsSubscriber:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\FileSystemAssetsInstaller'

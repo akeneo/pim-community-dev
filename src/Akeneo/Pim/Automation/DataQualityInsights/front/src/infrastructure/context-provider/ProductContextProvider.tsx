@@ -1,8 +1,8 @@
-import React, {FunctionComponent, useEffect} from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
 import {Product} from "../../domain";
 import {getProductFamilyInformationAction, initializeProductAction} from "../reducer";
-import {fetchFamilyInformation} from "../fetcher";
+import {fetchFamilyInformation, fetchProduct} from "../fetcher";
 
 interface ProductContextProviderProps {
   product: Product;
@@ -13,13 +13,36 @@ export const DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES = 'data-quality
 export const DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES = 'data-quality:product:filter_all_improvable_attributes';
 export const DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY = 'data-quality:dashboard:change_periodicity';
 export const DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY = 'data-quality:dashboard:filter:family';
+export const DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY = 'data-quality:dashboard:filter:category';
+export const DATA_QUALITY_INSIGHTS_PRODUCT_SAVING = 'data-quality:product:saving';
+export const DATA_QUALITY_INSIGHTS_PRODUCT_SAVED = 'data-quality:product:saved';
 
 const ProductContextProvider: FunctionComponent<ProductContextProviderProps> = ({product}) => {
+  const [productHasToBeReloaded, setProductHasToBeReloaded] = useState(false);
   const dispatchAction = useDispatch();
 
   useEffect(() => {
-    dispatchAction(initializeProductAction(product));
+    const handleProductSaving = () => {
+      // do nothing
+    };
+    const handleProductSaved = () => {
+      setProductHasToBeReloaded(true);
+    };
 
+    window.addEventListener(DATA_QUALITY_INSIGHTS_PRODUCT_SAVING, handleProductSaving);
+    window.addEventListener(DATA_QUALITY_INSIGHTS_PRODUCT_SAVED, handleProductSaved);
+
+    return () => {
+      window.removeEventListener(DATA_QUALITY_INSIGHTS_PRODUCT_SAVING, handleProductSaving);
+      window.removeEventListener(DATA_QUALITY_INSIGHTS_PRODUCT_SAVED, handleProductSaved);
+    };
+  }, []);
+
+  useEffect(() => {
+    dispatchAction(initializeProductAction(product));
+  }, [product]);
+
+  useEffect(() => {
     if (!product.family) {
       return;
     }
@@ -29,7 +52,17 @@ const ProductContextProvider: FunctionComponent<ProductContextProviderProps> = (
       dispatchAction(getProductFamilyInformationAction(data));
     })();
 
-  }, [product, product.family, dispatchAction]);
+  }, [product.family]);
+
+  useEffect(() => {
+    if (productHasToBeReloaded) {
+      (async () => {
+        const data = await fetchProduct(product.meta.id as number);
+        dispatchAction(initializeProductAction(data as Product));
+        setProductHasToBeReloaded(false);
+      })();
+    }
+  }, [productHasToBeReloaded]);
 
   return (
     <></>

@@ -12,7 +12,7 @@ import {
 import {HighlightElement} from "../../../domain";
 
 const OPENING_MILLISECONDS_DELAY = 50;
-const CLOSING_MILLISECONDS_DELAY = 300;
+const CLOSING_MILLISECONDS_DELAY = 500;
 
 const useGetPopover = () => {
   const {popover} = useSelector((state: ProductEditFormState) => state.spellcheck);
@@ -28,7 +28,10 @@ const useGetPopover = () => {
         callback();
       }
 
-      dispatchAction(enableWidgetHighlightAction(widgetId, highlight.id));
+      if (!highlight.isActive) {
+        dispatchAction(enableWidgetHighlightAction(widgetId, highlight.id));
+      }
+
       dispatchAction(showPopoverAction(widgetId, highlight));
     }, OPENING_MILLISECONDS_DELAY);
 

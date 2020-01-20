@@ -24,6 +24,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollecti
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
@@ -40,9 +41,10 @@ class EvaluateSpellingSpec extends ObjectBehavior
         BuildProductValuesInterface $buildProductValues,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleChecker $supportedLocaleChecker,
-        GetProductAttributesCodesInterface $getProductAttributesCodes
+        GetProductAttributesCodesInterface $getProductAttributesCodes,
+        GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery
     ) {
-        $this->beConstructedWith($textChecker, $buildProductValues, $localesByChannelQuery, $supportedLocaleChecker, $getProductAttributesCodes);
+        $this->beConstructedWith($textChecker, $buildProductValues, $localesByChannelQuery, $supportedLocaleChecker, $getProductAttributesCodes, $getTextareaAttributeCodesCompatibleWithSpellingQuery);
     }
 
     public function it_evaluates_rates_for_textarea_and_text_values(
@@ -51,6 +53,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $localesByChannelQuery,
         $supportedLocaleChecker,
         $getProductAttributesCodes,
+        $getTextareaAttributeCodesCompatibleWithSpellingQuery,
         TextCheckResultCollection $textCheckResultCollection1,
         TextCheckResultCollection $textCheckResultCollection2,
         TextCheckResultCollection $textCheckResultCollection3,
@@ -74,7 +77,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
             'print' => ['en_US', 'fr_FR'],
         ]);
 
-        $getProductAttributesCodes->getLocalizableTextarea($productId)->willReturn(['textarea_1']);
+        $getTextareaAttributeCodesCompatibleWithSpellingQuery->byProductId($productId)->willReturn(['textarea_1']);
         $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['textarea_1'])->willReturn([
             'textarea_1' => [
                 'ecommerce' => [

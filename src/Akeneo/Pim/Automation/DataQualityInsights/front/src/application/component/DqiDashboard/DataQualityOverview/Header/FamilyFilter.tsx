@@ -90,7 +90,7 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
       </div>
 
       {isFilterDisplayed && (
-        <div ref={ref} className="ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-filterCriteria select-filter-widget multiselect-filter-widget" style={{width: "244px", height: "285px", top: 0, right: 0, display: "block"}}>
+        <div ref={ref} id="AknFamily-filter" className="ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-filterCriteria select-filter-widget multiselect-filter-widget">
           <div className="ui-widget-header ui-corner-all ui-multiselect-header ui-helper-clearfix ui-multiselect-hasfilter">
             <div className="ui-multiselect-filter">
               <input autoFocus={true} placeholder={__('pim_enrich.entity.family.uppercase_label')} type="search" onChange={(event: ChangeEvent<HTMLInputElement>) => {
@@ -101,9 +101,8 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
           </div>
           <ul className="ui-multiselect-checkboxes ui-helper-reset">
             {(searchString === '' || searchString === null) && (
-              <li>
-                <label>
-                  <input type="checkbox" onClick={() => handleClickFamily(null)} title={__('pim_common.all')} defaultChecked={familyCode === null}/>
+              <li className={familyCode === null ? 'ui-state-active' : ''}>
+                <label onClick={() => handleClickFamily(null)} className={familyCode === null ? 'ui-state-active' : ''}>
                   <FamilyLabel>{__('pim_common.all')}</FamilyLabel>
                 </label>
               </li>
@@ -111,8 +110,7 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
             {filteredFamilies && Object.entries(filteredFamilies).map(([identifier, family]:[string, Family]) => {
               return (
                 <li key={identifier}>
-                  <label>
-                    <input type="checkbox" onClick={() => handleClickFamily(family.code)} defaultChecked={family.code === familyCode}/>
+                  <label onClick={() => handleClickFamily(family.code)} className={family.code === familyCode ? 'ui-state-active' : ''}>
                     <FamilyLabel>{family.labels[uiLocale]}</FamilyLabel>
                   </label>
                 </li>
