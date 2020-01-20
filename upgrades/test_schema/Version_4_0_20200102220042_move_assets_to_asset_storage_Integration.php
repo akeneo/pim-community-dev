@@ -62,8 +62,8 @@ SQL
     private function insertAssetsWithFiles()
     {
         $this->get('database_connection')->executeQuery(<<<SQL
-            INSERT INTO akeneo_asset_manager_asset_family(identifier, labels, rule_templates, transformations) VALUES
-            ('f', '{}', '{}', '{}')
+            INSERT INTO akeneo_asset_manager_asset_family(identifier, labels, rule_templates, transformations, naming_convention) VALUES
+            ('f', '{}', '{}', '{}', '{}')
 SQL
         );
 
