@@ -69,6 +69,7 @@ class TeamworkAssistantTestCase extends TestCase
      */
     protected function createProject($label, $owner, $locale, $channel, array $filters)
     {
+        $dueDate = (new \DateTime())->modify('+1 month');
         $projectData = array_merge([
             'label'           => $label,
             'locale'          => $locale,
@@ -76,7 +77,7 @@ class TeamworkAssistantTestCase extends TestCase
             'channel'         => $channel,
             'product_filters' => $filters,
             'description'     => 'An awesome description',
-            'due_date'        => '2020-01-19',
+            'due_date'        => $dueDate->format('Y-m-d'),
             'datagrid_view'   => ['filters' => '', 'columns' => 'sku,label,family'],
         ]);
 
