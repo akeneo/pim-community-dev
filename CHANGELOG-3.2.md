@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9060: Fix reference entity multiple links attribute data hydration
+
 # 3.2.33 (2020-01-20)
 
 ## Bug fixes
