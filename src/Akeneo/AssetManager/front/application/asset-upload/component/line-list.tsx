@@ -22,9 +22,14 @@ export const ColumnWidths = {
 
 const Header = styled.div`
   align-items: center;
+  background: ${(props: ThemedProps<void>) => props.theme.color.white};
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey140};
   display: flex;
+  height: 40px;
   padding-bottom: 7px;
+  position: sticky;
+  top: 93px;
+  z-index: 2;
 `;
 const LineCount = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
@@ -41,10 +46,13 @@ const List = styled.div`
 `;
 const ListHeader = styled.div`
   align-items: center;
+  background: ${(props: ThemedProps<void>) => props.theme.color.white};
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey120};
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
+  position: sticky;
+  top: 133px;
 `;
 const ListColumnHeader = styled.div<{width?: number}>`
   color: ${(props: ThemedProps<void>) => props.theme.color.grey140};

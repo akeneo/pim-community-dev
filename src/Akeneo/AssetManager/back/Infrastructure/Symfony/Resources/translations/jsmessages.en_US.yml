@@ -279,6 +279,7 @@ pim_asset_manager:
       will_appear_here: Upload assets and they will appear just here!
       discard_changes: You will lose your assets if you close this modal without creating them.
       disabled_for_media_link: You cannot upload assets in this family as the attribute used as main media is a media link attribute
+      upload_failure: An error occurred when uploading the file.
       list:
         asset: Asset
         filename: Filename

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import styled from 'styled-components';
-import {ConfirmButton, Header, Modal} from 'akeneoassetmanager/application/component/app/modal';
+import {ConfirmButton, Modal} from 'akeneoassetmanager/application/component/app/modal';
 import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
 import LineList from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
@@ -27,6 +27,23 @@ import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import Key from 'akeneoassetmanager/tools/key';
+
+const Header = styled.div`
+  background: ${(props: ThemedProps<void>) => props.theme.color.white};
+  position: sticky;
+  top: 0px;
+  z-index: 2;
+
+  :before {
+    content: '';
+    background: ${(props: ThemedProps<void>) => props.theme.color.white};
+    display: block;
+    position: absolute;
+    height: 40px;
+    top: -40px;
+    width: 100%;
+  }
+`;
 
 const Subtitle = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};

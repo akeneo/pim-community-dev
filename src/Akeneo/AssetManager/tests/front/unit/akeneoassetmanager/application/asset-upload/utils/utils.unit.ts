@@ -304,24 +304,6 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> addLines
   });
 });
 
-describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> assetUploadFailed', () => {
-  test('I can add new lines', () => {
-    const assetFamily = createFakeAssetFamily(false, false);
-    const channels: Channel[] = [];
-    const locales: Locale[] = [];
-
-    const A = createFakeLine('a.png', assetFamily, channels, locales);
-    const B = createFakeLine('b.png', assetFamily, channels, locales);
-    const C = createFakeLine('c.png', assetFamily, channels, locales);
-
-    expect(assetUploadFailed([A, B, C], B)).toEqual([
-      A,
-      {...B, errors: {...B.errors, front: []}, isFileUploading: false},
-      C,
-    ]);
-  });
-});
-
 describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> createCreationAssetsFromLines', () => {
   const createUploadedLineFromFilename = (
     filename: string,
