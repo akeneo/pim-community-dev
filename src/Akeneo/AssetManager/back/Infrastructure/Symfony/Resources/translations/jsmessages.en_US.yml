@@ -173,6 +173,8 @@ pim_asset_manager:
     delete:
       message: Are you sure you want to delete the asset family "{{ assetFamilyLabel }}"?
       title: Attribute
+    edit:
+      discard_changes: You will lose changes to the asset family "{{ assetFamilyLabel }}" if you leave the page.
     notification:
       save:
         success: Asset family successfully updated.
