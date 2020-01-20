@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByCon
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\DailyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
 use PhpSpec\ObjectBehavior;
 
