@@ -9,7 +9,7 @@ import {
   assetFamilyEditionTransformationsUpdated,
   assetFamilyEditionSubmission,
   assetFamilyEditionNamingConventionUpdated,
-  assetFamilyEditionProductLinkRulesUpdated
+  assetFamilyEditionProductLinkRulesUpdated,
 } from 'akeneoassetmanager/domain/event/asset-family/edit';
 import {
   notifyAssetFamilyWellSaved,

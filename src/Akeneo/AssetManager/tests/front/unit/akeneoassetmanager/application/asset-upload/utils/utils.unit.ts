@@ -11,6 +11,7 @@ import {
   getStatusFromLine,
   selectLinesToSend,
   hasAnUnsavedLine,
+  getCreatedAssetCodes,
 } from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {createFakeAssetFamily, createFakeChannel, createFakeError, createFakeLine, createFakeLocale} from '../tools';
 import Channel from 'akeneoassetmanager/domain/model/channel';
@@ -998,5 +999,28 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> hasAnUns
     ];
 
     expect(hasAnUnsavedLine(lines, valuePerLocale, valuePerChannel)).toEqual(false);
+  });
+
+  test('I can get created asset codes from lines', () => {
+    const valuePerLocale = true;
+    const valuePerChannel = true;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+
+    const lines = [
+      {
+        ...createFakeLine('a.jpg', assetFamily),
+        assetCreated: true,
+      },
+      {
+        ...createFakeLine('b.jpg', assetFamily),
+        assetCreated: false,
+      },
+      {
+        ...createFakeLine('c.jpg', assetFamily),
+        assetCreated: true,
+      },
+    ];
+
+    expect(getCreatedAssetCodes(lines)).toEqual(['a', 'c']);
   });
 });

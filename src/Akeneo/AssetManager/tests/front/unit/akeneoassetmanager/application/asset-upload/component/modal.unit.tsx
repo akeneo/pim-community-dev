@@ -54,6 +54,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -77,6 +78,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -104,6 +106,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -142,6 +145,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -180,6 +184,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -218,6 +223,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}

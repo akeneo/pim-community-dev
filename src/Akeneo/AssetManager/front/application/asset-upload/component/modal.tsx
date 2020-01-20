@@ -22,11 +22,12 @@ import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/att
 import {Reducer} from 'redux';
 import {onFileDrop} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-file-drop';
 import {onCreateAllAsset} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-create-all-assets';
-import {hasAnUnsavedLine} from 'akeneoassetmanager/application/asset-upload/utils/utils';
+import {hasAnUnsavedLine, getCreatedAssetCodes} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import Key from 'akeneoassetmanager/tools/key';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
 const Header = styled.div`
   background: ${(props: ThemedProps<void>) => props.theme.color.white};
@@ -64,18 +65,19 @@ const Title = styled.div`
 
 type UploadModalHeaderProps = {
   label: string;
+  confirmLabel: string;
   onClose: () => void;
   onConfirm: () => void;
 };
 
-const UploadModalHeader = React.memo(({label, onClose, onConfirm}: UploadModalHeaderProps) => {
+const UploadModalHeader = React.memo(({label, confirmLabel, onClose, onConfirm}: UploadModalHeaderProps) => {
   return (
     <Header>
       <CloseButton title={__('pim_asset_manager.close')} onClick={onClose} />
       <Subtitle>{label}</Subtitle>
       <Title>{__('pim_asset_manager.asset.upload.title')}</Title>
-      <ConfirmButton title={__('pim_asset_manager.asset.upload.confirm')} color="green" onClick={onConfirm}>
-        {__('pim_asset_manager.asset.upload.confirm')}
+      <ConfirmButton title={confirmLabel} color="green" onClick={onConfirm}>
+        {confirmLabel}
       </ConfirmButton>
     </Header>
   );
@@ -83,15 +85,23 @@ const UploadModalHeader = React.memo(({label, onClose, onConfirm}: UploadModalHe
 
 type UploadModalProps = {
   assetFamily: AssetFamily;
+  confirmLabel: string;
   locale: LocaleCode;
   channels: Channel[];
   locales: Locale[];
-  // @TODO merge this two callbacks into one onClose()
   onCancel: () => void;
-  onAssetCreated: () => void;
+  onAssetCreated: (assetCodes: AssetCode[]) => void;
 };
 
-const UploadModal = ({assetFamily, locale, channels, locales, onCancel, onAssetCreated}: UploadModalProps) => {
+const UploadModal = ({
+  assetFamily,
+  confirmLabel,
+  locale,
+  channels,
+  locales,
+  onCancel,
+  onAssetCreated,
+}: UploadModalProps) => {
   const [state, dispatch] = React.useReducer<Reducer<State>>(reducer, {lines: []});
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
   const valuePerLocale = attributeAsMainMedia.value_per_locale;
@@ -101,7 +111,7 @@ const UploadModal = ({assetFamily, locale, channels, locales, onCancel, onAssetC
   // This is a workaround because but we haven't found a proper way to do it directly after a successful onCreateAllAsset
   React.useEffect(() => {
     if (state.lines.length > 0 && !hasAnUnsavedLine(state.lines, valuePerLocale, valuePerChannel)) {
-      onAssetCreated();
+      onAssetCreated(getCreatedAssetCodes(state.lines));
     }
   }, [state.lines, valuePerLocale, valuePerChannel, onCancel]);
 
@@ -148,7 +158,7 @@ const UploadModal = ({assetFamily, locale, channels, locales, onCancel, onAssetC
 
   return (
     <Modal>
-      <UploadModalHeader label={label} onClose={handleClose} onConfirm={handleConfirm} />
+      <UploadModalHeader label={label} confirmLabel={confirmLabel} onClose={handleClose} onConfirm={handleConfirm} />
       <FileDropZone onDrop={handleDrop} />
       <LineList
         lines={state.lines}

@@ -244,6 +244,14 @@ export const assetCreationSucceeded = (lines: Line[], asset: CreationAsset): Lin
 export const selectLinesToSend = (lines: Line[]): Line[] =>
   lines.filter((line: Line) => !line.assetCreated && null !== line.file && !line.isFileUploading);
 
+export const getCreatedAssetCodes = (lines: Line[]): AssetCode[] => {
+  return lines.reduce(
+    (assetCodes: AssetCode[], line: Line) =>
+      line.assetCreated && !assetCodes.includes(line.code) ? [...assetCodes, line.code] : assetCodes,
+    []
+  );
+};
+
 export const getAllErrorsOfLineByTarget = (line: Line): LineErrorsByTarget => {
   let errors: LineErrorsByTarget = {
     common: [],
