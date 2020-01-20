@@ -29,13 +29,7 @@ export const getErrorsView = (
   );
 };
 
-const startsWith = (
-  field: string,
-) => (
-  (error: ValidationError) => error.propertyPath.indexOf(field) === 0
-);
+const startsWith = (field: string) => (error: ValidationError) => error.propertyPath.indexOf(field) === 0;
 
-export const getErrorsViewStartedWith = (
-    errors: ValidationError[],
-    field: string
-) => getErrorsView(errors, field, startsWith);
+export const getErrorsViewStartedWith = (errors: ValidationError[], field: string) =>
+  getErrorsView(errors, field, startsWith);

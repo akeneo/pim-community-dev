@@ -65,18 +65,19 @@ const Title = styled.div`
 
 type UploadModalHeaderProps = {
   label: string;
+  confirmLabel: string;
   onClose: () => void;
   onConfirm: () => void;
 };
 
-const UploadModalHeader = React.memo(({label, onClose, onConfirm}: UploadModalHeaderProps) => {
+const UploadModalHeader = React.memo(({label, confirmLabel, onClose, onConfirm}: UploadModalHeaderProps) => {
   return (
     <Header>
       <CloseButton title={__('pim_asset_manager.close')} onClick={onClose} />
       <Subtitle>{label}</Subtitle>
       <Title>{__('pim_asset_manager.asset.upload.title')}</Title>
-      <ConfirmButton title={__('pim_asset_manager.asset.upload.confirm')} color="green" onClick={onConfirm}>
-        {__('pim_asset_manager.asset.upload.confirm')}
+      <ConfirmButton title={confirmLabel} color="green" onClick={onConfirm}>
+        {confirmLabel}
       </ConfirmButton>
     </Header>
   );
@@ -84,6 +85,7 @@ const UploadModalHeader = React.memo(({label, onClose, onConfirm}: UploadModalHe
 
 type UploadModalProps = {
   assetFamily: AssetFamily;
+  confirmLabel: string;
   locale: LocaleCode;
   channels: Channel[];
   locales: Locale[];
@@ -91,7 +93,15 @@ type UploadModalProps = {
   onAssetCreated: (assetCodes: AssetCode[]) => void;
 };
 
-const UploadModal = ({assetFamily, locale, channels, locales, onCancel, onAssetCreated}: UploadModalProps) => {
+const UploadModal = ({
+  assetFamily,
+  confirmLabel,
+  locale,
+  channels,
+  locales,
+  onCancel,
+  onAssetCreated,
+}: UploadModalProps) => {
   const [state, dispatch] = React.useReducer<Reducer<State>>(reducer, {lines: []});
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
   const valuePerLocale = attributeAsMainMedia.value_per_locale;
@@ -148,7 +158,7 @@ const UploadModal = ({assetFamily, locale, channels, locales, onCancel, onAssetC
 
   return (
     <Modal>
-      <UploadModalHeader label={label} onClose={handleClose} onConfirm={handleConfirm} />
+      <UploadModalHeader label={label} confirmLabel={confirmLabel} onClose={handleClose} onConfirm={handleConfirm} />
       <FileDropZone onDrop={handleDrop} />
       <LineList
         lines={state.lines}

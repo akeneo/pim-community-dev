@@ -19,6 +19,11 @@ jest.mock('akeneoassetmanager/infrastructure/saver/asset', () => ({
     return new Promise(resolve => resolve());
   },
 }));
+
+jest.mock('akeneoassetmanager/tools/notify', () => ({
+  default: () => {},
+}));
+
 const imageAttribute = {
   identifier: 'image_attribute_identifier',
   type: MEDIA_FILE_ATTRIBUTE_TYPE,

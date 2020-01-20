@@ -54,6 +54,7 @@ export const MassUploader = React.memo(
         </UploadButton>
         {isOpen && null !== assetFamily && (
           <UploadModal
+            confirmLabel={__('pim_asset_manager.asset.upload.add_to_product')}
             assetFamily={assetFamily}
             locale={context.locale}
             locales={locales}
