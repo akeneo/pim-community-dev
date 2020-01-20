@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\DailyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQuery;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectVersioningProductEventCountByDayQuery;
@@ -61,7 +62,7 @@ SQL;
                 $dataRow['code'],
                 $dateTime->format('Y-m-d'),
                 (int)$dataRow['event_count'],
-                'product_created'
+                EventTypes::PRODUCT_CREATED
             );
         }
 
@@ -99,7 +100,7 @@ SQL;
                 '<all>',
                 $dateTime->format('Y-m-d'),
                 (int) $dataRow['event_count'],
-                'product_created'
+                EventTypes::PRODUCT_CREATED
             );
         }
 
@@ -139,7 +140,7 @@ SQL;
                 $dataRow['code'],
                 $dateTime->format('Y-m-d'),
                 (int) $dataRow['event_count'],
-                'product_updated'
+                EventTypes::PRODUCT_UPDATED
             );
         }
 
@@ -177,7 +178,7 @@ SQL;
                 '<all>',
                 $dateTime->format('Y-m-d'),
                 (int) $dataRow['event_count'],
-                'product_updated'
+                EventTypes::PRODUCT_UPDATED
             );
         }
 
