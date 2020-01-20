@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
@@ -69,6 +70,8 @@ class ConnectorAssetFamilyHydrator
             ->convertToPHPValue($row['transformations'], $this->platform);
         $namingConvention = Type::getType(Types::JSON)
             ->convertToPHPValue($row['naming_convention'], $this->platform);
+        $attributeAsMainMediaCode = Type::getType(Types::STRING)
+            ->convertToPHPValue($row['attribute_as_main_media'], $this->platform);
 
         $image = Image::createEmpty();
 
@@ -86,6 +89,9 @@ class ConnectorAssetFamilyHydrator
             $assetFamilyIdentifier
         );
         $readNamingConvention = $this->namingConventionHydrator->hydrate($namingConvention, $assetFamilyIdentifier);
+        if (null !== $attributeAsMainMediaCode) {
+            $attributeAsMainMediaCode = AttributeCode::fromString($attributeAsMainMediaCode);
+        }
 
         return new ConnectorAssetFamily(
             $assetFamilyIdentifier,
@@ -93,7 +99,8 @@ class ConnectorAssetFamilyHydrator
             $image,
             $productLinkRules,
             $readTransformations,
-            $readNamingConvention
+            $readNamingConvention,
+            $attributeAsMainMediaCode
         );
     }
 }

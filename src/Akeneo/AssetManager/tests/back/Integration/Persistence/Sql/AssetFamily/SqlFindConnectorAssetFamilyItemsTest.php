@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NullNamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyQuery;
@@ -59,7 +60,8 @@ class SqlFindConnectorAssetFamilyItemsTest extends SqlIntegrationTestCase
                 Image::createEmpty(),
                 [],
                 new ConnectorTransformationCollection([]),
-                new NullNamingConvention()
+                new NullNamingConvention(),
+                AttributeCode::fromString('media')
             );
         }
 
@@ -94,7 +96,8 @@ class SqlFindConnectorAssetFamilyItemsTest extends SqlIntegrationTestCase
                 Image::createEmpty(),
                 [],
                 new ConnectorTransformationCollection([]),
-                new NullNamingConvention()
+                new NullNamingConvention(),
+                AttributeCode::fromString('media')
             );
         }
 
