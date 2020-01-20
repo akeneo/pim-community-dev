@@ -55,7 +55,7 @@ export const createFakeLine = (
 
 export const createFakeError = (message: string = 'error'): NormalizedValidationError => {
   return Object.freeze({
-    messageTemplate: 'pim_asset_manager.asset.validation.server_error',
+    messageTemplate: message,
     parameters: {},
     message: message,
     propertyPath: '',
