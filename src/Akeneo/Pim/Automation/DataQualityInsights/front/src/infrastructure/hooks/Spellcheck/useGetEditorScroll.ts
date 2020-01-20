@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useLayoutEffect, useState} from "react";
 import {EditorElement} from "../../../domain";
 import {isTextInput} from "../../../domain/Spellcheck/EditorElement";
 
@@ -21,7 +21,7 @@ const useGetEditorScroll = (editor: EditorElement) => {
       lastScrollLeft = editor.scrollLeft;
 
       if (!ticking) {
-        window.requestAnimationFrame(function() {
+        window.requestAnimationFrame(() => {
           setEditorScrollTop(lastScrollTop);
           setEditorScrollLeft(lastScrollLeft);
           ticking = false;
@@ -44,7 +44,7 @@ const useGetEditorScroll = (editor: EditorElement) => {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!ticking) {
-        window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(() => {
           const scrollLeft = editor.scrollLeft;
           if (
               event.key === "ArrowLeft" || event.key === "ArrowRight" ||
@@ -55,6 +55,7 @@ const useGetEditorScroll = (editor: EditorElement) => {
           }
           ticking = false;
         });
+        ticking = true;
       }
     };
 
@@ -75,6 +76,55 @@ const useGetEditorScroll = (editor: EditorElement) => {
       }
     };
   }, [editor.id]);
+
+
+  useLayoutEffect(() => {
+    let ticking = false;
+    let buttonPressedInEditor = false;
+
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const isEditor = event.target === editor;
+
+          if (isEditor && !buttonPressedInEditor) {
+            buttonPressedInEditor = (event.buttons === 1);
+          }
+
+          if (isEditor || buttonPressedInEditor) {
+            setEditorScrollLeft(editor.scrollLeft);
+          }
+
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    const handleMouseUp = (event: MouseEvent) => {
+      const isEditor = event.target === editor;
+      if (isEditor) {
+        setEditorScrollLeft(editor.scrollLeft);
+      }
+
+      if (buttonPressedInEditor) {
+        buttonPressedInEditor = false;
+      }
+    };
+
+    if (isTextInput(editor)) {
+      document.addEventListener('mousemove', handleMouseMove as EventListener, true);
+      document.addEventListener('mouseup', handleMouseUp as EventListener, true);
+    }
+
+    return () => {
+      ticking = true;
+      if (isTextInput(editor)) {
+        document.removeEventListener('mousemove', handleMouseMove as EventListener);
+        document.removeEventListener('mouseup', handleMouseUp as EventListener);
+      }
+    };
+  }, []);
 
   return {
     editorScrollTop,
