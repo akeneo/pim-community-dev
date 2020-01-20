@@ -14,8 +14,11 @@ import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import {uploadFile} from 'akeneoassetmanager/application/asset-upload/utils/file';
+import notify from 'akeneoassetmanager/tools/notify';
 
 const flushPromises = () => new Promise(setImmediate);
+
+jest.mock('akeneoassetmanager/tools/notify', () => jest.fn());
 
 jest.mock('akeneoassetmanager/application/asset-upload/utils/file', () => ({
   uploadFile: jest.fn().mockImplementation((file: File, line: Line, updateProgress) => {
@@ -122,5 +125,35 @@ describe('', () => {
     const line = createLineFromFilename(file.name, assetFamily, channels, locales);
     expect(dispatch).toHaveBeenCalledWith(fileUploadFailureAction(line));
     expect(dispatch).toHaveBeenCalledWith(linesAddedAction([line]));
+  });
+
+  test('I can upload files up to a certain amount', async () => {
+    const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const dispatch = jest.fn();
+    const files = Array.from(Array(499).keys()).map(index => new File(['foo'], index + '.png', {type: 'image/png'}));
+
+    onFileDrop(files, assetFamily, channels, locales, dispatch);
+    await flushPromises();
+
+    expect(notify).not.toHaveBeenCalled();
+    const lines = files.map(file => createLineFromFilename(file.name, assetFamily, channels, locales));
+    expect(dispatch).toHaveBeenCalledWith(linesAddedAction(lines));
+  });
+
+  test('I cannot upload more files than allowed', async () => {
+    const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const dispatch = jest.fn();
+    const files = Array.from(Array(501).keys()).map(index => new File(['foo'], index + '.png', {type: 'image/png'}));
+
+    onFileDrop(files, assetFamily, channels, locales, dispatch);
+    await flushPromises();
+
+    expect(notify).toHaveBeenCalled();
+    const lines = files.slice(0, 500).map(file => createLineFromFilename(file.name, assetFamily, channels, locales));
+    expect(dispatch).toHaveBeenCalledWith(linesAddedAction(lines));
   });
 });

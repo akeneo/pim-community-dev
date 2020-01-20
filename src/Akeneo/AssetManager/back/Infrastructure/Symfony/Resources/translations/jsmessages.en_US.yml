@@ -277,6 +277,7 @@ pim_asset_manager:
       confirm: Create
       drop_or_click_here: Drag and drop your files or click here
       will_appear_here: Upload assets and they will appear just here!
+      files_limit: You are trying to upload too many files, only the first {{ limit }} will be uploaded.
       discard_changes: You will lose your assets if you close this modal without creating them.
       disabled_for_media_link: You cannot upload assets in this family as the attribute used as main media is a media link attribute
       upload_failure: An error occurred when uploading the file.

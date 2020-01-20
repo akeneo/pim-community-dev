@@ -9,10 +9,13 @@ import {
   linesAddedAction,
   fileUploadFailureAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
+import notify from 'akeneoassetmanager/tools/notify';
 import createQueue from 'p-limit';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
+
+const FILES_QUANTITY_LIMIT = 500;
 
 const CONCURRENCY = 5;
 const queue = createQueue(CONCURRENCY);
@@ -26,6 +29,12 @@ export const onFileDrop = (
 ) => {
   if (null === files || 0 === files.length) {
     return;
+  }
+
+  if (files.length > FILES_QUANTITY_LIMIT) {
+    files = files.slice(0, FILES_QUANTITY_LIMIT);
+
+    notify('warning', 'pim_asset_manager.asset.upload.files_limit', {limit: FILES_QUANTITY_LIMIT});
   }
 
   const lines = files.map((file: File) => {

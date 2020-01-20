@@ -13,6 +13,7 @@ import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 
 jest.mock('akeneoassetmanager/application/component/app/select2');
+jest.mock('akeneoassetmanager/tools/notify', () => jest.fn());
 
 jest.mock('akeneoassetmanager/application/asset-upload/saver/asset', () => ({
   create: jest.fn().mockImplementation(() => Promise.resolve(null)),
