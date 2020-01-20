@@ -446,43 +446,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param string $username
-     *
-     * @Then /^the user "([^"]*)" should have email notifications enabled$/
-     */
-    public function userShouldHaveEmailNotificationsEnabled($username)
-    {
-        return $this->userShouldHaveEmailNotifications($username, true);
-    }
-
-    /**
-     * @param string $username
-     *
-     * @Then /^the user "([^"]*)" should have email notifications disabled$/
-     */
-    public function userShouldHaveEmailNotificationsDisabled($username)
-    {
-        return $this->userShouldHaveEmailNotifications($username, false);
-    }
-
-    /**
-     * @param $username
-     * @param $value
-     *
-     * @throws Spin\TimeoutException
-     */
-    protected function userShouldHaveEmailNotifications($username, $value)
-    {
-        $user = $this->getUser($username);
-        $this->spin(function () use ($user, $value) {
-            $this->getEntityManager()->refresh($user);
-            $emailNotifications = (bool) $user->isEmailNotifications();
-
-            return $emailNotifications === $value;
-        }, sprintf('Email notifications of %s does not change to %s.', $username, $value ? 'true' : 'false'));
-    }
-
-    /**
      * @param mixed $data
      *
      * @return PublishedProductInterface
