@@ -37,7 +37,7 @@ import {
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneoassetmanager/platform/component/common/no-data';
 import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import {Link} from 'akeneoassetmanager/application/component/app/link';
-import {ColumnTitle, Column} from 'akeneoassetmanager/application/component/app/column';
+import {Column} from 'akeneoassetmanager/application/component/app/column';
 import AssetFetcher from 'akeneoassetmanager/domain/fetcher/asset';
 import {ChannelFetcher} from 'akeneoassetmanager/application/hooks/channel';
 import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
@@ -45,6 +45,7 @@ import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/att
 import {clearImageLoadingQueue} from 'akeneoassetmanager/tools/image-loader';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 
 const Header = styled.div`
   padding-left: 40px;
@@ -221,30 +222,12 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const notify = useNotify();
   const {redirectToAsset, redirectToAssetFamily} = useRoute();
 
-  const familyBreadcrumbConfiguration =
-    null === currentAssetFamilyIdentifier
-      ? []
-      : [
-          {
-            action: {
-              type: 'redirect',
-              route: 'akeneo_asset_manager_asset_family_edit',
-              parameters: {
-                identifier: currentAssetFamilyIdentifier,
-                tab: 'property',
-              },
-            },
-            label: currentAssetFamilyLabel,
-          },
-        ];
-
   const hasMediaLinkAsMainMedia =
     null !== currentAssetFamily && isMediaLinkAttribute(getAttributeAsMainMedia(currentAssetFamily));
 
   return (
     <Container>
-      <Column>
-        <ColumnTitle>{__('pim_asset_manager.asset_family.column.title')}</ColumnTitle>
+      <Column title={__('pim_asset_manager.asset_family.column.title')}>
         <AssetFamilySelector
           assetFamilyIdentifier={currentAssetFamilyIdentifier}
           locale={context.locale}
@@ -330,16 +313,11 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             withChannelSwitcher={true}
             isDirty={false}
             isLoading={false}
-            breadcrumbConfiguration={[
-              {
-                action: {
-                  type: 'redirect',
-                  route: 'akeneo_asset_manager_asset_family_index',
-                },
-                label: __('pim_asset_manager.asset_family.breadcrumb'),
-              },
-              ...familyBreadcrumbConfiguration,
-            ]}
+            breadcrumbConfiguration={breadcrumbConfiguration(
+              currentAssetFamilyIdentifier,
+              currentAssetFamilyLabel,
+              'property'
+            )}
             displayActions={true}
           />
         </Header>
@@ -352,11 +330,11 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 <HelperTitle>
                   👋 {__('pim_asset_manager.asset_family.helper.title')}
                   <HelperText>
-                    {__('pim_asset_manager.asset_family.helper.no_asset_family.text', {
-                      family: currentAssetFamilyLabel,
-                    })}
+                    {__('pim_asset_manager.asset_family.helper.no_asset_family.text')}
                     <br />
-                    <Link href="#">{__('pim_asset_manager.asset_family.helper.no_asset_family.link')}</Link>
+                    <Link href="https://help.akeneo.com/" target="_blank">
+                      {__('pim_asset_manager.asset_family.helper.no_asset_family.link')}
+                    </Link>
                   </HelperText>
                 </HelperTitle>
               </HelperSection>
@@ -364,8 +342,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 <AssetIllustration size={256} />
                 <NoDataTitle>{__('pim_asset_manager.asset_family.no_data.no_asset_family.title')}</NoDataTitle>
                 <NoDataText>
-                  {/* {__('pim_asset_manager.asset_family.no_data.no_asset_family.title')}
-                  <Spacer /> */}
                   <Link onClick={() => setCreateAssetFamilyModalOpen(true)}>
                     {__('pim_asset_manager.asset_family.no_data.no_asset_family.link')}
                   </Link>
@@ -381,8 +357,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                   👋 {__('pim_asset_manager.asset_family.helper.title')}
                   <HelperText>
                     {__('pim_asset_manager.asset_family.helper.no_asset.text', {family: currentAssetFamilyLabel})}
-                    <br />
-                    <Link href="#">{__('pim_asset_manager.asset_family.helper.no_asset.link')}</Link>
                   </HelperText>
                 </HelperTitle>
               </HelperSection>
@@ -390,8 +364,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 <AssetIllustration size={256} />
                 <NoDataTitle>{__('pim_asset_manager.asset_family.no_data.no_asset.title')}</NoDataTitle>
                 <NoDataText>
-                  {/* {__('pim_asset_manager.asset_family.helper.no_asset.text', {family: currentAssetFamilyLabel})}
-                  <Spacer /> */}
                   <Link onClick={() => setCreateAssetModalOpen(true)}>
                     {__('pim_asset_manager.asset_family.no_data.no_asset.link')}
                   </Link>

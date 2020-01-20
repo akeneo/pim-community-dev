@@ -8,6 +8,8 @@ import {
   assetFamilyEditionAttributeAsMainMediaUpdated,
   assetFamilyEditionTransformationsUpdated,
   assetFamilyEditionSubmission,
+  assetFamilyEditionNamingConventionUpdated,
+  assetFamilyEditionProductLinkRulesUpdated
 } from 'akeneoassetmanager/domain/event/asset-family/edit';
 import {
   notifyAssetFamilyWellSaved,
@@ -20,6 +22,8 @@ import {assetFamilyPermissionChanged} from 'akeneoassetmanager/domain/event/user
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import TransformationCollection from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
+import NamingConvention from 'akeneoassetmanager/domain/model/asset-family/naming-convention';
+import ProductLinkRuleCollection from 'akeneoassetmanager/domain/model/asset-family/product-link-rule-collection';
 
 export const saveAssetFamily = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const assetFamily = getState().form.data;
@@ -82,5 +86,21 @@ export const assetFamilyTransformationsUpdated = (transformations: Transformatio
   getState: () => EditState
 ) => {
   dispatch(assetFamilyEditionTransformationsUpdated(transformations));
+  dispatch(assetFamilyEditionUpdated(getState().form.data));
+};
+
+export const assetFamilyNamingConventionUpdated = (namingConvention: NamingConvention) => (
+  dispatch: any,
+  getState: () => EditState
+) => {
+  dispatch(assetFamilyEditionNamingConventionUpdated(namingConvention));
+  dispatch(assetFamilyEditionUpdated(getState().form.data));
+};
+
+export const assetFamilyProductLinkRulesUpdated = (productLinkRules: ProductLinkRuleCollection) => (
+  dispatch: any,
+  getState: () => EditState
+) => {
+  dispatch(assetFamilyEditionProductLinkRulesUpdated(productLinkRules));
   dispatch(assetFamilyEditionUpdated(getState().form.data));
 };

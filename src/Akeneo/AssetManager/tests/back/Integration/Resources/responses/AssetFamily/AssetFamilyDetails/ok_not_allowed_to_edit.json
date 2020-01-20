@@ -158,7 +158,37 @@
             },
             "attribute_as_label": "designer_name_123456",
             "attribute_as_main_media": "designer_portrait_123456",
-            "transformations": []
+            "transformations": [],
+            "naming_convention": {
+                "source": {
+                    "property": "media",
+                    "channel": null,
+                    "locale": null
+                },
+                "pattern": "/the_pattern/",
+                "abort_asset_creation_on_error": true
+            },
+            "product_link_rules": [
+                {
+                    "product_selections": [
+                        {
+                            "field": "fulltext",
+                            "operator": "IN",
+                            "value": "value",
+                            "channel": null,
+                            "locale": null
+                        }
+                    ],
+                    "assign_assets_to": [
+                        {
+                            "attribute": "main",
+                            "channel": null,
+                            "locale": null,
+                            "mode": "add"
+                        }
+                    ]
+                }
+            ]
         }
     }
 }

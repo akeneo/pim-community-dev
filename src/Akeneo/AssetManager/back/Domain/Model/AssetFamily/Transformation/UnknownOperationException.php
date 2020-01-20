@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention;
+namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
-class NullNamingConvention implements NamingConventionInterface
+/**
+ * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ */
+class UnknownOperationException extends \InvalidArgumentException
 {
-    public function normalize()
-    {
-        return new \stdClass;
-    }
 }

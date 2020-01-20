@@ -140,6 +140,8 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
       attributeAsLabel: '',
       attributes: [],
       transformations: '[]',
+      productLinkRules: "[]",
+      namingConvention: '{}',
     });
   });
 

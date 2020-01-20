@@ -2,6 +2,8 @@ import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-fa
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import TransformationCollection from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
+import NamingConvention from 'akeneoassetmanager/domain/model/asset-family/naming-convention';
+import ProductLinkRuleCollection from 'akeneoassetmanager/domain/model/asset-family/product-link-rule-collection';
 
 export const assetFamilyEditionReceived = (assetFamily: AssetFamily) => {
   return {type: 'ASSET_FAMILY_EDITION_RECEIVED', assetFamily};
@@ -21,6 +23,14 @@ export const assetFamilyEditionLabelUpdated = (value: string, locale: string) =>
 
 export const assetFamilyEditionTransformationsUpdated = (transformations: TransformationCollection) => {
   return {type: 'ASSET_FAMILY_EDITION_TRANSFORMATIONS_UPDATED', transformations};
+};
+
+export const assetFamilyEditionNamingConventionUpdated = (namingConvention: NamingConvention) => {
+  return {type: 'ASSET_FAMILY_EDITION_NAMING_CONVENTION_UPDATED', namingConvention};
+};
+
+export const assetFamilyEditionProductLinkRulesUpdated = (productLinkRules: ProductLinkRuleCollection) => {
+  return {type: 'ASSET_FAMILY_EDITION_PRODUCT_LINK_RULES_UPDATED', productLinkRules};
 };
 
 export const assetFamilyEditionAttributeAsMainMediaUpdated = (attributeAsMainMedia: AttributeIdentifier) => {

@@ -1,0 +1,42 @@
+{
+  "title": "BackendAssetFamilyNamingConvention",
+  "type": "object",
+  "properties": {
+    "source": {
+      "type": "object",
+      "properties": {
+        "property": {
+          "type": "string"
+        },
+        "channel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "locale": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "property",
+        "channel",
+        "locale"
+      ]
+    },
+    "pattern": {
+      "type": "string"
+    },
+    "abort_asset_creation_on_error": {
+      "type": "boolean"
+    }
+  },
+  "dependencies": {
+    "pattern": ["source", "abort_asset_creation_on_error"],
+    "abort_asset_creation_on_error": ["source", "pattern"],
+    "source": ["pattern", "abort_asset_creation_on_error"]
+  }
+}

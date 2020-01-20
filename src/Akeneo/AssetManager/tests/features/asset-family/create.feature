@@ -64,6 +64,7 @@ Feature: Create an asset family
   @acceptance-back
   Scenario: Creating an asset family with a collection of static rule templates
     When the user creates an asset family 'packshot' with a collection of static rule templates
+    Then there is no violations errors
     Then there is an asset family 'packshot' with a collection of static rule templates
 
   @acceptance-back

@@ -28,6 +28,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -99,27 +101,35 @@ class EditAction
 
         $parameters = json_decode($request->getContent(), true);
         $parameters = $this->replaceAttributeAsMainMediaIdentifierByCode($parameters);
-
-        $transformations = null;
-        if ($this->isUserAllowedToManageTransformation()) {
-            $transformations = json_decode($parameters['transformations'], true);
-            if (null === $transformations) {
-                // TODO Put a real validation error to be displayed correctly
-                return new JsonResponse(
-                    sprintf('Impossible to parse %s', $parameters['transformations']),
-                    Response::HTTP_BAD_REQUEST
-                );
-            }
+        $violations = $this->validateRequestContent($parameters);
+        if ($violations->count() > 0) {
+            return new JsonResponse(
+                $this->serializer->normalize($violations, 'internal_api'),
+                Response::HTTP_BAD_REQUEST
+            );
         }
+
+        $transformations = $this->isUserAllowedToManageTransformation()
+            ? json_decode($parameters['transformations'], true)
+            : null
+            ;
+        $namingConvention = $this->isUserAllowedToManageProductLinkRule()
+            ? json_decode($parameters['namingConvention'], true)
+            : null
+            ;
+        $productLinkRules = $this->isUserAllowedToManageProductLinkRule()
+            ? json_decode($parameters['productLinkRules'], true)
+            : null
+            ;
 
         $command = new EditAssetFamilyCommand(
             $parameters['identifier'],
             $parameters['labels'],
             $parameters['image'],
             $parameters['attributeAsMainMedia'],
-            isset($parameters['productLinkRules']) ? $parameters['productLinkRules'] : null,
+            $productLinkRules,
             $transformations,
-            null // TODO  $parameters['namingConvention'] Update this when user will be allowed to update through UI.
+            $namingConvention
         );
 
         $violations = $this->validator->validate($command);
@@ -159,6 +169,11 @@ class EditAction
         return $this->securityFacade->isGranted('akeneo_assetmanager_asset_family_manage_transformation');
     }
 
+    private function isUserAllowedToManageProductLinkRule(): bool
+    {
+        return $this->securityFacade->isGranted('akeneo_assetmanager_asset_family_manage_product_link_rule');
+    }
+
     /**
      * The frontend gives us the Identifier of the attribute as main media,
      * but the EditAssetFamilyCommand requires the Code of the attribute,
@@ -179,5 +194,32 @@ class EditAction
         }
 
         return array_merge($parameters, ['attributeAsMainMedia' => $attributeAsMainMediaCode]);
+    }
+
+    private function validateRequestContent(array $parameters): ConstraintViolationListInterface
+    {
+        $nestedConstraints = [];
+        if ($this->isUserAllowedToManageTransformation()) {
+            $nestedConstraints['transformations'] = [
+                new Assert\Type(['string']),
+                new Assert\Json(),
+            ];
+        }
+
+        if ($this->isUserAllowedToManageProductLinkRule()) {
+            $nestedConstraints['namingConvention'] = [
+                new Assert\Type(['string']),
+                new Assert\Json(),
+            ];
+            $nestedConstraints['productLinkRules'] = [
+                new Assert\Type(['string']),
+                new Assert\Json(),
+            ];
+        }
+
+        return $this->validator->validate($parameters, new Assert\Collection([
+            'fields' => $nestedConstraints,
+            'allowExtraFields' => true,
+        ]));
     }
 }

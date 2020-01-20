@@ -1,5 +1,4 @@
 import {hydrator} from 'akeneoassetmanager/application/hydrator/asset-family';
-import {createAssetFamilyFromNormalized} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
 describe('akeneo > asset family > application > hydrator --- asset family', () => {
   test('I can hydrate a new asset family', () => {

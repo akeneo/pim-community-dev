@@ -20,6 +20,6 @@ class NullNamingConventionSpec extends ObjectBehavior
 
     function it_represents_a_null_naming_convention()
     {
-        $this->normalize()->shouldReturn([]);
+        $this->normalize()->shouldBeLike(new \stdClass);
     }
 }

@@ -5,7 +5,7 @@ import MinimalAttribute, {
 } from 'akeneoassetmanager/domain/model/attribute/minimal';
 import AttributeCode from 'akeneoassetmanager/domain/model/attribute/code';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import LabelCollection from 'akeneoassetmanager/domain/model/label-collection';
+import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 
 /**
  * @api
@@ -39,6 +39,13 @@ export const wrapNormalizableAdditionalProperty = <NormalizedAdditionalProperty>
     normalize: (): NormalizedAdditionalProperty => {
       return normalizedAdditionalProperty;
     },
+  };
+};
+
+export const denormalizeAttribute = (attribute: any): NormalizedAttribute => {
+  return {
+    ...attribute,
+    labels: denormalizeLabelCollection(attribute.labels),
   };
 };
 

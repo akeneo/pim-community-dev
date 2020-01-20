@@ -62,7 +62,7 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
 
   return (
     <React.Fragment>
-      <span ref={labelRef} className="AknFilterBox-filterLabel" onClick={() => openPanel}>
+      <span ref={labelRef} className="AknFilterBox-filterLabel" onClick={openPanel}>
         {getLabel(attribute.labels, context.locale, attribute.code)}
       </span>
       <span className="AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited" onClick={openPanel}>

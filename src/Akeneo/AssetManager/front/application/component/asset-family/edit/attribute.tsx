@@ -200,59 +200,72 @@ class AttributeView extends React.Component<AttributeViewProps> {
 
 class AttributesView extends React.Component<CreateProps> {
   render() {
+    const {
+      assetFamily,
+      rights,
+      events,
+      context,
+      attributes,
+      firstLoading,
+      createAttribute,
+      editAttribute,
+      options,
+    } = this.props;
+    const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
+
     return (
       <React.Fragment>
         <Header
-          label={getAssetFamilyLabel(this.props.assetFamily, this.props.context.locale)}
-          image={this.props.assetFamily.image}
-          primaryAction={(defaultFocus: React.RefObject<any>) => {
-            return this.props.rights.attribute.create ? (
+          label={__('pim_asset_manager.asset_family.tab.attribute')}
+          image={assetFamily.image}
+          primaryAction={(defaultFocus: React.RefObject<any>) =>
+            rights.attribute.create ? (
               <button
                 className="AknButton AknButton--action"
-                onClick={this.props.events.onAttributeCreationStart}
+                onClick={events.onAttributeCreationStart}
                 ref={defaultFocus}
                 tabIndex={0}
               >
                 {__('pim_asset_manager.attribute.button.add')}
               </button>
-            ) : null;
-          }}
+            ) : null
+          }
           secondaryActions={() => null}
           withLocaleSwitcher={true}
           withChannelSwitcher={false}
           isDirty={false}
-          breadcrumbConfiguration={breadcrumbConfiguration}
-          displayActions={this.props.rights.attribute.create}
+          breadcrumbConfiguration={breadcrumbConfiguration(assetFamily.identifier, assetFamilyLabel)}
+          displayActions={rights.attribute.create}
         />
         <div className="AknSubsection">
           <StickyHeader>
             <span className="group-label">{__('pim_asset_manager.asset_family.attribute.title')}</span>
           </StickyHeader>
-          {this.props.firstLoading || 0 < this.props.attributes.length ? (
+          {firstLoading || 0 < attributes.length ? (
             <div className="AknSubsection-container">
               <div className="AknFormContainer AknFormContainer--withPadding">
                 {renderSystemAttributes()}
-                {this.props.firstLoading ? (
+                {firstLoading ? (
                   renderAttributePlaceholders()
                 ) : (
                   <React.Fragment>
-                    {this.props.attributes.map((attribute: NormalizedAttribute) => (
+                    {attributes.map((attribute: NormalizedAttribute) => (
                       <ErrorBoundary
                         key={attribute.identifier}
                         errorMessage={__('pim_asset_manager.asset_family.attribute.error.render_list')}
                       >
                         <AttributeView
                           attribute={attribute}
-                          onAttributeEdit={this.props.events.onAttributeEdit}
-                          locale={this.props.context.locale}
-                          rights={this.props.rights}
+                          onAttributeEdit={events.onAttributeEdit}
+                          locale={context.locale}
+                          rights={rights}
                         />
                       </ErrorBoundary>
                     ))}
                   </React.Fragment>
                 )}
               </div>
-              {this.props.editAttribute ? <AttributeEditForm rights={this.props.rights} /> : null}
+              {editAttribute && <AttributeEditForm rights={rights} />}
             </div>
           ) : (
             <React.Fragment>
@@ -261,21 +274,19 @@ class AttributesView extends React.Component<CreateProps> {
               </div>
               <div className="AknGridContainer-noData AknGridContainer-noData--small">
                 <div className="AknGridContainer-noDataTitle">
-                  {__('pim_asset_manager.attribute.no_data.title', {
-                    entityLabel: getAssetFamilyLabel(this.props.assetFamily, this.props.context.locale),
-                  })}
+                  {__('pim_asset_manager.attribute.no_data.title', {entityLabel: assetFamilyLabel})}
                 </div>
                 <div className="AknGridContainer-noDataSubtitle">
                   {__('pim_asset_manager.attribute.no_data.subtitle')}
                 </div>
-                <button className="AknButton AknButton--action" onClick={this.props.events.onAttributeCreationStart}>
+                <button className="AknButton AknButton--action" onClick={events.onAttributeCreationStart}>
                   {__('pim_asset_manager.attribute.button.add')}
                 </button>
               </div>
             </React.Fragment>
           )}
-          {this.props.createAttribute.active ? <CreateAttributeModal /> : null}
-          {this.props.options.isActive ? <ManageOptionsView rights={this.props.rights} /> : null}
+          {createAttribute.active && <CreateAttributeModal />}
+          {options.isActive && <ManageOptionsView rights={rights} />}
         </div>
       </React.Fragment>
     );

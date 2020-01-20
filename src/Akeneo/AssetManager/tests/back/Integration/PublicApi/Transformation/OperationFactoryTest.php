@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\PublicApi\Transformation;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\UnknownOperationException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class OperationFactoryTest extends KernelTestCase
@@ -37,7 +38,7 @@ class OperationFactoryTest extends KernelTestCase
 
     public function test_it_fails_with_unknown_type()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(UnknownOperationException::class);
         $this->operationFactory->create('unknown', ['width' => 100, 'height' => 80]);
     }
 }
