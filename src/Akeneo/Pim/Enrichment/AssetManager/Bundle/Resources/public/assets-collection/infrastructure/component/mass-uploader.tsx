@@ -33,11 +33,11 @@ export const MassUploader = React.memo(
     dataProvider: DataProvider;
   }) => {
     const [isOpen, setOpen] = React.useState(false);
-    const assetFamily = useAssetFamily(dataProvider, assetFamilyIdentifier);
+    const {assetFamily, rights} = useAssetFamily(dataProvider, assetFamilyIdentifier);
     const channels = useChannels(dataProvider.channelFetcher);
     const locales = getLocales(channels, context.channel);
 
-    if (!assetFamily.rights.asset.upload) {
+    if (!rights.asset.upload) {
       return null;
     }
 
@@ -47,22 +47,25 @@ export const MassUploader = React.memo(
           title={__('pim_asset_manager.asset_collection.upload_asset')}
           buttonSize="medium"
           color="outline"
-          isDisabled={!assetFamily.rights.asset.upload}
+          isDisabled={!rights.asset.upload}
           onClick={() => setOpen(true)}
         >
           {__('pim_asset_manager.asset_collection.upload_asset')}
         </UploadButton>
-        {isOpen && null !== assetFamily.assetFamily && (
+        {isOpen && null !== assetFamily && (
           <UploadModal
-            assetFamily={assetFamily.assetFamily}
+            assetFamily={assetFamily}
             locale={context.locale}
             locales={locales}
             channels={channels}
             onCancel={() => setOpen(false)}
-            onAssetCreated={(assetCodes: AssetCode[]) => {
-              onAssetCreated(assetCodes);
-              setOpen(false);
-            }}
+            onAssetCreated={
+              /* istanbul ignore next */
+              (assetCodes: AssetCode[]) => {
+                onAssetCreated(assetCodes);
+                setOpen(false);
+              }
+            }
           />
         )}
       </>
