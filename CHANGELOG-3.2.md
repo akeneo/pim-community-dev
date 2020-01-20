@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.33 (2020-01-20)
+
 ## Bug fixes:
 
 - PIM-9059: Fix catalog locale on user panel & attribute groups attributes
