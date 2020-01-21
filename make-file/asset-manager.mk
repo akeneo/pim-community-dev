@@ -68,7 +68,7 @@ asset-manager-static-back:
 	$(PHP_RUN) src/Akeneo/AssetManager/tests/check-requests-contracts-with-json-schemas.php
 
 .PHONY: asset-manager-unit-back
-asset-manager-unit-back:
+asset-manager-unit-back: var/tests/phpspec
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --format=junit > var/tests/phpspec/asset-manager.xml
 else
