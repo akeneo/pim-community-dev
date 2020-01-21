@@ -14,7 +14,10 @@ const useFetchFamilies = (isFilterDisplayed: boolean, uiLocale: string) => {
 
       let data = await fetchFamilies();
       data = Object.values(data).sort((family1: any, family2: any) => {
-        return family1.labels[uiLocale].localeCompare(family2.labels[uiLocale], uiLocale.replace('_', '-'), {sensitivity: 'base'});
+        const family1Label = family1.labels[uiLocale] ? family1.labels[uiLocale] : "[" + family1.code + "]";
+        const family2Label = family2.labels[uiLocale] ? family2.labels[uiLocale] : "[" + family2.code + "]";
+
+        return family1Label.localeCompare(family2Label, uiLocale.replace('_', '-'), {sensitivity: 'base'});
       });
       setFamilies(data);
     })();
