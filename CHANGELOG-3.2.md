@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Technical improvement
+
+- PIM-8957: Add content security policy to prevent XSS
+
 # 3.2.34 (2020-01-21)
 
 # 3.2.33 (2020-01-20)
