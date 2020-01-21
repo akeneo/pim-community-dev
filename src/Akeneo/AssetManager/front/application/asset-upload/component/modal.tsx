@@ -20,7 +20,7 @@ import FileDropZone from 'akeneoassetmanager/application/asset-upload/component/
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {Reducer} from 'redux';
-import {onFileDrop} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-file-drop';
+import {onFileDrop, retryFileUpload} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/upload';
 import {onCreateAllAsset} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-create-all-assets';
 import {hasAnUnsavedLine, getCreatedAssetCodes} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
@@ -125,7 +125,7 @@ const UploadModal = ({
 
   const handleConfirm = React.useCallback(() => {
     onCreateAllAsset(assetFamily, state.lines, dispatch);
-  }, [assetFamily, state.lines]);
+  }, [assetFamily, state.lines, dispatch]);
 
   const handleDrop = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,20 +135,16 @@ const UploadModal = ({
       const files = event.target.files ? Object.values(event.target.files) : [];
       onFileDrop(files, assetFamily, channels, locales, dispatch);
     },
-    [assetFamily, channels, locales]
+    [assetFamily, channels, locales, dispatch]
   );
 
-  const handleLineChange = React.useCallback((line: Line) => {
-    dispatch(editLineAction(line));
-  }, []);
+  const handleLineChange = React.useCallback((line: Line) => dispatch(editLineAction(line)), [dispatch]);
 
-  const handleLineRemove = React.useCallback((line: Line) => {
-    dispatch(removeLineAction(line));
-  }, []);
+  const handleLineUploadRetry = React.useCallback((line: Line) => retryFileUpload(line, dispatch), [dispatch]);
 
-  const handleLineRemoveAll = React.useCallback(() => {
-    dispatch(removeAllLinesAction());
-  }, []);
+  const handleLineRemove = React.useCallback((line: Line) => dispatch(removeLineAction(line)), [dispatch]);
+
+  const handleLineRemoveAll = React.useCallback(() => dispatch(removeAllLinesAction()), [dispatch]);
 
   const label = React.useMemo(() => {
     return getAssetFamilyLabel(assetFamily, locale, true);
@@ -167,6 +163,7 @@ const UploadModal = ({
         locales={locales}
         onLineChange={handleLineChange}
         onLineRemove={handleLineRemove}
+        onLineUploadRetry={handleLineUploadRetry}
         onLineRemoveAll={handleLineRemoveAll}
         valuePerLocale={valuePerLocale}
         valuePerChannel={valuePerChannel}

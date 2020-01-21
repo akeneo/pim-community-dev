@@ -9,6 +9,7 @@ import {getAllErrorsOfLineByTarget, getStatusFromLine} from 'akeneoassetmanager/
 import Spacer from 'akeneoassetmanager/application/component/app/spacer';
 import {ColumnWidths} from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import WarningIcon from 'akeneoassetmanager/application/component/app/icon/warning';
+import ReloadIcon from 'akeneoassetmanager/application/component/app/icon/reload';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Select2, {Select2Options} from 'akeneoassetmanager/application/component/app/select2';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
@@ -66,7 +67,17 @@ const RemoveLineButton = styled.button`
   height: 54px;
   line-height: 54px;
   margin: -15px;
-  padding: 12px 0 0 0;
+  padding: 7px 0 0 0;
+  width: 54px;
+`;
+const RetryUploadButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  height: 54px;
+  line-height: 54px;
+  margin: -15px;
+  padding: 7px 0 0 0;
   width: 54px;
 `;
 const Input = styled.input<{readOnly?: boolean; isValid?: boolean}>`
@@ -102,17 +113,6 @@ const StyledError = styled.div`
     margin: 0 5px 0 0;
   }
 `;
-
-type RowProps = {
-  line: Line;
-  locale: LocaleCode;
-  channels: Channel[];
-  locales: Locale[];
-  onLineRemove: (line: Line) => void;
-  onLineChange: (line: Line) => void;
-  valuePerLocale: boolean;
-  valuePerChannel: boolean;
-};
 
 const Error = ({message, ...props}: {message: string} & any) => (
   <StyledError {...props} aria-label={message}>
@@ -167,8 +167,29 @@ const LocaleDropdown = React.memo(({options, value, readOnly, onChange}: LocaleD
   );
 });
 
+type RowProps = {
+  line: Line;
+  locale: LocaleCode;
+  channels: Channel[];
+  locales: Locale[];
+  onLineRemove: (line: Line) => void;
+  onLineChange: (line: Line) => void;
+  onLineUploadRetry: (line: Line) => void;
+  valuePerLocale: boolean;
+  valuePerChannel: boolean;
+};
 const Row = React.memo(
-  ({line, locale, channels, locales, onLineRemove, onLineChange, valuePerLocale, valuePerChannel}: RowProps) => {
+  ({
+    line,
+    locale,
+    channels,
+    locales,
+    onLineRemove,
+    onLineChange,
+    onLineUploadRetry,
+    valuePerLocale,
+    valuePerChannel,
+  }: RowProps) => {
     const status = React.useMemo(() => {
       return getStatusFromLine(line, valuePerLocale, valuePerChannel);
     }, [line, valuePerLocale, valuePerChannel]);
@@ -207,6 +228,10 @@ const Row = React.memo(
       },
       [line]
     );
+
+    const handleRetryUpload = React.useCallback(() => {
+      onLineUploadRetry(line);
+    }, [onLineUploadRetry, line]);
 
     const handleLineRemove = React.useCallback(() => {
       onLineRemove(line);
@@ -254,6 +279,13 @@ const Row = React.memo(
           <Spacer />
           <Cell width={ColumnWidths.status}>
             <RowStatus status={status} progress={line.uploadProgress} />
+          </Cell>
+          <Cell width={ColumnWidths.retry}>
+            {line.isFileUploadFailed && (
+              <RetryUploadButton onClick={handleRetryUpload} aria-label={__('pim_asset_manager.asset.upload.retry')}>
+                <ReloadIcon />
+              </RetryUploadButton>
+            )}
           </Cell>
           <Cell width={ColumnWidths.remove}>
             <RemoveLineButton onClick={handleLineRemove} aria-label={__('pim_asset_manager.asset.upload.remove')}>

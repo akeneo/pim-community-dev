@@ -17,6 +17,7 @@ export const ColumnWidths = {
   locale: 250,
   channel: 250,
   status: 140,
+  retry: 54,
   remove: 54,
 };
 
@@ -91,6 +92,7 @@ type LineListProps = {
   onLineRemove: (line: Line) => void;
   onLineRemoveAll: () => void;
   onLineChange: (line: Line) => void;
+  onLineUploadRetry: (line: Line) => void;
   valuePerLocale: boolean;
   valuePerChannel: boolean;
 };
@@ -103,6 +105,7 @@ const LineList = ({
   onLineRemove,
   onLineRemoveAll,
   onLineChange,
+  onLineUploadRetry,
   valuePerLocale,
   valuePerChannel,
 }: LineListProps) => {
@@ -140,6 +143,7 @@ const LineList = ({
           <ListColumnHeader width={ColumnWidths.status}>
             {__('pim_asset_manager.asset.upload.list.status')}
           </ListColumnHeader>
+          <ListColumnHeader width={ColumnWidths.retry} />
           <ListColumnHeader width={ColumnWidths.remove} />
         </ListHeader>
         <div aria-label={__('pim_asset_manager.asset.upload.lines')}>
@@ -152,6 +156,7 @@ const LineList = ({
               locales={locales}
               onLineChange={onLineChange}
               onLineRemove={onLineRemove}
+              onLineUploadRetry={onLineUploadRetry}
               valuePerLocale={valuePerLocale}
               valuePerChannel={valuePerChannel}
             />

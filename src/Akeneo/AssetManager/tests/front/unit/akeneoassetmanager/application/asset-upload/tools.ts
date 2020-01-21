@@ -3,7 +3,7 @@
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {NormalizedValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
@@ -41,6 +41,8 @@ export const createFakeAssetFamily = (valuePerLocale: boolean, valuePerChannel: 
       },
     ],
     transformations: '[]',
+    namingConvention: '',
+    productLinkRules: '',
   });
 };
 
@@ -53,7 +55,7 @@ export const createFakeLine = (
   return Object.freeze(createLineFromFilename(filename, assetFamily, channels, locales));
 };
 
-export const createFakeError = (message: string = 'error'): NormalizedValidationError => {
+export const createFakeError = (message: string = 'error'): ValidationError => {
   return Object.freeze({
     messageTemplate: message,
     parameters: {},
