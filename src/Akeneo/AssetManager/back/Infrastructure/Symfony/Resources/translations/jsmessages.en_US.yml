@@ -1,5 +1,5 @@
 pim_title:
-  akeneo_asset_manager_asset_family_index: Create a new asset family
+  akeneo_asset_manager_asset_family_index: Asset Manager
   akeneo_asset_manager_asset_family_edit: Edit an asset family
   akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
@@ -218,7 +218,7 @@ pim_asset_manager:
       limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
-        should_be_unique: 'This code already exists for this entity.'
+        should_be_unique: 'This code already exists for this asset family.'
     no_data:
       title: There is no asset for {{ entityLabel }}
       subtitle: Click on the button "Add new" to create the first asset
@@ -275,6 +275,7 @@ pim_asset_manager:
       line_count: '[0,1]{{ count }} file|]1,Inf] {{ count }} files'
       title: Upload assets
       lines: Files
+      retry: Retry
       remove: Remove
       remove_all: Remove all
       confirm: Create
@@ -285,6 +286,7 @@ pim_asset_manager:
       discard_changes: You will lose your assets if you close this modal without creating them.
       disabled_for_media_link: You cannot upload assets in this family as the attribute used as main media is a media link attribute
       upload_failure: An error occurred when uploading the file.
+      cannot_retry: An error occurred when trying to upload the file.
       list:
         asset: Asset
         filename: Filename

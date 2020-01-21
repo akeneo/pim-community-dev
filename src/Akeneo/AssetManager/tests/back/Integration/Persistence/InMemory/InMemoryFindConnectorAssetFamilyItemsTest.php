@@ -51,7 +51,8 @@ class InMemoryFindConnectorAssetFamilyItemsTest extends TestCase
                 Image::createEmpty(),
                 [],
                 new ConnectorTransformationCollection([]),
-                new NullNamingConvention()
+                new NullNamingConvention(),
+                null
             );
             $assetFamilies[] = $connectorAssetFamily;
             $this->findConnectorAssetFamilyItems->save($assetFamily->getIdentifier(), $connectorAssetFamily);
@@ -88,7 +89,8 @@ class InMemoryFindConnectorAssetFamilyItemsTest extends TestCase
                 Image::createEmpty(),
                 [],
                 new ConnectorTransformationCollection([]),
-                new NullNamingConvention()
+                new NullNamingConvention(),
+                null
             );
             $assetFamilies[] = $connectorAssetFamily;
             $this->findConnectorAssetFamilyItems->save($assetFamily->getIdentifier(), $connectorAssetFamily);

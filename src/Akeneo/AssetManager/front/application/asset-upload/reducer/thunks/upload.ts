@@ -8,6 +8,7 @@ import {
   fileUploadSuccessAction,
   linesAddedAction,
   fileUploadFailureAction,
+  fileUploadStartAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 import notify from 'akeneoassetmanager/tools/notify';
 import createQueue from 'p-limit';
@@ -19,6 +20,29 @@ const FILES_QUANTITY_LIMIT = 500;
 
 const CONCURRENCY = 5;
 const queue = createQueue(CONCURRENCY);
+
+const queuedFiles: {[key: string]: File} = {};
+
+export const getCurrentQueuedFiles = () => queuedFiles;
+
+const uploadAndDispatch = (line: Line, file: File, dispatch: (action: any) => void) => {
+  queue(() => {
+    queuedFiles[line.id] = file;
+
+    dispatch(fileUploadStartAction(line));
+
+    return uploadFile(file, line, (line: Line, progress: number) => {
+      dispatch(fileUploadProgressAction(line, progress));
+    });
+  })
+    .then((file: FileModel) => {
+      delete queuedFiles[line.id];
+      dispatch(fileUploadSuccessAction(line, file));
+    })
+    .catch(() => {
+      dispatch(fileUploadFailureAction(line));
+    });
+};
 
 export const onFileDrop = (
   files: File[],
@@ -45,19 +69,21 @@ export const onFileDrop = (
       dispatch(fileThumbnailGenerationDoneAction(thumbnail, line))
     );
 
-    queue(() =>
-      uploadFile(file, line, (line: Line, progress: number) => {
-        dispatch(fileUploadProgressAction(line, progress));
-      })
-    )
-      .then((file: FileModel) => {
-        dispatch(fileUploadSuccessAction(line, file));
-      })
-      .catch(() => {
-        dispatch(fileUploadFailureAction(line));
-      });
+    uploadAndDispatch(line, file, dispatch);
 
     return line;
   });
+
   dispatch(linesAddedAction(lines));
+};
+
+export const retryFileUpload = (line: Line, dispatch: (action: any) => void) => {
+  const file = queuedFiles[line.id];
+
+  if (!file) {
+    notify('error', 'pim_asset_manager.asset.upload.cannot_retry');
+    return;
+  }
+
+  uploadAndDispatch(line, file, dispatch);
 };

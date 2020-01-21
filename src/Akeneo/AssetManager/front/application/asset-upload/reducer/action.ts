@@ -102,6 +102,20 @@ export const editLineAction = (line: Line): OnEditLineAction => ({
   },
 });
 
+export const FILE_UPLOAD_START = 'asset-upload/FILE_UPLOAD_START';
+export type OnFileUploadStartAction = {
+  type: typeof FILE_UPLOAD_START;
+  payload: {
+    line: Line;
+  };
+};
+export const fileUploadStartAction = (line: Line): OnFileUploadStartAction => ({
+  type: FILE_UPLOAD_START,
+  payload: {
+    line,
+  },
+});
+
 export const FILE_UPLOAD_SUCCESS = 'asset-upload/FILE_UPLOAD_SUCCESS';
 export type OnFileUploadSuccessAction = {
   type: typeof FILE_UPLOAD_SUCCESS;

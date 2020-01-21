@@ -3,13 +3,17 @@
 import {createFakeAssetFamily} from '../../tools';
 import {
   fileThumbnailGenerationDoneAction,
+  fileUploadFailureAction,
   fileUploadProgressAction,
   fileUploadSuccessAction,
-  fileUploadFailureAction,
   linesAddedAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
-import {onFileDrop} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-file-drop';
+import {
+  getCurrentQueuedFiles,
+  onFileDrop,
+  retryFileUpload
+} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/upload';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
@@ -20,16 +24,23 @@ const flushPromises = () => new Promise(setImmediate);
 
 jest.mock('akeneoassetmanager/tools/notify', () => jest.fn());
 
-jest.mock('akeneoassetmanager/application/asset-upload/utils/file', () => ({
-  uploadFile: jest.fn().mockImplementation((file: File, line: Line, updateProgress) => {
-    updateProgress(line, 0);
-    updateProgress(line, 1);
+const expectQueueInMemoryToBeEmpty = () => expect(Object.values(getCurrentQueuedFiles()).length).toBe(0);
+const expectQueueInMemoryToContain = (file: File) => expect(Object.values(getCurrentQueuedFiles())).toContainEqual(file);
+const storeInQueueInMemory = (key: string, file: File) => getCurrentQueuedFiles()[key] = file;
 
-    return Promise.resolve({
-      filePath: file.name,
-      originalFilename: file.name,
-    });
-  }),
+const uploadFileSuccessImpl = (file: File, line: Line, updateProgress: (line: Line, progress: number) => void) => {
+  updateProgress(line, 0);
+  updateProgress(line, 1);
+
+  return Promise.resolve({
+    filePath: file.name,
+    originalFilename: file.name,
+  });
+};
+const uploadFileFailureImpl = () => Promise.reject();
+
+jest.mock('akeneoassetmanager/application/asset-upload/utils/file', () => ({
+  uploadFile: jest.fn().mockImplementation(uploadFileSuccessImpl),
   getThumbnailFromFile: jest.fn().mockImplementation((file: File, line: Line) =>
     Promise.resolve({
       thumbnail: '/tmb/' + file.name,
@@ -44,8 +55,9 @@ jest.mock('akeneoassetmanager/application/asset-upload/utils/uuid', () => ({
   }),
 }));
 
-describe('', () => {
+describe('onFileDrop', () => {
   test('Nothing happens if I try to dispatch 0 files', async () => {
+    uploadFile.mockImplementation(uploadFileSuccessImpl);
     const assetFamily = createFakeAssetFamily(false, false);
     const channels: Channel[] = [];
     const locales: Locale[] = [];
@@ -59,6 +71,7 @@ describe('', () => {
   });
 
   test('A thumbnail is created when I upload a file', async () => {
+    uploadFile.mockImplementation(uploadFileSuccessImpl);
     const assetFamily = createFakeAssetFamily(false, false);
     const file = new File(['foo'], 'foo.png', {type: 'image/png'});
     const channels: Channel[] = [];
@@ -74,6 +87,7 @@ describe('', () => {
   });
 
   test('The upload progress is dispatched', async () => {
+    uploadFile.mockImplementation(uploadFileSuccessImpl);
     const assetFamily = createFakeAssetFamily(false, false);
     const channels: Channel[] = [];
     const locales: Locale[] = [];
@@ -90,6 +104,7 @@ describe('', () => {
   });
 
   test('The upload success is dispatched', async () => {
+    uploadFile.mockImplementation(uploadFileSuccessImpl);
     const assetFamily = createFakeAssetFamily(false, false);
     const channels: Channel[] = [];
     const locales: Locale[] = [];
@@ -111,7 +126,7 @@ describe('', () => {
   });
 
   test('The upload is not dispatched on failure', async () => {
-    uploadFile.mockImplementation(() => Promise.reject());
+    uploadFile.mockImplementation(uploadFileFailureImpl);
     const assetFamily = createFakeAssetFamily(false, false);
     const channels: Channel[] = [];
     const locales: Locale[] = [];
@@ -155,5 +170,78 @@ describe('', () => {
     expect(notify).toHaveBeenCalled();
     const lines = files.slice(0, 500).map(file => createLineFromFilename(file.name, assetFamily, channels, locales));
     expect(dispatch).toHaveBeenCalledWith(linesAddedAction(lines));
+  });
+
+  test('A failed upload is kept in memory', async () => {
+    uploadFile.mockImplementation(uploadFileFailureImpl);
+    const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const file = new File(['foo'], 'foo.png', {type: 'image/png'});
+    const files = [file];
+    const dispatch = jest.fn();
+
+    onFileDrop(files, assetFamily, channels, locales, dispatch);
+    await flushPromises();
+
+    expectQueueInMemoryToContain(file);
+  });
+});
+
+describe('retryFileUpload', () => {
+  test('I can retry a failed upload and keep it in memory if failing again', async () => {
+    uploadFile.mockImplementation(uploadFileFailureImpl);
+    const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const file = new File(['foo'], 'foo.png', {type: 'image/png'});
+    const dispatch = jest.fn();
+    const line = createLineFromFilename(file.name, assetFamily, channels, locales);
+
+    storeInQueueInMemory(line.id, file);
+
+    retryFileUpload(line, dispatch);
+    await flushPromises();
+
+    expectQueueInMemoryToContain(file);
+  });
+
+  test('I can retry a failed upload and succeed', async () => {
+    uploadFile.mockImplementation(uploadFileSuccessImpl);
+    const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const file = new File(['foo'], 'foo.png', {type: 'image/png'});
+    const dispatch = jest.fn();
+    const line = createLineFromFilename(file.name, assetFamily, channels, locales);
+
+    storeInQueueInMemory(line.id, file);
+
+    retryFileUpload(line, dispatch);
+    await flushPromises();
+
+    expectQueueInMemoryToBeEmpty();
+    expect(dispatch).toHaveBeenCalledWith(
+      fileUploadSuccessAction(line, {
+        filePath: 'foo.png',
+        originalFilename: 'foo.png',
+      })
+    );
+  });
+
+  test('I can retry on an unknown line and nothing will happen', async () => {
+    uploadFile.mockImplementation(uploadFileSuccessImpl);
+    const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+    const file = new File(['foo'], 'foo.png', {type: 'image/png'});
+    const dispatch = jest.fn();
+    const line = createLineFromFilename(file.name, assetFamily, channels, locales);
+
+    retryFileUpload(line, dispatch);
+    await flushPromises();
+
+    expectQueueInMemoryToBeEmpty();
+    expect(notify).toHaveBeenCalled();
   });
 });
