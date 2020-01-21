@@ -33,6 +33,9 @@ beforeEach(async () => {
 it('It fetches the rule relations', async () => {
   // It fetches the ruleRelations
   const response = await page.evaluate(async () => {
+    // Sometimes this test fails on circle ci. This wait should mitigate that
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     const fetchRuleRelations =
       require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/rule-relation')
       .fetchRuleRelations;
