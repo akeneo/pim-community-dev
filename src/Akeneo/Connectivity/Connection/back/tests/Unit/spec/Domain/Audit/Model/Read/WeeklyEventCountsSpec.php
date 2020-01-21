@@ -47,7 +47,7 @@ class WeeklyEventCountsSpec extends ObjectBehavior
     public function it_normalizes_a_connection_with_partial_data(): void
     {
         $this->beConstructedWith('magento', '2020-01-01', '2020-01-08', [
-            '2020-01-01' => 2,
+            '2020-01-02' => 2,
             '2020-01-03' => 10,
             '2020-01-10' => 5,
         ]);
@@ -55,8 +55,8 @@ class WeeklyEventCountsSpec extends ObjectBehavior
         $this->normalize()->shouldReturn(
             [
                 'magento' => [
-                    '2020-01-01' => 2,
-                    '2020-01-02' => 0,
+                    '2020-01-01' => 0,
+                    '2020-01-02' => 2,
                     '2020-01-03' => 10,
                     '2020-01-04' => 0,
                     '2020-01-05' => 0,
