@@ -203,7 +203,7 @@
                 },
                 {
                     "property": "transformations[10][operations][0][foo]",
-                    "message": "The property \"foo\" is not defined and the definition does not allow additional properties."
+                    "message": "The property \"foo\" was not expected."
                 },
                 {
                     "property": "transformations[10]",
