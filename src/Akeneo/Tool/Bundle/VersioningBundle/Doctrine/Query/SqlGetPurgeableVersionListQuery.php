@@ -64,7 +64,7 @@ SQL;
         int $listSize,
         int $startingId
     ): iterable {
-        $loggedAt = $date->format('Y-m-d H:i:s');
+        $loggedAt = $date->format('Y-m-d');
 
         $statement = $this->dbConnection->prepare($query);
         $statement->bindParam('resource_name', $resourceName, \PDO::PARAM_STR);
