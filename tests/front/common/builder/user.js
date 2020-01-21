@@ -15,7 +15,6 @@ class UserBuilder {
       user_default_locale: 'en_US',
       catalog_default_scope: 'ecommerce',
       default_category_tree: 'master',
-      email_notifications: null,
       display_proposals_state_notifications: null,
       proposals_state_notifications: null,
       display_proposals_to_review_notification: null,

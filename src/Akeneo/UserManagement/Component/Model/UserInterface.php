@@ -480,17 +480,6 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function setDefaultTree(CategoryInterface $defaultTree);
 
     /**
-     * @return bool
-     */
-    public function isEmailNotifications();
-    /**
-     * @param bool $emailNotifications
-     *
-     * @return UserInterface
-     */
-    public function setEmailNotifications($emailNotifications);
-
-    /**
      * @param string the view alias
      *
      * @return DatagridView|null
