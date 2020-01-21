@@ -30,7 +30,7 @@ class SqlGetPurgeableVersionListQuery
 SELECT id, logged_at FROM pim_versioning_version 
 WHERE resource_name = :resource_name  
   AND (
-      (date_format(logged_at, '%Y-%m-%d') = date_format(:logged_at, '%Y-%m-%d') AND id > :last_id) 
+      (logged_at = :logged_at AND id > :last_id) 
       OR logged_at > :logged_at
   ) 
 ORDER BY logged_at ASC, id ASC LIMIT :list_size
@@ -48,7 +48,7 @@ SQL;
 SELECT id, logged_at FROM pim_versioning_version 
 WHERE resource_name = :resource_name  
   AND (
-      (date_format(logged_at, '%Y-%m-%d') = date_format(:logged_at, '%Y-%m-%d') AND id < :last_id) 
+      (logged_at = :logged_at AND id < :last_id) 
       OR logged_at < :logged_at
   ) 
 ORDER BY logged_at DESC, id DESC LIMIT :list_size
@@ -64,7 +64,7 @@ SQL;
         int $listSize,
         int $startingId
     ): iterable {
-        $loggedAt = $date->format('Y-m-d');
+        $loggedAt = $date->format('Y-m-d H:i:s');
 
         $statement = $this->dbConnection->prepare($query);
         $statement->bindParam('resource_name', $resourceName, \PDO::PARAM_STR);
