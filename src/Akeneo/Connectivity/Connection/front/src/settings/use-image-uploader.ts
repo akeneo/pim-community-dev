@@ -1,6 +1,6 @@
-import {fetchResult} from '../shared/fetch-result';
+import * as $ from 'jquery';
 import {useRoute} from '../shared/router';
-import {err} from '../shared/fetch-result/result';
+import {err, ok, Result} from '../shared/fetch-result/result';
 
 export interface UploadedImage {
     originalFilename: string;
@@ -25,10 +25,10 @@ const allowedExtensions = [
     'image/bmp',
 ];
 
-export const useImageUploader = () => {
+export const useImageUploader = (handleOnUpload: (e: {loaded: number; total: number}) => void) => {
     const url = useRoute('pim_enrich_media_rest_post');
 
-    return async (file: File) => {
+    return async (file: File): Promise<Result<UploadedImage, UploadError>> => {
         if (!allowedExtensions.includes(file.type)) {
             return err({
                 extension: {
@@ -40,10 +40,28 @@ export const useImageUploader = () => {
         const body = new FormData();
         body.append('file', file);
 
-        return await fetchResult<UploadedImage, UploadError>(url, {
-            method: 'POST',
-            headers: [['X-Requested-With', 'XMLHttpRequest']],
-            body: body,
-        });
+        try {
+            const result = await $.ajax({
+                url,
+                type: 'POST',
+                data: body,
+                contentType: false,
+                cache: false,
+                processData: false,
+                xhr: () => {
+                    const ajaxSettings = $.ajaxSettings as any;
+                    const myXhr = ajaxSettings.xhr();
+                    if (myXhr.upload) {
+                        myXhr.upload.addEventListener('progress', handleOnUpload, false);
+                    }
+
+                    return myXhr;
+                },
+            });
+
+            return ok<UploadedImage>(result);
+        } catch (e) {
+            return err(e.responseJSON);
+        }
     };
 };
