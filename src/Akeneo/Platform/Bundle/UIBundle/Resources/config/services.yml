@@ -61,10 +61,3 @@ services:
         arguments:
             - '@request_stack'
             - '%kernel.secret%'
-
-    security.event_listener.add_csp:
-        class: Akeneo\Platform\Bundle\UIBundle\EventListener\AddContentSecurityPolicyListener
-        arguments:
-            - '@security.script_nonce_generator'
-        tags:
-            - { name: kernel.event_subscriber }
