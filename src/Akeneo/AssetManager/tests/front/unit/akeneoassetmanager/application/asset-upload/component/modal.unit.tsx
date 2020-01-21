@@ -13,6 +13,7 @@ import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 
 jest.mock('akeneoassetmanager/application/component/app/select2');
+jest.mock('akeneoassetmanager/tools/notify', () => jest.fn());
 
 jest.mock('akeneoassetmanager/application/asset-upload/saver/asset', () => ({
   create: jest.fn().mockImplementation(() => Promise.resolve(null)),
@@ -53,6 +54,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -76,6 +78,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -103,6 +106,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -141,6 +145,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -179,6 +184,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -217,6 +223,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}

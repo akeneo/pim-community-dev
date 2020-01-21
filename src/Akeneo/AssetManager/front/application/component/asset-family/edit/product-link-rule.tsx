@@ -110,7 +110,8 @@ const AssetFamilyProductLinkRulesEditor = ({
         schema={productLinkRulesSchema}
         ajv={ajv}
       />
-      {getErrorsViewStartedWith(errors, 'product_link_rules')}    </div>
+      {getErrorsViewStartedWith(errors, 'product_link_rules')}{' '}
+    </div>
   );
 };
 
@@ -164,7 +165,9 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps, Produc
         </div>
         <div className="AknSubsection">
           <header className="AknSubsection-title">
-            <span className="group-label">{__('pim_asset_manager.asset_family.product_link_rules.product_link_rules_subsection')}</span>
+            <span className="group-label">
+              {__('pim_asset_manager.asset_family.product_link_rules.product_link_rules_subsection')}
+            </span>
           </header>
           <div className="AknFormContainer AknFormContainer--wide">
             <AssetFamilyProductLinkRulesEditor

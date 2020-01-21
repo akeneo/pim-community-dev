@@ -55,6 +55,9 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
     });
 
     const response = await page.evaluate(async () => {
+      // Sometimes this tests fails on circle ci. This wait should mitigate that
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const fetcher = require('akeneoassetmanager/infrastructure/fetcher/attribute').default;
 
       return await fetcher.fetchAll('designer');

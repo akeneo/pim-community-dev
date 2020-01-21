@@ -10,7 +10,7 @@ const initialState = {
     labels: {},
     image: null,
     transformations: '[]',
-    productLinkRules: "[]",
+    productLinkRules: '[]',
     namingConvention: '{}',
   },
   errors: [],
