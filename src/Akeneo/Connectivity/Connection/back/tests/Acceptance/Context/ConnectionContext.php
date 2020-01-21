@@ -122,6 +122,9 @@ class ConnectionContext implements Context
         $data = $table->getColumnsHash()[0];
 
         $newLabel = $data['label'] ?? $label;
+        if ($newLabel === '<100chars>') {
+            $newLabel = str_pad('A', 120, 'a');
+        }
         if (!isset($data['flow_type']) || empty($data['flow_type'])) {
             throw new \InvalidArgumentException('You need to provide a new flow type to update the Connection.');
         }
