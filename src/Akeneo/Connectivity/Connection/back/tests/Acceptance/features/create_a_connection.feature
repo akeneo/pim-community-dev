@@ -45,3 +45,10 @@ Feature: Create a Connection
     Then the Connection "Magento-2" should not exist
     And there should be 0 Connections
     And I should have been warn the code is invalid
+
+  Scenario: Fail to create a Connection with a wrong flow type
+    Given no Connection has been created
+    When I create the test Connection "Magento"
+    Then the Connection "Magento" should not exist
+    And there should be 0 Connections
+    And I should have been warn the flow type is invalid

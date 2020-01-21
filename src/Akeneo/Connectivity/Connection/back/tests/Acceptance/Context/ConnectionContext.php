@@ -297,7 +297,7 @@ class ConnectionContext implements Context
     /**
      * @Then I should have been warn the :field should not be empty
      */
-    public function iShouldHaveBeenWarnTheShouldNotBeEmpty($field)
+    public function iShouldHaveBeenWarnTheShouldNotBeEmpty(string $field)
     {
         if (!$this->assertConstraintViolation($field, 'akeneo_connectivity.connection.connection.constraint.'.$field.'.required')) {
             throw new \Exception(sprintf('No violation about empty %s received.', $field));
@@ -311,6 +311,16 @@ class ConnectionContext implements Context
     {
         if (!$this->assertConstraintViolation('code', 'akeneo_connectivity.connection.connection.constraint.code.invalid')) {
             throw new \Exception('No violation about invalid code received.');
+        }
+    }
+
+    /**
+     * @Then I should have been warn the flow type is invalid
+     */
+    public function iShouldHaveBeenWarnTheFlowTypeIsInvalid()
+    {
+        if (!$this->assertConstraintViolation('flowType', 'akeneo_connectivity.connection.connection.constraint.flow_type.invalid')) {
+            throw new \Exception('No violation about invalid flow type received.');
         }
     }
 
@@ -364,7 +374,7 @@ class ConnectionContext implements Context
                 return FlowType::OTHER;
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Incorrect flow type "%s"', $flowType));
+                return $flowType;
         }
     }
 }
