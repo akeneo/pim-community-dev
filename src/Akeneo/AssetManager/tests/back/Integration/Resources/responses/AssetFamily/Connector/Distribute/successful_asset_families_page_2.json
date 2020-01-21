@@ -32,6 +32,7 @@
             "labels": {
               "fr_FR": "Marque"
             },
+            "attribute_as_main_media": null,
             "product_link_rules": [],
             "transformations": [],
             "naming_convention": {}
@@ -46,6 +47,7 @@
             "labels": {
               "fr_FR": "Marque"
             },
+            "attribute_as_main_media": null,
             "product_link_rules": [],
             "transformations": [],
             "naming_convention": {}
@@ -60,6 +62,7 @@
             "labels": {
               "fr_FR": "Marque"
             },
+            "attribute_as_main_media": null,
             "product_link_rules": [],
             "transformations": [],
             "naming_convention": {}
