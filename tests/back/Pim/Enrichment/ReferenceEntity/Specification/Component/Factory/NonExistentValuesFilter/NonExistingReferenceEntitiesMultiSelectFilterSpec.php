@@ -50,7 +50,6 @@ final class NonExistingReferenceEntitiesMultiSelectFilterSpec extends ObjectBeha
                                 'tablet' => [
                                     'en_US' => ['Red', 'Yellow', 'Purple', 'Orange'],
                                     'fr_FR' => ['Black', 'Grey'],
-
                                 ],
                             ],
                             'properties' => [
@@ -107,8 +106,7 @@ final class NonExistingReferenceEntitiesMultiSelectFilterSpec extends ObjectBeha
                                 ],
                                 'tablet' => [
                                     'en_US' => [],
-                                    'fr_FR' => [1 => 'Grey'],
-
+                                    'fr_FR' => [0 => 'Grey'],
                                 ],
                             ],
                             'properties' => [
