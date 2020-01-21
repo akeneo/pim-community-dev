@@ -218,7 +218,7 @@ pim_asset_manager:
       limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
-        should_be_unique: 'This code already exists for this entity.'
+        should_be_unique: 'This code already exists for this asset family.'
     no_data:
       title: There is no asset for {{ entityLabel }}
       subtitle: Click on the button "Add new" to create the first asset
