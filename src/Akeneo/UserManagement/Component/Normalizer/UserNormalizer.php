@@ -94,7 +94,6 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
             'user_default_locale'       => $user->getUiLocale()->getCode(),
             'catalog_default_scope'     => $user->getCatalogScope()->getCode(),
             'default_category_tree'     => $user->getDefaultTree()->getCode(),
-            'email_notifications'       => $user->isEmailNotifications(),
             'timezone'                  => $user->getTimezone(),
             'groups'                    => $user->getGroupNames(),
             'roles'                     => $this->getRoleNames($user),

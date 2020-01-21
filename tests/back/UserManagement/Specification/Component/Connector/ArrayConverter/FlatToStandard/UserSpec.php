@@ -72,7 +72,6 @@ class UserSpec extends ObjectBehavior
             'roles' => 'ROLE_USER',
             'groups' => 'Redactor',
             'enabled' => 1,
-            'email_notifications' => 1,
             'timezone' => '',
         ];
 
@@ -99,7 +98,6 @@ class UserSpec extends ObjectBehavior
             'roles' => ['ROLE_USER'],
             'groups' => ['Redactor'],
             'enabled' => true,
-            'email_notifications' => true,
             'timezone' => null,
         ]);
     }

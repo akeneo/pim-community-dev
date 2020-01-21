@@ -136,9 +136,6 @@ class User implements UserInterface
     /** @var ArrayCollection */
     protected $defaultGridViews;
 
-    /** @var bool */
-    protected $emailNotifications = false;
-
     /** @var array */
     protected $productGridFilters = [];
 
@@ -973,24 +970,6 @@ class User implements UserInterface
     public function setDefaultTree(CategoryInterface $defaultTree)
     {
         $this->defaultTree = $defaultTree;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isEmailNotifications()
-    {
-        return $this->emailNotifications;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setEmailNotifications($emailNotifications)
-    {
-        $this->emailNotifications = $emailNotifications;
 
         return $this;
     }
