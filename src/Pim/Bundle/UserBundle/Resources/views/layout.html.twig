@@ -34,7 +34,7 @@
         </div>
     </div>
     {# we had to do this to prevent loading js stack when not logged in#}
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
         const tooltip = document.querySelector('[data-toggle="tooltip"]');
         if (null !== tooltip) {
             tooltip.addEventListener('mouseover', function(event){

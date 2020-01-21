@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Technical improvement
+
+- PIM-8951: Add content security policy to prevent XSS
+
 # 2.3.76 (2020-01-10)
 
 ## Bug fixes

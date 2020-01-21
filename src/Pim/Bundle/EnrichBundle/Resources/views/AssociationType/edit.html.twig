@@ -11,7 +11,7 @@
                     <div id="association-type-edit-form">
 
                     </div>
-                    <script>
+                    <script nonce="{{ js_nonce() }}">
                         require(
                             ['underscore', 'jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error'],
                             function(_, $, FetcherRegistry, FormBuilder, UserContext, Dialog, mediator, Error) {

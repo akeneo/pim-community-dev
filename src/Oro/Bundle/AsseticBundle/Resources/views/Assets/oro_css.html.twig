@@ -12,11 +12,11 @@
           href="{{ asset(asset_url, 'frontend') }}"
           data-name="{{ name }}"
     />
-    <script>document.querySelector('link[data-name="{{ name }}"]').disabled = {{ isMain ? 'false' : 'true' }};</script>
+    <script nonce="{{ js_nonce() }}">document.querySelector('link[data-name="{{ name }}"]').disabled = {{ isMain ? 'false' : 'true' }};</script>
 {% endoro_css %}
 
 {% if hasLess %}
-    <script>localStorage.clear();</script>
-    <script src="{{ asset('bundles/oroassetic/lib/less-1.3.3.min.js') }}"></script>
-    <script>less.watch();</script>
+    <script nonce="{{ js_nonce() }}">localStorage.clear();</script>
+    <script nonce="{{ js_nonce() }}" src="{{ asset('bundles/oroassetic/lib/less-1.3.3.min.js') }}"></script>
+    <script nonce="{{ js_nonce() }}">less.watch();</script>
 {% endif %}

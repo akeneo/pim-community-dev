@@ -1,7 +1,7 @@
 {% if is_last_patch_enabled() %}
     <div class="AknFooter-item last-version"><span>{{ 'pim_analytics.new_patch_available'|trans }}:</span><span></span></div>
 
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
         require(
             ['jquery', 'pim/patch-fetcher'],
             function ($, Fetcher) {

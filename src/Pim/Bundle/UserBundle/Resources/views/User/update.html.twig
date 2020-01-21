@@ -5,7 +5,7 @@
 {% set title = form.vars.value.id ? 'Edit user'|trans ~ ' - ' ~ fullname : 'New user'|trans %}
 
 {% block head_script %}
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
         require(['underscore', 'jquery', 'pim/initselect2', 'datepicker', 'pim/date-context', 'jquery.jstree', 'jstree/jquery.hotkeys', 'bootstrap.bootstrapswitch'],
         function (_, $, initSelect2, datepicker, dateContext) {
             $(function() {
@@ -110,7 +110,7 @@
             {{ view_elements(form.vars.id ~ '.form_tab') }}
         </div>
 
-        <script>
+        <script nonce="{{ js_nonce() }}">
             require(
                 [
                     'pim/common/breadcrumbs',
@@ -155,7 +155,7 @@
 {% endblock %}
 
 {% block content_data %}
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
         require('pim/page-title').set({'username': '{{ fullname }}'});
 
         window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');

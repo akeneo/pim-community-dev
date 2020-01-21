@@ -37,3 +37,16 @@ services:
             - '@translator'
         tags:
             - { name: twig.extension }
+
+    security.script_nonce_generator:
+        class: Pim\Bundle\UIBundle\EventListener\ScriptNonceGenerator
+        arguments:
+            - '@request_stack'
+            - '%kernel.secret%'
+
+    pim_ui.twig.content_security_policy_extension:
+        class: Pim\Bundle\UIBundle\Twig\ContentSecurityPolicyExtension
+        arguments:
+            - '@security.script_nonce_generator'
+        tags:
+            - { name: twig.extension }

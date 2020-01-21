@@ -11,7 +11,7 @@
           {{ title }}
         </a>
         {% if buttonId is defined %}
-            <script type="text/javascript">
+            <script type="text/javascript" nonce="{{ js_nonce() }}">
                 require(
                     ['jquery', 'pim/dialogform'],
                     function ($, DialogForm) {
@@ -188,7 +188,7 @@
     <div id="entity-updated" style="opacity: 0">
         <span class="AknState">{{ 'info.updated'|trans }}</span>
     </div>
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
         require(
             ['jquery', 'pim/formupdatelistener'],
             function ($, FormUpdateListener) {
@@ -214,7 +214,7 @@
         <div class="btn-group">
             <button id="{{ switchId }}" type="button" class="btn">{{ form.enabled.vars.value ? disableLabel : enableLabel }}</button>
         </div>
-        <script type="text/javascript">
+        <script type="text/javascript" nonce="{{ js_nonce() }}">
             require(
                 ['jquery'],
                 function ($) {
