@@ -9,7 +9,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Currency controller for configuration
@@ -29,25 +28,21 @@ class CurrencyController
     /** @var SaverInterface */
     private $currencySaver;
 
-    /** @var TranslatorInterface */
-    private $translator;
-
+    /**
+     * @TODO merge master: remove RequestStack from the constructor
+     */
     public function __construct(
         RequestStack $requestStack,
         RouterInterface $router,
-        SaverInterface $currencySaver,
-        TranslatorInterface $translator
+        SaverInterface $currencySaver
     ) {
         $this->requestStack = $requestStack;
         $this->router = $router;
         $this->currencySaver = $currencySaver;
-        $this->translator = $translator;
     }
 
     /**
      * Activate/Deactivate a currency
-     *
-     * @param Currency $currency
      *
      * @AclAncestor("pim_enrich_currency_toggle")
      *
@@ -55,28 +50,19 @@ class CurrencyController
      */
     public function toggleAction(Currency $currency)
     {
-        $request = $this->requestStack->getCurrentRequest();
-
         try {
             $currency->toggleActivation();
             $this->currencySaver->save($currency);
-
-            $request
-                ->getSession()
-                ->getFlashBag()
-                ->add('success', $this->translator->trans('flash.currency.updated'));
         } catch (LinkedChannelException $e) {
-            $request
-                ->getSession()
-                ->getFlashBag()
-                ->add('error', $this->translator->trans('flash.currency.error.linked_to_channel'));
-        } catch (\Exception $e) {
-            $request
-                ->getSession()
-                ->getFlashBag()
-                ->add('error', $this->translator->trans('flash.error occurred'));
+            return new JsonResponse([
+                'successful' => false,
+                'message' => 'flash.currency.error.linked_to_channel'
+            ]);
         }
 
-        return new JsonResponse(['route' => 'pim_enrich_currency_index']);
+        return new JsonResponse([
+            'successful' => true,
+            'message' => 'flash.currency.updated'
+        ]);
     }
 }

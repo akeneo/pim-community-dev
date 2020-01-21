@@ -299,7 +299,9 @@ class AttributeUpdater implements ObjectUpdaterInterface
 
         $attribute->setType($attributeType->getName());
         $attribute->setBackendType($attributeType->getBackendType());
-        $attribute->setUnique($attributeType->isUnique());
+        if (true === $attributeType->isUnique() || null === $attribute->isUnique()) {
+            $attribute->setUnique($attributeType->isUnique());
+        }
     }
 
     /**
