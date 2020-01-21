@@ -41,7 +41,7 @@ export class ConcreteImageUploader implements Uploader<Image> {
           resolve(createFileFromNormalized(file));
         })
         .fail((response: any) => {
-          reject(response.responseJSON);
+          reject(response.responseJSON || []);
         });
     });
   }

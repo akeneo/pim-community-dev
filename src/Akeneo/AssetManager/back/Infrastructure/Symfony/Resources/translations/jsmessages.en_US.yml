@@ -1,5 +1,5 @@
 pim_title:
-  akeneo_asset_manager_asset_family_index: Create a new asset family
+  akeneo_asset_manager_asset_family_index: Asset Manager
   akeneo_asset_manager_asset_family_edit: Edit an asset family
   akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
@@ -12,6 +12,7 @@ pim_asset_manager:
   asset_counter: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
   asset_collection:
     add_asset: 'Add asset'
+    upload_asset: 'Upload asset'
     add_asset_title: 'Open the asset picker to add assets to the collection'
     no_asset_in_collection: 'Sorry, there is no asset in this collection.'
     helper:
@@ -173,6 +174,8 @@ pim_asset_manager:
     delete:
       message: Are you sure you want to delete the asset family "{{ assetFamilyLabel }}"?
       title: Attribute
+    edit:
+      discard_changes: You will lose changes to the asset family "{{ assetFamilyLabel }}" if you leave the page.
     notification:
       save:
         success: Asset family successfully updated.
@@ -215,7 +218,7 @@ pim_asset_manager:
       limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
-        should_be_unique: 'This code already exists for this entity.'
+        should_be_unique: 'This code already exists for this asset family.'
     no_data:
       title: There is no asset for {{ entityLabel }}
       subtitle: Click on the button "Add new" to create the first asset
@@ -272,14 +275,18 @@ pim_asset_manager:
       line_count: '[0,1]{{ count }} file|]1,Inf] {{ count }} files'
       title: Upload assets
       lines: Files
+      retry: Retry
       remove: Remove
       remove_all: Remove all
       confirm: Create
+      add_to_product: Add to product
       drop_or_click_here: Drag and drop your files or click here
       will_appear_here: Upload assets and they will appear just here!
+      files_limit: You are trying to upload too many files, only the first {{ limit }} will be uploaded.
       discard_changes: You will lose your assets if you close this modal without creating them.
       disabled_for_media_link: You cannot upload assets in this family as the attribute used as main media is a media link attribute
       upload_failure: An error occurred when uploading the file.
+      cannot_retry: An error occurred when trying to upload the file.
       list:
         asset: Asset
         filename: Filename

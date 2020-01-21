@@ -11,8 +11,10 @@ import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/mode
 import {createFakeAssetFamily} from '../tools';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
+import {uploadFile} from 'akeneoassetmanager/application/asset-upload/utils/file';
 
 jest.mock('akeneoassetmanager/application/component/app/select2');
+jest.mock('akeneoassetmanager/tools/notify', () => jest.fn());
 
 jest.mock('akeneoassetmanager/application/asset-upload/saver/asset', () => ({
   create: jest.fn().mockImplementation(() => Promise.resolve(null)),
@@ -53,6 +55,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -76,6 +79,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -103,6 +107,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -141,6 +146,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -179,6 +185,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -217,6 +224,7 @@ describe('Test modal component', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <UploadModal
+            confirmLabel="pim_asset_manager.asset.upload.confirm"
             locale="en_US"
             assetFamily={assetFamily}
             channels={channels}
@@ -240,6 +248,45 @@ describe('Test modal component', () => {
 
       const removeAllLinesButton = getByText(container, 'pim_asset_manager.asset.upload.remove_all');
       fireEvent.click(removeAllLinesButton);
+
+      // There should be a way to test if the dispatch has been called there
+      // or a better way to cover this event
+    });
+  });
+
+  test('I can drop a file and dispatch an upload retry', async () => {
+    uploadFile.mockImplementationOnce(() => Promise.reject());
+    const assetFamily = createFakeAssetFamily(false, false);
+    const channels: Channel[] = [];
+    const locales: Locale[] = [];
+
+    await act(async () => {
+      ReactDOM.render(
+        <ThemeProvider theme={akeneoTheme}>
+          <UploadModal
+            locale="en_US"
+            assetFamily={assetFamily}
+            channels={channels}
+            locales={locales}
+            onCancel={() => {}}
+            onAssetCreated={() => {}}
+          />
+        </ThemeProvider>,
+        container
+      );
+    });
+
+    const files = [new File(['foo'], 'foo.png', {type: 'image/png'})];
+
+    await act(async () => {
+      const filesInput = getByLabelText(container, 'pim_asset_manager.asset.upload.drop_or_click_here');
+      fireEvent.change(filesInput, {target: {files: files}});
+
+      // Wait for the line to be Invalid (uploaded failed)
+      await wait(() => getByText(container, 'pim_asset_manager.asset.upload.status.' + LineStatus.Invalid));
+
+      const retryUploadButton = getByLabelText(container, 'pim_asset_manager.asset.upload.retry');
+      fireEvent.click(retryUploadButton);
 
       // There should be a way to test if the dispatch has been called there
       // or a better way to cover this event

@@ -119,7 +119,8 @@ class SqlFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends SqlIntegrat
             Image::createEmpty(),
             [],
             $connectorTransformations,
-            $namingConvention
+            $namingConvention,
+            AttributeCode::fromString('media')
         );
 
         $assetFamilyFound = $this->findConnectorAssetFamilyQuery->find(AssetFamilyIdentifier::fromString('designer'));

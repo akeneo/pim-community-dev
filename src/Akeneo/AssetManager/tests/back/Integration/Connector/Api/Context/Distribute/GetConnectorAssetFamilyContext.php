@@ -114,7 +114,8 @@ class GetConnectorAssetFamilyContext implements Context
             Image::fromFileInfo($imageInfo),
             $productLinkRules,
             $connectorTransformations,
-            new NullNamingConvention()
+            new NullNamingConvention(),
+            null
         );
 
         $this->findConnectorAssetFamily->save(

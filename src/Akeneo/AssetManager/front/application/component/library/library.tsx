@@ -414,6 +414,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
       )}
       {isUploadModalOpen && null !== currentAssetFamily && (
         <UploadModal
+          confirmLabel={__('pim_asset_manager.asset.upload.confirm')}
           locale={context.locale}
           channels={channels}
           locales={locales}

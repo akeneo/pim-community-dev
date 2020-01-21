@@ -55,6 +55,9 @@ import {ResultCounter} from 'akeneoassetmanager/application/component/app/result
 import {addAssetsToCollection, emptyCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {Link} from 'akeneoassetmanager/application/component/app/link';
+import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel';
+import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import {MassUploader} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/mass-uploader';
 
 type ListStateProps = {
   attributes: Attribute[];
@@ -118,6 +121,11 @@ const LockIconContainer = styled.div`
   height: 14px;
 `;
 
+const dataProvider = {
+  assetFamilyFetcher,
+  channelFetcher: {fetchAll: fetchAllChannels},
+};
+
 const DisplayValues = ({
   values,
   family,
@@ -170,6 +178,14 @@ const DisplayValues = ({
                     onChange(updateValueData(value, addAssetsToCollection(value.data, assetCodes)));
                   }}
                   productLabels={productLabels}
+                />
+                <MassUploader
+                  dataProvider={dataProvider}
+                  assetFamilyIdentifier={value.attribute.referenceDataName}
+                  context={context}
+                  onAssetCreated={(assetCodes: AssetCode[]) => {
+                    onChange(updateValueData(value, addAssetsToCollection(value.data, assetCodes)));
+                  }}
                 />
                 <MoreButton
                   elements={[

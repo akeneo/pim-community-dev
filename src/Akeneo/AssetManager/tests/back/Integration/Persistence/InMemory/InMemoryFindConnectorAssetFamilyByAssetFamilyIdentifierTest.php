@@ -56,7 +56,8 @@ class InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends TestCa
             Image::createEmpty(),
             [],
             new ConnectorTransformationCollection([]),
-            new NullNamingConvention()
+            new NullNamingConvention(),
+            null
         );
 
         $this->query->save(

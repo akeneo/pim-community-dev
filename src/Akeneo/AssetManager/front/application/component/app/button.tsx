@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import Down from 'akeneoassetmanager/application/component/app/icon/down';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
+import Key from 'akeneoassetmanager/tools/key';
 
 type ButtonProps = {
   buttonSize?: 'micro' | 'medium' | 'default';
@@ -155,6 +157,8 @@ export const MultipleButton = ({items, children, ...props}: MultipleButtonProps)
       item.action();
     }
   };
+
+  useShortcut(Key.Escape, () => setOpen(false));
 
   return (
     <Container>

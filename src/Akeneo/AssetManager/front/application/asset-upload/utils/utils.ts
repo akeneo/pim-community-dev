@@ -41,6 +41,7 @@ export const createLineFromFilename = (
     assetCreated: false,
     isAssetCreating: false,
     isFileUploading: false,
+    isFileUploadFailed: false,
     file: null,
     filename: filename,
     code: info.code,
@@ -224,6 +225,7 @@ export const assetUploadFailed = (lines: Line[], lineToUpdate: Line): Line[] => 
       return {
         ...line,
         isFileUploading: false,
+        isFileUploadFailed: true,
         errors: {
           ...line.errors,
           front: [createBasicValidationError('pim_asset_manager.asset.upload.upload_failure')],
@@ -243,6 +245,14 @@ export const assetCreationSucceeded = (lines: Line[], asset: CreationAsset): Lin
 
 export const selectLinesToSend = (lines: Line[]): Line[] =>
   lines.filter((line: Line) => !line.assetCreated && null !== line.file && !line.isFileUploading);
+
+export const getCreatedAssetCodes = (lines: Line[]): AssetCode[] => {
+  return lines.reduce(
+    (assetCodes: AssetCode[], line: Line) =>
+      line.assetCreated && !assetCodes.includes(line.code) ? [...assetCodes, line.code] : assetCodes,
+    []
+  );
+};
 
 export const getAllErrorsOfLineByTarget = (line: Line): LineErrorsByTarget => {
   let errors: LineErrorsByTarget = {

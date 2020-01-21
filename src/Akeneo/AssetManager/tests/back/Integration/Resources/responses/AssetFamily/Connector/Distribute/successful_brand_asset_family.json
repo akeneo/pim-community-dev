@@ -13,6 +13,7 @@
       "labels": {
         "fr_FR": "Marque"
       },
+      "attribute_as_main_media": null,
       "product_link_rules": [
         {
           "product_selections": [

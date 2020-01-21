@@ -84,7 +84,7 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
       <div className="AknFilterBox-filter" onClick={() => setIsFilterDisplayed(true)}>
         <span className="AknFilterBox-filterLabel">{__('pim_enrich.entity.family.uppercase_label')}</span>
         <button type="button" className="AknFilterBox-filterCriteria ui-multiselect">
-          <span> {currentFamilyLabel}</span>
+          <span> {currentFamilyLabel ? currentFamilyLabel : "[" + familyCode + "]"}</span>
           <span className="AknFilterBox-filterCaret"/>
         </button>
       </div>
@@ -111,7 +111,7 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
               return (
                 <li key={identifier}>
                   <label onClick={() => handleClickFamily(family.code)} className={family.code === familyCode ? 'ui-state-active' : ''}>
-                    <FamilyLabel>{family.labels[uiLocale]}</FamilyLabel>
+                    <FamilyLabel>{family.labels[uiLocale] ? family.labels[uiLocale] : "[" + family.code + "]"}</FamilyLabel>
                   </label>
                 </li>
               )
