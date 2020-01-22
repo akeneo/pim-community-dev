@@ -1,6 +1,5 @@
 parameters:
-    level: 1
+    level: 6
     paths:
-        - %rootDir%/../../../src/Akeneo/Connectivity/Connection/back
-    excludes_analyse:
-        - %rootDir%/../../../src/Akeneo/Connectivity/Connection/back/tests/*
+        - %rootDir%/../../../src/Akeneo/Connectivity/Connection/back/Application
+        - %rootDir%/../../../src/Akeneo/Connectivity/Connection/back/Domain
