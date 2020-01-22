@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetsHandler;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkMultipleAssetsCommand;
 
 /**
- * This statefull class keeps track of all the assets that have been created via the API.
+ * This stateful class keeps track of all the assets that have been created via the API.
  *
  * Right before the end of the synchronization of the ERP and the PIM, it starts the process of linking to products all
  * the created assets during the synchronization.

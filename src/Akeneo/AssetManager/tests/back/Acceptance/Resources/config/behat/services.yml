@@ -244,5 +244,6 @@ services:
             - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
             - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
             - '@akeneo_assetmanager.application.asset.link_assets.link_assets_handler'
+            - '@akeneo_assetmanager.application.asset.link_assets.link_asset_handler'
         tags:
             - { name: fob.context_service }

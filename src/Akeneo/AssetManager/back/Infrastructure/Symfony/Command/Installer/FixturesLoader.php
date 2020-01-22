@@ -43,6 +43,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydratorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 class FixturesLoader
 {
@@ -292,7 +293,25 @@ class FixturesLoader
                 'fr_FR' => 'Marque',
             ],
             Image::createEmpty(),
-            RuleTemplateCollection::empty()
+            RuleTemplateCollection::createFromProductLinkRules(
+                [
+                    [
+                        'product_selections' => [
+                            [
+                                'field'    => '{{category_field}}',
+                                'operator' => Operators::EQUALS,
+                                'value'    => '{{category}}',
+                            ],
+                        ],
+                        'assign_assets_to'   => [
+                            [
+                                'mode'      => 'add',
+                                'attribute' => '{{product_multiple_link}}',
+                            ],
+                        ],
+                    ],
+                ]
+            )
         );
 
         $country = AssetFamily::create(

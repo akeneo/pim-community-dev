@@ -69,6 +69,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
@@ -768,7 +769,25 @@ class CreateOrUpdateAssetContext implements Context
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             ['en_US' => 'Front view'],
             Image::createEmpty(),
-            RuleTemplateCollection::empty()
+            RuleTemplateCollection::createFromProductLinkRules(
+                [
+                    [
+                        'product_selections' => [
+                            [
+                                'field' => '{{category_field}}',
+                                'operator' => Operators::EQUALS,
+                                'value' => '{{category}}',
+                            ],
+                        ],
+                        'assign_assets_to' => [
+                            [
+                                'mode' => 'add',
+                                'attribute' => '{{product_multiple_link}}',
+                            ],
+                        ],
+                    ],
+                ]
+            )
         );
         if ($withTransformation) {
             $assetFamily = $assetFamily->withTransformationCollection(
