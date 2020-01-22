@@ -20,7 +20,7 @@ class DailyEventCountSpec extends ObjectBehavior
         $this->beConstructedWith(
             'magento',
             '2019-12-30',
-            '329',
+            329,
             EventTypes::PRODUCT_CREATED
         );
     }
@@ -42,7 +42,7 @@ class DailyEventCountSpec extends ObjectBehavior
 
     public function it_returns_the_event_count()
     {
-        $this->eventCount()->shouldBe('329');
+        $this->eventCount()->shouldBe(329);
     }
 
     public function it_returns_the_event_type()
