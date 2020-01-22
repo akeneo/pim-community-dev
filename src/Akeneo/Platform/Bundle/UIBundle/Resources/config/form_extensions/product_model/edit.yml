@@ -45,10 +45,11 @@ extensions:
         position: 115
         config:
             datagridName: product-model-draft-grid
+            tabCode: pim-product-or-product-model-edit-form-proposals
 
     pim-product-model-edit-form-copy:
         module: pimee/product-edit-form/attributes/copy
-    
+
     pim-product-model-edit-form-copy-source-switcher:
         module: pimee/product-edit-form/source-switcher
         parent: pim-product-model-edit-form-copy

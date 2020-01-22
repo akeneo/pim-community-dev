@@ -45,12 +45,12 @@ class EntityWithGrantedValuesPropertySetterSpec extends ObjectBehavior
         $options = ['locale' => 'fr_FR', 'scope' => 'ecommerce'];
         $data = ['values' => ['a_name' => [['data' => 'name', 'locale' => null, 'scope' => null]]]];
         $attributeRepository->findOneByIdentifier('a_name')->willReturn($attributeName);
-        $attributeName->getGroup()->willReturn($marketingGroup);
+        $attributeName->getCode()->willReturn('a_name');
         $marketingGroup->getCode()->willReturn('marketing');
         $propertySetter->setData($entityWithValues, 'a_name', $data, $options);
 
-        $authorizationChecker->isGranted([Attributes::EDIT_ATTRIBUTES])->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW_ATTRIBUTES])->willReturn(true);
+        $authorizationChecker->isGranted([Attributes::EDIT_ATTRIBUTES], $attributeName)->willReturn(true);
+        $authorizationChecker->isGranted([Attributes::VIEW_ATTRIBUTES], $attributeName)->willReturn(true);
 
         $this->shouldNotThrow(
             new ResourceAccessDeniedException(
