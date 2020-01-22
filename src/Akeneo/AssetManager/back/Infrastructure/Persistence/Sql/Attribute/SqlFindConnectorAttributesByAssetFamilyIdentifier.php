@@ -3,6 +3,7 @@
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -83,6 +84,8 @@ SQL;
                 AttributeValuePerLocale::fromBoolean($hydratedAttribute->hasValuePerLocale()),
                 AttributeValuePerChannel::fromBoolean($hydratedAttribute->hasValuePerChannel()),
                 AttributeIsRequired::fromBoolean((bool) $result['is_required']),
+                // @todo: handle when we will know how to fetch this data!
+                AttributeIsReadOnly::fromBoolean(false),
                 $this->getAdditionalProperties($hydratedAttribute->normalize())
             );
 
@@ -100,6 +103,7 @@ SQL;
         unset($normalizedAttribute['labels']);
         unset($normalizedAttribute['order']);
         unset($normalizedAttribute['is_required']);
+        unset($normalizedAttribute['is_read_only']);
         unset($normalizedAttribute['value_per_channel']);
         unset($normalizedAttribute['value_per_locale']);
         unset($normalizedAttribute['type']);

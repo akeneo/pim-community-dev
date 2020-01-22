@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
@@ -67,6 +68,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
                 LabelCollection::fromArray($command->labels),
                 $order,
                 AttributeIsRequired::fromBoolean($command->isRequired),
+                AttributeIsReadOnly::fromBoolean($command->isReadOnly),
                 AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
                 AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
                 $maxLength,
@@ -81,6 +83,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
             LabelCollection::fromArray($command->labels),
             $order,
             AttributeIsRequired::fromBoolean($command->isRequired),
+            AttributeIsReadOnly::fromBoolean($command->isReadOnly),
             AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
             AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
             $maxLength,

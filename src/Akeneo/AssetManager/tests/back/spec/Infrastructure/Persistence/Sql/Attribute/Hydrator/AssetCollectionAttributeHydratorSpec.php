@@ -45,6 +45,7 @@ class AssetCollectionAttributeHydratorSpec extends ObjectBehavior
             'attribute_type' => 'asset',
             'attribute_order' => '0',
             'is_required' => false,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'additional_properties' => json_encode([

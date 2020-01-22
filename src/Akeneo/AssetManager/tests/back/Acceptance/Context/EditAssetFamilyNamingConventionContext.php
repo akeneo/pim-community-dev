@@ -330,6 +330,7 @@ class EditAssetFamilyNamingConventionContext implements Context
             $attributeCode,
             [],
             false,
+            false,
             $scopable,
             $localizable,
             MediaType::IMAGE,

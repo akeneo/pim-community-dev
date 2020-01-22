@@ -33,6 +33,7 @@ class OptionCollectionAttributeFactorySpec extends ObjectBehavior
                 ['fr_FR' => 'Couleur favorite'],
                 false,
                 false,
+                false,
                 false
             )
         )->shouldReturn(true);
@@ -44,6 +45,7 @@ class OptionCollectionAttributeFactorySpec extends ObjectBehavior
                     'fr_FR' => 'Nom',
                 ],
                 true,
+                false,
                 false,
                 false,
                 null,
@@ -59,6 +61,7 @@ class OptionCollectionAttributeFactorySpec extends ObjectBehavior
             'designer',
             'favorites_color',
             ['fr_FR' => 'Couleur favorites'],
+            false,
             false,
             false,
             false
@@ -91,6 +94,7 @@ class OptionCollectionAttributeFactorySpec extends ObjectBehavior
                          'designer',
                          'color',
                          [],
+                         false,
                          false,
                          false,
                          false,

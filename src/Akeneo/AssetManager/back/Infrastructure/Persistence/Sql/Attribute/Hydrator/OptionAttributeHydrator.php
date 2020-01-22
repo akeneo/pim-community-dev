@@ -8,6 +8,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
@@ -45,6 +46,7 @@ class OptionAttributeHydrator extends AbstractAttributeHydrator
             LabelCollection::fromArray($row['labels']),
             AttributeOrder::fromInteger($row['attribute_order']),
             AttributeIsRequired::fromBoolean($row['is_required']),
+            AttributeIsReadOnly::fromBoolean($row['is_read_only']),
             AttributeValuePerChannel::fromBoolean($row['value_per_channel']),
             AttributeValuePerLocale::fromBoolean($row['value_per_locale'])
         );
@@ -63,6 +65,7 @@ class OptionAttributeHydrator extends AbstractAttributeHydrator
             'labels',
             'attribute_order',
             'is_required',
+            'is_read_only',
             'value_per_locale',
             'value_per_channel',
             'attribute_type',

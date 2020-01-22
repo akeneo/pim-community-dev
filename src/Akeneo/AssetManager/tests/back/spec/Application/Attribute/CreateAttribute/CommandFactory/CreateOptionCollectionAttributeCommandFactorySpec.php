@@ -26,6 +26,7 @@ class CreateOptionCollectionAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'picture',
             'labels' => ['fr_FR' => 'Portrait'],
             'is_required' => false,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false
         ]);
@@ -45,6 +46,7 @@ class CreateOptionCollectionAttributeCommandFactorySpec extends ObjectBehavior
             'asset_family_identifier' => 'designer',
 //            'code' => 'picture', // For the test purpose, this one is missing
             'is_required' => false,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
         ];

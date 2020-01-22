@@ -9,6 +9,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -47,6 +48,7 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
             LabelCollection::fromArray($row['labels']),
             AttributeOrder::fromInteger($row['attribute_order']),
             AttributeIsRequired::fromBoolean($row['is_required']),
+            AttributeIsReadOnly::fromBoolean($row['is_read_only']),
             AttributeValuePerChannel::fromBoolean($row['value_per_channel']),
             AttributeValuePerLocale::fromBoolean($row['value_per_locale']),
             AttributeDecimalsAllowed::fromBoolean($row['decimals_allowed']),
@@ -64,6 +66,7 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
             'labels',
             'attribute_order',
             'is_required',
+            'is_read_only',
             'value_per_locale',
             'value_per_channel',
             'attribute_type',

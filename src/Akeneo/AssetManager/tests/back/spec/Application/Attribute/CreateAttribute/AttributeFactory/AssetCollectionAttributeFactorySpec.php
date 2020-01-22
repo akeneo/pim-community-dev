@@ -29,6 +29,7 @@ class AssetCollectionAttributeFactorySpec extends ObjectBehavior
                 true,
                 false,
                 false,
+                false,
                 'brand'
             )
         )->shouldReturn(true);
@@ -39,6 +40,7 @@ class AssetCollectionAttributeFactorySpec extends ObjectBehavior
                 [
                     'fr_FR' => 'Nom',
                 ],
+                true,
                 true,
                 false,
                 false,
@@ -56,6 +58,7 @@ class AssetCollectionAttributeFactorySpec extends ObjectBehavior
             'brands',
             ['fr_FR' => 'Marques'],
             true,
+            false,
             false,
             false,
             'brand'

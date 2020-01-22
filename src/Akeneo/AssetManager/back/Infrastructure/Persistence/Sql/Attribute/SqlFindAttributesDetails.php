@@ -92,6 +92,8 @@ SQL;
             $attributeDetails->order = (int) $result['attribute_order'];
             $attributeDetails->labels = $this->getLabelsByActivatedLocale($result, $activatedLocales);
             $attributeDetails->isRequired = (bool) $result['is_required'];
+            // @todo: handle when we will know how to fetch this data!
+            $attributeDetails->isReadOnly = false;
             $attributeDetails->valuePerChannel = (bool) $result['value_per_channel'];
             $attributeDetails->valuePerLocale = (bool) $result['value_per_locale'];
             $attributeDetails->additionalProperties = json_decode($result['additional_properties'], true);

@@ -33,6 +33,7 @@ class CreateMediaFileAttributeCommand extends AbstractCreateAttributeCommand
         string $code,
         array $labels,
         bool $isRequired,
+        bool $isReadOnly,
         bool $valuePerChannel,
         bool $valuePerLocale,
         ?string $maxFileSize,
@@ -44,6 +45,7 @@ class CreateMediaFileAttributeCommand extends AbstractCreateAttributeCommand
             $code,
             $labels,
             $isRequired,
+            $isReadOnly,
             $valuePerChannel,
             $valuePerLocale
         );

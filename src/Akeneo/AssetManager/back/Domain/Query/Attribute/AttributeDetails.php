@@ -51,6 +51,9 @@ class AttributeDetails
     public $isRequired;
 
     /** @var bool */
+    public $isReadOnly;
+
+    /** @var bool */
     public $valuePerChannel;
 
     /** @var bool */

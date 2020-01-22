@@ -29,6 +29,7 @@ class AssetAttributeFactorySpec extends ObjectBehavior
                 false,
                 false,
                 false,
+                false,
                 'designer'
             )
         )->shouldReturn(true);
@@ -39,6 +40,7 @@ class AssetAttributeFactorySpec extends ObjectBehavior
                 [
                     'fr_FR' => 'Nom',
                 ],
+                true,
                 true,
                 false,
                 false,
@@ -55,6 +57,7 @@ class AssetAttributeFactorySpec extends ObjectBehavior
             'designer',
             'mentor',
             ['fr_FR' => 'Mentor'],
+            false,
             false,
             false,
             false,

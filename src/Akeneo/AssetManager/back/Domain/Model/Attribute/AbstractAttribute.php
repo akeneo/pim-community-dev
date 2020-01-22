@@ -42,6 +42,9 @@ abstract class AbstractAttribute
     /** @var AttributeIsRequired */
     protected $isRequired;
 
+    /** @var AttributeIsReadOnly */
+    protected $isReadOnly;
+
     /** @var AttributeValuePerChannel */
     protected $valuePerChannel;
 
@@ -55,6 +58,7 @@ abstract class AbstractAttribute
         LabelCollection $labelCollection,
         AttributeOrder $order,
         AttributeIsRequired $isRequired,
+        AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale
     ) {
@@ -64,6 +68,7 @@ abstract class AbstractAttribute
         $this->labelCollection = $labelCollection;
         $this->order = $order;
         $this->isRequired = $isRequired;
+        $this->isReadOnly = $isReadOnly;
         $this->valuePerChannel = $valuePerChannel;
         $this->valuePerLocale = $valuePerLocale;
     }

@@ -6,6 +6,7 @@ namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
@@ -35,6 +36,7 @@ class MediaLinkAttributeSpec extends ObjectBehavior
                 LabelCollection::fromArray(['fr_FR' => 'Image', 'en_US' => 'Image']),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 Prefix::fromString('http:://www.binder.com'),

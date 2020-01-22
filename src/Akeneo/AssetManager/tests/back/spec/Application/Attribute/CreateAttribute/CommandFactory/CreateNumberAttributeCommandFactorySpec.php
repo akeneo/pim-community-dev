@@ -26,6 +26,7 @@ class CreateNumberAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'picture',
             'labels' => ['fr_FR' => 'Portrait'],
             'is_required' => false,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'decimals_allowed' => false,

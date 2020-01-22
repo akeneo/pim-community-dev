@@ -34,6 +34,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
             false,
             false,
             false,
+            false,
             '150',
             '200'
         );
@@ -44,6 +45,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
                 'fr_FR' => 'Nom',
             ],
             true,
+            false,
             false,
             false,
             null,
@@ -61,6 +63,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
             'designer',
             'number',
             ['fr_FR' => 'Nombre'],
+            false,
             false,
             false,
             false,
@@ -101,6 +104,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
             false,
             false,
             false,
+            false,
             null,
             null
         );
@@ -136,6 +140,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
                          'designer',
                          'color',
                          [],
+                         false,
                          false,
                          false,
                          false,

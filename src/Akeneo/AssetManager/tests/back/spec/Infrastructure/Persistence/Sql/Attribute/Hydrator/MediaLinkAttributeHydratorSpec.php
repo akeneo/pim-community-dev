@@ -43,6 +43,7 @@ class MediaLinkAttributeHydratorSpec extends ObjectBehavior
             'attribute_type' => 'media_link',
             'attribute_order' => '0',
             'is_required' => '1',
+            'is_read_only' => '0',
             'value_per_channel' => '0',
             'value_per_locale' => '1',
             'wrong_key' => '1',

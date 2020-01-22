@@ -28,6 +28,7 @@ class CreateAssetAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'mentor',
             'labels' => ['fr_FR' => 'Mentor'],
             'is_required' => false,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'asset_type' => 'designer',
@@ -49,6 +50,7 @@ class CreateAssetAttributeCommandFactorySpec extends ObjectBehavior
             'asset_family_identifier' => 'designer',
 //            'code' => 'mentor', // For the test purpose, this one is missing
             'is_required' => false,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'asset_type' => 'designer',
@@ -65,6 +67,7 @@ class CreateAssetAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'mentor',
             'labels' => ['fr_FR' => 'Mentor'],
             'is_required' => false,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             // 'asset_type' => 'designer', // For the test purpose, this one is missing

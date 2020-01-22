@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Domain\Query\Attribute\Connector;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -57,6 +58,9 @@ class ConnectorAttribute
     /** @var bool */
     private $isRequired;
 
+    /** @var bool */
+    private $isReadOnly;
+
     /** @var array */
     private $additionalProperties;
 
@@ -67,6 +71,7 @@ class ConnectorAttribute
         AttributeValuePerLocale $valuePerLocale,
         AttributeValuePerChannel $valuePerChannel,
         AttributeIsRequired $isRequired,
+        AttributeIsReadOnly $isReadOnly,
         array $additionalProperties
     ) {
         $this->code = $identifier;
@@ -75,6 +80,7 @@ class ConnectorAttribute
         $this->valuePerLocale = $valuePerLocale;
         $this->valuePerChannel = $valuePerChannel;
         $this->isRequired = $isRequired;
+        $this->isReadOnly = $isReadOnly;
         $this->additionalProperties = $additionalProperties;
     }
 

@@ -13,8 +13,8 @@ Feature: Delete an asset family
   @acceptance-back
   Scenario: User can't delete an Asset Family if it is used in any Asset Attribute on an Asset Family
     Given the following asset attributes:
-      | entity_identifier | code   | labels                                 | required | order | value_per_channel | value_per_locale | asset_type |
-      | designer          | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false    | 2     | false             | false            | designer    |
+      | entity_identifier | code   | labels                                 | required | read_only | order | value_per_channel | value_per_locale | asset_type |
+      | designer          | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false    | true      | 2     | false             | false            | designer    |
     When the user deletes the asset family "designer"
     Then there should be a validation error on the property '' with message 'You can not delete this family because asset family attributes are related to this family'
     And there is an asset family "designer" with:

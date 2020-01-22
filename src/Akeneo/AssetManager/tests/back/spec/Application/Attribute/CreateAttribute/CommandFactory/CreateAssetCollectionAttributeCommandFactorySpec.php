@@ -28,6 +28,7 @@ class CreateAssetCollectionAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'brands',
             'labels' => ['fr_FR' => 'Marques'],
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'asset_type' => 'brand',
@@ -50,6 +51,7 @@ class CreateAssetCollectionAttributeCommandFactorySpec extends ObjectBehavior
             // 'code' => 'brands', // For the test purpose, this one is missing
             'labels' => ['fr_FR' => 'Marques'],
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'asset_type' => 'brand',
@@ -66,6 +68,7 @@ class CreateAssetCollectionAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'brands',
             'labels' => ['fr_FR' => 'Marques'],
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             // 'asset_type' => 'brand', // For the test purpose, this one is missing

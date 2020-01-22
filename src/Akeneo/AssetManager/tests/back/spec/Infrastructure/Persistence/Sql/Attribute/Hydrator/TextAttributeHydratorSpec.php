@@ -43,6 +43,7 @@ class TextAttributeHydratorSpec extends ObjectBehavior
             'attribute_type'             => 'text',
             'attribute_order'            => '0',
             'is_required'                => '1',
+            'is_read_only'               => '1',
             'value_per_channel'          => '0',
             'value_per_locale'           => '1',
             'wrong_key'                  => '1',
@@ -83,6 +84,7 @@ class TextAttributeHydratorSpec extends ObjectBehavior
             'attribute_type'             => 'text',
             'attribute_order'            => '0',
             'is_required'                => '0',
+            'is_read_only'               => '0',
             'value_per_channel'          => '1',
             'value_per_locale'           => '0',
             'additional_properties'      => json_encode([
@@ -122,6 +124,7 @@ class TextAttributeHydratorSpec extends ObjectBehavior
             'attribute_type'             => 'text',
             'attribute_order'            => '0',
             'is_required'                => '0',
+            'is_read_only'               => '0',
             'value_per_channel'          => '1',
             'value_per_locale'           => '0',
             'additional_properties'      => json_encode([
@@ -161,6 +164,7 @@ class TextAttributeHydratorSpec extends ObjectBehavior
             'attribute_type'             => 'text',
             'attribute_order'            => '0',
             'is_required'                => '0',
+            'is_read_only'               => '0',
             'value_per_channel'          => '1',
             'value_per_locale'           => '0',
             'additional_properties'      => json_encode([
@@ -200,6 +204,7 @@ class TextAttributeHydratorSpec extends ObjectBehavior
             'attribute_type'             => 'text',
             'attribute_order'            => '0',
             'is_required'                => '0',
+            'is_read_only'               => '0',
             'value_per_channel'          => '1',
             'value_per_locale'           => '0',
             'additional_properties'      => json_encode([

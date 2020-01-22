@@ -22,6 +22,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
@@ -325,6 +326,7 @@ class FilterAssetsTest extends SearchIntegrationTestCase
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean($isScopable),
             AttributeValuePerLocale::fromBoolean($isLocalizable)
         );
@@ -355,6 +357,7 @@ class FilterAssetsTest extends SearchIntegrationTestCase
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean($isScopable),
             AttributeValuePerLocale::fromBoolean($isLocalizable)
         );
@@ -385,6 +388,7 @@ class FilterAssetsTest extends SearchIntegrationTestCase
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean($isScopable),
             AttributeValuePerLocale::fromBoolean($isLocalizable),
             AssetFamilyIdentifier::fromString($assetType)
@@ -405,6 +409,7 @@ class FilterAssetsTest extends SearchIntegrationTestCase
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean($isScopable),
             AttributeValuePerLocale::fromBoolean($isLocalizable),
             AssetFamilyIdentifier::fromString($assetType)
