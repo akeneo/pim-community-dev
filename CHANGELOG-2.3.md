@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.77 (2020-01-22)
+
 ## Bug fixes
 
 - PIM-8963: Add permission check on product variant creation button
