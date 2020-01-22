@@ -15,11 +15,9 @@ use PHPUnit\Framework\Assert;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version_4_0_20191004145507_remove_compute_model_descendant_jobs_Integration extends AbstractPimCatalogTestCase
+class Version_4_0_20200117145507_remove_compute_model_descendant_jobs_Integration extends AbstractPimCatalogTestCase
 {
     use ExecuteMigrationTrait;
-
-    private const MIGRATION_LABEL = '_4_0_20191004145507_remove_compute_model_descendant_jobs';
 
     protected function getConfiguration()
     {
@@ -47,7 +45,7 @@ class Version_4_0_20191004145507_remove_compute_model_descendant_jobs_Integratio
         $productsFound = $this->getSearchQueryResults($ESQuery);
         Assert::assertCount(0, $productsFound);
 
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration($this->getMigrationLabel());
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         Assert::assertNull($this->getComputeProductModelDescendantJobId());
@@ -139,5 +137,14 @@ SQL;
     private function numberOfJobsInQueue(): int
     {
         return (int) $this->getConnection()->executeQuery('SELECT COUNT(*) AS count FROM akeneo_batch_job_execution_queue')->fetch()['count'];
+    }
+
+    private function getMigrationLabel(): string
+    {
+        $migration = (new \ReflectionClass($this))->getShortName();
+        $migration = str_replace('_Integration', '', $migration);
+        $migration = str_replace('Version', '', $migration);
+
+        return $migration;
     }
 }
