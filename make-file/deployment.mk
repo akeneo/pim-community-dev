@@ -124,4 +124,8 @@ test-prod:
 
 .PHONY: release
 release:
-	echo "Release done! Well, almost..."
+	@echo Tagging Docker image ${IMAGE_TAG}
+	docker pull eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG}
+	docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG} eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG}
+	@echo Pushing Docker image ${IMAGE_TAG}
+	$(MAKE) push-php-image-prod
