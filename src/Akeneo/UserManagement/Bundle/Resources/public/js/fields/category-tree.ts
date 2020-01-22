@@ -32,7 +32,7 @@ class CategoryTree extends BaseSelect {
    */
   formatChoices(categories: InterfaceNormalizedCategory[]): { [key:string] : string } {
     return categories.reduce((result: { [key:string] : string }, category: InterfaceNormalizedCategory) => {
-      const label = category.labels[UserContext.get('uiLocale')];
+      const label = category.labels[UserContext.get('catalogLocale')];
       result[category.code] = label !== undefined ? label : '[' + category.code + ']';
 
       return result;

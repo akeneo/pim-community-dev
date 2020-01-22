@@ -22,7 +22,7 @@ class CategoryRepositorySpec extends ObjectBehavior
         TreeListener $treeListener,
         Nested $strategy
     ) {
-        $classMetadata->name = 'category';
+        $em->getClassMetadata('category')->willReturn($classMetadata);
 
         $userContext->getCurrentLocaleCode()->willReturn('en_US');
         $em->getEventManager()->willReturn($eventManager);
@@ -34,7 +34,7 @@ class CategoryRepositorySpec extends ObjectBehavior
             'left'   => 'left'
         ]);
 
-        $this->beConstructedWith($userContext, $em, $classMetadata);
+        $this->beConstructedWith($userContext, $em, 'category');
     }
 
     function it_is_initializable()

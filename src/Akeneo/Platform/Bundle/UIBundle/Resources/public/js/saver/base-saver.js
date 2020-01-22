@@ -24,7 +24,8 @@ define([
                     /* todo: remove ternary when all instances using this module will provide method parameter */
                     type: 'undefined' === typeof method ? 'POST' : method,
                     url: this.getUrl(code),
-                    data: JSON.stringify(data)
+                    data: JSON.stringify(data),
+                    contentType: 'application/json; charset=UTF-8'
                 }).then(function (entity) {
                     mediator.trigger('pim_enrich:form:entity:post_save', entity);
 
