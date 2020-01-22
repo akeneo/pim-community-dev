@@ -48,6 +48,7 @@ $rules = [
             'Akeneo\UserManagement\Bundle\Manager\UserManager',
             'Akeneo\UserManagement\Component\Model\GroupInterface',
             'Akeneo\UserManagement\Component\Model\RoleInterface',
+            'Akeneo\UserManagement\Component\Model\User',
             'Akeneo\UserManagement\Component\Model\UserInterface',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
@@ -87,7 +88,7 @@ $rules = [
         [
             'Akeneo\Connectivity\Connection\Domain',
             'Akeneo\UserManagement\Component\Model\User',
-            
+
             // Dependency for uuid generation
             'Ramsey\Uuid\Uuid',
 

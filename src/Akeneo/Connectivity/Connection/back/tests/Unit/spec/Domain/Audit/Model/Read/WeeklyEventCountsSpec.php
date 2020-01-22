@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\DailyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
 use PhpSpec\ObjectBehavior;
 
@@ -17,7 +16,7 @@ class WeeklyEventCountsSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith('magento');
+        $this->beConstructedWith('magento', '2020-01-20', '2020-01-28', []);
     }
 
     public function it_is_initializable(): void
@@ -25,37 +24,45 @@ class WeeklyEventCountsSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(WeeklyEventCounts::class);
     }
 
-    public function it_normalizes_a_connection(): void
+    public function it_normalizes_a_connection_without_data(): void
     {
-        $this->normalize()->shouldReturn(
-            [
-                'magento' => [],
-            ]
-        );
-    }
-
-    public function it_normalizes_a_connection_with_event_counts(): void
-    {
-        $eventDate1 = $eventDate = new \DateTime('2019-12-12', new \DateTimeZone('UTC'));
-        $eventCount1 = new DailyEventCount(153, $eventDate1);
-
-        $eventDate2 = $eventDate = new \DateTime('2019-12-13', new \DateTimeZone('UTC'));
-        $eventCount2 = new DailyEventCount(231, $eventDate2);
-
-        $eventDate3 = $eventDate = new \DateTime('2019-12-14', new \DateTimeZone('UTC'));
-        $eventCount3 = new DailyEventCount(127, $eventDate3);
-
-        $this->beConstructedWith('magento');
-        $this->addDailyEventCount($eventCount1);
-        $this->addDailyEventCount($eventCount2);
-        $this->addDailyEventCount($eventCount3);
+        $this->beConstructedWith('magento', '2020-01-01', '2020-01-08', []);
 
         $this->normalize()->shouldReturn(
             [
                 'magento' => [
-                    '2019-12-12' => 153,
-                    '2019-12-13' => 231,
-                    '2019-12-14' => 127,
+                    '2020-01-01' => 0,
+                    '2020-01-02' => 0,
+                    '2020-01-03' => 0,
+                    '2020-01-04' => 0,
+                    '2020-01-05' => 0,
+                    '2020-01-06' => 0,
+                    '2020-01-07' => 0,
+                    '2020-01-08' => 0,
+                ],
+            ]
+        );
+    }
+
+    public function it_normalizes_a_connection_with_partial_data(): void
+    {
+        $this->beConstructedWith('magento', '2020-01-01', '2020-01-08', [
+            '2020-01-01' => 2,
+            '2020-01-03' => 10,
+            '2020-01-10' => 5,
+        ]);
+
+        $this->normalize()->shouldReturn(
+            [
+                'magento' => [
+                    '2020-01-01' => 2,
+                    '2020-01-02' => 0,
+                    '2020-01-03' => 10,
+                    '2020-01-04' => 0,
+                    '2020-01-05' => 0,
+                    '2020-01-06' => 0,
+                    '2020-01-07' => 0,
+                    '2020-01-08' => 0,
                 ],
             ]
         );

@@ -17,6 +17,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolation
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection as WriteConnection;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository;
+use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryUserPermissionsRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -35,6 +36,7 @@ class ConnectionContext implements Context
     private $deleteConnectionHandler;
     private $updateConnectionHandler;
     private $violations;
+    private $userPermissionsRepository;
 
     public function __construct(
         InMemoryConnectionRepository $connectionRepository,
@@ -42,7 +44,8 @@ class ConnectionContext implements Context
         FindAConnectionHandler $findAConnectionHandler,
         CreateConnectionHandler $createConnectionHandler,
         DeleteConnectionHandler $deleteConnectionHandler,
-        UpdateConnectionHandler $updateConnectionHandler
+        UpdateConnectionHandler $updateConnectionHandler,
+        InMemoryUserPermissionsRepository $userPermissionsRepository
     ) {
         $this->connectionRepository = $connectionRepository;
         $this->fetchConnectionsHandler = $fetchConnectionsHandler;
@@ -50,6 +53,7 @@ class ConnectionContext implements Context
         $this->createConnectionHandler = $createConnectionHandler;
         $this->deleteConnectionHandler = $deleteConnectionHandler;
         $this->updateConnectionHandler = $updateConnectionHandler;
+        $this->userPermissionsRepository = $userPermissionsRepository;
     }
 
     /**
@@ -86,6 +90,9 @@ class ConnectionContext implements Context
      */
     public function iCreateTheConnection(string $flowType, string $label): void
     {
+        if ($label === '<100chars>') {
+            $label = str_pad('A', 120, 'a');
+        }
         try {
             $command = new CreateConnectionCommand(self::slugify($label), $label, self::defineFlowType($flowType));
             $this->createConnectionHandler->handle($command);
@@ -108,19 +115,23 @@ class ConnectionContext implements Context
     /**
      * @When I modify the Connection :label with:
      */
-    public function iChangeTheOfTheConnectionBy(string $label, TableNode $table)
+    public function iModifyTheConnectionWith(string $label, TableNode $table)
     {
         $code = self::slugify($label);
+
         $data = $table->getColumnsHash()[0];
+
         $newLabel = $data['label'] ?? $label;
+        if ($newLabel === '<100chars>') {
+            $newLabel = str_pad('A', 120, 'a');
+        }
         if (!isset($data['flow_type']) || empty($data['flow_type'])) {
             throw new \InvalidArgumentException('You need to provide a new flow type to update the Connection.');
         }
         $newFlowType = $data['flow_type'];
         $newImage = $data['image'] ?? null;
-
-        // $data['user_role'];
-        // $data['user_group'];
+        $newRole = $this->userPermissionsRepository->getRoleIdByIdentifier($data['user_role']);
+        $newGroup = $this->userPermissionsRepository->getGroupIdByIdentifier($data['user_group']);
 
         try {
             $command = new UpdateConnectionCommand(
@@ -128,8 +139,8 @@ class ConnectionContext implements Context
                 $newLabel,
                 $newFlowType,
                 $newImage,
-                '1',
-                '2'
+                (string) $newRole,
+                (string) $newGroup
             );
             $this->updateConnectionHandler->handle($command);
         } catch (ConstraintViolationListException $violationList) {
@@ -223,13 +234,27 @@ class ConnectionContext implements Context
     }
 
     /**
-     * @Then the Connection :label user role id should be :expectedUserRoleId
+     * @Then the Connection :label user role should be :expectedUserRole
      */
-    public function theConnectionUserRoleIdShouldBe(string $label, string $expectedUserRoleId): void
+    public function theConnectionUserRoleIdShouldBe(string $label, string $expectedUserRole): void
     {
         $connection = $this->connectionRepository->findOneByCode(self::slugify($label));
 
-        // Assert::eq($expectedUserRoleId, (string) );
+        $role = $this->userPermissionsRepository->getUserRole($connection->userId()->id());
+
+        Assert::eq($expectedUserRole, $role);
+    }
+
+    /**
+     * @Then the Connection :label user group should be :expectedUserGroup
+     */
+    public function theConnectionUserGroupIdShouldBe(string $label, string $expectedUserGroup): void
+    {
+        $connection = $this->connectionRepository->findOneByCode(self::slugify($label));
+
+        $group = $this->userPermissionsRepository->getUserGroup($connection->userId()->id());
+
+        Assert::eq($expectedUserGroup, $group);
     }
 
     /**
@@ -247,18 +272,72 @@ class ConnectionContext implements Context
      */
     public function iShouldHaveBeenWarnThatTheCodeIsUnique()
     {
+        if (!$this->assertConstraintViolation('code', 'akeneo_connectivity.connection.connection.constraint.code.must_be_unique')) {
+            throw new \Exception('No violation about code uniqueness received.');
+        }
+    }
+
+    /**
+     * @Then I should have been warn the :field should be longer than 3 chars
+     */
+    public function iShouldHaveBeenWarnTheShouldBeLongerThan3Chars(string $field)
+    {
+        if (!$this->assertConstraintViolation($field, 'akeneo_connectivity.connection.connection.constraint.'.$field.'.too_short')) {
+            throw new \Exception(sprintf('No violation about %s length received.', $field));
+        }
+    }
+
+    /**
+     * @Then I should have been warn the :field should be smaller than 100 chars
+     */
+    public function iShouldHaveBeenWarnTheShouldBeSmallerThan100Chars(string $field): void
+    {
+        if (!$this->assertConstraintViolation($field, 'akeneo_connectivity.connection.connection.constraint.'.$field.'.too_long')) {
+            throw new \Exception(sprintf('No violation about %s length received.', $field));
+        }
+    }
+
+    /**
+     * @Then I should have been warn the :field should not be empty
+     */
+    public function iShouldHaveBeenWarnTheShouldNotBeEmpty(string $field)
+    {
+        if (!$this->assertConstraintViolation($field, 'akeneo_connectivity.connection.connection.constraint.'.$field.'.required')) {
+            throw new \Exception(sprintf('No violation about empty %s received.', $field));
+        }
+    }
+
+    /**
+     * @Then I should have been warn the code is invalid
+     */
+    public function iShouldHaveBeenWarnTheCodeIsInvalid()
+    {
+        if (!$this->assertConstraintViolation('code', 'akeneo_connectivity.connection.connection.constraint.code.invalid')) {
+            throw new \Exception('No violation about invalid code received.');
+        }
+    }
+
+    /**
+     * @Then I should have been warn the flow type is invalid
+     */
+    public function iShouldHaveBeenWarnTheFlowTypeIsInvalid()
+    {
+        if (!$this->assertConstraintViolation('flowType', 'akeneo_connectivity.connection.connection.constraint.flow_type.invalid')) {
+            throw new \Exception('No violation about invalid flow type received.');
+        }
+    }
+
+    private function assertConstraintViolation(string $propertyPath, string $message): bool
+    {
         Assert::isInstanceOf($this->violations, ConstraintViolationListException::class);
 
         foreach ($this->violations->getConstraintViolationList() as $violation) {
-            if (
-                'code' === $violation->getPropertyPath() &&
-                'akeneo_connectivity.connection.connection.constraint.code.must_be_unique' === $violation->getMessage()
-            ) {
-                return;
+            if ($propertyPath === $violation->getPropertyPath() && $message === $violation->getMessage()) {
+                return true;
             }
         }
 
-        throw new \Exception('No exception about code uniqueness received.');
+        return false;
     }
 
     /**
@@ -298,7 +377,7 @@ class ConnectionContext implements Context
                 return FlowType::OTHER;
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Incorrect flow type "%s"', $flowType));
+                return $flowType;
         }
     }
 }
