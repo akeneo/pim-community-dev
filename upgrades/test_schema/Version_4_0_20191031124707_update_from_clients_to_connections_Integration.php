@@ -102,6 +102,19 @@ class Version_4_0_20191031124707_update_from_clients_to_connections_Integration 
         $this->assertConnectionExist(str_pad('', 97, 'a'), str_pad('', 97, 'a'), $clientId);
     }
 
+    public function test_it_migrates_api_client_with_label_chars_not_valid_for_user_firstname()
+    {
+        list($clientId, $secret, $label) = $this->createApiClient('"Test: > J&B');
+
+        $this->reExecuteMigration(self::MIGRATION_LABEL);
+
+        $this->assertClientCount(1);
+        $this->assertClientHasNotChanged($clientId, $secret, $label);
+
+        $this->assertConnectionCount(1);
+        $this->assertConnectionExist('_Test____J_B', '"Test: > J&B', $clientId);
+    }
+
     public function test_it_migrates_api_client_with_twice_the_same_client_label()
     {
         list($clientId1, $secret1, $label1) = $this->createApiClient('magento');
