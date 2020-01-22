@@ -83,9 +83,6 @@ else
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_EndToEnd $(0)
 endif
 
-connectivity-connection-cs-fix:
-	$(PHP_EXEC) vendor/bin/php-cs-fixer fix --config=.php_cs.php
-
 connectivity-connection-back:
 	make connectivity-connection-coupling-back
 	make connectivity-connection-static-analysis-back
