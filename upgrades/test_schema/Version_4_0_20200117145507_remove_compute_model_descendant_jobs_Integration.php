@@ -15,7 +15,7 @@ use PHPUnit\Framework\Assert;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version_4_0_20191004145507_remove_compute_model_descendant_jobs_Integration extends AbstractPimCatalogTestCase
+class Version_4_0_20200117145507_remove_compute_model_descendant_jobs_Integration extends AbstractPimCatalogTestCase
 {
     use ExecuteMigrationTrait;
 

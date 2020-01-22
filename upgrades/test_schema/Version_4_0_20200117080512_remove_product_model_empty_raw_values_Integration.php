@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 /**
  * This class will be removed after 4.0 version
  */
-class Version_4_0_20190917080512_remove_product_model_empty_raw_values_Integration extends TestCase
+class Version_4_0_20200117080512_remove_product_model_empty_raw_values_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 

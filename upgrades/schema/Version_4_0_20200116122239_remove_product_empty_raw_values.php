@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * This migration will delete the empty values from raw values of products.
  * For example, the value {attr: {<all_channels>: {<all_locales>: []}}} will be removed from the raw_values field.
  */
-final class Version_4_0_20190916122239_remove_product_empty_raw_values
+final class Version_4_0_20200116122239_remove_product_empty_raw_values
     extends AbstractMigration
     implements ContainerAwareInterface
 {
