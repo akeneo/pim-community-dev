@@ -27,6 +27,8 @@ class InMemoryConnectionRepository implements ConnectionRepository
             'user_id' => $connection->userId()->id(),
             'random_id' => uniqid(),
             'secret' => uniqid(),
+            'username' => (string) $connection->code(),
+            'password' => uniqid(),
             'image' => null,
         ];
     }

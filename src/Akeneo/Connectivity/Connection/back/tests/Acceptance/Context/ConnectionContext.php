@@ -8,6 +8,8 @@ use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnection
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionCommand;
@@ -38,11 +40,13 @@ class ConnectionContext implements Context
     private $deleteConnectionHandler;
     private $updateConnectionHandler;
     private $regenerateConnectionSecretHandler;
+    private $regenerateConnectionPasswordHandler;
     private $userPermissionsRepository;
 
     // Stateful properties
     private $violations;
     private $oldSecret;
+    private $oldPassword;
 
     public function __construct(
         InMemoryConnectionRepository $connectionRepository,
@@ -52,6 +56,7 @@ class ConnectionContext implements Context
         DeleteConnectionHandler $deleteConnectionHandler,
         UpdateConnectionHandler $updateConnectionHandler,
         RegenerateConnectionSecretHandler $regenerateConnectionSecretHandler,
+        RegenerateConnectionPasswordHandler $regenerateConnectionPasswordHandler,
         InMemoryUserPermissionsRepository $userPermissionsRepository
     ) {
         $this->connectionRepository = $connectionRepository;
@@ -61,6 +66,7 @@ class ConnectionContext implements Context
         $this->deleteConnectionHandler = $deleteConnectionHandler;
         $this->updateConnectionHandler = $updateConnectionHandler;
         $this->regenerateConnectionSecretHandler = $regenerateConnectionSecretHandler;
+        $this->regenerateConnectionPasswordHandler = $regenerateConnectionPasswordHandler;
         $this->userPermissionsRepository = $userPermissionsRepository;
     }
 
@@ -180,6 +186,22 @@ class ConnectionContext implements Context
 
         $command = new RegenerateConnectionSecretCommand($code);
         $this->regenerateConnectionSecretHandler->handle($command);
+    }
+
+    /**
+     * @When I regenerate the :label Connection password
+     */
+    public function iRegenerateTheConnectionPassword(string $label): void
+    {
+        $code = self::slugify($label);
+
+        if (!isset($this->connectionRepository->dataRows[$code])) {
+            throw new \InvalidArgumentException(sprintf('Connection "%s" does not exist!', $code));
+        }
+        $this->oldPassword = $this->connectionRepository->dataRows[$code]['password'];
+
+        $command = new RegenerateConnectionPasswordCommand($code);
+        $this->regenerateConnectionPasswordHandler->handle($command);
     }
 
     /**
@@ -364,6 +386,21 @@ class ConnectionContext implements Context
         $newSecret = $this->connectionRepository->dataRows[$code]['secret'];
 
         Assert::notEq($this->oldSecret, $newSecret);
+    }
+
+    /**
+     * @Then the :label Connection password should have been changed
+     */
+    public function theConnectionPasswordShouldHaveBeenChanged(string $label): void
+    {
+        $code = self::slugify($label);
+
+        if (!isset($this->connectionRepository->dataRows[$code])) {
+            throw new \InvalidArgumentException(sprintf('Connection "%s" does not exist!', $code));
+        }
+        $newPassword = $this->connectionRepository->dataRows[$code]['password'];
+
+        Assert::notEq($this->oldPassword, $newPassword);
     }
 
     private function assertConstraintViolation(string $propertyPath, string $message): bool
