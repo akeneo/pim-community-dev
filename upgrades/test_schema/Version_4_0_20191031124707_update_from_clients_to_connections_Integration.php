@@ -52,7 +52,7 @@ class Version_4_0_20191031124707_update_from_clients_to_connections_Integration 
 
     public function test_it_migrates_api_client_with_specific_chars()
     {
-        list($clientId, $secret, $label) = $this->createApiClient('Akénéo 2');
+        list($clientId, $secret, $label) = $this->createApiClient('Akénéo-2');
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
@@ -60,7 +60,7 @@ class Version_4_0_20191031124707_update_from_clients_to_connections_Integration 
         $this->assertClientHasNotChanged($clientId, $secret, $label);
 
         $this->assertConnectionCount(1);
-        $this->assertConnectionExist('Ak__n__o_2', 'Akénéo 2', $clientId);
+        $this->assertConnectionExist('Ak__n__o_2', 'Akénéo-2', $clientId);
     }
 
     public function test_it_migrates_api_client_with_short_label()
