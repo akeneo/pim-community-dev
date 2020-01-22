@@ -45,7 +45,7 @@ import {clearImageLoadingQueue} from 'akeneoassetmanager/tools/image-loader';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
-import notify from 'akeneoassetmanager/tools/notify'
+import notify from 'akeneoassetmanager/tools/notify';
 
 const Header = styled.div`
   padding-left: 40px;
@@ -135,23 +135,21 @@ const SecondaryActions = ({
 
 const useRoute = () => {
   const redirect = useRedirect();
-  const redirectToAsset = React.useCallback(
-    (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) =>
-      redirect('akeneo_asset_manager_asset_edit', {
-        assetCode,
-        assetFamilyIdentifier,
-        tab: 'enrich',
-      }),
-    []
-  );
-  const redirectToAssetFamily = React.useCallback(
-    (identifier: AssetFamilyIdentifier) =>
-      redirect('akeneo_asset_manager_asset_family_edit', {
-        identifier,
-        tab: 'attribute',
-      }),
-    []
-  );
+  const redirectToAsset = React.useCallback((assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => {
+    clearImageLoadingQueue();
+    redirect('akeneo_asset_manager_asset_edit', {
+      assetCode,
+      assetFamilyIdentifier,
+      tab: 'enrich',
+    });
+  }, []);
+  const redirectToAssetFamily = React.useCallback((identifier: AssetFamilyIdentifier) => {
+    clearImageLoadingQueue();
+    redirect('akeneo_asset_manager_asset_family_edit', {
+      identifier,
+      tab: 'attribute',
+    });
+  }, []);
   return {redirectToAsset, redirectToAssetFamily};
 };
 
