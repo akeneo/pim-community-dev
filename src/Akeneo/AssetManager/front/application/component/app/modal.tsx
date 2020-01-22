@@ -15,7 +15,10 @@ export const Modal = styled.div`
   width: 100%;
   height: 100%;
   padding: 40px;
-  overflow-x: auto;
+`;
+
+export const ScrollableModal = styled(Modal)`
+  padding-bottom: 0;
 `;
 
 export const ConfirmButton = styled(Button)`
