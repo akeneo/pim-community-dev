@@ -20,7 +20,6 @@ import {MultipleButton, Button} from 'akeneoassetmanager/application/component/a
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {CreateModal} from 'akeneoassetmanager/application/component/asset/create';
-import {useNotify} from 'akeneoassetmanager/application/hooks/notify';
 import {CreateAssetFamilyModal} from 'akeneoassetmanager/application/component/asset-family/create';
 import {useRedirect} from 'akeneoassetmanager/application/hooks/router';
 import {useStoredState} from 'akeneoassetmanager/application/hooks/state';
@@ -46,6 +45,7 @@ import {clearImageLoadingQueue} from 'akeneoassetmanager/tools/image-loader';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
+import notify from 'akeneoassetmanager/tools/notify'
 
 const Header = styled.div`
   padding-left: 40px;
@@ -219,7 +219,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
     setSearchResult
   );
   const filterViews = useFilterViews(currentAssetFamilyIdentifier, dataProvider);
-  const notify = useNotify();
   const {redirectToAsset, redirectToAssetFamily} = useRoute();
 
   const hasMediaLinkAsMainMedia =
