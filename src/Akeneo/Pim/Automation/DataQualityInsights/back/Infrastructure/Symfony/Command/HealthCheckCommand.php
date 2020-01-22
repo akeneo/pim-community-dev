@@ -193,7 +193,7 @@ SQL
     {
         $io->section('Dictionaries generated on shared FS');
 
-        $dictionaries = $this->mountManager->getFilesystem('dataQualityInsightsSharedAdapter')->listContents('/', true);
+        $dictionaries = $this->mountManager->getFilesystem('dataQualityInsightsSharedAdapter')->listContents('/consistency', true);
 
         if (!empty($dictionaries)) {
             $dictionaries = array_filter($dictionaries, function ($path) {
@@ -205,7 +205,7 @@ SQL
 
         $io->section('Dictionaries generated on local FS');
 
-        $dictionaries = $this->aspellDictionaryLocalFilesystem->getFilesystem()->listContents('/', true);
+        $dictionaries = $this->aspellDictionaryLocalFilesystem->getFilesystem()->listContents('/consistency', true);
 
         if (!empty($dictionaries)) {
             $dictionaries = array_filter($dictionaries, function ($path) {
