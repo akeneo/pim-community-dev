@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useState, useEffect, useRef, ChangeEvent} from "react";
 import useFetchFamilies from "../../../../../infrastructure/hooks/useFetchFamilies";
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from "../../../../../infrastructure/context-provider";
+import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from "../../../../listener";
 import styled from "styled-components";
 import {debounce} from "lodash";
 

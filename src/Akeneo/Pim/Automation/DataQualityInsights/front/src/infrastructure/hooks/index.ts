@@ -5,14 +5,14 @@ import useCatalogContext from "./useCatalogContext";
 import useProduct from "./useProduct";
 import useFetchProductAxisRates from "./useFetchProductAxisRates";
 import usePageContext from "./usePageContext";
-import useGetWidgetsList from "./Spellcheck/useGetWidgetsList";
-import useGetEditorBoundingRect from "./Spellcheck/useGetEditorBoundingRect";
-import useGetEditorScroll from "./Spellcheck/useGetEditorScroll";
-import useGetHighlights from "./Spellcheck/useGetHighlights";
-import useFetchTextAnalysis from "./Spellcheck/useFetchTextAnalysis";
-import useGetPopover from "./Spellcheck/useGetPopover";
-import useGetWidget from "./Spellcheck/useGetWidget";
-import useFetchIgnoreTextIssue from "./Spellcheck/useFetchIgnoreTextIssue";
+import useGetWidgetsList from "./EditorHighlight/useGetWidgetsList";
+import useGetEditorBoundingRect from "./EditorHighlight/useGetEditorBoundingRect";
+import useGetEditorScroll from "./EditorHighlight/useGetEditorScroll";
+import useGetHighlights from "./EditorHighlight/useGetHighlights";
+import useFetchTextAnalysis from "./EditorHighlight/Spellcheck/useFetchTextAnalysis";
+import useGetPopover from "./EditorHighlight/useGetPopover";
+import useGetWidget from "./EditorHighlight/useGetWidget";
+import useFetchIgnoreTextIssue from "./EditorHighlight/Spellcheck/useFetchIgnoreTextIssue";
 import useGetChartScalingSizeRatio from "./Dashboard/useGetChartScalingSizeRatio";
 
 export {
@@ -23,12 +23,12 @@ export {
   useProduct,
   useFetchProductAxisRates,
   usePageContext,
-  useGetWidgetsList as useGetSpellcheckWidgetsList,
-  useGetEditorBoundingRect as useGetSpellcheckEditorBoundingRect,
-  useGetEditorScroll as useGetSpellcheckEditorScroll,
-  useGetHighlights as useGetSpellcheckHighlights,
+  useGetWidgetsList as useGetEditorHighlightWidgetsList,
+  useGetEditorBoundingRect as useGetEditorHighlightBoundingRect,
+  useGetEditorScroll as useGetEditorHighlightScroll,
+  useGetHighlights as useGetEditorHighlights,
   useFetchTextAnalysis as useFetchSpellcheckTextAnalysis,
-  useGetPopover as useGetSpellcheckPopover,
+  useGetPopover as useGetEditorHighlightPopover,
   useGetWidget as useGetSpellcheckWidget,
   useFetchIgnoreTextIssue,
   useGetChartScalingSizeRatio as useGetDashboardChartScalingSizeRatio,

@@ -1,8 +1,6 @@
 import {Action, ActionCreator, Reducer} from "redux";
 import {isEmpty} from "lodash";
-
-import {ProductEvaluation} from "../../domain/Evaluation.interface";
-import {AxesCollection} from "../../domain";
+import {AxesCollection, ProductEvaluation} from "../../domain";
 
 export interface ProductEvaluationState {
   [productId: string]: ProductEvaluation;

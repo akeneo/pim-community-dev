@@ -28,7 +28,7 @@ import {
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
   PRODUCT_TAB_CHANGED,
-} from './infrastructure/context-provider';
+} from './application/listener';
 
 import {ATTRIBUTES_TAB_NAME, DATA_QUALITY_INSIGHTS_TAB_NAME} from './application/constant';
 

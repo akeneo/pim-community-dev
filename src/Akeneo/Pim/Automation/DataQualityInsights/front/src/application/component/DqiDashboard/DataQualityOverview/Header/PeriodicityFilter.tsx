@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from "react";
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY} from "../../../../../infrastructure/context-provider";
+import {DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY} from "../../../../listener";
 
 const __ = require('oro/translator');
 

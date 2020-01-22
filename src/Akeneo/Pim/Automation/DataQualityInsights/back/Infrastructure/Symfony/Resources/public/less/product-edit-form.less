@@ -1,7 +1,7 @@
-@AknSpellcheckZIndex: 2;
-@AknSpellcheckZIndexDebug: 2;
-@AknSpellcheckHighlightsZIndex: 2;
-@AknSpellcheckPopoverZIndex: 1100;
+@AknEditorHighlightZIndex: 2;
+@AknEditorHighlightZIndexDebug: 2;
+@AknEditorHighlightHighlightsZIndex: 2;
+@AknEditorHighlightPopoverZIndex: 1100;
 @AknIssueMarkOpacity: 0.75;
 @AknIssueMarkBackgroundOpacity: 0.15;
 
@@ -25,8 +25,8 @@
 }
 
 
-.AknSpellCheck--box-reset,
-.AknSpellCheck--box-reset > * {
+.AknEditorHighlight--box-reset,
+.AknEditorHighlight--box-reset > * {
     line-height: initial;
     white-space: normal;
     float: initial;
@@ -46,30 +46,30 @@
     animation: 0s ease 0s 1 normal none running none !important;
 }
 
-.AknSpellCheck-wrapper {
+.AknEditorHighlight-wrapper {
     position: absolute;
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: @AknSpellcheckZIndex;
+    z-index: @AknEditorHighlightZIndex;
 
     &--debug {
-        z-index: @AknSpellcheckZIndexDebug;
+        z-index: @AknEditorHighlightZIndexDebug;
     }
 }
 
-.AknSpellCheck-highlights,
-.AknSpellCheck-highlights-wrapper {
+.AknEditorHighlight-highlights,
+.AknEditorHighlight-highlights-wrapper {
     position: absolute;
     top: 0;
     left: 0;
     overflow: hidden;
 }
-.AknSpellCheck-highlights {
-    z-index: @AknSpellcheckHighlightsZIndex;
+.AknEditorHighlight-highlights {
+    z-index: @AknEditorHighlightHighlightsZIndex;
 }
 
-.AknSpellCheck-highlights-marks-wrapper {
+.AknEditorHighlight-highlights-marks-wrapper {
     box-sizing: content-box;
     position: relative;
     pointer-events: none;
@@ -80,7 +80,7 @@
     margin: 0;
 }
 
-.AknSpellCheck-mark {
+.AknEditorHighlight-mark {
     position: absolute !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -124,14 +124,14 @@
         visibility: visible !important;
         background: rgba(0, 0, 0, @AknIssueMarkBackgroundOpacity);
     }
-    &--misspelling.AknSpellCheck-mark--hover::before {
+    &--misspelling.AknEditorHighlight-mark--hover::before {
         background: rgba(212, 76, 96, @AknIssueMarkBackgroundOpacity);
     }
 }
 
-.AknSpellCheck-popover {
+.AknEditorHighlight-popover {
     position: absolute;
-    z-index: @AknSpellcheckPopoverZIndex;
+    z-index: @AknEditorHighlightPopoverZIndex;
     width: 200px;
     min-height: 250px;
     padding: 0 20px 20px;
@@ -158,7 +158,7 @@
         margin-bottom: 10px;
     }
 
-    .AknSpellCheck-popover-original {
+    .AknEditorHighlight-popover-original {
         &-title {
             color: @AknRed;
             margin-bottom: 10px;
@@ -170,7 +170,7 @@
         }
     }
 
-    .AknSpellCheck-popover-suggestions {
+    .AknEditorHighlight-popover-suggestions {
         min-height: 80px;
 
         &-title {
@@ -216,7 +216,7 @@
         margin-top: 20px;
     }
 
-    .AknSpellCheck-popover-ignore-button {
+    .AknEditorHighlight-popover-ignore-button {
         width: 82px;
         height: 13px;
         color: @AknDarkBlue;
@@ -231,13 +231,13 @@
         }
 
     }
-    button.AknSpellCheck-popover-ignore-button {
+    button.AknEditorHighlight-popover-ignore-button {
         border: none;
         background: none;
     }
 }
 
-.AknSpellCheck-cloned-editor {
+.AknEditorHighlight-cloned-editor {
     font-size: @AknDefaultFontSize;
     font-family: @AknDefaultFont;
     text-align: left;
@@ -256,7 +256,7 @@
     visibility: hidden !important;
     overflow: auto;
 
-    .AknSpellCheck-wrapper--debug & {
+    .AknEditorHighlight-wrapper--debug & {
         color: red !important;
         visibility: visible !important;
         background: rgba(255, 165, 0, 0.25) !important;

@@ -1,7 +1,7 @@
 import React, {FunctionComponent, useEffect, useState} from "react";
 import {createPortal} from "react-dom";
 import CategoryModal from "./CategoryModal";
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from "../../../../../infrastructure/context-provider";
+import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from "../../../../listener";
 
 const __ = require('oro/translator');
 

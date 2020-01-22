@@ -4,7 +4,11 @@ import catalogContextReducer, {
   changeCatalogContextLocale,
   initializeCatalogContext,
 } from "./catalogContextReducer";
-import productEvaluationReducer, {getProductEvaluationAction, getProductEvaluationRatesAction, ProductEvaluationState} from "./productEvaluationReducer";
+import productEvaluationReducer, {
+  getProductEvaluationAction,
+  getProductEvaluationRatesAction,
+  ProductEvaluationState
+} from "./productEvaluationReducer";
 import productFamilyInformationReducer, {
   getProductFamilyInformationAction,
   ProductFamilyInformationState
@@ -16,7 +20,7 @@ import pageContextReducer, {
   PageContextState,
   startProductAttributesTabIsLoadingAction
 } from "./pageContextReducer";
-import productSpellcheckReducer, {
+import productEditorHighlightReducer, {
   disableWidgetAction,
   disableWidgetHighlightAction,
   enableWidgetAction,
@@ -24,13 +28,13 @@ import productSpellcheckReducer, {
   hidePopoverAction,
   initializePopoverOpeningAction,
   initializeWidgetsListAction,
-  ProductSpellcheckState,
+  ProductEditorHighlightState,
   showPopoverAction,
   showWidgetAction,
   updateWidgetContent,
   updateWidgetContentAnalysis,
   updateWidgetHighlightsAction,
-} from "./productSpellcheckReducer";
+} from "./productEditorHighlightReducer";
 
 export {
   // Catalog Context Reducer
@@ -59,8 +63,8 @@ export {
   endProductAttributesTabIsLoadedAction,
   PageContextState,
   // Spellcheck
-  productSpellcheckReducer,
-  ProductSpellcheckState,
+  productEditorHighlightReducer,
+  ProductEditorHighlightState,
   initializeWidgetsListAction,
   showWidgetAction,
   enableWidgetAction,
