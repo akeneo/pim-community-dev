@@ -33,7 +33,7 @@ SQL;
 
         $this->getConnection()->executeQuery($sql);
 
-        $this->reExecuteMigration('_4_0_20190916122239_remove_product_empty_raw_values');
+        $this->reExecuteMigration($this->getMigrationLabel());
 
         $this->assertProductRawValuesEquals('product1', '{}');
         $this->assertProductRawValuesEquals('product2', '{}');
@@ -56,5 +56,14 @@ SQL;
             ['identifier' => $productIdentifier]
         );
         $this->assertEquals($expectedRawValues, $result[0]);
+    }
+
+    private function getMigrationLabel(): string
+    {
+        $migration = (new \ReflectionClass($this))->getShortName();
+        $migration = str_replace('_Integration', '', $migration);
+        $migration = str_replace('Version', '', $migration);
+
+        return $migration;
     }
 }
