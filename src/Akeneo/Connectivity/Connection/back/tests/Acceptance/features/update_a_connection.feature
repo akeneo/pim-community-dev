@@ -22,3 +22,35 @@ Feature: Update a Connection
     And the Connection "Magento" label should be Magento
     And the Connection "Magento" flow type should be destination
     And the Connection "Magento" should not have an image
+
+  Scenario: Fail to update a Connection with an empty label
+    Given the destination Connection "Magento" has been created
+    When I modify the Connection "Magento" with:
+      | label    | flow_type | image    | user_role | user_group |
+      |          | other     | path.jpg | ROLE_USER | All        |
+    Then the Connection "Magento" should exist
+    And I should have been warn the label should not be empty
+
+  Scenario: Fail to update a Connection with a label too long
+    Given the destination Connection "Magento" has been created
+    When I modify the Connection "Magento" with:
+      | label      | flow_type | image    | user_role | user_group |
+      | <100chars> | other     | path.jpg | ROLE_USER | All        |
+    Then the Connection "Magento" should exist
+    And I should have been warn the label should be smaller than 100 chars
+
+  Scenario: Fail to update a Connection with a label too small
+    Given the destination Connection "Magento" has been created
+    When I modify the Connection "Magento" with:
+      | label | flow_type | image    | user_role | user_group |
+      | a     | other     | path.jpg | ROLE_USER | All        |
+    Then the Connection "Magento" should exist
+    And I should have been warn the label should be longer than 3 chars
+
+  Scenario: Fail to update a Connection with a wrong flow type
+    Given the destination Connection "Magento" has been created
+    When I modify the Connection "Magento" with:
+      | label    | flow_type | image    | user_role | user_group |
+      | Magento  | wrong     | path.jpg | ROLE_USER | All        |
+    Then the Connection "Magento" should exist
+    And I should have been warn the flow type is invalid
