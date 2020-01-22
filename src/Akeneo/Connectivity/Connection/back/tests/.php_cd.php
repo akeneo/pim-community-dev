@@ -34,6 +34,9 @@ $rules = [
             'FOS\OAuthServerBundle\Model\ClientManagerInterface',
             'FOS\OAuthServerBundle\Util\Random',
             'OAuth2\OAuth2',
+
+            // For acceptance tests purpose
+            'Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Client'),
 
@@ -52,6 +55,8 @@ $rules = [
             'Akeneo\UserManagement\Component\Model\UserInterface',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
+            // For acceptance tests purpose
+            'Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository',
             'Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryUserPermissionsRepository',
 
             'Doctrine\DBAL\Driver\Connection',
