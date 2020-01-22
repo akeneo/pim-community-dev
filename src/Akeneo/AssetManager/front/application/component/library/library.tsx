@@ -45,6 +45,7 @@ import {clearImageLoadingQueue} from 'akeneoassetmanager/tools/image-loader';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
+import {useScroll} from 'akeneoassetmanager/application/hooks/scroll';
 import notify from 'akeneoassetmanager/tools/notify';
 
 const Header = styled.div`
@@ -178,22 +179,25 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
         // We need to reload the filters from local storage after changing the current asset family
         loadFilterCollectionFromStorage(`akeneo.asset_manager.grid.filter_collection_${newAssetFamily}`);
         clearImageLoadingQueue();
+        scrollTop();
       }
     }
   );
+  const [scrollContainerRef, scrollTop] = useScroll<HTMLDivElement>();
   const [filterCollection, setFilterCollection, loadFilterCollectionFromStorage] = useStoredState<Filter[]>(
     `akeneo.asset_manager.grid.filter_collection_${currentAssetFamilyIdentifier}`,
-    []
+    [],
+    scrollTop
   );
   const [excludedAssetCollection] = React.useState<AssetCode[]>([]);
   const [selection, setSelection] = React.useState<AssetCode[]>([]);
-  const [searchValue, setSearchValue] = useStoredState<string>('akeneo.asset_manager.grid.search_value', '');
+  const [searchValue, setSearchValue] = useStoredState<string>('akeneo.asset_manager.grid.search_value', '', scrollTop);
   const [searchResult, setSearchResult] = React.useState<SearchResult<ListAsset>>({
     items: [],
     matchesCount: 0,
     totalCount: 0,
   });
-  const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext);
+  const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext, scrollTop);
   const [isCreateAssetModalOpen, setCreateAssetModalOpen] = React.useState<boolean>(false);
   const [isUploadModalOpen, setUploadModalOpen] = React.useState<boolean>(false);
   const [isCreateAssetFamilyModalOpen, setCreateAssetFamilyModalOpen] = React.useState<boolean>(false);
@@ -378,6 +382,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 onContextChange={setContext}
               />
               <Mosaic
+                scrollContainerRef={scrollContainerRef}
                 selection={selection}
                 assetCollection={searchResult.items}
                 context={context}

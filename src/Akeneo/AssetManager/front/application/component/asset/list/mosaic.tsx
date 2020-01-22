@@ -32,6 +32,7 @@ const MoreResults = styled.div`
 const MAX_DISPLAYED_ASSETS = 500;
 
 const Mosaic = ({
+  scrollContainerRef = React.useRef<null | HTMLDivElement>(null),
   context,
   selection,
   onSelectionChange,
@@ -40,6 +41,7 @@ const Mosaic = ({
   resultCount,
   onAssetClick,
 }: {
+  scrollContainerRef?: React.RefObject<HTMLDivElement>;
   selection: AssetCode[];
   assetCollection: ListAsset[];
   context: Context;
@@ -52,7 +54,7 @@ const Mosaic = ({
     <React.Fragment>
       {hasReachMaximumSelection && <AssetCollectionLimitNotification />}
       {assetCollection.length > 0 ? (
-        <Container data-container="mosaic">
+        <Container data-container="mosaic" ref={scrollContainerRef}>
           <Grid>
             {assetCollection.map((asset: ListAsset) => {
               const isSelected = isAssetInCollection(asset.code, selection);
