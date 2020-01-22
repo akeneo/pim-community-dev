@@ -43,29 +43,44 @@ export const Chart = ({data, theme}: {data: ChartData[]; theme: VictoryThemeDefi
     let yMax = data.reduce((maxY, {y}) => (y > maxY ? y : maxY), 0);
     let yMin = data.reduce((minY, {y}) => (y < minY ? y : minY), yMax);
 
-    // Adds a margin to prevent displaying the chart line at the same level than the axis when all values are 0
-    if (0 === yMax - yMin) {
-        yMax += 4;
-        yMin -= 2;
+    // If yMin & yMax are equals: arbitrary override yMax value to be superior than yMin.
+    if (yMin === 0 && yMax === 0) {
+        yMax = 1;
     }
-    const step = (yMax - yMin) / 5;
+    // yMax & yMin are differents from 0 (but equals): arbitrary center the value between yMin & yMax.
+    if (yMax - yMin === 0) {
+        yMax += 1;
+        yMin -= 1;
+    }
 
-    // max and min domain focus the graph on the data.
-    const yMaxDomain = Math.round(yMax + step);
-    const yMinDomain = Math.round(yMin - step);
+    // Define the chart visual domain, add a margin of 20% of the data values below yMin and above yMax.
+    const yMaxDomain = yMax + (yMax - yMin) / 5;
+    const yMinDomain = yMin - (yMax - yMin) / 5;
 
-    // The first x value need to be hidden. It is used to see the hidden start of the graph.
+    // Define the absolute value used to draw each axe (total of 7).
+    const step = (yMaxDomain - yMinDomain) / 7;
+    const yGridAxes: number[] = [
+        yMinDomain,
+        yMinDomain + 1 * step,
+        yMinDomain + 2 * step,
+        yMinDomain + 3 * step,
+        yMinDomain + 4 * step,
+        yMinDomain + 5 * step,
+        yMinDomain + 6 * step,
+        yMaxDomain,
+    ];
+
+    // The first X value need to be hidden. It is used to see the hidden start of the chart.
     const xDaysValues = data.map(({xLabel}) => xLabel).slice(1);
-
-    const firstYGridAxe = yMin - step;
-    // We draw an Y axe each 20% of he graph.
-    const yGridAxes = Array.from(new Array(7)).map((_, index) => firstYGridAxe + step * index);
 
     const yLabels = ({datum}: {datum: ChartData}) => datum.yLabel;
 
-    const domain: {x: DomainTuple; y: DomainTuple} = {
+    const domain: {
+        x: DomainTuple;
+        y: DomainTuple;
+    } = {
         x: [0.5, 7.5],
-        y: [yMinDomain, yMaxDomain + 1],
+        y: [yMinDomain, yMaxDomain],
     };
 
     // The rendering order is based on the elements order. Axes must be first to be draw in background.
