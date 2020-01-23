@@ -1,6 +1,8 @@
 parameters:
-    akeneo.pim.automation.franklin_insights.franklin_client.request_timeout: 30
-    akeneo.pim.automation.franklin_insights.franklin_client.url: 'https://ask-franklin.cloud.akeneo.com'
+    env(ASK_FRANKLIN_REQUEST_TIMEOUT): 30
+    akeneo.pim.automation.franklin_insights.franklin_client.request_timeout: '%env(int:ASK_FRANKLIN_REQUEST_TIMEOUT)%'
+    env(ASK_FRANKLIN_URL): 'https://ask-franklin.cloud.akeneo.com'
+    akeneo.pim.automation.franklin_insights.franklin_client.url: '%env(ASK_FRANKLIN_URL)%'
 
 services:
     akeneo.pim.automation.franklin_insights.franklin_client.guzzle.message_formatter:

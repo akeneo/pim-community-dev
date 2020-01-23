@@ -1,13 +1,16 @@
 pim:
   defaultCatalog: src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+  franklin:
+    askFranklinUrl: "https://ask-franklin-test.dev.cloud.akeneo.com"
   secret: 5f559ffb-5b36-4922-9481-022057992057
+
   defaultAdminUser:
     login : pim-ci
     firstName: test1
     lastName: test2
     email: pim-ci@akeneo.fr
     password: oFVFp9oAEibTCiqJe3omkm
-    uiLocale: en_US 
+    uiLocale: en_US
   hook:
     addAdmin:
       enabled: true
@@ -18,7 +21,7 @@ pim:
       hook: "post-upgrade"
     upgradeES:
       enabled: false
- 
+
 mysql:
   common:
     class: standard

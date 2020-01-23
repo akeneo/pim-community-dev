@@ -10,7 +10,9 @@ global:
     pfid: ${pfid}
     instance_dns_record: ${instanceName}
     instance_dns_zone: ${dnsZone}
-    papo_project_code: ${papoProjectCode}   
+    papo_project_code: ${papoProjectCode}
+    papo_project_code_truncated: ${papoProjectCodeTruncated}
+    papo_project_code_hashed: ${papoProjectCodeHashed}
 
 common:
   gcpProjectID: ${projectId}

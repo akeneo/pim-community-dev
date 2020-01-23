@@ -3,7 +3,6 @@
 INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
 PFID ?= srnt-$(INSTANCE_NAME)
-PIM_SRC_DIR ?= ..
 CI ?= false
 
 #by default, the tag to deploy is CIRCLECI_SHA1
@@ -21,21 +20,19 @@ CLUSTER_DNS_NAME ?= europe-west3-a-akecld-saas-$(ENV_NAME).$(ENV_NAME).cloud.ake
 GOOGLE_STORAGE_lOCATION ?= eu
 REGISTRY ?= eu.gcr.io
 HELM_REPO_PROD := akeneo-charts
+DEPLOYMENTS_INSTANCES_DIR = $(PWD)/deployments/instances
+INSTANCE_DIR ?= $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
 
 ifeq ($(CI),true)
-	INSTANCE_DIR ?= ../$(PFID)
 	TF_INPUT_FALSE ?= -input=false
 	TF_AUTO_APPROVE ?= -auto-approve
-	PIM_SRC_DIR ?= ..
+	# CircleCi Checkout Directory , need to avoid ~ for terraform module path
+	PIM_SRC_DIR ?= /root/project
 else
-	# When not using the CI, consider PFID as the instance dir.
-	INSTANCE_DIR ?= ./$(PFID)
-	TF_INPUT_FALSE =
-	TF_AUTOAPPROVE =
-
-ifeq ($(PIM_SRC_DIR),)
-$(error PIM_SRC_DIR is empty, please define with path to pim-ai src repository)
-endif
+	TF_INPUT_FALSE ?=
+	TF_AUTOAPPROVE ?=
+	PIM_SRC_DIR ?= $(PWD)
+	# considering we use Makefile from the root of the project repo
 endif
 
 #Vars for exec_in
@@ -59,64 +56,66 @@ deploy: terraform-deploy
 .PHONY: terraform-deploy
 terraform-deploy: terraform-init terraform-apply
 
+$(INSTANCE_DIR):
+	mkdir -p $(INSTANCE_DIR)
+
 .PHONY: terraform-init
-terraform-init:
-	cd ~/4.x/ && terraform init $(TF_INPUT_FALSE) -upgrade
-	ln -sf ~/project/deployments/pim/ ~/4.x/.terraform/modules/pim
+terraform-init: $(INSTANCE_DIR)
+	cd $(INSTANCE_DIR) && terraform init $(TF_INPUT_FALSE) -upgrade
 
 .PHONY: terraform-apply
 terraform-apply:
-	cd ~/4.x/ && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
+	cd $(INSTANCE_DIR) && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
 
 .PHONY: delete
-delete: terraform-delete clean-all
+delete: terraform-delete purge-release-all
 
-.PHONY: clean-all
-clean-all: get-kubeconfig
-	kubectl delete all,pvc --all -n $(PFID) --force --grace-period=0
-	kubectl delete ns $(PFID)
+.PHONY: purge-release-all
+purge-release-all: get-kubeconfig
+	helm delete $(PFID) --purge || echo "WARNING: FAILED helm delete --purge $(PFID)"
+	kubectl delete all,pvc --all -n $(PFID) || echo "WARNING: FAILED kubectl delete all,pvc --all -n $(PFID)"
+	kubectl delete ns $(PFID) || echo "WARNING: FAILED kubectl delete ns $(PFID)"
 
 .PHONY: terraform-plan-destroy
 terraform-plan-destroy: terraform-init
-	cd ~/4.x/ && terraform plan -destroy $(TF_INPUT_FALSE)
+	cd $(INSTANCE_DIR) && terraform plan -destroy $(TF_INPUT_FALSE)
 
 .PHONY: terraform-delete
 terraform-delete: terraform-init
-	cd ~/4.x/ && terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
+	cd $(INSTANCE_DIR) && terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
 
 .PHONY: create-tf-files
-create-tf-files:
+create-tf-files: $(INSTANCE_DIR)
 	@echo "Deploy with $(DEPLOY_SHA1)"
-	mkdir -p ~/4.x/
-	cp ~/project/deployments/config/ci-values.yaml ~/4.x/values.yaml
-	yq w -i ~/project/deployments/pim/Chart.yaml version ${DEPLOY_SHA1}
+	cp $(PIM_SRC_DIR)/deployments/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml
+	yq w -i $(PIM_SRC_DIR)/deployments/pim/Chart.yaml version ${DEPLOY_SHA1}
 	@echo $(INSTANCE_NAME_PREFIX)
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-	yq w -i ~/4.x/values.yaml pim.hook.installPim.enabled true
-	yq w -i ~/4.x/values.yaml pim.hook.upgradePim.enabled true
-	yq w -i ~/4.x/values.yaml pim.hook.upgradeES.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
 endif
-	@echo "terraform {" >> ~/4.x/main.tf
-	@echo "backend \"gcs\" {" >> ~/4.x/main.tf
-	@echo "bucket  = \"akecld-terraform\"" >> ~/4.x/main.tf
-	@echo "prefix  = \"saas/$(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)/$(PFID)/\"" >> ~/4.x/main.tf
-	@echo "project = \"akeneo-cloud\"" >> ~/4.x/main.tf
-	@echo "}" >> ~/4.x/main.tf
-	@echo "}" >> ~/4.x/main.tf
-	@echo "module \"pim\" {" >> ~/4.x/main.tf
-	@echo "source = \"/root/project/deployments/terraform\"" >> ~/4.x/main.tf
-	@echo "google_project_id                 = \"$(GOOGLE_PROJECT_ID)\"" >> ~/4.x/main.tf
-	@echo "google_project_zone                 = \"$(GOOGLE_CLUSTER_ZONE)\"" >> ~/4.x/main.tf
-	@echo "instance_name                       = \"$(INSTANCE_NAME)\"" >> ~/4.x/main.tf
-	@echo "dns_external                        = \"$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS).\"" >> ~/4.x/main.tf
-	@echo "dns_internal                        = \"$(CLUSTER_DNS_NAME)\"" >> ~/4.x/main.tf
-	@echo "dns_zone                            = \"$(GOOGLE_MANAGED_ZONE_NAME)\"" >> ~/4.x/main.tf
-	@echo "pager_duty_service_key              = \"d55f85282a8e4e16b2c822249ad440bd\"" >> ~/4.x/main.tf
-	@echo "google_storage_location             = \"eu\"" >> ~/4.x/main.tf
-	@echo "papo_project_code                   = \"NOT_ON_PAPO\"" >> ~/4.x/main.tf
-	@echo "force_destroy_storage               = true" >> ~/4.x/main.tf
-	@echo "pim_version                         = \"$(IMAGE_TAG)\"" >> ~/4.x/main.tf
-	@echo "}" >> ~/4.x/main.tf
+	@echo "terraform {" >> $(INSTANCE_DIR)/main.tf
+	@echo "backend \"gcs\" {" >> $(INSTANCE_DIR)/main.tf
+	@echo "bucket  = \"akecld-terraform\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "prefix  = \"saas/$(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)/$(PFID)/\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "project = \"akeneo-cloud\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "}" >> $(INSTANCE_DIR)/main.tf
+	@echo "}" >> $(INSTANCE_DIR)/main.tf
+	@echo "module \"pim\" {" >> $(INSTANCE_DIR)/main.tf
+	@echo "source = \"$(PIM_SRC_DIR)/deployments/terraform\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "google_project_id                 = \"$(GOOGLE_PROJECT_ID)\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "google_project_zone                 = \"$(GOOGLE_CLUSTER_ZONE)\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "instance_name                       = \"$(INSTANCE_NAME)\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "dns_external                        = \"$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS).\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "dns_internal                        = \"$(CLUSTER_DNS_NAME)\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "dns_zone                            = \"$(GOOGLE_MANAGED_ZONE_NAME)\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "pager_duty_service_key              = \"d55f85282a8e4e16b2c822249ad440bd\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "google_storage_location             = \"eu\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "papo_project_code                   = \"$(PFID)\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "force_destroy_storage               = true" >> $(INSTANCE_DIR)/main.tf
+	@echo "pim_version                         = \"$(IMAGE_TAG)\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "}" >> $(INSTANCE_DIR)/main.tf
 
 .PHONY: test-prod
 test-prod:

@@ -10,6 +10,8 @@ metadata:
 data:
   AKENEO_PIM_URL: {{ printf "https://%s" .Values.common.pimMasterDomain  | quote }}
   PFID: {{ .Values.global.extraLabels.pfid | quote }}
+  PAPO_PROJECT_CODE_TRUNCATED: {{ .Values.global.extraLabels.papo_project_code_truncated}}
+  PAPO_PROJECT_CODE_HASHED: {{ .Values.global.extraLabels.papo_project_code_hashed}}
   GOOGLE_CLOUD_PROJECT: {{ .Values.common.gcpProjectID | quote }}
   GOOGLE_LOCATION: {{ .Values.common.googleZone | quote }}
   K8S_CLUSTER_NAME: {{ .Values.common.googleZone | quote }}
@@ -28,6 +30,8 @@ data:
   SRNT_GOOGLE_BUCKET_NAME: {{ .Values.pim.storage.bucketName | quote }}
   APP_ENV: prod
   TRUSTED_PROXY_IPS: 10.0.0.0/8
+  ASK_FRANKLIN_URL: {{ .Values.pim.franklin.askFranklinUrl | quote }}
+  ASK_FRANKLIN_REQUEST_TIMEOUT: {{ .Values.pim.franklin.askFranklinTimeout | quote }}
   {{- if .Values.onboarder.enabled }}
   ONBOARDER_ENABLED: "1"
   GCP_PROJECT_ID: {{ .Values.common.gcpProjectID | quote }}

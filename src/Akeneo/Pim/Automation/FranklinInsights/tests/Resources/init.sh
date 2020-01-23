@@ -11,6 +11,5 @@ ssh -A -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p ${TARGET_P
 gunzip < /tmp/dump.sql.gz | mysql -u akeneo_pim -pakeneo_pim akeneo_pim
 cd pim
 bin/console --env=prod pim:product:index --all
-sed -i s#https://ask-franklin.cloud.akeneo.com#https://ask-franklin-test.dev.cloud.akeneo.com# src/Akeneo/Pim/Automation/FranklinInsights/Infrastructure/Symfony/Resources/config/client/franklin.yml
 rm -rf var/cache/*
 ENDSSH

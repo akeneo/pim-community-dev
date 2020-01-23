@@ -83,6 +83,9 @@ image:
     pullPolicy: Always
 
 pim:
+  franklin:
+    askFranklinUrl: "https://ask-franklin.cloud.akeneo.com"
+    askFranklinTimeout: 30
   hook:
     addAdmin:
       enabled: true
