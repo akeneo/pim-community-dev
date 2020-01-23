@@ -2,24 +2,24 @@
 
 exports[`NoConnection should render 1`] = `
 <div
-  className="sc-htoDjs kkOYWO"
+  className="sc-gqjmRU kGBCDq"
 >
   <img
-    className="sc-dnqmqq kezHrQ"
+    className="sc-VigVT KRUGa"
     src="test-file-stub"
   />
   <div
-    className="sc-iwsKbI hvrcwP"
+    className="sc-jTzLTM blxAcO"
   >
     akeneo_connectivity.connection.no_connection.title
   </div>
   <div
-    className="sc-gZMcBi jVpjdn"
+    className="sc-fjdhpX kasnXz"
   >
     akeneo_connectivity.connection.no_connection.message
      
     <a
-      className="sc-kEYyzF hgSZNu"
+      className="sc-eHgmQL cBigQk"
       onClick={[Function]}
     >
       akeneo_connectivity.connection.no_connection.message_link

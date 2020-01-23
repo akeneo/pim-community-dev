@@ -150,3 +150,8 @@ akeneo_connectivity.connection:
             message_without_permission:
                 message: Ask your administrator to create one.
                 link: Learn more about connections here...
+
+    runtime_error:
+        error_message: Oh snap! An error occurred...
+        reload_helper: Please reload the page and try again.
+        reload_button:  Reload
