@@ -1,5 +1,4 @@
 import {useContext} from 'react';
-import {useHistory} from 'react-router';
 import {Connection} from '../../model/connection';
 import {ConnectionCredentials} from '../../model/connection-credentials';
 import {ConnectionUserPermissions} from '../../model/connection-user-permissions';
@@ -41,7 +40,6 @@ export const useCreateConnection = () => {
     const url = useRoute('akeneo_connectivity_connection_rest_create');
     const notify = useNotify();
     const translate = useContext(TranslateContext);
-    const history = useHistory();
 
     return async (data: RequestData) => {
         const result = await fetchResult<ResultValue, ResultError>(url, {
@@ -62,7 +60,6 @@ export const useCreateConnection = () => {
         }
 
         notify(NotificationLevel.SUCCESS, translate('akeneo_connectivity.connection.create_connection.flash.success'));
-        history.push(`/connections/${data.code}/edit`);
 
         const connection: Connection & ConnectionCredentials & ConnectionUserPermissions = {
             ...result.value,
