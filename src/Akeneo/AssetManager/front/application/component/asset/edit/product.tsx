@@ -14,7 +14,7 @@ import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
 import NoAttribute from 'akeneoassetmanager/application/component/asset/edit/product/no-attribute';
 import Key from 'akeneoassetmanager/tools/key';
-import ItemsCounter from 'akeneoassetmanager/application/component/asset/index/items-counter';
+import ItemsCounter from 'akeneoassetmanager/application/component/asset/list/items-counter';
 import {redirectToProductGrid} from 'akeneoassetmanager/application/event/router';
 import NotEnoughItems from 'akeneoassetmanager/application/component/asset/edit/product/not-enough-items';
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
 import Locale, {localeExists, LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel, {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import SearchField from 'akeneoassetmanager/application/component/asset/list/search-bar/search-field';
@@ -11,6 +10,9 @@ import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import {useChannels} from 'akeneoassetmanager/application/hooks/channel';
+import CompletenessFilter, {
+  CompletenessValue,
+} from 'akeneoassetmanager/application/component/asset/list/completeness-filter';
 
 type SearchProps = {
   dataProvider: any;
@@ -19,6 +21,8 @@ type SearchProps = {
   context: Context;
   onContextChange: (context: Context) => void;
   resultCount: number | null;
+  completenessValue?: CompletenessValue;
+  onCompletenessChange?: (value: CompletenessValue) => void;
 };
 
 const Container = styled.div`
@@ -44,7 +48,16 @@ const setLocaleIfNotExists = (
   }
 };
 
-const SearchBar = ({searchValue, onSearchChange, resultCount, context, onContextChange, dataProvider}: SearchProps) => {
+const SearchBar = ({
+  searchValue,
+  onSearchChange,
+  resultCount,
+  context,
+  onContextChange,
+  dataProvider,
+  completenessValue,
+  onCompletenessChange,
+}: SearchProps) => {
   const channels = useChannels(dataProvider.channelFetcher);
   setLocaleIfNotExists(onContextChange, channels, context.channel, context.locale);
 
@@ -58,6 +71,9 @@ const SearchBar = ({searchValue, onSearchChange, resultCount, context, onContext
       />
       <ResultCounter count={resultCount} />
       <AdjustedSeparator />
+      {onCompletenessChange !== undefined && completenessValue !== undefined && (
+        <CompletenessFilter value={completenessValue} onChange={onCompletenessChange} />
+      )}
       <ChannelSwitcher
         channelCode={context.channel}
         channels={channels}

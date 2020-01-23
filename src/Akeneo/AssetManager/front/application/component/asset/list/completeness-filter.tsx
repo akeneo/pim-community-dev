@@ -97,7 +97,7 @@ export default class CompletenessFilter extends React.Component<Props> {
         elements={this.getCompletenessFilter()}
         selectedElement={this.props.value}
         onSelectionChange={this.onCompletenessUpdated.bind(this)}
-        className="complete-filter AknFilterBox-filterContainer"
+        className="complete-filter"
       />
     );
   }

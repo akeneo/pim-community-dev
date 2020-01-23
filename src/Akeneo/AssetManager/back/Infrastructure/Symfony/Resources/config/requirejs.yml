@@ -20,10 +20,10 @@ config:
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/number.tsx'
             option:
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/option.tsx'
-                filter: '@akeneoassetmanager/application/component/asset/index/filter/option.tsx'
+                filter: '@akeneoassetmanager/application/component/asset/list/filter/option.tsx'
             option_collection:
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/option-collection.tsx'
-                filter: '@akeneoassetmanager/application/component/asset/index/filter/option.tsx'
+                filter: '@akeneoassetmanager/application/component/asset/list/filter/option.tsx'
 
         akeneoassetmanager/application/configuration/attribute:
             media_file:

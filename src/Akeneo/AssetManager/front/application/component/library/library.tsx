@@ -46,6 +46,8 @@ import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-fam
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 import {useScroll} from 'akeneoassetmanager/application/hooks/scroll';
+import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/list/completeness-filter';
+import {getCompletenessFilter, updateCompletenessFilter} from 'akeneoassetmanager/tools/filters/completeness';
 import notify from 'akeneoassetmanager/tools/notify';
 
 const Header = styled.div`
@@ -209,6 +211,14 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
     null === currentAssetFamily
       ? ''
       : getLabel(currentAssetFamily.labels, context.locale, currentAssetFamily.identifier);
+
+  const completenessValue = getCompletenessFilter(filterCollection);
+  const handleCompletenessValueChange = React.useCallback(
+    (value: CompletenessValue) => {
+      setFilterCollection(updateCompletenessFilter(filterCollection, value));
+    },
+    [filterCollection, setFilterCollection]
+  );
 
   const updateResults = useFetchResult(createQuery)(
     true,
@@ -380,6 +390,8 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 resultCount={searchResult.matchesCount}
                 onSearchChange={setSearchValue}
                 onContextChange={setContext}
+                completenessValue={completenessValue}
+                onCompletenessChange={handleCompletenessValueChange}
               />
               <Mosaic
                 scrollContainerRef={scrollContainerRef}
