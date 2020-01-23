@@ -54,6 +54,7 @@ const ListHeader = styled.div`
   margin-top: 10px;
   position: sticky;
   top: 133px;
+  z-index: 1;
 `;
 const ListColumnHeader = styled.div<{width?: number}>`
   color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
