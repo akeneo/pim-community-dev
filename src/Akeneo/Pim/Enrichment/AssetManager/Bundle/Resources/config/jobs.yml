@@ -18,14 +18,21 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.dummy_item'
+            - '@akeneo_assetmanager.job.reader.database'
             - '@pim_connector.processor.dummy_item'
             - '@pim_connector.writer.dummy_item'
             - '%pim_job_product_batch_size%'
 
     # Providers
-    akeneo_assetmanager.infrastructure.job.provider.csv_asset_export:
+    akeneo_assetmanager.job.provider.csv_asset_export:
         class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Provider\CsvAssetExport'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    # Readers:
+    akeneo_assetmanager.job.reader.database:
+        class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Reader\Database\AssetReader'
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
