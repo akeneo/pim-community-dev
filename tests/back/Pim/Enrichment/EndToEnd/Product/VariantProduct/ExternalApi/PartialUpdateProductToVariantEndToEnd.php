@@ -31,7 +31,7 @@ JSON;
             'enabled' => true,
             'values' => [
                 'a_localized_and_scopable_text_area' => [['locale' => 'en_US', 'scope' => 'ecommerce', 'data' => 'my pink tshirt']],
-                'a_number_float' => [['locale' => null, 'scope' => null, 'data' => '12.5000']],
+                'a_number_float' => [['locale' => null, 'scope' => null, 'data' => '12.5000000000']],
                 'a_price'  => [
                     'data' => ['locale' => null, 'scope' => null, 'data' => [['amount' => '50.00', 'currency' => 'EUR']]],
                 ],

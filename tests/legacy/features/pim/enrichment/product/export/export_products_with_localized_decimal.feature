@@ -38,10 +38,10 @@ Feature: Export products with localized numbers
     Then exported file of "ecommerce_product_export" should contain:
       """
       sku;categories;enabled;family;groups;cotton;metric;metric-unit
-      sandal-white;men_2013,men_2014,men_2015;1;sandal;;75,5500;;
-      sandal-black;men_2013,men_2014,men_2015;1;sandal;;75,0000;;
+      sandal-white;men_2013,men_2014,men_2015;1;sandal;;75,5500000000;;
+      sandal-black;men_2013,men_2014,men_2015;1;sandal;;75,0000000000;;
       sandal-yellow;men_2013,men_2014,men_2015;1;sandal;;;;
-      sandal-blue;men_2013,men_2014,men_2015;1;sandal;;75,0000;;
+      sandal-blue;men_2013,men_2014,men_2015;1;sandal;;75,0000000000;;
       """
 
   Scenario: Export metric attributes with the correct decimals formatting
