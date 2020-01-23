@@ -26,6 +26,8 @@ describe('testing RegenerateConnectionSecret page', () => {
 
         await act(async () => {
             userEvent.click(regenerateButton);
+
+            return Promise.resolve();
         });
 
         expect(fetchMock).toBeCalled();

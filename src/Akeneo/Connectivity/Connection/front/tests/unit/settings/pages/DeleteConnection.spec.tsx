@@ -29,6 +29,8 @@ describe('testing DeleteConnection page', () => {
 
         await act(async () => {
             userEvent.click(deleteButton);
+
+            return Promise.resolve();
         });
 
         expect(fetchMock).toBeCalled();
