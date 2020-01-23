@@ -19,7 +19,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@akeneo_assetmanager.job.reader.database'
-            - '@pim_connector.processor.dummy_item'
+            - '@akeneo_assetmanager.job.processor.normalization.asset'
             - '@pim_connector.writer.dummy_item'
             - '%pim_job_product_batch_size%'
 
@@ -36,3 +36,7 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+
+    # Processors:
+    akeneo_assetmanager.job.processor.normalization.asset:
+        class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Processor\Normalization\AssetProcessor'
