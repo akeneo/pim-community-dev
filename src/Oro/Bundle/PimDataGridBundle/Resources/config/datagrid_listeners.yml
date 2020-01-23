@@ -169,6 +169,7 @@ services:
         class: '%pim_datagrid.event_listener.add_username_to_grid_listener.class%'
         arguments:
             - '@security.token_storage'
+            - '@oro_security.security_facade'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.job-tracker-grid, method: onBuildAfter }
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.last-import-executions-grid, method: onBuildAfter }

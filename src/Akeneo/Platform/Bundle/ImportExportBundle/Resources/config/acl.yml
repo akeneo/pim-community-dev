@@ -115,3 +115,8 @@ pim_enrich_job_tracker_index:
     type: action
     label: pim_enrich.acl.job_tracker.index
     group_name: pim_enrich.acl_group.job_tracker
+
+pim_enrich_job_tracker_view_all_jobs:
+    type: action
+    label: pim_enrich.acl.job_tracker.view_all_jobs
+    group_name: pim_enrich.acl_group.job_tracker

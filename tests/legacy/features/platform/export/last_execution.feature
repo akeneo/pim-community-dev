@@ -16,6 +16,11 @@ Feature: Display only logged user's jobs execution in last executions job view
     And I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
+    And I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    And I revoke rights to resources View all jobs in process tracker
+    And I save the role
+    And I should not see the text "There are unsaved changes."
 
   Scenario: Only view last executions of user
     Given I am on the exports grid
