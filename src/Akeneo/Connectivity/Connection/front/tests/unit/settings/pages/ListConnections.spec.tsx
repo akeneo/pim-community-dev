@@ -3,7 +3,7 @@ import React from 'react';
 import {MemoryRouter} from 'react-router-dom';
 import {ConnectionsProvider} from '../../../../src/settings/connections-context';
 import {ListConnections} from '../../../../src/settings/pages/ListConnections';
-import {act, render, waitForElement} from '../../../utils/test-utils';
+import {render, waitForElement} from '../../../utils/test-utils';
 
 describe('testing ListConnections page', () => {
     beforeEach(() => {
@@ -16,6 +16,12 @@ describe('testing ListConnections page', () => {
                 {
                     code: 'franklin',
                     label: 'Franklin',
+                    flowType: 'data_source',
+                    image: null,
+                },
+                {
+                    code: 'dam',
+                    label: 'DAM',
                     flowType: 'data_source',
                     image: null,
                 },
@@ -33,6 +39,11 @@ describe('testing ListConnections page', () => {
         expect(fetchMock).toBeCalled();
         expect(fetchMock.mock.calls[0][0]).toEqual('akeneo_connectivity_connection_rest_list');
 
-        await waitForElement(() => getByText('Franklin'));
+        await waitForElement(() => [
+            getByText('Franklin'),
+            getByText('DAM'),
+            getByText('akeneo_connectivity.connection.flow_type.data_source'),
+            getByText('akeneo_connectivity.connection.connection_count?count=2'),
+        ]);
     });
 });

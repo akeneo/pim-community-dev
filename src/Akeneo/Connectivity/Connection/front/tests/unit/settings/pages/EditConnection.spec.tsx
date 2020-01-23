@@ -43,7 +43,7 @@ describe('testing EditConnection page', () => {
         fetchMock.mockResponseOnce(JSON.stringify({}));
 
         const history = createMemoryHistory({initialEntries: ['/connections/ecommerce/edit']});
-        const {getByText, getByLabelText, debug, rerender} = render(
+        const {getByText, getByLabelText} = render(
             <Router history={history}>
                 <Route path='/connections/:code/edit'>
                     <ConnectionsProvider>
