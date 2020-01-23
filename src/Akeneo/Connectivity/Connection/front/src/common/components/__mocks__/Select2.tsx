@@ -1,5 +1,5 @@
 import React, {ChangeEvent} from 'react';
-import {Select2 as BaseSelect2, Select2Configuration} from '../../../../src/common';
+import {Select2 as BaseSelect2, Select2Configuration} from '../Select2';
 
 export {Select2Configuration};
 
