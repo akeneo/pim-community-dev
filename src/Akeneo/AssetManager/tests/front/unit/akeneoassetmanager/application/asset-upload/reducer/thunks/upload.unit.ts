@@ -12,7 +12,7 @@ import {createLineFromFilename} from 'akeneoassetmanager/application/asset-uploa
 import {
   getCurrentQueuedFiles,
   onFileDrop,
-  retryFileUpload
+  retryFileUpload,
 } from 'akeneoassetmanager/application/asset-upload/reducer/thunks/upload';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import Channel from 'akeneoassetmanager/domain/model/channel';
@@ -25,8 +25,9 @@ const flushPromises = () => new Promise(setImmediate);
 jest.mock('akeneoassetmanager/tools/notify', () => jest.fn());
 
 const expectQueueInMemoryToBeEmpty = () => expect(Object.values(getCurrentQueuedFiles()).length).toBe(0);
-const expectQueueInMemoryToContain = (file: File) => expect(Object.values(getCurrentQueuedFiles())).toContainEqual(file);
-const storeInQueueInMemory = (key: string, file: File) => getCurrentQueuedFiles()[key] = file;
+const expectQueueInMemoryToContain = (file: File) =>
+  expect(Object.values(getCurrentQueuedFiles())).toContainEqual(file);
+const storeInQueueInMemory = (key: string, file: File) => (getCurrentQueuedFiles()[key] = file);
 
 const uploadFileSuccessImpl = (file: File, line: Line, updateProgress: (line: Line, progress: number) => void) => {
   updateProgress(line, 0);
