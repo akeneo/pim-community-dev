@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-9065: Change the number decimal precision to 10
+
 # 3.0.64 (2020-01-21)
 
 ## Bug fixes

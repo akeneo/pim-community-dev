@@ -42,7 +42,7 @@ class NumberPresenter implements PresenterInterface
 
         if (floor($value) != $value) {
             $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 2);
-            $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 4);
+            $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 10);
         }
 
         return $numberFormatter->format($value);

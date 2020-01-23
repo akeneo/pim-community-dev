@@ -145,7 +145,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             [
                 'locale' => 'en_US',
                 'scope'  => 'ecommerce',
-                'data'   => '15.5000',
+                'data'   => '15.5000000000',
             ]
         );
     }
