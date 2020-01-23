@@ -171,7 +171,7 @@ while ($line = fgets($stream)) {
 
 echo <<<YAML
 imports:
-    - { resource: '/home/benoit/akeneo/dev/pim-migration-aps2020/vendor/rector/rector/packages/**/config/config.yaml' }
+    - { resource: 'vendor/rector/rector/packages/**/config/config.yaml' }
 
 services:
     Rector\\Renaming\\Rector\\Class_\\RenameClassRector:
