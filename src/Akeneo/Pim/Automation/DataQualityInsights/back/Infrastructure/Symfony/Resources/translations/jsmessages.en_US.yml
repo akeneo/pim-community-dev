@@ -17,9 +17,22 @@ akeneo_data_quality_insights:
             average: Average
             below_average: Below average
             to_improve: To improve
-        category_modal:
+        category_modal_filter:
             subtitle: Filter on a category
             message: Choose the category to explore on your dashboard
+        widgets:
+            family_modal:
+                subtitle: Add families
+                message: Choose the families to add on your dashboard
+                max_families_msg: Sorry, you cannot add more than {{ count }} families to track on your dashboard
+            category_modal:
+                subtitle: Add categories
+                message: Choose the categories to add on your dashboard
+                max_categories_msg: Sorry, you cannot add more than {{ count }} categories to track on your dashboard
+            add_families: Add families
+            add_categories: Add categories
+            no_family_helper_msg: Select the families for which you wish to measure data quality
+            no_category_helper_msg: Select the categories for which you wish to measure data quality
 
     product_evaluation:
         criteria:

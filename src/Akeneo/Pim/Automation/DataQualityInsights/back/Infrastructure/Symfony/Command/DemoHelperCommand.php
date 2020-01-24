@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxis
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\DictionarySource;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
@@ -112,7 +113,7 @@ final class DemoHelperCommand extends Command
             return;
         }
 
-        $now = new \DateTimeImmutable();
+        $now = new ConsolidationDate(new \DateTimeImmutable());
 
         $io->section('Generate dictionaries');
         $this->aspellDictionaryGenerator->generate($this->productValueInDatabaseDictionarySource);
@@ -129,7 +130,7 @@ final class DemoHelperCommand extends Command
         }
 
         $io->section('Generate fake consolidation');
-        $this->consolidateDashboardRates->consolidate(new ConsolidationDate($now));
+        $this->consolidateDashboardRates->consolidate($now);
 
         $statement = $this->db->executeQuery('select type, code, rates from pimee_data_quality_insights_dashboard_rates_projection');
 
@@ -205,26 +206,6 @@ final class DemoHelperCommand extends Command
 
             ];
 
-            $ratesOfTheDay = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[0]);
-
-            $rates['daily'][$now->modify('-1 DAY')->format('Y-m-d')] = $ratesOfTheDay;
-
-            for ($i=2; $i < 8; $i++) {
-                $rates['daily'][$now->modify(sprintf('-%d DAY', $i))->format('Y-m-d')] = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]);
-            }
-
-            $rates['weekly'][$now->modify('sunday last week')->format('Y-m-d')] = $ratesOfTheDay;
-
-            for ($i=1; $i < 4; $i++) {
-                $rates['weekly'][$now->modify(sprintf('sunday %d weeks ago', $i))->format('Y-m-d')] = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]);
-            }
-
-            $rates['monthly'][$now->modify('-1 MONTH')->format('Y-m-t')] = $ratesOfTheDay;
-
-            for ($i=2; $i < 7; $i++) {
-                $rates['monthly'][$now->modify(sprintf('-%d MONTH', $i))->format('Y-m-t')] = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]);
-            }
-
             $projectionTypeAndCode = ['type' => null, 'code' => null];
 
             switch ($result['type']) {
@@ -242,13 +223,54 @@ final class DemoHelperCommand extends Command
                     break;
             }
 
-            $this->dashboardRatesProjectionRepository->save(
-                new DashboardRatesProjection(
+            $ratesOfTheDay = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[0]);
+            $ratesProjections = [];
+
+            for ($i=2; $i < 8; $i++) {
+                $ratesProjections[] = new DashboardRatesProjection(
                     $projectionTypeAndCode['type'],
                     $projectionTypeAndCode['code'],
-                    $rates
-                )
+                    $now->modify(sprintf('-%d DAY', $i)),
+                    new RanksDistributionCollection($this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]))
+                );
+            }
+
+            $ratesProjections[] = new DashboardRatesProjection(
+                $projectionTypeAndCode['type'],
+                $projectionTypeAndCode['code'],
+                $now->modify('sunday last week'),
+                new RanksDistributionCollection($ratesOfTheDay)
             );
+
+            for ($i=1; $i < 4; $i++) {
+                $ratesProjections[] = new DashboardRatesProjection(
+                    $projectionTypeAndCode['type'],
+                    $projectionTypeAndCode['code'],
+                    $now->modify(sprintf('sunday %d weeks ago', $i)),
+                    new RanksDistributionCollection($this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]))
+                );
+            }
+
+            $firstDayThisMonth = $now->modify('first day of this month');
+            for ($i=1; $i < 7; $i++) {
+                $ratesProjections[] = new DashboardRatesProjection(
+                    $projectionTypeAndCode['type'],
+                    $projectionTypeAndCode['code'],
+                    $firstDayThisMonth->modify(sprintf('last day of %d months ago', $i)),
+                    new RanksDistributionCollection($this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]))
+                );
+            }
+
+            $ratesProjections[] = new DashboardRatesProjection(
+                $projectionTypeAndCode['type'],
+                $projectionTypeAndCode['code'],
+                $now->modify('-1 DAY'),
+                new RanksDistributionCollection($ratesOfTheDay)
+            );
+
+            foreach ($ratesProjections as $ratesProjection) {
+                $this->dashboardRatesProjectionRepository->save($ratesProjection);
+            }
 
             $io->writeln(sprintf('    Fake consolidation for <info>%s</info> projection type and <info>%s</info> projection code', $result['type'], $result['code']));
         }
@@ -262,7 +284,7 @@ final class DemoHelperCommand extends Command
             foreach ($scope as $scopeCode => $locale) {
                 foreach ($locale as $localeCode => $ranks) {
                     foreach ($idealRates as $rankCode => $percentage) {
-                        $rates[$axe][$scopeCode][$localeCode][$rankCode] = ($numberOfProducts*$percentage/100) + (rand(1, intval(ceil($numberOfProducts*5/100))));
+                        $rates[$axe][$scopeCode][$localeCode][$rankCode] = intval(round($numberOfProducts*$percentage/100)) + rand(1, intval(ceil($numberOfProducts*5/100)));
                     }
                 }
             }
@@ -293,20 +315,20 @@ final class DemoHelperCommand extends Command
     private function fullSynchronousCriteriaEvaluation(SymfonyStyle $io): void
     {
         $query = $this->db->executeQuery('select count(*) as nb from pim_catalog_product where product_model_id is null');
-        $nb = $query->fetch();
+        $nbProducts = $query->fetch();
 
-        $nb = intval($nb['nb']);
-        if ($nb===0) {
+        $nbProducts = intval($nbProducts['nb']);
+        if ($nbProducts===0) {
             return;
         }
 
-        $steps = intval(ceil($nb/100));
+        $nbSteps = intval(ceil($nbProducts/100));
 
-        $io->comment(sprintf('Launch the evaluation of %d products', $nb));
-        $progressBar = new ProgressBar($io, $steps);
+        $io->comment(sprintf('Launch the evaluation of %d products', $nbProducts));
+        $progressBar = new ProgressBar($io, $nbProducts);
         $progressBar->start();
 
-        for ($i = 0; $i<$steps; $i++) {
+        for ($i = 0; $i<$nbSteps; $i++) {
             $stmt = $this->db->query('select id from pim_catalog_product where product_model_id is null LIMIT ' . $i*100 . ',100');
             $ids = array_map(function ($id) {
                 return intval($id);
@@ -314,7 +336,7 @@ final class DemoHelperCommand extends Command
 
             $this->evaluateProducts($ids);
 
-            $progressBar->advance();
+            $progressBar->advance(count($ids));
         }
 
         $progressBar->finish();

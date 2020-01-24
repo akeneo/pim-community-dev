@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useState} from "react";
-import useFetchCategoryChildren from "../../../../../infrastructure/hooks/useFetchCategoryChildren";
+import useFetchCategoryChildren from "../../../../infrastructure/hooks/useFetchCategoryChildren";
 
 interface CategoryTreeNodeProps {
   categoryId: string;
@@ -9,25 +9,31 @@ interface CategoryTreeNodeProps {
   categoryCode: string;
   onSelectCategory: (categoryCode: string, categoryLabel: string) => void;
   hasChildren: boolean;
-  selectedCategory: string | null;
+  selectedCategories: string[];
+  withCheckbox: boolean;
 }
 
-const CategoryTreeNode: FunctionComponent<CategoryTreeNodeProps> = ({categoryId, categoryLabel, locale, categoryCode, onSelectCategory, hasChildren, selectedCategory, isOpened = false}) => {
+const CategoryTreeNode: FunctionComponent<CategoryTreeNodeProps> = ({categoryId, categoryLabel, locale, categoryCode, onSelectCategory, hasChildren, selectedCategories, withCheckbox, isOpened = false}) => {
 
   const [isOpen, setIsOpen] = useState<boolean>(isOpened);
 
   const children = useFetchCategoryChildren(locale, categoryId.replace('node_', ''), isOpen);
 
+  categoryLabel = categoryLabel ? categoryLabel : '[' + categoryCode + ']';
+
   return (
-    <li className={`jstree-root jstree-last ${hasChildren ? (isOpen ? 'jstree-open' : 'jstree-closed') : 'jstree-leaf'} ${selectedCategory === categoryCode ? 'jstree-checked' : ''}`}>
+    <li className={`jstree-root jstree-last ${hasChildren ? (isOpen ? 'jstree-open' : 'jstree-closed') : 'jstree-leaf'} ${selectedCategories.includes(categoryCode) ? 'jstree-checked' : 'jstree-unchecked'}`}>
       <ins className="jstree-icon" onClick={() => setIsOpen(!isOpen)}>
         &nbsp;
       </ins>
       <a href="#" onClick={(event) => event.preventDefault()}>
+        {withCheckbox && (
+          <ins className="jstree-checkbox" onClick={() => onSelectCategory(categoryCode, categoryLabel)}>&nbsp;</ins>
+        )}
         <ins className="jstree-icon">
           &nbsp;
         </ins>
-        <span onClick={() => onSelectCategory(categoryCode, categoryLabel)}>{categoryLabel ? categoryLabel : '[' + categoryCode + ']'}</span>
+        <span onClick={() => onSelectCategory(categoryCode, categoryLabel)}>{categoryLabel}</span>
       </a>
       {isOpen && hasChildren && (
         <ul>
@@ -41,7 +47,8 @@ const CategoryTreeNode: FunctionComponent<CategoryTreeNodeProps> = ({categoryId,
                 categoryCode={category.attr['data-code']}
                 onSelectCategory={onSelectCategory}
                 hasChildren={category.state !== "leaf"}
-                selectedCategory={selectedCategory}
+                selectedCategories={selectedCategories}
+                withCheckbox={withCheckbox}
               />
             )
           })}

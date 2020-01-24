@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 
 final class AxisRateCollection
@@ -57,34 +56,16 @@ final class AxisRateCollection
 
     private function convertRateToString(int $value): string
     {
-        switch (true) {
-            case ($value >= 90):
-                return Rates::RANK_1;
-            case ($value >= 80):
-                return Rates::RANK_2;
-            case ($value >= 70):
-                return Rates::RANK_3;
-            case ($value >= 60):
-                return Rates::RANK_4;
-            default:
-                return Rates::RANK_5;
-        }
+        $rank = Rank::fromRate(new Rate($value));
+
+        return $rank->toLetter();
     }
 
     private function convertRateToRank(int $value): int
     {
-        switch (true) {
-            case ($value >= 90):
-                return 1;
-            case ($value >= 80):
-                return 2;
-            case ($value >= 70):
-                return 3;
-            case ($value >= 60):
-                return 4;
-            default:
-                return 5;
-        }
+        $rank = Rank::fromRate(new Rate($value));
+
+        return $rank->toInt();
     }
 
     private function computeChannelLocaleAverage($channelLocaleRates): int

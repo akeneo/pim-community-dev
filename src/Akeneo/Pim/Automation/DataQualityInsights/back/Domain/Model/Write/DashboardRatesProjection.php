@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionType;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
 
 final class DashboardRatesProjection
 {
@@ -24,14 +27,22 @@ final class DashboardRatesProjection
     /** @var DashboardProjectionCode */
     private $code;
 
-    /** @var array */
-    private $rates;
+    /** @var ConsolidationDate */
+    private $consolidationDate;
 
-    public function __construct(DashboardProjectionType $type, DashboardProjectionCode $code, array $rates)
-    {
+    /** @var RanksDistributionCollection */
+    private $ranksDistributionCollection;
+
+    public function __construct(
+        DashboardProjectionType $type,
+        DashboardProjectionCode $code,
+        ConsolidationDate $consolidationDate,
+        RanksDistributionCollection $ranksDistributionCollection
+    ) {
         $this->type = $type;
         $this->code = $code;
-        $this->rates = $rates;
+        $this->consolidationDate = $consolidationDate;
+        $this->ranksDistributionCollection = $ranksDistributionCollection;
     }
 
     public function getType(): DashboardProjectionType
@@ -46,6 +57,24 @@ final class DashboardRatesProjection
 
     public function getRates(): array
     {
-        return $this->rates;
+        $day = $this->consolidationDate->format();
+        $ranksDistribution = $this->ranksDistributionCollection->toArray();
+
+        $rates['average_rank'] = $this->ranksDistributionCollection->getAverageRanks();
+        $rates[Periodicity::DAILY][$day] = $ranksDistribution;
+
+        if ($this->consolidationDate->isLastDayOfWeek()) {
+            $rates[Periodicity::WEEKLY][$day] = $ranksDistribution;
+        }
+
+        if ($this->consolidationDate->isLastDayOfMonth()) {
+            $rates[Periodicity::MONTHLY][$day] = $ranksDistribution;
+        }
+
+        if ($this->consolidationDate->isLastDayOfYear()) {
+            $rates[Periodicity::YEARLY][$day] = $ranksDistribution;
+        }
+
+        return $rates;
     }
 }

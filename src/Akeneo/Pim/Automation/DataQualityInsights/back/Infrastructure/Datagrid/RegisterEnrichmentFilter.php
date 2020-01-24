@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Datagrid;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Rates;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
@@ -59,13 +59,7 @@ class RegisterEnrichmentFilter
             'options' => [
                 'field_options' => [
                     'multiple' => true,
-                    'choices' => [
-                        Rates::RANK_1 => 1,
-                        Rates::RANK_2 => 2,
-                        Rates::RANK_3 => 3,
-                        Rates::RANK_4 => 4,
-                        Rates::RANK_5 => 5,
-                    ],
+                    'choices' => array_flip(Rank::LETTERS_MAPPING),
                 ],
             ],
         ];

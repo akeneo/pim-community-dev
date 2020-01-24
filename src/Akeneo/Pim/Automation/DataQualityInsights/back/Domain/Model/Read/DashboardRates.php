@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistribution;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -80,36 +81,12 @@ final class DashboardRates
                     continue;
                 }
 
-                $ratesNumberByRank = $this->computeRatesNumberByRank($axisProjection);
-                $ratesRepartition = $this->computeRatesRepartition($ratesNumberByRank);
-
-                $result[$axisName][$date] = $ratesRepartition;
+                $ranksDistribution = new RanksDistribution($axisProjection[$this->channelCode][$this->localeCode]);
+                $result[$axisName][$date] = $ranksDistribution->getPercentages();
             }
         }
 
         return $result;
-    }
-
-    private function computeRatesNumberByRank($axisProjection): array
-    {
-        $ranks = [
-            "rank_1" => 0,
-            "rank_2" => 0,
-            "rank_3" => 0,
-            "rank_4" => 0,
-            "rank_5" => 0,
-        ];
-
-        return array_replace($ranks, $axisProjection[$this->channelCode][$this->localeCode]);
-    }
-
-    private function computeRatesRepartition(array $ratesNumberByRank): array
-    {
-        $totalRates = array_sum($ratesNumberByRank);
-
-        return array_map(function ($rate) use ($totalRates) {
-            return round($rate / $totalRates * 100, 2);
-        }, $ratesNumberByRank);
     }
 
     private function ensureRatesContainEnoughDays(array $result): array

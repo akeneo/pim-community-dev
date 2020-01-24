@@ -1,6 +1,7 @@
 import React, {FunctionComponent} from "react";
 import DataQualityOverviewHeader from "./DataQualityOverview/DataQualityOverviewHeader";
 import DataQualityOverviewCharts from "./DataQualityOverview/DataQualityOverviewCharts";
+import DataQualityWidgets from "./Widgets/DataQualityWidgets";
 
 interface DataQualityInsightsDashboardProps {
   periodicity: string;
@@ -16,6 +17,7 @@ const DataQualityInsightsDashboard: FunctionComponent<DataQualityInsightsDashboa
       <div className="AknSubsection">
         <DataQualityOverviewHeader periodicity={periodicity} familyCode={familyCode} categoryCode={categoryCode}/>
         <DataQualityOverviewCharts catalogLocale={catalogLocale} catalogChannel={catalogChannel} periodicity={periodicity} familyCode={familyCode} categoryCode={categoryCode}/>
+        <DataQualityWidgets catalogLocale={catalogLocale} catalogChannel={catalogChannel}/>
       </div>
     </div>
   )

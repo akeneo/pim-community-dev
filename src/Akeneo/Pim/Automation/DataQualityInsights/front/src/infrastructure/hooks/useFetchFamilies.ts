@@ -2,12 +2,12 @@ import {useEffect, useState} from 'react';
 import fetchFamilies from "../fetcher/fetchFamilies";
 import Family from "../../domain/Family.interface";
 
-const useFetchFamilies = (isFilterDisplayed: boolean, uiLocale: string) => {
+const useFetchFamilies = (isActive: boolean, uiLocale: string) => {
 
   const [families, setFamilies] = useState<Family[]>([]);
 
   useEffect(() => {
-    if (!isFilterDisplayed) {
+    if (!isActive) {
       return;
     }
     (async () => {
@@ -21,7 +21,7 @@ const useFetchFamilies = (isFilterDisplayed: boolean, uiLocale: string) => {
       });
       setFamilies(data);
     })();
-  }, [isFilterDisplayed]);
+  }, [isActive]);
 
   return families;
 };

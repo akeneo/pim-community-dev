@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useEffect, useState} from "react";
 import {createPortal} from "react-dom";
-import CategoryModal from "./CategoryModal";
+import CategoryModal from "../../CategoryModal/CategoryModal";
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from "../../../../listener";
 
 const __ = require('oro/translator');
@@ -63,10 +63,14 @@ const CategoryFilter: FunctionComponent<CategoryFilterProps> = ({categoryCode}) 
       {modalElement && createPortal(
         <CategoryModal
           onSelectCategory={onSelectCategory}
-          onValidate={onValidate}
+          onConfirm={onValidate}
           onDismissModal={onDismissModal}
           isVisible={showModal}
-          selectedCategory={selectedCategoryCode}
+          selectedCategories={selectedCategoryCode === null ? [] : [selectedCategoryCode]}
+          withCheckBox={false}
+          subtitle={__('akeneo_data_quality_insights.dqi_dashboard.category_modal_filter.subtitle')}
+          description={__('akeneo_data_quality_insights.dqi_dashboard.category_modal_filter.message')}
+          errorMessage={null}
         />,
         modalElement
       )}
