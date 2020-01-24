@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Client\Fos;
@@ -18,18 +19,17 @@ class CreateClientIntegration extends TestCase
 {
     public function test_the_client_creation()
     {
-        $results = $this->getDatabaseConnection()->fetchAll('SELECT id FROM pim_api_client');
-        Assert::assertCount(0, $results);
+        Assert::assertCount(0, $this->fetchApiClients());
 
         $client = $this
             ->get('akeneo_connectivity.connection.service.client.create_client')
             ->execute('Magento');
         Assert::assertInstanceOf(Client::class, $client);
 
-        $results = $this->getDatabaseConnection()->fetchAll('SELECT * FROM pim_api_client');
-        Assert::assertCount(1, $results);
+        $createdClients = $this->fetchApiClients();
+        Assert::assertCount(1, $createdClients);
 
-        $createdClient = $results[0];
+        $createdClient = $createdClients[0];
         Assert::assertEquals('Magento', $createdClient['label']);
         Assert::assertRegExp('/password/', $createdClient['allowed_grant_types']);
         Assert::assertRegExp('/refresh_token/', $createdClient['allowed_grant_types']);
@@ -43,6 +43,11 @@ class CreateClientIntegration extends TestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function fetchApiClients(): array
+    {
+        return $this->getDatabaseConnection()->fetchAll('SELECT id, random_id, secret FROM pim_api_client');
     }
 
     private function getDatabaseConnection(): Connection
