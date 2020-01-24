@@ -11,6 +11,9 @@ use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\FetchMode;
 
 /**
+ * Fetch a connection with credentials and permissions included. Only one `user_role` and `user_group` (not counting the
+ * default group `All`) should be defined per connection.
+ *
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -46,7 +49,7 @@ INNER JOIN oro_user_access_role urole ON u.id = urole.user_id
 INNER JOIN oro_user_access_group ugroup ON u.id = ugroup.user_id
 LEFT JOIN oro_access_group g ON ugroup.group_id = g.id
     AND g.name <> :default_group
-WHERE code = :code
+WHERE c.code = :code
 SQL;
 
         $data = $this->dbalConnection->executeQuery($selectSQL, [

@@ -6,8 +6,8 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Query;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\DailyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
 use PhpSpec\ObjectBehavior;
 
@@ -30,18 +30,25 @@ class CountDailyEventsByConnectionHandlerSpec extends ObjectBehavior
 
     function it_handles_the_event_count($selectConnectionsEventCountByDayQuery)
     {
-        $eventCountByConnection1 = new WeeklyEventCounts('Magento');
-        $eventCountByConnection1->addDailyEventCount(new DailyEventCount(42, new \DateTime('2019-12-10')));
-        $eventCountByConnection1->addDailyEventCount(new DailyEventCount(123, new \DateTime('2019-12-11')));
+        $eventCountByConnection1 = new WeeklyEventCounts(
+            'Magento',
+            '2019-12-09',
+            '2019-12-17',
+            []
+        );
 
-        $eventCountByConnection2 = new WeeklyEventCounts('Bynder');
-        $eventCountByConnection2->addDailyEventCount(new DailyEventCount(36, new \DateTime('2019-12-11')));
+        $eventCountByConnection2 = new WeeklyEventCounts(
+            'Bynder',
+            '2019-12-09',
+            '2019-12-17',
+            []
+        );
 
         $selectConnectionsEventCountByDayQuery
-            ->execute('product_created', '2019-12-10', '2019-12-12')
+            ->execute(EventTypes::PRODUCT_CREATED, '2019-12-09', '2019-12-17')
             ->willReturn([$eventCountByConnection1, $eventCountByConnection2]);
 
-        $query = new CountDailyEventsByConnectionQuery('product_created', '2019-12-10', '2019-12-12');
+        $query = new CountDailyEventsByConnectionQuery(EventTypes::PRODUCT_CREATED, '2019-12-09', '2019-12-17');
         $this->handle($query)->shouldReturn([$eventCountByConnection1, $eventCountByConnection2]);
     }
 }

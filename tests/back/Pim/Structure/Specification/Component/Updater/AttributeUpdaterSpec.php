@@ -299,4 +299,61 @@ class AttributeUpdaterSpec extends ObjectBehavior
             )
             ->during('update', [$attribute, $values, []]);
     }
+
+    function it_sets_the_default_unique_property_when_setting_an_attribute_type(
+        AttributeTypeRegistry $registry,
+        AttributeInterface $attribute,
+        AttributeTypeInterface $textAttributeType
+    ) {
+        $attribute->isUnique()->willReturn(null);
+
+        $textAttributeType->getName()->willReturn('pim_catalog_text');
+        $textAttributeType->getBackendType()->willReturn('text');
+        $textAttributeType->isUnique()->willReturn(false);
+        $registry->get('pim_catalog_text')->willReturn($textAttributeType);
+        $attribute->setType('pim_catalog_text')->shouldBeCalled();
+        $attribute->setBackendType('text')->shouldBeCalled();
+
+        $attribute->setUnique(false)->shouldBeCalled();
+
+        $this->update($attribute, ['type' => 'pim_catalog_text']);
+    }
+
+    function it_does_not_update_the_unique_property_if_it_is_already_defined(
+        AttributeTypeRegistry $registry,
+        AttributeInterface $attribute,
+        AttributeTypeInterface $textAttributeType
+    ) {
+        $attribute->isUnique()->willReturn(true);
+
+        $textAttributeType->getName()->willReturn('pim_catalog_text');
+        $textAttributeType->getBackendType()->willReturn('text');
+        $textAttributeType->isUnique()->willReturn(false);
+        $registry->get('pim_catalog_text')->willReturn($textAttributeType);
+        $attribute->setType('pim_catalog_text')->shouldBeCalled();
+        $attribute->setBackendType('text')->shouldBeCalled();
+
+        $attribute->setUnique(false)->shouldNotBeCalled();
+
+        $this->update($attribute, ['type' => 'pim_catalog_text']);
+    }
+
+    function it_sets_the_unique_property_to_true_if_the_attribute_type_must_be_unique(
+        AttributeTypeRegistry $registry,
+        AttributeInterface $attribute,
+        AttributeTypeInterface $identifierAttributeType
+    ) {
+        $attribute->isUnique()->willReturn(false);
+
+        $identifierAttributeType->getName()->willReturn('pim_catalog_identifier');
+        $identifierAttributeType->getBackendType()->willReturn('identifier');
+        $identifierAttributeType->isUnique()->willReturn(true);
+        $registry->get('pim_catalog_identifier')->willReturn($identifierAttributeType);
+        $attribute->setType('pim_catalog_identifier')->shouldBeCalled();
+        $attribute->setBackendType('identifier')->shouldBeCalled();
+
+        $attribute->setUnique(true)->shouldBeCalled();
+
+        $this->update($attribute, ['type' => 'pim_catalog_identifier']);
+    }
 }

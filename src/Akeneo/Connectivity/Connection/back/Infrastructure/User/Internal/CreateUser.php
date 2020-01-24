@@ -54,7 +54,7 @@ class CreateUser implements CreateUserInterface
             [
                 'username' => $username,
                 'password' => $password,
-                'first_name' => $firstname,
+                'first_name' => strtr($firstname, '<>&"', '____'),
                 'last_name' => $lastname,
                 'email' => sprintf('%s@example.com', $username),
             ]

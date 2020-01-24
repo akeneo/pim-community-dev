@@ -85,7 +85,13 @@ class FileSystemAssetsInstaller implements AssetsInstaller
     {
         if ($relative) {
             $this->filesystem->mkdir(dirname($targetDir));
-            $originDir = $this->filesystem->makePathRelative($originDir, realpath(dirname($targetDir)));
+
+            $startPath = realpath(dirname($targetDir));
+            if (false === $startPath) {
+                throw new IOException(sprintf('The directory `%s` does not exist', $startPath));
+            }
+
+            $originDir = $this->filesystem->makePathRelative($originDir, $startPath);
         }
         $this->filesystem->symlink($originDir, $targetDir);
         if (!file_exists($targetDir)) {

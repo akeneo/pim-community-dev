@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import {VictoryThemeDefinition} from 'victory';
 import {Section} from '../../common';
 import {AuditEventType} from '../../model/audit-event-type.enum';
-import {useDateFormatter} from '../../shared/date-formatter/use-date-formatter';
+import {useDateFormatter} from '../../shared/formatter/use-date-formatter';
+import {useNumberFormatter} from '../../shared/formatter/use-number-formatter';
 import {useTranslate} from '../../shared/translate';
 import {useFetchConnectionsAuditData} from '../api-hooks/use-fetch-connections-audit-data';
 import {useDashboardState} from '../dashboard-context';
@@ -35,6 +36,7 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
     const connectionsAuditData = useFetchConnectionsAuditData(eventType);
     const [chartData, setChartData] = useState();
     const formatDate = useDateFormatter();
+    const formatNumber = useNumberFormatter();
     const translate = useTranslate();
     useEffect(() => {
         setChartData(undefined);
@@ -51,7 +53,7 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
                 index + 1 !== numberOfData
                     ? formatDate(date, {weekday: 'long', month: 'short', day: 'numeric'})
                     : translate('akeneo_connectivity.connection.dashboard.charts.legend.today'),
-            yLabel: 0 === index ? '' : value.toString(),
+            yLabel: 0 === index ? '' : formatNumber(value),
         }));
 
         setChartData(chartData);

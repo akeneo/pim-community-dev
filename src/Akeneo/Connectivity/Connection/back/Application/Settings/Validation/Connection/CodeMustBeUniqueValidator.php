@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Application\Settings\Validation\Connect
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -25,6 +26,10 @@ class CodeMustBeUniqueValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
+        if (!$constraint instanceof CodeMustBeUnique) {
+            throw new UnexpectedTypeException($constraint, CodeMustBeUnique::class);
+        }
+
         if (null !== $this->repository->findOneByCode($value)) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }

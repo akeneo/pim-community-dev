@@ -313,7 +313,7 @@ class UserController
     {
         $user = $this->repository->findOneBy(['id' => $identifier]);
 
-        if (null === $user) {
+        if (null === $user || true === $user->isApiUser()) {
             throw new NotFoundHttpException(
                 sprintf('Username with id "%s" not found', $identifier)
             );

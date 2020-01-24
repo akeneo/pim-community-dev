@@ -34,6 +34,9 @@ $rules = [
             'FOS\OAuthServerBundle\Model\ClientManagerInterface',
             'FOS\OAuthServerBundle\Util\Random',
             'OAuth2\OAuth2',
+
+            // For acceptance tests purpose
+            'Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Client'),
 
@@ -48,9 +51,12 @@ $rules = [
             'Akeneo\UserManagement\Bundle\Manager\UserManager',
             'Akeneo\UserManagement\Component\Model\GroupInterface',
             'Akeneo\UserManagement\Component\Model\RoleInterface',
+            'Akeneo\UserManagement\Component\Model\User',
             'Akeneo\UserManagement\Component\Model\UserInterface',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
+            // For acceptance tests purpose
+            'Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository',
             'Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryUserPermissionsRepository',
 
             'Doctrine\DBAL\Driver\Connection',
@@ -87,7 +93,7 @@ $rules = [
         [
             'Akeneo\Connectivity\Connection\Domain',
             'Akeneo\UserManagement\Component\Model\User',
-            
+
             // Dependency for uuid generation
             'Ramsey\Uuid\Uuid',
 

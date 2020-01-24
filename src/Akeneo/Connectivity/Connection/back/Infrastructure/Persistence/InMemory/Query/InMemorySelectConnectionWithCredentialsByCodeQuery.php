@@ -20,14 +20,14 @@ class InMemorySelectConnectionWithCredentialsByCodeQuery implements SelectConnec
     private $connectionRepository;
 
     /** @var InMemoryUserPermissionsRepository */
-    private $inMemoryUserPermissionsRepository;
+    private $userPermissionsRepository;
 
     public function __construct(
         InMemoryConnectionRepository $connectionRepository,
-        InMemoryUserPermissionsRepository $inMemoryUserPermissionsRepository
+        InMemoryUserPermissionsRepository $userPermissionsRepository
     ) {
         $this->connectionRepository = $connectionRepository;
-        $this->inMemoryUserPermissionsRepository = $inMemoryUserPermissionsRepository;
+        $this->userPermissionsRepository = $userPermissionsRepository;
     }
 
     public function execute(string $code): ?ConnectionWithCredentials
@@ -40,7 +40,13 @@ class InMemorySelectConnectionWithCredentialsByCodeQuery implements SelectConnec
 
         $dataRow = $dataRows[$code];
 
-        $permissions = $this->inMemoryUserPermissionsRepository->getByUserId($dataRow['user_id']);
+        $roleId = $this->userPermissionsRepository->getRoleIdByIdentifier(
+            $this->userPermissionsRepository->getUserRole($dataRow['user_id'])
+        );
+
+        $groupId = $this->userPermissionsRepository->getGroupIdByIdentifier(
+            $this->userPermissionsRepository->getUserGroup($dataRow['user_id'])
+        );
 
         return new ConnectionWithCredentials(
             $dataRow['code'],
@@ -50,8 +56,8 @@ class InMemorySelectConnectionWithCredentialsByCodeQuery implements SelectConnec
             $dataRow['client_id'] . '_' . $dataRow['random_id'],
             $dataRow['secret'],
             $dataRow['code'] . '_app',
-            (string) $permissions['role']['id'],
-            (string) $permissions['group']['id']
+            (string) $roleId,
+            (string) $groupId
         );
     }
 }

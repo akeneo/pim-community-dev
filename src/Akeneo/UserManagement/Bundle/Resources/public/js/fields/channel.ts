@@ -32,7 +32,7 @@ class ChannelField extends BaseSelect {
    */
   formatChoices(scopes: InterfaceNormalizedChannel[]): { [key:string] : string } {
     return scopes.reduce((result: { [key:string] : string }, channel: InterfaceNormalizedChannel) => {
-      const label = channel.labels[UserContext.get('uiLocale')];
+      const label = channel.labels[UserContext.get('catalogLocale')];
       result[channel.code] = label !== undefined ? label : '[' + channel.code + ']';
 
       return result;
