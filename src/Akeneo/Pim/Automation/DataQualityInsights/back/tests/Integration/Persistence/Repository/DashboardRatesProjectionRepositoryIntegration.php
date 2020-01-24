@@ -24,7 +24,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjec
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -48,62 +48,62 @@ final class DashboardRatesProjectionRepositoryIntegration extends TestCase
 
     public function test_it_finds_catalog_projection()
     {
-        $result = $this->repository->findCatalogProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'));
+        $result = $this->repository->findCatalogProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new TimePeriod('daily'));
         $this->assertNull($result);
 
         $consolidationDate = new ConsolidationDate(new \DateTimeImmutable('2020-01-20'));
         $ranksDistributionCollection = $this->getRanksDistributionCollection();
         $this->insertCatalogRatesProjection($consolidationDate, $ranksDistributionCollection);
-        $result = $this->repository->findCatalogProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'));
+        $result = $this->repository->findCatalogProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new TimePeriod('daily'));
 
         $expectedDashboardRates = new DashboardRates([
-            Periodicity::DAILY => [
+            TimePeriod::DAILY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray()
             ]
-        ], new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'));
+        ], new ChannelCode('ecommerce'), new LocaleCode('en_US'), new TimePeriod('daily'));
 
         $this->assertEquals($expectedDashboardRates->toArray(), $result->toArray());
     }
 
     public function test_it_finds_a_category_projection()
     {
-        $result = $this->repository->findCategoryProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'), new CategoryCode('master'));
+        $result = $this->repository->findCategoryProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new TimePeriod('daily'), new CategoryCode('master'));
         $this->assertNull($result);
 
         $consolidationDate = new ConsolidationDate(new \DateTimeImmutable('2020-01-20'));
         $ranksDistributionCollection = $this->getRanksDistributionCollection();
         $this->insertCategoryRatesProjection($consolidationDate, $ranksDistributionCollection);
-        $result = $this->repository->findCategoryProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'), new CategoryCode('master'));
+        $result = $this->repository->findCategoryProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new TimePeriod('daily'), new CategoryCode('master'));
 
         $expectedDashboardRates = new DashboardRates([
-            Periodicity::DAILY => [
+            TimePeriod::DAILY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray()
             ]
-        ], new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'));
+        ], new ChannelCode('ecommerce'), new LocaleCode('en_US'), new TimePeriod('daily'));
 
         $this->assertEquals($expectedDashboardRates->toArray(), $result->toArray());
     }
 
     public function test_it_finds_a_family_projection()
     {
-        $result = $this->repository->findFamilyProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'), new FamilyCode('scanners'));
+        $result = $this->repository->findFamilyProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new TimePeriod('daily'), new FamilyCode('scanners'));
         $this->assertNull($result);
 
         $consolidationDate = new ConsolidationDate(new \DateTimeImmutable('2020-01-20'));
         $ranksDistributionCollection = $this->getRanksDistributionCollection();
         $this->insertFamilyRatesProjection($consolidationDate, $ranksDistributionCollection);
-        $result = $this->repository->findFamilyProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'), new FamilyCode('scanners'));
+        $result = $this->repository->findFamilyProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new TimePeriod('daily'), new FamilyCode('scanners'));
 
         $expectedDashboardRates = new DashboardRates([
-            Periodicity::DAILY => [
+            TimePeriod::DAILY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray()
             ]
-        ], new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'));
+        ], new ChannelCode('ecommerce'), new LocaleCode('en_US'), new TimePeriod('daily'));
 
         $this->assertEquals($expectedDashboardRates->toArray(), $result->toArray());
     }
 
-    public function test_it_removes_rates_for_a_given_periodicity_and_a_given_date()
+    public function test_it_removes_rates_for_a_given_time_period_and_a_given_date()
     {
         $commonDay = new ConsolidationDate(new \DateTimeImmutable('2019-12-19'));
         $lastDayOfWeek = new ConsolidationDate(new \DateTimeImmutable('2019-12-22'));
@@ -118,8 +118,8 @@ final class DashboardRatesProjectionRepositoryIntegration extends TestCase
         $this->insertCategoryRatesProjection($lastDayOfWeek, $ranksDistributionCollection);
         $this->insertCategoryRatesProjection($lastDayOfMonth, $ranksDistributionCollection);
 
-        $daily = Periodicity::daily();
-        $monthly = Periodicity::monthly();
+        $daily = TimePeriod::daily();
+        $monthly = TimePeriod::monthly();
         $this->assertCountRatesByDate(2, $daily, $lastDayOfMonth);
         $this->assertCountRatesByDate(2, $monthly, $lastDayOfMonth);
 
@@ -127,7 +127,7 @@ final class DashboardRatesProjectionRepositoryIntegration extends TestCase
 
         $this->assertCountRatesByDate(0, $daily, $lastDayOfMonth);
         $this->assertCountRatesByDate(2, $daily, $commonDay);
-        $this->assertCountRatesByDate(2, Periodicity::weekly(), $lastDayOfWeek);
+        $this->assertCountRatesByDate(2, TimePeriod::weekly(), $lastDayOfWeek);
         $this->assertCountRatesByDate(2, $monthly, $lastDayOfMonth);
 
         $this->repository->removeRates($monthly, $lastDayOfMonth);
@@ -217,12 +217,12 @@ final class DashboardRatesProjectionRepositoryIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function assertCountRatesByDate(int $expectedCount, Periodicity $periodicity, ConsolidationDate $date): void
+    private function assertCountRatesByDate(int $expectedCount, TimePeriod $timePeriod, ConsolidationDate $date): void
     {
-        $path = sprintf('\'$."%s"."%s"\'', $periodicity, $date->format());
+        $path = sprintf('\'$."%s"."%s"\'', $timePeriod, $date->format());
 
         $query = <<<SQL
-SELECT COUNT(*) AS nb_rates 
+SELECT COUNT(*) AS nb_rates
 FROM pimee_data_quality_insights_dashboard_rates_projection
 WHERE JSON_CONTAINS_PATH(rates, 'one', $path)
 SQL;

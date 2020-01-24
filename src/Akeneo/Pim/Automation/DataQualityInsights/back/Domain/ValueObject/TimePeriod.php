@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
 
-final class Periodicity
+final class TimePeriod
 {
     const DAILY = 'daily';
     const WEEKLY = 'weekly';
@@ -33,7 +33,7 @@ final class Periodicity
     public function __construct(string $value)
     {
         if (! in_array($value, self::ALLOWED_VALUES)) {
-            throw new \InvalidArgumentException('Unknown periodicity value');
+            throw new \InvalidArgumentException('Unknown time period value');
         }
 
         $this->value = $value;

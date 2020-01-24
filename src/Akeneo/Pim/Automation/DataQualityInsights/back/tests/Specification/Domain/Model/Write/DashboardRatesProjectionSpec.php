@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionType;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use PhpSpec\ObjectBehavior;
 
 final class DashboardRatesProjectionSpec extends ObjectBehavior
@@ -36,7 +36,7 @@ final class DashboardRatesProjectionSpec extends ObjectBehavior
 
         $this->getRates()->shouldBeLike([
             'average_rank' => $ranksDistributionCollection->getAverageRanks(),
-            Periodicity::DAILY => [
+            TimePeriod::DAILY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray(),
             ]
         ]);
@@ -56,10 +56,10 @@ final class DashboardRatesProjectionSpec extends ObjectBehavior
 
         $this->getRates()->shouldBeLike([
             'average_rank' => $ranksDistributionCollection->getAverageRanks(),
-            Periodicity::DAILY => [
+            TimePeriod::DAILY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray(),
             ],
-            Periodicity::WEEKLY => [
+            TimePeriod::WEEKLY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray(),
             ]
         ]);
@@ -79,10 +79,10 @@ final class DashboardRatesProjectionSpec extends ObjectBehavior
 
         $this->getRates()->shouldBeLike([
             'average_rank' => $ranksDistributionCollection->getAverageRanks(),
-            Periodicity::DAILY => [
+            TimePeriod::DAILY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray(),
             ],
-            Periodicity::MONTHLY => [
+            TimePeriod::MONTHLY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray(),
             ]
         ]);
@@ -102,13 +102,13 @@ final class DashboardRatesProjectionSpec extends ObjectBehavior
 
         $this->getRates()->shouldBeLike([
             'average_rank' => $ranksDistributionCollection->getAverageRanks(),
-            Periodicity::DAILY => [
+            TimePeriod::DAILY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray(),
             ],
-            Periodicity::MONTHLY => [
+            TimePeriod::MONTHLY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray(),
             ],
-            Periodicity::YEARLY => [
+            TimePeriod::YEARLY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray(),
             ]
         ]);

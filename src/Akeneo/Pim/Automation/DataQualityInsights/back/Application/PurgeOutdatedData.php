@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 
 final class PurgeOutdatedData
 {
@@ -50,27 +50,27 @@ final class PurgeOutdatedData
         $purgeDate = new ConsolidationDate($date);
 
         $this->dashboardRatesProjectionRepository->removeRates(
-            Periodicity::daily(),
+            TimePeriod::daily(),
             $purgeDate->modify(sprintf('-%d DAY', self::RETENTION_DAYS))
         );
 
         if ($purgeDate->isLastDayOfWeek()) {
             $this->dashboardRatesProjectionRepository->removeRates(
-                Periodicity::weekly(),
+                TimePeriod::weekly(),
                 $purgeDate->modify(sprintf('-%d WEEK', self::RETENTION_WEEKS))
             );
         }
 
         if ($purgeDate->isLastDayOfMonth()) {
             $this->dashboardRatesProjectionRepository->removeRates(
-                Periodicity::monthly(),
+                TimePeriod::monthly(),
                 $purgeDate->modify(sprintf('-%d MONTH', self::RETENTION_MONTHS))
             );
         }
 
         if ($purgeDate->isLastDayOfYear()) {
             $this->dashboardRatesProjectionRepository->removeRates(
-                Periodicity::yearly(),
+                TimePeriod::yearly(),
                 $purgeDate->modify(sprintf('-%d YEAR', self::RETENTION_YEARS))
             );
         }

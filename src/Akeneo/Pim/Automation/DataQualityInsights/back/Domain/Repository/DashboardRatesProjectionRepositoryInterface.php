@@ -20,17 +20,17 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 
 interface DashboardRatesProjectionRepositoryInterface
 {
     public function save(Write\DashboardRatesProjection $dashboardRates): void;
 
-    public function findCatalogProjection(ChannelCode $channel, LocaleCode $locale, Periodicity $periodicity): ?Read\DashboardRates;
+    public function findCatalogProjection(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod): ?Read\DashboardRates;
 
-    public function findCategoryProjection(ChannelCode $channel, LocaleCode $locale, Periodicity $periodicity, CategoryCode $category): ?Read\DashboardRates;
+    public function findCategoryProjection(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod, CategoryCode $category): ?Read\DashboardRates;
 
-    public function findFamilyProjection(ChannelCode $channel, LocaleCode $locale, Periodicity $periodicity, FamilyCode $family): ?Read\DashboardRates;
+    public function findFamilyProjection(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod, FamilyCode $family): ?Read\DashboardRates;
 
-    public function removeRates(Periodicity $periodicity, ConsolidationDate $date): void;
+    public function removeRates(TimePeriod $timePeriod, ConsolidationDate $date): void;
 }

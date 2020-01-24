@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionType;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 
 final class DashboardRatesProjection
 {
@@ -61,18 +61,18 @@ final class DashboardRatesProjection
         $ranksDistribution = $this->ranksDistributionCollection->toArray();
 
         $rates['average_rank'] = $this->ranksDistributionCollection->getAverageRanks();
-        $rates[Periodicity::DAILY][$day] = $ranksDistribution;
+        $rates[TimePeriod::DAILY][$day] = $ranksDistribution;
 
         if ($this->consolidationDate->isLastDayOfWeek()) {
-            $rates[Periodicity::WEEKLY][$day] = $ranksDistribution;
+            $rates[TimePeriod::WEEKLY][$day] = $ranksDistribution;
         }
 
         if ($this->consolidationDate->isLastDayOfMonth()) {
-            $rates[Periodicity::MONTHLY][$day] = $ranksDistribution;
+            $rates[TimePeriod::MONTHLY][$day] = $ranksDistribution;
         }
 
         if ($this->consolidationDate->isLastDayOfYear()) {
-            $rates[Periodicity::YEARLY][$day] = $ranksDistribution;
+            $rates[TimePeriod::YEARLY][$day] = $ranksDistribution;
         }
 
         return $rates;

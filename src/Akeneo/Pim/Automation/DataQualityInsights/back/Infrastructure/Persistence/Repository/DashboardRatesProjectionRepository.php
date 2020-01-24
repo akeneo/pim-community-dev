@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\ResultStatement;
 
@@ -109,7 +109,7 @@ final class DashboardRatesProjectionRepository implements DashboardRatesProjecti
         $this->db = $db;
     }
 
-    public function findCatalogProjection(ChannelCode $channel, LocaleCode $locale, Periodicity $periodicity): ?Read\DashboardRates
+    public function findCatalogProjection(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod): ?Read\DashboardRates
     {
         $sql = <<<'SQL'
 SELECT rates
@@ -119,10 +119,10 @@ SQL;
 
         $stmt = $this->db->executeQuery($sql, ['type' => self::TYPE_CATALOG_PROJECTION]);
 
-        return $this->buildResult($stmt, $channel, $locale, $periodicity);
+        return $this->buildResult($stmt, $channel, $locale, $timePeriod);
     }
 
-    public function findCategoryProjection(ChannelCode $channel, LocaleCode $locale, Periodicity $periodicity, CategoryCode $category): ?Read\DashboardRates
+    public function findCategoryProjection(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod, CategoryCode $category): ?Read\DashboardRates
     {
         $sql = <<<'SQL'
 SELECT rates
@@ -136,10 +136,10 @@ SQL;
             'code' => $category,
         ]);
 
-        return $this->buildResult($stmt, $channel, $locale, $periodicity);
+        return $this->buildResult($stmt, $channel, $locale, $timePeriod);
     }
 
-    public function findFamilyProjection(ChannelCode $channel, LocaleCode $locale, Periodicity $periodicity, FamilyCode $family): ?Read\DashboardRates
+    public function findFamilyProjection(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod, FamilyCode $family): ?Read\DashboardRates
     {
         $sql = <<<'SQL'
 SELECT rates
@@ -153,17 +153,17 @@ SQL;
             'code' => $family,
         ]);
 
-        return $this->buildResult($stmt, $channel, $locale, $periodicity);
+        return $this->buildResult($stmt, $channel, $locale, $timePeriod);
     }
 
-    private function buildResult(ResultStatement $stmt, ChannelCode $channel, LocaleCode $locale, Periodicity $periodicity): ?Read\DashboardRates
+    private function buildResult(ResultStatement $stmt, ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod): ?Read\DashboardRates
     {
         $result = $stmt->fetchColumn(0);
         if ($result === null || $result === false) {
             return null;
         }
 
-        return new Read\DashboardRates(json_decode($result, true), $channel, $locale, $periodicity);
+        return new Read\DashboardRates(json_decode($result, true), $channel, $locale, $timePeriod);
     }
 
     public function save(Write\DashboardRatesProjection $ratesProjection): void
@@ -181,9 +181,9 @@ SQL;
         ]);
     }
 
-    public function removeRates(Periodicity $periodicity, ConsolidationDate $date): void
+    public function removeRates(TimePeriod $timePeriod, ConsolidationDate $date): void
     {
-        $pathToRemove = sprintf('\'$."%s"."%s"\'', $periodicity, $date->format());
+        $pathToRemove = sprintf('\'$."%s"."%s"\'', $timePeriod, $date->format());
 
         $query = <<<SQL
 UPDATE pimee_data_quality_insights_dashboard_rates_projection

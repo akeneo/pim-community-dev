@@ -15,7 +15,7 @@ akeneo_data_quality_insights_dashboard:
     methods: [GET]
 
 akeneo_data_quality_insights_dashboard_overview:
-    path: /data-quality-insights/dashboard/overview/{channel}/{locale}/{periodicity}
+    path: /data-quality-insights/dashboard/overview/{channel}/{locale}/{timePeriod}
     defaults:
         _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardOverviewController
     methods: [GET]

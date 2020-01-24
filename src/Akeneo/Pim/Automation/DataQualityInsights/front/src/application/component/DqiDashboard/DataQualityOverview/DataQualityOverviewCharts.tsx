@@ -54,13 +54,13 @@ const transformData = (dataset: Dataset, axisName: string): any => {
 interface DataQualityOverviewChartProps {
   catalogLocale: string;
   catalogChannel: string;
-  periodicity: string;
+  timePeriod: string;
   familyCode: string | null;
   categoryCode: string | null;
 }
 
-const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, periodicity, familyCode, categoryCode}: DataQualityOverviewChartProps) => {
-  const dataset = useFetchDqiDashboardData(catalogChannel, catalogLocale, periodicity, familyCode, categoryCode);
+const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode}: DataQualityOverviewChartProps) => {
+  const dataset = useFetchDqiDashboardData(catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode);
 
   if (Object.entries(dataset).length === 0) {
 
@@ -115,9 +115,9 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, periodicity, 
             <Fragment key={i}>
               <DataQualityOverviewChartHeader axisName={axisName} displayLegend={i === 1}/>
               <div className='AknDataQualityInsights-chart'>
-                {periodicity === 'daily' && (<AxisChart dataset={axisDataset} padding={71} barRatio={1.49} dateFormatCallback={dailyCallback}/>)}
-                {periodicity === 'weekly' && (<AxisChart dataset={axisDataset} padding={125} barRatio={1.99} dateFormatCallback={weeklyCallback}/>)}
-                {periodicity === 'monthly' && (<AxisChart dataset={axisDataset} padding={80} barRatio={1.59} dateFormatCallback={monthlyCallback}/>)}
+                {timePeriod === 'daily' && (<AxisChart dataset={axisDataset} padding={71} barRatio={1.49} dateFormatCallback={dailyCallback}/>)}
+                {timePeriod === 'weekly' && (<AxisChart dataset={axisDataset} padding={125} barRatio={1.99} dateFormatCallback={weeklyCallback}/>)}
+                {timePeriod === 'monthly' && (<AxisChart dataset={axisDataset} padding={80} barRatio={1.59} dateFormatCallback={monthlyCallback}/>)}
               </div>
             </Fragment>
           )

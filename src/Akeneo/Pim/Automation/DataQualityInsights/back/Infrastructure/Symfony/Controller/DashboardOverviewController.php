@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +38,7 @@ final class DashboardOverviewController
         $this->dashboardRatesProjectionRepository = $dashboardRatesProjectionRepository;
     }
 
-    public function __invoke(Request $request, string $channel, string $locale, string $periodicity)
+    public function __invoke(Request $request, string $channel, string $locale, string $timePeriod)
     {
         if (! $this->featureFlag->isEnabled()) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
@@ -46,12 +46,12 @@ final class DashboardOverviewController
 
         if ($request->query->has('category')) {
             $category = new CategoryCode($request->query->getAlnum('category'));
-            $rates = $this->dashboardRatesProjectionRepository->findCategoryProjection(new ChannelCode($channel), new LocaleCode($locale), new Periodicity($periodicity), $category);
+            $rates = $this->dashboardRatesProjectionRepository->findCategoryProjection(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod), $category);
         } elseif ($request->query->has('family')) {
             $family = new FamilyCode($request->query->getAlnum('family'));
-            $rates = $this->dashboardRatesProjectionRepository->findFamilyProjection(new ChannelCode($channel), new LocaleCode($locale), new Periodicity($periodicity), $family);
+            $rates = $this->dashboardRatesProjectionRepository->findFamilyProjection(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod), $family);
         } else {
-            $rates = $this->dashboardRatesProjectionRepository->findCatalogProjection(new ChannelCode($channel), new LocaleCode($locale), new Periodicity($periodicity));
+            $rates = $this->dashboardRatesProjectionRepository->findCatalogProjection(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod));
         }
 
         if (empty($rates)) {
