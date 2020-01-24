@@ -66,6 +66,9 @@ beforeEach(async () => {
 it('It fetches the channels', async () => {
   // It fetches the channels
   const response = await page.evaluate(async () => {
+    // Sometimes this test fails on circle ci. This wait should mitigate that
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     const fetchChannels = require('akeneoassetmanager/infrastructure/fetcher/channel')
       .fetchChannels;
     const fetcherRegistry = require('pim/fetcher-registry');

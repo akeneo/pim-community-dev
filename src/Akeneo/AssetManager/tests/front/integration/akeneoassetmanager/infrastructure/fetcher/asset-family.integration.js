@@ -22,6 +22,9 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset-family', () => {
     });
 
     const response = await page.evaluate(async () => {
+      // Sometimes this test fails on circle ci. This wait should mitigate that
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const fetcher = require('akeneoassetmanager/infrastructure/fetcher/asset-family').default;
 
       return await fetcher.search();
@@ -61,6 +64,9 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset-family', () => {
     });
 
     const response = await page.evaluate(async () => {
+      // Sometimes this test fails on circle ci. This wait should mitigate that
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const fetcher = require('akeneoassetmanager/infrastructure/fetcher/asset-family').default;
 
       return await fetcher.fetch('sofa');

@@ -20,6 +20,9 @@ describe('Akeneoassetfamily > infrastructure > remover > attribute', () => {
     });
 
     await page.evaluate(async () => {
+      // Sometimes this test fails on circle ci. This wait should mitigate that
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const remover = require('akeneoassetmanager/infrastructure/remover/attribute').default;
 
       return await remover.remove('designer', 'name_1234');

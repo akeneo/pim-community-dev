@@ -20,6 +20,9 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
     });
 
     const response = await page.evaluate(async () => {
+      // Sometimes this test fails on circle ci. This wait should mitigate that
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const createAssetFamilyFromNormalized = require('akeneoassetmanager/domain/model/asset-family/asset-family')
         .createAssetFamilyFromNormalized;
       const createEmptyFile = require('akeneoassetmanager/domain/model/file').createEmptyFile;
@@ -55,6 +58,9 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
     });
 
     const response = await page.evaluate(async () => {
+      // Sometimes this test fails on circle ci. This wait should mitigate that
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const createAssetFamilyFromNormalized = require('akeneoassetmanager/domain/model/asset-family/asset-family')
         .createAssetFamilyFromNormalized;
       const createEmptyFile = require('akeneoassetmanager/domain/model/file').createEmptyFile;
@@ -118,6 +124,9 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
     });
 
     const response = await page.evaluate(async () => {
+      // Sometimes this test fails on circle ci. This wait should mitigate that
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const createAssetFamilyFromNormalized = require('akeneoassetmanager/domain/model/asset-family/asset-family')
         .createAssetFamilyFromNormalized;
       const createEmptyFile = require('akeneoassetmanager/domain/model/file').createEmptyFile;

@@ -22,6 +22,9 @@ describe('Akeneoassetfamily > infrastructure > remover > asset', () => {
     });
 
     await page.evaluate(async () => {
+      // Sometimes this test fails on circle ci. This wait should mitigate that
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const remover = require('akeneoassetmanager/infrastructure/remover/asset').default;
 
       return await remover.remove('designer', 'starck');
@@ -33,6 +36,9 @@ describe('Akeneoassetfamily > infrastructure > remover > asset', () => {
     await listenRequest(page, requestContract);
 
     await page.evaluate(async () => {
+      // Sometimes this test fails on circle ci. This wait should mitigate that
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const remover = require('akeneoassetmanager/infrastructure/remover/asset').default;
 
       return await remover.removeAll('designer');
