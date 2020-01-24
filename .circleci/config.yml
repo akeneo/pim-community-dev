@@ -4,6 +4,8 @@ jobs:
     machine:
       image: ubuntu-1604:201903-01
     steps:
+      - run:
+          command: cd /home/circleci && rmdir /home/circleci/project && mkdir /dev/shm/project && ln -s /dev/shm/project /home/circleci/project && cd /home/circleci/project
       - checkout
       - run:
           name: Copy docker-compose.override.yml.dist
