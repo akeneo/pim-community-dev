@@ -58,7 +58,7 @@ class NumberLocalizer implements LocalizerInterface
 
             if (floor($number) != $number) {
                 $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 2);
-                $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 4);
+                $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 10);
             }
 
             return $numberFormatter->format($number);

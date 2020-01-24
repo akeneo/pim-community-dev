@@ -137,7 +137,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.5000",
+                        "data"   => "12.5000000000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -451,7 +451,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.5000",
+                        "data"   => "12.5000000000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -535,7 +535,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.5000",
+                        "data"   => "12.5000000000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -620,7 +620,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.5000",
+                        "data"   => "12.5000000000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -705,7 +705,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.5000",
+                        "data"   => "12.5000000000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -799,7 +799,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.5000",
+                        "data"   => "12.5000000000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -910,7 +910,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.5000",
+                        "data"   => "12.5000000000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -1006,7 +1006,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.5000",
+                        "data"   => "12.5000000000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -1097,7 +1097,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.5000",
+                        "data"   => "12.5000000000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -1233,7 +1233,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.5000",
+                        "data"   => "12.5000000000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -1437,7 +1437,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.5000",
+                        "data"   => "12.5000000000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -1620,7 +1620,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.5000",
+                        "data"   => "12.5000000000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -1703,7 +1703,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.5000",
+                        "data"   => "12.5000000000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -1814,7 +1814,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.5000",
+                        "data"   => "12.5000000000",
                     ],
                 ],
                 "a_price" => [

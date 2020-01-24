@@ -101,10 +101,10 @@ class GetProductEndToEnd extends AbstractProductTestCase
                     ['locale' => null, 'scope' => null, 'data' => ['optionA', 'optionB']],
                 ],
                 'a_number_float'                     => [
-                    ['locale' => null, 'scope' => null, 'data' => '12.5678'],
+                    ['locale' => null, 'scope' => null, 'data' => '12.5678000000'],
                 ],
                 'a_number_float_negative'            => [
-                    ['locale' => null, 'scope' => null, 'data' => '-99.8732'],
+                    ['locale' => null, 'scope' => null, 'data' => '-99.8732000000'],
                 ],
                 'a_number_integer'                   => [
                     ['locale' => null, 'scope' => null, 'data' => 42]

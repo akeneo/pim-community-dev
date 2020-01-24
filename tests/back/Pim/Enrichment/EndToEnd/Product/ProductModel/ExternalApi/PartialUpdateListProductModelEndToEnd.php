@@ -107,7 +107,7 @@ JSON;
                         [
                             'locale' => null,
                             'scope'  => null,
-                            'data'   => '10.5000',
+                            'data'   => '10.5000000000',
                         ],
                     ],
                 ],
@@ -141,7 +141,7 @@ JSON;
                         [
                             'locale' => null,
                             'scope'  => null,
-                            'data'   => '10.5000',
+                            'data'   => '10.5000000000',
                         ],
                     ],
                 ],
@@ -175,7 +175,7 @@ JSON;
                         [
                             'locale' => null,
                             'scope'  => null,
-                            'data'   => '10.5000',
+                            'data'   => '10.5000000000',
                         ],
                     ],
                     'a_simple_select' => [
@@ -200,7 +200,7 @@ JSON;
                         [
                             'locale' => null,
                             'scope'  => null,
-                            'data'   => '13.0000',
+                            'data'   => '13.0000000000',
                         ],
                     ],
                 ],

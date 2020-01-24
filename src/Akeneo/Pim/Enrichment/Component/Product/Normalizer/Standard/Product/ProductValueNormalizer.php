@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductValueNormalizer implements NormalizerInterface
 {
-    const DECIMAL_PRECISION = 4;
+    const DECIMAL_PRECISION = 10;
 
     /** @var NormalizerInterface */
     private $normalizer;
