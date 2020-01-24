@@ -80,8 +80,8 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
 
 
         $productId = new ProductId(1);
-        $getProductAttributesCodes->getTextarea($productId)->willReturn(['textarea_1', 'textarea_2']);
-        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['textarea_1', 'textarea_2'])->willReturn([
+        $getProductAttributesCodes->getTextarea($productId)->willReturn(['textarea_1', 'textarea_2', 'textarea_3']);
+        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['textarea_1', 'textarea_2', 'textarea_3'])->willReturn([
             'textarea_1' => [
                 'ecommerce' => [
                     'en_US' => '<p><br></p>',
@@ -98,8 +98,8 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
             ],
             'textarea_2' => [
                 'ecommerce' => [
-                    'en_US' => '<strong>textarea2 ecommerce</strong>',
-                    'fr_FR' => '<strong>TEXTAREA2 ECOMMERCE</strong>',
+                    'en_US' => '<strong>textarea2 ecommerce éèâö</strong>',
+                    'fr_FR' => '<strong>TEXTAREA2 ECOMMERCE ÉÈÂÖ</strong>',
                 ],
                 'mobile' => [
                     'en_US' => '<STRONG>TEXTAREA2 MOBILE EN_US</STRONG>',
@@ -110,14 +110,29 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
                     'fr_FR' => 'text',
                 ],
             ],
+            'textarea_3' => [
+                'ecommerce' => [
+                    'en_US' => '123456',
+                    'fr_FR' => '123 456',
+                ],
+                'mobile' => [
+                    'en_US' => '12.34',
+                    'fr_FR' => '12-23',
+                ],
+                'print' => [
+                    'en_US' => '12_34',
+                    'fr_FR' => '1234!!',
+                ],
+            ],
         ]);
 
         $rates = new CriterionRateCollection();
         $rates
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
-            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(50))
-            ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(0))
-            ->addRate(new ChannelCode('mobile'), new LocaleCode('fr_FR'), new Rate(50))
+            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(67))
+            ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(33))
+            ->addRate(new ChannelCode('mobile'), new LocaleCode('fr_FR'), new Rate(67))
+            ->addRate(new ChannelCode('print'), new LocaleCode('en_US'), new Rate(100))
             ->addRate(new ChannelCode('print'), new LocaleCode('fr_FR'), new Rate(100))
         ;
 
