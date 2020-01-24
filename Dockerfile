@@ -145,7 +145,7 @@ RUN mkdir var && \
     bin/console pim:installer:assets --clean && \
     yarnpkg install --frozen-lockfile && \
     yarnpkg run less && \
-    yarnpkg run webpack && \
+    EDITION=cloud yarnpkg run webpack && \
     find . -type d -name node_modules | xargs rm -rf && \
     rm -rf public/test_dist && \
     cp vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema/
