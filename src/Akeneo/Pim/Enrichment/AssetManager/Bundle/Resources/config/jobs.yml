@@ -20,7 +20,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@akeneo_assetmanager.job.reader.database'
             - '@akeneo_assetmanager.job.processor.normalization.asset'
-            - '@pim_connector.writer.dummy_item'
+            - '@akeneo_assetmanager.job.writer.csv_file.asset'
             - '%pim_job_product_batch_size%'
 
     # Providers
@@ -40,3 +40,16 @@ services:
     # Processors:
     akeneo_assetmanager.job.processor.normalization.asset:
         class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Processor\Normalization\AssetProcessor'
+
+    # Writers
+    akeneo_assetmanager.job.writer.csv_file.asset:
+        class: 'Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer'
+        arguments:
+            - '@akeneo_assetmanager.job.array_converter.standard_to_flat.asset'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+
+    akeneo_assetmanager.job.array_converter.standard_to_flat.asset:
+        class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Connector\ArrayConverter\StandardToFlat\Asset'
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
