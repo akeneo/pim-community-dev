@@ -104,7 +104,8 @@ class ConnectorAttribute
             'type' => $this->mapAttributeType($this->type),
             'value_per_locale' => $this->valuePerLocale->normalize(),
             'value_per_channel' => $this->valuePerChannel->normalize(),
-            'is_required_for_completeness' => $this->isRequired->normalize()
+            'is_required_for_completeness' => $this->isRequired->normalize(),
+            'is_read_only' => $this->isReadOnly->normalize(),
         ];
 
         $additionalProperties = [];

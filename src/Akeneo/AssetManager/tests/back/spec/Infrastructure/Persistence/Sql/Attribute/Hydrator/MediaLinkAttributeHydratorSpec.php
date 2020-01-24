@@ -64,6 +64,7 @@ class MediaLinkAttributeHydratorSpec extends ObjectBehavior
             'labels' => ['fr_FR' => 'Shooting'],
             'order' => 0,
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => true,
             'type' => 'media_link',

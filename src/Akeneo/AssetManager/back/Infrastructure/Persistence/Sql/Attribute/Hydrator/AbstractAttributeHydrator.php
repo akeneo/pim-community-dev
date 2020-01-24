@@ -26,9 +26,6 @@ abstract class AbstractAttributeHydrator implements AttributeHydratorInterface
 
     public function hydrate(array $row): AbstractAttribute
     {
-        // @todo: remove this line when we will know how to fetch this data!
-        $row['is_read_only'] = '0';
-
         $this->checkRowProperties($row);
         $row = $this->convertCommonProperties($this->platform, $row);
         $row = $this->convertAdditionalProperties($this->platform, $row);

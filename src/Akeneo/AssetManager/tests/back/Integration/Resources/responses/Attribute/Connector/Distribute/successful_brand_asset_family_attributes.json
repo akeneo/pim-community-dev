@@ -19,6 +19,7 @@
         "value_per_locale": true,
         "value_per_channel": false,
         "is_required_for_completeness": true,
+        "is_read_only": false,
         "max_characters": 155,
         "is_textarea": false,
         "is_rich_text_editor": false,
@@ -40,6 +41,7 @@
         "value_per_locale": false,
         "value_per_channel": false,
         "is_required_for_completeness": true,
+        "is_read_only": false,
         "allowed_extensions": ["jpg"],
         "max_file_size": "10",
         "media_type": "image",
@@ -59,6 +61,7 @@
         "value_per_locale": false,
         "value_per_channel": false,
         "is_required_for_completeness": false,
+        "is_read_only": false,
         "_links": {
           "self": {
             "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/nationality"
@@ -75,6 +78,7 @@
         "value_per_locale": false,
         "value_per_channel": false,
         "is_required_for_completeness": false,
+        "is_read_only": false,
         "_links": {
           "self": {
             "href": "http://localhost/api/rest/v1/asset-families/brand/attributes/sales_areas"
@@ -91,6 +95,7 @@
         "value_per_locale": false,
         "value_per_channel": false,
         "is_required_for_completeness": false,
+        "is_read_only": false,
         "asset_family_code": "country",
         "_links": {
           "self": {
@@ -108,6 +113,7 @@
         "value_per_locale": false,
         "value_per_channel": false,
         "is_required_for_completeness": true,
+        "is_read_only": false,
         "asset_family_code": "designer",
         "_links": {
           "self": {

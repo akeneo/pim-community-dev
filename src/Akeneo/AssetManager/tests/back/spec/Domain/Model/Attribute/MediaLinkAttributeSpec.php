@@ -107,6 +107,7 @@ class MediaLinkAttributeSpec extends ObjectBehavior
                 'labels'                      => ['fr_FR' => 'Image', 'en_US' => 'Image'],
                 'order'                       => 0,
                 'is_required'                 => true,
+                'is_read_only'                => false,
                 'value_per_channel'           => true,
                 'value_per_locale'            => true,
                 'type'                        => 'media_link',

@@ -117,6 +117,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $name->assetFamilyIdentifier = 'designer';
         $name->code = 'name';
         $name->isRequired = false;
+        $name->isReadOnly = true;
         $name->order = 0;
         $name->valuePerChannel = false;
         $name->valuePerLocale = true;
@@ -135,6 +136,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $bio->assetFamilyIdentifier = 'designer';
         $bio->code = 'bio';
         $bio->isRequired = false;
+        $bio->isReadOnly = false;
         $bio->order = 1;
         $bio->valuePerChannel = false;
         $bio->valuePerLocale = true;
@@ -153,6 +155,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $portrait->assetFamilyIdentifier = 'designer';
         $portrait->code = 'portrait';
         $portrait->isRequired = false;
+        $portrait->isReadOnly = false;
         $portrait->order = 2;
         $portrait->valuePerChannel = false;
         $portrait->valuePerLocale = true;
@@ -169,6 +172,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $favoriteColor->assetFamilyIdentifier = 'designer';
         $favoriteColor->code = 'favorite_color';
         $favoriteColor->isRequired = true;
+        $favoriteColor->isReadOnly = false;
         $favoriteColor->order = 3;
         $favoriteColor->valuePerChannel = true;
         $favoriteColor->valuePerLocale = true;
@@ -192,6 +196,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $colors->assetFamilyIdentifier = 'designer';
         $colors->code = 'colors';
         $colors->isRequired = true;
+        $colors->isReadOnly = false;
         $colors->order = 4;
         $colors->valuePerChannel = true;
         $colors->valuePerLocale = true;
@@ -215,6 +220,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $birthdate->assetFamilyIdentifier = 'designer';
         $birthdate->code = 'year_of_birth';
         $birthdate->isRequired = false;
+        $birthdate->isReadOnly = false;
         $birthdate->order = 6;
         $birthdate->valuePerChannel = false;
         $birthdate->valuePerLocale = false;

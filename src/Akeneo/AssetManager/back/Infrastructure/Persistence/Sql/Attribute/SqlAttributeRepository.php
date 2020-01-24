@@ -162,6 +162,7 @@ SQL;
             attribute_type,
             attribute_order,
             is_required,
+            is_read_only,
             value_per_channel,
             value_per_locale,
             additional_properties
@@ -198,6 +199,7 @@ SQL;
             attribute_type,
             attribute_order,
             is_required,
+            is_read_only,
             value_per_channel,
             value_per_locale,
             additional_properties
@@ -238,6 +240,7 @@ SQL;
             attribute_type,
             attribute_order,
             is_required,
+            is_read_only,
             value_per_channel,
             value_per_locale,
             additional_properties
@@ -289,6 +292,7 @@ SQL;
         unset($normalizedAttribute['labels']);
         unset($normalizedAttribute['order']);
         unset($normalizedAttribute['is_required']);
+        unset($normalizedAttribute['is_read_only']);
         unset($normalizedAttribute['value_per_channel']);
         unset($normalizedAttribute['value_per_locale']);
         unset($normalizedAttribute['type']);

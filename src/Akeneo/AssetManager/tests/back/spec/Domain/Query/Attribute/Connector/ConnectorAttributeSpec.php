@@ -64,6 +64,7 @@ class ConnectorAttributeSpec extends ObjectBehavior
             'value_per_locale' => true,
             'value_per_channel' => true,
             'is_required_for_completeness' => false,
+            'is_read_only' => false,
             'max_characters' => 123,
             'is_textarea' => false,
             'is_rich_text_editor' => false,
@@ -100,6 +101,7 @@ class ConnectorAttributeSpec extends ObjectBehavior
             'value_per_locale' => true,
             'value_per_channel' => true,
             'is_required_for_completeness' => false,
+            'is_read_only' => true,
             'asset_family_code' => 'country'
         ]);
     }

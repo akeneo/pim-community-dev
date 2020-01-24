@@ -135,6 +135,7 @@ abstract class AbstractAttribute
             'labels' => $this->labelCollection->normalize(),
             'order' => $this->order->intValue(),
             'is_required' => $this->isRequired->normalize(),
+            'is_read_only' => $this->isReadOnly->normalize(),
             'value_per_channel' => $this->valuePerChannel->normalize(),
             'value_per_locale' => $this->valuePerLocale->normalize(),
             'type' => $this->getType(),

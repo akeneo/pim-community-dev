@@ -78,6 +78,7 @@ class OptionCollectionAttributeFactorySpec extends ObjectBehavior
             'labels'                      => ['fr_FR' => 'Couleur favorites'],
             'order'                       => 0,
             'is_required'                 => false,
+            'is_read_only'                => false,
             'value_per_channel'           => false,
             'value_per_locale'            => false,
             'type'                        => 'option_collection',

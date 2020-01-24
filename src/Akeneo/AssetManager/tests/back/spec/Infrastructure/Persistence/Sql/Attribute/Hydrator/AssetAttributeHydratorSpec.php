@@ -60,6 +60,7 @@ class AssetAttributeHydratorSpec extends ObjectBehavior
             'labels' => ['fr_FR' => 'Mentor'],
             'order' => 0,
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => true,
             'type' => 'asset',

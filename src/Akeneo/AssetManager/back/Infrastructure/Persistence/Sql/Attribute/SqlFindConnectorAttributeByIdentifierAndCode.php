@@ -49,6 +49,7 @@ class SqlFindConnectorAttributeByIdentifierAndCode implements FindConnectorAttri
             asset_family_identifier,
             attribute_order,
             is_required,
+            is_read_only,
             attribute_type,
             value_per_channel,
             value_per_locale,
@@ -88,8 +89,7 @@ SQL;
             AttributeValuePerLocale::fromBoolean($hydratedAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($hydratedAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean((bool) $result['is_required']),
-            // @todo: handle when we will know how to fetch this data!
-            AttributeIsReadOnly::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean((bool) $result['is_read_only']),
             $this->getAdditionalProperties($hydratedAttribute->normalize())
         );
     }
