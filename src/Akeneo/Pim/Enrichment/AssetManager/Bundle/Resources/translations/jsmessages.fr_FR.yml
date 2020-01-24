@@ -1,0 +1,4 @@
+batch_jobs:
+    asset_manager_csv_asset_export:
+        label: Export des ressources en CSV
+        export.label: Export des ressources
