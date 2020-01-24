@@ -6,11 +6,9 @@ import {Context} from 'akeneoassetmanager/domain/model/context';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
-import {useFetchResult} from 'akeneoassetmanager/application/hooks/grid';
+import {useFetchResult, createQuery} from 'akeneoassetmanager/application/hooks/grid';
 import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
 import __ from 'akeneoassetmanager/tools/translator';
 import {AssetFamilySelector} from 'akeneoassetmanager/application/component/library/asset-family-selector';
@@ -80,37 +78,6 @@ const Buttons = styled.div`
     margin-left: 10px;
   }
 `;
-
-const createQuery = (
-  assetFamilyIdentifier: AssetFamilyIdentifier,
-  filters: Filter[],
-  searchValue: string,
-  _excludedAssetCollection: AssetCode[],
-  channel: ChannelCode,
-  locale: LocaleCode,
-  page: number,
-  size: number
-): Query => ({
-  locale,
-  channel,
-  size,
-  page,
-  filters: [
-    ...filters,
-    {
-      field: 'asset_family',
-      operator: '=',
-      value: assetFamilyIdentifier,
-      context: {},
-    },
-    {
-      field: 'full_text',
-      operator: '=',
-      value: searchValue,
-      context: {},
-    },
-  ],
-});
 
 const SecondaryActions = ({
   canDeleteAllAssets,
