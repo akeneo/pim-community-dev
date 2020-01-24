@@ -25,6 +25,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -32,7 +33,7 @@ class MigrateAssetCategoryLabelsCommand extends Command
 {
     protected static $defaultName = 'pimee:assets:migrate:migrate-asset-category-labels';
 
-    private const CATEGORIES_FIELD = 'categories';
+    private const DEFAULT_CATEGORIES_CODE = 'categories';
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
@@ -59,8 +60,9 @@ class MigrateAssetCategoryLabelsCommand extends Command
     {
         $this
             ->setHidden(true)
-            ->setDescription(sprintf('Copy the category labels into the Asset Manager %s field.', self::CATEGORIES_FIELD))
+            ->setDescription('Copy the category labels into the Asset Manager categories field.')
             ->addArgument('asset-family-code', InputArgument::REQUIRED, 'The asset family code to migrate')
+            ->addOption('categories-attribute-code', null, InputOption::VALUE_OPTIONAL, 'The code of the attribute containing categories in your asset family', self::DEFAULT_CATEGORIES_CODE)
         ;
     }
 
@@ -68,22 +70,23 @@ class MigrateAssetCategoryLabelsCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $familyCode = $input->getArgument('asset-family-code');
+        $categoriesAttributeCode = $input->getOption('categories-attribute-code');
 
         $io->title(sprintf('Migration of the category labels of the asset family "%s"', $familyCode));
 
         try {
             $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
-                AttributeCode::fromString(self::CATEGORIES_FIELD),
+                AttributeCode::fromString($categoriesAttributeCode),
                 AssetFamilyIdentifier::fromString($familyCode)
             );
         } catch (AttributeNotFoundException $e) {
-            $io->error(sprintf('There is no attribute "%s" for the family "%s".', self::CATEGORIES_FIELD, $familyCode));
+            $io->error(sprintf('There is no attribute "%s" for the family "%s".', $categoriesAttributeCode, $familyCode));
 
             return;
         }
 
         if (!($attribute instanceof OptionCollectionAttribute)) {
-            $io->writeln(sprintf('The field "%s" is not a multiple_option. No migration needed.', self::CATEGORIES_FIELD));
+            $io->writeln(sprintf('The field "%s" is not a multiple_option. No migration needed.', $categoriesAttributeCode));
 
             return;
         }
@@ -93,7 +96,7 @@ class MigrateAssetCategoryLabelsCommand extends Command
             $PAMCategoryCodes[] = $attributeOption->getCode();
         }
         if (empty($PAMCategoryCodes)) {
-            $io->writeln(sprintf('The field "%s" does not contain any option. No migration needed.', self::CATEGORIES_FIELD));
+            $io->writeln(sprintf('The field "%s" does not contain any option. No migration needed.', $categoriesAttributeCode));
 
             return;
         }
@@ -129,10 +132,10 @@ class MigrateAssetCategoryLabelsCommand extends Command
             }
         }
 
-        $io->writeln(sprintf('Update the options of the field "%s" of the family "%s"...', self::CATEGORIES_FIELD, $familyCode));
+        $io->writeln(sprintf('Update the options of the field "%s" of the family "%s"...', $categoriesAttributeCode, $familyCode));
         $editAttributeCommand = new EditAttributeCommand(
             (string) $attribute->getIdentifier(), [
-                new EditOptionsCommand(self::CATEGORIES_FIELD, $options)
+                new EditOptionsCommand($categoriesAttributeCode, $options)
             ]
         );
 
