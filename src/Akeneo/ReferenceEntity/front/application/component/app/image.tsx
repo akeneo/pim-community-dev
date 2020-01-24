@@ -8,6 +8,7 @@ import __ from 'akeneoreferenceentity/tools/translator';
 import Download from 'akeneoreferenceentity/application/component/app/icon/download';
 import Import from 'akeneoreferenceentity/application/component/app/illustration/import';
 import Key from 'akeneoreferenceentity/tools/key';
+const Messenger = require('oro/messenger');
 
 class Image extends React.Component<
   {
@@ -95,8 +96,13 @@ class Image extends React.Component<
       if (undefined !== this.props.onImageChange) {
         this.props.onImageChange(image);
       }
-    } catch (error) {
-      console.error(error);
+    } catch (errors) {
+      Object.keys(errors).forEach(key => {
+        let error = errors[key];
+        if (error.message) {
+          Messenger.notify('error', error.message);
+        }
+      });
     }
 
     this.setState({loading: false, ratio: 0});

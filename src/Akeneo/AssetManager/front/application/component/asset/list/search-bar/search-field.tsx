@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import SearchIcon from 'akeneoassetmanager/application/component/app/icon/search';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import useDebounce from 'akeneoassetmanager/platform/hook/use-debounce';
+import {useFocus} from 'akeneoassetmanager/application/hooks/input';
 
 type SearchFieldProps = {
   value: string;
@@ -29,13 +30,9 @@ const SearchInput = styled.input`
 `;
 
 const SearchField = ({value, onChange}: SearchFieldProps) => {
-  const inputRef = React.useRef<HTMLInputElement>(null);
   const [userSearch, setUserSearch] = useState(value);
   const debouncedUserSearch = useDebounce(userSearch, 250);
-
-  useEffect(() => {
-    null !== inputRef.current && inputRef.current.focus();
-  }, []);
+  const [inputRef] = useFocus();
 
   useEffect(() => {
     onChange(debouncedUserSearch);

@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Application\Asset\LinkAssets;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -22,12 +23,16 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
  */
 class LinkAssetsHandler
 {
+    /** * @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
+
     /** @var ProductLinkRuleLauncherInterface */
     private $productLinkRuleLauncher;
 
-    public function __construct(ProductLinkRuleLauncherInterface $productLinkRuleLauncher)
+    public function __construct(AssetFamilyRepositoryInterface $assetFamilyRepository, ProductLinkRuleLauncherInterface $productLinkRuleLauncher)
     {
         $this->productLinkRuleLauncher = $productLinkRuleLauncher;
+        $this->assetFamilyRepository = $assetFamilyRepository;
     }
 
     public function handle(LinkMultipleAssetsCommand $command): void
@@ -40,10 +45,20 @@ class LinkAssetsHandler
         }
 
         foreach ($assetCodesByFamily as $familyIdentifier => $assetCodes) {
+            if (!$this->assetFamilyHasProductLinkRule($familyIdentifier)) {
+                continue;
+            }
             $this->productLinkRuleLauncher->launch(
                 AssetFamilyIdentifier::fromString($familyIdentifier),
                 $assetCodes
             );
         }
+    }
+
+    private function assetFamilyHasProductLinkRule(string $familyIdentifier)
+    {
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString($familyIdentifier));
+
+        return !$assetFamily->getRuleTemplateCollection()->isEmpty();
     }
 }

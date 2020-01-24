@@ -55,7 +55,7 @@ final class ValidateGrantedProperties implements ValidateGrantedPropertiesInterf
     public function validate(array $search): void
     {
         foreach ($search as $propertyCode => $filters) {
-            $property = trim($propertyCode);
+            $property = trim((string) $propertyCode);
             if (in_array($property, self::PRODUCT_FIELDS)) {
                 continue;
             }

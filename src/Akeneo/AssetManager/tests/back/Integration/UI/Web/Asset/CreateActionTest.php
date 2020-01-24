@@ -456,7 +456,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
         $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
-        $this->productLinkRuleLauncherSpy->assertHasRunForAsset('country', 'intel');
+        $this->productLinkRuleLauncherSpy->assertHasNotRunForAsset('country', 'intel');
 
         $asset = $this->assetRepository->getByAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString('country'),

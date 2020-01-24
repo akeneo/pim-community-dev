@@ -20,7 +20,6 @@ import {MultipleButton, Button} from 'akeneoassetmanager/application/component/a
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {CreateModal} from 'akeneoassetmanager/application/component/asset/create';
-import {useNotify} from 'akeneoassetmanager/application/hooks/notify';
 import {CreateAssetFamilyModal} from 'akeneoassetmanager/application/component/asset-family/create';
 import {useRedirect} from 'akeneoassetmanager/application/hooks/router';
 import {useStoredState} from 'akeneoassetmanager/application/hooks/state';
@@ -46,6 +45,10 @@ import {clearImageLoadingQueue} from 'akeneoassetmanager/tools/image-loader';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
+import {useScroll} from 'akeneoassetmanager/application/hooks/scroll';
+import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/list/completeness-filter';
+import {getCompletenessFilter, updateCompletenessFilter} from 'akeneoassetmanager/tools/filters/completeness';
+import notify from 'akeneoassetmanager/tools/notify';
 
 const Header = styled.div`
   padding-left: 40px;
@@ -135,23 +138,21 @@ const SecondaryActions = ({
 
 const useRoute = () => {
   const redirect = useRedirect();
-  const redirectToAsset = React.useCallback(
-    (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) =>
-      redirect('akeneo_asset_manager_asset_edit', {
-        assetCode,
-        assetFamilyIdentifier,
-        tab: 'enrich',
-      }),
-    []
-  );
-  const redirectToAssetFamily = React.useCallback(
-    (identifier: AssetFamilyIdentifier) =>
-      redirect('akeneo_asset_manager_asset_family_edit', {
-        identifier,
-        tab: 'attribute',
-      }),
-    []
-  );
+  const redirectToAsset = React.useCallback((assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => {
+    clearImageLoadingQueue();
+    redirect('akeneo_asset_manager_asset_edit', {
+      assetCode,
+      assetFamilyIdentifier,
+      tab: 'enrich',
+    });
+  }, []);
+  const redirectToAssetFamily = React.useCallback((identifier: AssetFamilyIdentifier) => {
+    clearImageLoadingQueue();
+    redirect('akeneo_asset_manager_asset_family_edit', {
+      identifier,
+      tab: 'attribute',
+    });
+  }, []);
   return {redirectToAsset, redirectToAssetFamily};
 };
 
@@ -180,22 +181,25 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
         // We need to reload the filters from local storage after changing the current asset family
         loadFilterCollectionFromStorage(`akeneo.asset_manager.grid.filter_collection_${newAssetFamily}`);
         clearImageLoadingQueue();
+        scrollTop();
       }
     }
   );
+  const [scrollContainerRef, scrollTop] = useScroll<HTMLDivElement>();
   const [filterCollection, setFilterCollection, loadFilterCollectionFromStorage] = useStoredState<Filter[]>(
     `akeneo.asset_manager.grid.filter_collection_${currentAssetFamilyIdentifier}`,
-    []
+    [],
+    scrollTop
   );
   const [excludedAssetCollection] = React.useState<AssetCode[]>([]);
   const [selection, setSelection] = React.useState<AssetCode[]>([]);
-  const [searchValue, setSearchValue] = useStoredState<string>('akeneo.asset_manager.grid.search_value', '');
+  const [searchValue, setSearchValue] = useStoredState<string>('akeneo.asset_manager.grid.search_value', '', scrollTop);
   const [searchResult, setSearchResult] = React.useState<SearchResult<ListAsset>>({
     items: [],
     matchesCount: 0,
     totalCount: 0,
   });
-  const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext);
+  const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext, scrollTop);
   const [isCreateAssetModalOpen, setCreateAssetModalOpen] = React.useState<boolean>(false);
   const [isUploadModalOpen, setUploadModalOpen] = React.useState<boolean>(false);
   const [isCreateAssetFamilyModalOpen, setCreateAssetFamilyModalOpen] = React.useState<boolean>(false);
@@ -208,6 +212,14 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
       ? ''
       : getLabel(currentAssetFamily.labels, context.locale, currentAssetFamily.identifier);
 
+  const completenessValue = getCompletenessFilter(filterCollection);
+  const handleCompletenessValueChange = React.useCallback(
+    (value: CompletenessValue) => {
+      setFilterCollection(updateCompletenessFilter(filterCollection, value));
+    },
+    [filterCollection, setFilterCollection]
+  );
+
   const updateResults = useFetchResult(createQuery)(
     true,
     dataProvider,
@@ -219,7 +231,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
     setSearchResult
   );
   const filterViews = useFilterViews(currentAssetFamilyIdentifier, dataProvider);
-  const notify = useNotify();
   const {redirectToAsset, redirectToAssetFamily} = useRoute();
 
   const hasMediaLinkAsMainMedia =
@@ -379,8 +390,11 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 resultCount={searchResult.matchesCount}
                 onSearchChange={setSearchValue}
                 onContextChange={setContext}
+                completenessValue={completenessValue}
+                onCompletenessChange={handleCompletenessValueChange}
               />
               <Mosaic
+                scrollContainerRef={scrollContainerRef}
                 selection={selection}
                 assetCollection={searchResult.items}
                 context={context}

@@ -92,6 +92,7 @@ extensions:
         position: 115
         config:
             datagridName: product-draft-grid
+            tabCode: pim-product-or-product-model-edit-form-proposals
 
     pim-product-edit-form-categories:
         module: pimee/product-edit-form/categories

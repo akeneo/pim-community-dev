@@ -58,6 +58,9 @@ beforeEach(async () => {
 it('It fetches all product attributes of asset', async () => {
   // It fetches the product attributes
   const response = await page.evaluate(async () => {
+    // Sometimes this test fails on circle ci. This wait should mitigate that
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     const fetchAssetAttributes =
       require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute')
       .fetchAssetAttributes;

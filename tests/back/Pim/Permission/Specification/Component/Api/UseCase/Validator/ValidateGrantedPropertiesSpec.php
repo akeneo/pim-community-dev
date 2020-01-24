@@ -41,6 +41,25 @@ class ValidateGrantedPropertiesSpec extends ObjectBehavior
         ]);
     }
 
+    function it_can_handle_numeric_attribute_codes(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
+        $attributeWithNumericCode = new Attribute();
+
+        $attributeRepository->findOneByIdentifier('1000')->willReturn($attributeWithNumericCode);
+        $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeWithNumericCode)->willReturn(true);
+
+        $this->shouldNotThrow(InvalidQueryException::class)->during(
+            'validate',
+            [
+                [
+                    1000 => [['operator' => 'EQUALS']],
+                ]
+            ]
+        );
+    }
+
     function it_throws_an_exception_when_filtering_on_ungranted_attributes(
         IdentifiableObjectRepositoryInterface $attributeRepository,
         AuthorizationCheckerInterface $authorizationChecker

@@ -26,7 +26,7 @@ type BasketProps = {
 const Container = styled.div`
   width: 300px;
   border-left: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
-  padding: 0 20px;
+  padding: 0 20px 20px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;

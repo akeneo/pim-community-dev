@@ -130,6 +130,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source\GlobalOffsetCalculator: ~
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\ProductValueInDatabaseDictionarySource:
+        public: true
         arguments:
             $db: '@database_connection'
 
@@ -142,6 +143,7 @@ services:
             $localFilesystemProvider : '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryLocalFilesystem'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryGenerator:
+        public: true
         arguments:
             $aspellDictionary: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionary'
             $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllActivatedLocalesQuery'

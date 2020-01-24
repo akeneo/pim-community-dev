@@ -18,6 +18,11 @@ export const Modal = styled.div`
   overflow-x: auto;
 `;
 
+export const ScrollableModal = styled(Modal)`
+  overflow: hidden;
+  padding-bottom: 0;
+`;
+
 export const ConfirmButton = styled(Button)`
   position: absolute;
   top: 0;

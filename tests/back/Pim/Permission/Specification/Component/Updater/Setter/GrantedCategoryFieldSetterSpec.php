@@ -65,11 +65,13 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $product->getCategoryCodes()->willReturn([]);
+        $product->getId()->willReturn('111');
         $categoryAccessRepository->areAllCategoryCodesGranted($user, Attributes::VIEW_ITEMS, [])->willReturn(true);
 
         $product->getCategoriesForVariation()->willReturn([$categoryA, $categoryB]);
         $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryA)->willReturn(true);
         $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryB)->willReturn(true);
+        $authorizationChecker->isGranted([Attributes::OWN], $product)->willReturn(false);
 
         $this->shouldNotThrow(
             InvalidPropertyException::validEntityCodeExpected(
@@ -244,7 +246,7 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $productModel->getId()->willReturn(1);
         $productModel->getCategories()->willReturn([]);
         $authorizationChecker->isGranted([Attributes::OWN], $productModel)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::EDIT], $productModel)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT, $productModel)->willReturn(false);
 
         $this->shouldNotThrow(
             new InvalidArgumentException('You should at least keep your product in one category on which you have an own permission.')

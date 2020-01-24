@@ -88,7 +88,7 @@ services:
             - { name: liip_imagine.binary.loader, loader: stream_data_loader }
 
     akeneo_assetmanager.infrastructure.loader.flysystem_loader:
-        class: 'Liip\ImagineBundle\Binary\Loader\FlysystemLoader'
+        class: 'Akeneo\AssetManager\Infrastructure\Filesystem\Loader\ImageLoader'
         arguments:
             - '@liip_imagine.extension_guesser'
             - '@oneup_flysystem.asset_storage_filesystem'
