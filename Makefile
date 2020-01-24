@@ -40,13 +40,13 @@ css:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/css
 	$(YARN_RUN) run less
 
-.PHONY: javascript-cloud
-javascript-cloud:
+.PHONY: javascript-prod
+javascript-prod:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(DOCKER_COMPOSE) run -e EDITION=cloud --rm node yarn run webpack
 
-.PHONY: javascript-prod
-javascript-prod:
+.PHONY: javascript-prod-onprem-saas
+javascript-prod-onprem-saas:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(YARN_RUN) run webpack
 
