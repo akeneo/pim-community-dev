@@ -175,31 +175,22 @@ type LibraryProps = {
 const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const [currentAssetFamilyIdentifier, setCurrentAssetFamilyIdentifier] = useStoredState<AssetFamilyIdentifier | null>(
     'akeneo.asset_manager.grid.current_asset_family',
-    null,
-    newAssetFamily => {
-      if (null !== newAssetFamily) {
-        // We need to reload the filters from local storage after changing the current asset family
-        loadFilterCollectionFromStorage(`akeneo.asset_manager.grid.filter_collection_${newAssetFamily}`);
-        clearImageLoadingQueue();
-        scrollTop();
-      }
-    }
+    null
   );
   const [scrollContainerRef, scrollTop] = useScroll<HTMLDivElement>();
-  const [filterCollection, setFilterCollection, loadFilterCollectionFromStorage] = useStoredState<Filter[]>(
+  const [filterCollection, setFilterCollection] = useStoredState<Filter[]>(
     `akeneo.asset_manager.grid.filter_collection_${currentAssetFamilyIdentifier}`,
-    [],
-    scrollTop
+    []
   );
   const [excludedAssetCollection] = React.useState<AssetCode[]>([]);
   const [selection, setSelection] = React.useState<AssetCode[]>([]);
-  const [searchValue, setSearchValue] = useStoredState<string>('akeneo.asset_manager.grid.search_value', '', scrollTop);
+  const [searchValue, setSearchValue] = useStoredState<string>('akeneo.asset_manager.grid.search_value', '');
   const [searchResult, setSearchResult] = React.useState<SearchResult<ListAsset>>({
     items: [],
     matchesCount: 0,
     totalCount: 0,
   });
-  const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext, scrollTop);
+  const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext);
   const [isCreateAssetModalOpen, setCreateAssetModalOpen] = React.useState<boolean>(false);
   const [isUploadModalOpen, setUploadModalOpen] = React.useState<boolean>(false);
   const [isCreateAssetFamilyModalOpen, setCreateAssetFamilyModalOpen] = React.useState<boolean>(false);
@@ -236,6 +227,16 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const hasMediaLinkAsMainMedia =
     null !== currentAssetFamily && isMediaLinkAttribute(getAttributeAsMainMedia(currentAssetFamily));
 
+  const handleAssetFamilyChange = React.useCallback(
+    (assetFamilyIdentifier: AssetFamilyIdentifier) => {
+      setCurrentAssetFamilyIdentifier(assetFamilyIdentifier);
+      clearImageLoadingQueue();
+    },
+    [setCurrentAssetFamilyIdentifier]
+  );
+
+  React.useEffect(scrollTop, [currentAssetFamilyIdentifier, filterCollection, searchValue, context]);
+
   return (
     <Container>
       <Column title={__('pim_asset_manager.asset_family.column.title')}>
@@ -243,7 +244,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           assetFamilyIdentifier={currentAssetFamilyIdentifier}
           locale={context.locale}
           dataProvider={dataProvider}
-          onChange={setCurrentAssetFamilyIdentifier}
+          onChange={handleAssetFamilyChange}
         />
         <FilterCollection
           filterCollection={filterCollection}
@@ -449,7 +450,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           onClose={() => setCreateAssetFamilyModalOpen(false)}
           onAssetFamilyCreated={(assetFamilyIdentifier: AssetFamilyIdentifier) => {
             notify('success', 'pim_asset_manager.asset_family.notification.create.success');
-            setCurrentAssetFamilyIdentifier(assetFamilyIdentifier);
+            handleAssetFamilyChange(assetFamilyIdentifier);
             redirectToAssetFamily(assetFamilyIdentifier);
           }}
         />

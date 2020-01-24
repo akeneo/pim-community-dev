@@ -3,9 +3,11 @@ import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
 import {act, fireEvent, getByText} from '@testing-library/react';
 import {renderHook} from '@testing-library/react-hooks';
-import CompletenessFilter, {CompletenessValue} from 'akeneoassetmanager/application/component/asset/list/completeness-filter'
+import CompletenessFilter, {
+  CompletenessValue,
+} from 'akeneoassetmanager/application/component/asset/list/completeness-filter';
 
-const KeyEventSpace = { key: ' ', code: 32, charCode: 32, keyCode: 32 };
+const KeyEventSpace = {key: ' ', code: 32, charCode: 32, keyCode: 32};
 
 const getDropdownButton = (container: HTMLElement): HTMLElement => {
   return container.querySelector(`.AknActionButton[tabindex="0"]`);
@@ -31,13 +33,7 @@ describe('Tests completeness filter', () => {
     const handleChange = jest.fn();
 
     await act(async () => {
-      ReactDOM.render(
-        <CompletenessFilter
-          value={CompletenessValue.All}
-          onChange={handleChange}
-        />,
-        container
-      );
+      ReactDOM.render(<CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />, container);
     });
   });
 
@@ -45,13 +41,7 @@ describe('Tests completeness filter', () => {
     const handleChange = jest.fn();
 
     await act(async () => {
-      ReactDOM.render(
-        <CompletenessFilter
-          value={CompletenessValue.All}
-          onChange={handleChange}
-        />,
-        container
-      );
+      ReactDOM.render(<CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />, container);
     });
 
     const dropdownButton = getDropdownButton(container);
@@ -67,13 +57,7 @@ describe('Tests completeness filter', () => {
     const handleChange = jest.fn();
 
     await act(async () => {
-      ReactDOM.render(
-        <CompletenessFilter
-          value={CompletenessValue.All}
-          onChange={handleChange}
-        />,
-        container
-      );
+      ReactDOM.render(<CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />, container);
     });
 
     const dropdownButton = getDropdownButton(container);

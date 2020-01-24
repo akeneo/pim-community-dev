@@ -2,33 +2,36 @@ import * as React from 'react';
 
 export const useStoredState = function<T>(
   name: string,
-  defaultValue: T,
-  afterSet?: (newValue: T) => void
-): [T, (newValue: T) => void, (name: string) => void] {
-  const [value, setValue] = React.useState(defaultValue);
-  const [firstLoad, setFirstLoad] = React.useState(true);
+  defaultValue: T
+): [T, (newValue: T) => void] {
+  const loadValueFromLocaleStorage = (): T => {
+    try {
+      const item = localStorage.getItem(name);
 
-  const setValueAndStore = (newValue: T) => {
-    if (value === newValue) return;
-
-    localStorage.setItem(name, JSON.stringify(newValue));
-    setValue(newValue);
-    afterSet && afterSet(newValue);
-  };
-
-  const loadFromStorage = (name: string) => {
-    const localeStorageValue = localStorage.getItem(name);
-    if (null !== localeStorageValue) {
-      setValue(JSON.parse(localeStorageValue));
-    } else {
-      setValue(defaultValue);
+      return null !== item ? JSON.parse(item) : defaultValue;
+    } catch (error) {
+      return defaultValue;
     }
   };
 
-  if (firstLoad) {
-    loadFromStorage(name);
-    setFirstLoad(false);
+  const [value, setValue] = React.useState<T>(loadValueFromLocaleStorage);
+  const [key, setKey] = React.useState<string>(name);
+
+  const setAndStoreValue = (value: T) => {
+    try {
+      setValue(value);
+      localStorage.setItem(name, JSON.stringify(value));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // When the key has changed, we need to reload because we are now using
+  // a different locale storage item
+  if (key !== name) {
+    setKey(name);
+    setValue(loadValueFromLocaleStorage());
   }
 
-  return [value, setValueAndStore, loadFromStorage];
+  return [value, setAndStoreValue];
 };
