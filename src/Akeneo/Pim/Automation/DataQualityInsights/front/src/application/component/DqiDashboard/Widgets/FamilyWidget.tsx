@@ -7,6 +7,7 @@ import {Ranks} from "../../../../domain/Rate.interface";
 import Rate from "../../Rate";
 import FamilyModal from "./FamilyModal";
 import {uniq as _uniq} from 'lodash';
+import {redirectToProductGridFilteredByFamily} from "../../../../infrastructure/GridRouter";
 
 const __ = require('oro/translator');
 const UserContext = require('pim/user-context');
@@ -117,6 +118,7 @@ const FamilyWidget: FunctionComponent<FamilyWidgetProps> = ({catalogChannel, cat
             <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">{__(`akeneo_data_quality_insights.product_evaluation.axis.enrichment.title`)}</th>
             <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">{__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)}</th>
             <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate"> </th>
+            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate"> </th>
           </tr>
 
           {Object.keys(ratesByFamily).length > 0 && Object.entries(ratesByFamily).map(([familyCode, ratesByAxis]:[string, any], index: number) => {
@@ -134,6 +136,11 @@ const FamilyWidget: FunctionComponent<FamilyWidgetProps> = ({catalogChannel, cat
                 </td>
                 <td className="AknGrid-bodyCell AknDataQualityInsightsGrid-axis-rate">
                   <Rate value={ratesByAxis.consistency ? Ranks[ratesByAxis.consistency] : null}/>
+                </td>
+                <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
+                  <div className="AknButton AknButton--micro" onClick={() => redirectToProductGridFilteredByFamily(catalogChannel, catalogLocale, familyCode)}>
+                    {__('akeneo_data_quality_insights.dqi_dashboard.widgets.see_in_grid')}
+                  </div>
                 </td>
                 <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
                   <img style={{cursor: "pointer"}} width="16" src="/bundles/pimui/images/icon-delete-slategrey.svg" onClick={() => onRemoveFamily(familyCode)}/>
