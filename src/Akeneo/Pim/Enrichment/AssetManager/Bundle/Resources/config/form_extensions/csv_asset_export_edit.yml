@@ -131,13 +131,15 @@ extensions:
             tooltip: pim_import_export.form.job_instance.tab.properties.enclosure.help
 
     pim-job-instance-csv-asset-export-edit-properties-asset-family:
-        module: pim/attribute-edit-form/properties/asset-family # TODO: create a new component
+        module: pim/export/asset-family-field
         parent: pim-job-instance-csv-asset-export-edit-global
         position: 150
         targetZone: properties
         config:
+            required: true
             fieldName: configuration.asset_family_identifier
             label: Asset Family # TODO: translation
+            choiceRoute: akeneo_asset_manager_asset_family_index_rest
 
     pim-job-instance-csv-asset-export-edit-properties-with-header:
         module: pim/job/common/edit/field/switch
