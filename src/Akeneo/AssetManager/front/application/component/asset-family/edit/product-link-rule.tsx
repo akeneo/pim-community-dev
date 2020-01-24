@@ -148,6 +148,23 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps, Produc
           isDirty={form.state.isDirty}
           breadcrumbConfiguration={breadcrumbConfiguration(assetFamily.identifier, assetFamilyLabel)}
         />
+        <div className="AknDescriptionHeader AknDescriptionHeader--sticky">
+          <div
+            className="AknDescriptionHeader-icon"
+            style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Asset.svg")'}}
+          />
+          <div className="AknDescriptionHeader-title">
+            👏 {__('pim_asset_manager.asset_family.product_link_rules.help.title')}
+            <div className="AknDescriptionHeader-description">
+              {__('pim_asset_manager.asset_family.product_link_rules.help.description')}
+              <br />
+              <a href="https://help.akeneo.com/" className="AknDescriptionHeader-link">
+                {__('pim_asset_manager.asset_family.product_link_rules.help.link')}
+              </a>
+              <br />
+            </div>
+          </div>
+        </div>
         <div className="AknSubsection">
           <header className="AknSubsection-title">
             <span className="group-label">

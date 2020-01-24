@@ -56,7 +56,7 @@ pim_asset_manager:
     edit_asset: Edit asset
     download: Download
     copy_url: Copy URL
-    error: An error occured during the rendering of the preview
+    error: An error occurred during the rendering of the preview
   close: Close the modal
   breadcrumb:
     products: Products
@@ -129,13 +129,17 @@ pim_asset_manager:
       product_link_rules: Product link rules
     transformations:
       help:
-        title: '👏Welcome to your new asset management area!'
+        title: 'Welcome to your new asset management area!'
         description: 'You can define here up to 10 transformations by asset family.'
         link: 'If you want to dig into the new Asset Manager transformations, click here'
       subsection: 'Transformation properties'
     product_link_rules:
       naming_convention_subsection: 'Naming convention properties'
       product_link_rules_subsection: 'Product link rules properties'
+      help:
+        title: 'Welcome to your new asset management area!'
+        description: 'You can define here up to 2 product link rules by asset family.'
+        link: 'If you want to dig into the Product Link Rules feature, click here'
     properties:
       title: Asset family properties
       identifier: Code
@@ -146,8 +150,8 @@ pim_asset_manager:
       title: Asset attributes
       attribute:
         error:
-          render_list: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute'
-          render_edit: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
+          render_list: 'An error occurred during the rendering of the "{{ %attribute_code% }}" attribute'
+          render_edit: 'An error occurred during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
     module:
       delete:
         button: Delete asset family
@@ -179,16 +183,16 @@ pim_asset_manager:
     notification:
       save:
         success: Asset family successfully updated.
-        fail: An error occured during the save of the asset family
+        fail: An error occurred during the save of the asset family
       create:
         success: Asset family successfully created.
-        fail: An error occured during the creation of the asset family
+        fail: An error occurred during the creation of the asset family
       delete:
         success: Asset family successfully deleted.
-        fail: An error occured during the deletion of the asset family
+        fail: An error occurred during the deletion of the asset family
       compute_transformations:
         success: Transformations have been launched. Once this job is finished, you will see your new variations updated in your assets.
-        fail: An error occured when trying to compute the transformations
+        fail: An error occurred when trying to compute the transformations
     helper:
       title: Welcome to the Asset Manager!
       no_asset:
@@ -339,17 +343,17 @@ pim_asset_manager:
     notification:
       save:
         success: Asset successfully updated.
-        fail: An error occured during the save of the asset
+        fail: An error occurred during the save of the asset
         validation_error: The asset could not be updated
       create:
         success: Asset successfully created.
-        fail: An error occured during the creation of the asset
+        fail: An error occurred during the creation of the asset
       delete:
         success: Asset "{{ code }}" successfully deleted.
-        fail: An error occured during the deletion of the asset
+        fail: An error occurred during the deletion of the asset
       delete_all:
         success: All "{{ entityIdentifier }}" assets successfully deleted.
-        fail: An error occured during the deletion of all this asset family's assets
+        fail: An error occurred during the deletion of all this asset family's assets
     completeness:
       label: Complete
   attribute:
@@ -436,18 +440,18 @@ pim_asset_manager:
       title: Attribute
     notification:
       list:
-        fail: An error occured during the update of the attribute list
+        fail: An error occurred during the update of the attribute list
       save:
         success: Attribute successfully updated.
-        fail: An error occured during the save of the attribute
+        fail: An error occurred during the save of the attribute
         validation_error: The attribute could not be updated
       create:
         success: Attribute successfully created.
-        fail: An error occured during the creation of the attribute
+        fail: An error occurred during the creation of the attribute
         validation_error: The attribute could not be created
       delete:
         success: Attribute successfully deleted.
-        fail: An error occured during the deletion of the attribute
+        fail: An error occurred during the deletion of the attribute
     options:
       no_value: Click here to select an option.
       sub_title: Asset Families
