@@ -223,12 +223,16 @@ class CreateOrUpdateAssetsAction
 
             ($this->createAssetHandler)($createAssetCommand);
             if (null !== $namingConventionEditCommand) {
-                ($this->editAssetHandler)($namingConventionEditCommand);
+                $editAssetCommand->editAssetValueCommands = array_merge($editAssetCommand->editAssetValueCommands, $namingConventionEditCommand->editAssetValueCommands);
             }
+
+            ($this->editAssetHandler)($editAssetCommand);
+
             $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
+        } else {
+            ($this->editAssetHandler)($editAssetCommand);
         }
 
-        ($this->editAssetHandler)($editAssetCommand);
 
         return [
             'code' => (string) $assetCode,
