@@ -21,6 +21,7 @@ use Symfony\Requirements\Requirement;
 class PimRequirements
 {
     const REQUIRED_PHP_VERSION = '7.3.0';
+    const REQUIRED_GD_VERSION = '2.0';
     const REQUIRED_GHOSTSCRIPT_VERSION = '9.27';
     const REQUIRED_CURL_VERSION = '7.0';
     const REQUIRED_ICU_VERSION = '4.2';
@@ -32,6 +33,7 @@ class PimRequirements
         'bcmath',
         'curl',
         'fileinfo',
+        'gd',
         'intl',
         'pdo_mysql',
         'xml',
@@ -59,6 +61,7 @@ class PimRequirements
     public function getRequirements(): array
     {
         $phpVersion  = phpversion();
+        $gdVersion   = defined('GD_VERSION') ? GD_VERSION : null;
         $curlVersion = function_exists('curl_version') ? curl_version() : null;
         $icuVersion  = Intl::getIcuVersion();
 
@@ -79,6 +82,12 @@ class PimRequirements
                 sprintf('Install and enable the <strong>%s</strong> extension.', $requiredExtension)
             );
         }
+
+        $requirements[] = new Requirement(
+            null !== $gdVersion && version_compare($gdVersion, self::REQUIRED_GD_VERSION, '>='),
+            'GD extension must be at least ' . self::REQUIRED_GD_VERSION,
+            'Install and enable the <strong>GD</strong> extension at least ' . self::REQUIRED_GD_VERSION . ' version'
+        );
 
         $isGhostScriptInstalled = !empty(shell_exec('which gs'));
         $isGhostScriptVersionSupported = $this->isGhostScriptVersionSupported();
