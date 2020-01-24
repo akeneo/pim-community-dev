@@ -47,6 +47,7 @@ export class ConcreteMediaFileAttribute extends ConcreteAttribute implements Med
     valuePerChannel: boolean,
     order: number,
     is_required: boolean,
+    is_read_only: boolean,
     readonly maxFileSize: MaxFileSize,
     readonly allowedExtensions: AllowedExtensions,
     readonly mediaType: MediaType
@@ -56,11 +57,12 @@ export class ConcreteMediaFileAttribute extends ConcreteAttribute implements Med
       assetFamilyIdentifier,
       code,
       labelCollection,
-      'media_file',
+      MEDIA_FILE_ATTRIBUTE_TYPE,
       valuePerLocale,
       valuePerChannel,
       order,
-      is_required
+      is_required,
+      is_read_only
     );
 
     Object.freeze(this);
@@ -76,6 +78,7 @@ export class ConcreteMediaFileAttribute extends ConcreteAttribute implements Med
       normalizedMediaFileAttribute.value_per_channel,
       normalizedMediaFileAttribute.order,
       normalizedMediaFileAttribute.is_required,
+      normalizedMediaFileAttribute.is_read_only,
       normalizedMediaFileAttribute.max_file_size,
       normalizedMediaFileAttribute.allowed_extensions,
       normalizedMediaFileAttribute.media_type
@@ -85,7 +88,7 @@ export class ConcreteMediaFileAttribute extends ConcreteAttribute implements Med
   public normalize(): NormalizedMediaFileAttribute {
     return {
       ...super.normalize(),
-      type: 'media_file',
+      type: MEDIA_FILE_ATTRIBUTE_TYPE,
       max_file_size: this.maxFileSize,
       allowed_extensions: this.allowedExtensions,
       media_type: this.mediaType,

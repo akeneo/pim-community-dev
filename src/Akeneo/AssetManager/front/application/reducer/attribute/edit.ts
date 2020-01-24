@@ -27,6 +27,7 @@ const initEditState = (): EditState => ({
     value_per_locale: false,
     value_per_channel: false,
     is_required: false,
+    is_read_only: false,
     max_length: null,
     is_textarea: false,
     is_rich_text_editor: false,
@@ -47,6 +48,7 @@ export const editReducer = (getAttributeReducer: (normalizedAttribute: Normalize
     locale,
     value,
     is_required,
+    is_read_only,
     errors,
     propertyCode,
     propertyValue,
@@ -57,6 +59,7 @@ export const editReducer = (getAttributeReducer: (normalizedAttribute: Normalize
     locale: string;
     value: string;
     is_required: boolean;
+    is_read_only: boolean;
     errors: ValidationError[];
     propertyCode: string;
     propertyValue: any;
@@ -121,6 +124,19 @@ export const editReducer = (getAttributeReducer: (normalizedAttribute: Normalize
         ...state,
         data: isRequiredUpdatedAttribute,
         isDirty: isDirty(state, isRequiredUpdatedAttribute),
+      };
+      break;
+    case 'ATTRIBUTE_EDITION_IS_READ_ONLY_UPDATED':
+      if (state.data.is_read_only === is_read_only || !state.isActive) {
+        return state;
+      }
+
+      const isReadOnlyUpdatedAttribute = {...state.data, is_read_only};
+
+      state = {
+        ...state,
+        data: isReadOnlyUpdatedAttribute,
+        isDirty: isDirty(state, isReadOnlyUpdatedAttribute),
       };
       break;
     case 'ATTRIBUTE_EDITION_ADDITIONAL_PROPERTY_UPDATED':

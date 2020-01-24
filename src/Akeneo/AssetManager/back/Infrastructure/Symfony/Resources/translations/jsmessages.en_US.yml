@@ -373,6 +373,7 @@ pim_asset_manager:
       number: Number
       media_link: Media link
     is_required: required for completeness
+    is_read_only: Read only in the UI
     media_type_preview: Preview of media type
     no_data:
       title: There are no custom attributes for {{ entityLabel }}
