@@ -1,0 +1,6 @@
+doctrine:
+    dbal:
+        connections:
+            default:
+                logging: true
+                profiling: true
