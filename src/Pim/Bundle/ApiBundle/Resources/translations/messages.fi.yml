@@ -3,7 +3,6 @@ pim_api:
     rights: Web API-käyttöoikeudet
     attribute:
       edit: Luo ja päivitä attribuutteja
-      list: Listaa attribuutit
     attribute_option:
       edit: Luo ja päivitä attribuuttien vaihtoehtoja
       list: Lisää attribuuttien vaihtoehdot
@@ -12,7 +11,6 @@ pim_api:
       list: Listaa attribuuttiryhmät
     category:
       edit: Luo ja päivitä kategorioita
-      list: Listaa kategoriat
     family:
       edit: Luo ja päivitä perheitä
       list: Listaa perheet
@@ -21,22 +19,13 @@ pim_api:
       list: Listaa varianttiperheet
     channel:
       edit: Luo ja päivitä kanavia
-      list: Listaa kanavat
-    locale.list: Lista lokaatioista
-    currency.list: Lista valuutoista
+    locale.list: Listaa lokaatiot
+    currency.list: Listaa valuutat
     association_type:
       edit: Luo ja päivitä assosiaatiotyyppejä
       list: Listaa assosiaatiotyypit
   acl_group:
     overall_access: Yleiset Web API-käyttöoikeudet
-    attribute: Attribuutit
     attribute_option: Attribuuttien vaihtoehdot
-    attribute_group: Attribuuttiryhmät
-    category: Kategoriat
-    family: Perheet
     family_variant: Varianttiperheet
-    channel: Kanavat
-    locale: Alueet
-    currency: Valuutat
     association_type: Assosiaatiotyypit
-rights.api: Web API-käyttöoikeudet
