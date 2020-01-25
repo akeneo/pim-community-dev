@@ -19,7 +19,7 @@ const redirectToFilteredProductGrid = (channelCode: string, localeCode: string, 
     scope: channelCode,
   });
 
-  Router.redirectToRoute('pim_enrich_product_index', {dataLocale: localeCode});
+  window.location.href = '#' + Router.generate('pim_enrich_product_index', {dataLocale: localeCode});
 };
 
 const addAxisColumnsToTheProductGrid = () => {
