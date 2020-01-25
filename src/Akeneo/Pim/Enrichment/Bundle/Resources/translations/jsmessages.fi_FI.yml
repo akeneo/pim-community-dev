@@ -11,7 +11,7 @@ flash:
       error: Kommenttia poistaessa tapahtui virhe.
     reply:
       success: Vastaus luotu.
-      error: Virhe luotaessa vastausta.
+      error: Vastausta luotaessa tapahtui virhe.
 pim_enrich.entity.product:
   label: tuote
   uppercase_label: Tuote
@@ -22,7 +22,7 @@ pim_enrich.entity.product:
       fail: Tuotetta ei voitu päivittää.
       fields_not_ready: "Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}"
       already_in_upload: Tiedosto on jo ladattu attribuutin lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
-      file_upload: Virhe tiedoston lataamisessa
+      file_upload: Tiedoston lataamisessa tapahtui virhe
     delete:
       success: Tuote poistettiin.
       fail: Tuotetta ei voi poistaa.
@@ -40,7 +40,7 @@ pim_enrich.entity.product:
     variant_navigation:
       common: Yleinen
     status:
-      enabled: Käytössä
+      enabled: Otettu käyttöön
       disabled: Poistettu käytöstä
     download_pdf:
       label: PDF
@@ -52,8 +52,8 @@ pim_enrich.entity.product:
     history:
       version: Versio
       author: Tekijä
-      logged_at: Kirjattu
-      from: Lähettäjä
+      logged_at: Kirjautunut
+      from: Alkaen
       modified: Muutettu
       old_value: Vanha arvo
       new_value: Uusi arvo
@@ -67,7 +67,7 @@ pim_enrich.entity.product:
     attribute:
       remove_optional: Poista tämä attribuutti
       locale_specific_unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
-      locale_unavailable: Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
+      locale_unavailable: Kielikohtaista kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
       to_fill_count: "{1}1 vaadittu attribuutti puuttuu|]1, Inf[{{ count }} vaadittua attribuuttia puuttuu"
       add_attribute_option: Lisää attribuutin vaihtoehto
       add_option: Lisää vaihtoehto
@@ -91,7 +91,7 @@ pim_enrich.entity.product:
       association_type_selector: Assosiaatiotyyppi
       target: Kohde
       manage: Lisää {{ associationType }} assosiaatiot
-      manage_description: Valitse tuotteet, jotka haluat liittää nykyiseen tuotteeseen
+      manage_description: Valitse tuotteet, jotka haluat assosioida tähän tuotteeseen
       add_associations: Lisää assosiaatiot
     attribute_filter:
       display: Näytä
@@ -99,10 +99,10 @@ pim_enrich.entity.product:
       missing_required: Kaikki puuttuvat vaaditut attribuutit
       at_this_level: Kaikki tämän tason attribuutit
     change_family:
-      title: Vaihda tuoteperhettä
+      title: Vaihda perhettä
       merge_attributes: Nykyiset attribuutit yhdistetään uuteen perheeseen.
       keep_attributes: Mitään attribuutteja ei poisteta.
-      change_family_to: Vaihda perhe olemaan
+      change_family_to: Vaihda perheeksi
       empty_selection: Valitse perhe
     basket:
       title: Kori
@@ -117,6 +117,7 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} kommentoi tuotetta'
       header_reply: '{{ user }} vastaa kommenttiin'
       delete_confirm: Oletko varma että haluat poistaa tämän kommentin?
+      removed_author: Poistettu käyttäjä
 pim_enrich.entity.product_model:
   label: tuotemalli
   uppercase_label: Tuotemalli
@@ -135,11 +136,11 @@ pim_enrich.entity.product_model:
       fail: Tuotemallia ei voi poistaa
   choose: Valitse tuotemalli
   property:
-    family_variant: Tuotevariaatio
+    family_variant: Variantti
   module:
     create:
       title: Luo tuotemalli
-      content: Tuotemalli kokoaa tuotevariantit ja helpottaa niille yhteisten ominaisuuksien rikastamista.
+      content: Tuotemalli kokoaa tuotevariantit ja helpottaa niille yhteisten attribuuttien rikastamista.
     attribute:
       read_only_parent_attribute_from_common: Tätä attribuuttia voidaan muokata yhteisissä attribuuteissa.
       read_only_parent_attribute_from_model: "Tätä attribuuttia voidaan muokata {{ axes }} attribuuteissa"
@@ -219,7 +220,7 @@ pim_enrich.export.product:
       title: Status
       help: "Valitse vietävät tuotteet statuksen mukaan. Esim: Vie tuotteet statuksesta huolimatta."
       value:
-        enabled: Käytössä
+        enabled: Otettu käyttöön
         disabled: Poistettu käytöstä
     completeness:
       title: Valmistumisaste
@@ -253,7 +254,7 @@ pim_enrich.export.product:
     title: Yleiset asetukset
 pim_enrich.mass_edit.product:
   title: Tuotteiden massamuokkaus
-  confirm: "{1}Olet päivittämässä tuotetta seuraavilla tiedoilla. Olet hyvä ja vahvista.|]1, Inf[Olet päivittämässä {{ itemsCount }} tuotetta seuravilla tiedoilla. Ole hyvä ja vahvista."
+  confirm: "{1}Olet päivittämässä tuotetta seuraavilla tiedoilla. Olet hyvä ja vahvista.|]1, Inf[Olet päivittämässä {{ itemsCount }} tuotetta seuraavilla tiedoilla. Ole hyvä ja vahvista."
   step:
     select:
       label: Valitse tuotteet
@@ -261,11 +262,11 @@ pim_enrich.mass_edit.product:
       title: Tuotteiden massamuokkaus
       label_count: "]0, Inf[Valitse toiminto"
     configure:
-      label: Konfiguroi
+      label: Muuta asetuksia
     confirm:
       label: Vahvista
     launch_error:
-      label: Massamuokkauksen käynnistämisen yhteydessä tapahtui virhe
+      label: Massamuokkauksen käynnistyksen yhteydessä tapahtui virhe
     launched:
       label: Massamuokkaus "{{ operation }}" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
   operation:
@@ -307,6 +308,7 @@ pim_enrich.mass_edit.product:
       label: Poista kategorioista
       label_count: "{1}Poista <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioista|]1, Inf[Poista <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioista"
       description: Tuotteet poistetaan seuraavista kategorioista.
+      no_update: Kategoriaa ei ole valittu poistettaville tuotteille.
     add_to_existing_product_model:
       label: Lisää olemassaolevaan tuotemalliin
       label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> olemassa olevaan tuotemalliin|]1, Inf[Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> olemassa olevaan tuotemalliin"
@@ -331,7 +333,7 @@ pim_datagrid:
     delete:
       confirm_content: Oletko varma, että haluat poistaa valitut tuotteet?
       success: Valitut tuotteet poistettiin.
-      error: Virhe yritettäessä poistaa valitut tuotteet, yritä uudelleen.
+      error: Valittujen tuotteiden poistamisessa tapahtui virhe, yritä uudelleen.
     quick_export:
       csv_all: CSV (kaikki attribuutit)
       csv_grid_context: CSV (Ruudukon konteksti)
@@ -346,7 +348,7 @@ pim_datagrid:
   view_selector:
     view: Näkymät
   actions:
-    edit_product_attributes: Muokkaa tuotteen ominaisuuksia
+    edit_product_attributes: Muokkaa tuotteen attribuutteja
     classify_product: Luokittele tuote
     delete_product: Poista tuote
     change_status: Muuta tuotteen tila
@@ -370,8 +372,8 @@ batch_jobs:
     label: Lisää tuotteen arvo
     perform.label: Lisää tuotteen arvo
   add_to_category:
-    label: Lisää kategorioihin
-    perform.label: Lisää kategorioihin
+    label: Lisää kategoriaan
+    perform.label: Lisää kategoriaan
   add_to_existing_product_model:
     label: Lisää olemassaolevaan tuotemalliin
     perform.label: Lisää olemassaolevaan tuotemalliin
@@ -398,8 +400,8 @@ batch_jobs:
     label: Laske valmiusaste
     perform.label: Laske valmiusaste
   move_to_category:
-    label: Siirrä kategorioihin
-    perform.label: Siirrä kategorioihin
+    label: Siirrä kategoriaan
+    perform.label: Siirrä kategoriaan
   update_product_value:
     label: Päivitä tuotteen arvo
     perform.label: Päivitä tuotteen arvo

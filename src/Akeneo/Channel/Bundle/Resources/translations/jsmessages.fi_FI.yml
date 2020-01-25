@@ -53,7 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: Kategoriahierarkia
     do_not_convert: Älä muunna
-    label_conversion_units: Valitse muunnosyksikkö jokaisella metrimääritteelle jota käytetään tuotteen viennin yhteydessä
+    label_conversion_units: Valitse muunnosyksikkö jokaisella metriselle attribuutille, jota käytetään tuotteen viennin yhteydessä
   module:
     create:
       button: Luo kanava
@@ -62,7 +62,7 @@ pim_enrich.entity.channel:
 pim_enrich.entity.locale:
   label: lokaatio
   uppercase_label: Lokaatio
-  plural_label: Alueet
+  plural_label: Lokaatiot
   page_title:
     index: "]-Inf, 1] {{ count }} lokaatio|]1, Inf [{{ count }} lokaatiota"
 pim_enrich.entity.currency:
