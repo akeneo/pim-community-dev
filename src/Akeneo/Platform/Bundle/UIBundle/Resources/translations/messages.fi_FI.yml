@@ -79,6 +79,7 @@ pim_enrich:
       associations_view: Näytä tuotteen assosiaatiot
       associations_edit: Lisää assosiaatiot tuotteelle
       change_family: Vaihda perhettä
+      change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
       mass_edit: Tuotteen massamuokkaus-toiminnot
       comment: Kommentoi tuotteita
@@ -200,6 +201,7 @@ flash:
     removed: Kohde poistettiin
   attribute:
     identifier_not_removable: Attribuutin identifioijaa ei voi poistaa
+    used_as_conversion_unit: Attribuuttia ei voi poistaa, koska sitä käytetään muunnosyksikkönä kanavassa %channelCodes%.
   category:
     removed: Kategoria poistettu
   tree:

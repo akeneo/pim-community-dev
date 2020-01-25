@@ -3,3 +3,7 @@ pim_enrich:
   locale:
     tab:
       property.title: Ominaisuudet
+  channel:
+    flash:
+      delete:
+        error: Et voi poistaa kanavaa "%channelCode%", koska PIM vaatii vähintään yhden kanavan.
