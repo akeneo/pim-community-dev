@@ -20,7 +20,10 @@ class CreateUserIntegration extends TestCase
 {
     public function test_it_creates_a_user()
     {
-        $this->getCreateUserService()->execute('pimgento', 'Pimgento', ' ');
+        $user = $this->getCreateUserService()->execute('pimgento', 'Pimgento', ' ');
+
+        Assert::assertInstanceOf(\Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\User::class, $user);
+        Assert::assertEquals('pimgento', $user->username());
 
         $sqlQuery = <<<SQL
 SELECT username, first_name, last_name, email, user_type, enabled FROM oro_user
@@ -38,7 +41,9 @@ SQL;
 
     public function test_it_creates_a_user_fixing_incorrect_firstname_or_lastname()
     {
-        $this->getCreateUserService()->execute('pimgento', 'Pim&Ecom', 'Pim&Ecom');
+        $user = $this->getCreateUserService()->execute('pimgento', 'Pim&Ecom', 'Pim&Ecom');
+        
+        Assert::assertInstanceOf(\Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\User::class, $user);
 
         $sqlQuery = <<<SQL
 SELECT username, first_name, last_name, email, user_type, enabled FROM oro_user
