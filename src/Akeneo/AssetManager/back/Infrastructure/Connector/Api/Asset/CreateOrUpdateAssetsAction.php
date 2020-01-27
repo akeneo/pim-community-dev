@@ -233,7 +233,6 @@ class CreateOrUpdateAssetsAction
             ($this->editAssetHandler)($editAssetCommand);
         }
 
-
         return [
             'code' => (string) $assetCode,
             'status_code' => $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT,

@@ -163,11 +163,11 @@ class CreateAction
             );
         }
 
-        $this->createAsset($createCommand);
+        ($this->createAssetHandler)($createCommand);
         if (null !== $namingConventionEditCommand) {
-            $this->executeNamingConvention($namingConventionEditCommand);
+            $editCommand->editAssetValueCommands = array_merge($editCommand->editAssetValueCommands, $namingConventionEditCommand->editAssetValueCommands);
         }
-        $this->editAsset($editCommand);
+        ($this->editAssetHandler)($editCommand);
         $this->linkAsset($request);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
@@ -220,32 +220,6 @@ class CreateAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         return $this->namingConventionEditAssetCommandFactory->create($normalizedCommand);
-    }
-
-    /**
-     * When creating multiple assets in a row using the UI "Create another",
-     * we force refresh of the index so that the grid is up to date when the users dismisses the creation modal.
-     */
-    private function createAsset(CreateAssetCommand $command): void
-    {
-        ($this->createAssetHandler)($command);
-        $this->assetIndexer->refresh();
-    }
-
-    /**
-     * When creating multiple assets in a row using the UI "Create another",
-     * we force refresh of the index so that the grid is up to date when the users dismisses the creation modal.
-     */
-    private function editAsset(EditAssetCommand $command): void
-    {
-        ($this->editAssetHandler)($command);
-        $this->assetIndexer->refresh();
-    }
-
-    private function executeNamingConvention(EditAssetCommand $namingConventionEditCommand): void
-    {
-        ($this->editAssetHandler)($namingConventionEditCommand);
-        $this->assetIndexer->refresh();
     }
 
     private function linkAsset(Request $request): void

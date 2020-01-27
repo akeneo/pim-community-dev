@@ -16,6 +16,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class IndexAssetSubscriber implements EventSubscriberInterface
 {
+    // twice the size of the API batch size to be able to have both creation and edition events
+    private const MAX_ASSET_TO_INDEX_BATCH = 200;
+
+    private $assetsToIndex = [];
+
     /** @var AssetIndexerInterface */
     private $assetIndexer;
 
@@ -44,16 +49,34 @@ class IndexAssetSubscriber implements EventSubscriberInterface
 
     public function whenAssetUpdated(AssetUpdatedEvent $assetUpdatedEvent): void
     {
-        $this->assetIndexer->index($assetUpdatedEvent->getAssetIdentifier());
+        $this->assetsToIndex[] = $assetUpdatedEvent->getAssetIdentifier();
+
+        if (count($this->assetsToIndex) === self::MAX_ASSET_TO_INDEX_BATCH) {
+            $this->assetIndexer->indexByAssetIdentifiers($this->assetsToIndex);
+            $this->assetIndexer->refresh();
+            $this->assetsToIndex = [];
+        }
     }
 
     public function whenAssetCreated(AssetCreatedEvent $assetCreatedEvent): void
     {
-        $this->assetIndexer->index($assetCreatedEvent->getAssetIdentifier());
+        $this->assetsToIndex[] = $assetCreatedEvent->getAssetIdentifier();
+
+        if (count($this->assetsToIndex) === self::MAX_ASSET_TO_INDEX_BATCH) {
+            $this->assetIndexer->indexByAssetIdentifiers($this->assetsToIndex);
+            $this->assetIndexer->refresh();
+            $this->assetsToIndex = [];
+        }
     }
 
     public function whenAttributeIsDeleted(AttributeDeletedEvent $attributeDeletedEvent): void
     {
         $this->indexByAssetFamilyInBackground->execute($attributeDeletedEvent->assetFamilyIdentifier);
+    }
+
+    public function onKernelTerminate(): void
+    {
+        $this->assetIndexer->indexByAssetIdentifiers($this->assetsToIndex);
+        $this->assetIndexer->refresh();
     }
 }

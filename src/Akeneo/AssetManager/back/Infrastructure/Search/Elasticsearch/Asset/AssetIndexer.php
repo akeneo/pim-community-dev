@@ -46,22 +46,22 @@ class AssetIndexer implements AssetIndexerInterface
         $this->assetClient->index($normalizedAsset['identifier'], $normalizedAsset, refresh::disable());
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function indexByAssetIdentifiers(array $assetIdentifiers)
+    {
+        $normalizedSearchableAssets = array_map(function (AssetIdentifier $assetIdentifier) {
+            return $this->normalizer->normalizeAsset($assetIdentifier);
+        }, array_unique($assetIdentifiers));
+
+        $this->bulkIndexAssets($normalizedSearchableAssets);
+    }
+
     public function indexByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
         $normalizedSearchableAssets = $this->normalizer->normalizeAssetsByAssetFamily($assetFamilyIdentifier);
-        $toIndex = [];
-        foreach ($normalizedSearchableAssets as $normalizedSearchableAsset) {
-            $toIndex[] = $normalizedSearchableAsset;
-
-            if (\count($toIndex) % $this->batchSize === 0) {
-                $this->assetClient->bulkindexes($toIndex, self::KEY_AS_ID, refresh::disable());
-                $toIndex = [];
-            }
-        }
-
-        if (!empty($toIndex)) {
-            $this->assetClient->bulkindexes($toIndex, self::KEY_AS_ID, refresh::disable());
-        }
+        $this->bulkIndexAssets($normalizedSearchableAssets);
     }
 
     /**
@@ -103,5 +103,21 @@ class AssetIndexer implements AssetIndexerInterface
     public function refresh(): void
     {
         $this->assetClient->refreshIndex();
+    }
+
+    private function bulkIndexAssets(iterable $normalizedSearchableAssets) {
+        $toIndex = [];
+        foreach ($normalizedSearchableAssets as $normalizedSearchableAsset) {
+            $toIndex[] = $normalizedSearchableAsset;
+
+            if (\count($toIndex) % $this->batchSize === 0) {
+                $this->assetClient->bulkindexes($toIndex, self::KEY_AS_ID, refresh::disable());
+                $toIndex = [];
+            }
+        }
+
+        if (!empty($toIndex)) {
+            $this->assetClient->bulkindexes($toIndex, self::KEY_AS_ID, refresh::disable());
+        }
     }
 }
