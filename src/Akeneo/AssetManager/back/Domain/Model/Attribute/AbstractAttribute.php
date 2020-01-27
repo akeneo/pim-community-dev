@@ -126,6 +126,11 @@ abstract class AbstractAttribute
         $this->isRequired = $isRequired;
     }
 
+    public function setIsReadOnly(AttributeIsReadOnly $isReadOnly): void
+    {
+        $this->isReadOnly = $isReadOnly;
+    }
+
     public function normalize(): array
     {
         return [

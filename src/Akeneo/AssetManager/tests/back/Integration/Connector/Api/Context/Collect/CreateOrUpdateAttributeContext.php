@@ -170,7 +170,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Main color', 'fr_FR' => 'Couleur principale']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
-            AttributeIsReadOnly::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),

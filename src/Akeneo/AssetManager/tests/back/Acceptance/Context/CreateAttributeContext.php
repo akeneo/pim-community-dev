@@ -243,6 +243,7 @@ class CreateAttributeContext implements Context
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['is_read_only'] = json_decode($expected['is_read_only']);
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
         $expected['asset_type'] = (string) $expected['asset_type'];
@@ -355,6 +356,7 @@ class CreateAttributeContext implements Context
             $attributeData['code'] = $attributeCode;
             $attributeData['order'] = $i;
             $attributeData['is_required'] = false;
+            $attributeData['is_read_only'] = false;
             $attributeData['value_per_channel'] = false;
             $attributeData['value_per_locale'] = false;
             $attributeData['labels'] = [];

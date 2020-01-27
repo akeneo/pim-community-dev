@@ -198,11 +198,45 @@ class EditAttributeContext implements Context
     }
 
     /**
+     * @Given /^an asset family with a text attribute \'([^\']*)\' not in read only$/
+     */
+    public function anAssetFamilyWithATextAttributeNotInReadOnly(string $attributeCode)
+    {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                $identifier,
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(100),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
+    }
+
+    /**
      * @When /^the user sets the \'([^\']*)\' attribute required$/
      */
     public function theUserSetsTheAttributeRequired(string $attributeCode)
     {
         $this->theUserSetsTheIsRequiredPropertyOfTo($attributeCode, "true");
+    }
+
+    /**
+     * @When /^the user sets the \'([^\']*)\' attribute read only/
+     */
+    public function theUserSetsTheAttributeReadOnly(string $attributeCode)
+    {
+        $this->theUserSetsTheIsReadOnlyPropertyOfTo($attributeCode, "true");
     }
 
     /**
@@ -215,6 +249,18 @@ class EditAttributeContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
         Assert::assertEquals(true, $attribute->normalize()['is_required']);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' should be read only$/
+     */
+    public function thenShouldBeReadOnly(string $attributeCode)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertEquals(true, $attribute->normalize()['is_read_only']);
     }
 
     /**
@@ -478,6 +524,20 @@ class EditAttributeContext implements Context
         $updateIsRequired = [
             'identifier'  => (string)$identifier,
             'is_required' => json_decode($invalidValue),
+        ];
+        $this->updateAttribute($updateIsRequired);
+    }
+
+    /**
+     * @When /^the user sets the is_read_only property of \'([^\']*)\' to \'([^\']*)\'$/
+     */
+    public function theUserSetsTheIsReadOnlyPropertyOfTo(string $attributeCode, $invalidValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $updateIsRequired = [
+            'identifier'  => (string)$identifier,
+            'is_read_only' => json_decode($invalidValue),
         ];
         $this->updateAttribute($updateIsRequired);
     }
@@ -1065,6 +1125,30 @@ class EditAttributeContext implements Context
      * @Given /^an asset family with a asset attribute \'([^\']*)\' non required$/
      */
     public function aAssetFamilyWithAAssetAttributeNonRequired($attributeCode)
+    {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(
+            AssetAttribute::create(
+                $identifier,
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AssetFamilyIdentifier::fromString('dummy_identifier')
+            )
+        );
+    }
+
+    /**
+     * @Given /^an asset family with a asset attribute \'([^\']*)\' not in read only$/
+     */
+    public function aAssetFamilyWithAAssetAttributeNotInReadOnly($attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;

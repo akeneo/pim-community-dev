@@ -122,7 +122,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Picture', 'fr_FR' => 'Image']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
-            AttributeIsReadOnly::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('250.12'),
@@ -398,6 +398,8 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         $expectedAttribute->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Biography', 'en_US' => 'Biographie']));
         $expectedAttribute->setMaxLength(AttributeMaxLength::fromInteger(100));
         $expectedAttribute->setIsRichTextEditor(AttributeIsRichTextEditor::fromBoolean(true));
+        $expectedAttribute->setIsRequired(AttributeIsRequired::fromBoolean(false));
+        $expectedAttribute->setIsReadOnly(AttributeIsReadOnly::fromBoolean(true));
         $this->attributeRepository->update($expectedAttribute);
 
         $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
