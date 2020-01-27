@@ -33,10 +33,8 @@ abstract class WebTestCase extends TestCase
     {
         $createConnectionCommand = new CreateConnectionCommand($code, $label, $flowType);
 
-        $connection = $this->get('akeneo_connectivity.connection.application.handler.create_connection')
+        return $this->get('akeneo_connectivity.connection.application.handler.create_connection')
             ->handle($createConnectionCommand);
-
-        return $connection;
     }
 
     protected function authenticateAsAdmin()
