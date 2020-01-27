@@ -7,7 +7,6 @@ use Akeneo\Channel\Component\Model\Currency;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -19,24 +18,16 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class CurrencyController
 {
-    /** @var RequestStack */
-    private $requestStack;
-
     /** @var RouterInterface */
     private $router;
 
     /** @var SaverInterface */
     private $currencySaver;
 
-    /**
-     * @TODO merge master: remove RequestStack from the constructor
-     */
     public function __construct(
-        RequestStack $requestStack,
         RouterInterface $router,
         SaverInterface $currencySaver
     ) {
-        $this->requestStack = $requestStack;
         $this->router = $router;
         $this->currencySaver = $currencySaver;
     }

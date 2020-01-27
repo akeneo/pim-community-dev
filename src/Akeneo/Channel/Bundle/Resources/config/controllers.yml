@@ -67,6 +67,5 @@ services:
         public: true
         class: 'Akeneo\Channel\Bundle\Controller\UI\CurrencyController'
         arguments:
-            - '@request_stack'
             - '@router'
             - '@pim_catalog.saver.currency'
