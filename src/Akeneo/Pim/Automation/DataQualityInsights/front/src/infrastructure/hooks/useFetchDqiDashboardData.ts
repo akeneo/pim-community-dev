@@ -3,7 +3,7 @@ import {fetchDqiDashboardData} from "../fetcher";
 
 const useFetchDqiDashboardData = (channel: string, locale: string, timePeriod: string, familyCode: string | null, categoryCode: string | null) => {
 
-  const [dqiDashboardData, setDqiDashboardData] = useState([] as any);
+  const [dqiDashboardData, setDqiDashboardData] = useState(null);
 
   useEffect(() => {
     (async () => {

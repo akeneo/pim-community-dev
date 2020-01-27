@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useFetchDqiDashboardData} from "../../../../infrastructure/hooks";
 import AxisChart from "./AxisChart";
 import {DataQualityOverviewChartHeader} from "../index";
@@ -61,10 +61,41 @@ interface DataQualityOverviewChartProps {
 }
 
 const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode}: DataQualityOverviewChartProps) => {
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [enrichmentChart, setEnrichmentChart] = useState();
+  const [consistencyChart, setConsistencyChart] = useState();
+
   const dataset = useFetchDqiDashboardData(catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode);
 
-  if (Object.entries(dataset).length === 0) {
+  useEffect(() => {
+    if (dataset === null) {
+      return;
+    }
+    // @ts-ignore
+    let enrichmentChart = getChart(transformData(dataset, 'enrichment'));
+    // @ts-ignore
+    let consistencyChart = getChart(transformData(dataset, 'consistency'));
+    setEnrichmentChart(enrichmentChart);
+    setConsistencyChart(consistencyChart);
+    setIsLoading(false);
+  }, [dataset]);
 
+  useEffect(() => {
+    setIsLoading(true);
+  }, [catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode]);
+
+  const getChart = (dataset: any) => {
+    return (
+      <>
+        {timePeriod === 'daily' && (<AxisChart dataset={dataset} padding={63} barRatio={1.29} dateFormatCallback={dailyCallback}/>)}
+        {timePeriod === 'weekly' && (<AxisChart dataset={dataset} padding={117} barRatio={1.85} dateFormatCallback={weeklyCallback}/>)}
+        {timePeriod === 'monthly' && (<AxisChart dataset={dataset} padding={73} barRatio={1.42} dateFormatCallback={monthlyCallback}/>)}
+      </>
+    );
+  };
+
+  if (dataset !== null && Object.entries(dataset).length === 0) {
     return (
       <>
         <div className="AknAssetPreview-imageContainer">
@@ -77,8 +108,6 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, timePeriod, f
       </>
     )
   }
-
-  let i = 0;
 
   const weeklyCallback = (date: string) => {
     const uiLocale = UserContext.get('uiLocale');
@@ -108,22 +137,17 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, timePeriod, f
 
   return (
     <>
-      {
-        Object.keys(dataset).map((axisName: string) => {
-          const axisDataset = transformData(dataset, axisName);
-          i++;
-          return (
-            <Fragment key={i}>
-              <DataQualityOverviewChartHeader axisName={axisName} displayLegend={i === 1}/>
-              <div className='AknDataQualityInsights-chart'>
-                {timePeriod === 'daily' && (<AxisChart dataset={axisDataset} padding={63} barRatio={1.29} dateFormatCallback={dailyCallback}/>)}
-                {timePeriod === 'weekly' && (<AxisChart dataset={axisDataset} padding={117} barRatio={1.85} dateFormatCallback={weeklyCallback}/>)}
-                {timePeriod === 'monthly' && (<AxisChart dataset={axisDataset} padding={73} barRatio={1.42} dateFormatCallback={monthlyCallback}/>)}
-              </div>
-            </Fragment>
-          )
-        })
-      }
+      <DataQualityOverviewChartHeader axisName={__(`akeneo_data_quality_insights.product_evaluation.axis.enrichment.title`)} displayLegend={true}/>
+      <div className='AknDataQualityInsights-chart'>
+        {isLoading && <div className="AknLoadingMask"/>}
+        {enrichmentChart}
+      </div>
+
+      <DataQualityOverviewChartHeader axisName={__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)} displayLegend={false}/>
+      <div className='AknDataQualityInsights-chart'>
+        {isLoading && <div className="AknLoadingMask"/>}
+        {consistencyChart}
+      </div>
     </>
   )
 };
