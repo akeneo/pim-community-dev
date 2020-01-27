@@ -45,6 +45,7 @@ const transformData = (dataset: Dataset, axisName: string): any => {
       Object.entries(ranksByDay).map(([rank, distribution]) => {
         ranks[rank].push({x: date, y: distribution});
       });
+      ranks['rank_6'].push({x: date, y: 0});
     }
   });
 
