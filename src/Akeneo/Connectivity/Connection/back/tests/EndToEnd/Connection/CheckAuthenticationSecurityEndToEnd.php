@@ -152,7 +152,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
         // Assert DB content
         $arrayClientId = explode('_', $apiConnection->clientId());
-        $dbalConnection = $dbalConnection = $this->get('database_connection');
+        $dbalConnection = $this->get('database_connection');
         $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(1, $results);
 
@@ -223,7 +223,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
         // Assert DB content
         $arrayClientId = explode('_', $apiConnection->clientId());
-        $dbalConnection = $dbalConnection = $this->get('database_connection');
+        $dbalConnection = $this->get('database_connection');
         $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(1, $results);
 
