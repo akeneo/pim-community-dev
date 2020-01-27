@@ -35,6 +35,7 @@ class CsvAssetExport implements ConstraintCollectionProviderInterface, DefaultVa
             'delimiter' => ';',
             'enclosure' => '"',
             'withHeader' => true,
+            'with_media' => true,
             'user_to_notify' => null,
             'is_user_authenticated' => false,
         ];
@@ -88,7 +89,7 @@ class CsvAssetExport implements ConstraintCollectionProviderInterface, DefaultVa
                             'groups' => ['Default', 'FileConfiguration'],
                         ]
                     ),
-//                    'with_media' => new Type('bool'),
+                    'with_media' => new Type('bool'),
                     'user_to_notify' => new Type('string'),
                     'is_user_authenticated' => new Type('bool'),
                     'asset_family_identifier' => [
