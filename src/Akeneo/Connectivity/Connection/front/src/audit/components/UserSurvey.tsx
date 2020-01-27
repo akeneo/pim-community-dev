@@ -24,16 +24,9 @@ const Illustration = styled.img`
     width: 128px;
 `;
 
-export interface Props {
-    title: string;
-    content: string;
-    buttonLabel: string;
-    link: string;
-}
-
-export const UserSurvey = ({title, content, buttonLabel, link}: Props) => {
+export const UserSurvey = () => {
     const handleClick = () => {
-        const win = window.open(link, '_blank');
+        const win = window.open('https://links.akeneo.com/surveys/connection-dashboard', '_blank');
         if (null !== win) {
             win.focus();
         }
@@ -41,15 +34,15 @@ export const UserSurvey = ({title, content, buttonLabel, link}: Props) => {
 
     return (
         <Container>
-            <Illustration src={surveyImageUrl} alt={'ziggy illustration'} />
+            <Illustration src={surveyImageUrl} />
             <Title>
-                <Translate id={title} />
+                <Translate id='akeneo_connectivity.connection.dashboard.user_survey.title' />
             </Title>
             <Content>
-                <Translate id={content} />
+                <Translate id='akeneo_connectivity.connection.dashboard.user_survey.content' />
             </Content>
             <ApplyButton onClick={handleClick}>
-                <Translate id={buttonLabel} />
+                <Translate id='akeneo_connectivity.connection.dashboard.user_survey.button' />
             </ApplyButton>
         </Container>
     );

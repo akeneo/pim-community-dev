@@ -48,12 +48,7 @@ export const Charts = () => {
                 title={<Translate id='akeneo_connectivity.connection.dashboard.charts.number_of_products_updated' />}
             />
 
-            <UserSurvey
-                title={'akeneo_connectivity.connection.dashboard.user_survey.title'}
-                content={'akeneo_connectivity.connection.dashboard.user_survey.content'}
-                buttonLabel={'akeneo_connectivity.connection.dashboard.user_survey.button'}
-                link={'https://www.akeneo.com'}
-            />
+            <UserSurvey />
         </>
     );
 };
