@@ -15,8 +15,8 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention;
 
 class NullNamingConvention implements NamingConventionInterface
 {
-    public function normalize(): array
+    public function normalize()
     {
-        return [];
+        return new \stdClass;
     }
 }

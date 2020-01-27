@@ -52,16 +52,6 @@ class GetProductAttributesCodesSpec extends ObjectBehavior
         $this->getTextarea(new ProductId(1))->shouldReturn(['textarea_1', 'textarea_2', 'textarea_3', 'textarea_4', 'textarea_5']);
     }
 
-    public function it_returns_localizable_textarea_attributes_codes(
-        $getLocalizableAttributesByTypeFromProductQuery
-    ) {
-        $getLocalizableAttributesByTypeFromProductQuery
-            ->execute(new ProductId(1), AttributeTypes::TEXTAREA)
-            ->willReturn(['textarea_localizable']);
-
-        $this->getLocalizableTextarea(new ProductId(1))->shouldReturn(['textarea_localizable']);
-    }
-
     public function it_returns_text_attributes_codes(
         $getAttributesByTypeFromProductQuery
     ) {

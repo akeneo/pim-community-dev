@@ -53,6 +53,9 @@ beforeEach(async () => {
 it('It fetches all permissions', async () => {
   // It fetches all permissions
   const response = await page.evaluate(async () => {
+    // Sometimes this test fails on circle ci. This wait should mitigate that
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     const fetchPermissions =
       require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission')
       .fetchPermissions;

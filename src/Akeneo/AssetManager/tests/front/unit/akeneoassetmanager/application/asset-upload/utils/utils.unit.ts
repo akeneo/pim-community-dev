@@ -11,6 +11,7 @@ import {
   getStatusFromLine,
   selectLinesToSend,
   hasAnUnsavedLine,
+  getCreatedAssetCodes,
 } from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import {createFakeAssetFamily, createFakeChannel, createFakeError, createFakeLine, createFakeLocale} from '../tools';
 import Channel from 'akeneoassetmanager/domain/model/channel';
@@ -301,24 +302,6 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> addLines
     expect(addLines([A, B, C], [D, E, F])).toEqual([D, E, F, A, B, C]);
     expect(addLines([], [D, E, F])).toEqual([D, E, F]);
     expect(addLines([A, B, C], [])).toEqual([A, B, C]);
-  });
-});
-
-describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> assetUploadFailed', () => {
-  test('I can add new lines', () => {
-    const assetFamily = createFakeAssetFamily(false, false);
-    const channels: Channel[] = [];
-    const locales: Locale[] = [];
-
-    const A = createFakeLine('a.png', assetFamily, channels, locales);
-    const B = createFakeLine('b.png', assetFamily, channels, locales);
-    const C = createFakeLine('c.png', assetFamily, channels, locales);
-
-    expect(assetUploadFailed([A, B, C], B)).toEqual([
-      A,
-      {...B, errors: {...B.errors, front: []}, isFileUploading: false},
-      C,
-    ]);
   });
 });
 
@@ -1016,5 +999,28 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> hasAnUns
     ];
 
     expect(hasAnUnsavedLine(lines, valuePerLocale, valuePerChannel)).toEqual(false);
+  });
+
+  test('I can get created asset codes from lines', () => {
+    const valuePerLocale = true;
+    const valuePerChannel = true;
+    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+
+    const lines = [
+      {
+        ...createFakeLine('a.jpg', assetFamily),
+        assetCreated: true,
+      },
+      {
+        ...createFakeLine('b.jpg', assetFamily),
+        assetCreated: false,
+      },
+      {
+        ...createFakeLine('c.jpg', assetFamily),
+        assetCreated: true,
+      },
+    ];
+
+    expect(getCreatedAssetCodes(lines)).toEqual(['a', 'c']);
   });
 });

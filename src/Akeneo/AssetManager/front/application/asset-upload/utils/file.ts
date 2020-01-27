@@ -40,7 +40,8 @@ export const uploadFile = async (
         .upload(file, (ratio: number) => {
           updateProgress(line, ratio);
         })
-        .then(resolve);
+        .then(resolve)
+        .catch(reject);
     } catch (error) {
       reject(error);
     }

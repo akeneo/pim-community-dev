@@ -318,4 +318,61 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromNormalized', [$transformationCollection]);
     }
+
+    function it_creates_a_transformation_collection_with_data_coming_from_database()
+    {
+        $transformationCollection = $this->fromDatabaseNormalized([
+            [
+                'label' =>'valid',
+                'source' => [
+                    'attribute' => 'source',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'target' => [
+                    'attribute' => 'target_2',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'operations' => [
+                    [
+                        'type' => 'thumbnail',
+                        'parameters' => [
+                            'width' => 200,
+                            'height' => 200,
+                        ],
+                    ],
+                ],
+                'filename_prefix' => 'pre',
+                'filename_suffix' => '_2',
+                'updated_at' => '1970-01-01',
+            ],
+            [
+                'label' =>'invalid_because_unknown_operation',
+                'source' => [
+                    'attribute' => 'source',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'target' => [
+                    'attribute' => 'target_3',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'operations' => [
+                    [
+                        'type' => 'unknown',
+                        'parameters' => [],
+                    ],
+                ],
+                'filename_prefix' => 'pre',
+                'filename_suffix' => '_2',
+                'updated_at' => '1970-01-01',
+            ],
+        ]);
+
+        $transformationCollection->shouldBeAnInstanceOf(TransformationCollection::class);
+        $transformationCollection->normalize()->shouldBeArray();
+        $transformationCollection->normalize()->shouldHaveCount(1);
+    }
 }

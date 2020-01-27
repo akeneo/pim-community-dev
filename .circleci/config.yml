@@ -472,7 +472,8 @@ workflows:
       jobs:
           - checkout
           - build_dev:
-              requires:
+                is_pull_request: false
+                requires:
                     - checkout
           - build_prod:
                 requires:

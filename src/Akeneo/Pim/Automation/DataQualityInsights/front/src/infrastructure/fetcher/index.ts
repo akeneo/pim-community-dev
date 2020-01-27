@@ -3,6 +3,7 @@ import fetchProductDataQualityEvaluation from "./fetchProductDataQualityEvaluati
 import fetchProductAxisRates from './fetchProductAxisRates';
 import fetchFamilyInformation from "./fetchFamilyInformation";
 import fetchIgnoreTextIssue from "./fetchIgnoreTextIssue";
+import fetchProduct from "./fetchProduct";
 
 
 export {
@@ -11,4 +12,5 @@ export {
   fetchProductAxisRates,
   fetchFamilyInformation,
   fetchIgnoreTextIssue,
+  fetchProduct,
 }

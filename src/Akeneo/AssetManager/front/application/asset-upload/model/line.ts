@@ -28,6 +28,7 @@ export default interface Line {
   assetCreated: boolean;
   isAssetCreating: boolean;
   isFileUploading: boolean;
+  isFileUploadFailed: boolean;
   file: FileModel;
   filename: string;
   code: string;

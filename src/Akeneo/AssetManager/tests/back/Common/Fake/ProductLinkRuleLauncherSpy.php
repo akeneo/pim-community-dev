@@ -11,7 +11,7 @@ use PHPUnit\Framework\Assert;
 class ProductLinkRuleLauncherSpy implements ProductLinkRuleLauncherInterface
 {
     /** @var array */
-    private $launches;
+    private $launches = [];
 
     public function launch(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): void
     {
@@ -34,6 +34,24 @@ class ProductLinkRuleLauncherSpy implements ProductLinkRuleLauncherInterface
             $allLaunches,
             sprintf(
                 'Expected rules launcher to run for asset family %s and asset code %s',
+                $assetFamilyIdentifier,
+                $assetCode
+            )
+        );
+    }
+
+    public function assertHasNotRunForAsset(string $assetFamilyIdentifier, string $assetCode)
+    {
+        $allLaunches = [];
+        foreach ($this->launches as $launches) {
+            $allLaunches = array_merge($allLaunches, $launches);
+        }
+
+        Assert::assertNotContains(
+            $this->fingerprint($assetFamilyIdentifier, $assetCode),
+            $allLaunches,
+            sprintf(
+                'Expected rules launcher to NOT run for asset family %s and asset code %s',
                 $assetFamilyIdentifier,
                 $assetCode
             )

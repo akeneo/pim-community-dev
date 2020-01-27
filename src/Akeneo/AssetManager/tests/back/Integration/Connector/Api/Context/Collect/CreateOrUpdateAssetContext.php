@@ -34,6 +34,8 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionInterface;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
@@ -44,8 +46,10 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLa
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -55,14 +59,17 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
@@ -187,6 +194,51 @@ class CreateOrUpdateAssetContext implements Context
         $this->loadMediaFileAttribute('PresentationView', 'main_image', 'Main Image', 1, '2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_house.jpg');
         $this->loadMediaFileAttribute('PresentationView', 'thumbnail', 'Thumbnail', 2);
         $this->loadPresentationViewAssetFamily('PresentationView');
+    }
+
+    /**
+     * @Given an asset of the PresentationView asset family existing in the ERP but not in the PIM with naming convention
+     */
+    public function anAssetOfTheBrandAssetFamilyPresentationViewExistingInTheErpButNotInThePimWithNamingConvention()
+    {
+        $this->requestContract = 'successful_building_asset_creation_with_naming_convention.json';
+
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
+        $this->loadMediaFileAttribute('PresentationView', 'main_image', 'Main Image', 1, 'house_12.jpg');
+        $this->loadMediaFileAttribute('PresentationView', 'thumbnail', 'Thumbnail', 2);
+        $this->loadTextAttribute('PresentationView', 'title', 3);
+        $this->loadNumberAttribute('PresentationView', 'length', 4);
+        $this->loadPresentationViewAssetFamily('PresentationView', NamingConvention::createFromNormalized([
+            'source' => ['property' => 'main_image', 'channel' => null, 'locale' => null],
+            'pattern' => '/(?P<title>[a-zA-Z0-9\s]+)_(?P<length>\d+)/',
+            'abort_asset_creation_on_error' => true,
+        ]));
+    }
+
+    /**
+     * @Given an asset of the PresentationView asset family existing in the ERP but not in the PIM with naming convention execution failure
+     */
+    public function anAssetOfTheBrandAssetFamilyPresentationViewExistingInTheErpButNotInThePimWithNamingConventionExecutionFailure()
+    {
+        $this->requestContract = 'unprocessable_entity_building_asset_for_naming_convention_failure.json';
+
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
+        $this->loadMediaFileAttribute('PresentationView', 'main_image', 'Main Image', 1, 'house_12.jpg');
+        $this->loadMediaFileAttribute('PresentationView', 'thumbnail', 'Thumbnail', 2);
+        $this->loadNumberAttribute('PresentationView', 'length', 3);
+        $this->loadPresentationViewAssetFamily('PresentationView', NamingConvention::createFromNormalized([
+            'source' => ['property' => 'main_image', 'channel' => null, 'locale' => null],
+            'pattern' => '/(?P<title>[a-zA-Z0-9\s]+)_(?P<length>\d+)/',
+            'abort_asset_creation_on_error' => true,
+        ]));
     }
 
     /**
@@ -437,13 +489,29 @@ class CreateOrUpdateAssetContext implements Context
     }
 
     /**
+     * @Then the PIM notifies the connector about an error indicating that the naming convention failed because of missing attribute
+     */
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheNamingConventionFailedBecauseOfMissingAttribute()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_building_asset_for_naming_convention_failure.json'
+        );
+    }
+
+    /**
      * @Given some assets of the Frontview asset family existing in the ERP but not in the PIM
      */
     public function someAssetsOfTheBrandAssetFamilyExistingInTheErpButNotInThePim()
     {
-        $this->loadFrontViewAssetFamily();
+        $this->loadFrontViewAssetFamily(false, NamingConvention::createFromNormalized([
+            'source' => ['property' => 'code', 'channel' => null, 'locale' => null],
+            'pattern' => '/(?P<title>.+)/',
+            'abort_asset_creation_on_error' => true,
+        ]));
         $this->loadDescriptionAttribute();
         $this->loadNameAttribute();
+        $this->loadTextAttribute(self::ASSET_FAMILY_IDENTIFIER, 'title', 5);
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
@@ -508,6 +576,13 @@ class CreateOrUpdateAssetContext implements Context
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Phone name')
+                ),
+                // Created by naming convention execution
+                Value::create(
+                    AttributeIdentifier::fromString('title_frontview_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    TextData::fromString(self::PHONE_ASSET_CODE)
                 )
             ])
         );
@@ -688,13 +763,31 @@ class CreateOrUpdateAssetContext implements Context
         );
     }
 
-    private function loadFrontViewAssetFamily(bool $withTransformation = false): void
+    private function loadFrontViewAssetFamily(bool $withTransformation = false, NamingConventionInterface $namingConvention = null): void
     {
         $assetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             ['en_US' => 'Front view'],
             Image::createEmpty(),
-            RuleTemplateCollection::empty()
+            RuleTemplateCollection::createFromProductLinkRules(
+                [
+                    [
+                        'product_selections' => [
+                            [
+                                'field' => '{{category_field}}',
+                                'operator' => Operators::EQUALS,
+                                'value' => '{{category}}',
+                            ],
+                        ],
+                        'assign_assets_to' => [
+                            [
+                                'mode' => 'add',
+                                'attribute' => '{{product_multiple_link}}',
+                            ],
+                        ],
+                    ],
+                ]
+            )
         );
         if ($withTransformation) {
             $assetFamily = $assetFamily->withTransformationCollection(
@@ -713,12 +806,17 @@ class CreateOrUpdateAssetContext implements Context
                 ])
             );
         }
+        if (null !== $namingConvention) {
+            $assetFamily->updateNamingConvention($namingConvention);
+        }
 
         $this->assetFamilyRepository->create($assetFamily);
     }
 
-    private function loadPresentationViewAssetFamily(string $assetFamilyIdentifier): void
-    {
+    private function loadPresentationViewAssetFamily(
+        string $assetFamilyIdentifier,
+        NamingConventionInterface $namingConvention = null
+    ): void {
         $assetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             ['en_US' => 'Presentation view'],
@@ -740,6 +838,9 @@ class CreateOrUpdateAssetContext implements Context
                 ),
             ])
         );
+        if (null !== $namingConvention) {
+            $assetFamily->updateNamingConvention($namingConvention);
+        }
 
         $this->assetFamilyRepository->create($assetFamily);
     }
@@ -758,6 +859,44 @@ class CreateOrUpdateAssetContext implements Context
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
+        );
+
+        $this->attributeRepository->create($name);
+    }
+
+    private function loadTextAttribute(string $assetFamilyIdentifier, string $code, int $order): void
+    {
+        $name = TextAttribute::createText(
+            AttributeIdentifier::create($assetFamilyIdentifier, $code, 'fingerprint'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($code),
+            LabelCollection::fromArray(['en_US' => $code]),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+
+        $this->attributeRepository->create($name);
+    }
+
+    private function loadNumberAttribute(string $assetFamilyIdentifier, string $code, int $order): void
+    {
+        $name = NumberAttribute::create(
+            AttributeIdentifier::create($assetFamilyIdentifier, $code, 'fingerprint'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($code),
+            LabelCollection::fromArray(['en_US' => $code]),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeDecimalsAllowed::fromBoolean(true),
+            AttributeLimit::limitless(),
+            AttributeLimit::limitless()
         );
 
         $this->attributeRepository->create($name);
@@ -950,6 +1089,35 @@ class CreateOrUpdateAssetContext implements Context
         );
 
         $this->computeTransformationLauncherSpy->assertAJobIsLaunchedWithAssetIdentifier($asset->getIdentifier());
+    }
+
+    /**
+     * @Then the asset contains values computed by naming convention
+     */
+    public function theAssetContainsValuesComputedByNamingConvention()
+    {
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('PresentationView'),
+            AssetCode::fromString('building')
+        );
+
+        $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+            AttributeCode::fromString('title'),
+            AssetFamilyIdentifier::fromString('PresentationView'),
+        );
+        $valueKey = ValueKey::create($attribute->getIdentifier(), ChannelReference::noReference(), LocaleReference::noReference());
+        $value = $asset->findValue($valueKey);
+        Assert::assertInstanceOf(Value::class, $value);
+        Assert::assertEquals('house', $value->getData()->normalize());
+
+        $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+            AttributeCode::fromString('length'),
+            AssetFamilyIdentifier::fromString('PresentationView'),
+        );
+        $valueKey = ValueKey::create($attribute->getIdentifier(), ChannelReference::noReference(), LocaleReference::noReference());
+        $value = $asset->findValue($valueKey);
+        Assert::assertInstanceOf(Value::class, $value);
+        Assert::assertEquals('12', $value->getData()->normalize());
     }
 
     /**

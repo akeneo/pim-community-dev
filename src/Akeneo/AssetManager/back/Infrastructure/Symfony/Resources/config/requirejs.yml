@@ -20,10 +20,10 @@ config:
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/number.tsx'
             option:
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/option.tsx'
-                filter: '@akeneoassetmanager/application/component/asset/index/filter/option.tsx'
+                filter: '@akeneoassetmanager/application/component/asset/list/filter/option.tsx'
             option_collection:
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/option-collection.tsx'
-                filter: '@akeneoassetmanager/application/component/asset/index/filter/option.tsx'
+                filter: '@akeneoassetmanager/application/component/asset/list/filter/option.tsx'
 
         akeneoassetmanager/application/configuration/attribute:
             media_file:
@@ -72,6 +72,9 @@ config:
                     transformation:
                         label: pim_asset_manager.asset_family.tab.transformations
                         view: '@akeneoassetmanager/application/component/asset-family/edit/transformation'
+                    product_link_rule:
+                        label: pim_asset_manager.asset_family.tab.product_link_rules
+                        view: '@akeneoassetmanager/application/component/asset-family/edit/product-link-rule'
             akeneo_asset_manager_asset_edit:
                 tabs:
                     enrich:

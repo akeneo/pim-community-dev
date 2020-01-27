@@ -46,9 +46,6 @@ class ProductLinkRuleLauncher implements ProductLinkRuleLauncherInterface
             }, $assetCodes),
         ];
 
-        $this->publishJobToQueue->publish(
-            'asset_manager_link_assets_to_products',
-            $config
-        );
+        $this->publishJobToQueue->publish('asset_manager_link_assets_to_products', $config);
     }
 }

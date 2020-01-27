@@ -1,4 +1,4 @@
-import {Action, Reducer} from "redux";
+import {Action, ActionCreator, Reducer} from "redux";
 import {Product} from '../../domain';
 
 export interface ProductState extends Product {
@@ -12,8 +12,7 @@ interface ProductAction extends Action {
 }
 
 const INITIALIZE_PRODUCT = 'INITIALIZE_PRODUCT';
-
-export const initializeProductAction = (product: Product): ProductAction => {
+export const initializeProductAction: ActionCreator<ProductAction> = (product: Product) => {
   return {
     type: INITIALIZE_PRODUCT,
     payload: {
@@ -27,6 +26,8 @@ const initialState: ProductState = {
   enabled: false,
   family: null,
   identifier: null,
+  created: null,
+  updated: null,
   meta: {
     id: null,
     label: {},
@@ -36,7 +37,9 @@ const initialState: ProductState = {
 const productReducer: Reducer<ProductState, ProductAction> = (previousState = initialState, {type, payload}) => {
   switch (type) {
     case INITIALIZE_PRODUCT:
-      return payload.product;
+      return {
+        ...payload.product
+      };
     default:
       return previousState;
   }

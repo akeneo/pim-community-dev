@@ -16,6 +16,12 @@ import AssetFamilyCode from 'akeneoassetmanager/domain/model/asset-family/code';
 import TransformationCollection, {
   denormalizeAssetFamilyTransformations,
 } from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
+import NamingConvention, {
+  denormalizeAssetFamilyNamingConvention,
+} from 'akeneoassetmanager/domain/model/asset-family/naming-convention';
+import ProductLinkRuleCollection, {
+  denormalizeAssetFamilyProductLinkRules,
+} from 'akeneoassetmanager/domain/model/asset-family/product-link-rule-collection';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 export interface AssetFamily {
@@ -27,6 +33,8 @@ export interface AssetFamily {
   attributeAsMainMedia: AttributeIdentifier;
   attributes: NormalizedAttribute[];
   transformations: TransformationCollection;
+  namingConvention: NamingConvention;
+  productLinkRules: ProductLinkRuleCollection;
 }
 
 export const createEmptyAssetFamily = (): AssetFamily => ({
@@ -38,6 +46,8 @@ export const createEmptyAssetFamily = (): AssetFamily => ({
   attributeAsLabel: '',
   attributes: [],
   transformations: '[]',
+  namingConvention: '{}',
+  productLinkRules: '[]',
 });
 
 export const createAssetFamilyFromNormalized = (normalizedAssetFamily: any): AssetFamily => ({
@@ -49,6 +59,8 @@ export const createAssetFamilyFromNormalized = (normalizedAssetFamily: any): Ass
   attributeAsLabel: denormalizeAttributeIdentifier(normalizedAssetFamily.attribute_as_label),
   attributes: normalizedAssetFamily.attributes,
   transformations: denormalizeAssetFamilyTransformations(normalizedAssetFamily.transformations),
+  namingConvention: denormalizeAssetFamilyNamingConvention(normalizedAssetFamily.namingConvention),
+  productLinkRules: denormalizeAssetFamilyProductLinkRules(normalizedAssetFamily.product_link_rules),
 });
 
 export const getAssetFamilyLabel = (

@@ -1,3 +1,4 @@
+import __ from 'akeneoassetmanager/tools/translator';
 import Line, {
   LineErrorsByTarget,
   LineIdentifier,
@@ -40,6 +41,7 @@ export const createLineFromFilename = (
     assetCreated: false,
     isAssetCreating: false,
     isFileUploading: false,
+    isFileUploadFailed: false,
     file: null,
     filename: filename,
     code: info.code,
@@ -189,6 +191,13 @@ const addBackValidationError = (line: Line, errors: ValidationError[]): Line => 
   },
 });
 
+export const sortLinesWithValidationErrorsFirst = (lines: Line[]): Line[] => {
+  const invalidLines = lines.filter((line: Line) => lineHasAnError(line));
+  const validLines = lines.filter((line: Line) => !lineHasAnError(line));
+
+  return [...invalidLines, ...validLines];
+};
+
 export const assetCreationFailed = (lines: Line[], asset: CreationAsset, errors: ValidationError[]): Line[] => {
   return lines.map((line: Line) =>
     line.code === asset.code
@@ -200,15 +209,26 @@ export const assetCreationFailed = (lines: Line[], asset: CreationAsset, errors:
   );
 };
 
+export const createBasicValidationError = (message: string): ValidationError => {
+  return {
+    messageTemplate: message,
+    parameters: {},
+    message: __(message),
+    propertyPath: '',
+    invalidValue: null,
+  };
+};
+
 export const assetUploadFailed = (lines: Line[], lineToUpdate: Line): Line[] => {
   return lines.map((line: Line) => {
     if (line.id === lineToUpdate.id) {
       return {
         ...line,
         isFileUploading: false,
+        isFileUploadFailed: true,
         errors: {
           ...line.errors,
-          front: [],
+          front: [createBasicValidationError('pim_asset_manager.asset.upload.upload_failure')],
         },
       };
     }
@@ -225,6 +245,14 @@ export const assetCreationSucceeded = (lines: Line[], asset: CreationAsset): Lin
 
 export const selectLinesToSend = (lines: Line[]): Line[] =>
   lines.filter((line: Line) => !line.assetCreated && null !== line.file && !line.isFileUploading);
+
+export const getCreatedAssetCodes = (lines: Line[]): AssetCode[] => {
+  return lines.reduce(
+    (assetCodes: AssetCode[], line: Line) =>
+      line.assetCreated && !assetCodes.includes(line.code) ? [...assetCodes, line.code] : assetCodes,
+    []
+  );
+};
 
 export const getAllErrorsOfLineByTarget = (line: Line): LineErrorsByTarget => {
   let errors: LineErrorsByTarget = {
@@ -256,15 +284,16 @@ export const getAllErrorsOfLineByTarget = (line: Line): LineErrorsByTarget => {
 
 export const getAllErrorsOfLine = (line: Line): ValidationError[] => [].concat.apply([], Object.values(line.errors));
 
+const lineHasAnError = (line: Line): boolean => {
+  return getAllErrorsOfLine(line).length > 0;
+};
+
 export const getStatusFromLine = (line: Line, valuePerLocale: boolean, valuePerChannel: boolean): LineStatus => {
-  const errorsCount = Object.values(line.errors).reduce((count: number, errors: ValidationError[]) => {
-    return count + errors.length;
-  }, 0);
   const isComplete: boolean =
     (!valuePerLocale || (valuePerLocale && line.locale !== null)) &&
     (!valuePerChannel || (valuePerChannel && line.channel !== null));
 
-  if (errorsCount > 0) {
+  if (lineHasAnError(line)) {
     return LineStatus.Invalid;
   }
   if (line.isFileUploading) {

@@ -15,7 +15,10 @@ const Container = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+
+  :not(:last-child) {
+    border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  }
 `;
 
 const AssetThumbnail = styled.img`

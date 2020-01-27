@@ -4,7 +4,8 @@ import React from "react";
 import {
   DataQualityInsightsDashboard,
   DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY
+  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
+  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY
 } from 'akeneodataqualityinsights-react';
 
 interface SectionConfig {
@@ -27,6 +28,10 @@ type DashboardFilterOnFamilyEvent = {
   familyCode: string;
 };
 
+type DashboardFilterOnCategoryEvent = {
+  categoryCode: string;
+};
+
 class SectionView extends BaseView {
   public readonly config: SectionConfig = {
     align: 'left',
@@ -36,6 +41,8 @@ class SectionView extends BaseView {
 
   private familyCode: string | null = null;
 
+  private categoryCode: string | null = null;
+
   configure(): JQueryPromise<any> {
     window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY, ((event: CustomEvent<DashboardChangePeriodicityEvent>) => {
       this.periodicity = event.detail.periodicity;
@@ -44,6 +51,13 @@ class SectionView extends BaseView {
 
     window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY, ((event: CustomEvent<DashboardFilterOnFamilyEvent>) => {
       this.familyCode = event.detail.familyCode;
+      this.categoryCode = null;
+      this.render();
+    }) as EventListener);
+
+    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY, ((event: CustomEvent<DashboardFilterOnCategoryEvent>) => {
+      this.categoryCode = event.detail.categoryCode;
+      this.familyCode = null;
       this.render();
     }) as EventListener);
 
@@ -63,7 +77,7 @@ class SectionView extends BaseView {
     const catalogChannel: string = UserContext.get('catalogScope');
 
     ReactDOM.render(
-      <DataQualityInsightsDashboard periodicity={this.periodicity} catalogLocale={catalogLocale} catalogChannel={catalogChannel} familyCode={this.familyCode} />,
+      <DataQualityInsightsDashboard periodicity={this.periodicity} catalogLocale={catalogLocale} catalogChannel={catalogChannel} familyCode={this.familyCode} categoryCode={this.categoryCode}/>,
       this.el
     );
     return this;

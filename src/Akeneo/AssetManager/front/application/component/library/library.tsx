@@ -20,7 +20,6 @@ import {MultipleButton, Button} from 'akeneoassetmanager/application/component/a
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {CreateModal} from 'akeneoassetmanager/application/component/asset/create';
-import {useNotify} from 'akeneoassetmanager/application/hooks/notify';
 import {CreateAssetFamilyModal} from 'akeneoassetmanager/application/component/asset-family/create';
 import {useRedirect} from 'akeneoassetmanager/application/hooks/router';
 import {useStoredState} from 'akeneoassetmanager/application/hooks/state';
@@ -37,12 +36,19 @@ import {
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneoassetmanager/platform/component/common/no-data';
 import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import {Link} from 'akeneoassetmanager/application/component/app/link';
-import {ColumnTitle, Column} from 'akeneoassetmanager/application/component/app/column';
+import {Column} from 'akeneoassetmanager/application/component/app/column';
 import AssetFetcher from 'akeneoassetmanager/domain/fetcher/asset';
 import {ChannelFetcher} from 'akeneoassetmanager/application/hooks/channel';
 import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {clearImageLoadingQueue} from 'akeneoassetmanager/tools/image-loader';
+import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
+import {useScroll} from 'akeneoassetmanager/application/hooks/scroll';
+import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/list/completeness-filter';
+import {getCompletenessFilter, updateCompletenessFilter} from 'akeneoassetmanager/tools/filters/completeness';
+import notify from 'akeneoassetmanager/tools/notify';
 
 const Header = styled.div`
   padding-left: 40px;
@@ -132,23 +138,21 @@ const SecondaryActions = ({
 
 const useRoute = () => {
   const redirect = useRedirect();
-  const redirectToAsset = React.useCallback(
-    (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) =>
-      redirect('akeneo_asset_manager_asset_edit', {
-        assetCode,
-        assetFamilyIdentifier,
-        tab: 'enrich',
-      }),
-    []
-  );
-  const redirectToAssetFamily = React.useCallback(
-    (identifier: AssetFamilyIdentifier) =>
-      redirect('akeneo_asset_manager_asset_family_edit', {
-        identifier,
-        tab: 'attribute',
-      }),
-    []
-  );
+  const redirectToAsset = React.useCallback((assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => {
+    clearImageLoadingQueue();
+    redirect('akeneo_asset_manager_asset_edit', {
+      assetCode,
+      assetFamilyIdentifier,
+      tab: 'enrich',
+    });
+  }, []);
+  const redirectToAssetFamily = React.useCallback((identifier: AssetFamilyIdentifier) => {
+    clearImageLoadingQueue();
+    redirect('akeneo_asset_manager_asset_family_edit', {
+      identifier,
+      tab: 'attribute',
+    });
+  }, []);
   return {redirectToAsset, redirectToAssetFamily};
 };
 
@@ -171,16 +175,10 @@ type LibraryProps = {
 const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const [currentAssetFamilyIdentifier, setCurrentAssetFamilyIdentifier] = useStoredState<AssetFamilyIdentifier | null>(
     'akeneo.asset_manager.grid.current_asset_family',
-    null,
-    newAssetFamily => {
-      if (null !== newAssetFamily) {
-        // We need to reload the filters from local storage after changing the current asset family
-        loadFilterCollectionFromStorage(`akeneo.asset_manager.grid.filter_collection_${newAssetFamily}`);
-        clearImageLoadingQueue();
-      }
-    }
+    null
   );
-  const [filterCollection, setFilterCollection, loadFilterCollectionFromStorage] = useStoredState<Filter[]>(
+  const [scrollContainerRef, scrollTop] = useScroll<HTMLDivElement>();
+  const [filterCollection, setFilterCollection] = useStoredState<Filter[]>(
     `akeneo.asset_manager.grid.filter_collection_${currentAssetFamilyIdentifier}`,
     []
   );
@@ -205,6 +203,14 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
       ? ''
       : getLabel(currentAssetFamily.labels, context.locale, currentAssetFamily.identifier);
 
+  const completenessValue = getCompletenessFilter(filterCollection);
+  const handleCompletenessValueChange = React.useCallback(
+    (value: CompletenessValue) => {
+      setFilterCollection(updateCompletenessFilter(filterCollection, value));
+    },
+    [filterCollection, setFilterCollection]
+  );
+
   const updateResults = useFetchResult(createQuery)(
     true,
     dataProvider,
@@ -216,35 +222,29 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
     setSearchResult
   );
   const filterViews = useFilterViews(currentAssetFamilyIdentifier, dataProvider);
-  const notify = useNotify();
   const {redirectToAsset, redirectToAssetFamily} = useRoute();
 
-  const familyBreadcrumbConfiguration =
-    null === currentAssetFamilyIdentifier
-      ? []
-      : [
-          {
-            action: {
-              type: 'redirect',
-              route: 'akeneo_asset_manager_asset_family_edit',
-              parameters: {
-                identifier: currentAssetFamilyIdentifier,
-                tab: 'property',
-              },
-            },
-            label: currentAssetFamilyLabel,
-          },
-        ];
+  const hasMediaLinkAsMainMedia =
+    null !== currentAssetFamily && isMediaLinkAttribute(getAttributeAsMainMedia(currentAssetFamily));
+
+  const handleAssetFamilyChange = React.useCallback(
+    (assetFamilyIdentifier: AssetFamilyIdentifier) => {
+      setCurrentAssetFamilyIdentifier(assetFamilyIdentifier);
+      clearImageLoadingQueue();
+    },
+    [setCurrentAssetFamilyIdentifier]
+  );
+
+  React.useEffect(scrollTop, [currentAssetFamilyIdentifier, filterCollection, searchValue, context]);
 
   return (
     <Container>
-      <Column>
-        <ColumnTitle>{__('pim_asset_manager.asset_family.column.title')}</ColumnTitle>
+      <Column title={__('pim_asset_manager.asset_family.column.title')}>
         <AssetFamilySelector
           assetFamilyIdentifier={currentAssetFamilyIdentifier}
           locale={context.locale}
           dataProvider={dataProvider}
-          onChange={setCurrentAssetFamilyIdentifier}
+          onChange={handleAssetFamilyChange}
         />
         <FilterCollection
           filterCollection={filterCollection}
@@ -280,10 +280,16 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                               },
                             ]
                           : []),
-                        ...(rights.asset.upload
+                        ...(rights.asset.upload || hasMediaLinkAsMainMedia
                           ? [
                               {
                                 label: __('pim_asset_manager.asset.upload.title'),
+                                title: __(
+                                  `pim_asset_manager.asset.upload.${
+                                    hasMediaLinkAsMainMedia ? 'disabled_for_media_link' : 'title'
+                                  }`
+                                ),
+                                isDisabled: hasMediaLinkAsMainMedia,
                                 action: () => setUploadModalOpen(true),
                               },
                             ]
@@ -319,16 +325,11 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             withChannelSwitcher={true}
             isDirty={false}
             isLoading={false}
-            breadcrumbConfiguration={[
-              {
-                action: {
-                  type: 'redirect',
-                  route: 'akeneo_asset_manager_asset_family_index',
-                },
-                label: __('pim_asset_manager.asset_family.breadcrumb'),
-              },
-              ...familyBreadcrumbConfiguration,
-            ]}
+            breadcrumbConfiguration={breadcrumbConfiguration(
+              currentAssetFamilyIdentifier,
+              currentAssetFamilyLabel,
+              'property'
+            )}
             displayActions={true}
           />
         </Header>
@@ -341,11 +342,11 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 <HelperTitle>
                   👋 {__('pim_asset_manager.asset_family.helper.title')}
                   <HelperText>
-                    {__('pim_asset_manager.asset_family.helper.no_asset_family.text', {
-                      family: currentAssetFamilyLabel,
-                    })}
+                    {__('pim_asset_manager.asset_family.helper.no_asset_family.text')}
                     <br />
-                    <Link href="#">{__('pim_asset_manager.asset_family.helper.no_asset_family.link')}</Link>
+                    <Link href="https://help.akeneo.com/" target="_blank">
+                      {__('pim_asset_manager.asset_family.helper.no_asset_family.link')}
+                    </Link>
                   </HelperText>
                 </HelperTitle>
               </HelperSection>
@@ -353,8 +354,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 <AssetIllustration size={256} />
                 <NoDataTitle>{__('pim_asset_manager.asset_family.no_data.no_asset_family.title')}</NoDataTitle>
                 <NoDataText>
-                  {/* {__('pim_asset_manager.asset_family.no_data.no_asset_family.title')}
-                  <Spacer /> */}
                   <Link onClick={() => setCreateAssetFamilyModalOpen(true)}>
                     {__('pim_asset_manager.asset_family.no_data.no_asset_family.link')}
                   </Link>
@@ -370,8 +369,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                   👋 {__('pim_asset_manager.asset_family.helper.title')}
                   <HelperText>
                     {__('pim_asset_manager.asset_family.helper.no_asset.text', {family: currentAssetFamilyLabel})}
-                    <br />
-                    <Link href="#">{__('pim_asset_manager.asset_family.helper.no_asset.link')}</Link>
                   </HelperText>
                 </HelperTitle>
               </HelperSection>
@@ -379,8 +376,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 <AssetIllustration size={256} />
                 <NoDataTitle>{__('pim_asset_manager.asset_family.no_data.no_asset.title')}</NoDataTitle>
                 <NoDataText>
-                  {/* {__('pim_asset_manager.asset_family.helper.no_asset.text', {family: currentAssetFamilyLabel})}
-                  <Spacer /> */}
                   <Link onClick={() => setCreateAssetModalOpen(true)}>
                     {__('pim_asset_manager.asset_family.no_data.no_asset.link')}
                   </Link>
@@ -396,8 +391,11 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 resultCount={searchResult.matchesCount}
                 onSearchChange={setSearchValue}
                 onContextChange={setContext}
+                completenessValue={completenessValue}
+                onCompletenessChange={handleCompletenessValueChange}
               />
               <Mosaic
+                scrollContainerRef={scrollContainerRef}
                 selection={selection}
                 assetCollection={searchResult.items}
                 context={context}
@@ -431,6 +429,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
       )}
       {isUploadModalOpen && null !== currentAssetFamily && (
         <UploadModal
+          confirmLabel={__('pim_asset_manager.asset.upload.confirm')}
           locale={context.locale}
           channels={channels}
           locales={locales}
@@ -451,6 +450,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           onClose={() => setCreateAssetFamilyModalOpen(false)}
           onAssetFamilyCreated={(assetFamilyIdentifier: AssetFamilyIdentifier) => {
             notify('success', 'pim_asset_manager.asset_family.notification.create.success');
+            handleAssetFamilyChange(assetFamilyIdentifier);
             redirectToAssetFamily(assetFamilyIdentifier);
           }}
         />

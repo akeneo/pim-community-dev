@@ -38,49 +38,47 @@ const AttributesContextProvider = () => {
   const dispatchAction = useDispatch();
 
   useLayoutEffect(() => {
-    if (!family) {
-      return;
-    }
-
     const container = document.querySelector('.entity-edit-form.edit-form div[data-drop-zone="container"]');
-    if (!container) {
-      return;
-    }
+    let observer: MutationObserver|null = null;
 
-    const textAttributes = getTextAttributes(family);
-    const observer = new MutationObserver((mutations) => {
-      let widgetList: WidgetsCollection = {};
-      mutations.forEach((mutation) => {
-        if (isTextAttributeElement(mutation.target as Element, textAttributes)) {
-          const element = mutation.target as Element;
-          const attribute = element.getAttribute('data-attribute');
-          const editor = element.querySelector('.field-input textarea, .field-input input[type="text"]'); // @todo adapt for contenteditable and input text elements
+    if (family && container) {
+      const textAttributes = getTextAttributes(family);
+      observer = new MutationObserver((mutations) => {
+        let widgetList: WidgetsCollection = {};
+        mutations.forEach((mutation) => {
+          if (isTextAttributeElement(mutation.target as Element, textAttributes)) {
+            const element = mutation.target as Element;
+            const attribute = element.getAttribute('data-attribute');
+            const editor = element.querySelector('.field-input textarea, .field-input input[type="text"]'); // @todo adapt for contenteditable and input text elements
 
-          if (!attribute || !editor) {
-            return;
+            if (!attribute || !editor) {
+              return;
+            }
+
+            editor.setAttribute('data-gramm', 'false');
+            editor.setAttribute('data-gramm_editor', 'false');
+            editor.setAttribute("spellcheck", 'false');
+
+            const widgetId = uuidV5(`${product.meta.id}-${attribute}`, WIDGET_UUID_NAMESPACE);
+            widgetList[widgetId] = createWidget(widgetId, editor as EditorElement, attribute);
           }
+        });
 
-          editor.setAttribute('data-gramm', 'false');
-          editor.setAttribute('data-gramm_editor', 'false');
-          editor.setAttribute("spellcheck", 'false');
-
-          const widgetId = uuidV5(`${product.meta.id}-${attribute}`, WIDGET_UUID_NAMESPACE);
-          widgetList[widgetId] = createWidget(widgetId, editor as EditorElement, attribute);
+        if (Object.entries(widgetList).length > 0) {
+          dispatchAction(initializeWidgetsListAction(widgetList));
         }
       });
 
-      if (Object.entries(widgetList).length > 0) {
-        dispatchAction(initializeWidgetsListAction(widgetList));
-      }
-    });
-
-    observer.observe(container, {
-      childList: true,
-      subtree: true
-    });
+      observer.observe(container, {
+        childList: true,
+        subtree: true
+      });
+    }
 
     return () => {
-      observer.disconnect();
+      if (observer) {
+        observer.disconnect();
+      }
     }
   },
   [product, family, attributesTabIsLoading]);

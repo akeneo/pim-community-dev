@@ -1,57 +1,75 @@
 'use strict';
 
 import '@testing-library/jest-dom/extend-expect';
-import {useStoredState} from 'akeneoassetmanager/application/hooks/state';
 import {renderHook, act} from '@testing-library/react-hooks';
+import {useStoredState} from 'akeneoassetmanager/application/hooks/state';
 
 describe('Test stored state hooks', () => {
-  test('It store a state in the locale storage', async () => {
-    const {result} = renderHook(() => useStoredState('my_key', null));
-    expect(result.current[0]).toEqual(null);
-
-    act(() => {
-      result.current[1]('new_value');
-    });
-
-    expect(result.current[0]).toEqual('new_value');
+  beforeEach(() => {
+    localStorage.clear();
   });
 
-  test('It retreive a state in the locale storage', async () => {
-    const {result} = renderHook(() => useStoredState('my_key', null));
-    expect(result.current[0]).toEqual('new_value');
-  });
-
-  test('It call the after set callback', async () => {
-    let listenerValue = 'nice';
-    const {result} = renderHook(() =>
-      useStoredState('another_key', null, newValue => {
-        listenerValue = newValue;
-      })
-    );
-    expect(listenerValue).toEqual('nice');
+  test('It store a state in the local storage', async () => {
+    const {result} = renderHook(() => useStoredState('foo', null));
+    let [value, setValue] = result.current;
+    expect(value).toEqual(null);
 
     act(() => {
-      result.current[1]('new_value');
+      setValue('new_value');
     });
 
-    expect(result.current[0]).toEqual('new_value');
-    expect(listenerValue).toEqual('new_value');
+    let [value, setValue] = result.current;
+    expect(value).toEqual('new_value');
+    expect(localStorage.getItem('foo')).toEqual(JSON.stringify('new_value'));
   });
 
-  test('Nothing happen if the old value is the same as the new value', async () => {
-    let listenerValue = 'nice';
-    const {result} = renderHook(() =>
-      useStoredState('last_key', 'same_value', newValue => {
-        listenerValue = newValue;
-      })
-    );
-    expect(listenerValue).toEqual('nice');
+  test('It retreive a state from the local storage', async () => {
+    localStorage.setItem('foo', JSON.stringify('stored_value'));
 
-    act(() => {
-      result.current[1]('same_value');
+    const {result} = renderHook(() => useStoredState('foo', null));
+    let [value, setValue] = result.current;
+    expect(value).toEqual('stored_value');
+  });
+
+  test('It returns the default value if the storage is not readable', async () => {
+    // https://github.com/facebook/jest/issues/6798
+    jest.spyOn(localStorage.__proto__, 'getItem').mockImplementationOnce(key => {
+      throw new Error();
     });
 
-    expect(result.current[0]).toEqual('same_value');
-    expect(listenerValue).toEqual('nice');
+    const {result} = renderHook(() => useStoredState('my_key', 'foo'));
+    let [value, setValue] = result.current;
+    expect(value).toEqual('foo');
+  });
+
+  test('It logs an error if the storage is not writable', async () => {
+    // https://github.com/facebook/jest/issues/6798
+    jest.spyOn(localStorage.__proto__, 'setItem').mockImplementationOnce((key, value) => {
+      throw new Error();
+    });
+    const logger = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    const {result} = renderHook(() => useStoredState('my_key', 'foo'));
+    let [value, setValue] = result.current;
+    act(() => {
+      setValue('bar');
+    });
+    expect(logger).toHaveBeenCalled();
+  });
+
+  test('It switch between items when the key changes', async () => {
+    localStorage.setItem('foo', JSON.stringify('foo_value'));
+    localStorage.setItem('bar', JSON.stringify('bar_value'));
+
+    let key = 'foo';
+    const {result, rerender} = renderHook(() => useStoredState(key, null));
+    let [value, setValue] = result.current;
+    expect(value).toEqual('foo_value');
+
+    key = 'bar';
+    rerender();
+
+    let [value, setValue] = result.current;
+    expect(value).toEqual('bar_value');
   });
 });

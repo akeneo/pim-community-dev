@@ -20,16 +20,11 @@ final class Version_4_0_20191216133927_data_quality_insights_initialize_criteria
     public function up(Schema $schema) : void
     {
         $this->disableMigrationWarning();
-        try
-        {
-            $this->initializeDictionary();
-            $initializeCriteriaEvaluation = $this->container->get('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeCriteriaEvaluation');
-            $initializeCriteriaEvaluation->initialize();
-        }
-        catch(\Throwable $e)
-        {
-            $this->write($e->getMessage());
-        }
+
+        $this->initializeDictionary();
+        $initializeCriteriaEvaluation = $this->container->get('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeCriteriaEvaluation');
+        $initializeCriteriaEvaluation->initialize();
+
     }
 
     public function down(Schema $schema) : void

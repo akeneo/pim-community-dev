@@ -74,7 +74,10 @@ class EditAssetCommandFactory
         $editAssetValueCommands = [];
         if ($namingConvention instanceof NamingConvention) {
             try {
-                $editAssetValueCommands = $this->extractAndBuildEditAssetValueCommands($namingConvention, $normalizedCommand);
+                $editAssetValueCommands = $this->extractAndBuildEditAssetValueCommands(
+                    $namingConvention,
+                    $normalizedCommand
+                );
             } catch (AttributeNotFoundException | NamingConventionPatternNotMatch | InvalidNamingConventionSourceAttributeType $e) {
                 throw new NamingConventionException($e, $namingConvention->abortAssetCreationOnError());
             }

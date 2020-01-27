@@ -9,6 +9,7 @@ import {
   fileUploadProgressAction,
   fileUploadSuccessAction,
   fileUploadFailureAction,
+  fileUploadStartAction,
   lineCreationStartAction,
   linesAddedAction,
   removeAllLinesAction,
@@ -206,6 +207,35 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
     expect(newState).toEqual(expectedState);
   });
 
+  test('I can mark a line as starting to upload', () => {
+    const state = Object.freeze({
+      ...defaultState,
+      lines: [lines.A, lines.B],
+    });
+
+    const action = fileUploadStartAction(lines.A);
+    const newState = reducer(state, action);
+
+    const expectedState = {
+      ...defaultState,
+      lines: [
+        {
+          ...lines.A,
+          isFileUploading: true,
+          isFileUploadFailed: false,
+          uploadProgress: 0,
+          errors: {
+            back: [],
+            front: [],
+          },
+        },
+        lines.B,
+      ],
+    };
+
+    expect(newState).toEqual(expectedState);
+  });
+
   test('I can mark a line as uploaded', () => {
     const state = Object.freeze({
       ...defaultState,
@@ -227,6 +257,7 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
           ...lines.A,
           file: file,
           isFileUploading: false,
+          isFileUploadFailed: false,
         },
         lines.B,
       ],
@@ -238,29 +269,26 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
   test('I can mark a line as failed to upload', () => {
     const state = Object.freeze({
       ...defaultState,
-      lines: [lines.A, lines.B],
+      lines: [lines.A, lines.B, lines.C],
     });
 
-    const file = Object.freeze({
-      filePath: 'foobar.jpg',
-      originalFilename: 'a.jpg',
-    } as FileModel);
-
-    const action = fileUploadFailureAction(lines.A, file);
+    const action = fileUploadFailureAction(lines.B);
     const newState = reducer(state, action);
 
     const expectedState = {
       ...defaultState,
       lines: [
         {
-          ...lines.A,
+          ...lines.B,
           isFileUploading: false,
+          isFileUploadFailed: true,
           errors: {
             back: [],
-            front: [],
+            front: [createFakeError('pim_asset_manager.asset.upload.upload_failure')],
           },
         },
-        lines.B,
+        lines.A,
+        lines.C,
       ],
     };
 
@@ -283,6 +311,7 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
           ...lines.A,
           uploadProgress: 0.4,
           isFileUploading: true,
+          isFileUploadFailed: false,
         },
         lines.B,
       ],
@@ -321,10 +350,10 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
   test('I can mark a line as successfully created', () => {
     const state = Object.freeze({
       ...defaultState,
-      lines: [lines.A, lines.B],
+      lines: [lines.A, lines.B, lines.C],
     });
 
-    const asset = createFakeCreationAsset(lines.A.code, assetFamily);
+    const asset = createFakeCreationAsset(lines.B.code, assetFamily);
 
     const action = assetCreationSuccessAction(asset);
     const newState = reducer(state, action);
@@ -332,12 +361,13 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
     const expectedState = {
       ...defaultState,
       lines: [
+        lines.A,
         {
-          ...lines.A,
+          ...lines.B,
           assetCreated: true,
           isAssetCreating: false,
         },
-        lines.B,
+        lines.C,
       ],
     };
 
@@ -347,10 +377,10 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
   test('I can mark a line as failed creation', () => {
     const state = Object.freeze({
       ...defaultState,
-      lines: [lines.A, lines.B],
+      lines: [lines.A, lines.B, lines.C],
     });
 
-    const asset = createFakeCreationAsset(lines.A.code, assetFamily);
+    const asset = createFakeCreationAsset(lines.B.code, assetFamily);
     const errors = [createFakeError('some error')];
 
     const action = assetCreationFailAction(asset, errors);
@@ -360,7 +390,7 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
       ...defaultState,
       lines: [
         {
-          ...lines.A,
+          ...lines.B,
           assetCreated: false,
           isAssetCreating: false,
           errors: {
@@ -368,7 +398,8 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
             front: [],
           },
         },
-        lines.B,
+        lines.A,
+        lines.C,
       ],
     };
 

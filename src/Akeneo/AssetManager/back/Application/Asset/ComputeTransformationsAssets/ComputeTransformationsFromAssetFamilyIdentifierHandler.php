@@ -27,6 +27,7 @@ class ComputeTransformationsFromAssetFamilyIdentifierHandler
 
     public function handle(ComputeTransformationsFromAssetFamilyIdentifierCommand $command): void
     {
+        // Check there is transformation in the family before launching a job
         $this->computeTransformationLauncher->launch(AssetFamilyIdentifier::fromString($command->getAssetFamilyIdentifier()));
     }
 }

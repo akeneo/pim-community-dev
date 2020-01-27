@@ -99,6 +99,7 @@ describe('', () => {
         {
           ...createFakeError(),
           message: 'Internal server error',
+          messageTemplate: 'pim_asset_manager.asset.validation.server_error',
           invalidValue: asset,
         },
       ])

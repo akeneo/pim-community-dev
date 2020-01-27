@@ -44,6 +44,7 @@ class SqlFindConnectorAssetFamilyItems implements FindConnectorAssetFamilyItemsI
         SELECT
             re.identifier,
             re.labels,
+            ama.code AS attribute_as_main_media,
             fi.file_key as image_file_key,
             fi.original_filename as image_original_filename,
             re.rule_templates,
@@ -51,6 +52,7 @@ class SqlFindConnectorAssetFamilyItems implements FindConnectorAssetFamilyItemsI
             re.naming_convention
         FROM akeneo_asset_manager_asset_family as re
         LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = re.image
+        LEFT JOIN akeneo_asset_manager_attribute ama ON re.attribute_as_main_media = ama.identifier
         %s
         ORDER BY identifier ASC
         LIMIT :search_after_limit

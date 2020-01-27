@@ -18,7 +18,13 @@ import Key from 'akeneoassetmanager/tools/key';
 import {LabelCollection} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {getLabel} from 'pimui/js/i18n';
 import {getAttributeLabel, Attribute as ProductAttribute} from 'akeneoassetmanager/platform/model/structure/attribute';
-import {Modal, Header, Title, SubTitle, ConfirmButton} from 'akeneoassetmanager/application/component/app/modal';
+import {
+  ScrollableModal,
+  Header,
+  Title,
+  SubTitle,
+  ConfirmButton,
+} from 'akeneoassetmanager/application/component/app/modal';
 import ListAsset, {
   canAddAssetToCollection,
   addAssetsToCollection,
@@ -42,7 +48,7 @@ type AssetPickerProps = {
 const Container = styled.div`
   display: flex;
   flex: 1;
-  height: 100%;
+  overflow-x: hidden;
 `;
 const Context = styled.div``;
 const Grid = styled.div`
@@ -184,7 +190,7 @@ export const AssetPicker = ({
         {__('pim_asset_manager.asset_collection.add_asset')}
       </Button>
       {isOpen && null !== filterViews && null !== searchResult ? (
-        <Modal data-container="asset-picker">
+        <ScrollableModal data-container="asset-picker">
           <Header>
             <CloseButton title={__('pim_asset_manager.close')} onClick={cancelModal} />
             <Title>{__('pim_asset_manager.asset_picker.title')}</Title>
@@ -247,7 +253,7 @@ export const AssetPicker = ({
               }}
             />
           </Container>
-        </Modal>
+        </ScrollableModal>
       ) : null}
     </React.Fragment>
   );

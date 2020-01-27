@@ -1,0 +1,41 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_asset_manager_asset_rest_connector_create_or_update",
+        "query": {
+            "assetFamilyIdentifier": "PresentationView",
+            "code": "building"
+        },
+        "body": {
+            "code": "building",
+            "values": {
+                "label": [
+                    {
+                        "locale": "en_US",
+                        "channel": null,
+                        "data": "building english label"
+                    },
+                    {
+                        "locale": "fr_FR",
+                        "channel": null,
+                        "data": "building french label"
+                    }
+                ],
+                "main_image": [
+                    {
+                        "channel": null,
+                        "locale": null,
+                        "data": "house_12.jpg"
+                    }
+                ]
+            }
+        }
+    },
+    "response": {
+        "status": 201,
+        "body": "",
+        "headers": {
+            "location": "http://localhost/api/rest/v1/asset-families/PresentationView/assets/building"
+        }
+    }
+}

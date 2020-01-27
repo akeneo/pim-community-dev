@@ -13,6 +13,11 @@ akeneo_assetmanager_asset_family_manage_transformation:
     label: akeneo_assetmanager.acl.asset_family.manage_transformation
     group_name: akeneo_assetmanager.acl_group.asset_manager
 
+akeneo_assetmanager_asset_family_manage_product_link_rule:
+    type: action
+    label: akeneo_assetmanager.acl.asset_family.manage_product_link_rule
+    group_name: akeneo_assetmanager.acl_group.asset_manager
+
 akeneo_assetmanager_asset_family_delete:
     type: action
     label: akeneo_assetmanager.acl.asset_family.delete

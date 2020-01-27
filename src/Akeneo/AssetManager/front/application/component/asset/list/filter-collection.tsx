@@ -44,7 +44,7 @@ export const useFilterViews = (
 };
 
 const Filters = styled.div`
-  padding-top: 16px;
+  padding-top: 30px;
   overflow-y: auto;
 `;
 
@@ -77,7 +77,7 @@ const FilterCollection = ({
         return (
           <div
             key={attribute.code}
-            className="AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin"
+            className="AknFilterBox-filterContainer AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin"
             data-attribute={attribute.code}
             data-type={attribute.type}
           >

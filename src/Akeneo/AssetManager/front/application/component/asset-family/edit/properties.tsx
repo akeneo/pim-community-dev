@@ -54,54 +54,47 @@ class Properties extends React.Component<StateProps & DispatchProps> {
     isDeleteModalOpen: false,
   };
 
-  private getSecondaryActions = () => {
-    return (
-      <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-        <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
-        <div className="AknDropdown-menu AknDropdown-menu--right">
-          <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
-          <div>
-            <button
-              tabIndex={-1}
-              className="AknDropdown-menuLink"
-              onClick={() => this.setState({isDeleteModalOpen: true})}
-            >
-              {__('pim_asset_manager.asset_family.module.delete.button')}
-            </button>
-          </div>
+  private getSecondaryActions = () => (
+    <div className="AknSecondaryActions AknDropdown AknButtonList-item">
+      <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
+      <div className="AknDropdown-menu AknDropdown-menu--right">
+        <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
+        <div>
+          <button
+            tabIndex={-1}
+            className="AknDropdown-menuLink"
+            onClick={() => this.setState({isDeleteModalOpen: true})}
+          >
+            {__('pim_asset_manager.asset_family.module.delete.button')}
+          </button>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
 
   render() {
+    const {events, attributes, context, form, rights} = this.props;
     const assetFamily = this.props.form.data;
-    const label = getAssetFamilyLabel(assetFamily, this.props.context.locale);
+    const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
 
     return (
       <React.Fragment>
         <Header
-          label={getAssetFamilyLabel(assetFamily, this.props.context.locale)}
+          label={__('pim_asset_manager.asset_family.tab.properties')}
           image={assetFamily.image}
-          primaryAction={(defaultFocus: React.RefObject<any>) => {
-            return this.props.rights.assetFamily.edit ? (
-              <button
-                className="AknButton AknButton--apply"
-                onClick={this.props.events.onSaveEditForm}
-                ref={defaultFocus}
-              >
+          primaryAction={(defaultFocus: React.RefObject<any>) =>
+            rights.assetFamily.edit ? (
+              <button className="AknButton AknButton--apply" onClick={events.onSaveEditForm} ref={defaultFocus}>
                 {__('pim_asset_manager.asset_family.button.save')}
               </button>
-            ) : null;
-          }}
-          secondaryActions={() => {
-            return this.props.rights.assetFamily.delete ? this.getSecondaryActions() : null;
-          }}
+            ) : null
+          }
+          secondaryActions={() => (rights.assetFamily.delete ? this.getSecondaryActions() : null)}
           withLocaleSwitcher={true}
           withChannelSwitcher={false}
-          isDirty={this.props.form.state.isDirty}
-          breadcrumbConfiguration={breadcrumbConfiguration}
-          displayActions={this.props.rights.assetFamily.edit}
+          isDirty={form.state.isDirty}
+          breadcrumbConfiguration={breadcrumbConfiguration(assetFamily.identifier, assetFamilyLabel)}
+          displayActions={rights.assetFamily.edit}
         />
         <div className="AknSubsection">
           <header className="AknSubsection-title">
@@ -109,22 +102,22 @@ class Properties extends React.Component<StateProps & DispatchProps> {
           </header>
           <div className="AknFormContainer AknFormContainer--withPadding">
             <Form
-              attributes={this.props.attributes}
-              onLabelUpdated={this.props.events.form.onLabelUpdated}
-              onAttributeAsMainMediaUpdated={this.props.events.form.onAttributeAsMainMediaUpdated}
-              onSubmit={this.props.events.form.onSubmit}
-              locale={this.props.context.locale}
-              data={this.props.form.data}
-              errors={this.props.form.errors}
-              rights={this.props.rights}
+              attributes={attributes}
+              onLabelUpdated={events.form.onLabelUpdated}
+              onAttributeAsMainMediaUpdated={events.form.onAttributeAsMainMediaUpdated}
+              onSubmit={events.form.onSubmit}
+              locale={context.locale}
+              data={form.data}
+              errors={form.errors}
+              rights={rights}
             />
           </div>
         </div>
         {this.state.isDeleteModalOpen && (
           <DeleteModal
-            message={__('pim_asset_manager.asset_family.delete.message', {assetFamilyLabel: label})}
+            message={__('pim_asset_manager.asset_family.delete.message', {assetFamilyLabel})}
             title={__('pim_asset_manager.asset_family.delete.title')}
-            onConfirm={() => this.props.events.onDelete(assetFamily)}
+            onConfirm={() => events.onDelete(assetFamily)}
             onCancel={() => this.setState({isDeleteModalOpen: false})}
           />
         )}

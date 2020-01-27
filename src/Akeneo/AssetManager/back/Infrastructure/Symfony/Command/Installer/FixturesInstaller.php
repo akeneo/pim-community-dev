@@ -149,6 +149,7 @@ CREATE TABLE `akeneo_asset_manager_attribute` (
     `value_per_channel` BOOLEAN NOT NULL,
     `value_per_locale` BOOLEAN NOT NULL,
     `additional_properties` JSON NOT NULL,
+    `is_read_only` BOOLEAN NOT NULL DEFAULT false,
     PRIMARY KEY (`identifier`),
     UNIQUE `attribute_identifier_index` (`code`, `asset_family_identifier`),
     UNIQUE `attribute_asset_family_order_index` (`asset_family_identifier`, `attribute_order`)

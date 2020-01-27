@@ -1,0 +1,12 @@
+{
+    "title": "BackendLabels",
+    "anyOf": [
+        {
+            "type": "object",
+            "patternProperties": {
+                ".+": { "type": "string" }
+            }
+        },
+        { "type": "array", "maxItems": 0 }
+    ]
+}

@@ -57,7 +57,7 @@ const ImageContainer = styled.div<ImageContainerProps>`
   min-height: 140px;
 
   &:hover {
-    cursor: ${(props: ThemedProps<ImageContainerProps>) => (props.isSelectable ? 'auto' : 'pointer')};
+    cursor: ${(props: ThemedProps<ImageContainerProps>) => (props.isSelectable ? 'pointer' : 'auto')};
   }
 `;
 

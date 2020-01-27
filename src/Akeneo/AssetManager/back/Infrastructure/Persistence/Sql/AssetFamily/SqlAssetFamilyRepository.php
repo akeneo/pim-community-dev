@@ -142,7 +142,7 @@ SQL;
             af.attribute_as_main_media, 
             af.rule_templates,
             af.transformations,
-            af.naming_convention
+            COALESCE(af.naming_convention, '{}') AS naming_convention
         FROM akeneo_asset_manager_asset_family af
         LEFT JOIN (
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
@@ -183,7 +183,7 @@ SQL;
             attribute_as_main_media,
             rule_templates,
             transformations,
-            naming_convention
+            COALESCE(naming_convention, '{}') AS naming_convention
         FROM akeneo_asset_manager_asset_family;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
@@ -251,7 +251,9 @@ SQL;
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
         $entityImage = $this->hydrateImage($image);
         $ruleTemplateCollection = $this->hydrateRuleTemplates($normalizedRuleTemplates);
-        $transformationCollection = $this->transformationCollectionFactory->fromNormalized(json_decode($transformationCollection, true));
+        $transformationCollection = $this->transformationCollectionFactory->fromDatabaseNormalized(
+            json_decode($transformationCollection, true)
+        );
         $namingConvention = NamingConvention::createFromNormalized(json_decode($namingConvention, true));
 
         $assetFamily = AssetFamily::createWithAttributes(

@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollect
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
@@ -81,7 +82,8 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
                 ]
             ],
             new ConnectorTransformationCollection([$transformation]),
-            $namingConvention
+            $namingConvention,
+            AttributeCode::fromString('media')
         );
     }
 
@@ -98,6 +100,7 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
                 'en_US' => 'Stark',
                 'fr_FR' => 'Stark',
             ],
+            'attribute_as_main_media' => 'media',
             'image' => null,
             'product_link_rules' => [
                 [

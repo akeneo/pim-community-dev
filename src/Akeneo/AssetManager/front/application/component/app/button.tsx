@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import Down from 'akeneoassetmanager/application/component/app/icon/down';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
+import Key from 'akeneoassetmanager/tools/key';
 
 type ButtonProps = {
   buttonSize?: 'micro' | 'medium' | 'default';
@@ -115,7 +117,7 @@ const StyledMultipleButton = styled(Button)`
   display: flex;
 `;
 
-const Item = styled.div`
+const Item = styled.div<{isDisabled?: boolean}>`
   color: ${(props: ThemedProps<void>) => props.theme.color.grey120};
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
   text-transform: none;
@@ -123,7 +125,8 @@ const Item = styled.div`
   height: 34px;
   display: flex;
   align-items: center;
-  cursor: pointer;
+  cursor: ${props => (props.isDisabled ? 'not-allowed' : 'pointer')};
+  opacity: ${props => (props.isDisabled ? 0.5 : 1)};
 `;
 
 const DownButton = styled.span`
@@ -132,17 +135,30 @@ const DownButton = styled.span`
   padding-left: 15px;
 `;
 
+type Item = {
+  label: string;
+  title?: string;
+  isDisabled?: boolean;
+  action: () => void;
+};
+
 type MultipleButtonProps = {
-  items: {
-    label: string;
-    action: () => void;
-  }[];
+  items: Item[];
   children: React.ReactNode;
 } & ButtonProps;
 
 export const MultipleButton = ({items, children, ...props}: MultipleButtonProps) => {
   const [isOpen, setOpen] = React.useState(false);
   if (0 === items.length) return null;
+
+  const onItemClick = (item: Item) => {
+    if (!item.isDisabled) {
+      setOpen(false);
+      item.action();
+    }
+  };
+
+  useShortcut(Key.Escape, () => setOpen(false));
 
   return (
     <Container>
@@ -161,10 +177,9 @@ export const MultipleButton = ({items, children, ...props}: MultipleButtonProps)
                 {items.map(item => (
                   <Item
                     key={item.label}
-                    onClick={() => {
-                      setOpen(false);
-                      item.action();
-                    }}
+                    title={item.title || item.label}
+                    isDisabled={item.isDisabled}
+                    onClick={() => onItemClick(item)}
                   >
                     {item.label}
                   </Item>

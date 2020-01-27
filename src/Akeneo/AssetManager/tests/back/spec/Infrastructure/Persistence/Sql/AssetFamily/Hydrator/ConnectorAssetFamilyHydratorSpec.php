@@ -16,6 +16,7 @@ namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hy
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NullNamingConvention;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
@@ -72,6 +73,7 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
             ]),
             'transformations' => json_encode([['fake_transformation']]),
             'naming_convention' => '{}',
+            'attribute_as_main_media' => null,
         ];
 
         $file = new FileInfo();
@@ -110,7 +112,8 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
                 ]
             ],
             new ConnectorTransformationCollection([]),
-            new NullNamingConvention()
+            new NullNamingConvention(),
+            null
         );
 
         $this->hydrate($row)->shouldBeLike($expectedAssetFamily);
@@ -132,6 +135,7 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
             'rule_templates' => json_encode([]),
             'transformations' => json_encode([['fake_transformation']]),
             'naming_convention' => '{}',
+            'attribute_as_main_media' => 'media',
         ];
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
@@ -148,7 +152,8 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
             Image::createEmpty(),
             [],
             new ConnectorTransformationCollection([]),
-            new NullNamingConvention()
+            new NullNamingConvention(),
+            AttributeCode::fromString('media')
         );
 
         $productLinkRulesHydrator->hydrate([])->willReturn([]);
@@ -184,6 +189,7 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
             'rule_templates' => json_encode([]),
             'transformations' => json_encode([['fake_transformation']]),
             'naming_convention' => json_encode($normalizedNamingConvention),
+            'attribute_as_main_media' => 'instructions',
         ];
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
@@ -203,7 +209,8 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
             Image::createEmpty(),
             [],
             new ConnectorTransformationCollection([]),
-            $namingConvention
+            $namingConvention,
+            AttributeCode::fromString('instructions')
         );
 
         $productLinkRulesHydrator->hydrate([])->willReturn([]);

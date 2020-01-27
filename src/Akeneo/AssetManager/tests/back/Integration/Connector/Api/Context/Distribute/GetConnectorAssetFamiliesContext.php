@@ -26,6 +26,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollect
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
@@ -84,6 +85,7 @@ class GetConnectorAssetFamiliesContext implements Context
             $productLinkRules = [];
             $connectorTransformations = new ConnectorTransformationCollection([]);
             $namingConvention = new NullNamingConvention();
+            $attributeAsMainMediaCode = null;
 
             if (1 === $i) {
                 $productLinkRules = [
@@ -127,6 +129,7 @@ class GetConnectorAssetFamiliesContext implements Context
                         'abort_asset_creation_on_error' => true,
                     ]
                 );
+                $attributeAsMainMediaCode = AttributeCode::fromString('main');
             }
 
             $assetFamily = new ConnectorAssetFamily(
@@ -135,7 +138,8 @@ class GetConnectorAssetFamiliesContext implements Context
                 Image::fromFileInfo($imageInfo),
                 $productLinkRules,
                 $connectorTransformations,
-                $namingConvention
+                $namingConvention,
+                $attributeAsMainMediaCode
             );
 
             $this->findConnectorAssetFamily->save(

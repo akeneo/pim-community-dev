@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom';
 import {
   CATALOG_CONTEXT_CHANNEL_CHANGED,
   CATALOG_CONTEXT_LOCALE_CHANGED,
-  DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
-  DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
+  DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
+  DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
+  DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
+  DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
   DataQualityInsightsFeature,
   getDataQualityInsightsFeature,
-  PRODUCT_TAB_CHANGED,
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
+  PRODUCT_TAB_CHANGED,
   ProductEditFormApp
 } from 'akeneodataqualityinsights-react';
 
@@ -102,6 +104,14 @@ class DataQualityInsightsApp extends BaseView {
 
     this.listenTo(this.getRoot(), 'pim_enrich:form:attributes:render:after', () => {
       window.dispatchEvent(new Event(PRODUCT_ATTRIBUTES_TAB_LOADED));
+    });
+
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () => {
+      window.dispatchEvent(new Event(DATA_QUALITY_INSIGHTS_PRODUCT_SAVING));
+    });
+
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', () => {
+      window.dispatchEvent(new Event(DATA_QUALITY_INSIGHTS_PRODUCT_SAVED));
     });
 
     return super.configure();

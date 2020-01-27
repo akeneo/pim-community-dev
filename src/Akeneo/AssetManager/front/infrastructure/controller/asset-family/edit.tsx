@@ -35,6 +35,7 @@ import Key from 'akeneoassetmanager/tools/key';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {ThemeProvider} from 'styled-components';
 import {attributeListUpdated} from 'akeneoassetmanager/domain/event/attribute/list';
+import {getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -118,7 +119,10 @@ class AssetFamilyEditController extends BaseController {
 
   beforeUnload = () => {
     if (this.isDirty()) {
-      return __('pim_enrich.confirmation.discard_changes', {entity: 'asset family'});
+      const state = this.store.getState();
+      const assetFamilyLabel = getAssetFamilyLabel(state.form.data, state.user.catalogLocale);
+
+      return __('pim_asset_manager.asset_family.edit.discard_changes', {assetFamilyLabel});
     }
 
     document.removeEventListener('keypress', shortcutDispatcher);
@@ -127,7 +131,9 @@ class AssetFamilyEditController extends BaseController {
   };
 
   canLeave() {
-    const message = __('pim_enrich.confirmation.discard_changes', {entity: 'asset family'});
+    const state = this.store.getState();
+    const assetFamilyLabel = getAssetFamilyLabel(state.form.data, state.user.catalogLocale);
+    const message = __('pim_asset_manager.asset_family.edit.discard_changes', {assetFamilyLabel});
 
     return this.isDirty() ? confirm(message) : true;
   }

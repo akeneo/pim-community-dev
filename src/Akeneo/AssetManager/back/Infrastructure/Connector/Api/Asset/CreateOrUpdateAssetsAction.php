@@ -16,7 +16,10 @@ namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector\EditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
+use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory as NamingConventionEditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Exception\NamingConventionException;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
@@ -74,6 +77,9 @@ class CreateOrUpdateAssetsAction
     /** @var BatchAssetsToLink */
     private $batchAssetsToLink;
 
+    /** @var NamingConventionEditAssetCommandFactory */
+    private $namingConventionEditAssetCommandFactory;
+
     /** @var int */
     private $maximumAssetsPerRequest;
 
@@ -89,6 +95,7 @@ class CreateOrUpdateAssetsAction
         AssetValidator $assetStructureValidator,
         AssetListValidator $assetListValidator,
         BatchAssetsToLink $batchAssetsToLink,
+        NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
         int $maximumAssetsPerRequest
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
@@ -102,6 +109,7 @@ class CreateOrUpdateAssetsAction
         $this->assetStructureValidator = $assetStructureValidator;
         $this->assetListValidator = $assetListValidator;
         $this->batchAssetsToLink = $batchAssetsToLink;
+        $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
         $this->maximumAssetsPerRequest = $maximumAssetsPerRequest;
     }
 
@@ -208,7 +216,15 @@ class CreateOrUpdateAssetsAction
         }
 
         if (true === $shouldBeCreated) {
+            $namingConventionEditCommand = $this->createValidatedNamingConventionCommandIfNeeded(
+                $assetFamilyIdentifier,
+                $normalizedAsset
+            );
+
             ($this->createAssetHandler)($createAssetCommand);
+            if (null !== $namingConventionEditCommand) {
+                ($this->editAssetHandler)($namingConventionEditCommand);
+            }
             $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
         }
 
@@ -218,5 +234,39 @@ class CreateOrUpdateAssetsAction
             'code' => (string) $assetCode,
             'status_code' => $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT,
         ];
+    }
+
+    private function createValidatedNamingConventionCommandIfNeeded(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        array $normalizedAsset
+    ): ?EditAssetCommand {
+        try {
+            $editAssetCommand = $this->namingConventionEditAssetCommandFactory->create(
+                $normalizedAsset,
+                $assetFamilyIdentifier
+            );
+        } catch (NamingConventionException $e) {
+            if ($e->namingConventionAbortOnError()) {
+                throw new UnprocessableEntityHttpException(
+                    sprintf('Error during naming convention execution: %s', $e->getMessage())
+                );
+            }
+
+            // The naming convention execution can not be executed but we continue.
+            $namingConventionEditCommand = null;
+            // @TODO AST-205: How do we display the warning message to the end user?
+
+            return null;
+        }
+
+        $violations = $this->assetDataValidator->validate($editAssetCommand);
+        if ($violations->count() > 0) {
+            throw new ViolationHttpException(
+                $violations,
+                'The asset data computed with naming convention do not comply with the business rules.'
+            );
+        }
+
+        return $editAssetCommand;
     }
 }
