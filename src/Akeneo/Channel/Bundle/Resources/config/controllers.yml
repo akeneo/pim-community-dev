@@ -70,4 +70,3 @@ services:
             - '@request_stack'
             - '@router'
             - '@pim_catalog.saver.currency'
-            - '@translator'

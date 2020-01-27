@@ -198,6 +198,6 @@ SQL;
         // Adds chars if less than 3 and substr some if more than 97
         $truncated = substr(str_pad($label, 3, '_'), 0, 97);
 
-        return preg_replace('/[^A-Za-z0-9\-]/', '_', $truncated);
+        return preg_replace('/[^A-Za-z0-9]/', '_', $truncated);
     }
 }

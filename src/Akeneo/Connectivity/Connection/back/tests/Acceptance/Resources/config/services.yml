@@ -20,3 +20,13 @@ services:
 
     akeneo_connectivity.connection.service.file_info.does_image_exist:
         class: Akeneo\Connectivity\Connection\Infrastructure\FileInfo\Fake\DoesImageExistQuery
+
+    akeneo_connectivity.connection.service.client.regenerate_client_secret:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fake\FakeRegenerateClientSecret
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
+
+    akeneo_connectivity.connection.service.user.regenerate_user_password:
+        class: Akeneo\Connectivity\Connection\Infrastructure\User\Fake\RegenerateUserPassword
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.connection'

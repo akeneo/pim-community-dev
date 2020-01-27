@@ -466,7 +466,7 @@ Akeneo\Pim\Structure\Component\Model\AttributeOption:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: Option code may contain only letters, numbers and underscores
             - Length:
-                max: 255
+                max: 100
         attribute:
             - NotBlank: ~
             - Valid: ~

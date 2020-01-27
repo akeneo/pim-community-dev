@@ -61,6 +61,7 @@ connectivity-connection-coupling-back:
 
 connectivity-connection-static-analysis-back:
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Connectivity/Connection/back/tests/phpstan.neon
+	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Connectivity/Connection/back/tests/phpstan-infra.neon
 
 connectivity-connection-unit-back:
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/

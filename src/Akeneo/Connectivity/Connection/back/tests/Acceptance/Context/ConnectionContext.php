@@ -8,6 +8,10 @@ use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnection
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsHandler;
@@ -35,8 +39,14 @@ class ConnectionContext implements Context
     private $createConnectionHandler;
     private $deleteConnectionHandler;
     private $updateConnectionHandler;
-    private $violations;
+    private $regenerateConnectionSecretHandler;
+    private $regenerateConnectionPasswordHandler;
     private $userPermissionsRepository;
+
+    // Stateful properties
+    private $violations;
+    private $oldSecret;
+    private $oldPassword;
 
     public function __construct(
         InMemoryConnectionRepository $connectionRepository,
@@ -45,6 +55,8 @@ class ConnectionContext implements Context
         CreateConnectionHandler $createConnectionHandler,
         DeleteConnectionHandler $deleteConnectionHandler,
         UpdateConnectionHandler $updateConnectionHandler,
+        RegenerateConnectionSecretHandler $regenerateConnectionSecretHandler,
+        RegenerateConnectionPasswordHandler $regenerateConnectionPasswordHandler,
         InMemoryUserPermissionsRepository $userPermissionsRepository
     ) {
         $this->connectionRepository = $connectionRepository;
@@ -53,6 +65,8 @@ class ConnectionContext implements Context
         $this->createConnectionHandler = $createConnectionHandler;
         $this->deleteConnectionHandler = $deleteConnectionHandler;
         $this->updateConnectionHandler = $updateConnectionHandler;
+        $this->regenerateConnectionSecretHandler = $regenerateConnectionSecretHandler;
+        $this->regenerateConnectionPasswordHandler = $regenerateConnectionPasswordHandler;
         $this->userPermissionsRepository = $userPermissionsRepository;
     }
 
@@ -90,6 +104,9 @@ class ConnectionContext implements Context
      */
     public function iCreateTheConnection(string $flowType, string $label): void
     {
+        if ($label === '<100chars>') {
+            $label = str_pad('A', 120, 'a');
+        }
         try {
             $command = new CreateConnectionCommand(self::slugify($label), $label, self::defineFlowType($flowType));
             $this->createConnectionHandler->handle($command);
@@ -119,6 +136,9 @@ class ConnectionContext implements Context
         $data = $table->getColumnsHash()[0];
 
         $newLabel = $data['label'] ?? $label;
+        if ($newLabel === '<100chars>') {
+            $newLabel = str_pad('A', 120, 'a');
+        }
         if (!isset($data['flow_type']) || empty($data['flow_type'])) {
             throw new \InvalidArgumentException('You need to provide a new flow type to update the Connection.');
         }
@@ -150,6 +170,38 @@ class ConnectionContext implements Context
         $query = new FindAConnectionQuery(self::slugify($label));
         $connection = $this->findAConnectionHandler->handle($query);
         Assert::eq($connection->label(), $label);
+    }
+
+    /**
+     * @When I regenerate the :label Connection secret
+     */
+    public function iRegenerateTheConnectionSecret(string $label): void
+    {
+        $code = self::slugify($label);
+
+        if (!isset($this->connectionRepository->dataRows[$code])) {
+            throw new \InvalidArgumentException(sprintf('Connection "%s" does not exist!', $code));
+        }
+        $this->oldSecret = $this->connectionRepository->dataRows[$code]['secret'];
+
+        $command = new RegenerateConnectionSecretCommand($code);
+        $this->regenerateConnectionSecretHandler->handle($command);
+    }
+
+    /**
+     * @When I regenerate the :label Connection password
+     */
+    public function iRegenerateTheConnectionPassword(string $label): void
+    {
+        $code = self::slugify($label);
+
+        if (!isset($this->connectionRepository->dataRows[$code])) {
+            throw new \InvalidArgumentException(sprintf('Connection "%s" does not exist!', $code));
+        }
+        $this->oldPassword = $this->connectionRepository->dataRows[$code]['password'];
+
+        $command = new RegenerateConnectionPasswordCommand($code);
+        $this->regenerateConnectionPasswordHandler->handle($command);
     }
 
     /**
@@ -266,18 +318,102 @@ class ConnectionContext implements Context
      */
     public function iShouldHaveBeenWarnThatTheCodeIsUnique()
     {
+        if (!$this->assertConstraintViolation('code', 'akeneo_connectivity.connection.connection.constraint.code.must_be_unique')) {
+            throw new \Exception('No violation about code uniqueness received.');
+        }
+    }
+
+    /**
+     * @Then I should have been warn the :field should be longer than 3 chars
+     */
+    public function iShouldHaveBeenWarnTheShouldBeLongerThan3Chars(string $field)
+    {
+        if (!$this->assertConstraintViolation($field, 'akeneo_connectivity.connection.connection.constraint.'.$field.'.too_short')) {
+            throw new \Exception(sprintf('No violation about %s length received.', $field));
+        }
+    }
+
+    /**
+     * @Then I should have been warn the :field should be smaller than 100 chars
+     */
+    public function iShouldHaveBeenWarnTheShouldBeSmallerThan100Chars(string $field): void
+    {
+        if (!$this->assertConstraintViolation($field, 'akeneo_connectivity.connection.connection.constraint.'.$field.'.too_long')) {
+            throw new \Exception(sprintf('No violation about %s length received.', $field));
+        }
+    }
+
+    /**
+     * @Then I should have been warn the :field should not be empty
+     */
+    public function iShouldHaveBeenWarnTheShouldNotBeEmpty(string $field)
+    {
+        if (!$this->assertConstraintViolation($field, 'akeneo_connectivity.connection.connection.constraint.'.$field.'.required')) {
+            throw new \Exception(sprintf('No violation about empty %s received.', $field));
+        }
+    }
+
+    /**
+     * @Then I should have been warn the code is invalid
+     */
+    public function iShouldHaveBeenWarnTheCodeIsInvalid()
+    {
+        if (!$this->assertConstraintViolation('code', 'akeneo_connectivity.connection.connection.constraint.code.invalid')) {
+            throw new \Exception('No violation about invalid code received.');
+        }
+    }
+
+    /**
+     * @Then I should have been warn the flow type is invalid
+     */
+    public function iShouldHaveBeenWarnTheFlowTypeIsInvalid()
+    {
+        if (!$this->assertConstraintViolation('flowType', 'akeneo_connectivity.connection.connection.constraint.flow_type.invalid')) {
+            throw new \Exception('No violation about invalid flow type received.');
+        }
+    }
+
+    /**
+     * @Then the :label Connection secret should have been changed
+     */
+    public function theConnectionSecretShouldHaveBeenChanged(string $label): void
+    {
+        $code = self::slugify($label);
+
+        if (!isset($this->connectionRepository->dataRows[$code])) {
+            throw new \InvalidArgumentException(sprintf('Connection "%s" does not exist!', $code));
+        }
+        $newSecret = $this->connectionRepository->dataRows[$code]['secret'];
+
+        Assert::notEq($this->oldSecret, $newSecret);
+    }
+
+    /**
+     * @Then the :label Connection password should have been changed
+     */
+    public function theConnectionPasswordShouldHaveBeenChanged(string $label): void
+    {
+        $code = self::slugify($label);
+
+        if (!isset($this->connectionRepository->dataRows[$code])) {
+            throw new \InvalidArgumentException(sprintf('Connection "%s" does not exist!', $code));
+        }
+        $newPassword = $this->connectionRepository->dataRows[$code]['password'];
+
+        Assert::notEq($this->oldPassword, $newPassword);
+    }
+
+    private function assertConstraintViolation(string $propertyPath, string $message): bool
+    {
         Assert::isInstanceOf($this->violations, ConstraintViolationListException::class);
 
         foreach ($this->violations->getConstraintViolationList() as $violation) {
-            if (
-                'code' === $violation->getPropertyPath() &&
-                'akeneo_connectivity.connection.connection.constraint.code.must_be_unique' === $violation->getMessage()
-            ) {
-                return;
+            if ($propertyPath === $violation->getPropertyPath() && $message === $violation->getMessage()) {
+                return true;
             }
         }
 
-        throw new \Exception('No exception about code uniqueness received.');
+        return false;
     }
 
     /**
@@ -317,7 +453,7 @@ class ConnectionContext implements Context
                 return FlowType::OTHER;
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Incorrect flow type "%s"', $flowType));
+                return $flowType;
         }
     }
 }

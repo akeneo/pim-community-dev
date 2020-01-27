@@ -44,6 +44,7 @@ final class ValidateProperties
     public function validate(array $search): void
     {
         foreach ($search as $propertyCode => $filters) {
+            $propertyCode = (string) $propertyCode;
             foreach ($filters as $filter) {
                 if (!(
                     $this->isProductField($propertyCode) ||

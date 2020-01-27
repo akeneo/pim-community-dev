@@ -35,6 +35,21 @@ class ValidatePropertiesSpec extends ObjectBehavior
         ]]);
     }
 
+    function it_does_not_throw_exception_if_attribute_code_is_numeric(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        AttributeInterface $attribute
+    ) {
+        $attributeRepository->findOneByIdentifier('1000')->willReturn($attribute)->shouldBeCalled();
+        $this->shouldNotThrow(InvalidQueryException::class)->during(
+            'validate',
+            [
+                [
+                    1000 => [['operator' => Operators::IN_LIST]]
+                ]
+            ]
+        );
+    }
+
     function it_throws_exception_if_filter_is_not_a_field_neither_an_attribute(
         IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
