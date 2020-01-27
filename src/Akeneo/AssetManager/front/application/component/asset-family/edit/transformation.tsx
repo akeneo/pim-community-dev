@@ -131,7 +131,7 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
             style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Asset.svg")'}}
           />
           <div className="AknDescriptionHeader-title">
-            {__('pim_asset_manager.asset_family.transformations.help.title')}
+            👏 {__('pim_asset_manager.asset_family.transformations.help.title')}
             <div className="AknDescriptionHeader-description">
               {__('pim_asset_manager.asset_family.transformations.help.description')}
               <br />

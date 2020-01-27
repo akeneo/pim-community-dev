@@ -134,12 +134,15 @@ class CreateOrUpdateAssetAction
             $responseStatusCode = Response::HTTP_CREATED;
             ($this->createAssetHandler)($createAssetCommand);
             if (null !== $namingConventionEditCommand) {
-                ($this->editAssetHandler)($namingConventionEditCommand);
+                $editAssetCommand->editAssetValueCommands = array_merge($editAssetCommand->editAssetValueCommands, $namingConventionEditCommand->editAssetValueCommands);
             }
-            $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
-        }
 
-        ($this->editAssetHandler)($editAssetCommand);
+            ($this->editAssetHandler)($editAssetCommand);
+
+            $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
+        } else {
+            ($this->editAssetHandler)($editAssetCommand);
+        }
 
         return $this->createResponse($responseStatusCode, $assetFamilyIdentifier, $assetCode);
     }

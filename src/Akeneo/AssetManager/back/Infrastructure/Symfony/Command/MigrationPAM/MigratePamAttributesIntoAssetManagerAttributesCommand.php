@@ -17,7 +17,6 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -100,7 +99,7 @@ SQL;
         $sqlCount = <<<SQL
 SELECT COUNT(1)
 FROM pim_catalog_attribute 
-WHERE attribute_type='pim_assets_collection'
+WHERE attribute_type='pim_assets_collection' OR attribute_type='pim_catalog_asset_collection'
 AND code IN (:attributeCodes)
 SQL;
         $statement = $this->connection->executeQuery($sqlCount,
@@ -112,7 +111,7 @@ SQL;
         $sql = <<<SQL
 UPDATE pim_catalog_attribute 
 SET attribute_type='pim_catalog_asset_collection', properties=:properties
-WHERE attribute_type='pim_assets_collection'
+WHERE attribute_type='pim_assets_collection' OR attribute_type='pim_catalog_asset_collection'
 AND code IN (:attributeCodes)
 SQL;
 
