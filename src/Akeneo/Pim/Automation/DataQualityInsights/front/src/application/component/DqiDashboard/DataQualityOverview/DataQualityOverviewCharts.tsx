@@ -115,9 +115,9 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, timePeriod, f
             <Fragment key={i}>
               <DataQualityOverviewChartHeader axisName={axisName} displayLegend={i === 1}/>
               <div className='AknDataQualityInsights-chart'>
-                {timePeriod === 'daily' && (<AxisChart dataset={axisDataset} padding={71} barRatio={1.49} dateFormatCallback={dailyCallback}/>)}
-                {timePeriod === 'weekly' && (<AxisChart dataset={axisDataset} padding={125} barRatio={1.99} dateFormatCallback={weeklyCallback}/>)}
-                {timePeriod === 'monthly' && (<AxisChart dataset={axisDataset} padding={80} barRatio={1.59} dateFormatCallback={monthlyCallback}/>)}
+                {timePeriod === 'daily' && (<AxisChart dataset={axisDataset} padding={63} barRatio={1.29} dateFormatCallback={dailyCallback}/>)}
+                {timePeriod === 'weekly' && (<AxisChart dataset={axisDataset} padding={117} barRatio={1.85} dateFormatCallback={weeklyCallback}/>)}
+                {timePeriod === 'monthly' && (<AxisChart dataset={axisDataset} padding={73} barRatio={1.42} dateFormatCallback={monthlyCallback}/>)}
               </div>
             </Fragment>
           )
