@@ -22,11 +22,11 @@ describe('Translate', () => {
 
         const component = create(
             <TranslateContext.Provider value={translate}>
-                <Translate id='hello.world' count={9} placeholders={{count: 9}} />
+                <Translate id='hello.world' count={9} placeholders={{count: '9'}} />
             </TranslateContext.Provider>
         );
 
-        expect(translate).toBeCalledWith('hello.world', {count: 9}, 9);
+        expect(translate).toBeCalledWith('hello.world', {count: '9'}, 9);
         expect(component.toJSON()).toMatchSnapshot();
     });
 });

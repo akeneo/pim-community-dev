@@ -13,7 +13,7 @@ Array [
     <div
       className="sc-kEYyzF uXDi"
     >
-      akeneo_connectivity.connection.connection_count
+      akeneo_connectivity.connection.connection_count?count=0
     </div>
   </header>,
   <div

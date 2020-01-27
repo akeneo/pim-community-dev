@@ -14,7 +14,7 @@ exports[`Connection should render 1`] = `
       <img
         alt="Google Shopping"
         className="sc-bxivhb fHwuCK AknImage-display"
-        src="pim_enrich_media_show"
+        src="pim_enrich_media_show?filename=a%252Fb%252Fc%252Fpath.jpg&filter=thumbnail"
       />
     </div>
   </div>
