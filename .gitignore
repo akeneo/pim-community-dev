@@ -29,6 +29,7 @@ npm-debug.log
 docker-compose.override.yml
 .web-server-pid
 package-lock.json
+.yarn/cache/
 .yarn-metadata.json
 yarn-error.log
 coverage/*

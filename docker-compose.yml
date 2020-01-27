@@ -38,12 +38,19 @@ services:
       - 'pim'
 
   node:
-    image: 'akeneo/node:10'
+    image: 'node:10'
     environment:
-      YARN_CACHE_FOLDER: '/home/node/.yarn'
+      YARN_CACHE_FOLDER: '${HOST_YARN_CACHE_FOLDER:-./.yarn/cache}'
     volumes:
       - './:/srv/pim'
-      - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:/home/node/.yarn'
+    working_dir: '/srv/pim'
+
+  puppeteer:
+    build:
+      dockerfile: './docker/puppeteer.dockerfile'
+      context: './'
+    volumes:
+      - './:/srv/pim:ro'
     working_dir: '/srv/pim'
     networks:
       - 'pim'

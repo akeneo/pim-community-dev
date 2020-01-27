@@ -46,12 +46,12 @@ acceptance-back: connectivity-connection-acceptance-back
 
 .PHONY: acceptance-front
 acceptance-front:
-	MAX_RANDOM_LATENCY_MS=100 $(YARN_RUN) acceptance run acceptance ./tests/features
+	MAX_RANDOM_LATENCY_MS=100 $(DOCKER_COMPOSE) run --rm puppeteer npm run-script acceptance ./tests/features
 
 ### Integration tests
 .PHONY: integration-front
 integration-front:
-	$(YARN_RUN) integration
+	$(DOCKER_COMPOSE) run --rm puppeteer npm run-script integration
 
 .PHONY: integration-back
 integration-back: var/tests/phpunit connectivity-connection-integration-back
