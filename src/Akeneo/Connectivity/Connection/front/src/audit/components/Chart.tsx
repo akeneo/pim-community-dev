@@ -2,18 +2,14 @@ import React from 'react';
 import {DomainTuple, VictoryAxis, VictoryChart, VictoryLine, VictoryScatter, VictoryThemeDefinition} from 'victory';
 import {darkGrey, grey, lightGrey, lightGreyStroke, purple} from '../event-chart-themes';
 
-interface VictoryStyle {
-    [property: string]: any;
-}
-
-const yAxeTheme: VictoryStyle = {
+const yAxeTheme = {
     tickLabels: {
         fill: 'none',
     },
     axis: lightGreyStroke,
     grid: lightGreyStroke,
 };
-const daysAxeTheme: VictoryStyle = {
+const daysAxeTheme = {
     tickLabels: {
         fontSize: 11,
         fontFamily: 'Lato',
@@ -27,7 +23,7 @@ const daysAxeTheme: VictoryStyle = {
         stroke: 'none',
     },
 };
-const gridYAxesTheme: VictoryStyle = {
+const gridYAxesTheme = {
     tickLabels: {
         fill: 'none',
     },
