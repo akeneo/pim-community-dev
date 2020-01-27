@@ -13,17 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\ResultStatement;
 
 /**
  * Example of a JSON string stored in the column "rates" of a projection entry:
@@ -92,78 +86,24 @@ use Doctrine\DBAL\Driver\ResultStatement;
  *          }
  *        }
  *      }
- *    }
+ *    },
+ *    "average_ranks": {
+ *      "enrichment": {
+ *        "en_US": "rank_2",
+ *        "fr_FR": "rank_3"
+ *      }
+ *    },
+ *    "average_ranks_consolidated_at" => "2020-01-24 14:42:35"
  *  }
  */
 final class DashboardRatesProjectionRepository implements DashboardRatesProjectionRepositoryInterface
 {
-    public const TYPE_CATALOG_PROJECTION = 'catalog';
-    public const TYPE_CATEGORY_PROJECTION = 'category';
-    public const TYPE_FAMILY_PROJECTION = 'family';
-
     /** @var Connection */
     private $db;
 
     public function __construct(Connection $db)
     {
         $this->db = $db;
-    }
-
-    public function findCatalogProjection(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod): ?Read\DashboardRates
-    {
-        $sql = <<<'SQL'
-SELECT rates
-FROM pimee_data_quality_insights_dashboard_rates_projection
-WHERE type = :type
-SQL;
-
-        $stmt = $this->db->executeQuery($sql, ['type' => self::TYPE_CATALOG_PROJECTION]);
-
-        return $this->buildResult($stmt, $channel, $locale, $timePeriod);
-    }
-
-    public function findCategoryProjection(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod, CategoryCode $category): ?Read\DashboardRates
-    {
-        $sql = <<<'SQL'
-SELECT rates
-FROM pimee_data_quality_insights_dashboard_rates_projection
-WHERE type = :type
-AND code = :code
-SQL;
-
-        $stmt = $this->db->executeQuery($sql, [
-            'type' => self::TYPE_CATEGORY_PROJECTION,
-            'code' => $category,
-        ]);
-
-        return $this->buildResult($stmt, $channel, $locale, $timePeriod);
-    }
-
-    public function findFamilyProjection(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod, FamilyCode $family): ?Read\DashboardRates
-    {
-        $sql = <<<'SQL'
-SELECT rates
-FROM pimee_data_quality_insights_dashboard_rates_projection
-WHERE type = :type
-AND code = :code
-SQL;
-
-        $stmt = $this->db->executeQuery($sql, [
-            'type' => self::TYPE_FAMILY_PROJECTION,
-            'code' => $family,
-        ]);
-
-        return $this->buildResult($stmt, $channel, $locale, $timePeriod);
-    }
-
-    private function buildResult(ResultStatement $stmt, ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod): ?Read\DashboardRates
-    {
-        $result = $stmt->fetchColumn(0);
-        if ($result === null || $result === false) {
-            return null;
-        }
-
-        return new Read\DashboardRates(json_decode($result, true), $channel, $locale, $timePeriod);
     }
 
     public function save(Write\DashboardRatesProjection $ratesProjection): void
@@ -177,8 +117,10 @@ SQL;
         $this->db->executeQuery($query, [
             'type' => $ratesProjection->getType(),
             'code' => $ratesProjection->getCode(),
-            'rates' => json_encode($ratesProjection->getRates())
+            'rates' => json_encode($ratesProjection->getRanksDistributionsPerTimePeriod())
         ]);
+
+        $this->saveAverageRanks($ratesProjection);
     }
 
     public function removeRates(TimePeriod $timePeriod, ConsolidationDate $date): void
@@ -191,5 +133,29 @@ SET rates = JSON_REMOVE(rates, $pathToRemove)
 SQL;
 
         $this->db->executeQuery($query);
+    }
+
+    private function saveAverageRanks(Write\DashboardRatesProjection $ratesProjection): void
+    {
+        $query = <<<SQL
+UPDATE pimee_data_quality_insights_dashboard_rates_projection
+SET rates = JSON_MERGE_PATCH(rates, :rates)
+WHERE type = :type AND code = :code 
+  AND (
+      NOT JSON_CONTAINS_PATH(rates, 'one', '$.average_ranks_consolidated_at')
+      OR JSON_UNQUOTE(JSON_EXTRACT(rates, '$.average_ranks_consolidated_at')) < :consolidated_at
+  );
+SQL;
+        $rates = [
+            'average_ranks' => $ratesProjection->getAverageRanks(),
+            'average_ranks_consolidated_at' => $ratesProjection->getConsolidationDate()->format('Y-m-d H:i:s')
+        ];
+
+        $this->db->executeQuery($query, [
+            'type' => $ratesProjection->getType(),
+            'code' => $ratesProjection->getCode(),
+            'rates' => json_encode($rates),
+            'consolidated_at' => $ratesProjection->getConsolidationDate()->format('Y-m-d H:i:s')
+        ]);
     }
 }

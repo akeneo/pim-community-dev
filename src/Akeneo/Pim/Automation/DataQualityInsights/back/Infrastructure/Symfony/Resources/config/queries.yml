@@ -65,6 +65,10 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetDashboardRatesQuery:
+        arguments:
+            - '@database_connection'
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAverageRanksQuery:
         arguments:
             - '@database_connection'

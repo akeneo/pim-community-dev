@@ -55,12 +55,16 @@ final class DashboardRatesProjection
         return $this->code;
     }
 
-    public function getRates(): array
+    public function getConsolidationDate(): ConsolidationDate
+    {
+        return $this->consolidationDate;
+    }
+
+    public function getRanksDistributionsPerTimePeriod(): array
     {
         $day = $this->consolidationDate->format();
         $ranksDistribution = $this->ranksDistributionCollection->toArray();
 
-        $rates['average_rank'] = $this->ranksDistributionCollection->getAverageRanks();
         $rates[TimePeriod::DAILY][$day] = $ranksDistribution;
 
         if ($this->consolidationDate->isLastDayOfWeek()) {
@@ -76,5 +80,10 @@ final class DashboardRatesProjection
         }
 
         return $rates;
+    }
+
+    public function getAverageRanks(): array
+    {
+        return $this->ranksDistributionCollection->getAverageRanks();
     }
 }

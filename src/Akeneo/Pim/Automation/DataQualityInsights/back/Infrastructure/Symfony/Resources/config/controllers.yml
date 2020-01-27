@@ -20,7 +20,7 @@ services:
         public: true
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetDashboardRatesQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardWidgetFamiliesController:
         public: true

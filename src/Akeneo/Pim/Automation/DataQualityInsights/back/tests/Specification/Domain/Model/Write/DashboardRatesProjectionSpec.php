@@ -22,7 +22,7 @@ use PhpSpec\ObjectBehavior;
 
 final class DashboardRatesProjectionSpec extends ObjectBehavior
 {
-    public function it_returns_the_rates_for_a_common_day()
+    public function it_returns_the_ranks_distributions_for_a_common_day()
     {
         $consolidationDate = new ConsolidationDate(new \DateTimeImmutable('2020-01-20'));
         $ranksDistributionCollection = $this->buildRandomRanksDistributionCollection();
@@ -34,15 +34,14 @@ final class DashboardRatesProjectionSpec extends ObjectBehavior
             $ranksDistributionCollection
         );
 
-        $this->getRates()->shouldBeLike([
-            'average_rank' => $ranksDistributionCollection->getAverageRanks(),
+        $this->getRanksDistributionsPerTimePeriod()->shouldBeLike([
             TimePeriod::DAILY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray(),
             ]
         ]);
     }
 
-    public function it_returns_the_rates_for_a_last_day_of_a_week()
+    public function it_returns_the_ranks_distributions_for_a_last_day_of_a_week()
     {
         $consolidationDate = new ConsolidationDate(new \DateTimeImmutable('2020-01-19'));
         $ranksDistributionCollection = $this->buildRandomRanksDistributionCollection();
@@ -54,8 +53,7 @@ final class DashboardRatesProjectionSpec extends ObjectBehavior
             $ranksDistributionCollection
         );
 
-        $this->getRates()->shouldBeLike([
-            'average_rank' => $ranksDistributionCollection->getAverageRanks(),
+        $this->getRanksDistributionsPerTimePeriod()->shouldBeLike([
             TimePeriod::DAILY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray(),
             ],
@@ -65,7 +63,7 @@ final class DashboardRatesProjectionSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_returns_the_rates_for_a_last_day_of_a_month()
+    public function it_returns_the_ranks_distributions_for_a_last_day_of_a_month()
     {
         $consolidationDate = new ConsolidationDate(new \DateTimeImmutable('2020-01-31'));
         $ranksDistributionCollection = $this->buildRandomRanksDistributionCollection();
@@ -77,8 +75,7 @@ final class DashboardRatesProjectionSpec extends ObjectBehavior
             $ranksDistributionCollection
         );
 
-        $this->getRates()->shouldBeLike([
-            'average_rank' => $ranksDistributionCollection->getAverageRanks(),
+        $this->getRanksDistributionsPerTimePeriod()->shouldBeLike([
             TimePeriod::DAILY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray(),
             ],
@@ -88,7 +85,7 @@ final class DashboardRatesProjectionSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_returns_the_rates_for_a_last_day_of_a_year()
+    public function it_returns_the_ranks_distributions_for_a_last_day_of_a_year()
     {
         $consolidationDate = new ConsolidationDate(new \DateTimeImmutable('2019-12-31'));
         $ranksDistributionCollection = $this->buildRandomRanksDistributionCollection();
@@ -100,8 +97,7 @@ final class DashboardRatesProjectionSpec extends ObjectBehavior
             $ranksDistributionCollection
         );
 
-        $this->getRates()->shouldBeLike([
-            'average_rank' => $ranksDistributionCollection->getAverageRanks(),
+        $this->getRanksDistributionsPerTimePeriod()->shouldBeLike([
             TimePeriod::DAILY => [
                 $consolidationDate->format() => $ranksDistributionCollection->toArray(),
             ],

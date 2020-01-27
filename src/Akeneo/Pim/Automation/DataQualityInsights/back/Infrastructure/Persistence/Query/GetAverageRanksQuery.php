@@ -42,8 +42,8 @@ final class GetAverageRanksQuery implements GetAverageRanksQueryInterface
 
     private function fetchByCodes(ChannelCode $channelCode, LocaleCode $localeCode, string $entityType, array $entityCodes): array
     {
-        $consistencyPath = sprintf('\'$.average_rank.consistency."%s"."%s"\'', $channelCode, $localeCode);
-        $enrichmentPath = sprintf('\'$.average_rank.enrichment."%s"."%s"\'', $channelCode, $localeCode);
+        $consistencyPath = sprintf('\'$.average_ranks.consistency."%s"."%s"\'', $channelCode, $localeCode);
+        $enrichmentPath = sprintf('\'$.average_ranks.enrichment."%s"."%s"\'', $channelCode, $localeCode);
 
         $query = <<<SQL
 SELECT

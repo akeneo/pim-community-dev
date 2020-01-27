@@ -13,24 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 
 interface DashboardRatesProjectionRepositoryInterface
 {
     public function save(Write\DashboardRatesProjection $dashboardRates): void;
-
-    public function findCatalogProjection(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod): ?Read\DashboardRates;
-
-    public function findCategoryProjection(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod, CategoryCode $category): ?Read\DashboardRates;
-
-    public function findFamilyProjection(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod, FamilyCode $family): ?Read\DashboardRates;
 
     public function removeRates(TimePeriod $timePeriod, ConsolidationDate $date): void;
 }

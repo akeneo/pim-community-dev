@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetDashboardRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
@@ -29,13 +29,13 @@ final class DashboardOverviewController
     /** @var FeatureFlag */
     private $featureFlag;
 
-    /** @var DashboardRatesProjectionRepositoryInterface */
-    private $dashboardRatesProjectionRepository;
+    /** @var GetDashboardRatesQueryInterface */
+    private $getDashboardRatesQuery;
 
-    public function __construct(FeatureFlag $featureFlag, DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository)
+    public function __construct(FeatureFlag $featureFlag, GetDashboardRatesQueryInterface $getDashboardRatesQuery)
     {
         $this->featureFlag = $featureFlag;
-        $this->dashboardRatesProjectionRepository = $dashboardRatesProjectionRepository;
+        $this->getDashboardRatesQuery = $getDashboardRatesQuery;
     }
 
     public function __invoke(Request $request, string $channel, string $locale, string $timePeriod)
@@ -46,12 +46,12 @@ final class DashboardOverviewController
 
         if ($request->query->has('category')) {
             $category = new CategoryCode($request->query->getAlnum('category'));
-            $rates = $this->dashboardRatesProjectionRepository->findCategoryProjection(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod), $category);
+            $rates = $this->getDashboardRatesQuery->byCategory(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod), $category);
         } elseif ($request->query->has('family')) {
             $family = new FamilyCode($request->query->getAlnum('family'));
-            $rates = $this->dashboardRatesProjectionRepository->findFamilyProjection(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod), $family);
+            $rates = $this->getDashboardRatesQuery->byFamily(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod), $family);
         } else {
-            $rates = $this->dashboardRatesProjectionRepository->findCatalogProjection(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod));
+            $rates = $this->getDashboardRatesQuery->byCatalog(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod));
         }
 
         if (empty($rates)) {
