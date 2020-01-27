@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9072: Add missing Reference Entities translations
+
 # 4.0.1 (2020-01-22)
 
 # 4.0.0 (2020-01-15)
