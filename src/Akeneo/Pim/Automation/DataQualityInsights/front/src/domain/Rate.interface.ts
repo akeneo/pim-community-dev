@@ -4,6 +4,8 @@ export default interface Rate {
   letterRate: string;
 }
 
+export const MAX_RATE = 100;
+
 export const RANK_1 = 'A';
 export const RANK_2 = 'B';
 export const RANK_3 = 'C';

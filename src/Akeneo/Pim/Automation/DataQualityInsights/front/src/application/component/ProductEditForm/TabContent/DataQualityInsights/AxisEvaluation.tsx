@@ -5,7 +5,7 @@ import Rate from "../../../Rate";
 import AllAttributesLink from "./AllAttributesLink";
 import {Evaluation, RANK_1, Recommendation} from "../../../../../domain";
 import CriteriaList from "./CriteriaList";
-import AxisEvaluationSuccess from "./AxisEvaluationSuccess";
+import AxisError from "./AxisError";
 
 interface AxisEvaluationProps {
   evaluation: Evaluation;
@@ -52,11 +52,12 @@ const AxisEvaluation: FunctionComponent<AxisEvaluationProps> = ({evaluation, axi
           )}
         </span>
       </header>
-      {isSuccess(evaluation) ? (
-        <AxisEvaluationSuccess axis={axis}/>
+      { evaluation.rate == "" ? (
+        <AxisError/>
       ) : (
-        <CriteriaList axis={axis} recommendations={recommendations} rates={rates}/>
+        <></>
       )}
+      <CriteriaList axis={axis} recommendations={recommendations} rates={rates}/>
     </div>
   )
 };

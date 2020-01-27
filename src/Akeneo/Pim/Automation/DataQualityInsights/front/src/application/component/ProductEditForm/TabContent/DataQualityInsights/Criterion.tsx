@@ -1,8 +1,7 @@
 import React, {FunctionComponent} from 'react';
 
 import RecommendationAttributesList from "./RecommendationAttributesList";
-import Attribute from './Attribute';
-import {Rate, RANK_1, Recommendation} from "../../../../../domain";
+import {Rate, MAX_RATE, Recommendation} from "../../../../../domain";
 
 const __ = require('oro/translator');
 
@@ -12,13 +11,12 @@ interface CriterionProps {
 }
 
 const isSuccess = (rate?: Rate) => {
-  return rate && rate.letterRate  === RANK_1;
+  return rate && rate.rate === MAX_RATE;
 };
-
 
 const Criterion: FunctionComponent<CriterionProps> = ({recommendation, rate}) => {
   const criterion = recommendation.criterion as string;
-  const attributes = recommendation.attributes || [];
+  const attributes = recommendation.attributes || [] as string[];
 
   return (
     <li className="AknVerticalList-item">
@@ -26,15 +24,16 @@ const Criterion: FunctionComponent<CriterionProps> = ({recommendation, rate}) =>
         <span className="CriterionRecommendationMessage">
           {__(`akeneo_data_quality_insights.product_evaluation.criteria.${criterion}.recommendation`)}:&nbsp;
         </span>
-        <span>
-          {isSuccess(rate) ? (
-            <Attribute code={''}>
-              {__(`akeneo_data_quality_insights.product_evaluation.messages.success.criterion`)}
-            </Attribute>
+          {isSuccess(rate) && attributes.length == 0 ? (
+              <div className="CriterionSuccessContainer">
+                <span className="CriterionSuccessMessage">
+                    {__(`akeneo_data_quality_insights.product_evaluation.messages.success.criterion`)}
+                </span>
+                <span className="CriterionSuccessTick"/>
+              </div>
           ) : (
             <RecommendationAttributesList criterion={criterion} attributes={attributes}/>
           )}
-        </span>
       </div>
     </li>
   );

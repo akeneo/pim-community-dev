@@ -42,11 +42,11 @@ akeneo_data_quality_insights:
             completeness_of_non_required_attributes:
                 recommendation: Non required attributes with missing values
             consistency_textarea_uppercase_words:
-                recommendation: Attributes with upper cases issues
+                recommendation: Attributes with uppercases issues
             consistency_textarea_lowercase_words:
-                recommendation: Attributes with lower cases issues
+                recommendation: Attributes with lowercases issues
             consistency_text_title_formatting:
-                recommendation: We found a suggestion to improve the title
+                recommendation: Attributes with formatting suggestions
             consistency_spelling:
                 recommendation: Attributes with spelling issues
         axis:
@@ -62,7 +62,7 @@ akeneo_data_quality_insights:
             error:
                 no_evaluation_for_axis: The rate could not be calculated. Please try again later.
             success:
-                criterion: None
+                criterion: It's all good.
     product_edit_form:
         attribute_filter:
             all_missing_attributes: All missing attributes
