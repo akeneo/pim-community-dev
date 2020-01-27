@@ -14,7 +14,7 @@ const useFetchWidgetFamilies = (channel: string, locale: string, familyCodes: st
         setWidgetFamilies(data);
       })();
     }
-  }, [familyCodes]);
+  }, [channel, locale, familyCodes]);
 
   return widgetFamilies;
 };

@@ -16,7 +16,7 @@ const useFetchWidgetCategories = (channel: string, locale: string, categories: C
         setWidgetCategories(data);
       })();
     }
-  }, [categories]);
+  }, [channel, locale, categories]);
 
   return widgetCategories;
 };
