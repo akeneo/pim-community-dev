@@ -47,7 +47,11 @@ class CreateClientIntegration extends TestCase
 
     private function fetchApiClients(): array
     {
-        return $this->getDatabaseConnection()->fetchAll('SELECT id, random_id, secret FROM pim_api_client');
+        $sqlQuery = <<<SQL
+SELECT id, random_id, secret, label, allowed_grant_types FROM pim_api_client
+SQL;
+
+        return $this->getDatabaseConnection()->fetchAll($sqlQuery);
     }
 
     private function getDatabaseConnection(): Connection
