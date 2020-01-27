@@ -3,6 +3,18 @@
 
 declare(strict_types = 1);
 
+/**
+ * This tools generate Rector configuration for moved classes and namespaces.
+ *
+ * This must be run from the root of a PIM repo, either CE or EE, while
+ * providing the Git tag from which we compare to have the list of
+ * moved classes and namespaces.
+ *
+ * For example, to get all classes and namespace moves from 3.2 compared
+ * to the current branch:
+ * $ std-build/migration/get_renamed_php_classes.php 3.2
+ */
+
 use Symfony\Component\Process\Process;
 
 require dirname(__DIR__).'/../vendor/autoload.php';
@@ -219,12 +231,3 @@ function extractNamespaceFromFile(string $filePath): string
 
     return $matches[1];
 }
-
-
-/*
-    TODO
-  - Adds config rector for Symfony ? => /rector/rector/config/set/symfony/symfony44.yaml
-
-  - Handle deleted class (from git history as well => get the list of them
-  - Uses Backward compatibility check for changes (but ignore deleted and moved class
-*/
