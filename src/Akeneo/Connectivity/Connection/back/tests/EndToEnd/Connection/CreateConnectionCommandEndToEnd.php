@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Connection;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Test\Integration\Configuration;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -16,13 +17,21 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class CreateConnectionCommandEndToEnd extends WebTestCase
 {
-    public function test_it_creates_a_connection(): void
+    /** @var Command */
+    private $command;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
         $kernel = static::createKernel();
         $application = new Application($kernel);
+        $this->command = $application->find('akeneo:connectivity-connection:create');
+    }
 
-        $command = $application->find('akeneo:connectivity-connection:create');
-        $commandTester = new CommandTester($command);
+    public function test_it_creates_a_connection(): void
+    {
+        $commandTester = new CommandTester($this->command);
         $commandTester->execute([
             'code' => 'magento',
         ]);
@@ -38,11 +47,7 @@ class CreateConnectionCommandEndToEnd extends WebTestCase
 
     public function test_it_fails_to_create_a_connection_with_a_too_short_code(): void
     {
-        $kernel = static::createKernel();
-        $application = new Application($kernel);
-
-        $command = $application->find('akeneo:connectivity-connection:create');
-        $commandTester = new CommandTester($command);
+        $commandTester = new CommandTester($this->command);
         $commandTester->execute([
             'code' => 'a',
         ]);
