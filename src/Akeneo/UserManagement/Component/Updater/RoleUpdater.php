@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\Util\ClassUtils;
+use Oro\Bundle\SecurityBundle\Acl\Permission\SingleAclMaskBuilderInterface;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 
 /**
@@ -94,10 +95,19 @@ class RoleUpdater implements ObjectUpdaterInterface
         foreach ($this->aclManager->getAllExtensions() as $extension) {
             $rootOid = $this->aclManager->getRootOid($extension->getExtensionKey());
             foreach ($extension->getAllMaskBuilders() as $maskBuilder) {
-                $fullAccessMask = $maskBuilder->hasConst('GROUP_SYSTEM')
-                    ? $maskBuilder->getConst('GROUP_SYSTEM')
-                    : $maskBuilder->getConst('GROUP_ALL');
-                $this->aclManager->setPermission($sid, $rootOid, $fullAccessMask, true);
+                if ($maskBuilder instanceof SingleAclMaskBuilderInterface) {
+                    $this->aclManager->setPermission(
+                        $sid,
+                        $maskBuilder->getOid(),
+                        $maskBuilder->getDefaultMask(),
+                        $maskBuilder->getDefaultGranting()
+                    );
+                } else {
+                    $fullAccessMask = $maskBuilder->hasConst('GROUP_SYSTEM')
+                        ? $maskBuilder->getConst('GROUP_SYSTEM')
+                        : $maskBuilder->getConst('GROUP_ALL');
+                    $this->aclManager->setPermission($sid, $rootOid, $fullAccessMask, true);
+                }
             }
         }
     }
