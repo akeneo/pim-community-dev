@@ -8,8 +8,6 @@ Feature: Import rules
     Given a "clothing" catalog configuration
     And I add the "french" locale to the "mobile" channel
     And I add the "french" locale to the "tablet" channel
-    And the following "sleeve_color" attribute reference data: yellow, blue, red, orange
-    And the following "sleeve_fabric" attribute reference data: chiffon, satin, wool, kevlar, leather, gore-tex, toile, cashmere
     And I am logged in as "Peter"
 
   Scenario: Successfully import a rule for "reference data" attributes
@@ -22,7 +20,7 @@ Feature: Import rules
                   operator: IN
                   value:
                     - red
-                    - orange
+                    - grizzly
                 - field:    sleeve_fabric.code
                   operator: IN
                   value:
@@ -56,7 +54,7 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then the row "set_reference_data" should contain the texts:
       | column    | value                                                                     |
-      | Condition | If sleeve_color.code in red, orange                                       |
+      | Condition | If sleeve_color.code in red, grizzly                                      |
       | Condition | If sleeve_fabric.code in kevlar, chiffon                                  |
       | Action    | Then yellow is set into sleeve_color                                      |
       | Action    | Then kevlar, chiffon, satin, wool is set into sleeve_fabric               |

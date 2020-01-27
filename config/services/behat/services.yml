@@ -1,3 +1,29 @@
 imports:
     - { resource: ../../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/pim/data_providers.yml }
     - { resource: ../../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/EndToEnd/Resources/config/behat/services.yml }
+
+services:
+    _defaults:
+        public: true
+
+    akeneo_legacy_behat_tests.loader.permission_cleaner:
+        class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Loader\PermissionCleaner'
+        arguments:
+            - '@database_connection'
+
+    akeneo_legacy_behat_tests.loader.reference_data_loader:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Loader\ReferenceDataLoader'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%kernel.bundles%'
+            - 'AcmeEnterpriseAppBundle'
+            - 'AcmeEnterprise\Bundle\AppBundle\Entity\Fabric'
+            - 'AcmeEnterprise\Bundle\AppBundle\Entity\Color'
+
+    akeneo_legacy_behat_tests.loader.ee_fixtures_loader:
+        class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Loader\FixturesLoader'
+        decorates: 'akeneo_legacy_behat_tests.loader.fixtures_loader'
+        decoration_inner_name: 'akeneo_legacy_behat_tests.loader.fixtures_loader.base'
+        arguments:
+            - '@akeneo_legacy_behat_tests.loader.fixtures_loader.base'
+            - '@akeneo_legacy_behat_tests.loader.permission_cleaner'
