@@ -251,7 +251,7 @@ const List = ({
               <HelperText>
                 {__('pim_asset_manager.asset_collection.helper.text')}
                 <br />
-                <Link href="https://help.akeneo.com/" target="_blank">
+                <Link href="https://help.akeneo.com/pim/v4/articles/manage-your-attributes.html" target="_blank">
                   {__('pim_asset_manager.asset_collection.helper.link')}
                 </Link>
               </HelperText>

@@ -14,7 +14,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import {AssetFamilySelector} from 'akeneoassetmanager/application/component/library/asset-family-selector';
 import {HeaderView} from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {getLabel} from 'pimui/js/i18n';
-import {MultipleButton, Button} from 'akeneoassetmanager/application/component/app/button';
+import {MultipleButton, Button, Buttons} from 'akeneoassetmanager/application/component/app/button';
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {CreateModal} from 'akeneoassetmanager/application/component/asset/create';
@@ -70,13 +70,6 @@ const Grid = styled.div`
   flex: 1;
   height: calc(100% - 136px);
   margin: 0 40px;
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  > :not(:first-child) {
-    margin-left: 10px;
-  }
 `;
 
 const SecondaryActions = ({
@@ -311,7 +304,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                   <HelperText>
                     {__('pim_asset_manager.asset_family.helper.no_asset_family.text')}
                     <br />
-                    <Link href="https://help.akeneo.com/" target="_blank">
+                    <Link href="https://help.akeneo.com/pim/v4/articles/what-about-assets.html" target="_blank">
                       {__('pim_asset_manager.asset_family.helper.no_asset_family.link')}
                     </Link>
                   </HelperText>

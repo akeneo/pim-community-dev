@@ -105,8 +105,18 @@ export const addAssetsToCollection = (assetCollection: AssetCode[], assetCodes: 
   return [...assetCollection, ...assetCodes];
 };
 
-export const removeAssetFromCollection = (assetCollection: AssetCode[], assetCodeToRemove: AssetCode): AssetCode[] => {
+export const removeAssetFromAssetCodeCollection = (
+  assetCollection: AssetCode[],
+  assetCodeToRemove: AssetCode
+): AssetCode[] => {
   return assetCollection.filter((assetCode: AssetCode) => assetCodeToRemove !== assetCode);
+};
+
+export const removeAssetFromAssetCollection = (
+  assetCollection: ListAsset[],
+  assetCodeToRemove: AssetCode
+): ListAsset[] => {
+  return assetCollection.filter((asset: ListAsset) => assetCodeToRemove !== asset.code);
 };
 
 export const isAssetInCollection = (assetCodeToLocate: AssetCode, assetCollection: AssetCode[]): boolean => {
@@ -130,11 +140,11 @@ export const getNextAssetCode = (assetCollection: AssetCode[], assetCode: AssetC
 };
 
 export const assetWillNotMoveInCollection = (
-  assetCollection: AssetCode[],
+  assetCollection: ListAsset[],
   asset: ListAsset,
   direction: MoveDirection
 ): boolean => {
-  const currentAssetPosition = assetCollection.indexOf(asset.code);
+  const currentAssetPosition = assetCollection.indexOf(asset);
 
   return (
     (0 === currentAssetPosition && direction === MoveDirection.Before) ||
@@ -148,11 +158,11 @@ export const getAssetCodes = (assetCollection: ListAsset[]): AssetCode[] => {
 };
 
 export const moveAssetInCollection = (
-  assetCollection: AssetCode[],
+  assetCollection: ListAsset[],
   asset: ListAsset,
   direction: MoveDirection
-): AssetCode[] => {
-  const currentAssetPosition = assetCollection.indexOf(asset.code);
+): ListAsset[] => {
+  const currentAssetPosition = assetCollection.indexOf(asset);
 
   // If asset already first, last or doesn't exists we do nothing
   if (assetWillNotMoveInCollection(assetCollection, asset, direction)) {
