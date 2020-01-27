@@ -1,5 +1,17 @@
 # 3.0.x
 
+# 3.0.64 (2020-01-21)
+
+# 3.0.63 (2020-01-10)
+
+# 3.0.62 (2020-01-03)
+
+## Bug fixes
+
+- PIM-9042: Fix message for product and product model update without permission
+
+# 3.0.61 (2019-12-19)
+
 # 3.0.60 (2019-12-13)
 
 # 3.0.59 (2019-12-09)

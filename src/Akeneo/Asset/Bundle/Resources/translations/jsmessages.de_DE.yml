@@ -15,8 +15,6 @@ pimee_product_asset:
         download: Herunterladen
         remove: Entfernen
         upload: Hochladen
-        yes: true
-        no: false
         assetRemoveConfirmationLabel: Sind Sie sicher, dass Sie dieses Asset löschen wollen?
     asset:
       not_empty: Code ist erforderlich. Feld darf nicht leer sein.

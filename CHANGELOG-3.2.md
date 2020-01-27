@@ -1,5 +1,39 @@
 # 3.2.x
 
+# 3.2.34 (2020-01-21)
+
+## Bug fixes
+
+- PIM-9060: Fix reference entity multiple links attribute data hydration
+
+# 3.2.33 (2020-01-20)
+
+## Bug fixes
+
+- PIM-9059: Fix catalog locale on user panel
+- PIM-9058: Fix search products API with filters on numeric attribute codes
+
+# 3.2.32 (2020-01-17)
+
+# 3.2.31 (2020-01-14)
+
+# 3.2.30 (2020-01-10)
+
+## Bug fixes
+
+- PIM-8923: Avoid product edit form tab switching when going from product model to products
+- PIM-9052: Display errors thrown by file upload
+
+# 3.2.29 (2020-01-03)
+
+## Bug fixes
+
+- PIM-9044: Fix product proposal count on datagrid
+
+# 3.2.28 (2019-12-31)
+
+# 3.2.27 (2019-12-19)
+
 # 3.2.26 (2019-12-16)
 
 - PIM-9019: Fix proposal counter not updating when approving changes
@@ -135,7 +169,7 @@
 
 ## Bug fixes
 
-- DAPI-366: Fix icon used for Franklin-Insights notifications 
+- DAPI-366: Fix icon used for Franklin-Insights notifications
 - GITHUB-10083: Fix proposal datagrid render when deleting values
 
 ## Technical improvement

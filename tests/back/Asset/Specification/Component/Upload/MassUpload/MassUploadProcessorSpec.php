@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Asset\Component\Upload\MassUpload;
 
 use Akeneo\Asset\Bundle\Event\AssetEvent;
+use Akeneo\Asset\Component\Model\Asset;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\ProcessedItem;
 use Akeneo\Asset\Component\ProcessedItemList;
@@ -218,8 +219,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         \SplFileInfo $importedFile8,
         \SplFileInfo $importedFile9,
         \SplFileInfo $importedFile10,
-        \SplFileInfo $importedFile11,
-        AssetInterface $asset
+        \SplFileInfo $importedFile11
     ) {
         $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
 
@@ -238,12 +238,13 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $importedFile10,
             $importedFile11
         ]);
-        $buildAsset->buildFromFile($importedFile)->willReturn($asset);
-        $asset->getId()->willReturn(42);
+        $buildAsset->buildFromFile(Argument::type(\SplFileInfo::class))->will(function() {
+            return new Asset();
+        });
 
-        $assetSaver->save($asset)->shouldBeCalled();
+        $assetSaver->save(Argument::type(Asset::class))->shouldBeCalledTimes(11);
 
-        $event = new AssetEvent($asset);
+        $event = new AssetEvent();
         $eventDispatcher
             ->dispatch(AssetEvent::POST_UPLOAD_FILES, Argument::type(AssetEvent::class))
             ->willReturn($event);
@@ -257,6 +258,6 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $processedFiles->count()->shouldReturn(11);
         $processedFiles->current()->getItem()->shouldReturn($importedFile);
         $processedFiles->current()->getState()->shouldReturn(ProcessedItem::STATE_SUCCESS);
-        $processedFiles->current()->getReason()->shouldReturn(UploadMessages::STATUS_UPDATED);
+        $processedFiles->current()->getReason()->shouldReturn(UploadMessages::STATUS_NEW);
     }
 }
