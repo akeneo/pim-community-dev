@@ -56,8 +56,6 @@ final class UpdateConnectionHandler
         $connection->setFlowType(new FlowType($command->flowType()));
         $connection->setImage(null !== $command->image() ? new ConnectionImage($command->image()) : null);
 
-
-
         $this->updateUserPermissions->execute(
             $connection->userId(),
             (int) $command->userRoleId(),

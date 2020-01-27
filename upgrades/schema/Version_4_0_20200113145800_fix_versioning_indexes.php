@@ -6,7 +6,7 @@ use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-class Version_4_0_202001131458_fix_versioning_indexes extends AbstractMigration
+class Version_4_0_20200113145800_fix_versioning_indexes extends AbstractMigration
 {
     public function up(Schema $schema)
     {

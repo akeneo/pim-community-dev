@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\DailyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
 use Doctrine\DBAL\Connection;
@@ -16,7 +15,6 @@ use Doctrine\DBAL\Connection;
  */
 class DbalSelectConnectionsEventCountByDayQuery implements SelectConnectionsEventCountByDayQuery
 {
-
     /** @var Connection */
     private $dbalConnection;
 
@@ -28,19 +26,25 @@ class DbalSelectConnectionsEventCountByDayQuery implements SelectConnectionsEven
     public function execute(string $eventType, string $startDate, string $endDate): array
     {
         $eventCountsDataPerConnection = $this->getPerConnection($startDate, $endDate, $eventType);
-        $eventCountsDataSum = $this->getSum($startDate, $endDate, $eventType);
-        $eventCounts = array_merge($eventCountsDataPerConnection, $eventCountsDataSum);
+        $eventCountsDataForAllConnections = $this->getForAllConnections($startDate, $endDate, $eventType);
+        $eventCounts = array_merge($eventCountsDataPerConnection, $eventCountsDataForAllConnections);
 
-        return $this->hydrateWeeklyEventCounts($eventCounts);
+        $weeklyEventCountsPerConnection = [];
+        foreach ($eventCounts as $code => $eventCount) {
+            $weeklyEventCountsPerConnection[$code] = new WeeklyEventCounts($code, $startDate, $endDate, $eventCount);
+        }
+
+        return $weeklyEventCountsPerConnection;
     }
 
-    private function getSum(
+    private function getForAllConnections(
         string $startDate,
         string $endDate,
         string $eventType
     ): array {
         $startDateTime = new \DateTime($startDate, new \DateTimeZone('UTC'));
         $endDateTime = new \DateTime($endDate, new \DateTimeZone('UTC'));
+
         $sqlQuery = <<<SQL
 SELECT connection_code as code, event_date, event_count
 FROM akeneo_connectivity_connection_audit
@@ -60,11 +64,7 @@ SQL;
             $result = [['code' => '<all>', 'event_date' => null, 'event_count' => null]];
         }
 
-        return $this->fillMissingDates(
-            $startDateTime,
-            $endDateTime,
-            $this->normalizeEventCountsData($result)
-        );
+        return $this->normalizeEventCountsData($result);
     }
 
     private function getPerConnection(
@@ -74,6 +74,7 @@ SQL;
     ): array {
         $startDateTime = new \DateTime($startDate, new \DateTimeZone('UTC'));
         $endDateTime = new \DateTime($endDate, new \DateTimeZone('UTC'));
+
         $sqlQuery = <<<SQL
 SELECT conn.code, audit.event_date, audit.event_count
 FROM akeneo_connectivity_connection conn
@@ -90,13 +91,16 @@ SQL;
 
         $result = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
 
-        return $this->fillMissingDates(
-            $startDateTime,
-            $endDateTime,
-            $this->normalizeEventCountsData($result)
-        );
+        return $this->normalizeEventCountsData($result);
     }
 
+    /**
+     * Return normalized data
+     * [
+     *  'bynder' => ['2020-01-02' => 12, '2020-01-03' => 10]
+     *  'magento' => ['2020-01-04' => 2]
+     * ]
+     */
     private function normalizeEventCountsData(array $dataRows): array
     {
         return array_reduce(
@@ -113,54 +117,5 @@ SQL;
             },
             []
         );
-    }
-
-    private function fillMissingDates(
-        \DateTime $start,
-        \DateTime $end,
-        array $eventCountsDataPerConnection
-    ): array {
-        $period = new \DatePeriod(
-            $start,
-            new \DateInterval('P1D'),
-            $end->modify('+1 day')
-        );
-
-        $days = [];
-        foreach ($period as $date) {
-            $days[] = $date->format('Y-m-d');
-        }
-
-        foreach ($eventCountsDataPerConnection as $connectionCode => $eventCounts) {
-            foreach ($days as $day) {
-                if (!isset($eventCounts[$day])) {
-                    $eventCountsDataPerConnection[$connectionCode][$day] = 0;
-                }
-            }
-        }
-
-        return $eventCountsDataPerConnection;
-    }
-
-    private function hydrateWeeklyEventCounts(array $eventCountsDataPerConnection): array
-    {
-        $weeklyEventCountsPerConnection = [];
-
-        foreach ($eventCountsDataPerConnection as $connectionCode => $eventCounts) {
-            $weeklyEventCounts = new WeeklyEventCounts($connectionCode);
-
-            foreach ($eventCounts as $eventDate => $eventCount) {
-                $weeklyEventCounts->addDailyEventCount(
-                    new DailyEventCount(
-                        $eventCount,
-                        new \DateTimeImmutable($eventDate, new \DateTimeZone('UTC'))
-                    )
-                );
-            }
-
-            $weeklyEventCountsPerConnection[] = $weeklyEventCounts;
-        }
-
-        return $weeklyEventCountsPerConnection;
     }
 }

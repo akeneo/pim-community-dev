@@ -51,7 +51,7 @@ class RequestParameters
         $currentValue = $this->get($type);
 
         if (is_array($currentValue) && is_array($value)) {
-            $parameters[$type] = array_merge_recursive($currentValue, $value);
+            $parameters[$type] = array_replace_recursive($currentValue, $value);
         } else {
             $parameters[$type] = $value;
         }

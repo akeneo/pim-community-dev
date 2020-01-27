@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 /**
  * This class will be removed after 4.0 version
  */
-class Version_4_0_20190917080512_remove_product_model_empty_raw_values_Integration extends TestCase
+class Version_4_0_20200117080512_remove_product_model_empty_raw_values_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
@@ -35,7 +35,7 @@ INSERT INTO pim_catalog_product_model VALUES
 SQL;
         $this->getConnection()->executeQuery($sql, ['familyId' => $familyId]);
 
-        $this->reExecuteMigration('_4_0_20190917080512_remove_product_model_empty_raw_values');
+        $this->reExecuteMigration($this->getMigrationLabel());
 
         $this->assertProductModelRawValuesEquals('pm1', '{}');
         $this->assertProductModelRawValuesEquals('pm2', '{}');
@@ -58,5 +58,14 @@ SQL;
             ['code' => $productModelCode]
         );
         $this->assertEquals($expectedRawValues, $result[0]);
+    }
+
+    private function getMigrationLabel(): string
+    {
+        $migration = (new \ReflectionClass($this))->getShortName();
+        $migration = str_replace('_Integration', '', $migration);
+        $migration = str_replace('Version', '', $migration);
+
+        return $migration;
     }
 }

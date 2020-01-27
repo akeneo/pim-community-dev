@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Query;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -16,7 +17,7 @@ class CountDailyEventsByConnectionQuerySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('product_created', '2019-12-10', '2019-12-12');
+        $this->beConstructedWith(EventTypes::PRODUCT_CREATED, '2019-12-10', '2019-12-12');
     }
 
     function it_is_initializable()
@@ -26,7 +27,7 @@ class CountDailyEventsByConnectionQuerySpec extends ObjectBehavior
 
     function it_returns_the_event_type()
     {
-        $this->eventType()->shouldReturn('product_created');
+        $this->eventType()->shouldReturn(EventTypes::PRODUCT_CREATED);
     }
 
     function it_returns_the_start_date()

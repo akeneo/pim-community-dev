@@ -54,7 +54,7 @@ class ClientSpec extends ObjectBehavior
 
     public function it_triggers_an_exception_if_the_indexation_of_a_document_has_failed($client)
     {
-        $client->index(['a document'])->willReturn(
+        $client->index(Argument::type('array'))->willReturn(
             [
                 'errors' => true,
                 'items' => [

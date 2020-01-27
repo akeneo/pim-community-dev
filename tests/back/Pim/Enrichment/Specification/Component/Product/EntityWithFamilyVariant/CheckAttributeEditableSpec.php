@@ -49,18 +49,6 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         $this->isEditable($product, $attribute)->shouldReturn(true);
     }
 
-    function it_throws_an_exception_if_the_variant_product_has_no_family_variant(
-        ProductInterface $product,
-        FamilyInterface $family,
-        AttributeInterface $attribute
-    ) {
-        $family->hasAttribute($attribute)->willReturn(true);
-        $product->getFamily()->willReturn($family);
-        $product->getFamilyVariant()->willReturn(null);
-
-        $this->shouldThrow(\Exception::class)->during('isEditable', [$product, $attribute]);
-    }
-
     function it_throws_an_exception_if_the_product_model_has_no_family_variant(
         ProductModelInterface $productModel,
         FamilyInterface $family,
@@ -81,8 +69,10 @@ class CheckAttributeEditableSpec extends ObjectBehavior
     ) {
         $family->hasAttribute($attribute)->willReturn(true);
         $product->getFamily()->willReturn($family);
+        $product->isVariant()->willReturn(true);
         $product->getFamilyVariant()->willReturn($familyVariant);
         $product->getVariationLevel()->willReturn(1);
+        $familyVariant->getCode()->willReturn("TV_Sony");
         $familyVariant->getVariantAttributeSet(1)->willReturn(null);
 
         $this->shouldThrow(\Exception::class)->during('isEditable', [$product, $attribute]);
@@ -98,6 +88,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         $productModel->getFamily()->willReturn($family);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $productModel->getVariationLevel()->willReturn(1);
+        $familyVariant->getCode()->willReturn("TV_Sony");
         $familyVariant->getVariantAttributeSet(1)->willReturn(null);
 
         $this->shouldThrow(\Exception::class)->during('isEditable', [$productModel, $attribute]);

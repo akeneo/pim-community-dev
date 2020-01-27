@@ -23,10 +23,8 @@ class CountDailyEventsByConnectionHandler
 
     public function handle(CountDailyEventsByConnectionQuery $query): array
     {
-        $connectionEventCounts = $this
+        return $this
             ->selectConnectionsEventCountByDayQuery
             ->execute($query->eventType(), $query->startDate(), $query->endDate());
-
-        return $connectionEventCounts;
     }
 }

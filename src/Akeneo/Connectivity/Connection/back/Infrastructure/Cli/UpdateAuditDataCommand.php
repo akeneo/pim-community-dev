@@ -36,7 +36,7 @@ class UpdateAuditDataCommand extends Command
         $this->selectEventDatesToRefreshQuery = $selectEventDatesToRefreshQuery;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $datesToRefresh = $this->selectEventDatesToRefreshQuery->execute();
         if (!in_array(date('Y-m-d'), $datesToRefresh)) {
@@ -50,5 +50,7 @@ class UpdateAuditDataCommand extends Command
             $command = new UpdateProductEventCountCommand($datetime->format('Y-m-d'));
             $this->updateProductEventCountHandler->handle($command);
         }
+
+        return 0;
     }
 }

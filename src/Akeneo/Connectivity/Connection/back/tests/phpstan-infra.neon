@@ -1,0 +1,4 @@
+parameters:
+    level: 1
+    paths:
+        - %rootDir%/../../../src/Akeneo/Connectivity/Connection/back/Infrastructure

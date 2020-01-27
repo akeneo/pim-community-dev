@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *  - recompute completeness and index the trees for those product model codes
  *  - remove the  "compute product models descendants" future jobs in DB
  */
-final class Version_4_0_20191004145507_remove_compute_model_descendant_jobs extends AbstractMigration implements
+final class Version_4_0_20200117145507_remove_compute_model_descendant_jobs extends AbstractMigration implements
     ContainerAwareInterface
 {
     /** @var ContainerInterface */
