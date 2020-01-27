@@ -136,6 +136,48 @@ final class DemoHelperCommand extends Command
 
         $results = $statement->fetchAll();
 
+        $idealCatalogRates = [
+            'enrichment' => [
+                0 => [ 'rank_1' => 65, 'rank_2' => 15, 'rank_3' => 0, 'rank_4' => 5, 'rank_5' => 15 ],
+                1 => [ 'rank_1' => 50, 'rank_2' => 15, 'rank_3' => 10, 'rank_4' => 10, 'rank_5' => 15 ],
+                2 => [ 'rank_1' => 40, 'rank_2' => 20, 'rank_3' => 15, 'rank_4' => 10, 'rank_5' => 15 ],
+                3 => [ 'rank_1' => 30, 'rank_2' => 20, 'rank_3' => 15, 'rank_4' => 15, 'rank_5' => 20 ],
+                4 => [ 'rank_1' => 20, 'rank_2' => 20, 'rank_3' => 15, 'rank_4' => 25, 'rank_5' => 25 ],
+                5 => [ 'rank_1' => 10, 'rank_2' => 20, 'rank_3' => 20, 'rank_4' => 25, 'rank_5' => 25 ],
+                6 => [ 'rank_1' => 10, 'rank_2' => 15, 'rank_3' => 25, 'rank_4' => 25, 'rank_5' => 25 ],
+            ],
+            'consistency' => [
+                0 => [ 'rank_1' => 80, 'rank_2' => 15, 'rank_3' => 0, 'rank_4' => 0, 'rank_5' => 5 ],
+                1 => [ 'rank_1' => 13, 'rank_2' => 32, 'rank_3' => 23, 'rank_4' => 22, 'rank_5' => 10 ],
+                2 => [ 'rank_1' => 13, 'rank_2' => 32, 'rank_3' => 20, 'rank_4' => 25, 'rank_5' => 10 ],
+                3 => [ 'rank_1' => 12, 'rank_2' => 31, 'rank_3' => 26, 'rank_4' => 25, 'rank_5' => 6 ],
+                4 => [ 'rank_1' => 12, 'rank_2' => 33, 'rank_3' => 25, 'rank_4' => 23, 'rank_5' => 7 ],
+                5 => [ 'rank_1' => 12, 'rank_2' => 33, 'rank_3' => 25, 'rank_4' => 22, 'rank_5' => 8 ],
+                6 => [ 'rank_1' => 11, 'rank_2' => 32, 'rank_3' => 25, 'rank_4' => 22, 'rank_5' => 10 ],
+            ],
+        ];
+
+        $idealFamilyRates = [
+            'enrichment' => [
+                0 => [ 'rank_1' => 90, 'rank_2' => 10, 'rank_3' => 0, 'rank_4' => 0, 'rank_5' => 0 ],
+                1 => [ 'rank_1' => 85, 'rank_2' => 15, 'rank_3' => 0, 'rank_4' => 0, 'rank_5' => 0 ],
+                2 => [ 'rank_1' => 70, 'rank_2' => 15, 'rank_3' => 15, 'rank_4' => 0, 'rank_5' => 0 ],
+                3 => [ 'rank_1' => 50, 'rank_2' => 15, 'rank_3' => 15, 'rank_4' => 10, 'rank_5' => 10 ],
+                4 => [ 'rank_1' => 15, 'rank_2' => 20, 'rank_3' => 20, 'rank_4' => 25, 'rank_5' => 20 ],
+                5 => [ 'rank_1' => 10, 'rank_2' => 10, 'rank_3' => 20, 'rank_4' => 30, 'rank_5' => 30 ],
+                6 => [ 'rank_1' => 0, 'rank_2' => 0, 'rank_3' => 20, 'rank_4' => 40, 'rank_5' => 40 ],
+            ],
+            'consistency' => [
+                0 => [ 'rank_1' => 90, 'rank_2' => 10, 'rank_3' => 0, 'rank_4' => 0, 'rank_5' => 0 ],
+                1 => [ 'rank_1' => 85, 'rank_2' => 15, 'rank_3' => 0, 'rank_4' => 0, 'rank_5' => 0 ],
+                2 => [ 'rank_1' => 70, 'rank_2' => 15, 'rank_3' => 15, 'rank_4' => 0, 'rank_5' => 0 ],
+                3 => [ 'rank_1' => 50, 'rank_2' => 15, 'rank_3' => 15, 'rank_4' => 10, 'rank_5' => 10 ],
+                4 => [ 'rank_1' => 15, 'rank_2' => 20, 'rank_3' => 20, 'rank_4' => 25, 'rank_5' => 20 ],
+                5 => [ 'rank_1' => 10, 'rank_2' => 10, 'rank_3' => 20, 'rank_4' => 30, 'rank_5' => 30 ],
+                6 => [ 'rank_1' => 0, 'rank_2' => 0, 'rank_3' => 20, 'rank_4' => 40, 'rank_5' => 40 ],
+            ],
+        ];
+
         foreach ($results as $result) {
             $rates = json_decode($result['rates'], true);
             $ratesOfTheDay = $rates['daily'][$now->format('Y-m-d')];
@@ -146,92 +188,36 @@ final class DemoHelperCommand extends Command
 
             $numberOfProducts = $this->numberOfProducts($ratesOfTheDay);
 
-            $idealRates = [
-                0 => [
-                    'rank_1' => 15,
-                    'rank_2' => 30,
-                    'rank_3' => 25,
-                    'rank_4' => 20,
-                    'rank_5' => 10
-                ],
-                1 => [
-                    'rank_1' => 13,
-                    'rank_2' => 32,
-                    'rank_3' => 23,
-                    'rank_4' => 22,
-                    'rank_5' => 10
-                ],
-                2 => [
-                    'rank_1' => 13,
-                    'rank_2' => 32,
-                    'rank_3' => 20,
-                    'rank_4' => 25,
-                    'rank_5' => 10
-                ],
-                3 => [
-                    'rank_1' => 12,
-                    'rank_2' => 31,
-                    'rank_3' => 26,
-                    'rank_4' => 25,
-                    'rank_5' => 6
-                ],
-                4 => [
-                    'rank_1' => 12,
-                    'rank_2' => 33,
-                    'rank_3' => 25,
-                    'rank_4' => 23,
-                    'rank_5' => 7
-                ],
-                5 => [
-                    'rank_1' => 12,
-                    'rank_2' => 33,
-                    'rank_3' => 25,
-                    'rank_4' => 22,
-                    'rank_5' => 8
-                ],
-                6 => [
-                    'rank_1' => 11,
-                    'rank_2' => 32,
-                    'rank_3' => 25,
-                    'rank_4' => 22,
-                    'rank_5' => 10
-                ],
-                7 => [
-                    'rank_1' => 8,
-                    'rank_2' => 12,
-                    'rank_3' => 40,
-                    'rank_4' => 12,
-                    'rank_5' => 20
-                ]
-
-            ];
-
             $projectionTypeAndCode = ['type' => null, 'code' => null];
+            $idealRates = [];
 
             switch ($result['type']) {
                 case 'catalog':
                     $projectionTypeAndCode['type'] = DashboardProjectionType::catalog();
                     $projectionTypeAndCode['code'] = DashboardProjectionCode::catalog();
+                    $idealRates =  $idealCatalogRates;
                     break;
                 case 'category':
                     $projectionTypeAndCode['type'] = DashboardProjectionType::category();
                     $projectionTypeAndCode['code'] = DashboardProjectionCode::category(new CategoryCode($result['code']));
+                    $idealRates =  $idealFamilyRates;
                     break;
                 case 'family':
                     $projectionTypeAndCode['type'] = DashboardProjectionType::family();
                     $projectionTypeAndCode['code'] = DashboardProjectionCode::family(new FamilyCode($result['code']));
+                    $idealRates =  $idealFamilyRates;
                     break;
             }
 
-            $ratesOfTheDay = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[0]);
+            $ratesOfTheDay = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates, 0);
             $ratesProjections = [];
 
-            for ($i=2; $i < 8; $i++) {
+            for ($i=0; $i < 7; $i++) {
                 $ratesProjections[] = new DashboardRatesProjection(
                     $projectionTypeAndCode['type'],
                     $projectionTypeAndCode['code'],
-                    $now->modify(sprintf('-%d DAY', $i)),
-                    new RanksDistributionCollection($this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]))
+                    $now->modify(sprintf('-%d DAY', $i+1)),
+                    new RanksDistributionCollection($this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates, $i))
                 );
             }
 
@@ -247,7 +233,7 @@ final class DemoHelperCommand extends Command
                     $projectionTypeAndCode['type'],
                     $projectionTypeAndCode['code'],
                     $now->modify(sprintf('sunday %d weeks ago', $i)),
-                    new RanksDistributionCollection($this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]))
+                    new RanksDistributionCollection($this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates, $i))
                 );
             }
 
@@ -257,7 +243,7 @@ final class DemoHelperCommand extends Command
                     $projectionTypeAndCode['type'],
                     $projectionTypeAndCode['code'],
                     $firstDayThisMonth->modify(sprintf('last day of %d months ago', $i)),
-                    new RanksDistributionCollection($this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates[$i]))
+                    new RanksDistributionCollection($this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates, $i))
                 );
             }
 
@@ -278,13 +264,13 @@ final class DemoHelperCommand extends Command
         $io->success('Fake consolidation generated');
     }
 
-    private function generateChaos(array $rates, int $numberOfProducts, array $idealRates): array
+    private function generateChaos(array $rates, int $numberOfProducts, array $idealRates, int $day): array
     {
         foreach ($rates as $axe => $scope) {
             foreach ($scope as $scopeCode => $locale) {
                 foreach ($locale as $localeCode => $ranks) {
-                    foreach ($idealRates as $rankCode => $percentage) {
-                        $rates[$axe][$scopeCode][$localeCode][$rankCode] = intval(round($numberOfProducts*$percentage/100)) + rand(1, intval(ceil($numberOfProducts*5/100)));
+                    foreach ($idealRates[$axe][$day] as $rankCode => $percentage) {
+                        $rates[$axe][$scopeCode][$localeCode][$rankCode] = intval(round($numberOfProducts*$percentage/100)) + rand(1, intval(ceil($numberOfProducts*1/100)));
                     }
                 }
             }
