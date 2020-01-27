@@ -7,17 +7,19 @@ interface CategoryTreeNodeProps {
   locale: string;
   isOpened?: boolean;
   categoryCode: string;
-  onSelectCategory: (categoryCode: string, categoryLabel: string) => void;
+  onSelectCategory: (categoryCode: string, categoryLabel: string, categoryId: string, rootCategoryId: string) => void;
   hasChildren: boolean;
   selectedCategories: string[];
   withCheckbox: boolean;
+  rootCategoryId: string;
 }
 
-const CategoryTreeNode: FunctionComponent<CategoryTreeNodeProps> = ({categoryId, categoryLabel, locale, categoryCode, onSelectCategory, hasChildren, selectedCategories, withCheckbox, isOpened = false}) => {
+const CategoryTreeNode: FunctionComponent<CategoryTreeNodeProps> = ({categoryId, categoryLabel, locale, categoryCode, onSelectCategory, hasChildren, selectedCategories, withCheckbox, isOpened = false, rootCategoryId}) => {
 
   const [isOpen, setIsOpen] = useState<boolean>(isOpened);
 
-  const children = useFetchCategoryChildren(locale, categoryId.replace('node_', ''), isOpen);
+  categoryId = categoryId.replace('node_', '');
+  const children = useFetchCategoryChildren(locale, categoryId, isOpen);
 
   categoryLabel = categoryLabel ? categoryLabel : '[' + categoryCode + ']';
 
@@ -28,12 +30,12 @@ const CategoryTreeNode: FunctionComponent<CategoryTreeNodeProps> = ({categoryId,
       </ins>
       <a href="#" onClick={(event) => event.preventDefault()}>
         {withCheckbox && (
-          <ins className="jstree-checkbox" onClick={() => onSelectCategory(categoryCode, categoryLabel)}>&nbsp;</ins>
+          <ins className="jstree-checkbox" onClick={() => onSelectCategory(categoryCode, categoryLabel, categoryId, rootCategoryId)}>&nbsp;</ins>
         )}
         <ins className="jstree-icon">
           &nbsp;
         </ins>
-        <span onClick={() => onSelectCategory(categoryCode, categoryLabel)}>{categoryLabel}</span>
+        <span onClick={() => onSelectCategory(categoryCode, categoryLabel, categoryId, rootCategoryId)}>{categoryLabel}</span>
       </a>
       {isOpen && hasChildren && (
         <ul>
@@ -49,6 +51,7 @@ const CategoryTreeNode: FunctionComponent<CategoryTreeNodeProps> = ({categoryId,
                 hasChildren={category.state !== "leaf"}
                 selectedCategories={selectedCategories}
                 withCheckbox={withCheckbox}
+                rootCategoryId={rootCategoryId}
               />
             )
           })}

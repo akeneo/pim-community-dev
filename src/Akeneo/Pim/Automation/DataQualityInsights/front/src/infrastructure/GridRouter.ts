@@ -9,6 +9,11 @@ export const redirectToProductGridFilteredByFamily = (channelCode: string, local
   redirectToFilteredProductGrid(channelCode, localeCode, gridFilters);
 };
 
+export const redirectToProductGridFilteredByCategory = (channelCode: string, localeCode: string, categoryId: string, rootCategoryId: string) => {
+  const gridFilters = `s[updated]=1&f[category][value][treeId]=${rootCategoryId}&f[category][value][categoryId]=${categoryId}&f[category][type]=1&f[scope][value]=${channelCode}&t=product-grid`;
+  redirectToFilteredProductGrid(channelCode, localeCode, gridFilters);
+};
+
 const redirectToFilteredProductGrid = (channelCode: string, localeCode: string, gridFilters: string) => {
   const productGridColumns = addAxisColumnsToTheProductGrid();
   DatagridState.set('product-grid', {

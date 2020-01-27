@@ -1,11 +1,11 @@
-import React, {FunctionComponent, useState, useEffect} from "react";
+import React, {FunctionComponent, useEffect, useState} from "react";
 import useFetchWidgetCategories from "../../../../infrastructure/hooks/useFetchWidgetCategories";
 import Rate from "../../Rate";
 import {Ranks} from "../../../../domain/Rate.interface";
 import CategoryModal from "../CategoryModal/CategoryModal";
-import {uniqBy as _uniqBy} from 'lodash';
-import {xorBy as _xorBy} from 'lodash';
+import {uniqBy as _uniqBy, xorBy as _xorBy} from 'lodash';
 import Category from "../../../../domain/Category.interface";
+import {redirectToProductGridFilteredByCategory} from "../../../../infrastructure/GridRouter";
 
 const __ = require('oro/translator');
 
@@ -25,8 +25,8 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
 
   const ratesByCategory = useFetchWidgetCategories(catalogChannel, catalogLocale, watchedCategories);
 
-  const onSelectCategory = (categoryCode: string, categoryLabel: string) => {
-    const selectedCategory = {'code': categoryCode, 'label': categoryLabel};
+  const onSelectCategory = (categoryCode: string, categoryLabel: string, categoryId: string, rootCategoryId: string) => {
+    const selectedCategory = {'code': categoryCode, 'label': categoryLabel, 'id': categoryId, 'rootCategoryId': rootCategoryId};
     const categoriesToSelect = _xorBy([selectedCategory], categoriesToWatch, 'code');
 
     setModalErrorMessage(null);
@@ -106,6 +106,7 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
             <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">{__(`akeneo_data_quality_insights.product_evaluation.axis.enrichment.title`)}</th>
             <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">{__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)}</th>
             <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate"> </th>
+            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate"> </th>
           </tr>
           {Object.entries(ratesByCategory).map(([categoryCode, ratesByAxis]: [string, any], index: number) => {
             const category = watchedCategories.find((watchedCategory: Category) => watchedCategory.code === categoryCode);
@@ -120,7 +121,11 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
                 <td className="AknGrid-bodyCell AknDataQualityInsightsGrid-axis-rate">
                   <Rate value={ratesByAxis.consistency ? Ranks[ratesByAxis.consistency] : null}/>
                 </td>
-
+                <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
+                  <div className="AknButton AknButton--micro" onClick={() => redirectToProductGridFilteredByCategory(catalogChannel, catalogLocale, category.id, category.rootCategoryId)}>
+                    {__('akeneo_data_quality_insights.dqi_dashboard.widgets.see_in_grid')}
+                  </div>
+                </td>
                 <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
                   <img style={{cursor: "pointer"}} width="16" src="/bundles/pimui/images/icon-delete-slategrey.svg" onClick={() => onRemoveCategory(categoryCode)} />
                 </td>

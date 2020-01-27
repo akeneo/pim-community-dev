@@ -7,7 +7,7 @@ const __ = require('oro/translator');
 const UserContext = require('pim/user-context');
 
 interface CategoryModalProps {
-  onSelectCategory: (categoryCode: string, categoryLabel: string) => void;
+  onSelectCategory: (categoryCode: string, categoryLabel: string, categoryId: string, rootCategoryId: string) => void;
   onConfirm: () => void;
   onDismissModal: () => void;
   isVisible: boolean;
@@ -78,6 +78,7 @@ const CategoryModal = ({onSelectCategory, onConfirm, onDismissModal, isVisible, 
                 hasChildren={true}
                 selectedCategories={selectedCategories}
                 withCheckbox={withCheckBox}
+                rootCategoryId={selectedCategoryTree.id}
               />
             )}
           </ul>
