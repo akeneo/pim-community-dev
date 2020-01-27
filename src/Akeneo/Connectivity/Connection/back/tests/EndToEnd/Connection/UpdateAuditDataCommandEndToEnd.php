@@ -11,6 +11,7 @@ use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection as DbalConnection;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -20,26 +21,28 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class UpdateAuditDataCommandEndToEnd extends WebTestCase
 {
+    /** @var Command */
+    private $command;
+
     /** @var DbalConnection */
     private $dbalConnection;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        $kernel = static::createKernel();
+        $application = new Application($kernel);
+        $this->command = $application->find('akeneo:connectivity-audit:update-data');
         $this->dbalConnection = self::$container->get('database_connection');
     }
 
     public function test_it_updates_audit_data(): void
     {
-        $kernel = static::createKernel();
-        $application = new Application($kernel);
-
         $connection = $this->createConnection('magento', 'Magento', FlowType::DATA_SOURCE);
-
         $this->setVersioningAuthor($connection->username());
 
-        $command = $application->find('akeneo:connectivity-audit:update-data');
-        $commandTester = new CommandTester($command);
+        $commandTester = new CommandTester($this->command);
         $commandTester->execute([]);
 
         Assert::assertEquals(242, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_CREATED));
