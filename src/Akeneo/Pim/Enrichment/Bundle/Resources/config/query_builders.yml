@@ -439,6 +439,7 @@ services:
             - ['=', 'IN', 'NOT IN']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
     pim_catalog.query.elasticsearch.filter.self_and_ancestor:
         class: '%pim_catalog.query.elasticsearch.filter.self_and_ancestor.class%'
