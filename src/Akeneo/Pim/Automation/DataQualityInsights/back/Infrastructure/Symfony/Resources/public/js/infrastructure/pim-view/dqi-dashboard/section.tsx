@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import React from "react";
 import {
   DataQualityInsightsDashboard,
+  DataQualityOverviewHelper,
   DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY
@@ -77,7 +78,10 @@ class SectionView extends BaseView {
     const catalogChannel: string = UserContext.get('catalogScope');
 
     ReactDOM.render(
-      <DataQualityInsightsDashboard timePeriod={this.timePeriod} catalogLocale={catalogLocale} catalogChannel={catalogChannel} familyCode={this.familyCode} categoryCode={this.categoryCode}/>,
+      <div>
+        <DataQualityOverviewHelper/>
+        <DataQualityInsightsDashboard timePeriod={this.timePeriod} catalogLocale={catalogLocale} catalogChannel={catalogChannel} familyCode={this.familyCode} categoryCode={this.categoryCode}/>,
+      </div>,
       this.el
     );
     return this;
