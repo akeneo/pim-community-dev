@@ -9,6 +9,7 @@ import productEvaluationReducer, {
   getProductEvaluationRatesAction,
   ProductEvaluationState
 } from "./productEvaluationReducer";
+import productAxesRatesReducer, {getProductAxesRatesAction, ProductAxesRatesState} from "../reducer/productAxesRatesReducer";
 import productFamilyInformationReducer, {
   getProductFamilyInformationAction,
   ProductFamilyInformationState
@@ -79,4 +80,7 @@ export {
   hidePopoverAction,
   enableWidgetHighlightAction,
   disableWidgetHighlightAction,
+  productAxesRatesReducer,
+  ProductAxesRatesState,
+  getProductAxesRatesAction
 }

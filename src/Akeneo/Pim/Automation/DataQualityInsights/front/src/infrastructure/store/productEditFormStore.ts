@@ -11,13 +11,14 @@ import {
   productFamilyInformationReducer,
   ProductFamilyInformationState,
   productReducer, productEditorHighlightReducer, ProductEditorHighlightState,
-  ProductState,
+  ProductState, productAxesRatesReducer, ProductAxesRatesState,
 } from "../reducer";
 
 export interface ProductEditFormState {
   catalogContext: CatalogContextState;
   pageContext: PageContextState;
   productEvaluation: ProductEvaluationState;
+  productAxesRates: ProductAxesRatesState;
   families: ProductFamilyInformationState;
   product: ProductState;
   editorHighlight: ProductEditorHighlightState;
@@ -32,6 +33,7 @@ const productEditFormStore: Store = createStore(
     catalogContext: catalogContextReducer,
     pageContext: pageContextReducer,
     productEvaluation: productEvaluationReducer,
+    productAxesRates: productAxesRatesReducer,
     families: productFamilyInformationReducer,
     product: productReducer,
     editorHighlight: productEditorHighlightReducer

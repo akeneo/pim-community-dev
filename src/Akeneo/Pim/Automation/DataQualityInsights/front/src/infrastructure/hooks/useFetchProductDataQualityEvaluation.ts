@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {isEmpty} from "lodash";
+import {isEmpty, get as _get} from "lodash";
 
 import {fetchProductDataQualityEvaluation} from '../fetcher';
 import {getProductEvaluationAction} from "../reducer";
-import {useProductEvaluation} from "./index";
+import {useCatalogContext, useProductEvaluation} from "./index";
 
 const MAXIMUM_RETRIES = 10;
 const RETRY_MILLISECONDS_DELAY = 200;
@@ -30,6 +30,7 @@ const getRetryDelay = (retry: number) => {
 const useFetchProductDataQualityEvaluation = () => {
   const [hasToBeEvaluated, setHasToBeEvaluated] = useState<boolean>(false);
   const [retries, setRetries] = useState<number>(0);
+  const {channel, locale} = useCatalogContext();
 
   const {productId, productUpdated, evaluation} = useProductEvaluation();
 
@@ -52,7 +53,8 @@ const useFetchProductDataQualityEvaluation = () => {
 
   useEffect(() => {
     const notEvaluatedAxesList = Object.values(evaluation).filter((axisEvaluation) => {
-      return isEmpty(axisEvaluation);
+      // @ts-ignore
+      return _get(axisEvaluation, [channel, locale, 'rate']) === null;
     });
 
     if (notEvaluatedAxesList.length === 0) {
