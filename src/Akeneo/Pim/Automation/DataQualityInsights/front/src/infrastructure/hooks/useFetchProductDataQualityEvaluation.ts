@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {isEmpty, get as _get} from "lodash";
+import {get as _get} from "lodash";
 
 import {fetchProductDataQualityEvaluation} from '../fetcher';
 import {getProductEvaluationAction} from "../reducer";
