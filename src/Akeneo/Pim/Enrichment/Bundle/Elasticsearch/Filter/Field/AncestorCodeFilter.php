@@ -65,7 +65,7 @@ class AncestorCodeFilter extends AbstractFieldFilter
             case Operators::NOT_IN_LIST:
                 $mustNotClause = [
                     'terms' => [
-                        self::ANCESTOR_ID_ES_FIELD => $values,
+                        self::ANCESTOR_CODES_ES_FIELD => $values,
                     ],
                 ];
                 $this->searchQueryBuilder->addMustNot($mustNotClause);
