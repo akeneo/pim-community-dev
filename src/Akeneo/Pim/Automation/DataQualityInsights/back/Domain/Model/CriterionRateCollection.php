@@ -29,6 +29,11 @@ final class CriterionRateCollection implements \IteratorAggregate
         return $this;
     }
 
+    public function getByChannelAndLocale(ChannelCode $channelCode, LocaleCode $localeCode): ?Rate
+    {
+        return $this->rates[strval($channelCode)][strval($localeCode)] ?? null;
+    }
+
     public function toArrayInt(): array
     {
         return array_map(function ($ratesPerLocale) {

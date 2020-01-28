@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 
@@ -24,7 +26,7 @@ final class AxisRateCollection
     {
         foreach ($rateCollection as $channelCode => $localeCodes) {
             foreach ($localeCodes as $localeCode => $rate) {
-                $this->rates[$channelCode][$localeCode][] = $rate->toInt();
+                $this->rates[$channelCode][$localeCode][] = $rate;
             }
         }
 
@@ -35,8 +37,8 @@ final class AxisRateCollection
     {
         return array_map(function ($channelRates) {
             return array_map(function ($localeRates) {
-                $average = $this->computeChannelLocaleAverage($localeRates);
-                return $this->convertRateToString($average);
+                $averageRate = $this->computeAverageRate($localeRates);
+                return $this->convertRateToString($averageRate);
             }, $channelRates);
         }, $this->rates);
     }
@@ -45,34 +47,45 @@ final class AxisRateCollection
     {
         return array_map(function ($channelRates) {
             return array_map(function ($localeRates) {
-                $average = $this->computeChannelLocaleAverage($localeRates);
+                $averageRate = $this->computeAverageRate($localeRates);
                 return [
-                    'rank' => $this->convertRateToRank($average),
-                    'value' => $average,
+                    'rank' => $this->convertRateToRank($averageRate),
+                    'value' => $averageRate->toInt(),
                 ];
             }, $channelRates);
         }, $this->rates);
     }
 
-    private function convertRateToString(int $value): string
+    public function computeForChannelAndLocale(ChannelCode $channelCode, LocaleCode $localeCode): ?Rate
     {
-        $rank = Rank::fromRate(new Rate($value));
+        $rates = $this->rates[strval($channelCode)][strval($localeCode)] ?? null;
+
+        return null !== $rates ? $this->computeAverageRate($rates) : null;
+    }
+
+    private function convertRateToString(Rate $rate): string
+    {
+        $rank = Rank::fromRate($rate);
 
         return $rank->toLetter();
     }
 
-    private function convertRateToRank(int $value): int
+    private function convertRateToRank(Rate $rate): int
     {
-        $rank = Rank::fromRate(new Rate($value));
+        $rank = Rank::fromRate($rate);
 
         return $rank->toInt();
     }
 
-    private function computeChannelLocaleAverage($channelLocaleRates): int
+    private function computeAverageRate($channelLocaleRates): Rate
     {
+        $channelLocaleRates = array_map(function (Rate $rate) {
+            return $rate->toInt();
+        }, $channelLocaleRates);
+
         $average = array_sum($channelLocaleRates) / count($channelLocaleRates);
 
-        return $this->roundRate($average);
+        return new Rate($this->roundRate($average));
     }
 
     private function roundRate(float $value): int
