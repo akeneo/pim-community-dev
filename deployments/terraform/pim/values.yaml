@@ -173,6 +173,10 @@ pim:
       enabled: true
       pimCommand: "pimee:data-quality-insights:schedule-periodic-tasks"
       schedule: "15 0 * * *"
+    franklin-insights-quality-highlights-push-structure-and-products:
+      enabled: true
+      pimCommand: "pimee:franklin-insights:quality-highlights:push-structure-and-products"
+      schedule: "15 0,12 * * *"
 
 # Onboarder
 onboarder:
