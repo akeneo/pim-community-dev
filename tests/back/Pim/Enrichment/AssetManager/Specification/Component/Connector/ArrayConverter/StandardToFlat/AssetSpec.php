@@ -389,9 +389,9 @@ class AssetSpec extends ObjectBehavior
             [
                 'code' => 'my_asset_code',
                 'assetFamilyIdentifier' => 'packshot',
-                'description-ecommerce-en_US' => 'Some great description',
-                'description-ecommerce-fr_FR' => 'Super description',
-                'description-mobile-en_US' => 'Short desc',
+                'description-en_US-ecommerce' => 'Some great description',
+                'description-fr_FR-ecommerce' => 'Super description',
+                'description-en_US-mobile' => 'Short desc',
             ]
         );
     }

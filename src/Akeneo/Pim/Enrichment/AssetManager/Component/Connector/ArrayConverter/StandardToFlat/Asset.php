@@ -105,11 +105,11 @@ class Asset extends AbstractSimpleArrayConverter
     private function generateKey(AbstractAttribute $attribute, array $value): string
     {
         $key = $attribute->getCode()->__toString();
-        if ($attribute->hasValuePerChannel()) {
-            $key = sprintf('%s-%s', $key, $value['channel']);
-        }
         if ($attribute->hasValuePerLocale()) {
             $key = sprintf('%s-%s', $key, $value['locale']);
+        }
+        if ($attribute->hasValuePerChannel()) {
+            $key = sprintf('%s-%s', $key, $value['channel']);
         }
 
         return $key;

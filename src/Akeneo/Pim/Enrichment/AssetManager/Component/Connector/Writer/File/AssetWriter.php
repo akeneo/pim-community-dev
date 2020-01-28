@@ -153,8 +153,8 @@ class AssetWriter extends AbstractFileWriter implements InitializableInterface, 
                         $headers[] = sprintf(
                             '%s-%s-%s',
                             $attribute->getCode()->__toString(),
-                            $channelCode,
-                            $localeCode
+                            $localeCode,
+                            $channelCode
                         );
                     }
                 }

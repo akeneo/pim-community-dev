@@ -155,9 +155,9 @@ class AssetWriterSpec extends ObjectBehavior
         ]);
 
         $flatRowBuffer->addToHeaders([
-           'scopable_and_localizable-ecommerce-en_US',
-           'scopable_and_localizable-ecommerce-fr_FR',
-           'scopable_and_localizable-mobile-de_DE',
+           'scopable_and_localizable-en_US-ecommerce',
+           'scopable_and_localizable-fr_FR-ecommerce',
+           'scopable_and_localizable-de_DE-mobile',
            'scopable-ecommerce',
            'scopable-mobile',
            'localizable-en_US',

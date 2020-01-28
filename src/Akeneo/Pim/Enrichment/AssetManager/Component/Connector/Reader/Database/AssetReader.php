@@ -55,6 +55,7 @@ class AssetReader implements ItemReaderInterface, InitializableInterface, StepEx
             $this->stepExecution->getJobParameters()->get('asset_family_identifier')
         );
         $this->identifiers = $this->findAssetIdentifiersByAssetFamily->find($assetFamilyIdentifier);
+        $this->identifiers->rewind();
         $this->firstRead = true;
     }
 
