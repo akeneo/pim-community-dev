@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Validator\ConnectionValidator;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Event\ConnectionActivated;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Exception\ConnectionConfigurationException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Handles a "SaveConfiguration" command.
@@ -34,16 +36,17 @@ class ActivateConnectionHandler
     /** @var ConfigurationRepositoryInterface */
     private $repository;
 
-    /**
-     * @param ConnectionValidator $connectionValidator
-     * @param ConfigurationRepositoryInterface $repository
-     */
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
         ConnectionValidator $connectionValidator,
-        ConfigurationRepositoryInterface $repository
+        ConfigurationRepositoryInterface $repository,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->connectionValidator = $connectionValidator;
         $this->repository = $repository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -62,5 +65,7 @@ class ActivateConnectionHandler
         $configuration->setToken($command->token());
 
         $this->repository->save($configuration);
+
+        $this->eventDispatcher->dispatch(ConnectionActivated::EVENT_NAME, new ConnectionActivated());
     }
 }

@@ -16,11 +16,13 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Confi
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Command\ActivateConnectionCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Command\ActivateConnectionHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Validator\ConnectionValidator;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Event\ConnectionActivated;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Exception\ConnectionConfigurationException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -29,9 +31,10 @@ class ActivateConnectionHandlerSpec extends ObjectBehavior
 {
     public function let(
         ConnectionValidator $connectionValidator,
-        ConfigurationRepositoryInterface $repository
+        ConfigurationRepositoryInterface $repository,
+        EventDispatcherInterface $eventDispatcher
     ): void {
-        $this->beConstructedWith($connectionValidator, $repository);
+        $this->beConstructedWith($connectionValidator, $repository, $eventDispatcher);
     }
 
     public function it_is_a_save_connector_configuration_command_handler(): void
@@ -39,7 +42,7 @@ class ActivateConnectionHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(ActivateConnectionHandler::class);
     }
 
-    public function it_updates_an_existing_configuration_if_token_valid($connectionValidator, $repository): void
+    public function it_updates_an_existing_configuration_if_token_valid($connectionValidator, $repository, $eventDispatcher): void
     {
         $token = new Token('bar');
         $command = new ActivateConnectionCommand($token);
@@ -52,10 +55,12 @@ class ActivateConnectionHandlerSpec extends ObjectBehavior
 
         $repository->save($configuration)->shouldBeCalled();
 
+        $eventDispatcher->dispatch(ConnectionActivated::EVENT_NAME, new ConnectionActivated())->shouldBeCalled();
+
         $this->handle($command);
     }
 
-    public function it_saves_a_new_configuration_if_token_valid($connectionValidator, $repository): void
+    public function it_saves_a_new_configuration_if_token_valid($connectionValidator, $repository, $eventDispatcher): void
     {
         $token = new Token('bar');
         $command = new ActivateConnectionCommand($token);
@@ -67,6 +72,8 @@ class ActivateConnectionHandlerSpec extends ObjectBehavior
         $repository->find()->willReturn(new Configuration());
 
         $repository->save($configuration)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(ConnectionActivated::EVENT_NAME, new ConnectionActivated())->shouldBeCalled();
 
         $this->handle($command);
     }

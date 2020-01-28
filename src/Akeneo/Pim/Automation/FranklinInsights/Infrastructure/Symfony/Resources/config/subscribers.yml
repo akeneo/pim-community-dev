@@ -149,3 +149,9 @@ services:
             - '@akeneo.pim.automation.franklin_insights.repository.quality_highlights_pending_items'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights\Configuration\ConnectionActivatedSubscriber:
+        arguments:
+            - '@Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher\SchedulePushStructureAndProductsToFranklin'
+        tags:
+            - { name: kernel.event_subscriber }

@@ -6,6 +6,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.application.configuration.validator.connection'
             - '@akeneo.pim.automation.franklin_insights.repository.configuration'
+            - '@event_dispatcher'
 
     akeneo.pim.automation.franklin_insights.application.configuration.command.deactivate_connection_handler:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Command\DeactivateConnectionHandler'
