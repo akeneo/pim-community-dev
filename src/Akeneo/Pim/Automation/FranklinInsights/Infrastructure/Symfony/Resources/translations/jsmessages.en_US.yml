@@ -225,7 +225,7 @@ akeneo_franklin_insights:
             franklin_attribute_created: Attributes created
             franklin_attribute_added_to_family: Attributes added to a family
             credits_total: Credits total
-            credits_consumed: Credits consummed
+            credits_consumed: Credits consumed
             credits_left: Credits left
             franklin_values_validated: Attribute values validated
             franklin_values_in_error: Attribute values in error

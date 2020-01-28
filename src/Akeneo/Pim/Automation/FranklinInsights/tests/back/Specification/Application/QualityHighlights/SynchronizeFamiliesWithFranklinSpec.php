@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use PhpSpec\ObjectBehavior;
+use Psr\Log\LoggerInterface;
 
 class SynchronizeFamiliesWithFranklinSpec extends ObjectBehavior
 {
@@ -28,9 +29,10 @@ class SynchronizeFamiliesWithFranklinSpec extends ObjectBehavior
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
         PendingItemsRepositoryInterface $pendingItemsRepository,
-        SelectFamiliesToApplyQueryInterface $selectFamiliesToApplyQuery
+        SelectFamiliesToApplyQueryInterface $selectFamiliesToApplyQuery,
+        LoggerInterface $logger
     ) {
-        $this->beConstructedWith($pendingItemIdentifiersQuery, $qualityHighlightsProvider, $pendingItemsRepository, $selectFamiliesToApplyQuery);
+        $this->beConstructedWith($pendingItemIdentifiersQuery, $qualityHighlightsProvider, $pendingItemsRepository, $selectFamiliesToApplyQuery, $logger);
     }
 
     public function it_synchronizes_families(
@@ -66,7 +68,7 @@ class SynchronizeFamiliesWithFranklinSpec extends ObjectBehavior
 
         $pendingItemIdentifiersQuery->getUpdatedFamilyCodes($lock, 100)->willReturn(['headphones', 'router']);
         $selectFamiliesToApplyQuery->execute(['headphones', 'router'])->willReturn($families);
-        $qualityHighlightsProvider->applyFamilies(['headphones', 'router'])->willThrow(new \Exception());
+        $qualityHighlightsProvider->applyFamilies($families)->willThrow(new \Exception());
         $pendingItemsRepository->releaseUpdatedFamiliesLock(['headphones', 'router'], $lock)->shouldBeCalled();
         $pendingItemsRepository->removeUpdatedFamilies(['headphones', 'router'], $lock)->shouldNotBeCalled();
 
@@ -91,14 +93,14 @@ class SynchronizeFamiliesWithFranklinSpec extends ObjectBehavior
         $pendingItemIdentifiersQuery->getUpdatedFamilyCodes($lock, 100)->willReturn(['headphones', 'router']);
         $selectFamiliesToApplyQuery->execute(['headphones', 'router'])->willReturn($families);
         $qualityHighlightsProvider->applyFamilies($families)->willThrow(new BadRequestException());
-        $pendingItemsRepository->releaseUpdatedFamiliesLock(['headphones', 'router'], $lock)->shouldNotBeCalled();
-        $pendingItemsRepository->removeUpdatedFamilies(['headphones', 'router'], $lock)->shouldBeCalled();
+        $pendingItemsRepository->releaseUpdatedFamiliesLock(['headphones', 'router'], $lock)->shouldBeCalled();
+        $pendingItemsRepository->removeUpdatedFamilies(['headphones', 'router'], $lock)->shouldNotBeCalled();
 
         $pendingItemIdentifiersQuery->getDeletedFamilyCodes($lock, 100)->willReturn(['accessories', 'camcorders']);
         $qualityHighlightsProvider->deleteFamily('accessories')->shouldBeCalled();
         $qualityHighlightsProvider->deleteFamily('camcorders')->willThrow(new BadRequestException());
-        $pendingItemsRepository->releaseDeletedFamiliesLock(['accessories', 'camcorders'], $lock)->shouldNotBeCalled();
-        $pendingItemsRepository->removeDeletedFamilies(['accessories', 'camcorders'], $lock)->shouldBeCalled();
+        $pendingItemsRepository->releaseDeletedFamiliesLock(['accessories', 'camcorders'], $lock)->shouldBeCalled();
+        $pendingItemsRepository->removeDeletedFamilies(['accessories', 'camcorders'], $lock)->shouldNotBeCalled();
 
         $this->synchronize($lock, new BatchSize(100));
     }

@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\Select
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\BatchSize;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
+use Psr\Log\LoggerInterface;
 
 class SynchronizeAttributesWithFranklin
 {
@@ -36,16 +36,21 @@ class SynchronizeAttributesWithFranklin
     /** @var SelectAttributesToApplyQueryInterface */
     private $selectAttributesToApplyQuery;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
         SelectAttributesToApplyQueryInterface $selectAttributesToApplyQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
-        PendingItemsRepositoryInterface $pendingItemsRepository
+        PendingItemsRepositoryInterface $pendingItemsRepository,
+        LoggerInterface $logger
     ) {
         $this->pendingItemIdentifiersQuery = $pendingItemIdentifiersQuery;
         $this->qualityHighlightsProvider = $qualityHighlightsProvider;
         $this->pendingItemsRepository = $pendingItemsRepository;
         $this->selectAttributesToApplyQuery = $selectAttributesToApplyQuery;
+        $this->logger = $logger;
     }
 
     public function synchronizeUpdatedAttributes(Lock $lock, BatchSize $attributesPerRequest, BatchSize $requestsPerPool): void
@@ -69,7 +74,8 @@ class SynchronizeAttributesWithFranklin
                     function () use ($attributeCodes, $lock) {
                         $this->pendingItemsRepository->removeUpdatedAttributes($attributeCodes, $lock);
                     },
-                    function () use ($attributeCodes, $lock) {
+                    function ($reason) use ($attributeCodes, $lock) {
+                        $this->logger->error($reason->getMessage());
                         $this->pendingItemsRepository->releaseUpdatedAttributesLock($attributeCodes, $lock);
                     }
                 );
@@ -87,10 +93,9 @@ class SynchronizeAttributesWithFranklin
                     foreach ($attributeCodes as $attributeCode) {
                         $this->qualityHighlightsProvider->deleteAttribute($attributeCode);
                     }
-                } catch (BadRequestException $exception) {
-                    //The error is logged by the api client
                 } catch (\Exception $exception) {
                     //Remove the lock, we will process those entities next time
+                    $this->logger->error($exception->getMessage());
                     $this->pendingItemsRepository->releaseDeletedAttributesLock($attributeCodes, $lock);
                     continue;
                 }

@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\Select
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\BatchSize;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
+use Psr\Log\LoggerInterface;
 
 class SynchronizeFamiliesWithFranklin
 {
@@ -35,16 +35,21 @@ class SynchronizeFamiliesWithFranklin
     /** @var SelectFamiliesToApplyQueryInterface */
     private $selectFamiliesToApplyQuery;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
         PendingItemsRepositoryInterface $pendingItemsRepository,
-        SelectFamiliesToApplyQueryInterface $selectFamiliesToApplyQuery
+        SelectFamiliesToApplyQueryInterface $selectFamiliesToApplyQuery,
+        LoggerInterface $logger
     ) {
         $this->pendingItemIdentifiersQuery = $pendingItemIdentifiersQuery;
         $this->qualityHighlightsProvider = $qualityHighlightsProvider;
         $this->pendingItemsRepository = $pendingItemsRepository;
         $this->selectFamiliesToApplyQuery = $selectFamiliesToApplyQuery;
+        $this->logger = $logger;
     }
 
     public function synchronize(Lock $lock, BatchSize $batchSize): void
@@ -61,10 +66,9 @@ class SynchronizeFamiliesWithFranklin
                 try {
                     $families = $this->selectFamiliesToApplyQuery->execute($familyCodes);
                     $this->qualityHighlightsProvider->applyFamilies($families);
-                } catch (BadRequestException $exception) {
-                    //The error is logged by the api client
                 } catch (\Exception $exception) {
                     //Remove the lock, we will process those entities next time
+                    $this->logger->error($exception->getMessage());
                     $this->pendingItemsRepository->releaseUpdatedFamiliesLock($familyCodes, $lock);
                     continue;
                 }
@@ -83,10 +87,9 @@ class SynchronizeFamiliesWithFranklin
                     foreach ($familyCodes as $familyCode) {
                         $this->qualityHighlightsProvider->deleteFamily($familyCode);
                     }
-                } catch (BadRequestException $exception) {
-                    //The error is logged by the api client
                 } catch (\Exception $exception) {
                     //Remove the lock, we will process those entities next time
+                    $this->logger->error($exception->getMessage());
                     $this->pendingItemsRepository->releaseDeletedFamiliesLock($familyCodes, $lock);
                     continue;
                 }

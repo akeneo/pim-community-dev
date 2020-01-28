@@ -22,7 +22,7 @@ class PushStructureAndProductsToFranklin
 {
     const DEFAULT_ATTRIBUTES_BATCH_SIZE = 10;
     const DEFAULT_FAMILIES_BATCH_SIZE = 10;
-    const DEFAULT_PRODUCTS_BATCH_SIZE = 500;
+    const DEFAULT_PRODUCTS_BATCH_SIZE = 200;
 
     const CONCURRENCY_BATCH_SIZE = 5;
 

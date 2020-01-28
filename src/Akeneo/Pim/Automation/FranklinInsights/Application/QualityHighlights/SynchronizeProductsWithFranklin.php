@@ -22,7 +22,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\Select
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\BatchSize;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
+use Psr\Log\LoggerInterface;
 
 class SynchronizeProductsWithFranklin
 {
@@ -50,13 +50,17 @@ class SynchronizeProductsWithFranklin
     /** @var SelectUpdatedProductsIdsToApplyQueryInterface */
     private $selectUpdatedProductsIdsToApplyQuery;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
         SelectUpdatedProductsIdsToApplyQueryInterface $selectUpdatedProductsIdsToApplyQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
         PendingItemsRepositoryInterface $pendingItemsRepository,
         SelectProductsToApplyQueryInterface $selectProductsToApplyQuery,
-        ProductNormalizerInterface $productNormalizer
+        ProductNormalizerInterface $productNormalizer,
+        LoggerInterface $logger
     ) {
         $this->pendingItemIdentifiersQuery = $pendingItemIdentifiersQuery;
         $this->qualityHighlightsProvider = $qualityHighlightsProvider;
@@ -64,6 +68,7 @@ class SynchronizeProductsWithFranklin
         $this->selectProductsToApplyQuery = $selectProductsToApplyQuery;
         $this->productNormalizer = $productNormalizer;
         $this->selectUpdatedProductsIdsToApplyQuery = $selectUpdatedProductsIdsToApplyQuery;
+        $this->logger = $logger;
     }
 
     public function synchronizeUpdatedProducts(Lock $lock, BatchSize $productsPerRequest, BatchSize $requestsPerPool): void
@@ -97,10 +102,9 @@ class SynchronizeProductsWithFranklin
                     foreach ($productIds as $productId) {
                         $this->qualityHighlightsProvider->deleteProduct($productId);
                     }
-                } catch (BadRequestException $exception) {
-                    //The error is logged by the api client
                 } catch (\Exception $exception) {
                     //Remove the lock, we will process those entities next time
+                    $this->logger->error($exception->getMessage());
                     $this->pendingItemsRepository->releaseDeletedProductsLock($productIds, $lock);
                     continue;
                 }
@@ -135,8 +139,9 @@ class SynchronizeProductsWithFranklin
             function () use ($productIds, $lock) {
                 $this->pendingItemsRepository->removeUpdatedProducts($productIds, $lock);
             },
-            function () use ($productIds, $lock) {
+            function ($reason) use ($productIds, $lock) {
                 //Remove the lock, we will process those products next time
+                $this->logger->error($reason->getMessage());
                 $this->pendingItemsRepository->releaseUpdatedProductsLock($productIds, $lock);
             }
         );

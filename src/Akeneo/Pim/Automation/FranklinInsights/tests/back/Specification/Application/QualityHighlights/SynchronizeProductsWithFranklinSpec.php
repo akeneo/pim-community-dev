@@ -29,6 +29,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 
 class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
@@ -39,9 +40,10 @@ class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
         PendingItemsRepositoryInterface $pendingItemsRepository,
         SelectProductsToApplyQueryInterface $selectProductsToApplyQuery,
-        ProductNormalizerInterface $productNormalizer
+        ProductNormalizerInterface $productNormalizer,
+        LoggerInterface $logger
     ) {
-        $this->beConstructedWith($pendingItemIdentifiersQuery, $selectUpdatedProductsIdsToApplyQuery, $qualityHighlightsProvider, $pendingItemsRepository, $selectProductsToApplyQuery, $productNormalizer);
+        $this->beConstructedWith($pendingItemIdentifiersQuery, $selectUpdatedProductsIdsToApplyQuery, $qualityHighlightsProvider, $pendingItemsRepository, $selectProductsToApplyQuery, $productNormalizer, $logger);
     }
 
     public function it_synchronizes_updated_products_with_franklin(
@@ -250,8 +252,8 @@ class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
 
         $pendingItemIdentifiersQuery->getDeletedProductIds($lock, 100)->willReturn([43]);
         $qualityHighlightsProvider->deleteProduct(43)->willThrow(new BadRequestException());
-        $pendingItemsRepository->releaseDeletedProductsLock([43], $lock)->shouldNotBeCalled();
-        $pendingItemsRepository->removeDeletedProducts([43], $lock)->shouldBeCalled();
+        $pendingItemsRepository->releaseDeletedProductsLock([43], $lock)->shouldBeCalled();
+        $pendingItemsRepository->removeDeletedProducts([43], $lock)->shouldNotBeCalled();
 
         $this->synchronizeDeletedProducts($lock, new BatchSize(100));
     }

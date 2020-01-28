@@ -39,15 +39,13 @@ export const Toolbar = ({selectedFranklinAttributeCodes}: Props) => {
   const franklinAttributeCodes: string[] = useSelector((state: FamilyMappingState) =>
     Object.keys(state.familyMapping.mapping)
   );
-  const attributesToCreate: AttributeMapping[] = useSelector(
-    selectAttributesThatCanBeCreated
-  ).filter((attributeMapping: AttributeMapping) =>
-    selectedFranklinAttributeCodes.includes(attributeMapping.franklinAttribute.code)
+  const attributesToCreate: AttributeMapping[] = useSelector(selectAttributesThatCanBeCreated).filter(
+    (attributeMapping: AttributeMapping) =>
+      selectedFranklinAttributeCodes.includes(attributeMapping.franklinAttribute.code)
   );
-  const attributesToAddToFamily: AttributeMapping[] = useSelector(
-    selectAttributesThatCanBeAddedToFamily
-  ).filter((attributeMapping: AttributeMapping) =>
-    selectedFranklinAttributeCodes.includes(attributeMapping.franklinAttribute.code)
+  const attributesToAddToFamily: AttributeMapping[] = useSelector(selectAttributesThatCanBeAddedToFamily).filter(
+    (attributeMapping: AttributeMapping) =>
+      selectedFranklinAttributeCodes.includes(attributeMapping.franklinAttribute.code)
   );
   const familyCode = useSelector((state: FamilyMappingState) => state.familyMapping.familyCode as string);
 

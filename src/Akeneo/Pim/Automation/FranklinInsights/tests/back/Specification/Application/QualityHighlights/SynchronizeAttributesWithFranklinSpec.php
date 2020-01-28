@@ -22,6 +22,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 
 class SynchronizeAttributesWithFranklinSpec extends ObjectBehavior
 {
@@ -29,9 +30,10 @@ class SynchronizeAttributesWithFranklinSpec extends ObjectBehavior
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
         SelectAttributesToApplyQueryInterface $selectAttributesToApplyQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider,
-        PendingItemsRepositoryInterface $pendingItemsRepository
+        PendingItemsRepositoryInterface $pendingItemsRepository,
+        LoggerInterface $logger
     ) {
-        $this->beConstructedWith($pendingItemIdentifiersQuery, $selectAttributesToApplyQuery, $qualityHighlightsProvider, $pendingItemsRepository);
+        $this->beConstructedWith($pendingItemIdentifiersQuery, $selectAttributesToApplyQuery, $qualityHighlightsProvider, $pendingItemsRepository, $logger);
     }
 
     public function it_synchronizes_updated_attributes(
@@ -112,8 +114,8 @@ class SynchronizeAttributesWithFranklinSpec extends ObjectBehavior
         $pendingItemIdentifiersQuery->getDeletedAttributeCodes($lock, 100)->willReturn(['color', 'weight']);
         $qualityHighlightsProvider->deleteAttribute('color')->shouldBeCalled();
         $qualityHighlightsProvider->deleteAttribute('weight')->willThrow(new BadRequestException());
-        $pendingItemsRepository->releaseDeletedAttributesLock(['color', 'weight'], $lock)->shouldNotBeCalled();
-        $pendingItemsRepository->removeDeletedAttributes(['color', 'weight'], $lock)->shouldBeCalled();
+        $pendingItemsRepository->releaseDeletedAttributesLock(['color', 'weight'], $lock)->shouldBeCalled();
+        $pendingItemsRepository->removeDeletedAttributes(['color', 'weight'], $lock)->shouldNotBeCalled();
 
         $this->synchronizeDeletedAttributes($lock, $batchSize);
     }
