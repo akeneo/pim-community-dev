@@ -15,5 +15,8 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query;
 
 interface GetLocalesByChannelQueryInterface
 {
+    /**
+     * @todo return a instance of ChannelLocaleCollection instead of an array
+     */
     public function execute(): array;
 }
