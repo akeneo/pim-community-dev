@@ -22,7 +22,7 @@ trait OperationExtraParameterTrait
             $messages = [];
             foreach ($extraFields as $extraField) {
                 $messages[] = sprintf(
-                    'The property "%s" is not defined and the definition does not allow additional properties.',
+                    'The property "%s" was not expected.',
                     $extraField
                 );
             }
