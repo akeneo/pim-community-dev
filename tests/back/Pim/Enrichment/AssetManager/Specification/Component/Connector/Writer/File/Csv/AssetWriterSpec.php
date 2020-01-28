@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Writer\File;
+namespace Specification\Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Writer\File\Csv;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
@@ -11,7 +11,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\AssetManager\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Writer\File\AssetWriter;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Writer\File\AbstractAssetWriter;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
@@ -103,7 +103,7 @@ class AssetWriterSpec extends ObjectBehavior
     {
         $this->shouldImplement(FlushableInterface::class);
         $this->shouldImplement(ArchivableWriterInterface::class);
-        $this->shouldBeAnInstanceOf(AssetWriter::class);
+        $this->shouldBeAnInstanceOf(AbstractAssetWriter::class);
     }
 
     function it_writes_items_to_the_file_buffer(

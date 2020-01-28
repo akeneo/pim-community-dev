@@ -30,7 +30,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Symfony\Component\Finder\Finder;
 
-class AssetWriter extends AbstractFileWriter implements InitializableInterface, FlushableInterface, ArchivableWriterInterface
+abstract class AbstractAssetWriter extends AbstractFileWriter implements InitializableInterface, FlushableInterface, ArchivableWriterInterface
 {
     /** @var ArrayConverterInterface */
     private $arrayConverter;
@@ -138,18 +138,10 @@ class AssetWriter extends AbstractFileWriter implements InitializableInterface, 
             $this->flatRowBuffer->addToHeaders($this->getAdditionalHeaders());
         }
         $this->flusher->setStepExecution($this->stepExecution);
-
         $parameters = $this->stepExecution->getJobParameters();
-        $writerOptions = [
-            'type' => 'csv',
-            'fieldDelimiter' => $parameters->get('delimiter'),
-            'fieldEnclosure' => $parameters->get('enclosure'),
-            'shouldAddBOM' => false,
-        ];
-
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,
-            $writerOptions,
+            $this->getWriterConfiguration(),
             $this->getPath(),
             ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1)
         );
@@ -160,6 +152,8 @@ class AssetWriter extends AbstractFileWriter implements InitializableInterface, 
 
         $this->exportMedias();
     }
+
+    abstract protected function getWriterConfiguration(): array;
 
     /**
      * - Add the media to the $this->writtenFiles to be archived later
