@@ -2,6 +2,8 @@
 
 namespace spec\Oro\Bundle\PimDataGridBundle\Extension\MassAction;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductMassActionRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
@@ -11,11 +13,11 @@ use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionHandlerRegistry;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductMassActionRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Request;
 
 class MassActionDispatcherSpec extends ObjectBehavior
@@ -208,5 +210,63 @@ class MassActionDispatcherSpec extends ObjectBehavior
             'massAction' => $massActionInterface,
             'actionName' => $massActionName
         ]]);
+    }
+
+    function it_convert_parent_filter_when_all_rows_are_selected(
+        DatagridInterface $grid,
+        Acceptor $acceptor,
+        MassActionExtension $massActionExtension,
+        MassActionInterface $massActionInterface,
+        QueryBuilder $queryBuilder,
+        ProductDatasource $datasource,
+        ProductMassActionRepositoryInterface $massActionRepository,
+        MassActionParametersParser $parametersParser,
+        ProductQueryBuilderInterface $productQueryBuilder
+    ) {
+        $massActionName = 'mass_edit_action';
+        $request = new Request([
+            'inset'      => 'inset',
+            'values'     => [1],
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => 'mass_edit_action',
+        ]);
+
+        $parametersParser->parse($request)->willReturn([
+            'inset' => 'inset',
+            'values' => [1],
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => 'mass_edit_action',
+        ]);
+        $datasource->getMassActionRepository()->willReturn($massActionRepository);
+        $massActionRepository->applyMassActionParameters($queryBuilder, '', [1])->willReturn(null);
+        $massActionExtension->getMassAction('mass_edit_action', $grid)->willReturn($massActionInterface);
+        $acceptor->getExtensions()->willReturn([$massActionExtension]);
+
+        $datasource->getProductQueryBuilder()->willReturn($productQueryBuilder);
+        $productQueryBuilder->getRawFilters()->willReturn([
+            [
+                'field' => 'parent',
+                'operator' => 'IN',
+                'values' => ['CODE1', 'CODE2'],
+            ],
+        ]);
+        $datasource->getParameters()->willReturn(null);
+
+        $this->getRawFilters([
+            'inset'      => '',
+            'values'     => [1],
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => $massActionName
+        ])->shouldReturn([
+            [
+                'field' => 'ancestor.code',
+                'operator' => 'IN',
+                'values' => ['CODE1', 'CODE2'],
+                'context' => [],
+            ],
+        ]);
     }
 }
