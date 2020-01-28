@@ -138,7 +138,7 @@ extensions:
         config:
             required: true
             fieldName: configuration.asset_family_identifier
-            label: Asset Family # TODO: translation
+            label: akeneo_assetmanager.export.assets.filter.asset_family
             choiceRoute: akeneo_asset_manager_asset_family_index_rest
 
     pim-job-instance-csv-asset-export-edit-properties-with-header:
