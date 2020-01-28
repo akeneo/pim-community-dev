@@ -63,6 +63,10 @@ $(INSTANCE_DIR):
 terraform-init: $(INSTANCE_DIR)
 	cd $(INSTANCE_DIR) && terraform init $(TF_INPUT_FALSE) -upgrade
 
+.PHONY: terraform-plan
+terraform-plan: terraform-init
+	cd $(INSTANCE_DIR) && terraform plan
+
 .PHONY: terraform-apply
 terraform-apply:
 	cd $(INSTANCE_DIR) && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
@@ -84,17 +88,28 @@ terraform-plan-destroy: terraform-init
 terraform-delete: terraform-init
 	cd $(INSTANCE_DIR) && terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
 
-.PHONY: create-tf-files
-create-tf-files: $(INSTANCE_DIR)
+# create-dev-instance Create main.tf and values files to deploy a PIM instance
+.PHONY: create-dev-instance
+create-dev-instance: create-ci-values create-tf-files
+
+#  create-ci-instance: Update Chart.yaml only if running in a CI container
+.PHONY: create-ci-instance
+create-ci-instance: create-ci-values create-tf-files
+	yq w -i $(PIM_SRC_DIR)/deployments/terraform/pim/Chart.yaml version ${DEPLOY_SHA1}
+
+.PHONY: create-ci-values
+create-ci-values: $(INSTANCE_DIR)
 	@echo "Deploy with $(DEPLOY_SHA1)"
 	cp $(PIM_SRC_DIR)/deployments/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml
-	yq w -i $(PIM_SRC_DIR)/deployments/pim/Chart.yaml version ${DEPLOY_SHA1}
-	@echo $(INSTANCE_NAME_PREFIX)
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
 endif
+
+.PHONY: create-tf-files
+create-tf-files: $(INSTANCE_DIR)
+	@echo $(INSTANCE_NAME_PREFIX)
 	@echo "terraform {" >> $(INSTANCE_DIR)/main.tf
 	@echo "backend \"gcs\" {" >> $(INSTANCE_DIR)/main.tf
 	@echo "bucket  = \"akecld-terraform\"" >> $(INSTANCE_DIR)/main.tf

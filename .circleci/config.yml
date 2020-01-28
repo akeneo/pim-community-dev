@@ -331,7 +331,7 @@ jobs:
           - run:
               name: Upgrade PIM3 env
               command: |
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 DEPLOY_SHA1=$CIRCLE_SHA1 make create-tf-files
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 DEPLOY_SHA1=$CIRCLE_SHA1 make create-ci-instance
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 DEPLOY_SHA1=$CIRCLE_SHA1 make deploy
           - run:
               name: Production tests on upgraded env
@@ -540,5 +540,5 @@ commands:
           name: "Prepare terraform configuration."
           shell: "/bin/bash -eo pipefail"
           command: |
-            IMAGE_TAG=$CIRCLE_SHA1 make create-tf-files
+            IMAGE_TAG=$CIRCLE_SHA1 make create-ci-instance
             make get-kubeconfig

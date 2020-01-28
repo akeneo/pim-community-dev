@@ -43,7 +43,7 @@ resource "null_resource" "helm_dependencies_update" {
     #FIXME: For the moment, chart definition is outside from the module
     # For CI/dev we have a relative from the root module defined in deployments/instances/<instance_name>
     command = <<EOF
-helm dependencies update ${path.root}/../../pim/
+helm dependencies update ${path.module}/pim/
 EOF
   }
 }
@@ -54,7 +54,7 @@ resource "null_resource" "helm_release_pim" {
     interpreter = ["/usr/bin/env", "bash", "-c"]
     #FIXME: For the moment, chart definition is outside from the module - Dev & CI only
     command = <<EOF
-helm upgrade --wait --install --timeout 1500 ${local.pfid} --namespace ${local.pfid} ${path.root}/../../pim/ -f tf-helm-pim-values.yaml -f values.yaml
+helm upgrade --wait --install --timeout 1500 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
 EOF
   }
 }

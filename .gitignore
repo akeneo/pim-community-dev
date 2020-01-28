@@ -33,5 +33,5 @@ coverage/*
 .env.dev.local
 .env.local.php
 config/gcp_credentials.json
-deployments/pim/charts/*
+deployments/terraform/pim/charts/*
 deployments/instances
