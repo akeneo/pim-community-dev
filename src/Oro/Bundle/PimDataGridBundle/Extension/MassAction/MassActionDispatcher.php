@@ -292,7 +292,7 @@ class MassActionDispatcher
 
     /**
      * When all rows are selected and the filter is activated on a root product model, then the query
-     * returns the sub product model bit not the variant product.
+     * returns the sub product model but not the variant product.
      * The field "parent" of the variant product cannot be used because it does not contain the root product model.
      * We have to use the ancestor.code field that contains all parent codes.
      *
