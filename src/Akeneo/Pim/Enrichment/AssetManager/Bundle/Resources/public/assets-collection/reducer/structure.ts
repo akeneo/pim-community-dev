@@ -11,9 +11,15 @@ import {fetchRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collect
 import {RuleRelation} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
+import {AttributeGroupCollection} from 'akeneoassetmanager/platform/model/structure/attribute-group';
+import {
+  attributeGroupFetcher,
+  fetchAssetAttributeGroups,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute-group';
 
 export type StructureState = {
   attributes: Attribute[];
+  attributeGroups: AttributeGroupCollection;
   channels: Channel[];
   family: Family | null;
   ruleRelations: RuleRelation[];
@@ -21,12 +27,15 @@ export type StructureState = {
 
 // Reducer
 export const structureReducer = (
-  state: StructureState = {attributes: [], channels: [], family: null, ruleRelations: []},
-  action: AttributeListUpdatedAction | ChannelListUpdatedAction | FamilyUpdatedAction | RuleRelationListUpdatedAction
+  state: StructureState = {attributes: [], attributeGroups: {}, channels: [], family: null, ruleRelations: []},
+  action: AttributeListUpdatedAction | AttributeGroupListUpdatedAction | ChannelListUpdatedAction | FamilyUpdatedAction | RuleRelationListUpdatedAction
 ) => {
   switch (action.type) {
     case 'ATTRIBUTE_LIST_UPDATED':
       state = {...state, attributes: action.attributes};
+      break;
+    case 'ATTRIBUTE_GROUP_LIST_UPDATED':
+      state = {...state, attributeGroups: action.attributeGroups};
       break;
     case 'CHANNEL_LIST_UPDATED':
       state = {...state, channels: action.channels};
@@ -50,6 +59,11 @@ export const attributeListUpdated = (attributes: Attribute[]): AttributeListUpda
   return {type: 'ATTRIBUTE_LIST_UPDATED', attributes};
 };
 
+type AttributeGroupListUpdatedAction = Action<'ATTRIBUTE_GROUP_LIST_UPDATED'> & {attributeGroups: AttributeGroupCollection};
+export const attributeGroupListUpdated = (attributeGroups: AttributeGroupCollection): AttributeGroupListUpdatedAction => {
+  return {type: 'ATTRIBUTE_GROUP_LIST_UPDATED', attributeGroups};
+};
+
 type ChannelListUpdatedAction = Action<'CHANNEL_LIST_UPDATED'> & {channels: Channel[]};
 export const channelListUpdated = (channels: Channel[]): ChannelListUpdatedAction => {
   return {type: 'CHANNEL_LIST_UPDATED', channels};
@@ -68,6 +82,10 @@ export const ruleRelationListUpdated = (ruleRelations: RuleRelation[]): RuleRela
 // Selectors
 export const selectAttributeList = (state: AssetCollectionState): Attribute[] => {
   return state.structure.attributes;
+};
+
+export const selectAttributeGroupList = (state: AssetCollectionState): AttributeGroupCollection => {
+  return state.structure.attributeGroups;
 };
 
 export const selectChannels = (state: AssetCollectionState): Channel[] => {
@@ -95,6 +113,11 @@ export const selectFamily = (state: AssetCollectionState): Family | null => {
 
 export const selectRuleRelations = (state: AssetCollectionState): RuleRelation[] => {
   return state.structure.ruleRelations;
+};
+
+export const updateAttributeGroups = () => async (dispatch: any) => {
+  const attributeGroups = await fetchAssetAttributeGroups(attributeGroupFetcher())();
+  dispatch(attributeGroupListUpdated(attributeGroups));
 };
 
 export const updateChannels = () => async (dispatch: any) => {
