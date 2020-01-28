@@ -117,6 +117,7 @@ pim_asset_manager:
       create: Create an asset family
       edit: Edit family
       view: View family
+      execute_product_link_rules: Execute rules
     permission:
       title: Asset family permissions
     title: Assets
@@ -142,6 +143,11 @@ pim_asset_manager:
         title: 'Welcome to your new asset management area!'
         description: 'You can define here up to 2 product link rules by asset family.'
         link: 'If you want to dig into the Product Link Rules feature, click here'
+      execute_rules:
+        confirm_title: Confirm execution
+        confirm_content: Are you sure you want to execute all the rules? (this could take a long time)
+        execute_rules: Execute rules
+        cancel: Cancel
     properties:
       title: Asset family properties
       identifier: Code
@@ -195,6 +201,9 @@ pim_asset_manager:
       compute_transformations:
         success: Transformations have been launched. Once this job is finished, you will see your new variations updated in your assets.
         fail: An error occurred when trying to compute the transformations
+      execute_product_link_rules:
+        success: Product link rules have been launched
+        fail: An error occured when trying to launch the product link rules
     helper:
       title: Welcome to the Asset Manager!
       no_asset:

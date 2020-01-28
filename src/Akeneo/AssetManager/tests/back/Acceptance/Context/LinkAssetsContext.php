@@ -6,6 +6,8 @@ namespace Akeneo\AssetManager\Acceptance\Context;
 
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\CompiledRuleRunnerInterface;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAllAssetFamilyAssetsCommand;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAllAssetFamilyAssetsHandler;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetCommand;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetHandler;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetsHandler;
@@ -97,6 +99,9 @@ class LinkAssetsContext implements Context
     /** @var LinkAssetsHandler */
     private $linkMultipleAssetHandler;
 
+    /** @var LinkAllAssetFamilyAssetsHandler */
+    private $linkAllAssetFamilyAssetsHandler;
+
     public function __construct(
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
@@ -107,7 +112,8 @@ class LinkAssetsContext implements Context
         ExceptionContext $exceptionContext,
         ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy,
         LinkAssetsHandler $linkAssetsHandler,
-        LinkAssetHandler $linkAssetHandler
+        LinkAssetHandler $linkAssetHandler,
+        LinkAllAssetFamilyAssetsHandler $linkAllAssetFamilyAssetsHandler
     ) {
         $this->assetRepository = $assetRepository;
         $this->assetFamilyRepository = $assetFamilyRepository;
@@ -119,6 +125,7 @@ class LinkAssetsContext implements Context
         $this->productLinkRuleLauncherSpy = $productLinkRuleLauncherSpy;
         $this->linkMultipleAssetHandler = $linkAssetsHandler;
         $this->linkAssetHandler = $linkAssetHandler;
+        $this->linkAllAssetFamilyAssetsHandler = $linkAllAssetFamilyAssetsHandler;
     }
 
     /**
@@ -190,6 +197,16 @@ class LinkAssetsContext implements Context
     {
         $this->productLinkRuleLauncherSpy->assertHasRunForAsset(self::ASSET_FAMILY_IDENTIFIER, 'house');
         $this->productLinkRuleLauncherSpy->assertHasRunForAsset(self::ASSET_FAMILY_IDENTIFIER, 'flower');
+    }
+
+    /**
+     * @When /^I link all assets in the asset family to some products using this rule template$/
+     */
+    public function iLinkAllAssetsInTheAssetFamilyToSomeProductsUsingThisRuleTemplate(): void
+    {
+        $this->createAsset(self::ASSET_FAMILY_IDENTIFIER, 'house');
+        $this->createAsset(self::ASSET_FAMILY_IDENTIFIER, 'flower');
+        $this->linkAllAssetsOfTheAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
     }
 
     /**
@@ -431,6 +448,12 @@ class LinkAssetsContext implements Context
         $this->linkMultipleAssetHandler->handle($linkMultipleAssetsCommand);
     }
 
+    private function linkAllAssetsOfTheAssetFamily(string $assetFamilyIdentifier): void
+    {
+        $linkAllAssetFamilyAssetsCommand = new LinkAllAssetFamilyAssetsCommand($assetFamilyIdentifier);
+        $this->linkAllAssetFamilyAssetsHandler->__invoke($linkAllAssetFamilyAssetsCommand);
+    }
+
     /**
      * @Then /^a job has not been launched to link assets to products$/
      */
@@ -451,6 +474,15 @@ class LinkAssetsContext implements Context
         $command->assetFamilyIdentifier = self::ASSET_FAMILY_IDENTIFIER;
         $command->assetCode = $assetCode;
         ($this->linkAssetHandler)($command);
+    }
+
+    /**
+     * @Then /^a job has been launched to link all assets of the asset family to products$/
+     */
+    public function aJobHasBeenLaunchedToLinkAllAssetsOfTheAssetFamily()
+    {
+        $this->productLinkRuleLauncherSpy->assertHasRunForAsset(self::ASSET_FAMILY_IDENTIFIER, 'house');
+        $this->productLinkRuleLauncherSpy->assertHasRunForAsset(self::ASSET_FAMILY_IDENTIFIER, 'flower');
     }
 
     /**

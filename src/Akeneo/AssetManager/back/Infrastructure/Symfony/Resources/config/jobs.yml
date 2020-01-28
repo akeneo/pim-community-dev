@@ -74,6 +74,7 @@ services:
         class: 'Akeneo\AssetManager\Infrastructure\Job\LinkAssetsToProductsTasklet'
         arguments:
             - '@akeneo_assetmanager.application.asset.execute_rule_templates.rule_template_executor'
+            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetCodesByAssetFamily'
         public: false
 
     akeneo_assetmanager.tasklet.compute_transformations:

@@ -57,6 +57,11 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
 
+    Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetCodesByAssetFamily:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryFindAssetCodesByAssetFamily
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+
     akeneo_assetmanager.infrastructure.persistence.query.find_connector_assets_by_identifiers:
         class: Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetsByIdentifiers
 
@@ -279,6 +284,8 @@ services:
 
     akeneo_assetmanager.infrastructure.job.product_link_rule_launcher:
         class: 'Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy'
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
 
     # Compute Transformations
     akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher:

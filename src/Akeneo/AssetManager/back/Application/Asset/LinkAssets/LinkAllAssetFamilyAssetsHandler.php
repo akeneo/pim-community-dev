@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2020 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\LinkAssets;
 
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 
@@ -21,31 +20,30 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  */
-class LinkAssetHandler
+class LinkAllAssetFamilyAssetsHandler
 {
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
+
     /** @var ProductLinkRuleLauncherInterface */
     private $productLinkRuleLauncher;
-
-    /** * @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         ProductLinkRuleLauncherInterface $productLinkRuleLauncher
     ) {
-        $this->productLinkRuleLauncher = $productLinkRuleLauncher;
         $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->productLinkRuleLauncher = $productLinkRuleLauncher;
     }
 
-    public function __invoke(LinkAssetCommand $command): void
+    public function __invoke(LinkAllAssetFamilyAssetsCommand $command): void
     {
         $assetFamily = $this->assetFamilyRepository->getByIdentifier(
             AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier)
         );
         if (!$assetFamily->getRuleTemplateCollection()->isEmpty()) {
-            $this->productLinkRuleLauncher->launchForAssetFamilyAndAssetCodes(
-                AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier),
-                [AssetCode::fromString($command->assetCode)]
+            $this->productLinkRuleLauncher->launchForAllAssetFamilyAssets(
+                AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier)
             );
         }
     }

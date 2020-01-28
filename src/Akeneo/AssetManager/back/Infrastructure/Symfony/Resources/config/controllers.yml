@@ -52,6 +52,14 @@ services:
         - '@validator'
         - '@akeneo_assetmanager.application.asset_family.delete_asset_family_handler'
 
+    akeneo_assetmanager.infrastructure.action.asset_family.execute_product_link_rules:
+        class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\ExecuteProductLinkRulesAction
+        arguments:
+            - '@Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAllAssetFamilyAssetsHandler'
+            - '@security.token_storage'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@oro_security.security_facade'
+
     # Asset Family Permissions
     akeneo_assetmanager.infrastructure.action.asset_family_permission.get:
         class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamilyPermission\GetAction

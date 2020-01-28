@@ -12,7 +12,7 @@ type ButtonProps = {
   isDisabled?: boolean;
 };
 
-export const Buttons = styled.div`
+export const ButtonContainer = styled.div`
   display: flex;
   > :not(:first-child) {
     margin-left: 10px;

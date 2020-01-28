@@ -14,7 +14,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import {AssetFamilySelector} from 'akeneoassetmanager/application/component/library/asset-family-selector';
 import {HeaderView} from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {getLabel} from 'pimui/js/i18n';
-import {MultipleButton, Button, Buttons} from 'akeneoassetmanager/application/component/app/button';
+import {MultipleButton, Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {CreateModal} from 'akeneoassetmanager/application/component/asset/create';
@@ -223,7 +223,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             )}
             image={null}
             primaryAction={() => (
-              <Buttons>
+              <ButtonContainer>
                 {null !== currentAssetFamilyIdentifier ? (
                   <>
                     <Button color="outline" onClick={() => redirectToAssetFamily(currentAssetFamilyIdentifier)}>
@@ -272,7 +272,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                     {__('pim_asset_manager.asset_family.button.create')}
                   </Button>
                 )}
-              </Buttons>
+              </ButtonContainer>
             )}
             context={context}
             secondaryActions={() => (
