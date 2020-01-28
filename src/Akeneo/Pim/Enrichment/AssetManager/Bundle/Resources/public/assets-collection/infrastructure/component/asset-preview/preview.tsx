@@ -147,6 +147,11 @@ const MediaFilePreviewView = ({
   return (
     <>
       <Image src={getMediaDataPreviewUrl(mediaFileData, attribute)} alt={label} data-role="asset-preview" />
+      {attribute.media_type === MediaTypes.other && (
+        <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
+          {__('pim_asset_manager.asset_preview.other_main_media')}
+        </Message>
+      )}
       <Actions>
         <DownloadAction url={getImageDownloadUrl(mediaFileData)} fileName={mediaFileData.originalFilename} />
         <EditAction url={editUrl} />
@@ -185,6 +190,11 @@ const MediaLinkPreviewView = ({
       return (
         <>
           <Image src={getMediaDataPreviewUrl(mediaLinkData, attribute)} alt={label} data-role="asset-preview" />
+          {attribute.media_type === MediaTypes.other && (
+            <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
+              {__('pim_asset_manager.asset_preview.other_main_media')}
+            </Message>
+          )}
           <Actions>
             <DownloadAction url={url} fileName={url} />
             <CopyUrlAction url={url} />
