@@ -1,0 +1,2 @@
+akeneo_connectivity.connection:
+  acl.manage_settings: Accéder au paramétrage des connections
