@@ -33,7 +33,7 @@ cp $DEV_DISTRIB_DIR/std-build/migration/32_to_40/oneup_flysystem.yml $STANDARD_D
 
 # We need a console and FPM entrypoint
 cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
-chmod +x  $STANDARD_DISTRIB_DIR/bin/console
+chmod +x $STANDARD_DISTRIB_DIR/bin/console
 cp $DEV_DISTRIB_DIR/public/* $STANDARD_DISTRIB_DIR/public/
 
 # We provide a kernel that loads configuration from the CE dev and override it with the one in standard
@@ -57,7 +57,6 @@ cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 
 # Prepare database upgrades to run
 mkdir -p $STANDARD_DISTRIB_DIR/upgrades/
-cp -R $DEV_DISTRIB_DIR/../pim-community-dev/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
 cp -R $DEV_DISTRIB_DIR/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
 
 cp $DEV_DISTRIB_DIR/std-build/migration/32_to_40/rector.yaml $STANDARD_DISTRIB_DIR/
