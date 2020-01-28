@@ -11,6 +11,7 @@ import {FormGroup} from './form/FormGroup';
 import {FormInput} from './form/FormInput';
 import {Helper, HelperLink, HelperTitle} from './Helper';
 import {InlineHelper} from './InlineHelper';
+import {RuntimeError} from './RuntimeError';
 import {Modal} from './Modal';
 import {PageContent} from './PageContent';
 import {PageError} from './PageError';
@@ -42,6 +43,7 @@ export {
     PageContent,
     PageError,
     PageHeader,
+    RuntimeError,
     SecondaryActionsDropdownButton,
     Section,
     Select,
