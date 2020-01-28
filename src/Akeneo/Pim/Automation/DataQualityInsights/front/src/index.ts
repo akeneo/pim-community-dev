@@ -32,10 +32,11 @@ import {
 
 import {ATTRIBUTES_TAB_NAME, DATA_QUALITY_INSIGHTS_TAB_NAME} from './application/constant';
 
-import {DataQualityInsightsDashboard, DataQualityOverviewChartHeader} from "./application/component/DqiDashboard";
+import {DataQualityInsightsDashboard, DataQualityOverviewChartHeader, DataQualityOverviewHelper} from "./application/component/DqiDashboard";
 
 export {
   DataQualityOverviewChartHeader,
+  DataQualityOverviewHelper,
   DataQualityInsightsDashboard,
   ProductEditFormApp,
   DataQualityInsightsFeature,
