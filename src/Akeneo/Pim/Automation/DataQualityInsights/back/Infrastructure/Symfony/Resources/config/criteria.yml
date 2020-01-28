@@ -33,7 +33,7 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\BuildProductValues'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLocalesByChannelQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\GetProductAttributesCodes'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetTextAttributeCodesCompatibleWithSpellingQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetTextareaAttributeCodesCompatibleWithSpellingQuery'
         tags:
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_criterion' }
