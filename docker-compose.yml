@@ -53,7 +53,7 @@ services:
     volumes:
       - './:/srv/pim:ro'
     ports:
-      - '${DOCKER_PORT_HTTP:-5910}:5900'
+      - '${DOCKER_PORT_SELENIUM:-5910}:5900'
     networks:
       - 'pim'
 
