@@ -3,9 +3,9 @@ import {uniq as _uniq} from 'lodash';
 
 import Rate from "../../../Rate";
 import AllAttributesLink from "./AllAttributesLink";
-import {Evaluation, RANK_1, Recommendation} from "../../../../../domain";
+import {Evaluation, Recommendation} from "../../../../../domain";
 import CriteriaList from "./CriteriaList";
-import AxisEvaluationSuccess from "./AxisEvaluationSuccess";
+import AxisError from "./AxisError";
 
 interface AxisEvaluationProps {
   evaluation: Evaluation;
@@ -25,14 +25,9 @@ const getAllAttributes = (recommendations: Recommendation[]): string[] => {
   return _uniq(attributes);
 };
 
-const isSuccess = (axis: Evaluation) => {
-  return (axis.rate === RANK_1)
+const canDisplayAllAttributesLink = (attributes: string[]) => {
+  return attributes.length > 0;
 };
-
-const canDisplayAllAttributesLink = (axis: Evaluation, attributes: string[]) => {
-  return (!isSuccess(axis) && attributes.length > 0);
-};
-
 
 const AxisEvaluation: FunctionComponent<AxisEvaluationProps> = ({evaluation, axis}) => {
   const recommendations = evaluation.recommendations || [];
@@ -47,16 +42,17 @@ const AxisEvaluation: FunctionComponent<AxisEvaluationProps> = ({evaluation, axi
           <Rate value={evaluation.rate} />
         </span>
         <span>
-          {canDisplayAllAttributesLink(evaluation, allAttributes) && (
+          {canDisplayAllAttributesLink(allAttributes) && (
             <AllAttributesLink axis={axis} attributes={allAttributes}/>
           )}
         </span>
       </header>
-      {isSuccess(evaluation) ? (
-        <AxisEvaluationSuccess axis={axis}/>
+      { evaluation.rate == "" ? (
+        <AxisError/>
       ) : (
-        <CriteriaList axis={axis} recommendations={recommendations} rates={rates}/>
+        <></>
       )}
+      <CriteriaList axis={axis} recommendations={recommendations} rates={rates}/>
     </div>
   )
 };

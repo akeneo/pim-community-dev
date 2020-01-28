@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluateProductsCriteriaParameters;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\TitleSuggestionIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\WordIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
@@ -63,6 +64,37 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $this::getSubscribedEvents()->shouldHaveKey(WordIgnoredEvent::WORD_IGNORED);
         $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE);
         $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE_ALL);
+    }
+
+    public function it_schedule_evaluation_when_a_title_suggestion_is_ignored(
+        $dataQualityInsightsFeature,
+        $createProductsCriteriaEvaluations,
+        $jobInstanceRepository,
+        $tokenStorage,
+        $queueJobLauncher,
+        ProductInterface $product,
+        JobInstance $jobInstance,
+        TokenInterface $token,
+        UserInterface $user
+    ) {
+        $product->getId()->willReturn(12345);
+        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+        $createProductsCriteriaEvaluations->create([new ProductId(12345)])->shouldBeCalled();
+
+        $jobInstanceRepository
+            ->findOneByIdentifier(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME)
+            ->willReturn($jobInstance);
+
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+
+        $queueJobLauncher->launch(
+            $jobInstance,
+            $user,
+            [EvaluateProductsCriteriaParameters::PRODUCT_IDS => [12345]]
+        );
+
+        $this->onIgnoredTitleSuggestion(new TitleSuggestionIgnoredEvent(new ProductId(12345)));
     }
 
     public function it_schedule_evaluation_when_a_word_is_ignored(

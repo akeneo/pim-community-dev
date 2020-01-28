@@ -36,7 +36,41 @@ const AxisChart = ({dataset, padding, barRatio, dateFormatCallback}: AxisChartPr
         width={INITIAL_CHART_WIDTH}
         padding={{top: 0, bottom: 65, left: padding, right: padding}}
       >
+        <VictoryAxis
+          tickValues={dates}
+          tickFormat={dateFormatCallback}
+          style={{
+            axis: {strokeWidth: 0},
+            tickLabels: {
+              fontSize: Math.ceil(11 * (downScalingRatio)),
+              fill: "#67768a",
+              padding: Math.ceil(27 * (downScalingRatio)),
+              fontFamily: "Lato",
+            }
+          }}
+        />
+        <VictoryAxis
+          dependentAxis
+          domain={[0, 100]}
+          orientation="left"
+          standalone={false}
+          tickValues={[0, 33, 66, 100]}
+          style={{
+            grid: {
+              stroke: "#e8ebee",
+              strokeWidth: 1,
+
+            },
+            tickLabels: {
+              fontSize: 0
+            },
+            axis: {
+              strokeWidth: 0
+            }
+          }}
+        />
         <VictoryStack
+          domain={{y: [0, 100] }}
           colorScale={[
             `${RANK_5_COLOR}`,
             `${RANK_4_COLOR}`,
@@ -59,19 +93,6 @@ const AxisChart = ({dataset, padding, barRatio, dateFormatCallback}: AxisChartPr
             />;
           })}
         </VictoryStack>
-        <VictoryAxis
-          tickValues={dates}
-          tickFormat={dateFormatCallback}
-          style={{
-            axis: {stroke: "none"},
-            tickLabels: {
-              fontSize: Math.ceil(11 * (downScalingRatio)),
-              fill: "#67768a",
-              padding: Math.ceil(27 * (downScalingRatio)),
-              fontFamily: "Lato",
-            }
-          }}
-        />
       </VictoryChart>
     </div>
   )

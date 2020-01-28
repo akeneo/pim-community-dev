@@ -1,9 +1,9 @@
-import DataQualityInsightsTabContentPortal, {CONTAINER_ELEMENT_ID as DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID} from './DataQualityInsightsTabContentPortal';
-import AttributesTabContentPortal, {CONTAINER_ELEMENT_ID as ATTRIBUTES_TAB_CONTENT_CONTAINER_ELEMENT_ID} from "./AttributesTabContentPortal";
+import DataQualityInsightsTabContent, {CONTAINER_ELEMENT_ID as DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID} from './DataQualityInsightsTabContent';
+import AttributesTabContent, {CONTAINER_ELEMENT_ID as ATTRIBUTES_TAB_CONTENT_CONTAINER_ELEMENT_ID} from "./AttributesTabContent";
 
 export {
-  DataQualityInsightsTabContentPortal,
+  DataQualityInsightsTabContent,
   DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID,
-  AttributesTabContentPortal,
+  AttributesTabContent,
   ATTRIBUTES_TAB_CONTENT_CONTAINER_ELEMENT_ID
 }

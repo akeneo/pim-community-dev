@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\back\tests\Integration\Persistence\Query;
+namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetCategoryChildrenIdsQuery;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetAllCategoryCodesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetAllFamilyCodesQueryInterface;
@@ -23,7 +24,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDa
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
 use PhpSpec\ObjectBehavior;
 
 class ConsolidateDashboardRatesSpec extends ObjectBehavior
@@ -37,7 +37,7 @@ class ConsolidateDashboardRatesSpec extends ObjectBehavior
         $this->beConstructedWith($getRanksDistributionFromProductAxisRatesQuery, $getAllCategoryCodesQuery, $getAllFamilyCodesQuery, $dashboardRatesProjectionRepository);
     }
 
-    public function it_consolidates_the_dashboard_rates_for_a_last_day_of_a_week(
+    public function it_consolidates_the_dashboard_rates(
         GetRanksDistributionFromProductAxisRatesQueryInterface $getRanksDistributionFromProductAxisRatesQuery,
         GetAllCategoryCodesQueryInterface $getAllCategoryCodesQuery,
         GetAllFamilyCodesQueryInterface $getAllFamilyCodesQuery,
@@ -46,24 +46,22 @@ class ConsolidateDashboardRatesSpec extends ObjectBehavior
         $dateTime = new \DateTimeImmutable('2020-01-19');
         $consolidationDate = new ConsolidationDate($dateTime);
 
-        $catalogRanks = $this->buildRandomRanksDistribution();
+        $catalogRanks = $this->buildRandomRanksDistributionCollection();
         $getRanksDistributionFromProductAxisRatesQuery->forWholeCatalog($dateTime)->willReturn($catalogRanks);
 
         $catalogRatesProjection = new DashboardRatesProjection(
             DashboardProjectionType::catalog(),
             DashboardProjectionCode::catalog(),
-            [
-                Periodicity::DAILY => ['2020-01-19' => $catalogRanks],
-                Periodicity::WEEKLY => ['2020-01-19' => $catalogRanks]
-            ]
+            $consolidationDate,
+            $catalogRanks
         );
 
         $dashboardRatesProjectionRepository->save($catalogRatesProjection)->shouldBeCalled();
 
         $familyMugsCode = new FamilyCode('mugs');
         $familyWebcamsCode = new FamilyCode('webcams');
-        $familyMugsRanks = $this->buildRandomRanksDistribution();
-        $familyWebcamsRanks = $this->buildRandomRanksDistribution();
+        $familyMugsRanks = $this->buildRandomRanksDistributionCollection();
+        $familyWebcamsRanks = $this->buildRandomRanksDistributionCollection();
 
         $getAllFamilyCodesQuery->execute()->willReturn([$familyMugsCode, $familyWebcamsCode]);
         $getRanksDistributionFromProductAxisRatesQuery->byFamily($familyMugsCode, $dateTime)->willReturn($familyMugsRanks);
@@ -72,58 +70,23 @@ class ConsolidateDashboardRatesSpec extends ObjectBehavior
         $familyMugsRatesProjection = new DashboardRatesProjection(
             DashboardProjectionType::family(),
             DashboardProjectionCode::family($familyMugsCode),
-            [
-                Periodicity::DAILY => ['2020-01-19' => $familyMugsRanks],
-                Periodicity::WEEKLY => ['2020-01-19' => $familyMugsRanks],
-            ]
+            $consolidationDate,
+            $familyMugsRanks
         );
         $familyWebcamsRatesProjection = new DashboardRatesProjection(
             DashboardProjectionType::family(),
             DashboardProjectionCode::family($familyWebcamsCode),
-            [
-                Periodicity::DAILY => ['2020-01-19' => $familyWebcamsRanks],
-                Periodicity::WEEKLY => ['2020-01-19' => $familyWebcamsRanks],
-            ]
+            $consolidationDate,
+            $familyWebcamsRanks
         );
 
         $dashboardRatesProjectionRepository->save($familyMugsRatesProjection)->shouldBeCalled();
         $dashboardRatesProjectionRepository->save($familyWebcamsRatesProjection)->shouldBeCalled();
 
-        $getAllCategoryCodesQuery->execute()->willReturn([]);
-
-        $this->consolidate($consolidationDate);
-    }
-
-    public function it_consolidates_the_dashboard_rates_for_a_last_day_of_a_year(
-        GetRanksDistributionFromProductAxisRatesQueryInterface $getRanksDistributionFromProductAxisRatesQuery,
-        GetAllCategoryCodesQueryInterface $getAllCategoryCodesQuery,
-        GetAllFamilyCodesQueryInterface $getAllFamilyCodesQuery,
-        DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository
-    ) {
-        $dateTime = new \DateTimeImmutable('2019-12-31');
-        $consolidationDate = new ConsolidationDate($dateTime);
-
-        $catalogRanks = $this->buildRandomRanksDistribution();
-        $getRanksDistributionFromProductAxisRatesQuery->forWholeCatalog($dateTime)->willReturn($catalogRanks);
-
-        $catalogRatesProjection = new DashboardRatesProjection(
-            DashboardProjectionType::catalog(),
-            DashboardProjectionCode::catalog(),
-            [
-                Periodicity::DAILY => ['2019-12-31' => $catalogRanks],
-                Periodicity::MONTHLY => ['2019-12-31' => $catalogRanks],
-                Periodicity::YEARLY => ['2019-12-31' => $catalogRanks],
-            ]
-        );
-
-        $dashboardRatesProjectionRepository->save($catalogRatesProjection)->shouldBeCalled();
-
-        $getAllFamilyCodesQuery->execute()->willReturn([]);
-
         $category1Code = new CategoryCode('category_1');
         $category2Code = new CategoryCode('category_2');
-        $category1Ranks = $this->buildRandomRanksDistribution();
-        $category2Ranks = $this->buildRandomRanksDistribution();
+        $category1Ranks = $this->buildRandomRanksDistributionCollection();
+        $category2Ranks = $this->buildRandomRanksDistributionCollection();
 
         $getAllCategoryCodesQuery->execute()->willReturn([$category1Code, $category2Code]);
         $getRanksDistributionFromProductAxisRatesQuery->byCategory($category1Code, $dateTime)->willReturn($category1Ranks);
@@ -132,20 +95,14 @@ class ConsolidateDashboardRatesSpec extends ObjectBehavior
         $category1RatesProjection = new DashboardRatesProjection(
             DashboardProjectionType::category(),
             DashboardProjectionCode::category($category1Code),
-            [
-                Periodicity::DAILY => ['2019-12-31' => $category1Ranks],
-                Periodicity::MONTHLY => ['2019-12-31' => $category1Ranks],
-                Periodicity::YEARLY => ['2019-12-31' => $category1Ranks],
-            ]
+            $consolidationDate,
+            $category1Ranks
         );
         $category2RatesProjection = new DashboardRatesProjection(
             DashboardProjectionType::category(),
             DashboardProjectionCode::category($category2Code),
-            [
-                Periodicity::DAILY => ['2019-12-31' => $category2Ranks],
-                Periodicity::MONTHLY => ['2019-12-31' => $category2Ranks],
-                Periodicity::YEARLY => ['2019-12-31' => $category2Ranks],
-            ]
+            $consolidationDate,
+            $category2Ranks
         );
 
         $dashboardRatesProjectionRepository->save($category1RatesProjection)->shouldBeCalled();
@@ -154,31 +111,31 @@ class ConsolidateDashboardRatesSpec extends ObjectBehavior
         $this->consolidate($consolidationDate);
     }
 
-    private function buildRandomRanksDistribution(): array
+    private function buildRandomRanksDistributionCollection(): RanksDistributionCollection
     {
-        return [
+        return new RanksDistributionCollection([
             "consistency" => [
                 "ecommerce" => [
                     "en_US" => [
-                        "1" => rand(1, 100),
-                        "2" => rand(1, 100),
-                        "3" => rand(1, 100),
-                        "4" => rand(1, 100),
-                        "5" => rand(1, 100)
+                        "rank_1" => rand(1, 100),
+                        "rank_2" => rand(1, 100),
+                        "rank_3" => rand(1, 100),
+                        "rank_4" => rand(1, 100),
+                        "rank_5" => rand(1, 100)
                     ],
                 ],
             ],
             "enrichment" => [
                 "ecommerce" => [
                     "en_US" => [
-                        "1" => rand(1, 100),
-                        "2" => rand(1, 100),
-                        "3" => rand(1, 100),
-                        "4" => rand(1, 100),
-                        "5" => rand(1, 100)
+                        "rank_1" => rand(1, 100),
+                        "rank_2" => rand(1, 100),
+                        "rank_3" => rand(1, 100),
+                        "rank_4" => rand(1, 100),
+                        "rank_5" => rand(1, 100)
                     ],
                 ],
             ],
-        ];
+        ]);
     }
 }
