@@ -25,15 +25,10 @@ class FindExistingAttributeCodesQuery implements QueryInterface
     /** @var Connection */
     public $connection;
 
-    /** @var TableNameBuilder */
-    private $tableNameBuilder;
-
     public function __construct(
-        Connection $connection,
-        TableNameBuilder $tableNameBuilder
+        Connection $connection
     ) {
         $this->connection = $connection;
-        $this->tableNameBuilder = $tableNameBuilder;
     }
 
     /**
@@ -41,10 +36,9 @@ class FindExistingAttributeCodesQuery implements QueryInterface
      */
     public function execute(array $attributeCodes): array
     {
-        $tableName = $this->tableNameBuilder->getTableName('pim_catalog.entity.attribute.class');
         $sql = <<<SQL
 SELECT attribute.code
-FROM $tableName as attribute
+FROM pim_catalog_attribute as attribute
 WHERE attribute.code IN (:attribute_codes)
 SQL;
 

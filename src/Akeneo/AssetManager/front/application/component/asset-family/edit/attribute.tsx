@@ -7,7 +7,7 @@ import {CreateState} from 'akeneoassetmanager/application/reducer/attribute/crea
 import CreateAttributeModal from 'akeneoassetmanager/application/component/attribute/create';
 import ManageOptionsView from 'akeneoassetmanager/application/component/attribute/edit/option';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
-import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {attributeEditionStartByIdentifier} from 'akeneoassetmanager/application/action/attribute/edit';
 import AttributeEditForm from 'akeneoassetmanager/application/component/attribute/edit';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
@@ -18,9 +18,10 @@ import {getAttributeIcon} from 'akeneoassetmanager/application/configuration/att
 import Key from 'akeneoassetmanager/tools/key';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {EditOptionState} from 'akeneoassetmanager/application/reducer/attribute/type/option';
-import {canEditLocale, canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
+import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
+import {StickyHeader} from 'akeneoassetmanager/application/component/asset-family/edit/permission';
 
-// const securityContext = require('pim/security-context');
+const securityContext = require('pim/security-context');
 
 interface StateProps {
   context: {
@@ -199,59 +200,72 @@ class AttributeView extends React.Component<AttributeViewProps> {
 
 class AttributesView extends React.Component<CreateProps> {
   render() {
+    const {
+      assetFamily,
+      rights,
+      events,
+      context,
+      attributes,
+      firstLoading,
+      createAttribute,
+      editAttribute,
+      options,
+    } = this.props;
+    const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
+
     return (
       <React.Fragment>
         <Header
-          label={this.props.assetFamily.getLabel(this.props.context.locale)}
-          image={this.props.assetFamily.getImage()}
-          primaryAction={(defaultFocus: React.RefObject<any>) => {
-            return this.props.rights.attribute.create ? (
+          label={__('pim_asset_manager.asset_family.tab.attribute')}
+          image={assetFamily.image}
+          primaryAction={(defaultFocus: React.RefObject<any>) =>
+            rights.attribute.create ? (
               <button
                 className="AknButton AknButton--action"
-                onClick={this.props.events.onAttributeCreationStart}
+                onClick={events.onAttributeCreationStart}
                 ref={defaultFocus}
                 tabIndex={0}
               >
                 {__('pim_asset_manager.attribute.button.add')}
               </button>
-            ) : null;
-          }}
+            ) : null
+          }
           secondaryActions={() => null}
           withLocaleSwitcher={true}
           withChannelSwitcher={false}
           isDirty={false}
-          breadcrumbConfiguration={breadcrumbConfiguration}
-          displayActions={this.props.rights.attribute.create}
+          breadcrumbConfiguration={breadcrumbConfiguration(assetFamily.identifier, assetFamilyLabel)}
+          displayActions={rights.attribute.create}
         />
         <div className="AknSubsection">
-          <header className="AknSubsection-title AknSubsection-title--sticky" style={{top: '192px'}}>
+          <StickyHeader>
             <span className="group-label">{__('pim_asset_manager.asset_family.attribute.title')}</span>
-          </header>
-          {this.props.firstLoading || 0 < this.props.attributes.length ? (
+          </StickyHeader>
+          {firstLoading || 0 < attributes.length ? (
             <div className="AknSubsection-container">
               <div className="AknFormContainer AknFormContainer--withPadding">
                 {renderSystemAttributes()}
-                {this.props.firstLoading ? (
+                {firstLoading ? (
                   renderAttributePlaceholders()
                 ) : (
                   <React.Fragment>
-                    {this.props.attributes.map((attribute: NormalizedAttribute) => (
+                    {attributes.map((attribute: NormalizedAttribute) => (
                       <ErrorBoundary
                         key={attribute.identifier}
                         errorMessage={__('pim_asset_manager.asset_family.attribute.error.render_list')}
                       >
                         <AttributeView
                           attribute={attribute}
-                          onAttributeEdit={this.props.events.onAttributeEdit}
-                          locale={this.props.context.locale}
-                          rights={this.props.rights}
+                          onAttributeEdit={events.onAttributeEdit}
+                          locale={context.locale}
+                          rights={rights}
                         />
                       </ErrorBoundary>
                     ))}
                   </React.Fragment>
                 )}
               </div>
-              {this.props.editAttribute ? <AttributeEditForm rights={this.props.rights} /> : null}
+              {editAttribute && <AttributeEditForm rights={rights} />}
             </div>
           ) : (
             <React.Fragment>
@@ -260,21 +274,19 @@ class AttributesView extends React.Component<CreateProps> {
               </div>
               <div className="AknGridContainer-noData AknGridContainer-noData--small">
                 <div className="AknGridContainer-noDataTitle">
-                  {__('pim_asset_manager.attribute.no_data.title', {
-                    entityLabel: this.props.assetFamily.getLabel(this.props.context.locale),
-                  })}
+                  {__('pim_asset_manager.attribute.no_data.title', {entityLabel: assetFamilyLabel})}
                 </div>
                 <div className="AknGridContainer-noDataSubtitle">
                   {__('pim_asset_manager.attribute.no_data.subtitle')}
                 </div>
-                <button className="AknButton AknButton--action" onClick={this.props.events.onAttributeCreationStart}>
+                <button className="AknButton AknButton--action" onClick={events.onAttributeCreationStart}>
                   {__('pim_asset_manager.attribute.button.add')}
                 </button>
               </div>
             </React.Fragment>
           )}
-          {this.props.createAttribute.active ? <CreateAttributeModal /> : null}
-          {this.props.options.isActive ? <ManageOptionsView rights={this.props.rights} /> : null}
+          {createAttribute.active && <CreateAttributeModal />}
+          {options.isActive && <ManageOptionsView rights={rights} />}
         </div>
       </React.Fragment>
     );
@@ -295,18 +307,18 @@ export default connect(
         },
         attribute: {
           create:
-            // securityContext.isGranted('akeneo_assetmanager_attribute_create') &&
+            securityContext.isGranted('akeneo_assetmanager_attribute_create') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           edit:
-            // securityContext.isGranted('akeneo_assetmanager_attribute_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_attribute_edit') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           delete:
-            // securityContext.isGranted('akeneo_assetmanager_attribute_edit') &&
-            // securityContext.isGranted('akeneo_assetmanager_attribute_delete') &&
+            securityContext.isGranted('akeneo_assetmanager_attribute_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_attribute_delete') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },
-      assetFamily: denormalizeAssetFamily(state.form.data),
+      assetFamily: state.form.data,
       createAttribute: state.createAttribute,
       editAttribute: state.attribute.isActive,
       options: state.options,

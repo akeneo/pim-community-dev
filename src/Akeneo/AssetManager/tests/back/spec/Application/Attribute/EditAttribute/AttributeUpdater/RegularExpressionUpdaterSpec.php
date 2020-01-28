@@ -6,7 +6,7 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\Reg
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
@@ -19,13 +19,13 @@ class RegularExpressionUpdaterSpec extends ObjectBehavior
 
     function it_only_supports_edit_regular_expressions_command_for_text_attributes(
         TextAttribute $textAttribute,
-        ImageAttribute $imageAttribute
+        MediaFileAttribute $mediaFileAttribute
     ) {
         $labelEditCommand = new EditLabelsCommand('name', []);
         $editRegularExpression = new EditRegularExpressionCommand('name', null);
 
         $this->supports($textAttribute, $editRegularExpression)->shouldReturn(true);
-        $this->supports($imageAttribute, $editRegularExpression)->shouldReturn(false);
+        $this->supports($mediaFileAttribute, $editRegularExpression)->shouldReturn(false);
         $this->supports($textAttribute, $labelEditCommand)->shouldReturn(false);
     }
 

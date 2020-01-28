@@ -9,6 +9,7 @@ use Akeneo\AssetManager\Common\Fake\InMemoryFindRequiredValueKeyCollectionForCha
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -56,6 +57,7 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocalesTest extends Tes
                 LabelCollection::fromArray(['en_US' => 'Name']),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(155),
@@ -72,6 +74,7 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocalesTest extends Tes
                 LabelCollection::fromArray(['en_US' => 'Name']),
                 AttributeOrder::fromInteger(1),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(155),
@@ -88,6 +91,7 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocalesTest extends Tes
                 LabelCollection::fromArray(['en_US' => 'Description']),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(255),

@@ -16,11 +16,13 @@ namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetFamilyItems;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NullNamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyQuery;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PHPUnit\Framework\TestCase;
 
@@ -47,7 +49,10 @@ class InMemoryFindConnectorAssetFamilyItemsTest extends TestCase
                 $assetFamily->getIdentifier(),
                 LabelCollection::fromArray(['en_US' => sprintf('asset_family_%s', $i)]),
                 Image::createEmpty(),
-                []
+                [],
+                new ConnectorTransformationCollection([]),
+                new NullNamingConvention(),
+                null
             );
             $assetFamilies[] = $connectorAssetFamily;
             $this->findConnectorAssetFamilyItems->save($assetFamily->getIdentifier(), $connectorAssetFamily);
@@ -66,7 +71,7 @@ class InMemoryFindConnectorAssetFamilyItemsTest extends TestCase
             $normalizedFoundAssetFamilies[] = $assetFamily->normalize();
         }
 
-        $this->assertSame($normalizedAssetFamilies, $normalizedFoundAssetFamilies);
+        $this->assertEquals($normalizedAssetFamilies, $normalizedFoundAssetFamilies);
     }
 
     /**
@@ -82,7 +87,10 @@ class InMemoryFindConnectorAssetFamilyItemsTest extends TestCase
                 $assetFamily->getIdentifier(),
                 LabelCollection::fromArray(['en_US' => sprintf('asset_family_%s', $i)]),
                 Image::createEmpty(),
-                []
+                [],
+                new ConnectorTransformationCollection([]),
+                new NullNamingConvention(),
+                null
             );
             $assetFamilies[] = $connectorAssetFamily;
             $this->findConnectorAssetFamilyItems->save($assetFamily->getIdentifier(), $connectorAssetFamily);
@@ -102,7 +110,7 @@ class InMemoryFindConnectorAssetFamilyItemsTest extends TestCase
             $normalizedFoundAssetFamilies[] = $assetFamily->normalize();
         }
 
-        $this->assertSame(array_slice($normalizedAssetFamilies, 3, 3), $normalizedFoundAssetFamilies);
+        $this->assertEquals(array_slice($normalizedAssetFamilies, 3, 3), $normalizedFoundAssetFamilies);
     }
 
     /**

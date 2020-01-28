@@ -1,12 +1,10 @@
 parameters:
     pimee_security.array_converter.flat_to_standard.locale_accesses.class:           Akeneo\Pim\Permission\Component\Connector\ArrayConverter\FlatToStandard\LocaleAccesses
-    pimee_security.array_converter.flat_to_standard.asset_category_accesses.class:   Akeneo\Pim\Permission\Component\Connector\ArrayConverter\FlatToStandard\AssetCategoryAccesses
     pimee_security.array_converter.flat_to_standard.product_category_accesses.class: Akeneo\Pim\Permission\Component\Connector\ArrayConverter\FlatToStandard\ProductCategoryAccesses
     pimee_security.array_converter.flat_to_standard.attribute_group_accesses.class:  Akeneo\Pim\Permission\Component\Connector\ArrayConverter\FlatToStandard\AttributeGroupAccesses
     pimee_security.array_converter.flat_to_standard.job_profile_accesses.class:      Akeneo\Pim\Permission\Component\Connector\ArrayConverter\FlatToStandard\JobProfileAccesses
 
     pimee_security.array_converter.standard_to_flat.locale_accesses.class:           Akeneo\Pim\Permission\Component\Connector\ArrayConverter\StandardToFlat\LocaleAccesses
-    pimee_security.array_converter.standard_to_flat.asset_category_accesses.class:   Akeneo\Pim\Permission\Component\Connector\ArrayConverter\StandardToFlat\AssetCategoryAccesses
     pimee_security.array_converter.standard_to_flat.product_category_accesses.class: Akeneo\Pim\Permission\Component\Connector\ArrayConverter\StandardToFlat\ProductCategoryAccesses
     pimee_security.array_converter.standard_to_flat.attribute_group_accesses.class:  Akeneo\Pim\Permission\Component\Connector\ArrayConverter\StandardToFlat\AttributeGroupAccesses
     pimee_security.array_converter.standard_to_flat.job_profile_accesses.class:      Akeneo\Pim\Permission\Component\Connector\ArrayConverter\StandardToFlat\JobProfileAccesses
@@ -19,14 +17,6 @@ services:
 
     pimee_security.array_converter.standard_to_flat.locale_accesses:
         class: '%pimee_security.array_converter.standard_to_flat.locale_accesses.class%'
-
-    pimee_security.array_converter.flat_to_standard.asset_category_accesses:
-        class: '%pimee_security.array_converter.flat_to_standard.asset_category_accesses.class%'
-        arguments:
-            - '@pim_connector.array_convertor.checker.fields_requirement'
-
-    pimee_security.array_converter.standard_to_flat.asset_category_accesses:
-        class: '%pimee_security.array_converter.standard_to_flat.asset_category_accesses.class%'
 
     pimee_security.array_converter.flat_to_standard.product_category_accesses:
         class: '%pimee_security.array_converter.flat_to_standard.product_category_accesses.class%'

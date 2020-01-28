@@ -6,7 +6,7 @@ namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditNumberValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditNumberValueCommandFactory;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use PhpSpec\ObjectBehavior;
 
@@ -18,7 +18,7 @@ class EditNumberValueCommandFactorySpec extends ObjectBehavior
     }
 
     function it_only_supports_create_value_of_number_attribute(
-        ImageAttribute $image,
+        MediaFileAttribute $image,
         NumberAttribute $number
     ) {
         $normalizedValue = [

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetHydrator;
@@ -36,9 +36,9 @@ class AssetHydratorSpec extends ObjectBehavior
     public function it_hydrates_a_asset(
         $valueHydrator,
         TextAttribute $label,
-        ImageAttribute $image,
+        MediaFileAttribute $image,
         TextAttribute $gameDescription,
-        ImageAttribute $gameBoxImage
+        MediaFileAttribute $gameBoxImage
     ) {
         $indexedAttributes = [
             'label_game_fingerprint'    => $label,
@@ -74,9 +74,9 @@ class AssetHydratorSpec extends ObjectBehavior
     public function it_hydrates_a_asset_with_values(
         $valueHydrator,
         TextAttribute $label,
-        ImageAttribute $imageAttribute,
+        MediaFileAttribute $mediaFileAttribute,
         TextAttribute $gameDescription,
-        ImageAttribute $gameBoxImage,
+        MediaFileAttribute $gameBoxImage,
         AttributeIdentifier $gameDescriptionIdentifier,
         AttributeIdentifier $gameBoxImageIdentifier,
         Value $labelfrFR,
@@ -181,14 +181,14 @@ class AssetHydratorSpec extends ObjectBehavior
         ]);
         $indexedAttributes = [
             'label_game_fingerprint'       => $label,
-            'image_game_fingerprint'       => $imageAttribute,
+            'image_game_fingerprint'       => $mediaFileAttribute,
             'description_game_fingerprint' => $gameDescription,
             'boximage_game_fingerprint'    => $gameBoxImage,
         ];
 
         $valueHydrator->hydrate($labelFrFrNormalized, $label)->willReturn($labelfrFR);
         $valueHydrator->hydrate($labelenUSNormalized, $label)->willReturn($labelenUS);
-        $valueHydrator->hydrate($imageNormalized, $imageAttribute)->willReturn($image);
+        $valueHydrator->hydrate($imageNormalized, $mediaFileAttribute)->willReturn($image);
         $valueHydrator->hydrate($gameDescriptionFrFrNormalized, $gameDescription)->willReturn($gameDescriptionFrFr);
         $valueHydrator->hydrate($gameDescriptionEnUSNormalized, $gameDescription)->willReturn($gameDescriptionEnUS);
         $valueHydrator->hydrate($gameBoxImageMobileNormalized, $gameBoxImage)->willReturn($gameBoxImageMobile);

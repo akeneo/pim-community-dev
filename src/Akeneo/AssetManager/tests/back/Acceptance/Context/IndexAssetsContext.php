@@ -9,9 +9,6 @@ use Akeneo\AssetManager\Application\Asset\IndexAssets\IndexAssetsByAssetFamilyHa
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
 use Akeneo\AssetManager\Common\Fake\AssetIndexerSpy;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Behat\Behat\Context\Context;
@@ -62,7 +59,7 @@ class IndexAssetsContext implements Context
      */
     public function theAssetFamily(string $assetFamilyIdentifier): void
     {
-        $createCommand = new CreateAssetFamilyCommand($assetFamilyIdentifier, [], []);
+        $createCommand = new CreateAssetFamilyCommand($assetFamilyIdentifier, [], [], []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {

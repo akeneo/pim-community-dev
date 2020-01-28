@@ -217,7 +217,28 @@ define(
                 }
 
                 return ViewSelector.prototype.getResultsPerPage.apply(this, arguments);
-            }
+            },
+
+            getDefaultView: function () {
+                if ('project' === this.currentViewType) {
+                    return {
+                        id: 0,
+                        text: __('teamwork_assistant.grid.view_selector.start_new_project'),
+                        columns: this.defaultColumns,
+                        type: 'project',
+                        filters: ''
+                    };
+                }
+
+                return {
+                    id: 0,
+                    text: __('pim_datagrid.view_selector.default_view'),
+                    columns: this.defaultColumns,
+                    type: 'view',
+                    filters: ''
+                };
+            },
+
         });
     }
 );

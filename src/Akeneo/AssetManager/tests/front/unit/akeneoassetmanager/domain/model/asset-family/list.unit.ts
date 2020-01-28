@@ -1,7 +1,8 @@
 import {
-  createAssetFamilyListItem,
-  denormalizeAssetFamilyListItem,
   createEmptyAssetFamilyListItem,
+  createAssetFamilyListItemFromNormalized,
+  assetFamilyListItemAreEqual,
+  getAssetFamilyListItemLabel,
 } from 'akeneoassetmanager/domain/model/asset-family/list';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
@@ -12,81 +13,94 @@ const didierLabels = {en_US: 'Didier'};
 
 describe('akeneo > asset family > domain > model --- asset family', () => {
   test('I can create a new asset family with an identifier and labels', () => {
-    expect(createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile()).getIdentifier()).toBe(
-      michelIdentifier
-    );
-  });
-
-  test('I cannot create a malformed asset family', () => {
-    expect(() => {
-      createAssetFamilyListItem(michelIdentifier, michelLabels, {
-        filePath: 'my_path.png',
-        originalFilename: 'path.png',
-      });
-    }).toThrow('AssetFamilyListItem expects a File as image argument');
+    expect(
+      createAssetFamilyListItemFromNormalized({
+        identifier: michelIdentifier,
+        labels: michelLabels,
+        image: createEmptyFile(),
+      }).identifier
+    ).toEqual(michelIdentifier);
   });
 
   test('I can compare two asset families', () => {
     const michelLabels = {en_US: 'Michel'};
     expect(
-      createAssetFamilyListItem(didierCode, didierLabels, createEmptyFile()).equals(
-        createAssetFamilyListItem(didierCode, didierLabels, createEmptyFile())
+      assetFamilyListItemAreEqual(
+        createAssetFamilyListItemFromNormalized({
+          identifier: didierCode,
+          labels: didierLabels,
+          image: createEmptyFile(),
+        }),
+        createAssetFamilyListItemFromNormalized({
+          identifier: didierCode,
+          labels: didierLabels,
+          image: createEmptyFile(),
+        })
       )
     ).toBe(true);
     expect(
-      createAssetFamilyListItem(didierCode, didierLabels, createEmptyFile()).equals(
-        createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile())
+      assetFamilyListItemAreEqual(
+        createAssetFamilyListItemFromNormalized({
+          identifier: didierCode,
+          labels: didierLabels,
+          image: createEmptyFile(),
+        }),
+        createAssetFamilyListItemFromNormalized({
+          identifier: michelIdentifier,
+          labels: michelLabels,
+          image: createEmptyFile(),
+        })
       )
     ).toBe(false);
   });
 
   test('I can get a label for the given locale', () => {
-    expect(createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabel('en_US')).toBe(
-      'Michel'
-    );
-    expect(createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabel('fr_FR')).toBe(
-      '[michel]'
-    );
-    expect(createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabel('fr_FR', false)).toBe(
-      ''
-    );
+    expect(
+      getAssetFamilyListItemLabel(
+        createAssetFamilyListItemFromNormalized({
+          identifier: michelIdentifier,
+          labels: michelLabels,
+          image: createEmptyFile(),
+        }),
+        'en_US'
+      )
+    ).toBe('Michel');
+    expect(
+      getAssetFamilyListItemLabel(
+        createAssetFamilyListItemFromNormalized({
+          identifier: michelIdentifier,
+          labels: michelLabels,
+          image: createEmptyFile(),
+        }),
+        'fr_FR'
+      )
+    ).toBe('[michel]');
+    expect(
+      getAssetFamilyListItemLabel(
+        createAssetFamilyListItemFromNormalized({
+          identifier: michelIdentifier,
+          labels: michelLabels,
+          image: createEmptyFile(),
+        }),
+        'fr_FR',
+        false
+      )
+    ).toBe('');
   });
 
   test('I can get the collection of labels', () => {
-    expect(createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile()).getLabelCollection()).toBe(
-      michelLabels
-    );
+    expect(
+      createAssetFamilyListItemFromNormalized({
+        identifier: michelIdentifier,
+        labels: michelLabels,
+        image: createEmptyFile(),
+      }).labels
+    ).toEqual(michelLabels);
   });
 
   test('I can create an empty asset family creation', () => {
     expect(createEmptyAssetFamilyListItem()).toEqual(
-      denormalizeAssetFamilyListItem({identifier: '', labels: {}, image: null})
+      createAssetFamilyListItemFromNormalized({identifier: '', labels: {}, image: null})
     );
-  });
-
-  test('I can normalize an asset family', () => {
-    const michelAssetFamily = createAssetFamilyListItem(michelIdentifier, michelLabels, createEmptyFile());
-
-    expect(michelAssetFamily.normalize()).toEqual({
-      identifier: 'michel',
-      labels: {en_US: 'Michel'},
-      image: null,
-    });
-  });
-
-  test('I can normalize an asset family', () => {
-    const michelAssetFamily = denormalizeAssetFamilyListItem({
-      identifier: 'michel',
-      labels: {
-        en_US: 'Michel',
-      },
-      image: null,
-    });
-
-    expect(michelAssetFamily.normalize()).toEqual({
-      identifier: 'michel',
-      labels: {en_US: 'Michel'},
-      image: null,
-    });
   });
 });

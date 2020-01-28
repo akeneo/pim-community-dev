@@ -32,3 +32,5 @@ services:
         arguments:
             $propertyName: 'proposals_state_notifications'
             $defaultPropertyValue: true
+
+    Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory: ~

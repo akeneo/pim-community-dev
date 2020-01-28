@@ -12,6 +12,7 @@ services:
     # Enrichment > Reference entities
     pimee.reference_entity.enrichment.product.get_products_linked_to_a_record_action:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Controller\Product\GetProductsLinkedToARecordAction
+        public: true
         arguments:
             - '@akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor'
             - '@akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows'

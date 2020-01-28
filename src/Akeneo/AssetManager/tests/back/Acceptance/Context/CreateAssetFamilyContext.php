@@ -26,7 +26,6 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\RuleEngineValidatorACLInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -108,7 +107,8 @@ final class CreateAssetFamilyContext implements Context
         $command = new CreateAssetFamilyCommand(
             $identifier,
             json_decode($updates['labels'] ?? '[]', true),
-            json_decode($updates['product_link_rules'] ?? '[]', true)
+            json_decode($updates['product_link_rules'] ?? '[]', true),
+            []
         );
 
         $this->createAssetFamily($command);
@@ -172,6 +172,7 @@ final class CreateAssetFamilyContext implements Context
             $command = new CreateAssetFamilyCommand(
                 uniqid(),
                 [],
+                [],
                 []
             );
             $this->createAssetFamily($command);
@@ -184,7 +185,7 @@ final class CreateAssetFamilyContext implements Context
     public function theUserCreatesAnAssetFamilyWithACollectionOfRuleTemplates(string $code): void
     {
         $ruleTemplate = $this->staticRuleTemplate();
-        $command = new CreateAssetFamilyCommand($code, [], [$ruleTemplate]);
+        $command = new CreateAssetFamilyCommand($code, [], [$ruleTemplate], []);
         $this->createAssetFamily($command);
     }
 
@@ -216,7 +217,8 @@ final class CreateAssetFamilyContext implements Context
         $command = new CreateAssetFamilyCommand(
             $code,
             ['en_US' => ucfirst($code)],
-            $ruleTemplates
+            $ruleTemplates,
+            []
         );
 
         $this->createAssetFamily($command);
@@ -232,7 +234,8 @@ final class CreateAssetFamilyContext implements Context
         $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
             self::ASSET_FAMILY_IDENTIFIER,
             [],
-            $invalidProductLinkRules
+            $invalidProductLinkRules,
+            []
         );
         $this->createAssetFamily($createAssetFamilyWithInvalidProductLinkRulesCommand);
     }
@@ -254,7 +257,8 @@ final class CreateAssetFamilyContext implements Context
         $createAssetFamilyWithEmptyProductSelection = new CreateAssetFamilyCommand(
             self::ASSET_FAMILY_IDENTIFIER,
             [],
-            $emptyProductSelection
+            $emptyProductSelection,
+            []
         );
         $this->createAssetFamily($createAssetFamilyWithEmptyProductSelection);
     }
@@ -268,7 +272,8 @@ final class CreateAssetFamilyContext implements Context
         $createAssetFamilyWithEmptyProductAssignment = new CreateAssetFamilyCommand(
             self::ASSET_FAMILY_IDENTIFIER,
             [],
-            $emptyProductAssignment
+            $emptyProductAssignment,
+            []
         );
         $this->createAssetFamily($createAssetFamilyWithEmptyProductAssignment);
     }
@@ -288,7 +293,8 @@ final class CreateAssetFamilyContext implements Context
         $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
             self::ASSET_FAMILY_IDENTIFIER,
             [],
-            $productLinkRuleRefencingAnUnexistingAttribute
+            $productLinkRuleRefencingAnUnexistingAttribute,
+            []
         );
         $this->createAssetFamily($createAssetFamilyWithInvalidProductLinkRulesCommand);
     }
@@ -315,7 +321,8 @@ final class CreateAssetFamilyContext implements Context
         $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
             self::ASSET_FAMILY_IDENTIFIER,
             [],
-            $productLinkRuleRefencingAnUnexistingAttribute
+            $productLinkRuleRefencingAnUnexistingAttribute,
+            []
         );
         $this->createAssetFamily($createAssetFamilyWithInvalidProductLinkRulesCommand);
     }
@@ -342,7 +349,8 @@ final class CreateAssetFamilyContext implements Context
         $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
             self::ASSET_FAMILY_IDENTIFIER,
             [],
-            $productLinkRuleRefencingAnUnexistingAttribute
+            $productLinkRuleRefencingAnUnexistingAttribute,
+            []
         );
         $this->createAssetFamily($createAssetFamilyWithInvalidProductLinkRulesCommand);
     }

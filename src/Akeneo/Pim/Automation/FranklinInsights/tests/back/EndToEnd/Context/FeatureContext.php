@@ -16,7 +16,6 @@ namespace Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\Behat\Hook\Scope\BeforeStepScope;
 use Context\EnterpriseAssertionContext;
 use Context\EnterpriseCatalogConfigurationContext;
 use Context\EnterpriseFeatureContext;

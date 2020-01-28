@@ -7,7 +7,7 @@ import {
   Value,
   ValueCollection,
 } from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
-import {Attribute, AttributeCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {Attribute, AttributeCode} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {
   AttributeGroupPermission,
   CategoryPermissions,
@@ -22,7 +22,7 @@ import {
   attributeFetcher,
   fetchAssetAttributes,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
-import {AttributeGroupCollection} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute-group';
+import {AttributeGroupCollection} from 'akeneoassetmanager/platform/model/structure/attribute-group';
 import {
   attributeGroupFetcher,
   fetchAssetAttributeGroups,

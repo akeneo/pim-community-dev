@@ -36,5 +36,6 @@ class AkeneoRuleEngineExtension extends Extension
         $loader->load('normalizers.yml');
         $loader->load('repositories.yml');
         $loader->load('runners.yml');
+        $loader->load('commands.yml');
     }
 }

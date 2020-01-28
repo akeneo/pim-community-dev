@@ -12,12 +12,12 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\Common\Saver;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -39,9 +39,6 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
  */
 class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
 {
-    /** @var CompletenessManager */
-    protected $completenessManager;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
@@ -72,22 +69,24 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
+    /** @var PimUserDraftSourceFactory */
+    private $draftSourceFactory;
+
     /**
-     * @param ObjectManager                            $objectManager
-     * @param CompletenessManager                      $completenessManager
-     * @param EventDispatcherInterface                 $eventDispatcher
-     * @param AuthorizationCheckerInterface            $authorizationChecker
-     * @param EntityWithValuesDraftBuilderInterface    $entityWithValuesDraftBuilder
-     * @param TokenStorageInterface                    $tokenStorage
+     * @param ObjectManager $objectManager
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param EntityWithValuesDraftBuilderInterface $entityWithValuesDraftBuilder
+     * @param TokenStorageInterface $tokenStorage
      * @param EntityWithValuesDraftRepositoryInterface $productDraftRepo
-     * @param RemoverInterface                         $productDraftRemover
-     * @param ProductUniqueDataSynchronizer            $uniqueDataSynchronizer
-     * @param NotGrantedDataMergerInterface            $mergeDataOnProduct
-     * @param ProductRepositoryInterface               $productRepository
+     * @param RemoverInterface $productDraftRemover
+     * @param ProductUniqueDataSynchronizer $uniqueDataSynchronizer
+     * @param NotGrantedDataMergerInterface $mergeDataOnProduct
+     * @param ProductRepositoryInterface $productRepository
+     * @param PimUserDraftSourceFactory $draftSourceFactory
      */
     public function __construct(
         ObjectManager $objectManager,
-        CompletenessManager $completenessManager,
         EventDispatcherInterface $eventDispatcher,
         AuthorizationCheckerInterface $authorizationChecker,
         EntityWithValuesDraftBuilderInterface $entityWithValuesDraftBuilder,
@@ -96,10 +95,10 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         RemoverInterface $productDraftRemover,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         NotGrantedDataMergerInterface $mergeDataOnProduct,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        PimUserDraftSourceFactory $draftSourceFactory
     ) {
         $this->objectManager = $objectManager;
-        $this->completenessManager = $completenessManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->authorizationChecker = $authorizationChecker;
         $this->entityWithValuesDraftBuilder = $entityWithValuesDraftBuilder;
@@ -109,6 +108,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         $this->uniqueDataSynchronizer = $uniqueDataSynchronizer;
         $this->mergeDataOnProduct = $mergeDataOnProduct;
         $this->productRepository = $productRepository;
+        $this->draftSourceFactory = $draftSourceFactory;
     }
 
     /**
@@ -226,7 +226,6 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         $options['unitary'] = true;
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($fullProduct, $options));
 
-        $this->completenessManager->generateMissingForProduct($fullProduct);
         $this->uniqueDataSynchronizer->synchronize($fullProduct);
 
         $this->objectManager->persist($fullProduct);
@@ -243,7 +242,10 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      */
     protected function saveProductDraft(ProductInterface $fullProduct, array $options, $withFlush = true)
     {
-        $productDraft = $this->entityWithValuesDraftBuilder->build($fullProduct, $this->getUsername());
+        $productDraft = $this->entityWithValuesDraftBuilder->build(
+            $fullProduct,
+            $this->draftSourceFactory->createFromUser($this->tokenStorage->getToken()->getUser())
+        );
 
         if (null !== $productDraft) {
             $this->validateObject($productDraft, EntityWithValuesDraftInterface::class);

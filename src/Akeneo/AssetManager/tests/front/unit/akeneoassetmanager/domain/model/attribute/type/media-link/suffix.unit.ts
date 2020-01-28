@@ -1,10 +1,10 @@
 import {
+  createEmptySuffix,
   createSuffixFromNormalized,
+  createSuffixFromString,
+  isValidSuffix,
   normalizeSuffix,
   suffixStringValue,
-  isValidSuffix,
-  createSuffixFromString,
-  createEmptySuffix,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 
 describe('akeneo > attribute > domain > model > attribute > type > media-link --- suffix', () => {

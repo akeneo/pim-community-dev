@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Application\Attribute\Subscribers;
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
-use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\Subscribers\SetDefaultAttributesOnAssetFamilyCreationSubscriber;
 use Akeneo\AssetManager\Domain\Event\AssetFamilyCreatedEvent;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -44,7 +44,7 @@ class SetDefaultAttributesOnAssetFamilyCreationSubscriberSpec extends ObjectBeha
         ]);
     }
 
-    function it_creates_attribute_as_label_and_as_image_after_asset_family_creation_and_sets_them_on_it(
+    function it_creates_attribute_as_label_and_as_main_media_after_asset_family_creation_and_sets_them_on_it(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
         CreateAttributeHandler $createAttributeHandler,
@@ -52,24 +52,24 @@ class SetDefaultAttributesOnAssetFamilyCreationSubscriberSpec extends ObjectBeha
         AssetFamilyIdentifier $assetFamilyIdentifier,
         AssetFamily $assetFamily,
         TextAttribute $labelAttribute,
-        ImageAttribute $imageAttribute
+        MediaFileAttribute $mediaFileAttribute
     ) {
         $assetFamilyCreatedEvent->getAssetFamilyIdentifier()->willReturn($assetFamilyIdentifier);
         $assetFamilyIdentifier->normalize()->willReturn('designer');
 
         $createAttributeHandler->__invoke(Argument::type(CreateTextAttributeCommand::class))
             ->shouldBeCalled();
-        $createAttributeHandler->__invoke(Argument::type(CreateImageAttributeCommand::class))
+        $createAttributeHandler->__invoke(Argument::type(CreateMediaFileAttributeCommand::class))
             ->shouldBeCalled();
 
         $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
 
         $labelAttribute->getCode()->willReturn(AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_LABEL_CODE));
         $labelAttribute->getIdentifier()->willReturn(AttributeIdentifier::fromString('label_brand_fingerprint'));
-        $imageAttribute->getCode()->willReturn(AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_IMAGE_CODE));
-        $imageAttribute->getIdentifier()->willReturn(AttributeIdentifier::fromString('image_brand_fingerprint'));
+        $mediaFileAttribute->getCode()->willReturn(AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE));
+        $mediaFileAttribute->getIdentifier()->willReturn(AttributeIdentifier::fromString('image_brand_fingerprint'));
         $attributeRepository->findByAssetFamily($assetFamilyIdentifier)->willReturn(
-            [$labelAttribute, $imageAttribute]
+            [$labelAttribute, $mediaFileAttribute]
         );
 
         $assetFamily->updateAttributeAsLabelReference(Argument::that(function ($attributeAsLabelReference) {
@@ -77,9 +77,9 @@ class SetDefaultAttributesOnAssetFamilyCreationSubscriberSpec extends ObjectBeha
                 && 'label_brand_fingerprint' === $attributeAsLabelReference->normalize();
 
         }))->shouldBeCalled();
-        $assetFamily->updateAttributeAsImageReference(Argument::that(function ($attributeAsImageReference) {
-            return $attributeAsImageReference instanceof AttributeAsImageReference
-                && 'image_brand_fingerprint' === $attributeAsImageReference->normalize();
+        $assetFamily->updateAttributeAsMainMediaReference(Argument::that(function ($attributeAsMainMediaReference) {
+            return $attributeAsMainMediaReference instanceof AttributeAsMainMediaReference
+                && 'image_brand_fingerprint' === $attributeAsMainMediaReference->normalize();
 
         }))->shouldBeCalled();
         $assetFamilyRepository->update($assetFamily)->shouldBeCalled();

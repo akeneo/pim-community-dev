@@ -16,7 +16,6 @@ namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InM
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Model\Read\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Test\Acceptance\Common\NotImplementedException;
 
 /**
  * @author Paul Chasle <paul.chasle@akeneo.com>

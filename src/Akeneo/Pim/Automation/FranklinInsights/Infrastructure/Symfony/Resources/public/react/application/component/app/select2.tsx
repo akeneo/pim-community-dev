@@ -9,7 +9,7 @@
 
 import * as React from 'react';
 import {useRef, useEffect} from 'react';
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 export interface Props {
   configuration: {

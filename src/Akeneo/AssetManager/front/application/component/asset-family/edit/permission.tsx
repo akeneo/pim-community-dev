@@ -1,26 +1,32 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import __ from 'akeneoassetmanager/tools/translator';
-import {denormalizeAssetFamily, NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 import PermissionCollectionEditor from 'akeneoassetmanager/tools/component/permission';
 import {FormState} from 'akeneoassetmanager/application/reducer/state';
 import {permissionEditionUpdated} from 'akeneoassetmanager/domain/event/asset-family/permission';
 import {
-  RightLevel,
   denormalizePermissionCollection,
   PermissionCollection,
+  RightLevel,
 } from 'akeneoassetmanager/domain/model/asset-family/permission';
 import {savePermission} from 'akeneoassetmanager/application/action/asset-family/permission';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 
-// const securityContext = require('pim/security-context');
+const securityContext = require('pim/security-context');
 const routing = require('routing');
 
+export const StickyHeader = styled.header.attrs(() => ({className: 'AknSubsection-title AknSubsection-title--sticky'}))`
+  top: 160px;
+  padding: 0;
+`;
+
 interface StateProps {
-  assetFamily: NormalizedAssetFamily;
+  assetFamily: AssetFamily;
   permission: {
     data: PermissionCollection;
     state: FormState;
@@ -49,45 +55,42 @@ class Permission extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
 
   render() {
-    const assetFamily = denormalizeAssetFamily(this.props.assetFamily);
+    const {assetFamily, context, rights, permission, events} = this.props;
+    const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
 
     return (
       <React.Fragment>
         <Header
-          label={assetFamily.getLabel(this.props.context.locale)}
-          image={assetFamily.getImage()}
-          primaryAction={(defaultFocus: React.RefObject<any>) => {
-            return this.props.rights.assetFamily.edit && !this.props.permission.data.isEmpty() ? (
+          label={__('pim_asset_manager.asset_family.tab.permission')}
+          image={assetFamily.image}
+          primaryAction={(defaultFocus: React.RefObject<any>) =>
+            rights.assetFamily.edit && !permission.data.isEmpty() ? (
               <button
                 className="AknButton AknButton--apply"
-                onClick={this.props.events.onSavePermissionEditForm}
+                onClick={events.onSavePermissionEditForm}
                 ref={defaultFocus}
               >
                 {__('pim_asset_manager.asset_family.button.save_permission')}
               </button>
-            ) : null;
-          }}
-          secondaryActions={() => {
-            return null;
-          }}
+            ) : null
+          }
+          secondaryActions={() => null}
           withLocaleSwitcher={false}
           withChannelSwitcher={false}
-          isDirty={this.props.permission.state.isDirty}
-          breadcrumbConfiguration={breadcrumbConfiguration}
+          isDirty={permission.state.isDirty}
+          breadcrumbConfiguration={breadcrumbConfiguration(assetFamily.identifier, assetFamilyLabel)}
         />
         <div className="AknSubsection">
-          <header className="AknSubsection-title AknSubsection-title--sticky AknSubsection-title--withHeader">
+          <StickyHeader>
             <span className="group-label">{__('pim_asset_manager.asset_family.permission.title')}</span>
-          </header>
+          </StickyHeader>
           <div className="AknFormContainer AknFormContainer--wide">
-            {!this.props.permission.data.isEmpty() ? (
+            {!permission.data.isEmpty() ? (
               <PermissionCollectionEditor
-                readOnly={!this.props.rights.assetFamily.edit}
-                value={this.props.permission.data}
+                readOnly={!rights.assetFamily.edit}
+                value={permission.data}
                 prioritizedRightLevels={[RightLevel.View, RightLevel.Edit]}
-                onChange={(newValue: PermissionCollection) => {
-                  this.props.events.onPermissionUpdated(newValue);
-                }}
+                onChange={events.onPermissionUpdated}
               />
             ) : (
               <div className="AknGridContainer-noData">
@@ -95,11 +98,11 @@ class Permission extends React.Component<StateProps & DispatchProps> {
                 <div className="AknGridContainer-noDataTitle">{__('pim_asset_manager.permission.no_data.title')}</div>
                 <div className="AknGridContainer-noDataSubtitle">
                   {__('pim_asset_manager.permission.no_data.subtitle')}{' '}
-                  {this.props.rights.userGroup.create ? (
+                  {rights.userGroup.create && (
                     <a href={`#${routing.generate('pim_user_group_index')}`} target="_blank">
                       {__('pim_asset_manager.permission.no_data.link')}
                     </a>
-                  ) : null}
+                  )}
                 </div>
               </div>
             )}
@@ -126,13 +129,12 @@ export default connect(
       rights: {
         assetFamily: {
           edit:
-            // securityContext.isGranted('akeneo_assetmanager_asset_family_manage_permission') &&
+            securityContext.isGranted('akeneo_assetmanager_asset_family_manage_permission') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
         userGroup: {
           create:
-            // securityContext.isGranted('pim_user_group_index') && securityContext.isGranted('pim_user_group_create'),
-            true,
+            securityContext.isGranted('pim_user_group_index') && securityContext.isGranted('pim_user_group_create'),
         },
       },
     };

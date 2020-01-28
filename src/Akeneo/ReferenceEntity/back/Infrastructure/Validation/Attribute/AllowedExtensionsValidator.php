@@ -93,7 +93,11 @@ class AllowedExtensionsValidator extends ConstraintValidator
     {
         $validator = Validation::createValidator();
         $violations = $validator->validate($allowedExtensions, [
-            new Assert\Choice(['choices' => AttributeAllowedExtensions::VALID_EXTENSIONS, 'multiple' => true]),
+            new Assert\Choice([
+                'strict' => true,
+                'choices' => AttributeAllowedExtensions::VALID_EXTENSIONS,
+                'multiple' => true,
+            ]),
         ]);
 
         if ($violations->count() > 0) {

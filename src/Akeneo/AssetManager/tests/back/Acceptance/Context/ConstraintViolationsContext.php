@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Acceptance\Context;
 
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -45,7 +46,7 @@ final class ConstraintViolationsContext implements Context
 
     /**
      * @Then /^there should be a validation error with message \'([^\']*)\'$/
-     * @Then /^there should be a validation error on the property image attribute with message \'([^\']*)\'$/
+     * @Then /^there should be a validation error on the property media file attribute with message \'([^\']*)\'$/
      */
     public function thereShouldBeAValidationErrorWithMessage(string $message): void
     {
@@ -58,10 +59,13 @@ final class ConstraintViolationsContext implements Context
      */
     public function thereIsNoViolationsErrors()
     {
-        Assert::assertEmpty(
-            $this->violations,
-            sprintf('Expecting to have no violations, but "%d" violations were found', $this->violations->count())
-        );
+        if (0 !== $this->violations->count()) {
+            $errorMessages = array_map(function (ConstraintViolation $violation) {
+                return $violation->getMessage();
+            }, iterator_to_array($this->violations->getIterator()));
+
+            throw new \RuntimeException(implode(',', $errorMessages));
+        }
     }
 
     public function addViolations(ConstraintViolationListInterface $violationList): void
@@ -126,14 +130,16 @@ final class ConstraintViolationsContext implements Context
 
     public function assertViolation(string $expectedMessage): void
     {
-        $found = false;
+        $violationMessages = array();
         foreach ($this->violations as $violation) {
-            if ($expectedMessage === $violation->getMessage()) {
-                $found = true;
-            }
+            $violationMessages[] = $violation->getMessage();
         }
 
-        Assert::assertTrue($found, sprintf('Expected violation with message "%s" not found.', $expectedMessage));
+        Assert::assertContains(
+            $expectedMessage,
+            $violationMessages,
+            sprintf('Could not find violation "%s" in the violations list: ("%s")', $expectedMessage, implode('", "', $violationMessages))
+        );
     }
 
     public function hasViolations(): bool

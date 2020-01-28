@@ -22,6 +22,11 @@ akeneo_asset_manager_asset_family_get_rest:
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset_family.get }
     methods: [GET]
 
+akeneo_asset_manager_asset_family_compute_transformations_rest:
+    path: '/rest/asset_manager/{identifier}/compute_transformations'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset_family.compute_transformations }
+    methods: [POST]
+
 akeneo_asset_manager_asset_family_edit_rest:
     path: '/rest/asset_manager/{identifier}'
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset_family.edit }
@@ -101,6 +106,11 @@ akeneo_asset_manager_image_preview:
     path: '/rest/asset_manager/image_preview/{attributeIdentifier}/{type}'
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.image_preview }
     methods: [GET]
+
+akeneo_asset_manager_file_upload:
+    path: '/rest/asset_manager/file/upload'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.file_upload }
+    methods: [POST]
 
 # API Connector
 akeneo_asset_manager_asset_family_rest_connector_get:

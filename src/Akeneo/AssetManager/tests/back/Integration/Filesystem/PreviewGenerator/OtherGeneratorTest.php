@@ -3,7 +3,20 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Filesystem\PreviewGenerator;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\OtherGenerator;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
@@ -19,7 +32,7 @@ final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
     private $otherGenerator;
 
     /** @var MediaLinkAttribute */
-    private $attribute;
+    private $mediaLinkAttribute;
 
     public function setUp(): void
     {
@@ -32,32 +45,60 @@ final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_can_support_only_media_type_other_of_an_url_attribute()
+    public function it_can_support_only_media_type_other_of_an_url_and_media_file_attribute()
     {
-        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $mediaFileAttributeWithoutOther = $this->createAttributeMediaFileWithMediaType(MediaType::IMAGE);
+        $mediaFileAttributeWithOther = $this->createAttributeMediaFileWithMediaType(MediaType::OTHER);
 
-        $this->assertTrue($isSupported);
+        $isSupportedMediaLinkAttribute = $this->otherGenerator->supports(self::IMAGE_FILENAME,
+            $this->mediaLinkAttribute,
+            PreviewGeneratorRegistry::THUMBNAIL_TYPE
+        );
+        $isSupportedMediaFileWithOther = $this->otherGenerator->supports(self::IMAGE_FILENAME,
+            $mediaFileAttributeWithOther,
+            PreviewGeneratorRegistry::THUMBNAIL_TYPE
+        );
+        $isSupportedMediaFileWithoutOther = $this->otherGenerator->supports(self::IMAGE_FILENAME,
+            $mediaFileAttributeWithoutOther,
+            PreviewGeneratorRegistry::THUMBNAIL_TYPE
+        );
+
+        $this->assertTrue($isSupportedMediaLinkAttribute);
+        $this->assertTrue($isSupportedMediaFileWithOther);
+        $this->assertFalse($isSupportedMediaFileWithoutOther);
     }
 
     /**
      * @test
      */
-    public function it_can_support_only_supported_type_image_of_an_url_attribute()
+    public function it_can_support_only_supported_type_image_of_an_url_and_media_file_attribute()
     {
-        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
-
+        $mediaFileAttribute = $this->createAttributeMediaFileWithMediaType(MediaType::OTHER);
+        $isSupported = $this->otherGenerator->supports(self::IMAGE_FILENAME,
+            $mediaFileAttribute,
+            PreviewGeneratorRegistry::THUMBNAIL_TYPE
+        );
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE);
-
+        $isSupported = $this->otherGenerator->supports(self::IMAGE_FILENAME,
+            $this->mediaLinkAttribute,
+            PreviewGeneratorRegistry::THUMBNAIL_TYPE
+        );
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::PREVIEW_TYPE);
-
+        $isSupported = $this->otherGenerator->supports(self::IMAGE_FILENAME,
+            $this->mediaLinkAttribute,
+            PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE
+        );
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, 'wrong_type');
+        $isSupported = $this->otherGenerator->supports(self::IMAGE_FILENAME,
+            $this->mediaLinkAttribute,
+            PreviewGeneratorRegistry::PREVIEW_TYPE
+        );
+        $this->assertTrue($isSupported);
 
+        $isSupported = $this->otherGenerator->supports(self::IMAGE_FILENAME, $this->mediaLinkAttribute, 'wrong_type');
         $this->assertFalse($isSupported);
     }
 
@@ -66,11 +107,16 @@ final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_get_a_default_image()
     {
-        $this->otherGenerator->supports('test', $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
-        $previewImage = $this->otherGenerator->generate('test', $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $this->otherGenerator->supports('test', $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->otherGenerator->generate('test',
+            $this->mediaLinkAttribute,
+            PreviewGeneratorRegistry::THUMBNAIL_TYPE
+        );
 
         $this->assertStringContainsString(
-            sprintf('media/cache/%s/pim_asset_manager.default_image.other', OtherGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE]),
+            sprintf('media/cache/%s/pim_asset_manager.default_image.other',
+                OtherGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE]
+            ),
             $previewImage
         );
     }
@@ -79,23 +125,40 @@ final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
     {
         $fixtures = $this->fixturesLoader
             ->assetFamily('designer')
-            ->withAttributes([
-                 'video'
-            ])
+            ->withAttributes(['video'])
             ->load();
-        $this->attribute = $fixtures['attributes']['video'];
+        $this->mediaLinkAttribute = $fixtures['attributes']['video'];
 
         $this->fixturesLoader
             ->asset('designer', 'starck')
             ->withValues([
-                 'video' => [
-                     [
-                         'channel' => null,
-                         'locale' => null,
-                         'data' => 'the-amazing-video.mov',
-                     ]
-                 ]
-            ])
+                'video' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => 'the-amazing-video.mov',
+                    ],
+                ],
+            ]
+            )
             ->load();
+    }
+
+    private function createAttributeMediaFileWithMediaType(string $mediaType): MediaFileAttribute
+    {
+        return MediaFileAttribute::create(
+            AttributeIdentifier::create('designer', 'media_file_attribute', 'finger'),
+            AssetFamilyIdentifier::fromString('designer'),
+            AttributeCode::fromString('media_file_attribute'),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('150.110'),
+            AttributeAllowedExtensions::fromList(['png']),
+            MediaType::fromString($mediaType)
+        );
     }
 }

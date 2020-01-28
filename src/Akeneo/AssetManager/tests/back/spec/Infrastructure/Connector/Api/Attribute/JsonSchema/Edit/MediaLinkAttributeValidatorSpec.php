@@ -13,18 +13,19 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\MediaLinkAttributeValidator;
 use PhpSpec\ObjectBehavior;
@@ -50,6 +51,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
             LabelCollection::fromArray(['en_US' => 'Preview']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::fromString('http://mydam.com'),

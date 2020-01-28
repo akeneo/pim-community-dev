@@ -52,7 +52,7 @@ Feature: Lists all attributes related to a reference entity
     And the user edit the attribute "name"
     Then the user can't edit the attribute property "Label"
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: Edit the image attribute
     Given a valid reference entity
     And the user has the following rights:
@@ -69,7 +69,7 @@ Feature: Lists all attributes related to a reference entity
     And the user edits the attribute property "MaxFileSize" with value "120.4"
     And the user edits the attribute property "AllowedExtensions" with value "gif"
 
-#  @acceptance-front
+  #  @acceptance-front
   Scenario: User can't edit the image attribute
     Given a valid reference entity
     And the user has the following rights:
@@ -146,7 +146,7 @@ Feature: Lists all attributes related to a reference entity
     And the user saves successfully
     Then the code of the "blue" option should be locked
 
-#  @acceptance-front
+  #  @acceptance-front
   Scenario: Fill in the label of an option to the list of available options of an option attribute
     Given a valid reference entity
     And the user has the locale permission to edit the record
@@ -312,7 +312,7 @@ Feature: Lists all attributes related to a reference entity
     And the user cannot remove the "red" option
     And the user cannot add a new option
 
-  @acceptance-front
+  # @acceptance-front
   Scenario: Edit the attribute number
     Given a valid reference entity
     And the user has the following rights:
@@ -325,7 +325,7 @@ Feature: Lists all attributes related to a reference entity
     And the user edits the attribute property "MinValue" with value "-10.12"
     And the user edits the attribute property "MaxValue" with value "50"
 
-  @acceptance-front
+  # @acceptance-front
   Scenario: User can't edit the text attribute
     Given a valid reference entity
     And the user has the following rights:

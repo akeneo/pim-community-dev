@@ -17,7 +17,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\BulkDryRunnerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,15 +30,42 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class RunCommand extends ContainerAwareCommand
+class RunCommand extends Command
 {
+    protected static $defaultName = 'akeneo:rule:run';
+
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    /** @var RuleDefinitionRepositoryInterface */
+    private $ruleDefinitionRepository;
+
+    /** @var BulkDryRunnerInterface */
+    private $strictbBulkDryRunner;
+
+    /** @var BulkDryRunnerInterface */
+    private $bulkDryRunner;
+
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
+        BulkDryRunnerInterface $strictbBulkDryRunner,
+        BulkDryRunnerInterface $bulkDryRunner
+    ) {
+        parent::__construct();
+
+        $this->eventDispatcher = $eventDispatcher;
+        $this->ruleDefinitionRepository = $ruleDefinitionRepository;
+        $this->strictbBulkDryRunner = $strictbBulkDryRunner;
+        $this->bulkDryRunner = $bulkDryRunner;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('akeneo:rule:run')
             ->addArgument('code', InputArgument::OPTIONAL, 'Code of the rule to run')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Dry run')
             ->addOption('stop-on-error', null, InputOption::VALUE_NONE, 'Stop rules execution on error')
@@ -71,9 +98,7 @@ class RunCommand extends ContainerAwareCommand
 
         $progressBar = new ProgressBar($output, count($rules));
 
-        $this->getContainer()
-            ->get('event_dispatcher')
-            ->addListener(
+        $this->eventDispatcher->addListener(
                 RuleEvents::POST_EXECUTE,
                 function () use ($progressBar) {
                     $progressBar->advance();
@@ -112,10 +137,8 @@ class RunCommand extends ContainerAwareCommand
      */
     protected function getRulesToRun($ruleCode): array
     {
-        $repository = $this->getRuleDefinitionRepository();
-
         if (null !== $ruleCode) {
-            $rules = $repository->findBy(
+            $rules = $this->ruleDefinitionRepository->findBy(
                 ['code' => explode(',', $ruleCode)],
                 ['priority' => 'DESC']
             );
@@ -124,18 +147,10 @@ class RunCommand extends ContainerAwareCommand
                 throw new \InvalidArgumentException(sprintf('The rule(s) %s does not exists', $ruleCode));
             }
         } else {
-            $rules = $repository->findAllOrderedByPriority();
+            $rules = $this->ruleDefinitionRepository->findAllOrderedByPriority();
         }
 
         return $rules;
-    }
-
-    /**
-     * @return RuleDefinitionRepositoryInterface
-     */
-    protected function getRuleDefinitionRepository(): RuleDefinitionRepositoryInterface
-    {
-        return $this->getContainer()->get('akeneo_rule_engine.repository.rule_definition');
     }
 
     /**
@@ -146,17 +161,9 @@ class RunCommand extends ContainerAwareCommand
     protected function getRuleRunner($stopOnError): BulkDryRunnerInterface
     {
         if ($stopOnError) {
-            return $this->getContainer()->get('akeneo_rule_engine.runner.strict_chained');
+            return $this->strictbBulkDryRunner;
         }
 
-        return $this->getContainer()->get('akeneo_rule_engine.runner.chained');
-    }
-
-    /**
-     * @return EventDispatcherInterface
-     */
-    protected function getEventDispatcher(): EventDispatcherInterface
-    {
-        return $this->getContainer()->get('event_dispatcher');
+        return $this->bulkDryRunner;
     }
 }

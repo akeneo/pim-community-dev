@@ -13,11 +13,11 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Attribute\DeleteAttribute;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsImageInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsLabelInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsMainMediaInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 
 /**
@@ -29,19 +29,19 @@ class DeleteAttributeHandler
     /** @var FindAssetFamilyAttributeAsLabelInterface */
     private $findAssetFamilyAttributeAsLabel;
 
-    /** @var FindAssetFamilyAttributeAsImageInterface */
-    private $findAssetFamilyAttributeAsImage;
+    /** @var FindAssetFamilyAttributeAsMainMediaInterface */
+    private $findAssetFamilyAttributeAsMainMedia;
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
     public function __construct(
         FindAssetFamilyAttributeAsLabelInterface $findAssetFamilyAttributeAsLabel,
-        FindAssetFamilyAttributeAsImageInterface $findAssetFamilyAttributeAsImage,
+        FindAssetFamilyAttributeAsMainMediaInterface $findAssetFamilyAttributeAsMainMedia,
         AttributeRepositoryInterface $attributeRepository
     ) {
         $this->findAssetFamilyAttributeAsLabel = $findAssetFamilyAttributeAsLabel;
-        $this->findAssetFamilyAttributeAsImage = $findAssetFamilyAttributeAsImage;
+        $this->findAssetFamilyAttributeAsMainMedia = $findAssetFamilyAttributeAsMainMedia;
         $this->attributeRepository = $attributeRepository;
     }
 
@@ -61,11 +61,11 @@ class DeleteAttributeHandler
             );
         }
 
-        $imageReference = $this->findAttributeAsImage($attribute->getAssetFamilyIdentifier());
-        if (!$imageReference->isEmpty() && $imageReference->getIdentifier()->equals($attributeIdentifier)) {
+        $mainMediaReference = $this->findAttributeAsMainMedia($attribute->getAssetFamilyIdentifier());
+        if (!$mainMediaReference->isEmpty() && $mainMediaReference->getIdentifier()->equals($attributeIdentifier)) {
             throw new \LogicException(
                 sprintf(
-                    'Attribute "%s" cannot be deleted for the asset family "%s"  as it is used as attribute as image.',
+                    'Attribute "%s" cannot be deleted for the asset family "%s"  as it is used as attribute as main media.',
                     $attributeIdentifier,
                     $attribute->getAssetFamilyIdentifier()
                 )
@@ -80,8 +80,8 @@ class DeleteAttributeHandler
         return $this->findAssetFamilyAttributeAsLabel->find($assetFamilyIdentifier);
     }
 
-    private function findAttributeAsImage(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsImageReference
+    private function findAttributeAsMainMedia(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsMainMediaReference
     {
-        return $this->findAssetFamilyAttributeAsImage->find($assetFamilyIdentifier);
+        return $this->findAssetFamilyAttributeAsMainMedia->find($assetFamilyIdentifier);
     }
 }

@@ -16,7 +16,6 @@ namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Behat\Behat\Context\Context;
-use PhpSpec\Exception\Example\PendingException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -27,7 +26,7 @@ class NotFoundAssetFamilyContext implements Context
 {
     private const ASSET_REQUEST_CONTRACT_DIR = 'Asset/Connector/Distribute/';
     private const ASSET_FAMILY_REQUEST_CONTRACT_DIR = 'AssetFamily/Connector/Distribute/';
-    private const DISTRIBIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR = 'Attribute/Connector/Distribute/';
+    private const DISTRIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR = 'Attribute/Connector/Distribute/';
     private const COLLECT_ATTRIBUTE_REQUEST_CONTRACT_DIR = 'Attribute/Connector/Collect/';
 
     /** @var OauthAuthenticatedClientFactory */
@@ -41,20 +40,6 @@ class NotFoundAssetFamilyContext implements Context
 
     /** @var null|string */
     private $notFoundAssetFamilyRequestContract;
-
-    /** @var null|Response */
-    private $notFoundAttributeForAssetFamilyResponse;
-
-    /** @var null|string */
-    private $notFoundAttributeForAssetFamilyRequestContract;
-
-    /** @var null|Response */
-    private $notFoundAssetFamilyForAttributeOptionResponse;
-
-    /** @var null|string */
-    private $notFoundAssetFamilyForAttributeOptionContract;
-
-
 
     public function __construct(OauthAuthenticatedClientFactory $clientFactory, WebClientHelper $webClientHelper)
     {
@@ -106,7 +91,7 @@ class NotFoundAssetFamilyContext implements Context
     public function theConnectorRequestsTheStructureOfANonExistentAssetFamily()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->notFoundAssetFamilyRequestContract = self::DISTRIBIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_asset_family_for_attributes.json";
+        $this->notFoundAssetFamilyRequestContract = self::DISTRIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_asset_family_for_attributes.json";
         $this->notFoundAssetFamilyResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundAssetFamilyRequestContract);
     }
 
@@ -116,7 +101,7 @@ class NotFoundAssetFamilyContext implements Context
     public function theConnectorRequestsAGivenAttributeOfANonExistentAssetFamily()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->notFoundAssetFamilyRequestContract = self::DISTRIBIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_asset_family_for_attribute.json";
+        $this->notFoundAssetFamilyRequestContract = self::DISTRIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_asset_family_for_attribute.json";
         $this->notFoundAssetFamilyResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundAssetFamilyRequestContract);
     }
 
@@ -127,7 +112,7 @@ class NotFoundAssetFamilyContext implements Context
     public function theConnectorRequestsANonExistentAttributeOfAGivenAssetFamily()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->notFoundAssetFamilyRequestContract = self::DISTRIBIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_attribute_for_asset_family.json";
+        $this->notFoundAssetFamilyRequestContract = self::DISTRIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_attribute_for_asset_family.json";
         $this->notFoundAssetFamilyResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundAssetFamilyRequestContract);
     }
 
@@ -137,7 +122,7 @@ class NotFoundAssetFamilyContext implements Context
     public function theConnectorRequestsTheOptionsOfAnAttributeForANonExistentAssetFamily()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->notFoundAssetFamilyRequestContract = self::DISTRIBIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR . "options_for_non_existent_asset_family.json";
+        $this->notFoundAssetFamilyRequestContract = self::DISTRIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR . "options_for_non_existent_asset_family.json";
         $this->notFoundAssetFamilyResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundAssetFamilyRequestContract);
     }
 

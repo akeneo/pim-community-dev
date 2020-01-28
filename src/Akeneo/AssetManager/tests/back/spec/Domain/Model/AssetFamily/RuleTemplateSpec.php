@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
-use PhpSpec\ObjectBehavior;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\CompiledRule;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -16,6 +15,27 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\CompiledRule;
  */
 class RuleTemplateSpec extends ObjectBehavior
 {
+    public function let()
+    {
+        $this->beConstructedThrough('createFromProductLinkRule', [
+            [
+                'product_selections' => [
+                    [
+                        'field' => 'sku',
+                        'operator' => '=',
+                        'value' => '{{product_sku}}'
+                    ]
+                ],
+                'assign_assets_to' => [
+                    [
+                        'mode' => 'add',
+                        'attribute' => '{{attribute}}'
+                    ]
+                ]
+            ]
+        ]);
+    }
+
     public function it_is_initializable()
     {
         $this->shouldHaveType(RuleTemplate::class);

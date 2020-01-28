@@ -11,8 +11,10 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Command;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -22,10 +24,33 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class ProjectRecalculationCommand extends ContainerAwareCommand
+class ProjectRecalculationCommand extends Command
 {
+    protected static $defaultName = 'pimee:project:recalculate';
+
     /** @var CommandExecutor */
     protected $commandExecutor;
+
+    /** @var ObjectDetacherInterface */
+    private $objectDetacher;
+
+    /** @var ProjectRepositoryInterface */
+    private $projectRepository;
+
+    /** @var string */
+    private $projectCalculationJobName;
+
+    public function __construct(
+        ObjectDetacherInterface $objectDetacher,
+        ProjectRepositoryInterface $projectRepository,
+        string $projectCalculationJobName
+    ) {
+        parent::__construct();
+
+        $this->objectDetacher = $objectDetacher;
+        $this->projectRepository = $projectRepository;
+        $this->projectCalculationJobName = $projectCalculationJobName;
+    }
 
     /**
      * {@inheritdoc}
@@ -33,7 +58,6 @@ class ProjectRecalculationCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pimee:project:recalculate')
             ->setDescription('Recalculate all enrichment projects (Warning: Be aware it can be very time-consuming)')
         ;
     }
@@ -55,22 +79,17 @@ class ProjectRecalculationCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $objectDetacher = $this->getContainer()->get('akeneo_storage_utils.doctrine.object_detacher');
-        $jobName = $this->getContainer()->getParameter('pimee_teamwork_assistant.project_calculation.job_name');
-
-        $projects = $this->getContainer()
-            ->get('pimee_teamwork_assistant.repository.project')
-            ->findAll();
+        $projects = $this->projectRepository->findAll();
 
         $projectToDetach = null;
         foreach ($projects as $project) {
             $this->commandExecutor->runCommand('akeneo:batch:job', [
-                'code' => $jobName,
+                'code' => $this->projectCalculationJobName,
                 '-c'   => sprintf('{"project_code":"%s"}', $project->getCode()),
             ]);
 
             if (null !== $projectToDetach) {
-                $objectDetacher->detach($projectToDetach);
+                $this->objectDetacher->detach($projectToDetach);
             }
 
             $projectToDetach = $project;

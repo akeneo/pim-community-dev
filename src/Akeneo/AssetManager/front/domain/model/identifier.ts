@@ -13,3 +13,4 @@ export const denormalizeIdentifier = (identifier: any): Identifier => {
 export const identifiersAreEqual = (first: Identifier, second: Identifier) => first === second;
 export const identifierStringValue = (identifier: Identifier) => identifier;
 export const isIdentifier = isString;
+export const isEmptyIdentifier = (identifier: Identifier) => '' === identifier;

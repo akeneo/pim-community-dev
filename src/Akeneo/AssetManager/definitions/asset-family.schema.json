@@ -1,0 +1,51 @@
+{
+    "title": "BackendAssetFamily",
+    "type": "object",
+    "properties": {
+        "identifier": { "type": "string" },
+        "code": { "type": "string" },
+        "labels": { "$ref": "labels.schema.json" },
+        "image": {
+            "type": ["object", "null"],
+            "properties": {
+                "filePath": { "type": "string" },
+                "originalFilename": { "type": "string" },
+                "size": { "type": "number" },
+                "mimeType": { "type": "string" },
+                "extension": { "type": "string" }
+            },
+            "required": [
+                "filePath",
+                "originalFilename"
+            ],
+            "additionalProperties": false
+        },
+        "asset_count": { "type": "integer" },
+        "attributes": {
+            "type": "array",
+            "items": { "$ref": "attribute.schema.json" }
+        },
+        "permission": {
+            "type": "object",
+            "patternProperties": {
+                ".+": { "type": "boolean" }
+            }
+        },
+        "attribute_as_label": { "type": "string" },
+        "attribute_as_main_media": { "type": "string" },
+        "transformations": { "$ref": "asset-family-transformations.schema.json" },
+        "naming_convention": { "$ref": "asset-family-naming-convention.schema.json" },
+        "product_link_rules": { "$ref": "asset-family-product-link-rules.schema.json" }
+    },
+    "required": [
+        "identifier",
+        "labels",
+        "image",
+        "asset_count",
+        "attributes",
+        "permission",
+        "attribute_as_label",
+        "attribute_as_main_media"
+    ],
+    "additionalProperties": false
+}

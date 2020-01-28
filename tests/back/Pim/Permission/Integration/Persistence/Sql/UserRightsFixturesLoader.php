@@ -138,7 +138,7 @@ class UserRightsFixturesLoader
 
         $this->container->get('pim_catalog.saver.product')->save($product);
 
-        $this->container->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         return $product;
     }
@@ -159,7 +159,7 @@ class UserRightsFixturesLoader
         Assert::assertCount(0, $errors);
 
         $this->container->get('pim_catalog.saver.product_model')->save($productModel);
-        $this->container->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
+        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         return $productModel;
     }

@@ -24,9 +24,7 @@ interface ProposalUpsertInterface
      * Creates or updates a proposal given a set of values.
      *
      * @param ProposalSuggestedData[] $suggestedData
-     * @param string $author
-     *
      * @return int number of proposals created or updated
      */
-    public function process(array $suggestedData, string $author): int;
+    public function process(array $suggestedData): int;
 }

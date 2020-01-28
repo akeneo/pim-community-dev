@@ -6,19 +6,15 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 class FilePresenterSpec extends ObjectBehavior
 {
     function let(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         UrlGeneratorInterface $generator,
         FileInfoRepositoryInterface $repository
     ) {
-        $this->beConstructedWith($attributeRepository, $generator, $repository);
+        $this->beConstructedWith($generator, $repository);
     }
 
     function it_is_a_presenter()
@@ -26,42 +22,25 @@ class FilePresenterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(PresenterInterface::class);
     }
 
-    function it_supports_file(
-        ValueInterface $value,
-        AttributeInterface $attribute,
-        $attributeRepository
-    ) {
-        $attribute->getType()->willReturn('pim_catalog_file');
-        $value->getAttributeCode()->willReturn('file_attribute');
-        $attributeRepository->findOneByIdentifier('file_attribute')->willReturn($attribute);
-
-        $this->supports($value)->shouldBe(true);
+    function it_supports_file() {
+        $this->supports('pim_catalog_file')->shouldBe(true);
     }
 
-    function it_does_not_presents_original_if_original_is_empty(
-        ValueInterface $value
-    ) {
-        $value->getData()->willReturn(null);
-
+    function it_does_not_presents_original_if_original_is_empty()
+    {
         $this
-            ->present($value, ['data' => 'key/of/the/change.jpg'])
+            ->present(null, ['data' => 'key/of/the/change.jpg'])
             ->shouldReturn(['before' => '', 'after' => '']);
     }
 
-    function it_does_not_presents_new_if_new_is_empty(
-        ValueInterface $value,
-        FileInfoInterface $media
-    ) {
-        $value->getData()->willReturn($media);
-
+    function it_does_not_presents_new_if_new_is_empty(FileInfoInterface $media) {
         $this
-            ->present($value, ['data' => null])
+            ->present($media, ['data' => null])
             ->shouldReturn(['before' => '', 'after' => '']);
     }
 
     function it_presents_file(
         $generator,
-        ValueInterface $value,
         FileInfoInterface $media,
         FileInfoInterface $changedMedia,
         FileInfoRepositoryInterface $repository
@@ -71,7 +50,6 @@ class FilePresenterSpec extends ObjectBehavior
         $changedMedia->getHash()->willReturn('different_hash');
         $changedMedia->getOriginalFilename()->willReturn('changed_media.jpg');
 
-        $value->getData()->willReturn($media);
         $media->getKey()->willReturn('key/of/the/original/media.jpg');
         $media->getHash()->willReturn('hash');
         $media->getOriginalFilename()->willReturn('media.jpg');
@@ -91,7 +69,7 @@ class FilePresenterSpec extends ObjectBehavior
             ->willReturn('url/of/the/changed/media.jpg');
 
         $this
-            ->present($value, ['data' => 'key/of/the/changed/media.jpg'])
+            ->present($media, ['data' => 'key/of/the/changed/media.jpg'])
             ->shouldReturn([
                 'before' => sprintf(
                     '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',

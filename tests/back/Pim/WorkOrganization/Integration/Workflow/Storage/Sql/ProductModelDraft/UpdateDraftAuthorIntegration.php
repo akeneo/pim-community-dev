@@ -12,14 +12,37 @@ use PHPUnit\Framework\Assert;
 
 class UpdateDraftAuthorIntegration extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $user = $this->get('pim_user.factory.user')->create();
+        $this->get('pim_user.updater.user')->update($user, [
+            'username' => 'admin',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'password' => 'adMinPasSWord',
+            'email' => 'admin@example.com',
+            'roles' => ['ROLE_ADMINISTRATOR'],
+            'groups' => ['Manager'],
+            'enabled' => true,
+        ]);
+        $this->get('pim_user.saver.user')->save($user);
+    }
+
     public function testQueryToGetAssociatedProductCodes(): void
     {
         $this->createFamilyVariant();
         $productModel = $this->createProductModel('foo');
 
-        $draft = $this
-            ->get('pimee_workflow.factory.product_model_draft')
-            ->createEntityWithValueDraft($productModel, 'admin');
+        $draftSource = $this
+            ->get('Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory')
+            ->createFromUser($this->get('pim_user.provider.user')->loadUserByUsername('admin'));
+
+        $draft = $this->get('pimee_workflow.factory.product_model_draft')->createEntityWithValueDraft(
+            $productModel,
+            $draftSource
+        );
         $draft->setValues(new WriteValueCollection());
         $this->get('pimee_workflow.saver.product_model_draft')->save($draft);
 
@@ -84,7 +107,7 @@ class UpdateDraftAuthorIntegration extends TestCase
         Assert::assertCount(0, $errors);
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
-        $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         return $productModel;
     }

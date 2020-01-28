@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_asset_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAssetContext
         arguments:
@@ -69,6 +72,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
             - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
             - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
+            - '@akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher'
 
     akeneo_assetmanager.tests.back.integration.connector.collect.delete_asset_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Collect\DeleteAssetContext
@@ -127,6 +131,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
             - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
             - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.get_asset_collection_type_adapter'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
     akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attribute_options_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeOptionsContext

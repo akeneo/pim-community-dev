@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 
+use Akeneo\AssetManager\Common\Fake\ComputeTransformationFromAssetIdentifiersLauncherSpy;
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
@@ -33,11 +34,23 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionInterface;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -45,15 +58,19 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
@@ -66,6 +83,7 @@ class CreateOrUpdateAssetContext implements Context
     private const HOUSE_ASSET_CODE = 'house';
     private const FLOWER_ASSET_CODE = 'flower';
     private const PHONE_ASSET_CODE = 'phone';
+    private const VALID_EXTENSIONS = ['gif', 'jfif', 'jif', 'jpeg', 'jpg', 'pdf', 'png', 'psd', 'tif', 'tiff'];
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -112,6 +130,9 @@ class CreateOrUpdateAssetContext implements Context
     /** @var ProductLinkRuleLauncherSpy */
     private $productLinkRuleLauncherSpy;
 
+    /** @var ComputeTransformationFromAssetIdentifiersLauncherSpy */
+    private $computeTransformationLauncherSpy;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -124,7 +145,8 @@ class CreateOrUpdateAssetContext implements Context
         InMemoryFindFileDataByFileKey $findFileData,
         InMemoryFileExists $fileExists,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
-        ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy
+        ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy,
+        ComputeTransformationFromAssetIdentifiersLauncherSpy $computeTransformationLauncherSpy
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -138,6 +160,7 @@ class CreateOrUpdateAssetContext implements Context
         $this->fileExists = $fileExists;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->productLinkRuleLauncherSpy = $productLinkRuleLauncherSpy;
+        $this->computeTransformationLauncherSpy = $computeTransformationLauncherSpy;
     }
 
     /**
@@ -155,6 +178,68 @@ class CreateOrUpdateAssetContext implements Context
 
         $this->loadDescriptionAttribute();
         $this->loadFrontViewAssetFamily();
+    }
+
+    /**
+     * @Given an asset of the PresentationView asset family existing in the ERP but not in the PIM
+     */
+    public function aAssetOfTheBrandAssetFamilyPresentationViewExistingInTheErpButNotInThePim()
+    {
+        $this->requestContract = 'successful_building_asset_creation.json';
+
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
+        $this->loadMediaFileAttribute('PresentationView', 'main_image', 'Main Image', 1, '2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_house.jpg');
+        $this->loadMediaFileAttribute('PresentationView', 'thumbnail', 'Thumbnail', 2);
+        $this->loadPresentationViewAssetFamily('PresentationView');
+    }
+
+    /**
+     * @Given an asset of the PresentationView asset family existing in the ERP but not in the PIM with naming convention
+     */
+    public function anAssetOfTheBrandAssetFamilyPresentationViewExistingInTheErpButNotInThePimWithNamingConvention()
+    {
+        $this->requestContract = 'successful_building_asset_creation_with_naming_convention.json';
+
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
+        $this->loadMediaFileAttribute('PresentationView', 'main_image', 'Main Image', 1, 'house_12.jpg');
+        $this->loadMediaFileAttribute('PresentationView', 'thumbnail', 'Thumbnail', 2);
+        $this->loadTextAttribute('PresentationView', 'title', 3);
+        $this->loadNumberAttribute('PresentationView', 'length', 4);
+        $this->loadPresentationViewAssetFamily('PresentationView', NamingConvention::createFromNormalized([
+            'source' => ['property' => 'main_image', 'channel' => null, 'locale' => null],
+            'pattern' => '/(?P<title>[a-zA-Z0-9\s]+)_(?P<length>\d+)/',
+            'abort_asset_creation_on_error' => true,
+        ]));
+    }
+
+    /**
+     * @Given an asset of the PresentationView asset family existing in the ERP but not in the PIM with naming convention execution failure
+     */
+    public function anAssetOfTheBrandAssetFamilyPresentationViewExistingInTheErpButNotInThePimWithNamingConventionExecutionFailure()
+    {
+        $this->requestContract = 'unprocessable_entity_building_asset_for_naming_convention_failure.json';
+
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
+        $this->loadMediaFileAttribute('PresentationView', 'main_image', 'Main Image', 1, 'house_12.jpg');
+        $this->loadMediaFileAttribute('PresentationView', 'thumbnail', 'Thumbnail', 2);
+        $this->loadNumberAttribute('PresentationView', 'length', 3);
+        $this->loadPresentationViewAssetFamily('PresentationView', NamingConvention::createFromNormalized([
+            'source' => ['property' => 'main_image', 'channel' => null, 'locale' => null],
+            'pattern' => '/(?P<title>[a-zA-Z0-9\s]+)_(?P<length>\d+)/',
+            'abort_asset_creation_on_error' => true,
+        ]));
     }
 
     /**
@@ -228,16 +313,28 @@ class CreateOrUpdateAssetContext implements Context
     }
 
     /**
+     * @Then the asset is created in the PIM from the request :arg1
+     */
+    public function theAssetIsCreatedInThePimFromTheRequest(string $filename)
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . $filename
+        );
+    }
+
+    /**
      * @Given an asset of the Brand asset family existing in the ERP and the PIM with different information
      */
     public function aAssetOfTheBrandAssetFamilyExistingInTheErpAndThePimWithDifferentInformation()
     {
         $this->requestContract = 'successful_house_asset_update.json';
 
-        $this->loadFrontViewAssetFamily();
+        $this->loadFrontViewAssetFamily(true);
         $this->loadDescriptionAttribute();
         $this->loadNameAttribute();
-        $this->loadCoverImageAttribute();
+        $this->loadCoverMediaFileAttribute();
+        $this->loadMediaFileAttribute('frontview', 'thumbnail', 'Thumbnail', 6);
         $this->loadFrontViewHouseAsset();
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
@@ -248,7 +345,8 @@ class CreateOrUpdateAssetContext implements Context
             'originalFilename' => 'house.jpg',
             'size'             => 128,
             'mimeType'         => 'image/jpeg',
-            'extension'        => 'jpg'
+            'extension'        => 'jpg',
+            'updatedAt'        => '2019-11-22T15:16:21+0000',
         ]);
         $this->fileExists->save('2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_house.jpg');
     }
@@ -269,13 +367,13 @@ class CreateOrUpdateAssetContext implements Context
             AssetCode::fromString(self::HOUSE_ASSET_CODE)
         );
 
-        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsLabelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
 
         $coverImageInfo = (new FileInfo())
@@ -296,22 +394,22 @@ class CreateOrUpdateAssetContext implements Context
             AssetCode::fromString(self::HOUSE_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
-                    $labelIdentifier,
+                    $attributeAsLabelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('House updated english label')
                 ),
                 Value::create(
-                    $labelIdentifier,
+                    $attributeAsLabelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('House updated french label')
                 ),
                 Value::create(
-                    $mainImageIdentifier,
+                    $attributeAsMainMediaIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($mainImageInfo)
+                    FileData::createFromFileinfo($mainImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
                 Value::create(
                     AttributeIdentifier::fromString('name_frontview_fingerprint'),
@@ -329,7 +427,7 @@ class CreateOrUpdateAssetContext implements Context
                     AttributeIdentifier::fromString('cover_image_frontview_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($coverImageInfo)
+                    FileData::createFromFileinfo($coverImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
             ])
         );
@@ -392,13 +490,29 @@ class CreateOrUpdateAssetContext implements Context
     }
 
     /**
+     * @Then the PIM notifies the connector about an error indicating that the naming convention failed because of missing attribute
+     */
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheNamingConventionFailedBecauseOfMissingAttribute()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_building_asset_for_naming_convention_failure.json'
+        );
+    }
+
+    /**
      * @Given some assets of the Frontview asset family existing in the ERP but not in the PIM
      */
     public function someAssetsOfTheBrandAssetFamilyExistingInTheErpButNotInThePim()
     {
-        $this->loadFrontViewAssetFamily();
+        $this->loadFrontViewAssetFamily(false, NamingConvention::createFromNormalized([
+            'source' => ['property' => 'code', 'channel' => null, 'locale' => null],
+            'pattern' => '/(?P<title>.+)/',
+            'abort_asset_creation_on_error' => true,
+        ]));
         $this->loadDescriptionAttribute();
         $this->loadNameAttribute();
+        $this->loadTextAttribute(self::ASSET_FAMILY_IDENTIFIER, 'title', 5);
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
@@ -463,6 +577,13 @@ class CreateOrUpdateAssetContext implements Context
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Phone name')
+                ),
+                // Created by naming convention execution
+                Value::create(
+                    AttributeIdentifier::fromString('title_frontview_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    TextData::fromString(self::PHONE_ASSET_CODE)
                 )
             ])
         );
@@ -476,13 +597,13 @@ class CreateOrUpdateAssetContext implements Context
     public function theAssetsExistingBothInTheErpAndThePimAreCorrectlySynchronizedInThePimWithTheInformationFromTheErp()
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
-        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsLabelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
 
         $mainImageInfo = new FileInfo();
@@ -496,22 +617,22 @@ class CreateOrUpdateAssetContext implements Context
             AssetCode::fromString(self::HOUSE_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
-                    $labelIdentifier,
+                    $attributeAsLabelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('House updated english label')
                 ),
                 Value::create(
-                    $labelIdentifier,
+                    $attributeAsLabelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('House updated french label')
                 ),
                 Value::create(
-                    $mainImageIdentifier,
+                    $attributeAsMainMediaIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($mainImageInfo)
+                    FileData::createFromFileinfo($mainImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
                 Value::create(
                     AttributeIdentifier::fromString('name_frontview_fingerprint'),
@@ -541,7 +662,7 @@ class CreateOrUpdateAssetContext implements Context
             AssetCode::fromString(self::FLOWER_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
-                    $labelIdentifier,
+                    $attributeAsLabelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Flower updated english label')
@@ -615,7 +736,7 @@ class CreateOrUpdateAssetContext implements Context
     public function theKartellAssetOfTheBrandAssetFamilyWithoutAnyMediaFile()
     {
         $this->loadFrontViewAssetFamily();
-        $this->loadCoverImageAttribute();
+        $this->loadCoverMediaFileAttribute();
         $this->loadFrontViewHouseAsset();
     }
 
@@ -643,14 +764,84 @@ class CreateOrUpdateAssetContext implements Context
         );
     }
 
-    private function loadFrontViewAssetFamily(): void
+    private function loadFrontViewAssetFamily(bool $withTransformation = false, NamingConventionInterface $namingConvention = null): void
     {
         $assetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             ['en_US' => 'Front view'],
             Image::createEmpty(),
+            RuleTemplateCollection::createFromProductLinkRules(
+                [
+                    [
+                        'product_selections' => [
+                            [
+                                'field' => '{{category_field}}',
+                                'operator' => Operators::EQUALS,
+                                'value' => '{{category}}',
+                            ],
+                        ],
+                        'assign_assets_to' => [
+                            [
+                                'mode' => 'add',
+                                'attribute' => '{{product_multiple_link}}',
+                            ],
+                        ],
+                    ],
+                ]
+            )
+        );
+        if ($withTransformation) {
+            $assetFamily = $assetFamily->withTransformationCollection(
+                TransformationCollection::create([
+                    Transformation::create(
+                        TransformationLabel::fromString('label'),
+                        Source::createFromNormalized(['attribute' => 'cover_image', 'channel'=> null, 'locale' => null]),
+                        Target::createFromNormalized(['attribute' => 'thumbnail', 'channel'=> null, 'locale' => null]),
+                        OperationCollection::create([
+                            ThumbnailOperation::create(['width' => 100, 'height' => 80]),
+                        ]),
+                        'pre',
+                        null,
+                        new \DateTime()
+                    ),
+                ])
+            );
+        }
+        if (null !== $namingConvention) {
+            $assetFamily->updateNamingConvention($namingConvention);
+        }
+
+        $this->assetFamilyRepository->create($assetFamily);
+    }
+
+    private function loadPresentationViewAssetFamily(
+        string $assetFamilyIdentifier,
+        NamingConventionInterface $namingConvention = null
+    ): void {
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            ['en_US' => 'Presentation view'],
+            Image::createEmpty(),
             RuleTemplateCollection::empty()
         );
+        $assetFamily = $assetFamily->withTransformationCollection(
+            TransformationCollection::create([
+                Transformation::create(
+                    TransformationLabel::fromString('label'),
+                    Source::createFromNormalized(['attribute' => 'main_image', 'channel'=> null, 'locale' => null]),
+                    Target::createFromNormalized(['attribute' => 'thumbnail', 'channel'=> null, 'locale' => null]),
+                    OperationCollection::create([
+                        ThumbnailOperation::create(['width' => 100, 'height' => 80]),
+                    ]),
+                    'pre',
+                    null,
+                    new \DateTime()
+                ),
+            ])
+        );
+        if (null !== $namingConvention) {
+            $assetFamily->updateNamingConvention($namingConvention);
+        }
 
         $this->assetFamilyRepository->create($assetFamily);
     }
@@ -664,12 +855,85 @@ class CreateOrUpdateAssetContext implements Context
             LabelCollection::fromArray(['en_US' => 'Description']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
         );
+
+        $this->attributeRepository->create($name);
+    }
+
+    private function loadTextAttribute(string $assetFamilyIdentifier, string $code, int $order): void
+    {
+        $name = TextAttribute::createText(
+            AttributeIdentifier::create($assetFamilyIdentifier, $code, 'fingerprint'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($code),
+            LabelCollection::fromArray(['en_US' => $code]),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+
+        $this->attributeRepository->create($name);
+    }
+
+    private function loadNumberAttribute(string $assetFamilyIdentifier, string $code, int $order): void
+    {
+        $name = NumberAttribute::create(
+            AttributeIdentifier::create($assetFamilyIdentifier, $code, 'fingerprint'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($code),
+            LabelCollection::fromArray(['en_US' => $code]),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeDecimalsAllowed::fromBoolean(true),
+            AttributeLimit::limitless(),
+            AttributeLimit::limitless()
+        );
+
+        $this->attributeRepository->create($name);
+    }
+
+    private function loadMediaFileAttribute(string $assetFamilyIdentifier, string $code, string $label, int $order, string $filePath = null): void
+    {
+        $name = MediaFileAttribute::create(
+            AttributeIdentifier::create($assetFamilyIdentifier, $code, 'fingerprint'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($code),
+            LabelCollection::fromArray(['en_US' => $label]),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('120'),
+            AttributeAllowedExtensions::fromList(self::VALID_EXTENSIONS),
+            MediaType::fromString(MediaType::IMAGE)
+        );
+
+        if (null !== $filePath) {
+            $this->findFileData->save([
+                'filePath' => $filePath,
+                'originalFilename' => 'image.jpg',
+                'size' => 128,
+                'mimeType' => 'image/jpeg',
+                'extension' => 'jpg',
+                'updatedAt' => '2019-11-22T15:16:21+0000',
+            ]);
+            $this->fileExists->save($filePath);
+        }
 
         $this->attributeRepository->create($name);
     }
@@ -683,6 +947,7 @@ class CreateOrUpdateAssetContext implements Context
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -693,19 +958,21 @@ class CreateOrUpdateAssetContext implements Context
         $this->attributeRepository->create($name);
     }
 
-    private function loadCoverImageAttribute(): void
+    private function loadCoverMediaFileAttribute(): void
     {
-        $image = ImageAttribute::create(
+        $image = MediaFileAttribute::create(
             AttributeIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, 'cover_image', 'fingerprint'),
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AttributeCode::fromString('cover_image'),
             LabelCollection::fromArray(['en_US' => 'Cover Image']),
             AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('250.2'),
-            AttributeAllowedExtensions::fromList(['jpg'])
+            AttributeAllowedExtensions::fromList(['jpg']),
+            MediaType::fromString(MediaType::IMAGE)
         );
 
         $this->attributeRepository->create($image);
@@ -719,13 +986,13 @@ class CreateOrUpdateAssetContext implements Context
             ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_house.jpg');
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
-        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsLabelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
 
         $asset = Asset::create(
@@ -734,16 +1001,16 @@ class CreateOrUpdateAssetContext implements Context
             AssetCode::fromString(self::HOUSE_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
-                    $labelIdentifier,
+                    $attributeAsLabelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('House English label')
                 ),
                 Value::create(
-                    $mainImageIdentifier,
+                    $attributeAsMainMediaIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($mainImageInfo)
+                    FileData::createFromFileinfo($mainImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
                 Value::create(
                     AttributeIdentifier::fromString('name_frontview_fingerprint'),
@@ -809,11 +1076,55 @@ class CreateOrUpdateAssetContext implements Context
     }
 
     /**
-     * @Given /^a job runs to automatically link it to products according to the rule template$/
+     * @Then /^a job runs to automatically link it to products according to the rule template$/
      */
     public function aJobRunsToAutomaticallyLinkItToProductsAccordingToTheRuleTemplate()
     {
         $this->productLinkRuleLauncherSpy->assertHasRunForAsset(self::ASSET_FAMILY_IDENTIFIER, self::HOUSE_ASSET_CODE);
+    }
+
+    /**
+     * @Then a job runs to automatically compute the transformations on the asset code :arg1 in asset family :arg2
+     */
+    public function aJobRunsToAutomaticallyComputeTheTransformationOnTheAsset(
+        string $assetcode,
+        string $assetFamilyIdentifier
+    ) {
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AssetCode::fromString($assetcode)
+        );
+
+        $this->computeTransformationLauncherSpy->assertAJobIsLaunchedWithAssetIdentifier($asset->getIdentifier());
+    }
+
+    /**
+     * @Then the asset contains values computed by naming convention
+     */
+    public function theAssetContainsValuesComputedByNamingConvention()
+    {
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('PresentationView'),
+            AssetCode::fromString('building')
+        );
+
+        $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+            AttributeCode::fromString('title'),
+            AssetFamilyIdentifier::fromString('PresentationView'),
+        );
+        $valueKey = ValueKey::create($attribute->getIdentifier(), ChannelReference::noReference(), LocaleReference::noReference());
+        $value = $asset->findValue($valueKey);
+        Assert::assertInstanceOf(Value::class, $value);
+        Assert::assertEquals('house', $value->getData()->normalize());
+
+        $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+            AttributeCode::fromString('length'),
+            AssetFamilyIdentifier::fromString('PresentationView'),
+        );
+        $valueKey = ValueKey::create($attribute->getIdentifier(), ChannelReference::noReference(), LocaleReference::noReference());
+        $value = $asset->findValue($valueKey);
+        Assert::assertInstanceOf(Value::class, $value);
+        Assert::assertEquals('12', $value->getData()->normalize());
     }
 
     /**

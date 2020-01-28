@@ -18,7 +18,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreatePr
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Factory\ProposalSuggestedDataFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
@@ -59,7 +58,7 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         $suggestedData = new ProposalSuggestedData($productId, []);
         $proposalSuggestedDataFactory->fromSubscription($productSubscription)->willReturn($suggestedData);
 
-        $proposalUpsert->process([$suggestedData], ProposalAuthor::USERNAME)->shouldBeCalled();
+        $proposalUpsert->process([$suggestedData])->shouldBeCalled();
         $subscriptionRepository->emptySuggestedDataByProducts([$productId])->shouldBeCalled();
 
         $this->handle(new CreateProposalCommand($productSubscription));

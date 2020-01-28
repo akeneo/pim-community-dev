@@ -52,6 +52,11 @@ services:
     akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_by_asset_family_and_code:
         class: Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetByAssetFamilyAndCode
 
+    akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryFindAssetIdentifiersByAssetFamily
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+
     akeneo_assetmanager.infrastructure.persistence.query.find_connector_assets_by_identifiers:
         class: Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetsByIdentifiers
 
@@ -72,6 +77,9 @@ services:
 
     akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_options:
         class: Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAttributeOptions
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_transformation_assets_by_identifiers:
+        class: Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindTransformationAssetsByIdentifiers
 
     akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists:
         class: Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyExists
@@ -167,6 +175,9 @@ services:
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets:
         class: Akeneo\AssetManager\Common\Fake\InMemoryCountAssets
 
+    Akeneo\AssetManager\Infrastructure\Clock:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryClock
+
     akeneo_assetmanager.infrastructure.persistence.query.channel_exists:
         class: Akeneo\AssetManager\Common\Fake\InMemoryChannelExists
 
@@ -215,8 +226,8 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
 
-    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_image:
-        class: Akeneo\AssetManager\Common\Fake\InMemoryFindAssetFamilyAttributeAsImage
+    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_main_media:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryFindAssetFamilyAttributeAsMainMedia
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
 
@@ -257,8 +268,8 @@ services:
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer:
         class: Akeneo\AssetManager\Common\Fake\AssetIndexerSpy
 
-    akeneo_assetmanager.infrastructure.persistence.query.find_image_attribute_codes:
-        class: Akeneo\AssetManager\Common\Fake\InMemoryFindImageAttributeCodes
+    akeneo_assetmanager.infrastructure.persistence.query.find_media_file_attribute_codes:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryFindMediaFileAttributeCodes
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
@@ -268,6 +279,13 @@ services:
 
     akeneo_assetmanager.infrastructure.job.product_link_rule_launcher:
         class: 'Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy'
+
+    # Compute Transformations
+    akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher:
+        class: Akeneo\AssetManager\Common\Fake\ComputeTransformationFromAssetIdentifiersLauncherSpy
+
+    akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_family_identifier_launcher:
+        class: Akeneo\AssetManager\Common\Fake\ComputeTransformationsFromAssetFamilyIdentifierLauncherSpy
 
     # Third party services
     oro_security.security_facade:

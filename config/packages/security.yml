@@ -1,0 +1,118 @@
+security:
+    providers:
+        chain_provider:
+            chain:
+                providers: [saml_pim_user, pim_user]
+        chain_provider_api:
+            chain:
+                providers: [saml_pim_user, pim_user_api]
+        pim_user:
+            id: pim_user.provider.user
+        pim_user_api:
+            id: pim_user.provider.user_api
+        saml_pim_user:
+            id: akeneo_authentication.sso.user.provider
+
+    encoders:
+        Akeneo\UserManagement\Component\Model\User: sha512
+        Symfony\Component\Security\Core\User\User: plaintext
+
+    firewalls:
+        dev:
+            pattern:                        ^/(_(profiler|wdt)|css|images|js)/
+            security:                       false
+
+        install:
+            pattern:                        ^/installer
+            security:                       false
+            anonymous:                      true
+
+        liip_imagine:
+            pattern:                        ^/media
+            security:                       false
+
+        login:
+            pattern:                        ^/user/(login|reset-request|send-email|check-email)$
+            provider:                       chain_provider
+            anonymous:                      true
+            logout_on_user_change:          true
+
+        monitoring:
+            pattern:                        ^/monitoring/services_status
+            security:                       false
+
+        reset_password:
+            pattern:                        ^/user/reset/*
+            provider:                       chain_provider
+            anonymous:                      true
+            logout_on_user_change:          true
+
+        oauth_token:
+            pattern:                        ^/api/oauth/v1/token
+            security:                       false
+
+        api_index:
+            pattern:                        ^/api/rest/v1$
+            security:                       false
+
+        api:
+            pattern:                        ^/api
+            fos_oauth:                      true
+            stateless:                      true
+            access_denied_handler:          pim_api.security.access_denied_handler
+            provider:                       chain_provider_api
+
+        sso:
+            pattern:   ^/
+            anonymous: true
+            provider:  chain_provider
+            saml:
+                username_attribute: akeneo_uid
+                check_path: saml_acs
+                login_path: saml_login
+                user_factory: akeneo_authentication.sso.user.factory
+            form_login:
+                csrf_token_generator: security.csrf.token_manager
+                login_path: saml_login
+                failure_path: pim_user_security_login
+                check_path: pim_user_security_check
+                use_forward: true
+            logout:
+                path: saml_logout
+
+        main:
+            pattern:                        ^/
+            provider:                       chain_provider
+            form_login:
+                csrf_token_generator:       security.csrf.token_manager
+                check_path:                 pim_user_security_check
+                login_path:                 pim_user_security_login
+                use_forward:                true
+            logout:
+                path:                       pim_user_security_logout
+            remember_me:
+                secret:                     "%env(APP_SECRET)%"
+                name:                       BAPRM
+                lifetime:                   1209600   # stay logged for two weeks
+            anonymous:                      false
+            logout_on_user_change:          true
+
+    access_control:
+        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/api/rest/v1$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/, role: pim_api_overall_access }
+        #Additionnal access control for SSO
+        - { path: ^/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/reset-request, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/send-email, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/saml-idp/resume, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
+
+acl:
+    connection: default
+    cache:
+        id: security.acl.cache.doctrine
+        prefix: sf2_acl_

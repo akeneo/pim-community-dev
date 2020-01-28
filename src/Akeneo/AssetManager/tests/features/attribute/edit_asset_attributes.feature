@@ -37,3 +37,9 @@ Feature: Edit an attribute of an asset family
     Examples:
       | invalid_required | message                               |
       | null             | This value should not be null.        |
+
+  @acceptance-back
+  Scenario: Updating read only property
+    Given an asset family with a asset attribute 'mentor' not in read only
+    When the user sets the 'mentor' attribute read only
+    Then 'mentor' should be read only

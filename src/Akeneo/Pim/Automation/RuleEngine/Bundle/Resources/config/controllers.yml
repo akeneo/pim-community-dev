@@ -3,6 +3,7 @@ parameters:
 
 services:
     pimee_catalog_rule.controller.rule:
+        public: true
         class: '%pimee_catalog_rule.controller.rule.class%'
         arguments:
             - '@akeneo_rule_engine.repository.rule_definition'
@@ -15,6 +16,7 @@ services:
             - '@oro_datagrid.mass_action.parameters_parser'
 
     pimee_enrich.controller.rule_relation:
+        public: true
         class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\RuleRelationController'
         arguments:
             - '@akeneo_rule_engine.repository.rule_relation'

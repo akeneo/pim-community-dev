@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
@@ -22,7 +24,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\OptionAttributeValidator;
 use PhpSpec\ObjectBehavior;
@@ -48,6 +49,7 @@ class OptionAttributeValidatorSpec extends ObjectBehavior
             LabelCollection::fromArray(['en_US' => 'Main material']),
             AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -64,6 +66,7 @@ class OptionAttributeValidatorSpec extends ObjectBehavior
             LabelCollection::fromArray(['en_US' => 'Materials']),
             AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );

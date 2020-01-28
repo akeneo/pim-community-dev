@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
@@ -26,7 +27,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -113,22 +115,24 @@ class SqlFindConnectorAttributeOptionsTest extends SqlIntegrationTestCase
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function createImageAttribute(string $assetFamilyIdentifier)
+    private function createMediaFileAttribute(string $assetFamilyIdentifier)
     {
-        $imageAttribute = ImageAttribute::create(
+        $mediaFileAttribute = MediaFileAttribute::create(
             AttributeIdentifier::create($assetFamilyIdentifier, 'portrait', 'fingerprint'),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('200.10'),
-            AttributeAllowedExtensions::fromList(['png'])
+            AttributeAllowedExtensions::fromList(['png']),
+            MediaType::fromString(MediaType::IMAGE)
         );
 
-        $this->attributeRepository->create($imageAttribute);
+        $this->attributeRepository->create($mediaFileAttribute);
     }
 
     private function createAttribute(string $assetFamilyIdentifier)
@@ -140,6 +144,7 @@ class SqlFindConnectorAttributeOptionsTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Attribute']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -167,6 +172,7 @@ class SqlFindConnectorAttributeOptionsTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Attribute']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );

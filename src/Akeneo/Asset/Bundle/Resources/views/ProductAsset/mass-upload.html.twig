@@ -1,9 +1,0 @@
-{% block content %}
-    <script>
-        require(['pimee/productasset/mass-upload'], function (massUpload) {
-            var myDropzone = new massUpload();
-            myDropzone.setElement('.view');
-            myDropzone.render();
-        });
-    </script>
-{% endblock %}

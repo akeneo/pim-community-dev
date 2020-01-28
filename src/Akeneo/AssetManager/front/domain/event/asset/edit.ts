@@ -1,26 +1,17 @@
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
-import File from 'akeneoassetmanager/domain/model/file';
-import Asset from 'akeneoassetmanager/domain/model/asset/asset';
-import Value from 'akeneoassetmanager/domain/model/asset/value';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
+import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
 
-export const assetEditionReceived = (asset: Asset) => {
-  return {type: 'ASSET_EDITION_RECEIVED', asset: asset.normalize()};
+export const assetEditionReceived = (asset: EditionAsset) => {
+  return {type: 'ASSET_EDITION_RECEIVED', asset};
 };
 
-export const assetEditionUpdated = (asset: Asset) => {
+export const assetEditionUpdated = (asset: EditionAsset) => {
   return {type: 'ASSET_EDITION_UPDATED', asset};
 };
 
-export const assetEditionLabelUpdated = (label: string, locale: string) => {
-  return {type: 'ASSET_EDITION_LABEL_UPDATED', label, locale};
-};
-
-export const assetEditionImageUpdated = (image: File) => {
-  return {type: 'ASSET_EDITION_IMAGE_UPDATED', image: image.normalize()};
-};
-
-export const assetEditionValueUpdated = (value: Value) => {
-  return {type: 'ASSET_EDITION_VALUE_UPDATED', value: value.normalize()};
+export const assetEditionValueUpdated = (value: EditionValue) => {
+  return {type: 'ASSET_EDITION_VALUE_UPDATED', value};
 };
 
 export const assetEditionSubmission = () => {

@@ -18,9 +18,4 @@ class AkeneoPimTeamworkAssistantExtensionSpec extends ObjectBehavior
     {
         $this->shouldHaveType(Extension::class);
     }
-
-    function it_loads_extension(ContainerBuilder $containerBuilder)
-    {
-        $this->load([], $containerBuilder);
-    }
 }

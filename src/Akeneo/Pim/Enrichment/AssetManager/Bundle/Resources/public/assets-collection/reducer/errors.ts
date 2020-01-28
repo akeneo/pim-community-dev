@@ -1,6 +1,6 @@
 import {Action} from 'redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
-import {ValidationError} from 'akeneopimenrichmentassetmanager/platform/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
 
 export type ErrorsState = ValidationError[];
 

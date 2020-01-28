@@ -135,16 +135,6 @@ jobs:
         alias:     refuse_product_draft
         label:     Mass reject product drafts
         type:      mass_edit
-    apply_assets_mass_upload:
-        connector: Akeneo Product Asset Connector
-        alias:     apply_assets_mass_upload
-        label:     Process mass uploaded assets
-        type:      mass_upload
-    apply_assets_mass_upload_into_asset_collection:
-        connector: Akeneo Product Asset Connector
-        alias:     apply_assets_mass_upload_into_asset_collection
-        label:     Process mass uploaded assets and add to product
-        type:      mass_upload
     xlsx_product_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_quick_export
@@ -192,16 +182,6 @@ jobs:
         alias:     rule_impacted_product_count
         label:     Calculation the affected products for the rules
         type:      mass_edit_rule
-    classify_assets:
-        connector: Akeneo Product Asset Connector
-        alias:     classify_assets
-        label:     Mass classify product assets
-        type:      mass_edit
-    add_tags_to_assets:
-        connector: Akeneo Product Asset Connector
-        alias:     add_tags_to_assets
-        label:     Add tags to assets
-        type:      mass_edit
     project_calculation:
         connector: teamwork assistant
         alias:     project_calculation
@@ -212,11 +192,6 @@ jobs:
         alias:     refresh_project_completeness_calculation
         label:     Refresh project completeness
         type:      refresh_project_completeness_calculation
-    compute_product_models_descendants:
-        connector: internal
-        alias:     compute_product_models_descendants
-        label:     Compute product models descendants
-        type:      compute_product_models_descendants
     compute_completeness_of_products_family:
         connector: internal
         alias:     compute_completeness_of_products_family
@@ -227,13 +202,13 @@ jobs:
         alias:     compute_family_variant_structure_changes
         label:     Compute family variant structure changes
         type:      compute_family_variant_structure_changes
-    compute_completeness_of_products_linked_to_assets:
-        connector: internal
-        alias:     compute_completeness_of_products_linked_to_assets
-        label:     compute completeness of products linked to assets
-        type:      compute_completeness_of_products_linked_to_assets
     asset_manager_link_assets_to_products:
         connector: internal
         alias:     asset_manager_link_assets_to_products
         label:     asset manager link assets to products
         type:      asset_manager_link_assets_to_products
+    asset_manager_compute_transformations:
+        connector: internal
+        alias:     asset_manager_compute_transformations
+        label:     asset_manager_compute_transformations
+        type:      asset_manager_compute_transformations

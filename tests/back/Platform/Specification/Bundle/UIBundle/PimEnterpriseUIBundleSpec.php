@@ -18,9 +18,4 @@ class PimEnterpriseUIBundleSpec extends ObjectBehavior
     {
         $this->shouldHaveType(Bundle::class);
     }
-
-    function it_extends_the_community_ui_bundle()
-    {
-        $this->getParent()->shouldReturn('PimUIBundle');
-    }
 }

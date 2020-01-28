@@ -4,18 +4,23 @@ import {EditState as State} from 'akeneoassetmanager/application/reducer/asset-f
 import Sidebar from 'akeneoassetmanager/application/component/app/sidebar';
 import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
 import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
-import CreateAssetModal from 'akeneoassetmanager/application/component/asset/create';
 import __ from 'akeneoassetmanager/tools/translator';
 import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
 import Key from 'akeneoassetmanager/tools/key';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {BreadcrumbConfiguration} from 'akeneoassetmanager/application/component/app/breadcrumb';
 
 interface StateProps {
+  locale: LocaleCode;
+  assetFamily: AssetFamily;
+  channels: Channel[];
+  locales: Locale[];
   sidebar: {
     tabs: Tab[];
     currentTab: string;
-  };
-  createAsset: {
-    active: boolean;
   };
 }
 
@@ -25,15 +30,45 @@ interface DispatchProps {
   };
 }
 
-export const breadcrumbConfiguration = [
-  {
+export const breadcrumbConfiguration = (
+  identifier: AssetFamilyIdentifier | null,
+  label: string,
+  tab?: string
+): BreadcrumbConfiguration => {
+  const indexAction = {
+    action: {
+      type: 'redirect',
+      route: 'akeneo_asset_manager_asset_family_index',
+    },
+    label: __('pim_asset_manager.asset_family.breadcrumb'),
+  };
+
+  if (null === identifier) return [indexAction];
+
+  const displayAssetFamilyAction = {
+    action: {
+      type: 'display',
+      parameters: {identifier},
+    },
+    label,
+  };
+
+  if (!tab) return [indexAction, displayAssetFamilyAction];
+
+  const editAssetFamilyAction = {
     action: {
       type: 'redirect',
       route: 'akeneo_asset_manager_asset_family_edit',
+      parameters: {
+        identifier,
+        tab,
+      },
     },
-    label: __('pim_asset_manager.asset_family.breadcrumb'),
-  },
-];
+    label,
+  };
+
+  return [indexAction, editAssetFamilyAction];
+};
 
 interface EditProps extends StateProps, DispatchProps {}
 
@@ -62,24 +97,6 @@ class AssetFamilyEditView extends React.Component<EditProps> {
           <div className="AknDefault-thirdColumn" />
         </div>
         <div className="AknDefault-contentWithBottom">
-          {/* @todo to remove when the feature is available */}
-          <div
-            style={{
-              display: 'flex',
-              fontSize: '15px',
-              color: 'rgb(255, 255, 255)',
-              minHeight: '50px',
-              alignItems: 'center',
-              lineHeight: '17px',
-              background: 'rgba(189, 10, 10, 0.62)',
-              justifyContent: 'center',
-            }}
-          >
-            <p>
-              The Asset Manager is still in progress. This page is under development. This is a temporary screen which
-              is not supported.
-            </p>
-          </div>
           <div
             className="AknDefault-mainContent AknDefault-mainContent--withoutBottomPadding"
             data-tab={this.props.sidebar.currentTab}
@@ -88,7 +105,6 @@ class AssetFamilyEditView extends React.Component<EditProps> {
           </div>
         </div>
         <Sidebar backButton={this.backToAssetFamilyList} />
-        {this.props.createAsset.active ? <CreateAssetModal /> : null}
       </div>
     );
   }
@@ -100,12 +116,13 @@ export default connect(
     const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
 
     return {
+      locale: state.user.catalogLocale,
+      assetFamily: state.form.data,
+      channels: state.structure.channels,
+      locales: state.structure.locales,
       sidebar: {
         tabs,
         currentTab,
-      },
-      createAsset: {
-        active: state.createAsset.active,
       },
     };
   },

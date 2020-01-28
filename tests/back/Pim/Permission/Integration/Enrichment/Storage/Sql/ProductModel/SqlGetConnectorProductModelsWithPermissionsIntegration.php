@@ -215,7 +215,7 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
+        $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
     }
 
     /**
@@ -256,6 +256,6 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
             'associations' => $associations,
         ]);
         $this->get('pim_catalog.saver.product_model')->save($productModel);
-        $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 }

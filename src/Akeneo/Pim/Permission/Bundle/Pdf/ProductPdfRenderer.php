@@ -11,8 +11,6 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Pdf;
 
-use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
-use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface;
@@ -44,10 +42,6 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
-
-    // TODO: on master we must remove null for the $attributeOptionRepository and change the order with $customFont
     public function __construct(
         EngineInterface $templating,
         PdfBuilderInterface $pdfBuilder,
@@ -58,12 +52,9 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         IdentifiableObjectRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
-        AssetRepositoryInterface $assetRepository,
         string $template,
-        string $uploadDirectory,
-        ?string $customFont = null,
-        ?IdentifiableObjectRepositoryInterface $attributeOptionRepository = null
-
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository,
+        ?string $customFont = null
     ) {
         parent::__construct(
             $templating,
@@ -73,15 +64,13 @@ class ProductPdfRenderer extends PimProductPdfRenderer
             $filterManager,
             $attributeRepository,
             $template,
-            $uploadDirectory,
-            $customFont,
-            $attributeOptionRepository
+            $attributeOptionRepository,
+            $customFont
         );
 
         $this->filterHelper = $filterHelper;
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
-        $this->assetRepository = $assetRepository;
     }
 
     /**
@@ -100,43 +89,6 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         }
 
         return $attributes;
-    }
-
-    /**
-     * Adds image paths to display for assets.
-     *
-     * {@inheritdoc}
-     */
-    protected function getImagePaths(ProductInterface $product, $localeCode, $scope)
-    {
-        $imagePaths = parent::getImagePaths($product, $localeCode, $scope);
-
-        $channel = $this->channelRepository->findOneByIdentifier($scope);
-        $locale = $this->localeRepository->findOneByIdentifier($localeCode);
-
-        foreach ($this->getAttributes($product, $localeCode) as $attribute) {
-            if (AttributeTypes::ASSETS_COLLECTION === $attribute->getType()) {
-                $assetsValue = $product->getValue(
-                    $attribute->getCode(),
-                    $attribute->isLocalizable() ? $localeCode : null,
-                    $attribute->isScopable() ? $scope : null
-                );
-
-                if (null !== $assetsValue) {
-                    $assets = $assetsValue->getData();
-                    foreach ($assets as $assetCode) {
-                        $asset = $this->assetRepository->findOneByIdentifier($assetCode);
-                        $file = $asset->getFileForContext($channel, $locale);
-
-                        if (null !== $file && $this->isImage($file)) {
-                            $imagePaths[] = $file->getKey();
-                        }
-                    }
-                }
-            }
-        }
-
-        return $imagePaths;
     }
 
     /**

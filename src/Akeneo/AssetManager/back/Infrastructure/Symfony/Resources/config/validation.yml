@@ -11,6 +11,12 @@ Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyComma
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ProductLinkRulesShouldBeExecutable: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessRuleTemplateThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AttributeAsMainMedia: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCollection: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AttributeSourceIsNotATarget: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationFilenameIsUnique: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NullableNamingConvention: { groups: [other_constraints] }
 
 Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand:
     group_sequence:
@@ -26,6 +32,7 @@ Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyC
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyIdentifierShouldBeUnique: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessAssetFamilyThanLimit: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessRuleTemplateThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NullableNamingConvention: { groups: [other_constraints] }
 
 Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFamilyCommand:
     group_sequence:
@@ -66,10 +73,6 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand:
             - Akeneo\AssetManager\Infrastructure\Validation\Asset\Code: ~
         assetFamilyIdentifier:
             - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
-        labels:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
-        image:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Image: ~
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetValueCommands: ~
 
@@ -81,9 +84,14 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueComm
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditTextValueCommand: ~
 
-Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommand:
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand:
     constraints:
-        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditStoredFileValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaFileValueCommand: ~
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditTargetValue: ~
+
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileTargetValueCommand:
+    constraints:
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaFileValueCommand: ~
 
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetValueCommand:
     constraints:
@@ -157,9 +165,9 @@ Akeneo\AssetManager\Domain\Query\Asset\AssetQuery:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\FilterAssetsByCompleteness: ~
 
 # Attributes
-Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
+Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand:
     group_sequence:
-        - CreateImageAttributeCommand
+        - CreateMediaFileAttributeCommand
         - other_constraints
     properties:
         assetFamilyIdentifier:
@@ -412,6 +420,11 @@ Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\MediaLink
     properties:
         mediaType:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MediaLink\MediaType: ~
+
+Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\MediaFile\EditMediaTypeCommand:
+  properties:
+      mediaType:
+          - Akeneo\AssetManager\Infrastructure\Validation\Attribute\MediaFile\MediaType: ~
 
 Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommand:
     properties:

@@ -6,7 +6,7 @@ import OptionCode, {
 } from 'akeneoassetmanager/domain/model/code';
 
 export const denormalizeOptionCode = denormalizeCode;
-export const optioncodesAreEqual = codesAreEqual;
+export const optionCodesAreEqual = codesAreEqual;
 export const optionCodeStringValue = codeStringValue;
 export const isOptionCode = isCode;
 

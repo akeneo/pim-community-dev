@@ -24,7 +24,7 @@ const brands = denormalizeMinimalAttribute({
 const frontView = denormalizeMinimalAttribute({
   asset_family_identifier: 'designer',
   code: 'front_fiew',
-  type: 'image',
+  type: 'media_file',
   labels: {en_US: 'Front View'},
   value_per_locale: false,
   value_per_channel: true,

@@ -3,7 +3,7 @@ import {
   Family,
   FamilyCode,
   AttributeRequirements,
-} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
+} from 'akeneoassetmanager/platform/model/structure/family';
 import {isString, isObject, isLabels} from 'akeneoassetmanager/domain/model/utils';
 const fetcherRegistry = require('pim/fetcher-registry');
 

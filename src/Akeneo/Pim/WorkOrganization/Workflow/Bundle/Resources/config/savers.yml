@@ -14,7 +14,6 @@ services:
         class: '%pim_catalog.saver.product.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pimee_workflow.manager.completeness'
             - '@event_dispatcher'
             - '@pimee_workflow.synchronizer.published_product_unique_data'
 
@@ -44,7 +43,6 @@ services:
         class: '%pimee_workflow.saver.product_delegating.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
             - '@security.authorization_checker'
             - '@pimee_workflow.product.builder.draft'
@@ -54,6 +52,7 @@ services:
             - '@pim_catalog.synchronizer.product_unique_data'
             - '@pimee_catalog.security.merger.merge_data_on_product'
             - '@pim_catalog.repository.product_without_permission'
+            - '@Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory'
 
     pimee_workflow.saver.product_model_delegating:
         class: '%pimee_workflow.saver.product_model_delegating.class%'
@@ -69,3 +68,4 @@ services:
             - '@pim_catalog.repository.product_model'
             - '@pimee_workflow.repository.product_model_draft'
             - '@pim_catalog.saver.product_model'
+            - '@Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory'

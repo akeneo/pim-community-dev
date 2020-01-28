@@ -91,9 +91,6 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /** @var Collection $associations */
     protected $associations;
 
-    /** @var Collection $completenesses */
-    protected $completenesses;
-
     /** @var string */
     protected $identifier;
 
@@ -113,7 +110,6 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     {
         $this->values = new WriteValueCollection();
         $this->categories = new ArrayCollection();
-        $this->completenesses = new ArrayCollection();
         $this->groups = new ArrayCollection();
         $this->associations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
@@ -303,12 +299,9 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setIdentifier(ValueInterface $identifier)
+    public function setIdentifier(?string $identifierValue): ProductInterface
     {
-        $this->identifier = $identifier->getData();
-
-        $this->values->removeByAttributeCode($identifier->getAttributeCode());
-        $this->values->add($identifier);
+        $this->identifier = $identifierValue;
 
         return $this;
     }
@@ -638,24 +631,6 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
         $this->associations = $associations;
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCompletenesses(Collection $completenesses)
-    {
-        $this->completenesses = $completenesses;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCompletenesses()
-    {
-        return $this->completenesses;
     }
 
     /**

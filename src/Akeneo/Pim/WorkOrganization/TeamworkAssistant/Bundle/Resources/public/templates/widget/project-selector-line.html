@@ -1,6 +1,16 @@
 <div class="AknProjectWidget-mainSelector<%- type %>">
-    <span class="AknProjectWidget-mainSelector<%- type %>Title">
+    <div class="AknProjectWidget-mainSelector<%- type %>Title">
         <%- projectLabel %>
-    </span>
-    <%- projectChannel %> | <%- projectLocale %>
+    </div>
+    <div class="AknProjectWidget-mainSelector<%- type %>Properties">
+        <p><%- projectChannel %> | <%- projectLocale %></p>
+        <% if (type === 'Line') { %>
+        <p><%- dueDateLabel %>: <%- dueDate %></p>
+        <% } %>
+    </div>
+    <div class="AknProjectWidget-mainSelector<%- type %>Completeness">
+        <span class="AknBadge <%- badgeClass %>">
+            <%- completionRatio %>%
+        </span>
+    </div>
 </div>

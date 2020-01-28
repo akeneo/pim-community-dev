@@ -15,7 +15,6 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
-use Symfony\Component\Security\Acl\Util\ClassUtils;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -70,6 +69,10 @@ class ThereShouldBeLessRuleTemplateThanLimitValidator extends ConstraintValidato
 
     private function validateCommand($command): void
     {
+        if ($command->productLinkRules === null) {
+            return;
+        }
+
         $total = count($command->productLinkRules);
 
         if ($total > $this->ruleTemplateByAssetFamilyLimit) {

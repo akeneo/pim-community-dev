@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelationInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,7 +21,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class RuleRelationNormalizer implements NormalizerInterface
+class RuleRelationNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var array */
     protected $supportedFormats = ['internal_api'];
@@ -54,5 +55,10 @@ class RuleRelationNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof RuleRelationInterface && in_array($format, $this->supportedFormats);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

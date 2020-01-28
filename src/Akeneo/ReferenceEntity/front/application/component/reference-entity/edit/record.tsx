@@ -13,33 +13,32 @@ import {recordCreationStart} from 'akeneoreferenceentity/domain/event/record/cre
 import {deleteAllReferenceEntityRecords, deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
 import {
+  completenessFilterUpdated,
+  filterUpdated,
   needMoreResults,
   searchUpdated,
   updateRecordResults,
-  completenessFilterUpdated,
-  filterUpdated,
 } from 'akeneoreferenceentity/application/action/record/search';
-import {Column} from 'akeneoreferenceentity/application/reducer/grid';
+import {Column, Filter} from 'akeneoreferenceentity/application/reducer/grid';
 import ReferenceEntityIdentifier, {
   createIdentifier as createReferenceIdentifier,
 } from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import RecordCode, {createCode as createRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
-import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+import {cancelDeleteModal, openDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import {
-  getDataCellView,
   CellView,
-  getDataFilterView,
   FilterView,
+  getDataCellView,
+  getDataFilterView,
   hasDataFilterView,
 } from 'akeneoreferenceentity/application/configuration/value';
-import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
-import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
+import {catalogChannelChanged, catalogLocaleChanged} from 'akeneoreferenceentity/domain/event/user';
 import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
-import {NormalizedAttribute, Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {Attribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 
 const securityContext = require('pim/security-context');

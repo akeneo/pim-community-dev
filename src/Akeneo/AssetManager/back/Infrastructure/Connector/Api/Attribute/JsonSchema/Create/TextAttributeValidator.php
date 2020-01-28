@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use JsonSchema\Validator;
 
 class TextAttributeValidator implements AttributeValidatorInterface
@@ -61,6 +59,9 @@ class TextAttributeValidator implements AttributeValidatorInterface
                     'type' => [ 'boolean'],
                 ],
                 'is_required_for_completeness' => [
+                    'type' => [ 'boolean'],
+                ],
+                'is_read_only' => [
                     'type' => [ 'boolean'],
                 ],
                 'is_textarea' => [

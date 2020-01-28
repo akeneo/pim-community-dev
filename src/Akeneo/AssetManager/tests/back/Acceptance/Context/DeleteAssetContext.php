@@ -137,6 +137,7 @@ final class DeleteAssetContext implements Context
         $createCommand = new CreateAssetFamilyCommand(
             self::ASSET_FAMILY_IDENTIFIER,
             [],
+            [],
             []
         );
 

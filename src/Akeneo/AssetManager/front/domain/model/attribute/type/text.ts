@@ -42,14 +42,19 @@ export type NormalizedTextAdditionalProperty =
   | ValidationRule
   | RegularExpression;
 
+export const TEXT_ATTRIBUTE_TYPE = 'text';
+
 export interface NormalizedTextAttribute extends NormalizedAttribute {
-  type: 'text';
+  type: typeof TEXT_ATTRIBUTE_TYPE;
   max_length: MaxLength;
   is_textarea: IsTextarea;
   is_rich_text_editor: IsRichTextEditor;
   validation_rule: ValidationRule;
   regular_expression: RegularExpression;
 }
+
+export const isTextAttribute = (textAttribute: NormalizedAttribute): textAttribute is NormalizedTextAttribute =>
+  textAttribute.type === TEXT_ATTRIBUTE_TYPE;
 
 export interface TextAttribute extends Attribute {
   maxLength: MaxLength;
@@ -72,6 +77,7 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
     valuePerChannel: boolean,
     order: number,
     is_required: boolean,
+    is_read_only: boolean,
     readonly maxLength: MaxLength,
     readonly isTextarea: IsTextarea,
     readonly isRichTextEditor: IsRichTextEditor,
@@ -83,11 +89,12 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
       assetFamilyIdentifier,
       code,
       labelCollection,
-      'text',
+      TEXT_ATTRIBUTE_TYPE,
       valuePerLocale,
       valuePerChannel,
       order,
-      is_required
+      is_required,
+      is_read_only
     );
 
     if (!isTextarea && isRichTextEditor) {
@@ -117,6 +124,7 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
       normalizedTextAttribute.value_per_channel,
       normalizedTextAttribute.order,
       normalizedTextAttribute.is_required,
+      normalizedTextAttribute.is_read_only,
       normalizedTextAttribute.max_length,
       normalizedTextAttribute.is_textarea,
       normalizedTextAttribute.is_rich_text_editor,
@@ -128,7 +136,7 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
   public normalize(): NormalizedTextAttribute {
     return {
       ...super.normalize(),
-      type: 'text',
+      type: TEXT_ATTRIBUTE_TYPE,
       max_length: this.maxLength,
       is_textarea: this.isTextarea,
       is_rich_text_editor: this.isRichTextEditor,

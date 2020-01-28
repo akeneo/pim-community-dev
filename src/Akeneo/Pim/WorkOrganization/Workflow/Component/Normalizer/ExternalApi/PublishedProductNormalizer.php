@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -21,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class PublishedProductNormalizer implements NormalizerInterface
+class PublishedProductNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var NormalizerInterface */
     protected $productNormalizer;
@@ -55,5 +56,10 @@ class PublishedProductNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof PublishedProductInterface && 'external_api' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

@@ -28,7 +28,7 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class WebClientHelper
 {
-    private const SHARED_RESPONSES_FILE_PATH_PREFIX = __DIR__ . '/../../../shared/responses/';
+    private const RESPONSES_FILE_PATH_PREFIX = __DIR__ . '/../../Integration/Resources/responses/';
 
     /** @var RouterInterface */
     private $router;
@@ -71,14 +71,22 @@ class WebClientHelper
     <head>
         <meta charset="UTF-8" />
         <title>An Error Occurred: Forbidden</title>
+        <style>
+            body { background-color: #fff; color: #222; font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; margin: 0; }
+            .container { margin: 30px; max-width: 600px; }
+            h1 { color: #dc3545; font-size: 24px; }
+            h2 { font-size: 18px; }
+        </style>
     </head>
     <body>
-        <h1>Oops! An Error Occurred</h1>
-        <h2>The server returned a "403 Forbidden".</h2>
+        <div class="container">
+            <h1>Oops! An Error Occurred</h1>
+            <h2>The server returned a "403 Forbidden".</h2>
 
-        <div>
-            Something is broken. Please let us know what you were doing when this error occurred.
-            We will fix it as soon as possible. Sorry for any inconvenience caused.
+            <p>
+                Something is broken. Please let us know what you were doing when this error occurred.
+                We will fix it as soon as possible. Sorry for any inconvenience caused.
+            </p>
         </div>
     </body>
 </html>
@@ -87,7 +95,7 @@ HTML;
         Assert::assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode(), 'Expected 403 Forbidden response');
         Assert::assertSame(
             $expectedForbiddenContent,
-            $response->getContent(),
+            ltrim($response->getContent()),
             'The content of the 403 forbidden response is not the same'
         );
     }
@@ -110,7 +118,7 @@ HTML;
 
     public function assertJsonFromFile(Response $response, string $relativeFilePath): void
     {
-        $fileContents = file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath);
+        $fileContents = file_get_contents(self::RESPONSES_FILE_PATH_PREFIX . $relativeFilePath);
         $expectedResponseArray = json_decode($fileContents, true);
         $expectedResponseObject = json_decode($fileContents);
         if (null === $expectedResponseArray) {
@@ -138,7 +146,7 @@ HTML;
 
     public function requestFromFile(Client $client, string $relativeFilePath): Response
     {
-        $fileData = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
+        $fileData = json_decode(file_get_contents(self::RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
         if (null === $fileData) {
             throw new \RuntimeException(
                 sprintf('Impossible to load "%s" file, the file is not be present or is malformed', $relativeFilePath)
@@ -157,7 +165,7 @@ HTML;
 
     public function assertStreamedResponseFromFile(StreamedResponse $response, string $responseContent, string $relativeFilePath): void
     {
-        $expectedResponse = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
+        $expectedResponse = json_decode(file_get_contents(self::RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
         if (null === $expectedResponse) {
             throw new \RuntimeException(
                 sprintf('Impossible to load "%s" file, the file is not be present or is malformed', $relativeFilePath)
@@ -178,7 +186,7 @@ HTML;
 
     private function assertFromFile(Response $response, string $relativeFilePath): void
     {
-        $expectedResponse = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
+        $expectedResponse = json_decode(file_get_contents(self::RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
         if (null === $expectedResponse) {
             throw new \RuntimeException(
                 sprintf('Impossible to load "%s" file, the file is not be present or is malformed', $relativeFilePath)
@@ -239,7 +247,7 @@ HTML;
         if (isset($request['files'])) {
             $files = array_map(function ($requestFile) {
                 return new UploadedFile(
-                    self::SHARED_RESPONSES_FILE_PATH_PREFIX . $requestFile['path'],
+                    self::RESPONSES_FILE_PATH_PREFIX . $requestFile['path'],
                     $requestFile['name'],
                     $requestFile['mime_type']
                 );

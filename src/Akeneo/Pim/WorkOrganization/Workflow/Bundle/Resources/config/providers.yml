@@ -21,6 +21,7 @@ services:
         class: '%pimee_workflow.provider.users_to_notify.class%'
         arguments:
             - '@pim_user.repository.user'
+            - '@pimee_security.query.get_access_group_id_for_locale_code'
 
     pimee_workflow.provider.owner_groups:
         class: '%pimee_workflow.provider.owner_groups.class%'

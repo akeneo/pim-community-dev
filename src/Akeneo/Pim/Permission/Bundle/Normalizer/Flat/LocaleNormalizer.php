@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Permission\Bundle\Normalizer\Flat;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,7 +21,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class LocaleNormalizer implements NormalizerInterface
+class LocaleNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var string[] */
     protected $supportedFormats = ['flat'];
@@ -68,5 +69,10 @@ class LocaleNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof LocaleInterface && in_array($format, $this->supportedFormats);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

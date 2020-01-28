@@ -25,22 +25,6 @@ services:
             - { name: pim_enrich.provider.field, priority: 100 }
             - { name: pim_enrich.provider.empty_value, priority: 80 }
 
-    akeneo_referenceentity.factory.product_value.reference_entity_collection:
-        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\ReferenceEntityCollectionValueFactory
-        public: false
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
-        tags:
-            - { name: pim_catalog.factory.value }
-
-    akeneo_referenceentity.factory.product_value.reference_entity:
-        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\ReferenceEntityValueFactory
-        public: false
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
-        tags:
-            - { name: pim_catalog.factory.value }
-
     akeneo_referenceentity.comparator.attribute.reference_entity_collection:
         class: '%pim_catalog.comparator.attribute.options.class%'
         arguments:
@@ -106,14 +90,14 @@ services:
     akeneo_referenceentity.infrastructure.catalog.normalizer.reference_entity_collection_value:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\ReferenceEntityCollectionValueNormalizer
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
+            - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     akeneo_referenceentity.infrastructure.catalog.normalizer.reference_entity_value:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\ReferenceEntityValueNormalizer
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
+            - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
@@ -167,10 +151,10 @@ services:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\Read\Value\ReferenceEntityCollectionValueFactory
         public: false
         tags:
-            - { name: akeneo.pim.enrichment.factory.read.product_value }
+            - { name: akeneo.pim.enrichment.factory.product_value }
 
     akeneo_referenceentity.factory.read.product_value.reference_entity:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\Read\Value\ReferenceEntityValueFactory
         public: false
         tags:
-            - { name: akeneo.pim.enrichment.factory.read.product_value }
+            - { name: akeneo.pim.enrichment.factory.product_value }

@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductProposal;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductProposalNormalizer;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
@@ -27,13 +28,14 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterface
+class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
 {
     use SerializerAwareTrait;
 
     const FIELD_ID = 'id';
     const FIELD_ENTITY_WITH_VALUES_IDENTIFIER = 'entity_with_values_identifier';
     const FIELD_AUTHOR = 'author';
+    const FIELD_SOURCE = 'source';
 
     const PRODUCT_IDENTIFIER_PREFIX = 'product_draft_';
 
@@ -55,18 +57,19 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] =  (string) $productProposal->getId();
         $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->serializer->normalize(
             $productProposal->getCreatedAt(),
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
         );
         $data[StandardPropertiesNormalizer::FIELD_FAMILY] = null !== $product->getFamily() ? $this->serializer->normalize(
             $product->getFamily(),
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
         ) : null;
-        $data[self::FIELD_AUTHOR] = (string) $productProposal->getAuthor();
+        $data[self::FIELD_AUTHOR] = $productProposal->getAuthor();
+        $data[self::FIELD_SOURCE] = $productProposal->getSource();
         $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $product->getCategoryCodes();
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$productProposal->getValues()->isEmpty()
             ? $this->serializer->normalize(
                 $productProposal->getValues(),
-                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+                ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
             ) : [];
 
         $attributeAsLabel = null !== $product->getFamily() ? $product->getFamily()->getAttributeAsLabel() : null;
@@ -115,5 +118,10 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductDraft && ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

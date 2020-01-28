@@ -15,7 +15,6 @@ namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -26,15 +25,14 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
@@ -45,27 +43,22 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
-use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
-use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
 class EditActionTest extends ControllerIntegrationTestCase
 {
     private const ASSET_EDIT_ROUTE = 'akeneo_asset_manager_asset_edit_rest';
-
-    /** @var Client */
-    private $client;
 
     /** @var WebClientHelper */
     private $webClientHelper;
@@ -84,8 +77,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->fixturesLoader = $this->get('akeneo_assetmanager.common.helper.fixtures_loader');
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
-            ->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
         $this->fileExists = $this->get('akeneo_assetmanager.infrastructure.persistence.query.file_exists');
         $this->findFileData = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key');
@@ -174,6 +166,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'size' => 1000,
             'mimeType' => 'image/png',
             'extension' => 'png',
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ];
         $this->findFileData->save($fileData);
         $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/image_value_ok.json');
@@ -277,7 +270,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeIdentifier::fromString('label_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
-            FileData::createFromFileinfo($imageInfo)
+            FileData::createFromFileinfo($imageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
         );
 
         $labelValueEnUS = Value::create(
@@ -309,6 +302,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(25),
@@ -327,6 +321,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'Description']),
             AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(25),
@@ -344,6 +339,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'Website']),
             AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(25),
@@ -353,18 +349,20 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
             ->create($websiteAttribute);
 
-        // image attribute
-        $portraitAttribute = ImageAttribute::create(
+        // media file attribute
+        $portraitAttribute = MediaFileAttribute::create(
             AttributeIdentifier::create('designer', 'portrait', 'fingerprint'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(6),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::noLimit(),
-            AttributeAllowedExtensions::fromList(['png'])
+            AttributeAllowedExtensions::fromList(['png']),
+            MediaType::fromString(MediaType::IMAGE)
         );
         $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
             ->create($portraitAttribute);
@@ -385,6 +383,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'Marque liée', 'en_US' => 'Linked brand']),
             AttributeOrder::fromInteger(7),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AssetFamilyIdentifier::fromString('brand')
@@ -400,6 +399,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Linked brand']),
             AttributeOrder::fromInteger(8),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeDecimalsAllowed::fromBoolean(false),
@@ -440,6 +440,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'Ville', 'en_US' => 'Cities']),
             AttributeOrder::fromInteger(9),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AssetFamilyIdentifier::fromString('city')

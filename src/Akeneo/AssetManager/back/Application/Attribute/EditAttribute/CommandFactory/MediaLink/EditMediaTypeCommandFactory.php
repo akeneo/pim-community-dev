@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory
 
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -25,7 +26,9 @@ class EditMediaTypeCommandFactory implements EditAttributeCommandFactoryInterfac
     public function supports(array $normalizedCommand): bool
     {
         return array_key_exists('media_type', $normalizedCommand)
-            && array_key_exists('identifier', $normalizedCommand);
+            && array_key_exists('identifier', $normalizedCommand)
+            && array_key_exists('type', $normalizedCommand)
+            && MediaLinkAttribute::ATTRIBUTE_TYPE === $normalizedCommand['type'];
     }
 
     public function create(array $normalizedCommand): AbstractEditAttributeCommand

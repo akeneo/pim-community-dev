@@ -8,7 +8,6 @@ services:
             - '@security.authorization_checker'
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.repository.product_model_draft'
-            - '@pim_user.manager'
             - '@security.token_storage'
             - '@pim_catalog.localization.presenter.datetime'
             - '@router'

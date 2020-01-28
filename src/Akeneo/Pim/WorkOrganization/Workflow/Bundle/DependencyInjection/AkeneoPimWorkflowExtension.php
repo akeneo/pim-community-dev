@@ -42,7 +42,6 @@ class AkeneoPimWorkflowExtension extends Extension
         $loader->load('connector/readers.yml');
         $loader->load('connector/writers.yml');
         $loader->load('controllers.yml');
-        $loader->load('completeness.yml');
         $loader->load('cursors.yml');
         $loader->load('datagrid.yml');
         $loader->load('entities.yml');
@@ -56,6 +55,7 @@ class AkeneoPimWorkflowExtension extends Extension
         $loader->load('mass_review_actions.yml');
         $loader->load('normalizers.yml');
         $loader->load('presenters.yml');
+        $loader->load('proposal_tracking.yml');
         $loader->load('providers.yml');
         $loader->load('publishers.yml');
         $loader->load('purgers.yml');
@@ -72,11 +72,14 @@ class AkeneoPimWorkflowExtension extends Extension
         $loader->load('readers.yml');
         $loader->load('steps.yml');
         $loader->load('security.yml');
+        $loader->load('value_fillers.yml');
         $loader->load('jobs.yml');
         $loader->load('widgets.yml');
         $loader->load('mass_actions.yml');
         $loader->load('processors.yml');
         $loader->load('writers.yml');
         $loader->load('presenters.yml');
+        $loader->load('cli_commands.yml');
+        $loader->load('feature_flags.yml');
     }
 }

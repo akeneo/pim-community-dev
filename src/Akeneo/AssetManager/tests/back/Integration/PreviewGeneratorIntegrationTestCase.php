@@ -26,10 +26,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
 {
-    protected const FILENAME = '2016/04/Fred-site-web.jpg';
-
-    /** @var KernelInterface|null */
-    protected $testKernel;
+    protected const IMAGE_FILENAME = '2016/04/Fred-site-web.jpg';
+    protected const DOCUMENT_FILENAME = '2016/04/1_4_user_guide.pdf';
 
     /** @var FixturesLoader */
     protected $fixturesLoader;
@@ -39,9 +37,7 @@ abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
 
     public function setUp(): void
     {
-        if (null === $this->testKernel) {
-            $this->bootTestKernel();
-        }
+        static::bootKernel(['debug' => false]);
         $this->fixturesLoader = $this->get('akeneoasset_manager.tests.helper.fixtures_loader');
         $this->resetDB();
     }
@@ -52,18 +48,9 @@ abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
         $this->cacheManager->remove();
     }
 
-    protected function bootTestKernel(): void
-    {
-        $this->testKernel = new \AppKernelTest('test', false);
-        $this->testKernel->boot();
-    }
-
-    /*
-     * @return mixed
-     */
     protected function get(string $service)
     {
-        return $this->testKernel->getContainer()->get($service);
+        return self::$container->get($service);
     }
 
     protected function resetDB(): void

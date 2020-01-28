@@ -15,7 +15,6 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Co
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer\ProposalWriter;
@@ -63,7 +62,7 @@ class ProposalWriterSpec extends ObjectBehavior
         $proposalSuggestedData2 = new ProposalSuggestedData($productId2, ['upc' => 'my-upc']);
 
         $proposalUpsert
-            ->process([$proposalSuggestedData1, $proposalSuggestedData2], ProposalAuthor::USERNAME)
+            ->process([$proposalSuggestedData1, $proposalSuggestedData2])
             ->willReturn(2);
         $subscriptionRepository->emptySuggestedDataByProducts([$productId1, $productId2])->shouldBeCalled();
 
@@ -81,7 +80,7 @@ class ProposalWriterSpec extends ObjectBehavior
         $proposalSuggestedData2 = new ProposalSuggestedData($productId2, ['upc' => 'my-upc']);
 
         $proposalUpsert
-            ->process([$proposalSuggestedData1, $proposalSuggestedData2], ProposalAuthor::USERNAME)
+            ->process([$proposalSuggestedData1, $proposalSuggestedData2])
             ->willReturn(2);
         $subscriptionRepository->emptySuggestedDataByProducts([$productId1, $productId2])->shouldBeCalled();
 

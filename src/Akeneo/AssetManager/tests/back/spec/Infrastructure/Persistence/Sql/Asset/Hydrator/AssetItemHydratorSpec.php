@@ -6,7 +6,7 @@ namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetItem;
@@ -45,13 +45,13 @@ class AssetItemHydratorSpec extends ObjectBehavior
         $this->shouldHaveType(AssetItemHydrator::class);
     }
 
-    public function it_hydrates_a_asset_item_with_attribute_as_image_is_image_value(
+    public function it_hydrates_a_asset_item_with_attribute_as_main_media_value(
         AssetQuery $assetQuery,
         FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         ValueKeyCollection $valueKeyCollection,
         AbstractAttribute $labelAttribute,
-        ImageAttribute $imageAttribute,
+        MediaFileAttribute $mediaFileAttribute,
         AbstractAttribute $textilesAttribute,
         ValueHydratorInterface $valueHydrator,
         ImagePreviewUrlGenerator $imagePreviewUrlGenerator
@@ -84,7 +84,7 @@ class AssetItemHydratorSpec extends ObjectBehavior
             ->willReturn(
                 [
                     'label'    => $labelAttribute,
-                    'image'    => $imageAttribute,
+                    'image'    => $mediaFileAttribute,
                     'textiles' => $textilesAttribute,
                 ]
             );
@@ -116,7 +116,7 @@ class AssetItemHydratorSpec extends ObjectBehavior
 
         $valueHydrator->hydrate($labelFrValue, $labelAttribute, [])->willReturn($labelFrValue);
         $valueHydrator->hydrate($labelEnValue, $labelAttribute, [])->willReturn($labelEnValue);
-        $valueHydrator->hydrate($imageValue, $imageAttribute, [])->willReturn(
+        $valueHydrator->hydrate($imageValue, $mediaFileAttribute, [])->willReturn(
             [
                 'attribute' => 'image',
                 'channel'   => null,
@@ -142,7 +142,7 @@ class AssetItemHydratorSpec extends ObjectBehavior
             'code'                    => 'dry_cotton',
             'value_collection'        => json_encode($values),
             'attribute_as_label'      => 'label',
-            'attribute_as_image'      => 'image',
+            'attribute_as_main_media'      => 'image',
         ];
 
         $actualAssetItem = $this->hydrate($row, $assetQuery);

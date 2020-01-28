@@ -1,0 +1,95 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2019 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
+
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
+use Doctrine\DBAL\Connection;
+
+/**
+ * Example of a JSON string stored in the column "rates":
+ * {
+ *    "mobile": {
+ *      "en_US": {
+ *        "rank": 1,
+ *        "rate": 96
+ *      },
+ *      "fr_FR": {
+ *        "rank": 5,
+ *        "rate": 36
+ *      }
+ *    },
+ *    "ecommerce": {
+ *      "en_US": {
+ *        "rank": 2,
+ *        "rate": 82
+ *      },
+ *      "fr_FR": {
+ *        "rank": 5,
+ *        "rate": 32
+ *      }
+ *    }
+ *  }
+ */
+final class ProductAxisRateRepository implements ProductAxisRateRepositoryInterface
+{
+    /** @var Connection */
+    private $db;
+
+    public function __construct(Connection $db)
+    {
+        $this->db = $db;
+    }
+
+    public function save(array $productAxisRates): void
+    {
+        if (empty($productAxisRates)) {
+            return;
+        }
+
+        $valuesPlaceholders = implode(',', array_fill(0, count($productAxisRates), '(?, ?, ?, ?)'));
+
+        $sql = <<<SQL
+REPLACE INTO pimee_data_quality_insights_product_axis_rates (axis_code, product_id, evaluated_at, rates)
+VALUES $valuesPlaceholders;
+SQL;
+
+        $statement = $this->db->prepare($sql);
+        $valuePlaceholderIndex = 1;
+        foreach ($productAxisRates as $item) {
+            $statement->bindValue($valuePlaceholderIndex++, $item['axis']);
+            $statement->bindValue($valuePlaceholderIndex++, strval($item['product_id']));
+            $statement->bindValue($valuePlaceholderIndex++, $item['evaluated_at']->format('Y-m-d'));
+            $statement->bindValue($valuePlaceholderIndex++, json_encode($item['rates']));
+        }
+        $statement->execute();
+    }
+
+    public function purgeUntil(\DateTimeImmutable $date): void
+    {
+        $query = <<<SQL
+DELETE old_rates
+FROM pimee_data_quality_insights_product_axis_rates AS old_rates
+INNER JOIN pimee_data_quality_insights_product_axis_rates AS younger_rates
+    ON younger_rates.product_id = old_rates.product_id
+    AND younger_rates.axis_code = old_rates.axis_code
+    AND younger_rates.evaluated_at > old_rates.evaluated_at
+WHERE old_rates.evaluated_at < :purge_date;
+SQL;
+
+        $this->db->executeQuery(
+            $query,
+            ['purge_date' => $date->format('Y-m-d')]
+        );
+    }
+}

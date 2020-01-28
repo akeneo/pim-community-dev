@@ -18,7 +18,6 @@ services:
         arguments:
             - '@akeneo_referenceentity.command.installer.fixtures_installer'
             - '@akeneo_referenceentity.command.installer.assets_installer'
-            - '%installer_data%'
         tags:
             - { name: kernel.event_subscriber }
             - { name: 'console.command'}
@@ -69,3 +68,13 @@ services:
                 - '@pim_catalog.command_launcher'
             tags:
                 - { name: kernel.event_subscriber }
+
+    Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexRecordsCommand:
+        arguments:
+            - '@akeneo_referenceentity.client.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - '%record_index_name%'
+        tags:
+            - { name: console.command }

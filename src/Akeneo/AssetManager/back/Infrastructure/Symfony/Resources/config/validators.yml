@@ -20,6 +20,14 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.should_exist' }
 
+    akeneo_assetmanager.infrastructure.validation.asset_family.attribute_as_main_media:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AttributeAsMainMediaValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.get_attribute_type'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.attribute_as_main_media' }
+
     akeneo_assetmanager.infrastructure.validation.attribute.attribute_should_not_exist:
         class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExistValidator
         arguments:
@@ -206,12 +214,12 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.attribute_option_should_not_exist' }
 
-    akeneo_assetmanager.infrastructure.validation.asset.edit_stored_file_value_command_validator:
-        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditStoredFileValueCommandValidator
+    akeneo_assetmanager.infrastructure.validation.asset.edit_media_file_value_command_validator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaFileValueCommandValidator
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
         tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_stored_file_value_command' }
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_media_file_value_command' }
 
     akeneo_assetmanager.infrastructure.validation.attribute.attribute_option_should_exist:
         class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeOptionShouldExistValidator
@@ -271,3 +279,76 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\GetAssetCollectionTypeAdapter
         arguments:
             - '@pim_catalog.repository.attribute'
+
+    Akeneo\AssetManager\Infrastructure\Validation\Asset\EditTargetValueValidator:
+        arguments:
+            - '@Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\CheckIfTransformationTarget'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_target_value_command' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCollectionValidator:
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCollectionValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationValidator:
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimitValidator:
+        arguments:
+            - '%asset_manager_transformations_by_asset_family_limit%'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimitValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\OperationValidator:
+        arguments:
+            - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\OperationValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawSourceExistValidator:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawSourceExistValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawTargetExistValidator:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation\RawTargetExistValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationFilenameIsUniqueValidator:
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationFilenameIsUniqueValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\Locale\RawLocaleShouldBeActivatedValidator:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\Locale\RawLocaleShouldBeActivatedValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\Channel\RawChannelShouldExistValidator:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\Channel\RawChannelShouldExistValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConventionValidator:
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NullableNamingConventionValidator:
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConvention\PatternValidator:
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\NamingConvention\RawSourceValidator:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_main_media'
+        tags:
+            - { name: 'validator.constraint_validator' }

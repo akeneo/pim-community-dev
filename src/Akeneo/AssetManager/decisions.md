@@ -930,3 +930,65 @@ About the tests: our command should validate the request contracts using the int
 #### Discard solutions
 
 We also explored the idea of validating the domain models directly but it was not covering all our use cases (tests and error could happen during the normalisation phase)
+
+## 21/11/2019
+
+### Use JSON schema for integration tests & generate typescript interfaces
+
+#### Problem
+We initially used to have "Request Contracts" **between front & back integration tests** to ensure the integrity of their interactions.
+To do this, they were sharing **the same ".json" file** containing the backend response, used to mock the frontend.
+But when updating the ".json" file for a test, we needed to update all related tests on the other side, being very **hard and fastidious to maintain**.
+```text
+OLD WAY (Request Contracts)
+===========================
+
++---------------+        +---------------+
+| Frontend      |        | Backend       |
+| Integration   |        | Integration   |
+| Tests         |        | Tests         |
+| (fetchers...) |        | (controllers) |
++--------------++        +---------------+
+               |         |
+               v         v
+           +---+---------+---+
+           |Request Contracts|
+           |  (.json files)  |
+           +-----------------+
+```
+
+#### Solution
+
+```text
++--------------+ AssetManager/tests +--------------+           AssetManager/definitions
+|                                                  |    (used to generate TypeScript interfaces)
+|                                                  |      |                                  |
+|    +---------------+        +---------------+    |      |   +--------------------------+   |
+|    | Frontend      |        | Backend       |    |      |   |JSON Schema (asset family)|   |
+|    | Integration   |        | Integration   |    |      |   +--------------------------+   |
+|    | Tests         |        | Tests         |    |      |   +--------------------------+   |
+|    | (fetchers...) |        | (controllers) |    |      |   |JSON Schema (attribute)   |   |
+|    +---+-----------+        +-----------+---+    |      |   +--------------------------+   |
+|        |                                |        |      |   +--------------------------+   |
+|        v                                v        |      |   |JSON Schema (etc...)      |   |
+|  +-----+-----+                    +-----+-----+  |      |   +--------------------------+   |
+|  |.json files|                    |.json files|  |      |                                  |
+|  |  (mock)   |                    |(response) |  |      +--+-------------------------------+
+|  +-------+---+                    +----+------+  |         ^
+|          ^                             ^         |         |
+|          |                             |         |         |
+|          |       +------------+        |         |         |
+|          +-------+ JSON Schema+--------+         |         |
+|                  +------+-----+                  |         |  JSON Schemas used for testing
+|                         |                        |         |  are using JSON Schemas in /definitions folder
++--------------------------------------------------+         |
+                          |                                  |
+                          +----------------------------------+
+```
+
+**Validating JSON files used in tests**  
+Solution we chose is to have dedicated JSON files for backend/frontend tests to be more flexible. No need to update frontend tests if we changed a response in a backend integration test, and vice versa.
+BUT to **keep consistency between them**, we now use dedicated testing JSON Schemas to validate them.
+
+**Generating Typescript interfaces**  
+We also take advantage of those JSON Schemas defined in `/definitions` to generate TypeScript models.

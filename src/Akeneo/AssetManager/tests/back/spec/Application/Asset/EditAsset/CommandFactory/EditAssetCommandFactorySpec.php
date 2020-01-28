@@ -10,6 +10,7 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditValueComm
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditValueCommandFactoryRegistryInterface;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -20,6 +21,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\CheckIfTransformationTarget;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesIndexedByIdentifier;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -32,9 +34,14 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
 {
     function let(
         EditValueCommandFactoryRegistryInterface $editAssetValueCommandFactoryRegistry,
-        SqlFindAttributesIndexedByIdentifier $sqlFindAttributesIndexedByIdentifier
+        SqlFindAttributesIndexedByIdentifier $sqlFindAttributesIndexedByIdentifier,
+        CheckIfTransformationTarget $checkIfTransformationTarget
     ) {
-        $this->beConstructedWith($editAssetValueCommandFactoryRegistry, $sqlFindAttributesIndexedByIdentifier);
+        $this->beConstructedWith(
+            $editAssetValueCommandFactoryRegistry,
+            $sqlFindAttributesIndexedByIdentifier,
+            $checkIfTransformationTarget
+        );
     }
 
     function it_is_initializable()
@@ -45,15 +52,13 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
     function it_creates_an_edit_asset_command_by_recursively_calling_other_edit_asset_value_factories(
         SqlFindAttributesIndexedByIdentifier $sqlFindAttributesIndexedByIdentifier,
         EditValueCommandFactoryRegistryInterface $editAssetValueCommandFactoryRegistry,
+        CheckIfTransformationTarget $checkIfTransformationTarget,
         EditValueCommandFactoryInterface $textValueCommandFactory,
         EditTextValueCommand $editDescriptionCommand
     ) {
         $normalizedCommand = [
             'asset_family_identifier' => 'designer',
             'code' => 'philippe_starck',
-            'labels' => [
-                'en_us' => 'Philippe Starck'
-            ],
             'values' => [
                 [
                     'attribute' => 'desginer_description_fingerprint',
@@ -70,6 +75,7 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
             LabelCollection::fromArray(['fr_FR' => 'Description', 'en_US' => 'Description']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
@@ -80,6 +86,8 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
             'desginer_description_fingerprint' => $descriptionAttribute
         ]);
 
+        $checkIfTransformationTarget->forAttribute($descriptionAttribute, 'en_US', 'ecommerce')->willReturn(false);
+
         $editAssetValueCommandFactoryRegistry->getFactory($descriptionAttribute, $normalizedCommand['values'][0])->willReturn($textValueCommandFactory);
         $textValueCommandFactory->create($descriptionAttribute, $normalizedCommand['values'][0])->willReturn($editDescriptionCommand);
 
@@ -87,7 +95,6 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
         $command->shouldBeAnInstanceOf(EditAssetCommand::class);
         $command->assetFamilyIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('philippe_starck');
-        $command->labels->shouldBeEqualTo([]);
         $command->editAssetValueCommands[0]->shouldBeAnInstanceOf(EditTextValueCommand::class);
     }
 
@@ -103,9 +110,6 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
         $normalizedCommand = [
             'asset_family_identifier' => 'designer',
             'code' => 'philippe_starck',
-            'labels' => [
-                'en_us' => 'Philippe Starck'
-            ],
             'values' => [ [ 'malformed data']]
         ];
 
@@ -122,9 +126,6 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
         $normalizedCommand = [
             'asset_family_identifier' => 'designer',
             'code' => 'philippe_starck',
-            'labels' => [
-                'en_us' => 'Philippe Starck'
-            ],
             'values' => [
                 [
                     'attribute' => 'unknown_attribute_type',

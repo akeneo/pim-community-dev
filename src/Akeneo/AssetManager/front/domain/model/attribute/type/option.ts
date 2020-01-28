@@ -8,12 +8,17 @@ import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/do
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {Attribute, ConcreteAttribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {Option, createOptionFromNormalized} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
-import OptionCode, {optioncodesAreEqual} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
+import OptionCode, {optionCodesAreEqual} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
+
+export const OPTION_ATTRIBUTE_TYPE = 'option';
 
 export interface NormalizedOptionAttribute extends NormalizedAttribute {
-  type: 'option';
+  type: typeof OPTION_ATTRIBUTE_TYPE;
   options: Option[];
 }
+
+export const isOptionAttribute = (optionAttribute: NormalizedAttribute): optionAttribute is NormalizedOptionAttribute =>
+  optionAttribute.type === OPTION_ATTRIBUTE_TYPE;
 
 export type NormalizedOptionAdditionalProperty = Option;
 export type OptionAdditionalProperty = Option;
@@ -40,6 +45,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
     valuePerLocale: boolean,
     order: number,
     is_required: boolean,
+    is_read_only: boolean,
     readonly options: Option[]
   ) {
     super(
@@ -47,11 +53,12 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
       assetFamilyIdentifier,
       code,
       labelCollection,
-      'option',
+      OPTION_ATTRIBUTE_TYPE,
       valuePerLocale,
       valuePerChannel,
       order,
-      is_required
+      is_required,
+      is_read_only
     );
 
     Object.freeze(this);
@@ -67,18 +74,19 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
       normalizedOptionAttribute.value_per_locale,
       normalizedOptionAttribute.order,
       normalizedOptionAttribute.is_required,
+      normalizedOptionAttribute.is_read_only,
       normalizedOptionAttribute.options.map(createOptionFromNormalized)
     );
   }
 
   public hasOption(optionCode: OptionCode) {
-    return this.options.some((option: Option) => optioncodesAreEqual(option.code, optionCode));
+    return this.options.some((option: Option) => optionCodesAreEqual(option.code, optionCode));
   }
 
   public normalize(): NormalizedOptionAttribute {
     return {
       ...super.normalize(),
-      type: 'option',
+      type: OPTION_ATTRIBUTE_TYPE,
       options: this.options,
     };
   }
@@ -93,6 +101,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
       this.valuePerLocale,
       this.order,
       this.isRequired,
+      this.isReadOnly,
       options
     );
   }

@@ -6,7 +6,7 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\IsT
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommand;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsTextarea;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
@@ -19,13 +19,13 @@ class IsTextareaUpdaterSpec extends ObjectBehavior
 
     function it_only_supports_edit_is_textarea_flag_for_text_attributes(
         TextAttribute $textAttribute,
-        ImageAttribute $imageAttribute
+        MediaFileAttribute $mediaFileAttribute
     ) {
         $labelEditCommand = new EditLabelsCommand('name', []);
         $isRequiredEditCommand = new EditIsTextareaCommand('name', true);
 
         $this->supports($textAttribute, $isRequiredEditCommand)->shouldReturn(true);
-        $this->supports($imageAttribute, $isRequiredEditCommand)->shouldReturn(false);
+        $this->supports($mediaFileAttribute, $isRequiredEditCommand)->shouldReturn(false);
         $this->supports($textAttribute, $labelEditCommand)->shouldReturn(false);
     }
 

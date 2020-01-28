@@ -1,6 +1,4 @@
-import {reducer} from 'akeneoreferenceentity/application/reducer/attribute/type/option';
-import {editOptionsReducer} from 'akeneoreferenceentity/application/reducer/attribute/type/option';
-import {NormalizedOption} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
+import {editOptionsReducer, reducer} from 'akeneoreferenceentity/application/reducer/attribute/type/option';
 
 const normalizedOptions = [
   {

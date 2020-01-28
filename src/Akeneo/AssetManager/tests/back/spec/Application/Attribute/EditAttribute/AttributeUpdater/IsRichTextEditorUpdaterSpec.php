@@ -6,7 +6,7 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\IsR
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
@@ -19,14 +19,14 @@ class IsRichTextEditorUpdaterSpec extends ObjectBehavior
 
     function it_only_supports_edit_is_rich_text_editor_command_of_text_attributes(
         TextAttribute $textAttribute,
-        ImageAttribute $imageAttribute
+        MediaFileAttribute $mediaFileAttribute
     ) {
         $isRichTextEditorEditCommand = new EditIsRichTextEditorCommand('name', true);
         $labelEditCommand = new EditLabelsCommand('name', []);
 
         $this->supports($textAttribute, $isRichTextEditorEditCommand)->shouldReturn(true);
         $this->supports($textAttribute, $labelEditCommand)->shouldReturn(false);
-        $this->supports($imageAttribute, $isRichTextEditorEditCommand)->shouldReturn(false);
+        $this->supports($mediaFileAttribute, $isRichTextEditorEditCommand)->shouldReturn(false);
     }
 
     function it_edits_the_is_rich_text_editor_flag_of_a_text_attribute(TextAttribute $textAttribute)
@@ -37,7 +37,7 @@ class IsRichTextEditorUpdaterSpec extends ObjectBehavior
         $this->__invoke($textAttribute, $editIsRichTextEditor)->shouldReturn($textAttribute);
     }
 
-    function it_throws_if_it_cannot_update_the_attribute(TextAttribute $rightAttribute, ImageAttribute $wrongAttribute)
+    function it_throws_if_it_cannot_update_the_attribute(TextAttribute $rightAttribute, MediaFileAttribute $wrongAttribute)
     {
         $wrongCommand = new EditLabelsCommand('name', []);
         $rightCommand = new EditIsRichTextEditorCommand('name', true);

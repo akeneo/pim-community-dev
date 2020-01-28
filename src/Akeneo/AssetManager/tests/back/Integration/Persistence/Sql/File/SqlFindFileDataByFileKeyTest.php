@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Persistence\Sql\File;
 
+use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\File\SqlFindFileDataByFileKey;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
@@ -72,7 +73,7 @@ class SqlFindFileDataByFileKeyTest extends SqlIntegrationTestCase
         $file->setSize(1024);
         $file->setExtension('jpg');
         $file->setHash(sha1('Starck image'));
-        $file->setStorage('catalogStorage');
+        $file->setStorage(Storage::FILE_STORAGE_ALIAS);
 
         $this->fileSaver->save($file);
     }

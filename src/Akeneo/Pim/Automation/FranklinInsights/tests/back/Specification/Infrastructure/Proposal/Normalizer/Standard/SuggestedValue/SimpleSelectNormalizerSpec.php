@@ -15,10 +15,10 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Pr
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Model\Read\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedValue;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue\SimpleSelectNormalizer;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

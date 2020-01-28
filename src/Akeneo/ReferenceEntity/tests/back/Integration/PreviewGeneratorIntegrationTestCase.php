@@ -28,9 +28,6 @@ abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
 {
     protected const FILENAME = '2016/04/Fred-site-web.jpg';
 
-    /** @var KernelInterface|null */
-    protected $testKernel;
-
     /** @var FixturesLoader */
     protected $fixturesLoader;
 
@@ -39,9 +36,7 @@ abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
 
     public function setUp(): void
     {
-        if (null === $this->testKernel) {
-            $this->bootTestKernel();
-        }
+        static::bootKernel(['debug' => false]);
         $this->fixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
         $this->resetDB();
     }
@@ -52,18 +47,9 @@ abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
         $this->cacheManager->remove();
     }
 
-    protected function bootTestKernel(): void
-    {
-        $this->testKernel = new \AppKernelTest('test', false);
-        $this->testKernel->boot();
-    }
-
-    /*
-     * @return mixed
-     */
     protected function get(string $service)
     {
-        return $this->testKernel->getContainer()->get($service);
+        return self::$container->get($service);
     }
 
     protected function resetDB(): void

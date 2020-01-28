@@ -2,14 +2,17 @@
 
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Manager;
 
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetPublishedProductCompletenesses;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Collections\Collection;
 
 /**
  * Testing strategy:
@@ -42,7 +45,7 @@ class PublishedProductsManagerIntegration extends TestCase
     {
         parent::setUp();
 
-        $productBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder');
+        $productBuilder = $this->get('akeneo_integration_tests.catalog.product.builder');
 
         $foo = $productBuilder
             ->withIdentifier('foo')
@@ -67,7 +70,7 @@ class PublishedProductsManagerIntegration extends TestCase
                 '',
                 'ecommerce'
             )->build();
-        $this->getFromTestContainer('pim_catalog.saver.product')->saveAll([$foo, $bar]);
+        $this->get('pim_catalog.saver.product')->saveAll([$foo, $bar]);
 
         $this->publishedProductRepository = $this->get('pimee_workflow.repository.published_product');
         $this->publishedProductManager = $this->get('pimee_workflow.manager.published_product');
@@ -95,8 +98,10 @@ class PublishedProductsManagerIntegration extends TestCase
         $this->assertValuesEqual($product->getValues()->toArray(), $publishedProduct->getValues()->toArray());
         $this->assertProductAssociationsEqual($product, $publishedProduct);
 
+        $productCompletenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $publishedProductCompletenesses = $this->getPublishedProductCompletenesses()->fromPublishedProductId($publishedProduct->getId());
 
-        $this->assertSameCompletenesses($product->getCompletenesses(), $publishedProduct->getCompletenesses());
+        $this->assertSameCompletenesses($productCompletenesses, $publishedProductCompletenesses);
     }
 
     public function testProductUpdateDoesNotImpactPublishedProduct()
@@ -215,23 +220,31 @@ class PublishedProductsManagerIntegration extends TestCase
         }
     }
 
-    /**
-     * @param Collection $completenesses
-     * @param Collection $publishedCompletenesses
-     */
-    protected function assertSameCompletenesses(Collection $completenesses, Collection $publishedCompletenesses)
-    {
+    private function assertSameCompletenesses(
+        ProductCompletenessCollection $completenesses,
+        PublishedProductCompletenessCollection $publishedCompletenesses
+    ) {
         foreach ($completenesses as $completeness) {
             foreach ($publishedCompletenesses as $publishedCompleteness) {
-                if ($completeness->getLocale() === $publishedCompleteness->getLocale() &&
-                    $completeness->getChannel() === $publishedCompleteness->getChannel()
+                if ($completeness->localeCode() === $publishedCompleteness->localeCode() &&
+                    $completeness->channelCode() === $publishedCompleteness->channelCode()
                 ) {
-                    $this->assertSame($completeness->getRatio(), $publishedCompleteness->getRatio());
-                    $this->assertSame($completeness->getRequiredCount(), $publishedCompleteness->getRequiredCount());
-                    $this->assertSame($completeness->getMissingCount(), $publishedCompleteness->getMissingCount());
+                    $this->assertSame($completeness->ratio(), $publishedCompleteness->ratio());
+                    $this->assertSame($completeness->requiredCount(), $publishedCompleteness->requiredCount());
+                    $this->assertSame($completeness->missingCount(), $publishedCompleteness->missingCount());
                 }
             }
         }
+    }
+
+    private function getProductCompletenesses(): GetProductCompletenesses
+    {
+        return $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses');
+    }
+
+    private function getPublishedProductCompletenesses(): GetPublishedProductCompletenesses
+    {
+        return $this->get('pimee_workflow.query.get_published_product_completenesses');
     }
 }
 

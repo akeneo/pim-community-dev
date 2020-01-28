@@ -1,6 +1,5 @@
 parameters:
     pimee_security.entity.attribute_group_access.class:  Akeneo\Pim\Permission\Bundle\Entity\AttributeGroupAccess
     pimee_security.entity.product_category_access.class: Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess
-    pimee_security.entity.asset_category_access.class:   Akeneo\Pim\Permission\Bundle\Entity\AssetCategoryAccess
     pimee_security.entity.job_profile_access.class:      Akeneo\Pim\Permission\Bundle\Entity\JobProfileAccess
     pimee_security.entity.locale_access.class:           Akeneo\Pim\Permission\Bundle\Entity\LocaleAccess

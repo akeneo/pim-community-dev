@@ -1,0 +1,42 @@
+services:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InitDataQualityInsightsDbSchemaSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InstallAssetsSubscriber:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\FileSystemAssetsInstaller'
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\FileSystemAssetsInstaller:
+        arguments:
+            - '@filesystem'
+            - '%kernel.project_dir%'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InitDataQualityInsightsJobsSubscriber:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeJobs'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\InitializeEvaluationOfAProductSubscriber:
+        arguments:
+            $dataQualityInsightsFeature: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            $createProductsCriteriaEvaluations: '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations'
+            $queueJobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
+            $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
+            $tokenStorage: '@security.token_storage'
+            $logger: '@logger'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\RemoveEvaluationJobsAfterFreshInstallSubscriber:
+        arguments:
+            $db: '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
+

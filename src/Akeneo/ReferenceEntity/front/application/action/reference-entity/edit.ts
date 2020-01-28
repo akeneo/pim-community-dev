@@ -1,15 +1,15 @@
 import {
+  referenceEntityEditionErrorOccurred,
+  referenceEntityEditionImageUpdated,
   referenceEntityEditionLabelUpdated,
   referenceEntityEditionReceived,
-  referenceEntityEditionUpdated,
-  referenceEntityEditionImageUpdated,
-  referenceEntityEditionErrorOccurred,
   referenceEntityEditionSucceeded,
+  referenceEntityEditionUpdated,
   referenceEntityRecordCountUpdated,
 } from 'akeneoreferenceentity/domain/event/reference-entity/edit';
 import {
-  notifyReferenceEntityWellSaved,
   notifyReferenceEntitySaveFailed,
+  notifyReferenceEntityWellSaved,
 } from 'akeneoreferenceentity/application/action/reference-entity/notify';
 import {denormalizeReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import referenceEntitySaver from 'akeneoreferenceentity/infrastructure/saver/reference-entity';

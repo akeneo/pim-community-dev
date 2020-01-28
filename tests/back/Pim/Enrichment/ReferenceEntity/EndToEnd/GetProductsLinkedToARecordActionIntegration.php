@@ -105,13 +105,11 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
             ->withReferenceEntity(self::REFERENCE_ENTITY)
             ->withRecords(self::RECORD)
             // Products
-            ->withAttributeLinkToRecord(
-                [
+            ->withAttributeLinkToRecord([
                     'code'             => self::ATTRIBUTE_LINK,
                     'type'             => ReferenceEntityType::REFERENCE_ENTITY,
                     'reference_entity' => self::REFERENCE_ENTITY
-                ]
-            )
+                ])
             ->withProductFamily('accessories')
             ->withLinkedProductModel('model-braided-hat')
             ->withLinkedProduct('1111111304');
@@ -203,7 +201,7 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
     private function withLinkedProduct(string $identifier): self
     {
         /** @var WriteValueCollectionFactory $valueCollectionFactory */
-        $valueCollectionFactory = $this->get('pim_catalog.factory.value_collection');
+        $valueCollectionFactory = $this->get('akeneo.pim.enrichment.factory.write_value_collection');
         $valueCollection = $valueCollectionFactory->createFromStorageFormat(
             [
                 $this->sku->getCode()           => [
@@ -221,7 +219,7 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
 
         $product = new Product();
         $product->setValues($valueCollection);
-        $product->setIdentifier($product->getValue($this->sku->getCode()));
+        $product->setIdentifier($product->getValue($this->sku->getCode())->getData());
 
         $constraints = $this->get('validator')->validate($product);
         self::assertCount(0, $constraints);
@@ -249,7 +247,7 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
 
         /** @var WriteValueCollectionFactory $valueCollectionFactory */
-        $valueCollectionFactory = $this->get('pim_catalog.factory.value_collection');
+        $valueCollectionFactory = $this->get('akeneo.pim.enrichment.factory.write_value_collection');
         $valueCollection = $valueCollectionFactory->createFromStorageFormat(
             [
                 $this->attributeLink->getCode() => [

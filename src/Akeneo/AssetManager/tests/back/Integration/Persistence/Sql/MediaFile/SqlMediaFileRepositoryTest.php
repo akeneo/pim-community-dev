@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\MediaFile;
 
 use Akeneo\AssetManager\Domain\Repository\MediaFileNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\MediaFileRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
@@ -69,7 +70,7 @@ class SqlMediaFileRepositoryTest extends SqlIntegrationTestCase
         $mediaFile->setSize(1024);
         $mediaFile->setExtension('jpg');
         $mediaFile->setHash('imagehash');
-        $mediaFile->setStorage('catalogStorage');
+        $mediaFile->setStorage(Storage::FILE_STORAGE_ALIAS);
 
         $fileSaver->save($mediaFile);
 

@@ -35,6 +35,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
@@ -45,8 +46,9 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType as MediaFileMediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType as MediaLinkMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
@@ -213,7 +215,7 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
                     AttributeIdentifier::fromString('main_image_designer_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($fileInfo)
+                    FileData::createFromFileinfo($fileInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
                 Value::create(
                     AttributeIdentifier::fromString('country_designer_fingerprint'),
@@ -280,6 +282,7 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -287,17 +290,19 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
             AttributeRegularExpression::createEmpty()
         );
 
-        $image = ImageAttribute::create(
+        $image = MediaFileAttribute::create(
             AttributeIdentifier::create('designer', 'main_image', 'fingerprint'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('main_image'),
             LabelCollection::fromArray(['en_US' => 'Image']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('250.2'),
-            AttributeAllowedExtensions::fromList(['png'])
+            AttributeAllowedExtensions::fromList(['png']),
+            MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
         );
 
         $country = AssetAttribute::create(
@@ -307,6 +312,7 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
             LabelCollection::fromArray(['en_US' => 'Country']),
             AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AssetFamilyIdentifier::fromString('country')
@@ -319,6 +325,7 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
             LabelCollection::fromArray(['en_US' => 'Brands']),
             AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AssetFamilyIdentifier::fromString('brand')
@@ -331,6 +338,7 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
             LabelCollection::fromArray(['en_US' => 'Favorite color']),
             AttributeOrder::fromInteger(6),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -347,6 +355,7 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
             LabelCollection::fromArray(['en_US' => 'Materials']),
             AttributeOrder::fromInteger(7),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -364,11 +373,12 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
             LabelCollection::fromArray(['en_US' => 'Front View']),
             AttributeOrder::fromInteger(8),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::fromString(''),
             Suffix::fromString(''),
-            MediaType::fromString(MediaType::IMAGE)
+            MediaLinkMediaType::fromString(MediaLinkMediaType::IMAGE)
         );
 
         $frontViewDam = MediaLinkAttribute::create(
@@ -378,11 +388,12 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
             LabelCollection::fromArray(['en_US' => 'Front View Dam']),
             AttributeOrder::fromInteger(9),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::fromString('https://my-dam.com/'),
             Suffix::fromString('/500x500/thumbnail'),
-            MediaType::fromString(MediaType::IMAGE)
+            MediaLinkMediaType::fromString(MediaLinkMediaType::IMAGE)
         );
 
         $attributesRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');

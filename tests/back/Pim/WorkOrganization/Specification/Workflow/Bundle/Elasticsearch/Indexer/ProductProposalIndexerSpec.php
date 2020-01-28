@@ -41,7 +41,7 @@ class ProductProposalIndexerSpec extends ObjectBehavior
 
     function it_bulk_removes_product_proposals($productProposalClient)
     {
-        $productProposalClient->bulkDelete('product_proposal', [
+        $productProposalClient->bulkDelete([
             'product_draft_1',
             'product_draft_12',
             'product_draft_4'
@@ -62,7 +62,7 @@ class ProductProposalIndexerSpec extends ObjectBehavior
         $normalizer->normalize($productModelDraft, ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX)
             ->willReturn($productDraftNormalized);
 
-        $productProposalClient->index('product_proposal', 1, $productDraftNormalized, Argument::type(Refresh::class))
+        $productProposalClient->index(1, $productDraftNormalized, Argument::type(Refresh::class))
             ->shouldBeCalled();
 
         $this->index($productModelDraft, [])->shouldReturn(null);
@@ -71,11 +71,10 @@ class ProductProposalIndexerSpec extends ObjectBehavior
     function it_removes_product_proposal($productProposalClient)
     {
         $productProposalClient->search(
-            'product_proposal',
             ['query' => ['term' => ['id' => 'product_draft_1']]]
         )->willReturn(['hits' => ['total' => 1]]);
 
-        $productProposalClient->delete('product_proposal', 'product_draft_1')->shouldBeCalled();
+        $productProposalClient->delete('product_draft_1')->shouldBeCalled();
         $productProposalClient->refreshIndex()->shouldNotBeCalled();
 
         $this->remove(1, [])->shouldReturn(null);
@@ -84,11 +83,10 @@ class ProductProposalIndexerSpec extends ObjectBehavior
     function it_removes_product_proposal_and_refresh_index($productProposalClient)
     {
         $productProposalClient->search(
-            'product_proposal',
             ['query' => ['term' => ['id' => 'product_draft_1']]]
         )->willReturn(['hits' => ['total' => 1]]);
 
-        $productProposalClient->delete('product_proposal', 'product_draft_1')->shouldBeCalled();
+        $productProposalClient->delete('product_draft_1')->shouldBeCalled();
         $productProposalClient->refreshIndex()->shouldBeCalled();
 
         $this->remove(1, ['index_refresh' => Refresh::enable()])->shouldReturn(null);

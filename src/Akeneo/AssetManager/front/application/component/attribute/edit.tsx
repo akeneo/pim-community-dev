@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import __ from 'akeneoassetmanager/tools/translator';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
@@ -11,6 +11,7 @@ import {
   attributeEditionCancel,
   attributeEditionIsRequiredUpdated,
   attributeEditionLabelUpdated,
+  attributeEditionIsReadOnlyUpdated,
 } from 'akeneoassetmanager/domain/event/attribute/edit';
 import {saveAttribute} from 'akeneoassetmanager/application/action/attribute/edit';
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
@@ -18,14 +19,13 @@ import {TextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text
 import {deleteAttribute} from 'akeneoassetmanager/application/action/attribute/delete';
 import AttributeIdentifier, {attributeidentifiersAreEqual} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
-import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getAttributeView} from 'akeneoassetmanager/application/configuration/attribute';
 import Key from 'akeneoassetmanager/tools/key';
 import Trash from 'akeneoassetmanager/application/component/app/icon/trash';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
-import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
 interface OwnProps {
   rights: {
@@ -49,19 +49,15 @@ interface StateProps extends OwnProps {
   isActive: boolean;
   attribute: Attribute;
   errors: ValidationError[];
-  confirmDelete: {
-    isActive: boolean;
-  };
 }
 
 interface DispatchProps {
   events: {
     onLabelUpdated: (value: string, locale: string) => void;
     onIsRequiredUpdated: (isRequired: boolean) => void;
+    onIsReadOnlyUpdated: (isReadOnly: boolean) => void;
     onAdditionalPropertyUpdated: (property: string, value: any) => void;
     onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => void;
-    onOpenDeleteModal: () => void;
-    onCancelDeleteModal: () => void;
     onCancel: () => void;
     onSubmit: () => void;
   };
@@ -103,9 +99,10 @@ const getAdditionalProperty = (
 class Edit extends React.Component<EditProps> {
   private labelInput: HTMLInputElement;
   public props: EditProps;
-  public state: {previousAttribute: string | null; currentAttribute: string | null} = {
+  public state: {previousAttribute: string | null; currentAttribute: string | null; isDeleteModalOpen: boolean} = {
     previousAttribute: null,
     currentAttribute: null,
+    isDeleteModalOpen: false,
   };
 
   componentDidMount() {
@@ -149,11 +146,8 @@ class Edit extends React.Component<EditProps> {
     // This will be simplyfied in the near future
     const displayDeleteButton =
       this.props.rights.attribute.delete &&
-      !attributeidentifiersAreEqual(
-        this.props.assetFamily.getAttributeAsLabel(),
-        this.props.attribute.getIdentifier()
-      ) &&
-      !attributeidentifiersAreEqual(this.props.assetFamily.getAttributeAsImage(), this.props.attribute.getIdentifier());
+      !attributeidentifiersAreEqual(this.props.assetFamily.attributeAsLabel, this.props.attribute.getIdentifier()) &&
+      !attributeidentifiersAreEqual(this.props.assetFamily.attributeAsMainMedia, this.props.attribute.getIdentifier());
 
     return (
       <React.Fragment>
@@ -253,6 +247,33 @@ class Edit extends React.Component<EditProps> {
                 </div>
                 {getErrorsView(this.props.errors, 'isRequired')}
               </div>
+
+              <div className="AknFieldContainer AknFieldContainer--packed" data-code="isReadOnly">
+                <div className="AknFieldContainer-header">
+                  <label
+                    className="AknFieldContainer-label AknFieldContainer-label--inline"
+                    htmlFor="pim_asset_manager.attribute.edit.input.is_read_only"
+                  >
+                    <Checkbox
+                      id="pim_asset_manager.attribute.edit.input.is_read_only"
+                      value={this.props.attribute.isReadOnly}
+                      onChange={this.props.events.onIsReadOnlyUpdated}
+                      readOnly={!this.props.rights.attribute.edit}
+                    />
+                    <span
+                      onClick={() => {
+                        if (this.props.rights.attribute.edit) {
+                          this.props.events.onIsReadOnlyUpdated(!this.props.attribute.isReadOnly);
+                        }
+                      }}
+                    >
+                      {__('pim_asset_manager.attribute.edit.input.is_read_only')}
+                    </span>
+                  </label>
+                </div>
+                {getErrorsView(this.props.errors, 'isReadOnly')}
+              </div>
+
               <ErrorBoundary errorMessage={__('pim_asset_manager.asset_family.attribute.error.render_edit')}>
                 {getAdditionalProperty(
                   this.props.attribute,
@@ -270,9 +291,9 @@ class Edit extends React.Component<EditProps> {
                   className="AknButton AknButton--delete"
                   tabIndex={0}
                   onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
-                    if (Key.Space === event.key) this.props.events.onOpenDeleteModal();
+                    if (Key.Space === event.key) this.setState({isDeleteModalOpen: true});
                   }}
-                  onClick={() => this.props.events.onOpenDeleteModal()}
+                  onClick={() => this.setState({isDeleteModalOpen: true})}
                   style={{flex: 1}}
                 >
                   <Trash color="#D4604F" className="AknButton-animatedIcon" />
@@ -308,14 +329,12 @@ class Edit extends React.Component<EditProps> {
             </footer>
           </div>
         </div>
-        {this.props.confirmDelete.isActive && (
+        {this.state.isDeleteModalOpen && (
           <DeleteModal
             message={__('pim_asset_manager.attribute.delete.message', {attributeLabel: label})}
             title={__('pim_asset_manager.attribute.delete.title')}
-            onConfirm={() => {
-              this.props.events.onAttributeDelete(this.props.attribute.getIdentifier());
-            }}
-            onCancel={this.props.events.onCancelDeleteModal}
+            onConfirm={() => this.props.events.onAttributeDelete(this.props.attribute.getIdentifier())}
+            onCancel={() => this.setState({isDeleteModalOpen: false})}
           />
         )}
       </React.Fragment>
@@ -330,12 +349,11 @@ export default connect(
       isActive: state.attribute.isActive,
       attribute: denormalizeAttribute(state.attribute.data),
       errors: state.attribute.errors,
-      assetFamily: denormalizeAssetFamily(state.form.data),
+      assetFamily: state.form.data,
       isSaving: state.attribute.isSaving,
       context: {
         locale: state.user.catalogLocale,
       },
-      confirmDelete: state.confirmDelete,
     } as StateProps;
   },
   (dispatch: any): DispatchProps => {
@@ -346,6 +364,9 @@ export default connect(
         },
         onIsRequiredUpdated: (isRequired: boolean) => {
           dispatch(attributeEditionIsRequiredUpdated(isRequired));
+        },
+        onIsReadOnlyUpdated: (isReadOnly: boolean) => {
+          dispatch(attributeEditionIsReadOnlyUpdated(isReadOnly));
         },
         onAdditionalPropertyUpdated: (property: string, value: any) => {
           dispatch(attributeEditionAdditionalPropertyUpdated(property, value));
@@ -358,12 +379,6 @@ export default connect(
         },
         onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => {
           dispatch(deleteAttribute(attributeIdentifier));
-        },
-        onCancelDeleteModal: () => {
-          dispatch(cancelDeleteModal());
-        },
-        onOpenDeleteModal: () => {
-          dispatch(openDeleteModal());
         },
       },
     } as DispatchProps;

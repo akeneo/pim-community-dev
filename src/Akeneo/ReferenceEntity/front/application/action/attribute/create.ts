@@ -1,14 +1,14 @@
 import attributeSaver from 'akeneoreferenceentity/infrastructure/saver/attribute';
 import {
-  attributeCreationSucceeded,
   attributeCreationErrorOccurred,
+  attributeCreationSucceeded,
 } from 'akeneoreferenceentity/domain/event/attribute/create';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {
-  notifyAttributeWellCreated,
   notifyAttributeCreateFailed,
   notifyAttributeCreateValidationError,
+  notifyAttributeWellCreated,
 } from 'akeneoreferenceentity/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
 import {

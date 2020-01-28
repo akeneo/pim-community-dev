@@ -15,8 +15,8 @@ Feature: Filter product drafts
       | sku    | family  | categories      |
       | tshirt | tshirts | 2015_collection |
     And the following product drafts:
-      | product | status      | author | result                                                                    |
-      | tshirt  | in progress | Sandra | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
+      | product | status      | source | source_label | author | author_label  | result                                                                    |
+      | tshirt  | in progress | pim    | PIM          | Sandra | Sandra Harvey | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
     And Mary proposed the following change to "tshirt":
       | field       | value                      |
       | Name        | Summer t-shirt             |
@@ -27,6 +27,7 @@ Feature: Filter product drafts
       | Price | 10 USD        | Sales   |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
+
   Scenario Outline: Successfully filter product drafts
     Given I am logged in as "Peter"
     And I edit the "tshirt" product

@@ -68,7 +68,7 @@ class SuggestedDataReaderSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $query->execute()->willReturn('2017-08-28 11:26:32');
 
-        $subscriptionProvider->fetch(new \Datetime('2017-08-28 11:26:32'))->shouldBeCalled();
+        $subscriptionProvider->fetch(new \Datetime('2017-08-28 11:26:32', new \DateTimeZone('UTC')))->shouldBeCalled();
 
         $this->initialize();
     }
@@ -79,7 +79,7 @@ class SuggestedDataReaderSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $query->execute()->willReturn('2012-01-01');
 
-        $subscriptionProvider->fetch(new \Datetime('2012-01-01'))->shouldBeCalled();
+        $subscriptionProvider->fetch(new \Datetime('2012-01-01', new \DateTimeZone('UTC')))->shouldBeCalled();
 
         $this->initialize();
     }

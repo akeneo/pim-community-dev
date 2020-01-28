@@ -12,14 +12,6 @@ services:
             - { name: pim_enrich.provider.field, priority: 100 }
             - { name: pim_enrich.provider.empty_value, priority: 80 }
 
-    akeneo_assetmanager.factory.product_value.asset_collection:
-        class: Akeneo\Pim\Enrichment\AssetManager\Component\Factory\AssetCollectionValueFactory
-        public: false
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
-        tags:
-            - { name: pim_catalog.factory.value }
-
     akeneo_assetmanager.comparator.attribute.asset_multiple_link:
         public:    false
         class:     'Akeneo\Pim\Enrichment\AssetManager\Component\Comparator\Attribute\AssetCollectionComparator'
@@ -55,7 +47,7 @@ services:
     akeneo_assetmanager.validator.constraint.is_asset_family_configured:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints\IsAssetFamilyConfiguredValidator
         arguments:
-            - ['pim_catalog_asset_collection', 'akeneo_asset']
+            - ['pim_catalog_asset_collection']
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_details'
         tags:
             - { name: validator.constraint_validator, alias: pim_is_asset_family_configured_validator }
@@ -63,7 +55,7 @@ services:
     akeneo_assetmanager.infrastructure.catalog.normalizer.asset_collection_value:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer\AssetCollectionValueNormalizer
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
+            - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
@@ -94,4 +86,4 @@ services:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Factory\Read\Value\AssetCollectionValueFactory
         public: false
         tags:
-            - { name: akeneo.pim.enrichment.factory.read.product_value }
+            - { name: akeneo.pim.enrichment.factory.product_value }

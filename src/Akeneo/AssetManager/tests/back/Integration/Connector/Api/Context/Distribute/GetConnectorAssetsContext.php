@@ -37,6 +37,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -179,7 +180,7 @@ class GetConnectorAssetsContext implements Context
                         AttributeIdentifier::fromString('main_image_brand_fingerprint'),
                         ChannelReference::noReference(),
                         LocaleReference::noReference(),
-                        FileData::createFromFileinfo($mainImageInfo)
+                        FileData::createFromFileinfo($mainImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                     ),
                 ])
             );
@@ -208,7 +209,7 @@ class GetConnectorAssetsContext implements Context
                             'data' => 'italy'
                         ]
                     ],
-                    'image' => [
+                    AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE => [
                         [
                             'locale' => null,
                             'channel' => null,
@@ -308,7 +309,7 @@ class GetConnectorAssetsContext implements Context
                         AttributeIdentifier::fromString('main_image_brand_fingerprint'),
                         ChannelReference::noReference(),
                         LocaleReference::noReference(),
-                        FileData::createFromFileinfo($mainImageInfo)
+                        FileData::createFromFileinfo($mainImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                     ),
                 ])
             );
@@ -348,7 +349,7 @@ class GetConnectorAssetsContext implements Context
                             'data' => 'italy'
                         ]
                     ],
-                    'image' => [
+                    AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE => [
                         [
                             'locale' => null,
                             'channel' => null,
@@ -887,6 +888,7 @@ class GetConnectorAssetsContext implements Context
             LabelCollection::fromArray(['en_US' => 'Required attribute']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -906,6 +908,7 @@ class GetConnectorAssetsContext implements Context
             LabelCollection::fromArray(['en_US' => 'Not required attribute']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),

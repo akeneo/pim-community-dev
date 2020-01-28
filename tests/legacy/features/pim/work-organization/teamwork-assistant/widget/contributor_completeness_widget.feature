@@ -73,16 +73,16 @@ Feature: Follow project completeness
       | usb_keys | USB Keys    | sku,name,description,size,weight,release_date,capacity | sku,name,size,description,capacity | sku,name,size,description,capacity |
       | posters  | Posters     | sku,name,description,size,release_date,picture         | sku,name,size,description,picture  | sku,name,size,description,picture  |
     And the following products:
-      | sku                  | family   | categories         | name-en_US                | size-en_US | weight-en_US | weight-en_US-unit | release_date-en_US | release_date-fr_FR | material-en_US | capacity | capacity-unit |
-      | tshirt-the-witcher-3 | tshirt   | clothing           | T-Shirt "The Witcher III" | M          | 5            | OUNCE             | 2015-06-20         | 2015-06-20         | cotton         |          |               |
-      | tshirt-skyrim        | tshirt   | clothing           | T-Shirt "Skyrim"          | M          | 5            | OUNCE             |                    |                    |                |          |               |
-      | tshirt-lcd           | tshirt   | clothing,high_tech | T-shirt LCD screen        | M          | 6            | OUNCE             | 2016-08-13         |                    |                |          |               |
-      | usb-key-big          | usb_keys | high_tech          | USB Key Big 64Go          |            | 1            | OUNCE             | 2016-08-13         | 2016-10-13         |                |          |               |
-      | usb-key-small        | usb_keys | high_tech          |                           |            | 1            | OUNCE             |                    |                    |                | 8        | GIGABYTE      |
-      | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
+      | sku                  | family   | categories         | name-en_US                | description-en_US-ecommerce          | size-en_US | weight-en_US | weight-en_US-unit | release_date-en_US | release_date-fr_FR | material-en_US | capacity | capacity-unit |
+      | tshirt-the-witcher-3 | tshirt   | clothing           | T-Shirt "The Witcher III" | Officially licensed by The Witcher 3 | M          | 5            | OUNCE             | 2015-06-20         | 2015-06-20         | cotton         |          |               |
+      | tshirt-skyrim        | tshirt   | clothing           | T-Shirt "Skyrim"          |                                      | M          | 5            | OUNCE             |                    |                    |                |          |               |
+      | tshirt-lcd           | tshirt   | clothing,high_tech | T-shirt LCD screen        |                                      | M          | 6            | OUNCE             | 2016-08-13         |                    |                |          |               |
+      | usb-key-big          | usb_keys | high_tech          | USB Key Big 64Go          |                                      |            | 1            | OUNCE             | 2016-08-13         | 2016-10-13         |                |          |               |
+      | usb-key-small        | usb_keys | high_tech          |                           |                                      |            | 1            | OUNCE             |                    |                    |                | 8        | GIGABYTE      |
+      | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    |                                      | A1         |              |                   |                    |                    |                |          |               |
     And the following projects:
       | label                  | owner | due_date   | description                                  | channel   | locale | product_filters                                            |
-      | Collection Summer 2030 | mary  | 2030-10-25 | Please do your best to finish before Summer. | ecommerce | en_US  | []                                                         |
+      | Collection Summer 2030 | mary  | 2030-10-25 | Please do your best to finish before Summer. | ecommerce | en_US  | [{"field":"family", "operator":"IN", "value": ["tshirt"]}] |
       | Collection Winter 2030 | julia | 2030-08-25 | Please do your best to finish before Winter. | ecommerce | en_US  | [{"field":"family", "operator":"IN", "value": ["tshirt"]}] |
 
   Scenario: Successfully display completeness on widget
@@ -90,7 +90,7 @@ Feature: Follow project completeness
     And I am on the dashboard page
     Then I should see the teamwork assistant widget
     And I should see the text "Collection Winter 2030 E-Commerce | English (United States)"
-    And I should not see the contributor selector
+    And I should see the contributor selector
     And I should see the following teamwork assistant completeness:
       | todo | in_progress | done |
       | 0    | 2           | 1    |
@@ -101,7 +101,7 @@ Feature: Follow project completeness
     And I should see the text "Due date: 08/25/2030"
     When I select "Collection Summer 2030" project
     Then I should see the text "Collection Summer 2030 E-Commerce | English (United States)"
-    And I should not see the contributor selector
+    And I should see the contributor selector
     And I should see the following teamwork assistant completeness:
       | todo | in_progress | done |
       | 0    | 2           | 1    |
@@ -111,19 +111,19 @@ Feature: Follow project completeness
     And I should see the text "Please do your best to finish before Summer."
     And I should see the text "Due date: 10/25/2030"
 
-  Scenario: I should not see the contributor selector if I'm not owner of the project
+  Scenario: I should see the contributor selector if I'm not owner of the project
     Given I am logged in as "Mary"
     And I am on the dashboard page
     Then I should see the teamwork assistant widget
     And I should see the text "Collection Winter 2030 E-Commerce | English (United States)"
-    And I should not see the contributor selector
+    And I should see the contributor selector
     When I select "Collection Summer 2030" project
     Then I should see the text "Collection Summer 2030 E-Commerce | English (United States)"
     When I select "Mary Smith" contributor
     And I should see the text "Mary Smith"
     When I select "Collection Winter 2030" project
     And I should see the text "Collection Winter 2030 E-Commerce | English (United States)"
-    But I should not see the contributor selector
+    But I should see the contributor selector
 
   @skip
   Scenario: Successfully display the widget without project

@@ -26,26 +26,16 @@ class EditAssetCommand
     /** @var string */
     public $code;
 
-    /** @var array */
-    public $labels = [];
-
-    /** @var string[]|null */
-    public $image;
-
-    /** @var array */
+    /** @var AbstractEditValueCommand[] */
     public $editAssetValueCommands = [];
 
     public function __construct(
         string $assetFamilyIdentifier,
         string $code,
-        array $labels,
-        ?array $image,
         array $editAssetValueCommands
     ) {
         $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->code = $code;
-        $this->labels = $labels;
-        $this->image = $image;
         $this->editAssetValueCommands = $editAssetValueCommands;
     }
 }

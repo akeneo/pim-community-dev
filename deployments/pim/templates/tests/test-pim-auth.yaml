@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-auth-test"
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+  - name: {{ .Release.Name }}-auth-test
+    image: tutum/curl
+    env:
+      - name: TARGET
+        value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
+      - name: LOGIN
+        value: {{ .Values.pim.defaultAdminUser.email }}
+      - name: PASSWORD
+        value: {{ .Values.pim.defaultAdminUser.password }}
+    command: ["/bin/bash", "-c"]
+    args: 
+    - export LOGIN_DATA=$(mktemp); 
+      export COOKIE_JAR=$(mktemp); 
+      echo "Testing ${TARGET}";
+      timeout 500 curl --retry 300 --retry-delay 30 -k ${TARGET} > /dev/null;
+      echo -n "_target_path=&_username=$LOGIN&_password=$PASSWORD&_csrf_token=" > $LOGIN_DATA;
+      cat $LOGIN_DATA;
+      curl --connect-timeout 5 --cookie-jar $COOKIE_JAR $TARGET/user/login | grep "_csrf_token" | cut -d '"' -f 6 >> $LOGIN_DATA;
+      curl --connect-timeout 5 -XPOST --cookie $COOKIE_JAR --cookie-jar $COOKIE_JAR --data @$LOGIN_DATA $TARGET/user/login-check;
+      curl -w "%{http_code}" --insecure --cookie $COOKIE_JAR $TARGET/dashboard | grep 200;
+  restartPolicy: Never

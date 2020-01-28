@@ -73,7 +73,7 @@ rules:
                 value: Canon
             -
                 field: auto_focus_lock
-                operator: !=
+                operator: "!="
                 value: true
         actions:
             -
@@ -94,7 +94,7 @@ rules:
                 value: Canon
             -
                 field: auto_focus_points
-                operator: !=
+                operator: "!="
                 value: 4
         actions:
             -
@@ -161,7 +161,7 @@ rules:
                 value: AKNTS_PB
             -
                 field: price
-                operator: !=
+                operator: "!="
                 value:
                     amount: 12
                     currency: EUR
@@ -182,7 +182,7 @@ rules:
                 value: AKNTS_PB
             -
                 field: weight
-                operator: !=
+                operator: "!="
                 value:
                     amount: 500
                     unit: GRAM

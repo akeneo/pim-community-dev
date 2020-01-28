@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
-use Box\Spout\Reader\IteratorInterface;
 use PhpSpec\ObjectBehavior;
 
 /**

@@ -8,20 +8,21 @@ services:
         tags:
             - { name: akeneo_assetmanager.create_attribute_command_factory }
 
-    akeneo_assetmanager.application.factory.create_image_attribute_command_factory:
-        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateImageAttributeCommandFactory
+    akeneo_assetmanager.application.factory.create_media_file_attribute_command_factory:
+        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateMediaFileAttributeCommandFactory
         tags:
             - { name: akeneo_assetmanager.create_attribute_command_factory }
 
-    akeneo_assetmanager.application.factory.create_asset_attribute_command_factory:
-        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateAssetAttributeCommandFactory
-        tags:
-            - { name: akeneo_assetmanager.create_attribute_command_factory }
+    # Will be activated again when we will do the link to reference entity
+    # akeneo_assetmanager.application.factory.create_asset_attribute_command_factory:
+    #     class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateAssetAttributeCommandFactory
+    #     tags:
+    #         - { name: akeneo_assetmanager.create_attribute_command_factory }
 
-    akeneo_assetmanager.application.factory.create_asset_collection_attribute_command_factory:
-        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateAssetCollectionAttributeCommandFactory
-        tags:
-            - { name: akeneo_assetmanager.create_attribute_command_factory }
+    # akeneo_assetmanager.application.factory.create_asset_collection_attribute_command_factory:
+    #     class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateAssetCollectionAttributeCommandFactory
+    #     tags:
+    #         - { name: akeneo_assetmanager.create_attribute_command_factory }
 
     akeneo_assetmanager.application.factory.create_option_attribute_command_factory:
         class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateOptionAttributeCommandFactory
@@ -54,6 +55,11 @@ services:
 
     akeneo_assetmanager.application.factory.edit_is_required_command_factory:
         class: Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommandFactory
+        tags:
+            - { name: akeneo_assetmanager.edit_attribute_command_factory, priority: 120 }
+
+    akeneo_assetmanager.application.factory.edit_is_read_only_command_factory:
+        class: Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsReadOnlyCommandFactory
         tags:
             - { name: akeneo_assetmanager.edit_attribute_command_factory, priority: 120 }
 
@@ -124,5 +130,10 @@ services:
 
     akeneo_assetmanager.application.factory.edit_media_link_media_type_command_factory:
         class: Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\MediaLink\EditMediaTypeCommandFactory
+        tags:
+            - { name: akeneo_assetmanager.edit_attribute_command_factory, priority: 120 }
+
+    akeneo_assetmanager.application.factory.edit_media_file_media_type_command_factory:
+        class: Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\MediaFile\EditMediaTypeCommandFactory
         tags:
             - { name: akeneo_assetmanager.edit_attribute_command_factory, priority: 120 }

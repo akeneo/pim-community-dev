@@ -22,6 +22,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
@@ -30,7 +31,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
@@ -40,7 +42,6 @@ use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetConnectorAttributesContext implements Context
@@ -87,7 +88,7 @@ class GetConnectorAttributesContext implements Context
         $assetFamilyIdentifier = 'brand';
 
         $this->createTextAttribute($assetFamilyIdentifier);
-        $this->createImageAttribute($assetFamilyIdentifier);
+        $this->createMediaFileAttribute($assetFamilyIdentifier);
         $this->createOptionAttribute($assetFamilyIdentifier);
         $this->createMultiOptionAttribute($assetFamilyIdentifier);
         $this->createSingleLinkAttribute($assetFamilyIdentifier);
@@ -147,7 +148,7 @@ class GetConnectorAttributesContext implements Context
 
         $secondIdentifier = 'whatever_2';
 
-        $this->createImageAttribute($secondIdentifier);
+        $this->createMediaFileAttribute($secondIdentifier);
 
         $secondAssetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString($secondIdentifier),
@@ -170,6 +171,7 @@ class GetConnectorAttributesContext implements Context
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -186,6 +188,7 @@ class GetConnectorAttributesContext implements Context
             AttributeValuePerLocale::fromBoolean($textAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($textAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 'max_length' => $textAttribute->getMaxLength()->intValue(),
                 'is_textarea' => false,
@@ -201,41 +204,45 @@ class GetConnectorAttributesContext implements Context
         );
     }
 
-    private function createImageAttribute(string $assetFamilyIdentifier)
+    private function createMediaFileAttribute(string $assetFamilyIdentifier)
     {
         $attributeIdentifier = 'photo';
 
-        $imageAttribute = ImageAttribute::create(
+        $mediaFileAttribute = MediaFileAttribute::create(
             AttributeIdentifier::create($assetFamilyIdentifier, $attributeIdentifier, 'test'),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('image'),
             LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('10'),
-            AttributeAllowedExtensions::fromList(['jpg'])
+            AttributeAllowedExtensions::fromList(['jpg']),
+            MediaType::fromString(MediaType::IMAGE)
         );
 
-        $this->attributeRepository->create($imageAttribute);
+        $this->attributeRepository->create($mediaFileAttribute);
 
-        $imageAttribute = new ConnectorAttribute(
-            $imageAttribute->getCode(),
+        $mediaFileAttribute = new ConnectorAttribute(
+            $mediaFileAttribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
-            'image',
-            AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),
-            AttributeValuePerChannel::fromBoolean($imageAttribute->hasValuePerChannel()),
+            'media_file',
+            AttributeValuePerLocale::fromBoolean($mediaFileAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($mediaFileAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 'allowed_extensions' => ['jpg'],
-                'max_file_size' => '10'
+                'max_file_size' => '10',
+                'media_type' => MediaType::IMAGE
             ]
         );
 
         $this->findConnectorAssetFamilyAttributes->save(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
-            $imageAttribute
+            $mediaFileAttribute
         );
     }
 
@@ -250,6 +257,7 @@ class GetConnectorAttributesContext implements Context
             LabelCollection::fromArray(['fr_FR' => 'Nationalité', 'en_US' => 'Nationality']),
             AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -263,6 +271,7 @@ class GetConnectorAttributesContext implements Context
             AttributeValuePerLocale::fromBoolean($optionAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($optionAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             []
         );
 
@@ -283,6 +292,7 @@ class GetConnectorAttributesContext implements Context
             LabelCollection::fromArray(['fr_FR' => 'Zones de vente', 'en_US' => 'Sales areas']),
             AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -296,6 +306,7 @@ class GetConnectorAttributesContext implements Context
             AttributeValuePerLocale::fromBoolean($optionAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($optionAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             []
         );
 
@@ -316,6 +327,7 @@ class GetConnectorAttributesContext implements Context
             LabelCollection::fromArray(['en_US' => 'Country', 'fr_FR' => 'Pays']),
             AttributeOrder::fromInteger(6),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -329,6 +341,7 @@ class GetConnectorAttributesContext implements Context
             AttributeValuePerLocale::fromBoolean($linkAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($linkAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 "asset_family_code" => 'country'
             ]
@@ -351,6 +364,7 @@ class GetConnectorAttributesContext implements Context
             LabelCollection::fromArray(['en_US' => 'Designers', 'fr_FR' => 'Designeurs']),
             AttributeOrder::fromInteger(7),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -364,6 +378,7 @@ class GetConnectorAttributesContext implements Context
             AttributeValuePerLocale::fromBoolean($multiLinkAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($multiLinkAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 "asset_family_code" => 'designer'
             ]

@@ -1,7 +1,7 @@
 import {NormalizedOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {NormalizedOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import {Option, createEmptyOption} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import sanitize from 'akeneoassetmanager/tools/sanitize';
 
 const optionAttributeReducer = (
@@ -89,6 +89,7 @@ export const editOptionsReducer = (state: EditOptionState = initEditOptionState(
         options,
         numberOfLockedOptions: options.length,
         errors: [],
+        currentOptionId: 0,
       };
 
     case 'OPTIONS_EDITION_CANCEL':
@@ -97,6 +98,7 @@ export const editOptionsReducer = (state: EditOptionState = initEditOptionState(
         ...state,
         isActive: false,
         isDirty: false,
+        currentOptionId: 0,
       };
 
     case 'OPTIONS_EDITION_SELECTED':
@@ -146,9 +148,11 @@ export const editOptionsReducer = (state: EditOptionState = initEditOptionState(
 
     case 'OPTIONS_EDITION_DELETE':
       const filteredOptions = state.options.filter((_option: Option, index: number) => index !== id);
+      const filteredErrors = state.errors.filter(error => error.propertyPath !== `options.${id}`);
       return {
         ...state,
         options: filteredOptions,
+        errors: filteredErrors,
         isDirty: isDirty(state, filteredOptions),
         currentOptionId: 1 <= id ? id - 1 : 0,
         numberOfLockedOptions:

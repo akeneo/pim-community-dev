@@ -2,7 +2,6 @@
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Webmozart\Assert\Assert;
 

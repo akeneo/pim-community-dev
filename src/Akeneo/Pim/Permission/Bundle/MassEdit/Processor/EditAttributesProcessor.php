@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\MassEdit\Processor;
 
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\EditAttributesProcessor as BaseProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
@@ -30,15 +31,6 @@ class EditAttributesProcessor extends BaseProcessor
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
-    /**
-     * @param ValidatorInterface                    $productValidator
-     * @param ValidatorInterface                    $productModelValidator
-     * @param ObjectUpdaterInterface                $productUpdater
-     * @param ObjectUpdaterInterface                $productModelUpdater
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository
-     * @param CheckAttributeEditable                $checkAttributeEditable
-     * @param AuthorizationCheckerInterface         $authorizationChecker
-     */
     public function __construct(
         ValidatorInterface $productValidator,
         ValidatorInterface $productModelValidator,
@@ -46,6 +38,8 @@ class EditAttributesProcessor extends BaseProcessor
         ObjectUpdaterInterface $productModelUpdater,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         CheckAttributeEditable $checkAttributeEditable,
+        FilterInterface $productEmptyValuesFilter,
+        FilterInterface $productModelEmptyValuesFilter,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct(
@@ -54,7 +48,9 @@ class EditAttributesProcessor extends BaseProcessor
             $productUpdater,
             $productModelUpdater,
             $attributeRepository,
-            $checkAttributeEditable
+            $checkAttributeEditable,
+            $productEmptyValuesFilter,
+            $productModelEmptyValuesFilter
         );
 
         $this->authorizationChecker = $authorizationChecker;

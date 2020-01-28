@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * This class is used for running integration tests testing the web controllers.
@@ -25,30 +25,20 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-abstract class ControllerIntegrationTestCase extends KernelTestCase
+abstract class ControllerIntegrationTestCase extends WebTestCase
 {
-    /** @var KernelInterface */
-    protected $testKernel;
+    /** @var KernelBrowser */
+    protected $client;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
-        if (null === $this->testKernel) {
-            $this->bootTestFakeKernel();
-        }
+        $this->client = static::createClient(['environment' => 'test_fake', 'debug' => false]);
+        $this->client->disableReboot();
     }
 
     protected function get(string $service)
     {
-        return $this->testKernel->getContainer()->get($service);
-    }
-
-    private function bootTestFakeKernel(): void
-    {
-        $this->testKernel = new \AppKernelTest('test_fake', false);
-        $this->testKernel->boot();
+        return self::$container->get($service);
     }
 
 
@@ -57,9 +47,9 @@ abstract class ControllerIntegrationTestCase extends KernelTestCase
      */
     protected function tearDown(): void
     {
-        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
+        $connectionCloser = $this->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
-        $this->testKernel->shutdown();
+        $this->ensureKernelShutdown();
     }
 }

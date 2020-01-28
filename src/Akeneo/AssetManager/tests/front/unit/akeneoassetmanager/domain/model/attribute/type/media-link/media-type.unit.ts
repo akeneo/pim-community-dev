@@ -1,8 +1,8 @@
 import {
   createMediaTypeFromNormalized,
-  normalizeMediaType,
-  isValidMediaType,
   createMediaTypeFromString,
+  isValidMediaType,
+  normalizeMediaType,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 
 describe('akeneo > attribute > domain > model > attribute > type > media-link --- media-type', () => {

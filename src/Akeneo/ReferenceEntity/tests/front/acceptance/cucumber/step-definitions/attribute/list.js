@@ -27,7 +27,7 @@ module.exports = async function(cucumber) {
   const getElement = createElementDecorator(config);
 
   const showAttributesTab = async function(page) {
-    const sidebar = await await getElement(page, 'Sidebar');
+    const sidebar = await getElement(page, 'Sidebar');
     await sidebar.clickOnTab('attribute');
   };
 
@@ -111,7 +111,7 @@ module.exports = async function(cucumber) {
   Then('there should be the following attributes:', async function(expectedAttributes) {
     await showAttributesTab(this.page);
 
-    const attributes = await await getElement(this.page, 'Attributes');
+    const attributes = await getElement(this.page, 'Attributes');
     let hasAllAttribute = true;
     for (const expectedAttribute of expectedAttributes.hashes()) {
       hasAllAttribute =
@@ -124,7 +124,7 @@ module.exports = async function(cucumber) {
   const editAttribute = async function(page, attributeIdentifier, editMode) {
     await showAttributesTab(page);
 
-    const attributes = await await getElement(page, 'Attributes');
+    const attributes = await getElement(page, 'Attributes');
 
     if (editMode) {
       await attributes.edit(attributeIdentifier);
@@ -144,7 +144,7 @@ module.exports = async function(cucumber) {
   Then('the list of attributes should be empty', async function() {
     await showAttributesTab(this.page);
 
-    const attributes = await await getElement(this.page, 'Attributes');
+    const attributes = await getElement(this.page, 'Attributes');
     const isEmpty = await attributes.isEmpty();
 
     assert.strictEqual(isEmpty, true);
@@ -155,7 +155,7 @@ module.exports = async function(cucumber) {
     referenceEntityIdentifier
   ) {
     await showAttributesTab(this.page);
-    const attributes = await await getElement(this.page, 'Attributes');
+    const attributes = await getElement(this.page, 'Attributes');
 
     await editAttribute(this.page, attributeIdentifier, true);
     this.page.on('request', request => {
@@ -178,7 +178,7 @@ module.exports = async function(cucumber) {
 
   When('the user cancel the deletion of attribute {string}', async function(attributeIdentifier) {
     await showAttributesTab(this.page);
-    const attributes = await await getElement(this.page, 'Attributes');
+    const attributes = await getElement(this.page, 'Attributes');
     await editAttribute(this.page, attributeIdentifier, true);
 
     await attributes.cancelDeletion();
@@ -189,7 +189,7 @@ module.exports = async function(cucumber) {
     referenceEntityIdentifier
   ) {
     await showAttributesTab(this.page);
-    const attributes = await await getElement(this.page, 'Attributes');
+    const attributes = await getElement(this.page, 'Attributes');
 
     await editAttribute(this.page, attributeIdentifier, true);
 
@@ -215,14 +215,14 @@ module.exports = async function(cucumber) {
     await showAttributesTab(this.page);
     await editAttribute(this.page, attributeIdentifier, false);
 
-    const attributes = await await getElement(this.page, 'Attributes');
+    const attributes = await getElement(this.page, 'Attributes');
     const hasRemoveButton = await attributes.hasRemoveButton();
 
     assert.strictEqual(hasRemoveButton, false);
   });
 
   Then('there should not be the following attributes:', async function(expectedAttributes) {
-    const attributes = await await getElement(this.page, 'Attributes');
+    const attributes = await getElement(this.page, 'Attributes');
     const isValid = await expectedAttributes.hashes().reduce(async (isValid, expectedAttribute) => {
       return (await isValid) && !(await attributes.hasAttribute(expectedAttribute.code, expectedAttribute.type));
     }, true);

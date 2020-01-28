@@ -19,7 +19,7 @@ abstract class AbstractProductModelExportTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->jobLauncher = new JobLauncher(static::$kernel);
+        $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
 
         $this->createProductModel('root_product_model_visible_for_redactor', [
             'family_variant' => 'familyVariantA1',
@@ -59,7 +59,7 @@ abstract class AbstractProductModelExportTestCase extends TestCase
         $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         return $productModel;
     }

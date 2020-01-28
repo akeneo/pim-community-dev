@@ -5,14 +5,23 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\Group;
+use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\Assert;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\ValidatorBuilderInterface;
 
 /**
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
@@ -21,15 +30,123 @@ use Psr\Container\ContainerInterface;
  */
 class PermissionFixturesLoader
 {
-    /** @var ContainerInterface */
-    protected $container;
+    /** @var SimpleFactoryInterface */
+    private $attributeFactory;
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    /** @var ObjectUpdaterInterface */
+    private $attributeUpdater;
+
+    /** @var SaverInterface */
+    private $attributeSaver;
+
+    /** @var SimpleFactoryInterface */
+    private $familyFactory;
+
+    /** @var ObjectUpdaterInterface */
+    private $familyUpdater;
+
+    /** @var SaverInterface */
+    private $familySaver;
+
+    /** @var SimpleFactoryInterface */
+    private $familyVariantFactory;
+
+    /** @var ObjectUpdaterInterface */
+    private $familyVariantUpdater;
+
+    /** @var SaverInterface */
+    private $familyVariantSaver;
+
+    /** @var ProductBuilderInterface */
+    private $productBuilder;
+
+    /** @var ObjectUpdaterInterface */
+    private $productUpdater;
+
+    /** @var ValidatorBuilderInterface */
+    private $productValidator;
+
+    /** @var SaverInterface */
+    private $productSaver;
+
+    /** @var SimpleFactoryInterface */
+    private $productModelFactory;
+
+    /** @var ObjectUpdaterInterface */
+    private $productModelUpdater;
+
+    /** @var SaverInterface */
+    private $productModelSaver;
+
+    /** @var SimpleFactoryInterface */
+    private $categoryFactory;
+
+    /** @var ObjectUpdaterInterface */
+    private $categoryUpdater;
+
+    /** @var SaverInterface */
+    private $categorySaver;
+
+    /** @var CategoryAccessManager */
+    private $categoryAccessManager;
+
+    /** @var ObjectManager */
+    private $objectManager;
+
+    /** @var Client */
+    private $esClient;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
+    public function __construct(
+        SimpleFactoryInterface $attributeFactory,
+        ObjectUpdaterInterface $attributeUpdater,
+        SaverInterface $attributeSaver,
+        SimpleFactoryInterface $familyFactory,
+        ObjectUpdaterInterface $familyUpdater,
+        SaverInterface $familySaver,
+        SimpleFactoryInterface $familyVariantFactory,
+        ObjectUpdaterInterface $familyVariantUpdater,
+        SaverInterface $familyVariantSaver,
+        ProductBuilderInterface $productBuilder,
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        SaverInterface $productSaver,
+        SimpleFactoryInterface $productModelFactory,
+        ObjectUpdaterInterface $productModelUpdater,
+        SaverInterface $productModelSaver,
+        SimpleFactoryInterface $categoryFactory,
+        ObjectUpdaterInterface $categoryUpdater,
+        SaverInterface $categorySaver,
+        CategoryAccessManager $categoryAccessManager,
+        ObjectManager $objectManager,
+        Client $esClient,
+        ValidatorInterface $validator
+    ) {
+        $this->attributeFactory = $attributeFactory;
+        $this->attributeUpdater = $attributeUpdater;
+        $this->attributeSaver = $attributeSaver;
+        $this->familyFactory = $familyFactory;
+        $this->familyUpdater = $familyUpdater;
+        $this->familySaver = $familySaver;
+        $this->familyVariantFactory = $familyVariantFactory;
+        $this->familyVariantUpdater = $familyVariantUpdater;
+        $this->familyVariantSaver = $familyVariantSaver;
+        $this->productBuilder = $productBuilder;
+        $this->productUpdater = $productUpdater;
+        $this->productValidator = $productValidator;
+        $this->productSaver = $productSaver;
+        $this->productModelFactory = $productModelFactory;
+        $this->productModelUpdater = $productModelUpdater;
+        $this->productModelSaver = $productModelSaver;
+        $this->categoryFactory = $categoryFactory;
+        $this->categoryUpdater = $categoryUpdater;
+        $this->categorySaver = $categorySaver;
+        $this->categoryAccessManager = $categoryAccessManager;
+        $this->objectManager = $objectManager;
+        $this->esClient = $esClient;
+        $this->validator = $validator;
     }
 
     /**
@@ -204,7 +321,8 @@ class PermissionFixturesLoader
                 'root_product_model_no_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
-                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],                ],
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
+                ],
                 'root_product_model_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
@@ -449,11 +567,11 @@ class PermissionFixturesLoader
             'group' => $attributeGroup
         ];
 
-        $attribute = $this->container->get('pim_catalog.factory.attribute')->create();
-        $this->container->get('pim_catalog.updater.attribute')->update($attribute, $data);
-        $constraints = $this->container->get('validator')->validate($attribute);
+        $attribute = $this->attributeFactory->create();
+        $this->attributeUpdater->update($attribute, $data);
+        $constraints = $this->validator->validate($attribute);
         Assert::assertCount(0, $constraints);
-        $this->container->get('pim_catalog.saver.attribute')->save($attribute);
+        $this->attributeSaver->save($attribute);
     }
 
     private function createCategoryFixtures(): void
@@ -502,8 +620,8 @@ class PermissionFixturesLoader
 
     private function createFamilyVariant(): void
     {
-        $family = $this->container->get('pim_catalog.factory.family')->create();
-        $this->container->get('pim_catalog.updater.family')->update($family, [
+        $family = $this->familyFactory->create();
+        $this->familyUpdater->update($family, [
             'code' => 'family_permission',
             'attributes'  => [
                 'sku',
@@ -537,12 +655,12 @@ class PermissionFixturesLoader
             ]
         ]);
 
-        $errors = $this->container->get('validator')->validate($family);
+        $errors = $this->validator->validate($family);
         Assert::assertCount(0, $errors);
-        $this->container->get('pim_catalog.saver.family')->save($family);
+        $this->familySaver->save($family);
 
-        $familyVariant = $this->container->get('pim_catalog.factory.family_variant')->create();
-        $this->container->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+        $familyVariant = $this->familyVariantFactory->create();
+        $this->familyVariantUpdater->update($familyVariant, [
             'code' => 'family_variant_permission',
             'family' => 'family_permission',
             'labels' => [
@@ -573,9 +691,9 @@ class PermissionFixturesLoader
             ],
         ]);
 
-        $errors = $this->container->get('validator')->validate($familyVariant);
+        $errors = $this->validator->validate($familyVariant);
         Assert::assertCount(0, $errors);
-        $this->container->get('pim_catalog.saver.family_variant')->save($familyVariant);
+        $this->familyVariantSaver->save($familyVariant);
     }
 
     /**
@@ -587,16 +705,16 @@ class PermissionFixturesLoader
      */
     protected function createProduct($identifier, array $data = []) : ProductInterface
     {
-        $product = $this->container->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->container->get('pim_catalog.updater.product')->update($product, $data);
+        $product = $this->productBuilder->createProduct($identifier);
+        $this->productUpdater->update($product, $data);
 
-        $errors = $this->container->get('pim_catalog.validator.product')->validate($product);
+        $errors = $this->productValidator->validate($product);
 
         Assert::assertCount(0, $errors);
 
-        $this->container->get('pim_catalog.saver.product')->save($product);
+        $this->productSaver->save($product);
 
-        $this->container->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->esClient->refreshIndex();
 
         return $product;
     }
@@ -609,15 +727,15 @@ class PermissionFixturesLoader
      */
     private function createProductModel(array $data = []) : ProductModelInterface
     {
-        $productModel = $this->container->get('pim_catalog.factory.product_model')->create();
-        $this->container->get('pim_catalog.updater.product_model')->update($productModel, $data);
+        $productModel = $this->productModelFactory->create();
+        $this->productModelUpdater->update($productModel, $data);
 
-        $errors = $this->container->get('pim_catalog.validator.product')->validate($productModel);
+        $errors = $this->productValidator->validate($productModel);
 
         Assert::assertCount(0, $errors);
 
-        $this->container->get('pim_catalog.saver.product_model')->save($productModel);
-        $this->container->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
+        $this->productModelSaver->save($productModel);
+        $this->esClient->refreshIndex();
 
         return $productModel;
     }
@@ -629,13 +747,13 @@ class PermissionFixturesLoader
      */
     private function createCategory(array $data = []) : CategoryInterface
     {
-        $category = $this->container->get('pim_catalog.factory.category')->create();
-        $this->container->get('pim_catalog.updater.category')->update($category, $data);
-        $errors = $this->container->get('validator')->validate($category);
+        $category = $this->categoryFactory->create();
+        $this->categoryUpdater->update($category, $data);
+        $errors = $this->validator->validate($category);
 
         Assert::assertCount(0, $errors);
 
-        $this->container->get('pim_catalog.saver.category')->save($category);
+        $this->categorySaver->save($category);
 
         return $category;
     }
@@ -647,15 +765,12 @@ class PermissionFixturesLoader
      */
     private function createCategoryAccesses(string $categoryCode, string $right, string $userGroupName): void
     {
-        $accessManager = $this->container->get('pimee_security.manager.category_access');
-        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+        $category = $this->objectManager->getRepository(Category::class)->findOneBy(['code' => $categoryCode]);
+        $userGroup = $this->objectManager->getRepository(Group::class)->findOneBy(['name' => $userGroupName]);
 
-        $category = $entityManager->getRepository(Category::class)->findOneBy(['code' => $categoryCode]);
-        $userGroup = $entityManager->getRepository(Group::class)->findOneBy(['name' => $userGroupName]);
-
-        $accessManager->revokeAccess($category);
-        $entityManager->flush();
-        $accessManager->grantAccess($category, $userGroup, $right);
+        $this->categoryAccessManager->revokeAccess($category);
+        $this->objectManager->flush();
+        $this->categoryAccessManager->grantAccess($category, $userGroup, $right);
     }
 
     /**
@@ -663,11 +778,8 @@ class PermissionFixturesLoader
      */
     private function revokeCategoryAccesses(string $categoryCode): void
     {
-        $accessManager = $this->container->get('pimee_security.manager.category_access');
-        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
-
-        $category = $entityManager->getRepository(Category::class)->findOneBy(['code' => $categoryCode]);
-        $accessManager->revokeAccess($category);
-        $entityManager->flush();
+        $category = $this->objectManager->getRepository(Category::class)->findOneBy(['code' => $categoryCode]);
+        $this->categoryAccessManager->revokeAccess($category);
+        $this->objectManager->flush();
     }
 }

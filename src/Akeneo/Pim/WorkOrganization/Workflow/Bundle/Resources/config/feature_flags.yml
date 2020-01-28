@@ -1,0 +1,7 @@
+parameters:
+  env(APP_FEATURE_FLAG_PROPOSAL_TRACKING): "false"
+
+services:
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\FeatureFlag\ProposalTrackingFeature:
+        arguments:
+            $activationFlag: '%env(bool:APP_FEATURE_FLAG_PROPOSAL_TRACKING)%'

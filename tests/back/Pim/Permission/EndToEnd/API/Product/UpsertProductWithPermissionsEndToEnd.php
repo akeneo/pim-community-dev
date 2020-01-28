@@ -28,8 +28,8 @@ class UpsertProductWithPermissionsEndToEnd extends AbstractProductTestCase
             'values'       => [
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'EN ecommerce', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => 'DE ecommerce', 'locale' => 'de_DE', 'scope' => 'ecommerce']
+                    ['data' => 'FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'tablet'],
+                    ['data' => 'DE ecommerce', 'locale' => 'de_DE', 'scope' => 'tablet']
                 ],
                 'a_multi_select' => [
                     ['locale' => null, 'scope' => null, 'data' => ['optionA', 'optionB']],
@@ -109,7 +109,7 @@ JSON;
         $values = '{"sku": {"<all_channels>": {"<all_locales>": "product_editable_by_redactor"}}, ';
         $values.= '"a_yes_no": {"<all_channels>": {"<all_locales>": true}}, ';
         $values.= '"a_multi_select": {"<all_channels>": {"<all_locales>": ["optionA", "optionB"]}}, ';
-        $values.= '"a_localized_and_scopable_text_area": {"ecommerce": {"de_DE": "DE ecommerce", "en_US": "english", "fr_FR": "FR ecommerce"}}}';
+        $values.= '"a_localized_and_scopable_text_area": {"tablet": {"de_DE": "DE ecommerce", "fr_FR": "FR ecommerce"}, "ecommerce": {"en_US": "english"}}}';
 
         $expected = [['raw_values' => $values]];
 

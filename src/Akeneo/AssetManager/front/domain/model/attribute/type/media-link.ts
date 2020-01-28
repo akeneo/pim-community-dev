@@ -6,26 +6,26 @@ import AssetFamilyIdentifier, {
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
-import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {Attribute, ConcreteAttribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {
-  Prefix,
-  NormalizedPrefix,
-  isValidPrefix,
   createPrefixFromNormalized,
+  isValidPrefix,
+  NormalizedPrefix,
   normalizePrefix,
+  Prefix,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
 import {
-  Suffix,
-  NormalizedSuffix,
-  isValidSuffix,
   createSuffixFromNormalized,
+  isValidSuffix,
+  NormalizedSuffix,
   normalizeSuffix,
+  Suffix,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 import {
-  isValidMediaType,
   createMediaTypeFromNormalized,
-  NormalizedMediaType,
+  isValidMediaType,
   MediaType,
+  NormalizedMediaType,
   normalizeMediaType,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 
@@ -35,11 +35,15 @@ export type MediaLinkAdditionalProperty = Prefix | Suffix | MediaType;
 export const MEDIA_LINK_ATTRIBUTE_TYPE = 'media_link';
 
 export interface NormalizedMediaLinkAttribute extends NormalizedAttribute {
-  type: 'media_link';
+  type: typeof MEDIA_LINK_ATTRIBUTE_TYPE;
   prefix: NormalizedPrefix;
   suffix: NormalizedSuffix;
   media_type: NormalizedMediaType;
 }
+
+export const isMediaLinkAttribute = (
+  mediaLinkAttribute: NormalizedAttribute
+): mediaLinkAttribute is NormalizedMediaLinkAttribute => MEDIA_LINK_ATTRIBUTE_TYPE === mediaLinkAttribute.type;
 
 export interface MediaLinkAttribute extends Attribute {
   prefix: Prefix;
@@ -60,6 +64,7 @@ export class ConcreteMediaLinkAttribute extends ConcreteAttribute implements Med
     valuePerChannel: boolean,
     order: number,
     is_required: boolean,
+    is_read_only: boolean,
     readonly prefix: Prefix,
     readonly suffix: Suffix,
     readonly mediaType: MediaType
@@ -73,7 +78,8 @@ export class ConcreteMediaLinkAttribute extends ConcreteAttribute implements Med
       valuePerLocale,
       valuePerChannel,
       order,
-      is_required
+      is_required,
+      is_read_only
     );
 
     if (!isValidPrefix(prefix)) {
@@ -101,6 +107,7 @@ export class ConcreteMediaLinkAttribute extends ConcreteAttribute implements Med
       normalizedMediaLinkAttribute.value_per_channel,
       normalizedMediaLinkAttribute.order,
       normalizedMediaLinkAttribute.is_required,
+      normalizedMediaLinkAttribute.is_read_only,
       createPrefixFromNormalized(normalizedMediaLinkAttribute.prefix),
       createSuffixFromNormalized(normalizedMediaLinkAttribute.suffix),
       createMediaTypeFromNormalized(normalizedMediaLinkAttribute.media_type)

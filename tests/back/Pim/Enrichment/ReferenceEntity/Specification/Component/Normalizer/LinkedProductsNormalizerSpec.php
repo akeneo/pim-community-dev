@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer;
 
-use Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\LinkedProductsNormalizer;
 use PhpSpec\ObjectBehavior;
 

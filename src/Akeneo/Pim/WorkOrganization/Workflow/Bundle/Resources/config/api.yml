@@ -58,6 +58,7 @@ services:
 
     pimee_api.controller.product_model_proposal:
         class : '%pimee_api.controller.product_model_proposal.class%'
+        public: true
         arguments:
             - '@pim_catalog.repository.product_model'
             - '@pimee_workflow.repository.product_model_draft'

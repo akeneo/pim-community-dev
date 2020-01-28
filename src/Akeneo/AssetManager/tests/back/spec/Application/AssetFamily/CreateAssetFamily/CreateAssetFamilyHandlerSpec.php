@@ -4,14 +4,9 @@ namespace spec\Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily;
 
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -53,6 +48,16 @@ class CreateAssetFamilyHandlerSpec extends ObjectBehavior
                         ]
                     ]
                 ]
+            ],
+            null,
+            [
+                'source' => [
+                    'property' => 'code',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+                'pattern' => '/valid_pattern/',
+                'abort_asset_creation_on_error' => true
             ]
         );
 
@@ -60,7 +65,8 @@ class CreateAssetFamilyHandlerSpec extends ObjectBehavior
             return $assetFamily instanceof AssetFamily
                 && 'brand' === $assetFamily->getIdentifier()->normalize()
                 && 'Intel' === $assetFamily->getLabel('en_US')
-                && 'Intel' === $assetFamily->getLabel('fr_FR');
+                && 'Intel' === $assetFamily->getLabel('fr_FR')
+                && 'code' === $assetFamily->getNamingConvention()->normalize()['source']['property'];
         }))->shouldBeCalled();
 
         $this->__invoke($createAssetFamilyCommand);

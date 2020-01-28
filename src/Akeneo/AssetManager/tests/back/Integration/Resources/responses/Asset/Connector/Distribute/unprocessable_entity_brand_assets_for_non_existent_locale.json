@@ -1,0 +1,23 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_asset_manager_assets_rest_connector_get",
+        "query": {
+            "assetFamilyIdentifier": "Brand",
+            "locales": "en_US,ww_ZZ"
+        }
+    },
+    "response": {
+        "status": 422,
+        "body": {
+            "code": 422,
+            "message": "Invalid query parameters",
+            "errors": [
+                {
+                    "property": "locales",
+                    "message":"Locale \"ww_ZZ\" does not exist or is not activated."
+                }
+            ]
+        }
+    }
+}

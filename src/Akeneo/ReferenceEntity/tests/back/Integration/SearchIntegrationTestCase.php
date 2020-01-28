@@ -27,9 +27,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 abstract class SearchIntegrationTestCase extends KernelTestCase
 {
-    /** @var KernelInterface|null */
-    protected $testKernel;
-
     /** @var SearchRecordIndexHelper */
     protected $searchRecordIndexHelper;
 
@@ -38,24 +35,13 @@ abstract class SearchIntegrationTestCase extends KernelTestCase
      */
     protected function setUp(): void
     {
-        if (null === $this->testKernel) {
-            $this->bootTestKernel();
-        }
+        static::bootKernel(['debug' => false]);
         $this->searchRecordIndexHelper = $this->get('akeneoreference_entity.tests.helper.search_index_helper');
         $this->searchRecordIndexHelper->resetIndex();
     }
 
-    protected function bootTestKernel(): void
-    {
-        $this->testKernel = new \AppKernelTest('test', false);
-        $this->testKernel->boot();
-    }
-
-    /*
-     * @return mixed
-     */
     protected function get(string $service)
     {
-        return $this->testKernel->getContainer()->get($service);
+        return self::$container->get($service);
     }
 }

@@ -1,13 +1,10 @@
 import * as React from 'react';
-import {
-  NotificationSection,
-  NotificationText,
-} from 'akeneopimenrichmentassetmanager/platform/component/common/notification';
-import {Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
-import IconInfoIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/icon/info';
+import {NotificationSection, NotificationText} from 'akeneoassetmanager/platform/component/common/notification';
+import {Separator} from 'akeneoassetmanager/application/component/app/separator';
+import IconInfoIllustration from 'akeneoassetmanager/platform/component/visual/icon/info';
 import __ from 'akeneoassetmanager/tools/translator';
 import styled from 'styled-components';
-import {ASSET_COLLECTION_LIMIT} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {ASSET_COLLECTION_LIMIT} from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 const NotShrinkableIcon = styled.div`
   flex-shrink: 0;

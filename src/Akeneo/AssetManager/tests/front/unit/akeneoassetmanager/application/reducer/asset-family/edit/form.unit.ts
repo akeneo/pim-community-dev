@@ -2,12 +2,16 @@ import reducer from 'akeneoassetmanager/application/reducer/asset-family/edit/fo
 
 const initialState = {
   data: {
-    attribute_as_label: '',
-    attribute_as_image: '',
+    attributeAsLabel: '',
+    attributeAsMainMedia: '',
+    attributes: [],
     identifier: '',
     code: '',
     labels: {},
     image: null,
+    transformations: '[]',
+    productLinkRules: '[]',
+    namingConvention: '{}',
   },
   errors: [],
   state: {
@@ -123,6 +127,90 @@ describe('akeneo > asset family > application > reducer > asset-family --- edit'
     });
   });
 
+  test('I can update the transformations of the asset family', () => {
+    const previousState = {
+      data: {
+        identifier: '',
+        labels: {},
+        image: null,
+        transformations: '[]',
+      },
+      errors: [],
+      state: {isDirty: false, originalData: ''},
+    };
+    const newState = reducer(previousState, {
+      type: 'ASSET_FAMILY_EDITION_TRANSFORMATIONS_UPDATED',
+      transformations: '["new transformations"]',
+    });
+
+    expect(newState).toEqual({
+      errors: [],
+      data: {
+        identifier: '',
+        labels: {},
+        image: null,
+        transformations: '["new transformations"]',
+      },
+      state: {isDirty: false, originalData: ''},
+    });
+  });
+
+  test('I can update the naming convention of the asset family', () => {
+    const previousState = {
+      data: {
+        identifier: '',
+        labels: {},
+        image: null,
+        namingConvention: '{}',
+      },
+      errors: [],
+      state: {isDirty: false, originalData: ''},
+    };
+    const newState = reducer(previousState, {
+      type: 'ASSET_FAMILY_EDITION_NAMING_CONVENTION_UPDATED',
+      namingConvention: '{"new": "namingConvention"]',
+    });
+
+    expect(newState).toEqual({
+      errors: [],
+      data: {
+        identifier: '',
+        labels: {},
+        image: null,
+        namingConvention: '{"new": "namingConvention"]',
+      },
+      state: {isDirty: false, originalData: ''},
+    });
+  });
+
+  test('I can update the product link rules of the asset family', () => {
+    const previousState = {
+      data: {
+        identifier: '',
+        labels: {},
+        image: null,
+        productLinkRules: '[]',
+      },
+      errors: [],
+      state: {isDirty: false, originalData: ''},
+    };
+    const newState = reducer(previousState, {
+      type: 'ASSET_FAMILY_EDITION_PRODUCT_LINK_RULES_UPDATED',
+      productLinkRules: '{"new": "rule"}',
+    });
+
+    expect(newState).toEqual({
+      errors: [],
+      data: {
+        identifier: '',
+        labels: {},
+        image: null,
+        productLinkRules: '{"new": "rule"}',
+      },
+      state: {isDirty: false, originalData: ''},
+    });
+  });
+
   test('I can update the image of the asset family', () => {
     const previousState = {
       data: {
@@ -151,6 +239,39 @@ describe('akeneo > asset family > application > reducer > asset-family --- edit'
           en_US: 'Designer',
         },
         image: {my: 'image'},
+      },
+      state: {isDirty: false, originalData: ''},
+    });
+  });
+
+  test('I can update the attribute as main media of the asset family', () => {
+    const previousState = {
+      data: {
+        identifier: '',
+        labels: {
+          en_US: 'Designer',
+        },
+        attributeAsMainMedia: 'old',
+      },
+      errors: [],
+      state: {
+        isDirty: false,
+        originalData: '',
+      },
+    };
+    const newState = reducer(previousState, {
+      type: 'ASSET_FAMILY_EDITION_ATTRIBUTE_AS_MAIN_MEDIA_UPDATED',
+      attributeAsMainMedia: 'new',
+    });
+
+    expect(newState).toEqual({
+      errors: [],
+      data: {
+        identifier: '',
+        labels: {
+          en_US: 'Designer',
+        },
+        attributeAsMainMedia: 'new',
       },
       state: {isDirty: false, originalData: ''},
     });

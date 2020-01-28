@@ -28,6 +28,8 @@ pim_asset_manager:
         channel_not_supported_for_field: 'You cannot specify a channel for the field "%product_field%"'
         locale_not_supported_for_field: 'You cannot specify a locale for the field "%product_field%"'
         assignmement_attribute_does_not_support_this_asset_family: 'The product attribute "%product_attribute_code%" cannot contain assets of asset family "%asset_family_identifier%"'
+      transformation:
+        attribute_reference_should_exist: 'The attribute "%attribute_code%" does not exist for this asset family'
   asset:
     validation:
       code:

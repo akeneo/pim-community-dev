@@ -32,6 +32,7 @@ $rules = [
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductIdentifiers',
         'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductModelCodes',
+        'Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface',
 
         // TIP-1000: Permissions should not be linked to Locale
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
@@ -66,7 +67,6 @@ $rules = [
         'Akeneo\Channel\Component\Model\ChannelInterface',
 
         //TODO: Link by id instead of reference
-        'Akeneo\Asset\Component\Model\CategoryInterface',
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
@@ -87,16 +87,12 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController',
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController',
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductModelController',
-        'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface',
 
         //TODO: It shouldn't rely on model to do join (bounded contexts integration)
         'Akeneo\UserManagement\Component\Model\Group',
 
         //TODO: Public constants
         'Akeneo\UserManagement\Component\Model\User',
-
-        // TIP-1017: Do not use public constants of AttributeTypes
-        'Akeneo\Asset\Bundle\AttributeType\AttributeTypes',
 
         //TODO: It uses jobs (maybe ImportExportBundle is not part of the Platform)
         'Akeneo\Platform\Bundle\ImportExportBundle\Event\JobExecutionEvents',
@@ -129,10 +125,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\RemoveProductValueProcessor',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\UpdateProductValueProcessor',
         'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable',
-        // good examples to show what should not be overriden
-        'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollectionFactory',
-        'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollectionFactory',
-        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\IncompleteValuesNormalizer',
 
         //TODO: It extends the writer
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit\ProductAndProductModelWriter',
@@ -143,9 +135,6 @@ $rules = [
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\FilterBundle',
         'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\DatagridViewTypes',
-
-        // TIP-1014: Do not use custom Flash Messages
-        'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
 
         // TIP-1008: Clean Provider system of Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
@@ -162,9 +151,6 @@ $rules = [
         // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
 
-        // TIP-883 Fixes services to use attribute code from value
-        'Akeneo\Asset\Component\Repository\AssetRepositoryInterface',
-
         //TODO: just because we override ProductController
         'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder',
     ])->in('Akeneo\Pim\Permission\Bundle'),
@@ -175,7 +161,6 @@ $rules = [
         'Akeneo\Tool',
 
         // TIP-998: Move Access entities to component
-        'Akeneo\Pim\Permission\Bundle\Entity\AssetCategoryAccess',
         'Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess',
 
         // TIP-997: Create interfaces for Access repositories
@@ -206,6 +191,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator',
 
         // TIP-1003: Do not override Community services
@@ -219,6 +205,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory'
     ])->in('Akeneo\Pim\Permission\Component'),
 ];
 

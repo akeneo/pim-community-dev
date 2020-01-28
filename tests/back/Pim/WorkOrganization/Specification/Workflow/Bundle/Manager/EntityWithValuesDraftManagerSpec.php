@@ -3,24 +3,26 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\DraftNotReviewableException;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
-use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\DraftNotReviewableException;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class EntityWithValuesDraftManagerSpec extends ObjectBehavior
 {
@@ -33,7 +35,8 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         EventDispatcherInterface $dispatcher,
         SaverInterface $draftSaver,
         RemoverInterface $remover,
-        CollectionFilterInterface $valuesFilter
+        CollectionFilterInterface $valuesFilter,
+        PimUserDraftSourceFactory $draftSourceFactory
     ) {
         $this->beConstructedWith(
             $workingCopySaver,
@@ -44,7 +47,8 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
             $dispatcher,
             $draftSaver,
             $remover,
-            $valuesFilter
+            $valuesFilter,
+            $draftSourceFactory
         );
     }
 
@@ -69,9 +73,17 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         EntityWithValuesDraftInterface $partialDraft,
         WriteValueCollection $values
     ) {
+        $source = 'source';
+        $sourceLabel = 'Source';
+        $author = 'author';
+        $authorLabel = 'Author';
+
         $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
         $draft->getEntityWithValue()->willReturn($product);
-        $draft->getAuthor()->willReturn('author');
+        $draft->getAuthor()->willReturn($author);
+        $draft->getAuthorLabel()->willReturn($authorLabel);
+        $draft->getSource()->willReturn($source);
+        $draft->getSourceLabel()->willReturn($sourceLabel);
         $draft->getValues()->willReturn($values);
         $values->getByCodes('sku', null, null)->willReturn(null);
         $attribute->getCode()->willReturn('sku');
@@ -88,7 +100,10 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
             'pim.internal_api.attribute.edit'
         )->shouldBeCalled()->willReturn($wholeChange);
 
-        $factory->createEntityWithValueDraft($product, 'author')->shouldBeCalled()->willReturn($partialDraft);
+        $factory->createEntityWithValueDraft($product, Argument::type(DraftSource::class))
+            ->shouldBeCalled()
+            ->willReturn($partialDraft);
+
         $partialDraft->setChanges(['values' => $wholeChange])->shouldBeCalled();
         $partialDraft->getId()->willReturn(null);
 
@@ -122,9 +137,17 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         WriteValueCollection $values,
         ValueInterface $value
     ) {
+        $source = 'source';
+        $sourceLabel = 'Source';
+        $author = 'author';
+        $authorLabel = 'Author';
+
         $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
         $draft->getEntityWithValue()->willReturn($product);
-        $draft->getAuthor()->willReturn('author');
+        $draft->getAuthor()->willReturn($author);
+        $draft->getAuthorLabel()->willReturn($authorLabel);
+        $draft->getSource()->willReturn($source);
+        $draft->getSourceLabel()->willReturn($sourceLabel);
         $draft->getValues()->willReturn($values);
         $values->getByCodes('sku', null, null)->willReturn($value);
         $attribute->getCode()->willReturn('sku');
@@ -216,9 +239,17 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         EntityWithValuesDraftInterface $partialDraft,
         WriteValueCollection $values
     ) {
+        $source = 'source';
+        $sourceLabel = 'Source';
+        $author = 'author';
+        $authorLabel = 'Author';
+
         $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
         $draft->getEntityWithValue()->willReturn($product);
-        $draft->getAuthor()->willReturn('author');
+        $draft->getAuthor()->willReturn($author);
+        $draft->getAuthorLabel()->willReturn($authorLabel);
+        $draft->getSource()->willReturn($source);
+        $draft->getSourceLabel()->willReturn($sourceLabel);
         $draft->getValues()->willReturn($values);
         $values->getByCodes('sku', null, null)->willReturn(null);
         $values->getByCodes('description', 'tablet', 'fr_FR')->willReturn(null);
@@ -247,7 +278,9 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
             'pim.internal_api.attribute.edit'
         )->shouldBeCalled()->willReturn($approvableChanges);
 
-        $factory->createEntityWithValueDraft($product, 'author')->shouldBeCalled()->willReturn($partialDraft);
+        $factory->createEntityWithValueDraft($product, Argument::type(DraftSource::class))
+            ->shouldBeCalled()
+            ->willReturn($partialDraft);
         $partialDraft->getId()->willReturn(null);
         $partialDraft->setChanges(['values' => $approvableChanges])->shouldBeCalled();
 
@@ -333,14 +366,30 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         $userContext,
         $repository,
         $factory,
+        $draftSourceFactory,
         UserInterface $user,
         ProductInterface $product,
-        EntityWithValuesDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft,
+        DraftSource $draftSource
     ) {
-        $user->getUsername()->willReturn('peter');
+        $username = 'peter';
+        $userFullName = 'Peter Williams';
+        $source = 'source';
+        $sourceLabel = 'Source';
+
+        $user->getUsername()->willReturn($username);
         $userContext->getUser()->willReturn($user);
-        $repository->findUserEntityWithValuesDraft($product, 'peter')->willReturn(null);
-        $factory->createEntityWithValueDraft($product, 'peter')->willReturn($productDraft);
+        $repository->findUserEntityWithValuesDraft($product, $username)->willReturn(null);
+
+        $draftSource->getSource()->willReturn($source);
+        $draftSource->getSourceLabel()->willReturn($sourceLabel);
+        $draftSource->getAuthor()->willReturn($username);
+        $draftSource->getAuthorLabel()->willReturn($userFullName);
+
+        $draftSourceFactory->createFromUser($user)->willReturn($draftSource);
+
+        $factory->createEntityWithValueDraft($product, $draftSource)
+            ->willReturn($productDraft);
 
         $this->findOrCreate($product)->shouldReturn($productDraft);
     }

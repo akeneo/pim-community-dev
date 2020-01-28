@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\Project;
 
-use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
 use AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\TeamworkAssistantTestCase;
+use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
 use PHPUnit\Framework\Assert;
 
 class RemoveUserIntegration extends TeamworkAssistantTestCase

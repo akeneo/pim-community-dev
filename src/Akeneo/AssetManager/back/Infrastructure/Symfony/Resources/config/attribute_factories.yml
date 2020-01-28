@@ -7,8 +7,8 @@ services:
         tags:
             - { name: akeneo_assetmanager.attribute_factory }
 
-    akeneo_assetmanager.application.factory.image_attribute_factory:
-        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\ImageAttributeFactory
+    akeneo_assetmanager.application.factory.media_file_attribute_factory:
+        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\MediaFileAttributeFactory
         tags:
             - { name: akeneo_assetmanager.attribute_factory }
 

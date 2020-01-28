@@ -42,7 +42,6 @@ class ProductPublisherSpec extends ObjectBehavior
         $product->getGroups()->willReturn([]);
         $product->getCategories()->willReturn([]);
         $product->getAssociations()->willReturn([]);
-        $product->getCompletenesses()->willReturn([]);
         $product->getValues()->willReturn([]);
         $product->getFamily()->willReturn(null);
         $product->getId()->willReturn(1);

@@ -1,10 +1,7 @@
 import user, {UserState} from 'akeneoassetmanager/application/reducer/user';
 import right, {RightState} from 'akeneoassetmanager/application/reducer/right';
 import sidebar, {SidebarState} from 'akeneoassetmanager/application/reducer/sidebar';
-import grid, {GridState} from 'akeneoassetmanager/application/reducer/grid';
-import createAsset, {CreateState as CreateAssetState} from 'akeneoassetmanager/application/reducer/asset/create';
 import form, {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
-import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import createAttribute, {
   CreateState as CreateAttributeState,
 } from 'akeneoassetmanager/application/reducer/attribute/create';
@@ -16,14 +13,11 @@ import {
   editOptionsReducer as options,
   EditOptionState,
 } from 'akeneoassetmanager/application/reducer/attribute/type/option';
-import confirmDelete, {ConfirmDeleteState} from 'akeneoassetmanager/application/reducer/confirmDelete';
 
 export interface EditState {
   user: UserState;
   right: RightState;
   sidebar: SidebarState;
-  grid: GridState<NormalizedAsset>;
-  createAsset: CreateAssetState;
   createAttribute: CreateAttributeState;
   attributes: ListState;
   attribute: EditAttributeState;
@@ -32,15 +26,12 @@ export interface EditState {
   assetCount: number;
   structure: StructureState;
   permission: PermissionState;
-  confirmDelete: ConfirmDeleteState;
 }
 
 export default {
   user,
   right,
   sidebar,
-  grid,
-  createAsset,
   createAttribute,
   attributes,
   attribute,
@@ -48,5 +39,4 @@ export default {
   permission,
   options,
   form,
-  confirmDelete,
 };

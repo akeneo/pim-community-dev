@@ -1,0 +1,33 @@
+services:
+    Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\ExportAssetsIntoCSVFiles\ExportAssetsCommand:
+        arguments:
+            - '@Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\ExportAssetsIntoCSVFiles\FindAssets'
+            - '@Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\ExportAssetsIntoCSVFiles\FindVariations'
+        tags:
+            - { name: console.command }
+
+    Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\ExportAssetsIntoCSVFiles\FindAssets:
+        arguments:
+            - '@doctrine.dbal.default_connection'
+
+    Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\ExportAssetsIntoCSVFiles\FindVariations:
+        arguments:
+            - '@doctrine.dbal.default_connection'
+
+    Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\MigratePamAttributesIntoAssetManagerAttributesCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: console.command }
+
+    Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\MigrateAssetCategoryLabelsCommand:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.application.attribute.edit_attribute_handler'
+            - '@database_connection'
+        tags:
+            - { name: console.command }
+
+    akeneo.pim.asset.factory.value.reference_data_collection:
+        class: Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\AssetCollectionValueFactory
+        tags: ['akeneo.pim.enrichment.factory.product_value']

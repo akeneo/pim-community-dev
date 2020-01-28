@@ -2,9 +2,9 @@
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\TextDataHydrator;
 use PhpSpec\ObjectBehavior;
 
@@ -17,7 +17,7 @@ class TextDataHydratorSpec extends ObjectBehavior
 
     function it_only_supports_hydrate_data_of_text_attribute(
         TextAttribute $text,
-        ImageAttribute $image
+        MediaFileAttribute $image
     ) {
         $this->supports($text)->shouldReturn(true);
         $this->supports($image)->shouldReturn(false);

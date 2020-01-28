@@ -27,6 +27,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -104,78 +105,89 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
         $labelAttribute = $this->attributeRepository->getByIdentifier(
             $assetFamily->getAttributeAsLabelReference()->getIdentifier()
         );
-        $imageAttribute = $this->attributeRepository->getByIdentifier(
-            $assetFamily->getAttributeAsImageReference()->getIdentifier()
+        $mediaFileAttribute = $this->attributeRepository->getByIdentifier(
+            $assetFamily->getAttributeAsMainMediaReference()->getIdentifier()
         );
 
         $expectedValues = [
             [
-                'data' => null,
-                'locale' => 'de_DE',
-                'channel' => null,
+                'data'      => null,
+                'locale'    => 'de_DE',
+                'channel'   => null,
                 'attribute' => $descriptionAttribute->normalize(),
             ],
             [
-                'data' => null,
-                'locale' => 'en_US',
-                'channel' => null,
+                'data'      => null,
+                'locale'    => 'en_US',
+                'channel'   => null,
                 'attribute' => $descriptionAttribute->normalize(),
             ],
             [
-                'data' => null,
-                'locale' => 'fr_FR',
-                'channel' => null,
+                'data'      => null,
+                'locale'    => 'fr_FR',
+                'channel'   => null,
                 'attribute' => $descriptionAttribute->normalize(),
             ],
             [
-                'data' => 'Hello',
-                'locale' => null,
-                'channel' => null,
+                'data'      => 'Hello',
+                'locale'    => null,
+                'channel'   => null,
                 'attribute' => $nameAttribute->normalize(),
             ],
             [
-                'data' => 'Philippe Starck',
-                'locale' => 'fr_FR',
-                'channel' => null,
+                'data'      => 'Philippe Starck',
+                'locale'    => 'fr_FR',
+                'channel'   => null,
                 'attribute' => $labelAttribute->normalize(),
             ],
             [
-                'data' => null,
-                'locale' => 'en_US',
-                'channel' => null,
+                'data'      => null,
+                'locale'    => 'en_US',
+                'channel'   => null,
                 'attribute' => $labelAttribute->normalize(),
             ],
             [
-                'data' => null,
-                'locale' => 'de_DE',
-                'channel' => null,
+                'data'      => null,
+                'locale'    => 'de_DE',
+                'channel'   => null,
                 'attribute' => $labelAttribute->normalize(),
             ],
             [
-                'data' => [
-                    'filePath' => 'test/image_2.jpg',
+                'data'      => [
+                    'filePath'         => 'test/image_2.jpg',
                     'originalFilename' => 'image_2.jpg',
-                    'size' => 100,
-                    'mimeType' => 'image/jpg',
-                    'extension' => '.jpg'
+                    'size'             => 100,
+                    'mimeType'         => 'image/jpg',
+                    'extension'        => '.jpg',
+                    'updatedAt'        => '2019-11-22T15:16:21+0000',
                 ],
-                'locale' => null,
-                'channel' => null,
-                'attribute' => $imageAttribute->normalize(),
+                'locale'    => null,
+                'channel'   => null,
+                'attribute' => $mediaFileAttribute->normalize(),
             ],
         ];
-
-        $imageInfo = new FileInfo();
-        $imageInfo
-            ->setOriginalFilename('image_2.jpg')
-            ->setKey('test/image_2.jpg');
 
         $expectedStarck = new AssetDetails(
             $this->assetIdentifier,
             $assetFamilyIdentifier,
+            $assetFamily->getAttributeAsMainMediaReference()->getIdentifier(),
             $assetCode,
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
-            Image::fromFileInfo($imageInfo),
+            [
+                [
+                    'data'      => [
+                        'size'             => 100,
+                        'filePath'         => 'test/image_2.jpg',
+                        'mimeType'         => 'image/jpg',
+                        'extension'        => '.jpg',
+                        'updatedAt'        => '2019-11-22T15:16:21+0000',
+                        'originalFilename' => 'image_2.jpg',
+                    ],
+                    'locale'    => null,
+                    'channel'   => null,
+                    'attribute' => $mediaFileAttribute->normalize(),
+                ],
+            ],
             $expectedValues,
             true
         );
@@ -210,7 +222,7 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
             TextData::fromString('Philippe Starck')
         );
         $imageValue = Value::create(
-            $assetFamily->getAttributeAsImageReference()->getIdentifier(),
+            $assetFamily->getAttributeAsMainMediaReference()->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
             FileData::createFromNormalize([
@@ -218,7 +230,8 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
                 'originalFilename' => 'image_2.jpg',
                 'size' => 100,
                 'mimeType' => 'image/jpg',
-                'extension' => '.jpg'
+                'extension' => '.jpg',
+                'updatedAt' => '2019-11-22T15:16:21+0000',
             ])
         );
 
@@ -236,6 +249,7 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(155),
@@ -251,6 +265,7 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'description']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(2500),
@@ -277,8 +292,17 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
         );
     }
 
-    private function assertAssetDetails(AssetDetails $expected, AssetDetails $actual)
+    private function assertAssetDetails(AssetDetails $expected, AssetDetails $actual): void
     {
-        $this->assertEqualsCanonicalizing($expected->normalize(), $actual->normalize());
+        $normalizeExpectedValues = $expected->normalize();
+        $normalizeActualValues = $actual->normalize();
+        $this->assertEquals($normalizeExpectedValues['identifier'], $normalizeActualValues['identifier']);
+        $this->assertEquals($normalizeExpectedValues['asset_family_identifier'], $normalizeActualValues['asset_family_identifier']);
+        $this->assertEquals($normalizeExpectedValues['attribute_as_main_media_identifier'], $normalizeActualValues['attribute_as_main_media_identifier']);
+        $this->assertEquals($normalizeExpectedValues['code'], $normalizeActualValues['code']);
+        $this->assertEquals($normalizeExpectedValues['labels'], $normalizeActualValues['labels']);
+        $this->assertEqualsCanonicalizing($normalizeExpectedValues['values'], $normalizeActualValues['values']);
+        $this->assertEquals($normalizeExpectedValues['image'], $normalizeActualValues['image']);
+        $this->assertEquals($normalizeExpectedValues['permission'], $normalizeActualValues['permission']);
     }
 }

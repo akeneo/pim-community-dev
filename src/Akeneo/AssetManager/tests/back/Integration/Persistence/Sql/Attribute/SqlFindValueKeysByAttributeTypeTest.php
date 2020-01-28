@@ -9,6 +9,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -113,6 +114,7 @@ class SqlFindValueKeysByAttributeTypeTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger($this->order++),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(25),
@@ -131,6 +133,7 @@ class SqlFindValueKeysByAttributeTypeTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger($this->order++),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true)
         );
@@ -146,6 +149,7 @@ class SqlFindValueKeysByAttributeTypeTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger($this->order++),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AssetFamilyIdentifier::fromString('designer')

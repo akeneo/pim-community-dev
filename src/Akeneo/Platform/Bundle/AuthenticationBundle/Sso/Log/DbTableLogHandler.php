@@ -11,6 +11,8 @@ declare(strict_types=1);
  */
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log;
 
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Doctrine\DBAL\Connection;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Handler\RotatingFileHandler;
@@ -18,33 +20,31 @@ use Monolog\Logger;
 
 /**
  * This Monolog handler logs message into a table in the current database.
- * The table is created automatically if it does not exists.
- *
- * The handler cleans up log entries older than the specified number of
- * days. 0 means no limit.
  */
 final class DbTableLogHandler extends AbstractProcessingHandler
 {
+    private const CONFIGURATION_CODE = 'authentication_sso';
+
+    /** @var Repository */
+    private $configRepository;
+
     /** @var Connection */
     private $connection;
 
-    /** @®ar int */
-    private $maxDays = 0;
-
-    /** @var boolean */
-    private $initialized = false;
+    /** @var bool */
+    private $ssoEnabled;
 
     /** @static string */
     const TABLE_NAME = 'pimee_sso_log';
 
     public function __construct(
+        Repository $configRepository,
         Connection $connection,
-        int $maxDays = 0,
         $level = Logger::DEBUG,
         bool $bubble = true
     ) {
+        $this->configRepository = $configRepository;
         $this->connection = $connection;
-        $this->maxDays = $maxDays;
 
         parent::__construct($level, $bubble);
     }
@@ -54,8 +54,8 @@ final class DbTableLogHandler extends AbstractProcessingHandler
      */
     protected function write(array $record): void
     {
-        if (!$this->initialized) {
-            $this->initialize();
+        if (!$this->isSSOEnabled()) {
+            return;
         }
 
         $datetime = $record['datetime'];
@@ -75,46 +75,17 @@ final class DbTableLogHandler extends AbstractProcessingHandler
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function close()
+    private function isSSOEnabled(): bool
     {
-        parent::close();
-
-        $this->rotate();
-    }
-
-    private function initialize(): void
-    {
-        $this->connection->exec(
-            sprintf(
-                'CREATE TABLE IF NOT EXISTS %s' .
-                '(time DATETIME, channel VARCHAR(255), level INTEGER, message LONGTEXT, INDEX(time))',
-                self::TABLE_NAME
-            )
-        );
-
-        $this->initialized = true;
-    }
-
-    private function rotate(): void
-    {
-        if (0 === $this->maxDays) {
-            return;
+        if (null === $this->ssoEnabled) {
+            try {
+                $config = $this->configRepository->find(self::CONFIGURATION_CODE);
+                $this->ssoEnabled = $config->isEnabled();
+            } catch (ConfigurationNotFound $e) {
+                $this->ssoEnabled = false;
+            }
         }
 
-        if (!$this->initialized) {
-            $this->initialize();
-        }
-
-        $expirationDate = new \DateTime(sprintf("%s days ago", $this->maxDays));
-
-        $this->connection->executeQuery(
-            sprintf('DELETE FROM %s WHERE time < :expirationTime', self::TABLE_NAME),
-            [
-                'expirationTime' => $this->connection->convertToDatabaseValue($expirationDate, 'datetime')
-            ]
-        );
+        return $this->ssoEnabled;
     }
 }

@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Factory\FranklinUserDraftSourceFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -45,31 +47,37 @@ final class ProposalUpsert implements ProposalUpsertInterface
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
+    /** @var FranklinUserDraftSourceFactory */
+    private $draftSourceFactory;
+
     /**
      * @param ProductRepositoryInterface $productRepository
      * @param ObjectUpdaterInterface $productUpdater
      * @param EntityWithValuesDraftBuilderInterface $draftBuilder
      * @param SaverInterface $draftSaver
      * @param EventDispatcherInterface $eventDispatcher
+     * @param FranklinUserDraftSourceFactory $draftSourceFactory
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,
         EntityWithValuesDraftBuilderInterface $draftBuilder,
         SaverInterface $draftSaver,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        FranklinUserDraftSourceFactory $draftSourceFactory
     ) {
         $this->productRepository = $productRepository;
         $this->productUpdater = $productUpdater;
         $this->draftBuilder = $draftBuilder;
         $this->draftSaver = $draftSaver;
         $this->eventDispatcher = $eventDispatcher;
+        $this->draftSourceFactory = $draftSourceFactory;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function process(array $suggestedData, string $author): int
+    public function process(array $suggestedData): int
     {
         $processed = 0;
         foreach ($suggestedData as $data) {
@@ -82,7 +90,7 @@ final class ProposalUpsert implements ProposalUpsertInterface
                 $wasProposalCreated = $this->doProcess(
                     $product,
                     $this->filterAttributesNotBelongingToTheFamily($product->getFamily(), $data->getSuggestedValues()),
-                    $author
+                    $this->draftSourceFactory->create()
                 );
                 if (true === $wasProposalCreated) {
                     $processed++;
@@ -98,11 +106,10 @@ final class ProposalUpsert implements ProposalUpsertInterface
     /**
      * @param ProductInterface $product
      * @param array $values
-     * @param string $author
-     *
+     * @param DraftSource $draftSource
      * @return bool
      */
-    private function doProcess(ProductInterface $product, array $values, string $author): bool
+    private function doProcess(ProductInterface $product, array $values, DraftSource $draftSource): bool
     {
         $this->productUpdater->update(
             $product,
@@ -110,7 +117,7 @@ final class ProposalUpsert implements ProposalUpsertInterface
                 'values' => $values,
             ]
         );
-        $productDraft = $this->draftBuilder->build($product, $author);
+        $productDraft = $this->draftBuilder->build($product, $draftSource);
 
         if (null !== $productDraft) {
             $this->eventDispatcher->dispatch(

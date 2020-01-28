@@ -16,13 +16,6 @@ services:
             - '@event_dispatcher'
             - '%pimee_security.entity.product_category_access.class%'
 
-    pimee_security.saver.asset_category_access:
-        class: '%akeneo_storage_utils.saver.base.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '%pimee_security.entity.asset_category_access.class%'
-
     pimee_security.saver.job_profile_access:
         class: '%akeneo_storage_utils.saver.base.class%'
         arguments:
@@ -56,17 +49,3 @@ services:
             - '@pim_catalog.saver.product_model_without_permission'
             - '@pimee_catalog.security.merger.merge_data_on_product_model'
             - '@pim_catalog.repository.product_model_without_permission'
-
-    # CE override
-    pim_catalog.saver.product_model_descendants:
-        class: '%pim_catalog.saver.product_model_descendants.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.repository.product_model_without_permission'
-            - '@pim_catalog.query.product_query_builder_factory_without_permission'
-            - '@pim_catalog.manager.completeness'
-            - '@pim_catalog.elasticsearch.indexer.product'
-            - '@pim_catalog.elasticsearch.indexer.product_model'
-            - '@pim_catalog.elasticsearch.indexer.product_model'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '%pim_job_product_batch_size%'

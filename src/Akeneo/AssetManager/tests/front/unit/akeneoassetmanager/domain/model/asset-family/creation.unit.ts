@@ -1,31 +1,48 @@
 import {
   createEmptyAssetFamilyCreation,
-  denormalizeAssetFamilyCreation,
+  createAssetFamilyCreationFromNormalized,
+  assetFamilyCreationAreEqual,
+  getAssetFamilyCreationLabel,
 } from 'akeneoassetmanager/domain/model/asset-family/creation';
 
+const michelIdentifier = 'michel';
 const michelLabels = {en_US: 'Michel'};
+const didierCode = 'didier';
+const didierLabels = {en_US: 'Didier'};
 
 describe('akeneo > asset family > domain > model --- asset family', () => {
-  test('I can compare two asset families', () => {
+  test('I can create a new asset family with an code and labels', () => {
     expect(
-      denormalizeAssetFamilyCreation({
-        code: 'didier',
-        labels: {en_US: 'Didier'},
-      }).equals(
-        denormalizeAssetFamilyCreation({
-          code: 'didier',
-          labels: {en_US: 'Didier'},
+      createAssetFamilyCreationFromNormalized({
+        code: michelIdentifier,
+        labels: michelLabels,
+      }).code
+    ).toEqual(michelIdentifier);
+  });
+
+  test('I can compare two asset families', () => {
+    const michelLabels = {en_US: 'Michel'};
+    expect(
+      assetFamilyCreationAreEqual(
+        createAssetFamilyCreationFromNormalized({
+          code: didierCode,
+          labels: didierLabels,
+        }),
+        createAssetFamilyCreationFromNormalized({
+          code: didierCode,
+          labels: didierLabels,
         })
       )
     ).toBe(true);
     expect(
-      denormalizeAssetFamilyCreation({
-        code: 'didier',
-        labels: {en_US: 'Didier'},
-      }).equals(
-        denormalizeAssetFamilyCreation({
-          code: 'michel',
-          labels: {en_US: 'Michel'},
+      assetFamilyCreationAreEqual(
+        createAssetFamilyCreationFromNormalized({
+          code: didierCode,
+          labels: didierLabels,
+        }),
+        createAssetFamilyCreationFromNormalized({
+          code: michelIdentifier,
+          labels: michelLabels,
         })
       )
     ).toBe(false);
@@ -33,61 +50,45 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
 
   test('I can get a label for the given locale', () => {
     expect(
-      denormalizeAssetFamilyCreation({
-        code: 'michel',
-        labels: {en_US: 'Michel'},
-      }).getLabel('en_US')
+      getAssetFamilyCreationLabel(
+        createAssetFamilyCreationFromNormalized({
+          code: michelIdentifier,
+          labels: michelLabels,
+        }),
+        'en_US'
+      )
     ).toBe('Michel');
     expect(
-      denormalizeAssetFamilyCreation({
-        code: 'michel',
-        labels: {en_US: 'Michel'},
-      }).getLabel('fr_FR')
+      getAssetFamilyCreationLabel(
+        createAssetFamilyCreationFromNormalized({
+          code: michelIdentifier,
+          labels: michelLabels,
+        }),
+        'fr_FR'
+      )
     ).toBe('[michel]');
     expect(
-      denormalizeAssetFamilyCreation({
-        code: 'michel',
-        labels: {en_US: 'Michel'},
-      }).getLabel('fr_FR', false)
+      getAssetFamilyCreationLabel(
+        createAssetFamilyCreationFromNormalized({
+          code: michelIdentifier,
+          labels: michelLabels,
+        }),
+        'fr_FR',
+        false
+      )
     ).toBe('');
   });
 
   test('I can get the collection of labels', () => {
     expect(
-      denormalizeAssetFamilyCreation({
-        code: 'michel',
-        labels: {en_US: 'Michel'},
-      }).getLabelCollection()
+      createAssetFamilyCreationFromNormalized({
+        code: michelIdentifier,
+        labels: michelLabels,
+      }).labels
     ).toEqual(michelLabels);
   });
 
   test('I can create an empty asset family creation', () => {
-    expect(createEmptyAssetFamilyCreation()).toEqual(denormalizeAssetFamilyCreation({code: '', labels: {}}));
-  });
-
-  test('I can normalize an asset family creation', () => {
-    const michelAssetFamily = denormalizeAssetFamilyCreation({
-      code: 'michel',
-      labels: {en_US: 'Michel'},
-    });
-
-    expect(michelAssetFamily.normalize()).toEqual({
-      code: 'michel',
-      labels: {en_US: 'Michel'},
-    });
-  });
-
-  test('I can normalize an asset family creation', () => {
-    const michelAssetFamily = denormalizeAssetFamilyCreation({
-      code: 'michel',
-      labels: {
-        en_US: 'Michel',
-      },
-    });
-
-    expect(michelAssetFamily.normalize()).toEqual({
-      code: 'michel',
-      labels: {en_US: 'Michel'},
-    });
+    expect(createEmptyAssetFamilyCreation()).toEqual({code: '', labels: {}});
   });
 });

@@ -1,10 +1,33 @@
 import * as React from 'react';
-import * as $ from 'jquery';
+import $ from 'jquery';
+import styled from 'styled-components';
+import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+
+const StyledSelect = styled.select<{light: boolean}>`
+  ${({light}: ThemedProps<{light: boolean}>) =>
+    light &&
+    `
+    .select2-choice {
+      border: none;
+      padding: 0;
+      width: fit-content;
+      background: inherit;
+      line-height: inherit;
+      height: initial;
+
+      .select2-arrow {
+        background-position: bottom left;
+      }
+    }
+`}
+`;
+
+export type Select2Options = {
+  [value: string]: string;
+};
 
 export interface Select2Props {
-  data: {
-    [choiceValue: string]: string;
-  };
+  data: Select2Options;
   value: string[] | string;
   multiple: boolean;
   readOnly: boolean;
@@ -29,7 +52,7 @@ export default class Select2 extends React.Component<Select2Props & any> {
     const $el = $(this.select.current) as any;
 
     if (undefined !== $el.select2) {
-      $el.val(this.props.value).select2(this.props.configuration);
+      $el.val(this.props.value).select2(this.props.configuration || {});
       $el.on('change', (event: any) => {
         this.props.onChange(event.val);
       });
@@ -40,10 +63,17 @@ export default class Select2 extends React.Component<Select2Props & any> {
     if (null === this.select.current) {
       return;
     }
+
+    const {value} = this.props;
     const $el = $(this.select.current) as any;
 
+    if (value.length === 0) {
+      return;
+    }
+
     if (undefined !== $el.select2) {
-      $el.val(this.props.value).select2(this.props.configuration);
+      $('#select2-drop-mask, #select2-drop').remove();
+      $el.val(value).select2(this.props.configuration || {});
     }
   }
 
@@ -60,9 +90,10 @@ export default class Select2 extends React.Component<Select2Props & any> {
     const {data, value, configuration, ...props} = this.props;
 
     return (
-      <select
+      <StyledSelect
         {...props}
         ref={this.select}
+        value={value}
         multiple={props.multiple}
         disabled={props.readOnly}
         onChange={event => {
@@ -85,7 +116,7 @@ export default class Select2 extends React.Component<Select2Props & any> {
             </option>
           );
         })}
-      </select>
+      </StyledSelect>
     );
   }
 }

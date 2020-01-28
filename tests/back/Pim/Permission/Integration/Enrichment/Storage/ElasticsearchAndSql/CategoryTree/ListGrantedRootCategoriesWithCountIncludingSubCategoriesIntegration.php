@@ -20,7 +20,7 @@ class ListGrantedRootCategoriesWithCountIncludingSubCategoriesIntegration extend
 
         $this->createAdminUser();
 
-        $fixturesLoader = new CategoryTreeFixturesLoaderWithPermission($this->testKernel->getContainer());
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.category_tree_loader_with_permissions');
         $fixturesLoader->adminUserAsRedactorAndITSupport();
 
         $fixturesLoader->givenTheCategoryTreesWithoutViewPermission([
@@ -59,6 +59,15 @@ class ListGrantedRootCategoriesWithCountIncludingSubCategoriesIntegration extend
             'product_4' => ['tree_1_child_2_level_2'],
             'product_5' => ['tree_2_child_1_level_2'],
             'product_6' => ['tree_2_child_1_level_1', 'tree_2_child_1_level_2'],
+        ]);
+
+        $fixturesLoader->givenTheProductModelsWithCategories([
+            'product_model_1' => ['tree_1', 'tree_1_child_1_level_1'],
+            'product_model_2' => ['tree_1_child_1_level_1'],
+            'product_model_3' => ['tree_1_child_1_level_3'],
+            'product_model_4' => ['tree_1_child_2_level_2'],
+            'product_model_5' => ['tree_2_child_1_level_2'],
+            'product_model_6' => ['tree_2_child_1_level_1', 'tree_2_child_1_level_2'],
         ]);
     }
 

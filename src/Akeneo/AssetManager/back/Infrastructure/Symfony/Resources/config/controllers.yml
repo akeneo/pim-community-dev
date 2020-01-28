@@ -1,10 +1,13 @@
 services:
+    _defaults:
+        public: true
+
     # Asset family
     akeneo_assetmanager.infrastructure.action.asset_family.create:
         class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\CreateAction
         arguments:
             - '@akeneo_assetmanager.application.asset_family.create_asset_family_handler'
-            - '@asset_family_serializer'
+            - '@asset_manager_serializer'
             - '@validator'
             - '@oro_security.security_facade'
             - '@pim_user.context.user'
@@ -21,14 +24,23 @@ services:
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@security.token_storage'
 
+    akeneo_assetmanager.infrastructure.action.asset_family.compute_transformations:
+        class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\ComputeTransformationsAction
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_details'
+            - '@akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_family_identifier_launcher'
+
     akeneo_assetmanager.infrastructure.action.asset_family.edit:
         class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\EditAction
         arguments:
             - '@akeneo_assetmanager.application.asset_family.edit_asset_family_handler'
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@security.token_storage'
-            - '@asset_family_serializer'
+            - '@asset_manager_serializer'
             - '@validator'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@oro_security.security_facade'
 
     akeneo_assetmanager.infrastructure.action.asset_family.delete:
         class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\DeleteAction
@@ -101,12 +113,16 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\CreateAction
         arguments:
             - '@akeneo_assetmanager.application.asset.create_asset_handler'
+            - '@akeneo_assetmanager.application.asset.edit_asset_handler'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@security.token_storage'
-            - '@asset_family_serializer'
+            - '@asset_manager_serializer'
             - '@validator'
             - '@oro_security.security_facade'
+            - '@akeneo_assetmanager.application.factory.asset.edit_asset_command_factory'
+            - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory'
+            - '@akeneo_assetmanager.application.asset.link_assets.link_asset_handler'
 
     akeneo_assetmanager.infrastructure.action.asset.index:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\IndexAction
@@ -128,7 +144,7 @@ services:
             - '@validator'
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@security.token_storage'
-            - '@serializer'
+            - '@asset_manager_serializer'
 
     akeneo_assetmanager.infrastructure.action.asset.delete:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\DeleteAction
@@ -153,6 +169,15 @@ services:
             - '@akeneo_assetmanager.infrastructure.registry.preview_generator'
             - '@pim_asset.provider.default_image'
 
+    akeneo_assetmanager.infrastructure.action.file_upload:
+        public: true
+        class: 'Akeneo\AssetManager\Infrastructure\Controller\File\UploadAction'
+        arguments:
+            - '@validator'
+            - '@akeneo_file_storage.file_storage.path_generator'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_file_storage.repository.file_info'
+
     # Connector
     akeneo_assetmanager.infrastructure.connector.action.asset.get:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\GetConnectorAssetAction
@@ -165,7 +190,7 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\Hal\AddHalDownloadLinkToAssetImages
         arguments:
             - '@router'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_image_attribute_codes'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_media_file_attribute_codes'
 
     akeneo_assetmanager.infrasctucture.connector.add_hal_download_link_to_asset_family_image:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\Hal\AddHalDownloadLinkToAssetFamilyImage
@@ -197,7 +222,6 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\GetConnectorAssetFamilyAction
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_by_asset_family_identifier'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
             - '@akeneo_assetmanager.infrasctucture.connector.add_hal_download_link_to_asset_family_image'
 
     akeneo_assetmanager.infrastructure.connector.action.asset_families.get:
@@ -232,6 +256,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.connector.api.asset_validator'
             - '@validator'
             - '@akeneo_assetmanager.infrastructure.connector.action.asset.batch_assets_to_link'
+            - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory'
 
     akeneo_assetmanager.infrastructure.connector.action.asset.delete:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\DeleteAssetAction
@@ -252,6 +277,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.connector.api.asset_validator'
             - '@akeneo_assetmanager.infrastructure.connector.api.asset_list_validator'
             - '@akeneo_assetmanager.infrastructure.connector.action.asset.batch_assets_to_link'
+            - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory'
             - '%asset_family_connector_maximum_assets_to_process_per_request%'
 
     akeneo_assetmanager.infrastructure.connector.action.asset.batch_assets_to_link:

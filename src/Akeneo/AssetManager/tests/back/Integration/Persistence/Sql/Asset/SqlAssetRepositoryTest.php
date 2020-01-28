@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
-use Akeneo\AssetManager\Common\Fake\EventDispatcherMock;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
@@ -37,6 +36,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherMock;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\Assert;
 
@@ -64,6 +64,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         $this->eventDispatcherMock->reset();
 
         $this->resetDB();
+        $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
         $this->loadFixtures();
     }
 
@@ -225,10 +226,10 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
                     TextData::fromString('Starck')
                 ),
                 Value::create(
-                    $assetFamily->getAttributeAsImageReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsMainMediaReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($imageInfo)
+                    FileData::createFromFileinfo($imageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
                 Value::create(
                     $this->fixturesDesigner['attributes']['name']->getIdentifier(),
@@ -240,7 +241,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
                     $this->fixturesDesigner['attributes']['main_image']->getIdentifier(),
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($fileInfo)
+                    FileData::createFromFileinfo($fileInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 )
             ])
         );
@@ -330,7 +331,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
                     $this->fixturesDesigner['attributes']['main_image']->getIdentifier(),
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($fileInfo)
+                    FileData::createFromFileinfo($fileInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
                 Value::create(
                     $this->fixturesDesigner['attributes']['website']->getIdentifier(),

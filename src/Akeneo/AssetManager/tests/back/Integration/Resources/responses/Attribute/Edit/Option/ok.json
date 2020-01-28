@@ -1,0 +1,38 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_asset_manager_attribute_edit_rest",
+    "query": {
+      "assetFamilyIdentifier": "designer",
+      "attributeIdentifier": "favorite_color_designer_52609e00b7ee307e79eb100099b9a8bf"
+    },
+    "body": {
+      "identifier": "favorite_color_designer_52609e00b7ee307e79eb100099b9a8bf",
+      "asset_family_identifier": "designer",
+      "options": [
+        {
+          "code": "red",
+          "labels": {
+            "en_US": "Red",
+            "fr_FR": "Rouge"
+          }
+        },
+        {
+          "code": "green",
+          "labels": {
+            "en_US": "Green",
+            "fr_FR": "Vert"
+          }
+        },
+        {
+          "code": "blue",
+          "labels": {}
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 204,
+    "body": ""
+  }
+}

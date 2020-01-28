@@ -1,4 +1,4 @@
-import * as $ from 'jquery';
+import $ from 'jquery';
 import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import * as React from 'react';
@@ -26,6 +26,8 @@ import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/local
 import {updateAttributeList} from 'akeneoassetmanager/application/action/product/attribute';
 import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import Key from 'akeneoassetmanager/tools/key';
+import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import {ThemeProvider} from 'styled-components';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -78,7 +80,9 @@ class AssetEditController extends BaseController {
 
         ReactDOM.render(
           <Provider store={this.store}>
-            <AssetView />
+            <ThemeProvider theme={akeneoTheme}>
+              <AssetView />
+            </ThemeProvider>
           </Provider>,
           this.el
         );

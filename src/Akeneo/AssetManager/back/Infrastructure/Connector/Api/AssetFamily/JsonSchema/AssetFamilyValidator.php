@@ -31,6 +31,7 @@ class AssetFamilyValidator
     {
         return [
             'type' => 'object',
+            'required' => ['code'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],
@@ -41,14 +42,9 @@ class AssetFamilyValidator
                         '.+' => ['type' => 'string'],
                     ],
                 ],
-                /** /!\ /!\ /!\ /!\
-                 * Crappy fix to remove the possibility of updating the image of the asset family on the API side.
-                 * @todo : To remove if the functional decide to not have an image on the asset family
-                 * @todo : Check the PR https://github.com/akeneo/pim-enterprise-dev/pull/6651 for real fix
-                 */
-//                'image' => [
-//                    'type' => ['string', 'null']
-//                ],
+                'attribute_as_main_media' => [
+                    'type' => ['string'],
+                ],
                 'product_link_rules' => [
                     'type'  => 'array',
                     'items' => [
@@ -106,11 +102,93 @@ class AssetFamilyValidator
                         'additionalProperties' => false,
                     ],
                 ],
+                'transformations' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'label' => ['type' => 'string'],
+                            'source' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'attribute' => [
+                                        'type' => 'string',
+                                    ],
+                                    'channel' => [
+                                        'type' => ['string', 'null'],
+                                    ],
+                                    'locale' => [
+                                        'type' => ['string', 'null'],
+                                    ],
+                                ],
+                                'required' => ['attribute', 'channel', 'locale'],
+                                'additionalProperties' => false,
+                            ],
+                            'target' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'attribute' => [
+                                        'type' => 'string',
+                                    ],
+                                    'channel' => [
+                                        'type' => ['string', 'null'],
+                                    ],
+                                    'locale' => [
+                                        'type' => ['string', 'null'],
+                                    ],
+                                ],
+                                'required' => ['attribute', 'channel', 'locale'],
+                                'additionalProperties' => false,
+                            ],
+                            'operations' => [
+                                'type' => 'array',
+                                'items' => [
+                                    'type' => 'object',
+                                    'properties' => [
+                                        'type' => [
+                                            'type' => 'string',
+                                        ],
+                                        'parameters' => [
+                                            'type' => ['object', 'null', 'array'],
+                                        ],
+                                        'required' => ['type'],
+                                        'additionalProperties' => false,
+                                    ],
+                                ],
+                            ],
+                            'filename_prefix' => [
+                                'type' => ['string', 'null'],
+                            ],
+                            'filename_suffix' => [
+                                'type' => ['string', 'null'],
+                            ],
+                        ],
+                        'required' => ['source', 'target', 'operations'],
+                        'additionalProperties' => false,
+                    ],
+                ],
+                'naming_convention' => [
+                    'type' => ['object', 'array'],
+                    'properties' => [
+                        'source' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'property' => ['type' => 'string'],
+                                'channel' => ['type' => ['string', 'null']],
+                                'locale' => ['type' => ['string', 'null']],
+                            ],
+                            'required' => ['property', 'channel', 'locale'],
+                            'additionalProperties' => false,
+                        ],
+                        'pattern' => ['type' => 'string'],
+                        'abort_asset_creation_on_error' => ['type' => 'boolean'],
+                    ],
+                    'additionalProperties' => false,
+                ],
                 '_links' => [
                     'type' => 'object'
                 ]
             ],
-            'required' => ['code'],
             'additionalProperties' => false,
         ];
     }

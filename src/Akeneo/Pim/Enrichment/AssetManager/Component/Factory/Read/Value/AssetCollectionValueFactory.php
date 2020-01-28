@@ -15,17 +15,18 @@ namespace Akeneo\Pim\Enrichment\AssetManager\Component\Factory\Read\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValue;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-final class AssetCollectionValueFactory implements ReadValueFactory
+final class AssetCollectionValueFactory implements ValueFactory
 {
-    public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         $attributeCode = $attribute->code();
         $assetCodes = array_map(function (string $assetCode): AssetCode {
@@ -45,6 +46,30 @@ final class AssetCollectionValueFactory implements ReadValueFactory
         }
 
         return AssetCollectionValue::value($attributeCode, $assetCodes);
+    }
+
+    public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected(
+                $attribute->code(),
+                static::class,
+                $data
+            );
+        }
+
+        foreach ($data as $key => $value) {
+            if (!is_string($value)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $attribute->code(),
+                    sprintf('array key "%s" expects a string as value, "%s" given', $key, gettype($value)),
+                    static::class,
+                    $data
+                );
+            }
+        }
+
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
     public function supportedAttributeType(): string

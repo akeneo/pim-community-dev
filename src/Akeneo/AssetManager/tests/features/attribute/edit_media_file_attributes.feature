@@ -5,13 +5,13 @@ Feature: Edit an attribute of an asset family
 
   @acceptance-back
   Scenario: Updating the label
-    Given an asset family with an image attribute 'image' and the label 'en_US' equal to 'Image'
+    Given an asset family with a media file attribute 'image' and the label 'en_US' equal to 'Image'
     When the user updates the 'image' attribute label with '"Portrait"' on the locale '"en_US"'
     Then the label 'en_US' of the 'image' attribute should be 'Portrait'
 
   @acceptance-back
   Scenario Outline: Invalid label edit
-    Given an asset family with an image attribute 'image' and the label 'en_US' equal to 'Name'
+    Given an asset family with a media file attribute 'image' and the label 'en_US' equal to 'Name'
     When the user updates the 'image' attribute label with '<label>' on the locale '<localeCode>'
     Then there should be a validation error on the property 'labels' with message '<message>'
 
@@ -24,13 +24,13 @@ Feature: Edit an attribute of an asset family
 
   @acceptance-back
   Scenario: Updating is required property
-    Given an asset family with an image attribute 'image' non required
+    Given an asset family with a media file attribute 'image' non required
     When the user sets the 'image' attribute required
     Then 'image' should be required
 
   @acceptance-back
   Scenario Outline: Invalid is required edit
-    Given an asset family with an image attribute 'image' non required
+    Given an asset family with a media file attribute 'image' non required
     When the user sets the is_required property of 'image' to '<invalid_required>'
     Then there should be a validation error on the property 'isRequired' with message '<message>'
 
@@ -41,19 +41,19 @@ Feature: Edit an attribute of an asset family
   # Max file size
   @acceptance-back
   Scenario: Updating max file size
-    Given an asset family with an image attribute 'image' with max file size '3000'
+    Given an asset family with a media file attribute 'image' with max file size '3000'
     When the user changes the max file size of 'image' to '"200"'
     Then the max file size of 'image' should be '200'
 
   @acceptance-back
   Scenario: Updating max file size to no limit
-    Given an asset family with an image attribute 'name' with max file size '250'
+    Given an asset family with a media file attribute 'name' with max file size '250'
     When the user changes the max file size of 'name' to no limit
     Then there should be no limit for the max file size of 'name'
 
   @acceptance-back
   Scenario Outline: Invalid max file size edit
-    Given an asset family with an image attribute 'image' with max file size '3000'
+    Given an asset family with a media file attribute 'image' with max file size '3000'
     When the user changes the max file size of 'image' to '<invalid_max_file_size>'
     Then there should be a validation error on the property 'maxFileSize' with message '<message>'
 
@@ -69,25 +69,38 @@ Feature: Edit an attribute of an asset family
   # Allowed extensions
   @acceptance-back
   Scenario: Updating allowed extensions
-    Given an asset family with an image attribute 'image' with allowed extensions: '["png"]'
-    When the user changes adds '["png"]' to the allowed extensions of 'image'
-    Then the 'image' should have '["png"]' as an allowed extension
+    Given an asset family with a media file attribute 'image' with allowed extensions: '["png"]'
+    When the user changes adds '["png", "mp3", "jpeg"]' to the allowed extensions of 'image'
+    Then the 'image' should have '["png", "mp3", "jpeg"]' as an allowed extension
 
   @acceptance-back
   Scenario: Updating allowed extensions to extensions all allowed
-    Given an asset family with an image attribute 'image' with allowed extensions: '[]'
+    Given an asset family with a media file attribute 'image' with allowed extensions: '[]'
     When the user changes adds '[]' to the allowed extensions of 'image'
     Then the 'image' should have '[]' as an allowed extension
 
   @acceptance-back
   Scenario Outline: Invalid allowed extensions
-    Given an asset family with an image attribute 'image' with allowed extensions: '["png", "jpeg"]'
+    Given an asset family with a media file attribute 'image' with allowed extensions: '["png", "jpeg"]'
     When the user changes adds '<invalid_allowed_extensions>' to the allowed extensions of 'image'
     Then there should be a validation error on the property 'allowedExtensions' with message '<message>'
 
     Examples:
-      | invalid_allowed_extensions | message                                     |
-      | ["not_a_valid_extension"]  | One or more of the given values is invalid. |
+      | invalid_allowed_extensions     | message                                                                      |
+      | [".notvalid"]                  | Extensions cannot contain the extension separator ".", ".notvalid" given.    |
+      | ["azaz_"]                      | Extensions should only contain lowercase letters and numbers, "azaz_" given. |
+      | ["JPEG"]                       | Extensions should only contain lowercase letters and numbers, "JPEG" given.  |
+      | ["012345678901234567891"]      | Extensions cannot be longer than 20 characters, length of 21 given.          |
+      | ["jpeg", "jpeg", "png", "png"] | There cannot be duplicated extensions: jpeg, png found.                      |
 
-  # TODO: imports
-  # Scenario: Updating the allowed extensions of an attribute that is not image fails
+  @acceptance-back
+  Scenario: Updating media type
+    Given an asset family with a media file attribute image with media type image
+    When the user changes the media type to pdf
+    Then the media type should be pdf
+
+  @acceptance-back
+  Scenario: Updating with an invalid media type
+    Given an asset family with a media file attribute image with media type image
+    When the user changes the media type to an unknown media type
+    Then there should be a validation error on the property 'mediaType' with message 'The media type given is not corresponding to the expected ones (image, pdf, other).'

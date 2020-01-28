@@ -17,6 +17,8 @@ use PHPUnit\Framework\Assert;
  */
 class FixturesInstallerTest extends SqlIntegrationTestCase
 {
+    private const TOTAL_ASSETS = 28;
+
     /** @var FixturesInstaller */
     private $fixturesInstaller;
 
@@ -25,10 +27,6 @@ class FixturesInstallerTest extends SqlIntegrationTestCase
 
     /** @var Client */
     private $assetClient;
-
-    private const ASSET_INDEX = 'pimee_asset_family_asset';
-
-    private const TOTAL_ASSETS = 6;
 
     public function setUp(): void
     {
@@ -98,8 +96,8 @@ SQL;
 
     private function assertFixturesPersisted(): void
     {
-        Assert::assertEquals(3, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family;')->rowCount());
-        Assert::assertEquals(23, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_attribute')->rowCount());
+        Assert::assertEquals(6, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family;')->rowCount());
+        Assert::assertEquals(20, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_attribute')->rowCount());
         Assert::assertEquals(self::TOTAL_ASSETS, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset')->rowCount());
         Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family_permissions')->rowCount());
     }
@@ -120,8 +118,8 @@ SQL;
     private function numbersOfAssetsIndexed(): int
     {
         $this->assetClient->refreshIndex();
-        $matches = $this->assetClient->search(self::ASSET_INDEX, ['_source' => '_id' ]);
+        $matches = $this->assetClient->search(['_source' => '_id' ]);
 
-        return $matches['hits']['total'];
+        return $matches['hits']['total']['value'];
     }
 }

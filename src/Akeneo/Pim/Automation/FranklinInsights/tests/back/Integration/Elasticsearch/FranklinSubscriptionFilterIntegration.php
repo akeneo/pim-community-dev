@@ -40,7 +40,10 @@ class FranklinSubscriptionFilterIntegration extends TestCase
         $this->insertSubscription($product1->getId(), true);
         $this->insertSubscription($product2->getId(), true);
 
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll([$product1, $product2], ['index_refresh' => Refresh::waitFor()]);
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifiers(
+            ['product1', 'product2'],
+            ['index_refresh' => Refresh::waitFor()]
+        );
     }
 
     public function test_products_are_filterable_by_franklin_subscription(): void
@@ -76,15 +79,15 @@ class FranklinSubscriptionFilterIntegration extends TestCase
 
     private function createProduct(string $identifier, string $familyCode): ProductInterface
     {
-        $product = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder')
+        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier($identifier)
             ->withFamily($familyCode)
             ->withCategories('master')
             ->build();
-        $violations = $this->getFromTestContainer('validator')->validate($product);
+        $violations = $this->get('validator')->validate($product);
         Assert::assertSame(0, $violations->count(), sprintf('Product "%s" is not valid.', $identifier));
 
-        $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
     }
@@ -117,11 +120,11 @@ SQL;
     private function createFamily(string $familyCode): FamilyInterface
     {
         $family = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
+            ->get('akeneo_ee_integration_tests.builder.family')
             ->build(['code' => $familyCode, 'attributes' => ['sku']]);
-        $violations = $this->getFromTestContainer('validator')->validate($family);
+        $violations = $this->get('validator')->validate($family);
         Assert::assertSame(0, $violations->count(), 'Family is not valid.');
-        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+        $this->get('pim_catalog.saver.family')->save($family);
 
         return $family;
     }

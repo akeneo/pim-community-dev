@@ -10,6 +10,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
@@ -18,7 +19,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
@@ -131,6 +133,7 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocalesTest extends SqlIntegration
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(25),
@@ -139,17 +142,19 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocalesTest extends SqlIntegration
         );
         $attributeRepository->create($name);
 
-        $image = ImageAttribute::create(
+        $image = MediaFileAttribute::create(
             AttributeIdentifier::fromString('main_image_designer_fingerprint'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('main_image'),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::noLimit(),
-            AttributeAllowedExtensions::fromList(['png'])
+            AttributeAllowedExtensions::fromList(['png']),
+            MediaType::fromString(MediaType::IMAGE)
         );
         $attributeRepository->create($image);
     }

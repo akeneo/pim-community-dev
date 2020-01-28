@@ -13,18 +13,19 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AssetAttributeValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
 use PhpSpec\ObjectBehavior;
 
 class AssetAttributeValidatorSpec extends ObjectBehavior
@@ -48,6 +49,7 @@ class AssetAttributeValidatorSpec extends ObjectBehavior
             LabelCollection::fromArray(['fr_FR' => 'Pays', 'en_US' => 'Country']),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AssetFamilyIdentifier::fromString('country')
@@ -65,6 +67,7 @@ class AssetAttributeValidatorSpec extends ObjectBehavior
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AssetFamilyIdentifier::fromString('brand')

@@ -1,19 +1,24 @@
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
-import {NormalizedAssetFamily, denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Flag from 'akeneoassetmanager/tools/component/flag';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
-import File from 'akeneoassetmanager/domain/model/file';
-import Image from 'akeneoassetmanager/application/component/app/image';
 import Key from 'akeneoassetmanager/tools/key';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import Select2 from 'akeneoassetmanager/application/component/app/select2';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {getLabel} from 'pimui/js/i18n';
+import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
+import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
 interface FormProps {
   locale: string;
-  data: NormalizedAssetFamily;
+  data: AssetFamily;
   errors: ValidationError[];
+  attributes: NormalizedAttribute[] | null;
   rights: {
     locale: {
       edit: boolean;
@@ -24,7 +29,7 @@ interface FormProps {
     };
   };
   onLabelUpdated: (value: string, locale: string) => void;
-  onImageUpdated: (image: File) => void;
+  onAttributeAsMainMediaUpdated: (attributeAsMainMedia: AttributeIdentifier) => void;
   onSubmit: () => void;
 }
 
@@ -52,9 +57,9 @@ export default class EditForm extends React.Component<FormProps> {
   };
 
   render() {
-    const assetFamily = denormalizeAssetFamily(this.props.data);
+    const assetFamily = this.props.data;
     const canEditLabel = this.props.rights.assetFamily.edit && this.props.rights.locale.edit;
-    const canEditImage = this.props.rights.assetFamily.edit;
+    const canEditAttributeAsMainMedia = this.props.rights.assetFamily.edit;
 
     return (
       <div>
@@ -75,7 +80,7 @@ export default class EditForm extends React.Component<FormProps> {
               name="identifier"
               id="pim_asset_manager.asset_family.properties.identifier"
               className="AknTextField AknTextField--light AknTextField--disabled"
-              value={assetFamilyIdentifierStringValue(assetFamily.getIdentifier())}
+              value={assetFamilyIdentifierStringValue(assetFamily.identifier)}
               readOnly
             />
           </div>
@@ -98,7 +103,7 @@ export default class EditForm extends React.Component<FormProps> {
               name="label"
               id="pim_asset_manager.asset_family.properties.label"
               className={`AknTextField AknTextField--light ${true === canEditLabel ? '' : 'AknTextField--disabled'}`}
-              value={assetFamily.getLabel(this.props.locale, false)}
+              value={getAssetFamilyLabel(assetFamily, this.props.locale, false)}
               onChange={this.updateLabel}
               onKeyDown={this.keyDown}
               ref={this.labelInput}
@@ -112,28 +117,41 @@ export default class EditForm extends React.Component<FormProps> {
           </div>
           {getErrorsView(this.props.errors, 'labels')}
         </div>
-        <div className="AknFieldContainer" data-code="image">
+        <div className="AknFieldContainer" data-code="attributeAsMainMedia">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label
-              title={__('pim_asset_manager.asset_family.properties.image')}
+              title={__('pim_asset_manager.asset_family.properties.attribute_as_main_media')}
               className="AknFieldContainer-label"
-              htmlFor="pim_asset_manager.asset_family.properties.image"
+              htmlFor="pim_asset_manager.asset_family.properties.attribute_as_main_media"
             >
-              {__('pim_asset_manager.asset_family.properties.image')}
+              {__('pim_asset_manager.asset_family.properties.attribute_as_main_media')}
             </label>
           </div>
           <div className="AknFieldContainer-inputContainer">
-            <Image
-              alt={__('pim_asset_manager.asset_family.img', {
-                '{{ label }}': assetFamily.getLabel(this.props.locale),
-              })}
-              image={assetFamily.getImage()}
-              wide={true}
-              onImageChange={this.props.onImageUpdated}
-              readOnly={!canEditImage}
-            />
+            {null !== this.props.attributes && (
+              <Select2
+                id="pim_asset_manager.attribute.edit.input.allowed_extensions"
+                name="allowed_extensions"
+                data={this.props.attributes
+                  .filter((attribute: NormalizedAttribute) =>
+                    [MEDIA_LINK_ATTRIBUTE_TYPE, MEDIA_FILE_ATTRIBUTE_TYPE].includes(attribute.type)
+                  )
+                  .reduce((result: {[key: string]: string}, current: NormalizedAttribute) => {
+                    return {...result, [current.identifier]: getLabel(current.labels, this.props.locale, current.code)};
+                  }, {})}
+                value={assetFamily.attributeAsMainMedia}
+                multiple={false}
+                readOnly={!canEditAttributeAsMainMedia}
+                configuration={{
+                  allowClear: false,
+                }}
+                onChange={(attributeAsMainMedia: string) => {
+                  this.props.onAttributeAsMainMediaUpdated(attributeAsMainMedia);
+                }}
+              />
+            )}
           </div>
-          {getErrorsView(this.props.errors, 'image')}
+          {getErrorsView(this.props.errors, 'attributeAsMainMedia')}
         </div>
       </div>
     );

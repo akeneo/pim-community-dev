@@ -18,6 +18,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDr
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -27,7 +28,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInterface
+class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
 {
     /** @var SerializerInterface */
     private $serializer;
@@ -94,14 +95,16 @@ class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInte
 
         $normalizedProductModel = $this->normalizer->normalize($productModel, 'internal_api', $context);
 
-        $normalizedProductModel['meta'] = array_merge(
-            $normalizedProductModel['meta'],
-            [
-                'is_owner'     => $this->authorizationChecker->isGranted(Attributes::OWN, $productModel),
-                'working_copy' => $normalizedWorkingCopy,
-                'draft_status' => $draftStatus
-            ]
-        );
+        $meta = [
+            'is_owner' => $isOwner,
+            'working_copy' => $normalizedWorkingCopy,
+            'draft_status' => $draftStatus,
+        ];
+        if (!$isOwner && !$canEdit) {
+            $meta['required_missing_attributes'] = [];
+        }
+
+        $normalizedProductModel['meta'] = array_merge($normalizedProductModel['meta'], $meta);
 
         return $normalizedProductModel;
     }
@@ -112,6 +115,12 @@ class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInte
     public function supportsNormalization($data, $format = null)
     {
         return $this->normalizer->supportsNormalization($data, $format);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return $this->normalizer instanceof CacheableSupportsMethodInterface
+            && $this->normalizer->hasCacheableSupportsMethod();
     }
 
     /**

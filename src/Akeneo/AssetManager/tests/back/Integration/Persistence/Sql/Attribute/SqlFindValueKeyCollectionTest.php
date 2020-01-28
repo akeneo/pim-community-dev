@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -65,7 +66,7 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
         $assetFamily = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')
             ->getByIdentifier($designer);
         $attributeAsLabelIdentifier = $assetFamily->getAttributeAsLabelReference()->getIdentifier();
-        $attributeAsImageIdentifier = $assetFamily->getAttributeAsImageReference()->getIdentifier();
+        $attributeAsMainMediaIdentifier = $assetFamily->getAttributeAsMainMediaReference()->getIdentifier();
 
         $this->assertInstanceOf(ValueKeyCollection::class, $actualValueKeyCollection);
         $normalizedActualValueKeyCollection = $actualValueKeyCollection->normalize();
@@ -84,7 +85,7 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
         $this->assertContains(sprintf('%s_en_US', $attributeAsLabelIdentifier), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_fr_FR', $attributeAsLabelIdentifier), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_de_DE', $attributeAsLabelIdentifier), $normalizedActualValueKeyCollection);
-        $this->assertContains(sprintf('%s', $attributeAsImageIdentifier), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s', $attributeAsMainMediaIdentifier), $normalizedActualValueKeyCollection);
     }
 
     private function resetDB(): void
@@ -122,6 +123,7 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger($this->order++),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean($hasValuePerChannel),
             AttributeValuePerLocale::fromBoolean($hasValuePerLocale),
             AttributeMaxLength::fromInteger(25),

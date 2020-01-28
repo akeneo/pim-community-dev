@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory;
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\OptionAttributeFactory;
-use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -32,11 +33,12 @@ class OptionAttributeFactorySpec extends ObjectBehavior
                 ['fr_FR' => 'Couleur favorite'],
                 false,
                 false,
+                false,
                 false
             )
         )->shouldReturn(true);
         $this->supports(
-            new CreateImageAttributeCommand(
+            new CreateMediaFileAttributeCommand(
                 'designer',
                 'name',
                 [
@@ -45,8 +47,10 @@ class OptionAttributeFactorySpec extends ObjectBehavior
                 true,
                 false,
                 false,
+                false,
                 null,
-                []
+                [],
+                MediaType::IMAGE
             )
         )->shouldReturn(false);
     }
@@ -57,6 +61,7 @@ class OptionAttributeFactorySpec extends ObjectBehavior
             'designer',
             'favorite_color',
             ['fr_FR' => 'Couleur favorite'],
+            false,
             false,
             false,
             false
@@ -73,6 +78,7 @@ class OptionAttributeFactorySpec extends ObjectBehavior
             'labels'                      => ['fr_FR' => 'Couleur favorite'],
             'order'                       => 0,
             'is_required'                 => false,
+            'is_read_only'                => false,
             'value_per_channel'           => false,
             'value_per_locale'            => false,
             'type'                        => 'option',
@@ -89,6 +95,7 @@ class OptionAttributeFactorySpec extends ObjectBehavior
                          'designer',
                          'color',
                          [],
+                         false,
                          false,
                          false,
                          false,

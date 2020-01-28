@@ -13,13 +13,14 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordCodeNormalizer implements NormalizerInterface
+class RecordCodeNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
      * {@inheritdoc}
@@ -41,5 +42,10 @@ class RecordCodeNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof RecordCode && ('standard' === $format || 'storage' === $format || 'flat' === $format);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

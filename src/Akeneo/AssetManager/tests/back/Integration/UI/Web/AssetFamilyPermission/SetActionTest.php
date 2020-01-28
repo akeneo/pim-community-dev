@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\AssetFamilyPermission;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClient;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
@@ -15,9 +15,6 @@ class SetActionTest extends ControllerIntegrationTestCase
 {
     private const SET_ASSET_FAMILY_PERMISSION_ROUTE = 'akeneo_asset_manager_asset_family_permission_set_rest';
 
-    /** @var Client */
-    private $client;
-
     /** @var WebClientHelper */
     private $webClientHelper;
 
@@ -25,8 +22,7 @@ class SetActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
-            ->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
 
         $securityFacadeStub = $this->get('oro_security.security_facade');

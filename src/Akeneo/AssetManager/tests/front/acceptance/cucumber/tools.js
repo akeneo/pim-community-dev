@@ -7,7 +7,7 @@ const {
 
 const getRequestContract = fileName => {
   return JSON.parse(
-    fs.readFileSync(`${process.cwd()}/src/Akeneo/AssetManager/tests/shared/responses/${fileName}`, 'utf-8')
+    fs.readFileSync(`${process.cwd()}/src/Akeneo/AssetManager/tests/front/integration/responses/${fileName}`, 'utf-8')
   );
 };
 
@@ -58,7 +58,7 @@ const askForAssetFamily = async function(identifier) {
   await this.page.evaluate(async identifier => {
     const Controller = require('pim/controller/asset-family/edit');
     const controller = new Controller();
-    controller.renderRoute({params: {identifier, tab: 'attribute'}});
+    await controller.renderRoute({params: {identifier, tab: 'attribute'}});
 
     await document.getElementById('app').appendChild(controller.el);
   }, identifier);

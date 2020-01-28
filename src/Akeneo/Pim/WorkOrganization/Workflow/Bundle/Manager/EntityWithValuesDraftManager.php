@@ -22,6 +22,8 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\DraftNotReviewableException;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -64,6 +66,9 @@ class EntityWithValuesDraftManager
     /** @var CollectionFilterInterface */
     protected $valuesFilter;
 
+    /** @var PimUserDraftSourceFactory */
+    private $draftSourceFactory;
+
     public function __construct(
         SaverInterface $workingCopySaver,
         UserContext $userContext,
@@ -73,7 +78,8 @@ class EntityWithValuesDraftManager
         EventDispatcherInterface $dispatcher,
         SaverInterface $draftSaver,
         RemoverInterface $draftRemover,
-        CollectionFilterInterface $valuesFilter
+        CollectionFilterInterface $valuesFilter,
+        PimUserDraftSourceFactory $draftSourceFactory
     ) {
         $this->workingCopySaver = $workingCopySaver;
         $this->userContext = $userContext;
@@ -84,6 +90,7 @@ class EntityWithValuesDraftManager
         $this->draftSaver = $draftSaver;
         $this->draftRemover = $draftRemover;
         $this->valuesFilter = $valuesFilter;
+        $this->draftSourceFactory = $draftSourceFactory;
     }
 
     /**
@@ -324,11 +331,14 @@ class EntityWithValuesDraftManager
         if (null === $this->userContext->getUser()) {
             throw new \LogicException('Current user cannot be resolved');
         }
-        $username = $this->userContext->getUser()->getUsername();
-        $draft = $this->repository->findUserEntityWithValuesDraft($entityWithValues, $username);
+        $user = $this->userContext->getUser();
+        $draft = $this->repository->findUserEntityWithValuesDraft($entityWithValues, $user->getUsername());
 
         if (null === $draft) {
-            $draft = $this->factory->createEntityWithValueDraft($entityWithValues, $username);
+            $draft = $this->factory->createEntityWithValueDraft(
+                $entityWithValues,
+                $this->draftSourceFactory->createFromUser($user)
+            );
         }
 
         return $draft;
@@ -365,7 +375,13 @@ class EntityWithValuesDraftManager
         EntityWithValuesDraftInterface $draft,
         array $draftChanges
     ): EntityWithValuesDraftInterface {
-        $partialDraft = $this->factory->createEntityWithValueDraft($draft->getEntityWithValue(), $draft->getAuthor());
+        $draftSource = new DraftSource(
+            $draft->getSource(),
+            $draft->getSourceLabel(),
+            $draft->getAuthor(),
+            $draft->getAuthorLabel()
+        );
+        $partialDraft = $this->factory->createEntityWithValueDraft($draft->getEntityWithValue(), $draftSource);
         $partialDraft->setChanges([
             'values' => $draftChanges
         ]);

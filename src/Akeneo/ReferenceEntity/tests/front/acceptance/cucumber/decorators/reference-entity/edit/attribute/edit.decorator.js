@@ -256,7 +256,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
 	};
 
 	const showManageOptionModal = async () => {
-		page.waitForSelector('.AknButton[data-code="manageOption"]');
+		await page.waitForSelector('.AknButton[data-code="manageOption"]');
 		await page.evaluate(edit => {
 			const button = edit.querySelector('.AknButton[data-code="manageOption"]');
 

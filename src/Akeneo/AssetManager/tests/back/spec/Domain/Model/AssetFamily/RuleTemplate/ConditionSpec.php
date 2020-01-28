@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
+use PhpSpec\ObjectBehavior;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>

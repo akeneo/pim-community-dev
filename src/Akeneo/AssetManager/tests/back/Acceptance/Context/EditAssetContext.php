@@ -41,15 +41,14 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
@@ -61,13 +60,13 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
-use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
@@ -102,8 +101,8 @@ final class EditAssetContext implements Context
 
     private const TEXT_ATTRIBUTE_CODE = 'name';
     private const TEXT_ATTRIBUTE_IDENTIFIER = 'name_designer_fingerprint';
-    private const IMAGE_ATTRIBUTE_CODE = 'primary_picture';
-    private const IMAGE_ATTRIBUTE_IDENTIFIER = 'primary_picture_designer_fingerprint';
+    private const MEDIA_FILE_ATTRIBUTE_CODE = 'primary_picture';
+    private const MEDIA_FILE_ATTRIBUTE_IDENTIFIER = 'primary_picture_designer_fingerprint';
     private const ASSET_TYPE = 'brand';
     private const ASSET_ATTRIBUTE_CODE = 'brand_linked';
     private const ASSET_ATTRIBUTE_IDENTIFIER = 'brand_linked_designer_fingerprint';
@@ -233,6 +232,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -307,35 +307,65 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^an asset family with an image attribute$/
+     * @Given /^an asset family with a media file attribute$/
      */
-    public function anAssetFamilyWithAImageAttribute()
+    public function anAssetFamilyWithAMediaFileAttribute()
     {
         $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
-            ImageAttribute::create(
+            MediaFileAttribute::create(
                 AttributeIdentifier::create(
                     self::ASSET_FAMILY_IDENTIFIER,
-                    self::IMAGE_ATTRIBUTE_CODE,
+                    self::MEDIA_FILE_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
                 AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
-                AttributeCode::fromString(self::IMAGE_ATTRIBUTE_CODE),
+                AttributeCode::fromString(self::MEDIA_FILE_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::noLimit(),
-                AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED)
+                AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED),
+                MediaType::fromString(MediaType::IMAGE)
             )
         );
     }
 
     /**
-     * @Given /^an asset belonging to this asset family with the file "([^"]*)" for the image attribute$/
+     * @Given /^an asset family with a media file attribute and "([^"]*)" as an allowed extension$/
      */
-    public function aAssetBelongingToThisAssetFamilyWithATheFileForTheImageAttribute(string $originalFilename)
+    public function anAssetFamilyWithAMediaFileAttributeAndAsAnAllowedExtension(string $allowedExtension)
+    {
+        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $this->attributeRepository->create(
+            MediaFileAttribute::create(
+                AttributeIdentifier::create(
+                    self::ASSET_FAMILY_IDENTIFIER,
+                    self::MEDIA_FILE_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+                AttributeCode::fromString(self::MEDIA_FILE_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(2),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxFileSize::noLimit(),
+                AttributeAllowedExtensions::fromList([$allowedExtension]),
+                MediaType::fromString(MediaType::IMAGE)
+            )
+        );
+    }
+
+    /**
+     * @Given /^an asset belonging to this asset family with the file "([^"]*)" for the media file attribute$/
+     */
+    public function aAssetBelongingToThisAssetFamilyWithATheFileForTheMediaFileAttribute(string $originalFilename)
     {
         $file = new FileInfo();
         $file->setOriginalFilename($originalFilename);
@@ -346,12 +376,12 @@ final class EditAssetContext implements Context
         $fileValue = Value::create(
             AttributeIdentifier::create(
                 self::ASSET_FAMILY_IDENTIFIER,
-                self::IMAGE_ATTRIBUTE_CODE,
+                self::MEDIA_FILE_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
-            FileData::createFromFileinfo($file)
+            FileData::createFromFileinfo($file, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
         );
         $this->createAsset($fileValue);
     }
@@ -363,7 +393,7 @@ final class EditAssetContext implements Context
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
+        $attributeAsMainMedia = $assetFamily->getAttributeAsMainMediaReference();
 
         $fileData = $this->initUploadedFileData();
 
@@ -373,7 +403,7 @@ final class EditAssetContext implements Context
             'labels' => [],
             'values' => [
                 [
-                    'attribute' => $attributeAsImage->normalize(),
+                    'attribute' => $attributeAsMainMedia->normalize(),
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => $fileData,
@@ -405,7 +435,7 @@ final class EditAssetContext implements Context
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
+        $attributeAsMainMedia = $assetFamily->getAttributeAsMainMediaReference();
 
         $filePath = json_decode($filePath);
         $filename = json_decode($filename);
@@ -415,7 +445,7 @@ final class EditAssetContext implements Context
             'code' => self::ASSET_CODE,
             'values' => [
                 [
-                    'attribute' => $attributeAsImage->normalize(),
+                    'attribute' => $attributeAsMainMedia->normalize(),
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => [
@@ -430,9 +460,9 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset with a valid uploaded file$/
+     * @When /^the user updates the media file attribute of the asset with a valid uploaded file$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetTo()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetTo()
     {
         $fileData = $this->initUploadedFileData();
         $editCommand = $this->editAssetCommandFactory->create([
@@ -441,7 +471,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => $fileData,
@@ -465,7 +495,7 @@ final class EditAssetContext implements Context
             ValueKey::create(
                 AttributeIdentifier::create(
                     self::ASSET_FAMILY_IDENTIFIER,
-                    self::IMAGE_ATTRIBUTE_CODE,
+                    self::MEDIA_FILE_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
                 ChannelReference::noReference(),
@@ -493,6 +523,30 @@ final class EditAssetContext implements Context
     }
 
     /**
+     * @Then /^there should be a validation error on the property text attribute locale with message "([^\']*)"$/
+     */
+    public function thereShouldBeAValidationErrorOnThePropertyLocaleWithMessage(string $expectedMessage)
+    {
+        $this->violationsContext->assertThereShouldBeViolations(1);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage(
+            'values.' . self::TEXT_ATTRIBUTE_CODE . '.locale',
+            $expectedMessage
+        );
+    }
+
+    /**
+     * @Then /^there should be a validation error on the property text attribute channel with message "([^\']*)"$/
+     */
+    public function thereShouldBeAValidationErrorOnThePropertyChannelWithMessage(string $expectedMessage)
+    {
+        $this->violationsContext->assertThereShouldBeViolations(1);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage(
+            'values.' . self::TEXT_ATTRIBUTE_CODE . '.channel',
+            $expectedMessage
+        );
+    }
+
+    /**
      * @Given /^an asset family with a text attribute with max length (\d+)$/
      * @throws \Exception
      */
@@ -511,6 +565,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(3),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger($maxLength),
@@ -539,6 +594,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -568,6 +624,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -621,6 +678,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -695,6 +753,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(255),
@@ -784,6 +843,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -868,7 +928,7 @@ final class EditAssetContext implements Context
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
+        $attributeAsMainMedia = $assetFamily->getAttributeAsMainMediaReference();
         $asset = $this->assetRepository->getByAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AssetCode::fromString(self::ASSET_CODE)
@@ -876,7 +936,7 @@ final class EditAssetContext implements Context
 
         $assetImage = $this->getImage(
             $asset->getValues()->normalize(),
-            $attributeAsImage->getIdentifier()->normalize()
+            $attributeAsMainMedia->getIdentifier()->normalize()
         );
         Assert::false($assetImage === null);
 
@@ -896,7 +956,7 @@ final class EditAssetContext implements Context
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
+        $attributeAsMainMedia = $assetFamily->getAttributeAsMainMediaReference();
         $asset = $this->assetRepository->getByAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AssetCode::fromString(self::ASSET_CODE)
@@ -904,7 +964,7 @@ final class EditAssetContext implements Context
 
         $assetImage = $this->getImage(
             $asset->getValues()->normalize(),
-            $attributeAsImage->getIdentifier()->normalize()
+            $attributeAsMainMedia->getIdentifier()->normalize()
         );
         Assert::true($assetImage === null);
     }
@@ -950,6 +1010,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -1018,6 +1079,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -1087,6 +1149,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(255),
@@ -1184,7 +1247,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user enriches a scopable attribute value of a asset without specifying the channel$/
+     * @When /^the user enriches a scopable attribute value of an asset without specifying the channel$/
      */
     public function theUserEnrichesAnScopableAttributeValueOfAAssetWithoutChannel()
     {
@@ -1247,9 +1310,9 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset to an invalid uploaded file path$/
+     * @When /^the user updates the media file attribute of the asset to an invalid uploaded file path$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetToAnInvalidUploadedFilepath()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetToAnInvalidUploadedFilepath()
     {
         $editCommand = $this->editAssetCommandFactory->create([
             'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
@@ -1257,7 +1320,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => [
@@ -1271,9 +1334,9 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset to an invalid stored file path$/
+     * @When /^the user updates the media file attribute of the asset to an invalid stored file path$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetToAnInvalidStoredFilepath()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetToAnInvalidStoredFilepath()
     {
         $editCommand = $this->editAssetCommandFactory->create([
             'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
@@ -1281,7 +1344,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => [
@@ -1290,6 +1353,7 @@ final class EditAssetContext implements Context
                         'size' => self::DUMMY_IMAGE_SIZE,
                         'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
                         'extension' => self::DUMMY_IMAGE_EXTENSION,
+                        'updatedAt' => '2019-11-22T15:16:21+0000'
                     ],
                 ],
             ],
@@ -1298,9 +1362,9 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset to an invalid stored file size$/
+     * @When /^the user updates the media file attribute of the asset to an invalid stored file size$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetToAnInvalidStoredSize()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetToAnInvalidStoredSize()
     {
         $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
 
@@ -1319,7 +1383,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => $fileData,
@@ -1330,9 +1394,9 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset to an invalid stored file extension$/
+     * @When /^the user updates the media file attribute of the asset to an invalid stored file extension$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetToAnInvalidStoredExtension()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetToAnInvalidStoredExtension()
     {
         $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
 
@@ -1342,6 +1406,7 @@ final class EditAssetContext implements Context
             'size' => self::DUMMY_IMAGE_SIZE,
             'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
             'extension' => self::INVALID_IMAGE_EXTENSION,
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ];
         $this->findFileData->save($fileData);
 
@@ -1351,7 +1416,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => $fileData,
@@ -1362,9 +1427,9 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset to an invalid stored file mime type$/
+     * @When /^the user updates the media file attribute of the asset to an invalid stored file mime type$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetToAnInvalidStoredMimeType()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetToAnInvalidStoredMimeType()
     {
         $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
 
@@ -1374,6 +1439,7 @@ final class EditAssetContext implements Context
             'size' => self::DUMMY_IMAGE_SIZE,
             'mimeType' => self::INVALID_IMAGE_MIMETYPE,
             'extension' => self::DUMMY_IMAGE_EXTENSION,
+            'updatedAt' => '2019-11-22T15:16:21+0000'
         ];
         $this->findFileData->save($fileData);
 
@@ -1383,7 +1449,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => $fileData,
@@ -1402,21 +1468,21 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Then /^there should be a validation error on the property image attribute with message "(.*)"$/
+     * @Then /^there should be a validation error on the property media file attribute with message "(.*)"$/
      */
-    public function thereShouldBeAValidationErrorOnThePropertyImageAttributeWithMessage(string $expectedMessage): void
+    public function thereShouldBeAValidationErrorOnThePropertyMediaFileAttributeWithMessage(string $expectedMessage): void
     {
         $this->violationsContext->assertThereShouldBeViolations(1);
         $this->violationsContext->assertViolationOnPropertyWithMesssage(
-            'values.' . self::IMAGE_ATTRIBUTE_CODE,
+            'values.' . self::MEDIA_FILE_ATTRIBUTE_CODE,
             $expectedMessage
         );
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset to an invalid uploaded file name$/
+     * @When /^the user updates the media file attribute of the asset to an invalid uploaded file name$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetToAnInvalidUploadedFileName()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetToAnInvalidUploadedFileName()
     {
         $editCommand = $this->editAssetCommandFactory->create([
             'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
@@ -1424,7 +1490,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => [
@@ -1438,9 +1504,9 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset to an image that does not exist$/
+     * @When /^the user updates the media file attribute of the asset to an image that does not exist$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetToAnImageThatDoesNotExist()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetToAnImageThatDoesNotExist()
     {
         $editCommand = $this->editAssetCommandFactory->create([
             'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
@@ -1448,7 +1514,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => [
@@ -1457,6 +1523,7 @@ final class EditAssetContext implements Context
                         'size' => self::DUMMY_IMAGE_SIZE,
                         'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
                         'extension' => self::DUMMY_IMAGE_EXTENSION,
+                        'updatedAt' => '2019-11-22T15:16:21+0000',
                     ],
                 ],
             ],
@@ -1465,9 +1532,9 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset to an invalid stored file name$/
+     * @When /^the user updates the media file attribute of the asset to an invalid stored file name$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetToAnInvalidStoredFileName()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetToAnInvalidStoredFileName()
     {
         $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
 
@@ -1477,6 +1544,7 @@ final class EditAssetContext implements Context
             'size' => self::DUMMY_IMAGE_SIZE,
             'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
             'extension' => self::DUMMY_IMAGE_EXTENSION,
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ];
         $this->findFileData->save($fileData);
 
@@ -1486,7 +1554,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => $fileData,
@@ -1497,9 +1565,9 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset with a bigger uploaded file than the limit$/
+     * @When /^the user updates the media file attribute of the asset with a bigger uploaded file than the limit$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetWithABiggerUploadedFileThanTheLimit()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetWithABiggerUploadedFileThanTheLimit()
     {
         $fileData = $this->initUploadedFileData([
             'size' => intval(10e6),
@@ -1510,7 +1578,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => $fileData,
@@ -1521,9 +1589,9 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset with a bigger stored file than the limit$/
+     * @When /^the user updates the media file attribute of the asset with a bigger stored file than the limit$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetWithABiggerStoredFileThanTheLimit()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetWithABiggerStoredFileThanTheLimit()
     {
         $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
 
@@ -1533,6 +1601,7 @@ final class EditAssetContext implements Context
             'size' => self::WRONG_IMAGE_SIZE,
             'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
             'extension' => self::DUMMY_IMAGE_EXTENSION,
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ];
         $this->findFileData->save($fileData);
 
@@ -1542,7 +1611,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => $fileData,
@@ -1553,9 +1622,9 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset with a smaller file than the limit$/
+     * @When /^the user updates the media file attribute of the asset with a smaller file than the limit$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetWithASmallerFileThanTheLimit()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetWithASmallerFileThanTheLimit()
     {
         $fileData = $this->initUploadedFileData([
             'size' => 1,
@@ -1566,7 +1635,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => $fileData,
@@ -1577,35 +1646,37 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^an asset family with an image attribute having a max file size of 15ko$/
+     * @Given /^an asset family with a media file attribute having a max file size of 15ko$/
      */
-    public function anAssetFamilyWithAnImageAttributeHavingAMaxFileSizeOf10k()
+    public function anAssetFamilyWithAnMediaFileAttributeHavingAMaxFileSizeOf10k()
     {
         $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
-            ImageAttribute::create(
+            MediaFileAttribute::create(
                 AttributeIdentifier::create(
                     self::ASSET_FAMILY_IDENTIFIER,
-                    self::IMAGE_ATTRIBUTE_CODE,
+                    self::MEDIA_FILE_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
                 AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
-                AttributeCode::fromString(self::IMAGE_ATTRIBUTE_CODE),
+                AttributeCode::fromString(self::MEDIA_FILE_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('0.015'),
-                AttributeAllowedExtensions::fromList([])
+                AttributeAllowedExtensions::fromList([]),
+                MediaType::fromString(MediaType::IMAGE)
             )
         );
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset with an uploaded gif file which is a denied extension$/
+     * @When /^the user updates the media file attribute of the asset with an uploaded gif file which is a denied extension$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetWithAnUploadedFileHavingADeniedExtension()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetWithAnUploadedFileHavingADeniedExtension()
     {
         $fileData = $this->initUploadedFileData([
             'extension' => current(self::INVALID_IMAGE_EXTENSION),
@@ -1616,7 +1687,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => $fileData,
@@ -1627,9 +1698,9 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset with a stored gif file which is a denied extension$/
+     * @When /^the user updates the media file attribute of the asset with a stored gif file which is a denied extension$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetWithAnStoredFileHavingADeniedExtension()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetWithAnStoredFileHavingADeniedExtension()
     {
         $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
 
@@ -1639,6 +1710,7 @@ final class EditAssetContext implements Context
             'size' => self::DUMMY_IMAGE_SIZE,
             'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
             'extension' => self::WRONG_EXTENSION,
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ];
         $this->findFileData->save($fileData);
 
@@ -1648,7 +1720,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => $fileData,
@@ -1659,9 +1731,9 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the asset with an uploaded png file$/
+     * @When /^the user updates the media file attribute of the asset with an uploaded png file$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheAssetWithAnUploadedFileHavingAValidExtension()
+    public function theUserUpdatesTheMediaFileAttributeOfTheAssetWithAnUploadedFileHavingAValidExtension()
     {
         $fileData = $this->initUploadedFileData();
         $editCommand = $this->editAssetCommandFactory->create([
@@ -1670,7 +1742,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => $fileData,
@@ -1681,27 +1753,29 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^an asset family with an image attribute allowing only files with extension png$/
+     * @Given /^an asset family with a media file attribute allowing only files with extension png$/
      */
-    public function anAssetFamilyWithAnImageAttributeAllowingOnlyFilesWithExtensionJpeg()
+    public function anAssetFamilyWithAnMediaFileAttributeAllowingOnlyFilesWithExtensionJpeg()
     {
         $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
-            ImageAttribute::create(
+            MediaFileAttribute::create(
                 AttributeIdentifier::create(
                     self::ASSET_FAMILY_IDENTIFIER,
-                    self::IMAGE_ATTRIBUTE_CODE,
+                    self::MEDIA_FILE_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
                 AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
-                AttributeCode::fromString(self::IMAGE_ATTRIBUTE_CODE),
+                AttributeCode::fromString(self::MEDIA_FILE_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('150.110'),
-                AttributeAllowedExtensions::fromList(['png'])
+                AttributeAllowedExtensions::fromList(['png']),
+                MediaType::fromString(MediaType::IMAGE)
             )
         );
     }
@@ -1717,7 +1791,7 @@ final class EditAssetContext implements Context
             'labels'                     => [],
             'values'                     => [
                 [
-                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'attribute' => self::MEDIA_FILE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => null,
@@ -1740,7 +1814,7 @@ final class EditAssetContext implements Context
             ValueKey::create(
                 AttributeIdentifier::create(
                     self::ASSET_FAMILY_IDENTIFIER,
-                    self::IMAGE_ATTRIBUTE_CODE,
+                    self::MEDIA_FILE_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
                 ChannelReference::noReference(),
@@ -1751,7 +1825,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^an asset family and a asset with french label "([^"]*)"$/
+     * @Given /^an asset family and an asset with french label "([^"]*)"$/
      */
     public function aAssetFamilyAndAAssetWithLabel(string $label): void
     {
@@ -1778,7 +1852,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^a assetFamily and a asset with an image$/
+     * @Given /^an asset family and an asset with an image$/
      */
     public function aAssetFamilyAndAAssetWithAnImage(): void
     {
@@ -1936,6 +2010,7 @@ final class EditAssetContext implements Context
         $createCommand = new CreateAssetFamilyCommand(
             $assetFamilyIdentifier,
             [],
+            [],
             []
         );
 
@@ -1976,7 +2051,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^an asset family with a asset attribute$/
+     * @Given /^an asset family with an asset attribute$/
      */
     public function anAssetFamilyWithAAssetAttribute()
     {
@@ -1994,6 +2069,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AssetFamilyIdentifier::fromString(self::ASSET_TYPE)
@@ -2266,7 +2342,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^an asset family with a asset collection attribute$/
+     * @Given /^an asset family with an asset collection attribute$/
      */
     public function anAssetFamilyWithAAssetCollectionAttribute()
     {
@@ -2284,6 +2360,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AssetFamilyIdentifier::fromString(self::ASSET_TYPE)
@@ -2309,6 +2386,7 @@ final class EditAssetContext implements Context
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -2417,6 +2495,7 @@ final class EditAssetContext implements Context
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -2534,15 +2613,15 @@ final class EditAssetContext implements Context
         );
     }
 
-    private function getImage(array $valueCollection, string $attributeAsImage)
+    private function getImage(array $valueCollection, string $attributeAsMainMedia)
     {
         $emptyImage = null;
 
         $value = current(
             array_filter(
                 $valueCollection,
-                function (array $value) use ($attributeAsImage) {
-                    return $value['attribute'] === $attributeAsImage;
+                function (array $value) use ($attributeAsMainMedia) {
+                    return $value['attribute'] === $attributeAsMainMedia;
                 }
             )
         );
@@ -2563,6 +2642,7 @@ final class EditAssetContext implements Context
             'size' => self::DUMMY_IMAGE_SIZE,
             'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
             'extension' => self::DUMMY_IMAGE_EXTENSION,
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ], $override);
         $this->findFileData->save($fileData);
 
@@ -2588,6 +2668,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeDecimalsAllowed::fromBoolean(true),
@@ -2682,6 +2763,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeDecimalsAllowed::fromBoolean(false),
@@ -2721,6 +2803,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeDecimalsAllowed::fromBoolean(false),

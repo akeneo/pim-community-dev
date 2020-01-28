@@ -13,7 +13,11 @@ namespace Akeneo\AssetManager\Infrastructure\Symfony\Command;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -25,10 +29,43 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class IndexAssetsCommand extends ContainerAwareCommand
+class IndexAssetsCommand extends Command
 {
+    protected static $defaultName = self::INDEX_ASSETS_COMMAND_NAME;
+
     public const INDEX_ASSETS_COMMAND_NAME = 'akeneo:asset-manager:index-assets';
     private const ERROR_CODE_USAGE = 1;
+
+    /** @var Client */
+    private $assetClient;
+
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
+
+    /** @var AssetIndexerInterface */
+    private $assetIndexer;
+
+    /** @var AssetFamilyExistsInterface */
+    private $assetFamilyExists;
+
+    /** @var string */
+    private $assetIndexName;
+
+    public function __construct(
+        Client $client,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        AssetIndexerInterface $assetIndexer,
+        AssetFamilyExistsInterface $assetFamilyExists,
+        string $assetIndexName
+    ) {
+        parent::__construct();
+
+        $this->assetClient = $client;
+        $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->assetIndexer = $assetIndexer;
+        $this->assetFamilyExists = $assetFamilyExists;
+        $this->assetIndexName = $assetIndexName;
+    }
 
     /**
      * {@inheritdoc}
@@ -36,7 +73,6 @@ class IndexAssetsCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName(self::INDEX_ASSETS_COMMAND_NAME)
             ->addArgument(
                 'asset_family_codes',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
@@ -78,12 +114,11 @@ class IndexAssetsCommand extends ContainerAwareCommand
      */
     private function checkAssetIndexExists()
     {
-        $assetClient = $this->getContainer()->get('akeneo_assetmanager.client.asset');
-        if (!$assetClient->hasIndex()) {
+        if (!$this->assetClient->hasIndex()) {
             throw new \RuntimeException(
                 sprintf(
                     'The index "%s" does not exist in Elasticsearch.',
-                    $this->getContainer()->getParameter('asset_index_name')
+                    $this->assetIndexName
                 )
             );
         }
@@ -95,13 +130,11 @@ class IndexAssetsCommand extends ContainerAwareCommand
      */
     protected function indexAll(OutputInterface $output): void
     {
-        $assetFamilyRepository = $this->getContainer()->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
-        $assetIndexer = $this->getContainer()->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer');
-        $allAssetFamilies = $assetFamilyRepository->all();
+        $allAssetFamilies = $this->assetFamilyRepository->all();
         $count = 0;
         foreach ($allAssetFamilies as $assetFamily) {
             /** @var AssetFamily $assetFamily */
-            $assetIndexer->indexByAssetFamily($assetFamily->getIdentifier());
+            $this->assetIndexer->indexByAssetFamily($assetFamily->getIdentifier());
             $count++;
         }
 
@@ -115,10 +148,9 @@ class IndexAssetsCommand extends ContainerAwareCommand
     {
         $existingAssetFamilyCodes = $this->getExistingAssetFamilyCodes($assetFamilyCodes, $output);
 
-        $assetIndexer = $this->getContainer()->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer');
         foreach ($existingAssetFamilyCodes as $i => $assetFamilyIdentifier) {
             $output->writeln(sprintf('<info>Indexing the assets of "%s".</info>', $assetFamilyCodes[$i]));
-            $assetIndexer->indexByAssetFamily($assetFamilyIdentifier);
+            $this->assetIndexer->indexByAssetFamily($assetFamilyIdentifier);
         }
     }
 
@@ -129,12 +161,9 @@ class IndexAssetsCommand extends ContainerAwareCommand
      */
     private function getExistingAssetFamilyCodes(array $assetFamilyCodes, OutputInterface $output): array
     {
-        $existsAssetFamily = $this
-            ->getContainer()
-            ->get('akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists');
         $existingAssetFamilyCodes = [];
         foreach ($assetFamilyCodes as $assetFamilyCode) {
-            if ($existsAssetFamily->withIdentifier(AssetFamilyIdentifier::fromString($assetFamilyCode))) {
+            if ($this->assetFamilyExists->withIdentifier(AssetFamilyIdentifier::fromString($assetFamilyCode))) {
                 $existingAssetFamilyCodes[] = AssetFamilyIdentifier::fromString($assetFamilyCode);
             } else {
                 $output->writeln(

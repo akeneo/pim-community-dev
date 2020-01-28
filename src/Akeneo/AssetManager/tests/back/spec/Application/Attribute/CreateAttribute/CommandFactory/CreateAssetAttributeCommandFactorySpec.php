@@ -18,7 +18,7 @@ class CreateAssetAttributeCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_type_asset()
     {
         $this->supports(['type' => 'asset'])->shouldReturn(true);
-        $this->supports(['type' => 'image'])->shouldReturn(false);
+        $this->supports(['type' => 'media_file'])->shouldReturn(false);
     }
 
     function it_creates_a_command_to_create_an_asset_attribute()
@@ -28,6 +28,7 @@ class CreateAssetAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'mentor',
             'labels' => ['fr_FR' => 'Mentor'],
             'is_required' => false,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'asset_type' => 'designer',
@@ -49,6 +50,7 @@ class CreateAssetAttributeCommandFactorySpec extends ObjectBehavior
             'asset_family_identifier' => 'designer',
 //            'code' => 'mentor', // For the test purpose, this one is missing
             'is_required' => false,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'asset_type' => 'designer',
@@ -65,6 +67,7 @@ class CreateAssetAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'mentor',
             'labels' => ['fr_FR' => 'Mentor'],
             'is_required' => false,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             // 'asset_type' => 'designer', // For the test purpose, this one is missing
@@ -73,7 +76,7 @@ class CreateAssetAttributeCommandFactorySpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('create', [$command]);
     }
-    
+
     public function it_builds_the_command_with_some_default_values()
     {
         $command = $this->create([

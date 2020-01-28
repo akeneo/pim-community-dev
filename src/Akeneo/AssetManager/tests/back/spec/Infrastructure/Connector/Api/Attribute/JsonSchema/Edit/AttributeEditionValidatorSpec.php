@@ -16,6 +16,7 @@ namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSc
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
@@ -24,7 +25,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -32,7 +34,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeEditionValidator;
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\ImageAttributeValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\MediaFileAttributeValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\OptionAttributeValidator;
 use PhpSpec\ObjectBehavior;
 
@@ -49,21 +51,24 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
             LabelCollection::fromArray(['en_US' => 'Main material']),
             AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
 
-        $imageAttribute = ImageAttribute::create(
+        $mediaFileAttribute = MediaFileAttribute::create(
             AttributeIdentifier::fromString('photo'),
             AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('photo'),
             LabelCollection::fromArray(['en_US' => 'Cover Image']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('250.2'),
-            AttributeAllowedExtensions::fromList(['jpg'])
+            AttributeAllowedExtensions::fromList(['jpg']),
+            MediaType::fromString(MediaType::IMAGE)
         );
 
         $textAttribute = TextAttribute::createText(
@@ -73,6 +78,7 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
             LabelCollection::fromArray(['en_US' => 'Main color', 'fr_FR' => 'Couleur principale']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -86,7 +92,7 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
 
         $attributeRepository
             ->getByIdentifier(AttributeIdentifier::fromString('photo'))
-            ->willReturn($imageAttribute);
+            ->willReturn($mediaFileAttribute);
 
         $attributeRepository
             ->getByIdentifier(AttributeIdentifier::fromString('text'))
@@ -110,7 +116,7 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
         $this->beConstructedWith(
             $attributeRepository,
             $getAttributeIdentifier,
-            [new ImageAttributeValidator(), new OptionAttributeValidator()]
+            [new MediaFileAttributeValidator(), new OptionAttributeValidator()]
         );
     }
 
@@ -119,7 +125,7 @@ class AttributeEditionValidatorSpec extends ObjectBehavior
         $this->shouldHaveType(AttributeEditionValidator::class);
     }
 
-    function it_validates_an_image_attribute()
+    function it_validates_a_media_file_attribute()
     {
         $this->validate(
             AssetFamilyIdentifier::fromString('brand'),

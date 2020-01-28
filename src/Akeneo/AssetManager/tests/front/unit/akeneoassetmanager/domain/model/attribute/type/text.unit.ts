@@ -5,6 +5,7 @@ import {
   createMaxLengthFromString,
   createRegularExpressionFromString,
   regularExpressionStringValue,
+  isTextAttribute,
 } from 'akeneoassetmanager/domain/model/attribute/type/text';
 
 const normalizedDescription = {
@@ -17,6 +18,7 @@ const normalizedDescription = {
   value_per_locale: true,
   value_per_channel: false,
   is_required: true,
+  is_read_only: true,
   max_length: 0,
   is_textarea: false,
   is_rich_text_editor: false,
@@ -66,6 +68,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
         false,
         0,
         true,
+        false,
         12,
         false,
         true
@@ -81,6 +84,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
         false,
         0,
         true,
+        false,
         12,
         true,
         false,
@@ -97,6 +101,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
         false,
         0,
         true,
+        false,
         12,
         true,
         false,
@@ -106,5 +111,10 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     }).toThrow(
       'Attribute cannot have a regular expression while the validation rule is not ValidationRuleOption.RegularExpression'
     );
+  });
+
+  test('I can check if it is a text attribute', () => {
+    expect(isTextAttribute(normalizedDescription)).toBe(true);
+    expect(isTextAttribute({...normalizedDescription, type: 'noice'})).toBe(false);
   });
 });

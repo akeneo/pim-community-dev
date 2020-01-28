@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Overridden category controller
@@ -52,18 +53,6 @@ class CategoryTreeController extends BaseCategoryTreeController
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /**
-     * @param EventDispatcherInterface    $eventDispatcher
-     * @param UserContext                 $userContext
-     * @param SaverInterface              $categorySaver
-     * @param RemoverInterface            $categoryRemover
-     * @param SimpleFactoryInterface      $categoryFactory
-     * @param CategoryRepositoryInterface $categoryRepository
-     * @param SecurityFacade              $securityFacade
-     * @param array                       $rawConfiguration
-     * @param CategoryAccessRepository    $categoryAccessRepo
-     * @param TokenStorageInterface       $tokenStorage
-     */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
@@ -72,6 +61,7 @@ class CategoryTreeController extends BaseCategoryTreeController
         SimpleFactoryInterface $categoryFactory,
         CategoryRepositoryInterface $categoryRepository,
         SecurityFacade $securityFacade,
+        TranslatorInterface $translator,
         array $rawConfiguration,
         CategoryAccessRepository $categoryAccessRepo,
         TokenStorageInterface $tokenStorage
@@ -84,6 +74,7 @@ class CategoryTreeController extends BaseCategoryTreeController
             $categoryFactory,
             $categoryRepository,
             $securityFacade,
+            $translator,
             $rawConfiguration
         );
 

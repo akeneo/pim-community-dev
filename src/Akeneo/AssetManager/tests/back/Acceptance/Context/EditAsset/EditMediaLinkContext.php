@@ -8,7 +8,6 @@ use Akeneo\AssetManager\Acceptance\Context\ConstraintViolationsContext;
 use Akeneo\AssetManager\Acceptance\Context\ExceptionContext;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommandFactory;
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
-use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository;
 use Akeneo\AssetManager\Common\Fake\InMemoryAttributeRepository;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
@@ -24,6 +23,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
@@ -197,6 +197,7 @@ class EditMediaLinkContext implements Context
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),

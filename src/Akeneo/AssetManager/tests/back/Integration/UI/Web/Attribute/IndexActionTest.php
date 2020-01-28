@@ -13,21 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\Attribute;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
-    /** @var Client */
-    private $client;
-
     /** @var WebClientHelper */
     private $webClientHelper;
 
@@ -36,8 +32,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
-            ->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
     }
 
@@ -112,6 +107,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $nameAttribute->labels = ['en_US' => 'Name'];
         $nameAttribute->order = 0;
         $nameAttribute->isRequired = true;
+        $nameAttribute->isReadOnly = true;
         $nameAttribute->valuePerChannel = true;
         $nameAttribute->valuePerLocale = true;
         $nameAttribute->additionalProperties = [
@@ -135,6 +131,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $emailAttribute->labels = ['en_US' => 'Email'];
         $emailAttribute->order = 0;
         $emailAttribute->isRequired = true;
+        $emailAttribute->isReadOnly = false;
         $emailAttribute->valuePerChannel = true;
         $emailAttribute->valuePerLocale = true;
         $emailAttribute->additionalProperties = [
@@ -153,16 +150,18 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $portraitAttribute = new AttributeDetails();
         $portraitAttribute->identifier = sprintf('portrait_designer_%s', md5('fingerprint'));
         $portraitAttribute->assetFamilyIdentifier = 'designer';
-        $portraitAttribute->type = 'image';
+        $portraitAttribute->type = 'media_file';
         $portraitAttribute->code = 'portrait';
         $portraitAttribute->labels = ['en_US' => 'Portrait'];
         $portraitAttribute->order = 1;
         $portraitAttribute->isRequired = true;
+        $portraitAttribute->isReadOnly = false;
         $portraitAttribute->valuePerChannel = true;
         $portraitAttribute->valuePerLocale = true;
         $portraitAttribute->additionalProperties = [
             'max_file_size' => '1000',
             'allowed_extensions' => ['pdf'],
+            'media_type' => MediaType::IMAGE
         ];
 
         return $portraitAttribute;
@@ -178,6 +177,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $optionAttribute->labels = ['en_US' => 'Favorite color'];
         $optionAttribute->order = 2;
         $optionAttribute->isRequired = true;
+        $optionAttribute->isReadOnly = false;
         $optionAttribute->valuePerChannel = true;
         $optionAttribute->valuePerLocale = true;
         $optionAttribute->additionalProperties = [
@@ -212,6 +212,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $optionCollectionAttribute->labels = ['en_US' => 'Colors'];
         $optionCollectionAttribute->order = 3;
         $optionCollectionAttribute->isRequired = true;
+        $optionCollectionAttribute->isReadOnly = false;
         $optionCollectionAttribute->valuePerChannel = true;
         $optionCollectionAttribute->valuePerLocale = true;
         $optionCollectionAttribute->additionalProperties = [

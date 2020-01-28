@@ -15,7 +15,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\Project
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectCompletenessRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\UserRepositoryInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -24,15 +24,42 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class NotificationDueDateWarningCommand extends ContainerAwareCommand
+class NotificationDueDateWarningCommand extends Command
 {
+    protected static $defaultName = 'pimee:project:notify-before-due-date';
+
+    /** @var ProjectRepositoryInterface */
+    private $projectRepository;
+
+    /** @var ProjectNotifierInterface */
+    private $projectNotifier;
+
+    /** @var ProjectCompletenessRepositoryInterface */
+    private $projectCompletenessRepository;
+
+    /** @var UserRepositoryInterface */
+    private $userRepository;
+
+    public function __construct(
+        ProjectRepositoryInterface $projectRepository,
+        ProjectNotifierInterface $projectNotifier,
+        ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
+        UserRepositoryInterface $userRepository
+    ) {
+        parent::__construct();
+
+        $this->projectRepository = $projectRepository;
+        $this->projectNotifier = $projectNotifier;
+        $this->projectCompletenessRepository = $projectCompletenessRepository;
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pimee:project:notify-before-due-date')
             ->setDescription('Sends a notification to users with a close due date.');
     }
 
@@ -41,50 +68,18 @@ class NotificationDueDateWarningCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $projects = $this->getProjectRepository()->findAll();
+        $projects = $this->projectRepository->findAll();
 
         foreach ($projects as $project) {
-            $users = $this->getProjectUserRepository()->findUsersToNotify($project);
+            $users = $this->userRepository->findUsersToNotify($project);
             foreach ($users as $user) {
-                $projectCompleteness = $this->getProjectCompletenessRepository()
+                $projectCompleteness = $this->projectCompletenessRepository
                     ->getProjectCompleteness($project, $user);
-                $this->getNotifier()->notifyUser($user, $project, $projectCompleteness);
+                $this->projectNotifier->notifyUser($user, $project, $projectCompleteness);
                 $output->writeln(sprintf('User %s has been notified.', $user->getUsername()));
             }
         }
 
         return 0;
-    }
-
-    /**
-     * @return ProjectRepositoryInterface
-     */
-    protected function getProjectRepository()
-    {
-        return $this->getContainer()->get('pimee_teamwork_assistant.repository.project');
-    }
-
-    /**
-     * @return ProjectNotifierInterface
-     */
-    protected function getNotifier()
-    {
-        return $this->getContainer()->get('pimee_teamwork_assistant.notifier.project_due_date_reminder');
-    }
-
-    /**
-     * @return ProjectCompletenessRepositoryInterface
-     */
-    protected function getProjectCompletenessRepository()
-    {
-        return $this->getContainer()->get('pimee_teamwork_assistant.repository.project_completeness');
-    }
-
-    /**
-     * @return UserRepositoryInterface
-     */
-    protected function getProjectUserRepository()
-    {
-        return $this->getContainer()->get('pimee_teamwork_assistant.repository.user');
     }
 }

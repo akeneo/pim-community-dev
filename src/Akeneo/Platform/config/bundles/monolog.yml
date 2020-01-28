@@ -1,8 +1,0 @@
-monolog:
-    handlers:
-        franklin:
-            level: info
-            type: stream
-            path: '%kernel.logs_dir%/ask-franklin.log'
-            channels: ['franklin']
-    channels: ['franklin']

@@ -13,25 +13,22 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\AssetFamily;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
-use Akeneo\UserManagement\Component\Model\User;
-use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    /** @var Client */
-    private $client;
-
     /** @var WebClientHelper */
     private $webClientHelper;
 
@@ -40,8 +37,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
-            ->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
     }
 
@@ -86,14 +82,42 @@ class GetActionTest extends ControllerIntegrationTestCase
         ]);
         $entityItem->image = Image::fromFileInfo($file);
         $entityItem->assetCount = 123;
-        $entityItem->attributeAsImage = AttributeAsImageReference::createFromNormalized('designer_portrait_123456');
+        $entityItem->attributeAsMainMedia = AttributeAsMainMediaReference::createFromNormalized('designer_portrait_123456');
         $entityItem->attributeAsLabel = AttributeAsLabelReference::createFromNormalized('designer_name_123456');
+        $entityItem->transformations = TransformationCollection::noTransformation();
+        $entityItem->namingConvention = NamingConvention::createFromNormalized([
+            'source' => ['property' => 'media', 'locale' => null, 'channel' => null],
+            'pattern' => '/the_pattern/',
+            'abort_asset_creation_on_error' => true,
+        ]);
+        $entityItem->productLinkRules = [
+            [
+                'product_selections' => [
+                    [
+                        'field' => 'fulltext',
+                        'operator' => 'IN',
+                        'value' => 'value',
+                        'channel' => null,
+                        'locale' => null
+                    ]
+                ],
+                'assign_assets_to' => [
+                    [
+                        'attribute' => 'main',
+                        'channel' => null,
+                        'locale' => null,
+                        'mode' => 'add'
+                    ]
+                ]
+            ]
+        ];
 
         $name = new AttributeDetails();
         $name->identifier = 'designer_name_123456';
         $name->assetFamilyIdentifier = 'designer';
         $name->code = 'name';
         $name->isRequired = false;
+        $name->isReadOnly = true;
         $name->order = 0;
         $name->valuePerChannel = false;
         $name->valuePerLocale = true;
@@ -112,6 +136,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $bio->assetFamilyIdentifier = 'designer';
         $bio->code = 'bio';
         $bio->isRequired = false;
+        $bio->isReadOnly = false;
         $bio->order = 1;
         $bio->valuePerChannel = false;
         $bio->valuePerLocale = true;
@@ -130,14 +155,16 @@ class GetActionTest extends ControllerIntegrationTestCase
         $portrait->assetFamilyIdentifier = 'designer';
         $portrait->code = 'portrait';
         $portrait->isRequired = false;
+        $portrait->isReadOnly = false;
         $portrait->order = 2;
         $portrait->valuePerChannel = false;
         $portrait->valuePerLocale = true;
-        $portrait->type = 'image';
+        $portrait->type = 'media_file';
         $portrait->labels = ['en_US' => 'Portrait', 'fr_FR' => 'Image'];
         $portrait->additionalProperties = [
             'max_file_size'      => '124.12',
             'allowed_extensions' => ['png', 'jpg'],
+            'media_type' => MediaType::IMAGE
         ];
 
         $favoriteColor = new AttributeDetails();
@@ -145,6 +172,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $favoriteColor->assetFamilyIdentifier = 'designer';
         $favoriteColor->code = 'favorite_color';
         $favoriteColor->isRequired = true;
+        $favoriteColor->isReadOnly = false;
         $favoriteColor->order = 3;
         $favoriteColor->valuePerChannel = true;
         $favoriteColor->valuePerLocale = true;
@@ -168,6 +196,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $colors->assetFamilyIdentifier = 'designer';
         $colors->code = 'colors';
         $colors->isRequired = true;
+        $colors->isReadOnly = false;
         $colors->order = 4;
         $colors->valuePerChannel = true;
         $colors->valuePerLocale = true;
@@ -186,25 +215,12 @@ class GetActionTest extends ControllerIntegrationTestCase
             ],
         ];
 
-        $city = new AttributeDetails();
-        $city->identifier = 'city_designer_79eb100099b9a8bf52609e00b7ee307e';
-        $city->assetFamilyIdentifier = 'designer';
-        $city->code = 'city';
-        $city->isRequired = false;
-        $city->order = 5;
-        $city->valuePerChannel = false;
-        $city->valuePerLocale = false;
-        $city->type = 'asset';
-        $city->labels = ['en_US' => 'City'];
-        $city->additionalProperties = [
-            'asset_type' => 'city'
-        ];
-
         $birthdate = new AttributeDetails();
         $birthdate->identifier = 'year_of_birth_designer_79eb100099b9a8bf52609e00b7ee307e';
         $birthdate->assetFamilyIdentifier = 'designer';
         $birthdate->code = 'year_of_birth';
         $birthdate->isRequired = false;
+        $birthdate->isReadOnly = false;
         $birthdate->order = 6;
         $birthdate->valuePerChannel = false;
         $birthdate->valuePerLocale = false;
@@ -222,14 +238,9 @@ class GetActionTest extends ControllerIntegrationTestCase
             $portrait,
             $favoriteColor,
             $colors,
-            $city,
             $birthdate
         ];
         $queryHandler->save($entityItem);
-
-        $user = new User();
-        $user->setUsername('julia');
-        $this->get('pim_user.repository.user')->save($user);
     }
 
     private function forbidEdition(): void

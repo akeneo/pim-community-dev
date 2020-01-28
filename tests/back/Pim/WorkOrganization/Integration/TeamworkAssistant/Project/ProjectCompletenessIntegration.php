@@ -184,7 +184,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
      *
      * @group critical
      */
-    public function testCreateAProjectOnTheTshirtFamilyButWithAnotherChannel()
+    public function testCreateAnotherProjectOnTheTshirtFamilyButWithAnotherChannel()
     {
         $project = $this->createProject('Tshirt - print', 'Julia', 'fr_FR', 'tablet', [
             [
@@ -262,7 +262,6 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Marc');
     }
 
-
     /**
      * Check that the project completeness is computed depending on the locale accesses.
      *
@@ -272,7 +271,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
      *
      * @group critical
      */
-    public function testCreateAProjectOnTheTshirtFamilyButWithAnotherChannelAndLocale()
+    public function testCreateAnotherProjectOnTheTshirtFamilyButWithAnotherChannelAndLocale()
     {
         $project = $this->createProject('Tshirt - print', 'Julia', 'es_ES', 'tablet', [
             [
@@ -499,10 +498,10 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         ];
 
         $family = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
+            ->get('akeneo_ee_integration_tests.builder.family')
             ->build($familyData, true);
 
-        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+        $this->get('pim_catalog.saver.family')->save($family);
     }
 
     private function createProductInFamily(string $familyCode): void
@@ -511,5 +510,6 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         $constraints = $this->get('pim_catalog.validator.product')->validate($product);
         Assert::assertCount(0, $constraints);
         $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 }

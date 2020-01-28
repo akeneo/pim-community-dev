@@ -10,6 +10,7 @@ parameters:
 
 services:
     pimee_workflow.controller.product_draft:
+        public: true
         class: '%pimee_workflow.controller.product_draft.class%'
         arguments:
             - '@request_stack'
@@ -28,6 +29,7 @@ services:
             - '@oro_datagrid.mass_action.parameters_parser'
 
     pimee_workflow.controller.published_product:
+        public: true
         class: '%pimee_workflow.controller.published_product.class%'
         arguments:
             - '@request_stack'
@@ -36,11 +38,11 @@ services:
             - '@translator'
             - '@pim_user.context.user'
             - '@pimee_workflow.manager.published_product'
-            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.repository.channel'
             - '@security.authorization_checker'
 
     pimee_workflow.controller.published_product_rest:
+        public: true
         class: '%pimee_workflow.controller.published_product_rest.class%'
         arguments:
             - '@security.authorization_checker'
@@ -49,6 +51,7 @@ services:
             - '@pim_internal_api_serializer'
 
     pimee_workflow.controller.product_draft_rest:
+        public: true
         class: '%pimee_workflow.controller.product_draft_rest.class%'
         arguments:
             - '@security.authorization_checker'
@@ -69,6 +72,7 @@ services:
             - '@akeneo_elasticsearch.client.product_proposal'
 
     pimee_workflow.controller.rest.product:
+        public: true
         class: '%pimee_workflow.controller.rest.product.class%'
         arguments:
             - '@pimee_workflow.repository.product_draft'
@@ -77,6 +81,7 @@ services:
             - '@pim_catalog.filter.chained'
 
     pimee_workflow.controller.product_model_draft_rest:
+        public: true
         class: '%pimee_workflow.controller.product_model_draft_rest.class%'
         arguments:
             - '@pim_catalog.repository.product_model'
@@ -91,6 +96,7 @@ services:
             - '@pim_catalog.repository.locale'
 
     pimee_workflow.controller.product_model_draft:
+        public: true
         class: '%pimee_workflow.controller.product_model_draft.class%'
         arguments:
             - '@request_stack'
@@ -109,12 +115,14 @@ services:
             - '@oro_datagrid.mass_action.parameters_parser'
 
     pimee_workflow.controller.author_draft:
+        public: true
         class: '%pimee_workflow.controller.author_draft.class%'
         arguments:
             - '@pimee_workflow.query.draft_authors'
             - '@pim_user.context.user'
 
     pimee_workflow.controller.category_tree.published_product:
+        public: true
         class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\CategoryTreeController'
         arguments:
             - '@event_dispatcher'
@@ -124,6 +132,7 @@ services:
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
+            - '@translator'
             - { related_entity: published_product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
@@ -131,6 +140,7 @@ services:
             - [ setContainer, [ '@service_container' ] ]
 
     pimee_workflow.controller.rest.mass_edit:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\MassEditController'
         arguments:
             - '@oro_datagrid.mass_action.parameters_parser'
@@ -140,6 +150,7 @@ services:
             - '@pim_datagrid.adapter.items_counter'
 
     pim_enrich.controller.rest.product:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController'
         arguments:
             - '@pim_catalog.repository.product'
@@ -160,10 +171,10 @@ services:
             - '@pim_enrich.normalizer.product_violation'
             - '@pim_catalog.builder.product'
             - '@pim_enrich.filter.product_attribute_filter'
-            - '@akeneo_elasticsearch.client.product'
             - '@akeneo_elasticsearch.client.product_and_product_model'
 
     pim_enrich.controller.rest.product_model:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelController'
         arguments:
             - '@pim_catalog.repository.product_model'
@@ -183,5 +194,4 @@ services:
             - '@pim_enrich.normalizer.violation'
             - '@pim_catalog.repository.family_variant'
             - '@pim_enrich.filter.product_model_attribute_filter'
-            - '@akeneo_elasticsearch.client.product_model'
             - '@akeneo_elasticsearch.client.product_and_product_model'

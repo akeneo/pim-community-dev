@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory;
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\AssetAttributeFactory;
-use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAssetAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use PhpSpec\ObjectBehavior;
 
 class AssetAttributeFactorySpec extends ObjectBehavior
@@ -28,21 +29,24 @@ class AssetAttributeFactorySpec extends ObjectBehavior
                 false,
                 false,
                 false,
+                false,
                 'designer'
             )
         )->shouldReturn(true);
         $this->supports(
-            new CreateImageAttributeCommand(
+            new CreateMediaFileAttributeCommand(
                 'designer',
                 'name',
                 [
                     'fr_FR' => 'Nom',
                 ],
                 true,
+                true,
                 false,
                 false,
                 null,
-                []
+                [],
+                MediaType::IMAGE
             )
         )->shouldReturn(false);
     }
@@ -53,6 +57,7 @@ class AssetAttributeFactorySpec extends ObjectBehavior
             'designer',
             'mentor',
             ['fr_FR' => 'Mentor'],
+            false,
             false,
             false,
             false,
@@ -70,6 +75,7 @@ class AssetAttributeFactorySpec extends ObjectBehavior
             'labels'                      => ['fr_FR' => 'Mentor'],
             'order'                       => 0,
             'is_required'                 => false,
+            'is_read_only'                => false,
             'value_per_channel'           => false,
             'value_per_locale'            => false,
             'type'                        => 'asset',

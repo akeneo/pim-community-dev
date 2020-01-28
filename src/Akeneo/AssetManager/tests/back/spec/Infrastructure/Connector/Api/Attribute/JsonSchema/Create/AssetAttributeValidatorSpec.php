@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AssetAttributeValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use PhpSpec\ObjectBehavior;
 
 class AssetAttributeValidatorSpec extends ObjectBehavior

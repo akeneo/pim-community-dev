@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\CheckIfTransformationTarget;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 
 /**
@@ -27,12 +29,17 @@ class EditAssetCommandFactory
     /** @var EditValueCommandFactoryRegistryInterface */
     private $editValueCommandFactoryRegistry;
 
+    /** @var CheckIfTransformationTarget */
+    private $checkIfTransformationTarget;
+
     public function __construct(
         EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
-        FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier
+        FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier,
+        CheckIfTransformationTarget $checkIfTransformationTarget
     ) {
         $this->sqlFindAttributesIndexedByIdentifier = $sqlFindAttributesIndexedByIdentifier;
         $this->editValueCommandFactoryRegistry = $editValueCommandFactoryRegistry;
+        $this->checkIfTransformationTarget = $checkIfTransformationTarget;
     }
 
     public function create(array $normalizedCommand): EditAssetCommand
@@ -44,8 +51,6 @@ class EditAssetCommandFactory
         $command = new EditAssetCommand(
             $normalizedCommand['asset_family_identifier'],
             $normalizedCommand['code'],
-            [],
-            null,
             []
         );
 
@@ -63,6 +68,11 @@ class EditAssetCommandFactory
             }
 
             $attribute = $attributesIndexedByIdentifier[$normalizedValue['attribute']];
+            if ($this->isAttributeTargetOrATransformation($attribute, $normalizedValue)) {
+                // Target attributes can not be updated through this action (read only)
+                continue;
+            }
+
             $command->editAssetValueCommands[] = $this->editValueCommandFactoryRegistry
                 ->getFactory($attribute, $normalizedValue)
                 ->create($attribute, $normalizedValue);
@@ -86,5 +96,14 @@ class EditAssetCommandFactory
     private function isAttributeExisting($normalizedValue, $attributesIndexedByIdentifier): bool
     {
         return array_key_exists($normalizedValue['attribute'], $attributesIndexedByIdentifier);
+    }
+
+    private function isAttributeTargetOrATransformation(AbstractAttribute $attribute, array $normalizedValue)
+    {
+        return $this->checkIfTransformationTarget->forAttribute(
+            $attribute,
+            $normalizedValue['locale'] ?? null,
+            $normalizedValue['channel'] ?? null
+        );
     }
 }

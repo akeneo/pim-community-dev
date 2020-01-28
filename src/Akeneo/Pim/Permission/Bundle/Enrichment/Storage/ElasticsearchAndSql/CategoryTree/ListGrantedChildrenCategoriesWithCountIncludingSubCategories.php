@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\ElasticsearchAndSql\Ca
 
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 
@@ -21,19 +22,14 @@ class ListGrantedChildrenCategoriesWithCountIncludingSubCategories implements Qu
     /** @var Client */
     private $client;
 
-    /** @var string */
-    private $indexType;
-
     /**
      * @param Connection $connection
      * @param Client     $client
-     * @param string     $indexType
      */
-    public function __construct(Connection $connection, Client $client, string $indexType)
+    public function __construct(Connection $connection, Client $client)
     {
         $this->connection = $connection;
         $this->client = $client;
-        $this->indexType = $indexType;
     }
 
     /**
@@ -230,21 +226,29 @@ SQL;
                 'query' => [
                     'constant_score' => [
                         'filter' => [
-                            'terms' => [
-                                'categories' => $categoryCodes
+                            'bool' => [
+                                'filter' => [
+                                    ['terms' => [
+                                        'categories' => $categoryCodes
+                                    ]],
+                                    ['term' => [
+                                        'document_type' => ProductInterface::class
+                                    ]]
+                                ]
                             ]
                         ]
                     ]
-                ]
+                ],
+                'track_total_hits' => true,
             ];
         }
 
-        $rows = $this->client->msearch($this->indexType, $body);
+        $rows = $this->client->msearch($body);
 
         $categoriesWithCount = [];
         $index = 0;
         foreach ($categoriesWithoutCount as $category) {
-            $category['count'] = $rows['responses'][$index]['hits']['total'] ?? -1;
+            $category['count'] = $rows['responses'][$index]['hits']['total']['value'] ?? -1;
             $categoriesWithCount[] = $category;
             $index++;
         }

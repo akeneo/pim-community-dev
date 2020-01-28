@@ -29,12 +29,6 @@ define(
              * Render a select2 populated by contributors of the given project
              */
             render: function () {
-                this.$el.html('');
-
-                if (UserContext.get('username') !== this.getFormData().currentProject.owner.username) {
-                    return;
-                }
-
                 this.$el.html(this.template());
                 this.initializeSelect();
             },

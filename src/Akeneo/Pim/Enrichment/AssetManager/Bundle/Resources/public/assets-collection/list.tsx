@@ -7,7 +7,6 @@ import {
   selectRuleRelations,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {
-  AssetCode,
   LabelCollection,
   ProductIdentifier,
   selectCurrentValues,
@@ -21,45 +20,44 @@ import {
 import {selectContext} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
-import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
-import {Attribute, getAttributeLabel} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {Label} from 'akeneoassetmanager/application/component/app/label';
+import {Attribute, getAttributeLabel} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {
   ChannelLabel,
   ContextLabel,
   LocaleLabel,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/context';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {Pill, Separator, Spacer} from 'akeneopimenrichmentassetmanager/platform/component/common';
+import {Pill} from 'akeneoassetmanager/application/component/app/pill';
+import {Separator} from 'akeneoassetmanager/application/component/app/separator';
+import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
 import {hasValues, isValueComplete} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
-import {Family} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
-import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
+import {Family} from 'akeneoassetmanager/platform/model/structure/family';
+import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import {
-  HelperIcon,
   HelperSection,
   HelperSeparator,
   HelperText,
   HelperTitle,
-} from 'akeneopimenrichmentassetmanager/platform/component/common/helper';
-import {
-  NoDataSection,
-  NoDataText,
-  NoDataTitle,
-} from 'akeneopimenrichmentassetmanager/platform/component/common/no-data';
-import {RuleRelation} from 'akeneopimenrichmentassetmanager/platform/model/structure/rule-relation';
-import {RuleNotification} from 'akeneopimenrichmentassetmanager/platform/component/rule-notification';
+} from 'akeneoassetmanager/platform/component/common/helper';
+import {NoDataSection, NoDataTitle} from 'akeneoassetmanager/platform/component/common/no-data';
+import {RuleRelation} from 'akeneoassetmanager/platform/model/structure/rule-relation';
+import {RuleNotification} from 'akeneoassetmanager/platform/component/rule-notification';
 import {selectErrors} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/errors';
-import {ValidationError} from 'akeneopimenrichmentassetmanager/platform/model/validation-error';
-import {ValidationErrorCollection} from 'akeneopimenrichmentassetmanager/platform/component/common/validation-error-collection';
-import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
+import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
+import {ValidationErrorCollection} from 'akeneoassetmanager/platform/component/common/validation-error-collection';
+import {Context} from 'akeneoassetmanager/domain/model/context';
 import {MoreButton} from 'akeneoassetmanager/application/component/app/more-button';
-import {
-  addAssetsToCollection,
-  emptyCollection,
-} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker';
-import LockIcon from 'akeneopimenrichmentassetmanager/platform/component/visual/icon/lock';
-import AssetCounter from 'akeneopimenrichmentassetmanager/platform/component/common/asset-counter';
+import LockIcon from 'akeneoassetmanager/platform/component/visual/icon/lock';
+import {ResultCounter} from 'akeneoassetmanager/application/component/app/result-counter';
+import {addAssetsToCollection, emptyCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import {Link} from 'akeneoassetmanager/application/component/app/link';
+import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel';
+import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import {MassUploader} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/mass-uploader';
 
 type ListStateProps = {
   attributes: Attribute[];
@@ -123,6 +121,11 @@ const LockIconContainer = styled.div`
   height: 14px;
 `;
 
+const dataProvider = {
+  assetFamilyFetcher,
+  channelFetcher: {fetchAll: fetchAllChannels},
+};
+
 const DisplayValues = ({
   values,
   family,
@@ -153,7 +156,7 @@ const DisplayValues = ({
               </IncompleteIndicator>
             ) : null}
             <Spacer />
-            <AssetCounter resultCount={value.data.length} />
+            <ResultCounter count={value.data.length} labelKey={'pim_asset_manager.asset_counter'} />
             <Separator />
             {value.channel !== null || value.locale !== null ? (
               <React.Fragment>
@@ -175,6 +178,14 @@ const DisplayValues = ({
                     onChange(updateValueData(value, addAssetsToCollection(value.data, assetCodes)));
                   }}
                   productLabels={productLabels}
+                />
+                <MassUploader
+                  dataProvider={dataProvider}
+                  assetFamilyIdentifier={value.attribute.referenceDataName}
+                  context={context}
+                  onAssetCreated={(assetCodes: AssetCode[]) => {
+                    onChange(updateValueData(value, addAssetsToCollection(value.data, assetCodes)));
+                  }}
                 />
                 <MoreButton
                   elements={[
@@ -217,8 +228,6 @@ const List = ({
   productLabels,
   onChange,
 }: ListStateProps & ListDispatchProps) => {
-  const familyLabel = null !== family ? family.labels[context.locale] : '';
-
   return (
     <AssetCollectionList>
       {hasValues(values) ? (
@@ -235,25 +244,22 @@ const List = ({
       ) : (
         <React.Fragment>
           <HelperSection>
-            <HelperIcon src="/bundles/pimui/images/illustrations/Asset.svg" />
+            <AssetIllustration size={80} />
             <HelperSeparator />
             <HelperTitle>
               👋 {__('pim_asset_manager.asset_collection.helper.title')}
               <HelperText>
-                {__('pim_asset_manager.asset_collection.helper.text', {family: familyLabel})}
+                {__('pim_asset_manager.asset_collection.helper.text')}
                 <br />
-                <a href="#">{__('pim_asset_manager.asset_collection.helper.link')}</a>
+                <Link href="https://help.akeneo.com/pim/v4/articles/manage-your-attributes.html" target="_blank">
+                  {__('pim_asset_manager.asset_collection.helper.link')}
+                </Link>
               </HelperText>
             </HelperTitle>
           </HelperSection>
           <NoDataSection>
             <AssetIllustration size={256} />
             <NoDataTitle>{__('pim_asset_manager.asset_collection.no_asset.title')}</NoDataTitle>
-            <NoDataText>
-              {__('pim_asset_manager.asset_collection.no_asset.text', {family: familyLabel})}
-              <Spacer />
-              <a href="#">{__('pim_asset_manager.asset_collection.helper.link')}</a>
-            </NoDataText>
           </NoDataSection>
         </React.Fragment>
       )}

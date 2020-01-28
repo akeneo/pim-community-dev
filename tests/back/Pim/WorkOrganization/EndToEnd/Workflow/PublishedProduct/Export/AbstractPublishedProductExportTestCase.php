@@ -18,7 +18,7 @@ class AbstractPublishedProductExportTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->jobLauncher       = new JobLauncher(static::$kernel);
+        $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         $publishedProductManager = $this->get('pimee_workflow.manager.published_product');
 
         $productsToPublish = [];
@@ -89,7 +89,7 @@ class AbstractPublishedProductExportTestCase extends TestCase
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         return $product;
     }

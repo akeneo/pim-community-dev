@@ -43,27 +43,28 @@ Feature: Create an asset family
       | labels                                     |
       | {"en_US": "Designer", "fr_FR": "Designer"} |
     Then there is a text attribute "label" in the asset family "designer" with:
-      | code  | labels | is_required | order | value_per_channel | value_per_locale | max_length | type | is_textarea | is_rich_text_editor | validation_rule | regular_expression |
-      | label | {}     | false       | 0     | false             | true             | null       | text | false       | false               | none            |                    |
+      | code  | labels | is_required | is_read_only | order | value_per_channel | value_per_locale | max_length | type | is_textarea | is_rich_text_editor | validation_rule | regular_expression |
+      | label | {}     | false       | false        | 0     | false             | true             | null       | text | false       | false               | none            |                    |
     And the asset family "designer" should be:
       | identifier | labels                                     | attribute_as_label |
       | designer   | {"en_US": "Designer", "fr_FR": "Designer"} | label              |
 
   @acceptance-back
-  Scenario: An attribute as image is created alongside the asset family
+  Scenario: An attribute as main media is created alongside the asset family
     When the user creates an asset family "designer" with:
       | labels                                     |
       | {"en_US": "Designer", "fr_FR": "Designer"} |
-    Then there is an image attribute "image" in the asset family "designer" with:
-      | code  | labels | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions | type  |
-      | image | {}     | false       | 1     | false             | false            | null          | []                 | image |
+    Then there is a media file attribute "media" in the asset family "designer" with:
+      | code  | labels | is_required | is_read_only | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions | type       | media_type |
+      | media | {}     | false       | false        | 1     | false             | false            | null          | []                 | media_file | image      |
     And the asset family "designer" should be:
-      | identifier | labels                                     | attribute_as_image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Designer"} | image              |
+      | identifier | labels                                     | attribute_as_main_media |
+      | designer   | {"en_US": "Designer", "fr_FR": "Designer"} | media                   |
 
   @acceptance-back
   Scenario: Creating an asset family with a collection of static rule templates
     When the user creates an asset family 'packshot' with a collection of static rule templates
+    Then there is no violations errors
     Then there is an asset family 'packshot' with a collection of static rule templates
 
   @acceptance-back

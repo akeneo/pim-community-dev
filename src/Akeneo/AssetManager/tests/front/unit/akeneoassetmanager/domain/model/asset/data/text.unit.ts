@@ -1,33 +1,33 @@
-import {create, denormalize} from 'akeneoassetmanager/domain/model/asset/data/text';
+import {
+  textDataFromString,
+  textDataStringValue,
+  areTextDataEqual,
+  isTextData,
+} from 'akeneoassetmanager/domain/model/asset/data/text';
 
+let textData = '12';
 describe('akeneo > asset family > domain > model > asset > data --- text', () => {
   test('I can create a new TextData with a string', () => {
-    expect(create('nice value').normalize()).toEqual('nice value');
-  });
-
-  test('I cannot create a new TextData with a value other than a string', () => {
-    expect(() => {
-      create(12);
-    }).toThrow('TextData expects a string as parameter to be created');
-  });
-
-  test('I can normalize a TextData', () => {
-    expect(denormalize('awesome text').normalize()).toEqual('awesome text');
+    expect(textDataFromString(textData)).toEqual(textData);
+    expect(textDataFromString('')).toEqual(null);
+    expect(textDataFromString('<p></p>\n')).toEqual(null);
   });
 
   test('I can get the string value of a TextData', () => {
-    expect(denormalize('awesome text').stringValue()).toEqual('awesome text');
+    expect(textDataStringValue(textData)).toEqual(textData);
+    expect(textDataStringValue(null)).toEqual('');
   });
 
-  test('I can test if a TextData is empty or not', () => {
-    expect(denormalize('awesome text').isEmpty()).toBe(false);
-    expect(denormalize('').isEmpty()).toBe(true);
-    expect(denormalize('<p></p>\n').isEmpty()).toBe(true);
+  test('I can test if a TextData is equal to another', () => {
+    expect(areTextDataEqual(textData, null)).toBe(false);
+    expect(areTextDataEqual(null, null)).toBe(true);
+    expect(areTextDataEqual(null, textData)).toBe(false);
+    expect(areTextDataEqual(textData, textData)).toBe(true);
   });
 
-  test('I can test if two textData are equal', () => {
-    expect(denormalize('awesome text').equals(denormalize('awesome text'))).toEqual(true);
-    expect(denormalize('awesome text').equals(denormalize('nice text'))).toEqual(false);
-    expect(denormalize('awesome text').equals('awesome text')).toEqual(false);
+  test('I can test if something is a TextData', () => {
+    expect(isTextData(textData)).toBe(true);
+    expect(isTextData(null)).toBe(true);
+    expect(isTextData({})).toBe(false);
   });
 });

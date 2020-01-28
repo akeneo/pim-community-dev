@@ -24,7 +24,7 @@ abstract class AbstractProductImportTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->jobLauncher = new JobLauncher(static::$kernel);
+        $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
     }
 
     /**
@@ -63,7 +63,7 @@ abstract class AbstractProductImportTestCase extends TestCase
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         return $product;
     }
@@ -80,15 +80,17 @@ abstract class AbstractProductImportTestCase extends TestCase
         string $username,
         array $draftData
     ): EntityWithValuesDraftInterface {
-        $productDraft = $this->get('pimee_workflow.factory.product_draft')->createEntityWithValueDraft($product, $username);
+        $user = $this->get('pim_user.provider.user')->loadUserByUsername($username);
+        $draftSource = $this->get('Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory')->createFromUser($user);
+        $productDraft = $this->get('pimee_workflow.factory.product_draft')->createEntityWithValueDraft($product, $draftSource);
         $productDraft->setChanges($draftData);
 
 
         $values = [];
         foreach ($draftData['values'] as $code => $value) {
-            $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($code);
+            $attribute = $this->get('akeneo.pim.structure.query.get_attributes')->forCode($code);
             foreach ($value as $data) {
-                $values[] = $this->get('pim_catalog.factory.value')->create(
+                $values[] = $this->get('akeneo.pim.enrichment.factory.value')->createByCheckingData(
                     $attribute,
                     $data['scope'],
                     $data['locale'],

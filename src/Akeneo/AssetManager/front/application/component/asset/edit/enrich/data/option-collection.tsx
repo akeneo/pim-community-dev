@@ -1,13 +1,16 @@
 import * as React from 'react';
-import Value from 'akeneoassetmanager/domain/model/asset/value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import {Option, getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
-import OptionCollectionData, {
-  denormalize as denormalizeOptionCollectionData,
+import {
+  isOptionCollectionData,
+  optionCollectionDataArrayValue,
+  optionCollectionDataFromArray,
 } from 'akeneoassetmanager/domain/model/asset/data/option-collection';
-import {OptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
+import {isOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import __ from 'akeneoassetmanager/tools/translator';
+import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 
 const View = ({
   value,
@@ -15,32 +18,31 @@ const View = ({
   locale,
   canEditData,
 }: {
-  value: Value;
+  value: EditionValue;
   locale: LocaleReference;
-  onChange: (value: Value) => void;
+  onChange: (value: EditionValue) => void;
   canEditData: boolean;
 }) => {
-  if (!(value.data instanceof OptionCollectionData)) {
+  if (!isOptionCollectionData(value.data) || !isOptionCollectionAttribute(value.attribute)) {
     return null;
   }
 
-  const data = value.data as OptionCollectionData;
+  const formatedOptions = value.attribute.options.reduce(
+    (formatedOptions: {[code: string]: string}, option: Option) => {
+      formatedOptions[option.code] = getOptionLabel(option, locale);
 
-  const attribute = value.attribute as OptionCollectionAttribute;
-
-  const formatedOptions = attribute.options.reduce((formatedOptions: {[code: string]: string}, option: Option) => {
-    formatedOptions[option.code] = getOptionLabel(option, locale);
-
-    return formatedOptions;
-  }, {});
+      return formatedOptions;
+    },
+    {}
+  );
 
   return (
     <div className="option-collection-selector-container AknSelectField">
       <Select2
-        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
+        id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
         className="AknSelectField"
         data={formatedOptions}
-        value={data.isEmpty() ? [] : data.normalize()}
+        value={optionCollectionDataArrayValue(value.data)}
         multiple={true}
         readOnly={!canEditData}
         configuration={{
@@ -48,8 +50,9 @@ const View = ({
           placeholder: __('pim_asset_manager.attribute.options.no_value'),
         }}
         onChange={(optionCodes: string[]) => {
-          const newData = denormalizeOptionCollectionData(optionCodes, attribute);
-          const newValue = value.setData(newData);
+          //TODO: remove old options
+          const newData = optionCollectionDataFromArray(optionCodes);
+          const newValue = setValueData(value, newData);
 
           onChange(newValue);
         }}

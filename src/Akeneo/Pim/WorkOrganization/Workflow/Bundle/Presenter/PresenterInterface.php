@@ -21,19 +21,19 @@ interface PresenterInterface
     /**
      * Whether or not this class can present the provided change
      *
-     * @param mixed $data
+     * @param string $attributeType
      *
      * @return bool
      */
-    public function supports($data);
+    public function supports(string $attributeType, string $referenceDataName = null): bool;
 
     /**
      * Present the provided change into html
      *
-     * @param mixed $data
+     * @param mixed $formerData
      * @param array $change
      *
-     * @return string
+     * @return mixed
      */
-    public function present($data, array $change);
+    public function present($formerData, array $change);
 }

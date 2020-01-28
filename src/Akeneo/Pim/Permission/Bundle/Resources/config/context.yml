@@ -3,6 +3,7 @@ parameters:
 
 services:
     pim_user.context.user:
+        public: true
         class: '%pimee_security.context.user.class%'
         arguments:
             - '@security.token_storage'
@@ -12,5 +13,5 @@ services:
             - '@request_stack'
             - '@security.authorization_checker'
             - '@pimee_security.repository.category_access'
-            - '%locale%'
+            - '%env(APP_DEFAULT_LOCALE)%'
             - 'defaultTree'

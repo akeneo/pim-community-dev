@@ -62,9 +62,6 @@ class DetachProductPostPublishSubscriber implements EventSubscriberInterface
         }
 
         $this->objectManager->detach($published);
-        foreach ($published->getCompletenesses() as $publishedComp) {
-            $this->objectManager->detach($publishedComp);
-        }
         foreach ($published->getAssociations() as $publishedAssoc) {
             $this->objectManager->detach($publishedAssoc);
         }
@@ -72,9 +69,6 @@ class DetachProductPostPublishSubscriber implements EventSubscriberInterface
         $this->objectManager->detach($product);
         foreach ($product->getAssociations() as $assoc) {
             $this->objectManager->detach($assoc);
-        }
-        foreach ($product->getCompletenesses() as $comp) {
-            $this->objectManager->detach($comp);
         }
     }
 }

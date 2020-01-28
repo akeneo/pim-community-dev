@@ -3,18 +3,19 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PhpSpec\ObjectBehavior;
 
 
@@ -35,6 +36,7 @@ class MediaLinkAttributeSpec extends ObjectBehavior
                 LabelCollection::fromArray(['fr_FR' => 'Image', 'en_US' => 'Image']),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 Prefix::fromString('http:://www.binder.com'),
@@ -105,6 +107,7 @@ class MediaLinkAttributeSpec extends ObjectBehavior
                 'labels'                      => ['fr_FR' => 'Image', 'en_US' => 'Image'],
                 'order'                       => 0,
                 'is_required'                 => true,
+                'is_read_only'                => false,
                 'value_per_channel'           => true,
                 'value_per_locale'            => true,
                 'type'                        => 'media_link',

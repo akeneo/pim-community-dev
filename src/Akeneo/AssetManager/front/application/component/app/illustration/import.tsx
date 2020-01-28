@@ -1,8 +1,6 @@
 import * as React from 'react';
 
-const Import = (
-  {color, title, ...props}: {color?: string; title?: string} & any = {color: '#67768A', title: 'Trash icon'}
-) => (
+const Import = ({color = '#67768A', title = 'Import', ...props}: {color?: string; title?: string} & any) => (
   <svg viewBox="0 0 243 177" {...props}>
     <defs>
       <path

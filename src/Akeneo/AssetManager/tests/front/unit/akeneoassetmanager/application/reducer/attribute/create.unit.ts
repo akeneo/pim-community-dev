@@ -165,14 +165,14 @@ describe('akeneo > asset family > application > reducer > attribute --- create',
     };
     const newState = reducer(state, {
       type: 'ATTRIBUTE_CREATION_TYPE_UPDATED',
-      attribute_type: 'image',
+      attribute_type: 'media_file',
     });
 
     expect(newState).toEqual({
       active: false,
       data: {
         code: '',
-        type: 'image',
+        type: 'media_file',
         asset_type: null,
         value_per_locale: false,
         value_per_channel: false,

@@ -29,7 +29,7 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         SelectProductIdentifierValuesQueryInterface $selectProductIdentifierValuesQuery,
         ResubscribeProductsInterface $resubscribeProducts,
-        GetConnectionIsActiveHandler$connectionIsActiveHandler
+        GetConnectionIsActiveHandler $connectionIsActiveHandler
     ): void {
         $this->beConstructedWith(
             $subscriptionRepository,

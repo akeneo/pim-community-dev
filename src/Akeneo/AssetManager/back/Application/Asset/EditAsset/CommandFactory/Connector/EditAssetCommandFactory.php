@@ -43,8 +43,6 @@ class EditAssetCommandFactory
         $command = new EditAssetCommand(
             $assetFamilyIdentifier->normalize(),
             $normalizedAsset['code'],
-            [],
-            null,
             $this->createEditAssetValueCommands($assetFamilyIdentifier, $normalizedAsset)
         );
 

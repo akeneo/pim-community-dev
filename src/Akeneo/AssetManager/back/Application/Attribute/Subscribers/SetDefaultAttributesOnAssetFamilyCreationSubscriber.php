@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Attribute\Subscribers;
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
-use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\AssetManager\Domain\Event\AssetFamilyCreatedEvent;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -64,8 +65,8 @@ class SetDefaultAttributesOnAssetFamilyCreationSubscriber implements EventSubscr
     {
         $assetFamilyIdentifier = $assetFamilyCreatedEvent->getAssetFamilyIdentifier();
         $this->createAttributeAsLabel($assetFamilyIdentifier);
-        $this->createAttributeAsImage($assetFamilyIdentifier);
-        $this->updateAssetFamilyWithAttributeAsLabelAndImage($assetFamilyIdentifier);
+        $this->createAttributeAsMainMedia($assetFamilyIdentifier);
+        $this->updateAssetFamilyWithAttributeAsLabelAndMainMedia($assetFamilyIdentifier);
     }
 
     private function createAttributeAsLabel(AssetFamilyIdentifier $assetFamilyIdentifier): void
@@ -74,6 +75,7 @@ class SetDefaultAttributesOnAssetFamilyCreationSubscriber implements EventSubscr
             $assetFamilyIdentifier->normalize(),
             AssetFamily::DEFAULT_ATTRIBUTE_AS_LABEL_CODE,
             [],
+            false,
             false,
             false,
             true,
@@ -87,23 +89,25 @@ class SetDefaultAttributesOnAssetFamilyCreationSubscriber implements EventSubscr
         ($this->createAttributeHandler)($createLabelAttributeCommand);
     }
 
-    private function createAttributeAsImage(AssetFamilyIdentifier $assetFamilyIdentifier): void
+    private function createAttributeAsMainMedia(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
-        $createImageAttributeCommand = new CreateImageAttributeCommand(
+        $createMediaFileAttributeCommand = new CreateMediaFileAttributeCommand(
             $assetFamilyIdentifier->normalize(),
-            AssetFamily::DEFAULT_ATTRIBUTE_AS_IMAGE_CODE,
+            AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE,
             [],
             false,
             false,
             false,
+            false,
             null,
-            []
+            [],
+            MediaType::IMAGE
         );
 
-        ($this->createAttributeHandler)($createImageAttributeCommand);
+        ($this->createAttributeHandler)($createMediaFileAttributeCommand);
     }
 
-    private function updateAssetFamilyWithAttributeAsLabelAndImage(AssetFamilyIdentifier $assetFamilyIdentifier): void
+    private function updateAssetFamilyWithAttributeAsLabelAndMainMedia(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
 
@@ -114,9 +118,9 @@ class SetDefaultAttributesOnAssetFamilyCreationSubscriber implements EventSubscr
                     AttributeAsLabelReference::fromAttributeIdentifier($attribute->getIdentifier())
                 );
             }
-            if (AssetFamily::DEFAULT_ATTRIBUTE_AS_IMAGE_CODE === (string) $attribute->getCode()) {
-                $assetFamily->updateAttributeAsImageReference(
-                    AttributeAsImageReference::fromAttributeIdentifier($attribute->getIdentifier())
+            if (AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE === (string) $attribute->getCode()) {
+                $assetFamily->updateAttributeAsMainMediaReference(
+                    AttributeAsMainMediaReference::fromAttributeIdentifier($attribute->getIdentifier())
                 );
             }
         }

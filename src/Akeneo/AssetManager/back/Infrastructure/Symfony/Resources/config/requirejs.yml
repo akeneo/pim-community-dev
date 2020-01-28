@@ -10,49 +10,27 @@ config:
                     module: pim/controller/asset/edit
 
         akeneoassetmanager/application/configuration/value:
-            image:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/file'
-                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/file.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/image.tsx'
+            media_file:
+                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/media-file.tsx'
             text:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/text'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/text.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/text.tsx'
             media_link:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/media-link'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/media-link.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/media-link.tsx'
             number:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/number'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/number.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/number.tsx'
-            asset:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/asset'
-                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/asset.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/asset.tsx'
-                filter: '@akeneoassetmanager/application/component/asset/index/filter/asset.tsx'
-            asset_collection:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/asset-collection'
-                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/asset-collection.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/asset-collection.tsx'
-                filter: '@akeneoassetmanager/application/component/asset/index/filter/asset.tsx'
             option:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/option'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/option.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/option.tsx'
-                filter: '@akeneoassetmanager/application/component/asset/index/filter/option.tsx'
+                filter: '@akeneoassetmanager/application/component/asset/list/filter/option.tsx'
             option_collection:
-                denormalize: '@akeneoassetmanager/domain/model/asset/data/option-collection'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/option-collection.tsx'
-                cell: '@akeneoassetmanager/application/component/asset/index/cell/option-collection.tsx'
-                filter: '@akeneoassetmanager/application/component/asset/index/filter/option.tsx'
+                filter: '@akeneoassetmanager/application/component/asset/list/filter/option.tsx'
 
         akeneoassetmanager/application/configuration/attribute:
-            image:
-                icon: bundles/pimui/images/attribute/icon-image.svg
-                denormalize: '@akeneoassetmanager/domain/model/attribute/type/image'
-                reducer: '@akeneoassetmanager/application/reducer/attribute/type/image'
-                view: '@akeneoassetmanager/application/component/attribute/edit/image.tsx'
+            media_file:
+                icon: bundles/pimui/images/attribute/icon-mediafile.svg
+                denormalize: '@akeneoassetmanager/domain/model/attribute/type/media-file'
+                reducer: '@akeneoassetmanager/application/reducer/attribute/type/media-file'
+                view: '@akeneoassetmanager/application/component/attribute/edit/media-file.tsx'
             text:
                 icon: bundles/pimui/images/attribute/icon-text.svg
                 denormalize: '@akeneoassetmanager/domain/model/attribute/type/text'
@@ -63,16 +41,6 @@ config:
                 denormalize: '@akeneoassetmanager/domain/model/attribute/type/number'
                 reducer: '@akeneoassetmanager/application/reducer/attribute/type/number'
                 view: '@akeneoassetmanager/application/component/attribute/edit/number.tsx'
-            asset:
-                icon: bundles/pimui/images/attribute/icon-asset-family.svg
-                denormalize: '@akeneoassetmanager/domain/model/attribute/type/asset'
-                reducer: '@akeneoassetmanager/application/reducer/attribute/type/asset'
-                view: '@akeneoassetmanager/application/component/attribute/edit/asset.tsx'
-            asset_collection:
-                icon: bundles/pimui/images/attribute/icon-asset-family-multiple.svg
-                denormalize: '@akeneoassetmanager/domain/model/attribute/type/asset-collection'
-                reducer: '@akeneoassetmanager/application/reducer/attribute/type/asset'
-                view: '@akeneoassetmanager/application/component/attribute/edit/asset.tsx'
             option:
                 icon: bundles/pimui/images/attribute/icon-select.svg
                 denormalize: '@akeneoassetmanager/domain/model/attribute/type/option'
@@ -92,9 +60,6 @@ config:
         akeneoassetmanager/application/configuration/sidebar:
             akeneo_asset_manager_asset_family_edit:
                 tabs:
-                    asset:
-                        label: '@akeneoassetmanager/application/component/asset-family/edit/asset'
-                        view: '@akeneoassetmanager/application/component/asset-family/edit/asset'
                     attribute:
                         label: pim_asset_manager.asset_family.tab.attribute
                         view: '@akeneoassetmanager/application/component/asset-family/edit/attribute'
@@ -104,6 +69,12 @@ config:
                     permission:
                         label: pim_asset_manager.asset_family.tab.permission
                         view: '@akeneoassetmanager/application/component/asset-family/edit/permission'
+                    transformation:
+                        label: pim_asset_manager.asset_family.tab.transformations
+                        view: '@akeneoassetmanager/application/component/asset-family/edit/transformation'
+                    product_link_rule:
+                        label: pim_asset_manager.asset_family.tab.product_link_rules
+                        view: '@akeneoassetmanager/application/component/asset-family/edit/product-link-rule'
             akeneo_asset_manager_asset_edit:
                 tabs:
                     enrich:
@@ -122,7 +93,7 @@ config:
         pim/attribute-edit-form/properties/asset-family: akeneoassetmanager/infrastructure/attribute/asset-single-link-field.ts
         pim/asset-single-link-field: akeneoassetmanager/infrastructure/product/asset-single-link-field.tsx
 
-        oro/datafilter/asset-collection-filter: akeneoassetmanager/infrastructure/product-grid/filter/attribute/asset-family-collection
+        oro/datafilter/asset-family-collection-filter: akeneoassetmanager/infrastructure/product-grid/filter/attribute/asset-family-collection
 
         pim/form/common/fields/values/asset: akeneoassetmanager/infrastructure/product/axis/asset.js
 

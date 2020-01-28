@@ -1,5 +1,5 @@
 import notify from 'akeneoassetmanager/application/event/notify';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 
 export const notifyAssetFamilyWellSaved = () => {
   return notify('success', 'pim_asset_manager.asset_family.notification.save.success');
@@ -9,12 +9,12 @@ export const notifyAssetFamilySaveFailed = () => {
   return notify('error', 'pim_asset_manager.asset_family.notification.save.fail');
 };
 
-export const notifyAssetFamilyWellCreated = () => {
-  return notify('success', 'pim_asset_manager.asset_family.notification.create.success');
+export const notifyLaunchComputeTransformationsFailed = () => {
+  return notify('error', 'pim_asset_manager.asset_family.notification.compute_transformations.fail');
 };
 
-export const notifyAssetFamilyCreateFailed = () => {
-  return notify('error', 'pim_asset_manager.asset_family.notification.create.fail');
+export const notifyLaunchComputeTransformationsSucceeded = () => {
+  return notify('info', 'pim_asset_manager.asset_family.notification.compute_transformations.success');
 };
 
 export const notifyAssetFamilyWellDeleted = () => {

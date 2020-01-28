@@ -2,7 +2,7 @@ import * as React from 'react';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {ThemeProvider} from 'styled-components';
 import {render} from '@testing-library/react';
-import ResultCounter from 'akeneopimenrichmentassetmanager/platform/component/common/result-counter';
+import {ResultCounter} from 'akeneoassetmanager/application/component/app/result-counter';
 import '@testing-library/jest-dom/extend-expect';
 
 test('It displays no count', () => {
@@ -20,9 +20,9 @@ test('It displays no count', () => {
 test('It displays a count', () => {
   const {getByText} = render(
     <ThemeProvider theme={akeneoTheme}>
-      <ResultCounter resultCount={10} />
+      <ResultCounter count={10} />
     </ThemeProvider>
   );
 
-  expect(getByText('pim_asset_manager.grid.counter')).toBeInTheDocument();
+  expect(getByText('pim_asset_manager.result_counter')).toBeInTheDocument();
 });

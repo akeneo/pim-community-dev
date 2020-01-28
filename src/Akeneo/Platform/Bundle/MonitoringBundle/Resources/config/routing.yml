@@ -1,0 +1,4 @@
+monitoring_servicesstatus_get:
+    path: /monitoring/services_status
+    methods: [GET]
+    defaults: { _controller: Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\Controller:getAction }

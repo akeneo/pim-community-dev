@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Normalizer;
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class ProjectNormalizer implements NormalizerInterface, SerializerAwareInterface
+class ProjectNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
 {
     /** @var array $supportedFormats */
     protected $supportedFormats = ['internal_api'];
@@ -69,6 +70,11 @@ class ProjectNormalizer implements NormalizerInterface, SerializerAwareInterface
     public function supportsNormalization($project, $format = null)
     {
         return $project instanceof ProjectInterface && in_array($format, $this->supportedFormats);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**

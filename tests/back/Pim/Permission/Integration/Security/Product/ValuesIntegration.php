@@ -78,7 +78,6 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->get('pim_catalog.saver.product')->save($product);
 
         $expectedValues = '{"sku": {"<all_channels>": {"<all_locales>": "product_a"}}, ';
-        $expectedValues.= '"a_text": {"<all_channels>": {"<all_locales>": null}}, ';
         $expectedValues.= '"a_number_float": {"<all_channels>": {"<all_locales>": "15.0000"}}, ';
         $expectedValues.= '"a_localized_and_scopable_text_area": {"ecommerce": {"de_DE": "mein text", "fr_FR": "mon text"}}}';
 
@@ -197,15 +196,6 @@ class ValuesIntegration extends AbstractSecurityTestCase
         ]);
 
         $this->assertSame($product->getValue('a_text')->getData(), 'The text bis');
-    }
-
-    public function testCreateAProductWithLocaleNotFound()
-    {
-        $this->expectException(UnknownPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "not_found" given.');
-
-        $this->generateToken('mary');
-        $this->createProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'not_found', 'scope' => 'ecommerce']]]]);
     }
 
     public function testCreateAProductWithLocaleNotViewable()

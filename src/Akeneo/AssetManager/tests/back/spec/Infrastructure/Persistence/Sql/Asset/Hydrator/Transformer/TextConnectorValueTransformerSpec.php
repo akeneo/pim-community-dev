@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerInterface;
 use PhpSpec\ObjectBehavior;
@@ -25,10 +25,10 @@ class TextConnectorValueTransformerSpec extends ObjectBehavior
         $this->shouldImplement(ConnectorValueTransformerInterface::class);
     }
 
-    function it_only_supports_a_value_of_a_text_attribute(TextAttribute $textAttribute, ImageAttribute $imageAttribute)
+    function it_only_supports_a_value_of_a_text_attribute(TextAttribute $textAttribute, MediaFileAttribute $mediaFileAttribute)
     {
         $this->supports($textAttribute)->shouldReturn(true);
-        $this->supports($imageAttribute)->shouldReturn(false);
+        $this->supports($mediaFileAttribute)->shouldReturn(false);
     }
 
     function it_transforms_a_normalized_to_a_normalized_connector_value(TextAttribute $textAttribute)

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory;
 
-use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
-
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

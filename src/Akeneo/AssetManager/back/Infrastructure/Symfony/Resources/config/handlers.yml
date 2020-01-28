@@ -4,8 +4,11 @@ services:
         class: Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
+            - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory'
+            - '@Akeneo\AssetManager\Infrastructure\Clock'
 
     akeneo_assetmanager.application.asset_family.create_asset_family_handler:
         class: Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler
@@ -40,7 +43,7 @@ services:
         class: Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeHandler
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_label'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_image'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_main_media'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
     akeneo_assetmanager.application.attribute.edit_attribute_handler:
@@ -58,12 +61,6 @@ services:
 
     akeneo_assetmanager.application.attribute.edit_attribute_option_handler:
         class: Akeneo\AssetManager\Application\Attribute\EditAttributeOption\EditAttributeOptionHandler
-        arguments:
-            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
-
-    akeneo_assetmanager.application.attribute.append_attribute_option_handler:
-        class: Akeneo\AssetManager\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler
         arguments:
             - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
@@ -113,4 +110,21 @@ services:
     akeneo_assetmanager.application.asset.link_assets.link_assets_handler:
         class: Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetsHandler
         arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
+
+    akeneo_assetmanager.application.asset.link_assets.link_asset_handler:
+        class: Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetHandler
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
+
+    akeneo_assetmanager.application.asset.compute_transformations_from_asset_identifiers.handler:
+        class: Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsFromAssetIdentifiersHandler
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher'
+
+    akeneo_assetmanager.application.asset.compute_transformations_from_asset_family_identifier.handler:
+        class: Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsFromAssetFamilyIdentifierHandler
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_family_identifier_launcher'

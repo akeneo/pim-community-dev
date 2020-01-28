@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 
 /**
@@ -23,6 +24,9 @@ interface EntityWithValuesDraftFactory
 {
     /**
      * Creates an entity with values draft instance.
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param DraftSource $draftSource
+     * @return EntityWithValuesDraftInterface|null
      */
-    public function createEntityWithValueDraft(EntityWithValuesInterface $enityWithValues, string $username): ?EntityWithValuesDraftInterface;
+    public function createEntityWithValueDraft(EntityWithValuesInterface $entityWithValues, DraftSource $draftSource): ?EntityWithValuesDraftInterface;
 }

@@ -37,6 +37,6 @@ catalog:
             count: 150
             with_images: false
         product_models:
-            root_product_models_count: 1
+            root_product_models_count: 10
             sub_product_models_per_root_product_model_count: 2
             variant_products_per_sub_product_model_count: 5

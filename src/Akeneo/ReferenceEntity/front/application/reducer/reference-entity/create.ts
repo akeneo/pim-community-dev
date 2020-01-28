@@ -1,7 +1,7 @@
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import {
-  NormalizedReferenceEntityCreation,
   createEmptyReferenceEntityCreation,
+  NormalizedReferenceEntityCreation,
 } from 'akeneoreferenceentity/domain/model/reference-entity/creation';
 import sanitize from 'akeneoreferenceentity/tools/sanitize';
 

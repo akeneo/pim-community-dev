@@ -1,5 +1,4 @@
 parameters:
-    pimee_teamwork_assistant.table_name_mapper.class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\TableNameMapper'
     pimee_teamwork_assistant.repository.user.class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\UserRepository'
     pimee_teamwork_assistant.repository.product.class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\ProductRepository'
     pimee_teamwork_assistant.repository.family_requirement.class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\FamilyRequirementRepository'
@@ -21,12 +20,6 @@ parameters:
     pimee_teamwork_assistant.project_completeness_filter.class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Filter\ProjectCompletenessFilter'
 
 services:
-    pimee_teamwork_assistant.table_name_mapper:
-        class: '%pimee_teamwork_assistant.table_name_mapper.class%'
-        arguments:
-            - '@akeneo_storage_utils.doctrine.table_name_builder'
-            - '%pimee_teamwork_assistant.pre_processing.tables%'
-
     ### Repositories
     pimee_teamwork_assistant.repository.user:
         class: '%pimee_teamwork_assistant.repository.user.class%'
@@ -56,7 +49,6 @@ services:
         class: '%pimee_teamwork_assistant.repository.pre_processing.class%'
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - '@pimee_teamwork_assistant.table_name_mapper'
 
     pimee_teamwork_assistant.repository.project_status:
         class: '%pimee_teamwork_assistant.repository.project_status.class%'
@@ -162,9 +154,8 @@ services:
     pimee_teamwork_assistant.calculator.attribute_group_completeness:
         class: '%pimee_teamwork_assistant.calculator.attribute_group_completeness.class%'
         arguments:
-            - '@pim_catalog.completeness.checker'
             - '@pimee_teamwork_assistant.repository.family_requirement'
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.completeness.calculator'
 
     pimee_teamwork_assistant.calculator.contributor_group:
         class: '%pimee_teamwork_assistant.calculator.contributor_group.class%'
@@ -182,3 +173,20 @@ services:
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }
+
+    Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Command\NotificationDueDateWarningCommand:
+        arguments:
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@pimee_teamwork_assistant.notifier.project_due_date_reminder'
+            - '@pimee_teamwork_assistant.repository.project_completeness'
+            - '@pimee_teamwork_assistant.repository.user'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Command\ProjectRecalculationCommand:
+        arguments:
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pimee_teamwork_assistant.repository.project'
+            - '%pimee_teamwork_assistant.project_calculation.job_name%'
+        tags:
+            - { name: console.command }

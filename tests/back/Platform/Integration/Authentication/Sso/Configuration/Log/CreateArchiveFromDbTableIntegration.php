@@ -3,21 +3,24 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Platform\Integration\Authentication\Sso\Log;
 
-use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler;
 use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchiveFromDbTable;
+use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Akeneo\Test\Integration\TestCase;
 use Monolog\Logger;
 
 final class CreateArchiveFromDbTableIntegration extends TestCase
 {
-
     /** @var \SplFileInfo */
     private $archiveFile;
 
     public function testItCreatesArchiveFromInsertedLogEntries(): void
     {
         $connection = $this->get('database_connection');
-        $handler = new DbTableLogHandler($connection, 1);
+        $configRepo = new EnabledConfigurationRepository();
+
+        $handler = new DbTableLogHandler($configRepo, $connection, 1);
 
         $archiveCreate = $this->get('akeneo_authentication.sso.log.create_archive_from_db_table');
 
@@ -64,22 +67,9 @@ final class CreateArchiveFromDbTableIntegration extends TestCase
 
     public function testItCreatesAnEmptyArchiveFromEmptyDbTable(): void
     {
+        $configRepo = new EnabledConfigurationRepository();
         $connection = $this->get('database_connection');
-        $handler = new DbTableLogHandler($connection, 1);
-
-        $handler->handle(
-            [
-                'message' => 'My nice message',
-                'context' => [],
-                'level' =>  Logger::DEBUG,
-                'level_name' => Logger::getLevelName(Logger::DEBUG),
-                'channel' => 'authentication',
-                'datetime' => new \DateTime('2013-01-01 13:43:25 GMT+2'),
-                'extra' => array()
-            ]
-        );
-
-        $handler->close();
+        $handler = new DbTableLogHandler($configRepo, $connection);
 
         $archiveCreate = $this->get('akeneo_authentication.sso.log.create_archive_from_db_table');
         $this->archiveFile = $archiveCreate->create();
@@ -102,14 +92,45 @@ final class CreateArchiveFromDbTableIntegration extends TestCase
         if (null !== $this->archiveFile) {
             unlink($this->archiveFile->getPathname());
         }
+
         $connection = $this->get('database_connection');
-        $connection->executeQuery(sprintf('DROP TABLE IF EXISTS %s', DbTableLogHandler::TABLE_NAME));
+        if ($connection->getSchemaManager()->tablesExist('pimee_sso_log') == true) {
+            $connection->executeQuery('TRUNCATE TABLE pimee_sso_log');
+        }
+
     }
 
     protected function getConfiguration()
     {
         return null;
     }
-
 }
 
+final class EnabledConfigurationRepository implements Repository
+{
+    public function find(string $code): Configuration
+    {
+        return Configuration::fromArray(
+            'enabledConfiguration',
+            [
+                'isEnabled' => true,
+                'identityProvider' => [
+                    'entityId' => 'http://www.example.com/',
+                    'signOnUrl' => 'http://www.example.com/signon',
+                    'logoutUrl' => 'http://www.example.com/logout',
+                    'certificate' => 'my mock certificate'
+                ],
+                'serviceProvider' => [
+                    'entityId' => 'http://www.example.com/',
+                    'certificate' => 'my mock certificate',
+                    'privateKey' => 'my mock private key'
+                ]
+            ]
+        );
+    }
+
+    public function save(Configuration $configurationRoot): void
+    {
+        throw new \LogicException("Mock configuration repository will not save configuration.");
+    }
+}

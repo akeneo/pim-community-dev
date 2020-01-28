@@ -66,7 +66,7 @@ class VariantProductBuilderIntegration extends TestCase
             ]
         ]);
         $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         // update the variant product
         $this->get('pim_catalog.updater.product')->update($product, [
@@ -80,7 +80,12 @@ class VariantProductBuilderIntegration extends TestCase
             ]
         ]);
 
-        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build($product, 'mary');
+        $user = $this->get('pim_user.provider.user')->loadUserByUsername('mary');
+
+        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build(
+            $product,
+            $this->get('Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory')->createFromUser($user)
+        );
 
         $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
     }

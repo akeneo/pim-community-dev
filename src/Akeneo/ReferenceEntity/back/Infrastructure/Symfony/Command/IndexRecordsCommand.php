@@ -13,7 +13,11 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -25,10 +29,43 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class IndexRecordsCommand extends ContainerAwareCommand
+class IndexRecordsCommand extends Command
 {
+    protected static $defaultName = self::INDEX_RECORDS_COMMAND_NAME;
+
     public const INDEX_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:index-records';
     private const ERROR_CODE_USAGE = 1;
+
+    /** @var Client */
+    private $recordClient;
+
+    /** @var ReferenceEntityRepositoryInterface */
+    private $referenceEntityRepository;
+
+    /** @var RecordIndexerInterface */
+    private $recordIndexer;
+
+    /** @var ReferenceEntityExistsInterface */
+    private $referenceEntityExists;
+
+    /** @var string */
+    private $recordIndexName;
+
+    public function __construct(
+        Client $client,
+        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        RecordIndexerInterface $recordIndexer,
+        ReferenceEntityExistsInterface $referenceEntityExists,
+        string $recordIndexName
+    ) {
+        parent::__construct();
+
+        $this->recordClient = $client;
+        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->recordIndexer = $recordIndexer;
+        $this->referenceEntityExists = $referenceEntityExists;
+        $this->recordIndexName = $recordIndexName;
+    }
 
     /**
      * {@inheritdoc}
@@ -36,7 +73,6 @@ class IndexRecordsCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName(self::INDEX_RECORDS_COMMAND_NAME)
             ->addArgument(
                 'reference_entity_codes',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
@@ -78,12 +114,11 @@ class IndexRecordsCommand extends ContainerAwareCommand
      */
     private function checkRecordIndexExists()
     {
-        $recordClient = $this->getContainer()->get('akeneo_referenceentity.client.record');
-        if (!$recordClient->hasIndex()) {
+        if (!$this->recordClient->hasIndex()) {
             throw new \RuntimeException(
                 sprintf(
                     'The index "%s" does not exist in Elasticsearch.',
-                    $this->getContainer()->getParameter('record_index_name')
+                    $this->recordIndexName
                 )
             );
         }
@@ -95,13 +130,11 @@ class IndexRecordsCommand extends ContainerAwareCommand
      */
     protected function indexAll(OutputInterface $output): void
     {
-        $referenceEntityRepository = $this->getContainer()->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $recordIndexer = $this->getContainer()->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer');
-        $allReferenceEntities = $referenceEntityRepository->all();
+        $allReferenceEntities = $this->referenceEntityRepository->all();
         $count = 0;
         foreach ($allReferenceEntities as $referenceEntity) {
             /** @var ReferenceEntity $referenceEntity */
-            $recordIndexer->indexByReferenceEntity($referenceEntity->getIdentifier());
+            $this->recordIndexer->indexByReferenceEntity($referenceEntity->getIdentifier());
             $count++;
         }
 
@@ -115,10 +148,9 @@ class IndexRecordsCommand extends ContainerAwareCommand
     {
         $existingReferenceEntityCodes = $this->getExistingReferenceEntityCodes($referenceEntityCodes, $output);
 
-        $recordIndexer = $this->getContainer()->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer');
         foreach ($existingReferenceEntityCodes as $i => $referenceEntityIdentifier) {
             $output->writeln(sprintf('<info>Indexing the records of "%s".</info>', $referenceEntityCodes[$i]));
-            $recordIndexer->indexByReferenceEntity($referenceEntityIdentifier);
+            $this->recordIndexer->indexByReferenceEntity($referenceEntityIdentifier);
         }
     }
 
@@ -129,12 +161,9 @@ class IndexRecordsCommand extends ContainerAwareCommand
      */
     private function getExistingReferenceEntityCodes(array $referenceEntityCodes, OutputInterface $output): array
     {
-        $existsReferenceEntity = $this
-            ->getContainer()
-            ->get('akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists');
         $existingReferenceEntityCodes = [];
         foreach ($referenceEntityCodes as $referenceEntityCode) {
-            if ($existsReferenceEntity->withIdentifier(ReferenceEntityIdentifier::fromString($referenceEntityCode))) {
+            if ($this->referenceEntityExists->withIdentifier(ReferenceEntityIdentifier::fromString($referenceEntityCode))) {
                 $existingReferenceEntityCodes[] = ReferenceEntityIdentifier::fromString($referenceEntityCode);
             } else {
                 $output->writeln(

@@ -1,0 +1,12 @@
+{
+  "request": {
+      "method": "POST",
+      "route": "pim_enrich_attribute_rest_index",
+      "query": {},
+      "body": "types=akeneo_asset%2Cpim_catalog_asset_collection"
+  },
+  "response": {
+      "status": 200,
+      "body": []
+  }
+}

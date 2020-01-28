@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\AssetFamily;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClient;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
@@ -25,9 +25,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
 {
     private const CREATE_ASSET_FAMILY_ROUTE = 'akeneo_asset_manager_asset_family_create_rest';
 
-    /** @var Client */
-    private $client;
-
     /** @var WebClientHelper */
     private $webClientHelper;
 
@@ -36,8 +33,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
-            ->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
     }
 
@@ -147,7 +143,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_asset_manager.asset_family.validation.code.should_be_unique","parameters":{"%asset_family_identifier%":"designer"},"plural":null,"message":"An asset family already exists with code \u0022designer\u0022","root":{"identifier":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"},"productLinkRules":[]},"propertyPath":"identifier","invalidValue":{"identifier":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"},"productLinkRules":[]},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]'
+            '[{"messageTemplate":"pim_asset_manager.asset_family.validation.code.should_be_unique","parameters":{"%asset_family_identifier%":"designer"},"message":"An asset family already exists with code \u0022designer\u0022","propertyPath":"identifier","invalidValue":{"identifier":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"},"productLinkRules":[],"transformations":[],"namingConvention":[]}}]'
         );
     }
 
@@ -241,11 +237,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'Identifier has a dash character' => [
                 'invalid-code',
-                '[{"messageTemplate":"pim_asset_manager.asset_family.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":"invalid-code","labels":{"fr_FR":"Concepteur","en_US":"Designer"},"productLinkRules":[]},"propertyPath":"identifier","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"pim_asset_manager.asset_family.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"message":"This field may only contain letters, numbers and underscores.","propertyPath":"identifier","invalidValue":"invalid-code"}]',
             ],
             'Identifier is 256 characters'    => [
                 str_repeat('a', 256),
-                '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"identifier":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","labels":{"fr_FR":"Concepteur","en_US":"Designer"},"productLinkRules":[]},"propertyPath":"identifier","invalidValue":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\u0022","{{ limit }}":255},"message":"This value is too long. It should have 255 characters or less.","propertyPath":"identifier","invalidValue":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}]',
             ],
         ];
     }
@@ -255,11 +251,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'label as an integer'           => [
                 ['labels' => ['fr_FR' => 1]],
-                '[{"messageTemplate":"invalid label for locale code \u0022fr_FR\u0022: This value should be of type string., \u00221\u0022 given","parameters":{"{{ value }}":"1","{{ type }}":"string"},"plural":null,"message":"invalid label for locale code \u0022fr_FR\u0022: This value should be of type string., \u00221\u0022 given","root":{"identifier":"designer","labels":{"fr_FR":1},"productLinkRules":[]},"propertyPath":"labels","invalidValue":{"fr_FR":1},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"invalid label for locale code \u0022fr_FR\u0022: This value should be of type string., \u00221\u0022 given","parameters":{"{{ value }}":"1","{{ type }}":"string"},"message":"invalid label for locale code \u0022fr_FR\u0022: This value should be of type string., \u00221\u0022 given","propertyPath":"labels","invalidValue":{"fr_FR":1}}]',
             ],
             'The locale code as an integer' => [
                 ['labels' => [1 => 'Designer']],
-                '[{"messageTemplate":"invalid locale code: This value should be of type string.","parameters":{"{{ value }}":"1","{{ type }}":"string"},"plural":null,"message":"invalid locale code: This value should be of type string.","root":{"identifier":"designer","labels":{"1":"Designer"},"productLinkRules":[]},"propertyPath":"labels","invalidValue":{"1":"Designer"},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"invalid locale code: This value should be of type string.","parameters":{"{{ value }}":"1","{{ type }}":"string"},"message":"invalid locale code: This value should be of type string.","propertyPath":"labels","invalidValue":{"1":"Designer"}}]',
             ],
         ];
     }

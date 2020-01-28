@@ -5,8 +5,8 @@ import {
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {
   recordCreationErrorOccurred,
-  recordCreationSucceeded,
   recordCreationStart,
+  recordCreationSucceeded,
 } from 'akeneoreferenceentity/domain/event/record/create';
 import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';

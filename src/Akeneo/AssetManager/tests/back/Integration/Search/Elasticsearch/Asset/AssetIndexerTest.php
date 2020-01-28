@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
@@ -27,7 +28,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -167,6 +169,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
                 LabelCollection::fromArray(['fr_FR' => 'Nom']),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(25),
@@ -176,17 +179,19 @@ class AssetIndexerTest extends SearchIntegrationTestCase
         );
 
         $attributeRepository->create(
-            ImageAttribute::create(
+            MediaFileAttribute::create(
                 AttributeIdentifier::create('designer', 'image', 'fingerprint'),
                 AssetFamilyIdentifier::fromString('designer'),
                 AttributeCode::fromString('portrait'),
                 LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
                 AttributeOrder::fromInteger(3),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('200.10'),
-                AttributeAllowedExtensions::fromList(['gif'])
+                AttributeAllowedExtensions::fromList(['gif']),
+                MediaType::fromString(MediaType::IMAGE)
             )
         );
 
@@ -197,6 +202,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
                 LabelCollection::fromArray(['fr_FR' => 'Nom']),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(25),
@@ -237,6 +243,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
                                 'size'             => 1024,
                                 'mimeType'         => 'image/gif',
                                 'extension'        => 'gif',
+                                'updatedAt'        => '2019-11-22T15:16:21+0000',
                             ]
                         )
                     ),
@@ -272,6 +279,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
                                 'size'             => 1024,
                                 'mimeType'         => 'image/gif',
                                 'extension'        => 'gif',
+                                'updatedAt'        => '2019-11-22T15:16:21+0000',
                             ]
                         )
                     ),

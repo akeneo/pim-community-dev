@@ -2,16 +2,15 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Updater\Setter;
 
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Akeneo\Pim\Permission\Component\Updater\Setter\EntityWithGrantedValuesPropertySetter;
-use Prophecy\Argument;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class EntityWithGrantedValuesPropertySetterSpec extends ObjectBehavior

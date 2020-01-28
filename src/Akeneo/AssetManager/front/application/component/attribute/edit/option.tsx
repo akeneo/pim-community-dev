@@ -2,16 +2,16 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import __ from 'akeneoassetmanager/tools/translator';
 import {getLabel} from 'pimui/js/i18n';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
-  optionEditionStart,
   optionEditionCancel,
-  optionEditionSubmission,
   optionEditionCodeUpdated,
-  optionEditionSelected,
-  optionEditionLabelUpdated,
   optionEditionDelete,
+  optionEditionLabelUpdated,
+  optionEditionSelected,
+  optionEditionStart,
+  optionEditionSubmission,
 } from 'akeneoassetmanager/domain/event/attribute/option';
 import Key from 'akeneoassetmanager/tools/key';
 import {Option, createEmptyOption} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
@@ -25,9 +25,9 @@ import {getErrorsView} from 'akeneoassetmanager/application/component/app/valida
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import Close from 'akeneoassetmanager/application/component/app/icon/close';
 import Flag from 'akeneoassetmanager/tools/component/flag';
-import {NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import AssetFamilyCode from 'akeneoassetmanager/domain/model/asset-family/code';
 
-// const securityContext = require('pim/security-context');
+const securityContext = require('pim/security-context');
 
 const OptionView = ({onOptionEditionStart}: {onOptionEditionStart: () => void}) => {
   return (
@@ -76,7 +76,7 @@ type StateProps = {
   structure: {
     locales: Locale[];
   };
-  assetFamily: NormalizedAssetFamily;
+  assetFamilyCode: AssetFamilyCode;
   catalogLocale: string;
   numberOfLockedOptions: any;
 };
@@ -362,7 +362,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
                 <div className="AknFullPage-content">
                   <div className="AknFullPage-titleContainer">
                     <div className="AknFullPage-subTitle">
-                      {__('pim_asset_manager.attribute.options.sub_title')} / {this.props.assetFamily.code}
+                      {__('pim_asset_manager.attribute.options.sub_title')} / {this.props.assetFamilyCode}
                     </div>
                     <div className="AknFullPage-title">
                       {__('pim_asset_manager.attribute.edit.input.manage_options.quick_edit.label')}
@@ -483,19 +483,17 @@ export default connect(
       attribute: state.attribute.data,
       isDirty: state.options.isDirty,
       numberOfLockedOptions: state.options.numberOfLockedOptions,
-      assetFamily: state.form.data,
+      assetFamilyCode: state.form.data.code,
       catalogLocale: state.user.defaultCatalogLocale,
       rights: {
         locale: {
           edit: ownProps.rights.locale.edit,
         },
         attribute: {
-          edit:
-            // securityContext.isGranted('akeneo_assetmanager_option_edit') &&
-            ownProps.rights.attribute.edit,
+          edit: securityContext.isGranted('akeneo_assetmanager_option_edit') && ownProps.rights.attribute.edit,
           delete:
-            // securityContext.isGranted('akeneo_assetmanager_option_delete') &&
-            // securityContext.isGranted('akeneo_assetmanager_option_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_option_delete') &&
+            securityContext.isGranted('akeneo_assetmanager_option_edit') &&
             ownProps.rights.attribute.edit,
         },
       },

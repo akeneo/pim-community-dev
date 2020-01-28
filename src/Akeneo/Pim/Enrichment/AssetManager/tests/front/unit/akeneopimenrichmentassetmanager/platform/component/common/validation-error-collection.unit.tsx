@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {render} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
-import {ValidationErrorCollection} from 'akeneopimenrichmentassetmanager/platform/component/common/validation-error-collection';
+import {ValidationErrorCollection} from 'akeneoassetmanager/platform/component/common/validation-error-collection';
 
 test('It should render the attribute error validation messages for the current context', () => {
   const attributeCode = 'packshot';

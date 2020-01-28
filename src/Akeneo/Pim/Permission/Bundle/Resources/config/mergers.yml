@@ -17,10 +17,9 @@ services:
     pimee_catalog.security.merger.not_granted_values:
         class: 'Akeneo\Pim\Permission\Component\Merger\NotGrantedValuesMerger'
         arguments:
-            - '@security.authorization_checker'
-            - '@pim_catalog.repository.cached_attribute'
-            - '@pim_catalog.repository.cached_locale'
-            - '@pim_catalog.factory.value_collection'
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@pimee_security.query.get_all_viewable_locales_for_user'
+            - '@security.token_storage'
 
     pimee_catalog.security.merger.merge_data_on_product:
         class: 'Akeneo\Pim\Permission\Component\Merger\MergeDataOnProduct'

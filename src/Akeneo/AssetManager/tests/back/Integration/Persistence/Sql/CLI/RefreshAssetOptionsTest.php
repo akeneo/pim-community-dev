@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
@@ -63,6 +64,7 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
         $this->removeOptionFromAttribute('red');
         $this->assertTrue($this->IsAssetHavingValue('red'));
 
+        $this->clearCache();
         $this->runRefreshAssetsCommand();
 
         $this->assertFalse($this->IsAssetHavingValue('red'));
@@ -79,6 +81,7 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
         $this->assertTrue($this->IsAssetHavingValue('red'));
         $this->assertTrue($this->IsAssetHavingValue('blue'));
 
+        $this->clearCache();
         $this->runRefreshAssetsCommand();
 
         $this->assertTrue($this->IsAssetHavingValue('blue'));
@@ -92,7 +95,7 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
 
     private function runRefreshAssetsCommand(): void
     {
-        $application = new Application($this->testKernel);
+        $application = new Application(self::$kernel);
         $command = $application->find('akeneo:asset-manager:refresh-assets');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
@@ -145,6 +148,7 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -168,6 +172,7 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -201,6 +206,7 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
                 ])
             )
         );
+        $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
     }
 
     /**
@@ -231,6 +237,7 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
                 ])
             )
         );
+        $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
     }
 
     private function removeOptionFromAttribute(string $optionToRemove): void
@@ -272,5 +279,11 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
         }
 
         return $data === $optionCode;
+    }
+
+    private function clearCache(): void
+    {
+        $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection')->clearCache();
+        $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier')->clearCache();
     }
 }

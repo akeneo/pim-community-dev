@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryClock;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeAdapter;
@@ -22,14 +23,38 @@ use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +62,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CreateOrUpdateAssetFamilyContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'AssetFamily/Connector/Collect/';
+    private const VALID_EXTENSIONS = ['gif', 'jfif', 'jif', 'jpeg', 'jpg', 'pdf', 'png', 'psd', 'tif', 'tiff'];
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -68,6 +94,9 @@ class CreateOrUpdateAssetFamilyContext implements Context
     /** @var InMemoryGetAssetCollectionTypeAdapter */
     private $findAssetCollectionTypeACL;
 
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -76,7 +105,8 @@ class CreateOrUpdateAssetFamilyContext implements Context
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
-        InMemoryGetAssetCollectionTypeAdapter $findAssetCollectionTypeACL
+        InMemoryGetAssetCollectionTypeAdapter $findAssetCollectionTypeACL,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -86,6 +116,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $this->activatedLocalesPerChannels = $activatedLocalesPerChannels;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->findAssetCollectionTypeACL = $findAssetCollectionTypeACL;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -126,13 +157,13 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('frontview');
-        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsLabelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
         $ruleTemplate = $this->getExpectedRuleTemplate();
 
@@ -144,12 +175,12 @@ class CreateOrUpdateAssetFamilyContext implements Context
                 'fr_FR' => 'Frontview french label',
             ],
             Image::createEmpty(),
-            AttributeAsLabelReference::fromAttributeIdentifier($labelIdentifier),
-            AttributeAsImageReference::fromAttributeIdentifier($mainImageIdentifier),
+            AttributeAsLabelReference::fromAttributeIdentifier($attributeAsLabelIdentifier),
+            AttributeAsMainMediaReference::fromAttributeIdentifier($attributeAsMainMediaIdentifier),
             RuleTemplateCollection::createFromProductLinkRules([$ruleTemplate])
         );
 
-        Assert::assertEquals($frontview, $expectedFrontview);
+        Assert::assertEquals($expectedFrontview, $frontview);
     }
 
     /**
@@ -157,6 +188,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
      */
     public function theBrandAssetFamilyExistingInTheErpAndInThePimWithDifferentProperties()
     {
+        InMemoryClock::$actualDateTime = new \DateTime('1990-01-01');
         $this->findAssetCollectionTypeACL->stubWith('brand');
         $this->requestContract = 'successful_brand_asset_family_update.json';
 
@@ -172,6 +204,10 @@ class CreateOrUpdateAssetFamilyContext implements Context
             Image::createEmpty(),
             RuleTemplateCollection::empty()
         );
+
+        $this->loadMediaFileAttribute('brand', 'main_image', 'Main image', 1);
+        $this->loadMediaFileAttribute('brand', 'thumbnail', 'Thumbnail image', 2);
+        $this->loadTextAttribute('brand', 'title', 'Title', 3);
 
         $this->assetFamilyRepository->create($assetFamily);
     }
@@ -201,13 +237,13 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
-        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsLabelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
         $ruleTemplate = $this->getExpectedRuleTemplate();
 
@@ -219,10 +255,28 @@ class CreateOrUpdateAssetFamilyContext implements Context
                 'fr_FR' => 'Brand french label',
             ],
             Image::createEmpty(),
-            AttributeAsLabelReference::fromAttributeIdentifier($labelIdentifier),
-            AttributeAsImageReference::fromAttributeIdentifier($mainImageIdentifier),
+            AttributeAsLabelReference::fromAttributeIdentifier($attributeAsLabelIdentifier),
+            AttributeAsMainMediaReference::fromAttributeIdentifier($attributeAsMainMediaIdentifier),
             RuleTemplateCollection::createFromProductLinkRules([$ruleTemplate])
         );
+        $expectedBrand = $expectedBrand->withTransformationCollection(TransformationCollection::create([
+            Transformation::create(
+                TransformationLabel::fromString('thumbnail_100x80'),
+                Source::createFromNormalized(['attribute' => 'main_image', 'channel'=> null, 'locale' => null]),
+                Target::createFromNormalized(['attribute' => 'thumbnail', 'channel'=> null, 'locale' => null]),
+                OperationCollection::create([
+                    ThumbnailOperation::create(['width' => 100, 'height' => 80]),
+                ]),
+                '1_',
+                '_2',
+                InMemoryClock::$actualDateTime
+            ),
+        ]));
+        $expectedBrand->updateNamingConvention(NamingConvention::createFromNormalized([
+            'source' => ['property' => 'media', 'locale' => null, 'channel' => null],
+            'pattern' => '/the_pattern/',
+            'abort_asset_creation_on_error' => true,
+        ]));
 
         Assert::assertEquals($brand, $expectedBrand);
     }
@@ -247,6 +301,48 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
 
         $this->assetFamilyRepository->create($assetFamily);
+    }
+
+    /**
+     * @Given some asset families with media file attributes
+     */
+    public function someAssetFamiliesWithMediaFileAttribute()
+    {
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->channelExists->save(ChannelIdentifier::fromCode('print'));
+        $this->channelExists->save(ChannelIdentifier::fromCode('other'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('de_DE'));
+
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('brand'),
+            [
+                'en_US' => 'It is an english label'
+            ],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
+
+        $this->assetFamilyRepository->create($assetFamily);
+        $this->loadMediaFileAttribute('brand', 'main_image', 'Main image', 2);
+        $this->loadMediaFileAttribute('brand', 'thumbnail', 'Thumbnail image', 3);
+        $this->attributeRepository->create(MediaFileAttribute::create(
+            AttributeIdentifier::create('brand', 'test_scopable_localizable', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('brand'),
+            AttributeCode::fromString('test_scopable_localizable'),
+            LabelCollection::fromArray(['en_US' => 'label']),
+            AttributeOrder::fromInteger(4),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxFileSize::fromString('120'),
+            AttributeAllowedExtensions::fromList(['jpg']),
+            MediaType::fromString(MediaType::IMAGE)
+        ));
+        $this->loadTextAttribute('brand', 'title', 'Title', 5);
+        $this->loadTextAttribute('brand', 'sub_title', 'Sub Title', 6);
     }
 
     /**
@@ -275,12 +371,48 @@ class CreateOrUpdateAssetFamilyContext implements Context
     /**
      * @When the connector collects an asset family whose data does not comply with the business rules
      */
-    public function theConnectorCollectsAAssetFamilyWhoseDataDoesNotComplyWithTheBusinessRules()
+    public function theConnectorCollectsAnAssetFamilyWhoseDataDoesNotComplyWithTheBusinessRules()
     {
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
             self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_for_invalid_data.json'
+        );
+    }
+
+    /**
+     * @When the connector collects an asset family whose transformations do not comply with the business rules
+     */
+    public function theConnectorCollectsAnAssetFamilyWhoseTransformationsDoNotComplyWithTheBusinessRules()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_transformation_for_invalid_data.json'
+        );
+    }
+
+    /**
+     * @When the connector collects an asset family whose transformation have invalid operation parameters
+     */
+    public function theConnectorCollectsAnAssetFamilyWhoseTransformationHaveInvalidOperationParameters()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_transformation_for_invalid_operation_parameters.json'
+        );
+    }
+
+    /**
+     * @When the connector collects an asset family whose naming convention do not comply with the business rules
+     */
+    public function theConnectorCollectsAnAssetFamilyWhoseNamingConventionDoNotComplyWithTheBusinessRules()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_naming_convention_for_invalid_data.json'
         );
     }
 
@@ -292,6 +424,39 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_for_invalid_data.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about errors indicating that the asset family has transformations that do not comply with the business rules
+     */
+    public function thePimNotifiesTheConnectorAboutErrorsIndicatingThatTheAssetFamilyHasTransformationsThatDoNotComplyWithTheBusinessRules()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_transformation_for_invalid_data.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about errors indicating that the asset family has a transformation that does not have valid operation parameters
+     */
+    public function thePimNotifiesTheConnectorAboutErrorsIndicatingThatTheAssetFamilyHasATransformationThatDoesNotHaveValidOperationParameters()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_transformation_for_invalid_operation_parameters.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about errors indicating that the asset family naming convention that do not comply with the business rules
+     */
+    public function thePimNotifiesTheConnectorAboutErrorsIndicatingThatTheAssetFamilyNamingConventionThatDoNotComplyWithTheBusinessRules()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_naming_convention_for_invalid_data.json'
         );
     }
 
@@ -339,5 +504,45 @@ class CreateOrUpdateAssetFamilyContext implements Context
                 ]
             ]
         ];
+    }
+
+    private function loadMediaFileAttribute(string $assetFamilyIdentifier, string $code, string $label, int $order): void
+    {
+        $name = MediaFileAttribute::create(
+            AttributeIdentifier::create($assetFamilyIdentifier, $code, 'fingerprint'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($code),
+            LabelCollection::fromArray(['en_US' => $label]),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('120'),
+            AttributeAllowedExtensions::fromList(self::VALID_EXTENSIONS),
+            MediaType::fromString(MediaType::IMAGE)
+        );
+
+        $this->attributeRepository->create($name);
+    }
+
+    private function loadTextAttribute(string $assetFamilyIdentifier, string $code, string $label, int $order): void
+    {
+        $name = TextAttribute::createText(
+            AttributeIdentifier::create($assetFamilyIdentifier, $code, 'fingerprint'),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($code),
+            LabelCollection::fromArray(['en_US' => $label]),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+
+        $this->attributeRepository->create($name);
     }
 }

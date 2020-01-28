@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\MediaFile;
 
+use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
@@ -28,8 +29,6 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class UploadMediaFileAction
 {
-    private const FILE_STORAGE_ALIAS = 'catalogStorage';
-
     /** @var FileStorerInterface */
     private $fileStorer;
 
@@ -49,7 +48,7 @@ class UploadMediaFileAction
         }
 
         try {
-            $fileInfo = $this->fileStorer->store($request->files->get('file'), self::FILE_STORAGE_ALIAS, true);
+            $fileInfo = $this->fileStorer->store($request->files->get('file'), Storage::FILE_STORAGE_ALIAS, true);
         } catch (FileTransferException | FileRemovalException $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage(), $exception);
         }

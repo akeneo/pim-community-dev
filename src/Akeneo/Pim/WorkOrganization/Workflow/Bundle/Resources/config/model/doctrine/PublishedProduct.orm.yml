@@ -18,7 +18,7 @@ Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct:
             unique: true
             nullable: false
         rawValues:
-            type: native_json
+            type: json
             column: raw_values
         created:
             type: datetime
@@ -73,14 +73,6 @@ Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct:
             targetEntity: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductAssociationInterface
             mappedBy: owner
             cascade:
-                - persist
-                - refresh
-                - detach
-        completenesses:
-            targetEntity: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductCompletenessInterface
-            mappedBy: product
-            cascade:
-                - remove
                 - persist
                 - refresh
                 - detach

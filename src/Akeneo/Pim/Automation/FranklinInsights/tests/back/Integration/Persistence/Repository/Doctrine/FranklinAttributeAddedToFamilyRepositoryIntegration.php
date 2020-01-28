@@ -14,12 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Repository\Doctrine;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeAddedToFamily;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\FranklinAttributeAddedToFamilyRepository;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\FranklinAttributeCreatedRepository;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;

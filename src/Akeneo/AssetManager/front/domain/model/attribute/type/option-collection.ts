@@ -8,12 +8,19 @@ import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/do
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {Attribute, ConcreteAttribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {Option, createOptionFromNormalized} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
-import {AttributeWithOptions} from './option';
+import {AttributeWithOptions} from 'akeneoassetmanager/domain/model/attribute/type/option';
+
+export const OPTION_COLLECTION_ATTRIBUTE_TYPE = 'option_collection';
 
 export interface NormalizedOptionCollectionAttribute extends NormalizedAttribute {
-  type: 'option_collection';
+  type: typeof OPTION_COLLECTION_ATTRIBUTE_TYPE;
   options: Option[];
 }
+
+export const isOptionCollectionAttribute = (
+  optionCollectionAttribute: NormalizedAttribute
+): optionCollectionAttribute is NormalizedOptionCollectionAttribute =>
+  optionCollectionAttribute.type === OPTION_COLLECTION_ATTRIBUTE_TYPE;
 
 export type NormalizedOptionCollectionAdditionalProperty = Option;
 export type OptionCollectionAdditionalProperty = Option;
@@ -35,6 +42,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
     valuePerLocale: boolean,
     order: number,
     is_required: boolean,
+    is_read_only: boolean,
     readonly options: Option[]
   ) {
     super(
@@ -42,11 +50,12 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
       assetFamilyIdentifier,
       code,
       labelCollection,
-      'option_collection',
+      OPTION_COLLECTION_ATTRIBUTE_TYPE,
       valuePerLocale,
       valuePerChannel,
       order,
-      is_required
+      is_required,
+      is_read_only
     );
 
     Object.freeze(this);
@@ -62,6 +71,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
       normalizedOptionCollectionAttribute.value_per_locale,
       normalizedOptionCollectionAttribute.order,
       normalizedOptionCollectionAttribute.is_required,
+      normalizedOptionCollectionAttribute.is_read_only,
       normalizedOptionCollectionAttribute.options.map(createOptionFromNormalized)
     );
   }
@@ -69,7 +79,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
   public normalize(): NormalizedOptionCollectionAttribute {
     return {
       ...super.normalize(),
-      type: 'option_collection',
+      type: OPTION_COLLECTION_ATTRIBUTE_TYPE,
       options: this.options,
     };
   }
@@ -84,6 +94,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
       this.valuePerLocale,
       this.order,
       this.isRequired,
+      this.isReadOnly,
       options
     );
   }

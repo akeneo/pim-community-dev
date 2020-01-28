@@ -1,24 +1,24 @@
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import Key from 'akeneoassetmanager/tools/key';
 import {
-  prefixStringValue,
   createPrefixFromString,
   isValidPrefix,
   NormalizedPrefix,
+  prefixStringValue,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
 import {
-  suffixStringValue,
-  isValidSuffix,
   createSuffixFromString,
+  isValidSuffix,
   NormalizedSuffix,
+  suffixStringValue,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 import {
-  wrapNormalizableAdditionalProperty,
   NormalizableAdditionalProperty,
+  wrapNormalizableAdditionalProperty,
 } from 'akeneoassetmanager/domain/model/attribute/attribute';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import {MediaTypes, MediaType} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
@@ -75,7 +75,9 @@ const MediaLinkView = ({
 
               onAdditionalPropertyUpdated(
                 'prefix',
-                wrapNormalizableAdditionalProperty<NormalizedPrefix>(createPrefixFromString(event.currentTarget.value))
+                wrapNormalizableAdditionalProperty<NormalizedPrefix>(
+                  createPrefixFromString(event.currentTarget.value)
+                ).normalize()
               );
             }}
           />
@@ -109,7 +111,9 @@ const MediaLinkView = ({
 
               onAdditionalPropertyUpdated(
                 'suffix',
-                wrapNormalizableAdditionalProperty<NormalizedSuffix>(createSuffixFromString(event.currentTarget.value))
+                wrapNormalizableAdditionalProperty<NormalizedSuffix>(
+                  createSuffixFromString(event.currentTarget.value)
+                ).normalize()
               );
             }}
           />

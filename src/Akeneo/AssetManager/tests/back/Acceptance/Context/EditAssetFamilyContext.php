@@ -24,18 +24,19 @@ use Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeAdapter;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
-use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -83,8 +84,15 @@ final class EditAssetFamilyContext implements Context
     /** @var InMemoryGetAssetCollectionTypeAdapter */
     private $inMemoryFindAssetCollectionTypeACL;
 
+    /** @var GetAttributeIdentifierInterface */
+    private $getAttributeIdentifier;
+
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
+        AttributeRepositoryInterface $attributeRepository,
         EditAssetFamilyHandler $editAssetFamilyHandler,
         CreateAssetFamilyHandler $createAssetFamilyHandler,
         ValidatorInterface $validator,
@@ -94,6 +102,7 @@ final class EditAssetFamilyContext implements Context
         FixturesLoader $fixturesLoader,
         InMemoryChannelExists $channelExists,
         InMemoryGetAssetCollectionTypeAdapter $inMemoryFindAssetCollectionTypeACL,
+        GetAttributeIdentifierInterface $getAttributeIdentifier,
         int $ruleTemplateByAssetFamilyLimit
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
@@ -107,8 +116,9 @@ final class EditAssetFamilyContext implements Context
         $this->channelExists = $channelExists;
         $this->inMemoryFindAssetCollectionTypeACL = $inMemoryFindAssetCollectionTypeACL;
         $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
-
         $this->inMemoryFindAssetCollectionTypeACL->stubWith(self::ASSET_FAMILY_IDENTIFIER);
+        $this->getAttributeIdentifier = $getAttributeIdentifier;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -127,6 +137,7 @@ final class EditAssetFamilyContext implements Context
                 'en_US' => 'Designer',
                 'fr_FR' => 'Concepteur'
             ],
+            [],
             []
         );
 
@@ -144,11 +155,9 @@ final class EditAssetFamilyContext implements Context
     public function theUserUpdatesTheAssetFamilyWith(string $identifier, TableNode $updateTable)
     {
         $updates = $updateTable->getRowsHash();
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily($identifier);
         $command = new EditAssetFamilyCommand(
-            $identifier,
-            json_decode($updates['labels'], true),
-            null,
-            []
+            $identifier, json_decode($updates['labels'], true), null, $attributeAsMainMedia, [], [], null
         );
         ($this->editAssetFamilyHandler)($command);
     }
@@ -180,15 +189,15 @@ final class EditAssetFamilyContext implements Context
             );
         }
 
-        if (key_exists('attribute_as_image', $expectedInformation)) {
+        if (key_exists('attribute_as_main_media', $expectedInformation)) {
             $expectedAttributeIdentifier = sprintf('%s_%s_%s',
-                $expectedInformation['attribute_as_image'],
+                $expectedInformation['attribute_as_main_media'],
                 $actualAssetFamily->getIdentifier(),
-                md5(sprintf('%s_%s', $actualAssetFamily->getIdentifier(), $expectedInformation['attribute_as_image']))
+                md5(sprintf('%s_%s', $actualAssetFamily->getIdentifier(), $expectedInformation['attribute_as_main_media']))
             );
 
             Assert::assertTrue(
-                $actualAssetFamily->getAttributeAsImageReference()->getIdentifier()->equals(
+                $actualAssetFamily->getAttributeAsMainMediaReference()->getIdentifier()->equals(
                     AttributeIdentifier::fromString($expectedAttributeIdentifier)
                 )
             );
@@ -222,7 +231,7 @@ final class EditAssetFamilyContext implements Context
 
         $label = json_decode($label);
 
-        $createCommand = new CreateAssetFamilyCommand($identifier, [$localCode => $label], []);
+        $createCommand = new CreateAssetFamilyCommand($identifier, [$localCode => $label], [], []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
@@ -237,7 +246,7 @@ final class EditAssetFamilyContext implements Context
      */
     public function anImageOnAnAssetFamilyWitPathAndFilename(string $identifier, string $filePath, string $filename): void
     {
-        $createCommand = new CreateAssetFamilyCommand($identifier, [], []);
+        $createCommand = new CreateAssetFamilyCommand($identifier, [], [], []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
@@ -276,7 +285,10 @@ final class EditAssetFamilyContext implements Context
                 'filePath' => $filePath,
                 'originalFilename' => $filename
             ],
-            []
+            null,
+            [],
+            [],
+            null
         );
         $this->editAssetFamily($editAssetFamilyCommand);
     }
@@ -287,12 +299,10 @@ final class EditAssetFamilyContext implements Context
     public function theUserUpdatesTheAssetFamilyWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
     {
         $label = json_decode($label);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily($identifier);
 
         $editAssetFamilyCommand = new EditAssetFamilyCommand(
-            $identifier,
-            [$localCode => $label],
-            null,
-            []
+            $identifier, [$localCode => $label], null, $attributeAsMainMedia, [], [], null
         );
         $this->editAssetFamily($editAssetFamilyCommand);
     }
@@ -302,7 +312,8 @@ final class EditAssetFamilyContext implements Context
      */
     public function theUserUpdatesTheAssetFamilyWithAnEmptyImage(string $identifier)
     {
-        $editAssetFamilyCommand = new EditAssetFamilyCommand($identifier, [], null, []);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily($identifier);
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($identifier, [], null, $attributeAsMainMedia, [], [], null);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 
@@ -340,7 +351,7 @@ final class EditAssetFamilyContext implements Context
     public function anEmptyRuleTemplateCollectionOnTheAssetFamily(string $code)
     {
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
-        $createCommand = new CreateAssetFamilyCommand($code, [], []);
+        $createCommand = new CreateAssetFamilyCommand($code, [], [], []);
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
             throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
@@ -355,7 +366,8 @@ final class EditAssetFamilyContext implements Context
     public function theUserUpdatesTheAssetFamilyToSetACollectionOfRuleTemplates(string $code)
     {
         $ruleTemplate = $this->getRuleTemplate();
-        $editAssetFamilyCommand = new EditAssetFamilyCommand($code, [], null, [$ruleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily($code);
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($code, [], null, $attributeAsMainMedia, [$ruleTemplate], [], null);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 
@@ -367,11 +379,12 @@ final class EditAssetFamilyContext implements Context
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
 
         $ruleTemplates = [];
-        for ($i = 1; $i <= $this->ruleTemplateByAssetFamilyLimit+1; $i++) {
+        for ($i = 1; $i <= $this->ruleTemplateByAssetFamilyLimit + 1; $i++) {
             $ruleTemplates[] = $this->getRuleTemplate();
         }
 
-        $editAssetFamilyCommand = new EditAssetFamilyCommand($code, ['en_US' => ucfirst($code)], null, $ruleTemplates);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily($code);
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($code, ['en_US' => ucfirst($code)], null, $attributeAsMainMedia, $ruleTemplates, [], null);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 
@@ -397,13 +410,13 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '11121313'
+                    'operator' => '=',
+                    'value' => '11121313'
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'  => 'replace',
+                    'mode' => 'replace',
                     'attribute' => '1234'
                 ]
             ]
@@ -418,10 +431,7 @@ final class EditAssetFamilyContext implements Context
         $this->ruleEngineValidatorACLStub->stubWithViolationMessage(self::RULE_ENGINE_VALIDATION_MESSAGE);
         $invalidProductLinkRules = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
         $editAssetFamilyCommand = new EditAssetFamilyCommand(
-            self::ASSET_FAMILY_IDENTIFIER,
-            [],
-            null,
-            $invalidProductLinkRules
+            self::ASSET_FAMILY_IDENTIFIER, [], null, null, $invalidProductLinkRules, [], null
         );
         $this->editAssetFamily($editAssetFamilyCommand);
     }
@@ -432,7 +442,7 @@ final class EditAssetFamilyContext implements Context
     public function theUserUpdatesAnAssetFamilyWithNoProductSelections(string $assetFamilyCode): void
     {
         $noProductSelection = [['product_selections' => [], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
-        $editAssetFamilyCommand = new EditAssetFamilyCommand($assetFamilyCode, [], null, $noProductSelection);
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($assetFamilyCode, [], null, null, $noProductSelection, [], null);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 
@@ -442,7 +452,7 @@ final class EditAssetFamilyContext implements Context
     public function theUserUpdatesAnAssetFamilyWithNoProductAssignment(string $assetFamilyCode): void
     {
         $noProductAssignment = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => []]];
-        $editAssetFamilyCommand = new EditAssetFamilyCommand($assetFamilyCode, [], null, $noProductAssignment);
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($assetFamilyCode, [], null, null, $noProductAssignment, [], null);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 
@@ -496,22 +506,23 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
-                    'operator'  => '=',
-                    'value'     => '123456789',
+                    'operator' => '=',
+                    'value' => '123456789',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -533,50 +544,52 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'operator' => '=',
+                    'value' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
     /**
      * @When /^the user updates this asset family with a dynamic product link rule having a dynamic assignment attribute which references this text attribute$/
      */
-    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingADynamicAssignmentAttributeValueWhichReferencesThisAttribute(
-    ) {
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingADynamicAssignmentAttributeValueWhichReferencesThisAttribute()
+    {
         $dynamicRuleTemplate = [
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '123456789',
+                    'operator' => '=',
+                    'value' => '123456789',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -600,22 +613,23 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'operator' => '=',
+                    'value' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -639,22 +653,23 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'operator' => '=',
+                    'value' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -667,22 +682,23 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '11234567899',
+                    'operator' => '=',
+                    'value' => '11234567899',
                     'channel' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -695,22 +711,23 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '11234567899',
+                    'operator' => '=',
+                    'value' => '11234567899',
                     'channel' => 'ecommerce',
                     'locale' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -723,22 +740,23 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '11234567899',
+                    'operator' => '=',
+                    'value' => '11234567899',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
                     'channel' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -751,43 +769,44 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '11234567899',
+                    'operator' => '=',
+                    'value' => '11234567899',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
                     'channel' => 'ecommerce',
                     'locale' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
     /**
      * @Given /^an asset family with no product link rules and an attribute with a type unsupported for extrapolation$/
      */
-    public function anAssetFamilyWithNoProductLinkRulesAndAnImageAttribute()
+    public function anAssetFamilyWithNoProductLinkRulesAndAMediaFileAttribute()
     {
         $this->fixturesLoader
             ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
-            ->withAttributeOfTypeImage(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
+            ->withAttributeOfTypeMediaFile(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
             ->load();
     }
 
     /**
      * @Then /^there should be a validation error stating that the product selection field does not support this attribute for extrapolation$/
      */
-    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionFieldDoesNotSupportExtrapolatedImageAttribute()
+    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionFieldDoesNotSupportExtrapolatedMediaFileAttribute()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "media_file" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -800,32 +819,33 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'operator' => '=',
+                    'value' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
     /**
      * @When /^there should be a validation error stating that the product selection value does not support this attribute for extrapolation/
      */
-    public function there_should_be_a_validation_error_stating_that_the_product_selection_value_does_not_support_extrapolated_image_attribute()
+    public function there_should_be_a_validation_error_stating_that_the_product_selection_value_does_not_support_extrapolated_media_file_attribute()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text, option, option_collection', self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "media_file" is not supported, only the following attribute types are supported for this field: text, option, option_collection', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -838,32 +858,33 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '123444456789',
+                    'operator' => '=',
+                    'value' => '123444456789',
                     'channel' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
     /**
      * @Then /^there should be a validation error stating that the product selection channel does not support this attribute for extrapolation$/
      */
-    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionChannelDoesNotSupportExtrapolatedImageAttribute()
+    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionChannelDoesNotSupportExtrapolatedMediaFileAttribute()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "media_file" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -876,22 +897,23 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '123444456789',
+                    'operator' => '=',
+                    'value' => '123444456789',
                     'channel' => 'ecommerce',
                     'locale' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -904,22 +926,23 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '123444456789',
+                    'operator' => '=',
+                    'value' => '123444456789',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -929,7 +952,7 @@ final class EditAssetFamilyContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheAssignmentAttributeDoesNotSupportThisExtrapolatedAttributeType()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "media_file" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -942,22 +965,23 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '123444456789',
+                    'operator' => '=',
+                    'value' => '123444456789',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'my_asset_collection',
                     'channel' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -967,7 +991,7 @@ final class EditAssetFamilyContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheProductAssignmentChannelDoesNotSupportThisAttributeForExtrapolation()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "media_file" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -980,22 +1004,23 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '123444456789',
+                    'operator' => '=',
+                    'value' => '123444456789',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'my_asset_collection',
                     'channel' => 'ecommerce',
                     'locale' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1005,7 +1030,7 @@ final class EditAssetFamilyContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheProductAssignmentLocaleDoesNotSupportThisAttributeForExtrapolation()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "media_file" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -1018,22 +1043,23 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '11234567899',
+                    'operator' => '=',
+                    'value' => '11234567899',
                     // No channel
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1045,23 +1071,24 @@ final class EditAssetFamilyContext implements Context
         $dynamicRuleTemplate = [
             'product_selections' => [
                 [
-                    'field'    => 'sku',
+                    'field' => 'sku',
                     'operator' => '=',
-                    'value'    => '11234567899',
-                    'channel'  => 'ecommerce',
-                    'locale'   => 'en_US',
+                    'value' => '11234567899',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
                 ],
             ],
-            'assign_assets_to'   => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
-                    'channel'   => 'ecommerce',
-                    'locale'    => 'en_US',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
                 ],
             ],
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1083,23 +1110,24 @@ final class EditAssetFamilyContext implements Context
         $dynamicRuleTemplate = [
             'product_selections' => [
                 [
-                    'field'    => 'sku',
+                    'field' => 'sku',
                     'operator' => '=',
-                    'value'    => '11234567899',
-                    'channel'  => self::UNKNOWN_CHANNEL,
-                    'locale'   => 'en_US',
+                    'value' => '11234567899',
+                    'channel' => self::UNKNOWN_CHANNEL,
+                    'locale' => 'en_US',
                 ],
             ],
-            'assign_assets_to'   => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
-                    'channel'   => 'ecommerce',
-                    'locale'    => 'en_US',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
                 ],
             ],
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1111,22 +1139,23 @@ final class EditAssetFamilyContext implements Context
         $dynamicRuleTemplate = [
             'product_selections' => [
                 [
-                    'field'    => 'sku',
+                    'field' => 'sku',
                     'operator' => '=',
-                    'value'    => '11234567899',
-                    'channel'  => 'ecommerce',
+                    'value' => '11234567899',
+                    'channel' => 'ecommerce',
                 ],
             ],
-            'assign_assets_to'   => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
-                    'channel'   => 'ecommerce',
-                    'locale'    => 'en_US',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
                 ],
             ],
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1138,23 +1167,24 @@ final class EditAssetFamilyContext implements Context
         $dynamicRuleTemplate = [
             'product_selections' => [
                 [
-                    'field'    => 'sku',
+                    'field' => 'sku',
                     'operator' => '=',
-                    'value'    => '11234567899',
-                    'channel'  => 'ecommerce',
-                    'locale'   => 'en_US',
+                    'value' => '11234567899',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
                 ],
             ],
-            'assign_assets_to'   => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
-                    'channel'   => 'ecommerce',
-                    'locale'    => 'en_US',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
                 ],
             ],
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1166,23 +1196,24 @@ final class EditAssetFamilyContext implements Context
         $productLinkRule = [
             'product_selections' => [
                 [
-                    'field'    => 'sku',
+                    'field' => 'sku',
                     'operator' => '=',
-                    'value'    => '11234567899',
-                    'channel'  => 'ecommerce',
-                    'locale'   => self::UNKNOWN_LOCALE,
+                    'value' => '11234567899',
+                    'channel' => 'ecommerce',
+                    'locale' => self::UNKNOWN_LOCALE,
                 ],
             ],
-            'assign_assets_to'   => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
-                    'channel'   => 'ecommerce',
-                    'locale'    => 'en_US',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
                 ],
             ],
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1204,20 +1235,21 @@ final class EditAssetFamilyContext implements Context
         $productLinkRule = [
             'product_selections' => [
                 [
-                    'field'    => 'sku',
+                    'field' => 'sku',
                     'operator' => '=',
-                    'value'    => '11234567899',
+                    'value' => '11234567899',
                 ],
             ],
-            'assign_assets_to'   => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
-                    'channel'   => 'ecommerce',
+                    'channel' => 'ecommerce',
                 ],
             ],
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1229,21 +1261,22 @@ final class EditAssetFamilyContext implements Context
         $productLinkRule = [
             'product_selections' => [
                 [
-                    'field'    => 'sku',
+                    'field' => 'sku',
                     'operator' => '=',
-                    'value'    => '11234567899',
+                    'value' => '11234567899',
                 ],
             ],
-            'assign_assets_to'   => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
-                    'channel'   => 'ecommerce',
-                    'locale'    => 'en_US'
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US'
                 ],
             ],
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1255,21 +1288,22 @@ final class EditAssetFamilyContext implements Context
         $productLinkRule = [
             'product_selections' => [
                 [
-                    'field'    => 'sku',
+                    'field' => 'sku',
                     'operator' => '=',
-                    'value'    => '11234567899',
+                    'value' => '11234567899',
                 ],
             ],
-            'assign_assets_to'   => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
-                    'channel'   => self::UNKNOWN_CHANNEL,
-                    'locale'    => 'en_US'
+                    'channel' => self::UNKNOWN_CHANNEL,
+                    'locale' => 'en_US'
                 ],
             ],
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1292,18 +1326,19 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '11234567899',
+                    'operator' => '=',
+                    'value' => '11234567899',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1316,19 +1351,20 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '11234567899',
+                    'operator' => '=',
+                    'value' => '11234567899',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
-                    'locale'    =>  'en_US'
+                    'locale' => 'en_US'
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1341,19 +1377,20 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '11234567899',
+                    'operator' => '=',
+                    'value' => '11234567899',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection',
-                    'locale'    =>  self::UNKNOWN_LOCALE
+                    'locale' => self::UNKNOWN_LOCALE
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1422,22 +1459,23 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => self::ATTRIBUTE_CODE,
-                    'operator'  => '=',
-                    'value'     => '123456789',
+                    'operator' => '=',
+                    'value' => '123456789',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => $mode,
+                    'mode' => $mode,
                     'attribute' => 'asset_collection',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$dynamicRuleTemplate], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1450,19 +1488,20 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => $productField,
-                    'operator'  => '=',
-                    'value'     => '123456789',
+                    'operator' => '=',
+                    'value' => '123456789',
                     'channel' => 'ecommerce'
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection'
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand($assetFamilyIdentifier, [], null, [$productLinkRule]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand($assetFamilyIdentifier, [], null, $assetFamilyIdentifier, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1475,19 +1514,20 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => $productField,
-                    'operator'  => '=',
-                    'value'     => '123456789',
+                    'operator' => '=',
+                    'value' => '123456789',
                     'locale' => 'fr_FR',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => 'asset_collection'
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand($assetFamilyIdentifier, [], null, [$productLinkRule]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand($assetFamilyIdentifier, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1501,18 +1541,19 @@ final class EditAssetFamilyContext implements Context
             'product_selections' => [
                 [
                     'field' => 'sku',
-                    'operator'  => '=',
-                    'value'     => '123456789',
+                    'operator' => '=',
+                    'value' => '123456789',
                 ]
             ],
-            'assign_assets_to'    => [
+            'assign_assets_to' => [
                 [
-                    'mode'      => 'replace',
+                    'mode' => 'replace',
                     'attribute' => self::ATTRIBUTE_CODE,
                 ]
             ]
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
         $this->editAssetFamily($command);
     }
 
@@ -1552,5 +1593,49 @@ final class EditAssetFamilyContext implements Context
     private function createEnUsLocale(): void
     {
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+    }
+
+    /**
+     * @Given /^an asset family with a media file attribute "([^"]*)"$/
+     */
+    public function theAssetFamilyWithAMediaFileAttribute($mediaFileAttributeCode)
+    {
+        $this->fixturesLoader
+            ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
+            ->withAttributeOfTypeMediaFile(self::ASSET_FAMILY_IDENTIFIER, $mediaFileAttributeCode)
+            ->load();
+    }
+
+    /**
+     * @When /^the user updates the attribute as main media to be "([^"]*)"$/
+     */
+    public function theUserUpdatesTheAttributeAsMainMediaToBe($attributeAsMainMedia)
+    {
+        $editCommand = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [], [], null);
+
+        $this->editAssetFamily($editCommand);
+    }
+
+    /**
+     * @Then /^the attribute as main media should be "([^"]*)"$/
+     */
+    public function theAttributeAsMainMediaShouldBe($attributeAsMainMedia)
+    {
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER));
+        $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+            $assetFamily->getIdentifier(),
+            AttributeCode::fromString($attributeAsMainMedia)
+        );
+
+        Assert::assertSame($assetFamily->getAttributeAsMainMediaReference()->normalize(), $attributeAsMainMediaIdentifier->normalize());
+    }
+
+    private function getAttributeAsMainMediaCodeForFamily(string $assetFamilyIdentifier): string
+    {
+        $attributeIdentifier = $this->assetFamilyRepository->getByIdentifier(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier)
+        )->getAttributeAsMainMediaReference()->getIdentifier();
+
+        return (string) $this->attributeRepository->getByIdentifier($attributeIdentifier)->getCode();
     }
 }

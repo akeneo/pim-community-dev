@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import __ from 'akeneoassetmanager/tools/translator';
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
@@ -19,11 +19,12 @@ import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/componen
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import {getAttributeTypes, AttributeType} from 'akeneoassetmanager/application/configuration/attribute';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
-import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {isAssetAttributeType} from 'akeneoassetmanager/domain/model/attribute/minimal';
 import Key from 'akeneoassetmanager/tools/key';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
+import {Asset} from 'akeneoassetmanager/application/component/app/illustration/asset';
 
 interface StateProps {
   context: {
@@ -170,7 +171,7 @@ class Create extends React.Component<CreateProps> {
           <div className="AknFullPage">
             <div className="AknFullPage-content AknFullPage-content--withIllustration" style={{overflowX: 'visible'}}>
               <div>
-                <img src="bundles/pimui/images/illustrations/Reference-entities.svg" className="AknFullPage-image" />
+                <Asset className="AknFullPage-image" />
               </div>
               <div>
                 <div className="AknFullPage-titleContainer">
@@ -268,8 +269,8 @@ class Create extends React.Component<CreateProps> {
                           ItemView={AssetTypeItemView}
                           label={__('pim_asset_manager.attribute.create.input.asset_type')}
                           elements={this.state.assetFamilies.map((assetFamily: AssetFamily) => ({
-                            identifier: assetFamily.getIdentifier(),
-                            label: assetFamily.getLabel(this.props.context.locale),
+                            identifier: assetFamily.identifier,
+                            label: getAssetFamilyLabel(assetFamily, this.props.context.locale),
                             original: assetFamily,
                           }))}
                           selectedElement={this.props.data.asset_type}

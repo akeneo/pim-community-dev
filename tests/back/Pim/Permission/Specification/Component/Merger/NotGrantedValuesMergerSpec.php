@@ -2,33 +2,39 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Merger;
 
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Util\ClassUtils;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Permission\Component\Merger\NotGrantedValuesMerger;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
+use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\Common\Util\ClassUtils;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class NotGrantedValuesMergerSpec extends ObjectBehavior
 {
     function let(
-        AuthorizationCheckerInterface $authorizationChecker,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        WriteValueCollectionFactory $valueCollectionFactory
-    )
-    {
-        $this->beConstructedWith($authorizationChecker, $attributeRepository, $localeRepository, $valueCollectionFactory);
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
+        GetAllViewableLocalesForUser $getViewableLocaleCodesForUser,
+        TokenStorageInterface $tokenStorage,
+        TokenInterface $token,
+        UserInterface $user
+    ) {
+        $user->getId()->willReturn(42);
+        $token->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+        $getViewableLocaleCodesForUser->fetchAll(42)->willReturn(['en_US']);
+
+        $this->beConstructedWith($getViewableAttributeCodes, $getViewableLocaleCodesForUser, $tokenStorage);
     }
 
     function it_implements_a_not_granted_data_merger_interface()
@@ -41,77 +47,45 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
         $this->shouldHaveType(NotGrantedValuesMerger::class);
     }
 
-    function it_merges_values_in_product(
-        $valueCollectionFactory,
-        $attributeRepository,
-        $localeRepository,
-        $authorizationChecker,
-        ProductInterface $filteredProduct,
-        ProductInterface $fullProduct,
-        ValueInterface $textValue,
-        ValueInterface $colorValue,
-        AttributeRepositoryInterface $textAttribute,
-        AttributeRepositoryInterface $colorAttribute,
-        LocaleInterface $frLocale,
-        LocaleInterface $enLocale,
-        WriteValueCollection $values
+    function it_does_not_merge_values_when_creating_an_entity(
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
+        EntityWithValuesInterface $filteredEntity
     ) {
-        $allValues = [
-            'text' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'a text'
-                ],
-            ],
-            'color' => [
-                '<all_channels>' => [
-                    'en_US' => false,
-                    'fr_FR' => false,
-                ],
-            ],
-        ];
-        $fullProduct->getRawValues()->willReturn($allValues);
+        $getViewableAttributeCodes->forAttributeCodes(Argument::cetera())->shouldNotBeCalled();
+        $this->merge($filteredEntity, null)->shouldReturn($filteredEntity);
+    }
 
-        $notGrantedValues = [
-            'text' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'a text'
-                ],
-            ],
-            'color' => [
-                '<all_channels>' => [
-                    'en_US' => false,
-                ],
-            ],
-        ];
+    function it_merges_values_in_product(
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
+        WriteValueCollectionFactory $valueCollectionFactory
+    ) {
+        $fullProduct = new Product();
+        $fullProduct->setValues(new WriteValueCollection(
+            [
+                ScalarValue::value('123', 'a text'),
+                OptionValue::localizableValue('color', 'yellow', 'en_US'),
+                OptionValue::localizableValue('color', 'red', 'fr_FR'),
+            ]
+        ));
 
-        $attributeRepository->findOneByIdentifier('text')->willReturn($textAttribute);
-        $attributeRepository->findOneByIdentifier('color')->willReturn($colorAttribute);
-        $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $textAttribute)->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $colorAttribute)->willReturn(true);
+        $filteredProduct = new Product();
+        $filteredProduct->setValues(new WriteValueCollection(
+           [
+               OptionValue::localizableValue('color', 'blue', 'en_US'),
+           ]
+        ));
 
-        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frLocale);
-        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
-        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $frLocale)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $enLocale)->willReturn(false);
+        $getViewableAttributeCodes->forAttributeCodes(Argument::is(['123', 'color']), 42)->willReturn(['color']);
 
-        $textValue->getAttributeCode()->willReturn('text');
-        $textValue->getScopeCode()->willReturn(null);
-        $textValue->getLocaleCode()->willReturn(null);
-
-        $colorValue->getAttributeCode()->willReturn('color');
-        $colorValue->getScopeCode()->willReturn(null);
-        $colorValue->getLocaleCode()->willReturn('en_US');
-
-        $valueCollectionFactory->createFromStorageFormat($notGrantedValues)->willReturn(new WriteValueCollection([$textValue->getWrappedObject(), $colorValue->getWrappedObject()]));
-
-        $filteredProduct->getFamilyVariant()->willReturn(null);
-        $filteredProduct->getValues()->willReturn($values);
-        $fullProduct->setValues($values)->shouldBeCalled();
-
-        $fullProduct->addValue($textValue->getWrappedObject())->shouldBeCalled();
-        $fullProduct->addValue($colorValue->getWrappedObject())->shouldBeCalled();
-
-        $this->merge($filteredProduct, $fullProduct)->shouldReturn($fullProduct);
+        $mergedEntity = $this->merge($filteredProduct, $fullProduct);
+        $mergedEntity->shouldBeEqualTo($fullProduct);
+        $mergedEntity->getValues()->shouldBeLike(new WriteValueCollection(
+            [
+                ScalarValue::value('123', 'a text'),
+                OptionValue::localizableValue('color', 'red', 'fr_FR'),
+                OptionValue::localizableValue('color', 'blue', 'en_US'),
+            ]
+        ));
     }
 
     function it_throws_an_exception_if_filtered_subject_is_not_an_entity_with_values()
@@ -124,5 +98,45 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
     {
         $this->shouldThrow(InvalidObjectException::objectExpected(ClassUtils::getClass(new \stdClass()), EntityWithValuesInterface::class))
             ->during('merge', [new Product(), new \stdClass()]);
+    }
+
+    function it_throws_an_exception_when_no_user_is_authenticated(
+        TokenInterface $token
+    ) {
+        $token->getUser()->willReturn(null);
+        $this->shouldThrow(
+            new \RuntimeException('Could not find any authenticated user')
+        )->during('merge', [new Product(), new Product()]);
+    }
+
+    function it_only_takes_the_new_values_for_the_system_user(
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
+        UserInterface $user
+    ) {
+        $user->getId()->willReturn(null);
+        $user->getUsername()->willReturn(UserInterface::SYSTEM_USER_NAME);
+
+        $filteredProduct = (new Product())->setIdentifier('filtered');
+        $newValues = new WriteValueCollection(
+            [
+                ScalarValue::value('a_test', 'foo'),
+                ScalarValue::value('a_boolean', true),
+            ]
+        );
+        $filteredProduct->setValues($newValues);
+
+        $fullEntity = (new Product())->setIdentifier('full');
+        $fullEntity->setValues(new WriteValueCollection(
+            [
+                OptionValue::value('color', 'red'),
+                OptionValue::value('size', 'XXL'),
+            ]
+        ));
+
+        $getViewableAttributeCodes->forAttributeCodes(Argument::cetera())->shouldNotBeCalled();
+
+        $result = $this->merge($filteredProduct, $fullEntity);
+        $result->shouldBeEqualTo($fullEntity);
+        $result->getValues()->shouldBeLike($newValues);
     }
 }

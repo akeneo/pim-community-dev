@@ -24,6 +24,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
@@ -32,13 +33,15 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
@@ -154,7 +157,7 @@ class GetConnectorAssetContext implements Context
         $this->assetFamilyRepository->create($assetFamily);
 
         $this->loadNameAttribute();
-        $this->loadCoverImageAttribute();
+        $this->loadCoverMediaFileAttribute();
     }
 
     /**
@@ -259,15 +262,15 @@ class GetConnectorAssetContext implements Context
      */
     public function theKartellAssetOfTheBrandAssetFamilyWithAMediaFileInAnAttributeValue()
     {
-        $imageFile = new FileInfo();
-        $imageFile->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
-        $imageFile->setMimeType('image/jpeg');
-        $imageFile->setOriginalFilename('kartell.jpg');
+        $mediaFile = new FileInfo();
+        $mediaFile->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
+        $mediaFile->setMimeType('image/jpeg');
+        $mediaFile->setOriginalFilename('kartell.jpg');
 
-        $this->mediaFileRepository->save($imageFile);
+        $this->mediaFileRepository->save($mediaFile);
 
-        $fileSystem = $this->filesystemProvider->getFileSystem('catalogStorage');
-        $fileSystem->write('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg', 'This represents the binary of an image');
+        $fileSystem = $this->filesystemProvider->getFileSystem(Storage::FILE_STORAGE_ALIAS);
+        $fileSystem->write('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg', 'This represents the binary of a media file');
     }
 
     /**
@@ -331,6 +334,7 @@ class GetConnectorAssetContext implements Context
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -341,19 +345,21 @@ class GetConnectorAssetContext implements Context
         $this->attributeRepository->create($name);
     }
 
-    private function loadCoverImageAttribute(): void
+    private function loadCoverMediaFileAttribute(): void
     {
-        $image = ImageAttribute::create(
+        $image = MediaFileAttribute::create(
             AttributeIdentifier::create('designer', 'cover_image', 'fingerprint'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('cover_image'),
             LabelCollection::fromArray(['en_US' => 'Cover Image']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('250.2'),
-            AttributeAllowedExtensions::fromList(['jpg'])
+            AttributeAllowedExtensions::fromList(['jpg']),
+            MediaType::fromString(MediaType::IMAGE)
         );
 
         $this->attributeRepository->create($image);

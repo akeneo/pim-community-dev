@@ -2,23 +2,16 @@
 
 namespace AkeneoEnterprise\Test\IntegrationTestsBundle\Loader;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Command\CleanAttributeGroupAccessesCommand;
-use Akeneo\Platform\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Akeneo\UserManagement\Component\Model\User;
+use Doctrine\DBAL\Connection;
 
 class PermissionCleaner
 {
-    /** @var KernelInterface */
-    protected $kernel;
+    /** @var Connection */
+    private $connection;
 
-    /**
-     * @param KernelInterface $kernel
-     */
-    public function __construct(KernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
+    public function __construct(Connection $connection) {
+        $this->connection = $connection;
     }
 
     /**
@@ -28,22 +21,20 @@ class PermissionCleaner
      */
     public function cleanPermission()
     {
-        $application = new Application();
+        $sql = <<<SQL
+            DELETE FROM pimee_security_attribute_group_access WHERE user_group_id IN (
+                SELECT id FROM oro_access_group WHERE name = :group_name
+            );
+        SQL;
 
-        $cleanCategoryRight = $application->add(new CleanCategoryAccessesCommand());
-        $cleanAttributeGroupRight = $application->add(new CleanAttributeGroupAccessesCommand());
+        $this->connection->executeQuery($sql, ['group_name' => User::GROUP_DEFAULT]);
 
-        $cleanCategoryRight->setContainer($this->kernel->getContainer());
-        $cleanAttributeGroupRight->setContainer($this->kernel->getContainer());
+        $sql = <<<SQL
+            DELETE FROM pimee_security_product_category_access WHERE user_group_id IN (
+                SELECT id FROM oro_access_group WHERE name = :group_name
+            );
+        SQL;
 
-        $cleanCategoryRightCommand = new CommandTester($cleanCategoryRight);
-        $cleanAttributeGroupRightCommand = new CommandTester($cleanAttributeGroupRight);
-
-        $cleanCategoryRightCode = $cleanCategoryRightCommand->execute([]);
-        $cleanAttributeGroupRightCode = $cleanAttributeGroupRightCommand->execute([]);
-
-        if (0 !== $cleanCategoryRightCode && 0 !== $cleanAttributeGroupRightCode) {
-            throw new \Exception('Failed to clean accesses.');
-        }
+        $this->connection->executeQuery($sql, ['group_name' => User::GROUP_DEFAULT]);
     }
 }

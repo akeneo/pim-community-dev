@@ -25,6 +25,7 @@ services:
     # Controllers
     pim_api.controller.media_file:
         class: '%pim_api.controller.media_file.class%'
+        public: true
         arguments:
             - '@pim_api.repository.media_file'
             - '@pim_external_api_serializer'
@@ -45,8 +46,16 @@ services:
             - '@pim_catalog.saver.product_model'
             - '%pim_api.configuration%'
 
+    pimee_security.api.warmup_query_cache.get_viewable_attribute_codes_for_user:
+        class: 'Akeneo\Pim\Permission\Bundle\Api\WarmupGetViewableAttributeCodesQuery'
+        arguments:
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@security.token_storage'
+            - '%api_input_buffer_size%'
+
     pim_api.controller.product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductController'
+        public: true
         arguments:
             - '@pim_external_api_serializer'
             - '@pim_api.repository.channel'
@@ -73,9 +82,12 @@ services:
             - '@pim_api.normalizer.connector_products'
             - '@security.token_storage'
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
+            - '@pim_catalog.event_subscriber.product.on_save.api_aggregator_event_subscriber'
+            - '@pimee_security.api.warmup_query_cache.get_viewable_attribute_codes_for_user'
 
     pim_api.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
+        public: true
         arguments:
             - '@pim_catalog.query.product_model_query_builder_factory'
             - '@pim_catalog.query.product_model_query_builder_search_after_size_factory'
@@ -97,6 +109,8 @@ services:
             - '@pim_api.normalizer.connector_product_models'
             - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes'
             - '@security.token_storage'
+            - '@pim_catalog.event_subscriber.product_model.on_save.api_aggregator_event_subscriber'
+            - '@pimee_security.api.warmup_query_cache.get_viewable_attribute_codes_for_user'
             - '%pim_api.configuration%'
 
     akeneo.pim.enrichment.use_cases.validator.validate_granted_search_locale:
@@ -136,7 +150,7 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers_without_permissions'
             - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
-            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@pimee_security.query.sql.get_viewable_attribute_codes_for_user'
             - '@pimee_security.query.get_all_viewable_locales_for_user'
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product_model'
@@ -149,7 +163,7 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes_without_permissions'
             - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
-            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@pimee_security.query.sql.get_viewable_attribute_codes_for_user'
             - '@pimee_security.query.get_all_viewable_locales_for_user'
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product_model'

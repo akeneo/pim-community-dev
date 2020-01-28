@@ -5,6 +5,7 @@ services:
         arguments:
             - '@akeneo_assetmanager.application.registry.asset.edit_asset_value_command_factory_registry'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+            - '@Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\CheckIfTransformationTarget'
 
     akeneo_assetmanager.application.registry.asset.edit_asset_value_command_factory_registry:
         class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditValueCommandFactoryRegistry
@@ -14,8 +15,8 @@ services:
         tags:
             - { name: akeneo_assetmanager.edit_asset_value_command_factory }
 
-    akeneo_assetmanager.application.factory.asset.edit_stored_file_value_command_factory:
-        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommandFactory
+    akeneo_assetmanager.application.factory.asset.edit_media_file_value_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommandFactory
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key'
         tags:
@@ -61,3 +62,20 @@ services:
         class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaLinkValueCommandFactory
         tags:
             - { name: akeneo_assetmanager.edit_asset_value_command_factory }
+
+    Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetValueCommandsFactory'
+
+    Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetValueCommandsFactory'
+
+    Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetValueCommandsFactory:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+            - '@akeneo_assetmanager.application.registry.asset.edit_asset_value_command_factory_registry'

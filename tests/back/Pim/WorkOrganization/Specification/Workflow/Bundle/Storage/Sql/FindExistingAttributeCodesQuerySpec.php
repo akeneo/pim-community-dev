@@ -21,9 +21,9 @@ use Prophecy\Argument;
 
 class FindExistingAttributeCodesQuerySpec extends ObjectBehavior
 {
-    public function let(Connection $connection, TableNameBuilder $tableNameBuilder): void
+    public function let(Connection $connection): void
     {
-        $this->beConstructedWith($connection, $tableNameBuilder);
+        $this->beConstructedWith($connection);
     }
 
     public function it_is_a_find_existing_attribute_codes_query()
@@ -34,11 +34,8 @@ class FindExistingAttributeCodesQuerySpec extends ObjectBehavior
 
     public function it_returns_existing_attribute_codes(
         $connection,
-        $tableNameBuilder,
         Statement $statement
     ) {
-        $tableNameBuilder->getTableName('pim_catalog.entity.attribute.class')->willReturn('pim_catalog_attribute');
-
         $connection->executeQuery(Argument::cetera())->willReturn($statement);
         $statement->fetchAll(\PDO::FETCH_COLUMN)->willReturn(['description', 'color', 'sku']);
 

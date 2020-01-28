@@ -9,6 +9,13 @@ suites:
         spec_prefix: Specification
 
     ## PIM BC
+    DataQualityInsights:
+        namespace: Akeneo\Pim\Automation\DataQualityInsights
+        psr4_prefix: Akeneo\Pim\Automation\DataQualityInsights
+        spec_path: src/Akeneo/Pim/Automation/DataQualityInsights/back/tests/
+        src_path: src/Akeneo/Pim/Automation/DataQualityInsights
+        spec_prefix: Specification
+
     FranklinInsights:
         namespace: Akeneo\Pim\Automation\FranklinInsights
         psr4_prefix: Akeneo\Pim\Automation\FranklinInsights

@@ -7,6 +7,7 @@ namespace Akeneo\AssetManager\Acceptance\Context;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\CompiledRuleRunnerInterface;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetCommand;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetHandler;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetsHandler;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkMultipleAssetsCommand;
 use Akeneo\AssetManager\Common\Fake\CompiledRuleRunnerSpy;
@@ -25,6 +26,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\CompiledRule;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -40,7 +42,6 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Behat\Behat\Context\Context;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -90,8 +91,11 @@ class LinkAssetsContext implements Context
     /** @var ProductLinkRuleLauncherSpy */
     private $productLinkRuleLauncherSpy;
 
+    /** * @var LinkAssetHandler */
+    private $linkAssetHandler;
+
     /** @var LinkAssetsHandler */
-    private $linkAssetsHandler;
+    private $linkMultipleAssetHandler;
 
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -102,7 +106,8 @@ class LinkAssetsContext implements Context
         ValidatorInterface $validator,
         ExceptionContext $exceptionContext,
         ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy,
-        LinkAssetsHandler $linkAssetsHandler
+        LinkAssetsHandler $linkAssetsHandler,
+        LinkAssetHandler $linkAssetHandler
     ) {
         $this->assetRepository = $assetRepository;
         $this->assetFamilyRepository = $assetFamilyRepository;
@@ -112,7 +117,8 @@ class LinkAssetsContext implements Context
         $this->exceptionContext = $exceptionContext;
         $this->compiledRuleRunnerSpy = $compiledRuleRunnerSpy;
         $this->productLinkRuleLauncherSpy = $productLinkRuleLauncherSpy;
-        $this->linkAssetsHandler = $linkAssetsHandler;
+        $this->linkMultipleAssetHandler = $linkAssetsHandler;
+        $this->linkAssetHandler = $linkAssetHandler;
     }
 
     /**
@@ -259,6 +265,7 @@ class LinkAssetsContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger($order++),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(100),
@@ -380,6 +387,21 @@ class LinkAssetsContext implements Context
         );
     }
 
+    /**
+     * @Given /^an asset family with no product link rule$/
+     */
+    public function anAssetFamilyWithNoTemplates()
+    {
+        $this->assetFamilyRepository->create(
+            AssetFamily::create(
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+                [],
+                Image::createEmpty(),
+                RuleTemplateCollection::empty()
+            )
+        );
+    }
+
     private function createAsset(string $assetFamilyIdentifier, string $assetCode): void
     {
         $assetIdentifier = sprintf('%s%s_finger', $assetCode, $assetFamilyIdentifier);
@@ -406,6 +428,36 @@ class LinkAssetsContext implements Context
             },
             $assetsToLink
         );
-        $this->linkAssetsHandler->handle($linkMultipleAssetsCommand);
+        $this->linkMultipleAssetHandler->handle($linkMultipleAssetsCommand);
+    }
+
+    /**
+     * @Then /^a job has not been launched to link assets to products$/
+     */
+    public function aJobHasNotBeenLaunchedToLinkAssetsToProducts()
+    {
+        $this->productLinkRuleLauncherSpy->assertHasNotRunForAsset(self::ASSET_FAMILY_IDENTIFIER, 'house');
+        $this->productLinkRuleLauncherSpy->assertHasNotRunForAsset(self::ASSET_FAMILY_IDENTIFIER, 'flower');
+    }
+
+    /**
+     * @When /^I link one asset to some products using this rule template$/
+     */
+    public function iLinkOneAssetToSomeProductsUsingThisRuleTemplate()
+    {
+        $assetCode = 'house';
+        $this->createAsset(self::ASSET_FAMILY_IDENTIFIER, $assetCode);
+        $command = new LinkAssetCommand();
+        $command->assetFamilyIdentifier = self::ASSET_FAMILY_IDENTIFIER;
+        $command->assetCode = $assetCode;
+        ($this->linkAssetHandler)($command);
+    }
+
+    /**
+     * @Then /^a job has been launched to link asset to products$/
+     */
+    public function aJobHasBeenLaunchedToLinkAssetToProducts()
+    {
+        $this->productLinkRuleLauncherSpy->assertHasRunForAsset(self::ASSET_FAMILY_IDENTIFIER, 'house');
     }
 }

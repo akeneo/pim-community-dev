@@ -5,6 +5,7 @@ services:
         arguments:
             - '@database_connection'
             - '@event_dispatcher'
+            - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory'
 
     akeneo_assetmanager.infrastructure.persistence.repository.attribute:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlAttributeRepository
@@ -51,6 +52,8 @@ services:
             - '@database_connection'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_details'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales'
+            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_product_link_rules'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_asset_items_for_identifiers_and_query:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetItemsForIdentifiersAndQuery
@@ -78,8 +81,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_image:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyAttributeAsImage
+    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_main_media:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyAttributeAsMainMedia
         arguments:
             - '@database_connection'
 
@@ -167,6 +170,11 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
 
+    akeneo_assetmanager.infrastructure.persistence.query.find_transformation_assets_by_identifiers:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindTransformationAssetsByIdentifiers
+        arguments:
+            - '@database_connection'
+
     akeneo_assetmanager.infrastructure.persistence.query.find_asset_labels_by_codes:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetLabelsByCodes
         arguments:
@@ -184,10 +192,21 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetIdentifiersByAssetFamily
+        arguments:
+            - '@database_connection'
+
     akeneo_assetmanager.infrastructure.persistence.query.find_codes_by_identifiers:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindCodesByIdentifiers
         arguments:
             - '@database_connection'
+
+    Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory'
 
     # Attributes query functions
     akeneo_assetmanager.infrastructure.persistence.query.attribute_exists:
@@ -243,8 +262,8 @@ services:
             - '@database_connection'
             - '@akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
 
-    akeneo_assetmanager.infrastructure.persistence.query.find_image_attribute_codes:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindImageAttributeCodes
+    akeneo_assetmanager.infrastructure.persistence.query.find_media_file_attribute_codes:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindMediaFileAttributeCodes
         arguments:
              - '@database_connection'
 
@@ -269,8 +288,8 @@ services:
         tags:
             - { name: akeneo_assetmanager.attribute_hydrator }
 
-    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.image_attribute_hydrator:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\ImageAttributeHydrator
+    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.media_file_attribute_hydrator:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\MediaFileAttributeHydrator
         arguments:
             - '@database_connection'
         tags:
@@ -384,9 +403,20 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_product_link_rules'
+            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator'
+            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorNamingConventionHydrator'
 
     akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_product_link_rules:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorProductLinkRulesHydrator
+
+    Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator:
+        arguments:
+            - '@validator'
+            - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory'
+
+    Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorNamingConventionHydrator:
+        arguments:
+            - '@validator'
 
     akeneo_assetmanager.infrastructure.persistence.asset.hydrator.value:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydrator
@@ -405,7 +435,7 @@ services:
             - { name: akeneo_assetmanager.data_hydrator }
 
     akeneo_assetmanager.infrastructure.persistence.asset.hydrator.file_data:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\FileDataHydrator
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\MediaFileDataHydrator
         tags:
             - { name: akeneo_assetmanager.data_hydrator }
 
@@ -458,7 +488,7 @@ services:
             - { name: akeneo_assetmanager.connector_value_transformer }
 
     akeneo_assetmanager.infrastructure.persistence.asset.transformer.image_connector_value:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ImageConnectorValueTransformer
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\MediaFileConnectorValueTransformer
         tags:
             - { name: akeneo_assetmanager.connector_value_transformer }
 
@@ -531,6 +561,10 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlGetAttributeIdentifier
         arguments:
             - '@database_connection'
+
+    Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\CheckIfTransformationTarget:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
 
     # Reference entities permissions queries
     akeneoassetmanager.infrastructure.persistence.query.find_asset_family_permissions_details:

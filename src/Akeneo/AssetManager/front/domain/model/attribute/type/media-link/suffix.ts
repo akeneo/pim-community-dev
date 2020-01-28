@@ -1,4 +1,4 @@
-import {InvalidArgumentError} from '../media-link';
+import {InvalidArgumentError} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
 export type Suffix = string | null;
 export type NormalizedSuffix = string | null;

@@ -27,6 +27,8 @@ services:
             - '@pim_catalog.updater.product_model'
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.entity_with_family_variant.check_attribute_editable'
+            - '@pim_catalog.comparator.filter.product'
+            - '@pim_catalog.comparator.filter.product_model'
             - '@security.authorization_checker'
 
     pim_enrich.connector.processor.mass_edit.product.add_attribute_value:
@@ -37,7 +39,7 @@ services:
             - '@pim_catalog.updater.property_adder'
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.entity_with_family_variant.check_attribute_editable'
-            - ['pim_catalog_multiselect', 'pim_reference_data_multiselect', 'pim_assets_collection', 'akeneo_reference_entity_collection']
+            - ['pim_catalog_multiselect', 'pim_reference_data_multiselect', 'akeneo_reference_entity_collection', 'pim_catalog_asset_collection']
             - '@security.authorization_checker'
 
     pimee_enrich.mass_edit.add_product_value.processor:
@@ -67,8 +69,4 @@ services:
             - '@pimee_workflow.saver.product_delegating'
             - '@pimee_workflow.saver.product_model_delegating'
             - '@pim_versioning.manager.version'
-            - '@security.token_storage'
-            - '@akeneo_batch_queue.launcher.queue_job_launcher'
-            - '@akeneo_batch.job.job_instance_repository'
             - '@security.authorization_checker'
-            - '%pim_catalog.compute_product_models_descendants.job_name%'

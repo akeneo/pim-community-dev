@@ -1,10 +1,10 @@
 import attributeSaver from 'akeneoreferenceentity/infrastructure/saver/attribute';
 import {
-  attributeEditionSucceeded,
+  attributeEditionCancel,
   attributeEditionErrorOccurred,
   attributeEditionStart as attributeEditionStartEvent,
   attributeEditionSubmission,
-  attributeEditionCancel,
+  attributeEditionSucceeded,
 } from 'akeneoreferenceentity/domain/event/attribute/edit';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
@@ -16,10 +16,10 @@ import {
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
 import AttributeCode from 'akeneoreferenceentity/domain/model/code';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
-import {NormalizedAttribute, Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {Attribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {
-  optionEditionSubmission,
   optionEditionErrorOccurred,
+  optionEditionSubmission,
   optionEditionSucceeded,
 } from 'akeneoreferenceentity/domain/event/attribute/option';
 import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';

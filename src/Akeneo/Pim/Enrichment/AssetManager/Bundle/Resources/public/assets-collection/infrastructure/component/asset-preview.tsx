@@ -1,19 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
-import {AssetCode, ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
-import {
-  Asset,
-  getAssetByCode,
-  getAssetCodes,
-  getAssetLabel,
-  getNextAssetCode,
-  getPreviousAssetCode,
-} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
-import {Modal, SubTitle, Title} from 'akeneopimenrichmentassetmanager/platform/component/common/modal';
-import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {Modal, SubTitle, Title} from 'akeneoassetmanager/application/component/app/modal';
+import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {Carousel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview/carousel';
 import {Preview} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview/preview';
 import Left from 'akeneoassetmanager/application/component/app/icon/left';
@@ -21,6 +13,18 @@ import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import Key from 'akeneoassetmanager/tools/key';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
+import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import ListAsset, {
+  getAssetByCode,
+  getAssetLabel,
+  getAssetCodes,
+  getPreviousAssetCode,
+  getNextAssetCode,
+} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import {useAssetFamily, AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
+import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 
 const Container = styled.div`
   position: relative;
@@ -47,12 +51,14 @@ const ArrowButton = styled(TransparentButton)`
 `;
 
 type AssetPreviewProps = {
-  assetCollection: Asset[];
+  assetCollection: ListAsset[];
   initialAssetCode: AssetCode;
   productIdentifier: ProductIdentifier | null;
   productAttribute: Attribute;
   context: ContextState;
+  assetFamilyIdentifier: AssetFamilyIdentifier;
   onClose: () => void;
+  dataProvider: AssetFamilyDataProvider;
 };
 
 export const AssetPreview = ({
@@ -60,32 +66,26 @@ export const AssetPreview = ({
   initialAssetCode,
   productIdentifier,
   productAttribute,
+  assetFamilyIdentifier,
   context,
   onClose,
+  dataProvider,
 }: AssetPreviewProps) => {
   const [currentAssetCode, setCurrentAssetCode] = React.useState(initialAssetCode);
-  const selectedAsset = getAssetByCode(assetCollection, currentAssetCode);
-
-  if (!selectedAsset) {
-    return null;
-  }
-
-  const selectedAssetLabel = getAssetLabel(selectedAsset, context.locale);
+  const selectedAsset: ListAsset | undefined = getAssetByCode(assetCollection, currentAssetCode);
+  const {assetFamily} = useAssetFamily(dataProvider, assetFamilyIdentifier);
   const assetCodeCollection = getAssetCodes(assetCollection);
   const setPreviousAsset = () => setCurrentAssetCode(assetCode => getPreviousAssetCode(assetCodeCollection, assetCode));
   const setNextAsset = () => setCurrentAssetCode(assetCode => getNextAssetCode(assetCodeCollection, assetCode));
 
-  React.useEffect(() => {
-    const handleArrowNavigation = (event: KeyboardEvent) => {
-      if (Key.ArrowLeft === event.key) {
-        setPreviousAsset();
-      } else if (Key.ArrowRight === event.key) {
-        setNextAsset();
-      }
-    };
-    document.addEventListener('keydown', handleArrowNavigation);
-    return () => document.removeEventListener('keydown', handleArrowNavigation);
-  }, []);
+  useShortcut(Key.ArrowLeft, setPreviousAsset);
+  useShortcut(Key.ArrowRight, setNextAsset);
+
+  if (undefined === selectedAsset || null === assetFamily) {
+    return null;
+  }
+  const selectedAssetLabel = getAssetLabel(selectedAsset, context.locale);
+
   return (
     <Modal data-role="asset-preview-modal">
       <Container>
@@ -99,7 +99,11 @@ export const AssetPreview = ({
           </SubTitle>
           <Title>{selectedAssetLabel}</Title>
           <PreviewContainer>
-            <Preview context={context} asset={selectedAsset} />
+            <Preview
+              context={context}
+              asset={selectedAsset}
+              attributeAsMainMedia={getAttributeAsMainMedia(assetFamily)}
+            />
           </PreviewContainer>
           <Carousel
             context={context}

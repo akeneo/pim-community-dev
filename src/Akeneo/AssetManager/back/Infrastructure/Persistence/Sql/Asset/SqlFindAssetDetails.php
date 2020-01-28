@@ -83,7 +83,7 @@ class SqlFindAssetDetails implements FindAssetDetailsInterface
             asset.code,
             asset.asset_family_identifier,
             asset.value_collection,
-            reference.attribute_as_image,
+            reference.attribute_as_main_media,
             reference.attribute_as_label
         FROM akeneo_asset_manager_asset AS asset
         INNER JOIN akeneo_asset_manager_asset_family AS reference

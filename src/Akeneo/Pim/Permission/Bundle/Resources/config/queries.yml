@@ -20,6 +20,11 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@security.token_storage'
 
+    pimee_security.query.get_access_group_id_for_locale_code:
+        class: Akeneo\Pim\Permission\Bundle\Entity\Query\GetAccessGroupIdsForLocaleCodeFromDb
+        arguments:
+            - '@database_connection'
+
     pimee_enrich.doctrine.counter.category_product:
         class: 'Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query\GrantedCategoryProductsCounter'
         arguments:
@@ -89,10 +94,15 @@ services:
         arguments:
             - '@pim_import_export.query.get_last_operations.without_permission'
 
-    pimee_security.query.get_viewable_attribute_codes_for_user:
+    pimee_security.query.sql.get_viewable_attribute_codes_for_user:
         class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\GetViewableAttributeCodesForUser'
         arguments:
             - '@database_connection'
+
+    pimee_security.query.get_viewable_attribute_codes_for_user:
+        class: 'Akeneo\Pim\Permission\Bundle\Persistence\Cache\LRUCachedGetViewableAttributeCodesForUser'
+        arguments:
+            - '@pimee_security.query.sql.get_viewable_attribute_codes_for_user'
 
     pimee_security.query.get_all_viewable_locales_for_user:
         class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\LocaleRight\GetAllViewableLocalesForUser'

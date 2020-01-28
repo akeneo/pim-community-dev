@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Permission\Bundle\MassEdit\Processor;
 
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -25,6 +26,8 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         ObjectUpdaterInterface $productModelUpdater,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         CheckAttributeEditable $checkAttributeEditable,
+        FilterInterface $productEmptyValuesFilter,
+        FilterInterface $productModelEmptyValuesFilter,
         AuthorizationCheckerInterface $authorizationChecker,
         StepExecution $stepExecution
     ) {
@@ -35,6 +38,8 @@ class EditAttributesProcessorSpec extends ObjectBehavior
             $productModelUpdater,
             $attributeRepository,
             $checkAttributeEditable,
+            $productEmptyValuesFilter,
+            $productModelEmptyValuesFilter,
             $authorizationChecker
         );
         $this->setStepExecution($stepExecution);
@@ -47,6 +52,7 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         $stepExecution,
         $attributeRepository,
         $checkAttributeEditable,
+        FilterInterface $productEmptyValuesFilter,
         AttributeInterface $attribute,
         ProductInterface $product,
         JobParameters $jobParameters
@@ -83,6 +89,9 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         $productValidator->validate($product)->willReturn($violations);
         $product->getId()->willReturn(42);
 
+        $filledValues = $values;
+        $productEmptyValuesFilter->filter($product, ['values' => $values])->willReturn(['values' => $filledValues]);
+
         $productUpdater->update($product, ['values' => $values])->shouldBeCalled();
 
         $this->process($product);
@@ -94,6 +103,7 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         $authorizationChecker,
         $stepExecution,
         $attributeRepository,
+        FilterInterface $productEmptyValuesFilter,
         $checkAttributeEditable,
         AttributeInterface $attribute,
         ProductInterface $product,
@@ -134,6 +144,10 @@ class EditAttributesProcessorSpec extends ObjectBehavior
 
         $product->isAttributeEditable($attribute)->willReturn(true);
         $product->getId()->willReturn(42);
+
+        $filledValues = $values;
+        $productEmptyValuesFilter->filter($product, ['values' => $values])->willReturn(['values' => $filledValues]);
+
         $productUpdater->update($product, ['values' => $values])->shouldBeCalled();
 
         $this->process($product);

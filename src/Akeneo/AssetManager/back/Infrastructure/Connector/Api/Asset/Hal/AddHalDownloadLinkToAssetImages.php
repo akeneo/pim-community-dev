@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\Hal;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Query\Attribute\FindImageAttributeCodesInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindMediaFileAttributeCodesInterface;
 use Akeneo\Tool\Component\Api\Hal\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
 
 /**
- * Add download links at HAL format to a list of normalized assets for each asset image (as main image or as value)
+ * Add download links at HAL format to a list of normalized assets for each asset image (as main media or as value)
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -30,37 +30,37 @@ class AddHalDownloadLinkToAssetImages
     /** @var Router */
     private $router;
 
-    /** @var FindImageAttributeCodesInterface */
-    private $findImageAttributeCodes;
+    /** @var FindMediaFileAttributeCodesInterface */
+    private $findMediaFileAttributeCodes;
 
     public function __construct(
         Router $router,
-        FindImageAttributeCodesInterface $findImageAttributeCodes
+        FindMediaFileAttributeCodesInterface $findMediaFileAttributeCodes
     ) {
         $this->router = $router;
-        $this->findImageAttributeCodes = $findImageAttributeCodes;
+        $this->findMediaFileAttributeCodes = $findMediaFileAttributeCodes;
     }
 
     public function __invoke(AssetFamilyIdentifier $assetFamilyIdentifier, array $normalizedAssets): array
     {
-        $imageAttributeCodes = $this->findImageAttributeCodes->find($assetFamilyIdentifier);
+        $mediaFileAttributeCodes = $this->findMediaFileAttributeCodes->find($assetFamilyIdentifier);
 
-        return array_map(function ($normalizedAsset) use ($imageAttributeCodes) {
-            return $this->addDownloadLinkToNormalizedAsset($normalizedAsset, $imageAttributeCodes);
+        return array_map(function ($normalizedAsset) use ($mediaFileAttributeCodes) {
+            return $this->addDownloadLinkToNormalizedAsset($normalizedAsset, $mediaFileAttributeCodes);
         }, $normalizedAssets);
     }
 
-    private function addDownloadLinkToNormalizedAsset(array $normalizedAsset, array $imageAttributeCodes): array
+    private function addDownloadLinkToNormalizedAsset(array $normalizedAsset, array $mediaFileAttributeCodes): array
     {
         if (is_object($normalizedAsset['values'])) {
             return $normalizedAsset;
         }
 
-        foreach ($imageAttributeCodes as $imageAttributeCode) {
-            $imageAttributeCode = (string) $imageAttributeCode;
-            if (isset($normalizedAsset['values'][$imageAttributeCode])) {
-                $normalizedAsset['values'][$imageAttributeCode] = $this->addDownloadLinksToImageValues(
-                    $normalizedAsset['values'][$imageAttributeCode]
+        foreach ($mediaFileAttributeCodes as $mediaFileAttributeCode) {
+            $mediaFileAttributeCode = (string) $mediaFileAttributeCode;
+            if (isset($normalizedAsset['values'][$mediaFileAttributeCode])) {
+                $normalizedAsset['values'][$mediaFileAttributeCode] = $this->addDownloadLinksToImageValues(
+                    $normalizedAsset['values'][$mediaFileAttributeCode]
                 );
             }
         }

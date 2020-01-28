@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -63,7 +64,7 @@ class SqlGenerateEmptyValuesTest extends SqlIntegrationTestCase
         $assetFamily = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')
             ->getByIdentifier($designer);
         $attributeAsLabelIdentifier = $assetFamily->getAttributeAsLabelReference()->getIdentifier();
-        $attributeAsImageIdentifier = $assetFamily->getAttributeAsImageReference()->getIdentifier();
+        $attributeAsMainMediaIdentifier = $assetFamily->getAttributeAsMainMediaReference()->getIdentifier();
 
         $this->assertCount(15, $emptyValues);
         $this->assertArrayHasKey(sprintf('%s', $image->getIdentifier()), $emptyValues);
@@ -80,7 +81,7 @@ class SqlGenerateEmptyValuesTest extends SqlIntegrationTestCase
         $this->assertArrayHasKey(sprintf('%s_en_US', $attributeAsLabelIdentifier), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_fr_FR', $attributeAsLabelIdentifier), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_de_DE', $attributeAsLabelIdentifier), $emptyValues);
-        $this->assertArrayHasKey(sprintf('%s', $attributeAsImageIdentifier), $emptyValues);
+        $this->assertArrayHasKey(sprintf('%s', $attributeAsMainMediaIdentifier), $emptyValues);
 
         $this->assertSame([
             'data' => null,
@@ -146,6 +147,7 @@ class SqlGenerateEmptyValuesTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger($this->order++),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean($hasValuePerChannel),
             AttributeValuePerLocale::fromBoolean($hasValuePerLocale),
             AttributeMaxLength::fromInteger(25),

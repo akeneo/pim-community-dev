@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Acceptance\Context;
 use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\EditAttributeHandler;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
@@ -80,13 +81,13 @@ class DeleteAttributeContext implements Context
     }
 
     /**
-     * @Then /^it is not possible to delete the attribute as image linked to this entity$/
+     * @Then /^it is not possible to delete the attribute as main media linked to this entity$/
      */
-    public function itIsNotPossibleToDeleteTheAttributeAsImageLinkedToThisEntity()
+    public function itIsNotPossibleToDeleteTheAttributeAsMainMediaLinkedToThisEntity()
     {
         $identifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString('designer'),
-            AttributeCode::fromString('image')
+            AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE)
         );
 
         $command = new DeleteAttributeCommand(
@@ -95,7 +96,7 @@ class DeleteAttributeContext implements Context
         try {
             ($this->deleteAttributeHandler)($command);
 
-            throw new \Exception('Attribute as image has been deleted but it should not.');
+            throw new \Exception('Attribute as main media has been deleted but it should not.');
         } catch (\LogicException $e) {
         }
     }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\AssetFamily;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClient;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
@@ -28,9 +28,6 @@ class IndexActionTest extends ControllerIntegrationTestCase
 {
     private const ASSET_FAMILY_LIST_ROUTE = 'akeneo_asset_manager_asset_family_index_rest';
 
-    /** @var Client */
-    private $client;
-
     /** @var WebClientHelper */
     private $webClientHelper;
 
@@ -39,8 +36,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
-            ->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
     }
 
@@ -103,9 +99,5 @@ class IndexActionTest extends ControllerIntegrationTestCase
         ]);
         $entityItem->image = Image::fromFileInfo($file);
         $queryHandler->save($entityItem);
-
-        $user = new User();
-        $user->setUsername('julia');
-        $this->get('pim_user.repository.user')->save($user);
     }
 }

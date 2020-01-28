@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Persistence\Sql\File;
 
 use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
+use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -46,7 +47,7 @@ class SqlFileExistsTest extends SqlIntegrationTestCase
         $file->setSize(1024);
         $file->setExtension('jpg');
         $file->setHash(sha1('Starck file'));
-        $file->setStorage('catalogStorage');
+        $file->setStorage(Storage::FILE_STORAGE_ALIAS);
 
         $this->fileSaver->save($file);
     }

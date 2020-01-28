@@ -58,7 +58,7 @@ const askForReferenceEntity = async function(identifier) {
   await this.page.evaluate(async identifier => {
     const Controller = require('pim/controller/reference-entity/edit');
     const controller = new Controller();
-    controller.renderRoute({params: {identifier, tab: 'attribute'}});
+    await controller.renderRoute({params: {identifier, tab: 'attribute'}});
 
     await document.getElementById('app').appendChild(controller.el);
   }, identifier);

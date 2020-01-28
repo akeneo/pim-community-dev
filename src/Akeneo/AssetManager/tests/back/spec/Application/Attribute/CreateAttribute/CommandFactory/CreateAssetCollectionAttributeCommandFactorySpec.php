@@ -18,7 +18,7 @@ class CreateAssetCollectionAttributeCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_type_asset_collection()
     {
         $this->supports(['type' => 'asset_collection'])->shouldReturn(true);
-        $this->supports(['type' => 'image'])->shouldReturn(false);
+        $this->supports(['type' => 'media_file'])->shouldReturn(false);
     }
 
     function it_creates_a_command_to_create_a_asset_collection_attribute()
@@ -28,6 +28,7 @@ class CreateAssetCollectionAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'brands',
             'labels' => ['fr_FR' => 'Marques'],
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'asset_type' => 'brand',
@@ -50,6 +51,7 @@ class CreateAssetCollectionAttributeCommandFactorySpec extends ObjectBehavior
             // 'code' => 'brands', // For the test purpose, this one is missing
             'labels' => ['fr_FR' => 'Marques'],
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'asset_type' => 'brand',
@@ -66,6 +68,7 @@ class CreateAssetCollectionAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'brands',
             'labels' => ['fr_FR' => 'Marques'],
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             // 'asset_type' => 'brand', // For the test purpose, this one is missing

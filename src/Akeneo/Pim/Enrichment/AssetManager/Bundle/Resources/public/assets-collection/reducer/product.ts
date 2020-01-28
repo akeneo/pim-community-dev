@@ -1,8 +1,8 @@
 import {Action} from 'redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {sameValue, Value as CommonValue} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
-export type AssetCode = string;
 export type AssetCollectionData = AssetCode[];
 
 export type ProductIdentifier = string;
@@ -78,8 +78,9 @@ export const selectCurrentValues = (state: AssetCollectionState) => {
   const currentChannel = state.context.channel;
 
   return state.product.values.filter(
-    ({locale, channel}: Value) =>
-      (locale === null || locale === currentLocale) && (channel === null || currentChannel === channel)
+    ({locale, channel, attribute}: Value) =>
+        (0 === attribute.availableLocales.length || attribute.availableLocales.includes(currentLocale)) &&
+        (locale === null || locale === currentLocale) && (channel === null || currentChannel === channel)
   );
 };
 

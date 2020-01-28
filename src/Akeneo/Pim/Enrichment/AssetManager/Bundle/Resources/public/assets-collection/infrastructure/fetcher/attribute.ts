@@ -1,5 +1,5 @@
 import promisify from 'akeneoassetmanager/tools/promisify';
-import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {isString, isLabels} from 'akeneoassetmanager/domain/model/utils';
 const fetcherRegistry = require('pim/fetcher-registry');
 
@@ -46,10 +46,15 @@ const denormalizeAssetAttribute = (normalizedAttribute: any): Attribute => {
     throw Error('The reference_data_name is not well formated');
   }
 
-  const {is_read_only = null, reference_data_name = null, ...attribute} = {
+  if (!Array.isArray(normalizedAttribute.available_locales)) {
+    throw Error('The available_locales is not well formated');
+  }
+
+  const {is_read_only = null, reference_data_name = null, available_locales = null, ...attribute} = {
     ...normalizedAttribute,
     isReadOnly: normalizedAttribute.is_read_only,
     referenceDataName: normalizedAttribute.reference_data_name,
+    availableLocales: normalizedAttribute.available_locales,
   };
 
   return attribute;

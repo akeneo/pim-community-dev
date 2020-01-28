@@ -1,0 +1,11 @@
+services:
+    Google\Cloud\Storage\StorageClient:
+        arguments:
+            - projectId: '%env(GOOGLE_CLOUD_PROJECT)%'
+              keyFilePath: '%env(SRNT_GOOGLE_APPLICATION_CREDENTIALS)%'
+
+    Google\Cloud\Storage\Bucket:
+        class: 'Google\Cloud\Storage\Bucket'
+        factory: 'Google\Cloud\Storage\StorageClient:bucket'
+        arguments:
+            - '%env(SRNT_GOOGLE_BUCKET_NAME)%'

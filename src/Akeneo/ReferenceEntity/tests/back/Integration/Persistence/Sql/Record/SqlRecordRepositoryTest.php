@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
-use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
@@ -35,6 +34,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherMock;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\Assert;
 
@@ -55,6 +55,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $this->repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
         $this->referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
@@ -596,7 +598,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $this->eventDispatcherMock->assertEventDispatched(RecordDeletedEvent::class);
         $this->expectException(RecordNotFoundException::class);
-        $this->repository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
+        $this->repository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
     }
 
     /**

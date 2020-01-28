@@ -19,11 +19,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -39,8 +40,8 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
     /** @var ComparatorRegistry */
     protected $comparatorRegistry;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
+    /** @var GetAttributes */
+    protected $getAttributes;
 
     /** @var EntityWithValuesDraftFactory */
     protected $factory;
@@ -57,7 +58,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
     public function __construct(
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         EntityWithValuesDraftFactory $factory,
         EntityWithValuesDraftRepositoryInterface $entityWithValuesDraftRepository,
         WriteValueCollectionFactory $valueCollectionFactory,
@@ -65,7 +66,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
     ) {
         $this->normalizer = $normalizer;
         $this->comparatorRegistry = $comparatorRegistry;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributes = $getAttributes;
         $this->factory = $factory;
         $this->entityWithValuesDraftRepository = $entityWithValuesDraftRepository;
         $this->valueCollectionFactory = $valueCollectionFactory;
@@ -75,7 +76,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
     /**
      * {@inheritdoc}
      */
-    public function build(EntityWithValuesInterface $entityWithValues, string $username): ?EntityWithValuesDraftInterface
+    public function build(EntityWithValuesInterface $entityWithValues, DraftSource $draftSource): ?EntityWithValuesDraftInterface
     {
         $values = $entityWithValues instanceof EntityWithFamilyVariantInterface ?
             $entityWithValues->getValuesForVariation() : $entityWithValues->getValues();
@@ -83,16 +84,18 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
         $newValues = $this->normalizer->normalize($values, 'standard');
         $originalValues = $this->getOriginalValues($entityWithValues);
 
+        $newValuesWithNullData = $this->fillNewValuesWithNullData($originalValues, $newValues);
+
         $values = [];
-        foreach ($newValues as $code => $newValue) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($code);
+        foreach ($newValuesWithNullData as $code => $newValue) {
+            $attribute = $this->getAttributes->forCode($code);
 
             if (null === $attribute) {
                 throw new \LogicException(sprintf('Cannot find attribute with code "%s".', $code));
             }
 
             foreach ($newValue as $index => $changes) {
-                $comparator = $this->comparatorRegistry->getAttributeComparator($attribute->getType());
+                $comparator = $this->comparatorRegistry->getAttributeComparator($attribute->type());
                 $diffAttribute = $comparator->compare(
                     $changes,
                     $this->getOriginalValue($originalValues, (string) $code, $changes['locale'], $changes['scope'])
@@ -101,19 +104,20 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
                 if (null !== $diffAttribute) {
                     $diff['values'][$code][] = $diffAttribute;
 
-                    $attribute = $this->attributeRepository->findOneByIdentifier($code);
-                    $values[] = $this->valueFactory->create(
-                        $attribute,
-                        $changes['scope'],
-                        $changes['locale'],
-                        $changes['data']
-                    );
+                    if (null !== $changes['data']) {
+                        $values[] = $this->valueFactory->createByCheckingData(
+                            $attribute,
+                            $changes['scope'],
+                            $changes['locale'],
+                            $changes['data']
+                        );
+                    }
                 }
             }
         }
 
         if (!empty($diff)) {
-            $entityWithValuesDraft = $this->getEntityWithValuesDraft($entityWithValues, $username);
+            $entityWithValuesDraft = $this->getEntityWithValuesDraft($entityWithValues, $draftSource);
             $entityWithValuesDraft->setValues(new WriteValueCollection($values));
             $entityWithValuesDraft->setChanges($diff);
             $entityWithValuesDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT);
@@ -124,13 +128,13 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
         return null;
     }
 
-    protected function getEntityWithValuesDraft(EntityWithValuesInterface $entityWithValues, string $username): EntityWithValuesDraftInterface
+    protected function getEntityWithValuesDraft(EntityWithValuesInterface $entityWithValues, DraftSource $draftSource): EntityWithValuesDraftInterface
     {
         if (null === $entityWithValuesDraft = $this->entityWithValuesDraftRepository->findUserEntityWithValuesDraft(
                 $entityWithValues,
-                $username
+                $draftSource->getAuthor()
             )) {
-            $entityWithValuesDraft = $this->factory->createEntityWithValueDraft($entityWithValues, $username);
+            $entityWithValuesDraft = $this->factory->createEntityWithValueDraft($entityWithValues, $draftSource);
         }
 
         return $entityWithValuesDraft;
@@ -157,5 +161,43 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
         }
 
         return [];
+    }
+
+    /**
+     * This method will add to the new values set the values deleted during the product update.
+     * For example, with this configuration (without scope and locale options, for readability):
+     * - original values = ['attr1' => 'attr1', 'attr2' => 'value2']
+     * - new values = ['attr2' => 'value2', 'attr3' => 'attr3']
+     * This method will add ['attr1' => null] to the new values, to be able to generate the diff.
+     *
+     * @warning These values will not be stored in the database, it's just to compute the diff.
+     *
+     * @param array $originalValues
+     * @param array $newValues
+     *
+     * @return array
+     */
+    private function fillNewValuesWithNullData(array $originalValues, array $newValues)
+    {
+        foreach ($originalValues as $originalAttributeCode => $originalValueSet) {
+            foreach ($originalValueSet as $originalIndex => $originalValue) {
+                $foundValueDeleted = false;
+                if (isset($newValues[$originalAttributeCode])) {
+                    foreach ($newValues[$originalAttributeCode] as $newIndex => $newValue) {
+                        $foundValueDeleted = $foundValueDeleted || (
+                            $newValue['locale'] === $originalValue['locale'] &&
+                            $newValue['scope'] === $originalValue['scope']
+                        );
+                    }
+                }
+                if (!$foundValueDeleted) {
+                    $newValues[$originalAttributeCode][$originalIndex]['locale'] = $originalValue['locale'];
+                    $newValues[$originalAttributeCode][$originalIndex]['scope'] = $originalValue['scope'];
+                    $newValues[$originalAttributeCode][$originalIndex]['data'] = null;
+                }
+            }
+        }
+
+        return $newValues;
     }
 }

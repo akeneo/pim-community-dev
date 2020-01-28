@@ -33,7 +33,7 @@ const Sidebar = async (nodeElement, createElementDecorator, page) => {
   };
 
   const clickOnTab = async tabName => {
-    page.waitForSelector(`.AknColumn-navigationLink[data-tab="${tabName}"]`);
+    await page.waitForSelector(`.AknColumn-navigationLink[data-tab="${tabName}"]`);
     // As the button doesn't have any size, we need to make it clickable by giving him a size
     await page.evaluate(
       (sidebar, tabName) => {

@@ -44,7 +44,7 @@ Feature: List proposals
     And I collapse the column
     And I should be able to sort the rows by author and proposed at
 
-  Scenario Outline: Successfully filter proposals in the grid
+  Scenario: Successfully filter proposals in the grid
     Given I am logged in as "Peter"
     When I am on the proposals page
     Then the grid should contain 1 elements
@@ -54,17 +54,14 @@ Feature: List proposals
     When I am on the proposals page
     And I reload the page
     Then the grid should contain 3 elements
-    And I show the filter "<filter>"
-    And I filter by "<filter>" with operator "<operator>" and value "<value>"
-    Then the grid should contain <count> elements
-    And I should see entities <result>
+    And I filter by "author" with operator "in list" and value "Sandra,Mary"
+    Then the grid should contain 2 elements
+    And I should see entities "sweater, tshirt"
+    And I filter by "label_or_identifier" with operator "equals" and value "tshirt"
+    Then the grid should contain 1 elements
+    And I should see entities "tshirt"
 
-    Examples:
-      | filter              | operator     | value         | count | result                  |
-      | author              | in list      | Sandra,Mary   | 2     | sweater, tshirt         |
-      | label_or_identifier | equals       | tshirt        | 1     | tshirt                  |
-      | name                | is not empty |               | 3     | tshirt, sweater, jacket |
-
+  @skip @jira https://akeneo.atlassian.net/browse/DAPI-729
   Scenario: Successfully apply multiple filters on proposal grid
     Given I am logged in as "Peter"
     When I am on the proposals page

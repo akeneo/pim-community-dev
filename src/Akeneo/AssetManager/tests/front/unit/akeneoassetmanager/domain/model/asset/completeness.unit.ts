@@ -1,8 +1,5 @@
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
-import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
-import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
-import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
+import {getValuesForChannelAndLocale} from 'akeneoassetmanager/domain/model/asset/value';
 
 const normalizedDescription = {
   identifier: 'description_1234',
@@ -20,7 +17,6 @@ const normalizedDescription = {
   validation_rule: 'email',
   regular_expression: null,
 };
-const description = denormalizeTextAttribute(normalizedDescription);
 const normalizedWebsite = {
   identifier: 'website_1234',
   asset_family_identifier: 'designer',
@@ -37,7 +33,6 @@ const normalizedWebsite = {
   validation_rule: 'url',
   regular_expression: null,
 };
-const website = denormalizeTextAttribute(normalizedWebsite);
 
 const normalizedNickname = {
   identifier: 'nickname_1234',
@@ -55,17 +50,31 @@ const normalizedNickname = {
   validation_rule: 'url',
   regular_expression: null,
 };
-const nickname = denormalizeTextAttribute(normalizedNickname);
-const descriptionData = denormalizeTextData('a nice description');
-const descriptionValue = createValue(description, 'ecommerce', 'en_US', descriptionData);
-const websiteData = denormalizeTextData('');
-const websiteValue = createValue(website, 'ecommerce', 'en_US', websiteData);
-const nicknameData = denormalizeTextData('Pedro');
-const nicknameValue = createValue(nickname, 'ecommerce', 'en_US', nicknameData);
-const valueCollection = createValueCollection([descriptionValue, websiteValue]);
-const valueCollectionWithNoRequired = createValueCollection([nicknameValue]);
-const valueCollectionIncomplete = createValueCollection([websiteValue]);
-const valueCollectionComplete = createValueCollection([descriptionValue]);
+const descriptionData = 'a nice description';
+const descriptionValue = {
+  attribute: normalizedDescription,
+  channel: 'ecommerce',
+  locale: 'en_US',
+  data: descriptionData,
+};
+const websiteData = null;
+const websiteValue = {
+  attribute: normalizedWebsite,
+  channel: 'ecommerce',
+  locale: 'en_US',
+  data: websiteData,
+};
+const nicknameData = 'Pedro';
+const nicknameValue = {
+  attribute: normalizedNickname,
+  channel: 'ecommerce',
+  locale: 'en_US',
+  data: nicknameData,
+};
+const valueCollection = [descriptionValue, websiteValue];
+const valueCollectionWithNoRequired = [nicknameValue];
+const valueCollectionIncomplete = [websiteValue];
+const valueCollectionComplete = [descriptionValue];
 const channelEcommerce = 'ecommerce';
 const localeEnUs = 'en_US';
 
@@ -78,7 +87,7 @@ describe('akeneo > asset > domain > model --- completeness', () => {
 
   test('I can create the completeness from the values', () => {
     const completeness = Completeness.createFromValues(
-      valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollection, channelEcommerce, localeEnUs)
     );
     expect(completeness.getCompleteAttributeCount()).toBe(1);
     expect(completeness.getRequiredAttributeCount()).toBe(2);
@@ -86,7 +95,7 @@ describe('akeneo > asset > domain > model --- completeness', () => {
 
   test('I can get the ratio', () => {
     const completeness = Completeness.createFromValues(
-      valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollection, channelEcommerce, localeEnUs)
     );
     expect(completeness.getRatio()).toBe(50);
   });
@@ -98,36 +107,36 @@ describe('akeneo > asset > domain > model --- completeness', () => {
 
   test('I can know if there is no required attribute', () => {
     const completeness = Completeness.createFromValues(
-      valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollection, channelEcommerce, localeEnUs)
     );
     expect(!completeness.hasRequiredAttribute()).toBe(false);
 
     const completenessWithNoRequired = Completeness.createFromValues(
-      valueCollectionWithNoRequired.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollectionWithNoRequired, channelEcommerce, localeEnUs)
     );
     expect(!completenessWithNoRequired.hasRequiredAttribute()).toBe(true);
   });
 
   test('I can know if there is no complete attribute', () => {
     const completeness = Completeness.createFromValues(
-      valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollection, channelEcommerce, localeEnUs)
     );
     expect(completeness.hasCompleteAttribute()).toBe(true);
 
     const completenessWithNoComplete = Completeness.createFromValues(
-      valueCollectionIncomplete.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollectionIncomplete, channelEcommerce, localeEnUs)
     );
     expect(completenessWithNoComplete.hasCompleteAttribute()).toBe(false);
   });
 
   test('I can know if the completeness is complete', () => {
     const completeness = Completeness.createFromValues(
-      valueCollectionComplete.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollectionComplete, channelEcommerce, localeEnUs)
     );
     expect(completeness.isComplete()).toBe(true);
 
     const completenessWithNoComplete = Completeness.createFromValues(
-      valueCollectionIncomplete.getValuesForChannelAndLocale(channelEcommerce, localeEnUs)
+      getValuesForChannelAndLocale(valueCollectionIncomplete, channelEcommerce, localeEnUs)
     );
     expect(completenessWithNoComplete.isComplete()).toBe(false);
   });

@@ -1,31 +1,33 @@
 import * as React from 'react';
-import {AssetFamilyIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
-import {
-  Asset,
-  isComplete,
-  emptyAsset,
-  getAssetLabel,
-  removeAssetFromCollection,
-  MoveDirection,
-  moveAssetInCollection,
-  getAssetCodes,
-  sortAssetCollection,
-  canAddAssetToCollection,
-} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
-import {AssetCode, ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
+import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import styled from 'styled-components';
-import {Pill} from 'akeneopimenrichmentassetmanager/platform/component/common';
+import {Pill} from 'akeneoassetmanager/application/component/app/pill';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
-import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
+import {Label} from 'akeneoassetmanager/application/component/app/label';
+import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import __ from 'akeneoassetmanager/tools/translator';
-import {fetchAssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {Thumbnail} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/thumbnail';
 import {AssetPreview} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview';
-import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import Key from 'akeneoassetmanager/tools/key';
 import {AssetCollectionLimitNotification} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/asset-collection-limit-notification';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import ListAsset, {
+  getAssetCodes,
+  sortAssetCollection,
+  canAddAssetToCollection,
+  removeAssetFromAssetCollection,
+  MoveDirection,
+  moveAssetInCollection,
+  getAssetLabel,
+  isComplete,
+} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
+import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
+import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 
 const AssetCard = styled.div`
   display: flex;
@@ -78,8 +80,8 @@ const useLoadAssets = (
   assetFamilyIdentifier: AssetFamilyIdentifier,
   context: ContextState
 ) => {
-  const [assets, assetsReceived] = React.useState<Asset[]>([]);
-  const hasChangeInCollection = (assetCodes: AssetCode[], assets: Asset[]) => {
+  const [assets, setAssets] = React.useState<ListAsset[]>([]);
+  const hasChangeInCollection = (assetCodes: AssetCode[], assets: ListAsset[]) => {
     const collectionSizesAreTheSame = assets.length === assetCodes.length;
     const fetchedAssetCollectionIsEmpty = assets.length === 0;
     const arrayCodesAreIdentical = getAssetCodes(assets)
@@ -90,14 +92,22 @@ const useLoadAssets = (
   };
 
   React.useEffect(() => {
-    if (assetCodes.length !== 0 && hasChangeInCollection(assetCodes, assets)) {
-      fetchAssetCollection(assetFamilyIdentifier, assetCodes, context).then((receivedAssets: Asset[]) => {
-        assetsReceived(sortAssetCollection(receivedAssets, assetCodes));
+    if (assetCodes.length === 0) {
+      setAssets([]);
+      return;
+    }
+    if (hasChangeInCollection(assetCodes, assets)) {
+      assetFetcher.fetchByCodes(assetFamilyIdentifier, assetCodes, context).then((receivedAssets: ListAsset[]) => {
+        setAssets(sortAssetCollection(receivedAssets, assetCodes));
       });
     }
-  });
+  }, [assetCodes, assetFamilyIdentifier, context]);
 
-  return assets;
+  return {assets, setAssets};
+};
+
+const assetPreviewDataProvider: AssetFamilyDataProvider = {
+  assetFamilyFetcher,
 };
 
 export const AssetCollection = ({
@@ -108,18 +118,12 @@ export const AssetCollection = ({
   context,
   onChange,
 }: AssetCollectionProps) => {
-  const assets = useLoadAssets(assetCodes, productAttribute.referenceDataName, context);
-
+  const assetFamilyIdentifier = productAttribute.referenceDataName;
   const [isPreviewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false);
   const [initialPreviewAssetCode, setInitialPreviewAssetCode] = React.useState<AssetCode | null>(null);
+  const {assets, setAssets} = useLoadAssets(assetCodes, assetFamilyIdentifier, context);
 
-  React.useEffect(() => {
-    const closeModalOnEscape = (event: KeyboardEvent) =>
-      Key.Escape === event.code ? setPreviewModalOpen(false) : null;
-    document.addEventListener('keydown', closeModalOnEscape);
-
-    return () => document.removeEventListener('keydown', closeModalOnEscape);
-  }, []);
+  useShortcut(Key.Escape, () => setPreviewModalOpen(false));
 
   return (
     <Container>
@@ -127,52 +131,36 @@ export const AssetCollection = ({
       {0 !== assetCodes.length ? (
         <React.Fragment>
           {!canAddAssetToCollection(assetCodes) && <AssetCollectionLimitNotification />}
-          {assetCodes.map((assetCode: AssetCode) => {
-            const asset = assets.find((asset: Asset) => asset.code === assetCode);
-
-            if (undefined === asset) {
-              return (
-                <AssetCard key={assetCode} className="AknLoadingPlaceHolderContainer">
-                  <Thumbnail
-                    asset={emptyAsset()}
-                    context={context}
-                    readonly={true}
-                    assetCollection={[]}
-                    onRemove={() => {}}
-                    onMove={() => {}}
-                  />
-                  <AssetTitle />
-                </AssetCard>
-              );
-            }
-
-            return (
-              <AssetCard key={asset.code} data-asset={asset.code}>
-                <Thumbnail
-                  asset={asset}
-                  context={context}
-                  readonly={readonly}
-                  assetCollection={assetCodes}
-                  onRemove={() => {
-                    onChange(removeAssetFromCollection(assetCodes, asset.code));
-                  }}
-                  onMove={(direction: MoveDirection) => {
-                    onChange(moveAssetInCollection(assetCodes, asset, direction));
-                  }}
-                  onClick={() => {
-                    setInitialPreviewAssetCode(asset.code);
-                    setPreviewModalOpen(true);
-                  }}
-                />
-                <AssetTitle>
-                  <Label color={readonly ? akeneoTheme.color.grey100 : undefined}>
-                    {getAssetLabel(asset, context.locale)}
-                  </Label>
-                  {!isComplete(asset) ? <BaselinePill /> : null}
-                </AssetTitle>
-              </AssetCard>
-            );
-          })}
+          {assets.map((asset: ListAsset) => (
+            <AssetCard key={asset.code} data-asset={asset.code}>
+              <Thumbnail
+                asset={asset}
+                context={context}
+                readonly={readonly}
+                assetCollection={assets}
+                onRemove={() => {
+                  const filteredAssets = removeAssetFromAssetCollection(assets, asset.code);
+                  setAssets(filteredAssets);
+                  onChange(getAssetCodes(filteredAssets));
+                }}
+                onMove={(direction: MoveDirection) => {
+                  const orderedAssets = moveAssetInCollection(assets, asset, direction);
+                  setAssets(orderedAssets);
+                  onChange(getAssetCodes(orderedAssets));
+                }}
+                onClick={() => {
+                  setInitialPreviewAssetCode(asset.code);
+                  setPreviewModalOpen(true);
+                }}
+              />
+              <AssetTitle>
+                <Label color={readonly ? akeneoTheme.color.grey100 : undefined}>
+                  {getAssetLabel(asset, context.locale)}
+                </Label>
+                {!isComplete(asset) ? <BaselinePill /> : null}
+              </AssetTitle>
+            </AssetCard>
+          ))}
           {isPreviewModalOpen && null !== initialPreviewAssetCode ? (
             <AssetPreview
               productIdentifier={productIdentifier}
@@ -181,6 +169,8 @@ export const AssetCollection = ({
               initialAssetCode={initialPreviewAssetCode}
               context={context}
               onClose={() => setPreviewModalOpen(false)}
+              assetFamilyIdentifier={assetFamilyIdentifier}
+              dataProvider={assetPreviewDataProvider}
             />
           ) : null}
         </React.Fragment>

@@ -2,9 +2,9 @@ import * as React from 'react';
 import {FilterView, FilterViewProps} from 'akeneoreferenceentity/application/configuration/value';
 import {ConcreteOptionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option';
 import {
-  Option,
   NormalizedOption,
   NormalizedOptionCode,
+  Option,
 } from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {connect} from 'react-redux';
@@ -34,15 +34,14 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
   const [isOpen, setIsOpen] = useState(false);
   const [displayRight, setDisplayRight] = useState(false);
 
-  const availableOptions = attribute.getOptions().reduce(
-    (availableOptions: {[choiceValue: string]: string}, option: Option) => {
+  const availableOptions = attribute
+    .getOptions()
+    .reduce((availableOptions: {[choiceValue: string]: string}, option: Option) => {
       const normalizedOption: NormalizedOption = option.normalize();
       availableOptions[normalizedOption.code] = option.getLabel(context.locale);
 
       return availableOptions;
-    },
-    {} as {[label: string]: string}
-  );
+    }, {} as {[label: string]: string});
 
   const emptyFilter = () => {
     setIsOpen(false);

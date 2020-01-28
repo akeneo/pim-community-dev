@@ -1,6 +1,6 @@
 import {
-  NormalizedMediaLinkAttribute,
   NormalizedMediaLinkAdditionalProperty,
+  NormalizedMediaLinkAttribute,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {NormalizedPrefix} from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
 import {NormalizedSuffix} from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';

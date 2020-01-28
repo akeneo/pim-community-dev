@@ -53,7 +53,7 @@ final class ValueCollectionFactoryIntegration extends TestCase
     public function test_it_can_instantiate_a_value_collection_containing_reference_entities_single_link_attribute()
     {
         /** @var WriteValueCollectionFactory $valueCollectionFactory */
-        $valueCollectionFactory = $this->get('pim_catalog.factory.value_collection');
+        $valueCollectionFactory = $this->get('akeneo.pim.enrichment.factory.write_value_collection');
         $valueCollection = $valueCollectionFactory->createFromStorageFormat([
             'singleColor' => [
                 '<all_channels>' => [

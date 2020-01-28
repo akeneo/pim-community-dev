@@ -9,6 +9,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionInterface;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
@@ -16,6 +17,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
@@ -26,8 +28,9 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType as MediaFileMediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType as MediaLinkMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
@@ -41,6 +44,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydratorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 class FixturesLoader
 {
@@ -64,6 +68,8 @@ class FixturesLoader
 
     /** @var string[] */
     private $customLoadedAttributes = [];
+
+    private $namingConvention = null;
 
     /** @var string */
     private $loadedAssetFamilyOfAsset;
@@ -91,6 +97,7 @@ class FixturesLoader
         $this->loadedAssetFamily = $identifier;
         $this->loadedAttributes = [];
         $this->customLoadedAttributes = [];
+        $this->namingConvention = null;
 
         return $this;
     }
@@ -138,11 +145,39 @@ class FixturesLoader
             LabelCollection::fromArray([]),
             $this->getOrderForAttribute($attributeCode),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean($valuePerChannel),
             AttributeValuePerLocale::fromBoolean($valuePerLocale),
             AttributeMaxLength::fromInteger(25),
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
+        );
+
+        return $this;
+    }
+
+    public function withAttributeOfTypeNumber(
+        string $assetFamilyIdentifier,
+        string $attributeCode,
+        bool $valuePerChannel = false,
+        bool $valuePerLocale = false
+    ): self {
+        $this->customLoadedAttributes[] = NumberAttribute::create(
+            $this->attributeRepository->nextIdentifier(
+                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+                AttributeCode::fromString($attributeCode)
+            ),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            $this->getOrderForAttribute($attributeCode),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean($valuePerChannel),
+            AttributeValuePerLocale::fromBoolean($valuePerLocale),
+            AttributeDecimalsAllowed::fromBoolean(true),
+            AttributeLimit::limitless(),
+            AttributeLimit::fromString('100')
         );
 
         return $this;
@@ -160,6 +195,7 @@ class FixturesLoader
             LabelCollection::fromArray([]),
             $this->getOrderForAttribute($attributeCode),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -179,6 +215,7 @@ class FixturesLoader
             LabelCollection::fromArray([]),
             $this->getOrderForAttribute('materials'),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -186,9 +223,12 @@ class FixturesLoader
         return $this;
     }
 
-    public function withAttributeOfTypeImage(string $assetFamilyIdentifier, string $attributeCode): self
-    {
-        $this->customLoadedAttributes[] = ImageAttribute::create(
+    public function withAttributeOfTypeMediaFile(
+        string $assetFamilyIdentifier,
+        string $attributeCode,
+        bool $scopable = true
+    ): self {
+        $this->customLoadedAttributes[] = MediaFileAttribute::create(
             $this->attributeRepository->nextIdentifier(
                 AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
                 AttributeCode::fromString($attributeCode)
@@ -198,11 +238,20 @@ class FixturesLoader
             LabelCollection::fromArray([]),
             $this->getOrderForAttribute($attributeCode),
             AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean($scopable),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('1000'),
-            AttributeAllowedExtensions::fromList(['png'])
+            AttributeAllowedExtensions::fromList(['png']),
+            MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
         );
+
+        return $this;
+    }
+
+    public function withNamingConvention(NamingConventionInterface $namingConvention): self
+    {
+        $this->namingConvention = $namingConvention;
 
         return $this;
     }
@@ -250,7 +299,25 @@ class FixturesLoader
                 'fr_FR' => 'Marque',
             ],
             Image::createEmpty(),
-            RuleTemplateCollection::empty()
+            RuleTemplateCollection::createFromProductLinkRules(
+                [
+                    [
+                        'product_selections' => [
+                            [
+                                'field'    => '{{category_field}}',
+                                'operator' => Operators::EQUALS,
+                                'value'    => '{{category}}',
+                            ],
+                        ],
+                        'assign_assets_to'   => [
+                            [
+                                'mode'      => 'add',
+                                'attribute' => '{{product_multiple_link}}',
+                            ],
+                        ],
+                    ],
+                ]
+            )
         );
 
         $country = AssetFamily::create(
@@ -262,6 +329,11 @@ class FixturesLoader
             Image::createEmpty(),
             RuleTemplateCollection::empty()
         );
+        if (null !== $this->namingConvention) {
+            $designer->updateNamingConvention($this->namingConvention);
+            $brand->updateNamingConvention($this->namingConvention);
+            $country->updateNamingConvention($this->namingConvention);
+        }
 
         switch ($this->loadedAssetFamily) {
             case 'designer':
@@ -283,6 +355,9 @@ class FixturesLoader
                     Image::createEmpty(),
                     RuleTemplateCollection::empty()
                 );
+                if (null !== $this->namingConvention) {
+                    $assetFamily->updateNamingConvention($this->namingConvention);
+                }
                 $this->assetFamilyRepository->create($assetFamily);
 
                 return $assetFamily;
@@ -313,6 +388,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('name'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(25),
@@ -336,6 +412,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('email'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(155),
@@ -358,6 +435,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('regex'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(155),
@@ -380,6 +458,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('long_description'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(155),
@@ -389,7 +468,7 @@ class FixturesLoader
 
         // MAIN IMAGE
         if (in_array('main_image', $this->loadedAttributes)) {
-            $attributes['main_image'] = ImageAttribute::create(
+            $attributes['main_image'] = MediaFileAttribute::create(
                 $this->attributeRepository->nextIdentifier(
                     $assetFamilyIdentifier,
                     AttributeCode::fromString('main_image')
@@ -401,10 +480,35 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('main_image'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('1000'),
-                AttributeAllowedExtensions::fromList(['png'])
+                AttributeAllowedExtensions::fromList(['png']),
+                MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
+            );
+        }
+
+        // MAIN document
+        if (in_array('main_document', $this->loadedAttributes)) {
+            $attributes['main_document'] = MediaFileAttribute::create(
+                $this->attributeRepository->nextIdentifier(
+                    $assetFamilyIdentifier,
+                    AttributeCode::fromString('main_document')
+                ),
+                $assetFamilyIdentifier,
+                AttributeCode::fromString('main_document'),
+                LabelCollection::fromArray([
+                    'en_US' => 'Main pdf',
+                ]),
+                $this->getOrderForAttribute('main_document'),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxFileSize::fromString('1000'),
+                AttributeAllowedExtensions::fromList(['pdf']),
+                MediaFileMediaType::fromString(MediaFileMediaType::PDF)
             );
         }
 
@@ -422,6 +526,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('country'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AssetFamilyIdentifier::fromString('country')
@@ -442,6 +547,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('brand'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AssetFamilyIdentifier::fromString('brand')
@@ -462,6 +568,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('brands'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AssetFamilyIdentifier::fromString('brand')
@@ -483,6 +590,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('designers'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(false),
                 AssetFamilyIdentifier::fromString('designer')
@@ -503,6 +611,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('materials'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(true)
             );
@@ -522,6 +631,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('nickname'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(100),
@@ -544,6 +654,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('year'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeDecimalsAllowed::fromBoolean(false),
@@ -566,6 +677,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('main_material'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false)
             );
@@ -585,11 +697,12 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('website'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString('https://www.akeneo.com/wp-content/uploads/'),
                 Suffix::empty(),
-                MediaType::fromString(MediaType::IMAGE)
+                MediaLinkMediaType::fromString(MediaLinkMediaType::IMAGE)
             );
         }
 
@@ -607,11 +720,12 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('notice'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString('https://www.akeneo.com/wp-content/uploads/'),
                 Suffix::empty(),
-                MediaType::fromString(MediaType::PDF)
+                MediaLinkMediaType::fromString(MediaLinkMediaType::PDF)
             );
         }
 
@@ -629,11 +743,12 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('video'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString('https://my-stream.com'),
                 Suffix::empty(),
-                MediaType::fromString(MediaType::OTHER)
+                MediaLinkMediaType::fromString(MediaLinkMediaType::OTHER)
             );
         }
 
@@ -651,11 +766,33 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('youtube'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::empty(),
                 Suffix::empty(),
-                MediaType::fromString(MediaType::YOUTUBE)
+                MediaLinkMediaType::fromString(MediaLinkMediaType::YOUTUBE)
+            );
+        }
+
+        // TARGET IMAGE
+        if (in_array('target_image', $this->loadedAttributes)) {
+            $attributes['target_image'] = MediaFileAttribute::create(
+                $this->attributeRepository->nextIdentifier(
+                    $assetFamilyIdentifier,
+                    AttributeCode::fromString('target_image')
+                ),
+                $assetFamilyIdentifier,
+                AttributeCode::fromString('target_image'),
+                LabelCollection::fromArray([]),
+                $this->getOrderForAttribute('target_image'),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxFileSize::noLimit(),
+                AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED),
+                MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
             );
         }
 
@@ -687,6 +824,9 @@ class FixturesLoader
             $attribute = current(array_filter($attributes, function (AbstractAttribute $attribute) use ($attributeCode) {
                 return (string) $attribute->getCode() === $attributeCode;
             }));
+            if (!$attribute) {
+                throw new \RuntimeException(sprintf('Impossible to load value for attribute "%s", attribute not found.', $attributeCode));
+            }
 
             foreach ($values as $value) {
                 $asset->setValue($this->valueHydrator->hydrate($value, $attribute));
@@ -699,7 +839,7 @@ class FixturesLoader
     private function getOrderForAttribute(string $code): AttributeOrder
     {
         $index = array_search($code, $this->loadedAttributes);
-        $realIndex = $index + 2; // Because there are always label+image attributes first.
+        $realIndex = $index + 2; // Because there are always label+media file attributes first.
 
         return AttributeOrder::fromInteger($realIndex);
     }

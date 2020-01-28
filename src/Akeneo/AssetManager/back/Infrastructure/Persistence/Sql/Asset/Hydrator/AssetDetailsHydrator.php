@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -60,7 +61,7 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         array $attributes
     ): AssetDetails {
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
-        $attributeAsImage = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
+        $attributeAsMainMedia = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_main_media'], $this->platform);
         $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'], $this->platform);
         $assetIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
@@ -78,11 +79,12 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         $allValues = $this->createEmptyValues($emptyValues, $normalizedValues);
 
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
-        $assetImage = $this->getImage($valueCollection, $attributes[$attributeAsImage]);
+        $assetImage = $this->getImage($valueCollection, $attributes[$attributeAsMainMedia]);
 
         $assetDetails = new AssetDetails(
             AssetIdentifier::fromString($assetIdentifier),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeIdentifier::fromString($attributeAsMainMedia),
             AssetCode::fromString($assetCode),
             LabelCollection::fromArray($labels),
             $assetImage,
@@ -124,36 +126,6 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         );
     }
 
-    private function getImage($valueCollection, AbstractAttribute $attributeAsImage): Image
-    {
-        $imageValue = array_filter(
-            $valueCollection,
-            function (array $value) use ($attributeAsImage) {
-                return $value['attribute'] === $attributeAsImage->getIdentifier()->normalize();
-            }
-        );
-
-        $result = Image::createEmpty();
-        if (!empty($imageValue)) {
-            $imageValue = current($imageValue);
-
-            if (MediaLinkAttribute::ATTRIBUTE_TYPE === $attributeAsImage->getType()) {
-                $url = sprintf('%s%s%s', $attributeAsImage->getPrefix()->normalize(), $imageValue['data'], $attributeAsImage->getSuffix()->normalize());
-                $imageValue['data'] = [
-                    'filePath'         => $imageValue['data'],
-                    'originalFilename' => basename($url)
-                ];
-            }
-
-            $file = new FileInfo();
-            $file->setKey($imageValue['data']['filePath']);
-            $file->setOriginalFilename($imageValue['data']['originalFilename']);
-            $result = Image::fromFileInfo($file);
-        }
-
-        return $result;
-    }
-
     private function hydrateValues(ValueKeyCollection $valueKeyCollection, array $attributes, $valueCollection): array
     {
         $hydratedValues = [];
@@ -173,5 +145,22 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         }
 
         return $hydratedValues;
+    }
+
+    private function getImage(array $valueCollection, AbstractAttribute $attributeAsMainMedia): array
+    {
+        $imageValues = array_filter(
+            $valueCollection,
+            function (array $value) use ($attributeAsMainMedia) {
+                return $value['attribute'] === $attributeAsMainMedia->getIdentifier()->normalize();
+            }
+        );
+
+        $result = array_map(function (array $value) use ($attributeAsMainMedia) {
+            $value['attribute'] = $attributeAsMainMedia->normalize();
+            return $value;
+        }, $imageValues);
+
+        return array_values($result);
     }
 }

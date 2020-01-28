@@ -32,9 +32,9 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->permissionCleaner = $permissionCleaner;
     }
 
-    public function load(): void
+    public function load(Configuration $configuration): void
     {
-        $this->baseFixturesLoader->load();
+        $this->baseFixturesLoader->load($configuration);
         $this->permissionCleaner->cleanPermission();
     }
 }

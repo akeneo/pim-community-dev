@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
@@ -27,7 +28,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
@@ -106,6 +108,7 @@ class SqlFindConnectorAttributesByAssetFamilyIdentifierTest extends SqlIntegrati
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -113,29 +116,31 @@ class SqlFindConnectorAttributesByAssetFamilyIdentifierTest extends SqlIntegrati
             AttributeRegularExpression::fromString('/\w+/')
         );
 
-        $imageAttribute = ImageAttribute::create(
+        $mediaFileAttribute = MediaFileAttribute::create(
             AttributeIdentifier::create($assetFamilyIdentifier, 'main_image', 'test'),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('main_image'),
             LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('10'),
-            AttributeAllowedExtensions::fromList(['jpg'])
+            AttributeAllowedExtensions::fromList(['jpg']),
+            MediaType::fromString(MediaType::IMAGE)
         );
 
         $this->attributeRepository->create($textAttribute);
-        $this->attributeRepository->create($imageAttribute);
+        $this->attributeRepository->create($mediaFileAttribute);
 
         $assetFamily = $this->assetFamilyRepository
             ->getByIdentifier(AssetFamilyIdentifier::fromString($assetFamilyIdentifier));
         $attributeAsLabelIdentifier = $assetFamily->getAttributeAsLabelReference()->getIdentifier();
-        $attributeAsImageIdentifier = $assetFamily->getAttributeAsImageReference()->getIdentifier();
+        $attributeAsMainMediaIdentifier = $assetFamily->getAttributeAsMainMediaReference()->getIdentifier();
 
         $attributeAsLabel = $this->attributeRepository->getByIdentifier($attributeAsLabelIdentifier);
-        $attributeAsImage = $this->attributeRepository->getByIdentifier($attributeAsImageIdentifier);
+        $attributeAsMainMedia = $this->attributeRepository->getByIdentifier($attributeAsMainMediaIdentifier);
 
         return [
             new ConnectorAttribute(
@@ -145,6 +150,7 @@ class SqlFindConnectorAttributesByAssetFamilyIdentifierTest extends SqlIntegrati
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 [
                     'max_length' => null,
                     'is_textarea' => false,
@@ -154,15 +160,17 @@ class SqlFindConnectorAttributesByAssetFamilyIdentifierTest extends SqlIntegrati
                 ]
             ),
             new ConnectorAttribute(
-                $attributeAsImage->getCode(),
+                $attributeAsMainMedia->getCode(),
                 LabelCollection::fromArray([]),
-                'image',
+                'media_file',
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 [
                     'max_file_size' => null,
-                    'allowed_extensions' => []
+                    'allowed_extensions' => [],
+                    'media_type' => MediaType::IMAGE
                 ]
             ),
             new ConnectorAttribute(
@@ -172,6 +180,7 @@ class SqlFindConnectorAttributesByAssetFamilyIdentifierTest extends SqlIntegrati
                 AttributeValuePerLocale::fromBoolean($textAttribute->hasValuePerLocale()),
                 AttributeValuePerChannel::fromBoolean($textAttribute->hasValuePerChannel()),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 [
                     'max_length' => $textAttribute->getMaxLength()->intValue(),
                     'is_textarea' => false,
@@ -181,15 +190,17 @@ class SqlFindConnectorAttributesByAssetFamilyIdentifierTest extends SqlIntegrati
                 ]
             ),
             new ConnectorAttribute(
-                $imageAttribute->getCode(),
+                $mediaFileAttribute->getCode(),
                 LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
-                'image',
-                AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),
-                AttributeValuePerChannel::fromBoolean($imageAttribute->hasValuePerChannel()),
+                'media_file',
+                AttributeValuePerLocale::fromBoolean($mediaFileAttribute->hasValuePerLocale()),
+                AttributeValuePerChannel::fromBoolean($mediaFileAttribute->hasValuePerChannel()),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 [
                     'max_file_size' => '10',
-                    'allowed_extensions' => ['jpg']
+                    'allowed_extensions' => ['jpg'],
+                    'media_type' => MediaType::IMAGE
                 ]
             ),
         ];

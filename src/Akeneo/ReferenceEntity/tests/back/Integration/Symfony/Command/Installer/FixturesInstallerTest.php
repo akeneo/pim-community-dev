@@ -26,8 +26,6 @@ class FixturesInstallerTest extends SqlIntegrationTestCase
     /** @var Client */
     private $recordClient;
 
-    private const RECORD_INDEX = 'pimee_reference_entity_record';
-
     private const TOTAL_RECORDS = 10026;
 
     public function setUp(): void
@@ -120,8 +118,8 @@ SQL;
     private function numbersOfRecordsIndexed(): int
     {
         $this->recordClient->refreshIndex();
-        $matches = $this->recordClient->search(self::RECORD_INDEX, ['_source' => '_id' ]);
+        $matches = $this->recordClient->search(['_source' => '_id', 'track_total_hits' => true]);
 
-        return $matches['hits']['total'];
+        return $matches['hits']['total']['value'];
     }
 }

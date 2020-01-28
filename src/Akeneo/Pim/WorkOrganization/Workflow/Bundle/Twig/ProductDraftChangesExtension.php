@@ -12,8 +12,6 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\RendererAwareInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface;
@@ -38,9 +36,6 @@ class ProductDraftChangesExtension extends \Twig_Extension
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var AttributeFactory */
-    protected $attributeFactory;
-
     /** @var PresenterInterface[] */
     protected $presenters = [];
 
@@ -55,20 +50,17 @@ class ProductDraftChangesExtension extends \Twig_Extension
      * @param RendererInterface                     $renderer
      * @param TranslatorInterface                   $translator
      * @param ValueFactory                          $valueFactory
-     * @param AttributeFactory                      $attributeFactory
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
         RendererInterface $renderer,
         TranslatorInterface $translator,
-        ValueFactory $valueFactory,
-        AttributeFactory $attributeFactory
+        ValueFactory $valueFactory
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->renderer = $renderer;
         $this->translator = $translator;
         $this->valueFactory = $valueFactory;
-        $this->attributeFactory = $attributeFactory;
     }
 
     /**
@@ -90,29 +82,21 @@ class ProductDraftChangesExtension extends \Twig_Extension
      *
      * @param EntityWithValuesDraftInterface $productDraft
      * @param array                                $change
-     * @param string                               $code
-     *
-     * @throws \InvalidArgumentException
-     * @throws \LogicException
+     * @param string                               $attributeCode
      *
      * @return string
+     *@throws \LogicException
+     *
+     * @throws \InvalidArgumentException
      */
-    public function presentChange(EntityWithValuesDraftInterface $productDraft, array $change, $code)
+    public function presentChange(EntityWithValuesDraftInterface $productDraft, array $change, string $attributeCode)
     {
-        if (null === $value = $productDraft->getEntityWithValue()->getValue($code, $change['locale'], $change['scope'])) {
-            $value = $this->createFakeValue($code);
-        }
+        $formerValue = $productDraft
+            ->getEntityWithValue()
+            ->getValue($attributeCode, $change['locale'], $change['scope']);
+        $formerData = (null !== $formerValue) ? $formerValue->getData() : null;
 
-        if (null !== $result = $this->present($value, $change)) {
-            return $result;
-        }
-
-        throw new \LogicException(
-            sprintf(
-                'No presenter supports the provided change with key(s) "%s"',
-                implode(', ', array_keys($change))
-            )
-        );
+        return $this->present($attributeCode, $formerData, $change);
     }
 
     /**
@@ -142,18 +126,11 @@ class ProductDraftChangesExtension extends \Twig_Extension
         return $presenters;
     }
 
-    /**
-     * Present an object
-     *
-     * @param object $object
-     * @param array  $change
-     *
-     * @return null|string
-     */
-    protected function present($object, array $change = [])
+    protected function present(string $attributeCode, $data, array $change)
     {
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
         foreach ($this->getPresenters() as $presenter) {
-            if ($presenter->supports($object)) {
+            if ($presenter->supports($attribute->getType(), $attribute->getReferenceDataName())) {
                 if ($presenter instanceof TranslatorAwareInterface) {
                     $presenter->setTranslator($this->translator);
                 }
@@ -162,31 +139,18 @@ class ProductDraftChangesExtension extends \Twig_Extension
                     $presenter->setRenderer($this->renderer);
                 }
 
-                return $presenter->present($object, $change);
+                return $presenter->present($data, array_merge($change, [
+                    'attribute' => $attributeCode,
+                    'reference_data_name' => $attribute->getReferenceDataName()
+                ]));
             }
         }
-    }
 
-    /**
-     * Create a fake value
-     *
-     * @param string $code
-     *
-     * @return ValueInterface
-     */
-    protected function createFakeValue($code)
-    {
-        $attribute = $this->attributeRepository->findOneByIdentifier($code);
-        $newAttribute = $this->attributeFactory->createAttribute($attribute->getType());
-        $newAttribute->setCode($code);
-        $newAttribute->setMetricFamily($attribute->getMetricFamily());
-
-        if ($attribute->isBackendTypeReferenceData()) {
-            $newAttribute->setReferenceDataName($attribute->getReferenceDataName());
-        }
-
-        $value = $this->valueFactory->create($newAttribute, null, null, null);
-
-        return $value;
+        throw new \LogicException(
+            sprintf(
+                'No presenter supports the provided change with key(s) "%s"',
+                implode(', ', array_keys($change))
+            )
+        );
     }
 }

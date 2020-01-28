@@ -30,8 +30,8 @@ class CreateMediaFileWithPermissionsEndToEnd extends AbstractMediaFileTestCase
             'values'     => [
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'EN ecommerce', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => 'DE ecommerce', 'locale' => 'de_DE', 'scope' => 'ecommerce']
+                    ['data' => 'FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'tablet'],
+                    ['data' => 'DE ecommerce', 'locale' => 'de_DE', 'scope' => 'tablet']
                 ],
                 'a_number_float' => [['data' => '12.05', 'locale' => null, 'scope' => null]],
                 'a_localizable_image' => [
@@ -75,7 +75,7 @@ class CreateMediaFileWithPermissionsEndToEnd extends AbstractMediaFileTestCase
         $this->assertSame('catalogStorage', $fileInfo->getStorage());
 
         // check if product value has been created
-        $productDraft = $this->testKernel->getContainer()->get('pimee_workflow.repository.product_draft')->findByEntityWithValues($product);
+        $productDraft = $this->get('pimee_workflow.repository.product_draft')->findByEntityWithValues($product);
         $this->assertStringContainsString('akeneo.jpg', $productDraft[0]->getChange('an_image', null, null));
     }
 

@@ -83,30 +83,16 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
         $channelCode = $options['scope'];
         $localeCode = $options['locale'];
 
+        $locale = null !== $localeCode ? $this->localeRepository->findOneByIdentifier($localeCode) : null;
         $permissions = [
             'view_attribute' => $this->authorizationChecker->isGranted([Attributes::VIEW_ATTRIBUTES], $attribute),
             'edit_attribute' => $this->authorizationChecker->isGranted([Attributes::EDIT_ATTRIBUTES], $attribute),
-            'view_locale'    => null,
-            'edit_locale'    => null,
+            'view_locale' => null !== $locale ? $this->authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $locale) : null,
+            'edit_locale' => null !== $locale ? $this->authorizationChecker->isGranted([Attributes::EDIT_ITEMS], $locale) : null,
         ];
 
         $this->checkViewableAttributeGroup($attribute, $permissions);
-
-        if (null !== $localeCode) {
-            $locale = $this->localeRepository->findOneByIdentifier($localeCode);
-            if (null === $locale) {
-                throw new UnknownPropertyException($localeCode, sprintf(
-                    'Attribute "%s" expects an existing and activated locale, "%s" given.',
-                    $attribute->getCode(),
-                    $localeCode
-                ));
-            }
-
-            $permissions = array_merge($permissions, [
-                'view_locale' => $this->authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $locale),
-                'edit_locale' => $this->authorizationChecker->isGranted([Attributes::EDIT_ITEMS], $locale)
-            ]);
-
+        if (null !== $locale) {
             $this->checkViewableLocalizableAttribute($attribute, $permissions, $localeCode);
         }
 
@@ -175,7 +161,8 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
             ));
         }
 
-        if (null !== $newValue->getLocaleCode() &&
+        if (null !== $newValue &&
+            null !== $newValue->getLocaleCode() &&
             true === $permissions['view_locale'] &&
             false === $permissions['edit_locale']
         ) {

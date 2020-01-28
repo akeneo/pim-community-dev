@@ -1,14 +1,13 @@
 const baseConfig = require(`${__dirname}/../../../../vendor/akeneo/pim-community-dev/tests/front/unit/jest/unit.jest.js`);
 
 const eeModuleNameMapperConfig = {
-  'pimee/rule-manager': '<rootDir>/web/bundles/pimenterpriseui/js/product/rule-manager.js',
+  'pimee/rule-manager': '<rootDir>/public/bundles/pimenterpriseui/js/product/rule-manager.js',
 };
 
 const moduleNameMapperConfig = {
   ...baseConfig.moduleNameMapper,
   ...eeModuleNameMapperConfig,
 };
-
 const eeConfig = {
   ...baseConfig,
   moduleNameMapper: moduleNameMapperConfig,
@@ -17,28 +16,41 @@ const eeConfig = {
     'akeneoassetmanager/tools',
     'pimui/lib',
     'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher',
-    'akeneopimenrichmentassetmanager/platform/component/common',
-    'akeneoassetmanager/application/component/app/button',
+    'akeneoassetmanager/infrastructure/fetcher',
+    'akeneoassetmanager/application/component/app/select2',
+    'akeneoassetmanager/platform/component/common/checkbox',
     'akeneofranklininsights/react/application/action',
     'akeneoassetmanager/application/component/asset/index/completeness-filter',
-    'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar/search-field', // cannot trigger re-render
-    'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar', // cannot test hooks + asynchronous fetching
-    'akeneoassetmanager/application/component/app/channel-switcher.tsx',
-    'akeneoassetmanager/application/component/app/locale-switcher.tsx',
-    'akeneoassetmanager/application/component/app/icon/',
+    'akeneoassetmanager/application/component/asset/list/search-bar/search-field', // cannot trigger re-render
+    'akeneoassetmanager/application/component/asset/list/search-bar', // cannot test hooks + asynchronous fetching
+    'akeneoassetmanager/application/component/app',
+    'akeneoassetmanager/application/hydrator/attribute.ts',
+    'akeneoassetmanager/infrastructure/uploader',
+    'akeneoassetmanager/domain/event',
+    'akeneoassetmanager/application/event',
+    'akeneoassetmanager/application/asset-upload/saver',
+    'akeneoassetmanager/application/action/asset/router',
+    'akeneoassetmanager/application/action/asset',
+    'akeneoassetmanager/application/component/asset-family/edit/header',
 
     'src/Akeneo/AssetManager/front/tools',
     'vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/public/lib',
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/fetcher',
-    'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/platform/component/common',
-    'src/Akeneo/AssetManager/front/application/component/app/button',
+    'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/platform/component/common/checkbox',
+    'src/Akeneo/AssetManager/front/infrastructure/fetcher',
     'src/Akeneo/Pim/Automation/FranklinInsights/Infrastructure/Symfony/Resources/public/react/application/action',
     'src/Akeneo/AssetManager/front/application/component/asset/index/completeness-filter',
-    'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/component/asset-picker/search-bar/search-field', // cannot test hooks + asynchronous fetching + cannot trigger re-render
-    'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/component/asset-picker/search-bar', // cannot test hooks + asynchronous fetching
-    'src/Akeneo/AssetManager/front/application/component/app/channel-switcher.tsx',
-    'src/Akeneo/AssetManager/front/application/component/app/locale-switcher.tsx',
-    'src/Akeneo/AssetManager/front/application/component/app/icon/',
+    'src/Akeneo/AssetManager/front/application/component/asset/list/search-bar/search-field', // cannot test hooks + asynchronous fetching + cannot trigger re-render
+    'src/Akeneo/AssetManager/front/application/component/asset/list/search-bar', // cannot test hooks + asynchronous fetching
+    'src/Akeneo/AssetManager/front/application/component/app',
+    'src/Akeneo/AssetManager/front/application/hydrator/attribute.ts',
+    'src/Akeneo/AssetManager/front/infrastructure/uploader',
+    'src/Akeneo/AssetManager/front/domain/event',
+    'src/Akeneo/AssetManager/front/application/event',
+    'src/Akeneo/AssetManager/front/application/asset-upload/saver',
+    'src/Akeneo/AssetManager/front/application/action/asset/router',
+    'src/Akeneo/AssetManager/front/application/action/asset',
+    'src/Akeneo/AssetManager/front/application/component/asset-family/edit/header',
   ],
 };
 

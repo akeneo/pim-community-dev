@@ -34,7 +34,7 @@ class ImagePreviewAction
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /** @var PreviewGeneratorInterface  */
+    /** @var PreviewGeneratorInterface */
     private $previewGenerator;
 
     /** @var DefaultImageProviderInterface */
@@ -64,6 +64,6 @@ class ImagePreviewAction
             $imagePreview = $this->defaultImageProvider->getImageUrl(OtherGenerator::DEFAULT_OTHER, $type);
         }
 
-        return new RedirectResponse($imagePreview, Response::HTTP_MOVED_PERMANENTLY);
+        return new RedirectResponse($imagePreview);
     }
 }

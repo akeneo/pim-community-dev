@@ -17,7 +17,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
 /**
  * Proposal media filter for an Elasticsearch query.
@@ -26,17 +28,17 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
 {
     const PATH_SUFFIX = 'original_filename';
 
-    /**
-     * @param ProposalAttributePathResolver $attributePathResolver
-     * @param string[]                      $supportedAttributeTypes
-     * @param string[]                      $supportedOperators
-     */
+    /** @var AttributeValidatorHelper */
+    protected $attributeValidatorHelper;
+
     public function __construct(
         ProposalAttributePathResolver $attributePathResolver,
+        AttributeValidatorHelper $attributeValidatorHelper,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attributePathResolver = $attributePathResolver;
+        $this->attributeValidatorHelper = $attributeValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators = $supportedOperators;
     }
@@ -59,6 +61,8 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
         }
+
+        $this->checkLocaleAndChannel($attribute, $locale, $channel);
 
         $attributePaths = $this->attributePathResolver->getAttributePaths($attribute);
 
@@ -197,5 +201,19 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected function checkValue(AttributeInterface $attribute, $value)
     {
         FieldFilterHelper::checkString($attribute->getCode(), $value, self::class);
+    }
+
+    protected function checkLocaleAndChannel(AttributeInterface $attribute, ?string $localeCode, ?string $channelCode): void
+    {
+        try {
+            $this->attributeValidatorHelper->validateLocale($attribute, $localeCode);
+            $this->attributeValidatorHelper->validateScope($attribute, $channelCode);
+        } catch (\LogicException $e) {
+            throw InvalidPropertyException::expectedFromPreviousException(
+                $attribute->getCode(),
+                static::class,
+                $e
+            );
+        }
     }
 }

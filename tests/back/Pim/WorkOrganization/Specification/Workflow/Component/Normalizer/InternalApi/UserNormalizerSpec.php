@@ -4,9 +4,7 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalize
 
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
-use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\UserNormalizer;
-use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

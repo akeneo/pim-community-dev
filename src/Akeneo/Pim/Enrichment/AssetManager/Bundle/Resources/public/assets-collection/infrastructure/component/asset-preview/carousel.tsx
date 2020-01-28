@@ -1,14 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {Asset} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import AssetCounter from 'akeneopimenrichmentassetmanager/platform/component/common/asset-counter';
 import __ from 'akeneoassetmanager/tools/translator';
-import {Attribute, getAttributeLabel} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
-import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
+import {Attribute, getAttributeLabel} from 'akeneoassetmanager/platform/model/structure/attribute';
+import {Context} from 'akeneoassetmanager/domain/model/context';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {Spacer} from 'akeneopimenrichmentassetmanager/platform/component/common';
-import {getAssetPreview, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
+import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
+import {ResultCounter} from 'akeneoassetmanager/application/component/app/result-counter';
+import ListAsset, {getListAssetMainMediaThumbnail} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 
 const AssetThumbnail = styled.img<{highlighted: boolean}>`
   border: 2px solid
@@ -35,7 +35,7 @@ const Title = styled.div`
 `;
 
 type CarouselProps = {
-  assetCollection: Asset[];
+  assetCollection: ListAsset[];
   selectedAssetCode: AssetCode;
   productAttribute: Attribute;
   context: Context;
@@ -53,7 +53,7 @@ export const Carousel = ({
     <React.Fragment>
       <Header>
         <Title>{getAttributeLabel(productAttribute, context.locale)}</Title>
-        <AssetCounter resultCount={assetCollection.length} />
+        <ResultCounter count={assetCollection.length} labelKey={'pim_asset_manager.asset_counter'} />
         <Spacer />
       </Header>
       {assetCollection.map(asset => (
@@ -61,7 +61,7 @@ export const Carousel = ({
           data-role={`carousel-thumbnail-${asset.code}`}
           key={asset.code}
           highlighted={selectedAssetCode === asset.code}
-          src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail)}
+          src={getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale))}
           onClick={() => onAssetChange(asset.code)}
         />
       ))}

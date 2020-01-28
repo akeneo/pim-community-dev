@@ -1,0 +1,86 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_asset_manager_asset_edit_rest",
+    "query": {
+      "assetCode": "starck",
+      "assetFamilyIdentifier": "designer"
+    },
+    "body": {
+      "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
+      "code": "starck",
+      "asset_family_identifier": "designer",
+      "labels": {
+        "fr_FR": "Philippe Starck"
+      },
+      "image": null,
+      "values": [
+        {
+          "attribute": "portrait_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": {
+            "filePath": "/a/b/c/philou.gif",
+            "originalFilename": "philou.gif",
+            "size": 2024,
+            "mimeType": "image/gif",
+            "extension": "gif",
+            "updatedAt": "2019-11-22T15:16:21+0000"
+          }
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": [
+      {
+        "messageTemplate":"The file \u0022\/a\/b\/c\/philou.gif\u0022 was not found.",
+        "parameters":{
+          "%file_path%":"\/a\/b\/c\/philou.gif"
+        },
+        "message":"The file \u0022\/a\/b\/c\/philou.gif\u0022 was not found.",
+        "propertyPath":"values.portrait",
+        "invalidValue":{
+          "filePath":"\/a\/b\/c\/philou.gif",
+          "originalFilename":null,
+          "size":null,
+          "mimeType":null,
+          "extension":null,
+          "updatedAt":"2019-11-22T15:16:21+0000",
+          "attribute":{
+            "maxFileSizeLimit":false,
+            "type": "media_file",
+            "maxFileSize":{
+              "limit":false
+            },
+            "allowedExtensions":{
+              "allAllowed":false
+            },
+            "mediaType": [],
+            "identifier":[
+
+            ],
+            "assetFamilyIdentifier":[
+
+            ],
+            "code":[
+
+            ],
+            "labelCodes":[
+              "fr_FR",
+              "en_US"
+            ],
+            "order":[
+
+            ],
+            "valuePerChannel":false,
+            "valuePerLocale":false
+          },
+          "channel":null,
+          "locale":null
+        }
+      }
+    ]
+  }
+}

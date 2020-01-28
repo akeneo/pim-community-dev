@@ -15,9 +15,10 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -25,7 +26,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Philippe Mossière <philippe.mossiere@akeneo.com>
  */
-class ProductModelProposalNormalizer implements NormalizerInterface
+class ProductModelProposalNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var NormalizerInterface */
     private $standardNormalizer;
@@ -36,19 +37,19 @@ class ProductModelProposalNormalizer implements NormalizerInterface
     /** @var ValueFactory */
     private $valueFactory;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributes */
+    private $getAttributesQuery;
 
     public function __construct(
         NormalizerInterface $standardNormalizer,
         NormalizerInterface $datagridNormlizer,
         ValueFactory $valueFactory,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        GetAttributes $getAttributesQuery
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->datagridNormlizer = $datagridNormlizer;
         $this->valueFactory = $valueFactory;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributesQuery = $getAttributesQuery;
     }
 
     /**
@@ -66,6 +67,9 @@ class ProductModelProposalNormalizer implements NormalizerInterface
         $data['createdAt'] = $this->datagridNormlizer->normalize($proposalModelProduct->getCreatedAt(), $format, $context);
         $data['product'] = $proposalModelProduct->getEntityWithValue();
         $data['author'] = $proposalModelProduct->getAuthor();
+        $data['author_label'] = $proposalModelProduct->getAuthorLabel();
+        $data['source'] = $proposalModelProduct->getSource();
+        $data['source_label'] = $proposalModelProduct->getSourceLabel();
         $data['status'] = $proposalModelProduct->getStatus();
         $data['proposal'] = $proposalModelProduct;
         $data['search_id'] = $proposalModelProduct->getEntityWithValue()->getCode();
@@ -82,6 +86,11 @@ class ProductModelProposalNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductModelDraft && 'datagrid' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**
@@ -103,9 +112,9 @@ class ProductModelProposalNormalizer implements NormalizerInterface
         $valueCollection = new WriteValueCollection();
 
         foreach ($changes['values'] as $code => $changeset) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($code);
+            $attribute = $this->getAttributesQuery->forCode($code);
             foreach ($changeset as $index => $change) {
-                $value = $this->valueFactory->create(
+                $value = $this->valueFactory->createByCheckingData(
                     $attribute,
                     $change['scope'],
                     $change['locale'],

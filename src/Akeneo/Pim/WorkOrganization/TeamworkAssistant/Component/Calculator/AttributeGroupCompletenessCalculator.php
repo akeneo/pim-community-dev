@@ -13,34 +13,28 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Calculator;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\AttributeGroupCompleteness;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\FamilyRequirementRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class AttributeGroupCompletenessCalculator implements ProjectItemCalculatorInterface
 {
-    /** @var ValueCompleteCheckerInterface */
-    protected $productValueChecker;
-
     /** @var FamilyRequirementRepositoryInterface */
     protected $familyRequirementRepository;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
+    /** @var CompletenessCalculator */
+    private $completenessCalculator;
 
     public function __construct(
-        ValueCompleteCheckerInterface $productValueChecker,
         FamilyRequirementRepositoryInterface $familyRequirementRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        CompletenessCalculator $completenessCalculator
     ) {
-        $this->productValueChecker = $productValueChecker;
         $this->familyRequirementRepository = $familyRequirementRepository;
-        $this->attributeRepository = $attributeRepository;
+        $this->completenessCalculator = $completenessCalculator;
     }
 
     /**
@@ -59,68 +53,26 @@ class AttributeGroupCompletenessCalculator implements ProjectItemCalculatorInter
             $channel,
             $locale
         );
-        $filledAttributesPerGroup = $this->findFilledAttributes($product, $channel, $locale);
+
+        $completenesses = $this->completenessCalculator->fromProductIdentifier($product->getIdentifier());
+        $completeness = $completenesses->getCompletenessForChannelAndLocale($channel->getCode(), $locale->getCode());
+        if (null === $completeness) {
+            return [];
+        }
 
         $result = [];
-        foreach ($requiredAttributesPerGroup as $attributeGroupId => $requiredAttributes) {
-            if (!isset($filledAttributesPerGroup[$attributeGroupId])) {
-                $filledAttributesPerGroup[$attributeGroupId] = [];
-            }
+        foreach ($requiredAttributesPerGroup as $attributeGroupId => $requiredAttributeCodes) {
+            $missingRequiredAttributeCodes = array_intersect($requiredAttributeCodes, $completeness->missingAttributeCodes());
 
-            $intersection = array_intersect($requiredAttributes, $filledAttributesPerGroup[$attributeGroupId]);
-            if ($intersection === $requiredAttributes) {
+            if (empty($missingRequiredAttributeCodes)) {
                 $result[] = new AttributeGroupCompleteness($attributeGroupId, 0, 1);
-            } elseif (count($intersection) > 0) {
-                $result[] = new AttributeGroupCompleteness($attributeGroupId, 1, 0);
-            } else {
+            } elseif ($missingRequiredAttributeCodes === $requiredAttributeCodes) {
                 $result[] = new AttributeGroupCompleteness($attributeGroupId, 0, 0);
+            } else {
+                $result[] = new AttributeGroupCompleteness($attributeGroupId, 1, 0);
             }
         }
 
         return $result;
-    }
-
-    /**
-     * Return every filled attributes for a product. This method return the attribute codes indexed by attribute ids:
-     *
-     * [
-     *      40 => [
-     *          'sku',
-     *          'name',
-     *      ],
-     *      33 => [
-     *          'description',
-     *      ],
-     * ];
-     *
-     * @param ProductInterface $product
-     * @param ChannelInterface $channel
-     * @param LocaleInterface  $locale
-     *
-     * @return array
-     */
-    protected function findFilledAttributes(
-        ProductInterface $product,
-        ChannelInterface $channel,
-        LocaleInterface $locale
-    ) {
-        $filledAttributes = [];
-        foreach ($product->getValues() as $value) {
-            if ($value->isScopable() && $value->getScopeCode() !== $channel->getCode() ||
-                $value->isLocalizable() && $value->getLocaleCode() !== $locale->getCode()
-            ) {
-                continue;
-            }
-
-            if ($this->productValueChecker->isComplete($value, $channel, $locale)) {
-                $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
-
-                if (null !== $attribute) {
-                    $filledAttributes[$attribute->getGroup()->getId()][] = $attribute->getCode();
-                }
-            }
-        }
-
-        return $filledAttributes;
     }
 }

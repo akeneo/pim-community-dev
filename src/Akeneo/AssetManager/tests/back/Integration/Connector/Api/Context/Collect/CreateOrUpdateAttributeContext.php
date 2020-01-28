@@ -24,6 +24,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
@@ -32,8 +33,9 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType as MediaFileMediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType as MediaLinkMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
@@ -168,6 +170,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Main color', 'fr_FR' => 'Couleur principale']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -191,17 +194,19 @@ class CreateOrUpdateAttributeContext implements Context
         $attributeIdentifier = AttributeIdentifier::create('designer', 'portrait', md5('designer_portrait'));
 
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
-        $expectedAttribute = ImageAttribute::create(
+        $expectedAttribute = MediaFileAttribute::create(
             $attributeIdentifier,
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('200.10'),
-            AttributeAllowedExtensions::fromList(['png'])
+            AttributeAllowedExtensions::fromList(['png']),
+            MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
@@ -242,6 +247,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['fr_FR' => 'Pays', 'en_US' => 'Country']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AssetFamilyIdentifier::fromString('country')
@@ -277,6 +283,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Birth date']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -311,11 +318,12 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Preview']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
             Suffix::empty(),
-            MediaType::fromString('image')
+            MediaLinkMediaType::fromString('image')
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
@@ -333,6 +341,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Main color']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -348,6 +357,7 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 'max_length' => 155,
                 'is_textarea' => false,
@@ -383,6 +393,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Main color', 'fr_FR' => 'Couleur principale']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::noLimit(),
@@ -398,17 +409,19 @@ class CreateOrUpdateAttributeContext implements Context
      */
     public function thePortraitAttributeThatIsBothPartOfTheStructureOfTheDesignerAssetFamilyInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
     {
-        $attribute = ImageAttribute::create(
+        $attribute = MediaFileAttribute::create(
             AttributeIdentifier::create('designer', 'image', 'fingerprint'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('200.10'),
-            AttributeAllowedExtensions::fromList(['gif'])
+            AttributeAllowedExtensions::fromList(['gif']),
+            MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
         );
         $this->attributeRepository->create($attribute);
 
@@ -419,6 +432,7 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 'max_file_size' => 200.10,
                 'allowed_extensions' => ['gif'],
@@ -442,17 +456,19 @@ class CreateOrUpdateAttributeContext implements Context
         $assetFamilyIdentifier = 'designer';
         $attributeIdentifier = AttributeIdentifier::create('designer', 'image', 'fingerprint');
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
-        $expectedAttribute = ImageAttribute::create(
+        $expectedAttribute = MediaFileAttribute::create(
             $attributeIdentifier,
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::noLimit(),
-            AttributeAllowedExtensions::fromList(['gif', 'png'])
+            AttributeAllowedExtensions::fromList(['gif', 'png']),
+            MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
@@ -470,6 +486,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Country']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AssetFamilyIdentifier::fromString('country')
@@ -483,6 +500,7 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             ['asset_type' => 'country']
         );
         $this->findConnectorAttribute->save($attribute->getAssetFamilyIdentifier(), $attribute->getCode(), $connectorAttribute);
@@ -509,6 +527,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['fr_FR' => 'Pays', 'en_US' => 'Country']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AssetFamilyIdentifier::fromString('country')
@@ -529,6 +548,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Birth date']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -541,6 +561,7 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             []
         );
         $this->findConnectorAttribute->save($attribute->getAssetFamilyIdentifier(), $attribute->getCode(), $connectorAttribute);
@@ -568,6 +589,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Birth date', 'fr_FR' => 'Date de naissance']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -587,11 +609,12 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Preview']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
             Suffix::empty(),
-            MediaType::fromString('image')
+            MediaLinkMediaType::fromString('image')
         );
         $this->attributeRepository->create($attribute);
 
@@ -602,6 +625,7 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             ['media_type' => 'image']
         );
         $this->findConnectorAttribute->save($attribute->getAssetFamilyIdentifier(), $attribute->getCode(), $connectorAttribute);
@@ -629,11 +653,12 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Preview', 'fr_FR' => 'Aperçu']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
             Suffix::empty(),
-            MediaType::fromString('image')
+            MediaLinkMediaType::fromString('image')
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);

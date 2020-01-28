@@ -7,7 +7,7 @@ Feature: Connection to e-commerce platforms and marketplaces
   Scenario: Get an asset family
     Given the Brand asset family
     When the connector requests the Brand asset family
-    Then the PIM returns the label, image properties and rule templates of Brand asset family
+    Then the PIM returns the label, media_file properties and rule templates of Brand asset family
 
   @integration-back
   Scenario: Notify an error when getting a non-existent asset family
@@ -19,4 +19,4 @@ Feature: Connection to e-commerce platforms and marketplaces
   Scenario: Get all the asset families
     Given 7 asset families in the PIM
     When the connector requests all asset families of the PIM
-    Then the PIM returns the label and image properties of the 7 asset families of the PIM
+    Then the PIM returns the label and media_file properties of the 7 asset families of the PIM

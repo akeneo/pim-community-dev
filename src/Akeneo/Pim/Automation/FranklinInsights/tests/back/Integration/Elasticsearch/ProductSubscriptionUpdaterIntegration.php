@@ -28,7 +28,10 @@ class ProductSubscriptionUpdaterIntegration extends TestCase
         $family = $this->createFamily('family');
         $subscribedProduct = $this->createProduct('subscribed_product', $family->getCode());
         $unsubscribedProduct = $this->createProduct('unsubscribed_product', $family->getCode());
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll([$subscribedProduct, $unsubscribedProduct], ['index_refresh' => Refresh::waitFor()]);
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifiers(
+            ['subscribed_product', 'unsubscribed_product'],
+            ['index_refresh' => Refresh::waitFor()]
+        );
 
         $this->insertSubscription($subscribedProduct->getId());
         $productSubscriptionUpdater = $this->get('akeneo.pim.automation.franklin_insights.elasticsearch.updater.product_subscription');
@@ -49,14 +52,14 @@ class ProductSubscriptionUpdaterIntegration extends TestCase
 
     private function createProduct(string $identifier, string $familyCode): ProductInterface
     {
-        $product = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder')
+        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier($identifier)
             ->withFamily($familyCode)
             ->withCategories('master')
             ->build();
-        $violations = $this->getFromTestContainer('validator')->validate($product);
+        $violations = $this->get('validator')->validate($product);
         Assert::assertSame(0, $violations->count(), sprintf('Product "%s" is not valid.', $identifier));
-        $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
     }
@@ -81,11 +84,11 @@ SQL;
     private function createFamily(string $familyCode): FamilyInterface
     {
         $family = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
+            ->get('akeneo_ee_integration_tests.builder.family')
             ->build(['code' => $familyCode, 'attributes' => ['sku']]);
-        $violations = $this->getFromTestContainer('validator')->validate($family);
+        $violations = $this->get('validator')->validate($family);
         Assert::assertSame(0, $violations->count(), 'Family is not valid.');
-        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+        $this->get('pim_catalog.saver.family')->save($family);
 
         return $family;
     }
@@ -95,7 +98,7 @@ SQL;
         $esClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
         $esClient->refreshIndex();
 
-        $searchResult = $esClient->search('pim_catalog_product', [
+        $searchResult = $esClient->search([
             'query' => [
                 'term' => [
                     'id' => sprintf('product_%d', $product->getId()),

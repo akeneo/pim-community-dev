@@ -1,4 +1,8 @@
-import {denormalizeIdentifier, identifiersAreEqual} from 'akeneoassetmanager/domain/model/identifier';
+import {
+  denormalizeIdentifier,
+  identifiersAreEqual,
+  isEmptyIdentifier,
+} from 'akeneoassetmanager/domain/model/identifier';
 
 describe('akeneo > asset family > domain > model --- identifier', () => {
   test('I can create a new identifier with a string value', () => {
@@ -14,5 +18,9 @@ describe('akeneo > asset family > domain > model --- identifier', () => {
   test('I can compare two identifiers', () => {
     expect(identifiersAreEqual(denormalizeIdentifier('michel'), denormalizeIdentifier('didier'))).toBe(false);
     expect(identifiersAreEqual(denormalizeIdentifier('didier'), denormalizeIdentifier('didier'))).toBe(true);
+  });
+  test('I can check if an identifier is empty', () => {
+    expect(isEmptyIdentifier(denormalizeIdentifier('michel'))).toBe(false);
+    expect(isEmptyIdentifier(denormalizeIdentifier(''))).toBe(true);
   });
 });

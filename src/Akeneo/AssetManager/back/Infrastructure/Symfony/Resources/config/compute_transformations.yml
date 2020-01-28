@@ -1,0 +1,71 @@
+services:
+    akeneo_assetmanager.infrastructure.filter.colorspace:
+        class: Akeneo\AssetManager\Infrastructure\Filesystem\Filter\ColorspaceFilter
+        tags:
+            - { name: 'liip_imagine.filter.loader', loader: colorspace }
+
+    # file utils:
+    Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader:
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
+            - '@filesystem'
+
+    # operation appliers:
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplierRegistry:
+        arguments:
+            - !tagged akeneo_assetmanager.transformation.operation_applier
+
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\ColorspaceOperationApplier:
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@filesystem'
+        tags:
+            - { name: akeneo_assetmanager.transformation.operation_applier }
+
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\ResizeOperationApplier:
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@filesystem'
+        tags:
+            - { name: akeneo_assetmanager.transformation.operation_applier }
+
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\ResolutionOperationApplier:
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@filesystem'
+        tags:
+            - { name: akeneo_assetmanager.transformation.operation_applier }
+
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\ScaleOperationApplier:
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@filesystem'
+        tags:
+            - { name: akeneo_assetmanager.transformation.operation_applier }
+
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\ThumbnailOperationApplier:
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@filesystem'
+        tags:
+            - { name: akeneo_assetmanager.transformation.operation_applier }
+
+    # executor
+    akeneo_assetmanager.infrastructure.transformation.file_transformer:
+        class: Akeneo\AssetManager\Infrastructure\Transformation\FileTransformer
+        arguments:
+            - '@Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplierRegistry'
+
+    akeneo_assetmanager.infrastructure.transformation.get_outdated_variation_source:
+        class: Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+            - '@validator'
+
+    Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor:
+        arguments:
+            - '@Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader'
+            - '@akeneo_assetmanager.infrastructure.transformation.file_transformer'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'

@@ -7,7 +7,7 @@ import {
   attributeEditionCancel,
 } from 'akeneoassetmanager/domain/event/attribute/edit';
 import AttributeIdentifier, {attributeidentifiersAreEqual} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
   notifyAttributeSaveFailed,
@@ -40,10 +40,12 @@ export const saveAttribute = (dismiss: boolean = true) => async (
 
   try {
     let errors = await attributeSaver.save(attribute);
-
     if (errors) {
-      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(attributeEditionErrorOccured(validationErrors));
+      if (Array.isArray(errors)) {
+        dispatch(attributeEditionErrorOccured(errors));
+      } else {
+        console.error(errors);
+      }
       dispatch(notifyAttributeSaveValidationError());
 
       return;
@@ -77,7 +79,6 @@ export const saveOptions = () => async (dispatch: any, getState: () => EditState
 
   try {
     let errors = await attributeOptionSaver.save((updatedAttribute as any) as Attribute);
-
     if (errors) {
       const validationErrors = Object.values(
         errors.reduce((filteredErrors: {[propertyPath: string]: ValidationError}, error: ValidationError) => {
@@ -85,7 +86,7 @@ export const saveOptions = () => async (dispatch: any, getState: () => EditState
 
           return filteredErrors;
         }, {})
-      ).map((error: ValidationError) => createValidationError(error));
+      );
       dispatch(optionEditionErrorOccured(validationErrors));
 
       return;

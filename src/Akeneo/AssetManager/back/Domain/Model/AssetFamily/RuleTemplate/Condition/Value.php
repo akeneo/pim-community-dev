@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Condition;
 
-use Webmozart\Assert\Assert;
-
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)

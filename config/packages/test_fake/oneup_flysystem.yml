@@ -1,0 +1,12 @@
+oneup_flysystem:
+    adapters:
+        asset_storage_adapter:
+            nulladapter: ~
+        catalog_storage_adapter:
+            nulladapter: ~
+        jobs_storage_adapter:
+            nulladapter: ~
+        archivist_adapter:
+            nulladapter: ~
+        data_quality_insights_shared_adapter:
+            nulladapter: ~

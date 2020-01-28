@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
-use Traversable;
 use Webmozart\Assert\Assert;
 
 /**
@@ -79,7 +78,7 @@ class RuleTemplateCollection implements \IteratorAggregate
         return $normalizedRuleTemplates;
     }
 
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->ruleTemplates);
     }

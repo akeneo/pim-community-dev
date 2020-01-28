@@ -6,6 +6,7 @@ namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
@@ -26,6 +27,7 @@ class AssetCollectionAttributeSpec extends ObjectBehavior
             LabelCollection::fromArray(['fr_FR' => 'Marques', 'en_US' => 'Brands']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AssetFamilyIdentifier::fromString('brand')
@@ -52,6 +54,7 @@ class AssetCollectionAttributeSpec extends ObjectBehavior
                 'labels' => ['fr_FR' => 'Marques', 'en_US' => 'Brands'],
                 'order' => 0,
                 'is_required' => true,
+                'is_read_only' => false,
                 'value_per_channel' => false,
                 'value_per_locale' => false,
                 'type' => 'asset_collection',
@@ -70,6 +73,7 @@ class AssetCollectionAttributeSpec extends ObjectBehavior
                 'labels' => ['fr_FR' => 'Anciennes Marques', 'en_US' => 'Old Brands'],
                 'order' => 0,
                 'is_required' => true,
+                'is_read_only' => false,
                 'value_per_channel' => false,
                 'value_per_locale' => false,
                 'type' => 'asset_collection',
@@ -91,6 +95,7 @@ class AssetCollectionAttributeSpec extends ObjectBehavior
                 'labels' => ['fr_FR' => 'Marques', 'en_US' => 'Brands'],
                 'order' => 0,
                 'is_required' => true,
+                'is_read_only' => false,
                 'value_per_channel' => false,
                 'value_per_locale' => false,
                 'type' => 'asset_collection',

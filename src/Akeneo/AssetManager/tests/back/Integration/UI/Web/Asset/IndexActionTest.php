@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales;
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClient;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -32,6 +32,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -50,9 +51,6 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
-    /** @var Client */
-    private $client;
-
     /** @var WebClientHelper */
     private $webClientHelper;
 
@@ -61,8 +59,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
-            ->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
     }
 
@@ -166,6 +163,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 LabelCollection::fromArray(['fr_FR' => 'Nom']),
                 AttributeOrder::fromInteger(4),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(512),
@@ -181,6 +179,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 LabelCollection::fromArray(['fr_FR' => 'Surnom']),
                 AttributeOrder::fromInteger(3),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(512),
@@ -196,6 +195,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 LabelCollection::fromArray(['en_US' => 'Color']),
                 AttributeOrder::fromInteger(5),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false)
             )
@@ -208,6 +208,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 LabelCollection::fromArray(['en_US' => 'City']),
                 AttributeOrder::fromInteger(6),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AssetFamilyIdentifier::fromString('city')

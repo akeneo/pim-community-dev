@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Domain\Query\AssetFamily\Connector;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 
@@ -35,27 +37,47 @@ class ConnectorAssetFamily
     /** @var array */
     private $productLinkRules;
 
+    /** @var ConnectorTransformationCollection */
+    private $transformations;
+
+    /** @var NamingConventionInterface */
+    private $namingConvention;
+
+    /** @var AttributeCode|null */
+    private $attributeAsMainMediaCode;
+
     public function __construct(
         AssetFamilyIdentifier $identifier,
         LabelCollection $labelCollection,
         Image $image,
-        array $productLinkRules
+        array $productLinkRules,
+        ConnectorTransformationCollection $transformations,
+        NamingConventionInterface $namingConvention,
+        ?AttributeCode $attributeAsMainMediaCode
     ) {
         $this->identifier = $identifier;
         $this->labelCollection = $labelCollection;
         $this->image = $image;
         $this->productLinkRules = $productLinkRules;
+        $this->transformations = $transformations;
+        $this->namingConvention = $namingConvention;
+        $this->attributeAsMainMediaCode = $attributeAsMainMediaCode;
     }
 
     public function normalize(): array
     {
         $normalizedLabels = $this->labelCollection->normalize();
+        $normalizedAttributeAsMainMedia = $this->attributeAsMainMediaCode ? (string) $this->attributeAsMainMediaCode : null;
+        $normalizedNamingConvention = $this->namingConvention->normalize();
 
         return [
             'code' => $this->identifier->normalize(),
             'labels' => empty($normalizedLabels) ? (object) [] : $normalizedLabels,
+            'attribute_as_main_media' => $normalizedAttributeAsMainMedia,
             'image' => $this->image->isEmpty() ? null : $this->image->getKey(),
             'product_link_rules' => $this->productLinkRules,
+            'transformations' => $this->transformations->normalize(),
+            'naming_convention' => empty($normalizedNamingConvention) ? (object) [] : $normalizedNamingConvention,
         ];
     }
 

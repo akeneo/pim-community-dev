@@ -206,7 +206,9 @@ class GetWorkflowStatusFromProductModelCodesIntegration extends TestCase
             ]
         );
 
-        $productModelDraft = $this->get('pimee_workflow.product_model.builder.draft')->build($productModel, $userName);
+        $user = $this->get('pim_user.provider.user')->loadUserByUsername($userName);
+        $draftSource = $this->get('Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory')->createFromUser($user);
+        $productModelDraft = $this->get('pimee_workflow.product_model.builder.draft')->build($productModel, $draftSource);
         if (true === $ready) {
             $productModelDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
             $productModelDraft->markAsReady();

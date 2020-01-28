@@ -5,14 +5,13 @@ namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doc
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\ProjectCompletenessRepository;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\TableNameMapper;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectCompletenessRepositoryInterface;
 
 class ProjectCompletenessRepositorySpec extends ObjectBehavior
 {
-    function let(EntityManager $entityManager, TableNameMapper $tableNameMapper)
+    function let(EntityManager $entityManager)
     {
-        $this->beConstructedWith($entityManager, $tableNameMapper);
+        $this->beConstructedWith($entityManager);
     }
 
     function it_is_initializable()

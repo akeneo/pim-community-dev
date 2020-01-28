@@ -14,9 +14,6 @@ class Cursor extends AbstractCursor implements CursorInterface
     /** @var array */
     private $esQuery;
 
-    /** @var string */
-    private $indexType;
-
     /** @var int */
     private $pageSize;
 
@@ -28,7 +25,6 @@ class Cursor extends AbstractCursor implements CursorInterface
      * @param CursorableRepositoryInterface $productDraftRepository
      * @param CursorableRepositoryInterface $productModelDraftRepository
      * @param array                         $esQuery
-     * @param string                        $indexType
      * @param int                           $pageSize
      */
     public function __construct(
@@ -36,14 +32,12 @@ class Cursor extends AbstractCursor implements CursorInterface
         CursorableRepositoryInterface $productDraftRepository,
         CursorableRepositoryInterface $productModelDraftRepository,
         array $esQuery,
-        string $indexType,
         int $pageSize
     ) {
         $this->esClient = $esClient;
         $this->productDraftRepository = $productDraftRepository;
         $this->productModelDraftRepository = $productModelDraftRepository;
         $this->esQuery = $esQuery;
-        $this->indexType = $indexType;
         $this->pageSize = $pageSize;
         $this->searchAfter = [];
     }
@@ -83,7 +77,7 @@ class Cursor extends AbstractCursor implements CursorInterface
             return $identifiers;
         }
 
-        $sort = ['_uid' => 'asc'];
+        $sort = ['_id' => 'asc'];
 
         if (isset($esQuery['sort'])) {
             $sort = array_merge($esQuery['sort'], $sort);
@@ -95,8 +89,8 @@ class Cursor extends AbstractCursor implements CursorInterface
             $esQuery['search_after'] = $this->searchAfter;
         }
 
-        $response = $this->esClient->search($this->indexType, $esQuery);
-        $this->count = $response['hits']['total'];
+        $response = $this->esClient->search($esQuery);
+        $this->count = $response['hits']['total']['value'];
 
         foreach ($response['hits']['hits'] as $hit) {
             $identifiers->add($hit['_source']['identifier'], $hit['_source']['document_type']);

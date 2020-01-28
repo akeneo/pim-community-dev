@@ -204,8 +204,6 @@ $rules = [
             'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass',
             'Ramsey\Uuid\Uuid',
             'Doctrine\DBAL\Connection',
-            // TODO: the next line could be removed with lazy-loaded commands
-            'Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand',
             'Symfony\Component',
 
             // TODO remove all links by reference
@@ -214,6 +212,8 @@ $rules = [
 
             // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
+
+            'Doctrine\Common\Persistence\ObjectRepository',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony'),
 
@@ -246,6 +246,9 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Query\Filter',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer',
+
+            // allow to enrich the indexation of the product
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch'),
 

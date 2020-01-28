@@ -2,12 +2,12 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductProposal;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductProposal\PropertiesNormalizer;
@@ -51,19 +51,20 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn('1');
 
         $productProposal->getAuthor()->willReturn('mary');
+        $productProposal->getSource()->willReturn('pim');
         $product->getCategoryCodes()->willReturn([]);
 
         $productProposal->getCreatedAt()->willReturn($now);
         $serializer->normalize(
             $productProposal->getWrappedObject()->getCreatedAt(),
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
         )->willReturn($now->format('c'));
 
         $product->getFamily()->willReturn($family);
         $family->getCode()->willReturn(null);
         $serializer->normalize(
             $product->getWrappedObject()->getFamily(),
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
         )->willReturn(['code' => 'family']);
 
         $productProposal->getValues()->willReturn($valueCollection);
@@ -81,6 +82,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'created' => $now->format('c'),
                 'family' => ['code' => 'family'],
                 'author' => 'mary',
+                'source' => 'pim',
                 'categories' => [],
                 'values' => [],
                 'label' => [],
@@ -103,19 +105,20 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn('1');
 
         $productProposal->getAuthor()->willReturn('mary');
+        $productProposal->getSource()->willReturn('pim');
         $product->getCategoryCodes()->willReturn([]);
 
         $productProposal->getCreatedAt()->willReturn($now);
         $serializer->normalize(
             $productProposal->getWrappedObject()->getCreatedAt(),
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
         )->willReturn($now->format('c'));
 
         $product->getFamily()->willReturn($family);
         $family->getCode()->willReturn(null);
         $serializer->normalize(
             $product->getWrappedObject()->getFamily(),
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
         )->willReturn(['code' => 'family']);
 
         $productProposal->getValues()->willReturn($valueCollection);
@@ -133,6 +136,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'created' => $now->format('c'),
                 'family' => ['code' => 'family'],
                 'author' => 'mary',
+                'source' => 'pim',
                 'categories' => [],
                 'values' => [],
                 'label' => [],

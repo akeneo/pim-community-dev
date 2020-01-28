@@ -6,6 +6,7 @@ namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
@@ -26,6 +27,7 @@ class AssetAttributeSpec extends ObjectBehavior
             LabelCollection::fromArray(['fr_FR' => 'Mentor', 'en_US' => 'Mentor']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AssetFamilyIdentifier::fromString('designer')
@@ -52,6 +54,7 @@ class AssetAttributeSpec extends ObjectBehavior
                 'labels' => ['fr_FR' => 'Mentor', 'en_US' => 'Mentor'],
                 'order' => 0,
                 'is_required' => true,
+                'is_read_only' => false,
                 'value_per_channel' => false,
                 'value_per_locale' => false,
                 'type' => 'asset',
@@ -70,6 +73,7 @@ class AssetAttributeSpec extends ObjectBehavior
                 'labels' => ['fr_FR' => 'Tuteur', 'en_US' => 'Mentor', 'de_DE' => 'Mentor'],
                 'order' => 0,
                 'is_required' => true,
+                'is_read_only' => false,
                 'value_per_channel' => false,
                 'value_per_locale' => false,
                 'type' => 'asset',
@@ -90,6 +94,7 @@ class AssetAttributeSpec extends ObjectBehavior
                 'labels' => ['fr_FR' => 'Mentor', 'en_US' => 'Mentor'],
                 'order' => 0,
                 'is_required' => true,
+                'is_read_only' => false,
                 'value_per_channel' => false,
                 'value_per_locale' => false,
                 'type' => 'asset',

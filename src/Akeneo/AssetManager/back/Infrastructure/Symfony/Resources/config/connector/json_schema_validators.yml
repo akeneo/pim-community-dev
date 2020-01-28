@@ -38,7 +38,7 @@ services:
             - { name: akeneo_assetmanager.connector.api.asset_value_validator }
 
     akeneo_assetmanager.infrastructure.connector.api.asset_value_image_type_validator:
-        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\ImageTypeValidator
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\MediaFileTypeValidator
         tags:
             - { name: akeneo_assetmanager.connector.api.asset_value_validator }
 
@@ -70,8 +70,8 @@ services:
         arguments:
             - !tagged akeneo_assetmanager.connector.api.create.attribute_validator
 
-    akeneo_assetmanager.infrastructure.connector.api.create.image_attribute_validator:
-        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\ImageAttributeValidator
+    akeneo_assetmanager.infrastructure.connector.api.create.media_file_attribute_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\MediaFileAttributeValidator
         tags:
             - { name: akeneo_assetmanager.connector.api.create.attribute_validator }
 
@@ -80,10 +80,11 @@ services:
         tags:
             - { name: akeneo_assetmanager.connector.api.create.attribute_validator }
 
-    akeneo_assetmanager.infrastructure.connector.api.create.asset_attribute_validator:
-        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AssetAttributeValidator
-        tags:
-            - { name: akeneo_assetmanager.connector.api.create.attribute_validator }
+    # Will be activated again when we will do the link to reference entity
+    # akeneo_assetmanager.infrastructure.connector.api.create.asset_attribute_validator:
+    #     class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AssetAttributeValidator
+    #     tags:
+    #         - { name: akeneo_assetmanager.connector.api.create.attribute_validator }
 
     akeneo_assetmanager.infrastructure.connector.api.create.text_attribute_validator:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\TextAttributeValidator
@@ -112,8 +113,8 @@ services:
         arguments:
             - !tagged akeneo_assetmanager.connector.api.attribute_option_validator
 
-    akeneo_assetmanager.infrastructure.connector.api.edit.image_attribute_validator:
-        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\ImageAttributeValidator
+    akeneo_assetmanager.infrastructure.connector.api.edit.media_file_attribute_validator:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\MediaFileAttributeValidator
         tags:
             - { name: akeneo_assetmanager.connector.api.edit.attribute_validator }
 
@@ -122,10 +123,11 @@ services:
         tags:
             - { name: akeneo_assetmanager.connector.api.edit.attribute_validator }
 
-    akeneo_assetmanager.infrastructure.connector.api.edit.asset_attribute_validator:
-        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AssetAttributeValidator
-        tags:
-            - { name: akeneo_assetmanager.connector.api.edit.attribute_validator }
+    # Will be activated again when we will do the link to reference entity
+    # akeneo_assetmanager.infrastructure.connector.api.edit.asset_attribute_validator:
+    #     class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AssetAttributeValidator
+    #     tags:
+    #         - { name: akeneo_assetmanager.connector.api.edit.attribute_validator }
 
     akeneo_assetmanager.infrastructure.connector.api.edit.text_attribute_validator:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\TextAttributeValidator

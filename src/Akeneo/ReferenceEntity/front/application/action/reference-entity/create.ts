@@ -1,11 +1,11 @@
 import referenceEntitySaver from 'akeneoreferenceentity/infrastructure/saver/reference-entity';
 import {
-  referenceEntityCreationSucceeded,
   referenceEntityCreationErrorOccurred,
+  referenceEntityCreationSucceeded,
 } from 'akeneoreferenceentity/domain/event/reference-entity/create';
 import {
-  notifyReferenceEntityWellCreated,
   notifyReferenceEntityCreateFailed,
+  notifyReferenceEntityWellCreated,
 } from 'akeneoreferenceentity/application/action/reference-entity/notify';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import {IndexState} from 'akeneoreferenceentity/application/reducer/reference-entity/index';

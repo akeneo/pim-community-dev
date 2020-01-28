@@ -16,7 +16,6 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyByAssetFamilyIdentifierInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorAssetFamilyHydrator;
 use Doctrine\DBAL\Connection;
 
@@ -46,10 +45,14 @@ class SqlFindConnectorAssetFamilyByAssetFamilyIdentifier implements FindConnecto
         SELECT
             re.identifier,
             re.labels,
+            ama.code AS attribute_as_main_media,
             fi.file_key as image_file_key,
             fi.original_filename as image_original_filename,
-            re.rule_templates
+            re.rule_templates,
+            re.transformations,
+            re.naming_convention
         FROM akeneo_asset_manager_asset_family as re
+        LEFT JOIN akeneo_asset_manager_attribute ama ON re.attribute_as_main_media = ama.identifier
         LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = re.image
         WHERE re.identifier = :identifier;
 SQL;

@@ -24,17 +24,12 @@ class ProductModelProposalIndexer implements IndexerInterface, BulkIndexerInterf
     /** @var Client */
     private $productModelProposalClient;
 
-    /** @var string */
-    private $indexType;
-
     public function __construct(
         NormalizerInterface $normalizer,
-        Client $productModelProposalClient,
-        string $indexType
+        Client $productModelProposalClient
     ) {
         $this->normalizer = $normalizer;
         $this->productModelProposalClient = $productModelProposalClient;
-        $this->indexType = $indexType;
     }
 
     /**
@@ -46,7 +41,7 @@ class ProductModelProposalIndexer implements IndexerInterface, BulkIndexerInterf
 
         $normalizedObject = $this->normalizer->normalize($object, ProductModelProposalNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_PROPOSAL_INDEX);
         $this->validateObjectNormalization($normalizedObject);
-        $this->productModelProposalClient->index($this->indexType, $normalizedObject['id'], $normalizedObject, $indexRefresh);
+        $this->productModelProposalClient->index($normalizedObject['id'], $normalizedObject, $indexRefresh);
     }
 
     /**
@@ -70,7 +65,7 @@ class ProductModelProposalIndexer implements IndexerInterface, BulkIndexerInterf
             $normalizedProductModels[] = $normalizedProductModel;
         }
 
-        $this->productModelProposalClient->bulkIndexes($this->indexType, $normalizedProductModels, 'id', $indexRefresh);
+        $this->productModelProposalClient->bulkIndexes($normalizedProductModels, 'id', $indexRefresh);
     }
 
     /**
@@ -79,13 +74,11 @@ class ProductModelProposalIndexer implements IndexerInterface, BulkIndexerInterf
     public function remove($objectId, array $options = [])
     {
         $documents = $this->productModelProposalClient->search(
-            $this->indexType,
             ['query' => ['term' => ['id' => self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $objectId]]]
         );
 
-        if (0 !== $documents['hits']['total']) {
+        if (0 !== $documents['hits']['total']['value']) {
             $this->productModelProposalClient->delete(
-                $this->indexType,
                 self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $objectId
             );
         }
@@ -106,7 +99,7 @@ class ProductModelProposalIndexer implements IndexerInterface, BulkIndexerInterf
         foreach ($objects as $objectId) {
             $objectIds[]  = self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $objectId;
         }
-        $this->productModelProposalClient->bulkDelete($this->indexType, $objectIds);
+        $this->productModelProposalClient->bulkDelete($objectIds);
     }
 
     private function validateObjectNormalization(array $normalization) : void

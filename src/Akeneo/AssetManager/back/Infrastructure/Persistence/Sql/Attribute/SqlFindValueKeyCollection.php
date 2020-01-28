@@ -32,6 +32,11 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
         $this->sqlConnection = $sqlConnection;
     }
 
+    public function clearCache(): void
+    {
+        $this->cachedResult = [];
+    }
+
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier): ValueKeyCollection
     {
         if (!isset($this->cachedResult[$assetFamilyIdentifier->normalize()])) {

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\AssetManager\Bundle\Datagrid\Filter\ProductValue;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindExistingAssetCodesInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindExistingAssetCodes;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -36,7 +36,7 @@ class AssetFamilyAssetFilter extends ChoiceFilter
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
 
-    /** @var SqlFindExistingAssetCodes */
+    /** @var FindExistingAssetCodesInterface */
     private $existingAssetCodesQuery;
 
     /**
@@ -55,7 +55,7 @@ class AssetFamilyAssetFilter extends ChoiceFilter
         AttributeRepositoryInterface $attributeRepository,
         AttributeOptionRepositoryInterface $attributeOptionRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
-        SqlFindExistingAssetCodes $existingAssetCodesQuery
+        FindExistingAssetCodesInterface $existingAssetCodesQuery
     ) {
         parent::__construct($factory, $util, $userContext, $attributeRepository, $attributeOptionRepository);
 

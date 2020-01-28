@@ -6,7 +6,7 @@ import Image from 'akeneoassetmanager/application/component/app/image';
 import {connect} from 'react-redux';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
-import File from 'akeneoassetmanager/domain/model/file';
+import {File} from 'akeneoassetmanager/domain/model/file';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import {EditState as State} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoassetmanager/domain/event/user';
@@ -16,7 +16,7 @@ import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 
 interface OwnProps {
   label: string;
-  image: File;
+  image: File | null;
   primaryAction: (defaultFocus: React.RefObject<any>) => JSX.Element | null;
   secondaryActions: () => JSX.Element | null;
   withLocaleSwitcher: boolean;
@@ -34,14 +34,14 @@ interface StateProps extends OwnProps {
     locale: string;
     channel: string;
   };
-  structure: {
+  structure?: {
     locales: Locale[];
     channels: Channel[];
   };
 }
 
 interface DispatchProps {
-  events: {
+  events?: {
     onLocaleChanged: (locale: Locale) => void;
     onChannelChanged: (channel: Channel) => void;
   };
@@ -49,7 +49,7 @@ interface DispatchProps {
 
 interface HeaderProps extends StateProps, DispatchProps {}
 
-class Header extends React.Component<HeaderProps> {
+export class HeaderView extends React.Component<HeaderProps> {
   private defaultFocus: React.RefObject<any>;
   static defaultProps = {
     displayActions: true,
@@ -87,7 +87,9 @@ class Header extends React.Component<HeaderProps> {
     return (
       <header className="AknTitleContainer">
         <div className="AknTitleContainer-line">
-          <Image alt={__('pim_asset_manager.asset_family.img', {'{{ label }}': label})} image={image} />
+          {null !== image ? (
+            <Image alt={__('pim_asset_manager.asset_family.img', {'{{ label }}': label})} image={image} />
+          ) : null}
           <div className="AknTitleContainer-mainContainer">
             <div>
               <div className="AknTitleContainer-line">
@@ -118,7 +120,7 @@ class Header extends React.Component<HeaderProps> {
             <div>
               <div className="AknTitleContainer-line">
                 <div className="AknTitleContainer-context AknButtonList">
-                  {withChannelSwitcher ? (
+                  {withChannelSwitcher && structure && events ? (
                     <ChannelSwitcher
                       channelCode={context.channel}
                       channels={structure.channels}
@@ -127,7 +129,7 @@ class Header extends React.Component<HeaderProps> {
                       className="AknDropdown--right"
                     />
                   ) : null}
-                  {withLocaleSwitcher ? (
+                  {withLocaleSwitcher && structure && events ? (
                     <LocaleSwitcher
                       localeCode={context.locale}
                       locales={structure.locales}
@@ -179,4 +181,4 @@ export default connect(
       },
     };
   }
-)(Header);
+)(HeaderView);

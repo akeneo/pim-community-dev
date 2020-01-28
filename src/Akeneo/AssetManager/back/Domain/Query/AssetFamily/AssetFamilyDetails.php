@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Domain\Query\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionInterface;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 
 /**
@@ -35,7 +37,10 @@ class AssetFamilyDetails
     public const ATTRIBUTES = 'attributes';
     public const PERMISSION = 'permission';
     public const ATTRIBUTE_AS_LABEL = 'attribute_as_label';
-    public const ATTRIBUTE_AS_IMAGE = 'attribute_as_image';
+    public const ATTRIBUTE_AS_MAIN_MEDIA = 'attribute_as_main_media';
+    public const TRANSFORMATIONS = 'transformations';
+    public const NAMING_CONVENTION = 'naming_convention';
+    public const PRODUCT_LINK_RULES = 'product_link_rules';
 
     /** @var AssetFamilyIdentifier */
     public $identifier;
@@ -55,8 +60,17 @@ class AssetFamilyDetails
     /** @var AttributeAsLabelReference */
     public $attributeAsLabel;
 
-    /** @var AttributeAsImageReference */
-    public $attributeAsImage;
+    /** @var AttributeAsMainMediaReference */
+    public $attributeAsMainMedia;
+
+    /** @var ConnectorTransformationCollection */
+    public $transformations;
+
+    /** @var NamingConventionInterface */
+    public $namingConvention;
+
+    /** @var array */
+    public $productLinkRules;
 
     /** @var bool */
     public $isAllowedToEdit = true;
@@ -77,7 +91,10 @@ class AssetFamilyDetails
                 self::EDIT_PERMISSION => $this->isAllowedToEdit,
             ],
             self::ATTRIBUTE_AS_LABEL => ($this->attributeAsLabel->isEmpty()) ? null : $this->attributeAsLabel->normalize(),
-            self::ATTRIBUTE_AS_IMAGE => ($this->attributeAsImage->isEmpty()) ? null : $this->attributeAsImage->normalize()
+            self::ATTRIBUTE_AS_MAIN_MEDIA => ($this->attributeAsMainMedia->isEmpty()) ? null : $this->attributeAsMainMedia->normalize(),
+            self::TRANSFORMATIONS => $this->transformations->normalize(),
+            self::NAMING_CONVENTION => $this->namingConvention->normalize(),
+            self::PRODUCT_LINK_RULES => $this->productLinkRules,
         ];
     }
 }

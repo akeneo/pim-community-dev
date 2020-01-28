@@ -1,8 +1,0 @@
-services:
-    pimee_installer.event_subscriber.mass_upload_assets:
-        class: Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\MassUploadAssetsSubscriber
-        arguments:
-            - '@pim_installer.fixture_loader.path_provider'
-            - '@filesystem'
-        tags:
-            - { name: kernel.event_subscriber }

@@ -53,7 +53,7 @@ Feature: Lists all attributes related to an asset family
     Then the user can't edit the attribute property "Label"
 
   @acceptance-front
-  Scenario: Edit the image attribute
+  Scenario: Edit the media file attribute
     Given a valid asset family
     And the user has the following rights:
       | akeneo_assetmanager_attribute_edit | true |
@@ -70,7 +70,7 @@ Feature: Lists all attributes related to an asset family
     And the user edits the attribute property "AllowedExtensions" with value "gif"
 
 #  @acceptance-front
-  Scenario: User can't edit the image attribute
+  Scenario: User can't edit the media file attribute
     Given a valid asset family
     And the user has the following rights:
       | akeneo_assetmanager_attribute_edit | false |

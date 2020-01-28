@@ -13,7 +13,6 @@ namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\Group;
@@ -32,9 +31,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class CategoryAccessRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface
 {
-    /** @var TableNameBuilder */
-    protected $tableNameBuilder;
-
     /**
      * Get user groups that have the specified access to a category
      *
@@ -149,46 +145,6 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     }
 
     /**
-     * Get revoked category query builder
-     *
-     * @param UserInterface $user
-     * @param string        $accessLevel
-     *
-     * @return \Doctrine\DBAL\Query\QueryBuilder
-     */
-    public function getRevokedCategoryQB(UserInterface $user, $accessLevel)
-    {
-        // get group ids
-        $groupIds = array_map(
-            function (Group $group) {
-                return $group->getId();
-            },
-            $user->getGroups()->toArray()
-        );
-
-        $categoryTable = $this->getTableName('pim_catalog.entity.category.class');
-        $categoryAccessTable = $this->getTableName('pimee_security.entity.product_category_access.class');
-
-        $conn = $this->_em->getConnection();
-        $qb = $conn->createQueryBuilder();
-        $qb
-            ->select('*')
-            ->from($categoryTable, 'c')
-            ->leftJoin('c', $categoryAccessTable, 'ca', 'ca.category_id = c.id')
-            ->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->andX(
-                        $qb->expr()->neq('ca.'.$this->getAccessField($accessLevel), true),
-                        $qb->expr()->in('ca.user_group_id', $groupIds)
-                    ),
-                    $qb->expr()->isNull('ca.'.$this->getAccessField($accessLevel))
-                )
-            );
-
-        return $qb;
-    }
-
-    /**
      * Get granted category ids
      *
      * @param Group[] $groups
@@ -222,19 +178,17 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     public function getGrantedCategoryIds(UserInterface $user, $accessLevel)
     {
         $categoryAccessTable = $this->_class->table['name'];
-        $userGroupsTable = $this->getTableName('pim_user.entity.user.class', 'groups');
 
         $pdo = $this->_em->getConnection()->getWrappedConnection();
         $stmt = $pdo->prepare(
             sprintf(
                 "SELECT ca.category_id
                     FROM %s ca
-                    JOIN %s ug
+                    JOIN oro_user_access_group ug
                         ON ug.group_id = ca.user_group_id
                     WHERE ug.user_id = :user_id
                       AND ca.%s = 1",
                 $categoryAccessTable,
-                $userGroupsTable,
                 $this->getAccessColumn($accessLevel)
             )
         );
@@ -246,52 +200,6 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
         $ids = $stmt->fetchAll(\PDO::FETCH_COLUMN, 'ca.id');
 
         return array_map('intval', $ids);
-    }
-
-    /**
-     * Returns revoked category ids
-     *
-     * @param UserInterface $user
-     * @param string        $accessLevel
-     *
-     * @return int[]
-     */
-    public function getRevokedCategoryIds(UserInterface $user, $accessLevel)
-    {
-        $qb = $this->getRevokedCategoryQB($user, $accessLevel);
-        $qb->select('DISTINCT c.id');
-
-        return array_map(
-            function ($row) {
-                return $row['id'];
-            },
-            $qb->execute()->fetchAll()
-        );
-    }
-
-    /**
-     * Returns revoked category ids
-     *
-     * @param UserInterface $user
-     * @param string        $accessLevel
-     *
-     * @return int[]
-     */
-    public function getRevokedAttributeIds(UserInterface $user, $accessLevel)
-    {
-        $attTable = $this->getTableName('pim_catalog.entity.category.class');
-
-        $qb = $this->getRevokedCategoryQB($user, $accessLevel);
-        $qb
-            ->select('DISTINCT a.id')
-            ->innerJoin('c', $attTable, 'a', 'a.category_id = c.id');
-
-        return array_map(
-            function ($row) {
-                return $row['id'];
-            },
-            $qb->execute()->fetchAll()
-        );
     }
 
     /**
@@ -470,33 +378,6 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
             },
             $qb->getQuery()->getArrayResult()
         );
-    }
-
-    /**
-     * Set table name builder
-     *
-     * @param TableNameBuilder $tableNameBuilder
-     *
-     * @return CategoryAccessRepository
-     */
-    public function setTableNameBuilder(TableNameBuilder $tableNameBuilder)
-    {
-        $this->tableNameBuilder = $tableNameBuilder;
-
-        return $this;
-    }
-
-    /**
-     * Get table name of entity defined
-     *
-     * @param string      $classParam
-     * @param string|null $targetEntity
-     *
-     * @return string
-     */
-    protected function getTableName($classParam, $targetEntity = null)
-    {
-        return $this->tableNameBuilder->getTableName($classParam, $targetEntity);
     }
 
     /**

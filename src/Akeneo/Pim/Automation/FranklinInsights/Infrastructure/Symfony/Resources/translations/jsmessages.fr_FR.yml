@@ -50,8 +50,10 @@ akeneo_franklin_insights:
         create_attribute_success: '{0} Désolé, aucun des attributs {{ requestCount }} n''a été créé. |{1} L''attribut créé et attaché avec succès à la famille "{{ family }}". |[2,Inf[ {{ successCount }} attributs sur {{ requestCount }} ont été créés et attachés à la famille "{{ family }}".'
         create_attribute_error: 'Désolé, une erreur s''est produite lors de la création ou de l''ajout de l''attribut à la famille.'
         suggest_attribute_mapping_error: 'L''attribut du catalogue "[{{ catalogAttributeCode }}]" est déjà mappé à l''attribut "{{ franklinAttributeLabel }}" de Franklin.'
+        add_attribute_to_family_success: '{1} Attribut attaché avec succès à la famille "{{ family }}". |[2,Inf[ Attributs rattachés avec succès à la famille "{{ family }}".'
         add_attribute_to_family_error: 'Désolé, une erreur s''est produite lors de l''ajout de l''attribut à la famille.'
       fields:
+        search_bar.placeholder: 'Rechercher sur l''attribut Franklin'
         franklin_attribute: 'Attribut Franklin'
         franklin_attribute_type: '{{ type }} attribut'
         franklin_value_sample: 'Exemple de valeur :'
@@ -77,6 +79,7 @@ akeneo_franklin_insights:
           family_status:
             pending: 'Nouveaux attributs de Franklin à réviser'
             full: 'Tous les attributs Franklin sont mappés'
+          types_mismatch_warning: 'Avertissement: les types d''attributs ne correspondent pas.'
           family_progress:
             title: 'Nombre d’attributs mappés'
             description: "Suivez d'un seul coup d'oeil où vous en êtes dans votre travail grâce à cette barre de progression."
@@ -113,6 +116,9 @@ akeneo_franklin_insights:
         duplicated_pim_attribute: "Le mapping ne peut pas être sauvé car vous avez mappé plusieurs attributs Franklin au même attribut PIM"
         attribute_not_in_family_not_allowed: 'L''attribut PIM doit être dans la famille sélectionnée.'
         only_unknown_mapped_attributes: 'Aucun attribut dans le mapping n''a pu être trouvé'
+      search:
+        no_result_title: Désolé, il n'y a pas d'attribut Franklin pour votre recherche.
+        no_result_subtitle: Essayez à nouveau avec d'autres critères de recherche.
     product_subscription:
       flash:
         create:
@@ -149,6 +155,7 @@ akeneo_franklin_insights:
         edit:
           title: 'Options de l''attribut {{ familyLabel }} - {{ franklinAttributeLabel }}'
           sub_title: 'Rencontrez Franklin, votre <span class="AknDescriptionHeader-title--highlight">assistant IA des informations produit</span> !'
+          description: 'Pour aider à enrichir votre catalogue, Franklin devra connaître les options d''attribut de votre catalogue qui lui correspondent. <a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">Lire la suite</a>'
   product:
     edit:
       btn.push: Suggestion de données

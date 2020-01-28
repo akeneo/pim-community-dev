@@ -35,71 +35,71 @@ module.exports = async function(cucumber) {
   });
 
   Given('the user manages the options of the attribute', async function() {
-    const edit = await await getElement(this.page, 'AttributeEdit');
-    edit.showManageOptionModal();
+    const edit = await getElement(this.page, 'AttributeEdit');
+    await edit.showManageOptionModal();
   });
 
   Then('the code of the {string} option should be locked', async function(code) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     assert.strictEqual(true, await manageOption.isLockedOptionCode(code));
   });
 
   Then('the label of the {string} option should be locked', async function (code) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     await manageOption.isLockedOptionLabel(code);
   });
 
   Then('the user cannot add the new option label {string}', async function(label) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     const isDisabledTextField = await manageOption.newOptionLabelFieldIsDisabled(label);
 
     assert.strictEqual(isDisabledTextField, true);
   });
 
   When('the user adds the new option label {string}', async function(label) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     await manageOption.newOptionLabel(label);
   });
 
   When('the user adds the new option code {string}', {timeout: 10 * 1000}, async function(code) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     await manageOption.newOptionCode(code);
   });
 
   When('the user removes the option {string}', async function(code) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
-    manageOption.removeOption(code);
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
+    await manageOption.removeOption(code);
   });
 
   Then('the user saves successfully', async function() {
     const requestContract = getRequestContract('Attribute/Edit/Option/ok.json');
     await listenRequest(this.page, requestContract);
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     await manageOption.save();
   });
 
   Then('the code of the option {string} should be {string}', async function(label, code) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     const newCode = await manageOption.getOptionCodeValue(code);
 
     assert.strictEqual(newCode, code);
   });
 
   Then('the user should see a success message on the edit attribute page', async function() {
-    const edit = await await getElement(this.page, 'AttributeEdit');
+    const edit = await getElement(this.page, 'AttributeEdit');
     const hasSuccessNotification = await edit.hasSuccessNotification();
     assert.strictEqual(hasSuccessNotification, true);
   });
 
   Then('the option {string} should not be in the list', async function(code) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     const hasOption = await manageOption.hasOption(code);
 
     assert.strictEqual(hasOption, false);
   });
 
   Then('the translation helper should display {string}', async function(expectedLabel) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     const found = await manageOption.helperContains(expectedLabel);
 
     assert.strictEqual(
@@ -115,12 +115,12 @@ module.exports = async function(cucumber) {
   });
 
   When('the user focuses the {string} option code', async function(code) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     await manageOption.focusCode(code);
   });
 
   Then('the focus should be on the {string} option label', async function(code) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     const hasFocus = await manageOption.labelHasFocus(code);
     if (!hasFocus) {
       throw new Error(`Expected label of option "${code}" to be focused`);
@@ -128,7 +128,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the focus should be on the {string} option code', async function(code) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     const hasFocus = await manageOption.codeHasFocus(code);
     assert.strictEqual(hasFocus, true, `Expected label of option "${code}" to be focused`);
   });
@@ -140,18 +140,18 @@ module.exports = async function(cucumber) {
       await dialog.accept();
     });
 
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     await manageOption.cancel();
     assert.strictEqual(dialogExist, true, 'Expected dialog to be shown but it did not');
   });
 
   When('the user changes the locale to translate to {string}', async function(locale) {
-    const manageOption = await await getElement(this.page, 'ManageOptionLocaleSelector');
+    const manageOption = await getElement(this.page, 'ManageOptionLocaleSelector');
     await manageOption.switchLocale(locale);
   });
 
   Then('the label of the option {string} should be {string}', async function(optionCode, optionLabel) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     assert.strictEqual(
       await manageOption.codeHasLabel(optionCode, optionLabel),
       true,
@@ -160,7 +160,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the translation helper displays {string}', async function(otherLabel) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     assert.strictEqual(
       await manageOption.helperContains(otherLabel),
       true,
@@ -174,7 +174,7 @@ module.exports = async function(cucumber) {
     async function() {
       const requestContract = getRequestContract('Attribute/Edit/Option/invalid_option_code_regular_expression.json');
       await listenRequest(this.page, requestContract);
-      const manageOption = await await getElement(this.page, 'ManageOptionModal');
+      const manageOption = await getElement(this.page, 'ManageOptionModal');
 
       let hasError = false;
       while (!hasError) {
@@ -190,38 +190,38 @@ module.exports = async function(cucumber) {
   Then('the user cannot save the options successfully because an option is duplicated', async function() {
     const requestContract = getRequestContract('Attribute/Edit/Option/invalid_options_duplicated.json');
     await listenRequest(this.page, requestContract);
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     await manageOption.save();
   });
 
   Then('the user cannot save the options successfully because the limit of options is reached', async function() {
     const requestContract = getRequestContract('Attribute/Edit/Option/limit_of_options_reached.json');
     await listenRequest(this.page, requestContract);
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     await manageOption.save();
   });
 
   Then('the user cannot remove the {string} option', async function (code) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     const hasRemoveOptionButton = await manageOption.hasRemoveOptionButton(code);
 
     assert.strictEqual(hasRemoveOptionButton, false);
   });
 
   Then('the user cannot add a new option', async function () {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     const hasNewOption = await manageOption.hasNewOption();
 
     assert.strictEqual(hasNewOption, false);
   });
 
   Then('there is an error message next to the {string} field', async function(code) {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     assert.strictEqual(await manageOption.hasError(code), true, `No validation error found for code: "${code}"`);
   });
 
   Then('there is an error message next to the translator', async function() {
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const manageOption = await getElement(this.page, 'ManageOptionModal');
     assert.strictEqual(await manageOption.hasGeneralError(), true, 'No general validation error found');
   });
 };

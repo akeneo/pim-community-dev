@@ -65,7 +65,7 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         $this->imagePreviewUrlGenerator = $imagePreviewUrlGenerator;
     }
 
-    public function hydrate(array $row, AssetQuery $query, $context = []): AssetItem
+    public function hydrate(array $row, AssetQuery $query, array $context = []): AssetItem
     {
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $this->platform);
         $assetFamilyIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
@@ -82,8 +82,8 @@ class AssetItemHydrator implements AssetItemHydratorInterface
 
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
         $labels = $this->getLabels($valueCollection, $attributeAsLabel);
-        $attributeAsImageIdentifier = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
-        $images = $this->getImages($query, $valueCollection, $attributeAsImageIdentifier);
+        $attributeAsMainMediaIdentifier = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_main_media'], $this->platform);
+        $images = $this->getImages($query, $valueCollection, $attributeAsMainMediaIdentifier);
 
         $assetItem = new AssetItem();
         $assetItem->identifier = $identifier;
@@ -120,7 +120,6 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         $channelIdentifier = ChannelIdentifier::fromCode($query->getChannel());
         $localeIdentifiers = LocaleIdentifierCollection::fromNormalized([$query->getLocale()]);
 
-        /** @var ValueKeyCollection $result */
         $result = $this->findRequiredValueKeyCollectionForChannelAndLocales->find(
             $assetFamilyIdentifier,
             $channelIdentifier,
@@ -145,28 +144,14 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         );
     }
 
-    private function getImages(AssetQuery $query, array $valueCollection, string $attributeAsImageIdentifier): array
+    private function getImages(AssetQuery $query, array $valueCollection, string $attributeAsMainMediaIdentifier): array
     {
         $images = array_values(array_filter(
             $valueCollection,
-            function (array $value) use ($attributeAsImageIdentifier, $query) {
-                return $value['attribute'] === $attributeAsImageIdentifier &&
-                    (null === $value['channel'] || $query->getChannel() === $value['channel']) &&
-                    (null === $value['locale'] || $query->getLocale() === $value['locale']);
+            function (array $value) use ($attributeAsMainMediaIdentifier) {
+                return $value['attribute'] === $attributeAsMainMediaIdentifier;
             }
         ));
-
-        if (empty($images)) {
-            return [[
-                'channel' => null,
-                'locale' => null,
-                'attribute' => $attributeAsImageIdentifier,
-                'data' => [
-                    'filePath' => '',
-                    'originalFilename' => ''
-                ]
-            ]];
-        }
 
         return $images;
     }

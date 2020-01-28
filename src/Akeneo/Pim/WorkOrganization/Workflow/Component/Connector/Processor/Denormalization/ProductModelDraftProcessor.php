@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
@@ -64,6 +65,9 @@ class ProductModelDraftProcessor extends AbstractProcessor implements
     /** @var MediaStorer */
     private $mediaStorer;
 
+    /** @var PimUserDraftSourceFactory */
+    private $draftSourceFactory;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
@@ -73,7 +77,8 @@ class ProductModelDraftProcessor extends AbstractProcessor implements
         EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         TokenStorageInterface $tokenStorage,
         AttributeFilterInterface $productModelAttributeFilter,
-        MediaStorer $mediaStorer
+        MediaStorer $mediaStorer,
+        PimUserDraftSourceFactory $draftSourceFactory
     ) {
         parent::__construct($repository);
 
@@ -85,6 +90,7 @@ class ProductModelDraftProcessor extends AbstractProcessor implements
         $this->tokenStorage = $tokenStorage;
         $this->productModelAttributeFilter = $productModelAttributeFilter;
         $this->mediaStorer = $mediaStorer;
+        $this->draftSourceFactory = $draftSourceFactory;
     }
 
     /**
@@ -160,7 +166,10 @@ class ProductModelDraftProcessor extends AbstractProcessor implements
      */
     private function buildDraft(EntityWithValuesInterface $productModel): ?EntityWithValuesDraftInterface
     {
-        $productModelDraft = $this->productModelDraftBuilder->build($productModel, $this->getUsername());
+        $productModelDraft = $this->productModelDraftBuilder->build(
+            $productModel,
+            $this->draftSourceFactory->createFromUser($this->tokenStorage->getToken()->getUser())
+        );
 
         // no draft has been created because there is no diff between proposal and product
         if (null === $productModelDraft) {

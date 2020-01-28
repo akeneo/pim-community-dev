@@ -1,6 +1,6 @@
 import {productidentifiersAreEqual} from 'akeneoassetmanager/domain/model/product/identifier';
 import {createProduct, denormalizeProduct} from 'akeneoassetmanager/domain/model/product/product';
-import {denormalizeFile} from 'akeneoassetmanager/domain/model/file';
+import {createFileFromNormalized} from 'akeneoassetmanager/domain/model/file';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
 const product = denormalizeProduct({
@@ -66,15 +66,11 @@ describe('akeneo > asset family > domain > model --- product', () => {
 
   test('I cannot create a malformed product', () => {
     expect(() => {
-      createProduct('123456', 'nice_product', 'nice', {en_US: 'My nice product'}, denormalizeFile(null));
+      createProduct('123456', 'nice_product', 'nice', {en_US: 'My nice product'}, createFileFromNormalized(null));
     }).toThrow('Product expects an ProductType as type argument');
 
     expect(() => {
-      createProduct('123456', 'nice_product', 'product', {en_US: 'My nice product'}, null);
-    }).toThrow('Product expects a File as image argument');
-
-    expect(() => {
-      createProduct('123456', 'nice_product', 'product', {en_US: 'My nice product'}, denormalizeFile(null));
+      createProduct('123456', 'nice_product', 'product', {en_US: 'My nice product'}, createFileFromNormalized(null));
     }).toThrow('Product expects a Completeness as completeness argument');
   });
 });

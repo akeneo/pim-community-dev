@@ -17,10 +17,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Model\R
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionMapping
-    as FranklinAttributeOptionMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionsMapping
-    as FranklinAttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionMapping as FranklinAttributeOptionMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionsMapping as FranklinAttributeOptionsMapping;
 
 /**
  * Converts object AttributeOptionsMapping between Franklin client and Akeneo PIM Application layer.

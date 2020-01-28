@@ -10,9 +10,9 @@ Feature: Compare fields and only see what I want
       | sku    | family | categories | name-fr_FR | description-en_US-mobile | description-fr_FR-mobile |
       | tshirt | tees   | tees       | Floup      | City tee                 | T-shirt de ville         |
     And the following product drafts:
-      | product | status | author | result                                                                   |
-      | tshirt  | draft  | Sandra | {"values":{"sku":[{"locale":null,"scope":null,"data":"My tshirt"}]}}     |
-      | tshirt  | draft  | Mary   | {"values":{"manufacturer":[{"locale":null,"scope":null,"data":"nike"}]}} |
+      | product | status | source | source_label | author | author_label  | result                                                                   |
+      | tshirt  | draft  | pim    | PIM          | Sandra | Sandra Harvey | {"values":{"sku":[{"locale":null,"scope":null,"data":"My tshirt"}]}}     |
+      | tshirt  | draft  | pim    | PIM          | Mary   | Mary Smith    | {"values":{"manufacturer":[{"locale":null,"scope":null,"data":"nike"}]}} |
 
   Scenario: See localizable, scopable and changed fields if I compare my draft with a working copy
     Given I am logged in as "Mary"

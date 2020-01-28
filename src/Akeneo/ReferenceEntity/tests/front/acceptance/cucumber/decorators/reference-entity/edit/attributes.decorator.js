@@ -45,7 +45,7 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
     const deleteButton = await nodeElement.$('.AknQuickEdit .AknButton--delete');
     await deleteButton.click();
 
-    const modalPage = await await getElement(page, 'Modal');
+    const modalPage = await getElement(page, 'Modal');
     await modalPage.confirmDeletion();
   };
 

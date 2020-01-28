@@ -1,7 +1,12 @@
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {wrapNormalizableAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {denormalize as denormalizeImageAttribute} from 'akeneoassetmanager/domain/model/attribute/type/image';
-import {ConcreteImageAttribute} from 'akeneoassetmanager/domain/model/attribute/type/image';
+import {
+  wrapNormalizableAdditionalProperty,
+  denormalizeAttribute,
+} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {
+  ConcreteMediaFileAttribute,
+  denormalize as denormalizeMediaFileAttribute,
+} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 
 const description = denormalizeTextAttribute({
   identifier: 'description_1234',
@@ -13,22 +18,24 @@ const description = denormalizeTextAttribute({
   value_per_locale: true,
   value_per_channel: false,
   is_required: true,
+  is_read_only: true,
   max_length: 0,
   is_textarea: false,
   is_rich_text_editor: false,
   validation_rule: 'email',
   regular_expression: null,
 });
-const frontView = denormalizeImageAttribute({
+const frontView = denormalizeMediaFileAttribute({
   identifier: 'front_view_1234',
   asset_family_identifier: 'designer',
   code: 'front_view',
   labels: {en_US: 'Front view'},
-  type: 'image',
+  type: 'media_file',
   order: 0,
   value_per_locale: true,
   value_per_channel: false,
   is_required: true,
+  is_read_only: true,
   max_file_size: null,
   allowed_extensions: [],
 });
@@ -45,15 +52,62 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
 
   test('I cannot create a malformed attribute', () => {
     expect(() => {
-      new ConcreteImageAttribute('front_view_1234', 'designer', 'front_view', {en_US: 'Front View'}, true, false, 0);
+      new ConcreteMediaFileAttribute(
+        'front_view_1234',
+        'designer',
+        'front_view',
+        {en_US: 'Front View'},
+        true,
+        false,
+        0
+      );
     }).toThrow('Attribute expects a boolean as isRequired value');
 
     expect(() => {
-      new ConcreteImageAttribute('front_view_1234', 'designer', 'front_view', {en_US: 'Front View'}, true, false);
+      new ConcreteMediaFileAttribute(
+        'front_view_1234',
+        'designer',
+        'front_view',
+        {en_US: 'Front View'},
+        true,
+        false,
+        0,
+        true
+      );
+    }).toThrow('Attribute expects a boolean as isReadOnly value');
+
+    expect(() => {
+      new ConcreteMediaFileAttribute('front_view_1234', 'designer', 'front_view', {en_US: 'Front View'}, true, false);
     }).toThrow('Attribute expects a number as order');
   });
 
   test('I can wrap a functionnal attribute in a normalizable object', () => {
     expect(wrapNormalizableAdditionalProperty('nice').normalize()).toEqual('nice');
+  });
+
+  test('I can denormalize an attribute without labels', () => {
+    expect(
+      denormalizeAttribute({
+        identifier: 'description_1234',
+        asset_family_identifier: 'designer',
+        code: 'description',
+        labels: [],
+        is_required: true,
+        is_read_only: true,
+        value_per_locale: false,
+        value_per_channel: true,
+        type: 'text',
+      })
+    ).toEqual({
+      identifier: 'description_1234',
+      asset_family_identifier: 'designer',
+      code: 'description',
+      labels: {},
+      is_required: true,
+      is_read_only: true,
+      value_per_locale: false,
+      value_per_channel: true,
+      type: 'text',
+    });
   });
 });

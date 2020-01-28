@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory;
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\NumberAttributeFactory;
-use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaFileAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateNumberAttributeCommand;
-use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -34,10 +34,11 @@ class NumberAttributeFactorySpec extends ObjectBehavior
             false,
             false,
             false,
+            false,
             '150',
             '200'
         );
-        $unsupportedCommand = new CreateImageAttributeCommand(
+        $unsupportedCommand = new CreateMediaFileAttributeCommand(
             'designer',
             'image',
             [
@@ -46,8 +47,10 @@ class NumberAttributeFactorySpec extends ObjectBehavior
             true,
             false,
             false,
+            false,
             null,
-            []
+            [],
+            MediaType::IMAGE
         );
 
         $this->supports($createNumberAttribute)->shouldReturn(true);
@@ -60,6 +63,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
             'designer',
             'number',
             ['fr_FR' => 'Nombre'],
+            false,
             false,
             false,
             false,
@@ -80,6 +84,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
                 'labels'                      => ['fr_FR' => 'Nombre'],
                 'order'                       => 0,
                 'is_required'                 => false,
+                'is_read_only'                => false,
                 'value_per_channel'           => false,
                 'value_per_locale'            => false,
                 'type'                        => 'number',
@@ -100,6 +105,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
             false,
             false,
             false,
+            false,
             null,
             null
         );
@@ -116,6 +122,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
                 'labels'                      => ['fr_FR' => 'Nombre'],
                 'order'                       => 0,
                 'is_required'                 => false,
+                'is_read_only'                => false,
                 'value_per_channel'           => false,
                 'value_per_locale'            => false,
                 'type'                        => 'number',
@@ -135,6 +142,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
                          'designer',
                          'color',
                          [],
+                         false,
                          false,
                          false,
                          false,

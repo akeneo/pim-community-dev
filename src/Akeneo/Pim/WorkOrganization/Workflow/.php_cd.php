@@ -13,6 +13,7 @@ $rules = [
         'Symfony\Component',
         'Akeneo\Tool',
         'Symfony\Bundle',
+        'Psr\Log\LoggerInterface',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Akeneo\Pim\WorkOrganization\Workflow\Component',
 
@@ -22,11 +23,6 @@ $rules = [
         // TIP-980: Workflow should not be linked to User
         // TIP-982: Rework User/Draft link
         'Akeneo\UserManagement\Component\Model\UserInterface',
-
-        // TIP-981: Workflow should not be linked to Asset
-        'Akeneo\Asset\Component\Repository\AssetRepositoryInterface',
-        'Akeneo\Asset\Component\Model\AssetInterface',
-        'Akeneo\Asset\Bundle\AttributeType\AttributeTypes',
 
         // TIP-984: Workflow should not be linked to Channel
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
@@ -44,6 +40,7 @@ $rules = [
         'Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface',
         'Akeneo\Pim\Permission\Component\Authorization\DenyNotGrantedCategorizedEntity',
         'Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory',
+        'Akeneo\Pim\Permission\Component\Query\GetAccessGroupIdsForLocaleCode',
 
         // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
@@ -65,6 +62,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface',
         'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetMetadataInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface',
 
         // TODO: permission
         'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
@@ -81,6 +79,7 @@ $rules = [
         // TIP-987: Published should be less coupled to Product
         // TIP-988: Split Published vs Draft/Proposal
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer',
 
         // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
@@ -101,6 +100,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions',
         'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductIdsQueryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper',
 
         // TIP-949: Assets should not be Reference Data
         // TIP-963: Define the Products public API
@@ -118,10 +119,13 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactoryInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory',
-        'Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager',
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes',
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
@@ -129,15 +133,18 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct',
         'Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory',
+        'Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
 
         // TIP-1004: WidgetInterface located in Platform is used in multiple contexts
         'Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface',
 
         // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\NotificationBundle',
-
-        // TIP-1014: Do not use custom Flash Messages
-        'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
 
         // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
@@ -150,6 +157,9 @@ $rules = [
 
         // TIP-1199: Workflow OroToPimGridFilterAdapter should not be linked to TeamworkAssistant ProjectCompletenessFilter
         'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Filter\ProjectCompletenessFilter',
+
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Bundle'),
     $builder->only([
         'Doctrine\Common',
@@ -164,6 +174,14 @@ $rules = [
 
         // TIP-983: Workflow should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
+
+        // TODO: Workflow should not be linked to channel
+        'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Component\Model\CurrencyInterface',
+        'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
 
         // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
@@ -193,7 +211,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
@@ -205,9 +222,10 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractCompleteness',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProductUniqueData',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\AbstractEntityWithValuesQueryBuilder',
+        'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface',
 
         // TIP-980: Workflow should not be linked to User
         // TIP-982: Rework User/Draft link
@@ -221,9 +239,9 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface',
 
         // TIP-1032: Workflow should not depend on PIM/Enrichment normalizers
-        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer',
-        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer',
 
         // TIP-990: Move classes to component
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermissionHelper',
@@ -232,6 +250,19 @@ $rules = [
         // Notification
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
+        // Normalization of published product
+        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder',
+        'Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\GetChannelLabelsInterface',
+        'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer',
+        'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
+        'Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface',
+        'Akeneo\UserManagement\Bundle\Context\UserContext',
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Component'),
 ];
 

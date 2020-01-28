@@ -67,6 +67,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
             attribute_type,
             attribute_order,
             is_required,
+            is_read_only,
             value_per_channel,
             value_per_locale,
             additional_properties
@@ -79,6 +80,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
             :attribute_type,
             :attribute_order,
             :is_required,
+            :is_read_only,
             :value_per_channel,
             :value_per_locale,
             :additional_properties
@@ -94,12 +96,14 @@ SQL;
                 'attribute_type'              => $normalizedAttribute['type'],
                 'attribute_order'             => $normalizedAttribute['order'],
                 'is_required'                 => $normalizedAttribute['is_required'],
+                'is_read_only'                => $normalizedAttribute['is_read_only'],
                 'value_per_channel'           => $normalizedAttribute['value_per_channel'],
                 'value_per_locale'            => $normalizedAttribute['value_per_locale'],
                 'additional_properties'       => json_encode($additionalProperties),
             ],
             [
                 'is_required'       => Type::getType(Type::BOOLEAN),
+                'is_read_only'      => Type::getType(Type::BOOLEAN),
                 'value_per_channel' => Type::getType(Type::BOOLEAN),
                 'value_per_locale'  => Type::getType(Type::BOOLEAN),
             ]
@@ -121,6 +125,7 @@ SQL;
             labels = :labels,
             attribute_order = :attribute_order,
             is_required = :is_required,
+            is_read_only = :is_read_only,
             additional_properties = :additional_properties
         WHERE identifier = :identifier;
 SQL;
@@ -132,10 +137,12 @@ SQL;
                 'labels'                      => $normalizedAttribute['labels'],
                 'attribute_order'             => $normalizedAttribute['order'],
                 'is_required'                 => $normalizedAttribute['is_required'],
+                'is_read_only'                => $normalizedAttribute['is_read_only'],
                 'additional_properties'       => $additionalProperties,
             ],
             [
                 'is_required'           => Type::getType(Type::BOOLEAN),
+                'is_read_only'          => Type::getType(Type::BOOLEAN),
                 'labels'                => Type::getType(Type::JSON_ARRAY),
                 'additional_properties' => Type::getType(Type::JSON_ARRAY),
             ]
@@ -162,6 +169,7 @@ SQL;
             attribute_type,
             attribute_order,
             is_required,
+            is_read_only,
             value_per_channel,
             value_per_locale,
             additional_properties
@@ -184,6 +192,45 @@ SQL;
     }
 
     /**
+     * @throws AttributeNotFoundException
+     * @throws DBALException
+     */
+    public function getByCodeAndAssetFamilyIdentifier(AttributeCode $code, AssetFamilyIdentifier $assetFamilyIdentifier): AbstractAttribute
+    {
+        $fetch = <<<SQL
+        SELECT
+            identifier,
+            code,
+            asset_family_identifier,
+            labels,
+            attribute_type,
+            attribute_order,
+            is_required,
+            is_read_only,
+            value_per_channel,
+            value_per_locale,
+            additional_properties
+        FROM akeneo_asset_manager_attribute
+        WHERE asset_family_identifier = :asset_family_identifier
+            AND code = :code;
+SQL;
+        $statement = $this->sqlConnection->executeQuery(
+            $fetch,
+            [
+                'asset_family_identifier' => $assetFamilyIdentifier,
+                'code' => $code
+            ]
+        );
+        $result = $statement->fetch();
+
+        if (!$result) {
+            throw AttributeNotFoundException::withAssetFamilyAndAttributeCode($assetFamilyIdentifier, $code);
+        }
+
+        return $this->attributeHydratorRegistry->getHydrator($result)->hydrate($result);
+    }
+
+    /**
      * @param AssetFamilyIdentifier $assetFamilyIdentifier
      *
      * @return AbstractAttribute[]
@@ -200,6 +247,7 @@ SQL;
             attribute_type,
             attribute_order,
             is_required,
+            is_read_only,
             value_per_channel,
             value_per_locale,
             additional_properties
@@ -251,6 +299,7 @@ SQL;
         unset($normalizedAttribute['labels']);
         unset($normalizedAttribute['order']);
         unset($normalizedAttribute['is_required']);
+        unset($normalizedAttribute['is_read_only']);
         unset($normalizedAttribute['value_per_channel']);
         unset($normalizedAttribute['value_per_locale']);
         unset($normalizedAttribute['type']);

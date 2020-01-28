@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Condition;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Condition\Operator;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Condition\Value;
 use PhpSpec\ObjectBehavior;
 

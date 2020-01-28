@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\Attribute;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -13,6 +12,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
@@ -22,7 +22,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
@@ -31,7 +32,6 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -43,9 +43,6 @@ class EditActionTest extends ControllerIntegrationTestCase
     private const EDIT_ATTRIBUTE_ROUTE = 'akeneo_asset_manager_attribute_edit_rest';
     private const RESPONSES_DIR = 'Attribute/Edit/';
 
-    /** @var Client */
-    private $client;
-
     /** @var WebClientHelper */
     private $webClientHelper;
 
@@ -54,8 +51,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
-            ->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
     }
 
@@ -176,23 +172,26 @@ class EditActionTest extends ControllerIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(100),
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
         );
-        $portrait = ImageAttribute::create(
+        $portrait = MediaFileAttribute::create(
             AttributeIdentifier::create('designer', 'portrait', md5('fingerprint')),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('200.10'),
-            AttributeAllowedExtensions::fromList(['png'])
+            AttributeAllowedExtensions::fromList(['png']),
+            MediaType::fromString(MediaType::IMAGE)
         );
 
         $favoriteColor = OptionAttribute::create(
@@ -202,6 +201,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'Couleur favorite', 'en_US' => 'Favorite color']),
             AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -213,6 +213,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'Age', 'en_US' => 'Age']),
             AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeDecimalsAllowed::fromBoolean(false),

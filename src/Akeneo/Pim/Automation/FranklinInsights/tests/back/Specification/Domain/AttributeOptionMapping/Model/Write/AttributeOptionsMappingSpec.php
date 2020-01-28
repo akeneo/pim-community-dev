@@ -15,9 +15,9 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeO
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Model\Write\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>

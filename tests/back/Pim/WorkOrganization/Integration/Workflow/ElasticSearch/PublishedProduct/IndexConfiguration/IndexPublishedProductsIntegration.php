@@ -22,8 +22,6 @@ use Akeneo\Test\Integration\TestCase;
  */
 class IndexPublishedProductsIntegration extends TestCase
 {
-    const DOCUMENT_TYPE = 'pimee_workflow_published_product';
-
     /** @var Client */
     protected $esPublishedProductClient;
 
@@ -59,7 +57,6 @@ class IndexPublishedProductsIntegration extends TestCase
         ];
 
         $this->esPublishedProductClient->index(
-            self::DOCUMENT_TYPE,
             $productWithDateInText['identifier'],
             $productWithDateInText
         );
@@ -76,7 +73,6 @@ class IndexPublishedProductsIntegration extends TestCase
         ];
 
         $this->esPublishedProductClient->index(
-            self::DOCUMENT_TYPE,
             $productWithPureText['identifier'],
             $productWithPureText
         );

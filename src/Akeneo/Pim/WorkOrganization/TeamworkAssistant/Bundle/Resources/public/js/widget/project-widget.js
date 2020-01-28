@@ -106,7 +106,7 @@ define(
                 }
 
                 return FetcherRegistry.getFetcher('project')
-                    .search({search: null, options: {limit: 1, page: 1, completeness: 0}})
+                    .search({search: null, options: {limit: 1, page: 1, completeness: 1}})
                     .then(function (projects) {
                         return _.first(projects);
                     });

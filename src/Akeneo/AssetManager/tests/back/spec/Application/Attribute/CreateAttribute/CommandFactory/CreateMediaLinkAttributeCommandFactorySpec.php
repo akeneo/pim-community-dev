@@ -18,7 +18,7 @@ class CreateMediaLinkAttributeCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_type_media_link()
     {
         $this->supports(['type' => 'media_link'])->shouldReturn(true);
-        $this->supports(['type' => 'image'])->shouldReturn(false);
+        $this->supports(['type' => 'media_file'])->shouldReturn(false);
     }
 
     function it_creates_a_command_to_create_a_media_link_attribute()
@@ -28,6 +28,7 @@ class CreateMediaLinkAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'full_resolution',
             'labels' => ['en_US' => 'Full resolution'],
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => true,
             'value_per_locale' => true,
             'media_type' => 'image',
@@ -55,6 +56,7 @@ class CreateMediaLinkAttributeCommandFactorySpec extends ObjectBehavior
             // 'code' => 'full_resolution', // For the test purpose, this one is missing
             'labels' => ['en_US' => 'Full resolution'],
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => true,
             'value_per_locale' => true,
             'media_type' => 'image',

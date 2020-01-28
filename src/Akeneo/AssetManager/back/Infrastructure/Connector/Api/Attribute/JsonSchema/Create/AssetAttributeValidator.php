@@ -11,10 +11,6 @@
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use JsonSchema\Validator;
 
 class AssetAttributeValidator implements AttributeValidatorInterface
@@ -62,6 +58,9 @@ class AssetAttributeValidator implements AttributeValidatorInterface
                     'type' => [ 'boolean'],
                 ],
                 'is_required_for_completeness' => [
+                    'type' => [ 'boolean'],
+                ],
+                'is_read_only' => [
                     'type' => [ 'boolean'],
                 ],
                 'asset_family_code' => [

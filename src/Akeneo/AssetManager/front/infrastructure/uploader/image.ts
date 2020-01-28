@@ -1,6 +1,7 @@
 import Uploader from 'akeneoassetmanager/domain/uploader/uploader';
-import Image, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
+import {File as Image, createFileFromNormalized} from 'akeneoassetmanager/domain/model/file';
 import * as $ from 'jquery';
+
 const routing = require('routing');
 
 export class ConcreteImageUploader implements Uploader<Image> {
@@ -28,24 +29,22 @@ export class ConcreteImageUploader implements Uploader<Image> {
           xhr: () => {
             const xhr = this.jQuery.ajaxSettings.xhr();
             if (xhr.upload) {
-              xhr.upload.addEventListener(
-                'progress',
-                (event: any) => onProgress(event.loaded / event.matchesCount),
-                false
-              );
+              xhr.upload.addEventListener('progress', (event: any) => onProgress(event.loaded / event.total), false);
             }
 
             return xhr;
           },
         })
-        .then((normalizedFile: NormalizedFile) => {
-          resolve(denormalizeFile(normalizedFile));
+        .then((file: File) => {
+          //TODO: Should be BackendFile instead of File. We will rework this after the JSON schema merge
+          // https://akeneo.atlassian.net/browse/AST-183
+          resolve(createFileFromNormalized(file));
         })
         .fail((response: any) => {
-          reject(response.responseJSON);
+          reject(response.responseJSON || []);
         });
     });
   }
 }
 
-export default ConcreteImageUploader.create($, routing, 'pim_enrich_media_rest_post');
+export default ConcreteImageUploader.create($, routing, 'akeneo_asset_manager_file_upload');

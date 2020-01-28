@@ -28,7 +28,6 @@ class LabelNormalizer implements NormalizerInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
-
     public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;

@@ -12,7 +12,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueDataInterface;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ImagePreviewUrlGenerator;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class AssetPreviewGeneratorSpec extends ObjectBehavior
 {
@@ -37,14 +38,14 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
         );
     }
 
-    public function it_gets_the_url_of_an_asset_with_image_attribute(
+    public function it_gets_the_url_of_an_asset_with_media_file_attribute(
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
         ImagePreviewUrlGenerator $imagePreviewUrlGenerator,
         Asset $asset,
         AssetFamily $assetFamily,
-        AttributeAsImageReference $attributeAsImageReference,
+        AttributeAsMainMediaReference $attributeAsMainMediaReference,
         AttributeIdentifier $attributeIdentifier,
         AbstractAttribute $attribute,
         Value $value,
@@ -58,8 +59,8 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
         $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('packshot'))
             ->willReturn($assetFamily);
 
-        $assetFamily->getAttributeAsImageReference()->willReturn($attributeAsImageReference);
-        $attributeAsImageReference->getIdentifier()->willReturn($attributeIdentifier);
+        $assetFamily->getAttributeAsMainMediaReference()->willReturn($attributeAsMainMediaReference);
+        $attributeAsMainMediaReference->getIdentifier()->willReturn($attributeIdentifier);
         $attributeIdentifier->stringValue()->willReturn('packshot');
         $attributeIdentifier->normalize()->willReturn('packshot');
 
@@ -81,7 +82,11 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
         ]);
 
         $imagePreviewUrlGenerator->generate(
-            '/a/b/c/d/jambon.png',
+            Argument::that(
+                function ($base64EncodedData) {
+                    return '/a/b/c/d/jambon.png' === base64_decode((string) $base64EncodedData);
+                }
+            ),
             'packshot',
             'thumbnail'
         )->willReturn('URL_TO_IMAGE');
@@ -97,7 +102,7 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
         ImagePreviewUrlGenerator $imagePreviewUrlGenerator,
         Asset $asset,
         AssetFamily $assetFamily,
-        AttributeAsImageReference $attributeAsImageReference,
+        AttributeAsMainMediaReference $attributeAsMainMediaReference,
         AttributeIdentifier $attributeIdentifier,
         AbstractAttribute $attribute,
         Value $value,
@@ -111,8 +116,8 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
         $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('packshot'))
             ->willReturn($assetFamily);
 
-        $assetFamily->getAttributeAsImageReference()->willReturn($attributeAsImageReference);
-        $attributeAsImageReference->getIdentifier()->willReturn($attributeIdentifier);
+        $assetFamily->getAttributeAsMainMediaReference()->willReturn($attributeAsMainMediaReference);
+        $attributeAsMainMediaReference->getIdentifier()->willReturn($attributeIdentifier);
         $attributeIdentifier->stringValue()->willReturn('packshot');
         $attributeIdentifier->normalize()->willReturn('packshot');
 
@@ -132,7 +137,11 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
         $data->normalize()->willReturn('http://www.example.org/image.png');
 
         $imagePreviewUrlGenerator->generate(
-            'http://www.example.org/image.png',
+            Argument::that(
+                function ($base64EncodedData) {
+                    return 'http://www.example.org/image.png' === base64_decode((string) $base64EncodedData);
+                }
+            ),
             'packshot',
             'thumbnail'
         )->willReturn('URL_TO_IMAGE');

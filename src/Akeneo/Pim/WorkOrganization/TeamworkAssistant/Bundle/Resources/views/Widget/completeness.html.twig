@@ -3,7 +3,7 @@
 {% set widgetContent %}
     <div id="teamwork-assistant-widget" class="AknProjectWidget"></div>
 
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
         require(
             ['jquery', 'pim/form-builder', 'pim/fetcher-registry', 'oro/loading-mask'],
             function ($, FormBuilder, FetcherRegistry, LoadingMask) {

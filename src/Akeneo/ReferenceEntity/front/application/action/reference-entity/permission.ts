@@ -1,11 +1,11 @@
 import {
   permissionEditionErrorOccurred,
-  permissionEditionSucceeded,
   permissionEditionReceived,
+  permissionEditionSucceeded,
 } from 'akeneoreferenceentity/domain/event/reference-entity/permission';
 import {
-  notifyPermissionWellSaved,
   notifyPermissionSaveFailed,
+  notifyPermissionWellSaved,
 } from 'akeneoreferenceentity/application/action/reference-entity/notify';
 import permissionSaver from 'akeneoreferenceentity/infrastructure/saver/permission';
 import permissionFetcher from 'akeneoreferenceentity/infrastructure/fetcher/permission';

@@ -1,4 +1,4 @@
-import {FormState, createFormState} from 'akeneoreferenceentity/application/reducer/state';
+import {createFormState, FormState} from 'akeneoreferenceentity/application/reducer/state';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import {NormalizedPermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 

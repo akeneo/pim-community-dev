@@ -13,9 +13,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class RefreshIndexesBeforeRuleSelectionSubscriberSpec extends ObjectBehavior
 {
-    function let(Client $productClient, Client $productAndProductModelClient, Client $productModelClient)
+    function let(Client $productAndProductModelClient)
     {
-        $this->beConstructedWith($productClient, $productAndProductModelClient, $productModelClient);
+        $this->beConstructedWith($productAndProductModelClient);
     }
 
     function it_is_initializable()
@@ -29,15 +29,11 @@ class RefreshIndexesBeforeRuleSelectionSubscriberSpec extends ObjectBehavior
     }
 
     function it_refreshes_indexes(
-        Client $productClient,
         Client $productAndProductModelClient,
-        Client $productModelClient,
         RuleEvent $event
     ) {
         $this->refreshIndexes($event);
 
-        $productClient->refreshIndex()->shouldBeCalled();
         $productAndProductModelClient->refreshIndex()->shouldBeCalled();
-        $productModelClient->refreshIndex()->shouldBeCalled();
     }
 }

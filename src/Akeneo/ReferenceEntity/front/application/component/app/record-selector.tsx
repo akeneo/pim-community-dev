@@ -1,9 +1,8 @@
 import * as React from 'react';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-const routing = require('routing');
-import {NormalizedRecord, NormalizedItemRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import {NormalizedItemRecord, NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
@@ -12,11 +11,13 @@ import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {
-  getTranslationKey,
   getCompletenessClass,
   getLabel as getCompletenessLabel,
+  getTranslationKey,
 } from 'akeneoreferenceentity/application/component/app/completeness';
 import Completeness from 'akeneoreferenceentity/domain/model/record/completeness';
+
+const routing = require('routing');
 
 const renderRow = (label: string, normalizedRecord: NormalizedItemRecord, withLink: boolean, compact: boolean) => {
   const normalizedCompleteness = normalizedRecord.completeness;

@@ -13,13 +13,17 @@ import {MaxValue, NormalizedMaxValue} from 'akeneoassetmanager/domain/model/attr
 export type DecimalsAllowed = boolean;
 export type NumberAdditionalProperty = DecimalsAllowed | MinValue | MaxValue;
 export type NormalizedNumberAdditionalProperty = DecimalsAllowed | NormalizedMinValue | NormalizedMaxValue;
+export const NUMBER_ATTRIBUTE_TYPE = 'number';
 
 export interface NormalizedNumberAttribute extends NormalizedAttribute {
-  type: 'number';
+  type: typeof NUMBER_ATTRIBUTE_TYPE;
   decimals_allowed: DecimalsAllowed;
   min_value: NormalizedMinValue;
   max_value: NormalizedMaxValue;
 }
+
+export const isNumberAttribute = (numberAttribute: NormalizedAttribute): numberAttribute is NormalizedNumberAttribute =>
+  NUMBER_ATTRIBUTE_TYPE === numberAttribute.type;
 
 export interface NumberAttribute extends Attribute {
   decimalsAllowed: DecimalsAllowed;
@@ -40,6 +44,7 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
     valuePerChannel: boolean,
     order: number,
     is_required: boolean,
+    is_read_only: boolean,
     readonly decimalsAllowed: DecimalsAllowed,
     readonly minValue: MinValue,
     readonly maxValue: MaxValue
@@ -49,11 +54,12 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
       assetFamilyIdentifier,
       code,
       labelCollection,
-      'number',
+      NUMBER_ATTRIBUTE_TYPE,
       valuePerLocale,
       valuePerChannel,
       order,
-      is_required
+      is_required,
+      is_read_only
     );
 
     Object.freeze(this);
@@ -69,6 +75,7 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
       normalizedNumberAttribute.value_per_channel,
       normalizedNumberAttribute.order,
       normalizedNumberAttribute.is_required,
+      normalizedNumberAttribute.is_read_only,
       normalizedNumberAttribute.decimals_allowed,
       normalizedNumberAttribute.min_value,
       normalizedNumberAttribute.max_value

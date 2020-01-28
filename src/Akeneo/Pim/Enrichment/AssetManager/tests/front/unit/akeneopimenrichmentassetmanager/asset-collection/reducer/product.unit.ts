@@ -165,6 +165,7 @@ test('It should be able to select the current values', () => {
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'smartphone-apple',
+        availableLocales: [],
       },
       locale: 'en_US',
       channel: 'ecommerce',
@@ -178,6 +179,7 @@ test('It should be able to select the current values', () => {
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'smartphone-honor',
+        availableLocales: [],
       },
       locale: 'en_US',
       channel: 'ecommerce',
@@ -193,6 +195,65 @@ test('It should be able to select the current values', () => {
   };
 
   expect(selectCurrentValues(state)).toEqual(values);
+});
+
+test('It should filter the current values for locale specific attributes', () => {
+  const values = [
+    {
+      attribute: {
+        code: 'smartphone-apple',
+        labels: {en_US: 'Smartphone Apple'},
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'smartphone-apple',
+        availableLocales: ['en_US'],
+      },
+      locale: 'en_US',
+      channel: 'ecommerce',
+      data: ['iphone-7.jpg', 'iphone-8.jpg'],
+      editable: true,
+    },
+    {
+      attribute: {
+        code: 'smartphone-honor',
+        labels: {en_US: 'Smartphone Honor'},
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'smartphone-honor',
+        availableLocales: ['fr_FR'],
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: ['honor-10-lite.jpg', 'honor-7x.jpg'],
+      editable: true,
+    },
+    {
+      attribute: {
+        code: 'smartphone-samsung',
+        labels: {en_US: 'Smartphone Samsung'},
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'smartphone-samsung',
+        availableLocales: ['en_US'],
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: ['galaxy-s10.jpg'],
+      editable: true,
+    },
+  ];
+
+  const expectedValues = [
+      values[0], values[2]
+  ];
+
+  const state = {
+    context: {channel: 'ecommerce', locale: 'en_US'},
+    structure: {attributes: [], channels: [], family: null},
+    product: {identifier: null, values, labels: {}},
+  };
+
+  expect(selectCurrentValues(state)).toEqual(expectedValues);
 });
 
 test('It should be able to select the current labels', () => {

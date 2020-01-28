@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Builder;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Builder\EntityWithValuesDraftBuilder;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\ProductDraftFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
@@ -26,7 +27,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
     function let(
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         ProductDraftFactory $factory,
         EntityWithValuesDraftRepositoryInterface $entityWithValuesDraftRepository,
         WriteValueCollectionFactory $valueCollectionFactory,
@@ -35,7 +36,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         $this->beConstructedWith(
             $normalizer,
             $comparatorRegistry,
-            $attributeRepository,
+            $getAttributes,
             $factory,
             $entityWithValuesDraftRepository,
             $valueCollectionFactory,
@@ -52,11 +53,10 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         $normalizer,
         $valueCollectionFactory,
         $comparatorRegistry,
-        $attributeRepository,
+        $getAttributes,
         $valueFactory,
         $entityWithValuesDraftRepository,
         ProductInterface $product,
-        AttributeInterface $textAttribute,
         ValueInterface $textValue,
         ValueInterface $newTextValue,
         ComparatorInterface $textComparator,
@@ -89,17 +89,15 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
             ]
         ]);
 
-        $textAttribute->getCode()->willReturn('name');
-        $textAttribute->getType()->willReturn('text');
-        $textAttribute->isUnique()->willReturn(false);
-        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
+        $textAttribute = new Attribute('name', 'text', [], false, false, '', false, 'text', []);
+        $getAttributes->forCode('name')->willReturn($textAttribute);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
             ['data' => 'product', 'locale' => null, 'scope' => null],
             ['data' => 'my product', 'locale' => null, 'scope' => null]
         )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
 
-        $valueFactory->create($textAttribute, null, null, 'product')->willReturn($newTextValue);
+        $valueFactory->createByCheckingData($textAttribute, null, null, 'product')->willReturn($newTextValue);
 
         $newTextValue->getAttributeCode()->willReturn('text');
 
@@ -114,18 +112,19 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ])->shouldBeCalled();
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
 
-        $this->build($product, 'mary')->shouldReturn($productDraft);
+        $draftSource = new DraftSource('pim', 'PIM', 'mary', 'Mary Smith');
+
+        $this->build($product, $draftSource)->shouldReturn($productDraft);
     }
 
     function it_builds_a_simple_product_draft_when_submitted_data_is_new(
         $normalizer,
         $valueCollectionFactory,
         $comparatorRegistry,
-        $attributeRepository,
+        $getAttributes,
         $valueFactory,
         $entityWithValuesDraftRepository,
         ProductInterface $product,
-        AttributeInterface $textAttribute,
         ValueInterface $textValue,
         ValueInterface $newTextValue,
         ComparatorInterface $textComparator,
@@ -148,17 +147,15 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         $valueCollectionFactory->createFromStorageFormat($rawValues)->willReturn($originalValuesCollection);
         $normalizer->normalize($originalValuesCollection, 'standard')->willReturn([]);
 
-        $textAttribute->getCode()->willReturn('name');
-        $textAttribute->getType()->willReturn('text');
-        $textAttribute->isUnique()->willReturn(false);
-        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
+        $textAttribute = new Attribute('name', 'text', [], false, false, '', false, 'text', []);
+        $getAttributes->forCode('name')->willReturn($textAttribute);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
             ['data' => 'product', 'locale' => null, 'scope' => null],
             []
         )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
 
-        $valueFactory->create($textAttribute, null, null, 'product')->willReturn($newTextValue);
+        $valueFactory->createByCheckingData($textAttribute, null, null, 'product')->willReturn($newTextValue);
         $newTextValue->getAttributeCode()->willReturn('text');
         $newTextValue->getData()->willReturn('product');
         $newTextValue->getScopeCode()->willReturn(null);
@@ -171,16 +168,17 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ])->shouldBeCalled();
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
 
-        $this->build($product, 'mary')->shouldReturn($productDraft);
+        $draftSource = new DraftSource('pim', 'PIM', 'mary', 'Mary Smith');
+
+        $this->build($product, $draftSource)->shouldReturn($productDraft);
     }
 
     function it_does_not_build_a_simple_product_draft_if_submitted_data_is_the_same_as_product_data(
         $normalizer,
         $valueCollectionFactory,
         $comparatorRegistry,
-        $attributeRepository,
+        $getAttributes,
         ProductInterface $product,
-        AttributeInterface $textAttribute,
         ValueInterface $textValue,
         ComparatorInterface $textComparator,
         WriteValueCollection $newValuesCollection,
@@ -211,23 +209,24 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
             ]
         ]);
 
-        $textAttribute->getType()->willReturn('text');
-        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
+        $textAttribute = new Attribute('name', 'text', [], false, false, '', false, 'text', []);
+        $getAttributes->forCode('name')->willReturn($textAttribute);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
             ['data' => 'my product', 'locale' => null, 'scope' => null],
             ['data' => 'my product', 'locale' => null, 'scope' => null]
         )->willReturn(null);
 
-        $this->build($product, 'mary')->shouldReturn(null);
+        $draftSource = new DraftSource('pim', 'PIM', 'mary', 'Mary Smith');
+
+        $this->build($product, $draftSource)->shouldReturn(null);
     }
 
     function it_throws_an_exception_if_the_attribute_does_not_exist(
         $normalizer,
         $valueCollectionFactory,
-        $attributeRepository,
+        $getAttributes,
         ProductInterface $product,
-        AttributeInterface $textAttribute,
         ValueInterface $textValue,
         WriteValueCollection $newValuesCollection,
         WriteValueCollection $originalValuesCollection
@@ -257,23 +256,23 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
             ]
         ]);
 
-        $textAttribute->getCode()->willReturn('name');
-        $attributeRepository->findOneByIdentifier('name')->willReturn(null);
+        $getAttributes->forCode('name')->willReturn(null);
+
+        $draftSource = new DraftSource('pim', 'PIM', 'mary', 'Mary Smith');
 
         $this->shouldThrow(
             new \LogicException('Cannot find attribute with code "name".')
-        )->during('build', [$product, 'mary']);
+        )->during('build', [$product, $draftSource]);
     }
 
     function it_builds_a_variant_product_draft_when_submitted_data_is_different_from_product_data(
         $normalizer,
         $valueCollectionFactory,
         $comparatorRegistry,
-        $attributeRepository,
+        $getAttributes,
         $valueFactory,
         $entityWithValuesDraftRepository,
         ProductInterface $variantProduct,
-        AttributeInterface $textAttribute,
         ValueInterface $textValue,
         ValueInterface $newTextValue,
         ComparatorInterface $textComparator,
@@ -306,17 +305,15 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
             ]
         ]);
 
-        $textAttribute->getCode()->willReturn('name');
-        $textAttribute->getType()->willReturn('text');
-        $textAttribute->isUnique()->willReturn(false);
-        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
+        $textAttribute = new Attribute('name', 'text', [], false, false, '', false, 'text', []);
+        $getAttributes->forCode('name')->willReturn($textAttribute);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
             ['data' => 'product', 'locale' => null, 'scope' => null],
             ['data' => 'my product', 'locale' => null, 'scope' => null]
         )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
 
-        $valueFactory->create($textAttribute, null, null, 'product')->willReturn($newTextValue);
+        $valueFactory->createByCheckingData($textAttribute, null, null, 'product')->willReturn($newTextValue);
         $newTextValue->getAttributeCode()->willReturn('text');
         $newTextValue->getData()->willReturn('product');
         $newTextValue->getScopeCode()->willReturn(null);
@@ -329,19 +326,19 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ])->shouldBeCalled();
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
 
-        $this->build($variantProduct, 'mary')->shouldReturn($productDraft);
+        $draftSource = new DraftSource('pim', 'PIM', 'mary', 'Mary Smith');
+
+        $this->build($variantProduct, $draftSource)->shouldReturn($productDraft);
     }
 
     function it_builds_a_variant_product_draft_but_do_not_create_value_if_values_are_same_as_parent(
         $normalizer,
         $valueCollectionFactory,
         $comparatorRegistry,
-        $attributeRepository,
+        $getAttributes,
         $valueFactory,
         $entityWithValuesDraftRepository,
         ProductInterface $variantProduct,
-        AttributeInterface $textAttribute,
-        AttributeInterface $colorAttribute,
         ValueInterface $textValue,
         ValueInterface $newTextValue,
         ValueInterface $colorValue,
@@ -399,26 +396,22 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
             ]
         ]);
 
-        $textAttribute->getCode()->willReturn('name');
-        $textAttribute->getType()->willReturn('text');
-        $textAttribute->isUnique()->willReturn(false);
-        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
+        $textAttribute = new Attribute('name', 'text', [], false, false, '', false, 'text', []);
+        $getAttributes->forCode('name')->willReturn($textAttribute);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
             ['data' => 'product', 'locale' => null, 'scope' => null],
             ['data' => 'my product', 'locale' => null, 'scope' => null]
         )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
 
-        $valueFactory->create($textAttribute, null, null, 'product')->willReturn($newTextValue);
+        $valueFactory->createByCheckingData($textAttribute, null, null, 'product')->willReturn($newTextValue);
         $newTextValue->getAttributeCode()->willReturn('text');
         $newTextValue->getData()->willReturn('product');
         $newTextValue->getScopeCode()->willReturn(null);
         $newTextValue->getLocaleCode()->willReturn(null);
 
-        $colorAttribute->getCode()->willReturn('color');
-        $colorAttribute->getType()->willReturn('simpleselect');
-        $colorAttribute->isUnique()->willReturn(false);
-        $attributeRepository->findOneByIdentifier('color')->willReturn($colorAttribute);
+        $colorAttribute = new Attribute('color', 'simpleselect', [], false, false, '', false, 'option', []);
+        $getAttributes->forCode('color')->willReturn($colorAttribute);
         $comparatorRegistry->getAttributeComparator('simpleselect')->willReturn($colorComparator);
         $colorComparator->compare(
             ['data' => 'blue', 'locale' => null, 'scope' => null],
@@ -432,6 +425,8 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ])->shouldBeCalled();
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
 
-        $this->build($variantProduct, 'mary')->shouldReturn($productDraft);
+        $draftSource = new DraftSource('pim', 'PIM', 'mary', 'Mary Smith');
+
+        $this->build($variantProduct, $draftSource)->shouldReturn($productDraft);
     }
 }

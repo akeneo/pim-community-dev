@@ -1,4 +1,4 @@
-import * as $ from 'jquery';
+import $ from 'jquery';
 import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import * as React from 'react';
@@ -25,15 +25,18 @@ import {setUpSidebar} from 'akeneoassetmanager/application/action/sidebar';
 import {updateActivatedLocales} from 'akeneoassetmanager/application/action/locale';
 import {updateCurrentTab} from 'akeneoassetmanager/application/event/sidebar';
 import {updateChannels} from 'akeneoassetmanager/application/action/channel';
-import {attributeListGotUpdated} from 'akeneoassetmanager/application/action/attribute/list';
 import {PermissionCollection} from 'akeneoassetmanager/domain/model/asset-family/permission';
 import {permissionEditionReceived} from 'akeneoassetmanager/domain/event/asset-family/permission';
 import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/locale';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
-import {restoreFilters} from 'akeneoassetmanager/application/action/asset/search';
 import {gridStateStoragePath} from 'akeneoassetmanager/infrastructure/middleware/grid';
 import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import Key from 'akeneoassetmanager/tools/key';
+import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import {ThemeProvider} from 'styled-components';
+import {attributeListUpdated} from 'akeneoassetmanager/domain/event/attribute/list';
+import {getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -58,19 +61,15 @@ class AssetFamilyEditController extends BaseController {
       .fetch(denormalizeAssetFamilyIdentifier(route.params.identifier))
       .then(async (assetFamilyResult: AssetFamilyResult) => {
         this.store = createStore(true)(assetFamilyReducer);
-        const assetFamilyIdentifier = assetFamilyResult.assetFamily.getIdentifier();
-        const filters = this.getFilters(assetFamilyIdentifier);
 
-        permissionFetcher
-          .fetch(assetFamilyResult.assetFamily.getIdentifier())
-          .then((permissions: PermissionCollection) => {
-            this.store.dispatch(permissionEditionReceived(permissions));
-          });
+        permissionFetcher.fetch(assetFamilyResult.assetFamily.identifier).then((permissions: PermissionCollection) => {
+          this.store.dispatch(permissionEditionReceived(permissions));
+        });
 
         // Not idea, maybe we should discuss about it
         await this.store.dispatch(updateChannels() as any);
         this.store.dispatch(updateActivatedLocales() as any);
-        this.store.dispatch(assetFamilyEditionReceived(assetFamilyResult.assetFamily.normalize()));
+        this.store.dispatch(assetFamilyEditionReceived(assetFamilyResult.assetFamily));
         this.store.dispatch(assetFamilyAssetCountUpdated(assetFamilyResult.assetCount));
         this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
@@ -78,8 +77,7 @@ class AssetFamilyEditController extends BaseController {
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
         this.store.dispatch(setUpSidebar('akeneo_asset_manager_asset_family_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
-        this.store.dispatch(restoreFilters(filters) as any);
-        this.store.dispatch(attributeListGotUpdated(assetFamilyResult.attributes) as any);
+        this.store.dispatch(attributeListUpdated(assetFamilyResult.attributes) as any);
         this.store.dispatch(assetFamilyPermissionChanged(assetFamilyResult.permission));
 
         document.addEventListener('keydown', shortcutDispatcher(this.store));
@@ -93,7 +91,9 @@ class AssetFamilyEditController extends BaseController {
 
         ReactDOM.render(
           <Provider store={this.store}>
-            <AssetFamilyView />
+            <ThemeProvider theme={akeneoTheme}>
+              <AssetFamilyView />
+            </ThemeProvider>
           </Provider>,
           this.el
         );
@@ -119,7 +119,10 @@ class AssetFamilyEditController extends BaseController {
 
   beforeUnload = () => {
     if (this.isDirty()) {
-      return __('pim_enrich.confirmation.discard_changes', {entity: 'asset family'});
+      const state = this.store.getState();
+      const assetFamilyLabel = getAssetFamilyLabel(state.form.data, state.user.catalogLocale);
+
+      return __('pim_asset_manager.asset_family.edit.discard_changes', {assetFamilyLabel});
     }
 
     document.removeEventListener('keypress', shortcutDispatcher);
@@ -128,7 +131,9 @@ class AssetFamilyEditController extends BaseController {
   };
 
   canLeave() {
-    const message = __('pim_enrich.confirmation.discard_changes', {entity: 'asset family'});
+    const state = this.store.getState();
+    const assetFamilyLabel = getAssetFamilyLabel(state.form.data, state.user.catalogLocale);
+    const message = __('pim_asset_manager.asset_family.edit.discard_changes', {assetFamilyLabel});
 
     return this.isDirty() ? confirm(message) : true;
   }

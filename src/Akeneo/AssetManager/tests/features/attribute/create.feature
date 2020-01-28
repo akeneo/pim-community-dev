@@ -7,56 +7,56 @@ Feature: Create an attribute linked to an asset family
     Given a valid asset family
 
   @acceptance-back
-  Scenario: Create an image attribute linked to an asset family
-    When the user creates an image attribute "another_image" linked to the asset family "designer" with:
-      | code          | labels                                    | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions |
-      | another_image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 250.0         | ["png", "jpg"]     |
-    Then there is an image attribute "another_image" in the asset family "designer" with:
-      | code          | labels                                    | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions | type  |
-      | another_image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 250.0         | ["png", "jpg"]     | image |
+  Scenario: Create a media file attribute linked to an asset family
+    When the user creates a media file attribute "another_image" linked to the asset family "designer" with:
+      | code          | labels                                    | is_required | is_read_only | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions | media_type |
+      | another_image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | false        | 2     | true              | false            | 250.0         | ["png", "jpg"]     | image      |
+    Then there is a media file attribute "another_image" in the asset family "designer" with:
+      | code          | labels                                    | is_required | is_read_only | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions | media_type | type       |
+      | another_image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | false        | 2     | true              | false            | 250.0         | ["png", "jpg"]     | image      | media_file |
 
   @acceptance-back
   Scenario: Create a text attribute linked to an asset family
     When the user creates a text attribute "name" linked to the asset family "designer" with:
-      | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
-      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 44         |
+      | code | labels                                    | is_required | is_read_only | order | value_per_channel | value_per_locale | max_length |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | false        | 2     | true              | false            | 44         |
     Then there is a text attribute "name" in the asset family "designer" with:
-      | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length | type | is_textarea | is_rich_text_editor | validation_rule | regular_expression |
-      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 44         | text | false       | false               | none            |                    |
+      | code | labels                                    | is_required | is_read_only | order | value_per_channel | value_per_locale | max_length | type | is_textarea | is_rich_text_editor | validation_rule | regular_expression |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | false        | 2     | true              | false            | 44         | text | false       | false               | none            |                    |
 
-  @acceptance-back
+  # @acceptance-back
   Scenario: Create a asset attribute linked to an asset family
     When the user creates a asset attribute "mentor" linked to the asset family "designer" with:
-      | code   | labels                                 | is_required | order | value_per_channel | value_per_locale | asset_type |
-      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 2     | false             | false            | designer    |
+      | code   | labels                                 | is_required | is_read_only | order | value_per_channel | value_per_locale | asset_type |
+      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | false        | 2     | false             | false            | designer   |
     Then there is a asset attribute "mentor" in the asset family "designer" with:
-      | code   | labels                                 | is_required | order | value_per_channel | value_per_locale | asset_type | type   |
-      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 2     | false             | false            | designer    | asset |
+      | code   | labels                                 | is_required | is_read_only | order | value_per_channel | value_per_locale | asset_type | type  |
+      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | false        | 2     | false             | false            | designer   | asset |
 
-  @acceptance-back
+  # @acceptance-back
   Scenario: Create a asset collection attribute linked to an asset family
     When the user creates a asset collection attribute "brands" linked to the asset family "designer" with:
-      | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | asset_type |
-      | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 2     | false             | false            | brand       |
+      | code   | labels                                  | is_required | is_read_only | order | value_per_channel | value_per_locale | asset_type |
+      | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | true         | 2     | false             | false            | brand       |
     Then there is a asset attribute "brands" in the asset family "designer" with:
-      | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | asset_type | type              |
-      | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 2     | false             | false            | brand       | asset_collection |
+      | code   | labels                                  | is_required | is_read_only | order | value_per_channel | value_per_locale | asset_type | type              |
+      | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | true         | 2     | false             | false            | brand       | asset_collection |
 
   @acceptance-back
   Scenario: Cannot create an attribute for an asset family if it already exists
     Given the user creates a text attribute "name" linked to the asset family "designer" with:
-      | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
-      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 44         |
+      | code | labels                                    | is_required | is_read_only | order | value_per_channel | value_per_locale | max_length |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | false        | 2     | true              | false            | 44         |
     When the user creates a text attribute "name" linked to the asset family "designer" with:
-      | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
-      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 44         |
+      | code | labels                                    | is_required | is_read_only | order | value_per_channel | value_per_locale | max_length |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | false        | 2     | true              | false            | 44         |
     Then an exception is thrown
 
   @acceptance-back
   Scenario Outline: Cannot create an attribute with a reserverd word as code
     When the user creates a text attribute "code" linked to the asset family "designer" with:
-      | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
-      | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 44         |
+      | labels                                    | is_required | is_read_only | order | value_per_channel | value_per_locale | max_length |
+      | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | false        | 2     | true              | false            | 44         |
     Then there should be a validation error on the property 'code' with message '<message>'
     And there is no exception thrown
 
@@ -65,11 +65,11 @@ Feature: Create an attribute linked to an asset family
       | label                  | The code cannot be any of those values: "{{ code, label, image }}" |
       | code                   | The code cannot be any of those values: "{{ code, label, image }}" |
 
-  @acceptance-back
+  # @acceptance-back
   Scenario: Cannot create a asset attribute with a asset type that refers to an asset family that does not exist
     When the user creates a asset attribute "mentor" linked to the asset family "designer" with:
-      | code   | labels                                 | is_required | order | value_per_channel | value_per_locale | asset_type |
-      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 2     | false             | false            | foo         |
+      | code   | labels                                 | is_required | is_read_only | order | value_per_channel | value_per_locale | asset_type |
+      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | false        | 2     | false             | false            | foo        |
     Then there should be a validation error on the property 'asset_family_code' with message 'The asset family "foo" was not found.'
     And there is no exception thrown
 
@@ -77,117 +77,117 @@ Feature: Create an attribute linked to an asset family
   Scenario: Cannot create more text attributes than the limit
     Given 100 random attributes for an asset family
     When the user creates a text attribute "name" linked to the asset family "designer" with:
-      | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
-      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         |
+      | code | labels                                    | is_required | is_read_only | order | value_per_channel | value_per_locale | max_length |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | false        | 0     | true              | false            | 44         |
     Then there should be a validation error with message 'You cannot create the attribute "Stylist" because you have reached the limit of 100 attributes for this asset family'
 
   @acceptance-back
-  Scenario: Cannot create more image attributes than the limit
+  Scenario: Cannot create more media file attributes than the limit
     Given 100 random attributes for an asset family
-    When the user creates an image attribute "stylist" linked to the asset family "designer" with:
-      | labels                                         | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions |
-      | {"en_US": "Stylist view", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 250.0         | ["png", "jpg"]     |
+    When the user creates a media file attribute "stylist" linked to the asset family "designer" with:
+      | labels                                         | is_required | is_read_only | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions |
+      | {"en_US": "Stylist view", "fr_FR": "Styliste"} | true        | false        | 0     | true              | false            | 250.0         | ["png", "jpg"]     |
     Then there should be a validation error with message 'You cannot create the attribute "Stylist view" because you have reached the limit of 100 attributes for this asset family'
 
-  @acceptance-back
+  # @acceptance-back
   Scenario: Cannot create more asset attributes than the limit
     Given 100 random attributes for an asset family
     When the user creates a asset attribute "mentor" linked to the asset family "designer" with:
-      | code   | labels                                 | is_required | order | value_per_channel | value_per_locale | asset_type |
-      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 0     | false             | false            | designer    |
+      | code   | labels                                 | is_required | is_read_only | order | value_per_channel | value_per_locale | asset_type |
+      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | false        | 0     | false             | false            | designer   |
     Then there should be a validation error with message 'You cannot create the attribute "Mentor" because you have reached the limit of 100 attributes for this asset family'
 
-  @acceptance-back
+  # @acceptance-back
   Scenario: Cannot create more asset collection attributes than the limit
     Given 100 random attributes for an asset family
     When the user creates a asset collection attribute "brands" linked to the asset family "designer" with:
-      | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | asset_type |
-      | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 0     | false             | false            | brand       |
+      | code   | labels                                  | is_required | is_read_only | order | value_per_channel | value_per_locale | asset_type |
+      | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | false        | 0     | false             | false            | brand       |
     Then there should be a validation error with message 'You cannot create the attribute "Brands" because you have reached the limit of 100 attributes for this asset family'
 
   @acceptance-back
   Scenario: Create an option attribute
     When the user creates an option attribute "color" with:
-      | labels             | is_required | order | value_per_channel | value_per_locale |
-      | {"en_US": "Color"} | false       | 2     | false             | false            |
+      | labels             | is_required | is_read_only | order | value_per_channel | value_per_locale |
+      | {"en_US": "Color"} | false       | true         | 2     | false             | false            |
     Then there is an option attribute "color" with:
-      | labels             | is_required | order | value_per_channel | value_per_locale | type   |
-      | {"en_US": "Color"} | false       | 2     | false             | false            | option |
+      | labels             | is_required | is_read_only | order | value_per_channel | value_per_locale | type   |
+      | {"en_US": "Color"} | false       | true         | 2     | false             | false            | option |
 
   @acceptance-back
   Scenario: Create an option collection attribute
     When the user creates an option collection attribute "favorite_colors" with:
-      | labels                       | is_required | order | value_per_channel | value_per_locale |
-      | {"en_US": "Favorite colors"} | true        | 2     | false             | false            |
+      | labels                       | is_required | is_read_only | order | value_per_channel | value_per_locale |
+      | {"en_US": "Favorite colors"} | true        | false        | 2     | false             | false            |
     Then there is an option collection attribute "favorite_colors" with:
-      | labels                       | is_required | order | value_per_channel | value_per_locale | type              |
-      | {"en_US": "Favorite colors"} | true        | 2     | false             | false            | option_collection |
+      | labels                       | is_required | is_read_only | order | value_per_channel | value_per_locale | type              |
+      | {"en_US": "Favorite colors"} | true        | false        | 2     | false             | false            | option_collection |
 
   @acceptance-back
   Scenario: Cannot create more option attributes than the limit
     Given 100 random attributes for an asset family
     When the user creates an option attribute "favorite_color"
-      | labels                                 | is_required | order | value_per_channel | value_per_locale | asset_type |
-      | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 0     | false             | false            | designer    |
+      | labels                                 | is_required | is_read_only | order | value_per_channel | value_per_locale | asset_type |
+      | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | false        | 0     | false             | false            | designer   |
     Then there should be a validation error with message 'You cannot create the attribute "Mentor" because you have reached the limit of 100 attributes for this asset family'
 
   @acceptance-back
   Scenario: Cannot create more option collection attributes than the limit
     Given 100 random attributes for an asset family
     When the user creates an option collection attribute "favorite_colors"
-      | labels                                  | is_required | order | value_per_channel | value_per_locale | asset_type |
-      | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 0     | false             | false            | brand       |
+      | labels                                  | is_required | is_read_only | order | value_per_channel | value_per_locale | asset_type |
+      | {"en_US": "Brands", "fr_FR": "Marques"} | true        | false        | 0     | false             | false            | brand      |
     Then there should be a validation error with message 'You cannot create the attribute "Brands" because you have reached the limit of 100 attributes for this asset family'
 
   @acceptance-back
   Scenario: Create a non decimal number attribute to an asset family
     When the user creates a number attribute "area" to the asset family "city" with:
-      | code | labels                                   | is_required | order | value_per_channel | value_per_locale | decimals_allowed | min_value | max_value |
-      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | 0     | false             | false            | false          | 10        | 11        |
+      | code | labels                                   | is_required | is_read_only | order | value_per_channel | value_per_locale | decimals_allowed | min_value | max_value |
+      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | false        | 0     | false             | false            | false            | 10        | 11        |
     Then there is a number attribute "area" in the asset family "city" with:
-      | code | labels                                   | is_required | order | value_per_channel | value_per_locale | type   | decimals_allowed | min_value | max_value |
-      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | 0     | false             | false            | number | false          | 10        | 11        |
+      | code | labels                                   | is_required | is_read_only | order | value_per_channel | value_per_locale | type   | decimals_allowed | min_value | max_value |
+      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | false        | 0     | false             | false            | number | false            | 10        | 11        |
 
   @acceptance-back
   Scenario: Create an invalid number attribute on an asset family
     When the user creates a number attribute "area" to the asset family "city" with:
-      | code | labels                                   | is_required | order | value_per_channel | value_per_locale | decimals_allowed | min_value | max_value |
-      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | 0     | false             | false            | false          | 10        | hello     |
+      | code | labels                                   | is_required | is_read_only | order | value_per_channel | value_per_locale | decimals_allowed | min_value | max_value |
+      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | false        | 0     | false             | false            | false          | 10        | hello     |
     Then there should be a validation error with message 'This value should be a number with the right decimal separator.'
 
   @acceptance-back
   Scenario: Create an media_link attribute to an asset family
     When the user creates a media_link attribute "dam_image" to the asset family "city" with:
-      | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | media_type | prefix | suffix |
-      | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | image        | null   | null   |
+      | code  | labels                                   | is_required | is_read_only | order | value_per_channel | value_per_locale | media_type | prefix | suffix |
+      | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | true         | 0     | false             | false            | image        | null   | null   |
     Then there is an media_link attribute "dam_image" in the asset family "city" with:
-      | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | type | media_type | prefix | suffix |
-      | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | media_link  | image        | null   | null   |
+      | code  | labels                                   | is_required | is_read_only | order | value_per_channel | value_per_locale | type | media_type | prefix | suffix |
+      | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | true         | 0     | false             | false            | media_link  | image        | null   | null   |
 
   @acceptance-back
   Scenario: Create an media_link attribute to an asset family
     When the user creates a media_link attribute "dam_image" to the asset family "city" with:
-      | code  | labels                               | is_required | order | value_per_channel | value_per_locale | media_type | prefix                | suffix   |
-      | image | {"en_US": "Image", "fr_FR": "Image"} | true        | 0     | false             | false            | image        | http://my-prefix.com/ | /500x500 |
+      | code  | labels                               | is_required | is_read_only | order | value_per_channel | value_per_locale | media_type | prefix                | suffix   |
+      | image | {"en_US": "Image", "fr_FR": "Image"} | true        | false        | 0     | false             | false            | image        | http://my-prefix.com/ | /500x500 |
     Then there is an media_link attribute "dam_image" in the asset family "city" with:
-      | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | type | media_type | prefix                | suffix   |
-      | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | media_link  | image        | http://my-prefix.com/ | /500x500 |
+      | code  | labels                                   | is_required | is_read_only | order | value_per_channel | value_per_locale | type | media_type | prefix                | suffix   |
+      | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | false        | 0     | false             | false            | media_link  | image        | http://my-prefix.com/ | /500x500 |
 
   @acceptance-back
   Scenario: Create an invalid media_link attribute on an asset family
     When the user creates a media_link attribute "dam_image" to the asset family "city" with:
-      | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | media_type | prefix | suffix |
-      | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | video        | null   | null   |
+      | code  | labels                                   | is_required | is_read_only | order | value_per_channel | value_per_locale | media_type | prefix | suffix |
+      | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | true         | 0     | false             | false            | video        | null   | null   |
     Then there should be a validation error with message 'The media type given is not corresponding to the expected ones (image, pdf, youtube, other).'
 
   @acceptance-back
   Scenario: If no locale nor channel is set, their default value is set to false
     When the user creates a text attribute "name" linked to the asset family "designer" with:
-      | code | labels                                    | is_required | order | max_length |
-      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | 44         |
+      | code | labels                                    | is_required | is_read_only | order | max_length |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | true         | 2     | 44         |
     Then there is a text attribute "name" in the asset family "designer" with:
-      | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length | type | is_textarea | is_rich_text_editor | validation_rule | regular_expression |
-      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | false             | false            | 44         | text | false       | false               | none            |                    |
+      | code | labels                                    | is_required | is_read_only | order | value_per_channel | value_per_locale | max_length | type | is_textarea | is_rich_text_editor | validation_rule | regular_expression |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | true         | 2     | false             | false            | 44         | text | false       | false               | none            |                    |
 
   @acceptance-front
   Scenario: Create a simple valid text attribute
@@ -222,11 +222,11 @@ Feature: Create an attribute linked to an asset family
     Then the user should not see any validation error
 
   @acceptance-front
-  Scenario: Create a simple valid image attribute
+  Scenario: Create a simple valid media file attribute
     Given the user has the following rights:
       | akeneo_assetmanager_attribute_create | true |
-    When the user creates a valid image attribute
-    And the user saves the valid image attribute
+    When the user creates a valid media file attribute
+    And the user saves the valid media file attribute
     Then the user should not see any validation error
 
   @acceptance-front

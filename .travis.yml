@@ -1,83 +1,97 @@
-dist: xenial
 language: php
 
 php:
-    - 7.2
+    - 7.3
 
-# Only build branches starting by "einrich-""
+# Only build branches starting by einrich- or assets- or AST- or ATR-
 branches:
-  only:
-    - /^(einrich|assets)-?.*$/
+    only:
+        - /^(einrich|assets|AST|ATR)-?.*$/
 
 # Extra dependencies
 services:
-  - mysql
+    - docker
 
 sudo: false
 
 # Speed up a bit the process
 cache:
-  directories:
-    - $HOME/.composer/cache/files
-    - $HOME/.cache/yarn
-    - /tmp/jest
+    directories:
+        - $HOME/.composer/cache/files
+        - $HOME/.cache/yarn
+        - /tmp/jest
+        - docker_images
 
 before_install:
-    - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-    - nvm install 10.15.0
-    - node tests/travis/check-changes.js $BRANCH src/Akeneo/ReferenceEntity/,.travis.yml,tests/travis/,tests/front,package.json,composer.json
-    - node tests/travis/check-changes.js $BRANCH src/Akeneo/AssetManager/,.travis.yml,tests/travis/,tests/front,package.json,composer.json
-    - php src/Akeneo/AssetManager/tests/check-fake-implementations.php
-    - php src/Akeneo/ReferenceEntity/tests/check-fake-implementations.php
-    - phpenv config-rm xdebug.ini
-    - composer config -g github-oauth.github.com $GITHUB_TOKEN
-    - phpenv config-add tests/travis/travis.php.ini
-    - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.5.4.deb && sudo dpkg -i --force-confnew elasticsearch-6.5.4.deb && sudo service elasticsearch restart
-    - yes | pecl install imagick
+    # Needed to install newer version of Docker (https://docs.travis-ci.com/user/docker/#installing-a-newer-docker-version)
+    - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    - sudo apt-get update
+    - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+
+    # Known issue with Docker Registry Mirrors (https://github.com/moby/buildkit/issues/606)
+    - echo "{}" | sudo tee /etc/docker/daemon.json
+    - sudo service docker restart
+
+    # Based on CircleCI config
+    - docker load -i docker_images/images.tar || true
+    - make php-image-dev
+    - mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
+    - sudo chown -R 1000:1000 ../pim-enterprise-dev
+    - sudo chown -R 1000:1000 ~/.composer
+    - sudo chown -R 1000:1000 ~/.cache/yarn
 
 install:
-    - composer install --prefer-dist --no-interaction
-    - cp tests/travis/parameters_test.yml app/config/parameters_test.yml
-    - ./bin/console pim:install:assets --env=behat
-    - ./bin/console pim:install:db --withoutIndexes --env=behat
-    - yarn install
-    - yarn less
-    - yarn webpack-test --env=prod
+    - curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${TRAVIS_BRANCH} && docker-compose run --rm -u www-data:www-data php php /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${TRAVIS_BRANCH}" --no-update || echo "No CE branch $TRAVIS_BRANCH found. I don't touch the composer.json file."
+    - make dependencies
+    - C='mysql elasticsearch' make up
+    - vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+    - make check-requirements
+    - make assets
+    - make javascript-test
+    - make javascript-dev
+    - sudo chown -R 1000:1000 ../pim-enterprise-dev
+    - sudo chmod 777 -R ../pim-enterprise-dev
 
 jobs:
-  include:
-    - stage: Reference Entities Tests
-      if: branch =~ /^einrich-?.*$/
-      script:
-          - yarn unit
-          - yarn integration
-          - NODE_OPTIONS="--max-old-space-size=4096" NODE_PATH=./node_modules node_modules/.bin/cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js src/Akeneo/ReferenceEntity/tests/features
-          - yarn lint
-          - vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back
-          - vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
-          - vendor/bin/behat --config src/Akeneo/ReferenceEntity/tests/back/behat.yml.dist --no-interaction --format=progress
-          - vendor/bin/phpunit -c src/Akeneo/ReferenceEntity/tests/back
-          - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
-          - vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --no-interaction
+    include:
+        - stage: Reference Entities Tests
+          if: branch =~ /^einrich-?.*$/
+          script:
+              - make unit-front
+              - make reference-entity-acceptance-front
+              - make integration-front
+              - make reference-entity-coupling-back
+              - make reference-entity-lint-back
+              - make reference-entity-unit-back
+              - make reference-entity-acceptance-back
+              # Start docker services
+              - APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
+              - vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+              - APP_ENV=test make database
+              # If CI is left to true, a circleci specific binary is loaded
+              - CI=false make reference-entity-integration-back
 
-    - stage: Asset Manager Tests
-      if: branch =~ /^assets-?.*$/
-      script:
-        - yarn unit
-        - yarn integration
-        - RANDOM_LATENCY=false NODE_OPTIONS="--max-old-space-size=4096" NODE_PATH=./node_modules node_modules/.bin/cucumber-js --tags @acceptance-front -r ./src/Akeneo/Pim/Enrichment/AssetManager/tests/front/acceptance/run-steps.js src/Akeneo/Pim/Enrichment/AssetManager/tests/front/features
-        - yarn lint
-        - vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/AssetManager/tests/back/.php_cd.php src/Akeneo/AssetManager/back
-        - vendor/bin/phpstan analyse --configuration src/Akeneo/AssetManager/tests/back/phpstan.neon.dist
-        - vendor/bin/behat --config src/Akeneo/AssetManager/tests/back/behat.yml.dist --no-interaction --format=progress
-        - vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back
-        - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
-        - vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction
-        - rm -rf var/cache
-        - rm -rf web/bundles
-        - ./bin/console pim:install:assets --env=prod
-        - yarn webpack --env=prod
+        - stage: Asset Manager Tests
+          if: branch =~ /^(assets|AST|ATR)-?.*$/
+          script:
+              - make unit-front
+              - make asset-manager-acceptance-front
+              - make integration-front
+              - make asset-manager-coupling-back
+              - make asset-manager-static-back
+              - make asset-manager-lint-back
+              - make asset-manager-unit-back
+              - make asset-manager-acceptance-back
+              # Start docker services
+              - APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
+              - vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+              - APP_ENV=test make database
+              # If CI is left to true, a circleci specific binary is loaded
+              - CI=false make asset-manager-integration-back
+
+before_cache:
+    - docker save -o docker_images/images.tar akeneo/pim-dev/php:7.3
 
 notifications:
-  email: false
+    email: false

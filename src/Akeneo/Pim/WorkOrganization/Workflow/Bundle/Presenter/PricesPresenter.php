@@ -14,7 +14,6 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Present changes on prices
@@ -30,12 +29,9 @@ class PricesPresenter extends AbstractProductValuePresenter
     protected $localeResolver;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         BasePresenterInterface $pricesPresenter,
         LocaleResolver $localeResolver
     ) {
-        parent::__construct($attributeRepository);
-
         $this->pricesPresenter = $pricesPresenter;
         $this->localeResolver = $localeResolver;
     }
@@ -43,7 +39,7 @@ class PricesPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange($attributeType)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
         return AttributeTypes::PRICE_COLLECTION === $attributeType;
     }
@@ -51,15 +47,15 @@ class PricesPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function present($data, array $change)
+    public function present($formerData, array $change)
     {
-        $data = $this->normalizeData($data->getData());
+        $value = $this->normalizeData($formerData);
         $change = $this->normalizeChange($change);
 
-        foreach ($data as $currency => $price) {
-            if (!isset($change[$currency]) || (isset($change[$currency]) && $price === $change[$currency])) {
-                unset($data[$currency]);
+        foreach ($value as $currency => $price) {
+            if (isset($change[$currency]) && $price === $change[$currency]) {
                 unset($change[$currency]);
+                unset($value[$currency]);
             }
         }
 
@@ -69,7 +65,7 @@ class PricesPresenter extends AbstractProductValuePresenter
             }
         }
 
-        return $this->renderer->renderDiff(array_values($data), array_values($change));
+        return $this->renderer->renderDiff(array_values($value), array_values($change));
     }
 
     /**

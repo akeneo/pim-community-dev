@@ -18,6 +18,8 @@ use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector\EditAssetCommandFactory;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
+use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory as NamingConventionEditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Exception\NamingConventionException;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
@@ -68,6 +70,9 @@ class CreateOrUpdateAssetAction
     /** @var BatchAssetsToLink */
     private $batchAssetsToLink;
 
+    /** @var NamingConventionEditAssetCommandFactory */
+    private $namingConventionEditAssetCommandFactory;
+
     public function __construct(
         AssetFamilyExistsInterface $assetFamilyExists,
         AssetExistsInterface $assetExists,
@@ -77,7 +82,8 @@ class CreateOrUpdateAssetAction
         Router $router,
         AssetValidator $assetStructureValidator,
         ValidatorInterface $assetDataValidator,
-        BatchAssetsToLink $batchAssetsToLink
+        BatchAssetsToLink $batchAssetsToLink,
+        NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
         $this->assetExists = $assetExists;
@@ -88,6 +94,7 @@ class CreateOrUpdateAssetAction
         $this->assetStructureValidator = $assetStructureValidator;
         $this->assetDataValidator = $assetDataValidator;
         $this->batchAssetsToLink = $batchAssetsToLink;
+        $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier, string $code): Response
@@ -116,16 +123,26 @@ class CreateOrUpdateAssetAction
 
         $createAssetCommand = $this->createValidatedAssetCommandIfNeeded($assetFamilyIdentifier, $assetCode);
         $editAssetCommand = $this->createValidatedEditCommand($assetFamilyIdentifier, $normalizedAsset);
+        $namingConventionEditCommand = $this->createValidatedNamingConventionCommandIfNeeded(
+            $assetFamilyIdentifier,
+            $normalizedAsset
+        );
 
         $responseStatusCode = Response::HTTP_NO_CONTENT;
 
         if (null !== $createAssetCommand) {
             $responseStatusCode = Response::HTTP_CREATED;
             ($this->createAssetHandler)($createAssetCommand);
-            $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
-        }
+            if (null !== $namingConventionEditCommand) {
+                $editAssetCommand->editAssetValueCommands = array_merge($editAssetCommand->editAssetValueCommands, $namingConventionEditCommand->editAssetValueCommands);
+            }
 
-        ($this->editAssetHandler)($editAssetCommand);
+            ($this->editAssetHandler)($editAssetCommand);
+
+            $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
+        } else {
+            ($this->editAssetHandler)($editAssetCommand);
+        }
 
         return $this->createResponse($responseStatusCode, $assetFamilyIdentifier, $assetCode);
     }
@@ -148,6 +165,37 @@ class CreateOrUpdateAssetAction
         }
 
         return $command;
+    }
+
+    private function createValidatedNamingConventionCommandIfNeeded(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        array $normalizedAsset
+    ): ?EditAssetCommand {
+        try {
+            $editAssetCommand = $this->namingConventionEditAssetCommandFactory->create(
+                $normalizedAsset,
+                $assetFamilyIdentifier
+            );
+        } catch (NamingConventionException $e) {
+            if ($e->namingConventionAbortOnError()) {
+                throw new UnprocessableEntityHttpException(
+                    sprintf('Error during naming convention execution: %s', $e->getMessage())
+                );
+            }
+
+            // The naming convention execution can not be executed but we continue.
+            $namingConventionEditCommand = null;
+            // @TODO AST-205: How do we display the warning message to the end user?
+
+            return null;
+        }
+
+        $violations = $this->assetDataValidator->validate($editAssetCommand);
+        if ($violations->count() > 0) {
+            throw new ViolationHttpException($violations, 'The asset data computed with naming convention do not comply with the business rules.');
+        }
+
+        return $editAssetCommand;
     }
 
     private function createValidatedEditCommand(AssetFamilyIdentifier $assetFamilyIdentifier, array $normalizedAsset): EditAssetCommand

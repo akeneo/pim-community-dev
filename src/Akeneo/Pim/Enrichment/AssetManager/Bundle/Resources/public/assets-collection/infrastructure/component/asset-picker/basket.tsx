@@ -1,20 +1,19 @@
 import * as React from 'react';
-import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
-import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
-import {
-  Asset,
-  emptyCollection,
-  getAssetByCode,
-  emptyAsset,
-  removeAssetFromCollection,
-} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {Context} from 'akeneoassetmanager/domain/model/context';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Button} from 'akeneoassetmanager/application/component/app/button';
-import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
+import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import AssetItem from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket/asset-item';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import ListAsset, {
+  createEmptyAsset,
+  getAssetByCode,
+  removeAssetFromAssetCodeCollection,
+  emptyCollection,
+} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
 type BasketProps = {
   dataProvider: any;
@@ -27,7 +26,7 @@ type BasketProps = {
 const Container = styled.div`
   width: 300px;
   border-left: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
-  padding: 0 20px;
+  padding: 0 20px 20px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -67,7 +66,7 @@ const useLoadAssetCollection = (
   assetFamilyIdentifier: AssetFamilyIdentifier,
   context: Context
 ) => {
-  const [assetCollection, setAssetCollection] = React.useState([] as Asset[]);
+  const [assetCollection, setAssetCollection] = React.useState<ListAsset[]>([]);
 
   React.useEffect(() => {
     if (0 === selection.length) {
@@ -75,9 +74,11 @@ const useLoadAssetCollection = (
       return;
     }
 
-    dataProvider.assetFetcher.fetchByCode(assetFamilyIdentifier, selection, context).then((receivedAssets: Asset[]) => {
-      setAssetCollection(receivedAssets);
-    });
+    dataProvider.assetFetcher
+      .fetchByCode(assetFamilyIdentifier, selection, context)
+      .then((receivedAssets: ListAsset[]) => {
+        setAssetCollection(receivedAssets);
+      });
   }, [selection]);
 
   return {assetCollection, setAssetCollection};
@@ -101,7 +102,7 @@ const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onSele
           if (undefined === asset) {
             return (
               <AssetItem
-                asset={emptyAsset(assetCode)}
+                asset={createEmptyAsset(assetCode)}
                 context={context}
                 onRemove={() => {}}
                 isLoading={true}
@@ -113,7 +114,7 @@ const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onSele
             <AssetItem
               asset={asset}
               context={context}
-              onRemove={() => onSelectionChange(removeAssetFromCollection(selection, asset.code))}
+              onRemove={() => onSelectionChange(removeAssetFromAssetCodeCollection(selection, asset.code))}
               key={assetCode}
             />
           );

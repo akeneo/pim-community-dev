@@ -1,7 +1,7 @@
 import {
-  notifyReferenceEntityWellDeleted,
   notifyReferenceEntityDeleteFailed,
   notifyReferenceEntityDeletionErrorOccurred,
+  notifyReferenceEntityWellDeleted,
 } from 'akeneoreferenceentity/application/action/reference-entity/notify';
 import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import referenceEntityRemover from 'akeneoreferenceentity/infrastructure/remover/reference-entity';

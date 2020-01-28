@@ -1,0 +1,26 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_asset_manager_assets_rest_connector_get",
+        "query": {
+            "assetFamilyIdentifier": "brand",
+            "search_after": "brand_7"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "_links": {
+                "self": {
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search_after=brand_7"
+                },
+                "first": {
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets"
+                }
+            },
+            "_embedded": {
+                "items": []
+            }
+        }
+    }
+}

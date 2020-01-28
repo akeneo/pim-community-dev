@@ -1,4 +1,4 @@
-import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import sanitize from 'akeneoassetmanager/tools/sanitize';
 
 export interface CreateState {

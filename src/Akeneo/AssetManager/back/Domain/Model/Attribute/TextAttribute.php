@@ -41,23 +41,6 @@ class TextAttribute extends AbstractAttribute
     /** @var AttributeIsRichTextEditor */
     private $isRichTextEditor;
 
-    /**
-     * TextAttribute constructor.
-     *
-     * @param AttributeIdentifier        $identifier
-     * @param AssetFamilyIdentifier   $assetFamilyIdentifier
-     * @param AttributeCode              $code
-     * @param LabelCollection            $labelCollection
-     * @param AttributeOrder             $order
-     * @param AttributeIsRequired        $isRequired
-     * @param AttributeValuePerChannel   $valuePerChannel
-     * @param AttributeValuePerLocale    $valuePerLocale
-     * @param AttributeMaxLength         $maxLength
-     * @param AttributeIsTextarea        $isTextarea
-     * @param AttributeValidationRule    $validationRule
-     * @param AttributeRegularExpression $regularExpression
-     * @param AttributeIsRichTextEditor  $isRichTextEditor
-     */
     protected function __construct(
         AttributeIdentifier $identifier,
         AssetFamilyIdentifier $assetFamilyIdentifier,
@@ -65,6 +48,7 @@ class TextAttribute extends AbstractAttribute
         LabelCollection $labelCollection,
         AttributeOrder $order,
         AttributeIsRequired $isRequired,
+        AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxLength $maxLength,
@@ -94,6 +78,7 @@ class TextAttribute extends AbstractAttribute
             $labelCollection,
             $order,
             $isRequired,
+            $isReadOnly,
             $valuePerChannel,
             $valuePerLocale
         );
@@ -112,6 +97,7 @@ class TextAttribute extends AbstractAttribute
         LabelCollection $labelCollection,
         AttributeOrder $order,
         AttributeIsRequired $isRequired,
+        AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxLength $maxLength,
@@ -125,6 +111,7 @@ class TextAttribute extends AbstractAttribute
             $labelCollection,
             $order,
             $isRequired,
+            $isReadOnly,
             $valuePerChannel,
             $valuePerLocale,
             $maxLength,
@@ -142,6 +129,7 @@ class TextAttribute extends AbstractAttribute
         LabelCollection $labelCollection,
         AttributeOrder $order,
         AttributeIsRequired $isRequired,
+        AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxLength $maxLength,
@@ -154,6 +142,7 @@ class TextAttribute extends AbstractAttribute
             $labelCollection,
             $order,
             $isRequired,
+            $isReadOnly,
             $valuePerChannel,
             $valuePerLocale,
             $maxLength,

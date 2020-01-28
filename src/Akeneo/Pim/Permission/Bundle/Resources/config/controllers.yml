@@ -4,6 +4,7 @@ parameters:
 
 services:
     pimee_security.controller.permission_rest:
+        public: true
         class: '%pimee_security.controller.permission_rest.class%'
         arguments:
             - '@security.authorization_checker'
@@ -15,6 +16,7 @@ services:
             - '@akeneo.pim.enrichment.category.get_ownable_category_codes'
 
     pimee_security.controller.product:
+        public: true
         class: '%pimee_security.controller.product.class%'
         parent: pim_pdf_generator.controller.product
         arguments:
@@ -22,6 +24,7 @@ services:
             - '@pim_user.context.user'
 
     pim_enrich.controller.rest.attribute:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeController'
         arguments:
             - '@pim_catalog.repository.attribute'
@@ -38,10 +41,11 @@ services:
             - '@pim_catalog.localization.localizer.number'
             - '@pim_enrich.normalizer.attribute'
             - '@translator'
-            - '@pim_catalog.doctrine.query.attribute_is_an_family_variant_axis'
+            - '@akeneo.pim.structure.query.attribute_is_an_family_variant_axis'
             - '@pim_catalog.repository.channel'
 
     pim_datagrid.controller.productgrid:
+        public: true
         class: Oro\Bundle\PimDataGridBundle\Controller\ProductGridController
         arguments:
             - '@pimee_security.product_grid.query.list_attributes'
@@ -54,6 +58,7 @@ services:
 
     # overridden to filter categories with a category access repository that handles permissions
     pim_enrich.controller.category_tree.product:
+        public: true
         class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\CategoryTreeController'
         arguments:
             - '@event_dispatcher'
@@ -63,6 +68,7 @@ services:
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
+            - '@translator'
             - { related_entity: product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
@@ -71,14 +77,13 @@ services:
 
     # overriden to add security checks and use a smarter product saver which update draft or working copy
     pim_enrich.controller.product:
+        public: true
         class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\ProductController'
         arguments:
             - '@translator'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.category'
             - '@pim_catalog.saver.product'
-            - '@pim_catalog.association.missing_association_adder'
-            - '@pim_catalog.values_filler.product'
             - '%pim_catalog.entity.category.class%'
             - '@oro_security.security_facade'
             - 'pim_enrich_product_categories_view'
@@ -86,10 +91,10 @@ services:
             - '@pim_catalog.manager.category'
 
     pim_enrich.controller.product_model:
+        public: true
         class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\ProductModelController'
         arguments:
             - '@pim_catalog.repository.product_model'
-            - '@pim_catalog.values_filler.entity_with_family_variant'
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
             - '%pim_catalog.entity.category.class%'
@@ -98,12 +103,15 @@ services:
             - '@pim_catalog.manager.category'
 
     pim_enrich.controller.locale:
+        public: true
         class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\LocaleController'
         arguments:
             - '@form.factory'
             - '@templating'
+            - '@translator'
 
     pim_enrich.controller.rest.job_instance:
+        public: true
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi\JobInstanceController'
         arguments:
             - '@akeneo_batch.job.job_instance_repository'

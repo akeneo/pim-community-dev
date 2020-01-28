@@ -5,6 +5,9 @@ default:
                 - '%paths.base%/../features'
             contexts:
                 - akeneo_assetmanager.tests.back.acceptance.context.edit_asset_family_context
+                - akeneo_assetmanager.tests.back.acceptance.context.edit_asset_family_transformations_context
+                - akeneo_assetmanager.tests.back.acceptance.context.edit_asset_family_naming_convention_context
+                - akeneo_assetmanager.tests.back.acceptance.context.compute_transformations_context
                 - akeneo_assetmanager.tests.back.acceptance.context.delete_asset_family_context
                 - akeneo_assetmanager.tests.back.acceptance.context.create_asset_family_context
                 - akeneo_assetmanager.tests.back.acceptance.context.create_asset_context
@@ -24,6 +27,7 @@ default:
                 - akeneo_assetmanager.tests.back.acceptance.context.set_asset_family_permission_context
                 - akeneo_assetmanager.tests.back.acceptance.context.edit_asset.edit_media_link
                 - akeneo_assetmanager.tests.back.acceptance.context.link_assets_context
+                - akeneo_assetmanager.tests.back.acceptance.context.edit_asset.execute_naming_convention
             filters:
                 tags: '@acceptance-back'
         integration:
@@ -47,7 +51,10 @@ default:
             filters:
                 tags: '@integration-back'
     extensions:
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
+                path: src/Kernel.php
+                class: Kernel
                 environment: test_fake
                 debug: false

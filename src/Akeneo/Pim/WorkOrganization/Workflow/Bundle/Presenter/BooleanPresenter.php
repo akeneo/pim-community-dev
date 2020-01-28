@@ -31,7 +31,7 @@ class BooleanPresenter extends AbstractProductValuePresenter implements Translat
     /**
      * {@inheritdoc}
      */
-    public function supportsChange($attributeType)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
         return AttributeTypes::BOOLEAN === $attributeType;
     }

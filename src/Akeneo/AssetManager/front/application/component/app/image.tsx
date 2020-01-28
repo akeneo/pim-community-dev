@@ -1,6 +1,6 @@
 import * as React from 'react';
-import FileModel from 'akeneoassetmanager/domain/model/file';
-import {getImageShowUrl, getImageDownloadUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {File as FileModel, isFileEmpty, isFileInStorage, createEmptyFile} from 'akeneoassetmanager/domain/model/file';
+import {getImageDownloadUrl, getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
 import Trash from 'akeneoassetmanager/application/component/app/icon/trash';
@@ -63,11 +63,11 @@ class Image extends React.Component<
 
   private remove = (event: React.MouseEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>) => {
     const removeEvent = event as React.KeyboardEvent<HTMLInputElement>;
-    if ((undefined === removeEvent.key || Key.Backspace === removeEvent.key) && !this.props.image.isEmpty()) {
+    if ((undefined === removeEvent.key || Key.Backspace === removeEvent.key) && !isFileEmpty(this.props.image)) {
       this.stopEvent(event);
       this.setState({dropping: false});
       if (undefined !== this.props.onImageChange) {
-        this.props.onImageChange(FileModel.createEmpty());
+        this.props.onImageChange(createEmptyFile());
       }
     }
   };
@@ -122,7 +122,7 @@ class Image extends React.Component<
 
       return (
         <div className={className}>
-          {!this.props.image.isEmpty() ? (
+          {!isFileEmpty(this.props.image) ? (
             <div className="AknImage-drop" style={{backgroundImage: `url("${url}")`}} />
           ) : null}
           {true === this.props.wide ? <img className="AknImage-display" src={url} /> : <Img src={url} />}
@@ -131,7 +131,7 @@ class Image extends React.Component<
     }
 
     const className = `AknImage AknImage--editable
-      ${this.props.image.isEmpty() ? 'AknImage--empty' : ''}
+      ${isFileEmpty(this.props.image) ? 'AknImage--empty' : ''}
       ${this.state.dropping && !this.state.loading ? 'AknImage--dropping' : ''}
       ${this.state.focusing ? 'AknImage--focusing' : ''}
       ${wide ? 'AknImage--wide' : ''}
@@ -143,7 +143,7 @@ class Image extends React.Component<
         : {width: `${this.state.ratio * 100}%`};
     return (
       <div className={className}>
-        {!this.props.image.isEmpty() && <div className="AknImage-drop" style={{backgroundImage: `url("${url}")`}} />}
+        {!isFileEmpty(this.props.image) && <div className="AknImage-drop" style={{backgroundImage: `url("${url}")`}} />}
         <input
           id={this.props.id}
           className="AknImage-updater"
@@ -160,7 +160,7 @@ class Image extends React.Component<
           value=""
           disabled={this.props.readOnly}
         />
-        {!this.props.image.isEmpty() ? (
+        {!isFileEmpty(this.props.image) ? (
           <div className="AknImage-action">
             {!this.props.readOnly ? (
               <span className="AknImage-actionItem" onClick={this.remove.bind(this)}>
@@ -168,7 +168,7 @@ class Image extends React.Component<
                 {__(`pim_asset_manager.app.image.${this.props.wide ? 'wide' : 'small'}.remove`)}
               </span>
             ) : null}
-            {this.props.image.isInStorage() ? (
+            {isFileInStorage(this.props.image) ? (
               <a className="AknImage-actionItem" href={getImageDownloadUrl(this.props.image)} tabIndex={-1}>
                 <Download color="#ffffff" className="AknImage-actionItemIcon" />{' '}
                 {__(`pim_asset_manager.app.image.${this.props.wide ? 'wide' : 'small'}.download`)}
@@ -186,12 +186,12 @@ class Image extends React.Component<
             />
           </div>
         ) : null}
-        {!this.props.image.isEmpty() ? (
+        {!isFileEmpty(this.props.image) ? (
           <div className="AknImage-displayContainer">
             {true === this.props.wide ? <img className="AknImage-display" src={url} /> : <Img src={url} />}
           </div>
         ) : null}
-        {this.props.image.isEmpty() && undefined !== this.props.onImageChange ? (
+        {isFileEmpty(this.props.image) && undefined !== this.props.onImageChange ? (
           <div className="AknImage-uploader">
             <Import className="AknImage-uploaderIllustration" />
             <span className="AknImage-uploaderHelper">

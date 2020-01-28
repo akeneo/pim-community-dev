@@ -2,8 +2,11 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,10 +18,33 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class IndexPublishedProductCommand extends ContainerAwareCommand
+class IndexPublishedProductCommand extends Command
 {
+    protected static $defaultName = 'pimee:published-product:index';
+
     /** @var integer */
     const DEFAULT_PAGE_SIZE = 100;
+
+    /** @var ProductRepositoryInterface */
+    private $productRepository;
+
+    /** @var BulkIndexerInterface */
+    private $bulkIndexer;
+
+    /** @var EntityManagerClearerInterface */
+    private $entityManagerClearer;
+
+    public function __construct(
+        ProductRepositoryInterface $productRepository,
+        BulkIndexerInterface $bulkIndexer,
+        EntityManagerClearerInterface $entityManagerClearer
+    ) {
+        parent::__construct();
+
+        $this->productRepository = $productRepository;
+        $this->bulkIndexer = $bulkIndexer;
+        $this->entityManagerClearer = $entityManagerClearer;
+    }
 
     /**
      * {@inheritdoc}
@@ -26,7 +52,6 @@ class IndexPublishedProductCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pimee:published-product:index')
             ->addOption(
                 'page-size',
                 false,
@@ -42,28 +67,24 @@ class IndexPublishedProductCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $publishedProductRepository = $this->getContainer()->get('pimee_workflow.repository.published_product');
-        $publishedProductIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.published_product_indexer');
-        $cacheClearer = $this->getContainer()->get('pim_connector.doctrine.cache_clearer');
-
         $bulkSize = $input->getOption('page-size') ?? self::DEFAULT_PAGE_SIZE;
 
-        $totalElements = $publishedProductRepository->countAll();
+        $totalElements = $this->productRepository->countAll();
 
         $output->writeln(sprintf('<info>%s published products to index</info>', $totalElements));
 
         $lastProduct = null;
         $progress = 0;
 
-        while (!empty($publishedProducts = $publishedProductRepository->searchAfter($lastProduct, $bulkSize))) {
+        while (!empty($publishedProducts = $this->productRepository->searchAfter($lastProduct, $bulkSize))) {
             $output->writeln(sprintf(
                 'Indexing published products %d to %d',
                 $progress + 1,
                 $progress + count($publishedProducts)
             ));
 
-            $publishedProductIndexer->indexAll($publishedProducts, ['index_refresh' => Refresh::disable()]);
-            $cacheClearer->clear();
+            $this->bulkIndexer->indexAll($publishedProducts, ['index_refresh' => Refresh::disable()]);
+            $this->entityManagerClearer->clear();
 
             $lastProduct = end($publishedProducts);
             $progress += count($publishedProducts);

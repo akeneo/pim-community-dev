@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "pim_enrich_attributegroup_rest_index"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "marketing": {
+        "code": "marketing",
+        "sort_order": 1,
+        "attributes": [
+          "name",
+          "description",
+          "response_time",
+          "release_date",
+          "variation_name",
+          "variation_description",
+          "collection",
+          "brand",
+          "designer"
+        ],
+        "labels": {"en_US": "Marketing", "fr_FR": "Marketing", "de_DE": "Marketing"},
+        "permissions": {"view": ["IT support", "Manager", "Redactor"], "edit": ["IT support", "Manager", "Redactor"]},
+        "attributes_sort_order": {
+          "brand": 3,
+          "collection": 2,
+          "description": 3,
+          "name": 2,
+          "Packshot": 0,
+          "release_date": 5,
+          "response_time": 4,
+          "variation_description": 5,
+          "variation_name": 4
+        },
+        "meta": {"id": 1}
+      }
+    }
+  }
+}

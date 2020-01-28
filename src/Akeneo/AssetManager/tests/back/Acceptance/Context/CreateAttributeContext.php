@@ -78,6 +78,7 @@ class CreateAttributeContext implements Context
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
         $attributeData['value_per_channel'] = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
         $attributeData['value_per_locale'] = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
@@ -115,6 +116,7 @@ class CreateAttributeContext implements Context
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['is_read_only'] = json_decode($expected['is_read_only']);
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
         $expected['max_length'] = $expected['max_length'] !== 'null' ? (int) $expected['max_length'] : null;
@@ -145,6 +147,7 @@ class CreateAttributeContext implements Context
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
         $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
@@ -178,6 +181,7 @@ class CreateAttributeContext implements Context
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['is_read_only'] = json_decode($expected['is_read_only']);
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
         $expected['asset_type'] = (string) $expected['asset_type'];
@@ -204,6 +208,7 @@ class CreateAttributeContext implements Context
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
         $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
@@ -238,6 +243,7 @@ class CreateAttributeContext implements Context
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['is_read_only'] = json_decode($expected['is_read_only']);
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
         $expected['asset_type'] = (string) $expected['asset_type'];
@@ -272,20 +278,21 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @When /^the user creates an image attribute "([^"]*)" linked to the asset family "([^"]*)" with:$/
+     * @When /^the user creates a media file attribute "([^"]*)" linked to the asset family "([^"]*)" with:$/
      */
-    public function theUserCreatesAnImageAttributeLinkedToTheAssetFamilyWith(
+    public function theUserCreatesAMediaFileAttributeLinkedToTheAssetFamilyWith(
         $attributeCode,
         $assetFamilyIdentifier,
         TableNode $attributeData
     ) {
         $attributeData = current($attributeData->getHash());
 
-        $attributeData['type'] = 'image';
+        $attributeData['type'] = 'media_file';
         $attributeData['code'] = $attributeCode;
         $attributeData['asset_family_identifier'] = $assetFamilyIdentifier;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
         $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
@@ -302,7 +309,7 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is an image attribute "([^"]*)" in the asset family "([^"]*)" with:$/
+     * @Then /^there is a media file attribute "([^"]*)" in the asset family "([^"]*)" with:$/
      */
     public function thereIsAnAttributeWith(
         string $attributeCode,
@@ -321,6 +328,7 @@ class CreateAttributeContext implements Context
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['is_read_only'] = json_decode($expected['is_read_only']);
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
         $expected['allowed_extensions'] = json_decode($expected['allowed_extensions']);
@@ -348,6 +356,7 @@ class CreateAttributeContext implements Context
             $attributeData['code'] = $attributeCode;
             $attributeData['order'] = $i;
             $attributeData['is_required'] = false;
+            $attributeData['is_read_only'] = false;
             $attributeData['value_per_channel'] = false;
             $attributeData['value_per_locale'] = false;
             $attributeData['labels'] = [];
@@ -377,6 +386,7 @@ class CreateAttributeContext implements Context
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
         $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
@@ -405,6 +415,7 @@ class CreateAttributeContext implements Context
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
         $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
@@ -434,6 +445,7 @@ class CreateAttributeContext implements Context
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
         $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
@@ -464,6 +476,7 @@ class CreateAttributeContext implements Context
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['is_read_only'] = json_decode($expected['is_read_only']);
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
         $expected['options'] = [];
@@ -489,6 +502,7 @@ class CreateAttributeContext implements Context
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
         $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
@@ -518,6 +532,7 @@ class CreateAttributeContext implements Context
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['is_read_only'] = json_decode($expected['is_read_only']);
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
         $expected['options'] = [];
@@ -545,6 +560,7 @@ class CreateAttributeContext implements Context
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
         $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
@@ -576,6 +592,7 @@ class CreateAttributeContext implements Context
         $expected['code'] = $attributeCode;
         $expected['order'] = (int)$expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['is_read_only'] = json_decode($expected['is_read_only']);
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
         $expected['labels'] = json_decode($expected['labels'], true);
@@ -603,6 +620,7 @@ class CreateAttributeContext implements Context
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
         $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
@@ -635,6 +653,7 @@ class CreateAttributeContext implements Context
         $expected['code'] = $attributeCode;
         $expected['order'] = (int)$expected['order'];
         $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['is_read_only'] = json_decode($expected['is_read_only']);
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
         $expected['labels'] = json_decode($expected['labels'], true);

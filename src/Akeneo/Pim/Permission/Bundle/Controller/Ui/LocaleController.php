@@ -13,13 +13,13 @@ namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Permission\Bundle\Form\Type\LocaleType;
-use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Templating\EngineInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Locale controller for configuration
@@ -31,18 +31,17 @@ class LocaleController
     /** @var FormFactoryInterface */
     protected $formFactory;
 
-    /**
-     * @var EngineInterface
-     */
+    /** @var EngineInterface */
     private $templating;
 
-    /**
-     * @param FormFactoryInterface $formFactory
-     */
-    public function __construct(FormFactoryInterface $formFactory, EngineInterface $engine)
+    /** @var TranslatorInterface */
+    private $translator;
+
+    public function __construct(FormFactoryInterface $formFactory, EngineInterface $engine, TranslatorInterface $translator)
     {
         $this->formFactory = $formFactory;
         $this->templating = $engine;
+        $this->translator = $translator;
     }
 
     /**
@@ -60,7 +59,7 @@ class LocaleController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $request->getSession()->getFlashBag()->add('success', new Message('flash.locale.updated'));
+                $request->getSession()->getFlashBag()->add('success', $this->translator->trans('flash.locale.updated'));
 
                 return new JsonResponse(
                     [

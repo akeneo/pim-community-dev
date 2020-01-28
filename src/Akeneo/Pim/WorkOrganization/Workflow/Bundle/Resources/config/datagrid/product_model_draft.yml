@@ -11,7 +11,7 @@ datagrid:
             entity: '%pimee_workflow.model.product_model_draft.class%'
             repository_method: createDatagridQueryBuilder
         columns:
-            author:
+            author_label:
                 label: pimee_workflow.product_draft.author
                 type: field
                 frontend_type: string
@@ -63,7 +63,7 @@ datagrid:
                             multiple: true
         sorters:
             columns:
-                author:
+                author_label:
                     data_name: author
                 status:
                     data_name: status

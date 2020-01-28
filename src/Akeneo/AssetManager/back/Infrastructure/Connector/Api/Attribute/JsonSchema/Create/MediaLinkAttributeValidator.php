@@ -11,7 +11,6 @@
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use JsonSchema\Validator;
 
 class MediaLinkAttributeValidator implements AttributeValidatorInterface
@@ -59,6 +58,9 @@ class MediaLinkAttributeValidator implements AttributeValidatorInterface
                 ],
                 'is_required_for_completeness' => [
                     'type' => ['boolean'],
+                ],
+                'is_read_only' => [
+                    'type' => [ 'boolean'],
                 ],
                 'media_type' => [
                     'type' => ['string'],

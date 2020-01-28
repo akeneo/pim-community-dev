@@ -13,17 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
@@ -34,7 +32,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
@@ -42,14 +41,9 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetDetails;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
-use Akeneo\UserManagement\Component\Model\User;
-use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    /** @var Client */
-    private $client;
-
     /** @var WebClientHelper */
     private $webClientHelper;
 
@@ -60,8 +54,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
-            ->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
         $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
 
@@ -94,6 +87,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(25),
@@ -110,6 +104,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'Description']),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(25),
@@ -125,6 +120,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'Website']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(25),
@@ -133,22 +129,24 @@ class GetActionTest extends ControllerIntegrationTestCase
         );
         $this->attributeRepository->create($websiteAttribute);
 
-        // image attribute
-        $portraitAttribute = ImageAttribute::create(
+        // media file attribute
+        $portraitAttribute = MediaFileAttribute::create(
             AttributeIdentifier::create('designer', 'portrait', 'fingerprint'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('200.10'),
-            AttributeAllowedExtensions::fromList(['png'])
+            AttributeAllowedExtensions::fromList(['png']),
+            MediaType::fromString(MediaType::IMAGE)
         );
         $this->attributeRepository->create($portraitAttribute);
 
-        // image attribute
+        // media file attribute
         $age = NumberAttribute::create(
             AttributeIdentifier::create('designer', 'age', 'fingerprint'),
             AssetFamilyIdentifier::fromString('designer'),
@@ -156,6 +154,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'Age', 'en_US' => 'Age']),
             AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeDecimalsAllowed::fromBoolean(false),
@@ -206,9 +205,10 @@ class GetActionTest extends ControllerIntegrationTestCase
         $starck = new AssetDetails(
             AssetIdentifier::fromString('designer_starck_a1677570-a278-444b-ab46-baa1db199392'),
             AssetFamilyIdentifier::fromString('designer'),
+            $portraitAttribute->getIdentifier(),
             AssetCode::fromString('starck'),
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
-            Image::createEmpty(),
+            [],
             $values,
             true
         );

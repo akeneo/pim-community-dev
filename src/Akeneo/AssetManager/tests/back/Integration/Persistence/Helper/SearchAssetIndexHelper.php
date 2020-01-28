@@ -27,8 +27,6 @@ class SearchAssetIndexHelper
     /** @var Client */
     private $assetClient;
 
-    private const INDEX_TYPE = 'pimee_asset_family_asset';
-
     public function __construct(Client $assetClient)
     {
         $this->assetClient = $assetClient;
@@ -46,7 +44,7 @@ class SearchAssetIndexHelper
                 throw new \InvalidArgumentException('Expect to index asset with a "identifier" property. None found.');
             }
 
-            $this->assetClient->index(self::INDEX_TYPE, $asset['identifier'], $asset);
+            $this->assetClient->index($asset['identifier'], $asset);
         }
 
         $this->assetClient->refreshIndex();
@@ -112,7 +110,7 @@ class SearchAssetIndexHelper
 
     public function executeQuery(array $query): array
     {
-        $matches = $this->assetClient->search(self::INDEX_TYPE, $query);
+        $matches = $this->assetClient->search($query);
         $documents = $matches['hits']['hits'] ?? [];
 
         $matchingIdentifiers = [];

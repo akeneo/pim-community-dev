@@ -14,7 +14,6 @@ namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductModelController as BaseProductModelController;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
@@ -32,7 +31,6 @@ class ProductModelController extends BaseProductModelController
 
     /**
      * @param ProductModelRepositoryInterface       $productModelRepository
-     * @param EntityWithFamilyValuesFillerInterface $valuesFiller
      * @param CategoryRepositoryInterface           $categoryRepository
      * @param SecurityFacade                        $securityFacade
      * @param string                                $categoryClass
@@ -42,7 +40,6 @@ class ProductModelController extends BaseProductModelController
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
-        EntityWithFamilyValuesFillerInterface $valuesFiller,
         CategoryRepositoryInterface $categoryRepository,
         SecurityFacade $securityFacade,
         string $categoryClass,
@@ -52,7 +49,6 @@ class ProductModelController extends BaseProductModelController
     ) {
         parent::__construct(
             $productModelRepository,
-            $valuesFiller,
             $categoryRepository,
             $securityFacade,
             $categoryClass,

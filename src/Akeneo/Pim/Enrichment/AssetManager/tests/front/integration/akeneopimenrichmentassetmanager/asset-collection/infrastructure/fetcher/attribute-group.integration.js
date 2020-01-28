@@ -5,11 +5,9 @@ let page = global.__PAGE__;
 // Setup to intercept the calls and return a fake response
 beforeEach(async () => {
   page.on('request', interceptedRequest => {
+    const baseUrl = interceptedRequest.url().split('?')[0];
     // Intercept the call to get the product attribute groups
-    if (
-      'http://pim.com/rest/attribute-group/' === interceptedRequest.url() &&
-      'GET' === interceptedRequest.method()
-    ) {
+    if ('http://pim.com/rest/attribute-group/' === baseUrl && 'GET' === interceptedRequest.method()) {
       const attributeGroups = {
         marketing: {
           code: 'marketing',
@@ -70,6 +68,9 @@ beforeEach(async () => {
 it('It fetches all product attribute groups of asset', async () => {
   // It fetches the product attribute groups
   const response = await page.evaluate(async () => {
+    // Sometimes this test fails on circle ci. This wait should mitigate that
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     const fetchAssetAttributeGroups = require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute-group')
       .fetchAssetAttributeGroups;
     const fetcherRegistry = require('pim/fetcher-registry');

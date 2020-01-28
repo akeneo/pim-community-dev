@@ -16,12 +16,15 @@ namespace Akeneo\Pim\Permission\Component\Merger;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
+use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
+use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Merge not granted values with new values. Example:
@@ -53,7 +56,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *      ]
  *    }
  * }
- * (@see \Akeneo\Pim\Permission\Component\Factory\ValueCollectionFactory)
  *
  * When user will update "my_product":
  * {
@@ -85,34 +87,23 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
 {
-    /** @var AuthorizationCheckerInterface */
-    private $authorizationChecker;
+    /** @var GetViewableAttributeCodesForUserInterface */
+    private $getViewableAttributeCodes;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAllViewableLocalesForUser */
+    private $getViewableLocaleCodesForUser;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $localeRepository;
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
 
-    /** @var WriteValueCollectionFactory */
-    private $valueCollectionFactory;
-
-    /**
-     * @param AuthorizationCheckerInterface         $authorizationChecker
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository
-     * @param IdentifiableObjectRepositoryInterface $localeRepository
-     * @param WriteValueCollectionFactory       $valueCollectionFactory
-     */
     public function __construct(
-        AuthorizationCheckerInterface $authorizationChecker,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        WriteValueCollectionFactory $valueCollectionFactory
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
+        GetAllViewableLocalesForUser $getViewableLocaleCodesForUser,
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->attributeRepository = $attributeRepository;
-        $this->localeRepository = $localeRepository;
-        $this->valueCollectionFactory = $valueCollectionFactory;
+        $this->getViewableAttributeCodes = $getViewableAttributeCodes;
+        $this->getViewableLocaleCodesForUser = $getViewableLocaleCodesForUser;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -132,76 +123,54 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullEntityWithValues), EntityWithValuesInterface::class);
         }
 
-        $rawValuesToMerge = [];
-        foreach ($fullEntityWithValues->getRawValues() as $attributeCode => $values) {
-            $isGrantedAttribute = $this->isGrantedAttribute($attributeCode);
-            if (null !== $isGrantedAttribute && false === $isGrantedAttribute) {
-                $rawValuesToMerge[$attributeCode] = $values;
-            } else {
-                $notGrantedValuesLocalizable = $this->getNotGrantedValuesLocalizable($values);
-
-                if (!empty($notGrantedValuesLocalizable)) {
-                    $rawValuesToMerge[$attributeCode] = $notGrantedValuesLocalizable;
-                }
-            }
-        }
-
         if ($filteredEntityWithValues instanceof EntityWithFamilyVariantInterface &&
             null !== $filteredEntityWithValues->getFamilyVariant()
         ) {
-            $values = clone $filteredEntityWithValues->getValuesForVariation();
+            $originalValues = WriteValueCollection::fromCollection($fullEntityWithValues->getValuesForVariation());
+            $newValues = WriteValueCollection::fromCollection($filteredEntityWithValues->getValuesForVariation());
         } else {
-            $values = clone $filteredEntityWithValues->getValues();
+            $originalValues = WriteValueCollection::fromCollection($fullEntityWithValues->getValues());
+            $newValues = WriteValueCollection::fromCollection($filteredEntityWithValues->getValues());
         }
 
-        $fullEntityWithValues->setValues($values);
+        $userId = $this->getUserId();
+        if (-1 !== $userId) {
+            $grantedAttributeCodes = array_flip(
+                $this->getViewableAttributeCodes->forAttributeCodes(
+                    $originalValues->getAttributeCodes(),
+                    $userId
+                )
+            );
+            $grantedLocaleCodes = $this->getViewableLocaleCodesForUser->fetchAll($userId);
 
-        if (!empty($rawValuesToMerge)) {
-            $notGrantedValues = $this->valueCollectionFactory->createFromStorageFormat($rawValuesToMerge);
-
-            foreach ($notGrantedValues as $notGrantedValue) {
-                $fullEntityWithValues->addValue($notGrantedValue);
+            foreach ($originalValues as $key => $originalValue) {
+                if (!isset($grantedAttributeCodes[$originalValue->getAttributeCode()]) ||
+                    ($originalValue->isLocalizable() && !in_array($originalValue->getLocaleCode(), $grantedLocaleCodes))
+                ) {
+                    Assert::false($newValues->containsKey($key));
+                    $newValues->add($originalValue);
+                }
             }
         }
+        $fullEntityWithValues->setValues($newValues);
 
         return $fullEntityWithValues;
     }
 
-    /**
-     * @param array $values
-     *
-     * @return array
-     */
-    private function getNotGrantedValuesLocalizable(array $values): array
+    private function getUserId(): int
     {
-        $notGrantedValues = [];
+        if (null === $this->tokenStorage->getToken() || null === $this->tokenStorage->getToken()->getUser()) {
+            throw new \RuntimeException('Could not find any authenticated user');
+        }
 
-        foreach ($values as $channelCode => $localeRawValue) {
-            foreach ($localeRawValue as $localeCode => $data) {
-                if ('<all_locales>' !== $localeCode) {
-                    $locale = $this->localeRepository->findOneByIdentifier($localeCode);
-                    if (null !== $locale && !$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
-                        $notGrantedValues[$channelCode][$localeCode] = $data;
-                    }
-                }
+        $user = $this->tokenStorage->getToken()->getUser();
+        if (null === $user->getId()) {
+            if (UserInterface::SYSTEM_USER_NAME === $user->getUsername()) {
+                return -1;
             }
+            throw new \RuntimeException('Could not find any authenticated user');
         }
 
-        return $notGrantedValues;
-    }
-
-    /**
-     * @param mixed $attributeCode
-     *
-     * @return bool|null
-     */
-    private function isGrantedAttribute($attributeCode): ?bool
-    {
-        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-        if (null === $attribute) {
-            return null;
-        }
-
-        return $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute);
+        return $user->getId();
     }
 }

@@ -10,7 +10,7 @@ Feature: Lists all attributes related to an asset family
       | code           | type              | labels                                  |
       | name           | text              | {"en_US": "Name", "fr_FR": "Name"}      |
       | bio            | text              | {"en_US": "Bio", "fr_FR": "Biographie"} |
-      | portrait       | image             | {"en_US": "Portrait", "fr_FR": "Image"} |
+      | portrait       | media_file             | {"en_US": "Portrait", "fr_FR": "Image"} |
       | favorite_color | option            | {"en_US": "Favorite Color"}             |
       | colors         | option_collection | {"en_US": "Colors"}                     |
     When the user asks for the asset family "designer"
@@ -18,7 +18,7 @@ Feature: Lists all attributes related to an asset family
       | code           | type              |
       | name           | text              |
       | bio            | text              |
-      | portrait       | image             |
+      | portrait       | media_file             |
       | favorite_color | option            |
       | colors         | option_collection |
 

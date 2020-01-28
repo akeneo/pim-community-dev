@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
@@ -50,7 +52,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $this->assertEmailAttribute($attributeDetails);
         $this->assertCustomRegex($attributeDetails);
         $this->assertLongDescriptionAttribute($attributeDetails);
-        $this->assertImageAttribute($attributeDetails);
+        $this->assertMediaFileAttribute($attributeDetails);
     }
 
     private function resetDB(): void
@@ -178,12 +180,12 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
      * @param $attributeDetails
      *
      */
-    private function assertImageAttribute($attributeDetails): void
+    private function assertMediaFileAttribute($attributeDetails): void
     {
         $actualImage = $this->getAttributeWithCode($attributeDetails, 'main_image');
 
         $expectedImage = new AttributeDetails();
-        $expectedImage->type = 'image';
+        $expectedImage->type = 'media_file';
         $expectedImage->identifier = (string) $this->fixturesDesigner['attributes']['main_image']->getIdentifier();
         $expectedImage->assetFamilyIdentifier = 'designer';
         $expectedImage->code = 'main_image';
@@ -195,6 +197,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedImage->additionalProperties = [
             'max_file_size' => '1000',
             'allowed_extensions' => ['png'],
+            'media_type' => MediaType::IMAGE
         ];
 
         $this->assertEquals($expectedImage, $actualImage);

@@ -35,7 +35,7 @@ class SelectActiveLocaleCodesManagedByFranklinQueryIntegration extends TestCase
 
     private function getQuery(): SelectActiveLocaleCodesManagedByFranklinQuery
     {
-        return $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_active_locale_codes_managed_by_franklin');
+        return $this->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_active_locale_codes_managed_by_franklin');
     }
 
     /**

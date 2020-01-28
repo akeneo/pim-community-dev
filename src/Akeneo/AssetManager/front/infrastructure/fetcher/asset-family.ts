@@ -1,5 +1,5 @@
-import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
-import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import hydrator from 'akeneoassetmanager/application/hydrator/asset-family';
 import hydrateAll from 'akeneoassetmanager/application/hydrator/hydrator';
 import {getJSON} from 'akeneoassetmanager/tools/fetch';
@@ -8,15 +8,14 @@ import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler'
 import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import hydrateAttribute from 'akeneoassetmanager/application/hydrator/attribute';
 import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
-import AssetFamilyListItem, {denormalizeAssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/list';
+import validateBackendAssetFamily from 'akeneoassetmanager/infrastructure/validator/asset-family';
+import {
+  AssetFamilyListItem,
+  createAssetFamilyListItemFromNormalized,
+} from 'akeneoassetmanager/domain/model/asset-family/list';
+import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
 
 const routing = require('routing');
-
-export interface AssetFamilyFetcher {
-  fetch: (identifier: AssetFamilyIdentifier) => Promise<AssetFamilyResult>;
-  fetchAll: () => Promise<AssetFamilyListItem[]>;
-  search: (query: Query) => Promise<SearchResult<AssetFamilyListItem>>;
-}
 
 export type AssetFamilyResult = {
   assetFamily: AssetFamily;
@@ -27,9 +26,11 @@ export type AssetFamilyResult = {
 
 export class AssetFamilyFetcherImplementation implements AssetFamilyFetcher {
   async fetch(identifier: AssetFamilyIdentifier): Promise<AssetFamilyResult> {
-    const backendAssetFamily = await getJSON(
+    const data = await getJSON(
       routing.generate('akeneo_asset_manager_asset_family_get_rest', {identifier: identifier})
     ).catch(errorHandler);
+
+    const backendAssetFamily = validateBackendAssetFamily(data);
 
     return {
       assetFamily: hydrator(backendAssetFamily),
@@ -49,7 +50,7 @@ export class AssetFamilyFetcherImplementation implements AssetFamilyFetcher {
       errorHandler
     );
 
-    return hydrateAll<AssetFamilyListItem>(denormalizeAssetFamilyListItem)(backendAssetFamilies.items);
+    return hydrateAll<AssetFamilyListItem>(createAssetFamilyListItemFromNormalized)(backendAssetFamilies.items);
   }
 
   async search(): Promise<SearchResult<AssetFamilyListItem>> {
@@ -57,7 +58,7 @@ export class AssetFamilyFetcherImplementation implements AssetFamilyFetcher {
       errorHandler
     );
 
-    const items = hydrateAll<AssetFamilyListItem>(denormalizeAssetFamilyListItem)(backendAssetFamilies.items);
+    const items = hydrateAll<AssetFamilyListItem>(createAssetFamilyListItemFromNormalized)(backendAssetFamilies.items);
 
     return {
       items,

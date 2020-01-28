@@ -16,7 +16,6 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
-use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -37,9 +36,6 @@ class ProposalWidget implements WidgetInterface
     /** @var EntityWithValuesDraftRepositoryInterface */
     protected $productModelDraftRepository;
 
-    /** @var UserManager */
-    protected $userManager;
-
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
@@ -53,7 +49,6 @@ class ProposalWidget implements WidgetInterface
         AuthorizationCheckerInterface $authorizationChecker,
         EntityWithValuesDraftRepositoryInterface $productDraftRepository,
         EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
-        UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         PresenterInterface $presenter,
         RouterInterface $router
@@ -61,7 +56,6 @@ class ProposalWidget implements WidgetInterface
         $this->authorizationChecker = $authorizationChecker;
         $this->productDraftRepository = $productDraftRepository;
         $this->productModelDraftRepository = $productModelDraftRepository;
-        $this->userManager = $userManager;
         $this->tokenStorage = $tokenStorage;
         $this->presenter = $presenter;
         $this->router = $router;
@@ -115,7 +109,7 @@ class ProposalWidget implements WidgetInterface
             $result[] = [
                 'productId'        => $proposal->getEntityWithValue()->getId(),
                 'productLabel'     => $proposal->getEntityWithValue()->getLabel(),
-                'authorFullName'   => $this->getAuthorFullName($proposal->getAuthor()),
+                'authorFullName'   => $proposal->getAuthorLabel(),
                 'productReviewUrl' => $route . $this->getProposalGridParametersAsUrl(
                         $proposal->getAuthor(),
                         $proposal instanceof ProductDraft ? $proposal->getEntityWithValue()->getIdentifier() : $proposal->getEntityWithValue()->getCode()
@@ -141,25 +135,6 @@ class ProposalWidget implements WidgetInterface
     protected function isDisplayable()
     {
         return $this->authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY);
-    }
-
-    /**
-     * Get author full name for given $authorUsername
-     *
-     * @param string $authorUsername
-     *
-     * @return string
-     */
-    protected function getAuthorFullName($authorUsername)
-    {
-        $user = $this->userManager->findUserByUsername($authorUsername);
-        $authorName = $authorUsername;
-
-        if ($user) {
-            $authorName = sprintf('%s %s', $user->getFirstName(), $user->getLastName());
-        }
-
-        return $authorName;
     }
 
     /**

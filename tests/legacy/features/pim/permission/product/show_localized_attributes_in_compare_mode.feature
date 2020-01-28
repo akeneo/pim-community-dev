@@ -11,9 +11,12 @@ Feature: Show localized attributes in compare mode
       | decimal_price  | decimal_price  | pim_catalog_price_collection | 1                |                  |               |                     | 1           | other |
       | decimal_number | decimal_number | pim_catalog_number           | 1                | 0                |               |                     | 1           | other |
       | decimal_metric | decimal_metric | pim_catalog_metric           | 1                | 0                | Length        | CENTIMETER          | 1           | other |
+    And the following family:
+      | code  | attributes                                      |
+      | shoes | sku,decimal_price,decimal_number,decimal_metric |
     And the following products:
-      | sku     | decimal_number-en_US | decimal_price-fr_FR  | decimal_number-fr_FR | decimal_metric-fr_FR |
-      | sandals | 1                    | 10.12 USD, 10.12 EUR | 12.1234              | 10.3456 CENTIMETER   |
+      | sku     | family | decimal_number-en_US | decimal_price-fr_FR  | decimal_number-fr_FR | decimal_metric-fr_FR |
+      | sandals | shoes  | 1                    | 10.12 USD, 10.12 EUR | 12.1234              | 10.3456 CENTIMETER   |
 
   Scenario: Successfully show English format numbers for English UI
     Given I am logged in as "Mary"

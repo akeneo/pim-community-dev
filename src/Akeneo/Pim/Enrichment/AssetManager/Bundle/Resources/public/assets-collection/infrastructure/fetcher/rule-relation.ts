@@ -1,5 +1,5 @@
 import promisify from 'akeneoassetmanager/tools/promisify';
-import {RuleRelation} from 'akeneopimenrichmentassetmanager/platform/model/structure/rule-relation';
+import {RuleRelation} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 import {isString, isArray} from 'akeneoassetmanager/domain/model/utils';
 const ruleManager = require('pimee/rule-manager');
 

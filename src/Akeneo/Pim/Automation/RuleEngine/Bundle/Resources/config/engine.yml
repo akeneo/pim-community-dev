@@ -52,5 +52,4 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_versioning.context.version'
             - '@translator'
-            - '@pim_catalog.saver.product_model_descendants'
             - '@pim_connector.doctrine.cache_clearer'

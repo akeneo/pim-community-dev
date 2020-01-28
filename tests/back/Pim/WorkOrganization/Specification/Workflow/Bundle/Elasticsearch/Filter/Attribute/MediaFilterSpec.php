@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute;
 
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
@@ -14,10 +16,11 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\P
 
 class MediaFilterSpec extends ObjectBehavior
 {
-    function let(ProposalAttributePathResolver $attributePathResolver)
+    function let(ProposalAttributePathResolver $attributePathResolver, AttributeValidatorHelper $attributeValidatorHelper)
     {
         $this->beConstructedWith(
             $attributePathResolver,
+            $attributeValidatorHelper,
             ['pim_catalog_file', 'pim_catalog_image'],
             ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'EMPTY', 'NOT EMPTY']
         );
@@ -312,5 +315,23 @@ class MediaFilterSpec extends ObjectBehavior
                 MediaFilter::class
             )
         )->during('addAttributeFilter', [$name, Operators::IN_CHILDREN_LIST, 'Sony']);
+    }
+
+    function it_throws_an_exception_when_it_filters_on_an_unsupported_locale(
+        ProposalAttributePathResolver $attributePathResolver,
+        AttributeValidatorHelper $attributeValidatorHelper,
+        AttributeInterface $name,
+        SearchQueryBuilder $sqb
+    ) {
+        $name->getCode()->willReturn('an_image');
+        $name->getBackendType()->willReturn('media');
+
+        $attributePathResolver->getAttributePaths($name)->willReturn(['values.an_image-media.ecommerce.en_US']);
+        $attributeValidatorHelper->validateLocale($name, 'to_TO')->willThrow(\LogicException::class);
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyException::class
+        )->during('addAttributeFilter', [$name, Operators::CONTAINS, 'Sony', 'to_TO']);
     }
 }

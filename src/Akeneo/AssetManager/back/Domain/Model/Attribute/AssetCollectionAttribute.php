@@ -34,6 +34,7 @@ class AssetCollectionAttribute extends AbstractAttribute
         LabelCollection $labelCollection,
         AttributeOrder $order,
         AttributeIsRequired $isRequired,
+        AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AssetFamilyIdentifier $assetType
@@ -45,6 +46,7 @@ class AssetCollectionAttribute extends AbstractAttribute
             $labelCollection,
             $order,
             $isRequired,
+            $isReadOnly,
             $valuePerChannel,
             $valuePerLocale
         );
@@ -59,6 +61,7 @@ class AssetCollectionAttribute extends AbstractAttribute
         LabelCollection $labelCollection,
         AttributeOrder $order,
         AttributeIsRequired $isRequired,
+        AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AssetFamilyIdentifier $assetType
@@ -70,6 +73,7 @@ class AssetCollectionAttribute extends AbstractAttribute
             $labelCollection,
             $order,
             $isRequired,
+            $isReadOnly,
             $valuePerChannel,
             $valuePerLocale,
             $assetType

@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
@@ -34,9 +37,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Except
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\WarningCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\SubscriptionsCursor;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

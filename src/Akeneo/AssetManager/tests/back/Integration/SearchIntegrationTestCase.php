@@ -27,9 +27,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 abstract class SearchIntegrationTestCase extends KernelTestCase
 {
-    /** @var KernelInterface|null */
-    protected $testKernel;
-
     /** @var SearchAssetIndexHelper */
     protected $searchAssetIndexHelper;
 
@@ -38,24 +35,13 @@ abstract class SearchIntegrationTestCase extends KernelTestCase
      */
     protected function setUp(): void
     {
-        if (null === $this->testKernel) {
-            $this->bootTestKernel();
-        }
+        static::bootKernel(['debug' => false]);
         $this->searchAssetIndexHelper = $this->get('akeneoasset_manager.tests.helper.search_index_helper');
         $this->searchAssetIndexHelper->resetIndex();
     }
 
-    protected function bootTestKernel(): void
-    {
-        $this->testKernel = new \AppKernelTest('test', false);
-        $this->testKernel->boot();
-    }
-
-    /*
-     * @return mixed
-     */
     protected function get(string $service)
     {
-        return $this->testKernel->getContainer()->get($service);
+        return self::$container->get($service);
     }
 }

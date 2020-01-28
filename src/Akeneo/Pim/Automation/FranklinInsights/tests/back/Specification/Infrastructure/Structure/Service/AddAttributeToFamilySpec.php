@@ -21,7 +21,6 @@ use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyRepository;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
-use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

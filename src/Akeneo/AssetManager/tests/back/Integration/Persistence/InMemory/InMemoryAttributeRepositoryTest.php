@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
@@ -58,6 +59,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -84,6 +86,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -110,6 +113,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -139,6 +143,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -191,6 +196,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(255),
@@ -219,6 +225,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
             LabelCollection::fromArray(['en_US' => 'description', 'fr_FR' => 'description']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(255),
@@ -237,6 +244,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(255),
@@ -266,6 +274,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),

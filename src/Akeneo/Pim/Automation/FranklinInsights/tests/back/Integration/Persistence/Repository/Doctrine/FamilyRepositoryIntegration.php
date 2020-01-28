@@ -34,22 +34,22 @@ class FamilyRepositoryIntegration extends TestCase
     {
         parent::setUp();
 
-        $testFamily = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family')->build([
+        $testFamily = $this->get('akeneo_ee_integration_tests.builder.family')->build([
             'code' => self::TEST_FAMILY_CODE,
             'labels' => self::TEST_FAMILY_LABELS,
             'attributes' => ['sku'],
         ]);
-        $this->getFromTestContainer('validator')->validate($testFamily);
+        $this->get('validator')->validate($testFamily);
 
-        $controlFamily = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family')->build([
+        $controlFamily = $this->get('akeneo_ee_integration_tests.builder.family')->build([
             'code' => self::CONTROL_FAMILY_CODE,
             'labels' => self::CONTROL_FAMILY_LABELS,
             'attributes' => ['sku'],
         ]);
-        $this->getFromTestContainer('validator')->validate($controlFamily);
+        $this->get('validator')->validate($controlFamily);
 
         $this
-            ->getFromTestContainer('pim_catalog.saver.family')
+            ->get('pim_catalog.saver.family')
             ->saveAll([$testFamily, $controlFamily]);
     }
 

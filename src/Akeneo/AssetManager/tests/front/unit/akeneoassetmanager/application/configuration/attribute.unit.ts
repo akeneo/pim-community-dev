@@ -233,25 +233,25 @@ Actual conf: ${JSON.stringify({text: {}})}`);
           icon: 'icon.svg',
           reducer: {},
         },
-        image: {
+        media_file: {
           icon: 'icon.svg',
           reducer: {},
         },
       })()
     ).toEqual([
       {icon: 'icon.svg', identifier: 'text', label: 'pim_asset_manager.attribute.type.text'},
-      {icon: 'icon.svg', identifier: 'image', label: 'pim_asset_manager.attribute.type.image'},
+      {icon: 'icon.svg', identifier: 'media_file', label: 'pim_asset_manager.attribute.type.media_file'},
     ]);
   });
 
-  test('I can get an attributet icon', () => {
+  test('I can get an attribute icon', () => {
     expect(
       getIcon({
         text: {
           icon: 'icon_text.svg',
           reducer: {},
         },
-        image: {
+        media_file: {
           icon: 'icon_image.svg',
           reducer: {},
         },

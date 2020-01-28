@@ -18,10 +18,18 @@ use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NullNamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformation;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
@@ -89,11 +97,25 @@ class GetConnectorAssetFamilyContext implements Context
             ]
         ];
 
+        $connectorTransformations = new ConnectorTransformationCollection([
+            new ConnectorTransformation(
+                TransformationLabel::fromString('the_label'),
+                Source::createFromNormalized(['attribute' => 'main', 'channel' => null, 'locale' => null]),
+                Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => null]),
+                OperationCollection::create([ThumbnailOperation::create(['width' => 100, 'height' => 80])]),
+                null,
+                '_2'
+            )
+        ]);
+
         $assetFamily = new ConnectorAssetFamily(
             $assetFamilyIdentifier,
             LabelCollection::fromArray(['fr_FR' => 'Marque']),
             Image::fromFileInfo($imageInfo),
-            $productLinkRules
+            $productLinkRules,
+            $connectorTransformations,
+            new NullNamingConvention(),
+            null
         );
 
         $this->findConnectorAssetFamily->save(
@@ -124,7 +146,7 @@ class GetConnectorAssetFamilyContext implements Context
     }
 
     /**
-     * @Then /^the PIM returns the label, image properties and rule templates of Brand asset family$/
+     * @Then /^the PIM returns the label, media_file properties and rule templates of Brand asset family$/
      */
     public function thePIMReturnsTheBrandAssetFamily(): void
     {

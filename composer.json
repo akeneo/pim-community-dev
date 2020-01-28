@@ -17,16 +17,11 @@
             "Pim\\Upgrade\\": "upgrades/",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/back",
-            "Akeneo\\Pim\\Automation\\FranklinInsights\\": "src/Akeneo/Pim/Automation/FranklinInsights"
+            "Akeneo\\Connectivity\\Connection\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back",
+            "Akeneo\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/back"
         },
-        "classmap": [
-            "app/AppKernel.php",
-            "app/AppCache.php",
-            "tests/back/Integration/AppKernelTest.php"
-        ],
         "exclude-from-classmap": [
-            "vendor/akeneo/pim-community-dev/app/AppKernel.php",
-            "vendor/akeneo/pim-community-dev/app/AppCache.php"
+            "vendor/akeneo/pim-community-dev/src/Kernel.php"
         ]
     },
     "autoload-dev": {
@@ -36,43 +31,49 @@
         },
         "psr-4": {
             "Pim\\Behat\\": "vendor/akeneo/pim-community-dev/tests/legacy/features/Behat",
+            "PimEnterprise\\Behat\\": "tests/legacy/features/Behat/",
             "AkeneoTest\\": "vendor/akeneo/pim-community-dev/tests/back",
             "AkeneoTestEnterprise\\": "tests/back",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "vendor/akeneo/pim-community-dev/tests/back/Integration/IntegrationTestsBundle/",
-            "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/back/Integration/",
-            "Akeneo\\Test\\Acceptance\\": "vendor/akeneo/pim-community-dev/tests/back/Acceptance/",
-            "Akeneo\\Test\\Common\\": "vendor/akeneo/pim-community-dev/tests/back/Common/",
-            "Akeneo\\Test\\Pim\\Automation\\FranklinInsights\\": "src/Akeneo/Pim/Automation/FranklinInsights/tests/back",
-            "PimEnterprise\\Behat\\": "tests/legacy/features/Behat/",
             "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
+            "Akeneo\\Test\\": "vendor/akeneo/pim-community-dev/tests/back/",
             "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/",
+            "Akeneo\\Test\\Pim\\Automation\\FranklinInsights\\": "src/Akeneo/Pim/Automation/FranklinInsights/tests/back",
+            "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/back/tests",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/tests/back",
-            "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back"
+            "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back",
+            "Akeneo\\Connectivity\\Connection\\Tests\\Acceptance\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance",
+            "Pim\\Upgrade\\Schema\\Tests\\": "vendor/akeneo/pim-community-dev/upgrades/test_schema/",
+            "Pimee\\Upgrade\\Schema\\Tests\\": "upgrades/test_schema/"
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "3.2.x-dev@dev",
-        "phpspec/php-diff": "1.0.2",
+        "akeneo/pim-community-dev": "4.0.x-dev@dev",
         "guzzlehttp/guzzle": "6.3.3",
-        "webmozart/assert": "1.3",
-        "justinrainbow/json-schema": "^5.2",
         "hslavich/oneloginsaml-bundle": "1.4.0",
-        "phpseclib/phpseclib": "~2.0"
+        "justinrainbow/json-schema": "^5.2",
+        "lcobucci/jwt": "3.3.1",
+        "phpspec/php-diff": "1.0.2",
+        "phpseclib/phpseclib": "~2.0",
+        "superbalist/flysystem-google-storage": "7.2.1",
+        "grpc/grpc": "1.19.0",
+        "mekras/php-speller": "^2.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
-        "behat/behat": "3.4.3",
+        "behat/behat": "3.5.0",
         "behat/gherkin": "4.5.1",
         "behat/mink": "1.7.1",
         "behat/mink-browserkit-driver": "1.3.3",
         "behat/mink-extension": "2.3.1",
         "behat/mink-selenium2-driver": "^1.3.1",
-        "behat/symfony2-extension": "2.1.4",
+        "behat/symfony2-extension": "2.1.5",
         "behat/transliterator": "1.2.0",
         "blackfire/php-sdk": "^1.18",
         "league/flysystem-memory": "^1.0",
         "league/flysystem-aws-s3-v3": "^1.0",
-        "phpspec/phpspec": "~5.1.0",
+        "phpspec/phpspec": "^6.0",
+        "phpspec/prophecy": "1.9.*",
         "phpunit/phpunit": "^8.0.4",
         "sebastian/exporter": "~3.1.0",
         "sensiolabs/behat-page-object-extension": "2.1.0",
@@ -85,22 +86,6 @@
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
     },
     "scripts": {
-        "symfony-scripts": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "php bin/console --ansi fos:js-routing:dump --target=web/js/routes.js",
-            "php bin/console --ansi pim:installer:assets"
-        ],
-        "post-install-cmd": [
-            "@symfony-scripts"
-        ],
-        "post-update-cmd": [
-            "@symfony-scripts"
-        ],
         "before-commit-re": [
             "php vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back",
             "php vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist --ansi",
@@ -122,24 +107,5 @@
         "before-commit-re": "Run all the checks on the Reference Entity Bounded Context",
         "before-commit-am": "Run all the checks on the Asset Manager Bounded Context"
     },
-    "minimum-stability": "stable",
-    "extra": {
-        "symfony-app-dir": "app",
-        "symfony-bin-dir": "bin",
-        "symfony-var-dir": "var",
-        "symfony-web-dir": "web",
-        "symfony-assets-install": "relative",
-        "incenteev-parameters": {
-            "file": "app/config/parameters.yml",
-            "keep-outdated": true,
-            "env-map": {
-                "database_host": "PIM_DATABASE_HOST",
-                "database_port": "PIM_DATABASE_PORT",
-                "database_name": "PIM_DATABASE_NAME",
-                "database_user": "PIM_DATABASE_USER",
-                "database_password": "PIM_DATABASE_PASSWORD",
-                "index_hosts": "PIM_INDEX_HOSTS"
-            }
-        }
-    }
+    "minimum-stability": "stable"
 }

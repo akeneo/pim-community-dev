@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Domain\Query\Attribute\Connector;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -31,14 +32,12 @@ class ConnectorAttribute
         'asset_collection' => 'asset_family_multiple_links',
         'option' => 'single_option',
         'option_collection' => 'multiple_options',
-        'image' => 'media_file',
     ];
 
     private const ATTRIBUTE_NAMES = [
         'max_length' => 'max_characters',
         'regular_expression' => 'validation_regexp',
         'asset_type' => 'asset_family_code',
-        'media_type' => 'image'
     ];
 
     /** @var AttributeIdentifier */
@@ -59,6 +58,9 @@ class ConnectorAttribute
     /** @var bool */
     private $isRequired;
 
+    /** @var bool */
+    private $isReadOnly;
+
     /** @var array */
     private $additionalProperties;
 
@@ -69,6 +71,7 @@ class ConnectorAttribute
         AttributeValuePerLocale $valuePerLocale,
         AttributeValuePerChannel $valuePerChannel,
         AttributeIsRequired $isRequired,
+        AttributeIsReadOnly $isReadOnly,
         array $additionalProperties
     ) {
         $this->code = $identifier;
@@ -77,6 +80,7 @@ class ConnectorAttribute
         $this->valuePerLocale = $valuePerLocale;
         $this->valuePerChannel = $valuePerChannel;
         $this->isRequired = $isRequired;
+        $this->isReadOnly = $isReadOnly;
         $this->additionalProperties = $additionalProperties;
     }
 
@@ -100,17 +104,14 @@ class ConnectorAttribute
             'type' => $this->mapAttributeType($this->type),
             'value_per_locale' => $this->valuePerLocale->normalize(),
             'value_per_channel' => $this->valuePerChannel->normalize(),
-            'is_required_for_completeness' => $this->isRequired->normalize()
+            'is_required_for_completeness' => $this->isRequired->normalize(),
+            'is_read_only' => $this->isReadOnly->normalize(),
         ];
 
         $additionalProperties = [];
 
         foreach ($this->additionalProperties as $key => $value) {
             $additionalProperties[$this->mapAttributeName($key)] = $value;
-        }
-
-        if ('image' === $this->type) {
-            $additionalProperties['media_type'] = $this->type;
         }
 
         return array_merge($commonProperties, $additionalProperties);

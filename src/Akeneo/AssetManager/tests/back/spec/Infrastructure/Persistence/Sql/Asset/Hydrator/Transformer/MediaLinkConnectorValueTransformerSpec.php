@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerInterface;
 use PhpSpec\ObjectBehavior;
@@ -25,10 +25,10 @@ class MediaLinkConnectorValueTransformerSpec extends ObjectBehavior
         $this->shouldImplement(ConnectorValueTransformerInterface::class);
     }
 
-    function it_only_supports_a_value_of_a_media_link_attribute(MediaLinkAttribute $mediaLinkAttribute, ImageAttribute $imageAttribute)
+    function it_only_supports_a_value_of_a_media_link_attribute(MediaLinkAttribute $mediaLinkAttribute, MediaFileAttribute $mediaFileAttribute)
     {
         $this->supports($mediaLinkAttribute)->shouldReturn(true);
-        $this->supports($imageAttribute)->shouldReturn(false);
+        $this->supports($mediaFileAttribute)->shouldReturn(false);
     }
 
     function it_transforms_a_normalized_to_a_normalized_connector_value(MediaLinkAttribute $mediaLinkAttribute)

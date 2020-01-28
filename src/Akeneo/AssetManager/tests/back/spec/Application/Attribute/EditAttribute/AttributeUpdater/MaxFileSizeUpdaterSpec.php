@@ -6,7 +6,7 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\Max
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
@@ -17,34 +17,34 @@ class MaxFileSizeUpdaterSpec extends ObjectBehavior
         $this->shouldHaveType(MaxFileSizeUpdater::class);
     }
 
-    function it_only_supports_edit_max_file_size_command_of_image_attributes(
+    function it_only_supports_edit_max_file_size_command_of_media_file_attributes(
         TextAttribute $textAttribute,
-        ImageAttribute $imageAttribute
+        MediaFileAttribute $mediaFileAttribute
     ) {
         $maxFileSizeEditCommand = new EditMaxFileSizeCommand('name', '120');
         $labelEditCommand = new EditLabelsCommand('name', []);
 
-        $this->supports($imageAttribute, $maxFileSizeEditCommand)->shouldReturn(true);
-        $this->supports($imageAttribute, $labelEditCommand)->shouldReturn(false);
+        $this->supports($mediaFileAttribute, $maxFileSizeEditCommand)->shouldReturn(true);
+        $this->supports($mediaFileAttribute, $labelEditCommand)->shouldReturn(false);
         $this->supports($textAttribute, $maxFileSizeEditCommand)->shouldReturn(false);
     }
 
-    function it_edits_the_max_file_size_property_of_an_image_attribute(ImageAttribute $imageAttribute)
+    function it_edits_the_max_file_size_property_of_a_media_file_attribute(MediaFileAttribute $mediaFileAttribute)
     {
         $editMaxFileSize = new EditMaxFileSizeCommand('name', '151.1');
         $editMaxFileSize->maxFileSize = '151.1';
-        $imageAttribute->setMaxFileSize(AttributeMaxFileSize::fromString('151.1'))->shouldBeCalled();
-        $this->__invoke($imageAttribute, $editMaxFileSize)->shouldReturn($imageAttribute);
+        $mediaFileAttribute->setMaxFileSize(AttributeMaxFileSize::fromString('151.1'))->shouldBeCalled();
+        $this->__invoke($mediaFileAttribute, $editMaxFileSize)->shouldReturn($mediaFileAttribute);
     }
 
-    function it_edits_sets_the_max_file_to_no_limit(ImageAttribute $textAttribute)
+    function it_edits_sets_the_max_file_to_no_limit(MediaFileAttribute $textAttribute)
     {
         $editMaxFileSize = new EditMaxFileSizeCommand('name', null);
         $textAttribute->setMaxFileSize(AttributeMaxFileSize::noLimit())->shouldBeCalled();
         $this->__invoke($textAttribute, $editMaxFileSize)->shouldReturn($textAttribute);
     }
 
-    function it_throws_if_it_cannot_update_the_attribute(ImageAttribute $rightAttribute, TextAttribute $wrongAttribute)
+    function it_throws_if_it_cannot_update_the_attribute(MediaFileAttribute $rightAttribute, TextAttribute $wrongAttribute)
     {
         $wrongCommand = new EditLabelsCommand('name', []);
         $rightCommand = new EditMaxFileSizeCommand('name', '120');

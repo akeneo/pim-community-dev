@@ -17,11 +17,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit\P
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
@@ -39,30 +36,18 @@ class ProductAndProductModelWriter extends BaseWriter
      * @param BulkSaverInterface                    $productSaver
      * @param BulkSaverInterface                    $productModelSaver
      * @param VersionManager                        $versionManager
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param JobLauncherInterface                  $jobLauncher
-     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
      * @param AuthorizationCheckerInterface         $authorizationChecker
-     * @param string                                $jobName
      */
     public function __construct(
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
         VersionManager $versionManager,
-        TokenStorageInterface $tokenStorage,
-        JobLauncherInterface $jobLauncher,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        AuthorizationCheckerInterface $authorizationChecker,
-        string $jobName
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct(
             $versionManager,
             $productSaver,
             $productModelSaver,
-            $tokenStorage,
-            $jobLauncher,
-            $jobInstanceRepository,
-            $jobName
         );
 
         $this->authorizationChecker = $authorizationChecker;

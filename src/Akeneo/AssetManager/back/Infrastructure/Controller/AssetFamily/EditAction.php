@@ -16,6 +16,11 @@ use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyC
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +28,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -48,18 +55,33 @@ class EditAction
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
+    /** @var AssetFamilyRepositoryInterface */
+    private $assetFamilyRepository;
+
+    /** @var SecurityFacade */
+    private $securityFacade;
+
     public function __construct(
         EditAssetFamilyHandler $editAssetFamilyHandler,
         CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
         Serializer $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        AttributeRepositoryInterface $attributeRepository,
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        SecurityFacade $securityFacade
     ) {
         $this->editAssetFamilyHandler = $editAssetFamilyHandler;
         $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
         $this->serializer = $serializer;
         $this->validator = $validator;
+        $this->attributeRepository = $attributeRepository;
+        $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request): Response
@@ -77,9 +99,40 @@ class EditAction
             throw new AccessDeniedHttpException();
         }
 
-        $command = $this->serializer->deserialize($request->getContent(), EditAssetFamilyCommand::class, 'json');
-        $violations = $this->validator->validate($command);
+        $parameters = json_decode($request->getContent(), true);
+        $parameters = $this->replaceAttributeAsMainMediaIdentifierByCode($parameters);
+        $violations = $this->validateRequestContent($parameters);
+        if ($violations->count() > 0) {
+            return new JsonResponse(
+                $this->serializer->normalize($violations, 'internal_api'),
+                Response::HTTP_BAD_REQUEST
+            );
+        }
 
+        $transformations = $this->isUserAllowedToManageTransformation()
+            ? json_decode($parameters['transformations'], true)
+            : null
+            ;
+        $namingConvention = $this->isUserAllowedToManageProductLinkRule()
+            ? json_decode($parameters['namingConvention'], true)
+            : null
+            ;
+        $productLinkRules = $this->isUserAllowedToManageProductLinkRule()
+            ? json_decode($parameters['productLinkRules'], true)
+            : null
+            ;
+
+        $command = new EditAssetFamilyCommand(
+            $parameters['identifier'],
+            $parameters['labels'],
+            $parameters['image'],
+            $parameters['attributeAsMainMedia'],
+            $productLinkRules,
+            $transformations,
+            $namingConvention
+        );
+
+        $violations = $this->validator->validate($command);
         if ($violations->count() > 0) {
             return new JsonResponse($this->serializer->normalize($violations, 'internal_api'),
                 Response::HTTP_BAD_REQUEST);
@@ -106,8 +159,67 @@ class EditAction
             $assetFamilyIdentifier,
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
-        $isAllowedToEdit = ($this->canEditAssetFamilyQueryHandler)($query);
 
-        return $isAllowedToEdit; // && add Check of ACLs
+        return $this->securityFacade->isGranted('akeneo_assetmanager_asset_family_edit')
+            && ($this->canEditAssetFamilyQueryHandler)($query);
+    }
+
+    private function isUserAllowedToManageTransformation(): bool
+    {
+        return $this->securityFacade->isGranted('akeneo_assetmanager_asset_family_manage_transformation');
+    }
+
+    private function isUserAllowedToManageProductLinkRule(): bool
+    {
+        return $this->securityFacade->isGranted('akeneo_assetmanager_asset_family_manage_product_link_rule');
+    }
+
+    /**
+     * The frontend gives us the Identifier of the attribute as main media,
+     * but the EditAssetFamilyCommand requires the Code of the attribute,
+     * this is why we retrieve the code here and updates the parameters of the request.
+     */
+    private function replaceAttributeAsMainMediaIdentifierByCode(array $parameters)
+    {
+        $attributeAsMainMediaIdentifier = $parameters['attributeAsMainMedia'];
+
+        try {
+            $attribute = $this->attributeRepository->getByIdentifier(
+                AttributeIdentifier::fromString($attributeAsMainMediaIdentifier)
+            );
+
+            $attributeAsMainMediaCode = (string) $attribute->getCode();
+        } catch (AttributeNotFoundException $e) {
+            $attributeAsMainMediaCode = null;
+        }
+
+        return array_merge($parameters, ['attributeAsMainMedia' => $attributeAsMainMediaCode]);
+    }
+
+    private function validateRequestContent(array $parameters): ConstraintViolationListInterface
+    {
+        $nestedConstraints = [];
+        if ($this->isUserAllowedToManageTransformation()) {
+            $nestedConstraints['transformations'] = [
+                new Assert\Type(['string']),
+                new Assert\Json(),
+            ];
+        }
+
+        if ($this->isUserAllowedToManageProductLinkRule()) {
+            $nestedConstraints['namingConvention'] = [
+                new Assert\Type(['string']),
+                new Assert\Json(),
+            ];
+            $nestedConstraints['productLinkRules'] = [
+                new Assert\Type(['string']),
+                new Assert\Json(),
+            ];
+        }
+
+        return $this->validator->validate($parameters, new Assert\Collection([
+            'fields' => $nestedConstraints,
+            'allowExtraFields' => true,
+        ]));
     }
 }

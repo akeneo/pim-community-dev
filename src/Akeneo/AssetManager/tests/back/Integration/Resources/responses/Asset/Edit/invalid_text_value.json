@@ -1,0 +1,101 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_asset_manager_asset_edit_rest",
+    "query": {
+      "assetCode": "starck",
+      "assetFamilyIdentifier": "designer"
+    },
+    "body": {
+      "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
+      "asset_family_identifier": "designer",
+      "code": "starck",
+      "labels": {
+        "fr_FR": "Philippe Starck"
+      },
+      "image": null,
+      "values": [
+        {
+          "attribute": "name_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": "Philippe Starck"
+        },
+        {
+          "attribute": "description_designer_fingerprint",
+          "channel": null,
+          "locale": "en_US",
+          "data": null
+        },
+        {
+          "attribute": "description_designer_fingerprint",
+          "channel": null,
+          "locale": "fr_FR",
+          "data": null
+        },
+        {
+          "attribute": "website_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": "hello world"
+        },
+        {
+          "attribute": "portrait_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": null
+        },
+        {
+          "attribute": "age_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": null
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": [
+      {
+        "messageTemplate": "This value is not a valid URL.",
+        "parameters": {
+          "{{ value }}": "\u0022hello world\u0022"
+        },
+        "message": "This value is not a valid URL.",
+        "propertyPath": "values.website",
+        "invalidValue": {
+          "text": "hello world",
+          "attribute": {
+            "regularExpression": {
+              "empty": true
+            },
+            "maxLength": [
+            ],
+            "textarea": false,
+            "validationRuleSetToRegularExpression": false,
+            "validationRuleSetToEmail": false,
+            "validationRuleSetToUrl": true,
+            "validationRule": false,
+            "type": "text",
+            "identifier": [
+            ],
+            "assetFamilyIdentifier": [
+            ],
+            "code": [
+            ],
+            "labelCodes": [
+              "fr_FR"
+            ],
+            "order": [
+            ],
+            "valuePerChannel": false,
+            "valuePerLocale": false
+          },
+          "channel": null,
+          "locale": null
+        }
+      }
+    ]
+  }
+}

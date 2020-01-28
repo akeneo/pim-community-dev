@@ -43,7 +43,7 @@ module.exports = async function(cucumber) {
   const startCreate = async function(page) {
     await loadAttributeTab(page);
 
-    const header = await await getElement(page, 'Header');
+    const header = await getElement(page, 'Header');
     await header.clickOnCreateButton();
   };
 
@@ -51,7 +51,7 @@ module.exports = async function(cucumber) {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
     await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
     await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
@@ -61,7 +61,7 @@ module.exports = async function(cucumber) {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.fillField('pim_reference_entity.attribute.create.input.code', 'not so nice attribute');
     await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
     await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
@@ -72,7 +72,7 @@ module.exports = async function(cucumber) {
 
     await listenRequest(this.page, requestContract);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.save();
   });
 
@@ -80,7 +80,7 @@ module.exports = async function(cucumber) {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
     await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
     await modal.select('.AknFieldContainer[data-code="type"]', 'record');
@@ -92,7 +92,7 @@ module.exports = async function(cucumber) {
 
     await listenRequest(this.page, requestContract);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.save();
   });
 
@@ -100,7 +100,7 @@ module.exports = async function(cucumber) {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
     await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
     await modal.select('.AknFieldContainer[data-code="type"]', 'record_collection');
@@ -112,7 +112,7 @@ module.exports = async function(cucumber) {
 
     await listenRequest(this.page, requestContract);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.save();
   });
 
@@ -120,7 +120,7 @@ module.exports = async function(cucumber) {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
     await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
     await modal.select('.AknFieldContainer[data-code="type"]', 'image');
@@ -132,7 +132,7 @@ module.exports = async function(cucumber) {
 
     await listenRequest(this.page, requestContract);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.save();
   });
 
@@ -141,12 +141,12 @@ module.exports = async function(cucumber) {
 
     await listenRequest(this.page, requestContract);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.save();
   });
 
   Then('the user should not see any validation error', async function() {
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
 
     let error = null;
     while (error !== '') {
@@ -157,7 +157,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user should see the validation error {string}', async function(expectedError) {
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
 
     let error = null;
     while (error !== expectedError) {
@@ -169,7 +169,7 @@ module.exports = async function(cucumber) {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
     await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
     await modal.select('.AknFieldContainer[data-code="type"]', 'option');
@@ -181,7 +181,7 @@ module.exports = async function(cucumber) {
 
     await listenRequest(this.page, requestContract);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.save();
   });
 
@@ -189,7 +189,7 @@ module.exports = async function(cucumber) {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
     await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
     await modal.select('.AknFieldContainer[data-code="type"]', 'option_collection');
@@ -201,14 +201,14 @@ module.exports = async function(cucumber) {
 
     await listenRequest(this.page, requestContract);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.save();
   });
 
   Then('the user should not see the add attribute button', async function() {
     await answerChannelList.apply(this);
     await loadAttributeTab(this.page);
-    const header = await await getElement(this.page, 'Header');
+    const header = await getElement(this.page, 'Header');
     await header.hasNoCreateButton();
   });
 
@@ -216,7 +216,7 @@ module.exports = async function(cucumber) {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
     await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
     await modal.select('.AknFieldContainer[data-code="type"]', 'number');
@@ -227,7 +227,7 @@ module.exports = async function(cucumber) {
 
     await listenRequest(this.page, requestContract);
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.save();
   });
 };
