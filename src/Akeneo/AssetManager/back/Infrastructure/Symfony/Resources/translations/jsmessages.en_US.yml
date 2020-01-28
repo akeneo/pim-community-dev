@@ -53,6 +53,7 @@ pim_asset_manager:
     previous: Previous asset
     next: Next asset
     empty_main_media: This asset has no media.
+    other_main_media: We cannot generate the preview of this asset.
     edit_asset: Edit asset
     download: Download
     copy_url: Copy URL
