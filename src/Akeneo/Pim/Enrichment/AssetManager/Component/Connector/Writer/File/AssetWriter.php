@@ -14,16 +14,21 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Writer\File;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\AssetManager\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Symfony\Component\Finder\Finder;
 
 class AssetWriter extends AbstractFileWriter implements InitializableInterface, FlushableInterface, ArchivableWriterInterface
 {
@@ -42,8 +47,14 @@ class AssetWriter extends AbstractFileWriter implements InitializableInterface, 
     /** @var FindActivatedLocalesPerChannelsInterface */
     private $findActivatedLocalesPerChannels;
 
+    /** @var FileExporterPathGeneratorInterface */
+    private $fileExporterPath;
+
     /** @var FlatItemBuffer */
-    protected $flatRowBuffer;
+    private $flatRowBuffer;
+
+    /** @var AbstractAttribute[] */
+    private $attributesIndexedByIdentifier;
 
     /** @var array */
     private $writtenFiles = [];
@@ -53,13 +64,15 @@ class AssetWriter extends AbstractFileWriter implements InitializableInterface, 
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
-        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels
+        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
+        FileExporterPathGeneratorInterface $fileExporterPath
     ) {
         $this->arrayConverter = $arrayConverter;
         $this->bufferFactory = $bufferFactory;
         $this->flusher = $flusher;
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
         $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
+        $this->fileExporterPath = $fileExporterPath;
 
         parent::__construct();
     }
@@ -72,6 +85,11 @@ class AssetWriter extends AbstractFileWriter implements InitializableInterface, 
         if (null === $this->flatRowBuffer) {
             $this->flatRowBuffer = $this->bufferFactory->create();
         }
+
+        $assetFamilyIdentifier = $this->stepExecution->getJobParameters()->get('asset_family_identifier');
+        $this->attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier)
+        );
     }
 
     /**
@@ -93,7 +111,15 @@ class AssetWriter extends AbstractFileWriter implements InitializableInterface, 
         }
 
         $flatItems = [];
+        $parameters = $this->stepExecution->getJobParameters();
+        $directory = $this->stepExecution->getJobExecution()->getExecutionContext()->get(
+            JobInterface::WORKING_DIRECTORY_PARAMETER
+        );
+
         foreach ($items as $item) {
+            if ($parameters->has('with_media') && $parameters->get('with_media')) {
+                $item = $this->resolveMediaPaths($item, $directory);
+            }
             $flatItems[] = $this->arrayConverter->convert($item);
         }
 
@@ -131,22 +157,60 @@ class AssetWriter extends AbstractFileWriter implements InitializableInterface, 
         foreach ($writtenFiles as $writtenFile) {
             $this->writtenFiles[$writtenFile] = basename($writtenFile);
         }
+
+        $this->exportMedias();
     }
 
+    /**
+     * - Add the media to the $this->writtenFiles to be archived later
+     * - Update the value of each media in the standard format to add the final path of media in archive.
+     */
+    private function resolveMediaPaths(array $item, string $tmpDirectory): array
+    {
+        $identifier = $item['code'];
+
+        foreach ($item['values'] as $index => $normalizedValue) {
+            $attribute = $this->attributesIndexedByIdentifier[$normalizedValue['attribute']] ?? null;
+            if (!$attribute instanceof MediaFileAttribute) {
+                continue;
+            }
+
+            $exportDirectory = $this->fileExporterPath->generate(
+                [
+                    'scope' => $normalizedValue['channel'],
+                    'locale' => $normalizedValue['locale'],
+                ],
+                [
+                    'identifier' => $identifier,
+                    'code' => $attribute->getCode()->__toString(),
+                ]
+            );
+
+            $finder = new Finder();
+            if (is_dir($tmpDirectory . $exportDirectory)) {
+                $files = iterator_to_array($finder->files()->in($tmpDirectory . $exportDirectory));
+                if (!empty($files)) {
+                    $path = $exportDirectory . current($files)->getFilename();
+                    $this->writtenFiles[$tmpDirectory . $path] = $path;
+                    $item['values'][$index]['data']['filePath'] = $path;
+                }
+            }
+        }
+
+        return $item;
+    }
+
+    /**
+     * Gets all possible headers from family attributes, in case no asset has the corresponding values set
+     */
     private function getAdditionalHeaders(): array
     {
         $localesPerChannel = $this->findActivatedLocalesPerChannels->findAll();
         $activeChannelCodes = array_keys($localesPerChannel);
         $activeLocaleCodes = array_unique(array_merge(...array_values($localesPerChannel)));
 
-        $assetFamilyIdentifier = $this->stepExecution->getJobParameters()->get('asset_family_identifier');
-        $attributes = $this->findAttributesIndexedByIdentifier->find(
-            AssetFamilyIdentifier::fromString($assetFamilyIdentifier)
-        );
-
         $headers = [];
-
-        foreach ($attributes as $attribute) {
+        foreach ($this->attributesIndexedByIdentifier as $attribute) {
             if ($attribute->hasValuePerChannel() && $attribute->hasValuePerLocale()) {
                 foreach ($localesPerChannel as $channelCode => $localeCodes) {
                     foreach ($localeCodes as $localeCode) {
@@ -172,5 +236,27 @@ class AssetWriter extends AbstractFileWriter implements InitializableInterface, 
         }
 
         return $headers;
+    }
+
+    /**
+     * Export medias from the working directory to the expected output directory.
+     */
+    private function exportMedias(): void
+    {
+        $outputDirectory = dirname($this->getPath());
+        $workingDirectory = $this->stepExecution->getJobExecution()->getExecutionContext()->get(
+            JobInterface::WORKING_DIRECTORY_PARAMETER
+        );
+
+        $outputFilesDirectory = $outputDirectory . DIRECTORY_SEPARATOR . 'files';
+        $workingFilesDirectory = $workingDirectory . 'files';
+
+        if ($this->localFs->exists($outputFilesDirectory)) {
+            $this->localFs->remove($outputFilesDirectory);
+        }
+
+        if ($this->localFs->exists($workingFilesDirectory)) {
+            $this->localFs->mirror($workingFilesDirectory, $outputFilesDirectory);
+        }
     }
 }
