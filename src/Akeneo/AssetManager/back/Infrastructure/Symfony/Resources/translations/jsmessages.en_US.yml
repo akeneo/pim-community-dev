@@ -409,6 +409,7 @@ pim_asset_manager:
         value_per_locale: Value per locale
         value_per_channel: Value per channel
         is_required: Required for completeness
+        is_read_only: Read only in the UI
         max_length: Max characters
         textarea: Text Area
         is_rich_text_editor: Rich Text Editor
