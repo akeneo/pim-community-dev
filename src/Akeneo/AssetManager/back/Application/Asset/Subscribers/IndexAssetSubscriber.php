@@ -78,8 +78,22 @@ class IndexAssetSubscriber implements EventSubscriberInterface
         $this->indexByAssetFamilyInBackground->execute($attributeDeletedEvent->assetFamilyIdentifier);
     }
 
+    public function flush()
+    {
+        $this->assetIndexer->indexByAssetIdentifiers($this->assetsToIndex);
+        $this->assetIndexer->refresh();
+    }
+
+    /**
+     * Another idea would have been to inject this stateful subscriber in each controller that creates/updates assets.
+     * And flush the assets to index directly from those controllers
+     */
     public function onKernelResponse(): void
     {
+        if (empty($this->assetsToIndex)){
+            return;
+        }
+
         $this->assetIndexer->indexByAssetIdentifiers($this->assetsToIndex);
         $this->assetIndexer->refresh();
     }

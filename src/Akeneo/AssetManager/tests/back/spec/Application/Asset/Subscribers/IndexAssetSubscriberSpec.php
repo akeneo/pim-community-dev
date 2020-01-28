@@ -44,7 +44,7 @@ class IndexAssetSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_triggers_the_reindexation_of_an_updated_asset(AssetIndexerInterface $assetIndexer)
+    function it_triggers_the_reindexation_of_an_updated_asset_on_kernel_event(AssetIndexerInterface $assetIndexer)
     {
         $assetIdentifier = AssetIdentifier::fromString('starck');
         $assetIndexer->index($assetIdentifier)->shouldBeCalled();
@@ -56,6 +56,7 @@ class IndexAssetSubscriberSpec extends ObjectBehavior
                 AssetFamilyIdentifier::fromString('designer')
             )
         );
+        $this->onKernelResponse();
     }
 
     function it_runs_a_reindexing_command_when_an_attribute_is_removed(

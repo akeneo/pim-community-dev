@@ -10,7 +10,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.symfony.command.index_by_asset_family_in_background'
         tags:
             - { name: kernel.event_subscriber }
-            - { name: kernel.event_listener, event: kernel.terminate }
+            - { name: kernel.event_listener, event: kernel.response }
 
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.remove_asset_from_index:
         class: Akeneo\AssetManager\Application\Asset\Subscribers\RemoveAssetFromIndexSubscriber

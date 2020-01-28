@@ -106,7 +106,8 @@ class AssetIndexer implements AssetIndexerInterface
         $this->assetClient->refreshIndex();
     }
 
-    private function bulkIndexAssets(iterable $normalizedSearchableAssets) {
+    private function bulkIndexAssets(iterable $normalizedSearchableAssets)
+    {
         $toIndex = [];
         foreach ($normalizedSearchableAssets as $normalizedSearchableAsset) {
             $toIndex[] = $normalizedSearchableAsset;
