@@ -48,11 +48,20 @@ class ConstraintViolationListNormalizer implements NormalizerInterface, Cacheabl
                 'parameters' => $constraintViolation->getParameters(),
                 'message' => $constraintViolation->getMessage(),
                 'propertyPath' => $constraintViolation->getPropertyPath(),
-                'invalidValue' => $this->normalizer->normalize($constraintViolation->getInvalidValue()),
+                'invalidValue' => $this->normalizeValue($constraintViolation->getInvalidValue()),
             ];
         }
 
         return $normalizedViolations;
+    }
+
+    private function normalizeValue($value)
+    {
+        try {
+            return $this->normalizer->normalize($value);
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     public function supportsNormalization($data, $format = null)

@@ -98,7 +98,9 @@ export const reducer = (
     case FILE_UPLOAD_FAILURE:
       return {
         ...state,
-        lines: sortLinesWithValidationErrorsFirst(assetUploadFailed(state.lines, action.payload.line)),
+        lines: sortLinesWithValidationErrorsFirst(
+          assetUploadFailed(state.lines, action.payload.line, action.payload.errors)
+        ),
       };
     case FILE_UPLOAD_PROGRESS:
       return {

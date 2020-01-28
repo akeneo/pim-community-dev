@@ -177,6 +177,7 @@ services:
             - '@akeneo_file_storage.file_storage.path_generator'
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@akeneo_file_storage.repository.file_info'
+            - '@asset_manager_serializer'
 
     # Connector
     akeneo_assetmanager.infrastructure.connector.action.asset.get:

@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -35,16 +37,21 @@ class UploadAction
     /** @var FileInfoRepositoryInterface */
     private $fileInfoRepository;
 
+    /** @var NormalizerInterface */
+    private $normalizer;
+
     public function __construct(
         ValidatorInterface $validator,
         PathGeneratorInterface $pathGenerator,
         FileStorer $fileStorer,
-        FileInfoRepositoryInterface $fileInfoRepository
+        FileInfoRepositoryInterface $fileInfoRepository,
+        NormalizerInterface $normalizer
     ) {
         $this->validator = $validator;
         $this->pathGenerator = $pathGenerator;
         $this->fileStorer = $fileStorer;
         $this->fileInfoRepository = $fileInfoRepository;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -62,18 +69,17 @@ class UploadAction
 
         /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $uploadedFile */
         $uploadedFile = $request->files->get('file');
-        $violations = $this->validator->validate($uploadedFile);
+        if (null === $uploadedFile) {
+            return new JsonResponse([], 400);
+        }
+
+        $violations = $this->validator->validate($uploadedFile, [
+            new Assert\Valid(),
+            new Assert\File(),
+        ]);
 
         if (count($violations) > 0) {
-            $errors = [];
-            foreach ($violations as $violation) {
-                $errors[$violation->getPropertyPath()] = [
-                    'message'       => $violation->getMessage(),
-                    'invalid_value' => $violation->getInvalidValue()
-                ];
-            }
-
-            return new JsonResponse($errors, 400);
+            return new JsonResponse($this->normalizer->normalize($violations), 400);
         }
 
         $file = $this->storeFile($uploadedFile);
