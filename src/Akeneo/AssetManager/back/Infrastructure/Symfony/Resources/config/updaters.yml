@@ -13,6 +13,11 @@ services:
         tags:
             - { name: akeneo_assetmanager.attribute_updater, priority: 120 }
 
+    akeneo_assetmanager.application.edit_attribute.attribute_updater.is_read_only_updater:
+        class: Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\IsReadOnlyUpdater
+        tags:
+            - { name: akeneo_assetmanager.attribute_updater, priority: 120 }
+
     akeneo_assetmanager.application.edit_attribute.attribute_updater.max_length_updater:
         class: Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\MaxLengthUpdater
         tags:

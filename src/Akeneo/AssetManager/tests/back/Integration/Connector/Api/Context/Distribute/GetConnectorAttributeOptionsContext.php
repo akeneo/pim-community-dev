@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
@@ -248,6 +249,7 @@ class GetConnectorAttributeOptionsContext implements Context
             LabelCollection::fromArray(['en_US' => 'Label']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -264,6 +266,7 @@ class GetConnectorAttributeOptionsContext implements Context
             AttributeValuePerLocale::fromBoolean($textAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($textAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 'max_length' => $textAttribute->getMaxLength()->intValue(),
                 'is_textarea' => false,
@@ -294,6 +297,7 @@ class GetConnectorAttributeOptionsContext implements Context
             LabelCollection::fromArray([ 'fr_FR' => 'Nationalite', 'en_US' => 'Nationality']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
@@ -326,6 +330,7 @@ class GetConnectorAttributeOptionsContext implements Context
             AttributeValuePerLocale::fromBoolean($optionAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($optionAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 'options' => array_map(
                     function (AttributeOption $attributeOption) {
@@ -357,6 +362,7 @@ class GetConnectorAttributeOptionsContext implements Context
             LabelCollection::fromArray([ 'fr_FR' => 'Ventes', 'en_US' => 'Sales area']),
             AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
@@ -389,6 +395,7 @@ class GetConnectorAttributeOptionsContext implements Context
             AttributeValuePerLocale::fromBoolean($optionAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($optionAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 'options' => array_map(
                     function (AttributeOption $attributeOption) {

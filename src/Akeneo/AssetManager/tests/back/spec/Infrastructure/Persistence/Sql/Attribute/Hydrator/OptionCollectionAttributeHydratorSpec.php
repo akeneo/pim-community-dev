@@ -45,6 +45,7 @@ class OptionCollectionAttributeHydratorSpec extends ObjectBehavior
             'attribute_type' => 'option',
             'attribute_order' => '0',
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => true,
             'additional_properties' => json_encode([
@@ -59,6 +60,7 @@ class OptionCollectionAttributeHydratorSpec extends ObjectBehavior
             'labels' => ['fr_FR' => 'Couleurs'],
             'order' => 0,
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => true,
             'type' => 'option_collection',
@@ -76,6 +78,7 @@ class OptionCollectionAttributeHydratorSpec extends ObjectBehavior
             'attribute_type' => 'option',
             'attribute_order' => '0',
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => true,
             'additional_properties' => json_encode([
@@ -103,6 +106,7 @@ class OptionCollectionAttributeHydratorSpec extends ObjectBehavior
             'labels' => ['fr_FR' => 'Couleurs'],
             'order' => 0,
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => true,
             'type' => 'option_collection',

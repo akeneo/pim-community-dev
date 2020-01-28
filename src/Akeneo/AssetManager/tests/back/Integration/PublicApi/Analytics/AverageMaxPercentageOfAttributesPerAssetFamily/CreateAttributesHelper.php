@@ -7,6 +7,7 @@ namespace Akeneo\AssetManager\Integration\PublicApi\Analytics\AverageMaxPercenta
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -62,6 +63,7 @@ class CreateAttributesHelper
                     LabelCollection::fromArray(['en_US' => 'Name']),
                     AttributeOrder::fromInteger($this->attributeOrder),
                     AttributeIsRequired::fromBoolean(true),
+                    AttributeIsReadOnly::fromBoolean(false),
                     AttributeValuePerChannel::fromBoolean($hasOneValuePerChannel),
                     AttributeValuePerLocale::fromBoolean($hasOneValuePerLocale),
                     AttributeMaxLength::fromInteger(155),

@@ -43,6 +43,7 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
             'attribute_type'             => 'number',
             'attribute_order'            => '0',
             'is_required'                => '1',
+            'is_read_only'               => '0',
             'value_per_channel'          => '0',
             'value_per_locale'           => '1',
             'additional_properties'      => json_encode([
@@ -59,6 +60,7 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
                 'labels'                      => ['fr_FR' => 'Superficie'],
                 'order'                       => 0,
                 'is_required'                 => true,
+                'is_read_only'                => false,
                 'value_per_channel'           => false,
                 'value_per_locale'            => true,
                 'type'                        => 'number',
@@ -80,6 +82,7 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
                 'attribute_type'              => 'number',
                 'attribute_order'             => '0',
                 'is_required'                 => '1',
+                'is_read_only'                => '1',
                 'value_per_channel'           => '0',
                 'value_per_locale'            => '1',
                 'additional_properties'       => json_encode(
@@ -100,6 +103,7 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
                 'labels'                      => ['fr_FR' => 'Superficie'],
                 'order'                       => 0,
                 'is_required'                 => true,
+                'is_read_only'                => true,
                 'value_per_channel'           => false,
                 'value_per_locale'            => true,
                 'type'                        => 'number',

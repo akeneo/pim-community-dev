@@ -19,6 +19,15 @@ import Ajv from 'ajv';
 import {getErrorsViewStartedWith} from 'akeneoassetmanager/application/component/app/validation-error';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
+import {Link} from 'akeneoassetmanager/application/component/app/link';
+import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
+import {
+  HelperSection,
+  HelperSeparator,
+  HelperTitle,
+  HelperText,
+} from 'akeneoassetmanager/platform/component/common/helper';
+
 const ajv = new Ajv({allErrors: true, verbose: true});
 const namingConventionSchema = require('akeneoassetmanager/infrastructure/model/asset-family-naming-convention.schema.json');
 const productLinkRulesSchema = require('akeneoassetmanager/infrastructure/model/asset-family-product-link-rules.schema.json');
@@ -148,23 +157,20 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps, Produc
           isDirty={form.state.isDirty}
           breadcrumbConfiguration={breadcrumbConfiguration(assetFamily.identifier, assetFamilyLabel)}
         />
-        <div className="AknDescriptionHeader AknDescriptionHeader--sticky">
-          <div
-            className="AknDescriptionHeader-icon"
-            style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Asset.svg")'}}
-          />
-          <div className="AknDescriptionHeader-title">
-            👏 {__('pim_asset_manager.asset_family.product_link_rules.help.title')}
-            <div className="AknDescriptionHeader-description">
+        <HelperSection>
+          <AssetIllustration size={80} />
+          <HelperSeparator />
+          <HelperTitle>
+            👋 {__('pim_asset_manager.asset_family.product_link_rules.help.title')}
+            <HelperText>
               {__('pim_asset_manager.asset_family.product_link_rules.help.description')}
               <br />
-              <a href="https://help.akeneo.com/" className="AknDescriptionHeader-link">
+              <Link href="https://help.akeneo.com/pim/v4/articles/assets-product-link-rules.html" target="_blank">
                 {__('pim_asset_manager.asset_family.product_link_rules.help.link')}
-              </a>
-              <br />
-            </div>
-          </div>
-        </div>
+              </Link>
+            </HelperText>
+          </HelperTitle>
+        </HelperSection>
         <div className="AknSubsection">
           <header className="AknSubsection-title">
             <span className="group-label">

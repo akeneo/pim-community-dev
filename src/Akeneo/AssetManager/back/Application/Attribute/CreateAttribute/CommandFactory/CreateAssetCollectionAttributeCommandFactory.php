@@ -38,6 +38,7 @@ class CreateAssetCollectionAttributeCommandFactory extends AbstractCreateAttribu
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
             $normalizedCommand['is_required'] ?? false,
+            $normalizedCommand['is_read_only'] ?? false,
             $normalizedCommand['value_per_channel'] ?? false,
             $normalizedCommand['value_per_locale'] ?? false,
             $normalizedCommand['asset_type']

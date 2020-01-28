@@ -14,6 +14,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
@@ -116,6 +117,7 @@ class EditAttributeContext implements Context
                     LabelCollection::fromArray(json_decode($attribute['labels'], true)),
                     AttributeOrder::fromInteger((int)$attribute['order']),
                     AttributeIsRequired::fromBoolean((bool)$attribute['required']),
+                    AttributeIsReadOnly::fromBoolean((bool) $attribute['read_only']),
                     AttributeValuePerChannel::fromBoolean((bool)$attribute['value_per_channel']),
                     AttributeValuePerLocale::fromBoolean((bool)$attribute['value_per_locale']),
                     AttributeMaxLength::fromInteger((int)$attribute['max_length']),
@@ -147,6 +149,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([$localeCode => $label]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(100),
@@ -184,6 +187,33 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(100),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
+    }
+
+    /**
+     * @Given /^an asset family with a text attribute \'([^\']*)\' not in read only$/
+     */
+    public function anAssetFamilyWithATextAttributeNotInReadOnly(string $attributeCode)
+    {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                $identifier,
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(100),
@@ -202,6 +232,14 @@ class EditAttributeContext implements Context
     }
 
     /**
+     * @When /^the user sets the \'([^\']*)\' attribute read only/
+     */
+    public function theUserSetsTheAttributeReadOnly(string $attributeCode)
+    {
+        $this->theUserSetsTheIsReadOnlyPropertyOfTo($attributeCode, "true");
+    }
+
+    /**
      * @Then /^\'([^\']*)\' should be required$/
      */
     public function thenShouldBeRequired(string $attributeCode)
@@ -211,6 +249,18 @@ class EditAttributeContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
         Assert::assertEquals(true, $attribute->normalize()['is_required']);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' should be read only$/
+     */
+    public function thenShouldBeReadOnly(string $attributeCode)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertEquals(true, $attribute->normalize()['is_read_only']);
     }
 
     /**
@@ -229,6 +279,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger($maxLength),
@@ -285,6 +336,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([$localeCode => $label]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxFileSize::fromString('210'),
@@ -315,6 +367,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([$localeCode => $label]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AssetFamilyIdentifier::fromString('dummy_identifier')
@@ -343,6 +396,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([$localeCode => $label]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AssetFamilyIdentifier::fromString('dummy_identifier')
@@ -366,6 +420,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxFileSize::fromString($maxFileSize),
@@ -474,6 +529,20 @@ class EditAttributeContext implements Context
     }
 
     /**
+     * @When /^the user sets the is_read_only property of \'([^\']*)\' to \'([^\']*)\'$/
+     */
+    public function theUserSetsTheIsReadOnlyPropertyOfTo(string $attributeCode, $invalidValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $updateIsRequired = [
+            'identifier'  => (string)$identifier,
+            'is_read_only' => json_decode($invalidValue),
+        ];
+        $this->updateAttribute($updateIsRequired);
+    }
+
+    /**
      * @Then /^there should be no limit for the max length of \'([^\']*)\'$/
      */
     public function thenThereShouldBeNoLimitForTheMaxLengthOf(string $attributeCode)
@@ -529,6 +598,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('200'),
@@ -557,6 +627,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxFileSize::fromString('200'),
@@ -582,6 +653,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(150),
@@ -634,6 +706,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(150),
@@ -678,6 +751,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(150),
@@ -732,6 +806,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(150),
@@ -857,6 +932,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(150),
@@ -968,6 +1044,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(100),
@@ -1019,6 +1096,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(100),
@@ -1059,6 +1137,31 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AssetFamilyIdentifier::fromString('dummy_identifier')
+            )
+        );
+    }
+
+    /**
+     * @Given /^an asset family with a asset attribute \'([^\']*)\' not in read only$/
+     */
+    public function aAssetFamilyWithAAssetAttributeNotInReadOnly($attributeCode)
+    {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(
+            AssetAttribute::create(
+                $identifier,
+                AssetFamilyIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AssetFamilyIdentifier::fromString('dummy_identifier')
@@ -1082,6 +1185,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AssetFamilyIdentifier::fromString('dummy_identifier')
@@ -1112,6 +1216,7 @@ class EditAttributeContext implements Context
                     LabelCollection::fromArray(json_decode($attribute['labels'], true)),
                     AttributeOrder::fromInteger((int)$attribute['order']),
                     AttributeIsRequired::fromBoolean((bool)$attribute['required']),
+                    AttributeIsReadOnly::fromBoolean((bool) $attribute['read_only']),
                     AttributeValuePerChannel::fromBoolean((bool)$attribute['value_per_channel']),
                     AttributeValuePerLocale::fromBoolean((bool)$attribute['value_per_locale']),
                     AssetFamilyIdentifier::fromString($attribute['asset_type'])
@@ -1136,6 +1241,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true)
             )
@@ -1160,6 +1266,7 @@ class EditAttributeContext implements Context
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true)
         );
@@ -1259,6 +1366,7 @@ class EditAttributeContext implements Context
             ),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true)
         );
@@ -1412,6 +1520,7 @@ class EditAttributeContext implements Context
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true)
         );
@@ -1448,6 +1557,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([$localeCode => $label]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeDecimalsAllowed::fromBoolean(false),
@@ -1475,6 +1585,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeDecimalsAllowed::fromBoolean(false),
@@ -1550,6 +1661,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeDecimalsAllowed::fromBoolean(false),
@@ -1623,6 +1735,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeDecimalsAllowed::fromBoolean(false),
@@ -1730,6 +1843,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([$localeCode => $label]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 Prefix::fromString(null),
@@ -1755,6 +1869,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString(null),
@@ -1865,6 +1980,7 @@ class EditAttributeContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxFileSize::fromString('200'),

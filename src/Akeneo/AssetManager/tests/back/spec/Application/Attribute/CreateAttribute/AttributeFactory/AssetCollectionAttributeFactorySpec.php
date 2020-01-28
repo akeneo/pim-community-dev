@@ -29,6 +29,7 @@ class AssetCollectionAttributeFactorySpec extends ObjectBehavior
                 true,
                 false,
                 false,
+                false,
                 'brand'
             )
         )->shouldReturn(true);
@@ -39,6 +40,7 @@ class AssetCollectionAttributeFactorySpec extends ObjectBehavior
                 [
                     'fr_FR' => 'Nom',
                 ],
+                true,
                 true,
                 false,
                 false,
@@ -58,6 +60,7 @@ class AssetCollectionAttributeFactorySpec extends ObjectBehavior
             true,
             false,
             false,
+            false,
             'brand'
         );
 
@@ -72,6 +75,7 @@ class AssetCollectionAttributeFactorySpec extends ObjectBehavior
             'labels'                      => ['fr_FR' => 'Marques'],
             'order'                       => 0,
             'is_required'                 => true,
+            'is_read_only'                => false,
             'value_per_channel'           => false,
             'value_per_locale'            => false,
             'type'                        => 'asset_collection',

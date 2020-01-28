@@ -30,9 +30,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeAction
 {
-    private const MEDIA_FILE_ATTRIBUTE_TYPE = 'media_file';
-    private const IMAGE_ATTRIBUTE_TYPE = 'image';
-
     /** @var CreateAttributeCommandFactoryRegistry */
     private $createAttributeCommandFactoryRegistry;
 

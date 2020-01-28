@@ -24,6 +24,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
@@ -91,6 +92,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(255),
@@ -120,6 +122,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Picture', 'fr_FR' => 'Image']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('250.12'),
@@ -150,6 +153,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Mentor', 'fr_FR' => 'Mentor']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             $assetFamilyIdentifier
@@ -178,6 +182,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Brands', 'fr_FR' => 'Marques']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AssetFamilyIdentifier::fromString('brand')
@@ -206,6 +211,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Favorite Color', 'fr_FR' => 'Couleur favorite']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -237,6 +243,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Colors', 'fr_FR' => 'Couleurs']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -266,6 +273,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Colors', 'fr_FR' => 'Couleurs']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeDecimalsAllowed::fromBoolean(true),
@@ -294,6 +302,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Preview', 'fr_FR' => 'Aperçu']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::fromString('http://google.com/'),
@@ -378,6 +387,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(255),
@@ -388,6 +398,8 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         $expectedAttribute->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Biography', 'en_US' => 'Biographie']));
         $expectedAttribute->setMaxLength(AttributeMaxLength::fromInteger(100));
         $expectedAttribute->setIsRichTextEditor(AttributeIsRichTextEditor::fromBoolean(true));
+        $expectedAttribute->setIsRequired(AttributeIsRequired::fromBoolean(false));
+        $expectedAttribute->setIsReadOnly(AttributeIsReadOnly::fromBoolean(true));
         $this->attributeRepository->update($expectedAttribute);
 
         $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
@@ -408,6 +420,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(255),
@@ -444,6 +457,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(255),
@@ -462,6 +476,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(255),
@@ -589,6 +604,7 @@ SQL;
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),

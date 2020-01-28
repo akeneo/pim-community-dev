@@ -28,6 +28,7 @@ class OptionAttribute extends AbstractAttribute
         LabelCollection $labelCollection,
         AttributeOrder $order,
         AttributeIsRequired $isRequired,
+        AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale
     ) : self {
@@ -38,6 +39,7 @@ class OptionAttribute extends AbstractAttribute
             $labelCollection,
             $order,
             $isRequired,
+            $isReadOnly,
             $valuePerChannel,
             $valuePerLocale
         );

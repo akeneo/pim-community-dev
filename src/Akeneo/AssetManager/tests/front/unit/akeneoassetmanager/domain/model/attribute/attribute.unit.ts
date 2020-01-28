@@ -18,6 +18,7 @@ const description = denormalizeTextAttribute({
   value_per_locale: true,
   value_per_channel: false,
   is_required: true,
+  is_read_only: true,
   max_length: 0,
   is_textarea: false,
   is_rich_text_editor: false,
@@ -34,6 +35,7 @@ const frontView = denormalizeMediaFileAttribute({
   value_per_locale: true,
   value_per_channel: false,
   is_required: true,
+  is_read_only: true,
   max_file_size: null,
   allowed_extensions: [],
 });
@@ -62,6 +64,19 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
     }).toThrow('Attribute expects a boolean as isRequired value');
 
     expect(() => {
+      new ConcreteMediaFileAttribute(
+        'front_view_1234',
+        'designer',
+        'front_view',
+        {en_US: 'Front View'},
+        true,
+        false,
+        0,
+        true
+      );
+    }).toThrow('Attribute expects a boolean as isReadOnly value');
+
+    expect(() => {
       new ConcreteMediaFileAttribute('front_view_1234', 'designer', 'front_view', {en_US: 'Front View'}, true, false);
     }).toThrow('Attribute expects a number as order');
   });
@@ -78,6 +93,7 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
         code: 'description',
         labels: [],
         is_required: true,
+        is_read_only: true,
         value_per_locale: false,
         value_per_channel: true,
         type: 'text',
@@ -88,6 +104,7 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
       code: 'description',
       labels: {},
       is_required: true,
+      is_read_only: true,
       value_per_locale: false,
       value_per_channel: true,
       type: 'text',

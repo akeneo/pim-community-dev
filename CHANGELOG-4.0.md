@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9070: Fix access to SSO configuration
 - PIM-9072: Add missing Reference Entities translations
 
 # 4.0.1 (2020-01-22)

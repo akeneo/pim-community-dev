@@ -38,6 +38,7 @@
             "en_US": "Nice attribute"
           },
           "isRequired": false,
+          "isReadOnly": false,
           "valuePerChannel": true,
           "valuePerLocale": false
         },

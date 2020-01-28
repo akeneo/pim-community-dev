@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -91,6 +92,7 @@ class SqlAverageMaxNumberOfAttributesPerAssetFamilyTest extends SqlIntegrationTe
                     LabelCollection::fromArray(['en_US' => 'Name']),
                     AttributeOrder::fromInteger($i + 2),
                     AttributeIsRequired::fromBoolean(true),
+                    AttributeIsReadOnly::fromBoolean(false),
                     AttributeValuePerChannel::fromBoolean(true),
                     AttributeValuePerLocale::fromBoolean(true),
                     AttributeMaxLength::fromInteger(155),

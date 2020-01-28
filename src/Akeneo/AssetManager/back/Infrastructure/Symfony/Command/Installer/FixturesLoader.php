@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
@@ -144,6 +145,7 @@ class FixturesLoader
             LabelCollection::fromArray([]),
             $this->getOrderForAttribute($attributeCode),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean($valuePerChannel),
             AttributeValuePerLocale::fromBoolean($valuePerLocale),
             AttributeMaxLength::fromInteger(25),
@@ -170,6 +172,7 @@ class FixturesLoader
             LabelCollection::fromArray([]),
             $this->getOrderForAttribute($attributeCode),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean($valuePerChannel),
             AttributeValuePerLocale::fromBoolean($valuePerLocale),
             AttributeDecimalsAllowed::fromBoolean(true),
@@ -192,6 +195,7 @@ class FixturesLoader
             LabelCollection::fromArray([]),
             $this->getOrderForAttribute($attributeCode),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -211,6 +215,7 @@ class FixturesLoader
             LabelCollection::fromArray([]),
             $this->getOrderForAttribute('materials'),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -233,6 +238,7 @@ class FixturesLoader
             LabelCollection::fromArray([]),
             $this->getOrderForAttribute($attributeCode),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean($scopable),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('1000'),
@@ -382,6 +388,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('name'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(25),
@@ -405,6 +412,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('email'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(155),
@@ -427,6 +435,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('regex'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(155),
@@ -449,6 +458,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('long_description'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(155),
@@ -470,6 +480,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('main_image'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('1000'),
@@ -492,6 +503,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('main_document'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('1000'),
@@ -514,6 +526,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('country'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AssetFamilyIdentifier::fromString('country')
@@ -534,6 +547,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('brand'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AssetFamilyIdentifier::fromString('brand')
@@ -554,6 +568,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('brands'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AssetFamilyIdentifier::fromString('brand')
@@ -575,6 +590,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('designers'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(false),
                 AssetFamilyIdentifier::fromString('designer')
@@ -595,6 +611,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('materials'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(true)
             );
@@ -614,6 +631,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('nickname'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(100),
@@ -636,6 +654,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('year'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeDecimalsAllowed::fromBoolean(false),
@@ -658,6 +677,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('main_material'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false)
             );
@@ -677,6 +697,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('website'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString('https://www.akeneo.com/wp-content/uploads/'),
@@ -699,6 +720,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('notice'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString('https://www.akeneo.com/wp-content/uploads/'),
@@ -721,6 +743,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('video'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString('https://my-stream.com'),
@@ -743,6 +766,7 @@ class FixturesLoader
                 ]),
                 $this->getOrderForAttribute('youtube'),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::empty(),
@@ -763,6 +787,7 @@ class FixturesLoader
                 LabelCollection::fromArray([]),
                 $this->getOrderForAttribute('target_image'),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::noLimit(),

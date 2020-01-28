@@ -28,6 +28,7 @@ class CreateMediaLinkAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'full_resolution',
             'labels' => ['en_US' => 'Full resolution'],
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => true,
             'value_per_locale' => true,
             'media_type' => 'image',
@@ -55,6 +56,7 @@ class CreateMediaLinkAttributeCommandFactorySpec extends ObjectBehavior
             // 'code' => 'full_resolution', // For the test purpose, this one is missing
             'labels' => ['en_US' => 'Full resolution'],
             'is_required' => true,
+            'is_read_only' => false,
             'value_per_channel' => true,
             'value_per_locale' => true,
             'media_type' => 'image',

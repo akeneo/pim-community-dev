@@ -9,8 +9,12 @@ import Left from 'akeneoassetmanager/application/component/app/icon/left';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
 import {getAssetEditUrl, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
-import ListAsset, {getListAssetMainMediaThumbnail, MoveDirection, getAssetLabel, assetWillNotMoveInCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
-import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import ListAsset, {
+  getListAssetMainMediaThumbnail,
+  MoveDirection,
+  getAssetLabel,
+  assetWillNotMoveInCollection,
+} from 'akeneoassetmanager/domain/model/asset/list-asset';
 
 const Img = styled.img`
   width: 140px;
@@ -110,7 +114,7 @@ export const Thumbnail = ({
   asset: ListAsset;
   context: ContextState;
   readonly: boolean;
-  assetCollection: AssetCode[];
+  assetCollection: ListAsset[];
   onRemove: () => void;
   onMove: (direction: MoveDirection) => void;
   onClick?: () => void;

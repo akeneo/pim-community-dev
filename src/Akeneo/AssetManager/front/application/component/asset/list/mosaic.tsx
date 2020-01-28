@@ -8,7 +8,7 @@ import {AssetCollectionLimitNotification} from 'akeneopimenrichmentassetmanager/
 import ListAsset, {
   isAssetInCollection,
   addAssetToCollection,
-  removeAssetFromCollection,
+  removeAssetFromAssetCodeCollection,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
@@ -69,7 +69,7 @@ const Mosaic = ({
                   onSelectionChange={(code: AssetCode, isChecked: boolean) => {
                     const newSelection = isChecked
                       ? addAssetToCollection(selection, code)
-                      : removeAssetFromCollection(selection, code);
+                      : removeAssetFromAssetCodeCollection(selection, code);
                     onSelectionChange(newSelection);
                   }}
                   onClick={onAssetClick}

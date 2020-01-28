@@ -29,6 +29,7 @@ class AssetAttributeFactorySpec extends ObjectBehavior
                 false,
                 false,
                 false,
+                false,
                 'designer'
             )
         )->shouldReturn(true);
@@ -39,6 +40,7 @@ class AssetAttributeFactorySpec extends ObjectBehavior
                 [
                     'fr_FR' => 'Nom',
                 ],
+                true,
                 true,
                 false,
                 false,
@@ -58,6 +60,7 @@ class AssetAttributeFactorySpec extends ObjectBehavior
             false,
             false,
             false,
+            false,
             'designer'
         );
 
@@ -72,6 +75,7 @@ class AssetAttributeFactorySpec extends ObjectBehavior
             'labels'                      => ['fr_FR' => 'Mentor'],
             'order'                       => 0,
             'is_required'                 => false,
+            'is_read_only'                => false,
             'value_per_channel'           => false,
             'value_per_locale'            => false,
             'type'                        => 'asset',

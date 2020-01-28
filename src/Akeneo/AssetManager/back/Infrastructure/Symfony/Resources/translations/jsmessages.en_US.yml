@@ -222,7 +222,7 @@ pim_asset_manager:
       limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
-        should_be_unique: 'This code already exists for this asset family.'
+        should_be_unique: 'This code already exists for another asset.'
     no_data:
       title: There is no asset for {{ entityLabel }}
       subtitle: Click on the button "Add new" to create the first asset
@@ -258,7 +258,7 @@ pim_asset_manager:
           not_usable_in_grid: To discover all the products linked, the product attribute must be set as "usable in grid".
         button: View all products
       no_product:
-        title: There are no products linked for the product attribute "{{ entityLabel }}"
+        title: This asset is not linked to any product via the "{{ entityLabel }}" product attribute
         subtitle: 'Start linking products to this attribute to see them here'
     enrich:
       title: Asset attributes
@@ -269,7 +269,7 @@ pim_asset_manager:
       header:
         title: Create
       subtitle: Asset Families
-      title: Add new {{ entityLabel }}
+      title: Add new asset in {{ entityLabel }}
       input:
         label: Label
         code: Code (required)
@@ -373,6 +373,7 @@ pim_asset_manager:
       number: Number
       media_link: Media link
     is_required: required for completeness
+    is_read_only: Read only in the UI
     media_type_preview: Preview of media type
     no_data:
       title: There are no custom attributes for {{ entityLabel }}
@@ -408,6 +409,7 @@ pim_asset_manager:
         value_per_locale: Value per locale
         value_per_channel: Value per channel
         is_required: Required for completeness
+        is_read_only: Read only in the UI
         max_length: Max characters
         textarea: Text Area
         is_rich_text_editor: Rich Text Editor

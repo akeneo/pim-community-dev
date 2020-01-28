@@ -43,6 +43,7 @@ class MediaLinkAttribute extends AbstractAttribute
         LabelCollection $labelCollection,
         AttributeOrder $order,
         AttributeIsRequired $isRequired,
+        AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         Prefix $prefix,
@@ -56,6 +57,7 @@ class MediaLinkAttribute extends AbstractAttribute
             $labelCollection,
             $order,
             $isRequired,
+            $isReadOnly,
             $valuePerChannel,
             $valuePerLocale
         );
@@ -72,6 +74,7 @@ class MediaLinkAttribute extends AbstractAttribute
         LabelCollection $labelCollection,
         AttributeOrder $order,
         AttributeIsRequired $isRequired,
+        AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         Prefix $prefix,
@@ -85,6 +88,7 @@ class MediaLinkAttribute extends AbstractAttribute
             $labelCollection,
             $order,
             $isRequired,
+            $isReadOnly,
             $valuePerChannel,
             $valuePerLocale,
             $prefix,

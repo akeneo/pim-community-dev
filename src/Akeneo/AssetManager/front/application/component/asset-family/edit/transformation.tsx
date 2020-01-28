@@ -18,6 +18,16 @@ import Ajv from 'ajv';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
+import {Link} from 'akeneoassetmanager/application/component/app/link';
+import {Button, Buttons} from 'akeneoassetmanager/application/component/app/button';
+import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
+import {
+  HelperSection,
+  HelperSeparator,
+  HelperTitle,
+  HelperText,
+} from 'akeneoassetmanager/platform/component/common/helper';
+
 const ajv = new Ajv({allErrors: true, verbose: true});
 const schema = require('akeneoassetmanager/infrastructure/model/asset-family-transformations.schema.json');
 const securityContext = require('pim/security-context');
@@ -84,20 +94,6 @@ interface DispatchProps {
   };
 }
 
-const SecondaryActions = ({onLaunchComputeTransformations}: {onLaunchComputeTransformations: () => void}) => (
-  <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-    <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
-    <div className="AknDropdown-menu AknDropdown-menu--right">
-      <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
-      <div>
-        <button tabIndex={-1} className="AknDropdown-menuLink" onClick={onLaunchComputeTransformations}>
-          {__('pim_asset_manager.asset.button.launch_transformations')}
-        </button>
-      </div>
-    </div>
-  </div>
-);
-
 class Transformation extends React.Component<StateProps & DispatchProps, Transformation> {
   props: StateProps & DispatchProps;
 
@@ -110,38 +106,38 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
         <Header
           label={__('pim_asset_manager.asset_family.tab.transformations')}
           image={null}
-          primaryAction={(defaultFocus: React.RefObject<any>) =>
-            rights.assetFamily.edit ? (
-              <button className="AknButton AknButton--apply" onClick={events.onSaveEditForm} ref={defaultFocus}>
-                {__('pim_asset_manager.asset_family.button.save')}
-              </button>
-            ) : null
-          }
-          secondaryActions={() => (
-            <SecondaryActions onLaunchComputeTransformations={events.onLaunchComputeTransformations} />
+          primaryAction={(defaultFocus: React.RefObject<any>) => (
+            <Buttons>
+              <Button color="outline" onClick={events.onLaunchComputeTransformations}>
+                {__('pim_asset_manager.asset.button.launch_transformations')}
+              </Button>
+              {rights.assetFamily.edit && (
+                <button className="AknButton AknButton--apply" onClick={events.onSaveEditForm} ref={defaultFocus}>
+                  {__('pim_asset_manager.asset_family.button.save')}
+                </button>
+              )}
+            </Buttons>
           )}
+          secondaryActions={() => null}
           withLocaleSwitcher={false}
           withChannelSwitcher={false}
           isDirty={form.state.isDirty}
           breadcrumbConfiguration={breadcrumbConfiguration(assetFamily.identifier, assetFamilyLabel)}
         />
-        <div className="AknDescriptionHeader AknDescriptionHeader--sticky">
-          <div
-            className="AknDescriptionHeader-icon"
-            style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Asset.svg")'}}
-          />
-          <div className="AknDescriptionHeader-title">
-            👏 {__('pim_asset_manager.asset_family.transformations.help.title')}
-            <div className="AknDescriptionHeader-description">
+        <HelperSection>
+          <AssetIllustration size={80} />
+          <HelperSeparator />
+          <HelperTitle>
+            👋 {__('pim_asset_manager.asset_family.transformations.help.title')}
+            <HelperText>
               {__('pim_asset_manager.asset_family.transformations.help.description')}
               <br />
-              <a href="https://help.akeneo.com/" className="AknDescriptionHeader-link">
+              <Link href="https://help.akeneo.com/pim/v4/articles/assets-transformation.html" target="_blank">
                 {__('pim_asset_manager.asset_family.transformations.help.link')}
-              </a>
-              <br />
-            </div>
-          </div>
-        </div>
+              </Link>
+            </HelperText>
+          </HelperTitle>
+        </HelperSection>
         <div className="AknSubsection">
           <header className="AknSubsection-title">
             <span className="group-label">{__('pim_asset_manager.asset_family.transformations.subsection')}</span>

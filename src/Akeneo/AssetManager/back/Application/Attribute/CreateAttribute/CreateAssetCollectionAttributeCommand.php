@@ -27,6 +27,7 @@ class CreateAssetCollectionAttributeCommand extends AbstractCreateAttributeComma
         string $code,
         array $labels,
         bool $isRequired,
+        bool $isReadOnly,
         bool $valuePerChannel,
         bool $valuePerLocale,
         $assetType
@@ -36,6 +37,7 @@ class CreateAssetCollectionAttributeCommand extends AbstractCreateAttributeComma
             $code,
             $labels,
             $isRequired,
+            $isReadOnly,
             $valuePerChannel,
             $valuePerLocale
         );

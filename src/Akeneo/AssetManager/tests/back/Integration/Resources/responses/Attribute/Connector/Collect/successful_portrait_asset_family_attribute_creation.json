@@ -16,9 +16,9 @@
             "value_per_locale": false,
             "value_per_channel": false,
             "is_required_for_completeness": false,
+            "is_read_only": false,
             "max_file_size": "200.10",
-            "allowed_extensions": ["png"],
-            "media_type": "image"
+            "allowed_extensions": ["png"]
         }
     },
     "response": {
