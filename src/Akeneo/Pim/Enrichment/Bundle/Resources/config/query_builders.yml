@@ -436,7 +436,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product_model'
             - ['ancestor.code']
-            - ['=']
+            - ['=', 'IN', 'NOT IN']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
 

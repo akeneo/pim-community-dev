@@ -122,6 +122,8 @@ class MassActionDispatcher
             }
         }
 
+        $filters = $this->convertParentFieldIfAllRowsAreSelected($filters);
+
         return $filters;
     }
 
@@ -286,5 +288,45 @@ class MassActionDispatcher
         $datagrid = $this->manager->getDatagrid($datagridName);
 
         return $this->getMassActionByName($actionName, $datagrid);
+    }
+
+    /**
+     * When all rows are selected and the filter is activated on a root product model, then the query
+     * returns the sub product model bit not the variant product.
+     * The field "parent" of the variant product cannot be used because it does not contain the root product model.
+     * We have to use the ancestor.code field that contains all parent codes.
+     *
+     * @param array $filters
+     * @return array
+     */
+    private function convertParentFieldIfAllRowsAreSelected(array $filters): array
+    {
+        if ($this->areAllRowsSelected($filters)) {
+            foreach ($filters as &$filter) {
+                if ('parent' === $filter['field']) {
+                    $filter['field'] = 'ancestor.code';
+                }
+            }
+        }
+
+        return $filters;
+    }
+
+    /**
+     * All rows are selected in the grid when there is no filter related to the ID of the selected rows.
+     *
+     * @param array $filters
+     *
+     * @return bool
+     */
+    private function areAllRowsSelected(array $filters): bool
+    {
+        foreach ($filters as $condition) {
+            if ('id' === $condition['field']) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
