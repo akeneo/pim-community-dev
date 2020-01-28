@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9066: Add error message when locale not within Channel in a project creation
+
 # 3.2.34 (2020-01-21)
 
 ## Bug fixes

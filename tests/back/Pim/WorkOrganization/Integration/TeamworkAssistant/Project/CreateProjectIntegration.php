@@ -75,9 +75,14 @@ class CreateProjectIntegration extends TeamworkAssistantTestCase
             ]
         ]);
 
-        $violation = $this->get('validator')->validate($project);
+        $violations = $this->get('validator')->validate($project);
 
-        $this->assertCount(1, $violation, 'The project locale is not valid');
+        $this->assertCount(1, $violations);
+        foreach ($violations as $violation) {
+            $this->assertEquals('The locale iu_Latn_CA is not supported by the channel ecommerce.', $violation->getMessage());
+            $this->assertEquals('locale', $violation->getPropertyPath());
+            break;
+        }
     }
 
     public function testThatWeCannotCreateAProjectWithDueDateInThePast()
