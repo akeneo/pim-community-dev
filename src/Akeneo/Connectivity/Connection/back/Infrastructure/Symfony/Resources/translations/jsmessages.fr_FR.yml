@@ -1,0 +1,149 @@
+pim_menu.item:
+  connection_settings: Connexions
+  connection_audit: Tableau de bord des connexions
+pim_title:
+  akeneo_connectivity_connection_settings_index: Connexions
+  akeneo_connectivity_connection_settings_any: Connexions
+  akeneo_connectivity_connection_audit_index: Tableau de bord des connexions
+  akeneo_connectivity_connection_audit_any: Tableau de bord des connexions
+akeneo_connectivity.connection:
+  connections: Connexions
+  secondary_actions:
+    title: Autres actions
+  connection:
+    code: Code
+    label: Libellé
+    flow_type: Type de flux
+    image: Image
+    client_id: Client ID
+    secret: Secret
+    username: Username
+    password: Password
+    user_role_id: Rôle
+    user_group_id: Groupe
+    constraint:
+      code:
+        required: Le code de la connexion est requis.
+        invalid: Le code d'une connexion peut contenir uniquement des lettres, des chiffres et des tirets bas.
+        too_short: Le code de la connexion est trop court. Il doit avoir au minimum 3 caractères.
+        too_long: Le code de la connexion est trop long. Il doit avoir au maximum 100 caractères.
+        must_be_unique: Le code de la connexion doit être unique.
+      label:
+        required: Le libellé de la connexion est requis.
+        too_short: Le code de la connexion est trop court. Il doit avoir au minimum 3 caractères.
+        too_long: Le code de la connexion est trop long. Il doit avoir au maximum 100 caractères.
+      flow_type:
+        invalid: Le type de flux de la connexion ne peut être que 'data_source', 'data_destination' ou 'other'.
+      image:
+        must_exist: Désolé, l'image n'a pas été trouvée. Veuillez réessayer.
+  flow_type:
+    data_source: Source de données | Sources de données
+    data_destination: Destination de données | Destinations de données
+    other: Autre | Autres
+  connection_count: '{{ count }} connexion | {{ count }} connexions'
+  no_connection:
+    title: Il y a 0 connexion pour le moment.
+    message: Ajoutez votre première en cliquant sur le bouton « Créer » ci-dessus ou
+    message_link: cliquez ici.
+  create_connection:
+    title: Créer une nouvelle connexion
+    description: Vous pouvez créer jusqu'à 50 connexions.
+    flash:
+      success: Connexion créée avec succès.
+      error: Désolé, une erreur s'est produite lors de la création de la connexion.
+  edit_connection:
+    subtitle: Général
+    flash:
+      success: Connexion mis à jour avec succès.
+      error: Désolé, une erreur s'est produite lors de la mise à jour de la connexion.
+    image_uploader:
+      extension_not_allowed: Désolé, le fichier que vous essayez de charger a une extension non autorisée.
+    credentials:
+      title: Identifiants
+      helper:
+        message: 'Voici les identifiants à utiliser dans votre connecteur {{ label }}.'
+        link: En savoir plus ici...
+      password_helper:
+        message: Si vous avez oublié votre mot de passe, vous pouvez en générer un nouveau ici.
+        link: En savoir plus…
+      clear_password_helper:
+        message: Assurez-vous de sauvegarder ce mot de passe quelque part, nous ne vous le montrons qu'à la création de la connexion.
+        link: En savoir plus…
+      action:
+        copy: Copier dans le presse-papier
+        regenerate: Régénérer
+      flash:
+        copied: '{{ name }} copié dans le presse-papier'
+    permissions:
+      title: Permissions
+      helper:
+        message: 'Dans cette section, vous pouvez définir les permissions de votre connexion {{ label }}.'
+        link: En savoir plus sur les permissions des connexions ici...
+      user_role_helper:
+        message: Le rôle par défaut `{{ role }}` n'est sûrement pas le plus adapté à vos besoins de connectivité. Choisissez-en un taillé sur mesure pour cette connexion.
+        link: Plus d'informations...
+      user_group_helper:
+        message: Nous vous recommandons de choisir un groupe adapté à vos besoins de connexion.
+        link: Plus d'informations...
+  regenerate_secret:
+    title: Confirmer la régénération
+    description: Êtes-vous sûr de vouloir régénérer le secret de la connexion ? Vous n'êtes pas sûr des impacts ?
+    link: Découvrez-les ici.
+    action:
+      regenerate: Régénérer
+    flash:
+      success: Le secret de la connexion a été régénéré avec succès.
+      error: Désolé, une erreur s'est produite lors du régénération du secret de la connexion.
+  regenerate_password:
+    title: Confirmer la régénération
+    description: Êtes-vous sûr de vouloir régénérer le password de la connexion ? Vous n'êtes pas sûr des impacts ?
+    link: Découvrez-les ici.
+    action:
+      regenerate: Régénérer
+    flash:
+      success: Le password de la connexion a été régénéré avec succès.
+      error: Désolé, une erreur s'est produite lors du régénération du password de la connexion.
+  delete_connection:
+    title: Confirmer la suppression
+    description: Êtes-vous sûr de vouloir supprimer la connexion ? Vous n'êtes pas sûr des impacts ?
+    link: Découvrez-les ici.
+    flash:
+      success: Connexion supprimée avec succès.
+  helper:
+    title: '👋 Bienvenue dans cette fonctionnalité qui vous aidera à bien connecter votre PIM !'
+    description: Un PIM non connecté, c'est un peu inutile, non ? Grâce aux connexions, vous pouvez déclarer facilement tous les flux de données qui sont envoyés dans votre PIM, ainsi que ceux qui en sortent.
+    link: Envie d'en savoir plus ? Découvrez ce qu'est une connexion et comment en tirer le meilleur parti ici !
+  flow_type_helper:
+    message: Mais qu'est-ce qu'un type de flux ?
+    link: Nous pouvons vous aider ici !
+  edit_image:
+    upload_helper: Changez votre image, glissez-déposez là ou
+    remove_helper: Supprimer l'image
+    click_here: cliquez ici
+    flash:
+      extension_not_allowed: Désolé, le fichier que vous essayé de charger a une extension non autorisée.
+  dashboard:
+    helper:
+      title: '👋 Bienvenue dans le tableau de bord de vos connexions !'
+      description: Ici, vous pouvez suivre tous les flux de données qui circulent via vos connexions, que ce soit des données entrantes provenant de vos sources ou de données sortantes distribuées sur vos destinations.
+      link: Envie d'en savoir plus ? Rendez-vous ici !
+    user_survey:
+      title: Envie de voir plus de données sur ce tableau de bord ?
+      content: Vos retours sont très précieux à nos yeux. Voter pour le prochain widget que vous souhaitez voir apparaître sur ce tableau de bord !
+      button: C'est parti !
+    connection_selector:
+      title: Connexions sources
+      all: Toutes
+    charts:
+      number_of_products_created: Nombre de produits créés
+      number_of_products_updated: Nombre de produits mis à jour
+      legend:
+        during_the_last_seven_days: Au cours des sept derniers jours
+        today: Aujourd'hui
+    no_connection:
+      title: Il y a 0 connexion pour le moment.
+      message_with_permission:
+        link: Créez-en une nouvelle juste ici !
+      message_without_permission:
+        message: Demandez à votre administrateur d'en créer une.
+        link: En savoir plus sur les connexions ici...
