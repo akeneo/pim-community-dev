@@ -9,7 +9,6 @@ use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser;
 use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUser;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
