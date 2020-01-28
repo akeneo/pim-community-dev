@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from "react";
 import WidgetsList from "./Attributes/EditorHighlight/WidgetsList";
-import PopoverPortal from "./Attributes/EditorHighlight/Popover";
+import Popover from "./Attributes/EditorHighlight/Popover";
 import TabContentWithPortalDecorator from "./TabContentWithPortalDecorator";
 import AttributesContextListener from "../../../listener/AttributesContextListener";
 import {ATTRIBUTES_TAB_NAME} from "../../../constant";
@@ -15,7 +15,7 @@ const BaseAttributesTabContent: FunctionComponent<AttributesTabContentProps> = (
       <AttributesContextListener />
 
       <WidgetsList/>
-      <PopoverPortal/>
+      <Popover/>
     </>
   );
 };

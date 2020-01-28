@@ -53,3 +53,16 @@ services:
             $supportedLocaleChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedPrefixLocaleChecker'
             $textCheckerDictionaryRepository: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository'
             $eventDispatcher: '@event_dispatcher'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckTitleSuggestionController:
+        public: true
+        arguments:
+            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            $getProductTitleSuggestion: '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductTitleSuggestion'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\IgnoreTitleSuggestionController:
+        public: true
+        arguments:
+            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            $ignoredTitleSuggestionRepository: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\IgnoredTitleSuggestionRepository'
+            $eventDispatcher: '@event_dispatcher'

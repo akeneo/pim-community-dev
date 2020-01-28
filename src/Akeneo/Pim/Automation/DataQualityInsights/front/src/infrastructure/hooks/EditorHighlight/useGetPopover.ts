@@ -9,7 +9,7 @@ import {
   initializePopoverOpeningAction,
   showPopoverAction
 } from "../../reducer";
-import {HighlightElement} from "../../../application/helper";
+import {HighlightElement, WidgetElement} from "../../../application/helper";
 
 const OPENING_MILLISECONDS_DELAY = 50;
 const CLOSING_MILLISECONDS_DELAY = 500;
@@ -19,7 +19,7 @@ const useGetPopover = () => {
   const dispatchAction = useDispatch();
 
   useEffect(() => {
-    const handleOpening = debounce((widgetId: string, highlight: HighlightElement, callback?: Function) => {
+    const handleOpening = debounce((widget: WidgetElement, highlight: HighlightElement, callback?: Function) => {
       if (handleClosing && handleClosing.cancel) {
         handleClosing.cancel();
       }
@@ -29,10 +29,10 @@ const useGetPopover = () => {
       }
 
       if (!highlight.isActive) {
-        dispatchAction(enableWidgetHighlightAction(widgetId, highlight.id));
+        dispatchAction(enableWidgetHighlightAction(widget.id, highlight.id));
       }
 
-      dispatchAction(showPopoverAction(widgetId, highlight));
+      dispatchAction(showPopoverAction(widget.id, highlight));
     }, OPENING_MILLISECONDS_DELAY);
 
     const handleClosing = debounce((callback?: Function) => {

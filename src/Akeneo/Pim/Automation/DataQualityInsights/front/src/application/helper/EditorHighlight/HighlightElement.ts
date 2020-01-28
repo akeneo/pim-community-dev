@@ -66,3 +66,16 @@ const getTextNodesIn = (node: Node) => {
   }
   return Array.from(node.childNodes).filter(n => n.nodeType === n.TEXT_NODE)
 };
+
+const HIGHLIGHT_INTERSECTING_MARGIN = 2;
+
+export const isIntersectingHighlight = (x: number, y: number, highlight: HighlightElement) => {
+  const rect: DOMRect = highlight.domRange.getBoundingClientRect();
+
+  return (
+    x >= (rect.left - HIGHLIGHT_INTERSECTING_MARGIN) &&
+    x <= (rect.right + HIGHLIGHT_INTERSECTING_MARGIN) &&
+    y >= (rect.top - HIGHLIGHT_INTERSECTING_MARGIN) &&
+    y <= (rect.bottom + HIGHLIGHT_INTERSECTING_MARGIN)
+  );
+};

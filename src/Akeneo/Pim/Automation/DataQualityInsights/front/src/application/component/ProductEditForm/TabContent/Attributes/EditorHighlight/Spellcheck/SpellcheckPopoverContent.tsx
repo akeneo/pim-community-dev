@@ -1,21 +1,20 @@
 import React, {FunctionComponent, useCallback} from "react";
-import {MistakeElement, setEditorContent} from "../../../../../helper";
-import {hidePopoverAction} from "../../../../../../infrastructure/reducer";
+import {MistakeElement, setEditorContent, WidgetElement} from "../../../../../../helper";
+import {hidePopoverAction} from "../../../../../../../infrastructure/reducer";
 import {useDispatch} from "react-redux";
-import {useFetchIgnoreTextIssue, useGetSpellcheckWidget} from "../../../../../../infrastructure/hooks";
+import {useFetchIgnoreTextIssue} from "../../../../../../../infrastructure/hooks";
 
 const __ = require("oro/translator");
 
 const SUGGESTIONS_LIMIT = 5;
 
-export interface PopoverContentProps {
+export interface SpellcheckPopoverContentProps {
   mistake: MistakeElement | null;
-  widgetId: string | null;
+  widget: WidgetElement | null;
 }
 
-const PopoverContent: FunctionComponent<PopoverContentProps> = ({mistake, widgetId}) => {
+const SpellcheckPopoverContent: FunctionComponent<SpellcheckPopoverContentProps> = ({mistake, widget}) => {
   const dispatchAction = useDispatch();
-  const widget = useGetSpellcheckWidget(widgetId);
   const {dispatchIgnoreTextIssue} = useFetchIgnoreTextIssue();
 
   const handleSuggestionClick = useCallback((suggestion: string) => {
@@ -42,11 +41,10 @@ const PopoverContent: FunctionComponent<PopoverContentProps> = ({mistake, widget
     dispatchIgnoreTextIssue(mistake.text);
     dispatchAction(hidePopoverAction());
   }, [widget, mistake]);
-
   return (
     <>
       {mistake && (
-        <div>
+        <div className="AknEditorHighlight-popover-content AknEditorHighlight-popover-content--spellcheck">
           <header>{__('akeneo_data_quality_insights.product_edit_form.spellcheck_popover.title')}</header>
           <div>
 
@@ -67,7 +65,7 @@ const PopoverContent: FunctionComponent<PopoverContentProps> = ({mistake, widget
                     {mistake.suggestions
                       .slice(0, SUGGESTIONS_LIMIT)
                       .map((suggestion, index) => (
-                        <li key={`suggestion-${index}`}
+                        <li key={`spellcheck-suggestion-${index}`}
                             className="AknEditorHighlight-popover-suggestions-item"
                             onClick={() => {handleSuggestionClick(suggestion);}}>
                           <span>{suggestion}</span>
@@ -91,4 +89,4 @@ const PopoverContent: FunctionComponent<PopoverContentProps> = ({mistake, widget
   );
 };
 
-export default PopoverContent;
+export default SpellcheckPopoverContent;

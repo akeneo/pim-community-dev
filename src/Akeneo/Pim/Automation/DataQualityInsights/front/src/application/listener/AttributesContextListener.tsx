@@ -10,10 +10,13 @@ const uuidV5 = require('uuid/v5');
 const WIDGET_UUID_NAMESPACE = '4e34f5c2-d1b0-4cf2-96c9-dca6b95e695e';
 
 const getTextAttributes = (family: Family) => {
+  const isValidTextarea = (attribute: Attribute) => (attribute.type === "pim_catalog_textarea" && attribute.localizable && !attribute.is_read_only && !attribute.wysiwyg_enabled);
+  const isValidText = (attribute: Attribute) => (attribute.type === "pim_catalog_text" && attribute.localizable && !attribute.is_read_only);
+
   return family.attributes.filter((attribute) => {
     return (
-      (attribute.type === "pim_catalog_textarea" && attribute.localizable && !attribute.is_read_only && !attribute.wysiwyg_enabled) ||
-      (attribute.type === "pim_catalog_text" && attribute.localizable && !attribute.is_read_only)
+      isValidTextarea(attribute) ||
+      isValidText(attribute)
     );
   });
 };
@@ -24,13 +27,13 @@ const isTextAttributeElement = (element: Element | null, attributes: Attribute[]
   }
   const attributeCode = element.getAttribute('data-attribute');
   const attribute = attributes.find(attr => attr.code === attributeCode);
+  const isValidTextarea = (attribute: Attribute) => (attribute.type === 'pim_catalog_textarea' && !attribute.wysiwyg_enabled);
+  const isValidText = (attribute: Attribute) =>  (attribute.type === 'pim_catalog_text');
 
   return attribute && (
-    (attribute.type === 'pim_catalog_textarea' && !attribute.wysiwyg_enabled) ||
-    (attribute.type === 'pim_catalog_text')
+    isValidTextarea(attribute) || isValidText(attribute)
   );
 };
-
 
 const AttributesContextListener = () => {
   const family = useFetchProductFamilyInformation();
@@ -61,7 +64,8 @@ const AttributesContextListener = () => {
             editor.setAttribute("spellcheck", 'false');
 
             const widgetId = uuidV5(`${product.meta.id}-${attribute}`, WIDGET_UUID_NAMESPACE);
-            widgetList[widgetId] = createWidget(widgetId, editor as EditorElement, attribute);
+            const isMainLabel = (attribute === family.attribute_as_label);
+            widgetList[widgetId] = createWidget(widgetId, editor as EditorElement, attribute, isMainLabel);
           }
         });
 

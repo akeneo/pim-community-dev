@@ -1,7 +1,8 @@
 import React, {FunctionComponent, useEffect, useLayoutEffect, useRef, useState} from "react";
-import {useGetEditorHighlightPopover} from "../../../../../../infrastructure/hooks";
-import PopoverContent from "./PopoverContent";
+import {useGetEditorHighlightPopover, useGetSpellcheckWidget} from "../../../../../../infrastructure/hooks";
 import {EditorHighlightPopoverContextListener} from "../../../../../listener";
+import SpellcheckPopoverContent from "./Spellcheck/SpellcheckPopoverContent";
+import SuggestedTitlePopoverContent from "./SuggestedTitle/SuggestedTitlePopoverContent";
 import PopoverWithPortalDecorator from "./PopoverWithPortalDecorator";
 
 const POPOVER_BOTTOM_PLACEMENT_OFFSET = 2;
@@ -20,6 +21,7 @@ export interface  PopoverProps {}
 
 const BasePopover: FunctionComponent<PopoverProps> = () => {
   const {isOpen, highlight, widgetId, handleOpening, handleClosing} = useGetEditorHighlightPopover();
+  const widget = useGetSpellcheckWidget(widgetId);
   const [style, setStyle] = useState<PopoverStyleState>({});
   const popoverRef = useRef<HTMLDivElement>(null);
   const classList = ["AknEditorHighlight-popover"];
@@ -61,14 +63,21 @@ const BasePopover: FunctionComponent<PopoverProps> = () => {
 
   return (
     <>
-      <EditorHighlightPopoverContextListener popoverRef={popoverRef} widgetId={widgetId} handleClosing={handleClosing}/>
+      <EditorHighlightPopoverContextListener popoverRef={popoverRef} activeHighlight={highlight} handleClosing={handleClosing}/>
       {isOpen && (
         <div ref={popoverRef}
              className={classList.join(' ')}
              style={style}
-             onMouseEnter={() => handleOpening(widgetId, highlight)}
+             onMouseEnter={() => handleOpening(widget, highlight)}
              onMouseLeave={() => handleClosing()}>
-          {highlight && highlight.mistake && <PopoverContent mistake={highlight.mistake} widgetId={widgetId}/>}
+          {highlight && highlight.mistake && widget && (
+            <>
+              {widget.isMainLabel ?
+                <SuggestedTitlePopoverContent mistake={highlight.mistake} widget={widget}/> :
+                <SpellcheckPopoverContent mistake={highlight.mistake} widget={widget}/>
+              }
+            </>
+          )}
         </div>
       )}
     </>

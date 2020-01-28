@@ -5,6 +5,7 @@ import fetchFamilyInformation from "./fetchFamilyInformation";
 import fetchIgnoreTextIssue from "./fetchIgnoreTextIssue";
 import fetchProduct from "./fetchProduct";
 import fetchTextAnalysis from "./fetchTextAnalysis";
+import fetchTitleSuggestion from "./fetchTitleSuggestion";
 
 
 export {
@@ -15,4 +16,5 @@ export {
   fetchIgnoreTextIssue,
   fetchProduct,
   fetchTextAnalysis,
+  fetchTitleSuggestion,
 }

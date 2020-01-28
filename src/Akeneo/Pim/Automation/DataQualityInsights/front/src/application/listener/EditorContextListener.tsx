@@ -1,19 +1,6 @@
 import React, {FunctionComponent, useEffect} from "react";
-import {HighlightElement, HighlightsCollection, WidgetElement} from "../helper";
+import {HighlightsCollection, isIntersectingHighlight, WidgetElement} from "../helper";
 import {useGetEditorHighlightPopover} from "../../infrastructure/hooks";
-
-const HIGHLIGHT_INTERSECTING_MARGIN = 2;
-
-const isIntersectingHighlight = (x: number, y: number, highlight: HighlightElement) => {
-  const rect: DOMRect = highlight.domRange.getBoundingClientRect();
-
-  return (
-    x >= (rect.left - HIGHLIGHT_INTERSECTING_MARGIN) &&
-    x <= (rect.right + HIGHLIGHT_INTERSECTING_MARGIN) &&
-    y >= (rect.top - HIGHLIGHT_INTERSECTING_MARGIN) &&
-    y <= (rect.bottom + HIGHLIGHT_INTERSECTING_MARGIN)
-  );
-};
 
 interface EditorContextListenerProps {
   widget: WidgetElement;
@@ -40,7 +27,7 @@ const EditorContextListener: FunctionComponent<EditorContextListenerProps> = ({w
           return;
         }
 
-        handleOpening(widget.id, activeHighlight);
+        handleOpening(widget, activeHighlight);
       })
     };
 

@@ -1,5 +1,11 @@
 import {Action, ActionCreator, Reducer} from 'redux';
-import {HighlightElement, HighlightsCollection, MistakeElement, WidgetElement, WidgetsCollection} from "../../application/helper";
+import {
+  HighlightElement,
+  HighlightsCollection,
+  MistakeElement,
+  WidgetElement,
+  WidgetsCollection
+} from "../../application/helper";
 
 export type ProductHighlightAction = WidgetAction & WidgetElementsAction & PopoverAction;
 
@@ -121,6 +127,20 @@ export const updateWidgetContentAnalysis: ActionCreator<WidgetAction> = (id: str
     }
   };
 };
+
+const UPDATE_WIDGET_TITLE_SUGGESTION = "UPDATE_WIDGET_TITLE_SUGGESTION";
+export const updateWidgetTitleSuggestion: ActionCreator<WidgetAction> = (id: string, suggestion: string) => {
+  return {
+    type: UPDATE_WIDGET_TITLE_SUGGESTION,
+    payload: {
+      widget: {
+        id,
+        suggestion
+      }
+    }
+  };
+};
+
 
 const UPDATE_WIDGET_HIGHLIGHTS = "UPDATE_WIDGET_HIGHLIGHTS";
 export const updateWidgetHighlightsAction: ActionCreator<WidgetAction> = (id: string, highlights: HighlightElement[]) => {

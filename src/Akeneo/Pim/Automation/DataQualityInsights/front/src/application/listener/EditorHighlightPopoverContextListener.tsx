@@ -1,15 +1,16 @@
 import React, {FunctionComponent, RefObject, useEffect} from "react";
 import {debounce} from "lodash";
+import {HighlightElement, isIntersectingHighlight} from "../helper";
 
 const CLOSING_MILLISECONDS_DELAY = 300;
 
 interface EditorHighlightPopoverContextListenerProps {
   popoverRef: RefObject<HTMLDivElement>;
-  widgetId: string|null;
   handleClosing: Function;
+  activeHighlight: HighlightElement|null;
 }
 
-const EditorHighlightPopoverContextListener: FunctionComponent<EditorHighlightPopoverContextListenerProps> = ({popoverRef, handleClosing}) => {
+const EditorHighlightPopoverContextListener: FunctionComponent<EditorHighlightPopoverContextListenerProps> = ({popoverRef, activeHighlight, handleClosing}) => {
   useEffect(() => {
     const handleDocumentMouseLeave = debounce(() => {
       handleClosing();
@@ -18,7 +19,8 @@ const EditorHighlightPopoverContextListener: FunctionComponent<EditorHighlightPo
     const handleDocumentMouseMove = debounce((event: MouseEvent) => {
       if (popoverRef.current && (
         // @ts-ignore
-        event.target !== popoverRef.current && !popoverRef.current.contains(event.target)
+        (event.target !== popoverRef.current && !popoverRef.current.contains(event.target)) &&
+        (activeHighlight && !isIntersectingHighlight(event.clientX, event.clientY, activeHighlight))
       )) {
         handleClosing();
       }
