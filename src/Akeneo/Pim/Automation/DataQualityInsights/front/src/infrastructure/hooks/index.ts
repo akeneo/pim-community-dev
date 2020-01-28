@@ -5,6 +5,7 @@ import useCatalogContext from "./useCatalogContext";
 import useProduct from "./useProduct";
 import useFetchProductAxisRates from "./useFetchProductAxisRates";
 import usePageContext from "./usePageContext";
+import useProductEvaluation from "./useProductEvaluation";
 import useGetWidgetsList from "./EditorHighlight/useGetWidgetsList";
 import useGetEditorBoundingRect from "./EditorHighlight/useGetEditorBoundingRect";
 import useGetEditorScroll from "./EditorHighlight/useGetEditorScroll";
@@ -34,4 +35,5 @@ export {
   useFetchIgnoreTextIssue,
   useGetChartScalingSizeRatio as useGetDashboardChartScalingSizeRatio,
   useFetchTitleSuggestion,
+  useProductEvaluation,
 }

@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {isEmpty} from "lodash";
 
 import {fetchProductDataQualityEvaluation} from '../fetcher';
-import {ProductEditFormState} from "../store";
 import {getProductEvaluationAction} from "../reducer";
+import {useProductEvaluation} from "./index";
 
 const MAXIMUM_RETRIES = 10;
 const RETRY_MILLISECONDS_DELAY = 200;
@@ -31,17 +31,7 @@ const useFetchProductDataQualityEvaluation = () => {
   const [hasToBeEvaluated, setHasToBeEvaluated] = useState<boolean>(false);
   const [retries, setRetries] = useState<number>(0);
 
-  const {productId, productUpdated, evaluation} = useSelector((state: ProductEditFormState) => {
-    const productId = state.product.meta.id;
-    const productUpdated = state.product.updated;
-    const evaluation = productId ? state.productEvaluation[productId] : {};
-
-    return {
-      evaluation: evaluation || {},
-      productId: productId,
-      productUpdated
-    };
-  });
+  const {productId, productUpdated, evaluation} = useProductEvaluation();
 
   const dispatchAction = useDispatch();
 

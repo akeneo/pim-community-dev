@@ -2,12 +2,13 @@ import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {WidgetElement} from "../../../../application/helper";
 import {fetchTitleSuggestion} from "../../../fetcher";
-import {useCatalogContext, useProduct} from "../../index";
+import {useCatalogContext, useProduct, useProductEvaluation} from "../../index";
 import {updateWidgetContentAnalysis} from "../../../reducer";
 
 const useFetchTitleSuggestion = (widget: WidgetElement) => {
   const {locale, channel} = useCatalogContext();
   const product = useProduct();
+  const {evaluation} = useProductEvaluation();
   const {analysis} = widget;
   const dispatchAction = useDispatch();
 
@@ -40,7 +41,7 @@ const useFetchTitleSuggestion = (widget: WidgetElement) => {
         suggestions
       }]));
     })();
-  }, []);
+  }, [evaluation]);
 
   return {analysis};
 };
