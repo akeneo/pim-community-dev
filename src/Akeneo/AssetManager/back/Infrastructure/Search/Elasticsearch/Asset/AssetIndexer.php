@@ -6,6 +6,7 @@ namespace Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\SearchableAssetItem;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;

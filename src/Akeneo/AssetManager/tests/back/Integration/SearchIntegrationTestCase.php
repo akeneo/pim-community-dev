@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration;
 
+use Akeneo\AssetManager\Application\Asset\Subscribers\IndexAssetSubscriber;
 use Akeneo\AssetManager\Integration\Persistence\Helper\SearchAssetIndexHelper;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -43,5 +44,11 @@ abstract class SearchIntegrationTestCase extends KernelTestCase
     protected function get(string $service)
     {
         return self::$container->get($service);
+    }
+
+    protected function flushAssetsToIndexCache(): void
+    {
+        $indexAssetsEventAggregator = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.index_asset');
+        $indexAssetsEventAggregator->onKernelResponse(); // Flushes the assets to index cache in the subscriber
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Search\Elasticsearch\Asset;
 
+use Akeneo\AssetManager\Application\Asset\Subscribers\IndexAssetSubscriber;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -37,6 +38,9 @@ use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Akeneo\AssetManager\Integration\SearchIntegrationTestCase;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Testing the search usecases for the asset grid for information in the code of the asset.
@@ -47,15 +51,22 @@ use PHPUnit\Framework\Assert;
  */
 class AssetIndexerTest extends SearchIntegrationTestCase
 {
+    private const STARK_ASSET_IDENTIFIER = 'stark_designer_fingerprint';
+    private const COCO_ASSET_IDENTIFIER = 'coco_designer_fingerprint';
+
     /** @var AssetIndexerInterface */
-    protected $assetIndexer;
+    private $assetIndexer;
+
+    /** * @var IndexAssetSubscriber */
+    private $indexAssetsEventAggregator;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->loadFixtures();
         $this->assetIndexer = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer');
+        $this->indexAssetsEventAggregator = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.index_asset');
+        $this->loadFixtures();
     }
 
     /**
@@ -66,9 +77,30 @@ class AssetIndexerTest extends SearchIntegrationTestCase
         $this->searchAssetIndexHelper->resetIndex();
         $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'stark');
 
-        $this->assetIndexer->index(AssetIdentifier::fromString('stark_designer_fingerprint'));
+        $this->assetIndexer->index(AssetIdentifier::fromString(self::STARK_ASSET_IDENTIFIER));
+        $this->indexAssetsEventAggregator->onKernelResponse();
 
         $this->searchAssetIndexHelper->assertAssetExists('designer', 'stark');
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_multiple_assets_by_identifiers()
+    {
+        $this->searchAssetIndexHelper->resetIndex();
+        $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'stark');
+        $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'coco');
+
+        $this->assetIndexer->indexByAssetIdentifiers(
+            [
+                AssetIdentifier::fromString(self::STARK_ASSET_IDENTIFIER),
+                AssetIdentifier::fromString(self::COCO_ASSET_IDENTIFIER),
+            ]
+        );
+
+        $this->searchAssetIndexHelper->assertAssetExists('designer', 'stark');
+        $this->searchAssetIndexHelper->assertAssetExists('designer', 'coco');
     }
 
     /**
@@ -91,7 +123,6 @@ class AssetIndexerTest extends SearchIntegrationTestCase
      */
     public function it_deletes_one_asset()
     {
-        $this->searchAssetIndexHelper->refreshIndex();
         $this->assetIndexer->removeAssetByAssetFamilyIdentifierAndCode('designer', 'stark');
 
         $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'stark');
@@ -129,6 +160,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
 
     private function loadFixtures()
     {
+        $this->searchAssetIndexHelper->resetIndex();
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
         $this->loadAssetFamilies();
         $this->loadAttributes();
@@ -217,7 +249,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
         $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
         $assetRepository->create(
             Asset::create(
-                AssetIdentifier::fromString('stark_designer_fingerprint'),
+                AssetIdentifier::fromString(self::STARK_ASSET_IDENTIFIER),
                 AssetFamilyIdentifier::fromString('designer'),
                 AssetCode::fromString('stark'),
                 ValueCollection::fromValues([
@@ -253,7 +285,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
 
         $assetRepository->create(
             Asset::create(
-                AssetIdentifier::fromString('coco_designer_fingerprint'),
+                AssetIdentifier::fromString(self::COCO_ASSET_IDENTIFIER),
                 AssetFamilyIdentifier::fromString('designer'),
                 AssetCode::fromString('coco'),
                 ValueCollection::fromValues([
@@ -308,5 +340,6 @@ class AssetIndexerTest extends SearchIntegrationTestCase
                 ])
             )
         );
+        $this->flushAssetsToIndexCache();
     }
 }
