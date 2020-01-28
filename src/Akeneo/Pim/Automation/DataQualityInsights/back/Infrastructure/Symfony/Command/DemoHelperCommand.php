@@ -212,7 +212,7 @@ final class DemoHelperCommand extends Command
             $ratesOfTheDay = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates, 0);
             $ratesProjections = [];
 
-            for ($i=0; $i < 7; $i++) {
+            for ($i=1; $i < 7; $i++) {
                 $ratesProjections[] = new DashboardRatesProjection(
                     $projectionTypeAndCode['type'],
                     $projectionTypeAndCode['code'],
