@@ -97,7 +97,10 @@ class GetProductEvaluation
     {
         $axisRateCollection = new AxisRateCollection();
         foreach ($axisCriteriaEvaluations as $criterionEvaluation) {
-            $axisRateCollection->addCriterionRateCollection($criterionEvaluation->getResult()->getRates());
+            $evaluationResult = $criterionEvaluation->getResult();
+            if ($evaluationResult !== null) {
+                $axisRateCollection->addCriterionRateCollection($evaluationResult->getRates());
+            }
         }
 
         return $axisRateCollection;
@@ -113,15 +116,15 @@ class GetProductEvaluation
     private function computeAxisCriteriaRates(array $criteriaEvaluations, ChannelCode $channelCode, LocaleCode $localeCode): array
     {
         $criteriaRates = [];
-        /** @var CriterionEvaluation $criteriaEvaluation */
-        foreach ($criteriaEvaluations as $criteriaEvaluation) {
-            $evaluationResult = $criteriaEvaluation->getResult();
+        /** @var CriterionEvaluation $criterionEvaluation */
+        foreach ($criteriaEvaluations as $criterionEvaluation) {
+            $evaluationResult = $criterionEvaluation->getResult();
             $rate = null !== $evaluationResult
                 ? $evaluationResult->getRates()->getByChannelAndLocale($channelCode, $localeCode)
                 : null;
 
             $criteriaRates[] = [
-                'criterion' => strval($criteriaEvaluation->getCriterionCode()),
+                'criterion' => strval($criterionEvaluation->getCriterionCode()),
                 'rate' => null !== $rate ? $rate->toInt() : null,
                 'letterRate' => null !== $rate ? strval($rate) : null,
             ];

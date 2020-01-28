@@ -80,7 +80,7 @@ class SectionView extends BaseView {
     ReactDOM.render(
       <div>
         <DataQualityOverviewHelper/>
-        <DataQualityInsightsDashboard timePeriod={this.timePeriod} catalogLocale={catalogLocale} catalogChannel={catalogChannel} familyCode={this.familyCode} categoryCode={this.categoryCode}/>,
+        <DataQualityInsightsDashboard timePeriod={this.timePeriod} catalogLocale={catalogLocale} catalogChannel={catalogChannel} familyCode={this.familyCode} categoryCode={this.categoryCode}/>
       </div>,
       this.el
     );
