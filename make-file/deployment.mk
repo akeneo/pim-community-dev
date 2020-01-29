@@ -5,9 +5,6 @@ INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
 PFID ?= srnt-$(INSTANCE_NAME)
 CI ?= false
 
-#by default, the tag to deploy is CIRCLECI_SHA1
-DEPLOY_SHA1 ?= $(IMAGE_TAG)
-
 TEST_AUTO ?= false
 ENV_NAME ?= dev
 GOOGLE_PROJECT_ID ?= akecld-saas-$(ENV_NAME)
@@ -95,11 +92,11 @@ create-dev-instance: create-ci-values create-tf-files
 #  create-ci-instance: Update Chart.yaml only if running in a CI container
 .PHONY: create-ci-instance
 create-ci-instance: create-ci-values create-tf-files
-	yq w -i $(PIM_SRC_DIR)/deployments/terraform/pim/Chart.yaml version ${DEPLOY_SHA1}
+	yq w -i $(PIM_SRC_DIR)/deployments/terraform/pim/Chart.yaml version ${IMAGE_TAG}
 
 .PHONY: create-ci-values
 create-ci-values: $(INSTANCE_DIR)
-	@echo "Deploy with $(DEPLOY_SHA1)"
+	@echo "Deploy with $(IMAGE_TAG)"
 	cp $(PIM_SRC_DIR)/deployments/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
@@ -138,8 +135,8 @@ test-prod:
 
 .PHONY: release
 release:
-	@echo Tagging Docker image ${IMAGE_TAG}
+	@echo Tagging Docker image ${NEW_IMAGE_TAG}
 	docker pull eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG}
-	docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG} eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG}
-	@echo Pushing Docker image ${IMAGE_TAG}
-	$(MAKE) push-php-image-prod
+	docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG} eu.gcr.io/akeneo-ci/pim-enterprise-dev:${NEW_IMAGE_TAG}
+	@echo Pushing Docker image ${NEW_IMAGE_TAG}
+	IMAGE_TAG=${NEW_IMAGE_TAG} $(MAKE) push-php-image-prod
