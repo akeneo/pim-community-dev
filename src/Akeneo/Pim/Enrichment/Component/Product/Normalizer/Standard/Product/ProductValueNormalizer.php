@@ -128,6 +128,7 @@ class ProductValueNormalizer implements NormalizerInterface
     }
 
     /**
+     * Cut all the ending zeros after coma if decimals are more than 4
      * @return int|string
      */
     private function formatNumber(ValueInterface $value, AttributeInterface $attribute)
@@ -136,13 +137,15 @@ class ProductValueNormalizer implements NormalizerInterface
             return (int)$value->getData();
         }
 
-        $valueExploded = explode(".", $value->getData());
+        $dataWithoutZero = preg_replace('/0+$/', '', $value->getData());
+
+        $valueExploded = explode(".", $dataWithoutZero);
         $valueBehindComa = array_pop($valueExploded);
 
         if (strlen($valueBehindComa) < 4) {
-            return number_format($value->getData(), static::DECIMAL_PRECISION, '.', ',');
+            return number_format($dataWithoutZero, static::DECIMAL_PRECISION, '.', ',');
         }
 
-        return $value->getData();
+        return $dataWithoutZero;
     }
 }

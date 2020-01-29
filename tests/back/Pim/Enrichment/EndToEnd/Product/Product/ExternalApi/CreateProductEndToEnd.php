@@ -494,7 +494,7 @@ JSON;
                     ['locale' => null, 'scope' => null, 'data' => '12.5600'],
                 ],
                 'a_number_float_very_decimal'                     => [
-                    ['locale' => null, 'scope' => null, 'data' => '12.56787697870'],
+                    ['locale' => null, 'scope' => null, 'data' => '12.5678769787'],
                 ],
                 'a_number_float_negative'            => [
                     ['locale' => null, 'scope' => null, 'data' => '-99.8732'],
