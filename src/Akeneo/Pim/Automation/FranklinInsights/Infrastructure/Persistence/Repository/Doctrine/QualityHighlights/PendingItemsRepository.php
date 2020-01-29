@@ -98,7 +98,8 @@ class PendingItemsRepository implements PendingItemsRepositoryInterface
             'action' => self::ACTION_ENTITY_DELETED,
         ];
 
-        $this->connection->executeQuery($this->getInsertQuery(), $bindParams);
+        //@todo this event have to be handled by the library
+        //$this->connection->executeQuery($this->getInsertQuery(), $bindParams);
     }
 
     public function acquireLock(Lock $lock): void
