@@ -99,6 +99,8 @@ contexts: &context
             - 'Context\FeatureContext'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_model'
+    -   Akeneo\Connectivity\Connection\Tests\EndToEnd\Context\SettingsContext:
+            - 'Context\FeatureContext'
 
 legacy:
     suites:
@@ -112,6 +114,7 @@ legacy:
             contexts: *context
             paths:
                 - tests/legacy/features
+                - src/Akeneo/Connectivity/Connection/tests/features/
             filters:
                 tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@critical'
         chipmunk:
@@ -135,6 +138,10 @@ legacy:
                 - tests/legacy/features/platform/
             filters:
                 tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@critical'
+        connectivity:
+            contexts: *context
+            paths:
+                - src/Akeneo/Connectivity/Connection/tests/features/
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
@@ -158,7 +165,7 @@ legacy:
                 debug: false
         SensioLabs\Behat\PageObjectExtension:
             namespaces:
-                page: [Context\Page]
+                page: [Context\Page, Akeneo\Connectivity\Connection\Tests\EndToEnd\Context\Page]
             factory:
                 page_parameters:
                     base_url: 'http://httpd/'
