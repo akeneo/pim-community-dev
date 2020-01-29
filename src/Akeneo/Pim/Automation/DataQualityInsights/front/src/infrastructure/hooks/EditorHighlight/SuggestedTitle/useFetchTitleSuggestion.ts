@@ -2,13 +2,13 @@ import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {WidgetElement} from "../../../../application/helper";
 import {fetchTitleSuggestion} from "../../../fetcher";
-import {useCatalogContext, useProduct, useProductEvaluation} from "../../index";
+import {useCatalogContext, useProduct, useFetchProductAxisRates} from "../../index";
 import {updateWidgetContentAnalysis} from "../../../reducer";
 
 const useFetchTitleSuggestion = (widget: WidgetElement) => {
   const {locale, channel} = useCatalogContext();
   const product = useProduct();
-  const {evaluation} = useProductEvaluation();
+  const evaluation = useFetchProductAxisRates();
   const {analysis} = widget;
   const dispatchAction = useDispatch();
 
