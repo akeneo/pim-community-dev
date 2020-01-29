@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Localization\Localizer;
 
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\Localization\Validator\Constraints\NumberFormat;
+use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -57,8 +58,7 @@ class NumberLocalizer implements LocalizerInterface
             $numberFormatter->setSymbol(\NumberFormatter::MINUS_SIGN_SYMBOL, '-');
 
             if (floor($number) != $number) {
-                $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 2);
-                $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 10);
+                $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 4);
             }
 
             return $numberFormatter->format($number);

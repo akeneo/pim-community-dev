@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -20,7 +21,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductValueNormalizer implements NormalizerInterface
 {
-    const DECIMAL_PRECISION = 10;
+    const DECIMAL_PRECISION = 4;
 
     /** @var NormalizerInterface */
     private $normalizer;
@@ -48,8 +49,8 @@ class ProductValueNormalizer implements NormalizerInterface
 
         return [
             'locale' => $entity->getLocaleCode(),
-            'scope'  => $entity->getScopeCode(),
-            'data'   => $data,
+            'scope' => $entity->getScopeCode(),
+            'data' => $data,
         ];
     }
 
@@ -64,7 +65,6 @@ class ProductValueNormalizer implements NormalizerInterface
     protected function getCollectionValue(ValueInterface $value, ?string $format = null, array $context = []): array
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
-
 
         if (null === $attribute) {
             return [];
@@ -103,9 +103,7 @@ class ProductValueNormalizer implements NormalizerInterface
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
         if (AttributeTypes::NUMBER === $attributeType && is_numeric($value->getData())) {
-            return $attribute->isDecimalsAllowed()
-                ? number_format($value->getData(), static::DECIMAL_PRECISION, '.', '')
-                : (int) $value->getData();
+            return $this->formatNumber($value, $attribute);
         }
 
         if ($value instanceof ScalarValue) {
@@ -127,5 +125,24 @@ class ProductValueNormalizer implements NormalizerInterface
         $context['is_decimals_allowed'] = $attribute->isDecimalsAllowed();
 
         return $this->normalizer->normalize($value->getData(), $format, $context);
+    }
+
+    /**
+     * @return int|string
+     */
+    private function formatNumber(ValueInterface $value, AttributeInterface $attribute)
+    {
+        if (!$attribute->isDecimalsAllowed()) {
+            return (int)$value->getData();
+        }
+
+        $valueExploded = explode(".", $value->getData());
+        $valueBehindComa = array_pop($valueExploded);
+
+        if (strlen($valueBehindComa) < 4) {
+            return number_format($value->getData(), static::DECIMAL_PRECISION, '.', ',');
+        }
+
+        return $value->getData();
     }
 }
