@@ -288,54 +288,6 @@ Feature: Edit an asset
     And there is no violations errors
     And the asset should have the valid image for this attribute
 
-  # Asset value
-  @acceptance-back
-  Scenario: Updating the asset value of an asset
-    Given an asset family with an asset attribute
-    And an asset belonging to this asset family with a value of "ikea" for the asset attribute
-    When the user updates the asset attribute of the asset to "made"
-    Then there is no exception thrown
-    And there is no violations errors
-    And the asset should have the asset value "made" for this attribute
-
-  @acceptance-back
-  Scenario: Updating the asset value of an asset with an invalid asset value
-    Given an asset family with an asset attribute
-    And an asset belonging to this asset family with a value of "ikea" for the asset attribute
-    When the user updates the asset attribute of the asset to an invalid asset value
-    Then an exception is thrown with message "There was no factory found to create the edit asset value command of the attribute "brand_linked_designer_fingerprint""
-
-  @acceptance-back
-  Scenario: Updating the asset value of an asset with a non-existent asset
-    Given an asset family with an asset attribute
-    And an asset belonging to this asset family with a value of "ikea" for the asset attribute
-    When the user tries to update the asset attribute of the asset with an unknown value
-    Then there should be a validation error on the property asset attribute with message "The asset "unknown_brand" was not found."
-
-  # Asset collection value
-  @acceptance-back
-  Scenario: Updating the asset collection value of an asset
-    Given an asset family with an asset collection attribute
-    And an asset belonging to this asset family with values of "ikea,made" for the asset collection attribute
-    When the user updates the asset collection attribute of the asset to "stork,cogip"
-    Then there is no exception thrown
-    And there is no violations errors
-    And the asset should have the asset collection value "stork,cogip" for this attribute
-
-  @acceptance-back
-  Scenario: Updating the asset collection value of an asset with an invalid asset value
-    Given an asset family with an asset collection attribute
-    And an asset belonging to this asset family with values of "ikea,made" for the asset collection attribute
-    When the user updates the asset collection attribute of the asset to an invalid asset value
-    Then an exception is thrown with message "There was no factory found to create the edit asset value command of the attribute "brand_linked_designer_fingerprint""
-
-  @acceptance-back
-  Scenario: Updating the asset collection value of an asset with non-existent assets
-    Given an asset family with an asset collection attribute
-    And an asset belonging to this asset family with values of "ikea,made" for the asset collection attribute
-    When the user updates the asset collection attribute of the asset with unknown values
-    Then there should be a validation error on the property asset attribute with message "The assets "unknown_brand,wrong_brand" were not found."
-
   # Option value
   @acceptance-back
   Scenario: Updating the option value of an asset

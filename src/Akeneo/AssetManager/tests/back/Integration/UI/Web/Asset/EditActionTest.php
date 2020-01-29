@@ -26,8 +26,6 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
@@ -191,39 +189,6 @@ class EditActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_edits_a_asset_value()
-    {
-        $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/asset_value_ok.json');
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_an_error_if_we_send_an_invalid_asset_value()
-    {
-        $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/invalid_asset_value.json');
-    }
-
-    /**
-     * @test
-     */
-    public function it_edits_a_asset_collection_value()
-    {
-        $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/asset_collection_value_ok.json');
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_an_error_if_we_send_an_invalid_asset_collection_value()
-    {
-        $this->webClientHelper->assertRequest($this->client,
-            'Asset/Edit/invalid_asset_collection_value.json');
-    }
-
-    /**
-     * @test
-     */
     public function it_throws_an_error_if_user_does_not_have_the_permissions_to_edit_the_asset_family()
     {
         $this->forbidsEdit();
@@ -375,23 +340,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         );
         $repository->create($ikeaAsset);
 
-        // asset attribute
-        $numberAttribute = AssetAttribute::create(
-            AttributeIdentifier::create('designer', 'linked_brand', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('designer'),
-            AttributeCode::fromString('linked_brand'),
-            LabelCollection::fromArray(['fr_FR' => 'Marque liée', 'en_US' => 'Linked brand']),
-            AttributeOrder::fromInteger(7),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeIsReadOnly::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(true),
-            AssetFamilyIdentifier::fromString('brand')
-        );
-        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
-            ->create($numberAttribute);
-
-        // asset attribute
+        // number attribute
         $numberAttribute = NumberAttribute::create(
             AttributeIdentifier::create('designer', 'age', 'fingerprint'),
             AssetFamilyIdentifier::fromString('designer'),
@@ -431,22 +380,6 @@ class EditActionTest extends ControllerIntegrationTestCase
             ValueCollection::fromValues([])
         );
         $repository->create($moscouAsset);
-
-        // asset collection attribute
-        $assetCollectionAttribute = AssetCollectionAttribute::create(
-            AttributeIdentifier::create('designer', 'linked_cities', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('designer'),
-            AttributeCode::fromString('linked_cities'),
-            LabelCollection::fromArray(['fr_FR' => 'Ville', 'en_US' => 'Cities']),
-            AttributeOrder::fromInteger(9),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeIsReadOnly::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(true),
-            AssetFamilyIdentifier::fromString('city')
-        );
-        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
-            ->create($assetCollectionAttribute);
 
         $activatedLocales = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers');
         $activatedLocales->save(LocaleIdentifier::fromCode('en_US'));

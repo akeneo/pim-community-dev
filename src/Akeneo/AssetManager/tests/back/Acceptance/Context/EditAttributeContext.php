@@ -8,8 +8,6 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditA
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\EditAttributeHandler;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
@@ -27,7 +25,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType as MediaFileMediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType as MediaLinkMediaType;
@@ -342,64 +339,6 @@ class EditAttributeContext implements Context
                 AttributeMaxFileSize::fromString('210'),
                 AttributeAllowedExtensions::fromList(['png']),
                 MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
-            )
-        );
-    }
-
-    /**
-     * @Given /^an asset family with a asset attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
-     */
-    public function aAssetFamilyWithAAssetAttributeAndTheLabelEqualTo(
-        string $attributeCode,
-        string $label,
-        string $localeCode
-    ) {
-        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
-
-        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
-        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
-
-        $this->attributeRepository->create(
-            AssetAttribute::create(
-                $identifier,
-                AssetFamilyIdentifier::fromString('dummy_identifier'),
-                AttributeCode::fromString($attributeCode),
-                LabelCollection::fromArray([$localeCode => $label]),
-                AttributeOrder::fromInteger(0),
-                AttributeIsRequired::fromBoolean(true),
-                AttributeIsReadOnly::fromBoolean(false),
-                AttributeValuePerChannel::fromBoolean(true),
-                AttributeValuePerLocale::fromBoolean(true),
-                AssetFamilyIdentifier::fromString('dummy_identifier')
-            )
-        );
-    }
-
-    /**
-     * @Given /^an asset family with a asset collection attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
-     */
-    public function aAssetFamilyWithAAssetCollectionAttributeAndTheLabelEqualTo(
-        string $attributeCode,
-        string $label,
-        string $localeCode
-    ) {
-        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
-
-        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
-        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
-
-        $this->attributeRepository->create(
-            AssetCollectionAttribute::create(
-                $identifier,
-                AssetFamilyIdentifier::fromString('dummy_identifier'),
-                AttributeCode::fromString($attributeCode),
-                LabelCollection::fromArray([$localeCode => $label]),
-                AttributeOrder::fromInteger(0),
-                AttributeIsRequired::fromBoolean(true),
-                AttributeIsReadOnly::fromBoolean(false),
-                AttributeValuePerChannel::fromBoolean(true),
-                AttributeValuePerLocale::fromBoolean(true),
-                AssetFamilyIdentifier::fromString('dummy_identifier')
             )
         );
     }
@@ -1119,110 +1058,6 @@ class EditAttributeContext implements Context
             'value_per_locale' => $valuePerChannel,
         ];
         $this->updateAttribute($updateValuePerChannel);
-    }
-
-    /**
-     * @Given /^an asset family with a asset attribute \'([^\']*)\' non required$/
-     */
-    public function aAssetFamilyWithAAssetAttributeNonRequired($attributeCode)
-    {
-        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
-        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
-
-        $this->attributeRepository->create(
-            AssetAttribute::create(
-                $identifier,
-                AssetFamilyIdentifier::fromString('dummy_identifier'),
-                AttributeCode::fromString($attributeCode),
-                LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(0),
-                AttributeIsRequired::fromBoolean(false),
-                AttributeIsReadOnly::fromBoolean(false),
-                AttributeValuePerChannel::fromBoolean(false),
-                AttributeValuePerLocale::fromBoolean(false),
-                AssetFamilyIdentifier::fromString('dummy_identifier')
-            )
-        );
-    }
-
-    /**
-     * @Given /^an asset family with a asset attribute \'([^\']*)\' not in read only$/
-     */
-    public function aAssetFamilyWithAAssetAttributeNotInReadOnly($attributeCode)
-    {
-        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
-        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
-
-        $this->attributeRepository->create(
-            AssetAttribute::create(
-                $identifier,
-                AssetFamilyIdentifier::fromString('dummy_identifier'),
-                AttributeCode::fromString($attributeCode),
-                LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(0),
-                AttributeIsRequired::fromBoolean(false),
-                AttributeIsReadOnly::fromBoolean(false),
-                AttributeValuePerChannel::fromBoolean(false),
-                AttributeValuePerLocale::fromBoolean(false),
-                AssetFamilyIdentifier::fromString('dummy_identifier')
-            )
-        );
-    }
-
-    /**
-     * @Given /^an asset family with a asset collection attribute \'([^\']*)\' non required$/
-     */
-    public function aAssetFamilyWithAAssetCollectionAttributeNonRequired($attributeCode)
-    {
-        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
-        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
-
-        $this->attributeRepository->create(
-            AssetCollectionAttribute::create(
-                $identifier,
-                AssetFamilyIdentifier::fromString('dummy_identifier'),
-                AttributeCode::fromString($attributeCode),
-                LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(0),
-                AttributeIsRequired::fromBoolean(false),
-                AttributeIsReadOnly::fromBoolean(false),
-                AttributeValuePerChannel::fromBoolean(false),
-                AttributeValuePerLocale::fromBoolean(false),
-                AssetFamilyIdentifier::fromString('dummy_identifier')
-            )
-        );
-    }
-
-    /**
-     * @Given /^the following asset attributes:$/
-     */
-    public function theFollowingAssetAttributes(TableNode $attributesTable)
-    {
-        foreach ($attributesTable->getHash() as $attribute) {
-            if (isset($attribute['identifier'])) {
-                $identifier = AttributeIdentifier::fromString($attribute['identifier']);
-            } else {
-                $identifier = $this->attributeRepository->nextIdentifier(
-                    AssetFamilyIdentifier::fromString($attribute['entity_identifier']),
-                    AttributeCode::fromString($attribute['code'])
-                );
-            }
-
-            $this->attributeRepository->create(
-                AssetAttribute::create(
-                    $identifier,
-                    AssetFamilyIdentifier::fromString($attribute['entity_identifier']),
-                    AttributeCode::fromString($attribute['code']),
-                    LabelCollection::fromArray(json_decode($attribute['labels'], true)),
-                    AttributeOrder::fromInteger((int)$attribute['order']),
-                    AttributeIsRequired::fromBoolean((bool)$attribute['required']),
-                    AttributeIsReadOnly::fromBoolean((bool) $attribute['read_only']),
-                    AttributeValuePerChannel::fromBoolean((bool)$attribute['value_per_channel']),
-                    AttributeValuePerLocale::fromBoolean((bool)$attribute['value_per_locale']),
-                    AssetFamilyIdentifier::fromString($attribute['asset_type'])
-                )
-            );
-        }
     }
 
     /**

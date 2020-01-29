@@ -16,8 +16,6 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetCollectionData;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
@@ -30,8 +28,6 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -110,20 +106,6 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
                         'locale'  => null,
                         'channel' => null,
                         'data'    => 'test/image_1.jpg',
-                    ]
-                ],
-                'country' => [
-                    [
-                        'locale'  => null,
-                        'channel' => null,
-                        'data'    => 'france',
-                    ]
-                ],
-                'brands' => [
-                    [
-                        'locale'  => null,
-                        'channel' => null,
-                        'data'    => ['lexon', 'kartell', 'cogip'],
                     ]
                 ],
                 'favorite_color' => [
@@ -218,18 +200,6 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
                     FileData::createFromFileinfo($fileInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('country_designer_fingerprint'),
-                    ChannelReference::noReference(),
-                    LocaleReference::noReference(),
-                    AssetData::createFromNormalize('france')
-                ),
-                Value::create(
-                    AttributeIdentifier::fromString('brands_designer_fingerprint'),
-                    ChannelReference::noReference(),
-                    LocaleReference::noReference(),
-                    AssetCollectionData::createFromNormalize(['kartell', 'lexon', 'cogip'])
-                ),
-                Value::create(
                     AttributeIdentifier::fromString('favorite_color_designer_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
@@ -305,32 +275,6 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
             MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
         );
 
-        $country = AssetAttribute::create(
-            AttributeIdentifier::create('designer', 'country', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('designer'),
-            AttributeCode::fromString('country'),
-            LabelCollection::fromArray(['en_US' => 'Country']),
-            AttributeOrder::fromInteger(4),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeIsReadOnly::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AssetFamilyIdentifier::fromString('country')
-        );
-
-        $brands = AssetCollectionAttribute::create(
-            AttributeIdentifier::create('designer', 'brands', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('designer'),
-            AttributeCode::fromString('brands'),
-            LabelCollection::fromArray(['en_US' => 'Brands']),
-            AttributeOrder::fromInteger(5),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeIsReadOnly::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AssetFamilyIdentifier::fromString('brand')
-        );
-
         $favoriteColor = OptionAttribute::create(
             AttributeIdentifier::create('designer', 'favorite_color', 'fingerprint'),
             AssetFamilyIdentifier::fromString('designer'),
@@ -399,8 +343,6 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
         $attributesRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $attributesRepository->create($name);
         $attributesRepository->create($image);
-        $attributesRepository->create($country);
-        $attributesRepository->create($brands);
         $attributesRepository->create($favoriteColor);
         $attributesRepository->create($materials);
         $attributesRepository->create($frontView);

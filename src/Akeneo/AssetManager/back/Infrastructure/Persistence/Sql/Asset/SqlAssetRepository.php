@@ -21,8 +21,6 @@ use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyAndCodesInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
@@ -91,10 +89,7 @@ class SqlAssetRepository implements AssetRepositoryInterface
 
     public function create(Asset $asset): void
     {
-        $valueCollection = $this->replaceCodesByIdentifiers(
-            $asset->getValues()->normalize(),
-            $asset->getAssetFamilyIdentifier()
-        );
+        $valueCollection = $asset->getValues()->normalize();
 
         $insert = <<<SQL
         INSERT INTO akeneo_asset_manager_asset
@@ -131,10 +126,7 @@ SQL;
 
     public function update(Asset $asset): void
     {
-        $valueCollection = $this->replaceCodesByIdentifiers(
-            $asset->getValues()->normalize(),
-            $asset->getAssetFamilyIdentifier()
-        );
+        $valueCollection = $asset->getValues()->normalize();
 
         $update = <<<SQL
         UPDATE akeneo_asset_manager_asset
@@ -316,50 +308,5 @@ SQL;
             $valueKeyCollection,
             $attributesIndexedByIdentifier
         );
-    }
-
-    private function replaceCodesByIdentifiers(
-        array $valueCollection,
-        AssetFamilyIdentifier $assetFamilyIdentifier
-    ): array {
-        $assetsValueKeys = $this->findValueKeysByAttributeType->find(
-            $assetFamilyIdentifier,
-            ['asset', 'asset_collection']
-        );
-
-        if (empty($assetsValueKeys)) {
-            return $valueCollection;
-        }
-
-        $onlyAssetsValues = array_intersect_key($valueCollection, array_flip($assetsValueKeys));
-
-        if (empty($onlyAssetsValues)) {
-            return $valueCollection;
-        }
-
-        $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($assetFamilyIdentifier);
-
-        // Replace codes by identifiers in the value collection
-        foreach ($onlyAssetsValues as $valueKey => $value) {
-            /** @var AssetAttribute|AssetCollectionAttribute $attribute */
-            $attribute = $attributesIndexedByIdentifier[$value['attribute']];
-
-            $indexedIdentifiers = $this->findIdentifiersByAssetFamilyAndCodes->find(
-                $attribute->getAssetType(),
-                is_array($value['data']) ? $value['data'] : [$value['data']]
-            );
-
-            if (is_array($value['data'])) {
-                $value['data'] = array_map(function ($code) use ($indexedIdentifiers) {
-                    return (string) $indexedIdentifiers[$code];
-                }, $value['data']);
-            } else {
-                $value['data'] = (string) $indexedIdentifiers[$value['data']];
-            }
-
-            $valueCollection[$valueKey] = $value;
-        }
-
-        return $valueCollection;
     }
 }

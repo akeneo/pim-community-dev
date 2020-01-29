@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales;
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClient;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionData;
@@ -29,7 +27,6 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
@@ -47,7 +44,6 @@ use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
@@ -93,22 +89,6 @@ class IndexActionTest extends ControllerIntegrationTestCase
     public function it_returns_a_list_of_assets_filtered_by_option()
     {
         $this->webClientHelper->assertRequest($this->client, 'Asset/Search/color_filtered.json');
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_a_list_of_assets_filtered_by_linked_asset()
-    {
-        $this->webClientHelper->assertRequest($this->client, 'Asset/Search/city_filtered.json');
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_a_list_of_assets_filtered_by_linked_asset_and_option()
-    {
-        $this->webClientHelper->assertRequest($this->client, 'Asset/Search/city_and_color_filtered.json');
     }
 
     /**
@@ -200,20 +180,6 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 AttributeValuePerLocale::fromBoolean(false)
             )
         );
-        $attributeRepository->create(
-            AssetAttribute::create(
-                AttributeIdentifier::create('designer', 'city', '79eb100099b9a8bf52609e00b7ee307e'),
-                AssetFamilyIdentifier::fromString('designer'),
-                AttributeCode::fromString('city'),
-                LabelCollection::fromArray(['en_US' => 'City']),
-                AttributeOrder::fromInteger(6),
-                AttributeIsRequired::fromBoolean(false),
-                AttributeIsReadOnly::fromBoolean(false),
-                AttributeValuePerChannel::fromBoolean(false),
-                AttributeValuePerLocale::fromBoolean(false),
-                AssetFamilyIdentifier::fromString('city')
-            )
-        );
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
@@ -262,18 +228,12 @@ class IndexActionTest extends ControllerIntegrationTestCase
             LocaleReference::noReference(),
             OptionData::createFromNormalize('red')
         );
-        $starkCityValue = Value::create(
-            AttributeIdentifier::fromString('city_designer_79eb100099b9a8bf52609e00b7ee307e'),
-            ChannelReference::noReference(),
-            LocaleReference::noReference(),
-            AssetData::createFromNormalize('city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717')
-        );
 
         $assetStarck = Asset::create(
             $identifier,
             $assetFamilyIdentifier,
             $assetCode,
-            ValueCollection::fromValues([$labelValueEnUS, $starckDescriptionValue, $starkColorValue, $starkCityValue])
+            ValueCollection::fromValues([$labelValueEnUS, $starckDescriptionValue, $starkColorValue])
         );
         $assetRepository->create($assetStarck);
 
@@ -336,17 +296,11 @@ class IndexActionTest extends ControllerIntegrationTestCase
             LocaleReference::noReference(),
             OptionData::createFromNormalize('red')
         );
-        $dysonCityValue = Value::create(
-            AttributeIdentifier::fromString('city_designer_79eb100099b9a8bf52609e00b7ee307e'),
-            ChannelReference::noReference(),
-            LocaleReference::noReference(),
-            AssetData::createFromNormalize('city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717')
-        );
         $assetDyson = Asset::create(
             $identifier,
             $assetFamilyIdentifier,
             $assetCode,
-            ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR, $dysonColorValue, $dysonCityValue])
+            ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR, $dysonColorValue])
         );
         $assetRepository->create($assetDyson);
 

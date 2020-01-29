@@ -61,8 +61,6 @@ class AssetValidatorTest extends SqlIntegrationTestCase
             ->assetFamily('brand')
             ->withAttributes([
                 'long_description',     // text
-                'country',              // asset
-                'designers',            // asset collection
                 'main_image',           // image
                 'main_material',        // option
                 'materials',            // option collection
@@ -97,20 +95,6 @@ class AssetValidatorTest extends SqlIntegrationTestCase
                         'locale'  => 'en_US',
                         'channel' => 'mobile',
                         'data'    => null,
-                    ],
-                ],
-                'country' => [
-                    [
-                        'locale'  => null,
-                        'channel' => null,
-                        'data'    => 'italy',
-                    ],
-                ],
-                'designers' => [
-                    [
-                        'locale'  => null,
-                        'channel' => 'ecommerce',
-                        'data'    => ['starck', 'arad'],
                     ],
                 ],
                 'main_image' => [
@@ -248,25 +232,11 @@ class AssetValidatorTest extends SqlIntegrationTestCase
         $errors = $this->assetValidator->validate(AssetFamilyIdentifier::fromString('brand'), $asset);
         $errors = JsonSchemaErrorsFormatter::format($errors);
 
-        $this->assertCount(8, $errors);
-        $this->assertContains(
-            [
-                'property' => 'values.country[0].data',
-                'message'  => 'Integer value found, but a string or a null is required'
-            ],
-            $errors
-        );
+        $this->assertCount(6, $errors);
         $this->assertContains(
             [
                 'property' => 'values.long_description[1].data',
                 'message'  => 'The property data is required'
-            ],
-            $errors
-        );
-        $this->assertContains(
-            [
-                'property' => 'values.designers[0].data',
-                'message'  => 'String value found, but an array is required'
             ],
             $errors
         );

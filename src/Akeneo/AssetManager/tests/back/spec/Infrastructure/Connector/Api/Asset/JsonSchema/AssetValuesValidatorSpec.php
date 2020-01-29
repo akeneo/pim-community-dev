@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -54,8 +53,7 @@ class AssetValuesValidatorSpec extends ObjectBehavior
     function it_validates_asset_values_grouped_by_attribute_type(
         AssetValueValidatorRegistry $assetValueValidatorRegistry,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
-        AssetValueValidatorInterface $textTypeValidator,
-        AssetValueValidatorInterface $assetTypeValidator
+        AssetValueValidatorInterface $textTypeValidator
     ) {
         $asset = [
             'values' => [
@@ -71,13 +69,6 @@ class AssetValuesValidatorSpec extends ObjectBehavior
                         'channel' => 'ecommerce',
                         'locale'  => 'en_US',
                     ]
-                ],
-                'country' => [
-                    [
-                        'channel' => null,
-                        'locale'  => null,
-                        'data'    => 42
-                    ],
                 ]
             ]
         ];
@@ -86,25 +77,17 @@ class AssetValuesValidatorSpec extends ObjectBehavior
 
         $nameAttribute = $this->getNameAttribute();
         $descriptionAttribute = $this->getDescriptionAttribute();
-        $countryAttribute = $this->getCountryAttribute();
 
         $findAttributesIndexedByIdentifier->find($assetFamilyIdentifier)->willReturn([
             $nameAttribute,
             $descriptionAttribute,
-            $countryAttribute,
         ]);
 
         $assetValueValidatorRegistry->getValidator(TextAttribute::class)->willReturn($textTypeValidator);
-        $assetValueValidatorRegistry->getValidator(AssetAttribute::class)->willReturn($assetTypeValidator);
 
         $textTypeError = [[
             'property' => 'values.description[0].data',
             'message'  => 'The property data is required'
-        ]];
-
-        $assetTypeError = [[
-            'property' => 'values.country[0].data',
-            'message'  => 'Integer value found, but a string or a null is required'
         ]];
 
         $textTypeValidator->validate([
@@ -125,29 +108,15 @@ class AssetValuesValidatorSpec extends ObjectBehavior
             ]
         ])->willReturn([$textTypeError]);
 
-        $assetTypeValidator->validate([
-            'values' => [
-                'country' => [
-                    [
-                        'channel' => null,
-                        'locale'  => null,
-                        'data'    => 42
-                    ],
-                ]
-            ]
-        ])->willReturn([$assetTypeError]);
-
         $errors = $this->validate($assetFamilyIdentifier, $asset);
-        $errors->shouldHaveCount(2);
+        $errors->shouldHaveCount(1);
         $errors->shouldContain($textTypeError);
-        $errors->shouldContain($assetTypeError);
     }
 
     function it_returns_an_empty_array_if_there_are_no_errors(
         AssetValueValidatorRegistry $assetValueValidatorRegistry,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
-        AssetValueValidatorInterface $textTypeValidator,
-        AssetValueValidatorInterface $assetTypeValidator
+        AssetValueValidatorInterface $textTypeValidator
     ) {
         $asset = [
             'values' => [
@@ -164,13 +133,6 @@ class AssetValuesValidatorSpec extends ObjectBehavior
                         'locale'  => 'en_US',
                         'data'    => 'The Kartell company'
                     ]
-                ],
-                'country' => [
-                    [
-                        'channel' => null,
-                        'locale'  => null,
-                        'data'    => 'italy'
-                    ],
                 ]
             ]
         ];
@@ -180,12 +142,10 @@ class AssetValuesValidatorSpec extends ObjectBehavior
         $findAttributesIndexedByIdentifier->find($assetFamilyIdentifier)->willReturn([
             $this->getNameAttribute(),
             $this->getDescriptionAttribute(),
-            $this->getCountryAttribute(),
             $this->getMediaFileAttribute(),
         ]);
 
         $assetValueValidatorRegistry->getValidator(TextAttribute::class)->willReturn($textTypeValidator);
-        $assetValueValidatorRegistry->getValidator(AssetAttribute::class)->willReturn($assetTypeValidator);
 
         $textTypeValidator->validate([
             'values' => [
@@ -203,18 +163,6 @@ class AssetValuesValidatorSpec extends ObjectBehavior
                         'data'    => 'The Kartell company'
                     ]
                 ],
-            ]
-        ])->willReturn([]);
-
-        $assetTypeValidator->validate([
-            'values' => [
-                'country' => [
-                    [
-                        'channel' => null,
-                        'locale'  => null,
-                        'data'    => 'italy'
-                    ],
-                ]
             ]
         ])->willReturn([]);
 
@@ -254,22 +202,6 @@ class AssetValuesValidatorSpec extends ObjectBehavior
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
-        );
-    }
-
-    private function getCountryAttribute(): AssetAttribute
-    {
-        return AssetAttribute::create(
-            AttributeIdentifier::create('brand', 'country', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('brand'),
-            AttributeCode::fromString('country'),
-            LabelCollection::fromArray(['fr_FR' => 'Pays', 'en_US' => 'Country']),
-            AttributeOrder::fromInteger(1),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeIsReadOnly::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AssetFamilyIdentifier::fromString('country')
         );
     }
 

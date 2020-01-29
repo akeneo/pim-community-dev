@@ -18,8 +18,6 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
@@ -128,64 +126,6 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             AttributeMaxFileSize::fromString('250.12'),
             AttributeAllowedExtensions::fromList(['pdf', 'png']),
             MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
-        );
-
-        $this->attributeRepository->create($expectedAttribute);
-
-        $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
-        $this->assertAttribute($expectedAttribute, $actualAttribute);
-    }
-
-    /**
-     * @test
-     */
-    public function it_creates_an_attribute_of_type_asset_and_returns_it()
-    {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
-        $attributeCode = AttributeCode::fromString('mentor');
-        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier($assetFamilyIdentifier, $attributeCode);
-
-        $expectedAttribute = AssetAttribute::create(
-            $identifier,
-            $assetFamilyIdentifier,
-            AttributeCode::fromString('mentor'),
-            LabelCollection::fromArray(['en_US' => 'Mentor', 'fr_FR' => 'Mentor']),
-            AttributeOrder::fromInteger(2),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeIsReadOnly::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            $assetFamilyIdentifier
-        );
-
-        $this->attributeRepository->create($expectedAttribute);
-
-        $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
-        $this->assertAttribute($expectedAttribute, $actualAttribute);
-    }
-
-    /**
-     * @test
-     */
-    public function it_creates_an_attribute_of_type_asset_collection_and_returns_it()
-    {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
-        $attributeCode = AttributeCode::fromString('brands');
-        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
-            ->nextIdentifier($assetFamilyIdentifier, $attributeCode);
-
-        $expectedAttribute = AssetCollectionAttribute::create(
-            $identifier,
-            $assetFamilyIdentifier,
-            AttributeCode::fromString('brands'),
-            LabelCollection::fromArray(['en_US' => 'Brands', 'fr_FR' => 'Marques']),
-            AttributeOrder::fromInteger(2),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeIsReadOnly::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AssetFamilyIdentifier::fromString('brand')
         );
 
         $this->attributeRepository->create($expectedAttribute);

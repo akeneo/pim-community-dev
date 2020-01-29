@@ -22,16 +22,6 @@ services:
         tags:
             - { name: akeneo_assetmanager.edit_asset_value_command_factory }
 
-    akeneo_assetmanager.application.factory.asset.edit_asset_value_command_factory:
-        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetValueCommandFactory
-        tags:
-            - { name: akeneo_assetmanager.edit_asset_value_command_factory }
-
-    akeneo_assetmanager.application.factory.asset.edit_asset_collection_value_command_factory:
-        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCollectionValueCommandFactory
-        tags:
-            - { name: akeneo_assetmanager.edit_asset_value_command_factory }
-
     akeneo_assetmanager.application.factory.asset.empty_value_command_factory:
         class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EmptyValueCommandFactory
         tags:

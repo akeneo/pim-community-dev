@@ -10,10 +10,6 @@ import AttributeCode, {
   denormalizeAttributeCode,
   attributeCodeStringValue,
 } from 'akeneoassetmanager/domain/model/attribute/code';
-import {
-  AssetType,
-  createAssetTypeFromNormalized,
-} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
 
 /**
  * @api
@@ -46,10 +42,6 @@ export default interface MinimalAttribute {
 }
 
 class InvalidArgumentError extends Error {}
-
-export const isAssetAttributeType = (attributeType: string) => {
-  return ['asset', 'asset_collection'].includes(attributeType);
-};
 
 /**
  * @api
@@ -117,51 +109,6 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
   }
 }
 
-export interface MinimalAssetNormalizedAttribute extends MinimalNormalizedAttribute {
-  asset_type: AssetType;
-}
-
-export class MinimalAssetConcreteAttribute extends MinimalConcreteAttribute {
-  protected constructor(
-    readonly assetFamilyIdentifier: AssetFamilyIdentifier,
-    readonly code: AttributeCode,
-    readonly labelCollection: LabelCollection,
-    readonly type: string,
-    readonly valuePerLocale: boolean,
-    readonly valuePerChannel: boolean,
-    readonly assetType: AssetType
-  ) {
-    super(assetFamilyIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
-
-    if (!isAssetAttributeType(type)) {
-      throw new InvalidArgumentError('MinimalAssetAttribute type needs to be "asset" or "asset_collection"');
-    }
-  }
-
-  public static createFromNormalized(minimalNormalizedAttribute: MinimalAssetNormalizedAttribute) {
-    return new MinimalAssetConcreteAttribute(
-      denormalizeAssetFamilyIdentifier(minimalNormalizedAttribute.asset_family_identifier),
-      denormalizeAttributeCode(minimalNormalizedAttribute.code),
-      denormalizeLabelCollection(minimalNormalizedAttribute.labels),
-      minimalNormalizedAttribute.type,
-      minimalNormalizedAttribute.value_per_locale,
-      minimalNormalizedAttribute.value_per_channel,
-      createAssetTypeFromNormalized(minimalNormalizedAttribute.asset_type)
-    );
-  }
-
-  public normalize(): MinimalAssetNormalizedAttribute {
-    return {
-      ...super.normalize(),
-      asset_type: this.assetType,
-    };
-  }
-}
-
 export const denormalizeMinimalAttribute = (normalizedAttribute: MinimalNormalizedAttribute) => {
-  if (isAssetAttributeType(normalizedAttribute.type)) {
-    return MinimalAssetConcreteAttribute.createFromNormalized(normalizedAttribute as MinimalAssetNormalizedAttribute);
-  }
-
   return MinimalConcreteAttribute.createFromNormalized(normalizedAttribute);
 };

@@ -19,8 +19,6 @@ use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetCollectionData;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
@@ -397,87 +395,9 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('Starck')
                 ),
-                Value::create(
-                    $this->fixturesDesigner['attributes']['brand']->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::noReference(),
-                    AssetData::createFromNormalize('ikea')
-                ),
-                Value::create(
-                    $this->fixturesDesigner['attributes']['brands']->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::noReference(),
-                    AssetCollectionData::createFromNormalize(['ikea'])
-                ),
             ])
         );
         $this->repository->create($asset);
-        $assetFound = $this->repository->getByIdentifier($identifier);
-        $this->assertEquals($asset->normalize(), $assetFound->normalize());
-    }
-
-    /**
-     * @test
-     */
-    public function it_replaces_asset_value_codes_by_their_identifiers_when_updating_a_asset()
-    {
-        // Create the brand we will link
-        $assetFamilyIdentifierBrand = AssetFamilyIdentifier::fromString('brand');
-        $brandCode = AssetCode::fromString('ikea');
-        $brandIdentifier = $this->repository->nextIdentifier($assetFamilyIdentifierBrand, $brandCode);
-        $asset = Asset::create(
-            $brandIdentifier,
-            $assetFamilyIdentifierBrand,
-            $brandCode,
-            ValueCollection::fromValues([])
-        );
-        $this->repository->create($asset);
-
-        // Create the designer we will update
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
-        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-        $assetCode = AssetCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
-
-        $asset = Asset::create(
-            $identifier,
-            $assetFamilyIdentifier,
-            $assetCode,
-            ValueCollection::fromValues([
-                Value::create(
-                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Starck')
-                ),
-                Value::create(
-                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                    TextData::fromString('Starck')
-                ),
-            ])
-        );
-        $this->repository->create($asset);
-        $this->eventDispatcherMock->reset();
-
-        $valueToUpdate = Value::create(
-            $this->fixturesDesigner['attributes']['brand']->getIdentifier(),
-            ChannelReference::noReference(),
-            LocaleReference::noReference(),
-            AssetData::createFromNormalize('ikea')
-        );
-        $asset->setValue($valueToUpdate);
-        $valueToUpdate = Value::create(
-            $this->fixturesDesigner['attributes']['brands']->getIdentifier(),
-            ChannelReference::noReference(),
-            LocaleReference::noReference(),
-            AssetCollectionData::createFromNormalize(['ikea'])
-        );
-        $asset->setValue($valueToUpdate);
-        $this->repository->update($asset);
-
-        $this->eventDispatcherMock->assertEventDispatched(AssetUpdatedEvent::class);
         $assetFound = $this->repository->getByIdentifier($identifier);
         $this->assertEquals($asset->normalize(), $assetFound->normalize());
     }

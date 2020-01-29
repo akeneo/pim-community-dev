@@ -16,7 +16,6 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\ValueKey;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -150,7 +149,7 @@ class SqlGetValueKeyForAttributeChannelAndLocaleTest extends SqlIntegrationTestC
 
     private function loadAttributeWithoutValuePerChannelOrLocale(string $attributeIdentifier): void
     {
-        $attribute = AssetAttribute::create(
+        $attribute = MediaFileAttribute::create(
             AttributeIdentifier::fromString($attributeIdentifier),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString($attributeIdentifier),
@@ -160,7 +159,9 @@ class SqlGetValueKeyForAttributeChannelAndLocaleTest extends SqlIntegrationTestC
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AssetFamilyIdentifier::fromString('country')
+            AttributeMaxFileSize::noLimit(),
+            AttributeAllowedExtensions::fromList(['png']),
+            MediaType::fromString(MediaType::IMAGE)
         );
 
         $this->attributeRepository->create($attribute);

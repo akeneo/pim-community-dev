@@ -24,7 +24,6 @@ describe('akeneo > asset family > application > reducer > attribute --- create',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
-        asset_type: null,
       },
       errors: [],
     });
@@ -54,7 +53,6 @@ describe('akeneo > asset family > application > reducer > attribute --- create',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
-        asset_type: null,
       },
       errors: [],
     });
@@ -156,7 +154,6 @@ describe('akeneo > asset family > application > reducer > attribute --- create',
       data: {
         code: '',
         type: 'text',
-        asset_type: null,
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -173,7 +170,6 @@ describe('akeneo > asset family > application > reducer > attribute --- create',
       data: {
         code: '',
         type: 'media_file',
-        asset_type: null,
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -188,7 +184,6 @@ describe('akeneo > asset family > application > reducer > attribute --- create',
       data: {
         code: '',
         type: 'text',
-        asset_type: null,
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -197,46 +192,14 @@ describe('akeneo > asset family > application > reducer > attribute --- create',
     };
     const newState = reducer(state, {
       type: 'ATTRIBUTE_CREATION_TYPE_UPDATED',
-      attribute_type: 'asset',
+      attribute_type: 'media_file',
     });
 
     expect(newState).toEqual({
       active: false,
       data: {
         code: '',
-        type: 'asset',
-        asset_type: null,
-        value_per_locale: false,
-        value_per_channel: false,
-        labels: {},
-      },
-      errors: [],
-    });
-  });
-
-  test('I can update the asset type of the attribute', () => {
-    const state = {
-      active: false,
-      data: {
-        code: '',
-        type: 'asset',
-        value_per_locale: false,
-        value_per_channel: false,
-        labels: {},
-      },
-      errors: [],
-    };
-    const newState = reducer(state, {
-      type: 'ATTRIBUTE_CREATION_ASSET_TYPE_UPDATED',
-      asset_type: 'brand',
-    });
-
-    expect(newState).toEqual({
-      active: false,
-      data: {
-        code: '',
-        type: 'asset',
-        asset_type: 'brand',
+        type: 'media_file',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},

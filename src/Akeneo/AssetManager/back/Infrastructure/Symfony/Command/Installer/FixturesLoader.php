@@ -12,8 +12,6 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventionInterface;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
@@ -509,91 +507,6 @@ class FixturesLoader
                 AttributeMaxFileSize::fromString('1000'),
                 AttributeAllowedExtensions::fromList(['pdf']),
                 MediaFileMediaType::fromString(MediaFileMediaType::PDF)
-            );
-        }
-
-        // COUNTRY
-        if (in_array('country', $this->loadedAttributes)) {
-            $attributes['country'] = AssetAttribute::create(
-                $this->attributeRepository->nextIdentifier(
-                    $assetFamilyIdentifier,
-                    AttributeCode::fromString('country')
-                ),
-                $assetFamilyIdentifier,
-                AttributeCode::fromString('country'),
-                LabelCollection::fromArray([
-                    'fr_FR' => 'Pays',
-                ]),
-                $this->getOrderForAttribute('country'),
-                AttributeIsRequired::fromBoolean(true),
-                AttributeIsReadOnly::fromBoolean(false),
-                AttributeValuePerChannel::fromBoolean(false),
-                AttributeValuePerLocale::fromBoolean(false),
-                AssetFamilyIdentifier::fromString('country')
-            );
-        }
-
-        // BRAND
-        if (in_array('brand', $this->loadedAttributes)) {
-            $attributes['brand'] = AssetAttribute::create(
-                $this->attributeRepository->nextIdentifier(
-                    $assetFamilyIdentifier,
-                    AttributeCode::fromString('brand')
-                ),
-                $assetFamilyIdentifier,
-                AttributeCode::fromString('brand'),
-                LabelCollection::fromArray([
-                    'fr_FR' => 'Marque',
-                ]),
-                $this->getOrderForAttribute('brand'),
-                AttributeIsRequired::fromBoolean(true),
-                AttributeIsReadOnly::fromBoolean(false),
-                AttributeValuePerChannel::fromBoolean(false),
-                AttributeValuePerLocale::fromBoolean(false),
-                AssetFamilyIdentifier::fromString('brand')
-            );
-        }
-
-        // BRANDS
-        if (in_array('brands', $this->loadedAttributes)) {
-            $attributes['brands'] = AssetCollectionAttribute::create(
-                $this->attributeRepository->nextIdentifier(
-                    $assetFamilyIdentifier,
-                    AttributeCode::fromString('brands')
-                ),
-                $assetFamilyIdentifier,
-                AttributeCode::fromString('brands'),
-                LabelCollection::fromArray([
-                    'fr_FR' => 'Marques',
-                ]),
-                $this->getOrderForAttribute('brands'),
-                AttributeIsRequired::fromBoolean(true),
-                AttributeIsReadOnly::fromBoolean(false),
-                AttributeValuePerChannel::fromBoolean(false),
-                AttributeValuePerLocale::fromBoolean(false),
-                AssetFamilyIdentifier::fromString('brand')
-            );
-        }
-
-        // DESIGNERS
-        if (in_array('designers', $this->loadedAttributes)) {
-            $attributes['designers'] = AssetCollectionAttribute::create(
-                $this->attributeRepository->nextIdentifier(
-                    $assetFamilyIdentifier,
-                    AttributeCode::fromString('designers')
-                ),
-                $assetFamilyIdentifier,
-                AttributeCode::fromString('designers'),
-                LabelCollection::fromArray([
-                    'en_US' => 'Designers',
-                    'fr_FR' => 'Concepteurs',
-                ]),
-                $this->getOrderForAttribute('designers'),
-                AttributeIsRequired::fromBoolean(false),
-                AttributeIsReadOnly::fromBoolean(false),
-                AttributeValuePerChannel::fromBoolean(true),
-                AttributeValuePerLocale::fromBoolean(false),
-                AssetFamilyIdentifier::fromString('designer')
             );
         }
 
