@@ -3,13 +3,10 @@
 namespace Pim\Upgrade\Schema;
 
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobInstanceNames;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
-class Version_3_2_X_20191204134851_franklin_insights_add_job_push_structure_and_products extends AbstractMigration
+class Version_4_0_20200128163617_franklin_insights_add_job_push_structure_and_products extends AbstractMigration
 {
     /**
      * @param Schema $schema
