@@ -19,8 +19,9 @@ export const Charts = () => {
 
     const route = useRoute('akeneo_connectivity_connection_rest_list');
     useEffect(() => {
+        let cancelled = false;
         fetchResult<Connection[], never>(route).then(result => {
-            if (isOk(result)) {
+            if (isOk(result) && !cancelled) {
                 const sourceConnections = result.value.filter(
                     (connection): connection is SourceConnection => FlowType.DATA_SOURCE === connection.flowType
                 );
@@ -28,6 +29,9 @@ export const Charts = () => {
                 dispatch(sourceConnectionsFetched(sourceConnections));
             }
         });
+        return () => {
+            cancelled = true;
+        };
     }, [route, dispatch]);
 
     const state = useDashboardState();

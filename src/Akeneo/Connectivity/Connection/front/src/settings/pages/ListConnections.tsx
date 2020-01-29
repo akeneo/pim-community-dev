@@ -34,9 +34,13 @@ export const ListConnections = () => {
 
     const route = useRoute('akeneo_connectivity_connection_rest_list');
     useEffect(() => {
+        let cancelled = false;
         fetchResult<ResultValue, never>(route).then(
-            result => isOk(result) && dispatch(connectionsFetched(result.value))
+            result => isOk(result) && !cancelled && dispatch(connectionsFetched(result.value))
         );
+        return () => {
+            cancelled = true;
+        };
     }, [route, dispatch]);
 
     const handleCreate = () => history.push('/connections/create');
