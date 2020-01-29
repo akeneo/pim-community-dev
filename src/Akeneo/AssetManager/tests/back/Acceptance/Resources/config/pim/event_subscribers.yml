@@ -1,6 +1,6 @@
 services:
-    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.index_asset:
-        class: Akeneo\AssetManager\Common\Fake\EventSubscriberStub
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator:
+        class: Akeneo\AssetManager\Common\Fake\EventAggregatorStub
         tags:
             - { name: kernel.event_subscriber }
 

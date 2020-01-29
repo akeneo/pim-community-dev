@@ -56,6 +56,10 @@ class AssetIndexerSpy implements AssetIndexerInterface
     {
     }
 
+    public function indexByAssetIdentifiers(array $assetIdentifiers)
+    {
+    }
+
     /**
      * Remove all assets belonging to an asset family
      */
