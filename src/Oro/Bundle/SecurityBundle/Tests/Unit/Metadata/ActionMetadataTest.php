@@ -11,7 +11,7 @@ class ActionMetadataTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp(): void
     {
-        $this->metadata = new ActionMetadata('SomeName', 'SomeGroup', 'SomeLabel');
+        $this->metadata = new ActionMetadata('SomeName', 'SomeGroup', 'SomeLabel', false);
     }
 
     public function testGetters()
@@ -19,6 +19,7 @@ class ActionMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('SomeName', $this->metadata->getClassName());
         $this->assertEquals('SomeGroup', $this->metadata->getGroup());
         $this->assertEquals('SomeLabel', $this->metadata->getLabel());
+        $this->assertFalse($this->metadata->isEnabledByDefault());
     }
 
     public function testSerialize()
@@ -28,5 +29,6 @@ class ActionMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('SomeName', $emptyMetadata->getClassName());
         $this->assertEquals('SomeGroup', $emptyMetadata->getGroup());
         $this->assertEquals('SomeLabel', $this->metadata->getLabel());
+        $this->assertFalse($this->metadata->isEnabledByDefault());
     }
 }
