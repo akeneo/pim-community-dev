@@ -58,7 +58,8 @@ class NumberLocalizer implements LocalizerInterface
             $numberFormatter->setSymbol(\NumberFormatter::MINUS_SIGN_SYMBOL, '-');
 
             if (floor($number) != $number) {
-                $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 4);
+                $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 2);
+                $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 4);
             }
 
             return $numberFormatter->format($number);
