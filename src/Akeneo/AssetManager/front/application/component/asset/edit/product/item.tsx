@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Product, {PRODUCT_MODEL_TYPE} from 'akeneoassetmanager/domain/model/product/product';
-import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import Completeness from 'akeneoassetmanager/domain/model/product/completeness';
 import ProductCompletenessLabel from 'akeneoassetmanager/application/component/app/product-completeness';
 import {productIdentifierStringValue} from 'akeneoassetmanager/domain/model/product/identifier';
@@ -36,7 +35,9 @@ export default ({
       <div
         className="AknGrid-fullImage"
         style={{
-          backgroundImage: `url("${getImageShowUrl(product.getImage(), 'thumbnail')}")`,
+          // TODO this is a temporary fix as this component will be reworked
+          // The Image model and what is to be stored in the `filePath` property needs to be discussed
+          backgroundImage: `url("${product.getImage()?.filePath}")`,
         }}
       >
         <ProductCompletenessLabel completeness={completeness} type={product.getType()} />
