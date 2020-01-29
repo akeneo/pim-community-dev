@@ -393,10 +393,14 @@ workflows:
           - test_back_performance:
                 requires:
                     - build_dev
+          - test_back_data_migrations:
+                requires:
+                    - build_dev
           - release:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
                     - test_back_phpunit
-                    - test_back_performance
                     - back_behat_legacy
+                    - test_back_performance
+                    - test_back_data_migrations
