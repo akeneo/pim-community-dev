@@ -17,7 +17,7 @@ import fetchProductDataQualityEvaluation from './infrastructure/fetcher/fetchPro
 import {
   CATALOG_CONTEXT_CHANNEL_CHANGED,
   CATALOG_CONTEXT_LOCALE_CHANGED,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY,
+  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
@@ -28,14 +28,15 @@ import {
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
   PRODUCT_TAB_CHANGED,
-} from './infrastructure/context-provider';
+} from './application/listener';
 
 import {ATTRIBUTES_TAB_NAME, DATA_QUALITY_INSIGHTS_TAB_NAME} from './application/constant';
 
-import {DataQualityInsightsDashboard, DataQualityOverviewChartHeader} from "./application/component/DqiDashboard";
+import {DataQualityInsightsDashboard, DataQualityOverviewChartHeader, DataQualityOverviewHelper} from "./application/component/DqiDashboard";
 
 export {
   DataQualityOverviewChartHeader,
+  DataQualityOverviewHelper,
   DataQualityInsightsDashboard,
   ProductEditFormApp,
   DataQualityInsightsFeature,
@@ -51,7 +52,7 @@ export {
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY,
+  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,

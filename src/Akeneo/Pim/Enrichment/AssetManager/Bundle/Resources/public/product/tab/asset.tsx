@@ -16,11 +16,10 @@ import {
   AssetCollectionState,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {ThemeProvider} from 'styled-components';
-import {updateChannels, updateFamily} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
+import {updateChannels, updateFamily, updateRuleRelations, updateAttributeGroups} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {errorsReceived, errorsRemovedAll} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/errors';
 import thunkMiddleware from 'redux-thunk';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
-import {updateRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {LegacyValue} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {
   isValidErrorCollection,
@@ -85,6 +84,7 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
     this.store.dispatch(channelUpdated(UserContext.get('catalogScope')));
     this.store.dispatch(updateChannels() as any);
     this.store.dispatch(updateRuleRelations() as any);
+    this.store.dispatch(updateAttributeGroups() as any);
 
     return Form.prototype.configure.apply(this, arguments);
   }

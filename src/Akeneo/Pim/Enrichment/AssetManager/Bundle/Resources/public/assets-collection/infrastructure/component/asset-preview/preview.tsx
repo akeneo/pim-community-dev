@@ -36,6 +36,7 @@ import {getPreviewModel} from 'akeneoassetmanager/domain/model/asset/list-value'
 import {getLabel} from 'pimui/js/i18n';
 import Data, {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
+import useImageLoader from 'akeneoassetmanager/application/hooks/image-loader';
 
 const Container = styled.div`
   display: flex;
@@ -130,6 +131,18 @@ const getMediaDataPreviewUrl = (data: Data, attributeAsMainMedia: NormalizedAttr
     data: getMediaData(data),
   });
 
+const LazyLoadedAssetPreview = React.memo(({src, alt, ...props}: {src: string, alt: string}) => {
+  const loadedSrc = useImageLoader(src);
+
+  return (
+    <Image
+      src={loadedSrc}
+      alt={alt}
+      {...props}
+    />
+  );
+});
+
 const MediaFilePreviewView = ({
   label,
   editUrl,
@@ -146,7 +159,12 @@ const MediaFilePreviewView = ({
 
   return (
     <>
-      <Image src={getMediaDataPreviewUrl(mediaFileData, attribute)} alt={label} data-role="asset-preview" />
+      <LazyLoadedAssetPreview src={getMediaDataPreviewUrl(mediaFileData, attribute)} alt={label} data-role="asset-preview"/>
+      {attribute.media_type === MediaTypes.other && (
+        <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
+          {__('pim_asset_manager.asset_preview.other_main_media')}
+        </Message>
+      )}
       <Actions>
         <DownloadAction url={getImageDownloadUrl(mediaFileData)} fileName={mediaFileData.originalFilename} />
         <EditAction url={editUrl} />
@@ -184,7 +202,12 @@ const MediaLinkPreviewView = ({
 
       return (
         <>
-          <Image src={getMediaDataPreviewUrl(mediaLinkData, attribute)} alt={label} data-role="asset-preview" />
+          <LazyLoadedAssetPreview src={getMediaDataPreviewUrl(mediaLinkData, attribute)} alt={label} data-role="asset-preview"/>
+          {attribute.media_type === MediaTypes.other && (
+            <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
+              {__('pim_asset_manager.asset_preview.other_main_media')}
+            </Message>
+          )}
           <Actions>
             <DownloadAction url={url} fileName={url} />
             <CopyUrlAction url={url} />
@@ -213,7 +236,7 @@ const PreviewView = ({
   if (undefined === previewModel || null === previewModel.data)
     return (
       <>
-        <Image src={getMediaDataPreviewUrl('', attributeAsMainMedia)} alt={label} data-role="asset-preview" />
+        <LazyLoadedAssetPreview src={getMediaDataPreviewUrl('', attributeAsMainMedia)} alt={label} data-role="asset-preview"/>
         <Message title={__('pim_asset_manager.asset_preview.empty_main_media')}>
           {__('pim_asset_manager.asset_preview.empty_main_media')}
         </Message>

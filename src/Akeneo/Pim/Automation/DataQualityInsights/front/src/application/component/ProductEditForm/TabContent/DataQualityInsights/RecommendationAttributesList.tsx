@@ -1,4 +1,4 @@
-import React, {Fragment, FunctionComponent} from 'react';
+import React, {FunctionComponent} from 'react';
 import Attribute from "./Attribute";
 import {useCatalogContext, useFetchProductFamilyInformation} from "../../../../../infrastructure/hooks";
 
@@ -23,25 +23,34 @@ const getAttributeLabel = (attributeCode: string, productFamilyInformation: any,
   return attributeItem.labels[locale];
 };
 
+const compareAttributeCode = (code1: string, code2: string) => {
+  return code1.localeCompare(code2, undefined , {sensitivity: 'base'});
+}
+
 const RecommendationAttributesList: FunctionComponent<RecommendationAttributesListProps> = ({criterion, attributes}) => {
   const {locale} = useCatalogContext();
   const productFamilyInformation = useFetchProductFamilyInformation();
 
-  return (
-    <>
-      {locale && productFamilyInformation && attributes.map((attributeCode: string, index) => {
-        return (
-          <Fragment key={`attribute-${criterion}-${index}`}>
-            <Attribute code={attributeCode}>
-              {getAttributeLabel(attributeCode, productFamilyInformation, locale)}
-            </Attribute>
-            {(index < (attributes.length -1)) && ', '}
-            {(index === (attributes.length -1)) && '.'}
-          </Fragment>
-        );
-      })}
-    </>
-  );
+    return (
+      <>
+        { attributes.length == 0 ? (
+            <span className="NonApplicableAttribute">N/A</span>
+          ) : (
+          <>
+            {locale && productFamilyInformation && attributes.sort(compareAttributeCode).map((attributeCode: string, index) => {
+              return (
+                <Attribute key={`attribute-${criterion}-${index}`} code={attributeCode}>
+                  {getAttributeLabel(attributeCode, productFamilyInformation, locale)}
+                  {(index < (attributes.length - 1)) && <>,&thinsp;</>}
+                  {(index === (attributes.length - 1)) && '.'}
+                </Attribute>
+              );
+            })}
+          </>
+          )
+        }
+      </>
+    )
 };
 
 export default RecommendationAttributesList;

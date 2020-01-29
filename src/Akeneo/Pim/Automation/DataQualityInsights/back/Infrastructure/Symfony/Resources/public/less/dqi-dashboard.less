@@ -4,6 +4,8 @@
         height: auto;
         margin-top: 20px;
         border-bottom: solid 1px @AknGrey60;
+        position: relative;
+        min-height: 300px;
 
         svg {
             width: 100%;
@@ -146,9 +148,48 @@
             max-height: 325px !important;
         }
     }
+
+    #data-quality-insights-activity-dashboard-widgets {
+        margin-top: 40px;
+        display: flex;
+
+        .no-family {
+            text-align: center;
+
+            img {
+                height: 150px;
+            }
+        }
+
+        .AknGrid {
+            th {
+                color: @AknGrey140;
+                font-size: 13px;
+            }
+            td:not(.AknGrid-bodyCell--actions) {
+                padding: 12px 4px;
+
+                &.familyName, &.categoryName {
+                    font-weight: bold;
+                    font-style: italic;
+                    font-size: 13px;
+                }
+            }
+        }
+
+        .AknDataQualityInsights-widgetColumn {
+            flex: 1;
+
+            &:first-child {
+                margin-right: 40px;
+                padding-right: 40px;
+                border-right: 1px @AknMediumGrey solid;
+            }
+        }
+    }
 }
 
-.modal.AknDataQualityInsightsCategoryFilter {
+.modal.AknDataQualityInsightsCategoryModal {
     ins {
         display: inline-block;
         text-decoration: none;
@@ -164,5 +205,15 @@
         white-space: nowrap;
         margin-left: 18px;
         min-width: 18px;
+    }
+}
+
+.modal.AknDataQualityInsightsFamilyFilter {
+    .select2-container {
+        margin-top: 8px;
+        width: 600px;
+    }
+    .AknMessageBox {
+        width: 600px;
     }
 }

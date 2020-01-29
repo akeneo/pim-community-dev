@@ -7,17 +7,11 @@ import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
 import __ from 'akeneoassetmanager/tools/translator';
 import {NormalizedOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {NormalizedOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
-import {NormalizedAssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {NormalizedAssetCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset-collection';
 import {AssetAttributeFetcher} from 'akeneoassetmanager/application/component/library/library';
 
-export type FilterableAttribute =
-  | NormalizedOptionAttribute
-  | NormalizedOptionCollectionAttribute
-  | NormalizedAssetAttribute
-  | NormalizedAssetCollectionAttribute;
+export type FilterableAttribute = NormalizedOptionAttribute | NormalizedOptionCollectionAttribute;
 
 export const sortFilterViewsByAttributeOrder = (filterViewCollection: FilterViewCollection) => {
   return [...filterViewCollection].sort(

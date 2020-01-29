@@ -77,6 +77,7 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
     valuePerChannel: boolean,
     order: number,
     is_required: boolean,
+    is_read_only: boolean,
     readonly maxLength: MaxLength,
     readonly isTextarea: IsTextarea,
     readonly isRichTextEditor: IsRichTextEditor,
@@ -88,11 +89,12 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
       assetFamilyIdentifier,
       code,
       labelCollection,
-      'text',
+      TEXT_ATTRIBUTE_TYPE,
       valuePerLocale,
       valuePerChannel,
       order,
-      is_required
+      is_required,
+      is_read_only
     );
 
     if (!isTextarea && isRichTextEditor) {
@@ -122,6 +124,7 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
       normalizedTextAttribute.value_per_channel,
       normalizedTextAttribute.order,
       normalizedTextAttribute.is_required,
+      normalizedTextAttribute.is_read_only,
       normalizedTextAttribute.max_length,
       normalizedTextAttribute.is_textarea,
       normalizedTextAttribute.is_rich_text_editor,
@@ -133,7 +136,7 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
   public normalize(): NormalizedTextAttribute {
     return {
       ...super.normalize(),
-      type: 'text',
+      type: TEXT_ATTRIBUTE_TYPE,
       max_length: this.maxLength,
       is_textarea: this.isTextarea,
       is_rich_text_editor: this.isRichTextEditor,

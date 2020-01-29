@@ -5,8 +5,17 @@
     text-transform: capitalize;
 }
 
+.AknSubsection-title {
+    margin-bottom: 0px;
+}
+
 .AknSubsection.AxisEvaluationContainer {
     margin-bottom: 20px;
+
+    .AknVerticalList-item {
+        min-height: 50px;
+        height: auto;
+    }
 }
 
 .AxisEvaluationTitle {
@@ -14,34 +23,82 @@
     margin-right: 10px;
 }
 
-.AxisEvaluationSuccessContainer {
-    font-size: 13px;
-    max-width: 400px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.AxisEvaluationSuccessIllustration {
-    display: inline-block;
-    background-image: url('@{dataQualityInsightsBundlePath}/images/Success.svg');
-    background-repeat: no-repeat;
-    background-position: center center;
-    height: 150px;
-    width: 150px;
-    margin: 0;
-    background-size: 100% auto;
-}
-
 .CriterionMessage {
     line-height: normal;
+    width: 100%;
+    margin: 20px auto;
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+
+    .CriterionSuccessContainer {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        flex: auto;
+
+        .CriterionSuccessTick {
+            display: inline-block;
+            background-image: url('@{pimuiBundlePath}/images/icon-check-green.svg');
+            background-repeat: no-repeat;
+            background-position: center center;
+            width: 20px;
+            margin: 0;
+        }
+    }
 }
 
 .CriterionRecommendationMessage {
     color: @AknGrey140;
     font-size: 13px;
     font-weight: normal;
+    white-space: nowrap;
+}
+
+.AknMessageBox--withIcon {
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.NoRateWindow {
+    color: @AknRed100;
+    background: #faefed;
+    border-radius: 0px;
+    height: 44px;
+    line-height: 44px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.NoRateIconWindow {
+    background-image: url('@{pimuiBundlePath}/images/icon-danger.svg');
+    height: 25px;
+    width: 38px;
+    border-right: solid 1px;
+    background-repeat: no-repeat;
+    margin-left: 12px;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
 }
 
 .CriterionErrorMessage {
-    line-height: normal;
+    font-weight: 600;
+    font-size: 13px;
+    height: 25px;
+    width: 100%;
+    line-height: 25px;
+    margin-left: 15px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.CriterionSuccessMessage {
+    color: @AknGreen120;
+    font-style: italic;
+}
+
+.NonApplicableAttribute {
+    color: @AknGrey;
 }

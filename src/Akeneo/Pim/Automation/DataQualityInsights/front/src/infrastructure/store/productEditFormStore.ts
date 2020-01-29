@@ -10,17 +10,18 @@ import {
   ProductEvaluationState,
   productFamilyInformationReducer,
   ProductFamilyInformationState,
-  productReducer, productSpellcheckReducer, ProductSpellcheckState,
-  ProductState,
+  productReducer, productEditorHighlightReducer, ProductEditorHighlightState,
+  ProductState, productAxesRatesReducer, ProductAxesRatesState,
 } from "../reducer";
 
 export interface ProductEditFormState {
   catalogContext: CatalogContextState;
   pageContext: PageContextState;
   productEvaluation: ProductEvaluationState;
+  productAxesRates: ProductAxesRatesState;
   families: ProductFamilyInformationState;
   product: ProductState;
-  spellcheck: ProductSpellcheckState;
+  editorHighlight: ProductEditorHighlightState;
 }
 
 const composeEnhancers = composeWithDevTools({
@@ -32,9 +33,10 @@ const productEditFormStore: Store = createStore(
     catalogContext: catalogContextReducer,
     pageContext: pageContextReducer,
     productEvaluation: productEvaluationReducer,
+    productAxesRates: productAxesRatesReducer,
     families: productFamilyInformationReducer,
     product: productReducer,
-    spellcheck: productSpellcheckReducer
+    editorHighlight: productEditorHighlightReducer
   }),
   composeEnhancers(applyMiddleware()),
 );

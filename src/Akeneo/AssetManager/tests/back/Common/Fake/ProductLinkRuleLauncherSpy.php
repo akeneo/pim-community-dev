@@ -5,21 +5,44 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Common\Fake;
 
 use Akeneo\AssetManager\Application\Asset\LinkAssets\ProductLinkRuleLauncherInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PHPUnit\Framework\Assert;
 
 class ProductLinkRuleLauncherSpy implements ProductLinkRuleLauncherInterface
 {
+    /** @var InMemoryAssetRepository */
+    private $assetRepository;
+
     /** @var array */
     private $launches = [];
 
-    public function launch(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): void
+    public function __construct(InMemoryAssetRepository $assetRepository)
+    {
+        $this->assetRepository = $assetRepository;
+    }
+
+    public function launchForAssetFamilyAndAssetCodes(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): void
     {
         $runId = sprintf('run_%s', uniqid());
 
         foreach ($assetCodes as $assetCode) {
             $this->launches[$runId][] = $this->fingerprint($assetFamilyIdentifier->normalize(), $assetCode->normalize());
         }
+    }
+
+    public function launchForAllAssetFamilyAssets(AssetFamilyIdentifier $assetFamilyIdentifier): void
+    {
+        $assetCodes = [];
+
+        /** @var Asset $asset */
+        foreach ($this->assetRepository->all() as $asset) {
+            if ($asset->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier)) {
+                $assetCodes[] = $asset->getCode();
+            }
+        }
+
+        $this->launchForAssetFamilyAndAssetCodes($assetFamilyIdentifier, $assetCodes);
     }
 
     public function assertHasRunForAsset(string $assetFamilyIdentifier, string $assetCode): void
@@ -80,6 +103,11 @@ class ProductLinkRuleLauncherSpy implements ProductLinkRuleLauncherInterface
             implode(', ', $assetCodes),
             $assetFamilyIdentifier
         ));
+    }
+
+    public function assertHasNoRun()
+    {
+        Assert::assertEmpty($this->launches, 'Expected no asset run');
     }
 
     private function fingerprint(string $assetFamilyIdentifier, string $assetCode): string

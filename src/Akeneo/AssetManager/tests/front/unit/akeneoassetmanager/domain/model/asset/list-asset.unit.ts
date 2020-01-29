@@ -2,7 +2,8 @@ import {
   ASSET_COLLECTION_LIMIT,
   isComplete,
   getAssetLabel,
-  removeAssetFromCollection,
+  removeAssetFromAssetCodeCollection,
+  removeAssetFromAssetCollection,
   emptyCollection,
   getPreviousAssetCode,
   getNextAssetCode,
@@ -21,13 +22,36 @@ import {
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {isLabels} from 'akeneoassetmanager/domain/model/utils';
 
+const labels = {en_US: 'Nice Label'};
+const asset1 = {
+  identifier: 'packshot_samsung_fingerprint',
+  code: 'samsung',
+  labels,
+};
+const asset2 = {
+  identifier: 'packshot_oneplus_fingerprint',
+  code: 'oneplus',
+  labels,
+};
+const asset3 = {
+  identifier: 'packshot_iphone_fingerprint',
+  code: 'iphone',
+  labels,
+};
+const asset4 = {
+  identifier: 'packshot_huawei_fingerprint',
+  code: 'huawei',
+  labels,
+};
+const assets = [asset1, asset2, asset3, asset4];
+
 test('The asset is complete', () => {
   const complete = {complete: 2, required: 2};
   const asset = {
     identifier: 'packshot_iphone_fingerprint',
     code: 'iphone',
     image: '/rest/asset/image/thumbnail/iphone.jpg',
-    labels: {en_US: 'Iphone'},
+    labels,
     completeness: complete,
   };
 
@@ -40,7 +64,7 @@ test('The asset is incomplete', () => {
     identifier: 'packshot_iphone_fingerprint',
     code: 'iphone',
     image: '/rest/asset/image/thumbnail/iphone.jpg',
-    labels: {en_US: 'Iphone'},
+    labels,
     completeness: incomplete,
   };
 
@@ -52,7 +76,6 @@ test('It could return an empty asset', () => {
     identifier: '',
     code: '',
     image: [],
-
     labels: {},
     completeness: {
       complete: 0,
@@ -70,8 +93,6 @@ test('It could validate if the label object is well formated', () => {
 
   const wrongFormatedLabels = {en_US: 123};
   expect(isLabels(wrongFormatedLabels)).toEqual(false);
-
-  const labels = {en_US: 'Packshot'};
   expect(isLabels(labels)).toEqual(true);
 });
 
@@ -86,12 +107,15 @@ test('I should get a label from my asset', () => {
   expect(getAssetLabel(asset, 'fr_FR')).toEqual('[iphone]');
 });
 
-test('I should be able to remove an asset from the collection', () => {
-  const assetCodeToRemove = 'iphone';
-  expect(removeAssetFromCollection(['samsung', 'oneplus', 'iphone'], assetCodeToRemove)).toEqual([
+test('I should be able to remove an asset from the asset code collection', () => {
+  expect(removeAssetFromAssetCodeCollection(['samsung', 'oneplus', 'iphone'], 'iphone')).toEqual([
     'samsung',
     'oneplus',
   ]);
+});
+
+test('I should be able to remove an asset from the asset collection', () => {
+  expect(removeAssetFromAssetCollection(assets, 'iphone')).toEqual([asset1, asset2, asset4]);
 });
 
 test('I should be able to tell if an asset is in the collection', () => {
@@ -152,96 +176,24 @@ test('It should add assets in the collection', () => {
 });
 
 test('I should be able to move assets', () => {
-  const asset = {
-    identifier: 'packshot_iphone_fingerprint',
-    code: 'iphone',
-    labels: {en_US: 'Iphone'},
-  };
-
-  expect(moveAssetInCollection(['samsung', 'oneplus', 'iphone', 'huawei'], asset, MoveDirection.Before)).toEqual([
-    'samsung',
-    'iphone',
-    'oneplus',
-    'huawei',
-  ]);
-
-  expect(moveAssetInCollection(['samsung', 'oneplus', 'iphone', 'huawei'], asset, MoveDirection.After)).toEqual([
-    'samsung',
-    'oneplus',
-    'huawei',
-    'iphone',
-  ]);
-
-  expect(moveAssetInCollection(['samsung', 'oneplus', 'huawei', 'iphone'], asset, MoveDirection.Before)).toEqual([
-    'samsung',
-    'oneplus',
-    'iphone',
-    'huawei',
-  ]);
+  expect(moveAssetInCollection(assets, asset3, MoveDirection.Before)).toEqual([asset1, asset3, asset2, asset4]);
+  expect(moveAssetInCollection(assets, asset3, MoveDirection.After)).toEqual([asset1, asset2, asset4, asset3]);
 });
 
 test('I should not be able to move the last asset after its current position', () => {
-  const asset = {
-    identifier: 'packshot_iphone_fingerprint',
-    code: 'iphone',
-    labels: {en_US: 'Iphone'},
-  };
-
-  expect(moveAssetInCollection(['samsung', 'oneplus', 'iphone'], asset, MoveDirection.After)).toEqual([
-    'samsung',
-    'oneplus',
-    'iphone',
-  ]);
+  expect(moveAssetInCollection(assets, asset4, MoveDirection.After)).toEqual(assets);
 });
 
 test('I should not be able to move the first asset before its current position', () => {
-  const asset = {
-    identifier: 'packshot_iphone_fingerprint',
-    code: 'iphone',
-    labels: {en_US: 'Iphone'},
-  };
-
-  expect(moveAssetInCollection(['iphone', 'oneplus', 'samsung'], asset, MoveDirection.Before)).toEqual([
-    'iphone',
-    'oneplus',
-    'samsung',
-  ]);
+  expect(moveAssetInCollection(assets, asset1, MoveDirection.Before)).toEqual(assets);
 });
 
 test('I can get asset codes of a collection', () => {
-  const iphone = {
-    identifier: 'packshot_iphone_fingerprint',
-    code: 'iphone',
-    labels: {en_US: 'Iphone'},
-  };
-  const samsung = {
-    identifier: 'packshot_samsung_fingerprint',
-    code: 'samsung',
-    labels: {en_US: 'Samsung'},
-  };
-  expect(getAssetCodes([iphone, samsung])).toEqual(['iphone', 'samsung']);
+  expect(getAssetCodes(assets)).toEqual(['samsung', 'oneplus', 'iphone', 'huawei']);
 });
 
 test('I can find an asset from a collection with its code', () => {
-  const assetCollection = [
-    {
-      identifier: 'packshot_iphone_fingerprint',
-      code: 'iphone',
-      labels: {en_US: 'Iphone'},
-    },
-    {
-      identifier: 'packshot_honor_fingerprint',
-      code: 'honor',
-      labels: {en_US: 'Honor'},
-    },
-  ];
-  const expectedAsset = {
-    identifier: 'packshot_honor_fingerprint',
-    code: 'honor',
-    labels: {en_US: 'Honor'},
-  };
-
-  expect(getAssetByCode(assetCollection, 'honor')).toMatchObject(expectedAsset);
+  expect(getAssetByCode(assets, 'oneplus')).toMatchObject(asset2);
 });
 
 test('I can sort an asset collection by codes when the order is already valid', () => {

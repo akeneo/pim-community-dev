@@ -18,6 +18,7 @@
           "en_US": "Name"
         },
         "is_required": true,
+        "is_read_only": false,
         "order": 0,
         "value_per_locale": true,
         "value_per_channel": true,
@@ -36,6 +37,7 @@
           "en_US": "Email"
         },
         "is_required": true,
+        "is_read_only": false,
         "order": 0,
         "value_per_locale": true,
         "value_per_channel": true,
@@ -54,6 +56,7 @@
           "en_US": "Portrait"
         },
         "is_required": true,
+        "is_read_only": false,
         "order": 1,
         "value_per_locale": true,
         "value_per_channel": true,
@@ -72,6 +75,7 @@
           "en_US": "Favorite color"
         },
         "is_required": true,
+        "is_read_only": false,
         "order": 2,
         "value_per_locale": true,
         "value_per_channel": true,
@@ -101,6 +105,7 @@
           "en_US": "Colors"
         },
         "is_required": true,
+        "is_read_only": false,
         "order": 3,
         "value_per_locale": true,
         "value_per_channel": true,

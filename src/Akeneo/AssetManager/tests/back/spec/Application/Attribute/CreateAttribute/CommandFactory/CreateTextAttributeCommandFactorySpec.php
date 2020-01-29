@@ -26,6 +26,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
             'is_required' => false,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'max_length' => 255,
@@ -56,6 +57,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
             // 'code' => 'name', // For the test purpose, this one is missing
             'labels' => ['fr_FR' => 'Nom'],
             'is_required' => false,
+            'is_read_only' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'max_length' => 255,

@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {isEmpty} from "lodash";
 
 import {fetchProductAxisRates} from '../fetcher';
-import {ProductEditFormState} from "../store";
-import {getProductEvaluationRatesAction} from "../reducer";
+import {getProductAxesRatesAction} from "../reducer";
+import useProductAxesRates from "./useProductAxesRates";
 
 const MAXIMUM_RETRIES = 10;
 const RETRY_MILLISECONDS_DELAY = 200;
@@ -30,18 +30,7 @@ const getRetryDelay = (retry: number) => {
 const useFetchProductAxisRates = () => {
   const [hasToBeEvaluated, setHasToBeEvaluated] = useState<boolean>(false);
   const [retries, setRetries] = useState<number>(0);
-
-  const {evaluation, productId, productUpdated} = useSelector((state: ProductEditFormState) => {
-    const productId = state.product.meta.id;
-    const productUpdated = state.product.updated;
-    const evaluation = productId ? state.productEvaluation[productId] : {};
-
-    return {
-      evaluation: evaluation || {},
-      productId: productId,
-      productUpdated,
-    };
-  });
+  const {axesRates, productId, productUpdated} = useProductAxesRates();
 
   const dispatchAction = useDispatch();
 
@@ -50,15 +39,18 @@ const useFetchProductAxisRates = () => {
       setTimeout(() => {
         (async () => {
           const data = await fetchProductAxisRates(productId);
-          dispatchAction(getProductEvaluationRatesAction(productId, data));
+          dispatchAction(getProductAxesRatesAction(productId, data));
         })();
       }, getRetryDelay(retries));
     }
   }, [hasToBeEvaluated, retries]);
 
   useEffect(() => {
-    const notEvaluatedAxesList = Object.values(evaluation).filter((axisEvaluation) => {
-      return isEmpty(axisEvaluation);
+    if(Object.keys(axesRates).length === 0) {
+      return;
+    }
+    const notEvaluatedAxesList = Object.values(axesRates).filter((axisEvaluation) => {
+      return isEmpty(axisEvaluation.rates);
     });
 
     if (notEvaluatedAxesList.length === 0) {
@@ -69,7 +61,7 @@ const useFetchProductAxisRates = () => {
       setRetries(retries + 1);
       setHasToBeEvaluated(true);
     }
-  }, [evaluation]);
+  }, [axesRates]);
 
   useEffect(() => {
     if (retries >= MAXIMUM_RETRIES) {
@@ -84,7 +76,7 @@ const useFetchProductAxisRates = () => {
     }
   }, [productId, productUpdated]);
 
-  return evaluation;
+  return axesRates;
 };
 
 export default useFetchProductAxisRates;

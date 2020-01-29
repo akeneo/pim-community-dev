@@ -11,6 +11,7 @@ const normalizedDescription = {
   value_per_locale: true,
   value_per_channel: false,
   is_required: true,
+  is_read_only: true,
   max_length: 0,
   is_textarea: false,
   is_rich_text_editor: false,
@@ -50,6 +51,7 @@ describe('akeneo > asset family > application > reducer > attribute --- edit', (
         value_per_locale: false,
         value_per_channel: false,
         is_required: false,
+        is_read_only: false,
         max_length: null,
         is_textarea: false,
         is_rich_text_editor: false,
@@ -262,6 +264,76 @@ describe('akeneo > asset family > application > reducer > attribute --- edit', (
       isActive: true,
       data: {
         is_required: false,
+      },
+      isDirty: true,
+      errors: [],
+    });
+  });
+
+  test("It doesn't update the is read_only if it's the same", () => {
+    const state = {
+      isActive: true,
+      data: {
+        is_read_only: false,
+      },
+      isDirty: false,
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_EDITION_IS_READ_ONLY_UPDATED',
+      is_read_only: false,
+    });
+
+    expect(newState).toEqual({
+      isActive: true,
+      data: {
+        is_read_only: false,
+      },
+      isDirty: false,
+      errors: [],
+    });
+  });
+
+  test('I can update the is_read_only property of the attribute', () => {
+    const state = {
+      isActive: true,
+      data: {
+        is_read_only: true,
+      },
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_EDITION_IS_READ_ONLY_UPDATED',
+      is_read_only: false,
+    });
+
+    expect(newState).toEqual({
+      isActive: true,
+      data: {
+        is_read_only: false,
+      },
+      isDirty: true,
+      errors: [],
+    });
+  });
+
+  test('I can update the is_read_only property of the attribute', () => {
+    const state = {
+      isActive: true,
+      data: {
+        is_read_only: true,
+      },
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_EDITION_IS_READ_ONLY_UPDATED',
+      is_read_only: false,
+    });
+
+    expect(newState).toEqual({
+      isActive: true,
+      data: {
+        is_read_only: false,
       },
       isDirty: true,
       errors: [],

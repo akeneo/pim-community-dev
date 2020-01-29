@@ -15,12 +15,12 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\R
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use PhpSpec\ObjectBehavior;
 
 final class DashboardRatesSpec extends ObjectBehavior
 {
-    public function it_get_rates_by_channel_locale_and_periodicity()
+    public function it_get_rates_by_channel_locale_and_time_period()
     {
         $yesterday = (new \DateTime('-1 DAY'))->format('Y-m-d');
         $twoDaysAgo = (new \DateTime('-2 DAY'))->format('Y-m-d');
@@ -170,7 +170,7 @@ final class DashboardRatesSpec extends ObjectBehavior
             ]
         ];
 
-        $this->beConstructedWith($rates, new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'));
+        $this->beConstructedWith($rates, new ChannelCode('ecommerce'), new LocaleCode('en_US'), new TimePeriod('daily'));
 
         $threeDaysAgo = (new \DateTime('-3 DAY'))->format('Y-m-d');
         $fourDaysAgo = (new \DateTime('-4 DAY'))->format('Y-m-d');

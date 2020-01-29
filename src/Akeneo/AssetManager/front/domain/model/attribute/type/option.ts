@@ -45,6 +45,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
     valuePerLocale: boolean,
     order: number,
     is_required: boolean,
+    is_read_only: boolean,
     readonly options: Option[]
   ) {
     super(
@@ -52,11 +53,12 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
       assetFamilyIdentifier,
       code,
       labelCollection,
-      'option',
+      OPTION_ATTRIBUTE_TYPE,
       valuePerLocale,
       valuePerChannel,
       order,
-      is_required
+      is_required,
+      is_read_only
     );
 
     Object.freeze(this);
@@ -72,6 +74,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
       normalizedOptionAttribute.value_per_locale,
       normalizedOptionAttribute.order,
       normalizedOptionAttribute.is_required,
+      normalizedOptionAttribute.is_read_only,
       normalizedOptionAttribute.options.map(createOptionFromNormalized)
     );
   }
@@ -83,7 +86,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
   public normalize(): NormalizedOptionAttribute {
     return {
       ...super.normalize(),
-      type: 'option',
+      type: OPTION_ATTRIBUTE_TYPE,
       options: this.options,
     };
   }
@@ -98,6 +101,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
       this.valuePerLocale,
       this.order,
       this.isRequired,
+      this.isReadOnly,
       options
     );
   }

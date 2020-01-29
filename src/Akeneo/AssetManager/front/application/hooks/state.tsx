@@ -1,9 +1,6 @@
 import * as React from 'react';
 
-export const useStoredState = function<T>(
-  name: string,
-  defaultValue: T
-): [T, (newValue: T) => void] {
+export const useStoredState = function<T>(name: string, defaultValue: T): [T, (newValue: T) => void] {
   const loadValueFromLocaleStorage = (): T => {
     try {
       const item = localStorage.getItem(name);

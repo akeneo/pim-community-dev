@@ -30,6 +30,7 @@
                         "fr_FR": "Nom"
                     },
                     "is_required": false,
+                    "is_read_only": true,
                     "order": 0,
                     "value_per_locale": true,
                     "value_per_channel": false,
@@ -49,6 +50,7 @@
                         "fr_FR": "Biographie"
                     },
                     "is_required": false,
+                    "is_read_only": false,
                     "order": 1,
                     "value_per_locale": true,
                     "value_per_channel": false,
@@ -68,6 +70,7 @@
                         "fr_FR": "Image"
                     },
                     "is_required": false,
+                    "is_read_only": false,
                     "order": 2,
                     "value_per_locale": true,
                     "value_per_channel": false,
@@ -87,6 +90,7 @@
                         "en_US": "Favorite color"
                     },
                     "is_required": true,
+                    "is_read_only": false,
                     "order": 3,
                     "value_per_locale": true,
                     "value_per_channel": true,
@@ -116,6 +120,7 @@
                         "en_US": "Colors"
                     },
                     "is_required": true,
+                    "is_read_only": false,
                     "order": 4,
                     "value_per_locale": true,
                     "value_per_channel": true,
@@ -145,6 +150,7 @@
                         "en_US": "Year of Birth"
                     },
                     "is_required": false,
+                    "is_read_only": false,
                     "order": 6,
                     "value_per_locale": false,
                     "value_per_channel": false,

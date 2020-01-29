@@ -99,7 +99,7 @@
                 },
                 {
                     "property": "transformations[1][operations][0]",
-                    "message": "The property \"foo\" is not defined and the definition does not allow additional properties."
+                    "message": "The property \"foo\" was not expected."
                 }
             ]
         }

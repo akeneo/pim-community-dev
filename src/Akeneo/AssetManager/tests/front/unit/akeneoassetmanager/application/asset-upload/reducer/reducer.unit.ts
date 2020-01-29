@@ -272,7 +272,9 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
       lines: [lines.A, lines.B, lines.C],
     });
 
-    const action = fileUploadFailureAction(lines.B);
+    const error = createFakeError('pim_asset_manager.asset.upload.upload_failure');
+
+    const action = fileUploadFailureAction(lines.B, [error]);
     const newState = reducer(state, action);
 
     const expectedState = {
@@ -283,8 +285,8 @@ describe('akeneoassetmanager/application/asset-upload/reducer/reducer.ts', () =>
           isFileUploading: false,
           isFileUploadFailed: true,
           errors: {
-            back: [],
-            front: [createFakeError('pim_asset_manager.asset.upload.upload_failure')],
+            back: [error],
+            front: [],
           },
         },
         lines.A,

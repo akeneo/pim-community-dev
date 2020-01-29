@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import React from "react";
 import {
   DataQualityInsightsDashboard,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY,
+  DataQualityOverviewHelper,
+  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY
 } from 'akeneodataqualityinsights-react';
@@ -20,8 +21,8 @@ interface ScopeEvent {
 
 const UserContext = require('pim/user-context');
 
-type DashboardChangePeriodicityEvent = {
-  periodicity: string;
+type DashboardChangeTimePeriodEvent = {
+  timePeriod: string;
 };
 
 type DashboardFilterOnFamilyEvent = {
@@ -37,15 +38,15 @@ class SectionView extends BaseView {
     align: 'left',
   };
 
-  private periodicity: string = 'daily';
+  private timePeriod: string = 'daily';
 
   private familyCode: string | null = null;
 
   private categoryCode: string | null = null;
 
   configure(): JQueryPromise<any> {
-    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_PERIODICITY, ((event: CustomEvent<DashboardChangePeriodicityEvent>) => {
-      this.periodicity = event.detail.periodicity;
+    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD, ((event: CustomEvent<DashboardChangeTimePeriodEvent>) => {
+      this.timePeriod = event.detail.timePeriod;
       this.render();
     }) as EventListener);
 
@@ -77,7 +78,10 @@ class SectionView extends BaseView {
     const catalogChannel: string = UserContext.get('catalogScope');
 
     ReactDOM.render(
-      <DataQualityInsightsDashboard periodicity={this.periodicity} catalogLocale={catalogLocale} catalogChannel={catalogChannel} familyCode={this.familyCode} categoryCode={this.categoryCode}/>,
+      <div>
+        <DataQualityOverviewHelper/>
+        <DataQualityInsightsDashboard timePeriod={this.timePeriod} catalogLocale={catalogLocale} catalogChannel={catalogChannel} familyCode={this.familyCode} categoryCode={this.categoryCode}/>
+      </div>,
       this.el
     );
     return this;

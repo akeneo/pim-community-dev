@@ -9,6 +9,7 @@ akeneo_assetmanager:
            manage_permission: Manage asset family permissions
            manage_transformation: Manage asset family transformations
            manage_product_link_rule: Manage asset family product link rules
+           execute_product_link_rule: Execute product link rules on all assets of an asset family
        asset:
            create: Create an asset
            edit: Edit the assets

@@ -1,6 +1,10 @@
+import * as React from 'react';
 import styled from 'styled-components';
-import {Button} from 'akeneoassetmanager/application/component/app/button';
+import {Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import {AssetFamily} from 'akeneoassetmanager/application/component/app/illustration/asset-family';
+import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
+import Key from 'akeneoassetmanager/tools/key';
 
 export const Modal = styled.div`
   display: flex;
@@ -50,3 +54,46 @@ export const SubTitle = styled.div`
 export const Header = styled.div`
   position: relative;
 `;
+
+type ConfirmModalProps = {
+  titleContent: string;
+  content: string;
+  cancelButtonText: string;
+  confirmButtonText: string;
+  onCancel: () => void;
+  onConfirm: () => void;
+};
+
+export const ConfirmModal = ({
+  titleContent,
+  content,
+  cancelButtonText,
+  confirmButtonText,
+  onCancel,
+  onConfirm,
+}: ConfirmModalProps) => {
+  useShortcut(Key.Escape, onCancel);
+
+  return (
+    <Modal>
+      <div className="AknFullPage modal-body">
+        <div className="AknFullPage-content AknFullPage-content--withIllustration">
+          <div>
+            <AssetFamily className="AknFullPage-image" />
+          </div>
+          <div>
+            <div className="AknFullPage-titleContainer">
+              <div className="AknFullPage-title">{titleContent}</div>
+              <div className="AknFullPage-description">{content}</div>
+            </div>
+            <ButtonContainer>
+              <Button color="grey" onClick={onCancel}>{cancelButtonText}</Button>
+              <Button color="blue" onClick={onConfirm}>{confirmButtonText}</Button>
+            </ButtonContainer>
+          </div>
+        </div>
+      </div>
+      <div className="AknFullPage-cancel cancel" onClick={onCancel}/>
+    </Modal>
+  )
+};

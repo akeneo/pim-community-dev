@@ -11,6 +11,7 @@ const normalizedDescription = {
   value_per_locale: true,
   value_per_channel: false,
   is_required: true,
+  is_read_only: true,
   max_length: 0,
   is_textarea: false,
   is_rich_text_editor: false,

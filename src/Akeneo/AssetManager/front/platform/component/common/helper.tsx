@@ -9,7 +9,6 @@ export const HelperSection = styled.div`
   margin-bottom: 20px;
   width: 100%;
   line-height: 25px;
-  margin-top: 20px;
 `;
 
 export const HelperSeparator = styled.div`

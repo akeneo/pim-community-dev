@@ -42,7 +42,6 @@ Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFamilyC
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyShouldHaveNoAsset: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyShouldNotBeLinkedToAnyProductAttribute: { groups: [other_constraints] }
-        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyShouldNotBeLinkedToAnyAssetFamilyAttribute: { groups: [other_constraints] }
 
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
@@ -92,14 +91,6 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValu
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileTargetValueCommand:
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaFileValueCommand: ~
-
-Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetValueCommand:
-    constraints:
-        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetValueCommand: ~
-
-Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCollectionValueCommand:
-    constraints:
-        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetCollectionValueCommand: ~
 
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionValueCommand:
     constraints:

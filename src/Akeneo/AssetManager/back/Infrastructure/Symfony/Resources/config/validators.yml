@@ -68,13 +68,6 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.should_not_be_linked_any_product_attribute' }
 
-    akeneo_assetmanager.validator.asset_family.should_not_be_linked_any_asset_family_attribute:
-        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyShouldNotBeLinkedToAnyAssetFamilyAttributeValidator
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_is_linked_to_at_least_one_asset_family_attribute'
-        tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.should_not_be_linked_any_asset_family_attribute' }
-
     akeneo_assetmanager.validator.asset_family.there_should_be_less_asset_family_than_limit:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessAssetFamilyThanLimitValidator
         arguments:
@@ -123,20 +116,6 @@ services:
             - '@validator'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_asset_value_commands' }
-
-    akeneo_assetmanager.infrastructure.validation.asset.edit_asset_value_command_validator:
-        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetValueCommandValidator
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_exists'
-        tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_asset_value_command' }
-
-    akeneo_assetmanager.infrastructure.validation.asset.edit_asset_collection_value_command_validator:
-        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetCollectionValueCommandValidator
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_existing_asset_codes'
-        tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_asset_collection_value_command' }
 
     akeneo_assetmanager.infrastructure.validation.asset.asset_should_exist:
         class: Akeneo\AssetManager\Infrastructure\Validation\Asset\AssetShouldExistValidator

@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
@@ -235,6 +236,7 @@ class GetConnectorAttributeOptionContext implements Context
             LabelCollection::fromArray([ 'fr_FR' => 'Nationalite', 'en_US' => 'Nationality']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
@@ -260,6 +262,7 @@ class GetConnectorAttributeOptionContext implements Context
             AttributeValuePerLocale::fromBoolean($this->singleOptionAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($this->singleOptionAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 'options' => array_map(
                     function (AttributeOption $attributeOption) {
@@ -289,6 +292,7 @@ class GetConnectorAttributeOptionContext implements Context
             LabelCollection::fromArray([ 'fr_FR' => 'Ventes', 'en_US' => 'Sales area']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
@@ -314,6 +318,7 @@ class GetConnectorAttributeOptionContext implements Context
             AttributeValuePerLocale::fromBoolean($this->multiOptionAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($this->multiOptionAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 'options' => array_map(
                     function (AttributeOption $attributeOption) {

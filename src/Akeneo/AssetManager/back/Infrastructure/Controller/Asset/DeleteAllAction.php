@@ -16,6 +16,7 @@ use Akeneo\AssetManager\Application\Asset\DeleteAllAssets\DeleteAllAssetFamilyAs
 use Akeneo\AssetManager\Application\Asset\DeleteAllAssets\DeleteAllAssetFamilyAssetsHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -41,17 +42,21 @@ class DeleteAllAction
     private $canEditAssetFamilyQueryHandler;
     /** @var TokenStorageInterface */
     private $tokenStorage;
+    /** @var AssetIndexerInterface */
+    private $assetIndexer;
 
     public function __construct(
         DeleteAllAssetFamilyAssetsHandler $deleteAllAssetsHandler,
         SecurityFacade $securityFacade,
         CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        AssetIndexerInterface $assetIndexer
     ) {
         $this->deleteAllAssetsHandler = $deleteAllAssetsHandler;
         $this->securityFacade = $securityFacade;
         $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
+        $this->assetIndexer = $assetIndexer;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response
@@ -66,6 +71,8 @@ class DeleteAllAction
         $command = new DeleteAllAssetFamilyAssetsCommand($assetFamilyIdentifier);
 
         ($this->deleteAllAssetsHandler)($command);
+
+        $this->assetIndexer->refresh();
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

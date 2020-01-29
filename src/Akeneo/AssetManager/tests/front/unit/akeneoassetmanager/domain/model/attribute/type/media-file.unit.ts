@@ -13,6 +13,7 @@ const normalizedFrontView = {
   value_per_locale: true,
   value_per_channel: false,
   is_required: true,
+  is_read_only: true,
   max_file_size: null,
   allowed_extensions: [],
 };

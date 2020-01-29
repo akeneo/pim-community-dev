@@ -43,7 +43,7 @@ class LinkAssetHandler
             AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier)
         );
         if (!$assetFamily->getRuleTemplateCollection()->isEmpty()) {
-            $this->productLinkRuleLauncher->launch(
+            $this->productLinkRuleLauncher->launchForAssetFamilyAndAssetCodes(
                 AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier),
                 [AssetCode::fromString($command->assetCode)]
             );

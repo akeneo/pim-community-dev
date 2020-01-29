@@ -1,19 +1,31 @@
 import React, {FunctionComponent} from "react";
-import WidgetsList from "./Attributes/WidgetsList";
-import AttributesContextProvider from "../../../../infrastructure/context-provider/AttributesContextProvider";
-import SpellCheckerPopoverPortal from "./Attributes/SpellCheckerPopoverPortal";
+import WidgetsList from "./Attributes/EditorHighlight/WidgetsList";
+import Popover from "./Attributes/EditorHighlight/Popover";
+import TabContentWithPortalDecorator from "./TabContentWithPortalDecorator";
+import AttributesContextListener from "../../../listener/AttributesContextListener";
+import {ATTRIBUTES_TAB_NAME} from "../../../constant";
+
+export const CONTAINER_ELEMENT_ID = 'attributes-product-tab-content-dqi';
 
 export interface AttributesTabContentProps {}
 
-const AttributesTabContent: FunctionComponent<AttributesTabContentProps> = () => {
+const BaseAttributesTabContent: FunctionComponent<AttributesTabContentProps> = () => {
   return (
     <>
-      <AttributesContextProvider />
+      <AttributesContextListener />
 
       <WidgetsList/>
-      <SpellCheckerPopoverPortal/>
+      <Popover/>
     </>
   );
+};
+
+const AttributesTabContent: FunctionComponent<AttributesTabContentProps> = (props) => {
+  return TabContentWithPortalDecorator(BaseAttributesTabContent)({
+    ...props,
+    containerId: CONTAINER_ELEMENT_ID,
+    tabName: ATTRIBUTES_TAB_NAME
+  });
 };
 
 export default AttributesTabContent;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetCategoryChildrenIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetRanksDistributionFromProductAxisRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
@@ -33,7 +34,7 @@ final class GetRanksDistributionFromProductAxisRatesQuery implements GetRanksDis
         $this->getCategoryChildrenIdsQuery = $getCategoryChildrenIdsQuery;
     }
 
-    public function forWholeCatalog(\DateTimeImmutable $date): array
+    public function forWholeCatalog(\DateTimeImmutable $date): RanksDistributionCollection
     {
         $productAxisRatesQuery = <<<SQL
 SELECT latest_eval.axis_code, latest_eval.product_id, latest_eval.rates
@@ -52,7 +53,7 @@ SQL;
 
         $results = $statement->fetchColumn();
         if (null === $results || false === $results) {
-            return [];
+            return new RanksDistributionCollection([]);
         }
 
         $ranks = json_decode($results, true);
@@ -61,10 +62,10 @@ SQL;
             throw new \RuntimeException('Something went wrong when fetching ranks distribution for the whole catalog');
         }
 
-        return $ranks;
+        return new RanksDistributionCollection($ranks);
     }
 
-    public function byCategory(CategoryCode $categoryCode, \DateTimeImmutable $date): array
+    public function byCategory(CategoryCode $categoryCode, \DateTimeImmutable $date): RanksDistributionCollection
     {
         $productAxisRatesQuery = <<<SQL
 SELECT DISTINCT latest_eval.axis_code, latest_eval.product_id, latest_eval.rates
@@ -97,7 +98,7 @@ SQL;
 
         $results = $statement->fetchColumn();
         if (null === $results || false === $results) {
-            return [];
+            return new RanksDistributionCollection([]);
         }
 
         $ranks = json_decode($results, true);
@@ -105,10 +106,10 @@ SQL;
             throw new \RuntimeException(sprintf('Something went wrong when fetching ranks distribution for the category "%s"', $categoryCode));
         }
 
-        return $ranks;
+        return new RanksDistributionCollection($ranks);
     }
 
-    public function byFamily(FamilyCode $familyCode, \DateTimeImmutable $date): array
+    public function byFamily(FamilyCode $familyCode, \DateTimeImmutable $date): RanksDistributionCollection
     {
         $productAxisRatesQuery = <<<SQL
 SELECT DISTINCT latest_eval.axis_code, latest_eval.product_id, latest_eval.rates
@@ -140,7 +141,7 @@ SQL;
 
         $results = $statement->fetchColumn();
         if (null === $results || false === $results) {
-            return [];
+            return new RanksDistributionCollection([]);
         }
 
         $ranks = json_decode($results, true);
@@ -148,7 +149,7 @@ SQL;
             throw new \RuntimeException(sprintf('Something went wrong when fetching ranks distribution for the family "%s"', $familyCode));
         }
 
-        return $ranks;
+        return new RanksDistributionCollection($ranks);
     }
 
     /**

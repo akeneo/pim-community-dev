@@ -10,6 +10,7 @@ services:
             - '@akeneo_authentication.sso.configuration.repository'
 
     akeneo_authentication.sso.configuration.ui.controller:
+        public: true
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI\Controller'
         arguments:
             - '@validator'

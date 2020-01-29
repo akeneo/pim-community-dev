@@ -20,10 +20,10 @@ use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
@@ -169,6 +169,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Main color', 'fr_FR' => 'Couleur principale']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -199,6 +200,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('200.10'),
@@ -223,33 +225,6 @@ class CreateOrUpdateAttributeContext implements Context
             RuleTemplateCollection::empty()
         );
         $this->assetFamilyRepository->create($country);
-    }
-
-    /**
-     * @Then /^the Country attribute is added to the structure of the Designer asset family in the PIM with the properties coming from the ERP$/
-     */
-    public function theCountryAttributeIsAddedToTheStructureOfTheDesignerAssetFamilyInThePIMWithThePropertiesComingFromTheERP()
-    {
-        $this->webClientHelper->assertJsonFromFile(
-            $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_country_asset_family_attribute_creation.json'
-        );
-
-        $attributeIdentifier = AttributeIdentifier::create('designer', 'country', md5('designer_country'));
-        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
-        $expectedAttribute = AssetAttribute::create(
-            $attributeIdentifier,
-            AssetFamilyIdentifier::fromString('designer'),
-            AttributeCode::fromString('country'),
-            LabelCollection::fromArray(['fr_FR' => 'Pays', 'en_US' => 'Country']),
-            AttributeOrder::fromInteger(2),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AssetFamilyIdentifier::fromString('country')
-        );
-
-        Assert::assertEquals($expectedAttribute, $attribute);
     }
 
     /**
@@ -279,6 +254,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Birth date']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -313,6 +289,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Preview']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
@@ -335,6 +312,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Main color']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -350,6 +328,7 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 'max_length' => 155,
                 'is_textarea' => false,
@@ -385,6 +364,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Main color', 'fr_FR' => 'Couleur principale']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::noLimit(),
@@ -407,6 +387,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('200.10'),
@@ -422,6 +403,7 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 'max_file_size' => 200.10,
                 'allowed_extensions' => ['gif'],
@@ -452,70 +434,12 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::noLimit(),
             AttributeAllowedExtensions::fromList(['gif', 'png']),
             MediaFileMediaType::fromString(MediaFileMediaType::IMAGE)
-        );
-
-        Assert::assertEquals($expectedAttribute, $attribute);
-    }
-
-    /**
-     * @Given /^the Country attribute that is both part of the structure of the Designer asset family in the ERP and in the PIM but with some unsynchronized properties$/
-     */
-    public function theCountryAttributeThatIsBothPartOfTheStructureOfTheDesignerAssetFamilyInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
-    {
-        $attribute = AssetAttribute::create(
-            AttributeIdentifier::create('designer', 'country', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('designer'),
-            AttributeCode::fromString('country'),
-            LabelCollection::fromArray(['en_US' => 'Country']),
-            AttributeOrder::fromInteger(2),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AssetFamilyIdentifier::fromString('country')
-        );
-        $this->attributeRepository->create($attribute);
-
-        $connectorAttribute = new ConnectorAttribute(
-            $attribute->getCode(),
-            LabelCollection::fromArray(['en_US' => 'Country']),
-            'asset',
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeIsRequired::fromBoolean(true),
-            ['asset_type' => 'country']
-        );
-        $this->findConnectorAttribute->save($attribute->getAssetFamilyIdentifier(), $attribute->getCode(), $connectorAttribute);
-
-        $this->requestContract = 'successful_country_asset_family_attribute_update.json';
-    }
-
-    /**
-     * @Then /^the properties of the Country attribute are updated in the PIM with the properties coming from the ERP$/
-     */
-    public function thePropertiesOfTheCountryAttributeAreUpdatedInThePIMWithThePropertiesComingFromTheERP()
-    {
-        $this->webClientHelper->assertJsonFromFile(
-            $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_country_asset_family_attribute_update.json'
-        );
-
-        $attributeIdentifier = AttributeIdentifier::create('designer', 'country', 'fingerprint');
-        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
-        $expectedAttribute = AssetAttribute::create(
-            $attributeIdentifier,
-            AssetFamilyIdentifier::fromString('designer'),
-            AttributeCode::fromString('country'),
-            LabelCollection::fromArray(['fr_FR' => 'Pays', 'en_US' => 'Country']),
-            AttributeOrder::fromInteger(2),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AssetFamilyIdentifier::fromString('country')
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
@@ -533,6 +457,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Birth date']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -545,6 +470,7 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             []
         );
         $this->findConnectorAttribute->save($attribute->getAssetFamilyIdentifier(), $attribute->getCode(), $connectorAttribute);
@@ -572,6 +498,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Birth date', 'fr_FR' => 'Date de naissance']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -591,6 +518,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Preview']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
@@ -606,6 +534,7 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             ['media_type' => 'image']
         );
         $this->findConnectorAttribute->save($attribute->getAssetFamilyIdentifier(), $attribute->getCode(), $connectorAttribute);
@@ -633,6 +562,7 @@ class CreateOrUpdateAttributeContext implements Context
             LabelCollection::fromArray(['en_US' => 'Preview', 'fr_FR' => 'Aperçu']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),

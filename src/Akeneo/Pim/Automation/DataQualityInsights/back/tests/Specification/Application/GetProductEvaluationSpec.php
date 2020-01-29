@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\EvaluateTitleFormatting;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
@@ -21,6 +22,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollecti
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
@@ -36,44 +38,23 @@ use PhpSpec\ObjectBehavior;
 class GetProductEvaluationSpec extends ObjectBehavior
 {
     public function let(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery
+        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetLocalesByChannelQueryInterface $getLocalesByChannelQuery
     ) {
-        $this->beConstructedWith($getLatestCriteriaEvaluationsByProductIdQuery);
-    }
+        $this->beConstructedWith($getLatestCriteriaEvaluationsByProductIdQuery, $getLocalesByChannelQuery);
 
-    public function it_gets_product_evaluation_without_result(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery
-    ) {
-        $productId = new ProductId(1000);
-        $rawEvaluation = new CriterionEvaluationCollection();
-
-        $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
-
-        $this->get($productId)->shouldBeLike([
-            "enrichment" => [],
-            "consistency" => [],
+        $getLocalesByChannelQuery->execute()->willReturn([
+            'ecommerce' => ['en_US', 'fr_FR'],
+            'mobile' => ['en_US']
         ]);
     }
 
-    public function it_gets_complete_product_evaluation(
+    public function it_gets_the_evaluations_of_a_product(
         GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery
     ) {
         $productId = new ProductId(2000);
         $rawEvaluation = $this->generateCompleteEvaluation($productId);
         $expectedEvaluation = $this->generateExpectedCompleteEvaluation();
-
-        $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
-
-        $this->get($productId)->shouldBeLike($expectedEvaluation);
-    }
-
-    /** Evaluation is not applicable for the Consistency Axis */
-    public function it_gets_partial_product_evaluation(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery
-    ) {
-        $productId = new ProductId(3000);
-        $rawEvaluation = $this->generatePartialEvaluation($productId);
-        $expectedEvaluation = $this->generateExpectedPartialEvaluation();
 
         $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
 
@@ -96,41 +77,60 @@ class GetProductEvaluationSpec extends ObjectBehavior
 
     private function generateCompleteEvaluation(ProductId $productId): CriterionEvaluationCollection
     {
-        $channelCode = new ChannelCode('ecommerce');
-        $localeCode = new LocaleCode('en_US');
+        $channelCodeEcommerce = new ChannelCode('ecommerce');
+        $channelCodeMobile = new ChannelCode('mobile');
+        $localeCodeEn = new LocaleCode('en_US');
+        $localeCodeFr = new LocaleCode('fr_FR');
 
         $completenessOfNonRequiredAttributesRates = new CriterionRateCollection();
         $completenessOfNonRequiredAttributesRates
-            ->addRate($channelCode, $localeCode, new Rate(50))
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(50))
         ;
         $completenessOfNonRequiredAttributesData = [
             "attributes" => [
                 "ecommerce" => [
-                    "en_US" => ["meta_title"]
+                    "en_US" => ["title", "meta_title"]
                 ]
             ]
         ];
 
         $completenessOfRequiredAttributesRates = new CriterionRateCollection();
         $completenessOfRequiredAttributesRates
-            ->addRate($channelCode, $localeCode, new Rate(50))
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(100))
         ;
         $completenessOfRequiredAttributesData = [
             "attributes" => [
-                "ecommerce" => [
-                    "en_US" => ["title"]
-                ]
+                "ecommerce" => []
             ]
         ];
 
         $evaluateSpellingRates = new CriterionRateCollection();
         $evaluateSpellingRates
-            ->addRate($channelCode, $localeCode, new Rate(88))
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(88))
+            ->addRate($channelCodeEcommerce, $localeCodeFr, new Rate(68))
+            ->addRate($channelCodeMobile, $localeCodeEn, new Rate(76))
         ;
         $evaluateSpellingData = [
             "attributes" => [
                 "ecommerce" => [
-                    "en_US" => ["description", "short_description"]
+                    "en_US" => ["description"],
+                    "fr_FR" => ["description", "short_description"],
+                ]
+            ]
+        ];
+
+        $evaluateTitleFormattingRates = new CriterionRateCollection();
+        $evaluateTitleFormattingRates
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(85))
+            ->addRate($channelCodeMobile, $localeCodeEn, new Rate(0))
+        ;
+        $evaluateTitleFormattingData = [
+            "attributes" => [
+                "ecommerce" => [
+                    "en_US" => ["title"],
+                ],
+                "mobile" => [
+                    "en_US" => ["title", "meta_title"]
                 ]
             ]
         ];
@@ -158,6 +158,13 @@ class GetProductEvaluationSpec extends ObjectBehavior
                 $evaluateSpellingRates,
                 $evaluateSpellingData
             ))
+            ->add($this->generateCriterionEvaluation(
+                $productId,
+                EvaluateTitleFormatting::CRITERION_CODE,
+                CriterionEvaluationStatus::DONE,
+                $evaluateTitleFormattingRates,
+                $evaluateTitleFormattingData
+            ))
         ;
 
         return $evaluation;
@@ -169,19 +176,17 @@ class GetProductEvaluationSpec extends ObjectBehavior
             "enrichment" => [
                 "ecommerce" => [
                     "en_US" => [
-                        "rate" => "E",
+                        "rate" => "C",
                         "recommendations" => [
                             [
                                 "criterion" => "completeness_of_non_required_attributes",
                                 "attributes" => [
-                                    "meta_title",
+                                    "title", "meta_title",
                                 ]
                             ],
                             [
                                 "criterion" => "completeness_of_required_attributes",
-                                "attributes" => [
-                                    "title",
-                                ]
+                                "attributes" => []
                             ],
                         ],
                         "rates" => [
@@ -192,8 +197,60 @@ class GetProductEvaluationSpec extends ObjectBehavior
                             ],
                             [
                                 "criterion" => "completeness_of_required_attributes",
-                                "rate" => 50,
-                                "letterRate" => "E",
+                                "rate" => 100,
+                                "letterRate" => "A",
+                            ]
+                        ],
+                    ],
+                    "fr_FR" => [
+                        "rate" => null,
+                        "recommendations" => [
+                            [
+                                "criterion" => "completeness_of_non_required_attributes",
+                                "attributes" => []
+                            ],
+                            [
+                                "criterion" => "completeness_of_required_attributes",
+                                "attributes" => []
+                            ],
+                        ],
+                        "rates" => [
+                            [
+                                "criterion" => "completeness_of_non_required_attributes",
+                                "rate" => null,
+                                "letterRate" => null,
+                            ],
+                            [
+                                "criterion" => "completeness_of_required_attributes",
+                                "rate" => null,
+                                "letterRate" => null,
+                            ]
+                        ],
+                    ],
+                ],
+                "mobile" => [
+                    "en_US" => [
+                        "rate" => null,
+                        "recommendations" => [
+                            [
+                                "criterion" => "completeness_of_non_required_attributes",
+                                "attributes" => []
+                            ],
+                            [
+                                "criterion" => "completeness_of_required_attributes",
+                                "attributes" => []
+                            ],
+                        ],
+                        "rates" => [
+                            [
+                                "criterion" => "completeness_of_non_required_attributes",
+                                "rate" => null,
+                                "letterRate" => null,
+                            ],
+                            [
+                                "criterion" => "completeness_of_required_attributes",
+                                "rate" => null,
+                                "letterRate" => null,
                             ]
                         ],
                     ],
@@ -208,7 +265,12 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "criterion" => "consistency_spelling",
                                 "attributes" => [
                                     "description",
-                                    "short_description",
+                                ]
+                            ],
+                            [
+                                "criterion" => "consistency_text_title_formatting",
+                                "attributes" => [
+                                    "title",
                                 ]
                             ],
                         ],
@@ -218,110 +280,72 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "rate" => 88,
                                 "letterRate" => "B",
                             ],
+                            [
+                                "criterion" => "consistency_text_title_formatting",
+                                "rate" => 85,
+                                "letterRate" => "B",
+                            ],
+                        ],
+                    ],
+                    "fr_FR" => [
+                        "rate" => "D",
+                        "recommendations" => [
+                            [
+                                "criterion" => "consistency_spelling",
+                                "attributes" => [
+                                    "description",
+                                    "short_description",
+                                ]
+                            ],
+                            [
+                                "criterion" => "consistency_text_title_formatting",
+                                "attributes" => []
+                            ],
+                        ],
+                        "rates" => [
+                            [
+                                "criterion" => "consistency_spelling",
+                                "rate" => 68,
+                                "letterRate" => "D",
+                            ],
+                            [
+                                "criterion" => "consistency_text_title_formatting",
+                                "rate" => null,
+                                "letterRate" => null,
+                            ],
                         ],
                     ],
                 ],
-            ],
-        ];
-    }
-
-    private function generatePartialEvaluation(ProductId $productId): CriterionEvaluationCollection
-    {
-        $channelCode = new ChannelCode('ecommerce');
-        $localeCode = new LocaleCode('en_US');
-
-        $completenessOfNonRequiredAttributesRates = new CriterionRateCollection();
-        $completenessOfNonRequiredAttributesRates
-            ->addRate($channelCode, $localeCode, new Rate(50))
-        ;
-        $completenessOfNonRequiredAttributesData = [
-            "attributes" => [
-                "ecommerce" => [
-                    "en_US" => ["meta_title"]
-                ]
-            ]
-        ];
-
-        $completenessOfRequiredAttributesRates = new CriterionRateCollection();
-        $completenessOfRequiredAttributesRates
-            ->addRate($channelCode, $localeCode, new Rate(50))
-        ;
-        $completenessOfRequiredAttributesData = [
-            "attributes" => [
-                "ecommerce" => [
-                    "en_US" => ["title"]
-                ]
-            ]
-        ];
-
-        $evaluateSpellingRates = new CriterionRateCollection();
-        $evaluateSpellingData = [];
-
-        $evaluation = new CriterionEvaluationCollection();
-        $evaluation
-            ->add($this->generateCriterionEvaluation(
-                $productId,
-                EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE,
-                CriterionEvaluationStatus::DONE,
-                $completenessOfNonRequiredAttributesRates,
-                $completenessOfNonRequiredAttributesData
-            ))
-            ->add($this->generateCriterionEvaluation(
-                $productId,
-                EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE,
-                CriterionEvaluationStatus::DONE,
-                $completenessOfRequiredAttributesRates,
-                $completenessOfRequiredAttributesData
-            ))
-            ->add($this->generateCriterionEvaluation(
-                $productId,
-                EvaluateSpelling::CRITERION_CODE,
-                CriterionEvaluationStatus::DONE,
-                $evaluateSpellingRates,
-                $evaluateSpellingData
-            ))
-        ;
-
-        return $evaluation;
-    }
-
-    private function generateExpectedPartialEvaluation(): array
-    {
-        return [
-            "enrichment" => [
-                "ecommerce" => [
+                "mobile" => [
                     "en_US" => [
                         "rate" => "E",
                         "recommendations" => [
                             [
-                                "criterion" => "completeness_of_non_required_attributes",
-                                "attributes" => [
-                                    "meta_title",
-                                ]
+                                "criterion" => "consistency_spelling",
+                                "attributes" => []
                             ],
                             [
-                                "criterion" => "completeness_of_required_attributes",
+                                "criterion" => "consistency_text_title_formatting",
                                 "attributes" => [
-                                    "title",
+                                   "title", "meta_title",
                                 ]
                             ],
                         ],
                         "rates" => [
                             [
-                                "criterion" => "completeness_of_non_required_attributes",
-                                "rate" => 50,
-                                "letterRate" => "E",
+                                "criterion" => "consistency_spelling",
+                                "rate" => 76,
+                                "letterRate" => "C",
                             ],
                             [
-                                "criterion" => "completeness_of_required_attributes",
-                                "rate" => 50,
+                                "criterion" => "consistency_text_title_formatting",
+                                "rate" => 0,
                                 "letterRate" => "E",
-                            ]
+                            ],
                         ],
                     ],
                 ],
             ],
-            "consistency" => [],
         ];
     }
 }

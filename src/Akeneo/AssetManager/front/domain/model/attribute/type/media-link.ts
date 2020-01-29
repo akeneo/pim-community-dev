@@ -64,6 +64,7 @@ export class ConcreteMediaLinkAttribute extends ConcreteAttribute implements Med
     valuePerChannel: boolean,
     order: number,
     is_required: boolean,
+    is_read_only: boolean,
     readonly prefix: Prefix,
     readonly suffix: Suffix,
     readonly mediaType: MediaType
@@ -77,7 +78,8 @@ export class ConcreteMediaLinkAttribute extends ConcreteAttribute implements Med
       valuePerLocale,
       valuePerChannel,
       order,
-      is_required
+      is_required,
+      is_read_only
     );
 
     if (!isValidPrefix(prefix)) {
@@ -105,6 +107,7 @@ export class ConcreteMediaLinkAttribute extends ConcreteAttribute implements Med
       normalizedMediaLinkAttribute.value_per_channel,
       normalizedMediaLinkAttribute.order,
       normalizedMediaLinkAttribute.is_required,
+      normalizedMediaLinkAttribute.is_read_only,
       createPrefixFromNormalized(normalizedMediaLinkAttribute.prefix),
       createSuffixFromNormalized(normalizedMediaLinkAttribute.suffix),
       createMediaTypeFromNormalized(normalizedMediaLinkAttribute.media_type)
