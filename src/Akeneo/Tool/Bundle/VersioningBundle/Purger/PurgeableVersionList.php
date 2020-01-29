@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Purger;
 
-class PurgeableVersionList implements \Countable
+final class PurgeableVersionList implements \Countable
 {
     /** @var int[] */
     private $versionIds;
