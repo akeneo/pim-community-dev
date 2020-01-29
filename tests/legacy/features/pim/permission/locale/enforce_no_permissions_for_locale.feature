@@ -44,12 +44,12 @@ Feature: Enforce no permissions for a locale
       | en_GB  | Manager    | view   |
     And I am logged in as "Julia"
     When I edit the "bar" product
-    And I switch the locale to "en_GB"
-    Then the field Name should be read only
     When I switch the locale to "en_US"
     And I change the "Name" to "My custom name"
     And I save the product
     Then the field Name should contain "My custom name"
+    And I switch the locale to "en_GB"
+    Then the field Name should be read only
 
   Scenario: Display only available locales in the product export builder
     Given the following locale accesses:
