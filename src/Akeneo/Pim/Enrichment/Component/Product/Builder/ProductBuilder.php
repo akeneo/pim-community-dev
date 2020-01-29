@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Builder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductEvents;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
@@ -36,13 +35,6 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var string */
     protected $productClass;
 
-    /**
-     * @param AttributeRepositoryInterface $attributeRepository Attribute repository
-     * @param FamilyRepositoryInterface $familyRepository Family repository
-     * @param EventDispatcherInterface $eventDispatcher Event dispatcher
-     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
-     * @param array $classes Model classes
-     */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         FamilyRepositoryInterface $familyRepository,
