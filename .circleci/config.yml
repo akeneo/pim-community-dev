@@ -331,8 +331,8 @@ jobs:
           - run:
               name: Upgrade PIM3 env
               command: |
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 DEPLOY_SHA1=$CIRCLE_SHA1 make create-ci-instance
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 DEPLOY_SHA1=$CIRCLE_SHA1 make deploy
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make create-ci-instance
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy
           - run:
               name: Production tests on upgraded env
               command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make test-prod
@@ -358,7 +358,7 @@ jobs:
           - set_gcloud_config
           - run:
               name: make release
-              command: OLD_IMAGE_TAG=$CIRCLE_SHA1 IMAGE_TAG=v$(date +%Y%m%d%H%M%S) make release
+              command: OLD_IMAGE_TAG=$CIRCLE_SHA1 NEW_IMAGE_TAG=v$(date +%Y%m%d%H%M%S) make release
 
   test_back_missing_structure_migrations:
       machine:
