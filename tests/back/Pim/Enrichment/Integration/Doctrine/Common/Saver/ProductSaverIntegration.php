@@ -401,12 +401,12 @@ class ProductSaverIntegration extends TestCase
             ],
             'a_number_float' => [
                 '<all_channels>' => [
-                    '<all_locales>' => '12.5678',
+                    '<all_locales>' => '12.5678000000111',
                 ],
             ],
             'a_number_float_negative' => [
                 '<all_channels>' => [
-                    '<all_locales>' => '-99.8732',
+                    '<all_locales>' => '-99.8732000000111',
                 ],
             ],
             'a_number_integer' => [
