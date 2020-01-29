@@ -42,10 +42,10 @@ class SelectAttributeOptionsByAttributeCodeQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->attributeBuilder = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute');
-        $this->attributeSaver = $this->getFromTestContainer('pim_catalog.saver.attribute');
-        $this->attributeOptionSaver = $this->getFromTestContainer('pim_catalog.saver.attribute_option');
-        $this->query = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_attributes_options_by_attribute_code');
+        $this->attributeBuilder = $this->get('akeneo_ee_integration_tests.builder.attribute');
+        $this->attributeSaver = $this->get('pim_catalog.saver.attribute');
+        $this->attributeOptionSaver = $this->get('pim_catalog.saver.attribute_option');
+        $this->query = $this->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_attributes_options_by_attribute_code');
     }
 
     public function test_it_finds_attribute_options_for_an_attribute(): void

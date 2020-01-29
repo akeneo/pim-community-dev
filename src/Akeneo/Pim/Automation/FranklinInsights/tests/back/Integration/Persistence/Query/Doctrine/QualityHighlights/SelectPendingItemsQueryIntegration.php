@@ -85,7 +85,7 @@ final class SelectPendingItemsQueryIntegration extends TestCase
 
     private function insertUpdatedAttribute(string $attributeCode, string $lock)
     {
-        $this->getFromTestContainer('database_connection')->executeQuery($this->getInsertSql(), [
+        $this->get('database_connection')->executeQuery($this->getInsertSql(), [
             'entity_type' => PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE,
             'entity_id' => $attributeCode,
             'action' => PendingItemsRepository::ACTION_ENTITY_UPDATED,
@@ -95,7 +95,7 @@ final class SelectPendingItemsQueryIntegration extends TestCase
 
     private function insertDeletedAttribute(string $attributeCode, string $lock)
     {
-        $this->getFromTestContainer('database_connection')->executeQuery($this->getInsertSql(), [
+        $this->get('database_connection')->executeQuery($this->getInsertSql(), [
             'entity_type' => PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE,
             'entity_id' => $attributeCode,
             'action' => PendingItemsRepository::ACTION_ENTITY_DELETED,
@@ -105,7 +105,7 @@ final class SelectPendingItemsQueryIntegration extends TestCase
 
     private function getQuery(): SelectPendingItemsQuery
     {
-        return $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_items');
+        return $this->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_items');
 
     }
 

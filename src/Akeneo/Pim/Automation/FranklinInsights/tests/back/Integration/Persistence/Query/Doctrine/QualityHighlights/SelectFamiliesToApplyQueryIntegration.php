@@ -31,7 +31,7 @@ final class SelectFamiliesToApplyQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->validator = $this->getFromTestContainer('validator');
+        $this->validator = $this->get('validator');
     }
 
     public function test_it_returns_families_to_apply()
@@ -43,7 +43,7 @@ final class SelectFamiliesToApplyQueryIntegration extends TestCase
         $family2Code = $this->createFamily('router', [$attributeCode3], []);
 
         $families = $this
-            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_families_to_apply')
+            ->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_families_to_apply')
             ->execute([$family1Code, $family2Code]);
 
         $expectedFamilies = [
@@ -73,7 +73,7 @@ final class SelectFamiliesToApplyQueryIntegration extends TestCase
 
     private function createAttributeText(string $attributeCode, $labels): string
     {
-        $attribute = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')->build(
+        $attribute = $this->get('akeneo_ee_integration_tests.builder.attribute')->build(
             [
                 'code' => $attributeCode,
                 'type' => AttributeTypes::TEXT,
@@ -82,7 +82,7 @@ final class SelectFamiliesToApplyQueryIntegration extends TestCase
             ]
         );
         $this->validator->validate($attribute);
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
 
         return $attribute->getCode();
     }
@@ -90,7 +90,7 @@ final class SelectFamiliesToApplyQueryIntegration extends TestCase
     private function createFamily(string $familyCode, array $attributeCodes, array $labels): string
     {
         $family = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
+            ->get('akeneo_ee_integration_tests.builder.family')
             ->build([
                 'code' => $familyCode,
                 'attributes' => array_merge(['sku'], $attributeCodes),
@@ -98,7 +98,7 @@ final class SelectFamiliesToApplyQueryIntegration extends TestCase
             ]);
 
         $this->validator->validate($family);
-        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+        $this->get('pim_catalog.saver.family')->save($family);
 
         return $family->getCode();
     }

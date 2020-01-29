@@ -52,13 +52,13 @@ class PendingItemsRepositoryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->attributeBuilder = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute');
-        $this->attributeSaver = $this->getFromTestContainer('pim_catalog.saver.attribute');
-        $this->familyBuilder = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family');
-        $this->familySaver = $this->getFromTestContainer('pim_catalog.saver.family');
-        $this->productBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder');
-        $this->productSaver = $this->getFromTestContainer('pim_catalog.saver.product');
-        $this->validator = $this->getFromTestContainer('validator');
+        $this->attributeBuilder = $this->get('akeneo_ee_integration_tests.builder.attribute');
+        $this->attributeSaver = $this->get('pim_catalog.saver.attribute');
+        $this->familyBuilder = $this->get('akeneo_ee_integration_tests.builder.family');
+        $this->familySaver = $this->get('pim_catalog.saver.family');
+        $this->productBuilder = $this->get('akeneo_integration_tests.catalog.product.builder');
+        $this->productSaver = $this->get('pim_catalog.saver.product');
+        $this->validator = $this->get('validator');
     }
 
     public function test_it_saves_an_updated_attribute_code(): void
