@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.35 (2020-01-29)
+
 - PIM-9067: Fix mass action product edit when all rows are selected
 
 # 3.2.34 (2020-01-21)
