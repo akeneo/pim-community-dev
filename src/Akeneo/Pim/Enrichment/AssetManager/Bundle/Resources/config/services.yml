@@ -25,5 +25,6 @@ services:
         arguments:
             -
                 asset_manager_csv_asset_export: pim-job-instance-csv-asset-export
+                asset_manager_xlsx_asset_export: pim-job-instance-xlsx-asset-export
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }

@@ -17,13 +17,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirect
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
-use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 
-class CsvAssetExport implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
+class XlsxAssetExport implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
 {
     /**
      * {@inheritdoc}
@@ -31,9 +31,8 @@ class CsvAssetExport implements ConstraintCollectionProviderInterface, DefaultVa
     public function getDefaultValues()
     {
         return [
-            'filePath' => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.csv',
-            'delimiter' => ';',
-            'enclosure' => '"',
+            'filePath' => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.xlsx',
+            'linesPerFile' => 10000,
             'withHeader' => true,
             'with_media' => true,
             'user_to_notify' => null,
@@ -54,34 +53,19 @@ class CsvAssetExport implements ConstraintCollectionProviderInterface, DefaultVa
                         new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
                         new Regex(
                             [
-                                'pattern' => '/.\.csv$/',
-                                'message' => 'The extension file must be ".csv"'
+                                'pattern' => '/.\.xlsx$/',
+                                'message' => 'The extension file must be ".xlsx"'
                             ]
                         )
                     ],
-                    'delimiter' => [
+                    'linesPerFile' => [
                         new NotBlank(['groups' => ['Default', 'FileConfiguration']]),
-                        new Choice(
+                        new GreaterThan(
                             [
-                                'strict' => true,
-                                'choices' => [",", ";", "|"],
-                                'message' => 'The value must be one of , or ; or |',
+                                'value' => 1,
                                 'groups' => ['Default', 'FileConfiguration'],
                             ]
                         ),
-                    ],
-                    'enclosure' => [
-                        [
-                            new NotBlank(['groups' => ['Default', 'FileConfiguration']]),
-                            new Choice(
-                                [
-                                    'strict' => true,
-                                    'choices' => ['"', "'"],
-                                    'message' => 'The value must be one of " or \'',
-                                    'groups' => ['Default', 'FileConfiguration'],
-                                ]
-                            ),
-                        ],
                     ],
                     'withHeader' => new Type(
                         [
@@ -106,6 +90,6 @@ class CsvAssetExport implements ConstraintCollectionProviderInterface, DefaultVa
      */
     public function supports(JobInterface $job)
     {
-        return 'asset_manager_csv_asset_export' === $job->getName();
+        return 'asset_manager_xlsx_asset_export' === $job->getName();
     }
 }
