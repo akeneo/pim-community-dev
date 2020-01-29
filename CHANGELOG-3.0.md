@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-- PIM-9065: Change the number decimal precision to 10
+- PIM-9065: Allow more than 4 decimals for an attribute of type "number"
 
 # 3.0.64 (2020-01-21)
 
