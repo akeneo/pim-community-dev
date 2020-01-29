@@ -74,8 +74,8 @@ delete: terraform-delete purge-release-all
 .PHONY: purge-release-all
 purge-release-all: get-kubeconfig
 	helm delete $(PFID) --purge || echo "WARNING: FAILED helm delete --purge $(PFID)"
-	kubectl delete all,pvc --all -n $(PFID) || echo "WARNING: FAILED kubectl delete all,pvc --all -n $(PFID)"
-	kubectl delete ns $(PFID) || echo "WARNING: FAILED kubectl delete ns $(PFID)"
+	@kubectl delete all,pvc --all -n $(PFID) --force --grace-period=0 && echo "kubectl delete all,pvc forced OK" || echo "WARNING: FAILED kubectl delete all,pvc --all -n $(PFID) --force --grace-period=0"
+	@kubectl delete ns $(PFID) && echo "kubectl delete ns OK"  || echo "WARNING: FAILED kubectl delete ns $(PFID)"
 
 .PHONY: terraform-plan-destroy
 terraform-plan-destroy: terraform-init
@@ -107,7 +107,7 @@ endif
 .PHONY: create-tf-files
 create-tf-files: $(INSTANCE_DIR)
 	@echo $(INSTANCE_NAME_PREFIX)
-	@echo "terraform {" >> $(INSTANCE_DIR)/main.tf
+	@echo "terraform {" > $(INSTANCE_DIR)/main.tf
 	@echo "backend \"gcs\" {" >> $(INSTANCE_DIR)/main.tf
 	@echo "bucket  = \"akecld-terraform\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "prefix  = \"saas/$(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)/$(PFID)/\"" >> $(INSTANCE_DIR)/main.tf
@@ -124,7 +124,7 @@ create-tf-files: $(INSTANCE_DIR)
 	@echo "dns_zone                            = \"$(GOOGLE_MANAGED_ZONE_NAME)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "pager_duty_service_key              = \"d55f85282a8e4e16b2c822249ad440bd\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "google_storage_location             = \"eu\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "papo_project_code                   = \"$(PFID)\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "papo_project_code                   = \"NOT_ON_PAPO_$(PFID)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "force_destroy_storage               = true" >> $(INSTANCE_DIR)/main.tf
 	@echo "pim_version                         = \"$(IMAGE_TAG)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "}" >> $(INSTANCE_DIR)/main.tf

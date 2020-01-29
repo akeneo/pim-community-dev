@@ -49,12 +49,16 @@ EOF
 }
 
 resource "null_resource" "helm_release_pim" {
+  triggers {
+        values = "${file("./values.yaml")}"
+        tf-helm-pim-values = "${data.template_file.helm_pim_config.rendered}"
+  }
   depends_on   = ["null_resource.helm_dependencies_update","local_file.helm_pim_config"]
   provisioner "local-exec" {
     interpreter = ["/usr/bin/env", "bash", "-c"]
     #FIXME: For the moment, chart definition is outside from the module - Dev & CI only
     command = <<EOF
-helm upgrade --wait --install --timeout 1500 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
+helm upgrade --wait --install --force --timeout 1500 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
 EOF
   }
 }

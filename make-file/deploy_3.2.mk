@@ -23,7 +23,7 @@ create-tf-files-for-pim3:
 	@echo "dns_zone                            = \"$(GOOGLE_MANAGED_ZONE_NAME)\"" >> ~/3.2/main.tf
 	@echo "pager_duty_service_key              = \"d55f85282a8e4e16b2c822249ad440bd\"" >> ~/3.2/main.tf
 	@echo "google_storage_location             = \"eu\"" >> ~/3.2/main.tf
-	@echo "papo_project_code                   = \"NOT_ON_PAPO\"" >> ~/3.2/main.tf
+	@echo "papo_project_code                   = \"NOT_ON_PAPO_$(PFID)\"" >> ~/3.2/main.tf
 	@echo "force_destroy_storage               = true" >> ~/3.2/main.tf
 	@echo "}" >> ~/3.2/main.tf
 
