@@ -8,7 +8,7 @@ import {updateWidgetContentAnalysis} from "../../../reducer";
 const useFetchTitleSuggestion = (widget: WidgetElement) => {
   const {locale, channel} = useCatalogContext();
   const product = useProduct();
-  const evaluation = useFetchProductAxisRates();
+  const axesRates = useFetchProductAxisRates();
   const {analysis} = widget;
   const dispatchAction = useDispatch();
 
@@ -41,7 +41,7 @@ const useFetchTitleSuggestion = (widget: WidgetElement) => {
         suggestions
       }]));
     })();
-  }, [evaluation]);
+  }, [axesRates]);
 
   return {analysis};
 };
