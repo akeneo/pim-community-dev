@@ -35,7 +35,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function setUp(): void
     {
-        static::bootKernel(['debug' => false]);
+        $this->testKernel = static::bootKernel(['debug' => false]);
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
 
         if (null !== $this->getConfiguration()) {
