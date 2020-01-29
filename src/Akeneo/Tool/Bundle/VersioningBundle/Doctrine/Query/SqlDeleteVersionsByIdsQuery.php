@@ -25,6 +25,10 @@ class SqlDeleteVersionsByIdsQuery
      */
     public function execute(array $versionIds): void
     {
+        if (empty($versionIds)) {
+            return;
+        }
+
         $sql = <<<SQL
 DELETE FROM pim_versioning_version
     WHERE id IN (:version_ids);
