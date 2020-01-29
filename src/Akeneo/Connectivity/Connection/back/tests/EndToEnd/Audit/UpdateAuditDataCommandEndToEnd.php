@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Connection;
+namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Audit;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\CommandTestCase;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
