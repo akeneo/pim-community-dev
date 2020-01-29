@@ -69,3 +69,8 @@ pim_enrich.entity.currency:
   plural_label: Devises
   page_title:
     index: "]-Inf, 1]{{ count }} devise|]1, Inf[{{ count }} devises"
+flash:
+  currency:
+    error:
+      linked_to_channel: Vous ne pouvez pas désactiver une devise liée à un canal
+    updated: Devise mise à jour avec succès

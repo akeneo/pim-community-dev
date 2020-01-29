@@ -4,7 +4,7 @@ import {TranslateContext} from './translate-context';
 
 interface Props {
     id: string;
-    placeholders?: {[name: string]: string | number};
+    placeholders?: {[name: string]: string};
     count?: number;
 }
 

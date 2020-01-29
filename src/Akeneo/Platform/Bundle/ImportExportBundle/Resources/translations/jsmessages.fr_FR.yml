@@ -89,7 +89,7 @@ pim_import_export:
           file_path:
             title: Chemin du fichier
             help: Emplacement du fichier généré sur le serveur
-            help_import: Emplacement du fichier utilisé par l'import sur le serveur
+            help_import: Le répertoire du fichier à utiliser pour l'import
           delimiter:
             title: Délimiteur
             help: Caractère unique utilisé pour délimiter les valeurs
