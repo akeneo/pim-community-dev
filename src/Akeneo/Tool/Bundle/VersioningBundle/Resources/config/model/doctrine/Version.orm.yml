@@ -18,10 +18,6 @@ Akeneo\Tool\Component\Versioning\Model\Version:
         logged_at_idx:
             columns:
                 - logged_at
-        resource_name_logged_at_idx:
-            columns:
-                - resource_name
-                - logged_at
     fields:
         id:
             type: integer

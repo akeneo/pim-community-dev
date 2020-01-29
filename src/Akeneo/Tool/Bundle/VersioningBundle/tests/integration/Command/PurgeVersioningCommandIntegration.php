@@ -32,7 +32,7 @@ class PurgeVersioningCommandIntegration extends TestCase
         $this->givenFamilyVersionsAtLeastAsYoungAs($limitDate, 3, 44, 13);
 
         $versionsCount = $this->getConnection()->executeQuery('SELECT count(*) FROM pim_versioning_version')->fetchColumn();
-        Assert::assertCount(25, $versionsCount);
+        Assert::assertEquals(25, $versionsCount);
 
         $output = $this->runPurgeCommand();
         $result = $output->fetch();
@@ -41,7 +41,7 @@ class PurgeVersioningCommandIntegration extends TestCase
         Assert::assertContains('Successfully deleted 18 versions', $result);
 
         $versionsCount = $this->getConnection()->executeQuery('SELECT count(*) FROM pim_versioning_version')->fetchColumn();
-        Assert::assertCount(7, $versionsCount);
+        Assert::assertEquals(7, $versionsCount);
     }
 
     /**

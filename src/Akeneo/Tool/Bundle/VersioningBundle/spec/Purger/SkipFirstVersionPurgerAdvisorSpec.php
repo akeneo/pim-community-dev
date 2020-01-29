@@ -6,9 +6,7 @@ use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetFirstVersionIdsById
 use Akeneo\Tool\Bundle\VersioningBundle\Purger\PurgeableVersionList;
 use Akeneo\Tool\Bundle\VersioningBundle\Purger\SkipFirstVersionPurgerAdvisor;
 use Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurgerAdvisorInterface;
-use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class SkipFirstVersionPurgerAdvisorSpec extends ObjectBehavior
 {
@@ -29,17 +27,15 @@ class SkipFirstVersionPurgerAdvisorSpec extends ObjectBehavior
 
     function it_supports_versions_types_only()
     {
-        $versionList = new PurgeableVersionList('resource_name', [111,666]);
+        $versionList = new PurgeableVersionList('resource_name', [111, 666]);
         $this->supports($versionList)->shouldReturn(true);
     }
 
     function it_advises_to_not_purge_the_first_version(
-        PurgeableVersionList $versionList,
         SqlGetFirstVersionIdsByIdsQuery $sqlGetFirstVersionIdsByIdsQuery
     ) {
-        $versionList->getVersionIds()->shouldBeCalled()->willReturn([111, 222]);
+        $versionList = new PurgeableVersionList('resource_name', [111, 222]);
         $sqlGetFirstVersionIdsByIdsQuery->execute([111, 222])->shouldBeCalled()->willReturn([111]);
-        $versionList->remove([111])->shouldBeCalled();
-        $this->isPurgeable($versionList)->shouldReturnAnInstanceOf(PurgeableVersionList::class);
+        $this->isPurgeable($versionList)->shouldBeLike(new PurgeableVersionList('resource_name', [222]));
     }
 }

@@ -65,6 +65,10 @@ class SqlGetFirstVersionsByIdsQueryIntegration extends TestCase
 
         $latestVersionIds = $this->getQuery()->execute($versionIds);
 
+        // order of the two arrays is not important
+        sort($expectedIds);
+        sort($latestVersionIds);
+
         $this->assertSame($expectedIds, $latestVersionIds);
     }
 
