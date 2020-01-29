@@ -38,6 +38,9 @@ class Acl implements \Serializable
      */
     private $label;
 
+    /** @var bool */
+    private $isEnabledByDefault = true;
+
     /**
      * Constructor
      *
@@ -66,6 +69,7 @@ class Acl implements \Serializable
         $this->class = isset($data['class']) ? $data['class'] : '';
         $this->group = isset($data['group_name']) ? $data['group_name'] : '';
         $this->label = isset($data['label']) ? $data['label'] : '';
+        $this->isEnabledByDefault = $data['enabled_by_default'] ?? true;
     }
 
     /**
@@ -136,6 +140,11 @@ class Acl implements \Serializable
     public function getLabel()
     {
         return $this->label;
+    }
+
+    public function isEnabledByDefault(): bool
+    {
+        return $this->isEnabledByDefault;
     }
 
     /**

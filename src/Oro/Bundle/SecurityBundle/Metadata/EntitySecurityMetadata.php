@@ -89,6 +89,11 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
         return $this->label;
     }
 
+    public function isEnabledByDefault(): bool
+    {
+        return true;
+    }
+
     /**
      * Gets permissions
      *

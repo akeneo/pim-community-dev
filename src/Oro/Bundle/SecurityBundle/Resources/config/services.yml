@@ -95,7 +95,6 @@ services:
         class: '%oro_security.acl.extension.action.class%'
         arguments:
             - '@oro_security.action_metadata_provider'
-            - !tagged oro_security.acl.action_mask_builder
         tags:
             - { name: oro_security.acl.extension, priority: 10 }
 
@@ -236,13 +235,5 @@ services:
 
     oro_security.acl.mask_builder.default_action_mask_builder:
         class: Oro\Bundle\SecurityBundle\Acl\Extension\ActionMaskBuilder
-        tags:
-            - { name: oro_security.acl.action_mask_builder }
-
-    oro_security.acl.mask_builder.pim_enrich_job_tracker_view_all_jobs:
-        class: Oro\Bundle\SecurityBundle\Acl\Extension\UnactiveAclActionMaskBuilder
-        arguments:
-            - 'action'
-            - 'pim_enrich_job_tracker_view_all_jobs'
         tags:
             - { name: oro_security.acl.action_mask_builder }

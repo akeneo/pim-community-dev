@@ -21,6 +21,9 @@ class ActionMetadata implements AclClassInfo, \Serializable
      */
     protected $label;
 
+    /** @var bool */
+    protected $isEnabledByDefault;
+
     /**
      * Gets an action name
      *
@@ -51,18 +54,17 @@ class ActionMetadata implements AclClassInfo, \Serializable
         return $this->label;
     }
 
-    /**
-     * Constructor
-     *
-     * @param string $name
-     * @param string $group
-     * @param string $label
-     */
-    public function __construct($name = '', $group = '', $label = '')
+    public function isEnabledByDefault(): bool
+    {
+        return $this->isEnabledByDefault;
+    }
+
+    public function __construct($name = '', $group = '', $label = '', bool $isEnabledByDefault = true)
     {
         $this->name = $name;
         $this->group = $group;
         $this->label = $label;
+        $this->isEnabledByDefault = $isEnabledByDefault;
     }
 
     /**
@@ -74,7 +76,8 @@ class ActionMetadata implements AclClassInfo, \Serializable
             [
                 $this->name,
                 $this->group,
-                $this->label
+                $this->label,
+                $this->isEnabledByDefault,
             ]
         );
     }
@@ -87,7 +90,8 @@ class ActionMetadata implements AclClassInfo, \Serializable
         list(
             $this->name,
             $this->group,
-            $this->label
+            $this->label,
+            $this->isEnabledByDefault
             ) = unserialize($serialized);
     }
 }

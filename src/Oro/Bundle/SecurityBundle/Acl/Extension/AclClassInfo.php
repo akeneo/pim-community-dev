@@ -24,4 +24,6 @@ interface AclClassInfo
      * @return string
      */
     public function getLabel();
+
+    public function isEnabledByDefault(): bool;
 }

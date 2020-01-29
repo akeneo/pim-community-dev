@@ -15,13 +15,12 @@ class ActionAclExtension extends AbstractAclExtension
      */
     protected $actionMetadataProvider;
 
-    /** @var iterable */
-    private $maskBuilders;
-
-    public function __construct(ActionMetadataProvider $actionMetadataProvider, iterable $maskBuilders)
+    /**
+     * Constructor
+     */
+    public function __construct(ActionMetadataProvider $actionMetadataProvider)
     {
         $this->actionMetadataProvider = $actionMetadataProvider;
-        $this->maskBuilders = $maskBuilders;
 
         $this->map = [
             'EXECUTE' => [
@@ -95,7 +94,7 @@ class ActionAclExtension extends AbstractAclExtension
      */
     public function getAllMaskBuilders()
     {
-        return $this->maskBuilders;
+        return [new ActionMaskBuilder()];
     }
 
     /**
