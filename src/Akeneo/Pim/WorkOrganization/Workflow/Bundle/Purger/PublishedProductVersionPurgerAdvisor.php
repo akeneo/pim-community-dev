@@ -11,7 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Purger;
 
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\GetPublishedVersionIdsByVersionIdsQuery;
+use Akeneo\Tool\Bundle\VersioningBundle\Purger\PurgeableVersionList;
 use Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurgerAdvisorInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 
@@ -24,28 +25,24 @@ use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
  */
 class PublishedProductVersionPurgerAdvisor implements VersionPurgerAdvisorInterface
 {
-    /** @var PublishedProductRepositoryInterface */
-    protected $publishedProductRepository;
+    /** @var GetPublishedVersionIdsByVersionIdsQuery */
+    protected $getPublishedVersionIdsByVersionIdsQuery;
 
     /** @var string */
     protected $productResourceName;
 
-    /**
-     * @param PublishedProductRepositoryInterface $publishedProductRepository
-     * @param string                              $productResourceName
-     */
-    public function __construct(PublishedProductRepositoryInterface $publishedProductRepository, $productResourceName)
+    public function __construct(GetPublishedVersionIdsByVersionIdsQuery $getPublishedVersionIdsByVersionIdsQuery, $productResourceName)
     {
-        $this->publishedProductRepository = $publishedProductRepository;
+        $this->getPublishedVersionIdsByVersionIdsQuery = $getPublishedVersionIdsByVersionIdsQuery;
         $this->productResourceName = $productResourceName;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supports(VersionInterface $version)
+    public function supports(PurgeableVersionList $versionList): bool
     {
-        return $this->productResourceName === $version->getResourceName();
+        return $this->productResourceName === $versionList->getResourceName();
     }
 
     /**
@@ -56,10 +53,10 @@ class PublishedProductVersionPurgerAdvisor implements VersionPurgerAdvisorInterf
      *
      * @return bool
      */
-    public function isPurgeable(VersionInterface $version, array $options = [])
+    public function isPurgeable(PurgeableVersionList $versionList): PurgeableVersionList
     {
-        return $version->getId() !== $this->publishedProductRepository->getPublishedVersionIdByOriginalProductId(
-            $version->getResourceId()
-        );
+        $publishedVersionIds = $this->getPublishedVersionIdsByVersionIdsQuery->execute($versionList->getVersionIds());
+
+        return $versionList->remove($publishedVersionIds);
     }
 }

@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-9036: Adapt purger advisor to the rework of the purge of the versions
+
 # 3.0.64 (2020-01-21)
 
 # 3.0.63 (2020-01-10)
