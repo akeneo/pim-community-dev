@@ -121,7 +121,7 @@ JSON;
                         [
                             "locale" => null,
                             "scope"  => null,
-                            "data"   => "12.5000000000",
+                            "data"   => "12.5000000000111",
                         ],
                     ],
                     "a_yes_no"                           => [
@@ -173,7 +173,7 @@ JSON;
                         [
                             "locale" => null,
                             "scope"  => null,
-                            "data"   => "12.5000000000",
+                            "data"   => "12.5000000000111",
                         ],
                     ],
                     "a_yes_no"                           => [

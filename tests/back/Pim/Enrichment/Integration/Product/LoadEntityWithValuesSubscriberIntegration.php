@@ -283,10 +283,10 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
                 ['locale' => null, 'scope' => null, 'data' => ['optionA', 'optionB']],
             ],
             'a_number_float'                     => [
-                ['locale' => null, 'scope' => null, 'data' => '12.5678000000'],
+                ['locale' => null, 'scope' => null, 'data' => '12.5678000000111'],
             ],
             'a_number_float_negative'            => [
-                ['locale' => null, 'scope' => null, 'data' => '-99.8732000000'],
+                ['locale' => null, 'scope' => null, 'data' => '-99.8732000000111'],
             ],
             'a_number_integer'                   => [
                 ['locale' => null, 'scope' => null, 'data' => 42]
