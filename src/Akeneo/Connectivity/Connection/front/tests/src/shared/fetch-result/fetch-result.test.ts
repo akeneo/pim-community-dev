@@ -13,7 +13,6 @@ describe('fetchResult', () => {
 
         expect(fetchMock).toBeCalledWith('my_request_uri', {
             credentials: 'include',
-            referrerPolicy: 'same-origin',
         });
         expect(result).toStrictEqual(ok({data: 'My test data.'}));
     });
