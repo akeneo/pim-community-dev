@@ -49,8 +49,7 @@ class ProductBuilder implements ProductBuilderInterface
         EventDispatcherInterface $eventDispatcher,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         array $classes
-    )
-    {
+    ) {
         $this->attributeRepository = $attributeRepository;
         $this->familyRepository = $familyRepository;
         $this->eventDispatcher = $eventDispatcher;
