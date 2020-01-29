@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Connection;
 
+use Akeneo\Connectivity\Connection\back\tests\EndToEnd\CommandTestCase;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Test\Integration\Configuration;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -15,7 +16,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class CreateConnectionCommandEndToEnd extends WebTestCase
+class CreateConnectionCommandEndToEnd extends CommandTestCase
 {
     /** @var Command */
     private $command;
@@ -24,9 +25,7 @@ class CreateConnectionCommandEndToEnd extends WebTestCase
     {
         parent::setUp();
 
-        $kernel = static::createKernel();
-        $application = new Application($kernel);
-        $this->command = $application->find('akeneo:connectivity-connection:create');
+        $this->command = $this->application->find('akeneo:connectivity-connection:create');
     }
 
     public function test_it_creates_a_connection(): void
