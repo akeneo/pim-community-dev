@@ -25,8 +25,9 @@ class KeepLastVersionPurgerAdvisorSpec extends ObjectBehavior
         $this->shouldImplement(VersionPurgerAdvisorInterface::class);
     }
 
-    function it_supports_versions_types_only(PurgeableVersionList $versionList)
+    function it_supports_versions_types_only()
     {
+        $versionList = new PurgeableVersionList('resource_name', [111, 666]);
         $this->supports($versionList)->shouldReturn(true);
     }
 

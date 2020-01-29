@@ -8,6 +8,7 @@ use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\DBAL\Connection;
+use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -30,17 +31,17 @@ class PurgeVersioningCommandIntegration extends TestCase
         $this->givenFamilyVersionsAtLeastAsYoungAs($limitDate, 2, 35, 9);
         $this->givenFamilyVersionsAtLeastAsYoungAs($limitDate, 3, 44, 13);
 
-        $versions = $this->getConnection()->executeQuery('SELECT id, resource_id, version FROM pim_versioning_version')->fetchAll();
-        $this->assertCount(25, $versions);
+        $versionsCount = $this->getConnection()->executeQuery('SELECT count(*) FROM pim_versioning_version')->fetchColumn();
+        Assert::assertCount(25, $versionsCount);
 
         $output = $this->runPurgeCommand();
         $result = $output->fetch();
 
-        $this->assertContains('Start purging versions of Akeneo\Pim\Structure\Component\Model\Family (1/1)', $result);
-        $this->assertContains('Successfully deleted 18 versions', $result);
+        Assert::assertContains(sprintf('Start purging versions of %s (1/1)', Family::class), $result);
+        Assert::assertContains('Successfully deleted 18 versions', $result);
 
-        $versions = $this->getConnection()->executeQuery('SELECT id, resource_id, version FROM pim_versioning_version')->fetchAll();
-        $this->assertCount(7, $versions);
+        $versionsCount = $this->getConnection()->executeQuery('SELECT count(*) FROM pim_versioning_version')->fetchColumn();
+        Assert::assertCount(7, $versionsCount);
     }
 
     /**

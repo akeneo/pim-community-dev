@@ -3,6 +3,7 @@ Akeneo\Tool\Component\Versioning\Model\Version:
     table: pim_versioning_version
     repositoryClass: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
     indexes:
+        # this index is useful to get the last versions for a given entity, without doing row lookup during the purge
         resource_name_resource_id_version_idx:
             columns:
                 - resource_name
@@ -11,6 +12,9 @@ Akeneo\Tool\Component\Versioning\Model\Version:
         pending_idx:
             columns:
                 - pending
+        version_idx:
+            columns:
+                - version
         logged_at_idx:
             columns:
                 - logged_at

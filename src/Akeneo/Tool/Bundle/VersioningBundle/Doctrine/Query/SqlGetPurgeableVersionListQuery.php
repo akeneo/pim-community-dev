@@ -23,6 +23,11 @@ class SqlGetPurgeableVersionListQuery
 
     /**
      * Returns an object PurgeableVersionList at each iteration
+     *
+     * Key set pagination. @see https://use-the-index-luke.com/sql/partial-results/fetch-next-page
+     * This query is doing row lookup to filter on resource name.
+     * As most of the versions are for products, the rows are not filtered by "resource_name" filter most of the time.
+     * It's therefore not a big deal to do row lookup.
      */
     public function youngerThan(string $resourceName, \DateTime $date, int $listSize): iterable
     {
@@ -41,6 +46,14 @@ SQL;
 
     /**
      * Returns an object PurgeableVersionList at each iteration
+     *
+     * Key set pagination. @see https://use-the-index-luke.com/sql/partial-results/fetch-next-page
+     * This query is doing row lookup to filter on resource name.
+     * As most of the versions are for products, the rows are not filtered by "resource_name" filter most of the time.
+     * It's therefore not a big deal to do row lookup.
+     *
+     * Please note that we iterate in the opposite direction by ordering by DESC both columns logged_at and id.
+     * In fact, it's not possible to iterate efficiently in the same direction as for the youngerThan method.
      */
     public function olderThan(string $resourceName, \DateTime $date, int $listSize): iterable
     {
