@@ -26,6 +26,8 @@ use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\IndexAssetEventAggregator;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,6 +75,9 @@ class CreateOrUpdateAssetAction
     /** @var NamingConventionEditAssetCommandFactory */
     private $namingConventionEditAssetCommandFactory;
 
+    /** @var IndexAssetEventAggregator */
+    private $indexAssetEventAggregator;
+
     public function __construct(
         AssetFamilyExistsInterface $assetFamilyExists,
         AssetExistsInterface $assetExists,
@@ -83,7 +88,8 @@ class CreateOrUpdateAssetAction
         AssetValidator $assetStructureValidator,
         ValidatorInterface $assetDataValidator,
         BatchAssetsToLink $batchAssetsToLink,
-        NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory
+        NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
+        EventAggregatorInterface $indexAssetEventAggregator
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
         $this->assetExists = $assetExists;
@@ -95,6 +101,7 @@ class CreateOrUpdateAssetAction
         $this->assetDataValidator = $assetDataValidator;
         $this->batchAssetsToLink = $batchAssetsToLink;
         $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
+        $this->indexAssetEventAggregator = $indexAssetEventAggregator;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier, string $code): Response
@@ -143,6 +150,8 @@ class CreateOrUpdateAssetAction
         } else {
             ($this->editAssetHandler)($editAssetCommand);
         }
+
+        $this->indexAssetEventAggregator->flushEvents();
 
         return $this->createResponse($responseStatusCode, $assetFamilyIdentifier, $assetCode);
     }

@@ -3,14 +3,13 @@ parameters:
 
 services:
     # Subscribers
-    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.index_asset:
-        class: Akeneo\AssetManager\Application\Asset\Subscribers\IndexAssetSubscriber
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator:
+        class: Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\IndexAssetEventAggregator
         arguments:
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
             - '@akeneo_assetmanager.infrastructure.symfony.command.index_by_asset_family_in_background'
         tags:
             - { name: kernel.event_subscriber }
-            - { name: kernel.event_listener, event: kernel.response }
 
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.remove_asset_from_index:
         class: Akeneo\AssetManager\Application\Asset\Subscribers\RemoveAssetFromIndexSubscriber

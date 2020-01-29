@@ -27,6 +27,8 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetListValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\IndexAssetEventAggregator;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -80,6 +82,9 @@ class CreateOrUpdateAssetsAction
     /** @var NamingConventionEditAssetCommandFactory */
     private $namingConventionEditAssetCommandFactory;
 
+    /** @var IndexAssetEventAggregator */
+    private $indexAssetEventAggregator;
+
     /** @var int */
     private $maximumAssetsPerRequest;
 
@@ -96,6 +101,7 @@ class CreateOrUpdateAssetsAction
         AssetListValidator $assetListValidator,
         BatchAssetsToLink $batchAssetsToLink,
         NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
+        EventAggregatorInterface $indexAssetEventAggregator,
         int $maximumAssetsPerRequest
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
@@ -111,6 +117,7 @@ class CreateOrUpdateAssetsAction
         $this->batchAssetsToLink = $batchAssetsToLink;
         $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
         $this->maximumAssetsPerRequest = $maximumAssetsPerRequest;
+        $this->indexAssetEventAggregator = $indexAssetEventAggregator;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response
@@ -163,6 +170,8 @@ class CreateOrUpdateAssetsAction
 
             $responsesData[] = $responseData;
         }
+
+        $this->indexAssetEventAggregator->flushEvents();
 
         return new JsonResponse($responsesData);
     }

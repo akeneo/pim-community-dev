@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Search\Elasticsearch\Asset;
 
-use Akeneo\AssetManager\Application\Asset\Subscribers\IndexAssetSubscriber;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -36,6 +35,7 @@ use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\IndexAssetEventAggregator;
 use Akeneo\AssetManager\Integration\SearchIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -57,7 +57,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
     /** @var AssetIndexerInterface */
     private $assetIndexer;
 
-    /** * @var IndexAssetSubscriber */
+    /** * @var IndexAssetEventAggregator */
     private $indexAssetsEventAggregator;
 
     public function setUp(): void
@@ -65,7 +65,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
         parent::setUp();
 
         $this->assetIndexer = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer');
-        $this->indexAssetsEventAggregator = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.subscriber.index_asset');
+        $this->indexAssetsEventAggregator = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator');
         $this->loadFixtures();
     }
 
@@ -78,7 +78,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
         $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'stark');
 
         $this->assetIndexer->index(AssetIdentifier::fromString(self::STARK_ASSET_IDENTIFIER));
-        $this->indexAssetsEventAggregator->onKernelResponse();
+        $this->indexAssetsEventAggregator->flushEvents();
 
         $this->searchAssetIndexHelper->assertAssetExists('designer', 'stark');
     }

@@ -25,6 +25,8 @@ use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\IndexAssetEventAggregator;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -76,6 +78,9 @@ class CreateAction
     /** @var LinkAssetHandler */
     private $linkAssetHandler;
 
+    /** @var IndexAssetEventAggregator */
+    private $indexAssetEventAggregator;
+
     public function __construct(
         CreateAssetHandler $createAssetHandler,
         EditAssetHandler $editAssetHandler,
@@ -87,7 +92,8 @@ class CreateAction
         SecurityFacade $securityFacade,
         EditAssetCommandFactory $editAssetCommandFactory,
         NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
-        LinkAssetHandler $linkAssetHandler
+        LinkAssetHandler $linkAssetHandler,
+        EventAggregatorInterface $indexAssetEventAggregator
     ) {
         $this->createAssetHandler = $createAssetHandler;
         $this->editAssetHandler = $editAssetHandler;
@@ -100,6 +106,7 @@ class CreateAction
         $this->editAssetCommandFactory = $editAssetCommandFactory;
         $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
         $this->linkAssetHandler = $linkAssetHandler;
+        $this->indexAssetEventAggregator = $indexAssetEventAggregator;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response
@@ -169,6 +176,8 @@ class CreateAction
         }
         ($this->editAssetHandler)($editCommand);
         $this->linkAsset($request);
+
+        $this->indexAssetEventAggregator->flushEvents();
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

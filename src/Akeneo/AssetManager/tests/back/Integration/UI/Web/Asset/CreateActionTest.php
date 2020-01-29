@@ -119,7 +119,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
-        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
         $this->productLinkRuleLauncherSpy->assertHasRunForAsset('brand', 'intel');
     }
 
@@ -148,7 +147,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
-        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator')
+            ->assertAssetEventsFlushed();
         $this->productLinkRuleLauncherSpy->assertHasRunForAsset('brand', 'intel');
     }
 
@@ -205,7 +205,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
-        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator')
+            ->assertAssetEventsFlushed();
         $this->productLinkRuleLauncherSpy->assertHasRunForAsset('brand', 'intel');
     }
 
@@ -456,7 +457,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
-        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator')
+            ->assertAssetEventsFlushed();
         $this->productLinkRuleLauncherSpy->assertHasNotRunForAsset('country', 'intel');
 
         $asset = $this->assetRepository->getByAssetFamilyAndCode(
@@ -553,7 +555,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
-        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator')
+            ->assertAssetEventsFlushed();
     }
 
     /**
