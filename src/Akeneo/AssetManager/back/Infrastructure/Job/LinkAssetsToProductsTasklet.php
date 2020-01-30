@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Application\Asset\LinkAssets\RuleTemplateExecutor;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetCodesByAssetFamilyInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -65,7 +66,12 @@ class LinkAssetsToProductsTasklet implements TaskletInterface
             ;
 
         foreach ($assetCodes as $assetCode) {
-            $this->ruleTemplateExecutor->execute($assetFamilyIdentifier, $assetCode);
+            try {
+                $this->ruleTemplateExecutor->execute($assetFamilyIdentifier, $assetCode);
+            } catch (\InvalidArgumentException $e) {
+                $message = sprintf('The asset could not be linked to products: %s', $e->getMessage());
+                $this->stepExecution->addWarning($message, [], new DataInvalidItem(['asset_code' => (string)$assetCode]));
+            }
         }
     }
 }
