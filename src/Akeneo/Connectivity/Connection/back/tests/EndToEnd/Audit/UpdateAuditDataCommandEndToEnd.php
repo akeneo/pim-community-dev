@@ -68,7 +68,7 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
     {
         $sqlQuery = <<<SQL
 SELECT event_count
-FROM akeneo_pim.akeneo_connectivity_connection_audit
+FROM akeneo_connectivity_connection_audit
 WHERE connection_code = :connection_code
 AND event_type = :event_type
 SQL;
@@ -84,8 +84,8 @@ SQL;
     private function setVersioningAuthor(string $author): void
     {
         $sqlQuery = <<<SQL
-UPDATE `akeneo_pim`.`pim_versioning_version`
-SET `author` = :author
+UPDATE pim_versioning_version
+SET author = :author
 SQL;
 
         $stmt = $this->dbalConnection->prepare($sqlQuery);
