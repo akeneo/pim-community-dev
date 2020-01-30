@@ -419,7 +419,7 @@ workflows:
   version: 2
   pull_request:
       jobs:
-          - wait_for_user_approval:
+          - ready_to_build?:
                 type: approval
                 filters:
                     branches:
@@ -427,7 +427,7 @@ workflows:
                             - master
           - checkout:
                 requires:
-                    - wait_for_user_approval
+                    - ready_to_build?
           - build_dev:
                 requires:
                     - checkout
@@ -503,7 +503,7 @@ workflows:
           - test_back_performance:
                 requires:
                     - build_dev
-          - ready_to_release:
+          - ready_to_release?:
                 type: approval
                 requires:
                     - test_back_static_and_acceptance
@@ -516,7 +516,7 @@ workflows:
                     - test_back_data_migrations
           - release:
                 requires:
-                    - ready_to_release
+                    - ready_to_release?
 
 commands:
   set_gcloud_config:
