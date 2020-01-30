@@ -26,13 +26,9 @@ class InitializeCriteriaEvaluationSpec extends ObjectBehavior
     public function let(
         FeatureFlag $featureFlag,
         Connection $db,
-        CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations,
-        JobInstanceRepository $jobInstanceRepository,
-        TokenStorageInterface $tokenStorage,
-        QueueJobLauncher $queueJobLauncher,
-        SimpleFactoryInterface $userFactory
+        CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations
     ) {
-        $this->beConstructedWith($featureFlag, $db, $createProductsCriteriaEvaluations, $jobInstanceRepository, $tokenStorage, $queueJobLauncher, $userFactory);
+        $this->beConstructedWith($featureFlag, $db, $createProductsCriteriaEvaluations);
     }
 
     public function it_is_initializable()
@@ -50,27 +46,15 @@ class InitializeCriteriaEvaluationSpec extends ObjectBehavior
     public function it_initialize_nothing_if_their_is_no_product(
         $featureFlag,
         $db,
-        $jobInstanceRepository,
-        $tokenStorage,
-        $userFactory,
-        UserInterface $user,
-        JobInstance $jobInstance,
-        TokenInterface $token,
+        $createProductsCriteriaEvaluations,
         ResultStatement $resultStatement
     ) {
         $featureFlag->isEnabled()->willReturn(true);
-        $userFactory->create()->willReturn($user);
-        $user->setUsername(UserInterface::SYSTEM_USER_NAME)->shouldBeCalled();
-        $user->getRoles()->willReturn([]);
-
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
-
-        $jobInstanceRepository->findOneByIdentifier(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME)->willReturn($jobInstance);
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
 
         $db->executeQuery('select count(*) as nb from pim_catalog_product where product_model_id is null')->willReturn($resultStatement);
         $resultStatement->fetch()->willReturn(['nb' => 0]);
+
+        $createProductsCriteriaEvaluations->create(Argument::any())->shouldNotBeCalled();
 
         $this->initialize();
     }
@@ -79,26 +63,10 @@ class InitializeCriteriaEvaluationSpec extends ObjectBehavior
         $featureFlag,
         $db,
         $createProductsCriteriaEvaluations,
-        $jobInstanceRepository,
-        $tokenStorage,
-        $queueJobLauncher,
-        $userFactory,
-        UserInterface $user,
-        JobInstance $jobInstance,
-        TokenInterface $token,
         ResultStatement $countResultStatement,
         ResultStatement $productIdsResultStatement
     ) {
         $featureFlag->isEnabled()->willReturn(true);
-        $userFactory->create()->willReturn($user);
-        $user->setUsername(UserInterface::SYSTEM_USER_NAME)->shouldBeCalled();
-        $user->getRoles()->willReturn([]);
-
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
-
-        $jobInstanceRepository->findOneByIdentifier(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME)->willReturn($jobInstance);
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
 
         $db->executeQuery('select count(*) as nb from pim_catalog_product where product_model_id is null')->willReturn($countResultStatement);
         $countResultStatement->fetch()->willReturn(['nb' => 99]);
@@ -109,7 +77,6 @@ class InitializeCriteriaEvaluationSpec extends ObjectBehavior
         $productIdsResultStatement->fetchAll(FetchMode::COLUMN, 0)->willReturn($ids);
 
         $createProductsCriteriaEvaluations->create(Argument::type('array'))->shouldBeCalled();
-        $queueJobLauncher->launch($jobInstance, $user, [EvaluateProductsCriteriaParameters::PRODUCT_IDS => $ids])->shouldBeCalled();
 
         $this->initialize();
     }
