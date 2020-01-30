@@ -14,9 +14,6 @@ services:
     akeneo.pim.automation.franklin_insights.connector.job_launcher.schedule_fetch_products:
         class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Connector\FakeScheduleFetchProducts'
 
-    Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher\SchedulePushStructureAndProductsToFranklin:
-        class: Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Connector\FakeSchedulePushStructureAndProductsToFranklin
-
     akeneo.pim.automation.franklin_insights.application.structure.service.add_attribute_to_family:
         class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Service\FakeAddAttributeToFamily'
         arguments:

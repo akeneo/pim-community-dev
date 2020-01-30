@@ -105,6 +105,7 @@ services:
             - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
 
     akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_is_active_handler:
+        public: true
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.repository.cache.configuration'
