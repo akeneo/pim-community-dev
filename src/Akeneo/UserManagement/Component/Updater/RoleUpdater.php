@@ -7,7 +7,6 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\Util\ClassUtils;
-use Oro\Bundle\SecurityBundle\Acl\Permission\SingleAclMaskBuilderInterface;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
