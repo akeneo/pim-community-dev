@@ -431,6 +431,9 @@ workflows:
           - build_dev:
                 requires:
                     - checkout
+          - build_prod:
+                requires:
+                    - checkout
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
