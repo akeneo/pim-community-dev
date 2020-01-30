@@ -125,7 +125,7 @@ class IdentifierFilterSpec extends ObjectBehavior
                     'field' => 'values.sku-identifier.<all_channels>.<all_locales>',
                 ],
             ]
-        )->shouldNotBeCalled();
+        )->shouldBeCalled();
 
         $sqb->addMustNot(
             [

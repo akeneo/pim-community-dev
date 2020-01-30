@@ -129,14 +129,12 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
                     ],
                 ];
 
-                // PIM-9071: If we filter on "does not contain", we don't have to check the existence
-                // of the field. Otherwise entities that does not have this field would be excluded from the results.
-//                $filterClause = [
-//                    'exists' => ['field' => $attributePath],
-//                ];
-//                $this->searchQueryBuilder->addFilter($filterClause);
+                $filterClause = [
+                    'exists' => ['field' => $attributePath],
+                ];
 
                 $this->searchQueryBuilder->addMustNot($mustNotClause);
+                $this->searchQueryBuilder->addFilter($filterClause);
                 break;
 
             case Operators::EQUALS:

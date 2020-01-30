@@ -142,7 +142,14 @@ class ProductAndProductModelSearchAggregatorSpec extends ObjectBehavior
                 'value'    => ['master_men'],
                 'context'  => [],
                 'type'     => 'field',
-            ]
+            ],
+            [
+                'field'    => 'bar',
+                'operator' => 'LIKE',
+                'value'    => 'test',
+                'context'  => [],
+                'type'     => 'attribute',
+            ],
         ];
 
         $categoryRepository->findOneBy(["code" => 'master_men'])->shouldBeCalled();
@@ -154,16 +161,18 @@ class ProductAndProductModelSearchAggregatorSpec extends ObjectBehavior
                         'terms' => ['attributes_of_ancestors' => ['foo']],
                     ],
                     [
+                        'terms' => ['attributes_of_ancestors' => ['bar']],
+                    ],
+                    [
                         'terms' => ['categories_of_ancestors' => ['master_men']],
                     ],
                 ],
             ]
         ])->shouldBeCalled();
         $searchQueryBuilder->addFilter([
-            'terms' => ['attributes_for_this_level' => ['foo']],
+            'terms' => ['attributes_for_this_level' => ['foo', 'bar']],
         ])->shouldBeCalled();
 
         $this->aggregateResults($searchQueryBuilder, $rawFilters)->shouldReturn($searchQueryBuilder);
     }
-
 }
