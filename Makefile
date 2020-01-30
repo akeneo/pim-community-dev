@@ -174,6 +174,13 @@ php-image-dev:
 
 .PHONY: php-image-prod
 php-image-prod:
+	IMAGE_TAG=v$(date +%Y%m%d%H%M%S)
+	git config user.name "Michel Tag"
+	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
+	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG}';/g" src/Akeneo/Platform/EnterpriseVersion.php
+	git add src/Akeneo/Platform/EnterpriseVersion.php
+	git commit -m "Prepare SaaS ${IMAGE_TAG}"
+
 	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod .
 
 .PHONY: push-php-image-prod
