@@ -21,4 +21,5 @@ export interface AttributeMapping {
   status: AttributeMappingStatus;
   exactMatchAttributeFromOtherFamily: string | null;
   canCreateAttribute: boolean;
+  suggestions: string[];
 }

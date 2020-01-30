@@ -101,7 +101,8 @@ class EditAttributeMappingController extends BaseController {
       familyMappingStatus: FamilyMappingStatus.EMPTY,
       hasUnsavedChanges: false,
       attributeCount: 0,
-      mappedAttributeCount: 0
+      mappedAttributeCount: 0,
+      suggestedAttributeCount: 0
     };
     form.setData(model);
     form.trigger('pim_enrich:form:entity:post_fetch');

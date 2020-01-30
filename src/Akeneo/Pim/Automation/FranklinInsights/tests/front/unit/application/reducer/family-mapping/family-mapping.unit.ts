@@ -281,6 +281,39 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
     ).toEqual(expectedState);
   });
 
+  it('should handle APPLY_FRANKLIN_SUGGESTION', () => {
+    const initialState: FamilyMappingState = {
+      mapping: defaultMapping,
+      originalMapping: {}
+    };
+    const expectedState: FamilyMappingState = {
+      mapping: {
+        ['connector_type(s)']: {
+          franklinAttribute: {
+            code: 'connector_type(s)',
+            label: '',
+            type: FranklinAttributeType.TEXT,
+            summary: []
+          },
+          attribute: 'connector_type_s_',
+          canCreateAttribute: true,
+          status: AttributeMappingStatus.ACTIVE,
+          exactMatchAttributeFromOtherFamily: null
+        }
+      },
+      originalMapping: {}
+    };
+
+    expect(
+      reducer(initialState, {
+        type: MAP_FRANKLIN_ATTRIBUTE,
+        familyCode: 'headphones',
+        franklinAttributeCode: 'connector_type(s)',
+        attributeCode: 'connector_type_s_'
+      })
+    ).toEqual(expectedState);
+  });
+
   it('should handle UNMAP_FRANKLIN_ATTRIBUTE', () => {
     const initialState: FamilyMappingState = {
       mapping: {

@@ -39,6 +39,10 @@ import {
   SAVED_FAMILY_MAPPING_SUCCESS,
   SavedFamilyMappingSuccessAction
 } from '../../action/family-mapping/save-family-mapping';
+import {
+  APPLY_FRANKLIN_SUGGESTION,
+  ApplyFranklinSuggestionAction
+} from '../../../domain/action/apply-franklin-suggestion';
 
 interface OriginalMappingState {
   [franklinAttributeCode: string]: {
@@ -122,6 +126,18 @@ const mapFranklinAttribute = (state: FamilyMappingState, action: MapFranklinAttr
   }
 });
 
+const applyFranklinSuggestion = (state: FamilyMappingState, action: ApplyFranklinSuggestionAction) => ({
+  ...state,
+  mapping: {
+    ...state.mapping,
+    [action.franklinAttributeCode]: {
+      ...state.mapping[action.franklinAttributeCode],
+      attribute: action.pimAttributeCode,
+      status: AttributeMappingStatus.ACTIVE
+    }
+  }
+});
+
 const unmapFranklinAttribute = (state: FamilyMappingState, action: UnmapFranklinAttributeAction) => ({
   ...state,
   mapping: {
@@ -161,7 +177,8 @@ type Actions =
   | DeactivateFranklinAttributeMappingActions
   | MapFranklinAttributeAction
   | UnmapFranklinAttributeAction
-  | SavedFamilyMappingSuccessAction;
+  | SavedFamilyMappingSuccessAction
+  | ApplyFranklinSuggestionAction;
 
 export default createReducer<FamilyMappingState, Actions>(initialState, {
   [SELECT_FAMILY]: selectFamily,
@@ -172,5 +189,6 @@ export default createReducer<FamilyMappingState, Actions>(initialState, {
   [FRANKLIN_ATTRIBUTE_MAPPING_DEACTIVATED]: franklinAttributeMappingDeactivated,
   [MAP_FRANKLIN_ATTRIBUTE]: mapFranklinAttribute,
   [UNMAP_FRANKLIN_ATTRIBUTE]: unmapFranklinAttribute,
-  [SAVED_FAMILY_MAPPING_SUCCESS]: savedFamilySuccess
+  [SAVED_FAMILY_MAPPING_SUCCESS]: savedFamilySuccess,
+  [APPLY_FRANKLIN_SUGGESTION]: applyFranklinSuggestion
 });
