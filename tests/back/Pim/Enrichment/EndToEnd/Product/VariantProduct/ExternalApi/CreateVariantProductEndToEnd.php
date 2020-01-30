@@ -115,7 +115,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.1111111111111",
+                        "data"   => "12.5000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -198,7 +198,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.1111111111111",
+                        "data"   => "12.5000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -472,7 +472,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.1111111111111",
+                        "data"   => "12.5000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -556,7 +556,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.1111111111111",
+                        "data"   => "12.5000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -647,7 +647,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.1111111111111",
+                        "data"   => "12.5000",
                     ],
                 ],
                 "a_yes_no" => [
@@ -897,7 +897,7 @@ JSON;
                     ['locale' => null, 'scope' => null, 'data' => 'product_variant_creation_product_values'],
                 ],
                 'a_number_float' => [
-                    ['locale' => null, 'scope' => null, 'data' => '12.1111111111111'],
+                    ['locale' => null, 'scope' => null, 'data' => '12.5000'],
                 ],
                 'a_price' => [
                     [
@@ -1004,7 +1004,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "12.1111111111111",
+                        "data"   => "12.5000",
                     ],
                 ],
                 "a_yes_no" => [

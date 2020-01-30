@@ -64,7 +64,7 @@ JSON;
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => '12.5111111',
+                        'data'   => '12.5000',
                     ],
                 ],
             ],
@@ -136,7 +136,7 @@ JSON;
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => '12.5111111',
+                        'data'   => '12.5000',
                     ],
                 ],
             ],
@@ -311,7 +311,7 @@ JSON;
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => '12.5111111',
+                        'data'   => '12.5000',
                     ],
                 ],
             ],
@@ -652,7 +652,7 @@ JSON;
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => '12.5111111',
+                        'data'   => '12.5000',
                     ],
                 ],
             ],

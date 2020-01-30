@@ -388,7 +388,7 @@ JSON;
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false');
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
-        $this->assertSame($standardizedProduct['values']['a_number_float'][0]['data'], '15.1111111111111');
+        $this->assertSame($standardizedProduct['values']['a_number_float'][0]['data'], '15.3000');
 
     }
 
@@ -449,7 +449,7 @@ JSON;
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => '12.1111111111111',
+                        'data'   => '12.5000',
                     ],
                 ],
             ],
@@ -498,7 +498,7 @@ JSON;
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => '12.1111111111111',
+                        'data'   => '12.5000',
                     ],
                 ],
             ],
@@ -548,7 +548,7 @@ JSON;
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => '12.1111111111111',
+                        'data'   => '12.5000',
                     ],
                 ],
             ],
