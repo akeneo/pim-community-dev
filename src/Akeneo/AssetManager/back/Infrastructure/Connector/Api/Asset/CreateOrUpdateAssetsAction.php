@@ -259,7 +259,7 @@ class CreateOrUpdateAssetsAction
             );
         } catch (NamingConventionException $e) {
             if ($e->namingConventionAbortOnError()) {
-                throw new UnprocessableEntityHttpException(
+                throw new \InvalidArgumentException(
                     sprintf('Error during naming convention execution: %s', $e->getMessage())
                 );
             }

@@ -35,6 +35,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -152,15 +154,22 @@ class CreateAction
             $namingConventionEditCommand = $this->getNamingConventionEditCommand($request);
         } catch (NamingConventionException $e) {
             if ($e->namingConventionAbortOnError()) {
+
+                // TODO AST-410
+                // FIXME: This is a dirty fix to display the error messages in the UI, find a better solution
+                // Also, error message should be translated
+                $message = sprintf('Could not execute naming convention: %s', $e->getMessage());
+                $violations = new ConstraintViolationList([
+                    new ConstraintViolation($message, $message, [], null, 'code', null)
+                ]);
                 return new JsonResponse(
-                    $e->getMessage(),
+                    $this->normalizer->normalize($violations, 'internal_api'),
                     Response::HTTP_BAD_REQUEST
                 );
             }
 
             // The naming convention execution can not be executed but we continue.
             $namingConventionEditCommand = null;
-            // @TODO AST-205: How do we display the warning message to the end user?
         }
         $namingConventionEditViolations = $this->validator->validate($namingConventionEditCommand);
         if ($namingConventionEditViolations->count() > 0) {
