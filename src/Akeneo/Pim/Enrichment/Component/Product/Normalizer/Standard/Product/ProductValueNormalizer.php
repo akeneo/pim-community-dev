@@ -137,6 +137,10 @@ class ProductValueNormalizer implements NormalizerInterface
             return (int)$value->getData();
         }
 
+        if (strpos($value->getData(), '.') === false) {
+            return $value->getData();
+        }
+
         $dataWithoutZero = rtrim($value->getData(), '0');
 
         list($integerPart, $decimalPart) = explode(".", $dataWithoutZero);
