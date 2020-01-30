@@ -402,6 +402,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 resultCount={searchResult.matchesCount}
                 hasReachMaximumSelection={false}
                 onSelectionChange={setSelection}
+                assetHasLink={true}
                 onAssetClick={(assetCode: AssetCode) => {
                   if (null !== currentAssetFamilyIdentifier) {
                     redirectToAsset(currentAssetFamilyIdentifier, assetCode);
