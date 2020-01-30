@@ -493,8 +493,7 @@ workflows:
                     - build_dev
           - test_back_phpunit:
                 requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
+                    - build_dev
           - back_behat_legacy:
                 requires:
                     - build_dev
