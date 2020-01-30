@@ -24,18 +24,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Index
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\TitleSuggestionIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\WordIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
-use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
 {
@@ -72,10 +66,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function it_schedule_evaluation_when_a_title_suggestion_is_ignored(
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
-        ProductInterface $product,
-        JobInstance $jobInstance,
-        TokenInterface $token,
-        UserInterface $user
+        ProductInterface $product
     ) {
         $product->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
@@ -143,19 +134,12 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function it_creates_criteria_on_unitary_product_post_save(
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
-        $evaluatePendingCriteria,
-        $consolidateProductAxisRates,
-        $indexProductRates,
         ProductInterface $product
     ) {
         $product->getId()->willReturn(12345);
         $product->isVariant()->willReturn(false);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->create([new ProductId(12345)])->shouldBeCalled();
-
-        $evaluatePendingCriteria->execute([12345])->shouldBeCalled();
-        $consolidateProductAxisRates->consolidate([12345])->shouldBeCalled();
-        $indexProductRates->execute([12345])->shouldBeCalled();
 
         $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => true]));
     }
@@ -163,19 +147,12 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function it_does_nothing_when_one_entity_is_not_a_product_on_post_save_all(
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
-        $evaluatePendingCriteria,
-        $consolidateProductAxisRates,
-        $indexProductRates,
         ProductInterface $product
     ) {
         $product->getId()->willReturn(12345);
         $product->isVariant()->willReturn(false);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->create([new ProductId(12345)])->shouldBeCalled();
-
-        $evaluatePendingCriteria->execute(Argument::any())->shouldNotBeCalled();
-        $consolidateProductAxisRates->consolidate(Argument::any())->shouldNotBeCalled();
-        $indexProductRates->execute(Argument::any())->shouldNotBeCalled();
 
         $this->onPostSaveAll(new GenericEvent([new \stdClass(), $product->getWrappedObject()]));
     }
@@ -216,9 +193,6 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function it_creates_criteria_on_post_save_all(
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
-        $evaluatePendingCriteria,
-        $consolidateProductAxisRates,
-        $indexProductRates,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
@@ -228,10 +202,6 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $product2->isVariant()->willReturn(false);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->create([new ProductId(12345), new ProductId(67891)])->shouldBeCalled();
-
-        $evaluatePendingCriteria->execute(Argument::any())->shouldNotBeCalled();
-        $consolidateProductAxisRates->consolidate(Argument::any())->shouldNotBeCalled();
-        $indexProductRates->execute(Argument::any())->shouldNotBeCalled();
 
         $this->onPostSaveAll(new GenericEvent([$product1->getWrappedObject(), $product2->getWrappedObject()]));
     }
