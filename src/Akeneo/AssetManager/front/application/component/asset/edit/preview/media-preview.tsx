@@ -1,17 +1,15 @@
 import * as React from 'react';
+import __ from 'akeneoassetmanager/tools/translator';
 import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {Context} from 'akeneoassetmanager/domain/model/context';
-import __ from 'akeneoassetmanager/tools/translator';
 import Download from 'akeneoassetmanager/application/component/app/icon/download';
 import Link from 'akeneoassetmanager/application/component/app/icon/link';
 import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
 import {
   copyToClipboard,
   canCopyToClipboard,
-  getMediaPreviewUrl,
   getImageDownloadUrl,
-  getAssetEditUrl,
+  getMediaPreviewUrl,
 } from 'akeneoassetmanager/tools/media-url-generator';
 import {
   NormalizedMediaLinkAttribute,
@@ -19,12 +17,9 @@ import {
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 import {
-  MEDIA_FILE_ATTRIBUTE_TYPE,
   NormalizedMediaFileAttribute,
+  MEDIA_FILE_ATTRIBUTE_TYPE,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-file';
-import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
-import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 import MediaLinkData, {
   getYouTubeWatchUrl,
   getYouTubeEmbedUrl,
@@ -32,11 +27,12 @@ import MediaLinkData, {
   isMediaLinkData,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import MediaFileData, {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
-import {getPreviewModel} from 'akeneoassetmanager/domain/model/asset/list-value';
-import {getLabel} from 'pimui/js/i18n';
+import useImageLoader from 'akeneoassetmanager/application/hooks/image-loader';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {MediaPreviewType, emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import Data, {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
-import useImageLoader from 'akeneoassetmanager/application/hooks/image-loader';
+import {PreviewModel} from 'akeneoassetmanager/domain/model/asset/value';
 
 const Container = styled.div`
   display: flex;
@@ -95,12 +91,6 @@ const YouTubePlayer = styled.iframe`
   border: none;
 `;
 
-type PreviewProps = {
-  asset: ListAsset;
-  context: Context;
-  attributeAsMainMedia: NormalizedAttribute;
-};
-
 const DownloadAction = ({url, fileName}: {url: string; fileName: string}) => (
   <Action href={url} download={fileName} target="_blank">
     <Download />
@@ -110,47 +100,45 @@ const DownloadAction = ({url, fileName}: {url: string; fileName: string}) => (
 
 const CopyUrlAction = ({url}: {url: string}) =>
   /* istanbul ignore next */
-  canCopyToClipboard() ? (
+  url && canCopyToClipboard() ? (
     <Action title={__('pim_asset_manager.asset_preview.copy_url')} onClick={() => copyToClipboard(url)}>
       <Link />
       <Label>{__('pim_asset_manager.asset_preview.copy_url')}</Label>
     </Action>
   ) : null;
 
-const EditAction = ({url}: {url: string}) => (
-  <Action href={url} target="_blank">
-    <Edit />
-    <Label>{__('pim_asset_manager.asset_preview.edit_asset')}</Label>
-  </Action>
-);
+const EditAction = ({url}: {url?: string}) =>
+  url ? (
+    <Action href={url} target="_blank">
+      <Edit />
+      <Label>{__('pim_asset_manager.asset_preview.edit_asset')}</Label>
+    </Action>
+  ) : null;
 
-const getMediaDataPreviewUrl = (data: Data, attributeAsMainMedia: NormalizedAttribute): string =>
-  getMediaPreviewUrl({
+const LazyLoadedImage = React.memo(({src, alt, ...props}: {src: string; alt: string}) => {
+  const loadedSrc = useImageLoader(src);
+
+  return <Image src={loadedSrc} alt={alt} {...props} />;
+});
+
+const getMediaDataPreviewUrl = (data: Data, attributeAsMainMedia?: NormalizedAttribute): string => {
+  if (!attributeAsMainMedia) return getMediaPreviewUrl(emptyMediaPreview());
+
+  return getMediaPreviewUrl({
     type: MediaPreviewType.Preview,
     attributeIdentifier: attributeAsMainMedia.identifier,
     data: getMediaData(data),
   });
+};
 
-const LazyLoadedAssetPreview = React.memo(({src, alt, ...props}: {src: string, alt: string}) => {
-  const loadedSrc = useImageLoader(src);
-
-  return (
-    <Image
-      src={loadedSrc}
-      alt={alt}
-      {...props}
-    />
-  );
-});
-
-const MediaFilePreviewView = ({
+const MediaFilePreview = ({
   label,
   editUrl,
   mediaFileData,
   attribute,
 }: {
   label: string;
-  editUrl: string;
+  editUrl?: string;
   mediaFileData: MediaFileData;
   attribute: NormalizedMediaFileAttribute;
 }) => {
@@ -159,7 +147,11 @@ const MediaFilePreviewView = ({
 
   return (
     <>
-      <LazyLoadedAssetPreview src={getMediaDataPreviewUrl(mediaFileData, attribute)} alt={label} data-role="asset-preview"/>
+      <LazyLoadedImage
+        src={getMediaDataPreviewUrl(mediaFileData, attribute)}
+        alt={label}
+        data-role="media-file-preview"
+      />
       {attribute.media_type === MediaTypes.other && (
         <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
           {__('pim_asset_manager.asset_preview.other_main_media')}
@@ -173,14 +165,14 @@ const MediaFilePreviewView = ({
   );
 };
 
-const MediaLinkPreviewView = ({
+const MediaLinkPreview = ({
   label,
   editUrl,
   mediaLinkData,
   attribute,
 }: {
   label: string;
-  editUrl: string;
+  editUrl?: string;
   mediaLinkData: MediaLinkData;
   attribute: NormalizedMediaLinkAttribute;
 }) => {
@@ -202,7 +194,11 @@ const MediaLinkPreviewView = ({
 
       return (
         <>
-          <LazyLoadedAssetPreview src={getMediaDataPreviewUrl(mediaLinkData, attribute)} alt={label} data-role="asset-preview"/>
+          <LazyLoadedImage
+            src={getMediaDataPreviewUrl(mediaLinkData, attribute)}
+            alt={label}
+            data-role="media-link-preview"
+          />
           {attribute.media_type === MediaTypes.other && (
             <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
               {__('pim_asset_manager.asset_preview.other_main_media')}
@@ -220,42 +216,39 @@ const MediaLinkPreviewView = ({
   }
 };
 
-const PreviewView = ({
-  asset,
-  context,
-  attributeAsMainMedia,
-}: {
-  asset: ListAsset;
-  context: Context;
-  attributeAsMainMedia: NormalizedAttribute;
-}) => {
-  const editUrl = getAssetEditUrl(asset);
-  const label = getLabel(asset.labels, context.locale, asset.code);
-  const previewModel = getPreviewModel(asset.image, context.channel, context.locale);
+export const EmptyMediaPreview = ({label, editUrl}: {label: string; editUrl?: string}) => (
+  <>
+    <LazyLoadedImage src={getMediaDataPreviewUrl(null)} alt={label} data-role="empty-preview" />
+    <Message title={__('pim_asset_manager.asset_preview.empty_main_media')}>
+      {__('pim_asset_manager.asset_preview.empty_main_media')}
+    </Message>
+    <Actions>
+      <EditAction url={editUrl} />
+    </Actions>
+  </>
+);
 
+type MediaPreviewProps = {
+  previewModel: PreviewModel | undefined;
+  label: string;
+  editUrl?: string;
+  attribute: NormalizedAttribute;
+};
+
+const Preview = ({previewModel, label, editUrl, attribute}: MediaPreviewProps) => {
   if (undefined === previewModel || null === previewModel.data)
-    return (
-      <>
-        <LazyLoadedAssetPreview src={getMediaDataPreviewUrl('', attributeAsMainMedia)} alt={label} data-role="asset-preview"/>
-        <Message title={__('pim_asset_manager.asset_preview.empty_main_media')}>
-          {__('pim_asset_manager.asset_preview.empty_main_media')}
-        </Message>
-        <Actions>
-          <EditAction url={editUrl} />
-        </Actions>
-      </>
-    );
+    return <EmptyMediaPreview label={label} editUrl={editUrl} />;
 
-  switch (attributeAsMainMedia.type) {
+  switch (attribute.type) {
     case MEDIA_LINK_ATTRIBUTE_TYPE:
       if (!isMediaLinkData(previewModel.data)) throw Error('The media link data is not valid');
 
       return (
-        <MediaLinkPreviewView
+        <MediaLinkPreview
           label={label}
           editUrl={editUrl}
           mediaLinkData={previewModel.data}
-          attribute={attributeAsMainMedia as NormalizedMediaLinkAttribute}
+          attribute={attribute as NormalizedMediaLinkAttribute}
         />
       );
     case MEDIA_FILE_ATTRIBUTE_TYPE:
@@ -263,21 +256,21 @@ const PreviewView = ({
       if (!isMediaFileData(previewModel.data)) throw Error('The media file data is not valid');
 
       return (
-        <MediaFilePreviewView
+        <MediaFilePreview
           label={label}
           editUrl={editUrl}
           mediaFileData={previewModel.data}
-          attribute={attributeAsMainMedia as NormalizedMediaFileAttribute}
+          attribute={attribute as NormalizedMediaFileAttribute}
         />
       );
   }
 };
 
-export const Preview = ({asset, context, attributeAsMainMedia}: PreviewProps) => (
+export const MediaPreview = ({previewModel, label, editUrl, attribute}: MediaPreviewProps) => (
   <Container>
     <Border>
       <ErrorBoundary errorMessage={__('pim_asset_manager.asset_preview.error')}>
-        <PreviewView asset={asset} context={context} attributeAsMainMedia={attributeAsMainMedia} />
+        <Preview previewModel={previewModel} label={label} editUrl={editUrl} attribute={attribute} />
       </ErrorBoundary>
     </Border>
   </Container>

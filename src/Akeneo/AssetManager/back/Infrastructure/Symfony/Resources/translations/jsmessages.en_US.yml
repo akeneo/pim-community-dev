@@ -252,6 +252,7 @@ pim_asset_manager:
       delete_all: Delete all assets
       back: Back to list
       launch_transformations: Launch transformations
+      fullscreen: Fullscreen
     product:
       attribute: Product attribute
       counter: '{{ totalCount }} result|{{ totalCount }} results'
