@@ -133,6 +133,10 @@ final class EvaluateUppercaseWords implements EvaluateCriterionInterface
             return null;
         }
 
+        if (preg_match('~\p{L}+~u', $productValue) === 0) {
+            return 100;
+        }
+
         return mb_strtoupper($productValue) === $productValue ? 0 : 100;
     }
 

@@ -15,6 +15,7 @@ import createQueue from 'p-limit';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 
 const FILES_QUANTITY_LIMIT = 500;
 
@@ -39,8 +40,8 @@ const uploadAndDispatch = (line: Line, file: File, dispatch: (action: any) => vo
       delete queuedFiles[line.id];
       dispatch(fileUploadSuccessAction(line, file));
     })
-    .catch(() => {
-      dispatch(fileUploadFailureAction(line));
+    .catch((errors: ValidationError[]) => {
+      dispatch(fileUploadFailureAction(line, errors));
     });
 };
 

@@ -24,6 +24,7 @@ class AttributeDetails
     public const CODE = 'code';
     public const LABELS = 'labels';
     public const IS_REQUIRED = 'is_required';
+    public const IS_READ_ONLY = 'is_read_only';
     public const ORDER = 'order';
     public const VALUE_PER_LOCALE = 'value_per_locale';
     public const VALUE_PER_CHANNEL = 'value_per_channel';
@@ -51,6 +52,9 @@ class AttributeDetails
     public $isRequired;
 
     /** @var bool */
+    public $isReadOnly;
+
+    /** @var bool */
     public $valuePerChannel;
 
     /** @var bool */
@@ -68,6 +72,7 @@ class AttributeDetails
             self::CODE => $this->code,
             self::LABELS => $this->labels,
             self::IS_REQUIRED => $this->isRequired,
+            self::IS_READ_ONLY => $this->isReadOnly,
             self::ORDER => $this->order,
             self::VALUE_PER_LOCALE => $this->valuePerLocale,
             self::VALUE_PER_CHANNEL => $this->valuePerChannel,

@@ -219,7 +219,7 @@ export const createBasicValidationError = (message: string): ValidationError => 
   };
 };
 
-export const assetUploadFailed = (lines: Line[], lineToUpdate: Line): Line[] => {
+export const assetUploadFailed = (lines: Line[], lineToUpdate: Line, errors: ValidationError[]): Line[] => {
   return lines.map((line: Line) => {
     if (line.id === lineToUpdate.id) {
       return {
@@ -228,7 +228,7 @@ export const assetUploadFailed = (lines: Line[], lineToUpdate: Line): Line[] => 
         isFileUploadFailed: true,
         errors: {
           ...line.errors,
-          front: [createBasicValidationError('pim_asset_manager.asset.upload.upload_failure')],
+          back: errors || [createBasicValidationError('pim_asset_manager.asset.upload.upload_failure')],
         },
       };
     }

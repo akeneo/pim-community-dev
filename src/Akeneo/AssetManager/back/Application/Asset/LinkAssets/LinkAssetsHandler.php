@@ -48,7 +48,7 @@ class LinkAssetsHandler
             if (!$this->assetFamilyHasProductLinkRule($familyIdentifier)) {
                 continue;
             }
-            $this->productLinkRuleLauncher->launch(
+            $this->productLinkRuleLauncher->launchForAssetFamilyAndAssetCodes(
                 AssetFamilyIdentifier::fromString($familyIdentifier),
                 $assetCodes
             );

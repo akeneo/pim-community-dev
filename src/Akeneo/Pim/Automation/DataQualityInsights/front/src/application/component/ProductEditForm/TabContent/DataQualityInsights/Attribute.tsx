@@ -6,9 +6,7 @@ interface AttributeProps {
 
 const Attribute: FunctionComponent<AttributeProps> = ({children}) => {
   return (
-    <>
-        <span className="AknDataQualityInsightsAttribute">{children}</span>
-    </>
+    <span className="AknDataQualityInsightsAttribute">{children}</span>
   );
 };
 

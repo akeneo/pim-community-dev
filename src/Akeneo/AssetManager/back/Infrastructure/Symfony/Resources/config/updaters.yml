@@ -13,6 +13,11 @@ services:
         tags:
             - { name: akeneo_assetmanager.attribute_updater, priority: 120 }
 
+    akeneo_assetmanager.application.edit_attribute.attribute_updater.is_read_only_updater:
+        class: Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\IsReadOnlyUpdater
+        tags:
+            - { name: akeneo_assetmanager.attribute_updater, priority: 120 }
+
     akeneo_assetmanager.application.edit_attribute.attribute_updater.max_length_updater:
         class: Akeneo\AssetManager\Application\Attribute\EditAttribute\AttributeUpdater\MaxLengthUpdater
         tags:
@@ -99,16 +104,6 @@ services:
 
     akeneo_assetmanager.application.edit_asset.asset_value_updater.empty_updater:
         class: Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\EmptyUpdater
-        tags:
-            - { name: akeneo_assetmanager.asset_value_updater }
-
-    akeneo_assetmanager.application.edit_asset.asset_value_updater.asset_updater:
-        class: Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\AssetUpdater
-        tags:
-            - { name: akeneo_assetmanager.asset_value_updater }
-
-    akeneo_assetmanager.application.edit_asset.asset_value_updater.asset_collection_updater:
-        class: Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\AssetCollectionUpdater
         tags:
             - { name: akeneo_assetmanager.asset_value_updater }
 

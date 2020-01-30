@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Domain\Query\Attribute\Connector;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -35,6 +36,7 @@ class ConnectorAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 'max_characters' => 123,
                 'is_textarea' => false,
@@ -62,6 +64,7 @@ class ConnectorAttributeSpec extends ObjectBehavior
             'value_per_locale' => true,
             'value_per_channel' => true,
             'is_required_for_completeness' => false,
+            'is_read_only' => false,
             'max_characters' => 123,
             'is_textarea' => false,
             'is_rich_text_editor' => false,
@@ -82,6 +85,7 @@ class ConnectorAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(true),
             [
                 "asset_family_code" => 'country'
             ]
@@ -97,6 +101,7 @@ class ConnectorAttributeSpec extends ObjectBehavior
             'value_per_locale' => true,
             'value_per_channel' => true,
             'is_required_for_completeness' => false,
+            'is_read_only' => true,
             'asset_family_code' => 'country'
         ]);
     }

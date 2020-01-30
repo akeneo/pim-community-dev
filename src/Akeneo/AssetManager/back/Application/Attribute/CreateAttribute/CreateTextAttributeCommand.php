@@ -39,6 +39,7 @@ class CreateTextAttributeCommand extends AbstractCreateAttributeCommand
         string $code,
         array $labels,
         bool $isRequired,
+        bool $isReadOnly,
         bool $valuePerChannel,
         bool $valuePerLocale,
         ?int $maxLength,
@@ -52,6 +53,7 @@ class CreateTextAttributeCommand extends AbstractCreateAttributeCommand
             $code,
             $labels,
             $isRequired,
+            $isReadOnly,
             $valuePerChannel,
             $valuePerLocale
         );

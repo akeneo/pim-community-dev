@@ -105,6 +105,44 @@ SQL
         );
         $categories = $stmt->fetch(\PDO::FETCH_ASSOC);
 
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT count(*) AS number_of_attributes
+FROM pim_catalog_attribute
+WHERE attribute_type IN ('pim_catalog_text', 'pim_catalog_textarea');
+SQL
+        );
+        $attributesTextAndTextarea = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT count(*) AS number_of_attributes
+FROM pim_catalog_attribute
+WHERE attribute_type IN ('pim_catalog_text', 'pim_catalog_textarea')
+AND is_scopable=1
+AND is_localizable=0;
+SQL
+        );
+        $attributesTextAndTextareaScopable = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT count(*) AS number_of_attributes
+FROM pim_catalog_attribute
+WHERE attribute_type IN ('pim_catalog_text', 'pim_catalog_textarea')
+AND is_scopable=0
+AND is_localizable=1;
+SQL
+        );
+        $attributesTextAndTextareaLocalizable = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT count(*) AS number_of_attributes
+FROM pim_catalog_attribute
+WHERE attribute_type IN ('pim_catalog_text', 'pim_catalog_textarea')
+AND is_scopable=1
+AND is_localizable=1;
+SQL
+        );
+        $attributesTextAndTextareaScopableAndLocalizable = $stmt->fetch(\PDO::FETCH_ASSOC);
+
         $data = [
             [
                 'feature_activated' => $this->featureFlag->isEnabled() ? 1 : 0,
@@ -112,10 +150,14 @@ SQL
                 'number_of_products' => $products['number_of_products'],
                 'number_of_activated_locales' => count(json_decode($locales['codes'])),
                 'activated_locales' => $locales['codes'],
-                'number_of_activated_channels' => count(json_decode($channels['codes'])),
+                'number_of_channels' => count(json_decode($channels['codes'])),
                 'channels' => $channels['codes'],
                 'number_of_families' => $families['number_of_families'],
-                'number_of_categories' => $categories['number_of_categories']
+                'number_of_categories' => $categories['number_of_categories'],
+                'number_of_attributes_text_and_textarea_total' => $attributesTextAndTextarea['number_of_attributes'],
+                'number_of_attributes_text_and_textarea_scopable' => $attributesTextAndTextareaScopable['number_of_attributes'],
+                'number_of_attributes_text_and_textarea_localizable' => $attributesTextAndTextareaLocalizable['number_of_attributes'],
+                'number_of_attributes_text_and_textarea_scopable_and_localizable' => $attributesTextAndTextareaScopableAndLocalizable['number_of_attributes']
             ]
         ];
 
@@ -182,7 +224,6 @@ SQL
         $this->outputAsTable($io, $stmt->fetchAll());
     }
 
-
     private function outputDictionaryInfo(SymfonyStyle $io)
     {
         $this->outputGeneratedDictionaryInfo($io);
@@ -193,7 +234,7 @@ SQL
     {
         $io->section('Dictionaries generated on shared FS');
 
-        $dictionaries = $this->mountManager->getFilesystem('dataQualityInsightsSharedAdapter')->listContents('/', true);
+        $dictionaries = $this->mountManager->getFilesystem('dataQualityInsightsSharedAdapter')->listContents('/consistency', true);
 
         if (!empty($dictionaries)) {
             $dictionaries = array_filter($dictionaries, function ($path) {
@@ -205,7 +246,7 @@ SQL
 
         $io->section('Dictionaries generated on local FS');
 
-        $dictionaries = $this->aspellDictionaryLocalFilesystem->getFilesystem()->listContents('/', true);
+        $dictionaries = $this->aspellDictionaryLocalFilesystem->getFilesystem()->listContents('/consistency', true);
 
         if (!empty($dictionaries)) {
             $dictionaries = array_filter($dictionaries, function ($path) {
@@ -235,6 +276,7 @@ SQL
     {
         $this->outputAverageTimePerCriterionPerProducts($io, $productIds);
         $this->outputProductAxisRatesPerProducts($io, $productIds);
+        $this->outputLastEvaluationResultPerProducts($io, $productIds);
     }
 
     private function outputAverageTimePerCriterionPerProducts(SymfonyStyle $io, array $productIds)
@@ -256,6 +298,53 @@ SQL;
         $stmt = $this->prepareStatementWithProductIds($query, $productIds);
 
         $this->outputAsTable($io, $stmt->fetchAll());
+    }
+
+    private function outputLastEvaluationResultPerProducts(SymfonyStyle $io, array $productIds)
+    {
+        $io->section('Last evaluation result per products');
+
+        $productIds = array_map(function ($productId) {
+            return intval($productId);
+        },
+            $productIds
+        );
+
+        foreach ($productIds as $productId) {
+            $query = <<<SQL
+SELECT
+       latest_evaluation.product_id,
+       latest_evaluation.criterion_code,
+       latest_evaluation.status,
+       latest_evaluation.result
+FROM pimee_data_quality_insights_criteria_evaluation AS latest_evaluation
+LEFT JOIN pimee_data_quality_insights_criteria_evaluation AS other_evaluation
+    ON other_evaluation.product_id = :product_id
+    AND latest_evaluation.criterion_code = other_evaluation.criterion_code
+    AND latest_evaluation.created_at < other_evaluation.created_at
+WHERE latest_evaluation.product_id = :product_id
+    AND other_evaluation.id IS NULL;
+SQL;
+            $stmt = $this->db->executeQuery(
+                $query,
+                [
+                    'product_id' => $productId
+                ],
+                [
+                    'product_id' => \PDO::PARAM_INT
+                ]
+            );
+
+            $data = $stmt->fetchAll();
+
+            if (empty($data)) {
+                $io->warning('No data found.');
+
+                return;
+            }
+
+            $io->horizontalTable(array_keys(current($data)), $data);
+        }
     }
 
     private function outputProductAxisRatesPerProducts(SymfonyStyle $io, array $productIds)
@@ -280,8 +369,8 @@ SQL;
         $io->section('Average time for each periodic tasks');
 
         $query = <<<SQL
-SELECT 
-    step.step_name AS task_name, 
+SELECT
+    step.step_name AS task_name,
     AVG(TIMESTAMPDIFF(SECOND, step.start_time, step.end_time)) as execution_time_in_second
 FROM akeneo_batch_job_instance AS job
     JOIN akeneo_batch_job_execution AS job_execution ON job_execution.job_instance_id = job.id

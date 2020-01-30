@@ -17,7 +17,7 @@ import {
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
 import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
-import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
+import {setValueData, isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 
 const Container = styled.div`
@@ -114,23 +114,27 @@ const View = ({
         disabled={!canEditData}
         readOnly={!canEditData}
       />
-      {MediaTypes.youtube !== value.attribute.media_type && (
-        <ActionLink href={mediaDownloadUrl} target="_blank" title={__('pim_asset_manager.media_link.download')}>
-          <DownloadIcon
-            color={akeneoTheme.color.grey100}
-            size={20}
-            title={__('pim_asset_manager.media_link.download')}
-          />
-        </ActionLink>
+      {!isValueEmpty(value) && (
+        <>
+          {MediaTypes.youtube !== value.attribute.media_type && (
+            <ActionLink href={mediaDownloadUrl} target="_blank" title={__('pim_asset_manager.media_link.download')}>
+              <DownloadIcon
+                color={akeneoTheme.color.grey100}
+                size={20}
+                title={__('pim_asset_manager.media_link.download')}
+              />
+            </ActionLink>
+          )}
+          <ActionButton
+            title={__('pim_asset_manager.media_link.copy')}
+            onClick={() => {
+              copyToClipboard(mediaDownloadUrl);
+            }}
+          >
+            <LinkIcon color={akeneoTheme.color.grey100} size={20} title={__('pim_asset_manager.media_link.copy')} />
+          </ActionButton>
+        </>
       )}
-      <ActionButton
-        title={__('pim_asset_manager.media_link.copy')}
-        onClick={() => {
-          copyToClipboard(mediaDownloadUrl);
-        }}
-      >
-        <LinkIcon color={akeneoTheme.color.grey100} size={20} title={__('pim_asset_manager.media_link.copy')} />
-      </ActionButton>
     </Container>
   );
 };

@@ -1,18 +1,30 @@
-import {uploadFile} from 'akeneoassetmanager/application/asset-upload/utils/file';
+import {uploadFile, shouldCreateThumbnailFromFile} from 'akeneoassetmanager/application/asset-upload/utils/file';
+import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
+import {createFakeAssetFamily, createFakeLine} from '../tools';
 
 jest.mock('akeneoassetmanager/infrastructure/uploader/image', () => ({
   upload: jest.fn().mockImplementation((file, updateProgress) => {
-    if (undefined !== file && file.file === 'invalid_data') {
-      throw Error('an error occured');
-    }
-    setTimeout(() => updateProgress(0.5), 10);
-    setTimeout(() => updateProgress(1), 30);
+    updateProgress(0);
+    updateProgress(1);
 
     return new Promise(resolve => {
-      setTimeout(() => resolve({originalFilename: 'nice'}), 50);
+      resolve({
+        originalFilename: file.name,
+        filePath: '/public/' + file.name,
+      });
     });
   }),
 }));
+
+const createFakeLineFromFilename = (filename: string) => {
+  const valuePerLocale = false;
+  const valuePerChannel = false;
+  const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
+  const channels: Channel[] = [];
+  const locales: Locale[] = [];
+
+  return createFakeLine(filename, assetFamily, channels, locales);
+};
 
 describe('akeneoassetmanager/application/asset-upload/utils/file.ts -> uploadFile', () => {
   test('I cannot upload an undefined file', async () => {
@@ -21,22 +33,64 @@ describe('akeneoassetmanager/application/asset-upload/utils/file.ts -> uploadFil
     expect(uploadedFile).toBe(null);
   });
 
-  test('I can upload a file an follow the progress', async () => {
-    let progress = 0;
-    const uploadedFile = await uploadFile({file: 'data'}, {code: '12'}, (line, currentProgress) => {
-      progress = currentProgress;
-    });
+  test('I can upload a file and follow the progress', async () => {
+    const line = createFakeLineFromFilename('foo.png');
+    const file = new File(['foo'], 'foo.png', {type: 'image/png'});
+    const handleProgress = jest.fn();
 
-    expect(progress).toBe(1);
-    expect(uploadedFile).toEqual({originalFilename: 'nice'});
+    const uploadedFile = await uploadFile(file, line, handleProgress);
+
+    expect(handleProgress).toHaveBeenCalledWith(line, 0);
+    expect(handleProgress).toHaveBeenCalledWith(line, 1);
+
+    expect(uploadedFile).toEqual({
+      originalFilename: 'foo.png',
+      filePath: '/public/foo.png',
+    });
+  });
+
+  test('I get an error if the upload is refused', async () => {
+    imageUploader.upload.mockImplementationOnce(() => Promise.reject());
+
+    const handleCatch = jest.fn();
+
+    const line = createFakeLineFromFilename('foo.png');
+    const file = new File(['foo'], 'foo.png', {type: 'image/png'});
+    const handleProgress = jest.fn();
+
+    await uploadFile(file, line, handleProgress).catch(handleCatch);
+
+    expect(handleCatch).toHaveBeenCalled();
   });
 
   test('I get an error if the upload failed', async () => {
-    let errorCaught = false;
-    await uploadFile({file: 'invalid_data'}, {code: '12'}, (line, currentProgress) => {}).catch(error => {
-      errorCaught = true;
+    imageUploader.upload.mockImplementationOnce(() => {
+      throw new Error();
     });
 
-    expect(errorCaught).toBe(true);
+    const handleCatch = jest.fn();
+
+    const line = createFakeLineFromFilename('foo.png');
+    const file = new File(['foo'], 'foo.png', {type: 'image/png'});
+    const handleProgress = jest.fn();
+
+    await uploadFile(file, line, handleProgress).catch(handleCatch);
+
+    expect(handleCatch).toHaveBeenCalled();
+  });
+});
+
+describe('akeneoassetmanager/application/asset-upload/utils/file.ts -> shouldCreateThumbnailFromFile', () => {
+  test('I allow creation of thumbnail for images', () => {
+    expect(shouldCreateThumbnailFromFile(new File(['foo'], 'foo.png', {type: 'image/png'}))).toEqual(true);
+    expect(shouldCreateThumbnailFromFile(new File(['foo'], 'foo.jpg', {type: 'image/jpeg'}))).toEqual(true);
+  });
+
+  test('I disallow creation of thumbnail for svg', () => {
+    expect(shouldCreateThumbnailFromFile(new File(['foo'], 'foo.svg', {type: 'image/svg+xml'}))).toEqual(false);
+  });
+
+  test('I disallow creation of thumbnail for other mimetypes', () => {
+    expect(shouldCreateThumbnailFromFile(new File(['foo'], 'foo.pdf', {type: 'application/pdf'}))).toEqual(false);
   });
 });

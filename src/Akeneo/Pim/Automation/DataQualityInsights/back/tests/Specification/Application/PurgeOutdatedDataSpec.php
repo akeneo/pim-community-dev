@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\PurgeOutdatedData;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -36,7 +36,7 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
     ) {
         $purgeDate = new \DateTimeImmutable('2020-01-08');
 
-        $dashboardRatesProjectionRepository->removeRates(Periodicity::daily(), Argument::that(function ($date) use ($purgeDate) {
+        $dashboardRatesProjectionRepository->removeRates(TimePeriod::daily(), Argument::that(function ($date) use ($purgeDate) {
             $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
@@ -49,12 +49,12 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
     ) {
         $purgeDate = new \DateTimeImmutable('2019-12-29');
 
-        $dashboardRatesProjectionRepository->removeRates(Periodicity::daily(), Argument::that(function ($date) use ($purgeDate) {
+        $dashboardRatesProjectionRepository->removeRates(TimePeriod::daily(), Argument::that(function ($date) use ($purgeDate) {
             $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
 
-        $dashboardRatesProjectionRepository->removeRates(Periodicity::weekly(), Argument::that(function ($date) use ($purgeDate) {
+        $dashboardRatesProjectionRepository->removeRates(TimePeriod::weekly(), Argument::that(function ($date) use ($purgeDate) {
             $purgeDate = $purgeDate->modify(sprintf('-%d WEEK', PurgeOutdatedData::RETENTION_WEEKS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
@@ -67,12 +67,12 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
     ) {
         $purgeDate = new \DateTimeImmutable('2019-10-31');
 
-        $dashboardRatesProjectionRepository->removeRates(Periodicity::daily(), Argument::that(function ($date) use ($purgeDate) {
+        $dashboardRatesProjectionRepository->removeRates(TimePeriod::daily(), Argument::that(function ($date) use ($purgeDate) {
             $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
 
-        $dashboardRatesProjectionRepository->removeRates(Periodicity::monthly(), Argument::that(function ($date) use ($purgeDate) {
+        $dashboardRatesProjectionRepository->removeRates(TimePeriod::monthly(), Argument::that(function ($date) use ($purgeDate) {
             $purgeDate = $purgeDate->modify(sprintf('-%d MONTH', PurgeOutdatedData::RETENTION_MONTHS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
@@ -85,17 +85,17 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
     ) {
         $purgeDate = new \DateTimeImmutable('2019-12-31');
 
-        $dashboardRatesProjectionRepository->removeRates(Periodicity::daily(), Argument::that(function ($date) use ($purgeDate) {
+        $dashboardRatesProjectionRepository->removeRates(TimePeriod::daily(), Argument::that(function ($date) use ($purgeDate) {
             $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
 
-        $dashboardRatesProjectionRepository->removeRates(Periodicity::monthly(), Argument::that(function ($date) use ($purgeDate) {
+        $dashboardRatesProjectionRepository->removeRates(TimePeriod::monthly(), Argument::that(function ($date) use ($purgeDate) {
             $purgeDate = $purgeDate->modify(sprintf('-%d MONTH', PurgeOutdatedData::RETENTION_MONTHS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
 
-        $dashboardRatesProjectionRepository->removeRates(Periodicity::yearly(), Argument::that(function ($date) use ($purgeDate) {
+        $dashboardRatesProjectionRepository->removeRates(TimePeriod::yearly(), Argument::that(function ($date) use ($purgeDate) {
             $purgeDate = $purgeDate->modify(sprintf('-%d YEAR', PurgeOutdatedData::RETENTION_YEARS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();

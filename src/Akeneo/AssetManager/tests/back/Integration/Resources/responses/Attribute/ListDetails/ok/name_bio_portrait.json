@@ -19,6 +19,7 @@
                     "fr_FR": "Nom"
                 },
                 "is_required": false,
+                "is_read_only": false,
                 "order": 0,
                 "value_per_locale": true,
                 "value_per_channel": false,
@@ -38,6 +39,7 @@
                     "fr_FR": "Biographie"
                 },
                 "is_required": false,
+                "is_read_only": false,
                 "order": 1,
                 "value_per_locale": true,
                 "value_per_channel": false,
@@ -57,6 +59,7 @@
                     "fr_FR": "Image"
                 },
                 "is_required": false,
+                "is_read_only": false,
                 "order": 2,
                 "value_per_locale": true,
                 "value_per_channel": false,

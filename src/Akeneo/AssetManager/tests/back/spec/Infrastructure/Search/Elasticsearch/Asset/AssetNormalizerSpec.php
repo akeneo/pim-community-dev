@@ -79,7 +79,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $findValueKeysByAttributeType
             ->find(
                 AssetFamilyIdentifier::fromString($stark->assetFamilyIdentifier),
-                ['option', 'option_collection', 'asset', 'asset_collection']
+                ['option', 'option_collection']
             )
             ->willReturn([$stark->assetFamilyIdentifier]);
 

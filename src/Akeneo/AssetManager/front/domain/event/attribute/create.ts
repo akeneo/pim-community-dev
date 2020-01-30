@@ -16,10 +16,6 @@ export const attributeCreationTypeUpdated = (attributeType: string) => {
   return {type: 'ATTRIBUTE_CREATION_TYPE_UPDATED', attribute_type: attributeType};
 };
 
-export const attributeCreationAssetTypeUpdated = (assetType: string) => {
-  return {type: 'ATTRIBUTE_CREATION_ASSET_TYPE_UPDATED', asset_type: assetType};
-};
-
 export const attributeCreationValuePerLocaleUpdated = (valuePerLocale: boolean) => {
   return {type: 'ATTRIBUTE_CREATION_VALUE_PER_LOCALE_UPDATED', value_per_locale: valuePerLocale};
 };

@@ -14,6 +14,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
@@ -242,6 +243,7 @@ SQL;
             LabelCollection::fromArray(['en_US' => 'Tags']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -482,6 +484,7 @@ SQL;
             LabelCollection::fromArray(['en_US' => 'Link atmosphere']),
             AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
@@ -497,6 +500,7 @@ SQL;
             LabelCollection::fromArray(['en_US' => 'Tags']),
             AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -603,6 +607,7 @@ SQL;
             LabelCollection::fromArray(['en_US' => 'PDF Link']),
             AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
@@ -618,6 +623,7 @@ SQL;
             LabelCollection::fromArray(['en_US' => 'Year of publication']),
             AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeDecimalsAllowed::fromBoolean(false),
@@ -715,6 +721,7 @@ SQL;
             LabelCollection::fromArray(['en_US' => 'Youtube']),
             AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),
@@ -762,6 +769,7 @@ SQL;
             LabelCollection::fromArray(['en_US' => 'Zoom image', 'fr_FR' => 'Zoom sur image']),
             AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::noLimit(),
@@ -844,6 +852,7 @@ SQL;
             LabelCollection::fromArray(['en_US' => 'Document']),
             AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::noLimit(),

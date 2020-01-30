@@ -44,7 +44,11 @@ export default (
       value.attribute.code
     );
 
-    const canEditData = value.attribute.value_per_locale ? rights.asset.edit && rights.locale.edit : rights.asset.edit;
+    const canEditAsset = rights.asset.edit;
+    const canEditAttribute = !value.attribute.is_read_only;
+    const canEditLocale = value.attribute.value_per_locale ? rights.locale.edit : true;
+    const canEditData = canEditAsset && canEditAttribute && canEditLocale;
+
     return (
       <div
         key={attributeIdentifierStringValue(value.attribute.identifier)}

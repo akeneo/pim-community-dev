@@ -6,6 +6,7 @@ use Akeneo\AssetManager\Application\Attribute\EditAttributeOption\EditAttributeO
 use Akeneo\AssetManager\Application\Attribute\EditAttributeOption\EditAttributeOptionHandler;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
@@ -57,6 +58,7 @@ class EditAttributeOptionHandlerSpec extends ObjectBehavior
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
@@ -74,6 +76,7 @@ class EditAttributeOptionHandlerSpec extends ObjectBehavior
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );

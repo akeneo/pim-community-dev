@@ -7,8 +7,8 @@ Feature: Delete an attribute linked to an asset family
   Scenario: Delete a text attribute linked to an asset family
     Given a valid asset family
     And the following text attributes:
-      | entity_identifier | code | labels                                    | required | order | value_per_channel | value_per_locale | max_length |
-      | designer          | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true     | 2     | true              | false            | 44         |
+      | entity_identifier | code | labels                                    | required | read_only | order | value_per_channel | value_per_locale | max_length |
+      | designer          | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true     | false     | 2     | true              | false            | 44         |
     When the user deletes the attribute "name" linked to the asset family "designer"
     Then there is no attribute "name" for the asset family "designer"
 

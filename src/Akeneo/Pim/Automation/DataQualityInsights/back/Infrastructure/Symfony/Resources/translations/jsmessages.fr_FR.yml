@@ -1,0 +1,57 @@
+akeneo_data_quality_insights:
+  title: Qualité des données
+  dqi_dashboard:
+    menu: Qualité des données
+    title: Vue d’ensemble de la qualité des données
+    no_data_title: Désolé, nous n'avons pas encore assez de données pour afficher l'aperçu de la qualité des données.
+    no_data_subtitle: Merci de revenir plus tard.
+    periodicity:
+      label: Périodicité
+      daily: Quotidien
+      weekly: Hebdomadaire
+      monthly: Mensuel
+    legend:
+      excellent: Excellent
+      good: Bon
+      average: Correct
+      below_average: Inférieur à la moyenne
+      to_improve: A améliorer
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: Attributs requis manquants
+      completeness_of_non_required_attributes:
+        recommendation: Attributs non-requis manquants
+      consistency_textarea_uppercase_words:
+        recommendation: Attributs contenant trop de majuscules
+      consistency_textarea_lowercase_words:
+        recommendation: Attributs contenant trop de minuscules
+      consistency_text_title_formatting:
+        recommendation: Attribut dont le format peut être amélioré
+      consistency_spelling:
+        recommendation: Attributs contenant des fautes d'orthographe
+    axis:
+      enrichment:
+        title: Enrichissement
+        attributes_link: Tous les attributs manquants
+        success: Tous les attributs sont renseignés. Félicitations !
+      consistency:
+        title: Cohérence
+        attributes_link: Tous les attributs améliorables
+        success: Le contenu est cohérent. Félicitations !
+    messages:
+      error:
+        no_evaluation_for_axis: La note n'a pas pu être calculée. Veuillez réessayer plus tard.
+      success:
+        criterion: Aucun
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: Tous les attributs manquants
+      all_improvable_attributes: Tous les attributs améliorables
+    spellcheck_popover:
+      title: Corrections
+      original_text_title: Original
+      suggestions_title: Propositions
+      ignore_all_suggestions_button_label: Ignorer
+pim_title:
+  akeneo_data_quality_insights_dashboard: Qualité des données

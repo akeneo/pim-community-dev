@@ -6,6 +6,7 @@ namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
@@ -32,6 +33,7 @@ class OptionAttributeSpec extends ObjectBehavior
             LabelCollection::fromArray(['fr_FR' => 'Couleur', 'en_US' => 'Color']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true)
         ]);
@@ -51,6 +53,7 @@ class OptionAttributeSpec extends ObjectBehavior
                 'labels'                      => ['fr_FR' => 'Couleur', 'en_US' => 'Color'],
                 'order'                       => 0,
                 'is_required'                 => true,
+                'is_read_only'                => false,
                 'value_per_channel'           => true,
                 'value_per_locale'            => true,
                 'type'                        => 'option',
@@ -75,6 +78,7 @@ class OptionAttributeSpec extends ObjectBehavior
             'labels'                      => ['fr_FR' => 'Couleur', 'en_US' => 'Color'],
             'order'                       => 0,
             'is_required'                 => true,
+            'is_read_only'                => false,
             'value_per_channel'           => true,
             'value_per_locale'            => true,
             'type'                        => 'option',

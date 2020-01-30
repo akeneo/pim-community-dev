@@ -35,8 +35,10 @@ class ProductLinkRuleLauncher implements ProductLinkRuleLauncherInterface
         $this->publishJobToQueue = $publishJobToQueue;
     }
 
-    public function launch(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): void
-    {
+    public function launchForAssetFamilyAndAssetCodes(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        array $assetCodes
+    ): void {
         Assert::allIsInstanceOf($assetCodes, AssetCode::class);
 
         $config = [
@@ -47,5 +49,12 @@ class ProductLinkRuleLauncher implements ProductLinkRuleLauncherInterface
         ];
 
         $this->publishJobToQueue->publish('asset_manager_link_assets_to_products', $config);
+    }
+
+    public function launchForAllAssetFamilyAssets(AssetFamilyIdentifier $assetFamilyIdentifier): void
+    {
+        $this->publishJobToQueue->publish('asset_manager_link_assets_to_products', [
+            'asset_family_identifier' => (string) $assetFamilyIdentifier,
+        ]);
     }
 }

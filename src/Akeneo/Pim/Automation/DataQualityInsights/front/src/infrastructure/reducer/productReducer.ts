@@ -1,9 +1,7 @@
 import {Action, ActionCreator, Reducer} from "redux";
 import {Product} from '../../domain';
 
-export interface ProductState extends Product {
-
-}
+export interface ProductState extends Product {}
 
 interface ProductAction extends Action {
   payload: {

@@ -59,6 +59,9 @@ class MediaLinkAttributeValidator implements AttributeValidatorInterface
                 'is_required_for_completeness' => [
                     'type' => ['boolean'],
                 ],
+                'is_read_only' => [
+                    'type' => [ 'boolean'],
+                ],
                 'media_type' => [
                     'type' => ['string'],
                 ],

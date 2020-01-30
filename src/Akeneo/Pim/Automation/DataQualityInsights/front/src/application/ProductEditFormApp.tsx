@@ -1,12 +1,12 @@
 import React, {FunctionComponent} from 'react';
 import {Provider} from "react-redux";
 import {productEditFormStore} from "../infrastructure/store";
-import {CatalogContextProvider, PageContextProvider, ProductContextProvider} from "../infrastructure/context-provider";
+import {CatalogContextListener, PageContextListener, ProductContextListener} from "./listener";
 import {Product} from "../domain";
 import {
-  AttributesTabContentPortal,
+  AttributesTabContent,
   AxisRatesOverviewPortal,
-  DataQualityInsightsTabContentPortal
+  DataQualityInsightsTabContent,
 } from "./component/ProductEditForm";
 
 interface ProductEditFormAppProps {
@@ -18,12 +18,12 @@ interface ProductEditFormAppProps {
 const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product, catalogChannel, catalogLocale}) => {
   return (
     <Provider store={productEditFormStore}>
-      <CatalogContextProvider catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
-      <PageContextProvider />
-      <ProductContextProvider product={product}/>
+      <CatalogContextListener catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
+      <PageContextListener />
+      <ProductContextListener product={product}/>
 
-      <AttributesTabContentPortal/>
-      <DataQualityInsightsTabContentPortal />
+      <AttributesTabContent/>
+      <DataQualityInsightsTabContent />
       <AxisRatesOverviewPortal />
     </Provider>
   );

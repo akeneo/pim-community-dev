@@ -42,6 +42,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
     valuePerLocale: boolean,
     order: number,
     is_required: boolean,
+    is_read_only: boolean,
     readonly options: Option[]
   ) {
     super(
@@ -49,11 +50,12 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
       assetFamilyIdentifier,
       code,
       labelCollection,
-      'option_collection',
+      OPTION_COLLECTION_ATTRIBUTE_TYPE,
       valuePerLocale,
       valuePerChannel,
       order,
-      is_required
+      is_required,
+      is_read_only
     );
 
     Object.freeze(this);
@@ -69,6 +71,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
       normalizedOptionCollectionAttribute.value_per_locale,
       normalizedOptionCollectionAttribute.order,
       normalizedOptionCollectionAttribute.is_required,
+      normalizedOptionCollectionAttribute.is_read_only,
       normalizedOptionCollectionAttribute.options.map(createOptionFromNormalized)
     );
   }
@@ -76,7 +79,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
   public normalize(): NormalizedOptionCollectionAttribute {
     return {
       ...super.normalize(),
-      type: 'option_collection',
+      type: OPTION_COLLECTION_ATTRIBUTE_TYPE,
       options: this.options,
     };
   }
@@ -91,6 +94,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
       this.valuePerLocale,
       this.order,
       this.isRequired,
+      this.isReadOnly,
       options
     );
   }

@@ -66,9 +66,11 @@ class TitleFormattingToken
 
         $composerJsonContent = json_decode(file_get_contents($composerJsonFile), true);
 
-        if (empty($repositories = $composerJsonContent['repositories'])) {
+        if (!array_key_exists('repositories', $composerJsonContent) || empty($composerJsonContent['repositories'])) {
             return $akeneoVcs;
         }
+
+        $repositories = $composerJsonContent['repositories'];
 
         $akeneoVcs = array_filter(
             $repositories,

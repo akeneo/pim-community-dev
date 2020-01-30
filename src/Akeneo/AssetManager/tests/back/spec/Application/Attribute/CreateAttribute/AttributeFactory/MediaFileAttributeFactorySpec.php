@@ -28,6 +28,7 @@ class MediaFileAttributeFactorySpec extends ObjectBehavior
                 false,
                 false,
                 false,
+                false,
                 null,
                 [],
                 MediaType::IMAGE
@@ -38,6 +39,7 @@ class MediaFileAttributeFactorySpec extends ObjectBehavior
                 'designer',
                 'color',
                 [],
+                false,
                 false,
                 false,
                 false,
@@ -61,6 +63,7 @@ class MediaFileAttributeFactorySpec extends ObjectBehavior
             true,
             false,
             false,
+            false,
             '30.0',
             ['pdf', 'png'],
             MediaType::IMAGE
@@ -77,6 +80,7 @@ class MediaFileAttributeFactorySpec extends ObjectBehavior
             'labels'                    => ['fr_FR' => 'Nom'],
             'order'                     => 0,
             'is_required'               => true,
+            'is_read_only'              => false,
             'value_per_channel'         => false,
             'value_per_locale'          => false,
             'type'                      => 'media_file',
@@ -97,6 +101,7 @@ class MediaFileAttributeFactorySpec extends ObjectBehavior
             true,
             false,
             false,
+            false,
             null,
             ['pdf', 'png'],
             MediaType::IMAGE
@@ -113,6 +118,7 @@ class MediaFileAttributeFactorySpec extends ObjectBehavior
             'labels'                      => ['fr_FR' => 'Nom'],
             'order'                       => 0,
             'is_required'                 => true,
+            'is_read_only'                => false,
             'value_per_channel'           => false,
             'value_per_locale'            => false,
             'type'                        => 'media_file',
@@ -133,6 +139,7 @@ class MediaFileAttributeFactorySpec extends ObjectBehavior
             true,
             false,
             false,
+            false,
             null,
             AttributeAllowedExtensions::ALL_ALLOWED,
             MediaType::IMAGE
@@ -149,6 +156,7 @@ class MediaFileAttributeFactorySpec extends ObjectBehavior
             'labels'                      => ['fr_FR' => 'Nom'],
             'order'                       => 0,
             'is_required'                 => true,
+            'is_read_only'                => false,
             'value_per_channel'           => false,
             'value_per_locale'            => false,
             'type'                        => 'media_file',

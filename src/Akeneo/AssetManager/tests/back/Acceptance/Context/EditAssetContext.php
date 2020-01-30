@@ -30,8 +30,6 @@ use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetCollectionData;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
@@ -42,12 +40,11 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
@@ -102,9 +99,6 @@ final class EditAssetContext implements Context
     private const TEXT_ATTRIBUTE_IDENTIFIER = 'name_designer_fingerprint';
     private const MEDIA_FILE_ATTRIBUTE_CODE = 'primary_picture';
     private const MEDIA_FILE_ATTRIBUTE_IDENTIFIER = 'primary_picture_designer_fingerprint';
-    private const ASSET_TYPE = 'brand';
-    private const ASSET_ATTRIBUTE_CODE = 'brand_linked';
-    private const ASSET_ATTRIBUTE_IDENTIFIER = 'brand_linked_designer_fingerprint';
     private const OPTION_ATTRIBUTE_CODE = 'favorite_color';
     private const OPTION_ATTRIBUTE_IDENTIFIER = 'favorite_color_designer_fingerprint';
     private const OPTION_COLLECTION_ATTRIBUTE_CODE = 'favorite_drinks';
@@ -231,6 +225,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -322,6 +317,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::noLimit(),
@@ -349,6 +345,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::noLimit(),
@@ -561,6 +558,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(3),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger($maxLength),
@@ -589,6 +587,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -618,6 +617,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -671,6 +671,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -745,6 +746,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(255),
@@ -834,6 +836,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -1000,6 +1003,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -1068,6 +1072,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -1137,6 +1142,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(255),
@@ -1650,6 +1656,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('0.015'),
@@ -1756,6 +1763,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('150.110'),
@@ -2036,322 +2044,6 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^an asset family with an asset attribute$/
-     */
-    public function anAssetFamilyWithAAssetAttribute()
-    {
-        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $this->createAssetFamily(self::ASSET_TYPE);
-        $this->attributeRepository->create(
-            AssetAttribute::create(
-                AttributeIdentifier::create(
-                    self::ASSET_FAMILY_IDENTIFIER,
-                    self::ASSET_ATTRIBUTE_CODE,
-                    self::FINGERPRINT
-                ),
-                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
-                AttributeCode::fromString(self::ASSET_ATTRIBUTE_CODE),
-                LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(2),
-                AttributeIsRequired::fromBoolean(false),
-                AttributeValuePerChannel::fromBoolean(false),
-                AttributeValuePerLocale::fromBoolean(false),
-                AssetFamilyIdentifier::fromString(self::ASSET_TYPE)
-            )
-        );
-    }
-
-    /**
-     * @Given /^an asset belonging to this asset family with a value of "([^"]*)" for the asset attribute$/
-     */
-    public function aAssetBelongingToThisAssetFamilyWithAValueOfForTheAssetAttribute($assetCode)
-    {
-        $this->createAssetLinked($assetCode);
-
-        $assetValue = Value::create(
-            AttributeIdentifier::create(
-                self::ASSET_FAMILY_IDENTIFIER,
-                self::ASSET_ATTRIBUTE_CODE,
-                self::FINGERPRINT
-            ),
-            ChannelReference::noReference(),
-            LocaleReference::noReference(),
-            AssetData::createFromNormalize($assetCode)
-        );
-        $this->createAsset($assetValue);
-    }
-
-    /**
-     * @When /^the user updates the asset attribute of the asset to "([^"]*)"$/
-     */
-    public function theUserUpdatesTheAssetAttributeOfTheAssetTo($assetCode)
-    {
-        $this->createAssetLinked($assetCode);
-
-        $editCommand = $this->editAssetCommandFactory->create([
-            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
-            'code'                       => self::ASSET_CODE,
-            'labels'                     => [],
-            'values'                     => [
-                [
-                    'attribute' => self::ASSET_ATTRIBUTE_IDENTIFIER,
-                    'channel'   => null,
-                    'locale'    => null,
-                    'data'      => $assetCode,
-                ],
-            ],
-        ]);
-        $this->executeCommand($editCommand);
-    }
-
-    /**
-     * @When /^the user tries to update the asset attribute of the asset with an unknown value$/
-     */
-    public function theUserTriesToUpdateTheAssetAttributeOfTheAssetWithAnUnknownValue()
-    {
-        $editCommand = $this->editAssetCommandFactory->create([
-            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
-            'code'                       => self::ASSET_CODE,
-            'labels'                     => [],
-            'values'                     => [
-                [
-                    'attribute' => self::ASSET_ATTRIBUTE_IDENTIFIER,
-                    'channel'   => null,
-                    'locale'    => null,
-                    'data'      => 'unknown_brand',
-                ],
-            ],
-        ]);
-        $this->executeCommand($editCommand);
-    }
-
-    /**
-     * @Then /^the asset should have the asset value "([^"]*)" for this attribute$/
-     */
-    public function theAssetShouldHaveTheAssetValueForThisAttribute($expectedValue)
-    {
-        $asset = $this->assetRepository->getByAssetFamilyAndCode(
-            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
-            AssetCode::fromString(self::ASSET_CODE)
-        );
-        $value = $asset->findValue(
-            ValueKey::create(
-                AttributeIdentifier::create(
-                    self::ASSET_FAMILY_IDENTIFIER,
-                    self::ASSET_ATTRIBUTE_CODE,
-                    self::FINGERPRINT
-                ),
-                ChannelReference::noReference(),
-                LocaleReference::noReference()
-            )
-        );
-
-        Assert::notNull($value);
-        Assert::same($expectedValue, $value->getData()->normalize());
-    }
-
-    /**
-     * @When /^the user updates the asset attribute of the asset to an invalid asset value$/
-     */
-    public function theUserUpdatesTheAssetAttributeOfTheAssetToAnInvalidAssetValue()
-    {
-        try {
-            $editCommand = $this->editAssetCommandFactory->create([
-                'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
-                'code'                       => self::ASSET_CODE,
-                'labels'                     => [],
-                'values'                     => [
-                    [
-                        'attribute' => self::ASSET_ATTRIBUTE_IDENTIFIER,
-                        'channel'   => null,
-                        'locale'    => null,
-                        'data'      => 1,
-                    ],
-                ],
-            ]);
-            $this->executeCommand($editCommand);
-        } catch (\Exception $e) {
-            $this->exceptionContext->setException($e);
-        }
-    }
-
-    /**
-     * @Then /^there should be a validation error on the property asset attribute with message "(.*)"$/
-     */
-    public function thereShouldBeAValidationErrorOnThePropertyAssetAttributeWithMessage($expectedMessage)
-    {
-        $this->violationsContext->assertThereShouldBeViolations(1);
-        $this->violationsContext->assertViolationOnPropertyWithMesssage(
-            'values.' . self::ASSET_ATTRIBUTE_CODE,
-            $expectedMessage
-        );
-    }
-
-    /**
-     * @Given /^an asset belonging to this asset family with values of "([^"]*)" for the asset collection attribute$/
-     */
-    public function aAssetBelongingToThisAssetFamilyWithValuesOfForTheAssetCollectionAttribute($assetCodeCollection)
-    {
-        $assetCodeCollection = explode(',', $assetCodeCollection);
-        foreach ($assetCodeCollection as $assetCode) {
-            $this->createAssetLinked(trim($assetCode));
-        }
-
-        $assetValue = Value::create(
-            AttributeIdentifier::create(
-                self::ASSET_FAMILY_IDENTIFIER,
-                self::ASSET_ATTRIBUTE_CODE,
-                self::FINGERPRINT
-            ),
-            ChannelReference::noReference(),
-            LocaleReference::noReference(),
-            AssetCollectionData::createFromNormalize($assetCodeCollection)
-        );
-        $this->createAsset($assetValue);
-    }
-
-    /**
-     * @When /^the user updates the asset collection attribute of the asset to "([^"]*)"$/
-     */
-    public function theUserUpdatesTheAssetCollectionAttributeOfTheAssetTo($assetCodeCollection)
-    {
-        $assetCodeCollection = explode(',', $assetCodeCollection);
-        foreach ($assetCodeCollection as $assetCode) {
-            $this->createAssetLinked(trim($assetCode));
-        }
-
-        $editCommand = $this->editAssetCommandFactory->create([
-            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
-            'code'                       => self::ASSET_CODE,
-            'labels'                     => [],
-            'values'                     => [
-                [
-                    'attribute' => self::ASSET_ATTRIBUTE_IDENTIFIER,
-                    'channel'   => null,
-                    'locale'    => null,
-                    'data'      => array_map(function ($newData) {
-                        return trim($newData);
-                    }, $assetCodeCollection),
-                ],
-            ],
-        ]);
-        $this->executeCommand($editCommand);
-    }
-
-    /**
-     * @When /^the user updates the asset collection attribute of the asset with unknown values$/
-     */
-    public function theUserUpdatesTheAssetCollectionAttributeOfTheAssetWithUnknownValues()
-    {
-        $editCommand = $this->editAssetCommandFactory->create([
-            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
-            'code'                       => self::ASSET_CODE,
-            'labels'                     => [],
-            'values'                     => [
-                [
-                    'attribute' => self::ASSET_ATTRIBUTE_IDENTIFIER,
-                    'channel'   => null,
-                    'locale'    => null,
-                    'data'      => [
-                        'unknown_brand',
-                        'wrong_brand'
-                    ],
-                ],
-            ],
-        ]);
-        $this->executeCommand($editCommand);
-    }
-
-    /**
-     * @Then /^the asset should have the asset collection value "([^"]*)" for this attribute$/
-     */
-    public function theAssetShouldHaveTheAssetCollectionValueForThisAttribute($expectedValue)
-    {
-        $expectedValue = explode(',', $expectedValue);
-        $asset = $this->assetRepository->getByAssetFamilyAndCode(
-            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
-            AssetCode::fromString(self::ASSET_CODE)
-        );
-        $value = $asset->findValue(
-            ValueKey::create(
-                AttributeIdentifier::create(
-                    self::ASSET_FAMILY_IDENTIFIER,
-                    self::ASSET_ATTRIBUTE_CODE,
-                    self::FINGERPRINT
-                ),
-                ChannelReference::noReference(),
-                LocaleReference::noReference()
-            )
-        );
-
-        Assert::notNull($value);
-        Assert::same($expectedValue, $value->getData()->normalize());
-    }
-
-    private function createAssetLinked($assetCode)
-    {
-        $this->assetRepository->create(
-            Asset::create(
-                AssetIdentifier::create(self::ASSET_TYPE, $assetCode, self::FINGERPRINT),
-                AssetFamilyIdentifier::fromString(self::ASSET_TYPE),
-                AssetCode::fromString($assetCode),
-                ValueCollection::fromValues([])
-            )
-        );
-    }
-
-    /**
-     * @When /^the user updates the asset collection attribute of the asset to an invalid asset value$/
-     */
-    public function theUserUpdatesTheAssetCollectionAttributeOfTheAssetToAnInvalidAssetValue()
-    {
-        try {
-            $editCommand = $this->editAssetCommandFactory->create([
-                'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
-                'code'                       => self::ASSET_CODE,
-                'labels'                     => [],
-                'values'                     => [
-                    [
-                        'attribute' => self::ASSET_ATTRIBUTE_IDENTIFIER,
-                        'channel'   => null,
-                        'locale'    => null,
-                        'data'      => 'invalid_asset_collection',
-                    ],
-                ],
-            ]);
-            $this->executeCommand($editCommand);
-        } catch (\Exception $e) {
-            $this->exceptionContext->setException($e);
-        }
-    }
-
-    /**
-     * @Given /^an asset family with an asset collection attribute$/
-     */
-    public function anAssetFamilyWithAAssetCollectionAttribute()
-    {
-        $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
-        $this->createAssetFamily(self::ASSET_TYPE);
-        $this->attributeRepository->create(
-            AssetCollectionAttribute::create(
-                AttributeIdentifier::create(
-                    self::ASSET_FAMILY_IDENTIFIER,
-                    self::ASSET_ATTRIBUTE_CODE,
-                    self::FINGERPRINT
-                ),
-                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
-                AttributeCode::fromString(self::ASSET_ATTRIBUTE_CODE),
-                LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(2),
-                AttributeIsRequired::fromBoolean(false),
-                AttributeValuePerChannel::fromBoolean(false),
-                AttributeValuePerLocale::fromBoolean(false),
-                AssetFamilyIdentifier::fromString(self::ASSET_TYPE)
-            )
-        );
-    }
-
-    /**
      * @Given /^an asset family with an option attribute$/
      */
     public function aAssetFamilyWithAnOptionAttribute()
@@ -2369,6 +2061,7 @@ final class EditAssetContext implements Context
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -2477,6 +2170,7 @@ final class EditAssetContext implements Context
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -2649,6 +2343,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeDecimalsAllowed::fromBoolean(true),
@@ -2743,6 +2438,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeDecimalsAllowed::fromBoolean(false),
@@ -2782,6 +2478,7 @@ final class EditAssetContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeDecimalsAllowed::fromBoolean(false),

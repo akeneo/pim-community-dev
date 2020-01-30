@@ -17,6 +17,37 @@ type AssetDataProvider = {
   };
 };
 
+export const createQuery = (
+  assetFamilyIdentifier: AssetFamilyIdentifier,
+  filters: Filter[],
+  searchValue: string,
+  _excludedAssetCollection: AssetCode[],
+  channel: ChannelCode,
+  locale: LocaleCode,
+  page: number,
+  size: number
+): Query => ({
+  locale,
+  channel,
+  size,
+  page,
+  filters: [
+    ...filters,
+    {
+      field: 'asset_family',
+      operator: '=',
+      value: assetFamilyIdentifier,
+      context: {},
+    },
+    {
+      field: 'full_text',
+      operator: '=',
+      value: searchValue,
+      context: {},
+    },
+  ],
+});
+
 let totalRequestCount = 0;
 export const useFetchResult = (
   createQuery: (
@@ -39,9 +70,7 @@ export const useFetchResult = (
   context: Context,
   setSearchResult: (result: SearchResult<ListAsset>) => void
 ) => {
-  const [askForReload, setAskForReload] = React.useState(false);
-  React.useEffect(() => {
-    setAskForReload(false);
+  const executeQuery = () => {
     if (!isOpen || null === assetFamilyIdentifier) {
       return;
     }
@@ -65,9 +94,18 @@ export const useFetchResult = (
         fetchMoreResult(currentRequestCount, dataProvider)(query, setSearchResult);
       }
     });
-  }, [filters, searchValue, context, excludedAssetCollection, isOpen, assetFamilyIdentifier, askForReload]);
+  };
 
-  return () => setAskForReload(true);
+  React.useEffect(executeQuery, [
+    filters,
+    searchValue,
+    context,
+    excludedAssetCollection,
+    isOpen,
+    assetFamilyIdentifier,
+  ]);
+
+  return () => executeQuery();
 };
 
 const fetchMoreResult = (currentRequestCount: number, dataProvider: AssetDataProvider) => (

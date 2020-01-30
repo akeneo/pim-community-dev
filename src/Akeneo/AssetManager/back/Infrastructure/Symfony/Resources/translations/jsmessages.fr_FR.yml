@@ -1,143 +1,156 @@
-#pim_title:
-#akeneo_asset_manager_asset_family_index: Create a new entity
-#akeneo_asset_manager_asset_family_edit: Edit an asset family
-#akeneo_asset_manager_asset_edit: Edit an asset
+pim_title:
+  akeneo_asset_manager_asset_family_edit: Modifier une famille de ressources
+  akeneo_asset_manager_asset_edit: Modifier une ressource
 pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: Lien incorporé suspect
+        message: Désolé, nous n'affichons pas cet élément intégré mais il sera correctement sauvegardé.
+  result_counter: '{0} Pas de résultat|{1} {{ count }} résultat|]1,Inf] {{ count }} résultats'
+  asset_counter: '{0}Pas de ressource |{1} {{ count }} ressource|]1,Inf] {{ count }} ressources'
   asset_collection:
+    add_asset: 'Ajouter une ressource'
+    add_asset_title: 'Ouvrir le sélecteur de ressources pour ajouter des ressources à la collection'
+    no_asset_in_collection: 'Désolé, il n''y a aucune ressource dans cette collection.'
+    helper:
+      link: 'Comment ajouter une collection de ressources ?'
+    notification:
+      product_rule: 'Cette collection peut être mise à jour par une règle produit :'
+      limit: 'Vous avez atteint la limite de {{ limit }} ressources par collection, vous ne pouvez plus ajouter de ressource à votre collection.'
+    edit_asset: Modifier l'asset
+    remove_asset: Supprimer une ressource
+    remove_one_asset: Supprimer la ressource {{ assetName }} de la collection de ressources
     other_actions: Autres actions
+    move_asset_to_left: Déplacer la ressource {{ assetName }} à gauche
+    move_asset_to_right: Déplacer la ressource {{ assetName }} à droite
+    legacy_helper:
+      moved_to_assets_tab: Pour voir la collection de ressources {{ label }}, allez à la section des ressources du produit.
+      is_missing_required: La collection de ressources {{ label }} est requise. Enrichissez-la dans la section des ressources du produit.
+  asset_picker:
+    title: Ajouter des ressources à votre produit
+    sub_title: Choisissez les ressources que vous souhaitez attacher à votre produit {{ productLabel }} dans la collection {{ attributeLabel }}
+    no_result:
+      title: Désolé, il n’y a aucune ressource pour votre recherche
+      sub_title: Essayez à nouveau avec d'autres critères de recherche
+    filter:
+      title: Filtres de ressources
+    basket:
+      title: '{{ assetCount }} ressource sélectionnée|{{ assetCount }} ressources sélectionnées'
+      empty_title: Votre panier est vide
+      remove_one_asset: Supprimer la ressource {{ assetName }} de la sélection des ressources
+      remove_all_assets: Tout supprimer
+  asset_preview:
+    previous: Ressource précédente
+    next: Prochaine ressource
+    empty_main_media: Cette ressource n'a pas de média.
+    edit_asset: Modifier l'asset
+    download: Télécharger
+    copy_url: Copier l'URL
+  close: Fermez la fenêtre
+  breadcrumb:
+    products: Produits
+  app:
+    image:
+      wide:
+        remove: Supprimer le fichier
+        download: Télécharger le fichier
+        upload: Glissez et déposez un fichier pour le charger ou cliquez ici
+      small:
+        remove: Supprimer
+        download: Télécharger
+        upload: Glissez et déposez pour charger
+  grid:
+    counter: '{{ resultCount }} résultats'
+    counter_empty: '0 résultat'
   asset_family:
-    #validation:
-    #code:
-    #pattern: 'This field may only contain letters, numbers and underscores.'
-    #should_be_unique: 'This code already exists for this entity.'
-    #limit_reached: 'You cannot create the asset family "{{ %asset_family_label% }}" because you have reached the limit of {{ %limit% }} asset families'
-    #button:
-    #save: Save
-    #save_permission: Save
-    #create: Create
-    #permission:
-    #title: Entity permissions
+    column:
+      title: Navigation dans les ressources
+      selector:
+        title: Familles de ressources
+        no_data: Aucune famille de ressources disponible
+    validation:
+      code:
+        pattern: 'Ce champ ne peut être composé que de lettres, de chiffres et d''underscores.'
+        should_be_unique: 'Ce code existe déjà pour cette famille de ressources.'
+        limit_reached: 'Vous ne pouvez pas créer la famille de ressource "{{ %asset_family_label% }}" car vous avez atteint la limite de {{ %limit% }} familles de ressources'
+      transformation:
+        limit_reached: 'Vous avez atteint la limite de transformations de {{ %limit%}}'
+        same_operation_twice: 'L''opération "{{ %operation_type% }}" ne peut pas être définie deux fois dans la même transformation'
+        source_can_not_be_a_target: 'La source de l''attribut "{{ %attribute_code% }}" ne peut pas être un attribut cible d''une transformation.'
+        attribute_reference_should_exist: 'L''attribut "{{ %attribute_code% }}" n''existe pas pour cette famille de ressources'
+        filename_is_not_unique: 'Une transformation avec le préfixe de nom de fichier "{{ %filename_prefix% }}" et le suffixe "{{ %filename_suffix% }}" existe déjà pour l''attribut source "{{ %attribute_code%}}"'
+        code_is_not_unique: 'Vous ne pouvez pas définir deux transformations avec le même code "{{ %transformation_code%}}"'
+    button:
+      save: Enregistrer
+      save_permission: Enregistrer
+      create: Créer une famille de ressources
+      edit: Modifier la famille
+      view: Voir la famille
+    permission:
+      title: Autorisations de la famille de ressources
     title: Ressources
-  #breadcrumb: Asset Families
-  #img: The main image of the asset family named "{{ label }}"
-  #tab:
-  #assets: Assets
-  #attribute: Attributes
-  #properties: Properties
-  #permission: Permissions
-  #properties:
-  #title: Entity properties
-  #identifier: Code
-  #label: Label
-  #image: Image
-  #attribute:
-  #title: Asset attributes
-  #attribute:
-  #error:
-  #render_list: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute'
-  #render_edit: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
-  #module:
-  #delete:
-  #button: Delete entity
-  #confirm: Are you sure you want to delete this entity?
-  #index:
-  #grid:
-  #count: '{0} No Asset Family|{1} {{ count }} Asset Family|]1,Inf] {{ count }} Asset Families'
-  #help:
-  #title: 'Welcome to the Asset Families!'
-  #description_part_one: Enrich relevant information related to products (e.g. brands, manufacturers, colors, materials, ingredients...).
-  #description_part_two: It will enable you to provide a better Product Experience to your customers.
-  #description_part_three: Click on the “Create” button to create your 1st asset family, set its attributes and assets.
-  #description_part_four: Then, to link to products, create a product attribute type related to this asset family.
-  #description_part_five: For more details, we invite you to browse this article.
-  #create:
-  #header:
-  #title: Create
-  #subtitle: Asset Families
-  #title: Create a new entity
-  #input:
-  #label: Label
-  #code: Code (required)
-  #confirm: Save
-  #delete:
-  #message: Are you sure you want to delete the entity "{{ assetFamilyLabel }}"?
-  #title: Attribute
-  #notification:
-  #save:
-  #success: Asset family successfully updated.
-  #fail: An error occured during the save of the asset family
-  #create:
-  #success: Asset family successfully created.
-  #fail: An error occured during the creation of the asset family
-  #delete:
-  #success: Asset family successfully deleted.
-  #fail: An error occured during the deletion of the asset family
-  #permission:
-  #notification:
-  #save:
-  #success: Asset family permissions successfully updated.
-  #fail: At least one user group should have edit permission on this entity
-  #no_data:
-  #title: You have no user group
-  #subtitle: To manage permission on asset family you need to have at least one user group.
-  #link: Clic here to add your first user group
+    breadcrumb: Familles de ressources
+    img: Le média principal de la famille de ressources nommée "{{ label }}"
+    tab:
+      assets: Ressources
+      attribute: Attributs
+      properties: Propriétés
+      permission: Autorisations
+      transformations: Transformations
+    properties:
+      title: Propriétés de la famille de ressources
+      identifier: Code
+      label: Libellé
+      media_file: Fichier média
+      attribute_as_main_media: Attribut comme média principal
+    attribute:
+      title: Attributs de la ressource
+    index:
+      grid:
+        count: '{0} Aucune famille de ressources|{1} {{ count }} famille de ressources|]1,Inf] {{ count }} familles de ressources'
+        help:
+          title: 'Bienvenue dans les Familles de ressources !'
+          description_part_one: 'Enrichissez les informations communes liées aux produits (ex: marques, fabricants, couleurs, matières, ingrédients...).'
+          description_part_two: Cela vous permettra de fournir une meilleure expérience produit à vos clients.
   asset:
-    #validation:
-    #limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
-    #code:
-    #pattern: 'This field may only contain letters, numbers and underscores.'
-    #should_be_unique: 'This code already exists for this entity.'
-    #no_data:
-    #title: There are no asset for {{ entityLabel }}
-    #subtitle: Click on the button "Add new" to create the first asset
-    #no_result:
-    #title: There are no result for your search
-    #subtitle: Try again with new search criteria.
+    validation:
+      code:
+        pattern: 'Ce champ ne peut être composé que de lettres, de chiffres et d''underscores.'
     selector:
       no_value: Cliquer ici pour sélectionner une ressource.
-  #column:
-  #code: Code
-  #image: Image
-  #label: Label
-  #complete: Complete
-  #action: Actions
-  #completeness:
-  #title_no_required: No attribute required
-  #title_non_complete: 0 out of {{ required }} attributes complete
-  #title_ongoing: '{{ complete }} out of {{ required }} attributes complete'
-  #title_complete: All {{ required }} attributes complete
-  #tab:
-  #enrich: Enrich
-  #product: Products
-  #notification:
-  #save:
-  #success: Asset successfully updated.
-  #fail: An error occured during the save of the asset
-  #validation_error: The asset could not be updated
-  #create:
-  #success: Asset successfully created.
-  #fail: An error occured during the creation of the asset
-  #delete:
-  #success: Asset "{{ code }}" successfully deleted.
-  #fail: An error occured during the deletion of the asset
-  #delete_all:
-  #success: All "{{ entityIdentifier }}" assets successfully deleted.
-  #fail: An error occured during the deletion of all this asset family's assets
-  #completeness:
-  #label: Complete
+    button:
+      save: Enregistrer
+      delete: Supprimer
+      delete_all: Supprimer toutes les ressources
+      back: Retour à la liste
+    product:
+      attribute: Attribut produit
+      counter: '{{ totalCount }} résultat|{{ totalCount }} résultats'
+      title: Produits
+    title: Ressources
+    upload:
+      remove_all: Tout supprimer
+    grid:
+      filter:
+        completeness:
+          'yes': 'Oui'
+      more_result:
+        title: Ce n'est pas tout !
+        description: Vous venez de faire défiler les {{ maxDisplayedAssets }}} premiers résultats parmi {{ total }} ressources. Pour en voir plus, essayez avec des critères de recherche plus spécifiques.
+    tab:
+      product: Produits
   attribute:
-    #validation:
-    #limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this asset family'
-    #default:
-    #code: Code
-    #label: Label
-    #image: Image
-    #type:
-    #text: Text
-    #image: Image
-    #asset: Asset single link
-    #asset_collection: Asset multiple links
-    #option: Single option
-    #option_collection: Multiple options
-    #number: Number
     is_required: requis pour la complétude
+    edit:
+      input:
+        asset_type: Famille de ressources liées (obligatoire)
+  media_link:
+    download: Télécharger
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        asset_family:
+          identifier: Famille de ressources liées (obligatoire)
+          default_label: Veuillez sélectionner une famille de ressources

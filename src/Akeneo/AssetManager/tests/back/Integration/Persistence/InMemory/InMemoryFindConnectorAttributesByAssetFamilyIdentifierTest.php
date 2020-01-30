@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAttributesByAssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -47,6 +48,7 @@ class InMemoryFindConnectorAttributesByAssetFamilyIdentifierTest extends TestCas
             AttributeValuePerLocale::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             []
         );
 
@@ -70,6 +72,7 @@ class InMemoryFindConnectorAttributesByAssetFamilyIdentifierTest extends TestCas
             AttributeValuePerLocale::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             []
         );
 

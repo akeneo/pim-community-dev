@@ -18,13 +18,13 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInte
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCodesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetTextAttributeCodesCompatibleWithSpellingQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
@@ -41,10 +41,10 @@ class EvaluateSpellingSpec extends ObjectBehavior
         BuildProductValuesInterface $buildProductValues,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleChecker $supportedLocaleChecker,
-        GetProductAttributesCodesInterface $getProductAttributesCodes,
+        GetTextAttributeCodesCompatibleWithSpellingQueryInterface $getTextAttributeCodesCompatibleWithSpellingQuery,
         GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery
     ) {
-        $this->beConstructedWith($textChecker, $buildProductValues, $localesByChannelQuery, $supportedLocaleChecker, $getProductAttributesCodes, $getTextareaAttributeCodesCompatibleWithSpellingQuery);
+        $this->beConstructedWith($textChecker, $buildProductValues, $localesByChannelQuery, $supportedLocaleChecker, $getTextAttributeCodesCompatibleWithSpellingQuery, $getTextareaAttributeCodesCompatibleWithSpellingQuery);
     }
 
     public function it_evaluates_rates_for_textarea_and_text_values(
@@ -52,7 +52,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $buildProductValues,
         $localesByChannelQuery,
         $supportedLocaleChecker,
-        $getProductAttributesCodes,
+        $getTextAttributeCodesCompatibleWithSpellingQuery,
         $getTextareaAttributeCodesCompatibleWithSpellingQuery,
         TextCheckResultCollection $textCheckResultCollection1,
         TextCheckResultCollection $textCheckResultCollection2,
@@ -93,7 +93,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
             ]
         ]);
 
-        $getProductAttributesCodes->getLocalizableText($productId)->willReturn(['text_1']);
+        $getTextAttributeCodesCompatibleWithSpellingQuery->byProductId($productId)->willReturn(['text_1']);
         $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['text_1'])->willReturn([
             'text_1' => [
                 'ecommerce' => [

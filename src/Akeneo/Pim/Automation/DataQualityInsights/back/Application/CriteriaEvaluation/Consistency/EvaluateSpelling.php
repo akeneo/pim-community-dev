@@ -15,13 +15,13 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluati
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCodesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetTextAttributeCodesCompatibleWithSpellingQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -49,8 +49,8 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     /** @var SupportedLocaleChecker */
     private $supportedLocaleChecker;
 
-    /** @var GetProductAttributesCodesInterface */
-    private $getProductAttributesCodes;
+    /** @var GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface */
+    private $getTextAttributeCodesCompatibleWithSpellingQuery;
 
     /** @var GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface */
     private $getTextareaAttributeCodesCompatibleWithSpellingQuery;
@@ -60,14 +60,14 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         BuildProductValuesInterface $buildProductValues,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleChecker $supportedLocaleChecker,
-        GetProductAttributesCodesInterface $getProductAttributesCodes,
+        GetTextAttributeCodesCompatibleWithSpellingQueryInterface $getTextAttributeCodesCompatibleWithSpellingQuery,
         GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery
     ) {
         $this->textChecker = $textChecker;
         $this->buildProductValues = $buildProductValues;
         $this->localesByChannelQuery = $localesByChannelQuery;
         $this->supportedLocaleChecker = $supportedLocaleChecker;
-        $this->getProductAttributesCodes = $getProductAttributesCodes;
+        $this->getTextAttributeCodesCompatibleWithSpellingQuery = $getTextAttributeCodesCompatibleWithSpellingQuery;
         $this->getTextareaAttributeCodesCompatibleWithSpellingQuery = $getTextareaAttributeCodesCompatibleWithSpellingQuery;
     }
 
@@ -80,7 +80,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         $textareaAttributesCodes = $this->getTextareaAttributeCodesCompatibleWithSpellingQuery->byProductId($productId);
         $textareaValuesList = $this->buildProductValues->buildForProductIdAndAttributeCodes($productId, $textareaAttributesCodes);
 
-        $textAttributesCodes = $this->getProductAttributesCodes->getLocalizableText($productId);
+        $textAttributesCodes = $this->getTextAttributeCodesCompatibleWithSpellingQuery->byProductId($productId);
         $textValuesList = $this->buildProductValues->buildForProductIdAndAttributeCodes($productId, $textAttributesCodes);
 
         $ratesByChannelAndLocaleTextarea = $this->computeAttributeRates($localesByChannel, $textareaValuesList, self::TEXTAREA_FAULT_WEIGHT);
