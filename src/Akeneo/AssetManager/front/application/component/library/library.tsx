@@ -87,6 +87,11 @@ const AssetCardPlaceholder = styled.div`
   min-height: 140px;
 `;
 
+const SearchBarPlaceholder = styled.div`
+  height: 45px;
+  width: 100%;
+`;
+
 const SecondaryActions = ({
   canDeleteAllAssets,
   onOpenDeleteAllAssetsModal,
@@ -316,22 +321,13 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           {!isInitialized ? (
             <>
               <div className={`AknLoadingPlaceHolderContainer`}>
-                <SearchBar
-                  dataProvider={dataProvider}
-                  searchValue={searchValue}
-                  context={context}
-                  resultCount={searchResult.matchesCount}
-                  onSearchChange={setSearchValue}
-                  onContextChange={setContext}
-                  completenessValue={completenessValue}
-                  onCompletenessChange={handleCompletenessValueChange}
-                />
+                <SearchBarPlaceholder />
               </div>
               <AssetCardPlaceholderGrid className={`AknLoadingPlaceHolderContainer`}>
                 {undefined !== currentAssetFamily?.assetCount &&
-                  [...Array(Math.min(currentAssetFamily.assetCount, 50))].map(i => {
-                    return <AssetCardPlaceholder key={i} />;
-                  })}
+                  [...Array(Math.min(currentAssetFamily.assetCount, 50))].map((_e, i) => (
+                    <AssetCardPlaceholder key={i} />
+                  ))}
               </AssetCardPlaceholderGrid>
             </>
           ) : null === currentAssetFamilyIdentifier ? (
