@@ -118,10 +118,18 @@ SQL;
 
     public function releaseLock(Lock $lock): void
     {
+        // Delete the locked items that already have an entry without lock, and empty the lock otherwise.
         $query = <<<'SQL'
+DELETE items_to_delete FROM pimee_franklin_insights_quality_highlights_pending_items AS items_to_delete
+INNER JOIN pimee_franklin_insights_quality_highlights_pending_items AS items_without_lock
+    ON items_without_lock.entity_type = items_to_delete.entity_type
+    AND items_without_lock.entity_id = items_to_delete.entity_id
+    AND items_without_lock.lock_id = ''
+WHERE items_to_delete.lock_id = :lock;
+
 UPDATE pimee_franklin_insights_quality_highlights_pending_items
 SET lock_id = ''
-WHERE lock_id = :lock
+WHERE lock_id = :lock;
 SQL;
 
         $this->connection->executeQuery($query, ['lock' => strval($lock)]);

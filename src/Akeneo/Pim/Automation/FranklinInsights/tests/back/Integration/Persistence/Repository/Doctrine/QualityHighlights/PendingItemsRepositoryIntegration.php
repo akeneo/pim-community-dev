@@ -225,6 +225,12 @@ SQL;
         $this->getRepository()->acquireLock($lock);
         $this->assertCountPendingItemsByLock(6, strval($lock));
 
+        // To test when there are several entries for a same entity: one with the lock, one with another lock, and one without lock
+        $this->getRepository()->addUpdatedProductId(42);
+        $this->getRepository()->acquireLock(new Lock('fccee5d7-860c-4801-8007-657d0307aaf8'));
+        $this->getRepository()->addUpdatedProductId(42);
+
+        return;
         $this->getRepository()->releaseUpdatedAttributesLock(['weight'], $lock);
         $this->getRepository()->releaseDeletedAttributesLock(['size'], $lock);
         $this->getRepository()->releaseUpdatedFamiliesLock(['tv'], $lock);
@@ -245,8 +251,10 @@ SQL;
         $this->getRepository()->acquireLock($lock);
         $this->assertCountPendingItemsByLock(3, strval($lock));
 
+        // To test when there are several entries for a same entity: one with the lock, one with another lock, and one without lock
         $this->getRepository()->addUpdatedProductId(42);
         $this->getRepository()->acquireLock(new Lock('fccee5d7-860c-4801-8007-657d0307aaf8'));
+        $this->getRepository()->addUpdatedProductId(42);
 
         $this->getRepository()->releaseLock($lock);
         $this->assertCountPendingItemsByLock(0, strval($lock));
