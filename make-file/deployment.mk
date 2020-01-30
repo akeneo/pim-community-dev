@@ -140,3 +140,9 @@ release:
 	docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG} eu.gcr.io/akeneo-ci/pim-enterprise-dev:${NEW_IMAGE_TAG}
 	@echo Pushing Docker image ${NEW_IMAGE_TAG}
 	IMAGE_TAG=${NEW_IMAGE_TAG} $(MAKE) push-php-image-prod
+	@echo Tagging EE dev repository
+	git config user.name "Michel Tag"
+	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
+	git tag -a ${NEW_IMAGE_TAG} -m "Tagging SaaS version ${NEW_IMAGE_TAG}"
+	git push origin ${NEW_IMAGE_TAG}
+
