@@ -41,7 +41,4 @@ final class JobInstanceNames
 
     /** @var string */
     public const SYNCHRONIZE = 'franklin_insights_synchronize';
-
-    /** @var string */
-    public const PUSH_STRUCTURE_AND_PRODUCTS = 'franklin_insights_push_structure_and_products';
 }

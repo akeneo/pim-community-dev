@@ -14,7 +14,7 @@ services:
     Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command\QualityHighlights\PushStructureAndProductsToFranklinCommand:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_is_active_handler'
-            - '@Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher\SchedulePushStructureAndProductsToFranklin'
+            - '@Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\PushStructureAndProductsToFranklin'
         tags:
             - { name: 'console.command' }
 

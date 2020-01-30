@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command\
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\PushStructureAndProductsToFranklin;
-use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SchedulePushStructureAndProductsToFranklinInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\BatchSize;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,23 +20,23 @@ class PushStructureAndProductsToFranklinCommand extends Command
     /** @var GetConnectionIsActiveHandler */
     private $connectionStatusHandler;
 
-    /** @var SchedulePushStructureAndProductsToFranklinInterface */
-    private $schedulePushStructureAndProductsToFranklin;
+    /** @var PushStructureAndProductsToFranklin */
+    private $pushStructureAndProductsToFranklin;
 
     public function __construct(
         GetConnectionIsActiveHandler $connectionIsActiveHandler,
-        SchedulePushStructureAndProductsToFranklinInterface $schedulePushStructureAndProductsToFranklin
+        PushStructureAndProductsToFranklin $pushStructureAndProductsToFranklin
     ) {
         parent::__construct(self::NAME);
 
         $this->connectionStatusHandler = $connectionIsActiveHandler;
-        $this->schedulePushStructureAndProductsToFranklin = $schedulePushStructureAndProductsToFranklin;
+        $this->pushStructureAndProductsToFranklin = $pushStructureAndProductsToFranklin;
     }
 
     protected function configure()
     {
         $this->setName(self::NAME)
-            ->setDescription('Schedule a push of catalog structure and products to Franklin API endpoints in order to compute Quality Highlights')
+            ->setDescription('Push the catalog structure and products to Franklin API endpoints in order to compute Quality Highlights')
             ->addOption('batch-attributes', 'a', InputOption::VALUE_OPTIONAL, 'Number of attributes type entity to push in one HTTP call', PushStructureAndProductsToFranklin::DEFAULT_ATTRIBUTES_BATCH_SIZE)
             ->addOption('batch-families', 'f', InputOption::VALUE_OPTIONAL, 'Number of families type entity to push in one HTTP call', PushStructureAndProductsToFranklin::DEFAULT_FAMILIES_BATCH_SIZE)
             ->addOption('batch-products', 'p', InputOption::VALUE_OPTIONAL, 'Number of products type entity to push in one HTTP call', PushStructureAndProductsToFranklin::DEFAULT_PRODUCTS_BATCH_SIZE);
@@ -57,11 +56,11 @@ class PushStructureAndProductsToFranklinCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         if ($this->isFranklinInsightsActivated() === false) {
-            $io->error('Unable to find an active Franklin configuration. Did you correctly set you Franklin Token in the PIM system tab ?');
-            exit(1);
+            $io->writeln('Franklin Insights is not activated.');
+            exit(0);
         }
 
-        $this->schedulePushStructureAndProductsToFranklin->schedule(
+        $this->pushStructureAndProductsToFranklin->push(
             new BatchSize($batchAttributesSize),
             new BatchSize($batchFamiliesSize),
             new BatchSize($batchProductsSize)

@@ -89,10 +89,3 @@ services:
             - '@akeneo_batch.job_repository'
             - '@akeneo.pim.automation.franklin_insights.connector.tasklet.notify_if_pending_attributes'
 
-    akeneo.pim.automation.franklin_insights.connector.step.push_structure_and_products:
-        class: '%pim_connector.step.tasklet.class%'
-        arguments:
-            - 'push_structure_and_products_to_franklin'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Tasklet\PushStructureAndProductsToFranklinTasklet'
