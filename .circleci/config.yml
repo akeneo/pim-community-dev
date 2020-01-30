@@ -504,7 +504,8 @@ workflows:
           - test_back_performance:
                 requires:
                     - build_dev
-          - release:
+          - ready_to_release:
+                type: approval
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
@@ -514,6 +515,9 @@ workflows:
                     - deploy_master_environment
                     - deploy_upgrade_pim3_environment
                     - test_back_data_migrations
+          - release:
+                requires:
+                    - ready_to_release
 
 commands:
   set_gcloud_config:
