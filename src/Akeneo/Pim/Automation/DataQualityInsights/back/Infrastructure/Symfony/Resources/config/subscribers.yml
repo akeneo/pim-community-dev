@@ -27,10 +27,10 @@ services:
         arguments:
             $dataQualityInsightsFeature: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $createProductsCriteriaEvaluations: '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations'
-            $queueJobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
-            $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
-            $tokenStorage: '@security.token_storage'
             $logger: '@logger'
+            $evaluatePendingCriteria: '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria'
+            $consolidateProductAxisRates: '@Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates'
+            $indexProductRates: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
         tags:
             - { name: kernel.event_subscriber }
 

@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluateProductsCriteriaParameters;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\TitleSuggestionIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\WordIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -39,18 +42,18 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function let(
         FeatureFlag $dataQualityInsightsFeature,
         CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations,
-        JobLauncherInterface $queueJobLauncher,
-        JobInstanceRepository $jobInstanceRepository,
-        TokenStorageInterface $tokenStorage,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        EvaluatePendingCriteria $evaluatePendingCriteria,
+        ConsolidateProductAxisRates $consolidateProductAxisRates,
+        IndexProductRates $indexProductRates
     ) {
         $this->beConstructedWith(
             $dataQualityInsightsFeature,
             $createProductsCriteriaEvaluations,
-            $queueJobLauncher,
-            $jobInstanceRepository,
-            $tokenStorage,
-            $logger
+            $logger,
+            $evaluatePendingCriteria,
+            $consolidateProductAxisRates,
+            $indexProductRates
         );
     }
 
@@ -69,9 +72,6 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function it_schedule_evaluation_when_a_title_suggestion_is_ignored(
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
-        $jobInstanceRepository,
-        $tokenStorage,
-        $queueJobLauncher,
         ProductInterface $product,
         JobInstance $jobInstance,
         TokenInterface $token,
@@ -80,19 +80,6 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $product->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->create([new ProductId(12345)])->shouldBeCalled();
-
-        $jobInstanceRepository
-            ->findOneByIdentifier(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME)
-            ->willReturn($jobInstance);
-
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
-
-        $queueJobLauncher->launch(
-            $jobInstance,
-            $user,
-            [EvaluateProductsCriteriaParameters::PRODUCT_IDS => [12345]]
-        );
 
         $this->onIgnoredTitleSuggestion(new TitleSuggestionIgnoredEvent(new ProductId(12345)));
     }
@@ -100,30 +87,11 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function it_schedule_evaluation_when_a_word_is_ignored(
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
-        $jobInstanceRepository,
-        $tokenStorage,
-        $queueJobLauncher,
-        ProductInterface $product,
-        JobInstance $jobInstance,
-        TokenInterface $token,
-        UserInterface $user
+        ProductInterface $product
     ) {
         $product->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->create([new ProductId(12345)])->shouldBeCalled();
-
-        $jobInstanceRepository
-            ->findOneByIdentifier(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME)
-            ->willReturn($jobInstance);
-
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
-
-        $queueJobLauncher->launch(
-            $jobInstance,
-            $user,
-            [EvaluateProductsCriteriaParameters::PRODUCT_IDS => [12345]]
-        );
 
         $this->onIgnoredWord(new WordIgnoredEvent(new ProductId(12345)));
     }
@@ -175,31 +143,19 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function it_creates_criteria_on_unitary_product_post_save(
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
-        $jobInstanceRepository,
-        $tokenStorage,
-        $queueJobLauncher,
-        ProductInterface $product,
-        JobInstance $jobInstance,
-        TokenInterface $token,
-        UserInterface $user
+        $evaluatePendingCriteria,
+        $consolidateProductAxisRates,
+        $indexProductRates,
+        ProductInterface $product
     ) {
         $product->getId()->willReturn(12345);
         $product->isVariant()->willReturn(false);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->create([new ProductId(12345)])->shouldBeCalled();
 
-        $jobInstanceRepository
-            ->findOneByIdentifier(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME)
-            ->willReturn($jobInstance);
-
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
-
-        $queueJobLauncher->launch(
-            $jobInstance,
-            $user,
-            [EvaluateProductsCriteriaParameters::PRODUCT_IDS => [12345]]
-        );
+        $evaluatePendingCriteria->execute([12345])->shouldBeCalled();
+        $consolidateProductAxisRates->consolidate([12345])->shouldBeCalled();
+        $indexProductRates->execute([12345])->shouldBeCalled();
 
         $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => true]));
     }
@@ -207,31 +163,19 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function it_does_nothing_when_one_entity_is_not_a_product_on_post_save_all(
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
-        $jobInstanceRepository,
-        $tokenStorage,
-        $queueJobLauncher,
-        ProductInterface $product,
-        JobInstance $jobInstance,
-        TokenInterface $token,
-        UserInterface $user
+        $evaluatePendingCriteria,
+        $consolidateProductAxisRates,
+        $indexProductRates,
+        ProductInterface $product
     ) {
         $product->getId()->willReturn(12345);
         $product->isVariant()->willReturn(false);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->create([new ProductId(12345)])->shouldBeCalled();
 
-        $jobInstanceRepository
-            ->findOneByIdentifier(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME)
-            ->willReturn($jobInstance);
-
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
-
-        $queueJobLauncher->launch(
-            $jobInstance,
-            $user,
-            [EvaluateProductsCriteriaParameters::PRODUCT_IDS => [12345]]
-        );
+        $evaluatePendingCriteria->execute(Argument::any())->shouldNotBeCalled();
+        $consolidateProductAxisRates->consolidate(Argument::any())->shouldNotBeCalled();
+        $indexProductRates->execute(Argument::any())->shouldNotBeCalled();
 
         $this->onPostSaveAll(new GenericEvent([new \stdClass(), $product->getWrappedObject()]));
     }
@@ -272,14 +216,11 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function it_creates_criteria_on_post_save_all(
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
-        $jobInstanceRepository,
-        $tokenStorage,
-        $queueJobLauncher,
+        $evaluatePendingCriteria,
+        $consolidateProductAxisRates,
+        $indexProductRates,
         ProductInterface $product1,
-        ProductInterface $product2,
-        JobInstance $jobInstance,
-        TokenInterface $token,
-        UserInterface $user
+        ProductInterface $product2
     ) {
         $product1->getId()->willReturn(12345);
         $product2->getId()->willReturn(67891);
@@ -288,18 +229,9 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->create([new ProductId(12345), new ProductId(67891)])->shouldBeCalled();
 
-        $jobInstanceRepository
-            ->findOneByIdentifier(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME)
-            ->willReturn($jobInstance);
-
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
-
-        $queueJobLauncher->launch(
-            $jobInstance,
-            $user,
-            [EvaluateProductsCriteriaParameters::PRODUCT_IDS => [12345, 67891]]
-        );
+        $evaluatePendingCriteria->execute(Argument::any())->shouldNotBeCalled();
+        $consolidateProductAxisRates->consolidate(Argument::any())->shouldNotBeCalled();
+        $indexProductRates->execute(Argument::any())->shouldNotBeCalled();
 
         $this->onPostSaveAll(new GenericEvent([$product1->getWrappedObject(), $product2->getWrappedObject()]));
     }
@@ -307,18 +239,13 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function it_does_not_stop_the_process_if_something_goes_wrong(
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
-        $jobInstanceRepository,
         $logger,
         ProductInterface $product
     ) {
         $product->getId()->willReturn(12345);
         $product->isVariant()->willReturn(false);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createProductsCriteriaEvaluations->create([new ProductId(12345)])->shouldBeCalled();
-
-        $jobInstanceRepository
-            ->findOneByIdentifier(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME)
-            ->willReturn(null);
+        $createProductsCriteriaEvaluations->create([new ProductId(12345)])->willThrow(\Exception::class);
 
         $logger->error(Argument::any())->shouldBeCalledOnce();
 
