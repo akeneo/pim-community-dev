@@ -30,7 +30,6 @@ class DoesImageExistIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->dbal = $this->get('database_connection');
         $this->imageExistQuery = $this->get('akeneo_connectivity.connection.service.file_info.does_image_exist');
     }
 
@@ -40,6 +39,6 @@ class DoesImageExistIntegration extends TestCase
     INSERT INTO akeneo_file_storage_file_info (file_key, original_filename, mime_type, size, extension)
     VALUES ('a/b/c/image.jpg', 'image.jpg', 'image/jpg', 42, 'jpg')
 SQL;
-        $this->dbal->executeQuery($query);
+        $this->get('database_connection')->executeQuery($query);
     }
 }
