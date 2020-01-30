@@ -134,9 +134,9 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
 //                $filterClause = [
 //                    'exists' => ['field' => $attributePath],
 //                ];
+//                $this->searchQueryBuilder->addFilter($filterClause);
 
                 $this->searchQueryBuilder->addMustNot($mustNotClause);
-//                $this->searchQueryBuilder->addFilter($filterClause);
                 break;
 
             case Operators::EQUALS:
