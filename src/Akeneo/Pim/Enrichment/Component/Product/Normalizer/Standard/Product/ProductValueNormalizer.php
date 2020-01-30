@@ -137,13 +137,12 @@ class ProductValueNormalizer implements NormalizerInterface
             return (int)$value->getData();
         }
 
-        $dataWithoutZero = preg_replace('/0+$/', '', $value->getData());
+        $dataWithoutZero = rtrim($value->getData(), '0');
 
-        $valueExploded = explode(".", $dataWithoutZero);
-        $valueBehindComa = array_pop($valueExploded);
+        list($integerPart, $decimalPart) = explode(".", $dataWithoutZero);
 
-        if (strlen($valueBehindComa) < 4) {
-            return number_format($dataWithoutZero, static::DECIMAL_PRECISION, '.', ',');
+        if (strlen($decimalPart) < 4) {
+            return number_format($dataWithoutZero, static::DECIMAL_PRECISION, '.', '');
         }
 
         return $dataWithoutZero;
