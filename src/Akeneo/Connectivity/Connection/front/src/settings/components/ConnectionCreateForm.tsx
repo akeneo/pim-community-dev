@@ -1,4 +1,5 @@
 import React, {ChangeEvent, Dispatch, RefObject, useEffect, useReducer, useRef} from 'react';
+import {useHistory} from 'react-router-dom';
 import {ApplyButton, Form, FormGroup, FormInput, InlineHelper} from '../../common';
 import {FlowType} from '../../model/flow-type.enum';
 import {isErr} from '../../shared/fetch-result/result';
@@ -77,6 +78,7 @@ const useFormValidation = (
 };
 
 export const ConnectionCreateForm = () => {
+    const history = useHistory();
     const connectionsDispatch = useConnectionsDispatch();
 
     const [state, dispatch] = useReducer(connectionFormReducer, initialState);
@@ -116,6 +118,8 @@ export const ConnectionCreateForm = () => {
         }
 
         connectionsDispatch(connectionFetched(result.value));
+
+        history.push(`/connections/${state.controls.code.value}/edit`);
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {

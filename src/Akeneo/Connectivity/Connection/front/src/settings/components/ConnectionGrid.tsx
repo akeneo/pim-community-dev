@@ -30,7 +30,7 @@ export const ConnectionGrid = ({connections, title}: Props) => (
                 <Translate
                     id='akeneo_connectivity.connection.connection_count'
                     count={connections.length}
-                    placeholders={{count: connections.length}}
+                    placeholders={{count: connections.length.toString()}}
                 />
             </Count>
         </Section>

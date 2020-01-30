@@ -1,5 +1,5 @@
 import React from 'react';
-import {HashRouter as Router, Route, Switch} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import {ConnectionsProvider} from '../connections-context';
 import {CreateConnection} from './CreateConnection';
 import {DeleteConnection} from './DeleteConnection';
@@ -7,10 +7,11 @@ import {EditConnection} from './EditConnection';
 import {ListConnections} from './ListConnections';
 import {RegenerateConnectionPassword} from './RegenerateConnectionPassword';
 import {RegenerateConnectionSecret} from './RegenerateConnectionSecret';
+import {SettingsErrorBoundary} from './SettingsErrorBoundary';
 
 export const Index = () => (
-    <ConnectionsProvider>
-        <Router>
+    <SettingsErrorBoundary>
+        <ConnectionsProvider>
             <Switch>
                 <Route path='/connections/:code/edit'>
                     <EditConnection />
@@ -31,6 +32,6 @@ export const Index = () => (
                     <ListConnections />
                 </Route>
             </Switch>
-        </Router>
-    </ConnectionsProvider>
+        </ConnectionsProvider>
+    </SettingsErrorBoundary>
 );
