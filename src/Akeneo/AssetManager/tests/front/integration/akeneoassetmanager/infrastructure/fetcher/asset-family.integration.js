@@ -70,6 +70,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset-family', () => {
       attributes: [],
       assetCount: 123,
       assetFamily: {
+        assetCount: 123,
         attributeAsMainMedia: '',
         attributeAsLabel: '',
         attributes: [],
