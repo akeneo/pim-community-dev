@@ -6,8 +6,7 @@ import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/re
 import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
 import {Modal, SubTitle, Title} from 'akeneoassetmanager/application/component/app/modal';
 import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
-import {Carousel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview/carousel';
-import {Preview} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview/preview';
+import {Carousel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/carousel';
 import Left from 'akeneoassetmanager/application/component/app/icon/left';
 import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
@@ -25,6 +24,9 @@ import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {useAssetFamily, AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
 import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
+import {getAssetEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
+import {getPreviewModelFromCollection} from 'akeneoassetmanager/domain/model/asset/value';
 
 const Container = styled.div`
   position: relative;
@@ -84,7 +86,10 @@ export const AssetPreview = ({
   if (undefined === selectedAsset || null === assetFamily) {
     return null;
   }
+
   const selectedAssetLabel = getAssetLabel(selectedAsset, context.locale);
+  const editUrl = getAssetEditUrl(selectedAsset);
+  const previewModel = getPreviewModelFromCollection(selectedAsset.image, context.channel, context.locale);
 
   return (
     <Modal data-role="asset-preview-modal">
@@ -99,10 +104,11 @@ export const AssetPreview = ({
           </SubTitle>
           <Title>{selectedAssetLabel}</Title>
           <PreviewContainer>
-            <Preview
-              context={context}
-              asset={selectedAsset}
-              attributeAsMainMedia={getAttributeAsMainMedia(assetFamily)}
+            <MediaPreview
+              previewModel={previewModel}
+              editUrl={editUrl}
+              label={selectedAssetLabel}
+              attribute={getAttributeAsMainMedia(assetFamily)}
             />
           </PreviewContainer>
           <Carousel

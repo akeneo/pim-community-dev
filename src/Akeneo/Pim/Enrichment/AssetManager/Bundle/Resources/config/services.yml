@@ -18,3 +18,13 @@ services:
             - '@pim_enrich.normalizer.file'
             - '@pim_catalog.repository.cached_attribute'
             - '@pimee.asset_manager.enrichment.asset_preview_generator'
+
+    # form providers
+    akeneo_assetmanager.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -
+                asset_manager_csv_asset_export: pim-job-instance-csv-asset-export
+                asset_manager_xlsx_asset_export: pim-job-instance-xlsx-asset-export
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }

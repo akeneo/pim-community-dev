@@ -25,6 +25,8 @@ use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\IndexAssetEventAggregator;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,6 +35,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -76,6 +80,9 @@ class CreateAction
     /** @var LinkAssetHandler */
     private $linkAssetHandler;
 
+    /** @var IndexAssetEventAggregator */
+    private $indexAssetEventAggregator;
+
     public function __construct(
         CreateAssetHandler $createAssetHandler,
         EditAssetHandler $editAssetHandler,
@@ -87,7 +94,8 @@ class CreateAction
         SecurityFacade $securityFacade,
         EditAssetCommandFactory $editAssetCommandFactory,
         NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
-        LinkAssetHandler $linkAssetHandler
+        LinkAssetHandler $linkAssetHandler,
+        EventAggregatorInterface $indexAssetEventAggregator
     ) {
         $this->createAssetHandler = $createAssetHandler;
         $this->editAssetHandler = $editAssetHandler;
@@ -100,6 +108,7 @@ class CreateAction
         $this->editAssetCommandFactory = $editAssetCommandFactory;
         $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
         $this->linkAssetHandler = $linkAssetHandler;
+        $this->indexAssetEventAggregator = $indexAssetEventAggregator;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response
@@ -145,15 +154,22 @@ class CreateAction
             $namingConventionEditCommand = $this->getNamingConventionEditCommand($request);
         } catch (NamingConventionException $e) {
             if ($e->namingConventionAbortOnError()) {
+
+                // TODO AST-410
+                // FIXME: This is a dirty fix to display the error messages in the UI, find a better solution
+                // Also, error message should be translated
+                $message = sprintf('Could not execute naming convention: %s', $e->getMessage());
+                $violations = new ConstraintViolationList([
+                    new ConstraintViolation($message, $message, [], null, 'code', null)
+                ]);
                 return new JsonResponse(
-                    $e->getMessage(),
+                    $this->normalizer->normalize($violations, 'internal_api'),
                     Response::HTTP_BAD_REQUEST
                 );
             }
 
             // The naming convention execution can not be executed but we continue.
             $namingConventionEditCommand = null;
-            // @TODO AST-205: How do we display the warning message to the end user?
         }
         $namingConventionEditViolations = $this->validator->validate($namingConventionEditCommand);
         if ($namingConventionEditViolations->count() > 0) {
@@ -163,12 +179,14 @@ class CreateAction
             );
         }
 
-        $this->createAsset($createCommand);
+        ($this->createAssetHandler)($createCommand);
         if (null !== $namingConventionEditCommand) {
-            $this->executeNamingConvention($namingConventionEditCommand);
+            $editCommand->editAssetValueCommands = array_merge($editCommand->editAssetValueCommands, $namingConventionEditCommand->editAssetValueCommands);
         }
-        $this->editAsset($editCommand);
+        ($this->editAssetHandler)($editCommand);
         $this->linkAsset($request);
+
+        $this->indexAssetEventAggregator->flushEvents();
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
@@ -220,32 +238,6 @@ class CreateAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         return $this->namingConventionEditAssetCommandFactory->create($normalizedCommand);
-    }
-
-    /**
-     * When creating multiple assets in a row using the UI "Create another",
-     * we force refresh of the index so that the grid is up to date when the users dismisses the creation modal.
-     */
-    private function createAsset(CreateAssetCommand $command): void
-    {
-        ($this->createAssetHandler)($command);
-        $this->assetIndexer->refresh();
-    }
-
-    /**
-     * When creating multiple assets in a row using the UI "Create another",
-     * we force refresh of the index so that the grid is up to date when the users dismisses the creation modal.
-     */
-    private function editAsset(EditAssetCommand $command): void
-    {
-        ($this->editAssetHandler)($command);
-        $this->assetIndexer->refresh();
-    }
-
-    private function executeNamingConvention(EditAssetCommand $namingConventionEditCommand): void
-    {
-        ($this->editAssetHandler)($namingConventionEditCommand);
-        $this->assetIndexer->refresh();
     }
 
     private function linkAsset(Request $request): void

@@ -1,16 +1,22 @@
 import * as React from 'react';
+import __ from 'akeneoassetmanager/tools/translator';
+import styled from 'styled-components';
 import {File as FileModel, isFileEmpty, isFileInStorage, createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 import {getImageDownloadUrl, getImageShowUrl, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
 import Trash from 'akeneoassetmanager/application/component/app/icon/trash';
-import __ from 'akeneoassetmanager/tools/translator';
 import Download from 'akeneoassetmanager/application/component/app/icon/download';
 import Import from 'akeneoassetmanager/application/component/app/illustration/import';
 import Key from 'akeneoassetmanager/tools/key';
-import styled from 'styled-components';
-import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
+import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import Fullscreen from 'akeneoassetmanager/application/component/app/icon/fullscreen';
 
 const Img = styled.img`
   margin: auto;
@@ -21,11 +27,20 @@ const Img = styled.img`
   object-fit: contain;
 `;
 
+const Anchor = styled.span.attrs(() => ({className: 'AknImage-actionItem'}))``;
+const ImageAction = styled.div.attrs(() => ({className: 'AknImage-action'}))`
+  z-index: 1000;
+`;
+
 class FileComponent extends React.Component<
   {
     id?: string;
+    context: {
+      channel: ChannelReference;
+      locale: LocaleReference;
+    };
     image: FileModel;
-    attribute: AttributeIdentifier;
+    attribute: NormalizedAttribute;
     alt: string;
     wide?: boolean;
     readOnly?: boolean;
@@ -116,29 +131,40 @@ class FileComponent extends React.Component<
   };
 
   render() {
-    const wide = this.props.wide;
+    const {id, context, image, attribute, wide, readOnly, onImageChange} = this.props;
+
     const url = getMediaPreviewUrl({
       type: wide ? MediaPreviewType.Preview : MediaPreviewType.ThumbnailSmall,
-      attributeIdentifier: this.props.attribute,
-      data: this.props.image?.filePath || '',
+      attributeIdentifier: attribute.identifier,
+      data: image?.filePath || '',
     });
+    const label = getLabelInCollection(
+      attribute.labels,
+      localeReferenceStringValue(context.locale),
+      true,
+      attribute.code
+    );
+    const previewModel = {
+      data: image,
+      channel: context.channel,
+      locale: context.locale,
+      attribute: attribute.identifier,
+    };
 
     // If the image is in read only mode, we return a simple version of the component
-    if (undefined === this.props.onImageChange) {
+    if (undefined === onImageChange) {
       const className = `AknImage AknImage--readOnly ${wide ? 'AknImage--wide' : ''}`;
 
       return (
         <div className={className}>
-          {!isFileEmpty(this.props.image) ? (
-            <div className="AknImage-drop" style={{backgroundImage: `url("${url}")`}} />
-          ) : null}
-          {true === this.props.wide ? <img className="AknImage-display" src={url} /> : <Img src={url} />}
+          {!isFileEmpty(image) && <div className="AknImage-drop" style={{backgroundImage: `url("${url}")`}} />}
+          {true === wide ? <img className="AknImage-display" src={url} /> : <Img src={url} />}
         </div>
       );
     }
 
     const className = `AknImage AknImage--editable
-      ${isFileEmpty(this.props.image) ? 'AknImage--empty' : ''}
+      ${isFileEmpty(image) ? 'AknImage--empty' : ''}
       ${this.state.dropping && !this.state.loading ? 'AknImage--dropping' : ''}
       ${this.state.focusing ? 'AknImage--focusing' : ''}
       ${wide ? 'AknImage--wide' : ''}
@@ -150,9 +176,9 @@ class FileComponent extends React.Component<
         : {width: `${this.state.ratio * 100}%`};
     return (
       <div className={className}>
-        {!isFileEmpty(this.props.image) && <div className="AknImage-drop" style={{backgroundImage: `url("${url}")`}} />}
+        {!isFileEmpty(image) && <div className="AknImage-drop" style={{backgroundImage: `url("${url}")`}} />}
         <input
-          id={this.props.id}
+          id={id}
           className="AknImage-updater"
           onDrag={this.stopEvent}
           onDragStart={this.stopEvent}
@@ -165,25 +191,33 @@ class FileComponent extends React.Component<
           onDragLeave={this.dragStop.bind(this)}
           type="file"
           value=""
-          disabled={this.props.readOnly}
+          disabled={readOnly}
         />
-        {!isFileEmpty(this.props.image) ? (
-          <div className="AknImage-action">
-            {!this.props.readOnly ? (
+        {!isFileEmpty(image) && (
+          <ImageAction>
+            {!readOnly && (
               <span className="AknImage-actionItem" onClick={this.remove.bind(this)}>
-                <Trash color="#ffffff" className="AknImage-actionItemIcon" />{' '}
-                {__(`pim_asset_manager.app.image.${this.props.wide ? 'wide' : 'small'}.remove`)}
+                <Trash color={akeneoTheme.color.white} className="AknImage-actionItemIcon" />
+                {__(`pim_asset_manager.app.image.${wide ? 'wide' : 'small'}.remove`)}
               </span>
-            ) : null}
-            {isFileInStorage(this.props.image) ? (
-              <a className="AknImage-actionItem" href={getImageDownloadUrl(this.props.image)} tabIndex={-1}>
-                <Download color="#ffffff" className="AknImage-actionItemIcon" />{' '}
-                {__(`pim_asset_manager.app.image.${this.props.wide ? 'wide' : 'small'}.download`)}
+            )}
+            {isFileInStorage(image) && (
+              <a className="AknImage-actionItem" href={getImageDownloadUrl(image)} tabIndex={-1}>
+                <Download color={akeneoTheme.color.white} className="AknImage-actionItemIcon" />
+                {__(`pim_asset_manager.app.image.${wide ? 'wide' : 'small'}.download`)}
               </a>
-            ) : null}
-          </div>
-        ) : null}
-        {this.state.loading ? (
+            )}
+            <FullscreenPreview anchor={Anchor} label={label} previewModel={previewModel} attribute={attribute}>
+              <Fullscreen
+                title={__('pim_asset_manager.asset.button.fullscreen')}
+                color={akeneoTheme.color.white}
+                className="AknImage-actionItemIcon"
+              />
+              {__('pim_asset_manager.asset.button.fullscreen')}
+            </FullscreenPreview>
+          </ImageAction>
+        )}
+        {this.state.loading && (
           <div className={`AknImage-loader ${this.state.loading ? 'AknImage-loader--loading' : ''}`} style={style}>
             <div
               className="AknImage-drop"
@@ -192,20 +226,20 @@ class FileComponent extends React.Component<
               }}
             />
           </div>
-        ) : null}
-        {!isFileEmpty(this.props.image) ? (
+        )}
+        {!isFileEmpty(image) && (
           <div className="AknImage-displayContainer">
-            {true === this.props.wide ? <img className="AknImage-display" src={url} /> : <Img src={url} />}
+            {true === wide ? <img className="AknImage-display" src={url} /> : <Img src={url} />}
           </div>
-        ) : null}
-        {isFileEmpty(this.props.image) && undefined !== this.props.onImageChange ? (
+        )}
+        {isFileEmpty(image) && undefined !== onImageChange && (
           <div className="AknImage-uploader">
             <Import className="AknImage-uploaderIllustration" />
             <span className="AknImage-uploaderHelper">
-              {__(`pim_asset_manager.app.image.${this.props.wide ? 'wide' : 'small'}.upload`)}
+              {__(`pim_asset_manager.app.image.${wide ? 'wide' : 'small'}.upload`)}
             </span>
           </div>
-        ) : null}
+        )}
       </div>
     );
   }

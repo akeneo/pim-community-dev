@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -95,6 +96,11 @@ class FakeClient implements ClientInterface
         }
 
         throw new \LogicException('Request has not been catched by the Fake Client');
+    }
+
+    public function requestAsync(string $method, string $uri, array $options = []): PromiseInterface
+    {
+        throw new \Exception('The method requestAsync is not implemented for the fake client.');
     }
 
     /**

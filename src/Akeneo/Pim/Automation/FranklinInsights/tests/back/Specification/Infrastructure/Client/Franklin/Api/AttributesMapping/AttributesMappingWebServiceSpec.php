@@ -96,7 +96,7 @@ class AttributesMappingWebServiceSpec extends ObjectBehavior
         $logger->error(
             'Unable to hydrate following AttributeMapping object',
             [
-                'attribute' => ["from" => ["id" => "malformedAttribute", "label" => ["en_us" => "malformedAttribute"], "type" => "text"], "summary" => [], "status" => "pending"],
+                'attribute' => ["from" => ["id" => "malformedAttribute", "label" => ["en_us" => "malformedAttribute"], "type" => "text"], "summary" => [], "status" => "pending", "suggestions" => []],
                 'error_message' => 'Missing key "to" in attribute'
             ]
         )->shouldBeCalled();

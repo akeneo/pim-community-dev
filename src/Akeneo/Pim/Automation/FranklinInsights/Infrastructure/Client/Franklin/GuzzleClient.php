@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -45,10 +46,7 @@ class GuzzleClient implements ClientInterface
      */
     public function request(string $method, string $uri, array $options = []): ResponseInterface
     {
-        $options = $options + [
-            'headers' => ['Authorization' => $this->token],
-            'timeout' => $this->timeout,
-        ];
+        $options = $options + $this->getOptions();
 
         $response = $this->httpClient->request($method, $uri, $options);
         $response->getBody()->rewind();
@@ -62,5 +60,20 @@ class GuzzleClient implements ClientInterface
     public function setToken(string $token): void
     {
         $this->token = $token;
+    }
+
+    public function requestAsync(string $method, string $uri, array $options = []): PromiseInterface
+    {
+        $options = $options + $this->getOptions();
+
+        return $this->httpClient->requestAsync($method, $uri, $options);
+    }
+
+    private function getOptions(): array
+    {
+        return [
+            'headers' => ['Authorization' => $this->token],
+            'timeout' => $this->timeout,
+        ];
     }
 }

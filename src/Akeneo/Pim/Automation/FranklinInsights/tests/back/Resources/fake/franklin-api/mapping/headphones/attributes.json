@@ -37,7 +37,8 @@
         "23kg",
         "12kg"
       ],
-      "status": "pending"
+      "status": "pending",
+      "suggestions": []
     }, {
       "from": {
         "id": "color",
@@ -53,7 +54,10 @@
         "blue",
         "red"
       ],
-      "status": "active"
+      "status": "active",
+      "suggestions": [
+        "color"
+      ]
     }
   ]
 }

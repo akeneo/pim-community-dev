@@ -40,17 +40,11 @@ class AttributeMapping
     /** @var string[]|null */
     private $summary;
 
+    /** @var string[] */
+    private $suggestions;
+
     private $exactMatchAttributeFromOtherFamily;
 
-    /**
-     * @param string $targetAttributeCode
-     * @param string|null $targetAttributeLabel
-     * @param string|null $targetAttributeType
-     * @param string|null $pimAttributeCode
-     * @param string $status
-     * @param string[]|null $summary
-     * @param string|null $exactMatchAttributeFromOtherFamily
-     */
     public function __construct(
         string $targetAttributeCode,
         ?string $targetAttributeLabel,
@@ -58,6 +52,7 @@ class AttributeMapping
         ?string $pimAttributeCode,
         string $status,
         ?array $summary = null,
+        array $suggestions = [],
         ?string $exactMatchAttributeFromOtherFamily = null
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
@@ -66,6 +61,7 @@ class AttributeMapping
         $this->pimAttributeCode = $pimAttributeCode;
         $this->status = $status;
         $this->summary = $summary;
+        $this->suggestions = $suggestions;
         $this->exactMatchAttributeFromOtherFamily = $exactMatchAttributeFromOtherFamily;
     }
 
@@ -119,6 +115,14 @@ class AttributeMapping
     public function getSummary(): ?array
     {
         return $this->summary;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getSuggestions(): array
+    {
+        return $this->suggestions;
     }
 
     public function isMapped(): bool

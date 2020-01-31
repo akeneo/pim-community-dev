@@ -152,6 +152,16 @@
       "en_US": "Color"
     }
   },
+  "secondary_color": {
+    "code": "secondary_color",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Secondary color"
+    }
+  },
   "weight": {
     "code": "weight",
     "type": "pim_catalog_number",
@@ -160,6 +170,16 @@
     "scopable": false,
     "labels": {
       "en_US": "Weight"
+    }
+  },
+  "item_weight": {
+    "code": "item_weight",
+    "type": "pim_catalog_number",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Item weight"
     }
   },
   "specifications": {

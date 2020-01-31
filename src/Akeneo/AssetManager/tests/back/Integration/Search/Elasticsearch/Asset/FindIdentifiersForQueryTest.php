@@ -42,6 +42,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
         parent::setUp();
 
         $this->findIdentifiersForQuery = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_identifiers_for_query');
+
         $this->resetDB();
         $this->createAssetFamilyWithAttributes();
         $this->loadDataset();

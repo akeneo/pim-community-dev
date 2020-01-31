@@ -166,6 +166,7 @@ export const CreateAssetFamilyModal = ({locale, onClose, onAssetFamilyCreated}: 
                     />
                   </div>
                   {getErrorsView(errors, 'code')}
+                  {getErrorsView(errors, 'identifier')}
                 </div>
                 <button className="AknButton AknButton--apply ok" onClick={submit}>
                   {__('pim_asset_manager.asset_family.create.confirm')}

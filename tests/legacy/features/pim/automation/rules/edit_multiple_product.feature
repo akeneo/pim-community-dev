@@ -88,6 +88,7 @@ Feature: Update multiple product by applying rules
       """
     Given the product rule "copy_name" is executed
     And I am on the "my-loafer" product page
+    And I visit the "Product information" group
     When I switch the locale to "fr_FR"
     Then the product [name] should be "Mocassin blanc"
     When I am on the "boot" product page

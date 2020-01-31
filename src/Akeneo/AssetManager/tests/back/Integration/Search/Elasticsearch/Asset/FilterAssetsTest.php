@@ -60,8 +60,10 @@ class FilterAssetsTest extends SearchIntegrationTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->resetDB();
         $this->findIdentifiersForQuery = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_identifiers_for_query');
+
+        $this->resetDB();
+        $this->loadAssetFamily();
     }
 
     /**
@@ -69,10 +71,9 @@ class FilterAssetsTest extends SearchIntegrationTestCase
      */
     public function it_finds_all_assets_having_a_simple_option()
     {
-        $this->loadAssetFamily();
         $this->loadAttributeWithOptions('main_color_designers_fingerprint', ['red', 'blue']);
         $this->loadAssetHavingOption('stark', 'red');
-        $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
+        $this->flushAssetsToIndexCache();
 
         $searchResultEcommerceEnUS = $this->searchAssets(
             'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['red']]
@@ -94,7 +95,6 @@ class FilterAssetsTest extends SearchIntegrationTestCase
      */
     public function it_finds_all_assets_having_a_simple_option_on_a_specific_channel_and_locale()
     {
-        $this->loadAssetFamily();
         $this->loadAttributeWithOptions('main_color_designers_fingerprint', ['red', 'blue'], true, true);
         $this->loadAssetHavingOption('stark', 'red', 'ecommerce', 'en_US');
         $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
@@ -116,7 +116,6 @@ class FilterAssetsTest extends SearchIntegrationTestCase
      */
     public function it_searches_all_assets_having_multiple_options()
     {
-        $this->loadAssetFamily();
         $this->loadAttributeWithOptionCollection('main_color_designers_fingerprint', ['red', 'blue', 'green']);
         $this->loadAssetHavingOptionCollection('stark', ['red', 'blue']);
         $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
@@ -141,7 +140,6 @@ class FilterAssetsTest extends SearchIntegrationTestCase
      */
     public function it_searches_all_assets_having_multiple_options_on_a_specific_channel_and_locale()
     {
-        $this->loadAssetFamily();
         $this->loadAttributeWithOptionCollection('main_color_designers_fingerprint', ['red', 'blue', 'green'], true, true);
         $this->loadAssetHavingOptionCollection('stark', ['red', 'blue'], 'ecommerce', 'en_US');
         $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
@@ -244,6 +242,7 @@ class FilterAssetsTest extends SearchIntegrationTestCase
                 ])
             )
         );
+        $this->flushAssetsToIndexCache();
     }
 
     private function loadAssetHavingOptionCollection(string $assetCode, array $optionCodes, string $channel = null, string $locale = null)
@@ -265,6 +264,7 @@ class FilterAssetsTest extends SearchIntegrationTestCase
                 ])
             )
         );
+        $this->flushAssetsToIndexCache();
     }
 
     private function loadAssetFamily(): void

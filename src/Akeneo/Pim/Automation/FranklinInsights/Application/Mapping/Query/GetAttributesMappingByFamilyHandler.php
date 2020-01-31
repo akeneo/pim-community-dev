@@ -117,7 +117,8 @@ class GetAttributesMappingByFamilyHandler
                 $attributeMapping->getTargetAttributeType(),
                 $pimAttributeCode,
                 $status,
-                $attributeMapping->getSummary()
+                $attributeMapping->getSummary(),
+                $attributeMapping->getSuggestions()
             );
             $newMapping->addAttribute($newAttributeMapping);
         }

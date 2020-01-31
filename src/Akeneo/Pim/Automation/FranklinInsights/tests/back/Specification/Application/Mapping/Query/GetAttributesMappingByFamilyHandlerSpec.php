@@ -84,7 +84,7 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     ): void {
         $attributeMappingCollection = new AttributeMappingCollection();
         $colorAttribute = new AttributeMapping('color', 'Color', 'text', 'pim_color', AttributeMappingStatus::ATTRIBUTE_ACTIVE);
-        $unknownAttribute = new AttributeMapping('size', 'Size', 'text', 'unknown_pim_attribute', AttributeMappingStatus::ATTRIBUTE_ACTIVE);
+        $unknownAttribute = new AttributeMapping('size', 'Size', 'text', 'unknown_pim_attribute', AttributeMappingStatus::ATTRIBUTE_ACTIVE, ['size']);
         $attributeMappingCollection->addAttribute($colorAttribute);
         $attributeMappingCollection->addAttribute($unknownAttribute);
 
@@ -99,7 +99,7 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $query = new GetAttributesMappingByFamilyQuery($familyCode);
         $expectedMappingResponse = new AttributeMappingCollection();
         $expectedMappingResponse->addAttribute($colorAttribute);
-        $expectedMappingResponse->addAttribute(new AttributeMapping('size', 'Size', 'text', null, AttributeMappingStatus::ATTRIBUTE_PENDING));
+        $expectedMappingResponse->addAttribute(new AttributeMapping('size', 'Size', 'text', null, AttributeMappingStatus::ATTRIBUTE_PENDING, ['size']));
         $this->handle($query)->shouldBeLike($expectedMappingResponse);
     }
 

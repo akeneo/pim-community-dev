@@ -84,7 +84,7 @@ pim_asset_manager:
     validation:
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
-        should_be_unique: 'This code already exists for this asset family.'
+        should_be_unique: 'An asset family already exists with code "{{ %asset_family_identifier% }}"'
         limit_reached: 'You cannot create the asset family "{{ %asset_family_label% }}" because you have reached the limit of {{ %limit% }} asset families'
       transformation:
         limit_reached: 'You have reached the limit of {{ %limit% }} transformations'
@@ -252,6 +252,7 @@ pim_asset_manager:
       delete_all: Delete all assets
       back: Back to list
       launch_transformations: Launch transformations
+      fullscreen: Fullscreen
     product:
       attribute: Product attribute
       counter: '{{ totalCount }} result|{{ totalCount }} results'

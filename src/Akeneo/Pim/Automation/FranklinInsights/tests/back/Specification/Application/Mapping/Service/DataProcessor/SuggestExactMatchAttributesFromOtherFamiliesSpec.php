@@ -51,7 +51,7 @@ class SuggestExactMatchAttributesFromOtherFamiliesSpec extends ObjectBehavior
 
         $expectedAttributeMappingCollection = new AttributeMappingCollection();
         $expectedAttributeMappingCollection
-            ->addAttribute(new AttributeMapping('color', 'Color', 'text', null, AttributeMappingStatus::ATTRIBUTE_PENDING, null, 'color'))
+            ->addAttribute(new AttributeMapping('color', 'Color', 'text', null, AttributeMappingStatus::ATTRIBUTE_PENDING, null, [], 'color'))
             ->addAttribute(new AttributeMapping('weight', 'Weight', 'text', null, AttributeMappingStatus::ATTRIBUTE_PENDING))
             ->addAttribute(new AttributeMapping('size', 'Size', 'text', 'pim_size', AttributeMappingStatus::ATTRIBUTE_ACTIVE))
         ;

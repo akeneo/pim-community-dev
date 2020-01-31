@@ -2,13 +2,13 @@ import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {WidgetElement} from "../../../../application/helper";
 import {fetchTitleSuggestion} from "../../../fetcher";
-import {useCatalogContext, useProduct, useProductEvaluation} from "../../index";
+import {useCatalogContext} from "../../index";
 import {updateWidgetContentAnalysis} from "../../../reducer";
+import useProductAxesRates from "../../useProductAxesRates";
 
 const useFetchTitleSuggestion = (widget: WidgetElement) => {
   const {locale, channel} = useCatalogContext();
-  const product = useProduct();
-  const {evaluation} = useProductEvaluation();
+  const {axesRates, productId} = useProductAxesRates();
   const {analysis} = widget;
   const dispatchAction = useDispatch();
 
@@ -18,12 +18,12 @@ const useFetchTitleSuggestion = (widget: WidgetElement) => {
         return;
       }
 
-      if (!product.meta.id || !channel || !locale) {
+      if (!productId || !channel || !locale) {
         dispatchAction(updateWidgetContentAnalysis(widget.id, []));
         return;
       }
 
-      const result: string|null = await fetchTitleSuggestion(product.meta.id, channel, locale);
+      const result: string|null = await fetchTitleSuggestion(productId, channel, locale);
 
       if (typeof result !== "string" || result.length === 0) {
         dispatchAction(updateWidgetContentAnalysis(widget.id, []));
@@ -41,7 +41,7 @@ const useFetchTitleSuggestion = (widget: WidgetElement) => {
         suggestions
       }]));
     })();
-  }, [evaluation]);
+  }, [axesRates]);
 
   return {analysis};
 };

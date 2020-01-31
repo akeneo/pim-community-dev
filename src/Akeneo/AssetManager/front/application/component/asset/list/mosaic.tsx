@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Context} from 'akeneoassetmanager/domain/model/context';
-import AssetCard from 'akeneoassetmanager/application/component/asset/list/mosaic/asset-card';
+import AssetCard, {AssetCardWithLink} from 'akeneoassetmanager/application/component/asset/list/mosaic/asset-card';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import EmptyResult from 'akeneoassetmanager/application/component/asset/list/mosaic/empty-result';
@@ -40,6 +40,7 @@ const Mosaic = ({
   hasReachMaximumSelection,
   resultCount,
   onAssetClick,
+  assetHasLink = false,
 }: {
   scrollContainerRef?: React.RefObject<HTMLDivElement>;
   selection: AssetCode[];
@@ -49,7 +50,10 @@ const Mosaic = ({
   hasReachMaximumSelection: boolean;
   onSelectionChange: (selection: AssetCode[]) => void;
   onAssetClick?: (asset: AssetCode) => void;
+  assetHasLink?: boolean;
 }) => {
+  const AssetCardComponent = assetHasLink ? AssetCardWithLink : AssetCard;
+
   return (
     <React.Fragment>
       {hasReachMaximumSelection && <AssetCollectionLimitNotification />}
@@ -60,7 +64,7 @@ const Mosaic = ({
               const isSelected = isAssetInCollection(asset.code, selection);
 
               return (
-                <AssetCard
+                <AssetCardComponent
                   key={asset.code}
                   asset={asset}
                   context={context}

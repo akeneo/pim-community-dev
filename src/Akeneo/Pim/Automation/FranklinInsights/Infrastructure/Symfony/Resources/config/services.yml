@@ -110,3 +110,40 @@ services:
             - { name: console.command }
 
     Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Factory\FranklinUserDraftSourceFactory: ~
+
+    akeneo.pim.automation.franklin_insights.application.quality_highlights.synchronize_attributes_with_franklin:
+        class: Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeAttributesWithFranklin
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_items'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_attributes_to_apply'
+            - '@akeneo.pim.automation.franklin_insights.data_provider.quality_highlights'
+            - '@akeneo.pim.automation.franklin_insights.repository.quality_highlights_pending_items'
+            - '@monolog.logger.franklin'
+
+    akeneo.pim.automation.franklin_insights.application.quality_highlights.synchronize_families_with_franklin:
+        class: Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeFamiliesWithFranklin
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_items'
+            - '@akeneo.pim.automation.franklin_insights.data_provider.quality_highlights'
+            - '@akeneo.pim.automation.franklin_insights.repository.quality_highlights_pending_items'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_families_to_apply'
+            - '@monolog.logger.franklin'
+
+    akeneo.pim.automation.franklin_insights.application.quality_highlights.synchronize_products_with_franklin:
+        class: Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeProductsWithFranklin
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_items'
+            - '@Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectUpdatedProductsIdsToApplyQuery'
+            - '@akeneo.pim.automation.franklin_insights.data_provider.quality_highlights'
+            - '@akeneo.pim.automation.franklin_insights.repository.quality_highlights_pending_items'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.quality_highlights.select_products_to_apply'
+            - '@akeneo.pim.automation.franklin_insights.normalizer.quality_highlights.product'
+            - '@monolog.logger.franklin'
+
+    Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\PushStructureAndProductsToFranklin:
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.repository.quality_highlights_pending_items'
+            - '@akeneo.pim.automation.franklin_insights.application.quality_highlights.synchronize_families_with_franklin'
+            - '@akeneo.pim.automation.franklin_insights.application.quality_highlights.synchronize_attributes_with_franklin'
+            - '@akeneo.pim.automation.franklin_insights.application.quality_highlights.synchronize_products_with_franklin'
+            - '@akeneo.pim.automation.franklin_insights.data_provider.quality_highlights'

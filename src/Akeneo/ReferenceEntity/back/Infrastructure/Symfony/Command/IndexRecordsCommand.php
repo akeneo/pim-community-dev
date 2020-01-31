@@ -126,7 +126,6 @@ class IndexRecordsCommand extends Command
 
     /**
      * @param OutputInterface $output
-     *
      */
     protected function indexAll(OutputInterface $output): void
     {

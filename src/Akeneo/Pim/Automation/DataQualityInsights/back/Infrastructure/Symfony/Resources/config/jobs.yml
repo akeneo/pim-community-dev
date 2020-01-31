@@ -66,6 +66,7 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdsToEvaluateQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\ConsolidateDashboardRatesTasklet:
         arguments:
@@ -84,10 +85,19 @@ services:
             - '@logger'
 
     #Job parameters
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluateProductsCriteriaParameters:
+    akeneo.pim.automation.data_quality_insights.job_parameters.default_values_provider.evaluate_products_criteria:
+        class: Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyDefaultValuesProvider
+        arguments:
+            - ['data_quality_insights_evaluate_products_criteria']
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo.pim.automation.data_quality_insights.job_parameters.constraint_collection_provider.evaluate_products_criteria:
+        class: Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintCollectionProvider
+        arguments:
+            - ['data_quality_insights_evaluate_products_criteria']
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
-            - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PeriodicTasksParameters:
         tags:

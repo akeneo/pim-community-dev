@@ -38,4 +38,7 @@ export const getEditionValue = (
   locale: LocaleReference
 ): EditionValue | undefined => values.find(getValueFilter(attributeIdentifier, channel, locale));
 
+export const isEditionValue = (value: any): value is EditionValue =>
+  undefined !== (value as EditionValue).attribute?.identifier;
+
 export default EditionValue;

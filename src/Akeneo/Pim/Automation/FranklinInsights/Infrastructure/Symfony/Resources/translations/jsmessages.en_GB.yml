@@ -218,7 +218,7 @@ akeneo_franklin_insights:
       franklin_attribute_created: Number of attributes created by Franklin
       franklin_attribute_added_to_family: Number of attributes added to a family by Franklin
       credits_total: Credits total
-      credits_consumed: Credits consummed
+      credits_consumed: Credits consumed
       credits_left: Credits left
 batch_jobs:
   default_steps:

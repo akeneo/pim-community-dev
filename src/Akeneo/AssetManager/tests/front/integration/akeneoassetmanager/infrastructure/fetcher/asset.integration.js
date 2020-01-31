@@ -56,6 +56,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
         identifier: 'designer_starck_a1677570-a278-444b-ab46-baa1db199392',
         labels: {fr_FR: 'Philippe Starck'},
         assetFamily: {
+          assetCount: 123,
           attributeAsLabel: '',
           attributeAsMainMedia: '',
           attributes: [],
