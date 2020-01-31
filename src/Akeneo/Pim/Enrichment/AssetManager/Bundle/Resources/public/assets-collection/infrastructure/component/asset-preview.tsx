@@ -34,22 +34,27 @@ const Container = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  height: 100%;
 `;
 
 const AssetContainer = styled.div`
-  overflow-x: auto;
-  flex-grow: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
   margin: 0 50px;
+  height: 100%;
+  overflow-x: auto;
 `;
 
-const PreviewContainer = styled.div`
-  display: flex;
-  height: calc(100vh - 320px);
-  min-height: 450px;
-`;
+const Header = styled.div``;
 
 const ArrowButton = styled(TransparentButton)`
   margin: 0 10px;
+`;
+
+const StyledMediaPreview = styled(MediaPreview)`
+  max-height: calc(100vh - 350px);
 `;
 
 type AssetPreviewProps = {
@@ -99,18 +104,18 @@ export const AssetPreview = ({
           <Left size={44} color={akeneoTheme.color.grey100} />
         </ArrowButton>
         <AssetContainer>
-          <SubTitle>
-            {__('pim_asset_manager.breadcrumb.products')} / {productIdentifier}
-          </SubTitle>
-          <Title>{selectedAssetLabel}</Title>
-          <PreviewContainer>
-            <MediaPreview
-              previewModel={previewModel}
-              editUrl={editUrl}
-              label={selectedAssetLabel}
-              attribute={getAttributeAsMainMedia(assetFamily)}
-            />
-          </PreviewContainer>
+          <Header>
+            <SubTitle>
+              {__('pim_asset_manager.breadcrumb.products')} / {productIdentifier}
+            </SubTitle>
+            <Title>{selectedAssetLabel}</Title>
+          </Header>
+          <StyledMediaPreview
+            previewModel={previewModel}
+            editUrl={editUrl}
+            label={selectedAssetLabel}
+            attribute={getAttributeAsMainMedia(assetFamily)}
+          />
           <Carousel
             context={context}
             selectedAssetCode={selectedAsset.code}

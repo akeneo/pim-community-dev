@@ -1,6 +1,6 @@
 import * as React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
 import styled from 'styled-components';
+import __ from 'akeneoassetmanager/tools/translator';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import Download from 'akeneoassetmanager/application/component/app/icon/download';
 import Link from 'akeneoassetmanager/application/component/app/icon/link';
@@ -38,7 +38,6 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 1;
 `;
 
 const Border = styled.div`
@@ -46,14 +45,15 @@ const Border = styled.div`
   flex-direction: column;
   padding: 20px;
   border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  max-height: 100%;
 `;
 
 const Image = styled.img`
   width: auto;
   object-fit: contain;
-  max-height: calc(100vh - 480px);
   min-height: 300px;
   max-width: 100%;
+  max-height: calc(100vh - 250px);
 `;
 
 const Actions = styled.div`
@@ -91,6 +91,11 @@ const YouTubePlayer = styled.iframe`
   border: none;
 `;
 
+const ImagePlaceholder = styled.div<{alt: string}>`
+  width: 400px;
+  height: 250px;
+`;
+
 const DownloadAction = ({url, fileName}: {url: string; fileName: string}) => (
   <Action href={url} download={fileName} target="_blank">
     <Download />
@@ -118,7 +123,13 @@ const EditAction = ({url}: {url?: string}) =>
 const LazyLoadedImage = React.memo(({src, alt, ...props}: {src: string; alt: string}) => {
   const loadedSrc = useImageLoader(src);
 
-  return <Image src={loadedSrc} alt={alt} {...props} />;
+  return undefined === loadedSrc ? (
+    <div className={`AknLoadingPlaceHolderContainer`}>
+      <ImagePlaceholder alt={alt} {...props} />
+    </div>
+  ) : (
+    <Image src={loadedSrc} alt={alt} {...props} />
+  );
 });
 
 const getMediaDataPreviewUrl = (data: Data, attributeAsMainMedia?: NormalizedAttribute): string => {
@@ -233,6 +244,7 @@ type MediaPreviewProps = {
   label: string;
   editUrl?: string;
   attribute: NormalizedAttribute;
+  className?: string;
 };
 
 const Preview = ({previewModel, label, editUrl, attribute}: MediaPreviewProps) => {
@@ -266,8 +278,8 @@ const Preview = ({previewModel, label, editUrl, attribute}: MediaPreviewProps) =
   }
 };
 
-export const MediaPreview = ({previewModel, label, editUrl, attribute}: MediaPreviewProps) => (
-  <Container>
+export const MediaPreview = ({previewModel, label, editUrl, attribute, className}: MediaPreviewProps) => (
+  <Container className={className}>
     <Border>
       <ErrorBoundary errorMessage={__('pim_asset_manager.asset_preview.error')}>
         <Preview previewModel={previewModel} label={label} editUrl={editUrl} attribute={attribute} />
