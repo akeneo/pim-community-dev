@@ -26,6 +26,7 @@ const AssetThumbnail = styled.img<{highlighted: boolean}>`
   margin: 20px 20px 0 0;
   ${(props: ThemedProps<{highlighted: boolean}>) => !props.highlighted && `opacity: 0.6`};
   object-fit: contain;
+  flex-shrink: 0;
 `;
 
 const Header = styled.div`
