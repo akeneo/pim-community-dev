@@ -509,7 +509,6 @@ workflows:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
                     - test_back_phpunit
-                    - back_behat_legacy
                     - test_back_performance
                     - back_behat_legacy
                     - deploy_master_environment
