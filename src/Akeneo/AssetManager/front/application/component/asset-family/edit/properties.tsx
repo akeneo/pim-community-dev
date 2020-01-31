@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
+import __ from 'akeneoassetmanager/tools/translator';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import Form from 'akeneoassetmanager/application/component/asset-family/edit/form';
 import {
@@ -8,7 +9,6 @@ import {
   attributeAsMainMediaUpdated,
 } from 'akeneoassetmanager/application/action/asset-family/edit';
 import {deleteAssetFamily} from 'akeneoassetmanager/application/action/asset-family/delete';
-import __ from 'akeneoassetmanager/tools/translator';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
@@ -17,6 +17,8 @@ import DeleteModal from 'akeneoassetmanager/application/component/app/delete-mod
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {Button} from 'akeneoassetmanager/application/component/app/button';
+
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -74,19 +76,19 @@ class Properties extends React.Component<StateProps & DispatchProps> {
 
   render() {
     const {events, attributes, context, form, rights} = this.props;
-    const assetFamily = this.props.form.data;
+    const assetFamily = form.data;
     const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
 
     return (
-      <React.Fragment>
+      <>
         <Header
           label={__('pim_asset_manager.asset_family.tab.properties')}
           image={assetFamily.image}
           primaryAction={(defaultFocus: React.RefObject<any>) =>
             rights.assetFamily.edit ? (
-              <button className="AknButton AknButton--apply" onClick={events.onSaveEditForm} ref={defaultFocus}>
+              <Button color="green" onClick={events.onSaveEditForm} ref={defaultFocus}>
                 {__('pim_asset_manager.asset_family.button.save')}
-              </button>
+              </Button>
             ) : null
           }
           secondaryActions={() => (rights.assetFamily.delete ? this.getSecondaryActions() : null)}
@@ -121,7 +123,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
             onCancel={() => this.setState({isDeleteModalOpen: false})}
           />
         )}
-      </React.Fragment>
+      </>
     );
   }
 }
