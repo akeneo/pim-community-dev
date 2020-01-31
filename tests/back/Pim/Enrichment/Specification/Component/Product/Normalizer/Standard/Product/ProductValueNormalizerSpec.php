@@ -150,6 +150,34 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         );
     }
 
+    function it_normalizes_a_number_product_value_with_very_long_decimal(
+        $normalizer,
+        ValueInterface $value,
+        AttributeInterface $attribute,
+        $attributeRepository
+    ) {
+        $normalizer->normalize('15.50787678676788000', null, ['is_decimals_allowed' => true])
+            ->shouldNotBeCalled();
+
+        $value->getData()->willReturn('15.50787678676788000');
+        $value->getLocaleCode()->willReturn('en_US');
+        $value->getScopeCode()->willReturn('ecommerce');
+        $value->getAttributeCode()->willReturn('attribute');
+
+        $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
+        $attribute->isDecimalsAllowed()->willReturn(true);
+        $attribute->getType()->willReturn(AttributeTypes::NUMBER);
+        $attribute->isDecimalsAllowed()->willReturn(true);
+
+        $this->normalize($value)->shouldReturn(
+            [
+                'locale' => 'en_US',
+                'scope'  => 'ecommerce',
+                'data'   => '15.50787678676788',
+            ]
+        );
+    }
+
     function it_normalizes_a_number_product_value_without_decimal(
         $normalizer,
         ValueInterface $value,
@@ -174,6 +202,34 @@ class ProductValueNormalizerSpec extends ObjectBehavior
                 'locale' => 'en_US',
                 'scope'  => 'ecommerce',
                 'data'   => 15,
+            ]
+        );
+    }
+
+    function it_normalizes_a_number_product_value_with_decimal_allowed(
+        $normalizer,
+        ValueInterface $value,
+        AttributeInterface $attribute,
+        $attributeRepository
+    ) {
+        $normalizer->normalize('15.00', null, [])
+            ->shouldNotBeCalled();
+
+        $value->getData()->willReturn('15.00');
+        $value->getLocaleCode()->willReturn('en_US');
+        $value->getScopeCode()->willReturn('ecommerce');
+        $value->getAttributeCode()->willReturn('attribute');
+
+        $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
+        $attribute->isDecimalsAllowed()->willReturn(false);
+        $attribute->getType()->willReturn(AttributeTypes::NUMBER);
+        $attribute->isDecimalsAllowed()->willReturn(true);
+
+        $this->normalize($value)->shouldReturn(
+            [
+                'locale' => 'en_US',
+                'scope'  => 'ecommerce',
+                'data'   => '15.0000',
             ]
         );
     }
