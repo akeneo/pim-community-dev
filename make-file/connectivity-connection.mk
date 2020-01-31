@@ -94,7 +94,7 @@ connectivity-connection-back:
 # Tests Front
 
 connectivity-connection-unit-front:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci
 
 connectivity-connection-lint-front:
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint
@@ -102,8 +102,11 @@ connectivity-connection-lint-front:
 
 # Development
 
+connectivity-connection-unit-front_coverage:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --coverage
+
 connectivity-connection-unit-front_watch:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --watchAll --coverage
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --watchAll
 
 connectivity-connection-lint-front_fix:
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint --fix

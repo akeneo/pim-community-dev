@@ -6,7 +6,7 @@
     "scripts": {
         "eslint": "eslint --config .eslintrc.json --quiet {src,tests}/**/*.{ts,tsx}",
         "prettier": "prettier --config .prettierrc.json {src,tests}/**/*.{ts,tsx}",
-        "jest": "jest --config tests/jest.config.js"
+        "jest": "jest --config jest.config.js"
     },
     "private": true
 }
