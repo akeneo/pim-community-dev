@@ -138,9 +138,8 @@ class ProductValueNormalizer implements NormalizerInterface
         }
 
         $data = $value->getData();
-
         $formattedNumber = number_format($data, static::DECIMAL_PRECISION, '.', '');
 
-        return strlen($formattedNumber) > strlen($data) ? $formattedNumber : rtrim($data, '0');
+        return strlen($formattedNumber) >= strlen($data) ? $formattedNumber : rtrim($data, '0');
     }
 }
