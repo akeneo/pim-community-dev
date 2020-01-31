@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9075: Fix mass_edit_rule key translation
+
 # 3.2.35 (2020-01-29)
 
 - PIM-9067: Fix mass action product edit when all rows are selected
