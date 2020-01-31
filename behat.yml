@@ -1,7 +1,7 @@
 contexts: &context
     -   Context\FeatureContext:
             -   base_url: 'http://httpd-behat/'
-                timeout: 20000
+                timeout: 25000
                 window_width: 1280
                 window_height: 1024
     -   Context\FixturesContext:
