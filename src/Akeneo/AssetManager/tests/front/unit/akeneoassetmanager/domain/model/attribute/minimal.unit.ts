@@ -1,23 +1,10 @@
-import {
-  denormalizeMinimalAttribute,
-  MinimalConcreteAttribute,
-  MinimalAssetConcreteAttribute,
-} from 'akeneoassetmanager/domain/model/attribute/minimal';
+import {denormalizeMinimalAttribute, MinimalConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/minimal';
 
 const description = denormalizeMinimalAttribute({
   asset_family_identifier: 'designer',
   code: 'description',
   type: 'text',
   labels: {en_US: 'Description'},
-  value_per_locale: true,
-  value_per_channel: false,
-});
-const brands = denormalizeMinimalAttribute({
-  asset_family_identifier: 'designer',
-  code: 'brands',
-  type: 'asset',
-  asset_type: 'brands',
-  labels: {en_US: 'Brands'},
   value_per_locale: true,
   value_per_channel: false,
 });
@@ -40,26 +27,15 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
     expect(description.getLabel('fr_fr', false)).toEqual('');
     expect(description.getLabelCollection()).toEqual({en_US: 'Description'});
   });
-  test('I can create a new asset attribute with a identifier and labels', () => {
-    expect(brands.getAssetFamilyIdentifier()).toEqual('designer');
-    expect(brands.getCode()).toEqual('brands');
-    expect(brands.getType()).toEqual('asset');
-    expect(brands.getLabel('en_US')).toEqual('Brands');
-    expect(brands.getLabel('fr_fr')).toEqual('[brands]');
-    expect(brands.getLabel('fr_fr', false)).toEqual('');
-    expect(brands.getLabelCollection()).toEqual({en_US: 'Brands'});
-  });
 
-  test('I can normalize a asset attribute', () => {
-    expect(brands.normalize()).toEqual({
-      code: 'brands',
-      labels: {en_US: 'Brands'},
-      asset_type: 'brands',
-      asset_family_identifier: 'designer',
-      type: 'asset',
-      value_per_channel: false,
-      value_per_locale: true,
-    });
+  test('I can create a new media file with a identifier and labels', () => {
+    expect(frontView.getAssetFamilyIdentifier()).toEqual('designer');
+    expect(frontView.getCode()).toEqual('front_fiew');
+    expect(frontView.getType()).toEqual('media_file');
+    expect(frontView.getLabel('en_US')).toEqual('Front View');
+    expect(frontView.getLabel('fr_fr')).toEqual('[front_fiew]');
+    expect(frontView.getLabel('fr_fr', false)).toEqual('');
+    expect(frontView.getLabelCollection()).toEqual({en_US: 'Front View'});
   });
 
   test('I cannot create a malformed attribute', () => {
@@ -68,12 +44,9 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
     }).toThrow('Attribute expects a boolean as valuePerChannel');
 
     expect(() => {
-      new MinimalAssetConcreteAttribute('designer', 'brands', {en_US: 'Brands'}, 'text', true, false);
-    }).toThrow('MinimalAssetAttribute type needs to be "asset" or "asset_collection"');
-
-    expect(() => {
       new MinimalConcreteAttribute('designer', 'front_view', {en_US: 'Front View'}, 'text');
     }).toThrow('Attribute expects a boolean as valuePerLocale');
+
     expect(() => {
       new MinimalConcreteAttribute('designer', 'front_view', {en_US: 'Front View'});
     }).toThrow('Attribute expects a string as attribute type');

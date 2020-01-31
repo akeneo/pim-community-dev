@@ -12,16 +12,6 @@ services:
         tags:
             - { name: akeneo_assetmanager.attribute_factory }
 
-    akeneo_assetmanager.application.factory.asset_attribute_factory:
-        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\AssetAttributeFactory
-        tags:
-            - { name: akeneo_assetmanager.attribute_factory }
-
-    akeneo_assetmanager.application.factory.asset_collection_attribute_factory:
-        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\AssetCollectionAttributeFactory
-        tags:
-            - { name: akeneo_assetmanager.attribute_factory }
-
     akeneo_assetmanager.application.factory.option_attribute_factory:
         class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\OptionAttributeFactory
         tags:

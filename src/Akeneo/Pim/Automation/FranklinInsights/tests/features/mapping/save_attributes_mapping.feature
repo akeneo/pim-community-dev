@@ -16,7 +16,7 @@ Feature: Map the PIM attributes with Franklin attributes
     Then Franklin's attribute product_weight should be mapped to weight
     But Franklin's attribute color should not be mapped
 
-  Scenario: Successfully udpdate the attributes mapping
+  Scenario: Successfully update the attributes mapping
     Given the family "router"
     And Franklin is configured with a valid token
     And a predefined attributes mapping for the family "router" as follows:

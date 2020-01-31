@@ -5,7 +5,7 @@ import {Label} from 'akeneoassetmanager/application/component/app/label';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import CompletenessBadge from 'akeneoassetmanager/application/component/asset/list/mosaic/completeness-badge';
-import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {getAssetEditUrl, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import ListAsset, {
   assetHasCompleteness,
   getAssetLabel,
@@ -61,6 +61,25 @@ const ImageContainer = styled.div<ImageContainerProps>`
   }
 `;
 
+type AssetCardProps = {
+  asset: ListAsset;
+  context: Context;
+  isSelected: boolean;
+  isDisabled: boolean;
+  onSelectionChange: (code: AssetCode, value: boolean) => void;
+  onClick?: (code: AssetCode) => void;
+};
+
+export const AssetCardWithLink = ({...props}: AssetCardProps) => {
+  const assetUrl = getAssetEditUrl(props.asset);
+
+  return (
+    <a href={assetUrl} onClick={e => e.preventDefault()}>
+      <AssetCard {...props} />
+    </a>
+  );
+};
+
 const AssetCard = ({
   asset,
   context,
@@ -68,14 +87,7 @@ const AssetCard = ({
   onSelectionChange,
   isDisabled,
   onClick,
-}: {
-  asset: ListAsset;
-  context: Context;
-  isSelected: boolean;
-  isDisabled: boolean;
-  onSelectionChange: (code: AssetCode, value: boolean) => void;
-  onClick?: (code: AssetCode) => void;
-}) => {
+}: AssetCardProps) => {
   const [url, setUrl] = React.useState<string | null>(null);
   let isDisplayed = true;
   React.useEffect(() => {

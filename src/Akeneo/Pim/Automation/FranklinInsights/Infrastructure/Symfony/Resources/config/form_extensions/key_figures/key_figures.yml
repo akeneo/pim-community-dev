@@ -64,4 +64,10 @@ extensions:
         parent: akeneo-franklin-insights-key-figures-structure-improvements
         targetZone: content
         config:
-            axes: [franklin_attribute_created, franklin_attribute_added_to_family]
+            axes:
+                - franklin_attribute_created
+                - franklin_attribute_added_to_family
+                - franklin_values_validated
+                - franklin_values_in_error
+                - franklin_values_suggested
+                - franklin_names_and_values_suggested

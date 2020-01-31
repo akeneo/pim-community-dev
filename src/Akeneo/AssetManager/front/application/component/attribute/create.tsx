@@ -12,16 +12,13 @@ import {
   attributeCreationTypeUpdated,
   attributeCreationValuePerLocaleUpdated,
   attributeCreationValuePerChannelUpdated,
-  attributeCreationAssetTypeUpdated,
 } from 'akeneoassetmanager/domain/event/attribute/create';
 import {createAttribute} from 'akeneoassetmanager/application/action/attribute/create';
 import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import {getAttributeTypes, AttributeType} from 'akeneoassetmanager/application/configuration/attribute';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
-import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
-import {isAssetAttributeType} from 'akeneoassetmanager/domain/model/attribute/minimal';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Key from 'akeneoassetmanager/tools/key';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
 import {Asset} from 'akeneoassetmanager/application/component/app/illustration/asset';
@@ -38,7 +35,6 @@ interface StateProps {
     type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
-    asset_type: string;
   };
   errors: ValidationError[];
 }
@@ -48,7 +44,6 @@ interface DispatchProps {
     onCodeUpdated: (value: string) => void;
     onLabelUpdated: (value: string, locale: string) => void;
     onTypeUpdated: (type: string) => void;
-    onAssetTypeUpdated: (assetType: string) => void;
     onValuePerLocaleUpdated: (valuePerLocale: boolean) => void;
     onValuePerChannelUpdated: (valuePerChannel: boolean) => void;
     onCancel: () => void;
@@ -89,37 +84,6 @@ const AttributeTypeItemView = ({
   );
 };
 
-const AssetTypeItemView = ({
-  isOpen,
-  element,
-  isActive,
-  onClick,
-}: {
-  isOpen: boolean;
-  element: DropdownElement;
-  isActive: boolean;
-  onClick: (element: DropdownElement) => void;
-}) => {
-  const className = `AknDropdown-menuLink AknDropdown-menuLink--withImage ${
-    isActive ? 'AknDropdown-menuLink--active' : ''
-  }`;
-
-  return (
-    <div
-      className={className}
-      data-identifier={element.identifier}
-      onClick={() => onClick(element)}
-      onKeyPress={event => {
-        if (Key.Space === event.key) onClick(element);
-      }}
-      tabIndex={isOpen ? 0 : -1}
-    >
-      <img className="AknDropdown-menuLinkImage" src={getImageShowUrl(element.original.getImage(), 'thumbnail')} />
-      <span>{element.label}</span>
-    </div>
-  );
-};
-
 class Create extends React.Component<CreateProps> {
   private labelInput: HTMLInputElement;
   public props: CreateProps;
@@ -144,10 +108,6 @@ class Create extends React.Component<CreateProps> {
 
   private onTypeUpdate = (value: DropdownElement) => {
     this.props.events.onTypeUpdated(value.identifier);
-  };
-
-  private onAssetTypeUpdate = (value: DropdownElement) => {
-    this.props.events.onAssetTypeUpdated(value.identifier);
   };
 
   private onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -199,7 +159,7 @@ class Create extends React.Component<CreateProps> {
                         className="AknTextField AknTextField--light"
                         id="pim_asset_manager.attribute.create.input.label"
                         name="label"
-                        value={this.props.data.labels[this.props.context.locale]}
+                        value={this.props.data.labels[this.props.context.locale] || ''}
                         onChange={this.onLabelUpdate}
                         onKeyPress={this.onKeyPress}
                       />
@@ -254,34 +214,6 @@ class Create extends React.Component<CreateProps> {
                     </div>
                     {getErrorsView(this.props.errors, 'type')}
                   </div>
-                  {isAssetAttributeType(this.props.data.type) ? (
-                    <div className="AknFieldContainer" style={{position: 'static'}} data-code="asset_type">
-                      <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                        <label
-                          className="AknFieldContainer-label"
-                          htmlFor="pim_asset_manager.attribute.create.input.asset_type"
-                        >
-                          {__('pim_asset_manager.attribute.create.input.asset_type')}
-                        </label>
-                      </div>
-                      <div className="AknFieldContainer-inputContainer">
-                        <Dropdown
-                          ItemView={AssetTypeItemView}
-                          label={__('pim_asset_manager.attribute.create.input.asset_type')}
-                          elements={this.state.assetFamilies.map((assetFamily: AssetFamily) => ({
-                            identifier: assetFamily.identifier,
-                            label: getAssetFamilyLabel(assetFamily, this.props.context.locale),
-                            original: assetFamily,
-                          }))}
-                          selectedElement={this.props.data.asset_type}
-                          onSelectionChange={this.onAssetTypeUpdate}
-                          allowEmpty={true}
-                          placeholder={__('pim_asset_manager.attribute.create.placeholder.asset_type')}
-                        />
-                      </div>
-                      {getErrorsView(this.props.errors, 'assetType')}
-                    </div>
-                  ) : null}
                   <div className="AknFieldContainer" style={{position: 'static'}} data-code="valuePerChannel">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
@@ -373,9 +305,6 @@ export default connect(
         },
         onTypeUpdated: (value: string) => {
           dispatch(attributeCreationTypeUpdated(value));
-        },
-        onAssetTypeUpdated: (value: string) => {
-          dispatch(attributeCreationAssetTypeUpdated(value));
         },
         onValuePerLocaleUpdated: (valuePerLocale: boolean) => {
           dispatch(attributeCreationValuePerLocaleUpdated(valuePerLocale));

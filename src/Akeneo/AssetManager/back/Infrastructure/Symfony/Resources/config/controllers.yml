@@ -52,6 +52,14 @@ services:
         - '@validator'
         - '@akeneo_assetmanager.application.asset_family.delete_asset_family_handler'
 
+    akeneo_assetmanager.infrastructure.action.asset_family.execute_product_link_rules:
+        class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\ExecuteProductLinkRulesAction
+        arguments:
+            - '@Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAllAssetFamilyAssetsHandler'
+            - '@security.token_storage'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@oro_security.security_facade'
+
     # Asset Family Permissions
     akeneo_assetmanager.infrastructure.action.asset_family_permission.get:
         class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamilyPermission\GetAction
@@ -123,6 +131,7 @@ services:
             - '@akeneo_assetmanager.application.factory.asset.edit_asset_command_factory'
             - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory'
             - '@akeneo_assetmanager.application.asset.link_assets.link_asset_handler'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
 
     akeneo_assetmanager.infrastructure.action.asset.index:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\IndexAction
@@ -145,6 +154,7 @@ services:
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@security.token_storage'
             - '@asset_manager_serializer'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
 
     akeneo_assetmanager.infrastructure.action.asset.delete:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\DeleteAction
@@ -161,6 +171,7 @@ services:
             - '@oro_security.security_facade'
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@security.token_storage'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
 
     akeneo_assetmanager.infrastructure.action.image_preview:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\ImagePreviewAction
@@ -177,6 +188,7 @@ services:
             - '@akeneo_file_storage.file_storage.path_generator'
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@akeneo_file_storage.repository.file_info'
+            - '@asset_manager_serializer'
 
     # Connector
     akeneo_assetmanager.infrastructure.connector.action.asset.get:
@@ -257,6 +269,7 @@ services:
             - '@validator'
             - '@akeneo_assetmanager.infrastructure.connector.action.asset.batch_assets_to_link'
             - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
 
     akeneo_assetmanager.infrastructure.connector.action.asset.delete:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\DeleteAssetAction
@@ -278,6 +291,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.connector.api.asset_list_validator'
             - '@akeneo_assetmanager.infrastructure.connector.action.asset.batch_assets_to_link'
             - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
             - '%asset_family_connector_maximum_assets_to_process_per_request%'
 
     akeneo_assetmanager.infrastructure.connector.action.asset.batch_assets_to_link:

@@ -17,6 +17,8 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetComm
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\IndexAssetEventAggregator;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -55,13 +57,17 @@ class EditAction
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
+    /** @var IndexAssetEventAggregator */
+    private $indexAssetEventAggregator;
+
     public function __construct(
         EditAssetCommandFactory $editAssetCommandFactory,
         EditAssetHandler $editAssetHandler,
         ValidatorInterface $validator,
         CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        EventAggregatorInterface $indexAssetEventAggregator
     ) {
         $this->editAssetCommandFactory = $editAssetCommandFactory;
         $this->editAssetHandler = $editAssetHandler;
@@ -69,6 +75,7 @@ class EditAction
         $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
+        $this->indexAssetEventAggregator = $indexAssetEventAggregator;
     }
 
     public function __invoke(Request $request): Response
@@ -98,6 +105,8 @@ class EditAction
         } catch (FileTransferException | FileRemovalException $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage(), $exception);
         }
+
+        $this->indexAssetEventAggregator->flushEvents();
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

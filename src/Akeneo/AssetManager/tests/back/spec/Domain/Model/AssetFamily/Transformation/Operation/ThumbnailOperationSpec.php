@@ -104,7 +104,7 @@ class ThumbnailOperationSpec extends ObjectBehavior
             'height' => 100,
             'foo' => 'bar',
         ]]);
-        $this->shouldThrow(new \InvalidArgumentException('The property "foo" is not defined and the definition does not allow additional properties.'))
+        $this->shouldThrow(new \InvalidArgumentException('The property "foo" was not expected.'))
             ->duringInstantiation();
     }
 }

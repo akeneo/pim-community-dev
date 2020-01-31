@@ -34,8 +34,8 @@ class CountAssetsTest extends SearchIntegrationTestCase
     public function setUp(): void
     {
         parent::setUp();
-
         $this->countAssets = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets');
+
         $this->resetDB();
         $this->createAssetFamilyWithAttributes();
     }
@@ -99,6 +99,7 @@ class CountAssetsTest extends SearchIntegrationTestCase
                 ValueCollection::fromValues([])
             )
         );
+        $this->flushAssetsToIndexCache();
         $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->refresh();
     }
 }

@@ -10,6 +10,7 @@
         "picture",
         "description",
         "release_date",
+        "color",
         "weight",
         "specifications",
         "connectivity"

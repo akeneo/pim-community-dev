@@ -35,6 +35,7 @@ export interface AssetFamily {
   transformations: TransformationCollection;
   namingConvention: NamingConvention;
   productLinkRules: ProductLinkRuleCollection;
+  assetCount?: number;
 }
 
 export const createEmptyAssetFamily = (): AssetFamily => ({
@@ -61,6 +62,7 @@ export const createAssetFamilyFromNormalized = (normalizedAssetFamily: any): Ass
   transformations: denormalizeAssetFamilyTransformations(normalizedAssetFamily.transformations),
   namingConvention: denormalizeAssetFamilyNamingConvention(normalizedAssetFamily.namingConvention),
   productLinkRules: denormalizeAssetFamilyProductLinkRules(normalizedAssetFamily.product_link_rules),
+  assetCount: normalizedAssetFamily.asset_count,
 });
 
 export const getAssetFamilyLabel = (

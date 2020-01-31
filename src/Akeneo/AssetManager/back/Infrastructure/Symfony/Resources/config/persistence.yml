@@ -71,11 +71,6 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_assetmanager.infrastructure.persistence.query.asset_family_is_linked_to_at_least_one_asset_family_attribute:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlAssetFamilyIsLinkedToAtLeastOneAssetFamilyAttribute
-        arguments:
-            - '@database_connection'
-
     akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_label:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyAttributeAsLabel
         arguments:
@@ -197,6 +192,10 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetCodesByAssetFamily:
+        arguments:
+            - '@database_connection'
+
     akeneo_assetmanager.infrastructure.persistence.query.find_codes_by_identifiers:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindCodesByIdentifiers
         arguments:
@@ -295,20 +294,6 @@ services:
         tags:
             - { name: akeneo_assetmanager.attribute_hydrator }
 
-    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.asset_attribute_hydrator:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AssetAttributeHydrator
-        arguments:
-            - '@database_connection'
-        tags:
-            - { name: akeneo_assetmanager.attribute_hydrator }
-
-    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.asset_collection_attribute_hydrator:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AssetCollectionAttributeHydrator
-        arguments:
-            - '@database_connection'
-        tags:
-            - { name: akeneo_assetmanager.attribute_hydrator }
-
     akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.option_attribute_hydrator:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\OptionAttributeHydrator
         arguments:
@@ -380,13 +365,6 @@ services:
     akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset_item_value_hydrator_registry:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ValueHydratorRegistry
 
-    akeneo_assetmanager.infrastructure.persistence.asset_item.hydrator.asset_value:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\AssetValueHydrator
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_labels_by_codes'
-        tags:
-            - { name: akeneo_assetmanager.asset_item_value_hydrator }
-
     akeneo_assetmanager.infrastructure.persistence.asset_item.hydrator.media_link_hydrator:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\MediaLinkValueHydrator
         tags:
@@ -439,20 +417,6 @@ services:
         tags:
             - { name: akeneo_assetmanager.data_hydrator }
 
-    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset_data:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetDataHydrator
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_codes_by_identifiers'
-        tags:
-            - { name: akeneo_assetmanager.data_hydrator }
-
-    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset_collection_data:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetCollectionDataHydrator
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_codes_by_identifiers'
-        tags:
-            - { name: akeneo_assetmanager.data_hydrator }
-
     akeneo_assetmanager.infrastructure.persistence.asset.hydrator.option_data:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\OptionDataHydrator
         tags:
@@ -489,20 +453,6 @@ services:
 
     akeneo_assetmanager.infrastructure.persistence.asset.transformer.image_connector_value:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\MediaFileConnectorValueTransformer
-        tags:
-            - { name: akeneo_assetmanager.connector_value_transformer }
-
-    akeneo_assetmanager.infrastructure.persistence.asset.transformer.asset_connector_value:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\AssetConnectorValueTransformer
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_codes_by_identifiers'
-        tags:
-            - { name: akeneo_assetmanager.connector_value_transformer }
-
-    akeneo_assetmanager.infrastructure.persistence.asset.transformer.asset_collection_connector_value:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\AssetCollectionConnectorValueTransformer
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_codes_by_identifiers'
         tags:
             - { name: akeneo_assetmanager.connector_value_transformer }
 

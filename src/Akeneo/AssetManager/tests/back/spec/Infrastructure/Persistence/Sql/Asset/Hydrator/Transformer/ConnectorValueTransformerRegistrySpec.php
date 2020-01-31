@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerRegistry;
 use PhpSpec\ObjectBehavior;
@@ -47,11 +47,11 @@ class ConnectorValueTransformerRegistrySpec extends ObjectBehavior
     function it_should_throws_an_exception_if_no_transformer_supports_the_given_type(
         $textTransformer,
         $imageTransformer,
-        AssetAttribute $assetAttribute
+        MediaLinkAttribute $mediaLinkAttribute
     ) {
-        $textTransformer->supports($assetAttribute)->willReturn(false);
-        $imageTransformer->supports($assetAttribute)->willReturn(false);
+        $textTransformer->supports($mediaLinkAttribute)->willReturn(false);
+        $imageTransformer->supports($mediaLinkAttribute)->willReturn(false);
 
-        $this->shouldThrow(\RuntimeException::class)->during('getTransformer', [$assetAttribute]);
+        $this->shouldThrow(\RuntimeException::class)->during('getTransformer', [$mediaLinkAttribute]);
     }
 }

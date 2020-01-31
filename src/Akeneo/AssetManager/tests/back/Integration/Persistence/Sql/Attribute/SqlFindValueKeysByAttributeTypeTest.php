@@ -7,7 +7,6 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
@@ -68,13 +67,6 @@ class SqlFindValueKeysByAttributeTypeTest extends SqlIntegrationTestCase
         $this->assertContains(sprintf('%s_ecommerce_fr_FR', $identifiers['option']), $optionValueKeys);
         $this->assertContains(sprintf('%s_mobile_de_DE', $identifiers['option']), $optionValueKeys);
         $this->assertContains(sprintf('%s_print_en_US', $identifiers['option']), $optionValueKeys);
-
-        $assetCollectionValueKeys = $this->findValueKeysByAttributeType->find($designer, ['asset_collection']);
-        $this->assertCount(4, $assetCollectionValueKeys);
-        $this->assertContains(sprintf('%s_ecommerce_en_US', $identifiers['asset_collection']), $assetCollectionValueKeys);
-        $this->assertContains(sprintf('%s_ecommerce_fr_FR', $identifiers['asset_collection']), $assetCollectionValueKeys);
-        $this->assertContains(sprintf('%s_mobile_de_DE', $identifiers['asset_collection']), $assetCollectionValueKeys);
-        $this->assertContains(sprintf('%s_print_en_US', $identifiers['asset_collection']), $assetCollectionValueKeys);
     }
 
     private function resetDB(): void
@@ -138,23 +130,6 @@ class SqlFindValueKeysByAttributeTypeTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(true)
         );
         $attributeRepository->create($optionAttribute);
-
-        $attrCode = AttributeCode::fromString('asset_collection_attr');
-        $identifier = $attributeRepository->nextIdentifier($assetFamilyIdentifier, $attrCode);
-        $identifiers['asset_collection'] = $identifier;
-        $assetCollAttribute = AssetCollectionAttribute::create(
-            $identifier,
-            $assetFamilyIdentifier,
-            $attrCode,
-            LabelCollection::fromArray(['fr_FR' => 'dummy label']),
-            AttributeOrder::fromInteger($this->order++),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeIsReadOnly::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AssetFamilyIdentifier::fromString('designer')
-        );
-        $attributeRepository->create($assetCollAttribute);
 
         return $identifiers;
     }

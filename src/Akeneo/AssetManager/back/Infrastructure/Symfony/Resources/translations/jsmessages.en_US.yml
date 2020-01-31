@@ -53,6 +53,7 @@ pim_asset_manager:
     previous: Previous asset
     next: Next asset
     empty_main_media: This asset has no media.
+    other_main_media: We cannot generate the preview of this asset.
     edit_asset: Edit asset
     download: Download
     copy_url: Copy URL
@@ -83,7 +84,7 @@ pim_asset_manager:
     validation:
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
-        should_be_unique: 'This code already exists for this asset family.'
+        should_be_unique: 'An asset family already exists with code "{{ %asset_family_identifier% }}"'
         limit_reached: 'You cannot create the asset family "{{ %asset_family_label% }}" because you have reached the limit of {{ %limit% }} asset families'
       transformation:
         limit_reached: 'You have reached the limit of {{ %limit% }} transformations'
@@ -92,6 +93,7 @@ pim_asset_manager:
         attribute_reference_should_exist: 'The attribute "{{ %attribute_code% }}" does not exist for this asset family'
         filename_is_not_unique: 'A transformation with filename''s prefix "{{ %filename_prefix% }}" and suffix "{{ %filename_suffix% }}" already exists for attribute source "{{ %attribute_code% }}"'
         code_is_not_unique: 'You cannot define two transformations with the same code "{{ %transformation_code% }}"'
+        unknown_extra_field: 'The property {{ {{ field }} }} was not expected.'
       naming_convention:
         property_should_exist: 'The property "{{ %property% }}" does not exist for this asset family'
         not_main_media_attribute_code: 'Expected property "{{ %property% }}" to match the code of the attribute as main media.'
@@ -115,6 +117,7 @@ pim_asset_manager:
       create: Create an asset family
       edit: Edit family
       view: View family
+      execute_product_link_rules: Execute rules
     permission:
       title: Asset family permissions
     title: Assets
@@ -140,6 +143,11 @@ pim_asset_manager:
         title: 'Welcome to your new asset management area!'
         description: 'You can define here up to 2 product link rules by asset family.'
         link: 'If you want to dig into the Product Link Rules feature, click here'
+      execute_rules:
+        confirm_title: Confirm execution
+        confirm_content: Are you sure you want to execute all the rules? (this could take a long time)
+        execute_rules: Execute rules
+        cancel: Cancel
     properties:
       title: Asset family properties
       identifier: Code
@@ -193,6 +201,9 @@ pim_asset_manager:
       compute_transformations:
         success: Transformations have been launched. Once this job is finished, you will see your new variations updated in your assets.
         fail: An error occurred when trying to compute the transformations
+      execute_product_link_rules:
+        success: Product link rules have been launched
+        fail: An error occured when trying to launch the product link rules
     helper:
       title: Welcome to the Asset Manager!
       no_asset:
@@ -241,6 +252,7 @@ pim_asset_manager:
       delete_all: Delete all assets
       back: Back to list
       launch_transformations: Launch transformations
+      fullscreen: Fullscreen
     product:
       attribute: Product attribute
       counter: '{{ totalCount }} result|{{ totalCount }} results'

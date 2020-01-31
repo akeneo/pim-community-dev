@@ -175,7 +175,7 @@ class AttributeMappingCollectionSpec extends ObjectBehavior
             $franklinAttrCodes[] = $attrMapping;
         }
 
-        $expectedAttrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMappingStatus::ATTRIBUTE_PENDING, null, 'pim_weight');
+        $expectedAttrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMappingStatus::ATTRIBUTE_PENDING, null, [], 'pim_weight');
 
         Assert::eq(
             $franklinAttrCodes,

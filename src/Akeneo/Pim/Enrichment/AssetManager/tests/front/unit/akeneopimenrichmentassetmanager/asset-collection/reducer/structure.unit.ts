@@ -9,9 +9,11 @@ import {
   selectLocales,
   selectFamily,
   selectRuleRelations,
+  selectAttributeGroupList,
   updateChannels,
   updateFamily,
   updateRuleRelations,
+  updateAttributeGroups,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {channelFetcher, fetchChannels} from 'akeneoassetmanager/infrastructure/fetcher/channel';
 import {
@@ -19,6 +21,7 @@ import {
   fetchFamily,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family';
 import {fetchRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/rule-relation';
+import {attributeGroupFetcher, fetchAssetAttributeGroups} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute-group';
 
 jest.mock('pim/fetcher-registry', () => {});
 jest.mock('pimee/rule-manager', () => {});
@@ -27,6 +30,8 @@ fetchFamily = jest.fn();
 fetchRuleRelations = jest.fn();
 channelFetcher = jest.fn();
 familyFetcher = jest.fn();
+attributeGroupFetcher = jest.fn();
+fetchAssetAttributeGroups = jest.fn();
 
 /**
  *  REDUCER TESTS
@@ -386,4 +391,54 @@ test('It should be able to dispatch an action to update the rule relation list',
   await updateRuleRelations()(dispatch);
   expect(fetchRuleRelations).toBeCalled();
   expect(dispatch).toBeCalledWith({type: 'RULE_RELATION_LIST_UPDATED', ruleRelations});
+});
+
+test('It should update the attribute group list', () => {
+  const state = {attributes: [], attributeGroups: {}, channels: [], family: null, ruleRelations: []};
+  const attributeGroups = {
+    'marketing': {
+      'code': 'marketing',
+      'sort_order': 1,
+      'labels': {'en_US': 'Marketing Label US', 'fr_FR': 'Marketing Label FR', 'de_DE': 'Marketing Label DE'},
+    },
+  };
+  const newState = structureReducer(state, {
+    type: 'ATTRIBUTE_GROUP_LIST_UPDATED',
+    attributeGroups,
+  });
+
+  expect(newState).toMatchObject({attributes: [], attributeGroups, channels: [], family: null, ruleRelations: []});
+});
+
+test('It should be able to select attribute groups from the state', () => {
+  const attributeGroups = {
+    'marketing': {
+      'code': 'marketing',
+      'sort_order': 1,
+      'labels': {'en_US': 'Marketing Label US', 'fr_FR': 'Marketing Label FR', 'de_DE': 'Marketing Label DE'},
+    },
+  };
+  const state = {
+    context: {channel: 'ecommerce', locale: 'en_US'},
+    structure: {attributes: [], channels: [], family: null, ruleRelations: [], attributeGroups},
+    values: [],
+  };
+
+  expect(selectAttributeGroupList(state)).toEqual(attributeGroups);
+});
+
+test('It should be able to dispatch an action to update the attribute group list', async () => {
+  const attributeGroups = {
+    'marketing': {
+      'code': 'marketing',
+      'sort_order': 1,
+      'labels': {'en_US': 'Marketing Label US', 'fr_FR': 'Marketing Label FR', 'de_DE': 'Marketing Label DE'},
+    },
+  };
+  const dispatch = jest.fn();
+  fetchAssetAttributeGroups.mockImplementation(attributeGroupFetcher => () => attributeGroups);
+
+  await updateAttributeGroups()(dispatch);
+  expect(fetchAssetAttributeGroups).toBeCalled();
+  expect(dispatch).toBeCalledWith({type: 'ATTRIBUTE_GROUP_LIST_UPDATED', attributeGroups});
 });

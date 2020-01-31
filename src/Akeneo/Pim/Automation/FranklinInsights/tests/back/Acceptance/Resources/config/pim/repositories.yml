@@ -36,3 +36,6 @@ services:
 
     akeneo.pim.automation.franklin_insights.repository.franklin_attribute_added_to_family:
         class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryFranklinAttributeAddedToFamilyRepository'
+
+    akeneo.pim.automation.franklin_insights.repository.quality_highlights_pending_items:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryPendingItemsRepository'

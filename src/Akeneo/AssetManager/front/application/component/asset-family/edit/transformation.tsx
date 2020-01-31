@@ -19,7 +19,7 @@ import {getErrorsView} from 'akeneoassetmanager/application/component/app/valida
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 import {Link} from 'akeneoassetmanager/application/component/app/link';
-import {Button, Buttons} from 'akeneoassetmanager/application/component/app/button';
+import {Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import {
   HelperSection,
@@ -107,7 +107,7 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
           label={__('pim_asset_manager.asset_family.tab.transformations')}
           image={null}
           primaryAction={(defaultFocus: React.RefObject<any>) => (
-            <Buttons>
+            <ButtonContainer>
               <Button color="outline" onClick={events.onLaunchComputeTransformations}>
                 {__('pim_asset_manager.asset.button.launch_transformations')}
               </Button>
@@ -116,7 +116,7 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
                   {__('pim_asset_manager.asset_family.button.save')}
                 </button>
               )}
-            </Buttons>
+            </ButtonContainer>
           )}
           secondaryActions={() => null}
           withLocaleSwitcher={false}

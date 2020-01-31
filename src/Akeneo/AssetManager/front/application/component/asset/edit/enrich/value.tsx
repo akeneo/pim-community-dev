@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
@@ -13,6 +14,10 @@ import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/at
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {getValuesForChannelAndLocale, isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
+
+const NoZIndexFieldContainer = styled.div.attrs(() => ({className: 'AknFieldContainer'}))`
+  z-index: unset;
+`;
 
 export default (
   asset: EditionAsset,
@@ -50,9 +55,8 @@ export default (
     const canEditData = canEditAsset && canEditAttribute && canEditLocale;
 
     return (
-      <div
+      <NoZIndexFieldContainer
         key={attributeIdentifierStringValue(value.attribute.identifier)}
-        className="AknFieldContainer"
         data-code={value.attribute.code}
       >
         <div className="AknFieldContainer-header AknFieldContainer-header--light AknFieldContainer-header AknFieldContainer-header--light--small">
@@ -100,7 +104,7 @@ export default (
           </ErrorBoundary>
         </div>
         {getErrorsView(errors, value)}
-      </div>
+      </NoZIndexFieldContainer>
     );
   });
 };

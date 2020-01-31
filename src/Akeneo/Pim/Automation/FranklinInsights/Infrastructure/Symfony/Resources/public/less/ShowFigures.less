@@ -12,7 +12,12 @@
     background-size: 29px auto;
     position: relative;
 
-    &--franklin-attribute-created {
+    &--franklin-attribute-created,
+    &--franklin-attribute-added-to-family,
+    &--franklin-values-validated,
+    &--franklin-values-in-error,
+    &--franklin-values-suggested,
+    &--franklin-names-and-values-suggested {
       background-image: url("/bundles/pimui/images/icon-tag.svg");
     }
 
@@ -20,10 +25,6 @@
     &--credits-consumed,
     &--credits-left {
       background-image: url("../images/credit.svg");
-    }
-
-    &--franklin-attributed-added-to-family {
-      background-image: url("/bundles/pimui/images/bulk/icon-template.svg");
     }
 
     &--header {

@@ -107,16 +107,6 @@ services:
         tags:
             - { name: akeneo_assetmanager.asset_value_updater }
 
-    akeneo_assetmanager.application.edit_asset.asset_value_updater.asset_updater:
-        class: Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\AssetUpdater
-        tags:
-            - { name: akeneo_assetmanager.asset_value_updater }
-
-    akeneo_assetmanager.application.edit_asset.asset_value_updater.asset_collection_updater:
-        class: Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\AssetCollectionUpdater
-        tags:
-            - { name: akeneo_assetmanager.asset_value_updater }
-
     akeneo_assetmanager.application.edit_asset.asset_value_updater.option_updater:
         class: Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\OptionUpdater
         tags:

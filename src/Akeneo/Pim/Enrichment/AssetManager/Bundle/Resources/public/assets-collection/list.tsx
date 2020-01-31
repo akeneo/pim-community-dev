@@ -2,6 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {
+  selectAttributeGroupList,
   selectAttributeList,
   selectFamily,
   selectRuleRelations,
@@ -58,9 +59,16 @@ import {Link} from 'akeneoassetmanager/application/component/app/link';
 import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {MassUploader} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/mass-uploader';
+import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import {
+  AttributeGroupCode,
+  AttributeGroupCollection,
+} from 'akeneoassetmanager/platform/model/structure/attribute-group';
 
 type ListStateProps = {
   attributes: Attribute[];
+  attributeGroups: AttributeGroupCollection;
   values: ValueCollection;
   productIdentifier: ProductIdentifier | null;
   productLabels: LabelCollection;
@@ -75,6 +83,7 @@ type ListDispatchProps = {
 
 type DisplayValuesProps = {
   values: ValueCollection;
+  attributeGroups: AttributeGroupCollection;
   productIdentifier: ProductIdentifier | null;
   productLabels: LabelCollection;
   family: Family | null;
@@ -126,8 +135,13 @@ const dataProvider = {
   channelFetcher: {fetchAll: fetchAllChannels},
 };
 
+const getAttributeGroupLabel = (attributeGroups: AttributeGroupCollection, code: AttributeGroupCode, locale: LocaleCode): string => {
+  return getLabelInCollection(attributeGroups[code].labels, locale, true, code);
+};
+
 const DisplayValues = ({
   values,
+  attributeGroups,
   family,
   context,
   ruleRelations,
@@ -147,7 +161,7 @@ const DisplayValues = ({
               </LockIconContainer>
             ) : null}
             <AttributeBreadCrumb readonly={!value.editable}>
-              {value.attribute.group} / {getAttributeLabel(value.attribute, context.locale)}
+              {getAttributeGroupLabel(attributeGroups, value.attribute.group, context.locale)} / {getAttributeLabel(value.attribute, context.locale)}
             </AttributeBreadCrumb>
             {!isValueComplete(value, family, context.channel) ? (
               <IncompleteIndicator>
@@ -220,6 +234,7 @@ const DisplayValues = ({
 
 const List = ({
   values,
+  attributeGroups,
   family,
   context,
   ruleRelations,
@@ -233,6 +248,7 @@ const List = ({
       {hasValues(values) ? (
         <DisplayValues
           values={values}
+          attributeGroups={attributeGroups}
           family={family}
           context={context}
           ruleRelations={ruleRelations}
@@ -270,6 +286,7 @@ const List = ({
 export default connect(
   (state: AssetCollectionState): ListStateProps => ({
     attributes: selectAttributeList(state),
+    attributeGroups: selectAttributeGroupList(state),
     context: selectContext(state),
     values: selectCurrentValues(state),
     productIdentifier: selectProductIdentifer(state),

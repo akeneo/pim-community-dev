@@ -14,7 +14,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import {AssetFamilySelector} from 'akeneoassetmanager/application/component/library/asset-family-selector';
 import {HeaderView} from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {getLabel} from 'pimui/js/i18n';
-import {MultipleButton, Button, Buttons} from 'akeneoassetmanager/application/component/app/button';
+import {MultipleButton, Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {CreateModal} from 'akeneoassetmanager/application/component/asset/create';
@@ -70,6 +70,26 @@ const Grid = styled.div`
   flex: 1;
   height: calc(100% - 136px);
   margin: 0 40px;
+`;
+
+const AssetCardPlaceholderGrid = styled.div`
+  margin-top: 20px;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+`;
+
+const AssetCardPlaceholder = styled.div`
+  width: 100%;
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+  position: relative;
+  margin-bottom: 6px;
+  min-height: 140px;
+`;
+
+const SearchBarPlaceholder = styled.div`
+  height: 45px;
+  width: 100%;
 `;
 
 const SecondaryActions = ({
@@ -150,6 +170,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
     matchesCount: 0,
     totalCount: 0,
   });
+  const [isInitialized, setIsInitialized] = React.useState<boolean>(false);
   const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext);
   const [isCreateAssetModalOpen, setCreateAssetModalOpen] = React.useState<boolean>(false);
   const [isUploadModalOpen, setUploadModalOpen] = React.useState<boolean>(false);
@@ -179,7 +200,10 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
     searchValue,
     excludedAssetCollection,
     context,
-    setSearchResult
+    (results: SearchResult<ListAsset>): void => {
+      setSearchResult(results);
+      setIsInitialized(true);
+    }
   );
   const filterViews = useFilterViews(currentAssetFamilyIdentifier, dataProvider);
   const {redirectToAsset, redirectToAssetFamily} = useRoute();
@@ -216,14 +240,14 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
       <Content>
         <Header>
           <HeaderView
-            label={__(
-              'pim_asset_manager.result_counter',
-              {count: searchResult.matchesCount},
-              searchResult.matchesCount
-            )}
+            label={
+              isInitialized
+                ? __('pim_asset_manager.result_counter', {count: searchResult.matchesCount}, searchResult.matchesCount)
+                : ''
+            }
             image={null}
             primaryAction={() => (
-              <Buttons>
+              <ButtonContainer>
                 {null !== currentAssetFamilyIdentifier ? (
                   <>
                     <Button color="outline" onClick={() => redirectToAssetFamily(currentAssetFamilyIdentifier)}>
@@ -272,7 +296,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                     {__('pim_asset_manager.asset_family.button.create')}
                   </Button>
                 )}
-              </Buttons>
+              </ButtonContainer>
             )}
             context={context}
             secondaryActions={() => (
@@ -294,7 +318,19 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           />
         </Header>
         <Grid>
-          {null === currentAssetFamilyIdentifier ? (
+          {!isInitialized ? (
+            <>
+              <div className={`AknLoadingPlaceHolderContainer`}>
+                <SearchBarPlaceholder />
+              </div>
+              <AssetCardPlaceholderGrid className={`AknLoadingPlaceHolderContainer`}>
+                {undefined !== currentAssetFamily?.assetCount &&
+                  [...Array(Math.min(currentAssetFamily.assetCount, 50))].map((_e, i) => (
+                    <AssetCardPlaceholder key={i} />
+                  ))}
+              </AssetCardPlaceholderGrid>
+            </>
+          ) : null === currentAssetFamilyIdentifier ? (
             <>
               <HelperSection>
                 <AssetIllustration size={80} />
@@ -362,6 +398,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 resultCount={searchResult.matchesCount}
                 hasReachMaximumSelection={false}
                 onSelectionChange={setSelection}
+                assetHasLink={true}
                 onAssetClick={(assetCode: AssetCode) => {
                   if (null !== currentAssetFamilyIdentifier) {
                     redirectToAsset(currentAssetFamilyIdentifier, assetCode);
