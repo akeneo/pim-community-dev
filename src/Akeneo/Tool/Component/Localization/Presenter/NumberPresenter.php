@@ -41,7 +41,7 @@ class NumberPresenter implements PresenterInterface
         $numberFormatter = $this->numberFactory->create($options);
 
         if (floor($value) != $value) {
-            $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 4);
+            $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 2);
         }
 
         return $numberFormatter->format($value);

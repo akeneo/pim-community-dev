@@ -49,4 +49,14 @@ class NumberPresenterSpec extends ObjectBehavior
         $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
         $this->present(12000.34, ['disable_grouping_separator' => true])->shouldReturn('12000.34');
     }
+
+    function it_presents_a_number_with_very_long_decimal (
+        $numberFactory,
+        \NumberFormatter $numberFormatter
+    ) {
+        $numberFactory->create(['locale' => 'fr_FR'])->willReturn($numberFormatter);
+        $numberFormatter->format(12000.3400887897676)->willReturn('12 000,3400887897676');
+        $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
+        $this->present(12000.3400887897676, ['locale' => 'fr_FR'])->shouldReturn('12 000,3400887897676');
+    }
 }
