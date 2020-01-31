@@ -138,19 +138,9 @@ class ProductValueNormalizer implements NormalizerInterface
         }
 
         $data = $value->getData();
-        if (strpos($data, '.') !== false) {
-            $data = rtrim($data, '0');
-            $data = rtrim($data, '.');
-        }
 
-        if (strpos($data, '.') !== false) {
-            list($integerPart, $decimalPart) = explode(".", $data);
+        $formattedNumber = number_format($data, static::DECIMAL_PRECISION, '.', '');
 
-            if (strlen($decimalPart) > 4) {
-                return $data;
-            }
-        }
-
-        return number_format($data, static::DECIMAL_PRECISION, '.', '');
+        return strlen($formattedNumber) > strlen($data) ? $formattedNumber : rtrim($data, '0');
     }
 }
