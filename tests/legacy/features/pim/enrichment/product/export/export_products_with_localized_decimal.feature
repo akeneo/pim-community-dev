@@ -39,9 +39,9 @@ Feature: Export products with localized numbers
       """
       sku;categories;enabled;family;groups;cotton;metric;metric-unit
       sandal-white;men_2013,men_2014,men_2015;1;sandal;;75,5500;;
-      sandal-black;men_2013,men_2014,men_2015;1;sandal;;75;;
+      sandal-black;men_2013,men_2014,men_2015;1;sandal;;75,0000;;
       sandal-yellow;men_2013,men_2014,men_2015;1;sandal;;;;
-      sandal-blue;men_2013,men_2014,men_2015;1;sandal;;75;;
+      sandal-blue;men_2013,men_2014,men_2015;1;sandal;;75,0000;;
       """
 
   Scenario: Export metric attributes with the correct decimals formatting
