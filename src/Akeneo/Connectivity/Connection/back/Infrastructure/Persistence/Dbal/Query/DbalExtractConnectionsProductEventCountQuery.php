@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\DailyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQuery;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectVersioningProductEventCountByDayQuery;
+use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection as DbalConnection;
 
 /**
@@ -52,7 +52,7 @@ SQL;
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
             'end_time' => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
             'resource_name' => $this->productClass,
-            'user_type' => \Akeneo\UserManagement\Component\Model\User::TYPE_API
+            'user_type' => User::TYPE_API
         ];
 
         $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
@@ -90,7 +90,7 @@ SQL;
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
             'end_time'   => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
             'resource_name' => $this->productClass,
-            'user_type' => \Akeneo\UserManagement\Component\Model\User::TYPE_API
+            'user_type' => User::TYPE_API
         ];
 
         $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
@@ -130,7 +130,7 @@ SQL;
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
             'end_time'   => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
             'resource_name' => $this->productClass,
-            'user_type' => \Akeneo\UserManagement\Component\Model\User::TYPE_API
+            'user_type' => User::TYPE_API
         ];
 
         $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
@@ -168,7 +168,7 @@ SQL;
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
             'end_time'   => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
             'resource_name' => $this->productClass,
-            'user_type' => \Akeneo\UserManagement\Component\Model\User::TYPE_API
+            'user_type' => User::TYPE_API
         ];
 
         $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
