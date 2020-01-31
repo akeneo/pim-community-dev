@@ -7,21 +7,21 @@ import {getProductEvaluationAction} from "../reducer";
 import {useCatalogContext, useProductEvaluation} from "./index";
 
 const MAXIMUM_RETRIES = 10;
-const RETRY_MILLISECONDS_DELAY = 200;
+const RETRY_MILLISECONDS_DELAY = 500;
 
 /**
  * @example
  *  Retry | Delay
  *    0   | 0
- *    1   | 200
- *    2   | 800
- *    3   | 1800
- *    4   | 3200
- *    5   | 5000
- *    6   | 7200
- *    7   | 9600
- *    8   | 12800
- *    9   | 16200
+ *    1   | 500
+ *    2   | 2000
+ *    3   | 4500
+ *    4   | 8000
+ *    5   | 12500
+ *    6   | 18000
+ *    7   | 24500
+ *    8   | 32000
+ *    9   | 40500
  */
 const getRetryDelay = (retry: number) => {
   return Math.pow(retry, 2) * RETRY_MILLISECONDS_DELAY;
@@ -63,19 +63,19 @@ const useFetchProductDataQualityEvaluation = () => {
     }
     else {
       setRetries(retries + 1);
-      setHasToBeEvaluated(true);
+      setHasToBeEvaluated(retries < MAXIMUM_RETRIES);
     }
   }, [evaluation]);
 
   useEffect(() => {
-    if (retries >= MAXIMUM_RETRIES) {
-      setRetries(0);
+    if (hasToBeEvaluated && retries >= MAXIMUM_RETRIES) {
       setHasToBeEvaluated(false);
     }
   }, [retries]);
 
   useEffect(() => {
     if (productId && productUpdated) {
+      setRetries(0);
       setHasToBeEvaluated(true);
     }
   }, [productId, productUpdated]);
