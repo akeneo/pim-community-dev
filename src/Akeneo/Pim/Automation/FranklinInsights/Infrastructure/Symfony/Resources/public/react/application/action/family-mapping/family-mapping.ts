@@ -4,6 +4,9 @@ import {fetchAttributes} from './family-attributes';
 import {AttributesMapping} from '../../../domain/model/attributes-mapping';
 import {unselectAllFranklinAttributes} from './franklin-attribute-selection';
 import {fetchFamily} from './family';
+import {AttributeMapping} from '../../../domain/model/attribute-mapping';
+import {AttributeMappingStatus} from '../../../domain/model/attribute-mapping-status.enum';
+import {applyFranklinSuggestion} from '../../action-creator/family-mapping/apply-franklin-suggestion';
 
 export function selectAndFetchFamily(familyCode: string) {
   return (dispatch: any) => {
@@ -35,6 +38,18 @@ export function fetchFamilyMapping(familyCode: string) {
     try {
       const mapping = await fetchByFamilyCode(familyCode);
       dispatch(fetchedFamilyMappingSuccess(familyCode, mapping));
+
+      Object.values(mapping).forEach((attributeMapping: AttributeMapping) => {
+        if (attributeMapping.status === AttributeMappingStatus.PENDING && attributeMapping.suggestions.length > 0) {
+          dispatch(
+            applyFranklinSuggestion(
+              familyCode,
+              attributeMapping.franklinAttribute.code,
+              attributeMapping.suggestions[0]
+            )
+          );
+        }
+      });
     } catch {
       dispatch(fetchedFamilyMappingFail());
     }

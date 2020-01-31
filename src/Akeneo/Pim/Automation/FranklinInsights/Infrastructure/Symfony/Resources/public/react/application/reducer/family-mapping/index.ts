@@ -5,6 +5,7 @@ import searchFranklinAttributesReducer from './search-franklin-attributes';
 import attributesReducer from './attributes';
 import attributeGroupsReducer from './attribute-groups';
 import familyReducer from './family';
+import attributeMappingStatusReducer from './attributes-mapping-status';
 
 const rootReducer = combineReducers({
   familyMapping: familyMappingReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   selectedFranklinAttributeCodes: franklinAttributeSelectionReducer,
   attributes: attributesReducer,
   attributeGroups: attributeGroupsReducer,
-  family: familyReducer
+  family: familyReducer,
+  attributesMappingStatus: attributeMappingStatusReducer
 });
 
 export type FamilyMappingState = ReturnType<typeof rootReducer>;

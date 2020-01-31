@@ -11,3 +11,9 @@ export type MediaPreview = {
   attributeIdentifier: AttributeIdentifier;
   data: string;
 };
+
+export const emptyMediaPreview = (): MediaPreview => ({
+  type: MediaPreviewType.ThumbnailSmall,
+  attributeIdentifier: 'UNKNOWN',
+  data: '',
+});

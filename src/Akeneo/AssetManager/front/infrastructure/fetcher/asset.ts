@@ -11,11 +11,13 @@ import AssetCode, {assetCodeStringValue} from 'akeneoassetmanager/domain/model/a
 import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
-import ListAsset, {PreviewCollection, ValueCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import ListAsset, {ValueCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import LabelCollection from 'akeneoassetmanager/domain/model/label-collection';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
+import {PreviewCollection} from 'akeneoassetmanager/domain/model/asset/value';
+
 const routing = require('routing');
 
 class InvalidArgument extends Error {}

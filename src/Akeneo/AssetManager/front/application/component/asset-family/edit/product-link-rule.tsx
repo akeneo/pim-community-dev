@@ -86,7 +86,7 @@ const AssetFamilyNamingConventionEditor = ({
       <Editor
         value={JSON.parse(namingConvention)}
         onChange={(event: object) => {
-          onAssetFamilyNamingConventionChange(JSON.stringify(event));
+          onAssetFamilyNamingConventionChange(JSON.stringify(null === event ? {} : event));
         }}
         mode="code"
         schema={namingConventionSchema}

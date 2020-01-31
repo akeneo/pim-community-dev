@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin;
 
 use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -38,4 +39,6 @@ interface ClientInterface
      * @param string $token
      */
     public function setToken(string $token): void;
+
+    public function requestAsync(string $method, string $uri, array $options = []): PromiseInterface;
 }

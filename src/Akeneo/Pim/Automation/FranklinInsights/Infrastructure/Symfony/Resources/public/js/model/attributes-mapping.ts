@@ -15,4 +15,5 @@ export interface AttributesMapping {
   hasUnsavedChanges: boolean;
   attributeCount: number;
   mappedAttributeCount: number;
+  suggestedAttributeCount: number;
 }

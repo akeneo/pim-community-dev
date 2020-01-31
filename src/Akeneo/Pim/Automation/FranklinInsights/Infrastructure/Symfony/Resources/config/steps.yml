@@ -88,3 +88,4 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@akeneo.pim.automation.franklin_insights.connector.tasklet.notify_if_pending_attributes'
+

@@ -6,6 +6,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.application.configuration.validator.connection'
             - '@akeneo.pim.automation.franklin_insights.repository.configuration'
+            - '@event_dispatcher'
 
     akeneo.pim.automation.franklin_insights.application.configuration.command.deactivate_connection_handler:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Command\DeactivateConnectionHandler'
@@ -104,6 +105,7 @@ services:
             - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
 
     akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_is_active_handler:
+        public: true
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.repository.cache.configuration'
@@ -118,8 +120,8 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
 
-    akeneo.pim.automation.franklin_insights.handler.get_attribute_mapping_with_suggestions:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsHandler'
+    akeneo.pim.automation.franklin_insights.handler.get_attribute_mapping_with_exact_match:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithExactMatchHandler'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.handler.get_attributes_mapping_by_family'
             - '@akeneo.pim.automation.franklin_insights.application.mapping.service.data_processor.apply_attribute_exact_matches'
@@ -152,13 +154,10 @@ services:
             - '@akeneo.pim.automation.franklin_insights.application.structure.service.add_attribute_to_family'
             - '@akeneo.pim.automation.franklin_insights.repository.franklin_attribute_added_to_family'
 
-    akeneo.pim.automation.franklin_insights.handler.get_key_measurements:
+    akeneo.pim.automation.franklin_insights.handler.get_key_figures:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetKeyFiguresHandler'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.repository.franklin_attribute_created'
             - '@akeneo.pim.automation.franklin_insights.repository.franklin_attribute_added_to_family'
-
-    akeneo.pim.automation.franklin_insights.handler.get_ask_franklin_credits:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetCreditsHandler'
-        arguments:
-            - '@akeneo.pim.automation.franklin_insights.data_provider.statistics'
+            - '@akeneo.pim.automation.franklin_insights.data_provider.key_figure.credits'
+            - '@akeneo.pim.automation.franklin_insights.data_provider.key_figure.quality_highlights'

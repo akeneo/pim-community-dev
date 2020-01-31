@@ -4,6 +4,7 @@ import {render, fireEvent} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import Mosaic from 'akeneoassetmanager/application/component/asset/list/mosaic';
+import {getAssetEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
 
 const context = {locale: 'en_US', channel: 'ecommerce'};
 const assetCollection = [
@@ -136,4 +137,23 @@ test('it can remove an asset from the selection', () => {
   fireEvent.click(firstCard);
 
   expect(newSelection).toEqual([]);
+});
+
+test('it can show the assets as links', () => {
+  getAssetEditUrl = jest.fn().mockImplementation((asset) => '#' + asset.code);
+
+  const {container} = render(
+    <ThemeProvider theme={akeneoTheme}>
+      <Mosaic
+        selection={[]}
+        assetCollection={assetCollection}
+        context={context}
+        assetHasLink={true}
+      />
+    </ThemeProvider>
+  );
+
+  const link = container.querySelector('a[href$="#' + assetCollection[0].code + '"]');
+  expect(link).not.toBeNull();
+  fireEvent.click(link);
 });
