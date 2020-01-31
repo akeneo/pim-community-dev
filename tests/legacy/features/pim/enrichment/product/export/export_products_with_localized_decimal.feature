@@ -61,8 +61,8 @@ Feature: Export products with localized numbers
     Then exported file of "ecommerce_product_export" should contain:
       """
       sku;categories;enabled;family;groups;cotton;metric;metric-unit
-      sandal-white;men_2013,men_2014,men_2015;1;sandal;;;90;GRAM
+      sandal-white;men_2013,men_2014,men_2015;1;sandal;;;90,0000;GRAM
       sandal-black;men_2013,men_2014,men_2015;1;sandal;;;95,5500;GRAM
-      sandal-yellow;men_2013,men_2014,men_2015;1;sandal;;;85;GRAM
-      sandal-blue;men_2013,men_2014,men_2015;1;sandal;;;-5;GRAM
+      sandal-yellow;men_2013,men_2014,men_2015;1;sandal;;;85,0000;GRAM
+      sandal-blue;men_2013,men_2014,men_2015;1;sandal;;;-5,0000;GRAM
       """
