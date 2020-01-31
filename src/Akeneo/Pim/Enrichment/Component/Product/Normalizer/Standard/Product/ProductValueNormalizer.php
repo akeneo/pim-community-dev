@@ -137,23 +137,20 @@ class ProductValueNormalizer implements NormalizerInterface
             return (int)$value->getData();
         }
 
-        if (strpos($value->getData(), '.') === false) {
-            return $value->getData();
+        $data = $value->getData();
+        if (strpos($data, '.') !== false) {
+            $data = rtrim($data, '0');
+            $data = rtrim($data, '.');
         }
 
-        $dataWithoutZero = rtrim($value->getData(), '0');
-        $dataWithoutZero = rtrim($dataWithoutZero, '.');
+        if (strpos($data, '.') !== false) {
+            list($integerPart, $decimalPart) = explode(".", $data);
 
-        if (strpos($dataWithoutZero, '.') === false) {
-            return $dataWithoutZero;
+            if (strlen($decimalPart) > 4) {
+                return $data;
+            }
         }
 
-        list($integerPart, $decimalPart) = explode(".", $dataWithoutZero);
-
-        if (strlen($decimalPart) < 4) {
-            return number_format($dataWithoutZero, static::DECIMAL_PRECISION, '.', '');
-        }
-
-        return $dataWithoutZero;
+        return number_format($data, static::DECIMAL_PRECISION, '.', '');
     }
 }
