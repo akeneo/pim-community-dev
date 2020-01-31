@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\DBAL\Connection;
 
@@ -32,6 +33,10 @@ final class InitializeJobs
 
     public function initialize(): void
     {
+        if (!$this->isJobInstanceAlreadyCreated(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME)) {
+            $this->createJobInstance(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME);
+        }
+
         if (!$this->isJobInstanceAlreadyCreated('data_quality_insights_periodic_tasks')) {
             $this->createJobInstance('data_quality_insights_periodic_tasks');
         }

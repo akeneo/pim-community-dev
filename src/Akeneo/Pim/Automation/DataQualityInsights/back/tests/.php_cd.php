@@ -89,6 +89,13 @@ $rules = [
             'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
             'Oro\Bundle\FilterBundle\Filter\ChoiceFilter',
 
+            //Necessary for the particular command EvaluatePendingCriteriaCommand
+            'Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager',
+            'Akeneo\Tool\Component\Batch',
+            'Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage',
+            'Doctrine\ORM\EntityManager',
+            'Symfony\Component\Process',
+
             //External dependencies
             'Doctrine\DBAL',
             'Doctrine\Common\Persistence\ObjectRepository',

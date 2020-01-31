@@ -1,6 +1,18 @@
 services:
 
     #Jobs
+    akeneo.pim.automation.data_quality_insights.job.evaluate_products_criteria:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'data_quality_insights_evaluate_products_criteria'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_criteria'
+        tags:
+            - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
+            - name: akeneo_batch.job.not_visible
+
     akeneo.pim.automation.data_quality_insights.job.periodic_tasks:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -16,6 +28,13 @@ services:
             - name: akeneo_batch.job.not_visible
 
     #Steps
+    akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_criteria:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'evaluate_products_criteria'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet'
 
     akeneo.pim.automation.data_quality_insights.connector.step.consolidate_dashboard_rates:
         class: '%pim_connector.step.tasklet.class%'
@@ -42,6 +61,13 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PurgeOutdatedDataTasklet'
 
     #Tasklets
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdsToEvaluateQuery'
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\ConsolidateDashboardRatesTasklet:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateDashboardRates'
@@ -59,6 +85,20 @@ services:
             - '@logger'
 
     #Job parameters
+    akeneo.pim.automation.data_quality_insights.job_parameters.default_values_provider.evaluate_products_criteria:
+        class: Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyDefaultValuesProvider
+        arguments:
+            - ['data_quality_insights_evaluate_products_criteria']
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo.pim.automation.data_quality_insights.job_parameters.constraint_collection_provider.evaluate_products_criteria:
+        class: Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintCollectionProvider
+        arguments:
+            - ['data_quality_insights_evaluate_products_criteria']
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PeriodicTasksParameters:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

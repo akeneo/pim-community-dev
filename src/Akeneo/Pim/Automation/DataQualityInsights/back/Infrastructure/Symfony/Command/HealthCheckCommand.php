@@ -59,6 +59,7 @@ final class HealthCheckCommand extends Command
         $this->outputCriteriaInfo($io);
         $this->outputDictionaryInfo($io);
         $this->outputPeriodicTasksInfo($io);
+        $this->outputEvaluationJobInfo($io);
 
         if (count($productIds = $input->getOption('products')) > 0) {
             $this->outputTargetedProductsInfo($io, $productIds);
@@ -377,6 +378,30 @@ FROM akeneo_batch_job_instance AS job
     JOIN akeneo_batch_step_execution AS step ON step.job_execution_id = job_execution.id
 WHERE job.code = 'data_quality_insights_periodic_tasks'
     AND job_execution.status = 1
+GROUP BY step.step_name;
+SQL;
+
+        $stmt = $this->db->executeQuery($query);
+
+        $this->outputAsTable($io, $stmt->fetchAll());
+    }
+
+    private function outputEvaluationJobInfo(SymfonyStyle $io)
+    {
+        $io->section('Evaluation jobs data');
+
+        $query = <<<SQL
+SELECT
+    step.step_name AS task_name,
+    AVG(TIMESTAMPDIFF(SECOND, step.start_time, step.end_time)) as execution_time_in_second,
+    AVG(step.write_count) AS average_number_of_product_per_job,
+    MAX(step.write_count) AS max_number_of_product_in_a_job
+FROM akeneo_batch_job_instance AS job
+    JOIN akeneo_batch_job_execution AS job_execution ON job_execution.job_instance_id = job.id
+    JOIN akeneo_batch_step_execution AS step ON step.job_execution_id = job_execution.id
+WHERE job.code = 'data_quality_insights_evaluate_products_criteria'
+    AND job_execution.status = 1
+    AND step.write_count > 0
 GROUP BY step.step_name;
 SQL;
 
