@@ -170,7 +170,10 @@ pim_measure:
     PSI: Pfund pro Quadratzoll
     TORR: Torr
     MMHG: Millimeter Quecksilbersäule
+    #Energy
+    CALORIE: Kalorien
     KILOCALORIE: Kilokalorien
+    JOULE: Joule
     KILOJOULE: Kilojoule
     #CaseBox
     PIECE: Stück
