@@ -63,9 +63,9 @@ pim_user_management:
         ui_locale: Impostazioni locali dell'interfaccia utente
         timezone: Fuso orario
         default_product_grid_view: Visualizzazione predefinita griglia prodotti
-        default_published_product_grid_view: Griglia di visualizzazione predefinita dei prodotti pubblicati
-        proposals_to_review_notification: Quando una nuova proposta è da revisionare
-        proposals_state_notifications: Quando una proposta è accettata o rifiutata
+        default_published_product_grid_view: Griglia di visualizzazione predefinita dei prodotti pubblicati #EE Only
+        proposals_to_review_notification: Quando una nuova proposta è da revisionare #EE Only
+        proposals_state_notifications: Quando una proposta è accettata o rifiutata #EE Only
       module:
         create:
           button: Crea utente
@@ -76,7 +76,7 @@ pim_user_management:
           groups_and_roles: Gruppi e ruoli
           password: Password
           interfaces: Interfacce
-          notifications: Notifiche
+          notifications: Notifiche #TODO EE Only
     role:
       plural_label: Ruoli
       page_title:

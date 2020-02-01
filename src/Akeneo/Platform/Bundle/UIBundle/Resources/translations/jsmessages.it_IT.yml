@@ -1,8 +1,9 @@
+#ORO messages
 "Yes, I Agree": "Sì, sono d'accordo"
 "Yes, do it": "Sì, prosegui"
 "Ok, got it.": "Ok, capito."
 "Edit": "Modifica"
-"Unexpected error occurred. Please contact system administrator.": "Si è verificato un errore imprevisto. Contattare l'amministratore di sistema."
+"Unexpected error occurred. Please contact system administrator.": "Si è verificato un errore inaspettato. Sei pregato di contattare l'amministratore di sistema."
 "Yes, revoke": "Si, revoca"
 "Revoke Confirmation": "Revoca conferma"
 Prev: Precedente
@@ -20,9 +21,11 @@ Second: Secondi
 Millisecond: Millisecondi
 Microsecond: Microsecondi
 "Time Zone": "Fuso orario"
+#PIM messages
 Localized value: Valori localizzati
 Columns: Colonne
 Datagrid Configuration: Configurazione tabella di dati
+#Filters
 Action: Azione
 Unit: Unità
 Currency: Valuta
@@ -34,6 +37,7 @@ jstree:
     unclassified: Prodotti non classificati
   no_tree: Nessuna struttura disponibile
   include_sub: Includere le sotto-categorie
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Domenica
@@ -85,6 +89,7 @@ datetimepicker:
     Oct: Ott
     Nov: Nov
     Dec: Dic
+#ORO
 oro_config:
   form:
     config:
@@ -111,6 +116,33 @@ pim_ui:
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Le modifiche effettuate andranno perse. Sei sicuro di voler aggiornare la pagina?"
 "navigation.message.content.outdated": "Il contenuto della pagina {{ title }} non è aggiornato, prego <a href='#' data-action='page-refresh'>refresh the page</a>"
 "Content of pinned page is outdated": "Il contenuto della pagina bloccata è scaduto"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
 pim_common:
   actions: Azioni
   add: Aggiungi
@@ -137,6 +169,7 @@ pim_common:
   history: Cronologia
   label: Etichetta
   label_translations: Traduzioni etichetta
+  Label or identifier: etichetta o identificatore
   less_than: Meno di
   loading: Caricamento in corso...
   media_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
@@ -178,11 +211,11 @@ pim_common:
     STARTS WITH: Inizia con
     ENDS WITH: Termina con
 error:
-  exception: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
+  exception: Accidenti! Si è verificato un errore {{ status_code}}...
   forbidden: Vietato. Non è consentito accedere a questa pagina
 alert:
   attribute_option:
-    error_occurred_during_submission: Si è verificato un errore durante l'invio del modulo al server
+    error_occurred_during_submission: Si è verificato un errore durante l'invio del modulo sul server
     save_before_edit_other: Si prega di registrare le modifiche sulle altre righe prima di modificare questa
   session_storage:
     not_available: Il tuo browser non sembra compatibile con il sessionStorage. Contattare l'amministratore
