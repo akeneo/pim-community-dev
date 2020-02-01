@@ -165,6 +165,7 @@ pim_enrich:
       associations_view: Visualizza le associazioni di un prodotto
       associations_edit: Aggiungi associazioni ad un prodotto
       change_family: Cambia la famiglia dell'articolo
+      change_state: Modifica lo stato di un prodotto
       add_to_groups: Aggiungi l'articolo ai gruppi
       mass_edit: Azione di modifica di massa dell'articolo
       comment: Commenta i prodotti
@@ -383,6 +384,7 @@ flash:
     updated: Attributo aggiornato con successo
     removed: Attributo rimosso con successo
     identifier_not_removable: L'dentificatore attributo non può essere rimosso
+    used_as_conversion_unit: Questo attributo non può essere rimosso perché è usato come unità di conversione nel canale(i) %channelCodes%.
   attribute group:
     created: Gruppo di attributi creato con successo
     updated: Gruppo di attributi aggiornato con successo
