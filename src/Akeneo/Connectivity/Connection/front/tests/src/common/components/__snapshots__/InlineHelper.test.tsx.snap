@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InlineHelper should render 1`] = `
+<div
+  className="sc-gzVnrw ekSiAz"
+>
+  content
+</div>
+`;

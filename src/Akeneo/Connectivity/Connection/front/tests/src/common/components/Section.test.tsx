@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import {Section} from '@src/common';
-import {createWithProviders} from '../../test-utils';
+import {createWithProviders} from '../../../test-utils';
 
 describe('Section', () => {
     it('should render', () => {

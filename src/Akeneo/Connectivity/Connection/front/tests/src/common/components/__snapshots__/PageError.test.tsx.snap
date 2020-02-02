@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageError should render 1`] = `
+<div
+  className="sc-gqjmRU kGBCDq"
+>
+  <img
+    className="sc-VigVT KRUGa"
+    src="test-file-stub"
+  />
+  <div
+    className="sc-jTzLTM blxAcO"
+  >
+    title
+  </div>
+  <div
+    className="sc-fjdhpX kasnXz"
+  >
+    content
+  </div>
+</div>
+`;
