@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SecondaryActionsDropdownButton should render 1`] = `
+<div
+  className="AknSecondaryActions AknDropdown AknButtonList-item"
+>
+  <div
+    className="AknSecondaryActions-button"
+    data-toggle="dropdown"
+  />
+  <div
+    className="AknDropdown-menu AknDropdown-menu--right"
+  >
+    <div
+      className="AknDropdown-menuTitle"
+    >
+      akeneo_connectivity.connection.secondary_actions.title
+    </div>
+    <button
+      className="AknDropdown-menuLink"
+      type="button"
+    >
+      link 1
+    </button>
+    <button
+      className="AknDropdown-menuLink"
+      type="button"
+    >
+      link 2
+    </button>
+  </div>
+</div>
+`;
