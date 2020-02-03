@@ -26,12 +26,12 @@ class PublishedProductVersionPurgerAdvisorSpec extends ObjectBehavior
         $this->shouldImplement(VersionPurgerAdvisorInterface::class);
     }
 
-    function it_supports_products_versions_only(PurgeableVersionList $v1, PurgeableVersionList $v2)
+    function it_supports_products_versions_only()
     {
-        $v1->getResourceName()->willReturn('ProductEntityClassName');
+        $v1 = new PurgeableVersionList('ProductEntityClassName', []);
         $this->supports($v1)->shouldReturn(true);
 
-        $v2->getResourceName()->willReturn('foo');
+        $v2 = new PurgeableVersionList('foo', []);
         $this->supports($v2)->shouldReturn(false);
     }
 
