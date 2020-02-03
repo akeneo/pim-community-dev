@@ -145,4 +145,5 @@ release:
 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
 	git tag -a ${NEW_IMAGE_TAG} -m "Tagging SaaS version ${NEW_IMAGE_TAG}"
 	git push origin ${NEW_IMAGE_TAG}
+	git push origin master
 
