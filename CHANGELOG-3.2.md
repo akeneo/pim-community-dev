@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9080: Fix overlapping jQuery.resizable handle
+
 # 3.2.36 (2020-02-03)
 
 ## Bug fixes:
