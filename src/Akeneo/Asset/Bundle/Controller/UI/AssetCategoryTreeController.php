@@ -11,6 +11,7 @@
 
 namespace Akeneo\Asset\Bundle\Controller\UI;
 
+use Akeneo\Asset\Bundle\Persistence\Query\Sql\IsDefaultAssetCategoryTreeOfAUser;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Attributes;
@@ -29,6 +30,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -88,6 +90,9 @@ class AssetCategoryTreeController
     /** @var SessionInterface */
     private $session;
 
+    /** * @var IsDefaultAssetCategoryTreeOfAUser */
+    private $isDefaultAssetCategoryTreeOfAUser;
+
     /**
      * @param EventDispatcherInterface $eventDispatcher
      * @param UserContext $userContext
@@ -114,7 +119,8 @@ class AssetCategoryTreeController
         TokenStorageInterface $tokenStorage,
         EngineInterface $engine,
         FormFactoryInterface $formFactory,
-        SessionInterface $session
+        SessionInterface $session,
+        IsDefaultAssetCategoryTreeOfAUser $isDefaultAssetCategoryTreeOfAUser = null
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->userContext = $userContext;
@@ -133,6 +139,7 @@ class AssetCategoryTreeController
         $resolver->setRequired(['related_entity', 'form_type', 'acl', 'route']);
 
         $this->rawConfiguration = $resolver->resolve($rawConfiguration);
+        $this->isDefaultAssetCategoryTreeOfAUser = $isDefaultAssetCategoryTreeOfAUser;
     }
 
     /**
@@ -425,6 +432,10 @@ class AssetCategoryTreeController
         }
 
         $category = $this->findCategory($id);
+
+        if ($this->isDefaultAssetCategoryTreeOfAUser->fetch($category->getCode())) {
+            throw new ConflictHttpException('Category tree cannot be removed because it used as a default asset tree for a user.');
+        }
 
         $this->categoryRemover->remove($category);
 
