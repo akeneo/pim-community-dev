@@ -6,6 +6,7 @@ export type Select2Configuration = {
     data: Array<{id: string; text: string}>;
     allowClear?: boolean;
     dropdownCssClass?: string;
+    containerCssClass?: string;
     formatResult?: (item: {id: string}) => string;
 };
 
