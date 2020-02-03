@@ -1,0 +1,53 @@
+services:
+    _defaults:
+        public: true
+
+    akeneo_legacy_behat_tests.doctrine.connection.connection_closer:
+        class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser
+        arguments:
+            - '@doctrine'
+
+    akeneo_legacy_behat_tests.loader.database_schema_handler:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Loader\DatabaseSchemaHandler'
+        arguments:
+            - '@database_connection'
+
+    akeneo_legacy_behat_tests.security.system_user_authenticator:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator'
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.repository.group'
+            - '@pim_user.repository.role'
+            - '@security.token_storage'
+
+    akeneo_legacy_behat_tests.loader.reference_data_loader:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Loader\ReferenceDataLoader'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%kernel.bundles%'
+            - 'AcmeAppBundle'
+            - '\Acme\Bundle\AppBundle\Entity\Fabric'
+            - '\Acme\Bundle\AppBundle\Entity\Color'
+
+    akeneo_legacy_behat_tests.loader.fixtures_loader:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoader'
+        arguments:
+            - '@kernel'
+            - '@akeneo_legacy_behat_tests.loader.database_schema_handler'
+            - '@akeneo_legacy_behat_tests.security.system_user_authenticator'
+            - '@akeneo_legacy_behat_tests.loader.reference_data_loader'
+            - '@oneup_flysystem.archivist_filesystem'
+            - '@akeneo_batch.job_repository'
+            - '@pim_installer.fixture_loader.job_loader'
+            - '@oro_security.acl.manager'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
+            - '@akeneo_elasticsearch.registry.clients'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@database_connection'
+            - '%env(APP_DATABASE_HOST)%'
+            - '%env(APP_DATABASE_NAME)%'
+            - '%env(APP_DATABASE_USER)%'
+            - '%env(APP_DATABASE_PASSWORD)%'
+            - '%kernel.cache_dir%/sql-dump/'
+            - '%index_hosts%'

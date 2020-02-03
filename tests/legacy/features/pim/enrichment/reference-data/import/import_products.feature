@@ -6,9 +6,6 @@ Feature: Execute a job
 
   Background:
     Given the "footwear" catalog configuration
-    And the following "sole_fabric" attribute reference data: PVC, Nylon, Neoprene
-    And the following "lace_fabric" attribute reference data: Spandex, Wool, Kevlar, Jute
-    And the following "heel_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White
     And the following family:
       | code      | attributes                         |
       | new_heels | sole_fabric,lace_fabric,heel_color |
@@ -19,7 +16,7 @@ Feature: Execute a job
     Given the following CSV file to import:
       """
       sku;family;heel_color;sole_fabric;lace_fabric-en_US-tablet;lace_fabric-en_US-mobile
-      SKU-001;new_heels;Red;PVC,Nylon;;Kevlar
+      SKU-001;new_heels;Red;viyella,Nylon;;Kevlar
       SKU-002;new_heels;;;Jute,Spandex;Wool,Kevlar
       SKU-003;new_heels;Magenta;Neoprene;Wool;Jute
       SKU-004;new_heels;Black;Neoprene;Spandex;Spandex
@@ -33,22 +30,22 @@ Feature: Execute a job
     And the family of the product "SKU-001" should be "new_heels"
     And product "SKU-002" should be enabled
     And the product "SKU-001" should have the following values:
-      | heel_color               | [Red]          |
-      | sole_fabric              | [Nylon], [PVC] |
-      | lace_fabric-en_US-tablet |                |
-      | lace_fabric-en_US-mobile | [Kevlar]       |
+      | heel_color               | [red]              |
+      | sole_fabric              | [nylon], [viyella] |
+      | lace_fabric-en_US-tablet |                    |
+      | lace_fabric-en_US-mobile | [kevlar]           |
     And the product "SKU-002" should have the following values:
       | heel_color               |                   |
       | sole_fabric              |                   |
-      | lace_fabric-en_US-tablet | [Jute], [Spandex] |
-      | lace_fabric-en_US-mobile | [Kevlar], [Wool]  |
+      | lace_fabric-en_US-tablet | [jute], [spandex] |
+      | lace_fabric-en_US-mobile | [kevlar], [wool]  |
     And the product "SKU-003" should have the following values:
-      | heel_color               | [Magenta]  |
-      | sole_fabric              | [Neoprene] |
-      | lace_fabric-en_US-tablet | [Wool]     |
-      | lace_fabric-en_US-mobile | [Jute]     |
+      | heel_color               | [magenta]  |
+      | sole_fabric              | [neoprene] |
+      | lace_fabric-en_US-tablet | [wool]     |
+      | lace_fabric-en_US-mobile | [jute]     |
     And the product "SKU-004" should have the following values:
-      | heel_color               | [Black]    |
-      | sole_fabric              | [Neoprene] |
-      | lace_fabric-en_US-tablet | [Spandex]  |
-      | lace_fabric-en_US-mobile | [Spandex]  |
+      | heel_color               | [black]    |
+      | sole_fabric              | [neoprene] |
+      | lace_fabric-en_US-tablet | [spandex]  |
+      | lace_fabric-en_US-mobile | [spandex]  |

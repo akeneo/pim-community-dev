@@ -13,14 +13,6 @@ Feature: Display reference data in the grid
     Given the following products:
       | sku        | family |
       | high-heels | heels  |
-    And the following reference data:
-      | type   | code         | label        |
-      | color  | red          | Red          |
-      | color  | blue         |              |
-      | color  | green        | Green        |
-      | fabric | cashmerewool | Cashmerewool |
-      | fabric | neoprene     |              |
-      | fabric | silk         | Silk         |
     Given the following product values:
       | product    | attribute   | value                  |
       | high-heels | sole_fabric | cashmerewool, neoprene |
@@ -31,4 +23,4 @@ Feature: Display reference data in the grid
     Then the row "high-heels" should contain:
       | column      | value                    |
       | Sole color  | Red                      |
-      | Sole fabric | Cashmerewool, [neoprene] |
+      | Sole fabric | Cashmerewool, Neoprene   |

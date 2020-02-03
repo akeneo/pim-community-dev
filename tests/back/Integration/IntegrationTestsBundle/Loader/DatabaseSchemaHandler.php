@@ -14,12 +14,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class DatabaseSchemaHandler
 {
-    /** @var KernelInterface */
-    private $kernel;
-
-    /** @var Application */
-    private $cli;
-
     /** @var Connection */
     private $dbConnection;
 
@@ -31,14 +25,11 @@ class DatabaseSchemaHandler
         'acl_security_identities',
         'pimee_security_product_category_access',
         'pimee_workflow_published_product',
-        'oro_access_group'
+        'oro_access_group',
     ];
 
-    public function __construct(KernelInterface $kernel, Connection $dbConnection)
+    public function __construct(Connection $dbConnection)
     {
-        $this->kernel = $kernel;
-        $this->cli = new Application($this->kernel);
-        $this->cli->setAutoExit(false);
         $this->dbConnection = $dbConnection;
     }
 
@@ -54,7 +45,7 @@ class DatabaseSchemaHandler
     public function reset()
     {
         $schemaManager = $this->dbConnection->getSchemaManager();
-        $tables = $schemaManager->listTableNames();
+        $tables = array_merge($schemaManager->listTableNames(), ['pim_session']);
 
         $purger = new DBALPurger(
             $this->dbConnection,

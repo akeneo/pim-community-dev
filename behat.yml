@@ -8,6 +8,8 @@ contexts: &context
             - 'Context\FeatureContext'
     -   Context\CatalogConfigurationContext:
             - 'Context\FeatureContext'
+            - '@akeneo_legacy_behat_tests.loader.fixtures_loader'
+            - '@pim_connector.doctrine.cache_clearer'
     -   Context\WebUser:
             - 'Context\FeatureContext'
     -   Context\DataGridContext:
