@@ -38,3 +38,11 @@ export const notifyPermissionWellSaved = () => {
 export const notifyPermissionSaveFailed = () => {
   return notify('error', 'pim_asset_manager.permission.notification.save.fail');
 };
+
+export const notifyExecuteProductLinkRulesSucceeded = () => {
+  return notify('success', 'pim_asset_manager.asset_family.notification.execute_product_link_rules.success');
+};
+
+export const notifyExecuteProductLinkRulesFailed = () => {
+  return notify('error', 'pim_asset_manager.asset_family.notification.execute_product_link_rules.fail');
+};

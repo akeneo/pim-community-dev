@@ -13,6 +13,10 @@ export const attributeEditionIsRequiredUpdated = (is_required: boolean) => {
   return {type: 'ATTRIBUTE_EDITION_IS_REQUIRED_UPDATED', is_required};
 };
 
+export const attributeEditionIsReadOnlyUpdated = (is_read_only: boolean) => {
+  return {type: 'ATTRIBUTE_EDITION_IS_READ_ONLY_UPDATED', is_read_only};
+};
+
 export const attributeEditionAdditionalPropertyUpdated = (
   propertyCode: string,
   propertyValue: NormalizableAdditionalProperty

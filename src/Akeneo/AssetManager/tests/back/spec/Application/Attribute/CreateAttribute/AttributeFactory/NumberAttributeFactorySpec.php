@@ -34,6 +34,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
             false,
             false,
             false,
+            false,
             '150',
             '200'
         );
@@ -44,6 +45,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
                 'fr_FR' => 'Nom',
             ],
             true,
+            false,
             false,
             false,
             null,
@@ -65,6 +67,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
             false,
             false,
             false,
+            false,
             '150',
             '200'
         );
@@ -81,6 +84,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
                 'labels'                      => ['fr_FR' => 'Nombre'],
                 'order'                       => 0,
                 'is_required'                 => false,
+                'is_read_only'                => false,
                 'value_per_channel'           => false,
                 'value_per_locale'            => false,
                 'type'                        => 'number',
@@ -101,6 +105,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
             false,
             false,
             false,
+            false,
             null,
             null
         );
@@ -117,6 +122,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
                 'labels'                      => ['fr_FR' => 'Nombre'],
                 'order'                       => 0,
                 'is_required'                 => false,
+                'is_read_only'                => false,
                 'value_per_channel'           => false,
                 'value_per_locale'            => false,
                 'type'                        => 'number',
@@ -136,6 +142,7 @@ class NumberAttributeFactorySpec extends ObjectBehavior
                          'designer',
                          'color',
                          [],
+                         false,
                          false,
                          false,
                          false,

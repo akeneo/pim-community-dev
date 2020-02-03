@@ -42,18 +42,8 @@ services:
         tags:
             - { name: akeneo_assetmanager.connector.api.asset_value_validator }
 
-    akeneo_assetmanager.infrastructure.connector.api.asset_value_asset_type_validator:
-        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\AssetTypeValidator
-        tags:
-            - { name: akeneo_assetmanager.connector.api.asset_value_validator }
-
     akeneo_assetmanager.infrastructure.connector.api.asset_value_option_type_validator:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\OptionTypeValidator
-        tags:
-            - { name: akeneo_assetmanager.connector.api.asset_value_validator }
-
-    akeneo_assetmanager.infrastructure.connector.api.asset_value_asset_collection_type_validator:
-        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\AssetCollectionTypeValidator
         tags:
             - { name: akeneo_assetmanager.connector.api.asset_value_validator }
 

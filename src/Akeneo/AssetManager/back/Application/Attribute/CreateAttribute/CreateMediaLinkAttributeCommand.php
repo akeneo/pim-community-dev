@@ -33,6 +33,7 @@ class CreateMediaLinkAttributeCommand extends AbstractCreateAttributeCommand
         string $code,
         array $labels,
         bool $isRequired,
+        bool $isReadOnly,
         bool $valuePerChannel,
         bool $valuePerLocale,
         string $mediaType,
@@ -44,6 +45,7 @@ class CreateMediaLinkAttributeCommand extends AbstractCreateAttributeCommand
             $code,
             $labels,
             $isRequired,
+            $isReadOnly,
             $valuePerChannel,
             $valuePerLocale
         );

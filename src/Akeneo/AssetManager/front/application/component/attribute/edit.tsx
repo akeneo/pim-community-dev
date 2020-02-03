@@ -11,6 +11,7 @@ import {
   attributeEditionCancel,
   attributeEditionIsRequiredUpdated,
   attributeEditionLabelUpdated,
+  attributeEditionIsReadOnlyUpdated,
 } from 'akeneoassetmanager/domain/event/attribute/edit';
 import {saveAttribute} from 'akeneoassetmanager/application/action/attribute/edit';
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
@@ -54,6 +55,7 @@ interface DispatchProps {
   events: {
     onLabelUpdated: (value: string, locale: string) => void;
     onIsRequiredUpdated: (isRequired: boolean) => void;
+    onIsReadOnlyUpdated: (isReadOnly: boolean) => void;
     onAdditionalPropertyUpdated: (property: string, value: any) => void;
     onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => void;
     onCancel: () => void;
@@ -245,6 +247,33 @@ class Edit extends React.Component<EditProps> {
                 </div>
                 {getErrorsView(this.props.errors, 'isRequired')}
               </div>
+
+              <div className="AknFieldContainer AknFieldContainer--packed" data-code="isReadOnly">
+                <div className="AknFieldContainer-header">
+                  <label
+                    className="AknFieldContainer-label AknFieldContainer-label--inline"
+                    htmlFor="pim_asset_manager.attribute.edit.input.is_read_only"
+                  >
+                    <Checkbox
+                      id="pim_asset_manager.attribute.edit.input.is_read_only"
+                      value={this.props.attribute.isReadOnly}
+                      onChange={this.props.events.onIsReadOnlyUpdated}
+                      readOnly={!this.props.rights.attribute.edit}
+                    />
+                    <span
+                      onClick={() => {
+                        if (this.props.rights.attribute.edit) {
+                          this.props.events.onIsReadOnlyUpdated(!this.props.attribute.isReadOnly);
+                        }
+                      }}
+                    >
+                      {__('pim_asset_manager.attribute.edit.input.is_read_only')}
+                    </span>
+                  </label>
+                </div>
+                {getErrorsView(this.props.errors, 'isReadOnly')}
+              </div>
+
               <ErrorBoundary errorMessage={__('pim_asset_manager.asset_family.attribute.error.render_edit')}>
                 {getAdditionalProperty(
                   this.props.attribute,
@@ -335,6 +364,9 @@ export default connect(
         },
         onIsRequiredUpdated: (isRequired: boolean) => {
           dispatch(attributeEditionIsRequiredUpdated(isRequired));
+        },
+        onIsReadOnlyUpdated: (isReadOnly: boolean) => {
+          dispatch(attributeEditionIsReadOnlyUpdated(isReadOnly));
         },
         onAdditionalPropertyUpdated: (property: string, value: any) => {
           dispatch(attributeEditionAdditionalPropertyUpdated(property, value));

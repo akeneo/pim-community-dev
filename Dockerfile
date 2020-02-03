@@ -47,6 +47,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         php7.3-mbstring \
         php7.3-bcmath \
         php7.3-imagick \
+        php7.3-gd \
         php7.3-apcu \
         php7.3-exif \
         php-memcached \

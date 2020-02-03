@@ -16,6 +16,7 @@ namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSc
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
@@ -50,6 +51,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
             LabelCollection::fromArray(['en_US' => 'Preview']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::fromString('http://mydam.com'),

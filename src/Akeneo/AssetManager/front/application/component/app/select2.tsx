@@ -84,6 +84,7 @@ export default class Select2 extends React.Component<Select2Props & any> {
     const $el = $(this.select.current) as any;
 
     $el.off('change');
+    $el.select2('destroy');
   }
 
   render(): JSX.Element | JSX.Element[] {

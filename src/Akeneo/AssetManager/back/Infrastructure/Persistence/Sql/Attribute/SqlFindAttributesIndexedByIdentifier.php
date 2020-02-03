@@ -71,6 +71,7 @@ class SqlFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIde
             attribute_type,
             attribute_order,
             is_required,
+            is_read_only,
             value_per_channel,
             value_per_locale,
             additional_properties

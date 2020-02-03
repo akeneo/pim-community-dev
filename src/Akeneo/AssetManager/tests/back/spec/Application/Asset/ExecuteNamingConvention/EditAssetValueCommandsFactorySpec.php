@@ -26,6 +26,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\Pattern;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
@@ -227,6 +228,7 @@ class EditAssetValueCommandsFactorySpec extends ObjectBehavior
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::noLimit(),
@@ -244,6 +246,7 @@ class EditAssetValueCommandsFactorySpec extends ObjectBehavior
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeDecimalsAllowed::fromBoolean(false),
@@ -261,6 +264,7 @@ class EditAssetValueCommandsFactorySpec extends ObjectBehavior
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::empty(),

@@ -19,45 +19,6 @@ Feature: Partial review a proposal
       | Weather conditions | Snowy  |
     And I am logged in as "Julia"
 
-  Scenario: Successfully re-send for approval a proposal partially approved and partially rejected
-    Given I am on the proposals page
-    And the grid should contain 1 element
-    And I should see the following proposals:
-      | product | author | attribute          | original | new    |
-      | jacket  | Mary   | name               | Coat     | Jacket |
-      | jacket  | Mary   | weather_conditions | Dry      | Snowy  |
-    When I partially approve:
-      | product | author | attribute | locale | scope |
-      | jacket  | Mary   | name      | en_US  |       |
-    Then the grid should contain 1 element
-    And I should see the following proposals:
-      | product | author | attribute          | original | new   |
-      | jacket  | Mary   | weather_conditions | Dry      | Snowy |
-    When I partially reject:
-      | product | author | attribute          | locale | scope |
-      | jacket  | Mary   | weather_conditions |        |       |
-    Then I should not get the following proposal:
-      | jacket | Mary |
-    When I edit the "jacket" product
-    Then the field Name should contain "Jacket"
-    And the field Weather conditions should contain "Dry"
-    And I logout
-    When I am logged in as "Mary"
-    And I am on the dashboard page
-    Then I should see notifications:
-      | type    | message                                                                         |
-      | error   | Julia Stark has rejected value(s) for Weather conditions for the product jacket |
-      | success | Julia Stark has accepted value(s) for Name for the product jacket               |
-    And Mary proposed the following change to "jacket":
-      | field              | value |
-      | Weather conditions | Hot   |
-    And I am logged in as "Julia"
-    When I am on the proposals page
-    Then the grid should contain 1 element
-    And I should see the following proposals:
-      | product | author | attribute          | original | new |
-      | jacket  | Mary   | weather_conditions | Dry      | Hot |
-
   Scenario: Successfully partial reject then a partial approve a proposal
     Given I am on the proposals page
     And the grid should contain 1 element

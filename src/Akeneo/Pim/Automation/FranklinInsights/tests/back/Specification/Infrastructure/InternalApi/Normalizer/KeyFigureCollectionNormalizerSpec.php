@@ -34,7 +34,7 @@ class KeyFigureCollectionNormalizerSpec extends ObjectBehavior
                     3
                 ),
                 new KeyFigure(
-                    'franklin_attributed_added_to_family',
+                    'franklin_attribute_added_to_family',
                     2
                 ),
             ]
@@ -46,7 +46,7 @@ class KeyFigureCollectionNormalizerSpec extends ObjectBehavior
                     'type' => KeyFigure::TYPE_NUMBER,
                     'value' => 3,
                 ],
-                'franklin_attributed_added_to_family' => [
+                'franklin_attribute_added_to_family' => [
                     'type' => KeyFigure::TYPE_NUMBER,
                     'value' => 2,
                 ],

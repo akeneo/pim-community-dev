@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
@@ -106,6 +107,7 @@ class SqlFindConnectorAttributeOptionTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Attribute']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -130,6 +132,7 @@ class SqlFindConnectorAttributeOptionTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean($optionCollectionAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($optionCollectionAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             [
                 'options' => array_map(
                     function (AttributeOption $attributeOption) {

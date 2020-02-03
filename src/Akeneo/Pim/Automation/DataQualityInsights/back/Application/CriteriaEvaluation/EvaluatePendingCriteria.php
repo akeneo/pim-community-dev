@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvalua
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
-final class EvaluatePendingCriteria
+class EvaluatePendingCriteria
 {
     public const NO_LIMIT = -1;
 

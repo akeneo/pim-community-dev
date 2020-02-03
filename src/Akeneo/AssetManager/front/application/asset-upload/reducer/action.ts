@@ -137,12 +137,14 @@ export type OnFileUploadFailureAction = {
   type: typeof FILE_UPLOAD_FAILURE;
   payload: {
     line: Line;
+    errors: ValidationError[];
   };
 };
-export const fileUploadFailureAction = (line: Line): OnFileUploadFailureAction => ({
+export const fileUploadFailureAction = (line: Line, errors: ValidationError[]): OnFileUploadFailureAction => ({
   type: FILE_UPLOAD_FAILURE,
   payload: {
     line,
+    errors,
   },
 });
 

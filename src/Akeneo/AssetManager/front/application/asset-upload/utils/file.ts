@@ -8,11 +8,16 @@ type ThumbnailForLine = {
   line: Line;
 };
 
+const ALLOWED_THUMBNAIL_MIME_TYPES = ['image/png', 'image/jpeg'];
+export const shouldCreateThumbnailFromFile = (file: File): boolean => {
+  return ALLOWED_THUMBNAIL_MIME_TYPES.includes(file.type);
+};
+
 /* istanbul ignore next */
 export const getThumbnailFromFile = async (file: File, line: Line): Promise<ThumbnailForLine> => {
   return new Promise((resolve: ({thumbnail, line}: ThumbnailForLine) => void) => {
-    const fileReader = new FileReader();
-    if (file.type.match('image')) {
+    if (shouldCreateThumbnailFromFile(file)) {
+      const fileReader = new FileReader();
       fileReader.onload = () => {
         resolve({thumbnail: fileReader.result as string, line});
       };

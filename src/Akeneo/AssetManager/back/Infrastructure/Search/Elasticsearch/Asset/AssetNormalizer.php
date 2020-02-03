@@ -6,8 +6,6 @@ namespace Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Query\Asset\SearchableAssetItem;
@@ -172,9 +170,7 @@ class AssetNormalizer implements AssetNormalizerInterface
             AssetFamilyIdentifier::fromString($searchableAssetItem->assetFamilyIdentifier),
             [
                 OptionAttribute::ATTRIBUTE_TYPE,
-                OptionCollectionAttribute::ATTRIBUTE_TYPE,
-                AssetAttribute::ATTRIBUTE_TYPE,
-                AssetCollectionAttribute::ATTRIBUTE_TYPE
+                OptionCollectionAttribute::ATTRIBUTE_TYPE
             ]
         );
         $result = [];

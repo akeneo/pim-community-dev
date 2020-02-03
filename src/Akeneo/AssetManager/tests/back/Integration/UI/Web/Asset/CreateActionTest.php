@@ -26,6 +26,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventi
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -118,7 +119,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
-        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
         $this->productLinkRuleLauncherSpy->assertHasRunForAsset('brand', 'intel');
     }
 
@@ -147,7 +147,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
-        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator')
+            ->assertAssetEventsFlushed();
         $this->productLinkRuleLauncherSpy->assertHasRunForAsset('brand', 'intel');
     }
 
@@ -204,7 +205,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
-        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator')
+            ->assertAssetEventsFlushed();
         $this->productLinkRuleLauncherSpy->assertHasRunForAsset('brand', 'intel');
     }
 
@@ -455,7 +457,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
-        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator')
+            ->assertAssetEventsFlushed();
         $this->productLinkRuleLauncherSpy->assertHasNotRunForAsset('country', 'intel');
 
         $asset = $this->assetRepository->getByAssetFamilyAndCode(
@@ -552,7 +555,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
-        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer')->assertIndexRefreshed();
+        $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator')
+            ->assertAssetEventsFlushed();
     }
 
     /**
@@ -654,6 +658,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
             LabelCollection::fromArray(['fr_FR' => 'Logo', 'en_US' => 'Logo']),
             AttributeOrder::fromInteger(6),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::noLimit(),

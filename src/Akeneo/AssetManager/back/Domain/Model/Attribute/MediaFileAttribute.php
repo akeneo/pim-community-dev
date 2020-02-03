@@ -42,14 +42,24 @@ class MediaFileAttribute extends AbstractAttribute
         LabelCollection $labelCollection,
         AttributeOrder $order,
         AttributeIsRequired $isRequired,
+        AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxFileSize $maxFileSize,
         AttributeAllowedExtensions $extensions,
         MediaType $mediaType
     ) {
-        parent::__construct($identifier, $assetFamilyIdentifier, $code, $labelCollection, $order, $isRequired,
-            $valuePerChannel, $valuePerLocale);
+        parent::__construct(
+            $identifier,
+            $assetFamilyIdentifier,
+            $code,
+            $labelCollection,
+            $order,
+            $isRequired,
+            $isReadOnly,
+            $valuePerChannel,
+            $valuePerLocale
+        );
 
         $this->maxFileSize = $maxFileSize;
         $this->allowedExtensions = $extensions;
@@ -63,6 +73,7 @@ class MediaFileAttribute extends AbstractAttribute
         LabelCollection $labelCollection,
         AttributeOrder $order,
         AttributeIsRequired $isRequired,
+        AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxFileSize $maxFileSize,
@@ -76,6 +87,7 @@ class MediaFileAttribute extends AbstractAttribute
             $labelCollection,
             $order,
             $isRequired,
+            $isReadOnly,
             $valuePerChannel,
             $valuePerLocale,
             $maxFileSize,

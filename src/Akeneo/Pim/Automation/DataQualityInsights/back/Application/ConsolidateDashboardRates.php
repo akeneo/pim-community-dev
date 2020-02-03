@@ -21,7 +21,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesPr
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionType;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
 
 final class ConsolidateDashboardRates
 {
@@ -37,18 +36,6 @@ final class ConsolidateDashboardRates
     /** @var DashboardRatesProjectionRepositoryInterface */
     private $dashboardRatesProjectionRepository;
 
-    /** @var Periodicity */
-    private $daily;
-
-    /** @var Periodicity */
-    private $weekly;
-
-    /** @var Periodicity */
-    private $monthly;
-
-    /** @var Periodicity */
-    private $yearly;
-
     public function __construct(
         GetRanksDistributionFromProductAxisRatesQueryInterface $getRanksDistributionFromProductAxisRatesQuery,
         GetAllCategoryCodesQueryInterface $getAllCategoryCodesQuery,
@@ -59,10 +46,6 @@ final class ConsolidateDashboardRates
         $this->getAllCategoryCodesQuery = $getAllCategoryCodesQuery;
         $this->getAllFamilyCodesQuery = $getAllFamilyCodesQuery;
         $this->dashboardRatesProjectionRepository = $dashboardRatesProjectionRepository;
-        $this->daily = Periodicity::daily();
-        $this->weekly = Periodicity::weekly();
-        $this->monthly = Periodicity::monthly();
-        $this->yearly = Periodicity::yearly();
     }
 
     public function consolidate(ConsolidationDate $day): void
@@ -79,7 +62,8 @@ final class ConsolidateDashboardRates
         $dashBoardRatesProjection = new DashboardRatesProjection(
             DashboardProjectionType::catalog(),
             DashboardProjectionCode::catalog(),
-            $this->formatDashboardRanks($day, $catalogRanks)
+            $day,
+            $catalogRanks
         );
 
         $this->dashboardRatesProjectionRepository->save($dashBoardRatesProjection);
@@ -95,7 +79,8 @@ final class ConsolidateDashboardRates
             $dashBoardRatesProjection = new DashboardRatesProjection(
                 $dashboardFamily,
                 DashboardProjectionCode::family($familyCode),
-                $this->formatDashboardRanks($day, $familyRanks)
+                $day,
+                $familyRanks
             );
 
             $this->dashboardRatesProjectionRepository->save($dashBoardRatesProjection);
@@ -112,31 +97,11 @@ final class ConsolidateDashboardRates
             $dashBoardRatesProjection = new DashboardRatesProjection(
                 $dashboardCategory,
                 DashboardProjectionCode::category($categoryCode),
-                $this->formatDashboardRanks($day, $categoryRanks)
+                $day,
+                $categoryRanks
             );
 
             $this->dashboardRatesProjectionRepository->save($dashBoardRatesProjection);
         }
-    }
-
-    private function formatDashboardRanks(ConsolidationDate $day, array $rates): array
-    {
-        $dashboardRanks = [];
-
-        $dashboardRanks[strval($this->daily)][$day->format()] = $rates;
-
-        if ($day->isLastDayOfWeek()) {
-            $dashboardRanks[strval($this->weekly)][$day->format()] = $rates;
-        }
-
-        if ($day->isLastDayOfMonth()) {
-            $dashboardRanks[strval($this->monthly)][$day->format()] = $rates;
-        }
-
-        if ($day->isLastDayOfYear()) {
-            $dashboardRanks[strval($this->yearly)][$day->format()] = $rates;
-        }
-
-        return $dashboardRanks;
     }
 }

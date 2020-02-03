@@ -66,9 +66,8 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocalesTest extends SqlInteg
 
         $this->assertInstanceOf(ValueKeyCollection::class, $actualValueKeyCollection);
         $normalizedActualValueKeyCollection = $actualValueKeyCollection->normalize();
-        $this->assertCount(6, $normalizedActualValueKeyCollection);
+        $this->assertCount(5, $normalizedActualValueKeyCollection);
 
-        $this->assertContains(sprintf('%s', $this->fixturesDesigner['attributes']['country']->getIdentifier()), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_ecommerce', $this->fixturesDesigner['attributes']['main_image']->getIdentifier()), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_ecommerce_fr_FR', $this->fixturesDesigner['attributes']['long_description']->getIdentifier()), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_ecommerce_en_US', $this->fixturesDesigner['attributes']['long_description']->getIdentifier()), $normalizedActualValueKeyCollection);

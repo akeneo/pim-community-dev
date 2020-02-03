@@ -1,4 +1,4 @@
-#General behavior
+# General behavior
 
 A product is evaluated regarding some criteria.  
 Each criterion provide a grade (from 0 to 100).  
@@ -17,26 +17,26 @@ A criterion is always evaluated by scope and locale.
 The Dasboard view is a consolidation of all the evaluations of all the products.  
 We can filter the dashboard by scope/locale/(family or category) by day/week/month.
 
-##Criteria evaluation
+## Criteria evaluation
 Each criterion has is own php implementation.  
 We loop over each attribute values by scope and locale and evaluate the business rule.
 
 The attribute codes on which we have a recommendation are persisted. 
 
-##Axis computation
+## Axis computation
 TODO
 
-##Dashboard consolidation
+## Dashboard consolidation
 TODO
 
-##Migration from 3.x to 4.0
+## Migration from 3.x to 4.0
 The migration scripts handle:
 - the tables creation
 - the new jobs creation
 - the initialization of the dictionaries by activated locales (synchronously)
 - the initialization of the evaluation of all the active products of the catalog (asynchronously with the job queue)
 
-##PIM Lifecycle
+## PIM Lifecycle
 On product save, the criteria that have to be evaluated are persisted in a `PENDING` status in the `pimee_data_quality_insights_criteria_evaluation` table.  
 A Job `data_quality_insights_evaluate_products_criteria` is added to the queue with the product id in parameter.
 
@@ -51,21 +51,21 @@ Each criterion is evaluated one by one.
 > The content of the user is evaluated by our spellchecker class on the fly when the user edit the product to have
 > immediate feedback.
 
-#Criteria
+# Criteria
 
-##Completeness of required attributes
+## Completeness of required attributes
 Scope: All required attributes
 
 Calls the completeness service and return all the required attributes with no value
-##Completeness of non-required attributes
+## Completeness of non-required attributes
 Scope: All non required attributes
 
 Calls the completeness service and return all the non-required attributes with no value
-##Textarea uppercase words
+## Textarea uppercase words
 Scope: All textarea attributes
 
 Evaluate the number of words in a textarea that are in uppercase.
-##Text title formatting
+## Text title formatting
 Scope: For attribute type text, localizable, attribute as main title in the family of the product to evaluate.
 
 Calls Franklin Library to suggest a better formatting.
@@ -73,7 +73,7 @@ Calls Franklin Library to suggest a better formatting.
 Example: 
 `Macbook air Azerty core I7` should be written `MacBook Air AZERTY Core i7`
 
-##Spelling
+## Spelling
 Scope: For attribute type textarea (without WYSIWIG) and text.
 
 Calls the Aspell linux binary to evaluate the content.  
@@ -83,9 +83,9 @@ It uses also the words "ignored" by the users.
 
 
 
-###Commands
+### Commands
 
-####Commands usable in production
+#### Commands usable in production
 
 `pimee:data-quality-insights:schedule-periodic-tasks`
 
@@ -132,7 +132,7 @@ Aim:
 - Provide a health-check tool to understand the customer catalog and the status of criteria evaluation
 
 
-####Commands not usable in production - use with care
+#### Commands not usable in production - use with care
 
 `pimee:data-quality-insights:demo-helper`
 
@@ -146,9 +146,9 @@ Evaluate criteria for one product of each family (enough data to have a dashboar
 You can add the `--full-catalog-evaluation` option to evaluate all the products criteria synchronously
 
 
-###Jobs
+### Jobs
 
-####Good to know
+#### Good to know
 In order to have a quick feedback loop on evaluation of the criteria, we recommend to add a dedicated daemon queue for 
 the _data_quality_insights__* jobs like the following command:  
 
@@ -159,7 +159,7 @@ The regular daemon of the pim have to exclude them like the following command:
     bin/console akeneo:batch:job-queue-consumer-daemon -b data_quality_insights_evaluate_products_criteria -b data_quality_insights_periodic_tasks
     
 
-####List of jobs
+#### List of jobs
 
 `data_quality_insights_periodic_tasks`
 

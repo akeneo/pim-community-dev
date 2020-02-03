@@ -10,7 +10,7 @@ import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/
 import ListAsset, {
   createEmptyAsset,
   getAssetByCode,
-  removeAssetFromCollection,
+  removeAssetFromAssetCodeCollection,
   emptyCollection,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
@@ -114,7 +114,7 @@ const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onSele
             <AssetItem
               asset={asset}
               context={context}
-              onRemove={() => onSelectionChange(removeAssetFromCollection(selection, asset.code))}
+              onRemove={() => onSelectionChange(removeAssetFromAssetCodeCollection(selection, asset.code))}
               key={assetCode}
             />
           );

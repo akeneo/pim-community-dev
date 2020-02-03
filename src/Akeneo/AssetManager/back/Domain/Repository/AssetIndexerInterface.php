@@ -9,11 +9,18 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 interface AssetIndexerInterface
 {
     /**
-     * Indexes multiple assets
+     * Indexes one asset
      *
      * @param AssetIdentifier $assetIdentifier
      */
     public function index(AssetIdentifier $assetIdentifier);
+
+    /**
+     * Indexes multiple assets
+     *
+     * @param AssetIdentifier[] $assetIdentifiers
+     */
+    public function indexByAssetIdentifiers(array $assetIdentifiers);
 
     /**
      * Indexes all assets belonging to the given asset family.

@@ -58,6 +58,11 @@ services:
         tags:
             - { name: akeneo_assetmanager.edit_attribute_command_factory, priority: 120 }
 
+    akeneo_assetmanager.application.factory.edit_is_read_only_command_factory:
+        class: Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsReadOnlyCommandFactory
+        tags:
+            - { name: akeneo_assetmanager.edit_attribute_command_factory, priority: 120 }
+
     akeneo_assetmanager.application.factory.edit_labels_command_factory:
         class: Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommandFactory
         tags:

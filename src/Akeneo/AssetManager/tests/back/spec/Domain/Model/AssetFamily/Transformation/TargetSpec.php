@@ -13,6 +13,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
@@ -38,6 +39,7 @@ class TargetSpec extends ObjectBehavior
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeDecimalsAllowed::fromBoolean(false),
@@ -234,6 +236,7 @@ class TargetSpec extends ObjectBehavior
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(false),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean($scopable),
             AttributeValuePerLocale::fromBoolean($localizable),
             AttributeMaxFileSize::noLimit(),

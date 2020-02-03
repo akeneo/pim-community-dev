@@ -9,12 +9,27 @@ akeneo_data_quality_insights_product_evaluation:
     methods: [GET]
 
 akeneo_data_quality_insights_dashboard:
-    path: /data-quality-insights/dashboard/{channel}/{locale}/{periodicity}
+    path: /data-quality-insights/dashboard
     defaults:
         _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardController
-        channel: null
-        locale: null
-        periodicity: null
+    methods: [GET]
+
+akeneo_data_quality_insights_dashboard_overview:
+    path: /data-quality-insights/dashboard/overview/{channel}/{locale}/{timePeriod}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardOverviewController
+    methods: [GET]
+
+akeneo_data_quality_insights_dashboard_widget_families:
+    path: /data-quality-insights/dashboard/widget/families/{channel}/{locale}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardWidgetFamiliesController
+    methods: [GET]
+
+akeneo_data_quality_insights_dashboard_widget_categories:
+    path: /data-quality-insights/dashboard/widget/categories/{channel}/{locale}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardWidgetCategoriesController
     methods: [GET]
 
 akeneo_data_quality_insights_feature_flag:
@@ -30,4 +45,14 @@ akeneo_data_quality_insights_check_text:
 akeneo_data_quality_insights_check_text_ignore:
     path: /data-quality-insights/check-text/ignore
     defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddWordInDictionaryController }
+    methods: [POST]
+
+akeneo_data_quality_insights_check_title_suggestion:
+    path: /data-quality-insights/check-title
+    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckTitleSuggestionController }
+    methods: [POST]
+
+akeneo_data_quality_insights_check_title_suggestion_ignore:
+    path: /data-quality-insights/check-title/ignore
+    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\IgnoreTitleSuggestionController }
     methods: [POST]

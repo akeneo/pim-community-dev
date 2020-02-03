@@ -623,6 +623,7 @@ class EditAssetFamilyTransformationsContext implements Context
                 'en_US' => $attributeCode,
             ],
             false,
+            false,
             $scopable,
             $localizable,
             null,

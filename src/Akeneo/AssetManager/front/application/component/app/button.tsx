@@ -12,6 +12,13 @@ type ButtonProps = {
   isDisabled?: boolean;
 };
 
+export const ButtonContainer = styled.div`
+  display: flex;
+  > :not(:first-child) {
+    margin-left: 10px;
+  }
+`;
+
 export const TransparentButton = styled.button`
   background: none;
   border: none;

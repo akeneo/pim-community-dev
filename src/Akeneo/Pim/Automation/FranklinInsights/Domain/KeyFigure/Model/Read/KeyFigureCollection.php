@@ -30,4 +30,9 @@ final class KeyFigureCollection implements \IteratorAggregate
     {
         return new \ArrayIterator($this->collection);
     }
+
+    public function merge(KeyFigureCollection $keyFigureCollection): KeyFigureCollection
+    {
+        return new self(array_merge($this->collection, iterator_to_array($keyFigureCollection)));
+    }
 }

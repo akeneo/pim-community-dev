@@ -17,8 +17,13 @@ import {
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
 import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
-import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
+import {setValueData, isValueEmpty, getPreviewModelFromValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
+import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
+import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import Fullscreen from 'akeneoassetmanager/application/component/app/icon/fullscreen';
 
 const Container = styled.div`
   align-items: center;
@@ -64,11 +69,15 @@ const ActionButton = styled.button`
 
 const View = ({
   value,
+  channel,
+  locale,
   onChange,
   onSubmit,
   canEditData,
 }: {
   value: EditionValue;
+  channel: ChannelReference;
+  locale: LocaleReference;
   onChange: (value: EditionValue) => void;
   onSubmit: () => void;
   canEditData: boolean;
@@ -95,6 +104,14 @@ const View = ({
     data: getMediaData(value.data),
   });
 
+  const label = getLabelInCollection(
+    value.attribute.labels,
+    localeReferenceStringValue(locale),
+    true,
+    value.attribute.code
+  );
+  const previewModel = getPreviewModelFromValue(value, channel, locale);
+
   return (
     <Container>
       <Thumbnail src={mediaPreviewUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
@@ -114,23 +131,37 @@ const View = ({
         disabled={!canEditData}
         readOnly={!canEditData}
       />
-      {MediaTypes.youtube !== value.attribute.media_type && (
-        <ActionLink href={mediaDownloadUrl} target="_blank" title={__('pim_asset_manager.media_link.download')}>
-          <DownloadIcon
-            color={akeneoTheme.color.grey100}
-            size={20}
-            title={__('pim_asset_manager.media_link.download')}
-          />
-        </ActionLink>
+      {!isValueEmpty(value) && (
+        <>
+          {MediaTypes.youtube !== value.attribute.media_type && (
+            <ActionLink href={mediaDownloadUrl} target="_blank" title={__('pim_asset_manager.media_link.download')}>
+              <DownloadIcon
+                color={akeneoTheme.color.grey100}
+                size={20}
+                title={__('pim_asset_manager.media_link.download')}
+              />
+            </ActionLink>
+          )}
+          <ActionButton
+            title={__('pim_asset_manager.media_link.copy')}
+            onClick={() => copyToClipboard(mediaDownloadUrl)}
+          >
+            <LinkIcon color={akeneoTheme.color.grey100} size={20} title={__('pim_asset_manager.media_link.copy')} />
+          </ActionButton>
+          <FullscreenPreview
+            anchor={ActionButton}
+            label={label}
+            previewModel={previewModel}
+            attribute={value.attribute}
+          >
+            <Fullscreen
+              title={__('pim_asset_manager.asset.button.fullscreen')}
+              color={akeneoTheme.color.grey100}
+              size={20}
+            />
+          </FullscreenPreview>
+        </>
       )}
-      <ActionButton
-        title={__('pim_asset_manager.media_link.copy')}
-        onClick={() => {
-          copyToClipboard(mediaDownloadUrl);
-        }}
-      >
-        <LinkIcon color={akeneoTheme.color.grey100} size={20} title={__('pim_asset_manager.media_link.copy')} />
-      </ActionButton>
     </Container>
   );
 };

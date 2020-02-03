@@ -30,7 +30,9 @@ class AttributeMappingSpec extends ObjectBehavior
             'text',
             'pim_series',
             AttributeMappingStatus::ATTRIBUTE_ACTIVE,
-            ['Hair care']
+            ['Hair care'],
+            ['old_series', 'new_series'],
+            null
         );
     }
 
@@ -51,6 +53,7 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->isPending()->shouldReturn(false);
         $this->getExactMatchAttributeFromOtherFamily()->shouldReturn(null);
         $this->canCreateAttribute()->shouldReturn(false);
+        $this->getSuggestions()->shouldReturn(['old_series', 'new_series']);
     }
 
     public function it_can_have_null_target_label_and_summary(): void
@@ -115,6 +118,7 @@ class AttributeMappingSpec extends ObjectBehavior
             null,
             AttributeMappingStatus::ATTRIBUTE_PENDING,
             null,
+            [],
             null
         );
 
@@ -130,6 +134,7 @@ class AttributeMappingSpec extends ObjectBehavior
             null,
             AttributeMappingStatus::ATTRIBUTE_PENDING,
             null,
+            [],
             'pim_series'
         );
 

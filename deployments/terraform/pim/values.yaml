@@ -103,7 +103,6 @@ pim:
     type: RollingUpdate
   replicas: 1
   numDaemon: 1
-  numDataQualityDaemon: 1
   extraLabels: {}
   secret: nil # Generate me with `uuidgen`
   resources:
@@ -173,6 +172,10 @@ pim:
       enabled: true
       pimCommand: "pimee:data-quality-insights:schedule-periodic-tasks"
       schedule: "15 0 * * *"
+    data-quality-insights-evaluate-products:
+      enabled: true
+      pimCommand: "pimee:data-quality-insights:evaluate-products"
+      schedule: "*/30 * * * *"
     franklin-insights-quality-highlights-push-structure-and-products:
       enabled: true
       pimCommand: "pimee:franklin-insights:quality-highlights:push-structure-and-products"

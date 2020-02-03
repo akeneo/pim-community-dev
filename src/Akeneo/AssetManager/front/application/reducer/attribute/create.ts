@@ -11,7 +11,6 @@ export interface CreateState {
     type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
-    asset_type: string | null;
   };
   errors: ValidationError[];
 }
@@ -23,7 +22,6 @@ const initCreateState = (): CreateState => ({
     type: 'text',
     value_per_locale: false,
     value_per_channel: false,
-    asset_type: null,
     labels: {},
   },
   errors: [],
@@ -39,7 +37,6 @@ export default (
     attribute_type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
-    asset_type: string | null;
   }
 ) => {
   switch (action.type) {
@@ -60,15 +57,7 @@ export default (
         data: {
           ...state.data,
           type: action.attribute_type,
-          asset_type: state.data.asset_type,
         },
-      };
-      break;
-
-    case 'ATTRIBUTE_CREATION_ASSET_TYPE_UPDATED':
-      state = {
-        ...state,
-        data: {...state.data, asset_type: action.asset_type},
       };
       break;
 

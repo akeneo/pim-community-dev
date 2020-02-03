@@ -16,6 +16,8 @@ namespace Akeneo\AssetManager\Infrastructure\Job;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\RuleTemplateExecutor;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetCodesByAssetFamilyInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -30,12 +32,18 @@ class LinkAssetsToProductsTasklet implements TaskletInterface
     /** @var RuleTemplateExecutor */
     private $ruleTemplateExecutor;
 
+    /** @var FindAssetCodesByAssetFamilyInterface */
+    private $findAssetCodesByAssetFamily;
+
     /** @var StepExecution */
     private $stepExecution;
 
-    public function __construct(RuleTemplateExecutor $ruleExecutor)
-    {
+    public function __construct(
+        RuleTemplateExecutor $ruleExecutor,
+        FindAssetCodesByAssetFamilyInterface $findAssetCodesByAssetFamily
+    ) {
         $this->ruleTemplateExecutor = $ruleExecutor;
+        $this->findAssetCodesByAssetFamily = $findAssetCodesByAssetFamily;
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
@@ -43,12 +51,27 @@ class LinkAssetsToProductsTasklet implements TaskletInterface
         $this->stepExecution = $stepExecution;
     }
 
-    public function execute()
+    public function execute(): void
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($this->stepExecution->getJobParameters()->get('asset_family_identifier'));
 
-        foreach ($this->stepExecution->getJobParameters()->get('asset_codes') as $assetCode) {
-            $this->ruleTemplateExecutor->execute($assetFamilyIdentifier, AssetCode::fromString($assetCode));
+        $assetCodes = $this->stepExecution->getJobParameters()->has('asset_codes')
+            ? array_map(
+                function (string $assetCode) {
+                    return AssetCode::fromString($assetCode);
+                },
+                $this->stepExecution->getJobParameters()->get('asset_codes')
+            )
+            : $this->findAssetCodesByAssetFamily->find($assetFamilyIdentifier)
+            ;
+
+        foreach ($assetCodes as $assetCode) {
+            try {
+                $this->ruleTemplateExecutor->execute($assetFamilyIdentifier, $assetCode);
+            } catch (\InvalidArgumentException $e) {
+                $message = sprintf('The asset could not be linked to products: %s', $e->getMessage());
+                $this->stepExecution->addWarning($message, [], new DataInvalidItem(['asset_code' => (string)$assetCode]));
+            }
         }
     }
 }

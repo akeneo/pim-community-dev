@@ -75,3 +75,39 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\FilterUsersToNotifyAboutGivenFamilyMissingMappingQuery'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_attributes_to_apply:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectAttributesToApplyQuery
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_attributes_options_by_attribute_code'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_attributes_options_by_attribute_code:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectAttributeOptionsByAttributeCodeQuery
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_items:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectPendingItemsQuery
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_families_to_apply:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectFamiliesToApplyQuery
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.quality_highlights.select_products_to_apply:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectProductsToApplyQuery
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_attribute_codes'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.quality_highlights.select_supported_attributes_by_family:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectSupportedAttributesByFamilyQuery
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectUpdatedProductsIdsToApplyQuery:
+        arguments:
+            - '@database_connection'

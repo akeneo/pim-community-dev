@@ -6,6 +6,7 @@ namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -34,6 +35,7 @@ class NumberAttributeSpec extends ObjectBehavior
                 LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeDecimalsAllowed::fromBoolean(false),
@@ -65,6 +67,7 @@ class NumberAttributeSpec extends ObjectBehavior
                 LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeDecimalsAllowed::fromBoolean(true),
@@ -87,6 +90,7 @@ class NumberAttributeSpec extends ObjectBehavior
                 LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeDecimalsAllowed::fromBoolean(false),
@@ -106,6 +110,7 @@ class NumberAttributeSpec extends ObjectBehavior
                 'labels'                      => ['fr_FR' => 'Superficie', 'en_US' => 'Area'],
                 'order'                       => 0,
                 'is_required'                 => true,
+                'is_read_only'                => true,
                 'value_per_channel'           => true,
                 'value_per_locale'            => true,
                 'type'                        => 'number',
@@ -127,6 +132,7 @@ class NumberAttributeSpec extends ObjectBehavior
                 LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
                 AttributeOrder::fromInteger(0),
                 AttributeIsRequired::fromBoolean(true),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeDecimalsAllowed::fromBoolean(false),

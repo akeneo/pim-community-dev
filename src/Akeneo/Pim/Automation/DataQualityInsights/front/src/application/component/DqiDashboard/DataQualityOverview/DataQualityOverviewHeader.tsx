@@ -1,18 +1,18 @@
 import React, {FunctionComponent} from 'react';
 import FamilyFilter from "./Header/FamilyFilter";
-import PeriodicityFilter from "./Header/PeriodicityFilter";
+import TimePeriodFilter from "./Header/TimePeriodFilter";
 import CategoryFilter from "./Header/CategoryFilter";
 
 const __ = require('oro/translator');
 const SecurityContext = require('pim/security-context');
 
 interface DataQualityOverviewHeaderProps {
-  periodicity: string;
+  timePeriod: string;
   familyCode: string | null;
   categoryCode: string | null;
 }
 
-const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProps> = ({periodicity, familyCode, categoryCode}) => {
+const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProps> = ({timePeriod, familyCode, categoryCode}) => {
 
   return (
     <div className="AknSubsection-title AknSubsection-title--glued">
@@ -20,7 +20,7 @@ const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProp
       <div className="AknFilterBox AknFilterBox--search">
         <div className="AknFilterBox-list filter-box">
 
-          <PeriodicityFilter periodicity={periodicity}/>
+          <TimePeriodFilter timePeriod={timePeriod}/>
 
           {SecurityContext.isGranted('pim_enrich_product_category_list') && (<CategoryFilter categoryCode={categoryCode}/>)}
 

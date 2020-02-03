@@ -47,6 +47,6 @@ Feature: Execute naming convention on an asset
   Scenario: Exception is thrown when naming convention pattern does not match and in strict mode
     Given an asset family with some attributes and a naming convention with unmatched pattern and strict mode
     When an asset is created with valid values for naming convention execution
-    Then an exception is thrown with message "Naming convention pattern does not match"
+    Then an exception is thrown with message "This value does not match the naming convention's pattern"
     And there is no violations errors
     And the asset should be unchanged

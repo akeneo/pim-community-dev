@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tas
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluateProductsCriteriaParameters;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductIdsToEvaluateQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -23,6 +23,9 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 final class EvaluateProductsCriteriaTasklet implements TaskletInterface
 {
     public const JOB_INSTANCE_NAME = 'data_quality_insights_evaluate_products_criteria';
+
+    private const NB_PRODUCTS_MAX = 10000;
+    private const BULK_SIZE = 100;
 
     /** @var EvaluatePendingCriteria */
     private $evaluatePendingCriteria;
@@ -36,23 +39,32 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
     /** @var IndexProductRates */
     private $indexProductRates;
 
-    public function __construct(EvaluatePendingCriteria $evaluatePendingCriteria, ConsolidateProductAxisRates $consolidateProductAxisRates, IndexProductRates $indexProductRates)
-    {
+    /** @var GetProductIdsToEvaluateQueryInterface */
+    private $getProductIdsToEvaluateQuery;
+
+    public function __construct(
+        EvaluatePendingCriteria $evaluatePendingCriteria,
+        ConsolidateProductAxisRates $consolidateProductAxisRates,
+        IndexProductRates $indexProductRates,
+        GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery
+    ) {
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
         $this->consolidateProductAxisRates = $consolidateProductAxisRates;
         $this->indexProductRates = $indexProductRates;
+        $this->getProductIdsToEvaluateQuery = $getProductIdsToEvaluateQuery;
     }
 
     public function execute(): void
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $productIds = $jobParameters->get(EvaluateProductsCriteriaParameters::PRODUCT_IDS);
+        foreach ($this->getProductIdsToEvaluateQuery->execute(self::NB_PRODUCTS_MAX, self::BULK_SIZE) as $productIds) {
+            $this->evaluatePendingCriteria->execute($productIds);
 
-        $this->evaluatePendingCriteria->execute($productIds);
+            $this->consolidateProductAxisRates->consolidate($productIds);
 
-        $this->consolidateProductAxisRates->consolidate($productIds);
+            $this->indexProductRates->execute($productIds);
 
-        $this->indexProductRates->execute($productIds);
+            $this->stepExecution->setWriteCount($this->stepExecution->getWriteCount() + count($productIds));
+        }
     }
 
     public function setStepExecution(StepExecution $stepExecution)

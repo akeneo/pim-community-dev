@@ -19,6 +19,7 @@
         "value_per_locale": true,
         "value_per_channel": false,
         "is_required_for_completeness": true,
+        "is_read_only": false,
         "max_characters": 155,
         "is_textarea": false,
         "is_rich_text_editor": false,

@@ -17,8 +17,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttri
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithExactMatchHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithExactMatchQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyCommand;
@@ -78,8 +78,8 @@ final class AttributesMappingContext implements Context
     /** @var array */
     private $originalAttributesMapping;
 
-    /** @var GetAttributesMappingWithSuggestionsHandler */
-    private $getAttributesMappingWithSuggestionsHandler;
+    /** @var GetAttributesMappingWithExactMatchHandler */
+    private $getAttributesMappingWithExactMatchHandler;
 
     /** @var InMemorySelectExactMatchAttributeCodeQuery */
     private $inMemorySelectExactMatchAttributeCodeQuery;
@@ -107,7 +107,7 @@ final class AttributesMappingContext implements Context
         CreateAttributeInFamilyHandler $createAttributeInFamilyHandler,
         BulkCreateAttributesInFamilyHandler $bulkCreateAttributeInFamilyHandler,
         FakeClient $fakeClient,
-        GetAttributesMappingWithSuggestionsHandler $getAttributesMappingWithSuggestionsHandler,
+        GetAttributesMappingWithExactMatchHandler $getAttributesMappingWithExactMatchHandler,
         InMemorySelectExactMatchAttributeCodeQuery $inMemorySelectExactMatchAttributeCodeQuery,
         InMemoryFamilyRepository $familyRepository,
         InMemoryAttributeRepository $attributeRepository,
@@ -120,7 +120,7 @@ final class AttributesMappingContext implements Context
         $this->createAttributeInFamilyHandler = $createAttributeInFamilyHandler;
         $this->bulkCreateAttributeInFamilyHandler = $bulkCreateAttributeInFamilyHandler;
         $this->fakeClient = $fakeClient;
-        $this->getAttributesMappingWithSuggestionsHandler = $getAttributesMappingWithSuggestionsHandler;
+        $this->getAttributesMappingWithExactMatchHandler = $getAttributesMappingWithExactMatchHandler;
         $this->inMemorySelectExactMatchAttributeCodeQuery = $inMemorySelectExactMatchAttributeCodeQuery;
         $this->familyRepository = $familyRepository;
         $this->attributeRepository = $attributeRepository;
@@ -201,14 +201,12 @@ final class AttributesMappingContext implements Context
     }
 
     /**
-     * @When I retrieve the attributes mapping with suggestions for the family :familyCode
-     *
-     * @param string $familyCode
+     * @When I retrieve the attributes mapping with exact match for the family "router_exact_match"
      */
-    public function iRetrieveTheAttributesMappingWithSuggestionsForTheFamily($familyCode): void
+    public function iRetrieveTheAttributesMappingWithExactMatchForTheFamilyRouter(): void
     {
-        $query = new GetAttributesMappingWithSuggestionsQuery(new FamilyCode($familyCode));
-        $this->retrievedAttributesMapping = $this->getAttributesMappingWithSuggestionsHandler->handle($query);
+        $query = new GetAttributesMappingWithExactMatchQuery(new FamilyCode('router_exact_match'));
+        $this->retrievedAttributesMapping = $this->getAttributesMappingWithExactMatchHandler->handle($query);
     }
 
     /**
@@ -382,6 +380,8 @@ final class AttributesMappingContext implements Context
                     Assert::eq($attributeMapping->getTargetAttributeType(), $expectedAttribute['target_attribute_type']);
                     Assert::eq($attributeMapping->getPimAttributeCode(), $expectedAttribute['pim_attribute_code']);
                     Assert::eq($attributeMapping->getStatus(), $expectedAttribute['status']);
+                    $expectedSuggestions = '' !== $expectedAttribute['suggestions'] ? explode(',', $expectedAttribute['suggestions']) : [];
+                    Assert::eq($attributeMapping->getSuggestions(), $expectedSuggestions);
                     break;
                 }
             }

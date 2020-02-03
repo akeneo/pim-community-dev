@@ -2,16 +2,20 @@ import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/
 import LabelCollection from 'akeneoassetmanager/domain/model/label-collection';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import AssetIdentifier from 'akeneoassetmanager/domain/model/asset/identifier';
-import ListValue, {getPreviewModel} from 'akeneoassetmanager/domain/model/asset/list-value';
+import ListValue from 'akeneoassetmanager/domain/model/asset/list-value';
 import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {MediaPreview, MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
+import {MediaPreview, MediaPreviewType, emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
-import MediaFileData from 'akeneoassetmanager/domain/model/asset/data/media-file';
-import MediaLinkData from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {getLabel} from 'pimui/js/i18n';
 import {assetCodesAreEqual} from 'akeneoassetmanager/domain/model/asset-family/code';
+import {
+  PreviewCollection,
+  getPreviewModelFromCollection,
+  isPreviewModelUndefined,
+  isPreviewModelNull,
+} from 'akeneoassetmanager/domain/model/asset/value';
 
 export const ASSET_COLLECTION_LIMIT = 50;
 
@@ -21,12 +25,6 @@ export enum MoveDirection {
 }
 
 export type ValueCollection = {[key: string]: ListValue};
-
-export type PreviewCollection = PreviewModel[];
-
-export type PreviewModel = ListValue & {
-  data: MediaFileData | MediaLinkData;
-};
 
 export const createEmptyAsset = (assetCode?: AssetCode): ListAsset => ({
   identifier: '',
@@ -57,13 +55,9 @@ export const getListAssetMainMediaThumbnail = (
   channel: ChannelCode,
   locale: LocaleCode
 ): MediaPreview => {
-  const previewModel = getPreviewModel(asset.image, channel, locale);
-  if (undefined === previewModel) {
-    return {
-      type: MediaPreviewType.Thumbnail,
-      attributeIdentifier: 'UNKNOWN',
-      data: '',
-    };
+  const previewModel = getPreviewModelFromCollection(asset.image, channel, locale);
+  if (isPreviewModelUndefined(previewModel)) {
+    return emptyMediaPreview();
   }
   const attributeIdentifier = previewModel.attribute;
 
@@ -74,13 +68,10 @@ export const getListAssetMainMediaThumbnail = (
   };
 };
 
-const previewModelIsUndefined = (previewModel: any): previewModel is undefined => previewModel === undefined;
-const previewModelIsNull = (previewModel: any): previewModel is null => previewModel === null;
-
 export const isMainMediaEmpty = (asset: ListAsset, channel: ChannelCode, locale: LocaleCode) => {
-  const previewModel = getPreviewModel(asset.image, channel, locale);
+  const previewModel = getPreviewModelFromCollection(asset.image, channel, locale);
 
-  return previewModelIsUndefined(previewModel) || previewModelIsNull(previewModel.data);
+  return isPreviewModelUndefined(previewModel) || isPreviewModelNull(previewModel.data);
 };
 
 export const assetHasCompleteness = (asset: ListAsset) => asset.completeness.required > 0;
@@ -105,8 +96,18 @@ export const addAssetsToCollection = (assetCollection: AssetCode[], assetCodes: 
   return [...assetCollection, ...assetCodes];
 };
 
-export const removeAssetFromCollection = (assetCollection: AssetCode[], assetCodeToRemove: AssetCode): AssetCode[] => {
+export const removeAssetFromAssetCodeCollection = (
+  assetCollection: AssetCode[],
+  assetCodeToRemove: AssetCode
+): AssetCode[] => {
   return assetCollection.filter((assetCode: AssetCode) => assetCodeToRemove !== assetCode);
+};
+
+export const removeAssetFromAssetCollection = (
+  assetCollection: ListAsset[],
+  assetCodeToRemove: AssetCode
+): ListAsset[] => {
+  return assetCollection.filter((asset: ListAsset) => assetCodeToRemove !== asset.code);
 };
 
 export const isAssetInCollection = (assetCodeToLocate: AssetCode, assetCollection: AssetCode[]): boolean => {
@@ -130,11 +131,11 @@ export const getNextAssetCode = (assetCollection: AssetCode[], assetCode: AssetC
 };
 
 export const assetWillNotMoveInCollection = (
-  assetCollection: AssetCode[],
+  assetCollection: ListAsset[],
   asset: ListAsset,
   direction: MoveDirection
 ): boolean => {
-  const currentAssetPosition = assetCollection.indexOf(asset.code);
+  const currentAssetPosition = assetCollection.indexOf(asset);
 
   return (
     (0 === currentAssetPosition && direction === MoveDirection.Before) ||
@@ -148,11 +149,11 @@ export const getAssetCodes = (assetCollection: ListAsset[]): AssetCode[] => {
 };
 
 export const moveAssetInCollection = (
-  assetCollection: AssetCode[],
+  assetCollection: ListAsset[],
   asset: ListAsset,
   direction: MoveDirection
-): AssetCode[] => {
-  const currentAssetPosition = assetCollection.indexOf(asset.code);
+): ListAsset[] => {
+  const currentAssetPosition = assetCollection.indexOf(asset);
 
   // If asset already first, last or doesn't exists we do nothing
   if (assetWillNotMoveInCollection(assetCollection, asset, direction)) {

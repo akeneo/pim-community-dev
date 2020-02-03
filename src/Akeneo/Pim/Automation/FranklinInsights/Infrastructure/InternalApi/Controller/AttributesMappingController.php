@@ -15,8 +15,8 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Cont
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithExactMatchHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithExactMatchQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
@@ -50,8 +50,8 @@ class AttributesMappingController
     /** @var AttributesMappingNormalizer */
     private $attributesMappingNormalizer;
 
-    /** @var GetAttributesMappingWithSuggestionsHandler */
-    private $getAttributesMappingWithSuggestions;
+    /** @var GetAttributesMappingWithExactMatchHandler */
+    private $getAttributesMappingWithExactMatch;
 
     public function __construct(
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
@@ -59,14 +59,14 @@ class AttributesMappingController
         FamiliesMappingStatusNormalizer $familiesNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer,
         SecurityFacade $securityFacade,
-        GetAttributesMappingWithSuggestionsHandler $getAttributesMappingWithSuggestions
+        GetAttributesMappingWithExactMatchHandler $getAttributesMappingWithExactMatch
     ) {
         $this->saveAttributesMappingByFamilyHandler = $saveAttributesMappingByFamilyHandler;
         $this->searchFamiliesHandler = $searchFamiliesHandler;
         $this->familiesNormalizer = $familiesNormalizer;
         $this->attributesMappingNormalizer = $attributesMappingNormalizer;
         $this->securityFacade = $securityFacade;
-        $this->getAttributesMappingWithSuggestions = $getAttributesMappingWithSuggestions;
+        $this->getAttributesMappingWithExactMatch = $getAttributesMappingWithExactMatch;
     }
 
     /**
@@ -106,7 +106,7 @@ class AttributesMappingController
     {
         $this->checkAccess('akeneo_franklin_insights_settings_mapping');
 
-        $familyAttributesMapping = $this->getAttributesMappingWithSuggestions->handle(new GetAttributesMappingWithSuggestionsQuery(new FamilyCode($identifier)));
+        $familyAttributesMapping = $this->getAttributesMappingWithExactMatch->handle(new GetAttributesMappingWithExactMatchQuery(new FamilyCode($identifier)));
 
         return new JsonResponse([
             'code' => $identifier,

@@ -26,3 +26,9 @@ Feature: Automatically link assets to products
 	Given an asset family with no product link rule
 	When I link some assets to some products using this rule template
 	Then a job has not been launched to link assets to products
+
+  @acceptance-back
+  Scenario: A job to link all assets in an asset family is launched when we create one asset
+    Given an asset family with some rule templates
+    When I link all assets in the asset family to some products using this rule template
+    Then a job has been launched to link all assets of the asset family to products

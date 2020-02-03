@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
@@ -129,6 +130,7 @@ class SqlAverageMaxNumberOfValuesPerAssetTest extends SqlIntegrationTestCase
                     LabelCollection::fromArray([]),
                     AttributeOrder::fromInteger($index + 2), // Labels and Image are created by default
                     AttributeIsRequired::fromBoolean(false),
+                    AttributeIsReadOnly::fromBoolean(false),
                     AttributeValuePerChannel::fromBoolean(false),
                     AttributeValuePerLocale::fromBoolean(false),
                     AttributeMaxLength::fromInteger(255),

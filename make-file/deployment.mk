@@ -5,9 +5,6 @@ INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
 PFID ?= srnt-$(INSTANCE_NAME)
 CI ?= false
 
-#by default, the tag to deploy is CIRCLECI_SHA1
-DEPLOY_SHA1 ?= $(IMAGE_TAG)
-
 TEST_AUTO ?= false
 ENV_NAME ?= dev
 GOOGLE_PROJECT_ID ?= akecld-saas-$(ENV_NAME)
@@ -77,8 +74,8 @@ delete: terraform-delete purge-release-all
 .PHONY: purge-release-all
 purge-release-all: get-kubeconfig
 	helm delete $(PFID) --purge || echo "WARNING: FAILED helm delete --purge $(PFID)"
-	kubectl delete all,pvc --all -n $(PFID) || echo "WARNING: FAILED kubectl delete all,pvc --all -n $(PFID)"
-	kubectl delete ns $(PFID) || echo "WARNING: FAILED kubectl delete ns $(PFID)"
+	@kubectl delete all,pvc --all -n $(PFID) --force --grace-period=0 && echo "kubectl delete all,pvc forced OK" || echo "WARNING: FAILED kubectl delete all,pvc --all -n $(PFID) --force --grace-period=0"
+	@kubectl delete ns $(PFID) && echo "kubectl delete ns OK"  || echo "WARNING: FAILED kubectl delete ns $(PFID)"
 
 .PHONY: terraform-plan-destroy
 terraform-plan-destroy: terraform-init
@@ -95,11 +92,11 @@ create-dev-instance: create-ci-values create-tf-files
 #  create-ci-instance: Update Chart.yaml only if running in a CI container
 .PHONY: create-ci-instance
 create-ci-instance: create-ci-values create-tf-files
-	yq w -i $(PIM_SRC_DIR)/deployments/terraform/pim/Chart.yaml version ${DEPLOY_SHA1}
+	yq w -i $(PIM_SRC_DIR)/deployments/terraform/pim/Chart.yaml version ${IMAGE_TAG}
 
 .PHONY: create-ci-values
 create-ci-values: $(INSTANCE_DIR)
-	@echo "Deploy with $(DEPLOY_SHA1)"
+	@echo "Deploy with $(IMAGE_TAG)"
 	cp $(PIM_SRC_DIR)/deployments/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
@@ -110,7 +107,7 @@ endif
 .PHONY: create-tf-files
 create-tf-files: $(INSTANCE_DIR)
 	@echo $(INSTANCE_NAME_PREFIX)
-	@echo "terraform {" >> $(INSTANCE_DIR)/main.tf
+	@echo "terraform {" > $(INSTANCE_DIR)/main.tf
 	@echo "backend \"gcs\" {" >> $(INSTANCE_DIR)/main.tf
 	@echo "bucket  = \"akecld-terraform\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "prefix  = \"saas/$(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)/$(PFID)/\"" >> $(INSTANCE_DIR)/main.tf
@@ -127,7 +124,7 @@ create-tf-files: $(INSTANCE_DIR)
 	@echo "dns_zone                            = \"$(GOOGLE_MANAGED_ZONE_NAME)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "pager_duty_service_key              = \"d55f85282a8e4e16b2c822249ad440bd\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "google_storage_location             = \"eu\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "papo_project_code                   = \"$(PFID)\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "papo_project_code                   = \"NOT_ON_PAPO_$(PFID)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "force_destroy_storage               = true" >> $(INSTANCE_DIR)/main.tf
 	@echo "pim_version                         = \"$(IMAGE_TAG)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "}" >> $(INSTANCE_DIR)/main.tf
@@ -138,8 +135,14 @@ test-prod:
 
 .PHONY: release
 release:
-	@echo Tagging Docker image ${IMAGE_TAG}
+	@echo Tagging Docker image ${NEW_IMAGE_TAG}
 	docker pull eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG}
-	docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG} eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG}
-	@echo Pushing Docker image ${IMAGE_TAG}
-	$(MAKE) push-php-image-prod
+	docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG} eu.gcr.io/akeneo-ci/pim-enterprise-dev:${NEW_IMAGE_TAG}
+	@echo Pushing Docker image ${NEW_IMAGE_TAG}
+	IMAGE_TAG=${NEW_IMAGE_TAG} $(MAKE) push-php-image-prod
+	@echo Tagging EE dev repository
+	git config user.name "Michel Tag"
+	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
+	git tag -a ${NEW_IMAGE_TAG} -m "Tagging SaaS version ${NEW_IMAGE_TAG}"
+	git push origin ${NEW_IMAGE_TAG}
+

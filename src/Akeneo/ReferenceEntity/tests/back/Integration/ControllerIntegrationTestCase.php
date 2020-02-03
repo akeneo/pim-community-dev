@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration;
 
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\IndexAssetEventAggregator;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

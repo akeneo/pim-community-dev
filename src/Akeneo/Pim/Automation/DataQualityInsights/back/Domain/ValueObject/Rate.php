@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Rates;
-
 final class Rate
 {
     /** @var int */
@@ -41,17 +39,6 @@ final class Rate
 
     public function __toString()
     {
-        switch (true) {
-            case ($this->rate >= 90):
-                return Rates::RANK_1;
-            case ($this->rate >= 80):
-                return Rates::RANK_2;
-            case ($this->rate >= 70):
-                return Rates::RANK_3;
-            case ($this->rate >= 60):
-                return Rates::RANK_4;
-            default:
-                return Rates::RANK_5;
-        }
+        return Rank::fromRate($this)->toLetter();
     }
 }

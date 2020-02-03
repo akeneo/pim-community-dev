@@ -30,6 +30,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
                 true,
                 false,
                 false,
+                false,
                 155,
                 false,
                 false,
@@ -47,6 +48,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
                 true,
                 false,
                 false,
+                false,
                 null,
                 [],
                 MediaType::IMAGE
@@ -61,6 +63,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'name',
             ['fr_FR' => 'Nom'],
             true,
+            false,
             false,
             false,
             155,
@@ -82,6 +85,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
                 'labels'                      => ['fr_FR' => 'Nom'],
                 'order'                       => 0,
                 'is_required'                 => true,
+                'is_read_only'                => false,
                 'value_per_channel'           => false,
                 'value_per_locale'            => false,
                 'type'                        => 'text',
@@ -103,6 +107,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             true,
             false,
             false,
+            false,
             155,
             false,
             false,
@@ -122,6 +127,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
                 'labels'                      => ['fr_FR' => 'Nom'],
                 'order'                       => 0,
                 'is_required'                 => true,
+                'is_read_only'                => false,
                 'value_per_channel'           => false,
                 'value_per_locale'            => false,
                 'type'                        => 'text',
@@ -143,6 +149,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             true,
             false,
             false,
+            false,
             AttributeMaxLength::NO_LIMIT,
             false,
             false,
@@ -162,6 +169,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
                 'labels'                      => ['fr_FR' => 'Nom'],
                 'order'                       => 0,
                 'is_required'                 => true,
+                'is_read_only'                => false,
                 'value_per_channel'           => false,
                 'value_per_locale'            => false,
                 'type'                        => 'text',
@@ -183,6 +191,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             true,
             false,
             false,
+            false,
             AttributeMaxLength::NO_LIMIT,
             false,
             false,
@@ -201,6 +210,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'labels'                      => ['fr_FR' => 'Nom'],
             'order'                       => 0,
             'is_required'                 => true,
+            'is_read_only'                => false,
             'value_per_channel'           => false,
             'value_per_locale'            => false,
             'type'                        => 'text',
@@ -221,6 +231,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             true,
             false,
             false,
+            false,
             155,
             true,
             true,
@@ -231,6 +242,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->code = 'name';
         $command->labels = ['fr_FR' => 'Nom'];
         $command->isRequired = true;
+        $command->isReadOnly = false;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
         $command->maxLength = 155;
@@ -248,6 +260,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'labels'                      => ['fr_FR' => 'Nom'],
             'order'                       => 0,
             'is_required'                 => true,
+            'is_read_only'                => false,
             'value_per_channel'           => false,
             'value_per_locale'            => false,
             'type'                        => 'text',

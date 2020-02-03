@@ -33,6 +33,7 @@ class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
         string $code,
         array $labels,
         bool $isRequired,
+        bool $isReadOnly,
         bool $valuePerChannel,
         bool $valuePerLocale,
         bool $decimalsAllowed,
@@ -44,6 +45,7 @@ class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
             $code,
             $labels,
             $isRequired,
+            $isReadOnly,
             $valuePerChannel,
             $valuePerLocale
         );

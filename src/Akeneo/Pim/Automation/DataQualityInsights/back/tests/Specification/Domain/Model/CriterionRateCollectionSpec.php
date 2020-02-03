@@ -56,4 +56,26 @@ final class CriterionRateCollectionSpec extends ObjectBehavior
             ],
         ]);
     }
+
+    public function it_returns_the_rate_for_a_channel_and_a_locale()
+    {
+        $expectedRate = new Rate(75);
+
+        $this
+            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(91))
+            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(40))
+            ->addRate(new ChannelCode('print'), new LocaleCode('en_US'), $expectedRate)
+            ->addRate(new ChannelCode('print'), new LocaleCode('fr_FR'), new Rate(65));
+
+        $this->getByChannelAndLocale(new ChannelCode('print'), new LocaleCode('en_US'))->shouldReturn($expectedRate);
+    }
+
+    public function it_returns_null_if_there_is_no_rate_for_a_channel_and_a_locale()
+    {
+        $this
+            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(91))
+            ->addRate(new ChannelCode('print'), new LocaleCode('fr_FR'), new Rate(65));
+
+        $this->getByChannelAndLocale(new ChannelCode('print'), new LocaleCode('en_US'))->shouldReturn(null);
+    }
 }

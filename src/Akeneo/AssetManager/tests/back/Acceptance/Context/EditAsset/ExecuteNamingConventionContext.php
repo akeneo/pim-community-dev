@@ -35,6 +35,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
@@ -403,6 +404,7 @@ class ExecuteNamingConventionContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::noLimit(),
@@ -422,6 +424,7 @@ class ExecuteNamingConventionContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(3),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(255),
@@ -441,6 +444,7 @@ class ExecuteNamingConventionContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(4),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeDecimalsAllowed::fromBoolean(true),
@@ -460,6 +464,7 @@ class ExecuteNamingConventionContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(5),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::empty(),
@@ -479,6 +484,7 @@ class ExecuteNamingConventionContext implements Context
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(6),
                 AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(255),

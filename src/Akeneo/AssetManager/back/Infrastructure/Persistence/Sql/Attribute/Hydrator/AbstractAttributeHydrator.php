@@ -62,6 +62,7 @@ abstract class AbstractAttributeHydrator implements AttributeHydratorInterface
         $row['labels'] = json_decode($row['labels'], true);
         $row['attribute_order'] = Type::getType(Type::INTEGER)->convertToPHPValue($row['attribute_order'], $platform);
         $row['is_required'] = Type::getType(Type::BOOLEAN)->convertToPHPValue($row['is_required'], $platform);
+        $row['is_read_only'] = Type::getType(Type::BOOLEAN)->convertToPHPValue($row['is_read_only'], $platform);
         $row['value_per_channel'] = Type::getType(Type::BOOLEAN)->convertToPHPValue($row['value_per_channel'], $platform);
         $row['value_per_locale'] = Type::getType(Type::BOOLEAN)->convertToPHPValue($row['value_per_locale'], $platform);
         $row['additional_properties'] = json_decode($row['additional_properties'], true);

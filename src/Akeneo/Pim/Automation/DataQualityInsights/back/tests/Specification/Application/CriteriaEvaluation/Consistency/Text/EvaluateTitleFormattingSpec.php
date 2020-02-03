@@ -11,6 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCo
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetIgnoredProductTitleSuggestionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
@@ -28,9 +29,16 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         BuildProductValuesInterface $buildProductValues,
         GetProductAttributesCodesInterface $getProductAttributesCodes,
-        TitleFormattingServiceInterface $titleFormattingService
+        TitleFormattingServiceInterface $titleFormattingService,
+        GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery
     ) {
-        $this->beConstructedWith($localesByChannelQuery, $buildProductValues, $getProductAttributesCodes, $titleFormattingService);
+        $this->beConstructedWith(
+            $localesByChannelQuery,
+            $buildProductValues,
+            $getProductAttributesCodes,
+            $titleFormattingService,
+            $getIgnoredProductTitleSuggestionQuery
+        );
     }
 
     public function it_is_initializable()
@@ -100,7 +108,7 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
         ]);
 
         $titleFormattingService->format(new ProductTitle('MacBook Pro Retina 13"'))->shouldBeCalledTimes(3)->willReturn(new ProductTitle('MacBook Pro Retina 13"'));
-        $titleFormattingService->format(new ProductTitle('Titre non evalué'))->shouldNotBeCalled()->willReturn(new ProductTitle('Titre non evalué'));
+        $titleFormattingService->format(new ProductTitle('Titre non evalué'))->shouldNotBeCalled();
 
         $rates = new CriterionRateCollection();
         $rates
@@ -118,7 +126,17 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
                 CriterionEvaluationStatus::pending()
             )
         )->shouldBeLike(new CriterionEvaluationResult($rates, [
-            'attributes' => [],
+            'attributes' => [
+                'ecommerce' => [
+                    'en_US' => []
+                ],
+                'mobile' => [
+                    'en_US' => []
+                ],
+                'print' => [
+                    'en_US' => []
+                ],
+            ],
             'suggestions' => []
         ]));
     }
@@ -148,7 +166,7 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
         ]);
 
         $titleFormattingService->format(new ProductTitle('Macbook Pro Retina 13" Azerty'))->shouldBeCalled()->willReturn(new ProductTitle('MacBook Pro Retina 13" AZERTY'));
-        $titleFormattingService->format(new ProductTitle('Titre non evalué'))->shouldNotBeCalled()->willReturn(new ProductTitle('Titre non evalué'));
+        $titleFormattingService->format(new ProductTitle('Titre non evalué'))->shouldNotBeCalled();
 
         $rates = new CriterionRateCollection();
         $rates
@@ -230,6 +248,59 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
                     'en_GB' => 'MacBook Pro Retina 13" AZERTY'
                 ]
             ]
+        ]));
+    }
+    public function it_evaluates_title_with_ignored_suggestions(
+        $localesByChannelQuery,
+        $buildProductValues,
+        $getProductAttributesCodes,
+        $titleFormattingService,
+        $getIgnoredProductTitleSuggestionQuery
+    ) {
+        $localesByChannelQuery->execute()->willReturn(
+            [
+                'ecommerce' => ['en_US', 'fr_FR'],
+            ]
+        );
+
+
+        $productId = new ProductId(1);
+        $getProductAttributesCodes->getTitle($productId)->willReturn(['attribute_as_main_title_localizable_scopable']);
+        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['attribute_as_main_title_localizable_scopable'])->willReturn([
+            'attribute_as_main_title_localizable_scopable' => [
+                'ecommerce' => [
+                    'en_US' => 'Macbook Pro Retina 13" Azerty',
+                    'fr_FR' => 'Titre non evalué',
+                ],
+            ],
+        ]);
+
+        $titleFormattingService->format(new ProductTitle('Macbook Pro Retina 13" Azerty'))->shouldBeCalled()->willReturn(new ProductTitle('MacBook Pro Retina 13" AZERTY'));
+        $titleFormattingService->format(new ProductTitle('Titre non evalué'))->shouldNotBeCalled();
+
+        $getIgnoredProductTitleSuggestionQuery->execute($productId, new ChannelCode('ecommerce'), new LocaleCode('en_US'))->shouldBeCalled()->willReturn('MacBook Pro Retina 13" AZERTY');
+        $getIgnoredProductTitleSuggestionQuery->execute($productId, new ChannelCode('ecommerce'), new LocaleCode('fr_FR'))->shouldNotBeCalled();
+
+        $rates = new CriterionRateCollection();
+        $rates
+            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
+        ;
+
+        $this->evaluate(
+            new CriterionEvaluation(
+                new CriterionEvaluationId(),
+                new CriterionCode('criterion1'),
+                new ProductId(1),
+                new \DateTimeImmutable(),
+                CriterionEvaluationStatus::pending()
+            )
+        )->shouldBeLike(new CriterionEvaluationResult($rates, [
+            'attributes' => [
+                'ecommerce' => [
+                    'en_US' => []
+                ]
+            ],
+            'suggestions' => []
         ]));
     }
 }

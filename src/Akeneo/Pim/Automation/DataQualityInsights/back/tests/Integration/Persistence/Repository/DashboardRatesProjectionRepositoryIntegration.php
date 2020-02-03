@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Repository;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\DashboardRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Periodicity;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionType;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -42,170 +42,139 @@ final class DashboardRatesProjectionRepositoryIntegration extends TestCase
         $this->repository = $this->get(DashboardRatesProjectionRepository::class);
     }
 
-    public function test_it_finds_catalog_projection()
+    public function test_it_removes_rates_for_a_given_time_period_and_a_given_date()
     {
-        $result = $this->repository->findCatalogProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'));
-        $this->assertNull($result);
+        $commonDay = new ConsolidationDate(new \DateTimeImmutable('2019-12-19'));
+        $lastDayOfWeek = new ConsolidationDate(new \DateTimeImmutable('2019-12-22'));
+        $lastDayOfMonth = new ConsolidationDate(new \DateTimeImmutable('2019-12-31'));
 
-        $this->insertCatalogRatesProjection($this->getRates());
-        $result = $this->repository->findCatalogProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'));
+        $ranksDistributionCollection = $this->getRanksDistributionCollection();
+        $this->insertCatalogRatesProjection($commonDay, $ranksDistributionCollection);
+        $this->insertCatalogRatesProjection($lastDayOfWeek, $ranksDistributionCollection);
+        $this->insertCatalogRatesProjection($lastDayOfMonth, $ranksDistributionCollection);
 
-        $this->assertEquals(
-            new DashboardRates($this->getRates(), new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily')),
-            $result
-        );
+        $this->insertCategoryRatesProjection($commonDay, $ranksDistributionCollection);
+        $this->insertCategoryRatesProjection($lastDayOfWeek, $ranksDistributionCollection);
+        $this->insertCategoryRatesProjection($lastDayOfMonth, $ranksDistributionCollection);
+
+        $daily = TimePeriod::daily();
+        $monthly = TimePeriod::monthly();
+        $this->assertCountRatesByDate(2, $daily, $lastDayOfMonth);
+        $this->assertCountRatesByDate(2, $monthly, $lastDayOfMonth);
+
+        $this->repository->removeRates($daily, $lastDayOfMonth);
+
+        $this->assertCountRatesByDate(0, $daily, $lastDayOfMonth);
+        $this->assertCountRatesByDate(2, $daily, $commonDay);
+        $this->assertCountRatesByDate(2, TimePeriod::weekly(), $lastDayOfWeek);
+        $this->assertCountRatesByDate(2, $monthly, $lastDayOfMonth);
+
+        $this->repository->removeRates($monthly, $lastDayOfMonth);
+        $this->assertCountRatesByDate(0, $monthly, $lastDayOfMonth);
     }
 
-    public function test_it_finds_a_category_projection()
+    public function test_it_does_not_save_outdated_average_ranks()
     {
-        $result = $this->repository->findCategoryProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'), new CategoryCode('master'));
-        $this->assertNull($result);
-
-        $this->insertCategoryRatesProjection($this->getRates());
-        $result = $this->repository->findCategoryProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'), new CategoryCode('master'));
-
-        $this->assertEquals(
-            new DashboardRates($this->getRates(), new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily')),
-            $result
-        );
-    }
-
-    public function test_it_finds_a_family_projection()
-    {
-        $result = $this->repository->findFamilyProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'), new FamilyCode('scanners'));
-        $this->assertNull($result);
-
-        $this->insertFamilyRatesProjection($this->getRates());
-        $result = $this->repository->findFamilyProjection(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily'), new FamilyCode('scanners'));
-
-        $this->assertEquals(
-            new DashboardRates($this->getRates(), new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Periodicity('daily')),
-            $result
-        );
-    }
-
-    public function test_it_removes_rates_for_a_given_periodicity_and_a_given_date()
-    {
-        $rates = [
-            'daily' => [
-                '2019-12-19' => [],
-                '2019-12-20' => [],
-                '2019-12-31' => [],
-            ],
-            'weekly' => [
-                '2019-12-28' => [],
-            ],
-            'monthly' => [
-                '2019-12-31' => [],
-            ],
+        $youngestRanksDistributionCollection = new RanksDistributionCollection([
+            "consistency" => ["ecommerce" => ["en_US" => ["rank_4" => 50]]],
+            "enrichment" => ["ecommerce" => ["en_US" => ["rank_2" => 50]]]
+        ]);
+        $youngestAverageRanks = [
+            "consistency" => ["ecommerce" => ["en_US" => "rank_4"]],
+            "enrichment" => ["ecommerce" => ["en_US" => "rank_2"]]
         ];
+        $youngestConsolidationDate = new ConsolidationDate(new \DateTimeImmutable('2019-12-19 12:34:41'));
 
-        $this->insertCatalogRatesProjection($rates);
-        $this->insertCategoryRatesProjection($rates);
+        $this->insertCatalogRatesProjection($youngestConsolidationDate, $youngestRanksDistributionCollection);
+        $this->assertCatalogAverageRanksEquals($youngestAverageRanks);
 
-        $removingDate = new ConsolidationDate(new \DateTimeImmutable('2019-12-31'));
-        $daily = Periodicity::daily();
-        $monthly = Periodicity::monthly();
-        $this->assertCountRatesByDate(2, $daily, $removingDate);
-        $this->assertCountRatesByDate(2, $monthly, $removingDate);
-
-        $this->repository->removeRates($daily, $removingDate);
-
-        $this->assertCountRatesByDate(0, $daily, $removingDate);
-        $this->assertCountRatesByDate(2, $daily, new ConsolidationDate(new \DateTimeImmutable('2019-12-20')));
-        $this->assertCountRatesByDate(2, Periodicity::weekly(), new ConsolidationDate(new \DateTimeImmutable('2019-12-28')));
-        $this->assertCountRatesByDate(2, $monthly, $removingDate);
-
-        $this->repository->removeRates($monthly, $removingDate);
-        $this->assertCountRatesByDate(0, $monthly, $removingDate);
-    }
-
-    private function insertCatalogRatesProjection(array $rates): void
-    {
-        $sql = <<<SQL
-INSERT INTO pimee_data_quality_insights_dashboard_rates_projection(type, code, rates)
-VALUES (:type, :code, :rates)
-SQL;
-
-        $this->db->executequery($sql, [
-            'type' => DashboardRatesProjectionRepository::TYPE_CATALOG_PROJECTION,
-            'code' => "catalog",
-            'rates' => json_encode($rates),
+        $olderRanksDistributionCollection = new RanksDistributionCollection([
+            "consistency" => ["ecommerce" => ["en_US" => ["rank_1" => 50]]],
+            "enrichment" => ["ecommerce" => ["en_US" => ["rank_3" => 50]]]
         ]);
-    }
+        $olderConsolidationDate = $youngestConsolidationDate->modify('-1 second');
 
-    private function insertCategoryRatesProjection(array $rates): void
-    {
-        $sql = <<<SQL
-INSERT INTO pimee_data_quality_insights_dashboard_rates_projection(type, code, rates)
-VALUES (:type, :code, :rates)
-SQL;
+        $this->insertCatalogRatesProjection($olderConsolidationDate, $olderRanksDistributionCollection);
+        $this->assertCatalogAverageRanksEquals($youngestAverageRanks);
 
-        $this->db->executequery($sql, [
-            'type' => DashboardRatesProjectionRepository::TYPE_CATEGORY_PROJECTION,
-            'code' => "master",
-            'rates' => json_encode($rates),
+        $youngerRanksDistributionCollection = new RanksDistributionCollection([
+            "consistency" => ["ecommerce" => ["en_US" => ["rank_3" => 50]]],
+            "enrichment" => ["ecommerce" => ["en_US" => ["rank_5" => 50]]]
         ]);
+        $youngerAverageRanks = [
+            "consistency" => ["ecommerce" => ["en_US" => "rank_3"]],
+            "enrichment" => ["ecommerce" => ["en_US" => "rank_5"]]
+        ];
+        $youngerConsolidationDate = $youngestConsolidationDate->modify('+1 second');
+
+        $this->insertCatalogRatesProjection($youngerConsolidationDate, $youngerRanksDistributionCollection);
+        $this->assertCatalogAverageRanksEquals($youngerAverageRanks);
     }
 
-    private function insertFamilyRatesProjection(array $rates): void
+    private function insertCatalogRatesProjection(ConsolidationDate $consolidationDate, RanksDistributionCollection $ranksDistributionCollection): void
     {
-        $sql = <<<SQL
-INSERT INTO pimee_data_quality_insights_dashboard_rates_projection(type, code, rates)
-VALUES (:type, :code, :rates)
-SQL;
+        $dashboardRatesProjection = new DashboardRatesProjection(
+            DashboardProjectionType::catalog(),
+            DashboardProjectionCode::catalog(),
+            $consolidationDate,
+            $ranksDistributionCollection
+        );
 
-        $this->db->executequery($sql, [
-            'type' => DashboardRatesProjectionRepository::TYPE_FAMILY_PROJECTION,
-            'code' => "scanners",
-            'rates' => json_encode($rates),
-        ]);
+        $this->repository->save($dashboardRatesProjection);
     }
 
-    private function getRates(): array
+    private function insertCategoryRatesProjection(ConsolidationDate $consolidationDate, RanksDistributionCollection $ranksDistributionCollection): void
     {
-        return [
-            "daily" => [
-                "2019-12-17" => [
-                    "consistency" => [
-                        "ecommerce" => [
-                            "en_US" => [
-                                "1" => 12,
-                                "2" => 28,
-                                "3" => 10,
-                                "4" => 50,
-                                "5" => 10
-                            ],
-                            "fr_FR" => [
-                                "1" => 30,
-                                "2" => 10,
-                                "3" => 20,
-                                "4" => 20,
-                                "5" => 20
-                            ],
-                        ],
+        $dashboardRatesProjection = new DashboardRatesProjection(
+            DashboardProjectionType::category(),
+            DashboardProjectionCode::category(new CategoryCode('master')),
+            $consolidationDate,
+            $ranksDistributionCollection
+        );
+
+        $this->repository->save($dashboardRatesProjection);
+    }
+
+    private function getRanksDistributionCollection(): RanksDistributionCollection
+    {
+        return new RanksDistributionCollection([
+            "consistency" => [
+                "ecommerce" => [
+                    "en_US" => [
+                        "rank_1" => 12,
+                        "rank_2" => 28,
+                        "rank_3" => 10,
+                        "rank_4" => 50,
+                        "rank_5" => 10
                     ],
-                    "enrichment" => [
-                        "ecommerce" => [
-                            "en_US" => [
-                                "1" => 10,
-                                "2" => 50,
-                                "3" => 10,
-                                "4" => 28,
-                                "5" => 12
-                            ],
-                            "fr_FR" => [
-                                "1" => 20,
-                                "2" => 20,
-                                "3" => 20,
-                                "4" => 10,
-                                "5" => 30
-                            ],
-                        ],
+                    "fr_FR" => [
+                        "rank_1" => 30,
+                        "rank_2" => 10,
+                        "rank_3" => 20,
+                        "rank_4" => 20,
+                        "rank_5" => 20
                     ],
                 ],
             ],
-        ];
+            "enrichment" => [
+                "ecommerce" => [
+                    "en_US" => [
+                        "rank_1" => 10,
+                        "rank_2" => 50,
+                        "rank_3" => 10,
+                        "rank_4" => 28,
+                        "rank_5" => 12
+                    ],
+                    "fr_FR" => [
+                        "rank_1" => 20,
+                        "rank_2" => 20,
+                        "rank_3" => 20,
+                        "rank_4" => 10,
+                        "rank_5" => 30
+                    ],
+                ],
+            ],
+        ]);
     }
 
     protected function getConfiguration(): Configuration
@@ -213,12 +182,12 @@ SQL;
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function assertCountRatesByDate(int $expectedCount, Periodicity $periodicity, ConsolidationDate $date): void
+    private function assertCountRatesByDate(int $expectedCount, TimePeriod $timePeriod, ConsolidationDate $date): void
     {
-        $path = sprintf('\'$."%s"."%s"\'', $periodicity, $date->format());
+        $path = sprintf('\'$."%s"."%s"\'', $timePeriod, $date->format());
 
         $query = <<<SQL
-SELECT COUNT(*) AS nb_rates 
+SELECT COUNT(*) AS nb_rates
 FROM pimee_data_quality_insights_dashboard_rates_projection
 WHERE JSON_CONTAINS_PATH(rates, 'one', $path)
 SQL;
@@ -226,5 +195,23 @@ SQL;
         $count = intval($this->db->executeQuery($query)->fetchColumn());
 
         $this->assertSame($expectedCount, $count);
+    }
+
+    private function assertCatalogAverageRanksEquals(array $expectedAverageRanks): void
+    {
+        $query = <<<SQL
+SELECT JSON_EXTRACT(rates, '$.average_ranks') as average_ranks
+FROM pimee_data_quality_insights_dashboard_rates_projection
+WHERE type = :type AND code = :code
+SQL;
+
+        $stmt = $this->db->executeQuery($query, [
+            'type' => DashboardProjectionType::CATALOG,
+            'code' => DashboardProjectionCode::CATALOG
+        ]);
+
+        $averageRanks = json_decode($stmt->fetchColumn(), true);
+
+        $this->assertEquals($expectedAverageRanks, $averageRanks);
     }
 }

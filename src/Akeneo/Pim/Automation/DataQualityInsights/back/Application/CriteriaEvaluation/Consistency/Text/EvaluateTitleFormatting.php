@@ -9,10 +9,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCo
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetIgnoredProductTitleSuggestionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductTitle;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 
@@ -31,17 +33,23 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface
 
     /** @var TitleFormattingServiceInterface */
     private $titleFormattingService;
+    /**
+     * @var GetIgnoredProductTitleSuggestionQueryInterface
+     */
+    private $getIgnoredProductTitleSuggestionQuery;
 
     public function __construct(
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         BuildProductValuesInterface $buildProductValues,
         GetProductAttributesCodesInterface $getProductAttributesCodes,
-        TitleFormattingServiceInterface $titleFormattingService
+        TitleFormattingServiceInterface $titleFormattingService,
+        GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery
     ) {
         $this->localesByChannelQuery = $localesByChannelQuery;
         $this->buildProductValues = $buildProductValues;
         $this->getProductAttributesCodes = $getProductAttributesCodes;
         $this->titleFormattingService = $titleFormattingService;
+        $this->getIgnoredProductTitleSuggestionQuery = $getIgnoredProductTitleSuggestionQuery;
     }
 
     public function getCode(): CriterionCode
@@ -55,7 +63,7 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface
         $attributeCodeAsMainTitle = $this->getProductAttributesCodes->getTitle($criterionEvaluation->getProductId());
 
         $productValues = $this->buildProductValues->buildForProductIdAndAttributeCodes($criterionEvaluation->getProductId(), $attributeCodeAsMainTitle);
-        $ratesAndSuggestionByChannelAndLocale = $this->computeAttributeRates($localesByChannel, $productValues);
+        $ratesAndSuggestionByChannelAndLocale = $this->computeAttributeRates($criterionEvaluation->getProductId(), $localesByChannel, $productValues);
 
         $rates = $this->buildCriterionRateCollection($ratesAndSuggestionByChannelAndLocale);
         $attributesCodesToImprove = $this->computeAttributeCodesToImprove($ratesAndSuggestionByChannelAndLocale);
@@ -67,7 +75,7 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface
         ]);
     }
 
-    private function computeAttributeRates(array $localesByChannel, array $productValues): array
+    private function computeAttributeRates(ProductId $productId, array $localesByChannel, array $productValues): array
     {
         $ratesAndSuggestionByChannelAndLocale = [];
         foreach ($localesByChannel as $channelCode => $localeCodes) {
@@ -78,7 +86,7 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface
 
                 foreach ($productValues as $attributeCode => $productValueByChannelAndLocale) {
                     $productValue = $productValueByChannelAndLocale[$channelCode][$localeCode];
-                    $rateAndSuggestion = $this->computeProductValueRate($productValue);
+                    $rateAndSuggestion = $this->computeProductValueRate($productId, $productValue, $channelCode, $localeCode);
                     if (empty($rateAndSuggestion)) {
                         continue;
                     }
@@ -94,7 +102,7 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface
         return preg_match('~^en_[A-Z]{2}$~', $localeCode) === 1;
     }
 
-    private function computeProductValueRate(?string $originalTitle): array
+    private function computeProductValueRate(ProductId $productId, ?string $originalTitle, string $channel, string $locale): array
     {
         if ($originalTitle === null) {
             return [];
@@ -104,6 +112,12 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface
             $titleSuggestion = $this->titleFormattingService->format(new ProductTitle($originalTitle));
         } catch (\Exception $e) {
             return [];
+        }
+
+        if ($this->checkTitleSuggestionIsIgnored($titleSuggestion, $productId, $channel, $locale) === true) {
+            return [
+                'rate' => 100,
+            ];
         }
 
         $numberOfDifferences = $this->computeDifference($originalTitle, $titleSuggestion->__toString());
@@ -117,6 +131,17 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface
             'rate' => $rate,
             'titleSuggestion' => $titleSuggestion->__toString()
         ];
+    }
+
+    private function checkTitleSuggestionIsIgnored(ProductTitle $titleSuggestion, ProductId $productId, string $channel, string $locale): bool
+    {
+        $ignoredTitleSuggestion = $this->getIgnoredProductTitleSuggestionQuery->execute(
+            $productId,
+            new ChannelCode($channel),
+            new LocaleCode($locale)
+        );
+
+        return (strval($titleSuggestion) === $ignoredTitleSuggestion);
     }
 
     private function explodeStringByWords(string $title): array
@@ -152,6 +177,7 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface
         foreach ($ratesByChannelAndLocale as $channelCode => $ratesByLocale) {
             foreach ($ratesByLocale as $localeCode => $ratesAndSuggestionByAttribute) {
                 foreach ($ratesAndSuggestionByAttribute as $attributeCode => $rateAndSuggestion) {
+                    $attributesCodesToImprove[$channelCode][$localeCode] = [];
                     if (! empty($rateAndSuggestion['rate'] < 100)) {
                         $attributesCodesToImprove[$channelCode][$localeCode] = [$attributeCode];
                     }

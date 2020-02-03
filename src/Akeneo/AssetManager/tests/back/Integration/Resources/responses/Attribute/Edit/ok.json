@@ -16,6 +16,7 @@
       },
       "order": 10,
       "is_required": false,
+      "is_read_only": true,
       "value_per_channel": false,
       "value_per_locale": false,
       "type": "wrong_type",

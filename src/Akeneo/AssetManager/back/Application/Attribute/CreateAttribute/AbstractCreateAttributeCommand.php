@@ -33,6 +33,9 @@ abstract class AbstractCreateAttributeCommand
     public $isRequired;
 
     /** @var bool */
+    public $isReadOnly;
+
+    /** @var bool */
     public $valuePerChannel;
 
     /** @var bool */
@@ -43,6 +46,7 @@ abstract class AbstractCreateAttributeCommand
         string $code,
         array $labels,
         bool $isRequired,
+        bool $isReadOnly,
         bool $valuePerChannel,
         bool $valuePerLocale
     ) {
@@ -50,6 +54,7 @@ abstract class AbstractCreateAttributeCommand
         $this->code = $code;
         $this->labels = $labels;
         $this->isRequired = $isRequired;
+        $this->isReadOnly = $isReadOnly;
         $this->valuePerChannel = $valuePerChannel;
         $this->valuePerLocale = $valuePerLocale;
     }

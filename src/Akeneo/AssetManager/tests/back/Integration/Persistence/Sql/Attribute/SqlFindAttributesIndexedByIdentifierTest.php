@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
@@ -144,6 +145,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -157,6 +159,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Email']),
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -170,6 +173,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Regex']),
             AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -183,6 +187,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Long description']),
             AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
@@ -195,6 +200,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(6),
             AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::fromString('1000'),

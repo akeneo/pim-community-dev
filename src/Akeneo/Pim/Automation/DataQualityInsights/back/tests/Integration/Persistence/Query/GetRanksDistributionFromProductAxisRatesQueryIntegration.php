@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\back\tests\Integration\Persistence\Query;
+namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
@@ -64,6 +64,8 @@ final class GetRanksDistributionFromProductAxisRatesQueryIntegration extends Tes
                     'en_US' => [
                         'rank_1' => 3,
                         'rank_2' => 9,
+                        'rank_3' => 0,
+                        'rank_4' => 0,
                         'rank_5' => 7,
                     ]
                 ]
@@ -71,14 +73,17 @@ final class GetRanksDistributionFromProductAxisRatesQueryIntegration extends Tes
             'consistency' => [
                 'ecommerce' => [
                     'en_US' => [
+                        'rank_1' => 0,
                         'rank_2' => 2,
                         'rank_3' => 4,
+                        'rank_4' => 0,
+                        'rank_5' => 0,
                     ]
                 ]
             ]
         ];
 
-        $this->assertEquals($expectedRanksDistribution, $ranksDistribution);
+        $this->assertEquals($expectedRanksDistribution, $ranksDistribution->toArray());
     }
 
     public function test_it_returns_ranks_distribution_by_family()
@@ -101,14 +106,19 @@ final class GetRanksDistributionFromProductAxisRatesQueryIntegration extends Tes
                 'ecommerce' => [
                     'en_US' => [
                         'rank_1' => 8,
+                        'rank_2' => 0,
                         'rank_3' => 11,
                         'rank_4' => 6,
+                        'rank_5' => 0,
                     ]
                 ]
             ],
             'consistency' => [
                 'ecommerce' => [
                     'en_US' => [
+                        'rank_1' => 0,
+                        'rank_2' => 0,
+                        'rank_3' => 0,
                         'rank_4' => 7,
                         'rank_5' => 13,
                     ]
@@ -116,7 +126,7 @@ final class GetRanksDistributionFromProductAxisRatesQueryIntegration extends Tes
             ]
         ];
 
-        $this->assertEquals($expectedRanksDistribution, $ranksDistribution);
+        $this->assertEquals($expectedRanksDistribution, $ranksDistribution->toArray());
     }
 
     public function test_it_returns_ranks_distribution_by_category()
@@ -158,6 +168,9 @@ final class GetRanksDistributionFromProductAxisRatesQueryIntegration extends Tes
                     'en_US' => [
                         'rank_1' => 9,
                         'rank_2' => 12,
+                        'rank_3' => 0,
+                        'rank_4' => 0,
+                        'rank_5' => 0,
                     ]
                 ]
             ],
@@ -165,12 +178,16 @@ final class GetRanksDistributionFromProductAxisRatesQueryIntegration extends Tes
                 'ecommerce' => [
                     'en_US' => [
                         'rank_1' => 7,
+                        'rank_2' => 0,
+                        'rank_3' => 0,
+                        'rank_4' => 0,
+                        'rank_5' => 0,
                     ]
                 ]
             ]
         ];
 
-        $this->assertEquals($expectedRanksDistribution, $ranksDistribution);
+        $this->assertEquals($expectedRanksDistribution, $ranksDistribution->toArray());
     }
 
     public function test_it_returns_ranks_distribution_without_data_for_one_axis()
@@ -189,12 +206,16 @@ final class GetRanksDistributionFromProductAxisRatesQueryIntegration extends Tes
                 'ecommerce' => [
                     'en_US' => [
                         'rank_1' => 3,
+                        'rank_2' => 0,
+                        'rank_3' => 0,
+                        'rank_4' => 0,
+                        'rank_5' => 0,
                     ]
                 ]
             ]
         ];
 
-        $this->assertEquals($expectedRanksDistribution, $ranksDistribution);
+        $this->assertEquals($expectedRanksDistribution, $ranksDistribution->toArray());
     }
 
     private function givenProductsByRankAndAxisForWholeCatalog(int $countProducts, int $rank, string $axis): void

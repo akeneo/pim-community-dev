@@ -119,6 +119,11 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
 
+    Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAllAssetFamilyAssetsHandler:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
+
     akeneo_assetmanager.application.asset.compute_transformations_from_asset_identifiers.handler:
         class: Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsFromAssetIdentifiersHandler
         arguments:

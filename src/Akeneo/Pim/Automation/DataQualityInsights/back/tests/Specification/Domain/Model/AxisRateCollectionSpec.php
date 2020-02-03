@@ -21,7 +21,7 @@ use PhpSpec\ObjectBehavior;
 
 final class AxisRateCollectionSpec extends ObjectBehavior
 {
-    public function it_adds_rates_per_channel_and_locale()
+    public function let()
     {
         $rateCollection1 = (new CriterionRateCollection())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(80))
@@ -38,7 +38,10 @@ final class AxisRateCollectionSpec extends ObjectBehavior
         $this
             ->addCriterionRateCollection($rateCollection1)
             ->addCriterionRateCollection($rateCollection2);
+    }
 
+    public function it_adds_rates_per_channel_and_locale()
+    {
         $this->toArrayString()->shouldReturn([
             'ecommerce' => [
                 'en_US' => 'B',
@@ -53,22 +56,6 @@ final class AxisRateCollectionSpec extends ObjectBehavior
 
     public function it_formats_for_consolidation()
     {
-        $rateCollection1 = (new CriterionRateCollection())
-            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(80))
-            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(40))
-            ->addRate(new ChannelCode('print'), new LocaleCode('en_US'), new Rate(75))
-            ->addRate(new ChannelCode('print'), new LocaleCode('fr_FR'), new Rate(65));
-
-        $rateCollection2 = (new CriterionRateCollection())
-            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(90))
-            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(60))
-            ->addRate(new ChannelCode('print'), new LocaleCode('en_US'), new Rate(60))
-            ->addRate(new ChannelCode('print'), new LocaleCode('fr_FR'), new Rate(80));
-
-        $this
-            ->addCriterionRateCollection($rateCollection1)
-            ->addCriterionRateCollection($rateCollection2);
-
         $this->formatForConsolidation()->shouldReturn([
             'ecommerce' => [
                 'en_US' =>  ['rank' => 2, 'value' => 85],
@@ -79,5 +66,11 @@ final class AxisRateCollectionSpec extends ObjectBehavior
                 'fr_FR' => ['rank' => 3, 'value' => 72],
             ],
         ]);
+    }
+
+    public function it_computes_the_average_rate_for_a_channel_and_a_locale()
+    {
+        $this->computeForChannelAndLocale(new ChannelCode('ecommerce'), new LocaleCode('en_US'))->shouldBeLike(new Rate(85));
+        $this->computeForChannelAndLocale(new ChannelCode('ecommerce'), new LocaleCode('de_DE'))->shouldReturn(null);
     }
 }

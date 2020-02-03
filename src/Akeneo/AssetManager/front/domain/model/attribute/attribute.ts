@@ -14,6 +14,7 @@ export interface NormalizedAttribute extends MinimalNormalizedAttribute {
   identifier: AttributeIdentifier;
   order: number;
   is_required: boolean;
+  is_read_only: boolean;
 }
 
 /**
@@ -23,6 +24,7 @@ export interface Attribute extends MinimalAttribute {
   identifier: AttributeIdentifier;
   order: number;
   isRequired: boolean;
+  isReadOnly: boolean;
   equals: (attribute: MinimalAttribute) => boolean;
   getIdentifier: () => AttributeIdentifier;
   normalize(): NormalizedAttribute;
@@ -62,7 +64,8 @@ export abstract class ConcreteAttribute extends MinimalConcreteAttribute impleme
     valuePerLocale: boolean,
     valuePerChannel: boolean,
     readonly order: number,
-    readonly isRequired: boolean
+    readonly isRequired: boolean,
+    readonly isReadOnly: boolean
   ) {
     super(assetFamilyIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
 
@@ -71,6 +74,9 @@ export abstract class ConcreteAttribute extends MinimalConcreteAttribute impleme
     }
     if (typeof isRequired !== 'boolean') {
       throw new InvalidArgumentError('Attribute expects a boolean as isRequired value');
+    }
+    if (typeof isReadOnly !== 'boolean') {
+      throw new InvalidArgumentError('Attribute expects a boolean as isReadOnly value');
     }
   }
 
@@ -84,6 +90,7 @@ export abstract class ConcreteAttribute extends MinimalConcreteAttribute impleme
       ...super.normalize(),
       order: this.order,
       is_required: this.isRequired,
+      is_read_only: this.isReadOnly,
     };
   }
 

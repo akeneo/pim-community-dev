@@ -31,6 +31,12 @@ Feature: Edit a text attribute of an asset family
     Then 'name' should be required
 
   @acceptance-back
+  Scenario: Updating read only property
+    Given an asset family with a text attribute 'name' not in read only
+    When the user sets the 'name' attribute read only
+    Then 'name' should be read only
+
+  @acceptance-back
   Scenario Outline: Updating with an invalid is required edit
     Given an asset family with a text attribute 'name' non required
     When the user sets the is_required property of 'name' to '<invalid_required>'

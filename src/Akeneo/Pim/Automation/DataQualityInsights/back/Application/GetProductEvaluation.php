@@ -18,13 +18,16 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Con
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Textarea\EvaluateUppercaseWords;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AxisRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Criterion\LowerCaseWords;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
@@ -36,31 +39,30 @@ class GetProductEvaluation
      */
     private $getLatestCriteriaEvaluationsByProductIdQuery;
 
+    /** @var GetLocalesByChannelQueryInterface */
+    private $getLocalesByChannelQuery;
+
     public function __construct(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery
+        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetLocalesByChannelQueryInterface $getLocalesByChannelQuery
     ) {
         $this->getLatestCriteriaEvaluationsByProductIdQuery = $getLatestCriteriaEvaluationsByProductIdQuery;
+        $this->getLocalesByChannelQuery = $getLocalesByChannelQuery;
     }
 
     public function get(ProductId $productId): array
     {
         $productEvaluation = $this->getLatestCriteriaEvaluationsByProductIdQuery->execute($productId);
+        $channelsLocales = $this->getChannelsLocales();
 
-        return $this->adaptForFrontend( // @todo[DAPI-488] remove after adapting the frontend application with build response
-            $this->build($productEvaluation)
-        );
-    }
-
-    private function build(CriterionEvaluationCollection $evaluations): array
-    {
-        $evaluationsArray = iterator_to_array($evaluations->getIterator());
+        $evaluationsArray = iterator_to_array($productEvaluation->getIterator());
 
         $enrichmentCriteria = $this->filterByAxis($evaluationsArray, 'enrichment');
         $consistencyCriteria = $this->filterByAxis($evaluationsArray, 'consistency');
 
         return [
-            'enrichment' => $this->buildAxisEvaluation($enrichmentCriteria),
-            'consistency' => $this->buildAxisEvaluation($consistencyCriteria),
+            'enrichment' => $this->buildAxisEvaluation($enrichmentCriteria, $channelsLocales),
+            'consistency' => $this->buildAxisEvaluation($consistencyCriteria, $channelsLocales),
         ];
     }
 
@@ -73,126 +75,78 @@ class GetProductEvaluation
         });
     }
 
-    private function buildAxisEvaluation(array $axisEvaluations): array
+    private function buildAxisEvaluation(array $axisCriteriaEvaluations, ChannelLocaleCollection $channelsLocales): array
     {
-        return array_merge_recursive(
-            $this->computeAxisRate($axisEvaluations),
-            $this->computeAxisRecommendations($axisEvaluations),
-            $this->computeAxisCriteriaRates($axisEvaluations)
-        );
+        $axisRates = $this->buildAxisRateCollection($axisCriteriaEvaluations);
+
+        $axisEvaluation = [];
+        foreach ($channelsLocales as $channelCode => $locales) {
+            foreach ($locales as $localeCode) {
+                $axisEvaluation[strval($channelCode)][strval($localeCode)] = [
+                    'rate' => $this->computeAxisRate($axisRates, $channelCode, $localeCode),
+                    'rates' => $this->computeAxisCriteriaRates($axisCriteriaEvaluations, $channelCode, $localeCode),
+                    'recommendations' => $this->computeAxisRecommendations($axisCriteriaEvaluations, $channelCode, $localeCode)
+                ];
+            }
+        }
+
+        return $axisEvaluation;
     }
 
-    private function computeAxisRate(array $criteriaEvaluations): array
+    private function buildAxisRateCollection(array $axisCriteriaEvaluations): AxisRateCollection
     {
-        return array_reduce($criteriaEvaluations, function (array $previous, CriterionEvaluation $criterionEvaluation) {
+        $axisRateCollection = new AxisRateCollection();
+        foreach ($axisCriteriaEvaluations as $criterionEvaluation) {
             $evaluationResult = $criterionEvaluation->getResult();
-            $rates = [];
             if ($evaluationResult !== null) {
-                $rates = $evaluationResult->getRates()->toArrayInt();
+                $axisRateCollection->addCriterionRateCollection($evaluationResult->getRates());
             }
+        }
 
-            $data = $this->compute($rates, $previous, function ($rate, $state, $channel, $locale) {
-                $previousRate = $state[$channel][$locale]['rate']['value'] ?? 0;
-                $previousTotal = $state[$channel][$locale]['rate']['total'] ?? 0;
-
-                $newRate = $previousRate + intval($rate);
-                $newTotal = $previousTotal + 1;
-
-                return [
-                    $channel => [
-                        $locale => [
-                            'rate' => [
-                                'value' => $newRate,
-                                'total' => $newTotal,
-                                'average' => ($newRate / $newTotal)
-                            ],
-                        ]
-                    ]
-                ];
-            });
-
-            return array_merge(
-                $previous,
-                $data
-            );
-        }, []);
+        return $axisRateCollection;
     }
 
-    private function computeAxisCriteriaRates(array $criteriaEvaluations): array
+    private function computeAxisRate(AxisRateCollection $axisRates, ChannelCode $channelCode, LocaleCode $localeCode): ?string
     {
-        return array_reduce($criteriaEvaluations, function (array $previous, CriterionEvaluation $criterionEvaluation) {
-            $evaluationResult = $criterionEvaluation->getResult();
-            $rates = [];
-            if ($evaluationResult !== null) {
-                $rates = $evaluationResult->getRates()->toArrayInt();
-            }
-            $criterion = strval($criterionEvaluation->getCriterionCode());
+        $axisRate = $axisRates->computeForChannelAndLocale($channelCode, $localeCode);
 
-            $data = $this->compute($rates, $previous, function ($rate, $state, $channel, $locale) use ($criterion) {
-                $numRate = intval($rate);
-                $rate = new Rate($numRate);
-                $letterRate = strval($rate);
-
-                return [
-                    $channel => [
-                        $locale => [
-                            'rates' => [
-                                $criterion => [
-                                    'criterion' => $criterion,
-                                    'rate' => $numRate,
-                                    'letterRate' => $letterRate
-                                ]
-                            ]
-                        ]
-                    ]
-                ];
-            });
-
-            return array_merge_recursive(
-                $previous,
-                $data
-            );
-        }, []);
+        return $computedAxisRates[strval($channelCode)][strval($localeCode)]['rate'] = null !== $axisRate ? strval($axisRate) : null;
     }
 
-    private function computeAxisRecommendations(array $criteriaEvaluations): array
+    private function computeAxisCriteriaRates(array $criteriaEvaluations, ChannelCode $channelCode, LocaleCode $localeCode): array
     {
-        return array_reduce($criteriaEvaluations, function (array $previous, CriterionEvaluation $criterionEvaluation) {
+        $criteriaRates = [];
+        /** @var CriterionEvaluation $criterionEvaluation */
+        foreach ($criteriaEvaluations as $criterionEvaluation) {
             $evaluationResult = $criterionEvaluation->getResult();
-            $evaluationData = [];
-            if ($evaluationResult !== null) {
-                $evaluationData = $evaluationResult->getData()?? [];
-            }
-            $criterion = strval($criterionEvaluation->getCriterionCode());
-            $recommendations = $evaluationData['attributes'] ?? [];
+            $rate = null !== $evaluationResult
+                ? $evaluationResult->getRates()->getByChannelAndLocale($channelCode, $localeCode)
+                : null;
 
-            $data = $this->compute($recommendations, $previous, function ($attributes, $state, $channel, $locale) use ($criterion) {
-                $previousAttributes = $state[$channel][$locale]['recommendations'][$criterion] ?? [];
+            $criteriaRates[] = [
+                'criterion' => strval($criterionEvaluation->getCriterionCode()),
+                'rate' => null !== $rate ? $rate->toInt() : null,
+                'letterRate' => null !== $rate ? strval($rate) : null,
+            ];
+        }
 
-                $newAttributes = array_merge(
-                    $previousAttributes,
-                    $attributes
-                );
+        return $criteriaRates;
+    }
 
-                return [
-                    $channel => [
-                        $locale => [
-                            'recommendations' => [
-                                $criterion => [
-                                    'criterion' => $criterion,
-                                    'attributes' => $newAttributes,
-                                ]
-                            ]
-                        ]
-                    ]
-                ];
-            });
+    private function computeAxisRecommendations(array $criteriaEvaluations, ChannelCode $channelCode, LocaleCode $localeCode): array
+    {
+        $recommendations = [];
+        /** @var CriterionEvaluation $criteriaEvaluation */
+        foreach ($criteriaEvaluations as $criteriaEvaluation) {
+            $evaluationResult = $criteriaEvaluation->getResult();
+            $evaluationData = null !== $evaluationResult ? $evaluationResult->getData() : [];
+            $recommendations[] = [
+                'criterion' => strval($criteriaEvaluation->getCriterionCode()),
+                'attributes' => $evaluationData['attributes'][strval($channelCode)][strval($localeCode)] ?? []
+            ];
+        }
 
-            return array_merge_recursive(
-                $previous,
-                $data
-            );
-        }, []);
+        return $recommendations;
     }
 
     private function getAxis(CriterionCode $code): ?string
@@ -209,142 +163,8 @@ class GetProductEvaluation
         return $axes[strval($code)] ?? null;
     }
 
-    private function compute(array $channels, array $state, callable $callback): array
+    private function getChannelsLocales(): ChannelLocaleCollection
     {
-        $result = [];
-        foreach ($channels as $channel => $locales) {
-            foreach ($locales as $locale => $data) {
-                $result = array_merge_recursive(
-                    $result,
-                    $callback($data, $state, $channel, $locale)
-                );
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Adapt built data for frontend application
-     * FROM:
-     * <<<JSON
-     * {
-     *     enrichment: {
-     *       ecommerce: {
-     *         en_US: {
-     *           rate: {
-     *               value: 75,
-     *               total: 3,
-     *               average: 25
-     *           },
-     *           rates: {
-     *             example_criterion_code: {criterion: 'example_criterion_code', rate: 25, letterRate: 'E'},
-     *             ...
-     *           },
-     *           recommendations: {
-     *             example_criterion_code: {criterion: 'example_criterion_code', attributes: ['attribute1', 'attribute2', 'attribute3']},
-     *             ...
-     *           },
-     *         },
-     *         ...
-     *       },
-     *       ...
-     *     },
-     *     consistency: {
-     *       ecommerce: {
-     *         en_US: {
-     *           rate: {
-     *               value: 75,
-     *               total: 3,
-     *               average: 25
-     *           },
-     *           rates: {
-     *             example_criterion_code: {criterion: 'example_criterion_code', rate: 25, letterRate: 'E'},
-     *             ...
-     *           },
-     *           recommendations: {
-     *             example_criterion_code: {criterion: 'example_criterion_code', attributes: ['attribute1', 'attribute2', 'attribute3']},
-     *             ...
-     *           },
-     *         },
-     *         ...
-     *       },
-     *       ...
-     *     }
-     * }
-     * JSON;
-     *
-     * TO:
-     * <<<JSON
-     * {
-     *     enrichment: {
-     *       ecommerce: {
-     *         en_US: {
-     *           rate: 'B',
-     *           recommendations: [
-     *             {criterion: 'example_criterion_code', attributes: ['attribute1', 'attribute2', 'attribute3']},
-     *             ...
-     *           ],
-     *           rates: [
-     *             {criterion: 'example_criterion_code', rate: 25, letterRate: 'E'},
-     *             ...
-     *           ],
-     *         },
-     *         ...
-     *       },
-     *       ...
-     *     },
-     *     consistency: {
-     *       ecommerce: {
-     *         en_US: {
-     *           rate: 'D',
-     *           recommendations: [
-     *             {criterion: 'example_criterion_code', attributes: ['attribute1', 'attribute2', 'attribute3']},
-     *             ...
-     *           ],
-     *         },
-     *         ...
-     *       },
-     *       ...
-     *     }
-     * }
-     * JSON;
-     *
-     * @param array $productEvaluation
-     * @return array
-     * @deprecated
-     * @todo[DAPI-488] the design of the frontend data format is currently in progress. Remove this method after adapting the frontend application with build response
-     */
-    private function adaptForFrontend(array $productEvaluation): array
-    {
-        return array_map(function ($channels) {
-            return $this->compute($channels, [], function ($axisEvaluation, $state, $channel, $locale) {
-                $rate = $axisEvaluation['rate']['average'] ?? null;
-                $recommendations = $axisEvaluation['recommendations'] ?? [];
-                $rates = $axisEvaluation['rates'] ?? [];
-                $stateRecommendations = $state[$channel][$locale]['recommendations'] ?? [];
-
-                if ($rate !== null) {
-                    $rate = (int) round($rate, 0, PHP_ROUND_HALF_DOWN);
-                    $rate = new Rate($rate);
-                    $rate = strval($rate);
-                }
-
-                $recommendations = array_merge(
-                    $stateRecommendations,
-                    $recommendations
-                );
-
-                return [
-                    $channel => [
-                        $locale => [
-                            'rate' => $rate,
-                            'recommendations' => array_values($recommendations),
-                            'rates' => array_values($rates),
-                        ]
-                    ]
-                ];
-            });
-        }, $productEvaluation);
+        return new ChannelLocaleCollection($this->getLocalesByChannelQuery->execute());
     }
 }
