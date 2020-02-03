@@ -25,7 +25,7 @@ class ImageNormalizer
     }
 
     /**
-     * Normalizes an value interface to display an image
+     * Normalizes a value interface to display an image
      *
      * @param ValueInterface|null $value
      * @param string|null         $localeCode
