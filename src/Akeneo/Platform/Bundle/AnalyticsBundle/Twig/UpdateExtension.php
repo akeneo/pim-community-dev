@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\Twig;
 
+use Akeneo\Platform\VersionProviderInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 /**
@@ -19,13 +20,13 @@ class UpdateExtension extends \Twig_Extension
     /** @var string */
     protected $updateServerUrl;
 
-    /**
-     * @param ConfigManager $configManager
-     * @param string        $updateServerUrl
-     */
-    public function __construct(ConfigManager $configManager, $updateServerUrl)
+    /** @var VersionProviderInterface */
+    private $versionProvider;
+
+    public function __construct(ConfigManager $configManager, VersionProviderInterface $versionProvider, $updateServerUrl)
     {
         $this->configManager = $configManager;
+        $this->versionProvider = $versionProvider;
         $this->updateServerUrl = $updateServerUrl;
     }
 
@@ -47,7 +48,7 @@ class UpdateExtension extends \Twig_Extension
      */
     public function isLastPatchEnabled()
     {
-        return $this->configManager->get('pim_analytics.version_update');
+        return !$this->versionProvider->isSaaSVersion() && $this->configManager->get('pim_analytics.version_update');
     }
 
     /**
