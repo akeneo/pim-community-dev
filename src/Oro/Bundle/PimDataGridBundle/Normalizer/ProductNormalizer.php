@@ -163,7 +163,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     protected function normalizeImage(?ValueInterface $data, array $context = [])
     {
-        return $this->imageNormalizer->normalize($data, $context['data_locale']);
+        return $this->imageNormalizer->normalize($data, $context['data_channel'], $context['data_locale']);
     }
 
     /**
