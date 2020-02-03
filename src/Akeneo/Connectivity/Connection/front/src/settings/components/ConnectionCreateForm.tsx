@@ -129,7 +129,7 @@ export const ConnectionCreateForm = () => {
     const handleFlowTypeSelect = (flowType: FlowType) => dispatch(inputChanged('flow_type', flowType));
 
     return (
-        <Form>
+        <Form data-testid='create-connection'>
             <FormGroup
                 controlId='label'
                 label='akeneo_connectivity.connection.connection.label'
