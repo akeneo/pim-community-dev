@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.65 (2020-02-03)
+
 ## Bug fixes
 
 - PIM-9065: Allow more than 4 decimals for an attribute of type "number"
