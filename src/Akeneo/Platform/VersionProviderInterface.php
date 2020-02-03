@@ -15,13 +15,9 @@ interface VersionProviderInterface
 {
     public function getEdition(): string;
 
-    public function getMajor(): string;
-
-    public function getMinor(): string;
-
     public function getPatch(): string;
 
-    public function getStability(): string;
-
     public function getFullVersion(): string;
+
+    public function isSaaSVersion(): bool;
 }

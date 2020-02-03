@@ -43,45 +43,16 @@ class VersionProvider implements VersionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getMajor(): string
-    {
-        $matches = [];
-        preg_match('/^(?P<major>\d+)/', $this->version, $matches);
-
-        return $matches['major'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMinor(): string
-    {
-        $matches = [];
-        preg_match('/^(?P<minor>\d+.\d+)/', $this->version, $matches);
-
-        return $matches['minor'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPatch(): string
     {
-        $matches = [];
-        preg_match('/^(?P<patch>\d+.\d+.\d+)/', $this->version, $matches);
+        if (!$this->isSaaSVersion()) {
+            $matches = [];
+            preg_match('/^(?P<patch>\d+.\d+.\d+)/', $this->version, $matches);
 
-        return $matches['patch'];
-    }
+            return $matches['patch'];
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStability(): string
-    {
-        $matches = [];
-        preg_match('/-(?P<stability>\w+)\d+$/', $this->version, $matches);
-
-        return (isset($matches['stability'])) ? $matches['stability'] : 'stable';
+        return $this->version;
     }
 
     /**
@@ -90,5 +61,13 @@ class VersionProvider implements VersionProviderInterface
     public function getFullVersion(): string
     {
         return sprintf('%s %s %s', $this->edition, $this->version, $this->codeName);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isSaaSVersion(): bool
+    {
+        return false !== strpos(strtolower($this->getEdition()), 'saas');
     }
 }
