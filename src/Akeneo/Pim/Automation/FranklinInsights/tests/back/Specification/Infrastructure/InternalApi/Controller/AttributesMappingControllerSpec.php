@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\In
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithExactMatchHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\AttributesMappingController;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesMappingStatusNormalizer;
@@ -24,7 +24,7 @@ class AttributesMappingControllerSpec extends ObjectBehavior
         FamiliesMappingStatusNormalizer $familiesNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer,
         SecurityFacade $securityFacade,
-        GetAttributesMappingWithSuggestionsHandler $getAttributesMappingWithSuggestions
+        GetAttributesMappingWithExactMatchHandler $getAttributesMappingWithExactMatch
     ): void {
         $this->beConstructedWith(
             $saveAttributesMappingByFamilyHandler,
@@ -32,7 +32,7 @@ class AttributesMappingControllerSpec extends ObjectBehavior
             $familiesNormalizer,
             $attributesMappingNormalizer,
             $securityFacade,
-            $getAttributesMappingWithSuggestions
+            $getAttributesMappingWithExactMatch
         );
     }
 

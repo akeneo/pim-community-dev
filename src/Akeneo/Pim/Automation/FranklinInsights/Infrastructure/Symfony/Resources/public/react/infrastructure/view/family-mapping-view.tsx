@@ -30,6 +30,8 @@ import {translate} from '../translator';
 import {hideLoadingMaskMiddleware} from '../middleware/loading-mask';
 
 import View = require('pimui/js/view/base');
+import {AttributesMappingStatusState} from '../../application/reducer/family-mapping/attributes-mapping-status';
+import {FrontAttributeMappingStatus} from '../../domain/model/front-attribute-mapping-status.enum';
 
 class FamilyMappingView extends View {
   private store: Store;
@@ -87,7 +89,8 @@ class FamilyMappingView extends View {
       familyMappingStatus: getFamilyMappingStatus(state.familyMapping.mapping),
       hasUnsavedChanges: getHasUnsavedChanges(state.familyMapping.originalMapping, state.familyMapping.mapping),
       attributeCount: getAttributeCount(state.familyMapping.mapping),
-      mappedAttributeCount: getMappedAttributeCount(state.familyMapping.mapping)
+      mappedAttributeCount: getMappedAttributeCount(state.attributesMappingStatus),
+      suggestedAttributeCount: getSuggestedAttributeCount(state.attributesMappingStatus)
     };
     this.getFormModel().set(newData);
     this.getRoot().trigger('pim_enrich:form:entity:post_update');
@@ -136,8 +139,16 @@ function getAttributeCount(mapping: AttributesMapping): number {
   return Object.keys(mapping).length;
 }
 
-function getMappedAttributeCount(mapping: AttributesMapping): number {
-  return Object.values(mapping).filter(attrMapping => attrMapping.status === AttributeMappingStatus.ACTIVE).length;
+function getMappedAttributeCount(attributesMappingStatus: AttributesMappingStatusState): number {
+  return Object.values(attributesMappingStatus).filter(
+    attributeStatus => attributeStatus === FrontAttributeMappingStatus.MAPPED
+  ).length;
+}
+
+function getSuggestedAttributeCount(attributesMappingStatus: AttributesMappingStatusState): number {
+  return Object.values(attributesMappingStatus).filter(
+    attributeStatus => attributeStatus === FrontAttributeMappingStatus.SUGGESTION_APPLIED
+  ).length;
 }
 
 export = FamilyMappingView;

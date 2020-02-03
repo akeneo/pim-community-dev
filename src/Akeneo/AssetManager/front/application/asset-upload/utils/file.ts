@@ -8,12 +8,9 @@ type ThumbnailForLine = {
   line: Line;
 };
 
+const ALLOWED_THUMBNAIL_MIME_TYPES = ['image/png', 'image/jpeg'];
 export const shouldCreateThumbnailFromFile = (file: File): boolean => {
-  if (file.type === 'image/svg+xml') {
-    return false;
-  }
-
-  return file.type.match('image') !== null;
+  return ALLOWED_THUMBNAIL_MIME_TYPES.includes(file.type);
 };
 
 /* istanbul ignore next */

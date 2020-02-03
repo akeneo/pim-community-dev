@@ -24,12 +24,14 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Pim\Automation\FranklinInsights\Domain',
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception',
 
             // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
 
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
             'Psr\Log\LoggerInterface',
+            'Ramsey\Uuid\Uuid',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Application'),
 
@@ -120,6 +122,7 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils',
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobInstanceNames',
             'Akeneo\Tool\Component\Batch\Job\BatchStatus',
+            'Akeneo\Pim\Structure\Component\AttributeTypes',
 
             // External dependencies
             'Doctrine',
@@ -199,6 +202,8 @@ $rules = [
 
             // external dependencies
             'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass',
+            'Ramsey\Uuid\Uuid',
+            'Doctrine\DBAL\Connection',
             'Symfony\Component',
 
             // TODO remove all links by reference

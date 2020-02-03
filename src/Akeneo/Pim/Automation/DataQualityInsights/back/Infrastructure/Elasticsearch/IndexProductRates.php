@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesR
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
-final class IndexProductRates
+class IndexProductRates
 {
     /** @var Client */
     private $esClient;

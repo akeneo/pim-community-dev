@@ -1,9 +1,10 @@
 services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\EvaluatePendingCriteriaCommand:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeCriteriaEvaluation'
+            - '@doctrine.orm.entity_manager'
+            - '@akeneo_batch_queue.manager.job_execution_manager'
+            - '@akeneo_batch.job_repository'
+            - '%kernel.project_dir%'
         tags:
             - { name: 'console.command' }
 

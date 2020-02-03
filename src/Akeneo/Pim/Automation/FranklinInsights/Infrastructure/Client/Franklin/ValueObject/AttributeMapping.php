@@ -97,14 +97,23 @@ class AttributeMapping
     }
 
     /**
+     * @return string[]
+     */
+    public function getSuggestions(): array
+    {
+        return $this->attributeData['suggestions'] ?? [];
+    }
+
+    /**
      * @param array $attribute
      */
     private function validateAttribute(array $attribute): void
     {
         $this->checkMandatoryKeys($attribute);
 
-        $this->validateAttributeType((string) $attribute['from']['type']);
-        $this->validateStatus($attribute['status']);
+        if (!isset($attribute['from']['type'])) {
+            throw new \InvalidArgumentException('Missing "type" key in target attribute code data');
+        }
 
         if (!isset($attribute['from']['id'])) {
             throw new \InvalidArgumentException('Missing "id" key in target attribute code data');
@@ -112,6 +121,13 @@ class AttributeMapping
 
         if (!empty($attribute['to']) && !isset($attribute['to']['id'])) {
             throw new \InvalidArgumentException('Missing "id" key in pim attribute code data');
+        }
+
+        $this->validateAttributeType((string) $attribute['from']['type']);
+        $this->validateStatus($attribute['status']);
+
+        if (isset($attribute['suggestions'])) {
+            $this->validateSuggestions($attribute['suggestions']);
         }
     }
 
@@ -155,6 +171,19 @@ class AttributeMapping
                     'Missing key "%s" in attribute',
                     $mandatoryKey
                 ));
+            }
+        }
+    }
+
+    private function validateSuggestions($suggestions): void
+    {
+        if (!is_array($suggestions)) {
+            throw new \InvalidArgumentException('The property "suggestions" is not an array');
+        }
+
+        foreach ($suggestions as $suggestion) {
+            if (!is_string($suggestion)) {
+                throw new \InvalidArgumentException('The property "suggestions" is malformed');
             }
         }
     }

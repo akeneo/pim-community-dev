@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration;
 
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\IndexAssetEventAggregator;
 use Akeneo\ReferenceEntity\Integration\Persistence\Helper\SearchRecordIndexHelper;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -30,6 +31,9 @@ abstract class SearchIntegrationTestCase extends KernelTestCase
     /** @var SearchRecordIndexHelper */
     protected $searchRecordIndexHelper;
 
+    /** @var IndexAssetEventAggregator*/
+    protected $indexAssetSubscriber;
+
     /**
      * {@inheritdoc}
      */
@@ -37,7 +41,13 @@ abstract class SearchIntegrationTestCase extends KernelTestCase
     {
         static::bootKernel(['debug' => false]);
         $this->searchRecordIndexHelper = $this->get('akeneoreference_entity.tests.helper.search_index_helper');
+        $this->indexAssetSubscriber = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator');
         $this->searchRecordIndexHelper->resetIndex();
+    }
+
+    protected function indexAssets()
+    {
+        $this->indexAssetSubscriber->flushCache();
     }
 
     protected function get(string $service)

@@ -21,6 +21,7 @@ export const hydrator = () => (backendAssetFamily: BackendAssetFamily): AssetFam
     transformations: denormalizeAssetFamilyTransformations(backendAssetFamily.transformations),
     namingConvention: denormalizeAssetFamilyNamingConvention(backendAssetFamily.naming_convention),
     productLinkRules: denormalizeAssetFamilyProductLinkRules(backendAssetFamily.product_link_rules),
+    assetCount: backendAssetFamily.asset_count,
   };
 };
 

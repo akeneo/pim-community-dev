@@ -240,9 +240,7 @@ const Row = React.memo(
     return (
       <Container status={status}>
         <Cells>
-          <Cell width={ColumnWidths.asset}>
-            {null !== line.thumbnail && <Thumbnail src={line.thumbnail} title={line.filename} />}
-          </Cell>
+          <Cell width={ColumnWidths.asset}>{null !== line.thumbnail && <Thumbnail src={line.thumbnail} alt="" />}</Cell>
           <Cell width={ColumnWidths.filename}>
             <StyledFilename>{line.filename}</StyledFilename>
           </Cell>

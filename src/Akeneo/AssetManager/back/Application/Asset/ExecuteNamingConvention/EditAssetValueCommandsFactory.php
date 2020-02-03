@@ -63,7 +63,7 @@ class EditAssetValueCommandsFactory
                 return [];
             }
 
-            throw new NamingConventionPatternNotMatch('Naming convention pattern does not match');
+            throw new NamingConventionPatternNotMatch('This value does not match the naming convention\'s pattern');
         }
 
         return $this->buildEditAssetValueCommands($namingConvention, $assetFamilyIdentifier, $matches);
