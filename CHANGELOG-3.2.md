@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.36 (2020-02-03)
+
 ## Bug fixes:
 
 - PIM-9075: Fix mass_edit_rule key translation
