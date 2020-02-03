@@ -177,7 +177,7 @@ php-image-prod:
 	IMAGE_TAG=v$(date +%Y%m%d%H%M%S)
 	git config user.name "Michel Tag"
 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
-	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG}';/g" src/Akeneo/Platform/EnterpriseVersion.php
+	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG//v}';/g" src/Akeneo/Platform/EnterpriseVersion.php
 	git add src/Akeneo/Platform/EnterpriseVersion.php
 	git commit -m "Prepare SaaS ${IMAGE_TAG}"
 
