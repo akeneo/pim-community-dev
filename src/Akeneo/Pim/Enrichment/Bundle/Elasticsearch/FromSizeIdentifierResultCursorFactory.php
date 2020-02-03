@@ -36,6 +36,7 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
         $options = $this->resolveOptions($options);
         $sort = ['_id' => 'asc'];
 
+        $esQuery['track_total_hits'] = true;
         $esQuery['_source'] = array_merge($esQuery['_source'], ['document_type']);
         $esQuery['sort'] = isset($esQuery['sort']) ? array_merge($esQuery['sort'], $sort) : $sort;
         $esQuery['size'] = $options['limit'];

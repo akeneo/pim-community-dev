@@ -215,7 +215,7 @@ error:
   forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
 alert:
   attribute_option:
-    error_occurred_during_submission: Une erreur s'est produite lors de l'envoi d'un formulaire sur le serveur
+    error_occurred_during_submission: Une erreur s'est produite lors de l'envoi du formulaire sur le serveur
     save_before_edit_other: Veuillez enregistrer vos modifications sur les autres lignes avant de modifier celle-ci
   session_storage:
     not_available: Votre navigateur Internet ne semble pas être compatible avec sessionStorage. Contactez votre administrateur
@@ -284,8 +284,6 @@ pim_title:
   pim_enrich_mass_edit_action_perform: Edition en masse | Effectuer
   pim_enrich_job_tracker_index: Traqueur de processus
   pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
-  pim_enrich_api_connection_index: Connexions API
-  pim_enrich_api_connection_create: Connexions d'API | Création
   pim_enrich_mass_edit_action: Edition en masse
   pim_analytics_system_info_index: Informations système
 pim_menu:
@@ -319,7 +317,6 @@ pim_menu:
     user_role: Rôles
     info: Informations système
     job_tracker: Traqueur de processus
-    api_connection: Connexions API
     catalog_volume: Volumétrie du catalogue
   navigation:
     activity: Centre d'activité

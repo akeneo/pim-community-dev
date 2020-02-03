@@ -1,20 +1,24 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9076: Fix product count on datagrid when more than 10000 products
+
 # 4.0.1 (2020-01-22)
 
 # 4.0.0 (2020-01-15)
 
-# New features
+## New features
 
 - API-649: Set up Connections
 - API-767: Audit Connections
 
-# Bug fixes
+## Bug fixes
 
 - GITHUB-10247: Fix regex to compile the frontend assets. Thanks @liamjtoohey!
 - PIM-8894: Change product identifier validation to forbid surrounding spaces
 
-# Technical Improvements
+## Technical Improvements
 - TIP-1185: Use a single index "product_and_product_model_index" to search on product and product models, instead dedicated product/product model indexes
 - TIP-1159: Improve the performance of the calculation of the completeness for the products
 - TIP-1225: Improve the performance of the indexation of the products

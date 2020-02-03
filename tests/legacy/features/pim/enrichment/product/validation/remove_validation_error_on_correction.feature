@@ -25,5 +25,5 @@ Feature: Validate that validation is removed on correction
     And there should be 1 error in the "Other" tab
     Then I change the "Cost" to "10 USD"
     And I save the product
-    Then I should not see validation tooltip "This value should not be a decimal."
     And there should be 0 error in the "Other" tab
+    Then I should not see validation tooltip "This value should not be a decimal."
