@@ -37,11 +37,12 @@ class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
 
         $esClient->search(
             [
-                'sort'    => ['_id' => 'asc'],
-                'query'   => [],
+                'sort' => ['_id' => 'asc'],
+                'query' => [],
                 '_source' => ['identifier', 'document_type'],
-                'size'    => 25,
-                'from'    => 0
+                "track_total_hits" => true,
+                'size' => 25,
+                'from' => 0
             ]
         )->willReturn(['hits' => [
             'total' => ['value' => 42, 'relation' => 'eq'],
