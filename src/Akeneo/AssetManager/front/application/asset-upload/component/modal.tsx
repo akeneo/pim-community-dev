@@ -23,6 +23,7 @@ import {Reducer} from 'redux';
 import {onFileDrop, retryFileUpload} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/upload';
 import {onCreateAllAsset} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-create-all-assets';
 import {hasAnUnsavedLine, getCreatedAssetCodes} from 'akeneoassetmanager/application/asset-upload/utils/utils';
+import limitFileUpload from 'akeneoassetmanager/application/asset-upload/utils/upload-limit';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
@@ -132,10 +133,12 @@ const UploadModal = ({
       event.preventDefault();
       event.stopPropagation();
 
-      const files = event.target.files ? Object.values(event.target.files) : [];
+      let files = event.target.files ? Object.values(event.target.files) : [];
+      files = limitFileUpload(files, state.lines.length);
+
       onFileDrop(files, assetFamily, channels, locales, dispatch);
     },
-    [assetFamily, channels, locales, dispatch]
+    [assetFamily, channels, locales, dispatch, state.lines.length]
   );
 
   const handleLineChange = React.useCallback((line: Line) => dispatch(editLineAction(line)), [dispatch]);
