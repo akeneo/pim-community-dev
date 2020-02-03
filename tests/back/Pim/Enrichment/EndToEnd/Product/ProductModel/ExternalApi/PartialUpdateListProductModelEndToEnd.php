@@ -52,7 +52,7 @@ class PartialUpdateListProductModelEndToEnd extends AbstractProductModelTestCase
         $data =
             <<<JSON
     {"code": "sub_sweat_option_a", "family_variant": "familyVariantA1", "parent": "sweat", "values": {"a_simple_select": [{"locale": null, "scope": null, "data": "optionA"}]}}
-    {"code": "root_product_model", "family_variant": "familyVariantA1", "values": {"a_number_float": [{"locale": null, "scope": null, "data": "13"}]}}
+    {"code": "root_product_model", "family_variant": "familyVariantA1", "values": {"a_number_float": [{"locale": null, "scope": null, "data": "13.111111111111"}]}}
     {"code": "sweat", "values": {"a_number_float": [{"locale": null, "scope": null, "data": "10.5000"}]}}
     {"code": "sub_sweat_option_b", "family_variant": "familyVariantA1", "parent": "sweat", "values": {"a_simple_select": [{"locale": null, "scope": null, "data": "optionB"}]}}
 JSON;
@@ -107,7 +107,7 @@ JSON;
                         [
                             'locale' => null,
                             'scope'  => null,
-                            'data'   => '10.5000000000',
+                            'data'   => '10.5000',
                         ],
                     ],
                 ],
@@ -141,7 +141,7 @@ JSON;
                         [
                             'locale' => null,
                             'scope'  => null,
-                            'data'   => '10.5000000000',
+                            'data'   => '10.5000',
                         ],
                     ],
                 ],
@@ -175,7 +175,7 @@ JSON;
                         [
                             'locale' => null,
                             'scope'  => null,
-                            'data'   => '10.5000000000',
+                            'data'   => '10.5000',
                         ],
                     ],
                     'a_simple_select' => [
@@ -200,7 +200,7 @@ JSON;
                         [
                             'locale' => null,
                             'scope'  => null,
-                            'data'   => '13.0000000000',
+                            'data'   => '13.111111111111',
                         ],
                     ],
                 ],
