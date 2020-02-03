@@ -62,13 +62,18 @@ class ProductAndProductModelSearchAggregator
 
         $attributeCodesWithIsEmptyOperator = $this->getAttributeCodesWithIsEmptyOperator($rawFilters);
         if (!empty($attributeCodesWithIsEmptyOperator)) {
-            $searchQueryBuilder->addFilter(
+            $searchQueryBuilder->addShould([
                 [
                     'terms' => [
                         'attributes_for_this_level' => $attributeCodesWithIsEmptyOperator,
                     ],
-                ]
-            );
+                ],
+                [
+                    'terms' => [
+                        'attributes_of_ancestors' => $attributeCodesWithIsEmptyOperator,
+                    ],
+                ],
+            ]);
         }
 
         return $searchQueryBuilder;

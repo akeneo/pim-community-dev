@@ -5,6 +5,7 @@
 ## Bug fixes:
 
 - PIM-9075: Fix mass_edit_rule key translation
+- PIM-9071: Fix "does not contain" filter on SKU in product data grid
 
 # 3.2.35 (2020-01-29)
 
