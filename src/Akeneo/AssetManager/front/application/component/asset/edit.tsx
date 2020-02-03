@@ -16,7 +16,6 @@ import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
-import Key from 'akeneoassetmanager/tools/key';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
@@ -30,6 +29,7 @@ import EditionAsset, {getEditionAssetCompleteness} from 'akeneoassetmanager/doma
 import {MainMediaThumbnail} from 'akeneoassetmanager/application/component/asset/edit/main-media-thumbnail';
 import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
 const securityContext = require('pim/security-context');
+const router = require('pim/router');
 
 interface StateProps {
   sidebar: {
@@ -78,17 +78,18 @@ class AssetEditView extends React.Component<EditProps> {
   };
 
   private backToAssetFamilyList = () => (
-    <span
+    <a
+      href={`#${router.generate('akeneo_asset_manager_asset_family_index')}`}
       role="button"
       tabIndex={0}
       className="AknColumn-navigationLink"
-      onClick={this.props.events.backToAssetFamilyList}
-      onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (Key.Space === event.key) this.props.events.backToAssetFamilyList();
+      onClick={e => {
+        e.preventDefault();
+        this.props.events.backToAssetFamilyList();
       }}
     >
       {__('pim_asset_manager.asset.button.back')}
-    </span>
+    </a>
   );
 
   private onConfirmedDelete = () => {

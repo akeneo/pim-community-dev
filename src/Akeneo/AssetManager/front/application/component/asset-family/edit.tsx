@@ -6,12 +6,12 @@ import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
 import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
 import __ from 'akeneoassetmanager/tools/translator';
 import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
-import Key from 'akeneoassetmanager/tools/key';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {BreadcrumbConfiguration} from 'akeneoassetmanager/application/component/app/breadcrumb';
+const router = require('pim/router');
 
 interface StateProps {
   locale: LocaleCode;
@@ -75,17 +75,18 @@ interface EditProps extends StateProps, DispatchProps {}
 class AssetFamilyEditView extends React.Component<EditProps> {
   public props: EditProps;
   private backToAssetFamilyList = () => (
-    <span
+    <a
+      href={`#${router.generate('akeneo_asset_manager_asset_family_index')}`}
       role="button"
       tabIndex={0}
       className="AknColumn-navigationLink"
-      onClick={this.props.events.backToAssetFamilyList}
-      onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (Key.Space === event.key) this.props.events.backToAssetFamilyList();
+      onClick={e => {
+        e.preventDefault();
+        this.props.events.backToAssetFamilyList();
       }}
     >
       {__('pim_asset_manager.asset.button.back')}
-    </span>
+    </a>
   );
 
   render(): JSX.Element | JSX.Element[] {
