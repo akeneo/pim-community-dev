@@ -277,7 +277,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      */
     protected function normalizeImage(?ValueInterface $value, ?string $channelCode = null, ?string $localeCode = null): ?array
     {
-        return $this->imageNormalizer->normalize($value, $channelCode, $localeCode);
+        return $this->imageNormalizer->normalize($value, $localeCode, $channelCode);
     }
 
     /**

@@ -119,7 +119,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $imageAsLabel->value($productModel)->willReturn($image);
-        $imageNormalizer->normalize($image, 'ecommerce', 'en_US')->willReturn([
+        $imageNormalizer->normalize($image, 'en_US', 'ecommerce')->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);
@@ -229,7 +229,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $imageAsLabel->value($productModel)->willReturn($image);
-        $imageNormalizer->normalize($image, 'ecommerce', 'en_US')->willReturn([
+        $imageNormalizer->normalize($image, 'en_US', 'ecommerce')->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);
@@ -341,7 +341,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $imageAsLabel->value($productModel)->willReturn($image);
-        $imageNormalizer->normalize($image, 'ecommerce', 'en_US')->willReturn([
+        $imageNormalizer->normalize($image, 'en_US', 'ecommerce')->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);

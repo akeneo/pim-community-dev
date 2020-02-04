@@ -277,6 +277,6 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
      */
     private function normalizeImage(?ValueInterface $data, ?string $channelCode, ?string $localeCode = null): ?array
     {
-        return $this->imageNormalizer->normalize($data, $channelCode, $localeCode);
+        return $this->imageNormalizer->normalize($data, $localeCode, $channelCode);
     }
 }
