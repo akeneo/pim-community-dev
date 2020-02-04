@@ -90,7 +90,8 @@ class ProductAndProductModelDatasource extends Datasource
         $context = [
             'locales'             => [$localeCode],
             'channels'            => [$channelCode],
-            'data_locale'         => $this->getParameters()['dataLocale']
+            'data_locale'         => $this->getParameters()['dataLocale'],
+            'data_channel'        => $this->getParameters()['scopeCode']
         ];
 
         $normalizedRows = [
