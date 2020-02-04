@@ -434,13 +434,35 @@ workflows:
           - build_prod:
                 requires:
                     - checkout
-          - ready_to_release?:
-                type: approval
+          - test_back_static_and_acceptance:
                 requires:
-                    - build_prod
-          - release:
+                    - build_dev
+          - test_front_static_acceptance_and_integration:
                 requires:
-                    - ready_to_release?
+                    - build_dev
+          - test_back_missing_structure_migrations:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
+          - test_back_data_migrations:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
+          - test_back_phpunit:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
+          - back_behat_legacy:
+                requires:
+                    - test_back_data_migrations
+                    - test_back_missing_structure_migrations
+                    - test_back_phpunit
+          - test_back_performance:
+                requires:
+                    - test_back_data_migrations
+                    - test_back_missing_structure_migrations
+                    - test_back_phpunit
+
   nightly:
       triggers:
           - schedule:
