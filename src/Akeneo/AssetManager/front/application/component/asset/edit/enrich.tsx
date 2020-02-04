@@ -9,8 +9,32 @@ import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import Key from 'akeneoassetmanager/tools/key';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import styled from 'styled-components';
+import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import __ from 'akeneoassetmanager/tools/translator';
 
 const securityContext = require('pim/security-context');
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const LeftColumn = styled.div`
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 600px;
+`;
+
+const Separator = styled.div`
+  background: ${(props: ThemedProps<void>) => props.theme.color.purple100};
+  margin: 0 40px;
+  width: 1px;
+`;
+
+const RightColumn = styled.div`
+  flex-grow: 1;
+`;
 
 interface StateProps {
   form: EditionFormState;
@@ -56,19 +80,28 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
     const asset = this.props.form.data;
 
     return (
-      <div className="AknSubsection">
-        <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">
-          {renderValues(
-            asset,
-            denormalizeChannelReference(this.props.context.channel),
-            denormalizeLocaleReference(this.props.context.locale),
-            this.props.form.errors,
-            this.props.events.form.onValueChange,
-            this.props.events.form.onSubmit,
-            this.props.rights
-          )}
-        </div>
-      </div>
+      <Container>
+        <LeftColumn>
+          <div className="AknSubsection">
+            <header className="AknSubsection-title">
+              <span className="group-label">{__('pim_asset_manager.asset.enrich.edit_subsection')}</span>
+            </header>
+            <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">
+              {renderValues(
+                asset,
+                denormalizeChannelReference(this.props.context.channel),
+                denormalizeLocaleReference(this.props.context.locale),
+                this.props.form.errors,
+                this.props.events.form.onValueChange,
+                this.props.events.form.onSubmit,
+                this.props.rights
+              )}
+            </div>
+          </div>
+        </LeftColumn>
+        <Separator />
+        <RightColumn>{/* TODO */}</RightColumn>
+      </Container>
     );
   }
 }

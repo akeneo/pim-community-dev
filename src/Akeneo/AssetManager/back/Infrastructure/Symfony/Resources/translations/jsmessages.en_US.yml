@@ -276,6 +276,7 @@ pim_asset_manager:
       title: Asset attributes
       code: Code
       label: Label
+      edit_subsection: Edit asset
     title: Assets
     create:
       header:
