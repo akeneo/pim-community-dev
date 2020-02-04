@@ -433,8 +433,10 @@ class AssetCategoryTreeController
 
         $category = $this->findCategory($id);
 
-        if ($this->isDefaultAssetCategoryTreeOfAUser->fetch($category->getCode())) {
-            throw new ConflictHttpException('Category tree cannot be removed because it used as a default asset tree for a user.');
+        if (null !== $this->isDefaultAssetCategoryTreeOfAUser) {
+            if ($this->isDefaultAssetCategoryTreeOfAUser->fetch($category->getCode())) {
+                throw new ConflictHttpException('Category tree cannot be removed because it used as a default asset tree for a user.');
+            }
         }
 
         $this->categoryRemover->remove($category);

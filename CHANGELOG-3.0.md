@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-9036: Prevent the removal of an asset category tree being the default asset category tree of a user
+
 # 3.0.65 (2020-02-03)
 
 ## Bug fixes
