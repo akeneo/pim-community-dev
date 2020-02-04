@@ -5,16 +5,17 @@ import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {Attribute, getAttributeLabel} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
 import {ResultCounter} from 'akeneoassetmanager/application/component/app/result-counter';
 import ListAsset, {getListAssetMainMediaThumbnail} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {useKeepVisibleX} from 'akeneoassetmanager/application/hooks/scroll';
 
 const Container = styled.div``;
 
 const Thumbnails = styled.div`
   display: flex;
   overflow-x: auto;
+  padding: 10px 0;
 `;
 
 const AssetThumbnail = styled.img<{highlighted: boolean}>`
@@ -23,10 +24,13 @@ const AssetThumbnail = styled.img<{highlighted: boolean}>`
       props.highlighted ? props.theme.color.blue100 : props.theme.color.grey60};
   width: 80px;
   height: 80px;
-  margin: 20px 20px 0 0;
   ${(props: ThemedProps<{highlighted: boolean}>) => !props.highlighted && `opacity: 0.6`};
   object-fit: contain;
   flex-shrink: 0;
+
+  :not(:last-child) {
+    margin-right: 20px;
+  }
 `;
 
 const Header = styled.div`
@@ -56,23 +60,27 @@ export const Carousel = ({
   productAttribute,
   context,
   onAssetChange,
-}: CarouselProps) => (
-  <Container>
-    <Header>
-      <Title>{getAttributeLabel(productAttribute, context.locale)}</Title>
-      <ResultCounter count={assetCollection.length} labelKey={'pim_asset_manager.asset_counter'} />
-      <Spacer />
-    </Header>
-    <Thumbnails>
-      {assetCollection.map(asset => (
-        <AssetThumbnail
-          data-role={`carousel-thumbnail-${asset.code}`}
-          key={asset.code}
-          highlighted={selectedAssetCode === asset.code}
-          src={getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale))}
-          onClick={() => onAssetChange(asset.code)}
-        />
-      ))}
-    </Thumbnails>
-  </Container>
-);
+}: CarouselProps) => {
+  const {containerRef, elementRef} = useKeepVisibleX<HTMLDivElement>();
+
+  return (
+    <Container>
+      <Header>
+        <Title>{getAttributeLabel(productAttribute, context.locale)}</Title>
+        <ResultCounter count={assetCollection.length} labelKey={'pim_asset_manager.asset_counter'} />
+      </Header>
+      <Thumbnails ref={containerRef}>
+        {assetCollection.map(asset => (
+          <AssetThumbnail
+            data-role={`carousel-thumbnail-${asset.code}`}
+            ref={selectedAssetCode === asset.code ? elementRef : undefined}
+            key={asset.code}
+            highlighted={selectedAssetCode === asset.code}
+            src={getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale))}
+            onClick={() => onAssetChange(asset.code)}
+          />
+        ))}
+      </Thumbnails>
+    </Container>
+  );
+};
