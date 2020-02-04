@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.2 (2020-02-04)
+
 ## Bug fixes
 
 - PIM-9076: Fix product count on datagrid when more than 10000 products
