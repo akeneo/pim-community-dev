@@ -63,7 +63,7 @@ class GetProductsLinkedToAAssetAction
         $localeCode = $request->query->get('locale');
 
         $rows = $this->findProductAndProductModelsIdentifiers($assetCode, $attributeCode, $localeCode, $channelCode);
-        $normalizedProducts = $this->linkedProductNormalizer->normalize($rows, $localeCode);
+        $normalizedProducts = $this->linkedProductNormalizer->normalize($rows, $channelCode, $localeCode);
 
         return new JsonResponse(['items' => $normalizedProducts, 'total_count' => $rows->totalCount()]);
     }

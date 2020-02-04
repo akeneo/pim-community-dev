@@ -30,13 +30,14 @@ class LinkedProductsNormalizerSpec extends ObjectBehavior
         $productIdentifier = 'identifier';
         $label = 'Product label';
         $localeCode = 'en_US';
+        $channelCode = 'ecommerce';
         $image = null;
         $completeness = 100;
         $row = $this->productRow($technicalId, $productIdentifier, $label, $image, $completeness);
 
-        $imageNormalizer->normalize($image, $localeCode)->willReturn(['image' => 'info']);
+        $imageNormalizer->normalize($image, $localeCode, $channelCode)->willReturn(['image' => 'info']);
 
-        $this->normalize(new Rows([$row], 15), $localeCode)->shouldReturn(
+        $this->normalize(new Rows([$row], 15), $channelCode, $localeCode)->shouldReturn(
             [
                 [
                     'id'                             => $technicalId,
@@ -57,13 +58,14 @@ class LinkedProductsNormalizerSpec extends ObjectBehavior
         $productIdentifier = 'identifier';
         $label = 'Product label';
         $localeCode = 'en_US';
+        $channelCode = 'ecommerce';
         $image = null;
         $childrenCompleteness = ['total' => 2, 'complete' => 1];
         $row = $this->productModelRow($technicalId, $productIdentifier, $label, $image, $childrenCompleteness);
 
-        $imageNormalizer->normalize($image, $localeCode)->willReturn(['image' => 'info']);
+        $imageNormalizer->normalize($image, $localeCode, $channelCode)->willReturn(['image' => 'info']);
 
-        $this->normalize(new Rows([$row], 10), $localeCode)->shouldReturn(
+        $this->normalize(new Rows([$row], 10), $channelCode, $localeCode)->shouldReturn(
             [
                 [
                     'id'                             => $technicalId,
