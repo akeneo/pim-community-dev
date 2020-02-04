@@ -52,7 +52,7 @@ const CategoryFilter: FunctionComponent<CategoryFilterProps> = ({categoryCode}) 
     <>
 
       <div className="AknFilterBox-filterContainer">
-        <div className="AknFilterBox-filter" onClick={() => setShowModal(true)}>
+        <div className="AknFilterBox-filter" onClick={() => setShowModal(true)} data-testid={'dqiCategoryFilter'}>
           <span className="AknFilterBox-filterLabel">{__('pim_enrich.entity.category.uppercase_label')}</span>
           <button type="button" className="AknFilterBox-filterCriteria ui-multiselect">
             <span>{selectedCategoryCode && selectedCategoryLabel ? selectedCategoryLabel : __('pim_common.all')}</span>
