@@ -16,7 +16,7 @@ import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/do
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
-import Fullscreen from 'akeneoassetmanager/application/component/app/icon/fullscreen';
+import {Fullscreen} from 'akeneoassetmanager/application/component/app/icon/fullscreen';
 
 const Img = styled.img`
   margin: auto;

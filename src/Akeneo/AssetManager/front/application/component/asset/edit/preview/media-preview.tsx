@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import Download from 'akeneoassetmanager/application/component/app/icon/download';
-import Link from 'akeneoassetmanager/application/component/app/icon/link';
+import {Link} from 'akeneoassetmanager/application/component/app/icon/link';
 import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
 import {
   copyToClipboard,

@@ -59,7 +59,7 @@ test('It renders a empty media preview', () => {
 });
 
 test('It renders a media file preview with invalid media', () => {
-  jest.spyOn(console, 'error').mockImplementation(() => {});
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation(() => {});
   const otherPreviewModel = {...mediaFilePreviewModel, data: {}};
   const {getByText} = render(
     <ThemeProvider theme={akeneoTheme}>
@@ -67,7 +67,7 @@ test('It renders a media file preview with invalid media', () => {
     </ThemeProvider>
   );
   expect(getByText('The media file data is not valid')).toBeInTheDocument();
-  console.error.mockRestore();
+  mockedConsole.mockRestore();
 });
 
 test('It renders a media file preview', () => {
@@ -94,7 +94,7 @@ test('It renders a media link preview', () => {
 });
 
 test('It tells when the provided media link media type is unknown', () => {
-  jest.spyOn(console, 'error').mockImplementation(() => {});
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation(() => {});
   const {getByText} = render(
     <ThemeProvider theme={akeneoTheme}>
       <MediaPreview
@@ -106,11 +106,11 @@ test('It tells when the provided media link media type is unknown', () => {
     </ThemeProvider>
   );
   expect(getByText('The preview type UNKNOWN is not supported')).toBeInTheDocument();
-  console.error.mockRestore();
+  mockedConsole.mockRestore();
 });
 
 test('It tells when the provided media link data is invalid', () => {
-  jest.spyOn(console, 'error').mockImplementation(() => {});
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation(() => {});
   const invalidPreviewModel = {...mediaLinkPreviewModel, data: {}};
   const {getByText} = render(
     <ThemeProvider theme={akeneoTheme}>
@@ -123,5 +123,5 @@ test('It tells when the provided media link data is invalid', () => {
     </ThemeProvider>
   );
   expect(getByText('The media link data is not valid')).toBeInTheDocument();
-  console.error.mockRestore();
+  mockedConsole.mockRestore();
 });

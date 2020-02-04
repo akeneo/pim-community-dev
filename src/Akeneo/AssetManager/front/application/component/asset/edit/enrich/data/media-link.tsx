@@ -6,7 +6,7 @@ import {copyToClipboard, getMediaPreviewUrl} from 'akeneoassetmanager/tools/medi
 import styled from 'styled-components';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import DownloadIcon from 'akeneoassetmanager/application/component/app/icon/download';
-import LinkIcon from 'akeneoassetmanager/application/component/app/icon/link';
+import {Copy} from 'akeneoassetmanager/application/component/app/icon/copy';
 import {
   isMediaLinkData,
   mediaLinkDataFromString,
@@ -23,7 +23,9 @@ import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
-import Fullscreen from 'akeneoassetmanager/application/component/app/icon/fullscreen';
+import {Fullscreen} from 'akeneoassetmanager/application/component/app/icon/fullscreen';
+import {TransparentButton, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
+import {Link} from 'akeneoassetmanager/application/component/app/link';
 
 const Container = styled.div`
   align-items: center;
@@ -39,32 +41,21 @@ const Container = styled.div`
 const Thumbnail = styled.img`
   border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey60};
   flex-shrink: 0;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   margin-right: 10px;
   object-fit: cover;
-  width: 42px;
 `;
 
-const ActionLink = styled.a`
-  align-items: center;
-  cursor: pointer;
-  display: flex;
-  flex-shrink: 0;
-  height: 28px;
-  justify-content: center;
-  margin: 0 2px;
-  width: 28px;
-`;
+const StyledButtonContainer = styled(ButtonContainer)`
+  > :not(:first-child) {
+    margin-left: unset;
+  }
 
-const ActionButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: block;
-  flex-shrink: 0;
-  height: 28px;
-  margin: 0 2px;
-  width: 28px;
+  > ${Link}, > ${TransparentButton} {
+    display: flex;
+    margin-left: 12px;
+  }
 `;
 
 const View = ({
@@ -132,24 +123,24 @@ const View = ({
         readOnly={!canEditData}
       />
       {!isValueEmpty(value) && (
-        <>
+        <StyledButtonContainer>
           {MediaTypes.youtube !== value.attribute.media_type && (
-            <ActionLink href={mediaDownloadUrl} target="_blank" title={__('pim_asset_manager.media_link.download')}>
+            <Link href={mediaDownloadUrl} target="_blank" title={__('pim_asset_manager.media_link.download')}>
               <DownloadIcon
                 color={akeneoTheme.color.grey100}
                 size={20}
                 title={__('pim_asset_manager.media_link.download')}
               />
-            </ActionLink>
+            </Link>
           )}
-          <ActionButton
+          <TransparentButton
             title={__('pim_asset_manager.media_link.copy')}
             onClick={() => copyToClipboard(mediaDownloadUrl)}
           >
-            <LinkIcon color={akeneoTheme.color.grey100} size={20} title={__('pim_asset_manager.media_link.copy')} />
-          </ActionButton>
+            <Copy color={akeneoTheme.color.grey100} size={20} title={__('pim_asset_manager.media_link.copy')} />
+          </TransparentButton>
           <FullscreenPreview
-            anchor={ActionButton}
+            anchor={TransparentButton}
             label={label}
             previewModel={previewModel}
             attribute={value.attribute}
@@ -160,7 +151,7 @@ const View = ({
               size={20}
             />
           </FullscreenPreview>
-        </>
+        </StyledButtonContainer>
       )}
     </Container>
   );
