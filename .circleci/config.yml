@@ -481,13 +481,12 @@ workflows:
           - build_prod:
                 requires:
                     - checkout
-          - deploy_upgrade_pim3_environment:
-                requires:
-                    - checkout
-                    - build_prod
           - deploy_master_environment:
                 requires:
                     - build_prod
+          - deploy_upgrade_pim3_environment:
+                requires:
+                    - deploy_master_environment
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev

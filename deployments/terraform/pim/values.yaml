@@ -176,7 +176,7 @@ pim:
       enabled: true
       pimCommand: "pimee:data-quality-insights:evaluate-products"
       schedule: "*/30 * * * *"
-    franklin-insights-quality-highlights-push-structure-and-products:
+    franklin-insights-quality-highlights-push:
       enabled: true
       pimCommand: "pimee:franklin-insights:quality-highlights:push-structure-and-products"
       schedule: "15 0,12 * * *"
