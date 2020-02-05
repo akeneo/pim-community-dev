@@ -36,7 +36,7 @@ describe('Dashboard > filter on category', () => {
 
     fireEvent.click(getByTestId('dqiValidateModal'));
 
-    assertDigitalCategoryFilterIsAppliedOnDashboard(baseElement);
+    assertDigitalCameraCategoryFilterIsAppliedOnDashboard(baseElement);
     assertCategoryFilterEventHasBeenDispatched();
   });
 });
@@ -63,7 +63,7 @@ async function selectDigitalCamerasCategory(getByText, getByTestId) {
   expect(digitalCameraNode.className.includes("jstree-checked")).toBeTruthy();
 }
 
-function assertDigitalCategoryFilterIsAppliedOnDashboard(baseElement: HTMLElement) {
+function assertDigitalCameraCategoryFilterIsAppliedOnDashboard(baseElement: HTMLElement) {
   expect(baseElement.textContent.includes("Digital cameras")).toBeTruthy();
 }
 
