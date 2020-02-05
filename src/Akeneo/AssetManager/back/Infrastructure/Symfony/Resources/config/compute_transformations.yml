@@ -27,6 +27,13 @@ services:
         tags:
             - { name: akeneo_assetmanager.transformation.operation_applier }
 
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\OptimizeOperationApplier:
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@filesystem'
+        tags:
+            - { name: akeneo_assetmanager.transformation.operation_applier }
+
     Akeneo\AssetManager\Infrastructure\Transformation\Operation\ResizeOperationApplier:
         arguments:
             - '@liip_imagine.filter.manager'
