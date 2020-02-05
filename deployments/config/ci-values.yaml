@@ -21,18 +21,31 @@ pim:
       hook: "post-upgrade"
     upgradeES:
       enabled: false
+  resources:
+    limits:
+      memory: "512Mi"
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+
+backup:
+  enabled: false
 
 mysql:
   common:
     class: standard
   mysql:
-    innodbBufferPoolSize: 2G
-    innodb_buffer_pool_instances: 16
+    innodbBufferPoolSize: 512M
+    innodb_buffer_pool_instances: 4
     maxConnections: 151
     maxAllowedPacket: 4M
     dataDiskSize: 5Gi
     userPassword: 9vbtChLWrLsRhnKkjozHEqqL
     rootPassword: exKJXyqPcVRxsMv7J9W7MdCC
+    resources:
+      requests:
+        memory: 768Mi
+        cpu: 200m
 
 elasticsearch:
   master:
@@ -43,4 +56,7 @@ elasticsearch:
     persistence:
       size: 15Gi
       storageClass: standard
-
+    resources:
+      requests:
+        cpu: "25m"
+        memory: "512Mi"
