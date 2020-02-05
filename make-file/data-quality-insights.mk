@@ -26,5 +26,13 @@ data-quality-insights-cs-fix:
 data-quality-insights-integration-back:
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit --testsuite=Data_Quality_Insights --testdox
 
+.PHONY: data-quality-insights-unit-front
+data-quality-insights-unit-front:
+	$(YARN_RUN) jest --coverage=false --maxWorkers=4 --config src/Akeneo/Pim/Automation/DataQualityInsights/front/tests/front/unit/unit.jest.js ${W}
+
+.PHONY: data-quality-insights-unit-front-watch
+data-quality-insights-unit-front-watch:
+	W="--watchAll" $(MAKE) data-quality-insights-unit-front
+
 .PHONY: data-quality-insights-tests
 data-quality-insights-tests: data-quality-insights-coupling-back data-quality-insights-lint-back data-quality-insights-phpstan data-quality-insights-unit-back data-quality-insights-integration-back
