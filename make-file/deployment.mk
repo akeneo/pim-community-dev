@@ -85,18 +85,13 @@ terraform-plan-destroy: terraform-init
 terraform-delete: terraform-init
 	cd $(INSTANCE_DIR) && terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
 
-# create-dev-instance Create main.tf and values files to deploy a PIM instance
-.PHONY: create-dev-instance
-create-dev-instance: create-ci-values create-tf-files
-
-#  create-ci-instance: Update Chart.yaml only if running in a CI container
-.PHONY: create-ci-instance
-create-ci-instance: create-ci-values create-tf-files
-	yq w -i $(PIM_SRC_DIR)/deployments/terraform/pim/Chart.yaml version ${IMAGE_TAG}
+.PHONY: create-ci-release-files
+create-ci-release-files: create-ci-values create-pim-main-tf
 
 .PHONY: create-ci-values
 create-ci-values: $(INSTANCE_DIR)
-	@echo "Deploy with $(IMAGE_TAG)"
+	@echo "Deploy with $(IMAGE_TAG) - $(INSTANCE_DIR)/values.yaml"
+	@echo "Create Helm values file : $(INSTANCE_DIR)/values.yaml"
 	cp $(PIM_SRC_DIR)/deployments/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
@@ -104,8 +99,8 @@ ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
 endif
 
-.PHONY: create-tf-files
-create-tf-files: $(INSTANCE_DIR)
+.PHONY: create-pim-main-tf
+create-pim-main-tf: $(INSTANCE_DIR)
 	@echo $(INSTANCE_NAME_PREFIX)
 	@echo "terraform {" > $(INSTANCE_DIR)/main.tf
 	@echo "backend \"gcs\" {" >> $(INSTANCE_DIR)/main.tf

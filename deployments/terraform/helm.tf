@@ -58,6 +58,8 @@ resource "null_resource" "helm_release_pim" {
     interpreter = ["/usr/bin/env", "bash", "-c"]
     #FIXME: For the moment, chart definition is outside from the module - Dev & CI only
     command = <<EOF
+yq w -i ${path.module}/pim/Chart.yaml version ${var.pim_version}
+yq w -i ${path.module}/pim/Chart.yaml appVersion ${var.pim_version}
 helm upgrade --wait --install --force --timeout 1500 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
 EOF
   }

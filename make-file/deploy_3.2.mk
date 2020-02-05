@@ -3,8 +3,8 @@ INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
 PFID ?= srnt-$(INSTANCE_NAME)
 
-PHONY: create-tf-files-for-pim3
-create-tf-files-for-pim3:
+PHONY: create-main-tf-for-pim3
+create-main-tf-for-pim3:
 	mkdir -p ~/3.2/
 	@echo "terraform {" >> ~/3.2/main.tf
 	@echo "backend \"gcs\" {" >> ~/3.2/main.tf
@@ -34,7 +34,7 @@ create-pimyaml-for-pim3:
 	cat ~/project/deployments/config/catalog-3.2.yaml >> ~/3.2/pim.yaml
 
 .PHONY: deploy-pim3
-deploy-pim3: create-tf-files-for-pim3 terraform-init-for-pim3 create-pimyaml-for-pim3 terraform-apply-for-pim3 helm-deploy-for-pim3
+deploy-pim3: create-main-tf-for-pim3 terraform-init-for-pim3 create-pimyaml-for-pim3 terraform-apply-for-pim3 helm-deploy-for-pim3
 
 .PHONY: terraform-init-for-pim3
 terraform-init-for-pim3:
