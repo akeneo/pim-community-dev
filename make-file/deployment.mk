@@ -43,7 +43,6 @@ get-kubeconfig:
 .PHONY: helm-prepare
 helm-prepare:
 	helm init --client-only
-	helm plugin install https://github.com/hayorov/helm-gcs --version 0.2.2 || true
 	helm repo add $(HELM_REPO_PROD) gs://$(HELM_REPO_PROD)/
 	helm repo update
 
@@ -141,4 +140,3 @@ release:
 	git tag -a ${NEW_IMAGE_TAG} -m "Tagging SaaS version ${NEW_IMAGE_TAG}"
 	git push origin ${NEW_IMAGE_TAG}
 	git push origin master
-

@@ -9,6 +9,10 @@ provider "google" {
   version = "~> 2.14.0"
 }
 
+provider "helm" {
+  version = "0.10.4"
+}
+
 locals {
   pfid                = "srnt-${var.instance_name}"
   mailgun_login_email = "${data.template_file.mailgun_login.rendered}@${var.mailgun_domain}"

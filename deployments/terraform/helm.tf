@@ -56,7 +56,6 @@ resource "null_resource" "helm_release_pim" {
   depends_on   = ["null_resource.helm_dependencies_update","local_file.helm_pim_config"]
   provisioner "local-exec" {
     interpreter = ["/usr/bin/env", "bash", "-c"]
-    #FIXME: For the moment, chart definition is outside from the module - Dev & CI only
     command = <<EOF
 yq w -i ${path.module}/pim/Chart.yaml version ${var.pim_version}
 yq w -i ${path.module}/pim/Chart.yaml appVersion ${var.pim_version}
@@ -64,4 +63,3 @@ helm upgrade --wait --install --force --timeout 1500 ${local.pfid} --namespace $
 EOF
   }
 }
-
