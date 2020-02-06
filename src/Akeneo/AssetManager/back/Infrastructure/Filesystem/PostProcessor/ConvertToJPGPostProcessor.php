@@ -31,7 +31,12 @@ class ConvertToJPGPostProcessor implements PostProcessorInterface
         Assert::keyExists($options, 'quality');
 
         $image = new \Imagick();
-        $image->readImageBlob($binary->getContent());
+        try {
+            $image->readImageBlob($binary->getContent());
+        } catch (\ImagickException $e) {
+            return $binary;
+        }
+
         $image->setImageCompressionQuality($options['quality']);
         $isSuccess = $image->setImageFormat('jpeg');
 
