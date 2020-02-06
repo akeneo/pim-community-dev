@@ -66,20 +66,22 @@ class OptimizeOperationApplier implements OperationApplier
         );
         $this->filesystem->dumpFile($file->getRealPath(), $computedImage->getContent());
 
-        return $this->updateFileExtension($file, $computedImage);
+        if ($computedImage->getMimeType() === ConvertToJPGPostProcessor::MIME_TYPE && $file->getExtension() !== 'jpg') {
+            return $this->computeFileWithNewJPGExtension($file);
+        }
+
+        return $file;
     }
 
-    private function updateFileExtension(File $file, BinaryInterface $binary): File
+    private function computeFileWithNewJPGExtension(File $file): File
     {
-        if ($binary->getMimeType() === ConvertToJPGPostProcessor::MIME_TYPE && $file->getExtension() !== 'jpg') {
-            $extensionPosition = strrpos($file->getRealPath(), $file->getExtension());
+        $extensionPosition = strrpos($file->getRealPath(), $file->getExtension());
 
-            if($extensionPosition !== false) {
-                $newPath = substr_replace($file->getRealPath(), 'jpg', $extensionPosition, strlen($file->getExtension()));
-                $this->filesystem->rename($file->getRealPath(), $newPath);
+        if ($extensionPosition !== false) {
+            $newPath = substr_replace($file->getRealPath(), 'jpg', $extensionPosition, strlen($file->getExtension()));
+            $this->filesystem->rename($file->getRealPath(), $newPath);
 
-                return new File($newPath);
-            }
+            return new File($newPath);
         }
 
         return $file;
