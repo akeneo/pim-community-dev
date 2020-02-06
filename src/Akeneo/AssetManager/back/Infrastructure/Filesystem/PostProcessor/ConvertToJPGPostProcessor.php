@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Filesystem\PostProcessor;
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Filter\PostProcessor\PostProcessorInterface;
 use Liip\ImagineBundle\Model\Binary;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -27,15 +28,16 @@ class ConvertToJPGPostProcessor implements PostProcessorInterface
 
     public function process(BinaryInterface $binary, array $options = []): BinaryInterface
     {
+        Assert::keyExists($options, 'quality');
+
         $image = new \Imagick();
         $image->readImageBlob($binary->getContent());
         $image->setImageCompressionQuality($options['quality']);
         $isSuccess = $image->setImageFormat('jpeg');
 
-        if ($isSuccess) {
-            return new Binary($image->__toString(), static::MIME_TYPE);
-        }
-
-        return $binary;
+        return $isSuccess
+            ? new Binary($image->__toString(), static::MIME_TYPE)
+            : $binary
+            ;
     }
 }

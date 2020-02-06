@@ -44,7 +44,7 @@ class OptimizeOperationSpec extends ObjectBehavior
         $this::getType()->shouldBe('optimize');
     }
 
-    function it_returns_width_and_height()
+    function it_returns_quality()
     {
         $this->getQuality()->shouldBe(50);
     }
