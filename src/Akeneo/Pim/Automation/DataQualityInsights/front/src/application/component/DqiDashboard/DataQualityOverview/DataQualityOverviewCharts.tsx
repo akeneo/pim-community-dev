@@ -3,9 +3,9 @@ import {useFetchDqiDashboardData} from "../../../../infrastructure/hooks";
 import AxisChart from "./AxisChart";
 import {DataQualityOverviewChartHeader} from "../index";
 import {formatBackendRanksToVictoryFormat} from "../../../helper/Dashboard/FormatBackendRanksToVictoryFormat";
+import {dailyCallback, monthlyCallback, weeklyCallback} from "../../../helper/Dashboard/FormatDateWithUserLocale";
 
 const __ = require('oro/translator');
-const UserContext = require('pim/user-context');
 
 interface DataQualityOverviewChartProps {
   catalogLocale: string;
@@ -63,32 +63,6 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, timePeriod, f
       </>
     )
   }
-
-  const weeklyCallback = (date: string) => {
-    const uiLocale = UserContext.get('uiLocale');
-
-    const endDate = new Date(date);
-    const startDate = new Date(date);
-    startDate.setDate(startDate.getDate() - 6);
-
-    return new Intl.DateTimeFormat(uiLocale.replace('_', '-')).format(startDate) + ' - ' + new Intl.DateTimeFormat(uiLocale.replace('_', '-')).format(endDate);
-  };
-
-  const dailyCallback = (date: string) => {
-    const uiLocale = UserContext.get('uiLocale');
-    return new Intl.DateTimeFormat(
-      uiLocale.replace('_', '-'),
-      {weekday: "long", month: "long", day: "numeric"}
-    ).format(new Date(date));
-  };
-
-  const monthlyCallback = (date: string) => {
-    const uiLocale = UserContext.get('uiLocale');
-    return new Intl.DateTimeFormat(
-      uiLocale.replace('_', '-'),
-      {month: "long", year: "numeric"}
-    ).format(new Date(date));
-  };
 
   return (
     <>
