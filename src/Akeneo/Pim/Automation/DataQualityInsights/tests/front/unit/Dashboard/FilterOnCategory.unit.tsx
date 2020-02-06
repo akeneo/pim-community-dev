@@ -1,17 +1,17 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render, waitForElement} from '@testing-library/react';
-import fetchCategoryTrees from "../../../../src/infrastructure/fetcher/fetchCategoryTrees";
-import fetchCategoryChildren from "../../../../src/infrastructure/fetcher/fetchCategoryChildren";
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from "../../../../src/application/listener";
+import fetchCategoryTrees from "../../../../front/src/infrastructure/fetcher/fetchCategoryTrees";
+import fetchCategoryChildren from "../../../../front/src/infrastructure/fetcher/fetchCategoryChildren";
+import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from "../../../../front/src/application/listener";
 import CategoryFilter
-  from "../../../../src/application/component/DqiDashboard/DataQualityOverview/Header/CategoryFilter";
+  from "../../../../front/src/application/component/DqiDashboard/DataQualityOverview/Header/CategoryFilter";
 
 const UserContext = require('pim/user-context');
 
 jest.mock('pim/user-context');
-jest.mock("../../../../src/infrastructure/fetcher/fetchCategoryTrees");
-jest.mock("../../../../src/infrastructure/fetcher/fetchCategoryChildren");
+jest.mock("../../../../front/src/infrastructure/fetcher/fetchCategoryTrees");
+jest.mock("../../../../front/src/infrastructure/fetcher/fetchCategoryChildren");
 
 beforeEach(() =>  {
   jest.resetModules();

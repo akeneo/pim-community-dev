@@ -1,5 +1,5 @@
 const baseConfig = require(
-  `${__dirname}/../../../../../../../../../tests/front/unit/jest/unit.jest.js`
+  `${__dirname}/../../../../../../../../tests/front/unit/jest/unit.jest.js`
 );
 
 const unitConfig = {
@@ -8,7 +8,7 @@ const unitConfig = {
     'src/Akeneo/Pim/Automation/DataQualityInsights'
   ],
   verbose: true,
-  testRegex: 'src/Akeneo/Pim/Automation/DataQualityInsights/front/tests/front/unit(.*)(unit).(jsx?|tsx?)$',
+  testRegex: 'src/Akeneo/Pim/Automation/DataQualityInsights/tests/front/unit(.*)(unit).(jsx?|tsx?)$',
 };
 
 module.exports = Object.assign({}, baseConfig, unitConfig);

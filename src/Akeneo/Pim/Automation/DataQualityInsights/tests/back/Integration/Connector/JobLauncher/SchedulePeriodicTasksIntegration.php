@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\back\tests\Integration\Connector\JobLauncher;
+namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Connector\JobLauncher;
 
 use Akeneo\Test\Integration\TestCase;
 
@@ -42,7 +42,7 @@ final class SchedulePeriodicTasksIntegration extends TestCase
     private function assertCountScheduledPeriodicTasks(int $expectedCount): void
     {
         $query = <<<SQL
-SELECT COUNT(*) 
+SELECT COUNT(*)
 FROM akeneo_batch_job_execution_queue AS queue
 JOIN akeneo_batch_job_execution AS job_execution ON job_execution.id = queue.job_execution_id
 JOIN akeneo_batch_job_instance AS job_instance ON job_instance.id = job_execution.job_instance_id
