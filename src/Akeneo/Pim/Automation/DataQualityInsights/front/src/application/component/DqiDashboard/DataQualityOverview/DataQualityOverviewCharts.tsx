@@ -2,55 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {useFetchDqiDashboardData} from "../../../../infrastructure/hooks";
 import AxisChart from "./AxisChart";
 import {DataQualityOverviewChartHeader} from "../index";
+import {formatBackendRanksToVictoryFormat} from "../../../helper/Dashboard/FormatBackendRanksToVictoryFormat";
 
 const __ = require('oro/translator');
 const UserContext = require('pim/user-context');
-
-type Ranks = {
-  [rank: string]: number;
-}
-
-type AxisRates = {
-  [date: string]: Ranks;
-};
-
-type Dataset = {
-  [axisName: string]: AxisRates;
-};
-
-const transformData = (dataset: Dataset, axisName: string): any => {
-  if (Object.keys(dataset).length === 0) {
-    return {};
-  }
-
-  let ranks: {[rank: string]: any[]} = {
-    'rank_5': [],
-    'rank_4': [],
-    'rank_3': [],
-    'rank_2': [],
-    'rank_1': [],
-    'rank_6': [],
-  };
-
-  Object.entries(dataset[axisName]).map(([date, ranksByDay]) => {
-
-    if (Object.keys(ranksByDay).length === 0) {
-      ranks['rank_5'].push({x: date, y: 0});
-      ranks['rank_4'].push({x: date, y: 0});
-      ranks['rank_3'].push({x: date, y: 0});
-      ranks['rank_2'].push({x: date, y: 0});
-      ranks['rank_1'].push({x: date, y: 0});
-      ranks['rank_6'].push({x: date, y: 100});
-    } else {
-      Object.entries(ranksByDay).map(([rank, distribution]) => {
-        ranks[rank].push({x: date, y: distribution});
-      });
-      ranks['rank_6'].push({x: date, y: 0});
-    }
-  });
-
-  return ranks;
-};
 
 interface DataQualityOverviewChartProps {
   catalogLocale: string;
@@ -73,9 +28,9 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, timePeriod, f
       return;
     }
     // @ts-ignore
-    let enrichmentChart = getChart(transformData(dataset, 'enrichment'));
+    let enrichmentChart = getChart(formatBackendRanksToVictoryFormat(dataset, 'enrichment'));
     // @ts-ignore
-    let consistencyChart = getChart(transformData(dataset, 'consistency'));
+    let consistencyChart = getChart(formatBackendRanksToVictoryFormat(dataset, 'consistency'));
     setEnrichmentChart(enrichmentChart);
     setConsistencyChart(consistencyChart);
     setIsLoading(false);
