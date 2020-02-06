@@ -4,6 +4,8 @@
 
 - PIM-8952: Freeze the first line and column of the attribute options tab
 
+# 3.0.66 (2020-02-06)
+
 # 3.0.65 (2020-02-03)
 
 ## Bug fixes
