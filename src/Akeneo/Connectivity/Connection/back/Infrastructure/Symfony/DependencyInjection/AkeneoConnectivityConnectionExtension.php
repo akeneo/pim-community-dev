@@ -21,6 +21,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('install.yml');
         $loader->load('services.yml');
         $loader->load('validators.yml');
+        $loader->load('wrong_credentials_connection.yml');
 
         $loader->load('cli.yml');
         $loader->load('handlers.yml');

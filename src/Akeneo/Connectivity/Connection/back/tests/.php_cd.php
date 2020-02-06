@@ -68,6 +68,7 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+            'Akeneo\Connectivity\Connection\Infrastructure\WrongCredentialsConnection\Install',
             'Doctrine\DBAL\Driver\Connection',
             'Symfony\Component',
         ]
