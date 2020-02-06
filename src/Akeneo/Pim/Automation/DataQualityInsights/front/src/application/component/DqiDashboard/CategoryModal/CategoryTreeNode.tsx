@@ -23,9 +23,11 @@ const CategoryTreeNode: FunctionComponent<CategoryTreeNodeProps> = ({categoryId,
 
   categoryLabel = categoryLabel ? categoryLabel : '[' + categoryCode + ']';
 
+  const className = `jstree-root jstree-last ${hasChildren ? (isOpen ? 'jstree-open' : 'jstree-closed') : 'jstree-leaf'} ${selectedCategories.includes(categoryCode) ? 'jstree-checked' : 'jstree-unchecked'}`;
+
   return (
-    <li className={`jstree-root jstree-last ${hasChildren ? (isOpen ? 'jstree-open' : 'jstree-closed') : 'jstree-leaf'} ${selectedCategories.includes(categoryCode) ? 'jstree-checked' : 'jstree-unchecked'}`}>
-      <ins className="jstree-icon" onClick={() => setIsOpen(!isOpen)}>
+    <li className={className} data-testid={`dqiChildNode_${categoryId}`}>
+      <ins className="jstree-icon" onClick={() => setIsOpen(!isOpen)} data-testid={`dqiChildOpeningIcon_${categoryId}`}>
         &nbsp;
       </ins>
       <a href="#" onClick={(event) => event.preventDefault()}>

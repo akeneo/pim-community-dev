@@ -7,7 +7,6 @@ import fetchProduct from "./fetchProduct";
 import fetchTextAnalysis from "./fetchTextAnalysis";
 import fetchTitleSuggestion from "./fetchTitleSuggestion";
 
-
 export {
   fetchDqiDashboardData,
   fetchProductDataQualityEvaluation,

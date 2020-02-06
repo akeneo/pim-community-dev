@@ -81,7 +81,7 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
   return (
 
     <div className="AknFilterBox-filterContainer">
-      <div className="AknFilterBox-filter" onClick={() => setIsFilterDisplayed(true)}>
+      <div className="AknFilterBox-filter" onClick={() => setIsFilterDisplayed(true)} data-testid={'dqiFamilyFilter'}>
         <span className="AknFilterBox-filterLabel">{__('pim_enrich.entity.family.uppercase_label')}</span>
         <button type="button" className="AknFilterBox-filterCriteria ui-multiselect">
           <span> {currentFamilyLabel ? currentFamilyLabel : "[" + familyCode + "]"}</span>
@@ -110,7 +110,7 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
             {filteredFamilies && Object.entries(filteredFamilies).map(([identifier, family]:[string, Family]) => {
               return (
                 <li key={identifier}>
-                  <label onClick={() => handleClickFamily(family.code)} className={family.code === familyCode ? 'ui-state-active' : ''}>
+                  <label onClick={() => handleClickFamily(family.code)} className={family.code === familyCode ? 'ui-state-active' : ''} data-testid={`dqiFamily_${family.code}`}>
                     <FamilyLabel>{family.labels[uiLocale] ? family.labels[uiLocale] : "[" + family.code + "]"}</FamilyLabel>
                   </label>
                 </li>
