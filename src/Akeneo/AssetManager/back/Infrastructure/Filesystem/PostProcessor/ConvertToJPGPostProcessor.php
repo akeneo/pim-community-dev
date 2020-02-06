@@ -36,7 +36,7 @@ class ConvertToJPGPostProcessor implements PostProcessorInterface
         $isSuccess = $image->setImageFormat('jpeg');
 
         return $isSuccess
-            ? new Binary($image->__toString(), static::MIME_TYPE)
+            ? new Binary($image->__toString(), static::MIME_TYPE, 'jpg')
             : $binary
             ;
     }
