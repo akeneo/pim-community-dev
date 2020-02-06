@@ -2,7 +2,7 @@ import React from 'react';
 
 const __ = require('oro/translator');
 
-const DataQualityOverviewHelper = React.memo(() => {
+const DashboardHelper = React.memo(() => {
 
   let helper = <></>;
   const showHelper = localStorage.getItem('data-quality-insights:dashboard:show-helper');
@@ -29,4 +29,4 @@ const DataQualityOverviewHelper = React.memo(() => {
   return (<>{helper}</>);
 });
 
-export default DataQualityOverviewHelper;
+export default DashboardHelper;

@@ -6,8 +6,8 @@ import {
   VictoryStack,
   VictoryTooltip
 } from "victory";
-import {NO_RATE_COLOR, RANK_1_COLOR, RANK_2_COLOR, RANK_3_COLOR, RANK_4_COLOR, RANK_5_COLOR} from "../../../../domain";
-import {useGetDashboardChartScalingSizeRatio} from "../../../../infrastructure/hooks";
+import {NO_RATE_COLOR, RANK_1_COLOR, RANK_2_COLOR, RANK_3_COLOR, RANK_4_COLOR, RANK_5_COLOR} from "../../../../../domain";
+import {useGetDashboardChartScalingSizeRatio} from "../../../../../infrastructure/hooks";
 import Tooltip from "./Tooltip";
 
 const INITIAL_CHART_WIDTH = 1000;

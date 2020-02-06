@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useFetchDqiDashboardData} from "../../../../infrastructure/hooks";
-import AxisChart from "./AxisChart";
-import {DataQualityOverviewChartHeader} from "../index";
+import AxisChart from "./Charts/AxisChart";
 import {formatBackendRanksToVictoryFormat} from "../../../helper/Dashboard/FormatBackendRanksToVictoryFormat";
 import {dailyCallback, monthlyCallback, weeklyCallback} from "../../../helper/Dashboard/FormatDateWithUserLocale";
+import Filters from "./Filters";
+import Header from "./Charts/Header";
 
 const __ = require('oro/translator');
 
@@ -15,7 +16,7 @@ interface DataQualityOverviewChartProps {
   categoryCode: string | null;
 }
 
-const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode}: DataQualityOverviewChartProps) => {
+const Overview = ({catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode}: DataQualityOverviewChartProps) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [enrichmentChart, setEnrichmentChart] = useState();
@@ -53,6 +54,7 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, timePeriod, f
   if (dataset !== null && Object.entries(dataset).length === 0) {
     return (
       <>
+        <Filters timePeriod={timePeriod} familyCode={familyCode} categoryCode={categoryCode}/>
         <div className="AknAssetPreview-imageContainer">
           <img src={"bundles/pimui/images/illustrations/Project.svg"} alt="illustrations/Project.svg"/>
         </div>
@@ -66,13 +68,14 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, timePeriod, f
 
   return (
     <>
-      <DataQualityOverviewChartHeader axisName={__(`akeneo_data_quality_insights.product_evaluation.axis.enrichment.title`)} displayLegend={true}/>
+      <Filters timePeriod={timePeriod} familyCode={familyCode} categoryCode={categoryCode}/>
+      <Header axisName={__(`akeneo_data_quality_insights.product_evaluation.axis.enrichment.title`)} displayLegend={true}/>
       <div className='AknDataQualityInsights-chart'>
         {isLoading && <div className="AknLoadingMask"/>}
         {enrichmentChart}
       </div>
 
-      <DataQualityOverviewChartHeader axisName={__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)} displayLegend={false}/>
+      <Header axisName={__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)} displayLegend={false}/>
       <div className='AknDataQualityInsights-chart'>
         {isLoading && <div className="AknLoadingMask"/>}
         {consistencyChart}
@@ -81,4 +84,4 @@ const DataQualityOverviewCharts = ({catalogChannel, catalogLocale, timePeriod, f
   )
 };
 
-export default DataQualityOverviewCharts;
+export default Overview;
