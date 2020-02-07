@@ -16,11 +16,15 @@ export const useFetchConnectionsAuditData = (eventType: AuditEventType): Connect
     const route = useRoute('akeneo_connectivity_connection_rest_audit_source_connections_event');
 
     useEffect(() => {
+        let cancelled = false;
         fetchResult<ResultValue, never>(`${route}?event_type=${eventType}`).then(result => {
-            if (isOk(result)) {
+            if (isOk(result) && !cancelled) {
                 dispatch(connectionsAuditDataFetched(eventType, result.value));
             }
         });
+        return () => {
+            cancelled = true;
+        };
     }, [route, eventType, dispatch]);
 
     return state.events[eventType];

@@ -34,9 +34,13 @@ export const ListConnections = () => {
 
     const route = useRoute('akeneo_connectivity_connection_rest_list');
     useEffect(() => {
+        let cancelled = false;
         fetchResult<ResultValue, never>(route).then(
-            result => isOk(result) && dispatch(connectionsFetched(result.value))
+            result => isOk(result) && !cancelled && dispatch(connectionsFetched(result.value))
         );
+        return () => {
+            cancelled = true;
+        };
     }, [route, dispatch]);
 
     const handleCreate = () => history.push('/connections/create');
@@ -101,37 +105,43 @@ export const ListConnections = () => {
                 ) : (
                     <>
                         {sourceConnections && sourceConnections.length > 0 && (
-                            <ConnectionGrid
-                                connections={sourceConnections}
-                                title={
-                                    <Translate
-                                        id='akeneo_connectivity.connection.flow_type.data_source'
-                                        count={sourceConnections.length}
-                                    />
-                                }
-                            />
+                            <div data-testid='data_source'>
+                                <ConnectionGrid
+                                    connections={sourceConnections}
+                                    title={
+                                        <Translate
+                                            id='akeneo_connectivity.connection.flow_type.data_source'
+                                            count={sourceConnections.length}
+                                        />
+                                    }
+                                />
+                            </div>
                         )}
                         {destinationConnections && destinationConnections.length > 0 && (
-                            <ConnectionGrid
-                                connections={destinationConnections}
-                                title={
-                                    <Translate
-                                        id='akeneo_connectivity.connection.flow_type.data_destination'
-                                        count={destinationConnections.length}
-                                    />
-                                }
-                            />
+                            <div data-testid='data_destination'>
+                                <ConnectionGrid
+                                    connections={destinationConnections}
+                                    title={
+                                        <Translate
+                                            id='akeneo_connectivity.connection.flow_type.data_destination'
+                                            count={destinationConnections.length}
+                                        />
+                                    }
+                                />
+                            </div>
                         )}
                         {otherConnections && otherConnections.length > 0 && (
-                            <ConnectionGrid
-                                connections={otherConnections}
-                                title={
-                                    <Translate
-                                        id='akeneo_connectivity.connection.flow_type.other'
-                                        count={otherConnections.length}
-                                    />
-                                }
-                            />
+                            <div data-testid='data_other'>
+                                <ConnectionGrid
+                                    connections={otherConnections}
+                                    title={
+                                        <Translate
+                                            id='akeneo_connectivity.connection.flow_type.other'
+                                            count={otherConnections.length}
+                                        />
+                                    }
+                                />
+                            </div>
                         )}
                     </>
                 )}
