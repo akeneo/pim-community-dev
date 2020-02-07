@@ -9,6 +9,7 @@ use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\InternalApiTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class DownloadProductPdfEndToEnd extends InternalApiTestCase
@@ -39,10 +40,13 @@ class DownloadProductPdfEndToEnd extends InternalApiTestCase
             ]
         ]);
 
-        $this->client->request(
-            'GET',
-            "/enrich/product/{$product->getId()}/download-pdf?dataLocale=en_US&dataScope=ecommerce"
-        );
+        $url = $this->getRouter()->generate('pim_pdf_generator_download_product_pdf', [
+            'id' => $product->getId(),
+            'dataLocale' => 'en_US',
+            'dataScope' => 'ecommerce'
+        ]);
+
+        $this->client->request('GET', $url);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -50,6 +54,11 @@ class DownloadProductPdfEndToEnd extends InternalApiTestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function getRouter(): RouterInterface
+    {
+        return self::$container->get('router');
     }
 
     private function getAdminUser(): UserInterface
