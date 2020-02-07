@@ -1,4 +1,4 @@
-# 4.0
+# 20200211
 
 Get the EE tag to deploy :
 `git fetch origin &> /dev/null && git tag --list | grep -E '^v?[0-9]+$' | sort -r | head -n 1`
