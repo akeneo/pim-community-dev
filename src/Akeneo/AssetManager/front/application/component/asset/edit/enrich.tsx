@@ -14,6 +14,7 @@ import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoassetmanager/tools/translator';
 import LinkedProducts from 'akeneoassetmanager/application/component/asset/edit/linked-products';
 import {Subsection, SubsectionHeader} from 'akeneoassetmanager/application/component/app/subsection';
+import {MainMediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/main-media-preview';
 
 const securityContext = require('pim/security-context');
 
@@ -104,6 +105,7 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
         </LeftColumn>
         <Separator />
         <RightColumn>
+          <MainMediaPreview asset={asset} context={this.props.context} />
           <LinkedProducts />
         </RightColumn>
       </Container>

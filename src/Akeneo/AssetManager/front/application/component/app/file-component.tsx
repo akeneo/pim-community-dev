@@ -144,12 +144,6 @@ class FileComponent extends React.Component<
       true,
       attribute.code
     );
-    const previewModel = {
-      data: image,
-      channel: context.channel,
-      locale: context.locale,
-      attribute: attribute.identifier,
-    };
 
     // If the image is in read only mode, we return a simple version of the component
     if (undefined === onImageChange) {
@@ -207,7 +201,7 @@ class FileComponent extends React.Component<
                 {__(`pim_asset_manager.app.image.${wide ? 'wide' : 'small'}.download`)}
               </a>
             )}
-            <FullscreenPreview anchor={Anchor} label={label} previewModel={previewModel} attribute={attribute}>
+            <FullscreenPreview anchor={Anchor} label={label} data={image} attribute={attribute}>
               <Fullscreen
                 title={__('pim_asset_manager.asset.button.fullscreen')}
                 color={akeneoTheme.color.white}

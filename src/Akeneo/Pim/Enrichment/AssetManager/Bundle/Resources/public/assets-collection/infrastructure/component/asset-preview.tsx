@@ -19,6 +19,7 @@ import ListAsset, {
   getAssetCodes,
   getPreviousAssetCode,
   getNextAssetCode,
+  getListAssetMediaData,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
@@ -26,7 +27,15 @@ import {useAssetFamily, AssetFamilyDataProvider} from 'akeneoassetmanager/applic
 import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import {getAssetEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
-import {getPreviewModelFromCollection} from 'akeneoassetmanager/domain/model/asset/value';
+import {Border, PreviewContainer} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
+import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
+import {
+  Action,
+  ActionLabel,
+  Actions,
+  DownloadAction,
+  CopyUrlAction,
+} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media-actions';
 
 const Container = styled.div`
   position: relative;
@@ -53,7 +62,7 @@ const ArrowButton = styled(TransparentButton)`
   margin: 0 10px;
 `;
 
-const StyledMediaPreview = styled(MediaPreview)`
+const StyledPreviewContainer = styled(PreviewContainer)`
   max-height: calc(100vh - 350px);
 `;
 
@@ -67,6 +76,13 @@ type AssetPreviewProps = {
   onClose: () => void;
   dataProvider: AssetFamilyDataProvider;
 };
+
+const EditAction = ({url, label}: {url: string; label: string}) => (
+  <Action title={label} href={url} target="_blank">
+    <Edit />
+    <ActionLabel title={label}>{label}</ActionLabel>
+  </Action>
+);
 
 export const AssetPreview = ({
   assetCollection,
@@ -94,7 +110,8 @@ export const AssetPreview = ({
 
   const selectedAssetLabel = getAssetLabel(selectedAsset, context.locale);
   const editUrl = getAssetEditUrl(selectedAsset);
-  const previewModel = getPreviewModelFromCollection(selectedAsset.image, context.channel, context.locale);
+  const data = getListAssetMediaData(selectedAsset, context.channel, context.locale);
+  const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily);
 
   return (
     <Modal data-role="asset-preview-modal">
@@ -110,12 +127,24 @@ export const AssetPreview = ({
             </SubTitle>
             <Title>{selectedAssetLabel}</Title>
           </Header>
-          <StyledMediaPreview
-            previewModel={previewModel}
-            editUrl={editUrl}
-            label={selectedAssetLabel}
-            attribute={getAttributeAsMainMedia(assetFamily)}
-          />
+          <StyledPreviewContainer>
+            <Border>
+              <MediaPreview data={data} label={selectedAssetLabel} attribute={attributeAsMainMedia} />
+              <Actions>
+                <DownloadAction
+                  data={data}
+                  attribute={attributeAsMainMedia}
+                  label={__('pim_asset_manager.asset_preview.download')}
+                />
+                <CopyUrlAction
+                  data={data}
+                  attribute={attributeAsMainMedia}
+                  label={__('pim_asset_manager.asset_preview.copy_url')}
+                />
+                <EditAction url={editUrl} label={__('pim_asset_manager.asset_preview.edit_asset')} />
+              </Actions>
+            </Border>
+          </StyledPreviewContainer>
           <Carousel
             context={context}
             selectedAssetCode={selectedAsset.code}

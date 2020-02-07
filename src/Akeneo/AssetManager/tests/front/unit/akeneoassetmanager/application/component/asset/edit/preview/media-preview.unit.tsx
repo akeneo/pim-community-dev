@@ -34,94 +34,83 @@ const mediaFileData = {
   filePath: 'f/e/wq/fefwf.png',
 };
 const mediaLinkData = 'pim';
-const mediaFilePreviewModel = {
-  data: mediaFileData,
-  channel: null,
-  locale: null,
-  attribute: mediaFileAttribute.identifier,
-};
-const mediaLinkPreviewModel = {
-  data: mediaLinkData,
-  channel: null,
-  locale: null,
-  attribute: mediaLinkImageAttribute.identifier,
-};
+const otherData = {some: 'thing'};
 
-test('It renders a empty media preview', () => {
-  const emptyPreviewModel = {...mediaFilePreviewModel, data: null};
-  const {getByText, container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <MediaPreview previewModel={emptyPreviewModel} label="" attribute={mediaFileAttribute} />
-    </ThemeProvider>
-  );
-  expect(container.querySelector('[data-role="empty-preview"]')).toBeInTheDocument();
-  expect(getByText('pim_asset_manager.asset_preview.empty_main_media')).toBeInTheDocument();
-});
+describe('Tests media preview component', () => {
+  test('It renders a empty media preview', () => {
+    const {getByText, container} = render(
+      <ThemeProvider theme={akeneoTheme}>
+        <MediaPreview data={null} label="" attribute={mediaFileAttribute} />
+      </ThemeProvider>
+    );
 
-test('It renders a media file preview with invalid media', () => {
-  const mockedConsole = jest.spyOn(console, 'error').mockImplementation(() => {});
-  const otherPreviewModel = {...mediaFilePreviewModel, data: {}};
-  const {getByText} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <MediaPreview previewModel={otherPreviewModel} label="" attribute={mediaFileAttribute} />
-    </ThemeProvider>
-  );
-  expect(getByText('The media file data is not valid')).toBeInTheDocument();
-  mockedConsole.mockRestore();
-});
+    expect(container.querySelector('[data-role="empty-preview"]')).toBeInTheDocument();
+    expect(getByText('pim_asset_manager.asset_preview.empty_main_media')).toBeInTheDocument();
+  });
 
-test('It renders a media file preview', () => {
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <MediaPreview previewModel={mediaFilePreviewModel} label="" editUrl="pim.com" attribute={mediaFileAttribute} />
-    </ThemeProvider>
-  );
-  expect(container.querySelector('[data-role="media-file-preview"]')).toBeInTheDocument();
-});
+  test('It renders a media file preview', () => {
+    const {container} = render(
+      <ThemeProvider theme={akeneoTheme}>
+        <MediaPreview data={mediaFileData} label="" attribute={mediaFileAttribute} />
+      </ThemeProvider>
+    );
 
-test('It renders a media link preview', () => {
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <MediaPreview
-        previewModel={mediaLinkPreviewModel}
-        label=""
-        editUrl="pim.com"
-        attribute={mediaLinkImageAttribute}
-      />
-    </ThemeProvider>
-  );
-  expect(container.querySelector('[data-role="media-link-preview"]')).toBeInTheDocument();
-});
+    expect(container.querySelector('[data-role="media-data-preview"]')).toBeInTheDocument();
+  });
 
-test('It tells when the provided media link media type is unknown', () => {
-  const mockedConsole = jest.spyOn(console, 'error').mockImplementation(() => {});
-  const {getByText} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <MediaPreview
-        previewModel={mediaLinkPreviewModel}
-        label=""
-        editUrl="pim.com"
-        attribute={mediaLinkUnknownAttribute}
-      />
-    </ThemeProvider>
-  );
-  expect(getByText('The preview type UNKNOWN is not supported')).toBeInTheDocument();
-  mockedConsole.mockRestore();
-});
+  test('It renders a media link image preview', () => {
+    const {container} = render(
+      <ThemeProvider theme={akeneoTheme}>
+        <MediaPreview data={mediaLinkData} label="" attribute={mediaLinkImageAttribute} />
+      </ThemeProvider>
+    );
 
-test('It tells when the provided media link data is invalid', () => {
-  const mockedConsole = jest.spyOn(console, 'error').mockImplementation(() => {});
-  const invalidPreviewModel = {...mediaLinkPreviewModel, data: {}};
-  const {getByText} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <MediaPreview
-        previewModel={invalidPreviewModel}
-        label=""
-        editUrl="pim.com"
-        attribute={mediaLinkUnknownAttribute}
-      />
-    </ThemeProvider>
-  );
-  expect(getByText('The media link data is not valid')).toBeInTheDocument();
-  mockedConsole.mockRestore();
+    expect(container.querySelector('[data-role="media-data-preview"]')).toBeInTheDocument();
+  });
+
+  test('It renders a media link youtube preview', () => {
+    const {container} = render(
+      <ThemeProvider theme={akeneoTheme}>
+        <MediaPreview data={mediaLinkData} label="" attribute={mediaLinkYouTubeAttribute} />
+      </ThemeProvider>
+    );
+
+    expect(container.querySelector('[data-role="youtube-preview"]')).toBeInTheDocument();
+  });
+
+  test('It tells when the provided media link media type is unknown', () => {
+    const mockedConsole = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const {getByText} = render(
+      <ThemeProvider theme={akeneoTheme}>
+        <MediaPreview data={mediaLinkData} label="" attribute={mediaLinkUnknownAttribute} />
+      </ThemeProvider>
+    );
+
+    expect(getByText('The preview type UNKNOWN is not supported')).toBeInTheDocument();
+    mockedConsole.mockRestore();
+  });
+
+  test('It tells when the provided media link data is invalid', () => {
+    const mockedConsole = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const {getByText} = render(
+      <ThemeProvider theme={akeneoTheme}>
+        <MediaPreview data={otherData} label="" attribute={mediaLinkImageAttribute} />
+      </ThemeProvider>
+    );
+
+    expect(getByText('The media link data is not valid')).toBeInTheDocument();
+    mockedConsole.mockRestore();
+  });
+
+  test('It tells when the provided media file data is invalid', () => {
+    const mockedConsole = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const {getByText} = render(
+      <ThemeProvider theme={akeneoTheme}>
+        <MediaPreview data={otherData} label="" attribute={mediaFileAttribute} />
+      </ThemeProvider>
+    );
+
+    expect(getByText('The media file data is not valid')).toBeInTheDocument();
+    mockedConsole.mockRestore();
+  });
 });

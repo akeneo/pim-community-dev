@@ -279,6 +279,7 @@ pim_asset_manager:
       label: Label
       edit_subsection: Edit asset
       product_subsection: Products Link
+      main_media_preview: Asset preview
     title: Assets
     create:
       header:

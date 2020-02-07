@@ -2,20 +2,15 @@ import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/
 import LabelCollection from 'akeneoassetmanager/domain/model/label-collection';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import AssetIdentifier from 'akeneoassetmanager/domain/model/asset/identifier';
-import ListValue from 'akeneoassetmanager/domain/model/asset/list-value';
+import ListValue, {ListValueCollection, getListValue} from 'akeneoassetmanager/domain/model/asset/list-value';
 import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {MediaPreview, MediaPreviewType, emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
-import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
+import {getMediaData, MediaData} from 'akeneoassetmanager/domain/model/asset/data';
 import {getLabel} from 'pimui/js/i18n';
 import {assetCodesAreEqual} from 'akeneoassetmanager/domain/model/asset-family/code';
-import {
-  PreviewCollection,
-  getPreviewModelFromCollection,
-  isPreviewModelUndefined,
-  isPreviewModelNull,
-} from 'akeneoassetmanager/domain/model/asset/value';
+import {isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
 
 export const ASSET_COLLECTION_LIMIT = 50;
 
@@ -44,34 +39,34 @@ type ListAsset = {
   identifier: AssetIdentifier;
   code: AssetCode;
   labels: LabelCollection;
-  image: PreviewCollection;
+  image: ListValueCollection;
   assetFamilyIdentifier: AssetFamilyIdentifier;
   values: ValueCollection;
   completeness: NormalizedCompleteness;
 };
 
+export const getListAssetMediaData = (asset: ListAsset, channel: ChannelCode, locale: LocaleCode): MediaData => {
+  const value = getListValue(asset.image, channel, locale);
+
+  return value ? (value.data as MediaData) : null;
+};
+
 export const getListAssetMainMediaThumbnail = (
   asset: ListAsset,
   channel: ChannelCode,
-  locale: LocaleCode
+  locale: LocaleCode,
+  previewType: MediaPreviewType = MediaPreviewType.ThumbnailSmall
 ): MediaPreview => {
-  const previewModel = getPreviewModelFromCollection(asset.image, channel, locale);
-  if (isPreviewModelUndefined(previewModel)) {
+  const listValue = getListValue(asset.image, channel, locale);
+  if (undefined === listValue || isValueEmpty(listValue)) {
     return emptyMediaPreview();
   }
-  const attributeIdentifier = previewModel.attribute;
 
   return {
-    type: MediaPreviewType.Thumbnail,
-    attributeIdentifier,
-    data: getMediaData(previewModel.data),
+    type: previewType,
+    attributeIdentifier: listValue.attribute,
+    data: getMediaData(listValue.data),
   };
-};
-
-export const isMainMediaEmpty = (asset: ListAsset, channel: ChannelCode, locale: LocaleCode) => {
-  const previewModel = getPreviewModelFromCollection(asset.image, channel, locale);
-
-  return isPreviewModelUndefined(previewModel) || isPreviewModelNull(previewModel.data);
 };
 
 export const assetHasCompleteness = (asset: ListAsset) => asset.completeness.required > 0;

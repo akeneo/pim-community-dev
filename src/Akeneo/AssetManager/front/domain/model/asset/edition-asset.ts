@@ -9,8 +9,8 @@ import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference'
 import {getLabel} from 'pimui/js/i18n';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
-import {MediaPreview, MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
+import {getMediaData, MediaData, isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
+import {MediaPreview, MediaPreviewType, emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import {getValuesForChannelAndLocale} from 'akeneoassetmanager/domain/model/asset/value';
 
 export type EditionValueCollection = EditionValue[];
@@ -45,18 +45,27 @@ export const getEditionAssetCompleteness = (
 export const getEditionAssetLabel = (editionAsset: EditionAsset, locale: LocaleCode): string =>
   getLabel(editionAsset.labels, locale, editionAsset.code);
 
+export const getEditionAssetMediaData = (asset: EditionAsset, channel: ChannelCode, locale: LocaleCode): MediaData => {
+  const value = getEditionValue(asset.values, asset.assetFamily.attributeAsMainMedia, channel, locale);
+
+  return value ? (value.data as MediaData) : null;
+};
+
 export const getEditionAssetMainMediaThumbnail = (
   asset: EditionAsset,
   channel: ChannelCode,
-  locale: LocaleCode
+  locale: LocaleCode,
+  previewType: MediaPreviewType = MediaPreviewType.ThumbnailSmall
 ): MediaPreview => {
-  const attributeIdentifier = asset.assetFamily.attributeAsMainMedia;
-  const mediaValue = getEditionValue(asset.values, attributeIdentifier, channel, locale);
+  const mediaData = getEditionAssetMediaData(asset, channel, locale);
+  if (isDataEmpty(mediaData)) {
+    return emptyMediaPreview();
+  }
 
   return {
-    type: MediaPreviewType.Thumbnail,
-    attributeIdentifier,
-    data: undefined !== mediaValue ? getMediaData(mediaValue.data) : '',
+    type: previewType,
+    attributeIdentifier: asset.assetFamily.attributeAsMainMedia,
+    data: getMediaData(mediaData),
   };
 };
 

@@ -2,30 +2,28 @@ import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import Key from 'akeneoassetmanager/tools/key';
-import {copyToClipboard, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import styled from 'styled-components';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import DownloadIcon from 'akeneoassetmanager/application/component/app/icon/download';
-import {Copy} from 'akeneoassetmanager/application/component/app/icon/copy';
 import {
   isMediaLinkData,
   mediaLinkDataFromString,
   areMediaLinkDataEqual,
   mediaLinkDataStringValue,
-  getMediaLinkUrl,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
 import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
-import {setValueData, isValueEmpty, getPreviewModelFromValue} from 'akeneoassetmanager/domain/model/asset/value';
-import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
+import {setValueData, isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
-import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import {Fullscreen} from 'akeneoassetmanager/application/component/app/icon/fullscreen';
-import {TransparentButton, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
-import {Link} from 'akeneoassetmanager/application/component/app/link';
+import {
+  Action,
+  DownloadAction,
+  CopyUrlAction,
+} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media-actions';
 
 const Container = styled.div`
   align-items: center;
@@ -35,7 +33,7 @@ const Container = styled.div`
   flex: 1;
   justify-content: center;
   max-width: 460px;
-  padding: 12px;
+  padding: 15px;
 `;
 
 const Thumbnail = styled.img`
@@ -43,31 +41,26 @@ const Thumbnail = styled.img`
   flex-shrink: 0;
   width: 40px;
   height: 40px;
-  margin-right: 10px;
+  margin-right: 15px;
   object-fit: cover;
 `;
 
-const StyledButtonContainer = styled(ButtonContainer)`
-  > :not(:first-child) {
-    margin-left: unset;
-  }
+const Actions = styled.div`
+  display: flex;
 
-  > ${Link}, > ${TransparentButton} {
-    display: flex;
-    margin-left: 12px;
+  > ${Action} {
+    margin-left: 15px;
   }
 `;
 
 const View = ({
   value,
-  channel,
   locale,
   onChange,
   onSubmit,
   canEditData,
 }: {
   value: EditionValue;
-  channel: ChannelReference;
   locale: LocaleReference;
   onChange: (value: EditionValue) => void;
   onSubmit: () => void;
@@ -88,7 +81,6 @@ const View = ({
     onChange(newValue);
   };
 
-  const mediaDownloadUrl = getMediaLinkUrl(value.data, value.attribute);
   const mediaPreviewUrl = getMediaPreviewUrl({
     type: MediaPreviewType.Thumbnail,
     attributeIdentifier: value.attribute.identifier,
@@ -101,7 +93,6 @@ const View = ({
     true,
     value.attribute.code
   );
-  const previewModel = getPreviewModelFromValue(value, channel, locale);
 
   return (
     <Container>
@@ -123,35 +114,17 @@ const View = ({
         readOnly={!canEditData}
       />
       {!isValueEmpty(value) && (
-        <StyledButtonContainer>
-          {MediaTypes.youtube !== value.attribute.media_type && (
-            <Link href={mediaDownloadUrl} target="_blank" title={__('pim_asset_manager.media_link.download')}>
-              <DownloadIcon
-                color={akeneoTheme.color.grey100}
-                size={20}
-                title={__('pim_asset_manager.media_link.download')}
-              />
-            </Link>
-          )}
-          <TransparentButton
-            title={__('pim_asset_manager.media_link.copy')}
-            onClick={() => copyToClipboard(mediaDownloadUrl)}
-          >
-            <Copy color={akeneoTheme.color.grey100} size={20} title={__('pim_asset_manager.media_link.copy')} />
-          </TransparentButton>
-          <FullscreenPreview
-            anchor={TransparentButton}
-            label={label}
-            previewModel={previewModel}
-            attribute={value.attribute}
-          >
+        <Actions>
+          <DownloadAction color={akeneoTheme.color.grey100} size={20} data={value.data} attribute={value.attribute} />
+          <CopyUrlAction color={akeneoTheme.color.grey100} size={20} data={value.data} attribute={value.attribute} />
+          <FullscreenPreview anchor={Action} label={label} data={value.data} attribute={value.attribute}>
             <Fullscreen
               title={__('pim_asset_manager.asset.button.fullscreen')}
               color={akeneoTheme.color.grey100}
               size={20}
             />
           </FullscreenPreview>
-        </StyledButtonContainer>
+        </Actions>
       )}
     </Container>
   );

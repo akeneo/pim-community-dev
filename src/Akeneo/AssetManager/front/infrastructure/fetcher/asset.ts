@@ -16,7 +16,7 @@ import LabelCollection from 'akeneoassetmanager/domain/model/label-collection';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
-import {PreviewCollection} from 'akeneoassetmanager/domain/model/asset/value';
+import {ListValueCollection} from 'akeneoassetmanager/domain/model/asset/list-value';
 
 const routing = require('routing');
 
@@ -52,7 +52,7 @@ type BackendListAsset = {
   asset_family_identifier: string;
   labels: LabelCollection;
   values: ValueCollection;
-  image: PreviewCollection;
+  image: ListValueCollection;
 };
 
 const denormalizeListAsset = (backendAsset: BackendListAsset): ListAsset => {
