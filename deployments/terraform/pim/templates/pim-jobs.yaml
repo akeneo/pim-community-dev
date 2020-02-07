@@ -26,7 +26,11 @@ spec:
             imagePullPolicy: {{ $tplCtx.Values.image.pim.pullPolicy | quote }}
             command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console {{ $jobOptions.pimCommand }}"']
             resources:
-  {{ toYaml $tplCtx.Values.pim.resources | indent 12 }}
+{{- if $jobOptions.resources }}            
+{{ toYaml $jobOptions.resources | indent 14 }}
+{{- else }}
+{{ toYaml $tplCtx.Values.pim.resources | indent 14 }}
+{{- end }}
             volumeMounts:
               - name: google-cloud-pim-storage-key
                 mountPath: /var/secrets/google/srnt.json

@@ -1,0 +1,30 @@
+{{ if .Values.onboarder.enabled -}}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: pim-onboarder-worker-hpa
+  labels:
+    app: {{ template "pim.fullName" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    component: {{ template "pim.fullName" . }}
+    {{ include "pim.extraLabels" . | indent 4 }}
+    role: pim-onboarder-worker-hpa
+spec:
+  minReplicas: 1
+  maxReplicas: {{ .Values.onboarder.pubsub.maxReplicas }}
+  metrics:
+  - external:
+      metricName: pubsub.googleapis.com|subscription|num_undelivered_messages
+      metricSelector:
+        matchLabels:
+          resource.labels.subscription_id: {{ .Values.onboarder.pubsub.queueName }}
+      targetAverageValue: "2"
+    type: External
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: pim-onboarder-worker
+{{- end }}
+

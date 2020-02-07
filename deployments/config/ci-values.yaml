@@ -3,7 +3,6 @@ pim:
   franklin:
     askFranklinUrl: "https://ask-franklin-test.dev.cloud.akeneo.com"
   secret: 5f559ffb-5b36-4922-9481-022057992057
-
   defaultAdminUser:
     login : pim-ci
     firstName: test1
@@ -27,7 +26,10 @@ pim:
     requests:
       cpu: "100m"
       memory: "256Mi"
-
+  daemon-default:
+    enabled: true
+    pimCommand: "akeneo:batch:job-queue-consumer-daemon"
+    replicas: 2
 backup:
   enabled: false
 

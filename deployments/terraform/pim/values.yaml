@@ -15,16 +15,6 @@ backup:
     schedule: "0 0 */1 * * *" # Once every hour: https://godoc.org/github.com/robfig/cron
     retentionPolicy:
       dailyBackups: 10
-      weeklyBackups: 4
-      monthlyBackups: 12
-      yearlyBackups: 10
-    export:
-      enabled: false
-      snapshotAge: 24h
-  storage:
-    schedule: "0 0 */24 * * *"
-    retentionPolicy:
-      dailyBackups: 10
       weeklyBackups: 5
       monthlyBackups: 12
       yearlyBackups: 10
@@ -47,6 +37,8 @@ common:
     value: "off"
   - name: "PHP_CONF_ERROR_REPORTING"
     value: "22527" # E_ALL & ~E_DEPRECATED & ~E_STRICT
+  - name: "PHP_CONF_DATE_TIMEZONE"
+    value: "Etc/UTC"
 
   phpConfCLI:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
@@ -63,6 +55,8 @@ common:
     value: "off"
   - name: "PHP_CONF_ERROR_REPORTING"
     value: "22527" # E_ALL & ~E_DEPRECATED & ~E_STRICT
+  - name: "PHP_CONF_DATE_TIMEZONE"
+    value: "Etc/UTC"
 
 mailer:
   login: nil # Generated with terraform template
@@ -75,12 +69,12 @@ image:
   pim:
     repository: eu.gcr.io/akeneo-ci/pim-enterprise-dev
     # image.pim.tag is added by the Jenkinsfile when running the CI, manually use "--set image.pim.tag x.y.z-AB"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     tag: master
   httpd:
     repository: httpd
     tag: 2.4.33
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
 
 pim:
   franklin:
@@ -101,8 +95,12 @@ pim:
     serviceAccountKey: nil
   updateStrategy:
     type: RollingUpdate
+  daemons:
+    default:
+      enabled: true
+      pimCommand: "akeneo:batch:job-queue-consumer-daemon"
+      replicas: 2
   replicas: 1
-  numDaemon: 1
   extraLabels: {}
   secret: nil # Generate me with `uuidgen`
   resources:
@@ -188,14 +186,18 @@ onboarder:
     setupOnboarderDatabase:
       enabled: true
       hook: "post-install"
+    pushChannelToOnboarder:
+      enabled: true
+      hook: "post-install"
     importAdditionalOnboarderFixtures:
-      enabled: false
+      enabled: true
       hook: "post-install"
   pubsub:
     topicPubMiddleware: nil
     topicPubOnboarder: nil
     topicCon: nil
     queueName: nil
+    maxReplicas: 10
   serviceAccount: nil
 
 mysql:
