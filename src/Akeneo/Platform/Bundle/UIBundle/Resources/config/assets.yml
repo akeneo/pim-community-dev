@@ -113,3 +113,4 @@ css:
         - bundles/pimui/less/pages/Default.less
         - bundles/pimui/less/pages/FullPage.less
         - bundles/pimui/less/pages/Login.less
+        - bundles/pimui/less/pages/AttributeOptions.less
