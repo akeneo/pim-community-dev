@@ -1,8 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render, waitForElement} from "@testing-library/react";
-import TimePeriodFilter
-  from "@akeneo-pim-ee/data-quality-insights/src/application/component/DqiDashboard/DataQualityOverview/Header/TimePeriodFilter";
+import TimePeriodFilter from "../../../../front/src/application/component/Dashboard/Overview/Filters/TimePeriodFilter";
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD} from "@akeneo-pim-ee/data-quality-insights/src/application/listener";
 
 const UserContext = require('pim/user-context');

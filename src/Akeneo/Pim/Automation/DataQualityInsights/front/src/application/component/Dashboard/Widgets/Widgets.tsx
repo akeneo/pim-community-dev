@@ -7,7 +7,7 @@ interface DataQualityWidgetsProps {
   catalogChannel: string;
 }
 
-const DataQualityWidgets: FunctionComponent<DataQualityWidgetsProps> = ({catalogChannel, catalogLocale}) => {
+const Widgets: FunctionComponent<DataQualityWidgetsProps> = ({catalogChannel, catalogLocale}) => {
   return (
     <div id="data-quality-insights-activity-dashboard-widgets">
       <div className="AknDataQualityInsights-widgetColumn">
@@ -20,4 +20,4 @@ const DataQualityWidgets: FunctionComponent<DataQualityWidgetsProps> = ({catalog
   )
 };
 
-export default DataQualityWidgets;
+export default Widgets;

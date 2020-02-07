@@ -1,7 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render, waitForElement} from "@testing-library/react";
-import FamilyFilter from "../../../../front/src/application/component/DqiDashboard/DataQualityOverview/Header/FamilyFilter";
+import FamilyFilter from "../../../../front/src/application/component/Dashboard/Overview/Filters/FamilyFilter";
 import fetchFamilies from "../../../../front/src/infrastructure/fetcher/fetchFamilies";
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from "../../../../front/src/application/listener";
 

@@ -5,7 +5,7 @@ import fetchCategoryTrees from "../../../../front/src/infrastructure/fetcher/fet
 import fetchCategoryChildren from "../../../../front/src/infrastructure/fetcher/fetchCategoryChildren";
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from "../../../../front/src/application/listener";
 import CategoryFilter
-  from "../../../../front/src/application/component/DqiDashboard/DataQualityOverview/Header/CategoryFilter";
+  from "../../../../front/src/application/component/Dashboard/Overview/Filters/CategoryFilter";
 
 const UserContext = require('pim/user-context');
 

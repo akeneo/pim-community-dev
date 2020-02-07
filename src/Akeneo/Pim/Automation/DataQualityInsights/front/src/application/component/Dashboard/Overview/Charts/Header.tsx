@@ -7,7 +7,7 @@ interface AxisChartHeaderProps {
   displayLegend: boolean;
 }
 
-const DataQualityOverviewChartHeader: FunctionComponent<AxisChartHeaderProps> = ({axisName, displayLegend}) => {
+const Header: FunctionComponent<AxisChartHeaderProps> = ({axisName, displayLegend}) => {
   return (
     <header className="AknDataQualityOverviewChartHeader">
           <span className="AknSubsection-AxisTitle">{axisName}</span>
@@ -31,4 +31,4 @@ const DataQualityOverviewChartHeader: FunctionComponent<AxisChartHeaderProps> = 
   );
 };
 
-export default DataQualityOverviewChartHeader;
+export default Header;

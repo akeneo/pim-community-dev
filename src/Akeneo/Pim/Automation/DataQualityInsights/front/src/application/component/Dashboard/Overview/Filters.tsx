@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react';
-import FamilyFilter from "./Header/FamilyFilter";
-import TimePeriodFilter from "./Header/TimePeriodFilter";
-import CategoryFilter from "./Header/CategoryFilter";
+import FamilyFilter from "./Filters/FamilyFilter";
+import TimePeriodFilter from "./Filters/TimePeriodFilter";
+import CategoryFilter from "./Filters/CategoryFilter";
 
 const __ = require('oro/translator');
 const SecurityContext = require('pim/security-context');
@@ -12,7 +12,7 @@ interface DataQualityOverviewHeaderProps {
   categoryCode: string | null;
 }
 
-const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProps> = ({timePeriod, familyCode, categoryCode}) => {
+const Filters: FunctionComponent<DataQualityOverviewHeaderProps> = ({timePeriod, familyCode, categoryCode}) => {
 
   return (
     <div className="AknSubsection-title AknSubsection-title--glued">
@@ -32,4 +32,4 @@ const DataQualityOverviewHeader: FunctionComponent<DataQualityOverviewHeaderProp
   );
 };
 
-export default DataQualityOverviewHeader;
+export default Filters;

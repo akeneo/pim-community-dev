@@ -2,8 +2,8 @@ import BaseView = require('pimui/js/view/base');
 import ReactDOM from 'react-dom';
 import React from "react";
 import {
-  DataQualityInsightsDashboard,
-  DataQualityOverviewHelper,
+  Dashboard,
+  DashboardHelper,
   DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY
@@ -79,8 +79,8 @@ class SectionView extends BaseView {
 
     ReactDOM.render(
       <div>
-        <DataQualityOverviewHelper/>
-        <DataQualityInsightsDashboard timePeriod={this.timePeriod} catalogLocale={catalogLocale} catalogChannel={catalogChannel} familyCode={this.familyCode} categoryCode={this.categoryCode}/>
+        <DashboardHelper/>
+        <Dashboard timePeriod={this.timePeriod} catalogLocale={catalogLocale} catalogChannel={catalogChannel} familyCode={this.familyCode} categoryCode={this.categoryCode}/>
       </div>,
       this.el
     );
