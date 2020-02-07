@@ -12,6 +12,8 @@ import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale
 import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoassetmanager/tools/translator';
+import LinkedProducts from 'akeneoassetmanager/application/component/asset/edit/linked-products';
+import {Subsection, SubsectionHeader} from 'akeneoassetmanager/application/component/app/subsection';
 
 const securityContext = require('pim/security-context');
 
@@ -28,6 +30,7 @@ const LeftColumn = styled.div`
 
 const Separator = styled.div`
   background: ${(props: ThemedProps<void>) => props.theme.color.purple100};
+  flex-shrink: 0;
   margin: 0 40px;
   width: 1px;
 `;
@@ -82,10 +85,10 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
     return (
       <Container>
         <LeftColumn>
-          <div className="AknSubsection">
-            <header className="AknSubsection-title">
-              <span className="group-label">{__('pim_asset_manager.asset.enrich.edit_subsection')}</span>
-            </header>
+          <Subsection>
+            <SubsectionHeader>
+              <span>{__('pim_asset_manager.asset.enrich.edit_subsection')}</span>
+            </SubsectionHeader>
             <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">
               {renderValues(
                 asset,
@@ -97,10 +100,12 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
                 this.props.rights
               )}
             </div>
-          </div>
+          </Subsection>
         </LeftColumn>
         <Separator />
-        <RightColumn>{/* TODO */}</RightColumn>
+        <RightColumn>
+          <LinkedProducts />
+        </RightColumn>
       </Container>
     );
   }

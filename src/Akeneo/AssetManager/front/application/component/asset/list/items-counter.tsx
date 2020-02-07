@@ -1,9 +1,19 @@
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
+import styled from 'styled-components';
+import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 
-export default React.memo(({count, inline = false}: {count: number; inline?: boolean}) => {
+const StyledItemsCounter = styled.div`
+  color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
+  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
+  font-weight: normal;
+  position: relative;
+  text-transform: none;
+`;
+
+export const ItemsCounter = React.memo(({count}: {count: number}) => {
   return (
-    <div className={`AknFilterBox-itemsCounter ${inline ? 'AknFilterBox-itemsCounter--inline' : ''}`}>
+    <StyledItemsCounter>
       {__(
         'pim_asset_manager.result_counter',
         {
@@ -11,6 +21,6 @@ export default React.memo(({count, inline = false}: {count: number; inline?: boo
         },
         count
       )}
-    </div>
+    </StyledItemsCounter>
   );
 });

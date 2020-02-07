@@ -272,11 +272,13 @@ pim_asset_manager:
       no_product:
         title: This asset is not linked to any product via the "{{ entityLabel }}" product attribute
         subtitle: 'Start linking products to this attribute to see them here'
+    no_linked_products: This asset is not linked to products
     enrich:
       title: Asset attributes
       code: Code
       label: Label
       edit_subsection: Edit asset
+      product_subsection: Products Link
     title: Assets
     create:
       header:
