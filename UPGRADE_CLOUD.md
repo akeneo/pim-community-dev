@@ -5,12 +5,13 @@ Get the EE tag to deploy :
 
 - In main.tf :
 
-change source with 
+Change source with 
 `git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform?ref=TAGtoDEPLOY`
-add field 
+
+Add field 
 `pim_version = "TAGtoDEPLOY"`
 
-- Rename pim.yaml in values.yaml
+- Rename pim.yaml to values.yaml
 - In values.yaml, add in PIM :
 ```
   hook:
