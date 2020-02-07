@@ -85,6 +85,6 @@ echo "Compare database 40+PR migrations from database PR..."
 diff /tmp/dump_40_database_with_migrations.sql /tmp/dump_branch_database.sql --context=10
 
 echo "Compare index 40+PR migrations from index PR..."
-sed -i -r 's/[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/uuid/g' /tmp/dump_40_index_with_migrations.json
-sed -i -r 's/[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/uuid/g' /tmp/dump_branch_index.json
+sed -i -r 's/[0-9]+_[0-9]+_[0-9]+_[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/version_uuid/g' /tmp/dump_40_index_with_migrations.json
+sed -i -r 's/[0-9]+_[0-9]+_[0-9]+_[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/version_uuid/g' /tmp/dump_branch_index.json
 diff /tmp/dump_40_index_with_migrations.json /tmp/dump_branch_index.json --context=10
