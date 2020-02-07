@@ -6,13 +6,13 @@ Get the EE tag to deploy :
 - In main.tf :
 
 change source with 
-"git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform?ref=TAGtoDEPLOY"
+`git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform?ref=TAGtoDEPLOY`
 add field 
 `pim_version = "TAGtoDEPLOY"`
 
 - Rename pim.yaml in values.yaml
 - In values.yaml, add in PIM :
-`
+```
   hook:
     addAdmin:
       enabled: false
@@ -23,7 +23,7 @@ add field
       hook: post-upgrade
     upgradeES:
       enabled: true
-`
+```
 
 And upgrade the PIM :
 
