@@ -25,6 +25,7 @@ const Container = styled.div`
   align-items: center;
   margin: 20px 0;
   max-height: calc(100vh - 500px);
+  min-height: 250px;
 `;
 
 const Actions = styled.div`
