@@ -3,6 +3,7 @@
 "Yes, do it": "Sì, prosegui"
 "Ok, got it.": "Ok, capito."
 "Edit": "Modifica"
+"Unexpected error occurred. Please contact system administrator.": "Si è verificato un errore inaspettato. Sei pregato di contattare l'amministratore di sistema."
 "Yes, revoke": "Si, revoca"
 "Revoke Confirmation": "Revoca conferma"
 Prev: Precedente
@@ -168,6 +169,7 @@ pim_common:
   history: Cronologia
   label: Etichetta
   label_translations: Traduzioni etichetta
+  Label or identifier: etichetta o identificatore
   less_than: Meno di
   loading: Caricamento in corso...
   media_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
@@ -209,14 +211,17 @@ pim_common:
     STARTS WITH: Inizia con
     ENDS WITH: Termina con
 error:
+  exception: Accidenti! Si è verificato un errore {{ status_code}}...
   forbidden: Vietato. Non è consentito accedere a questa pagina
 alert:
   attribute_option:
+    error_occurred_during_submission: Si è verificato un errore durante l'invio del modulo sul server
     save_before_edit_other: Si prega di registrare le modifiche sulle altre righe prima di modificare questa
   session_storage:
     not_available: Il tuo browser non sembra compatibile con il sessionStorage. Contattare l'amministratore
 pim_enrich.entity.fallback:
   flash:
+    generic_error: Si è verificato un errore
     update:
       fail: Aggiornamento non riuscito
       success: Aggiornato correttamente

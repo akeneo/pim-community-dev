@@ -89,6 +89,7 @@ pim_import_export:
           file_path:
             title: Percorso del file
             help: Dove scrivere il file generato nel file System
+            help_import: La directory del file da usare per l'importazione
           delimiter:
             title: Delimitatore
             help: Un carattere utilizzato per impostare il delimitatore di campo
