@@ -40,6 +40,8 @@ oro.datagrid.nocolumns: Nessuna colonna configurata per questa griglia
 oro.datagrid.pagination.label: "Pagina"
 oro.datagrid.pagination.totalPages: "di {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} record"
+#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
+oro.datagrid.pagination.limit_warning: "La griglia non può mostrare più di {{ limit }} risultati, prova a filtrare in base ai criteri di ricerca aggiuntivi."
 oro.datagrid.action.reset: "Azzera"
 oro.datagrid.action.refresh: "Aggiorna"
 oro_datagrid.select.all: "Tutto"
