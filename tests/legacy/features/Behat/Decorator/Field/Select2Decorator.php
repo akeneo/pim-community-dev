@@ -111,7 +111,7 @@ class Select2Decorator extends ElementDecorator
             $dropMask = $this->getBody()->find('css', '#select2-drop-mask');
 
             if (null !== $dropMask) {
-                $dropMask->click();
+                $this->getSession()->executeScript('$("#select2-drop-mask").click();');
             }
         }
     }
