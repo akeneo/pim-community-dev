@@ -27,7 +27,7 @@ class IsDefaultAssetCategoryTreeOfAUserIntegration extends TestCase
     /** @var IsDefaultAssetCategoryTreeOfAUser  */
     private $query;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -45,6 +45,6 @@ class IsDefaultAssetCategoryTreeOfAUserIntegration extends TestCase
      */
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useMinimalCatalog();
+        return $this->catalog->useTechnicalCatalog();
     }
 }

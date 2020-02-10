@@ -59,7 +59,7 @@ class PurgeVersioningCommandWithPublishedProductsIntegration extends TestCase
         return $this->get('database_connection');
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
