@@ -5,6 +5,7 @@ parameters:
     pimee_workflow.controller.published_product_rest.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\PublishedProductController
     pimee_workflow.controller.product_draft_rest.class:     Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\ProductDraftController
     pimee_workflow.controller.rest.product.class:           Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\ProductController
+    pimee_workflow.controller.rest.product_model.class:     Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\ProductModelController
     pimee_workflow.controller.product_model_draft_rest.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\ProductModelDraftController
     pimee_workflow.controller.author_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\AuthorDraftController
 
@@ -69,6 +70,14 @@ services:
         arguments:
             - '@pimee_workflow.repository.product_draft'
             - '@pim_catalog.repository.product'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.filter.chained'
+
+    pimee_workflow.controller.rest.product_model:
+        class: '%pimee_workflow.controller.rest.product_model.class%'
+        arguments:
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pim_catalog.repository.product_model'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
 
