@@ -88,31 +88,4 @@ class GetLastOperationsSpec extends ObjectBehavior
 
         $this->getQueryBuilder($user)->shouldReturn($qb);
     }
-
-    function it_returns_the_query_builder_without_user(
-        $notVisibleJobs,
-        $connection,
-        QueryBuilder $qb,
-        ExpressionBuilder $expr
-    ) {
-        $notVisibleJobs->getCodes()->willReturn(['not_visible_job', 'again']);
-        $connection->createQueryBuilder()->willReturn($qb);
-
-        $qb->select(Argument::cetera())->willReturn($qb);
-        $qb->from(Argument::cetera())->willReturn($qb);
-        $qb->innerJoin(Argument::cetera())->willReturn($qb);
-        $qb->leftJoin(Argument::cetera())->willReturn($qb);
-        $qb->expr()->willReturn($expr);
-        $qb->where(Argument::cetera())->willReturn($qb);
-        $qb->andWhere(Argument::cetera())->willReturn($qb);
-        $qb->groupBy(Argument::cetera())->willReturn($qb);
-        $qb->orderBy(Argument::cetera())->willReturn($qb);
-        $qb->setMaxResults(Argument::cetera())->willReturn($qb);
-        $qb->setParameters(Argument::cetera())->willReturn($qb);
-
-        $expr->eq(Argument::cetera())->willReturn('eq');
-        $expr->notIn(Argument::cetera())->willReturn('notIn');
-
-        $this->getQueryBuilder()->shouldReturn($qb);
-    }
 }

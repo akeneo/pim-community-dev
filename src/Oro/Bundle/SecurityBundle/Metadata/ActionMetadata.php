@@ -21,7 +21,11 @@ class ActionMetadata implements AclClassInfo, \Serializable
      */
     protected $label;
 
-    /** @var bool */
+    /**
+     * Defines if the ACL must be enabled/disabled at creation for all roles.
+     *
+     * @var bool
+     */
     protected $isEnabledByDefault;
 
     /**
