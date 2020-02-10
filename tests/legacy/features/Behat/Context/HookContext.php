@@ -47,33 +47,6 @@ class HookContext extends PimContext
     /**
      * @BeforeScenario
      */
-    public function purgeDatabase()
-    {
-        $connection = $this->getService('database_connection');
-        $schemaManager = $connection->getSchemaManager();
-        $tables = $schemaManager->listTableNames();
-        $purger = new DBALPurger(
-            $this->getService('database_connection'),
-            $tables
-        );
-
-        $purger->purge();
-
-        $this->resetElasticsearchIndex();
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function clearAclCache()
-    {
-        $aclManager = $this->getService('oro_security.acl.manager');
-        $aclManager->clearCache();
-    }
-
-    /**
-     * @BeforeScenario
-     */
     public function launchJobConsumer()
     {
         $process = new Process(sprintf('exec bin/console %s --env=behat', JobQueueConsumerCommand::COMMAND_NAME));

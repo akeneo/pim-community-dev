@@ -10,8 +10,6 @@ Feature: Export products
     And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
     And I am logged in as "Julia"
-    And the following "sole_color" attribute reference data: Red, Blue and Green
-    And the following "sole_fabric" attribute reference data: Cashmerewool, Neoprene and Silk
     Given the following products:
       | sku      | family   | categories        | price          | size | color    | name-en_US |
       | SNKRS-1B | heels    | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    |
@@ -31,6 +29,6 @@ Feature: Export products
     Then exported file of "csv_footwear_product_export" should contain:
     """
     sku;categories;enabled;family;groups;color;description-en_US-mobile;heel_color;manufacturer;name-en_US;price-EUR;price-USD;side_view;size;sole_color;sole_fabric;top_view
-    SNKRS-1B;summer_collection;1;heels;;black;;Red;;Model 1;50.00;70.00;;45;Blue;Silk;
-    SNKRS-1R;summer_collection;1;heels;;red;;Red;;Model 1;50.00;70.00;;45;Red;Neoprene,Silk;
+    SNKRS-1B;summer_collection;1;heels;;black;;red;;Model 1;50.00;70.00;;45;blue;silk;
+    SNKRS-1R;summer_collection;1;heels;;red;;red;;Model 1;50.00;70.00;;45;red;neoprene,silk;
     """

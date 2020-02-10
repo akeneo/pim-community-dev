@@ -97,7 +97,6 @@ services:
     akeneo_integration_tests.loader.database_schema_handler:
         class: '%akeneo_integration_tests.loader.database_schema_handler.class%'
         arguments:
-            - '@kernel'
             - '@database_connection'
 
     akeneo_integration_tests.doctrine.connection.connection_closer:

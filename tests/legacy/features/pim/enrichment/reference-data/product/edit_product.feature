@@ -9,14 +9,6 @@ Feature: Edit a product
     And the following products:
       | sku        | family |
       | high-heels | heels  |
-    And the following reference data:
-      | type   | code         | label        |
-      | color  | red          | Red          |
-      | color  | blue         |              |
-      | color  | green        | Green        |
-      | fabric | cashmerewool | Cashmerewool |
-      | fabric | neoprene     |              |
-      | fabric | silk         | Silk         |
 
   @critical
   Scenario: Successfully add reference data values to a product
@@ -24,12 +16,12 @@ Feature: Edit a product
     And I am on the "high-heels" product page
     And I visit the "Other" group
     And I fill in the following information:
-      | Heel color  | Red            |
-      | Sole fabric | neoprene, Silk |
+      | Heel color  | Tufts Blue             |
+      | Sole fabric | Cashmerewool, SilkNoil |
     When I save the product
     Then I should be on the product "high-heels" edit page
-    Then the product Heel color should be "red"
-    Then the product Sole fabric should be "neoprene, silk"
+    Then the product Heel color should be "tufts-blue"
+    Then the product Sole fabric should be "cashmerewool, silknoil"
 
   @critical
   Scenario: Successfully edit reference data values to a product
@@ -41,9 +33,9 @@ Feature: Edit a product
     And I am on the "high-heels" product page
     And I visit the "Other" group
     And I fill in the following information:
-      | Heel color  | [blue]             |
-      | Sole fabric | Cashmerewool, Silk |
+      | Heel color  | Tufts Blue              |
+      | Sole fabric | Cashmerewool, SilkNoil |
     When I save the product
     Then I should be on the product "high-heels" edit page
-    Then the product Heel color should be "blue"
-    Then the product Sole fabric should be "cashmerewool, silk"
+    Then the product Heel color should be "tufts-blue"
+    Then the product Sole fabric should be "cashmerewool, silknoil"

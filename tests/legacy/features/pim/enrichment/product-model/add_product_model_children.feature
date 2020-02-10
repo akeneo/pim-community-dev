@@ -9,7 +9,6 @@ Feature: Add children to product model
     And the following attributes:
       | code            | label-en_US     | localizable | scopable | type                            | reference_data_name | group |
       | reference_color | Reference color | 0           | 0        | pim_reference_data_simpleselect | color               | other |
-    And the following "reference_color" attribute reference data: Red, Blue and Green
     And I am logged in as "Julia"
 
   @critical

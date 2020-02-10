@@ -6,9 +6,6 @@ Feature: Sort products
 
   Scenario: Successfully sort products by simple reference data
     Given the "footwear" catalog configuration
-    And the following "sole_color" attribute reference data: Red, Blue and Green
-    And the following "sole_fabric" attribute reference data: Cashmerewool, Neoprene and Silk
-    And the following "heel_color" attribute reference data: Pink, Purple and Black
     And the following products:
       | sku    |
       | postit |

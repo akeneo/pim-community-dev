@@ -146,13 +146,6 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->doctrineJobRepository->getJobManager()->getConnection()->close();
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * The elastic search indexes are reset here, at the same time than the database.
-     * However, the second index is not reset directly after the first one, as it could
-     * prevent the first one to be correctly dilated.
-     */
     public function load(Configuration $configuration): void
     {
         $this->deleteAllDocumentsInElasticsearch();

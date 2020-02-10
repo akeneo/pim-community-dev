@@ -25,6 +25,9 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
  */
 class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenessTestCase
 {
+    /**
+     * @group critical
+     */
     public function testLocalisable()
     {
         $family = $this->createFamilyWithRequirement(
