@@ -1,7 +1,7 @@
 .AknDataQualityInsightsRate {
     width: 31px;
     height: 18px;
-    line-height: 17px;
+    line-height: 14px;
     font-size: 13px;
     text-align: center;
     display: inline-block;
@@ -36,5 +36,16 @@
         border-color: @AknGrey;
         color: @AknGrey;
         width: 45px;
+    }
+
+    &.AknDataQualityInsightsRate-Loading {
+        border-color: @AknGrey;
+        color: @AknGrey;
+        line-height: 20px !important;
+        white-space: nowrap;
+
+        .AknDataQualityInsightsRate-Loader {
+            width: 65%;
+        }
     }
 }
