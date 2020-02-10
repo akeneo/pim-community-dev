@@ -43,7 +43,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $environment = $scope->getEnvironment();
 
         $this->contexts['fixtures'] = $environment->getContext(EnterpriseFixturesContext::class);
-        $this->contexts['catalogConfiguration'] = $environment->getContext(EnterpriseCatalogConfigurationContext::class);
+        $this->contexts['catalogConfiguration'] = $environment->getContext(CatalogConfigurationContext::class);
         $this->contexts['domain-family-variants'] = $environment->getContext(FamilyVariantConfigurationContext::class);
         $this->contexts['webUser'] = $environment->getContext(EnterpriseWebUser::class);
         $this->contexts['datagrid'] = $environment->getContext(EnterpriseDataGridContext::class);

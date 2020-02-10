@@ -8,8 +8,7 @@ Feature: Export rules
     Given a "clothing" catalog configuration
     And I add the "french" locale to the "mobile" channel
     And I add the "french" locale to the "tablet" channel
-    And the following "sleeve_color" attribute reference data: yellow, blue, red, orange
-    And the following "sleeve_fabric" attribute reference data: chiffon, satin, wool, kevlar, leather, gore-tex, toile, cashmere
+    And the following "sleeve_color" attribute reference data: orange
     And the following product rule definitions:
       """
       set_reference_data:

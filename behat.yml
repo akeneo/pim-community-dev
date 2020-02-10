@@ -16,8 +16,12 @@ legacy:
                         window_height: 1024
                 - Context\EnterpriseFixturesContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Context\EnterpriseCatalogConfigurationContext:
+                - Context\CatalogConfigurationContext:
                     - 'Context\EnterpriseFeatureContext'
+                    - '@akeneo_legacy_behat_tests.loader.fixtures_loader'
+                    - '@pim_connector.doctrine.cache_clearer'
+                    -
+                        - '%%kernel.project_dir%%/tests/legacy/features/Context/catalog'
                 - Context\EnterpriseWebUser:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseDataGridContext:
@@ -192,8 +196,12 @@ legacy:
                         window_height: 1024
                 - Context\EnterpriseFixturesContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Context\EnterpriseCatalogConfigurationContext:
-                    - 'Context\EnterpriseFeatureContext'
+                - Context\CatalogConfigurationContext:
+                      - 'Context\EnterpriseFeatureContext'
+                      - '@akeneo_legacy_behat_tests.loader.fixtures_loader'
+                      - '@pim_connector.doctrine.cache_clearer'
+                      -
+                          - '%%kernel.project_dir%%/tests/legacy/features/Context/catalog'
                 - Context\EnterpriseWebUser:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseDataGridContext:
@@ -370,8 +378,12 @@ legacy:
                         window_height: 1024
                 - Context\EnterpriseFixturesContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Context\EnterpriseCatalogConfigurationContext:
-                    - 'Context\EnterpriseFeatureContext'
+                - Context\CatalogConfigurationContext:
+                      - 'Context\EnterpriseFeatureContext'
+                      - '@akeneo_legacy_behat_tests.loader.fixtures_loader'
+                      - '@pim_connector.doctrine.cache_clearer'
+                      -
+                          - '%%kernel.project_dir%%/tests/legacy/features/Context/catalog'
                 - Context\EnterpriseWebUser:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseDataGridContext:
@@ -507,8 +519,12 @@ legacy:
                         window_height: 1024
                 - Context\EnterpriseFixturesContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Context\EnterpriseCatalogConfigurationContext:
-                    - 'Context\EnterpriseFeatureContext'
+                - Context\CatalogConfigurationContext:
+                      - 'Context\EnterpriseFeatureContext'
+                      - '@akeneo_legacy_behat_tests.loader.fixtures_loader'
+                      - '@pim_connector.doctrine.cache_clearer'
+                      -
+                          - '%%kernel.project_dir%%/tests/legacy/features/Context/catalog'
                 - Context\EnterpriseWebUser:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseDataGridContext:
@@ -645,8 +661,12 @@ legacy:
                         window_height: 1024
                 - Context\EnterpriseFixturesContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Context\EnterpriseCatalogConfigurationContext:
-                    - 'Context\EnterpriseFeatureContext'
+                - Context\CatalogConfigurationContext:
+                      - 'Context\EnterpriseFeatureContext'
+                      - '@akeneo_legacy_behat_tests.loader.fixtures_loader'
+                      - '@pim_connector.doctrine.cache_clearer'
+                      -
+                          - '%%kernel.project_dir%%/tests/legacy/features/Context/catalog'
                 - Context\EnterpriseWebUser:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseDataGridContext:
@@ -784,8 +804,12 @@ legacy:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                 - Context\EnterpriseWebUser:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                - Context\EnterpriseCatalogConfigurationContext:
-                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                - Context\CatalogConfigurationContext:
+                      - 'Context\EnterpriseFeatureContext'
+                      - '@akeneo_legacy_behat_tests.loader.fixtures_loader'
+                      - '@pim_connector.doctrine.cache_clearer'
+                      -
+                          - '%%kernel.project_dir%%/tests/legacy/features/Context/catalog'
                 - Context\EnterpriseAssertionContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                 - PimEnterprise\Behat\Context\HookContext:
