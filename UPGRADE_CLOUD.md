@@ -1,8 +1,14 @@
 # 20200211
 
+Scale "ES, web, daemons" containers to 0 :
+
+`kubectl delete -n srnt-${INSTANCE_NAME} cronjob --all`
+`kubectl scale -n srnt-${INSTANCE_NAME} deploy/pim-web deploy/pim-daemon --replicas=0`
+`kubectl scale -n srnt-${INSTANCE_NAME} statefulset elasticsearch-data --replicas=0`
+
 Get the EE tag to deploy :
 
-`git fetch origin &> /dev/null && git tag --list | grep -E '^v?[0-9]+$' | sort -r | head -n 1`
+`git clone git@github.com:akeneo/pim-enterprise-dev.git && cd pim-enterprise-dev && git fetch origin &> /dev/null && git tag --list | grep -E '^v?[0-9]+$' | sort -r | head -n 1`
 
 - In main.tf :
 
@@ -35,3 +41,8 @@ And upgrade the PIM :
 `terraform init -upgrade`
 
 `terraform apply`
+
+Rescale ES, pim-web & pim-daemon :
+
+`kubectl scale -n srnt-${INSTANCE_NAME} deploy/pim-web deploy/pim-daemon --replicas=2`
+`kubectl scale -n srnt-${INSTANCE_NAME} statefulset elasticsearch-data --replicas=2`
