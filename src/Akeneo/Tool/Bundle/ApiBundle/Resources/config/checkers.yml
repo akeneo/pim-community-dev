@@ -35,4 +35,4 @@ services:
             - ['family', 'categories', 'completeness', 'identifier', 'created', 'updated']
 
     pim_api.checker.duplicate_value:
-        class: 'Pim\Bundle\ApiBundle\Checker\DuplicateValueChecker'
+        class: 'Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker'

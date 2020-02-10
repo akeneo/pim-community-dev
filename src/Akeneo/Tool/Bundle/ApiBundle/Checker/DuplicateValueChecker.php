@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\ApiBundle\Checker;
+namespace Akeneo\Tool\Bundle\ApiBundle\Checker;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
