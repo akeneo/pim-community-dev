@@ -1,5 +1,19 @@
 # 3.0.x
 
+# 3.0.67 (2020-02-10)
+
+# 3.0.66 (2020-02-06)
+
+## Bug fixes
+
+- PIM-9036: Prevent the removal of an asset category tree being the default asset category tree of a user
+
+# 3.0.65 (2020-02-03)
+
+## Bug fixes
+
+- PIM-9036: Adapt purger advisor to the rework of the purge of the versions
+
 # 3.0.64 (2020-01-21)
 
 # 3.0.63 (2020-01-10)

@@ -49,6 +49,8 @@ extensions:
 
     pim-product-model-edit-form-copy:
         module: pimee/product-edit-form/attributes/copy
+        config:
+            fetcher: product_model_draft
 
     pim-product-model-edit-form-copy-source-switcher:
         module: pimee/product-edit-form/source-switcher

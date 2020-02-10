@@ -1,5 +1,18 @@
 # 2.3.x
 
+# 2.3.77 (2020-01-22)
+
+## Bug fixes
+
+- PIM-8963: Add permission check on product variant creation button
+
+# 2.3.76 (2020-01-10)
+
+## Bug fixes
+
+- PIM-9050: Fix the list of versions in compare/translate for product models
+- PIM-7971: Fix filters being incorrectly disabled in the asset grid 
+
 # 2.3.75 (2020-01-03)
 
 # 2.3.74 (2019-12-12)

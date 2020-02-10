@@ -11,6 +11,7 @@ datagrid:
                 gallery:
                     label: pim_datagrid.display_selector.gallery
                     rowView: oro/datagrid/asset-row
+            removeFiltersNotUsableInGrid: false
         source:
             acl_resource:      pimee_product_asset_index
             type:              pimee_datasource_asset

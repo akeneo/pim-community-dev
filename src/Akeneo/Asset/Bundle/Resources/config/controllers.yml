@@ -74,6 +74,7 @@ services:
             - '@templating'
             - '@form.factory'
             - '@session'
+            - '@pimee_product_asset.query.is_default_asset_category_tree_of_a_user'
 
     pimee_product_asset.controller.category_tree_asset_picker:
         class: 'Akeneo\Asset\Bundle\Controller\UI\AssetCategoryTreeController'
@@ -91,6 +92,7 @@ services:
             - '@templating'
             - '@form.factory'
             - '@session'
+            - '@pimee_product_asset.query.is_default_asset_category_tree_of_a_user'
 
     pimee_product_asset.controller.rest.asset_category:
         class: '%pimee_product_asset.controller.rest.asset_category.class%'
