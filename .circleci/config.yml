@@ -279,7 +279,7 @@ jobs:
           - set_gcloud_config
           - run:
               name: Build PROD PIM docker image
-              command: IMAGE_TAG=$CIRCLE_SHA1 make php-image-prod
+              command: IMAGE_TAG=$CIRCLE_SHA1 IMAGE_TAG_DATE=v$(date +%Y%m%d%H%M%S) make php-image-prod
           - run:
               name: Push PROD PIM image on docker registry
               command: IMAGE_TAG=$CIRCLE_SHA1 make push-php-image-prod
@@ -358,7 +358,7 @@ jobs:
           - set_gcloud_config
           - run:
               name: make release
-              command: OLD_IMAGE_TAG=$CIRCLE_SHA1 NEW_IMAGE_TAG=v$(date +%Y%m%d%H%M%S) make release
+              command: OLD_IMAGE_TAG=$CIRCLE_SHA1 make release
 
   test_back_missing_structure_migrations:
       machine:
