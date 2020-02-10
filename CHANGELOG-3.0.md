@@ -1,5 +1,19 @@
 # 3.0.x
 
+# 3.0.67 (2020-02-10)
+
+## Enhancements
+
+- PIM-8952: Freeze the first line and column of the attribute options tab
+
+# 3.0.66 (2020-02-06)
+
+# 3.0.65 (2020-02-03)
+
+## Bug fixes
+
+- PIM-9065: Allow more than 4 decimals for an attribute of type "number"
+
 # 3.0.64 (2020-01-21)
 
 ## Bug fixes

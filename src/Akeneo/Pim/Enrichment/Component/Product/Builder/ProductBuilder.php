@@ -35,13 +35,6 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var string */
     protected $productClass;
 
-    /**
-     * @param AttributeRepositoryInterface       $attributeRepository Attribute repository
-     * @param FamilyRepositoryInterface          $familyRepository Family repository
-     * @param EventDispatcherInterface           $eventDispatcher Event dispatcher
-     * @param EntityWithValuesBuilderInterface   $entityWithValuesBuilder
-     * @param array                              $classes Model classes
-     */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         FamilyRepositoryInterface $familyRepository,
@@ -49,10 +42,10 @@ class ProductBuilder implements ProductBuilderInterface
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         array $classes
     ) {
-        $this->attributeRepository     = $attributeRepository;
-        $this->familyRepository        = $familyRepository;
-        $this->eventDispatcher         = $eventDispatcher;
-        $this->productClass            = $classes['product'];
+        $this->attributeRepository = $attributeRepository;
+        $this->familyRepository = $familyRepository;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->productClass = $classes['product'];
         $this->entityWithValuesBuilder = $entityWithValuesBuilder;
     }
 
@@ -96,7 +89,7 @@ class ProductBuilder implements ProductBuilderInterface
         ?string $localeCode,
         ?string $scopeCode,
         $data
-    ) :ValueInterface {
+    ): ValueInterface {
         return $this->entityWithValuesBuilder->addOrReplaceValue($values, $attribute, $localeCode, $scopeCode, $data);
     }
 }
