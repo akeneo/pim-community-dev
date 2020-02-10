@@ -265,15 +265,6 @@ extensions:
             title: pim_menu.item.info
             to: pim_analytics_system_info_index
 
-    pim-menu-changelog:
-        module: pim/menu/item
-        parent: pim-menu-system-navigation-block
-        aclResourceId: pim_analytics_system_info_index
-        position: 115
-        config:
-            title: pim_menu.item.changelog
-            to: pim_analytics_changelog_index
-
     pim-menu-system-api-connection:
         module: pim/menu/item
         parent: pim-menu-system-navigation-block

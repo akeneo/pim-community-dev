@@ -57,10 +57,6 @@ pim_analytics:
         system_info:
             index: System information
 
-    changelog:
-        title: Changelog
-
 pim_menu:
     item:
         system_info: System information
-        changelog: Changelog
