@@ -80,7 +80,7 @@ class MigrateAssetCategoryLabelsCommand extends Command
                 AssetFamilyIdentifier::fromString($familyCode)
             );
         } catch (AttributeNotFoundException $e) {
-            $io->error(sprintf('There is no attribute "%s" for the family "%s".', $categoriesAttributeCode, $familyCode));
+            $io->warning(sprintf('There is no attribute "%s" for the family "%s".', $categoriesAttributeCode, $familyCode));
 
             return;
         }
