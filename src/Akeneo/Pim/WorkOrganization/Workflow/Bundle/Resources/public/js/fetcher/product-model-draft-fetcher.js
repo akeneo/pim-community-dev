@@ -16,7 +16,7 @@ define(
         return BaseFetcher.extend({
             fetchAllById: function (id) {
                 return $.getJSON(
-                    Routing.generate(this.options.urls.product_index, {productId: id})
+                    Routing.generate(this.options.urls.product_model_index, {productModelId: id})
                 ).promise();
             }
         });
