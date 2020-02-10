@@ -8,6 +8,10 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
+ * @deprecated Will be removed in 4.0
+ *
+ * @todo merge in master: remove this class
+ *
  * Subscriber that advances a progress bar during a purge version operation
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>

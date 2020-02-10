@@ -2,17 +2,17 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
@@ -40,7 +40,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_scalar_value_in_standard_format_with_no_locale_and_no_scope(
-        $normalizer,
+        NormalizerInterface $normalizer,
         ValueInterface $value,
         GetAttributes $getAttributes
     ) {
@@ -75,7 +75,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_scalar_value_in_standard_format_with_locale_and_no_scope(
-        $normalizer,
+        NormalizerInterface $normalizer,
         ValueInterface $value,
         GetAttributes $getAttributes
     ) {
@@ -110,7 +110,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_scalar_value_in_standard_format_with_locale_and_scope(
-        $normalizer,
+        NormalizerInterface $normalizer,
         ValueInterface $value,
         GetAttributes $getAttributes
     ) {
@@ -145,7 +145,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_number_product_value_with_decimal(
-        $normalizer,
+        NormalizerInterface $normalizer,
         ValueInterface $value,
         GetAttributes $getAttributes
     ) {
@@ -178,8 +178,42 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         );
     }
 
+    function it_normalizes_a_number_product_value_with_very_long_decimal(
+        NormalizerInterface $normalizer,
+        ValueInterface $value,
+        GetAttributes $getAttributes
+    ) {
+        $normalizer->normalize('15.50787678676788000', null, ['is_decimals_allowed' => true])
+            ->shouldNotBeCalled();
+
+        $value->getData()->willReturn('15.50787678676788000');
+        $value->getLocaleCode()->willReturn('en_US');
+        $value->getScopeCode()->willReturn('ecommerce');
+        $value->getAttributeCode()->willReturn('attribute_with_very_long_decimal');
+
+        $attribute = new Attribute(
+            'attribute_with_very_long_decimal',
+            AttributeTypes::NUMBER,
+            [],
+            true,
+            true,
+            null,
+            true
+        );
+
+        $getAttributes->forCode('attribute_with_very_long_decimal')->shouldBeCalled()->willReturn($attribute);
+
+        $this->normalize($value)->shouldReturn(
+            [
+                'locale' => 'en_US',
+                'scope'  => 'ecommerce',
+                'data'   => '15.50787678676788',
+            ]
+        );
+    }
+
     function it_normalizes_a_number_product_value_without_decimal(
-        $normalizer,
+        NormalizerInterface $normalizer,
         ValueInterface $value,
         GetAttributes $getAttributes
     ) {
@@ -212,8 +246,42 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         );
     }
 
+    function it_normalizes_a_number_product_value_with_decimal_allowed(
+        NormalizerInterface $normalizer,
+        ValueInterface $value,
+        GetAttributes $getAttributes
+    ) {
+        $normalizer->normalize('15.00', null, [])
+            ->shouldNotBeCalled();
+
+        $value->getData()->willReturn('15.00');
+        $value->getLocaleCode()->willReturn('en_US');
+        $value->getScopeCode()->willReturn('ecommerce');
+        $value->getAttributeCode()->willReturn('attribute_with_decimal_allowed');
+
+        $attribute = new Attribute(
+            'attribute_with_decimal_allowed',
+            AttributeTypes::NUMBER,
+            [],
+            true,
+            true,
+            null,
+            true
+        );
+
+        $getAttributes->forCode('attribute_with_decimal_allowed')->shouldBeCalled()->willReturn($attribute);
+
+        $this->normalize($value)->shouldReturn(
+            [
+                'locale' => 'en_US',
+                'scope'  => 'ecommerce',
+                'data'   => '15.0000',
+            ]
+        );
+    }
+
     function it_normalizes_a_simple_select(
-        $normalizer,
+        NormalizerInterface $normalizer,
         ValueInterface $value,
         AttributeOptionInterface $simpleSelect,
         GetAttributes $getAttributes
@@ -248,7 +316,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_multi_select(
-        $normalizer,
+        NormalizerInterface $normalizer,
         OptionsValueInterface $value,
         AttributeOptionInterface $multiSelect,
         GetAttributes $getAttributes

@@ -130,20 +130,22 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
      */
     public function findPotentiallyPurgeableBy(array $options = [])
     {
-        $qb = $this->createQueryBuilder('v');
+        $connection = $this->_em->getConnection();
+        $qb = $connection->createQueryBuilder();
+        $qb->select('id', 'resource_id', 'resource_name', 'version')->from('pim_versioning_version');
 
         if (isset($options['resource_name'])) {
-            $qb->where('v.resourceName = :resourceName');
-            $qb->setParameter(':resourceName', $options['resource_name']);
+            $qb->andWhere('resource_name = :resource_name')
+               ->setParameter(':resource_name', $options['resource_name'], \PDO::PARAM_STR);
         }
 
         if (isset($options['date_operator']) && isset($options['limit_date'])) {
             if ('<' === $options['date_operator']) {
-                $qb->andWhere($qb->expr()->lt('v.loggedAt', ':limit_date'));
+                $qb->andWhere('logged_at < :logged_at');
             } else {
-                $qb->andWhere($qb->expr()->gt('v.loggedAt', ':limit_date'));
+                $qb->andWhere('logged_at > :logged_at');
             }
-            $qb->setParameter('limit_date', $options['limit_date'], Type::DATETIME);
+            $qb->setParameter(':logged_at', $options['limit_date']->format('Y-m-d'), \PDO::PARAM_STR);
         }
 
         $cursorOptions = [];
@@ -151,7 +153,8 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
             $cursorOptions['page_size'] = $options['batch_size'];
         }
 
-        return $this->cursorFactory->createCursor($qb, $cursorOptions);
+
+        return $qb->execute();
     }
 
     /**
