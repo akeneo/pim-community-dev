@@ -115,7 +115,6 @@ class Version_4_1_20200127171059_unauthorized_view_all_jobs_permission_Integrati
         return null;
     }
 
-
     private function authorizedPermission(Role $role): void
     {
         $privilege = new AclPrivilege();
