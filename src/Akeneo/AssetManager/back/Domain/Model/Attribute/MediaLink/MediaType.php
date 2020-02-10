@@ -24,11 +24,13 @@ class MediaType
     public const IMAGE = 'image';
     public const PDF = 'pdf';
     public const YOUTUBE = 'youtube';
+    public const VIMEO = 'vimeo';
     public const OTHER = 'other';
     public const MEDIA_TYPES = [
         self::IMAGE,
         self::PDF,
         self::YOUTUBE,
+        self::VIMEO,
         self::OTHER
     ];
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2020 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,12 +18,12 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 
 /**
- * @author    Julien Sanchez <julien@akeneo.com>
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @author    Valentin Dijkstra <valentin.dijkstra@akeneo.com>
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  */
-class MediaLinkYoutubeGenerator extends AbstractPreviewGenerator
+class MediaLinkVimeoGenerator extends AbstractPreviewGenerator
 {
-    private const YOUTUBE_PREVIEW_URL = 'https://img.youtube.com/vi/%s/hqdefault.jpg';
+    private const VIMEO_PREVIEW_URL = 'https://vimeo.com/api/v2/video/%s.json';
     public const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image'; // Should change depending on the preview type
     public const SUPPORTED_TYPES = [
         PreviewGeneratorRegistry::THUMBNAIL_TYPE       => 'am_url_image_thumbnail',
@@ -34,7 +34,7 @@ class MediaLinkYoutubeGenerator extends AbstractPreviewGenerator
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
         return MediaLinkAttribute::ATTRIBUTE_TYPE === $attribute->getType()
-               && MediaType::YOUTUBE === $attribute->getMediaType()->normalize()
+               && MediaType::VIMEO === $attribute->getMediaType()->normalize()
                && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 
@@ -45,7 +45,15 @@ class MediaLinkYoutubeGenerator extends AbstractPreviewGenerator
 
     protected function generateUrl(string $data, AbstractAttribute $attribute): string
     {
-        return sprintf(self::YOUTUBE_PREVIEW_URL, $data);
+        $url = '';
+        $raw = file_get_contents(sprintf(self::VIMEO_PREVIEW_URL, $data));
+
+        if ($raw) {
+            $json = json_decode($raw, true);
+            $url = $json[0]['thumbnail_large'];
+        }
+
+        return $url;
     }
 
     protected function defaultImage(): string

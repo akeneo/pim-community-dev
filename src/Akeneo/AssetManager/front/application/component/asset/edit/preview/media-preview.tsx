@@ -14,6 +14,7 @@ import {
 import MediaLinkData, {
   getYouTubeEmbedUrl,
   isMediaLinkData,
+  getVimeoEmbedUrl,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 import useImageLoader from 'akeneoassetmanager/application/hooks/image-loader';
@@ -34,7 +35,7 @@ const Message = styled.div`
   text-align: center;
 `;
 
-const YouTubePlayer = styled.iframe`
+const EmbedPlayer = styled.iframe`
   width: 640px;
   height: 360px;
   border: none;
@@ -95,7 +96,9 @@ const MediaLinkPreview = ({
 }) => {
   switch (attribute.media_type) {
     case MediaTypes.youtube:
-      return <YouTubePlayer src={getYouTubeEmbedUrl(mediaLinkData)} data-role="youtube-preview" allowFullScreen />;
+      return <EmbedPlayer src={getYouTubeEmbedUrl(mediaLinkData)} data-role="youtube-preview" allowFullScreen />;
+    case MediaTypes.vimeo:
+      return <EmbedPlayer src={getVimeoEmbedUrl(mediaLinkData)} data-role="vimeo-preview" allowFullScreen />;
     case MediaTypes.image:
     case MediaTypes.pdf:
     case MediaTypes.other:

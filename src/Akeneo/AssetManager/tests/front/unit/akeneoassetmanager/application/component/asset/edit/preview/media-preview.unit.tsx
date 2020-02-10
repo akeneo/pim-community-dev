@@ -25,6 +25,11 @@ const mediaLinkYouTubeAttribute = {
   type: MEDIA_LINK_ATTRIBUTE_TYPE,
   media_type: MediaTypes.youtube,
 };
+const mediaLinkVimeoAttribute = {
+  identifier: 'media_link_vimeo_attribute_identifier',
+  type: MEDIA_LINK_ATTRIBUTE_TYPE,
+  media_type: MediaTypes.vimeo,
+};
 const mediaFileAttribute = {
   identifier: 'image_attribute_identifier',
   type: MEDIA_FILE_ATTRIBUTE_TYPE,
@@ -76,6 +81,16 @@ describe('Tests media preview component', () => {
     );
 
     expect(container.querySelector('[data-role="youtube-preview"]')).toBeInTheDocument();
+  });
+
+  test('It renders a media link vimeo preview', () => {
+    const {container} = render(
+      <ThemeProvider theme={akeneoTheme}>
+        <MediaPreview data={mediaLinkData} label="" attribute={mediaLinkVimeoAttribute} />
+      </ThemeProvider>
+    );
+
+    expect(container.querySelector('[data-role="vimeo-preview"]')).toBeInTheDocument();
   });
 
   test('It tells when the provided media link media type is unknown', () => {
