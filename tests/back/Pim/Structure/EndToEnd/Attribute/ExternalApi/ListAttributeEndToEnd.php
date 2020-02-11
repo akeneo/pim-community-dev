@@ -130,7 +130,7 @@ JSON;
 		}
 	},
 	"current_page": 2,
-	"items_count": 29,
+	"items_count": 30,
     "_embedded" : {
         "items" : [
             {$standardizedAttributes['a_metric']},

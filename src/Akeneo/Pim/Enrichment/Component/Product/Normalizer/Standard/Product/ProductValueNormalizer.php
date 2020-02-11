@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -49,8 +50,8 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
 
         return [
             'locale' => $entity->getLocaleCode(),
-            'scope'  => $entity->getScopeCode(),
-            'data'   => $data,
+            'scope' => $entity->getScopeCode(),
+            'data' => $data,
         ];
     }
 
@@ -70,7 +71,6 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
     protected function getCollectionValue(ValueInterface $value, ?string $format = null, array $context = []): array
     {
         $attribute = $this->getAttributes->forCode($value->getAttributeCode());
-
         if (null === $attribute) {
             return [];
         }
@@ -108,9 +108,7 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
         if (AttributeTypes::NUMBER === $attributeType && is_numeric($value->getData())) {
-            return $attribute->isDecimalsAllowed()
-                ? number_format($value->getData(), static::DECIMAL_PRECISION, '.', '')
-                : (int) $value->getData();
+            return $this->formatNumber($value, $attribute);
         }
 
         if ($value instanceof ScalarValue) {
@@ -132,5 +130,21 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
         $context['is_decimals_allowed'] = $attribute->isDecimalsAllowed();
 
         return $this->normalizer->normalize($value->getData(), $format, $context);
+    }
+
+    /**
+     * Cut all the ending zeros after coma if decimals are more than 4
+     * @return int|string
+     */
+    private function formatNumber(ValueInterface $value, Attribute $attribute)
+    {
+        if (!$attribute->isDecimalsAllowed()) {
+            return (int)$value->getData();
+        }
+
+        $data = $value->getData();
+        $formattedNumber = number_format($data, static::DECIMAL_PRECISION, '.', '');
+
+        return strlen($formattedNumber) >= strlen($data) ? $formattedNumber : rtrim($data, '0');
     }
 }

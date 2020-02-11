@@ -215,7 +215,6 @@ error:
   forbidden: Prohibido. Usted no tiene permitido acceder a esta página
 alert:
   attribute_option:
-    error_occurred_during_submission: Se produjo un error durante el envío del formulario al servidor
     save_before_edit_other: Por favor registre sus modificaciones en otras filas antes de editar este
   session_storage:
     not_available: Su navegador parece no ser compatible con sessionStorage. Por favor contacte a su administrador

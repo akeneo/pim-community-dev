@@ -42,7 +42,7 @@ class NumberPresenter implements PresenterInterface
 
         if (floor($value) != $value) {
             $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 2);
-            $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 4);
+            $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 100); // I didn't find a way to pass an infinite number parameter to NumberFormatter
         }
 
         return $numberFormatter->format($value);
