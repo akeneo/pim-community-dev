@@ -43,4 +43,8 @@ Upscale pim-web & pim-daemon :
 
 `kubectl scale -n srnt-${INSTANCE_NAME} deploy/pim-web deploy/pim-daemon --replicas=2`
 
-Remove "hook" in values.yaml
+In values.yaml, remove "hook"
+
+Create user to test :
+
+`bin/console pim:user:create adminakeneo adminakeneo franck.brouard@akeneo.com test1 test2 en_US --admin -n`
