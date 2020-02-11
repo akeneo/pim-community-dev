@@ -45,10 +45,5 @@ Upscale pim-web & pim-daemon :
 
 In values.yaml, remove "hook"
 
-Create user to test :
 
-`bin/console pim:user:create adminakeneo adminakeneo franck.brouard@akeneo.com test1 test2 en_US --admin -n`
-
-Remove user after tests :
-
-`DELETE FROM oro_user WHERE email="franck.brouard@akeneo.com";`
+-- To test migrations : SELECT COUNT(*) FROM akeneo_asset_manager_asset;
