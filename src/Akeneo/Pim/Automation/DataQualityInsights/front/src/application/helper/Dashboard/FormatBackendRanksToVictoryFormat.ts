@@ -1,12 +1,12 @@
-type Ranks = {
+export type Ranks = {
   [rank: string]: number;
 }
 
-type AxisRates = {
+export type AxisRates = {
   [date: string]: Ranks;
 };
 
-type Dataset = {
+export type Dataset = {
   [axisName: string]: AxisRates;
 };
 
