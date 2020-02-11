@@ -178,7 +178,7 @@ ifeq ($(CI),true)
 	git config user.name "Michel Tag"
 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
 endif
-	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG_DATE//v}';/g" src/Akeneo/Platform/EnterpriseVersion.php
+	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG_DATE}';/g" src/Akeneo/Platform/EnterpriseVersion.php
 	git add src/Akeneo/Platform/EnterpriseVersion.php
 	git commit -m "Prepare SaaS ${IMAGE_TAG}"
 
