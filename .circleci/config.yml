@@ -520,6 +520,58 @@ workflows:
                 requires:
                     - ready_to_release?
 
+  on_demand:
+      jobs:
+          - ready_to_build?:
+                type: approval
+                filters:
+                    branches:
+                        only: master
+          - checkout:
+                requires:
+                    - ready_to_build?
+          - build_dev:
+                is_pull_request: false
+                requires:
+                    - checkout
+          - build_prod:
+                requires:
+                    - checkout
+          - deploy_master_environment:
+                requires:
+                    - build_prod
+          - deploy_upgrade_pim3_environment:
+                requires:
+                    - deploy_master_environment
+          - test_back_static_and_acceptance:
+                requires:
+                    - build_dev
+          - test_front_static_acceptance_and_integration:
+                requires:
+                    - build_dev
+          - test_back_phpunit:
+                requires:
+                    - build_dev
+          - back_behat_legacy:
+                requires:
+                    - build_dev
+          - test_back_data_migrations:
+                requires:
+                    - build_dev
+          - test_back_performance:
+                requires:
+                    - build_dev
+          - release:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
+                    - test_back_phpunit
+                    - test_back_performance
+                    - back_behat_legacy
+                    - deploy_master_environment
+                    - deploy_upgrade_pim3_environment
+                    - test_back_data_migrations
+
 commands:
   set_gcloud_config:
     description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."
