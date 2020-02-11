@@ -33,6 +33,7 @@ const eeConfig = {
     'akeneoassetmanager/application/action/asset/router',
     'akeneoassetmanager/application/action/asset',
     'akeneoassetmanager/application/component/asset-family/edit/header',
+    'akeneoreferenceentity/tools',
 
     'src/Akeneo/AssetManager/front/tools',
     'vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/public/lib',
@@ -53,6 +54,8 @@ const eeConfig = {
     'src/Akeneo/AssetManager/front/application/action/asset/router',
     'src/Akeneo/AssetManager/front/application/action/asset',
     'src/Akeneo/AssetManager/front/application/component/asset-family/edit/header',
+    'src/Akeneo/ReferenceEntity/front/tools',
+    'src/Akeneo/ReferenceEntity/front/infrastructure/tools/error-handler',
   ],
 };
 
