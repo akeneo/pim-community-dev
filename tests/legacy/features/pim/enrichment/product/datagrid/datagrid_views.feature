@@ -56,7 +56,7 @@ Feature: Datagrid views
     And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Some shoes"
     When I display the columns SKU, Name, Family and Manufacturer
-    Then I should see the columns Family, Sku, Manufacturer, Name
+    Then I should see the columns Family, Name, Manufacturer, Sku
     Then I should see the text "Nike"
     When I update the view
     And I apply the "Some shoes" view
