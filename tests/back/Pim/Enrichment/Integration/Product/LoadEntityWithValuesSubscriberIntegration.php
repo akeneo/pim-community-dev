@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Cache\LRUCachedGetAttributes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Test\Integration\TestCase;
 
@@ -56,26 +57,26 @@ SQL;
 
     public function testItDoesNotLoadValuesOfAProductForWhichThereIsARemovedAttribute()
     {
+        $this->updateFooProduct();
         $this->removeAttribute('a_metric');
         $amputatedStandardValues = $this->removeAttributeFromAllStandardValues('a_metric');
         $expectedValues = $this->getValuesFromStandardValues(
             $amputatedStandardValues
         );
 
-        $this->updateFooProduct();
         $product = $this->findProductByIdentifier('foo');
         $this->assertProductHasValues($expectedValues, $product);
     }
 
     public function testItDoesNotLoadValuesOfAProductForWhichThereIsARemovedAttributeOptionOfSimpleselect()
     {
+        $this->updateFooProduct();
         $this->removeAttributeOptionFromAttribute('a_simple_select', 'optionB');
         $amputatedStandardValues = $this->removeAttributeFromAllStandardValues('a_simple_select');
         $expectedValues = $this->getValuesFromStandardValues(
             $amputatedStandardValues
         );
 
-        $this->updateFooProduct();
         $product = $this->findProductByIdentifier('foo');
         $this->assertProductHasValues($expectedValues, $product);
     }
@@ -438,6 +439,7 @@ SQL;
             );
         }
         $this->get('pim_catalog.remover.attribute')->remove($attributeToRemove);
+        $this->getAttributesCache()->resetCache();
     }
 
     /**
@@ -488,5 +490,10 @@ SQL;
         $allStandardValues = $this->getStandardValuesWithAllAttributes();
         $allStandardValues[$attributeCode][0]['data'] = $data;
         return $allStandardValues;
+    }
+
+    private function getAttributesCache(): LRUCachedGetAttributes
+    {
+        return $this->get('akeneo.pim.structure.query.get_attributes');
     }
 }

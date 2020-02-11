@@ -197,6 +197,6 @@ class PurgeCommand extends Command
             }
         }
 
-        $this->getVersionPurger()->purge($purgeOptions, $output);
+        $this->versionPurger->purge($purgeOptions, $output);
     }
 }

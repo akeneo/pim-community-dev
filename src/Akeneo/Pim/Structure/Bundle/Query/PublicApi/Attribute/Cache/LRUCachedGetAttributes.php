@@ -23,7 +23,7 @@ final class LRUCachedGetAttributes implements GetAttributes
     public function __construct(GetAttributes $getAttributes)
     {
         $this->getAttributes = $getAttributes;
-        $this->cache = new LRUCache(1000);
+        $this->resetCache();
     }
 
     /**
@@ -54,5 +54,13 @@ final class LRUCachedGetAttributes implements GetAttributes
         };
 
         return $this->cache->getForKey($attributeCode, $fetchNonFoundAttributeCodes);
+    }
+
+    /**
+     * This method must be used only in special cases, like tests when we want to explicitely clear clear the cache
+     */
+    public function resetCache(): void
+    {
+        $this->cache = new LRUCache(1000);
     }
 }

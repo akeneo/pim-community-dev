@@ -4,8 +4,10 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Stand
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -202,7 +204,9 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             true,
             true,
             null,
-            true
+            true,
+            'integer',
+            []
         );
 
         $getAttributes->forCode('attribute_with_very_long_decimal')->shouldBeCalled()->willReturn($attribute);
@@ -272,7 +276,9 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             true,
             true,
             null,
-            true
+            true,
+            'integer',
+            []
         );
 
         $getAttributes->forCode('attribute_with_decimal_allowed')->shouldBeCalled()->willReturn($attribute);
