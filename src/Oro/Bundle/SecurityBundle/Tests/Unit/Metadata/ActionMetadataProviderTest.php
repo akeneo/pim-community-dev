@@ -62,7 +62,7 @@ class ActionMetadataProviderTest extends \PHPUnit_Framework_TestCase
                                 'type'       => 'action',
                                 'group_name' => 'TestGroup',
                                 'label'      => 'TestLabel',
-                                'enabled_by_default' => false,
+                                'enabled_at_creation' => false,
                             ]
                         )
                     ]

@@ -102,7 +102,7 @@ class RoleUpdater implements ObjectUpdaterInterface
             }
 
             foreach ($extension->getClasses() as $class) {
-                if (!$class->isEnabledByDefault()) {
+                if (!$class->isEnabledAtCreation()) {
                     $oid = new ObjectIdentity($extension->getExtensionKey(), $class->getClassName());
                     $this->aclManager->setPermission($sid, $oid, 0, true);
                 }

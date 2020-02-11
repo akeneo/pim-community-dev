@@ -17,7 +17,7 @@ class AclTest extends \PHPUnit_Framework_TestCase
                 'group_name'       => 'SomeGroup',
                 'label'            => 'SomeLabel',
                 'ignore_class_acl' => true,
-                'enabled_by_default' => false,
+                'enabled_at_creation' => false,
             ]
         );
         $this->assertEquals('test_acl', $annotation->getId());
@@ -27,7 +27,7 @@ class AclTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('SomeGroup', $annotation->getGroup());
         $this->assertEquals('SomeLabel', $annotation->getLabel());
         $this->assertTrue($annotation->getIgnoreClassAcl());
-        $this->assertFalse($annotation->isEnabledByDefault());
+        $this->assertFalse($annotation->isEnabledAtCreation());
     }
 
     /**

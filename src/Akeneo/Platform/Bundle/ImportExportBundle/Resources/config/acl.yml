@@ -120,4 +120,4 @@ pim_enrich_job_tracker_view_all_jobs:
     type: action
     label: pim_enrich.acl.job_tracker.view_all_jobs
     group_name: pim_enrich.acl_group.job_tracker
-    enabled_by_default: false
+    enabled_at_creation: false
