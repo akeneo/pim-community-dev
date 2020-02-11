@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9089: Fix error when a category is unknown during a product search
+
 # 3.2.37 (2020-02-04)
 
 ## Bug fixes:
