@@ -84,11 +84,13 @@ interface VersionRepositoryInterface
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null);
 
     /**
+     * @deprecated Will be removed in 4.0
+     *
      * Find all versions potentially purgeable for given options
      *
      * @param array $options
      *
-     * @return CursorInterface
+     * @return CursorInterface|\PDOStatement
      */
     public function findPotentiallyPurgeableBy(array $options = []);
 

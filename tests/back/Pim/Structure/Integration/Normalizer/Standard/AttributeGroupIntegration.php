@@ -38,6 +38,7 @@ class AttributeGroupIntegration extends TestCase
                 'a_metric_without_decimal',
                 'a_metric_negative',
                 'a_number_float',
+                'a_number_float_very_decimal',
                 'a_number_float_negative',
                 'a_number_integer',
                 'a_number_integer_negative',

@@ -51,7 +51,7 @@ Feature: Export products with localized numbers
     And the following product values:
       | product       | attribute | value        |
       | sandal-white  | metric    | 90.0000 GRAM |
-      | sandal-black  | metric    | 95.5500 GRAM |
+      | sandal-black  | metric    | 95.55 GRAM |
       | sandal-yellow | metric    | 85 GRAM      |
       | sandal-blue   | metric    | -5 GRAM      |
     And I launched the completeness calculator

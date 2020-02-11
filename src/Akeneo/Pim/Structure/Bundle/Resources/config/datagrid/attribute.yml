@@ -4,6 +4,7 @@ datagrid:
             locale_parameter: localeCode
             entityHint: attribute
             manageFilters: false
+            removeFiltersNotUsableInGrid: false
         source:
             type: pim_datasource_attribute
             acl_resource: pim_enrich_attribute_index

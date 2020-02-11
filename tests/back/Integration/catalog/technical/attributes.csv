@@ -9,6 +9,7 @@ a_metric_without_decimal_negative;;;;;;0;CELSIUS;attributeGroupC;0;;;Temperature
 a_metric_negative;;;;;;1;CELSIUS;attributeGroupB;0;;;Temperature;;1;;;;0;0;pim_catalog_metric;0;0;;;
 a_multi_select;;0;;;;;;attributeGroupC;0;;;;;;;;;0;0;pim_catalog_multiselect;0;0;;;
 a_number_float;;;;;;1;;attributeGroupB;0;;;;;0;;;;0;0;pim_catalog_number;0;0;;;
+a_number_float_very_decimal;;;;;;1;;attributeGroupB;0;;;;;0;;;;0;0;pim_catalog_number;0;0;;;
 a_number_float_negative;;;;;;1;;attributeGroupB;0;;;;;1;1000;-250;;0;0;pim_catalog_number;0;0;;;
 a_number_integer;;;;;;0;;attributeGroupB;0;;;;;0;;;;0;0;pim_catalog_number;0;0;;;
 a_number_integer_negative;;;;;;0;;attributeGroupB;0;;;;;1;;;;0;0;pim_catalog_number;0;0;;;

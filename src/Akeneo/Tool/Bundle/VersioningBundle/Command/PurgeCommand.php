@@ -7,7 +7,6 @@ use Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurgerInterface;
 use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -57,7 +56,7 @@ class PurgeCommand extends ContainerAwareCommand
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Purges the versions by batch',
-                100
+                1000
             )
             ->addOption(
                 'force',
@@ -152,14 +151,9 @@ class PurgeCommand extends ContainerAwareCommand
         $purgeOptions['date_operator'] = null !== $lessThanDays ? '>' : '<';
         $operatorLabel = null !== $lessThanDays ? 'younger' : 'older';
 
-        $purger = $this->getVersionPurger();
-
-        $totalVersions = $purger->getVersionsToPurgeCount($purgeOptions);
-
         $output->writeln(
             sprintf(
-                '<info>You are about to process %d versions %s%s than %d days.</info>',
-                $totalVersions,
+                '<info>You are about to process versions %s%s than %d days.</info>',
                 $resourceNameLabel,
                 $operatorLabel,
                 $purgeOptions['days_number']
@@ -181,20 +175,7 @@ class PurgeCommand extends ContainerAwareCommand
             }
         }
 
-        $progressBar = new ProgressBar($output, $totalVersions);
-        $this->getPurgeProgressBarAdvancer()->setProgressBar($progressBar);
-
-        $purgeVersionsCount = $purger->purge($purgeOptions);
-
-        $progressBar->finish();
-
-        $output->writeln('');
-        $output->writeln(
-            sprintf(
-                '<info>Successfully deleted %d versions.</info>',
-                $purgeVersionsCount
-            )
-        );
+        $this->getVersionPurger()->purge($purgeOptions, $output);
     }
 
     /**
