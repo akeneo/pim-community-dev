@@ -42,3 +42,5 @@ And upgrade the PIM :
 Upscale pim-web & pim-daemon :
 
 `kubectl scale -n srnt-${INSTANCE_NAME} deploy/pim-web deploy/pim-daemon --replicas=2`
+
+Remove "hook" in values.yaml
