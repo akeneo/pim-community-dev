@@ -31,6 +31,7 @@ services:
     onelogin_auth:
         class: 'OneLogin\Saml2\Auth'
         factory: 'onelogin_auth.factory:create'
+        public: true
 
     onelogin_auth.factory:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\OneLoginAuthFactory'
