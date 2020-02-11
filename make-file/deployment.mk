@@ -130,11 +130,11 @@ test-prod:
 NEW_IMAGE_TAG = $$(grep -o "const VERSION = '.*';$$" src/Akeneo/Platform/EnterpriseVersion.php | sed "s/const VERSION = '//" | sed "s/';//")
 .PHONY: release
 release:
-	@echo Tagging Docker image ${NEW_IMAGE_TAG}
+	@echo Tagging Docker image v${NEW_IMAGE_TAG}
 	docker pull eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG}
-	docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG} eu.gcr.io/akeneo-ci/pim-enterprise-dev:${NEW_IMAGE_TAG}
-	@echo Pushing Docker image ${NEW_IMAGE_TAG}
-	IMAGE_TAG=${NEW_IMAGE_TAG} $(MAKE) push-php-image-prod
+	docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG} eu.gcr.io/akeneo-ci/pim-enterprise-dev:v${NEW_IMAGE_TAG}
+	@echo Pushing Docker image v${NEW_IMAGE_TAG}
+	IMAGE_TAG=v${NEW_IMAGE_TAG} $(MAKE) push-php-image-prod
 	@echo Tagging EE dev repository
 ifeq ($(CI),true)
 	git config user.name "Michel Tag"
