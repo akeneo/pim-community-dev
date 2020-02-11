@@ -43,7 +43,7 @@ Feature: Show localized rules
     Then the row "my_rule" should contain the texts:
       | column    | value                                            |
       | Condition | If decimal_number equals 10.5                    |
-      | Action    | Then 5.5679 is set into another_decimal_number   |
+      | Action    | Then 5.56789 is set into another_decimal_number   |
       | Action    | Then €12.50 is set into decimal_price            |
       | Action    | Then 10.50 Centimeter is set into decimal_metric |
 
@@ -54,6 +54,6 @@ Feature: Show localized rules
     Then the row "my_rule" should contain the texts:
       | column    | value                                                 |
       | Condition | Si decimal_number est égal à 10,50                    |
-      | Action    | Alors 5,5679 est défini dans another_decimal_number   |
+      | Action    | Alors 5,56789 est défini dans another_decimal_number   |
       | Action    | Alors 12,50 € est défini dans decimal_price           |
       | Action    | Alors 10,50 Centimètre est défini dans decimal_metric |

@@ -111,6 +111,7 @@ config:
         pimee/product-edit-form/associations:                         pimenterpriseui/js/product/form/associations
         pimee/product-edit-form/meta/status-switcher:                 pimenterpriseui/js/product/form/meta/status-switcher
         pimee/product-edit-form/variant-navigation:                   pimenterpriseui/js/product/form/variant-navigation
+        pimee/product-edit-form/variant-navigation:                   pimenterpriseenrich/js/product/form/variant-navigation
         pim/common/tab/asset-transformation:                          pimenterpriseui/js/channel/tab/asset-transformation
 
         pimee/mass-edit-form/product/publish:                         pimenterpriseui/js/mass-edit/form/product/publish
