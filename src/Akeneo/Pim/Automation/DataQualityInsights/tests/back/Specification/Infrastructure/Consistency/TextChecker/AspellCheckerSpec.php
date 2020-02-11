@@ -18,7 +18,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultC
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source\GlobalOffsetCalculator;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Result\AspellGlobalOffsetCalculator;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Result\AspellLineNumberCalculator;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository;
 use Mekras\Speller\Aspell\Aspell;
 use Mekras\Speller\Issue;
@@ -30,16 +31,21 @@ use Prophecy\Argument;
  */
 class AspellCheckerSpec extends ObjectBehavior
 {
-    public function let(AspellDictionaryInterface $aspellDictionary, GlobalOffsetCalculator $globalOffsetCalculator, TextCheckerDictionaryRepository $textCheckerDictionaryRepository)
-    {
-        $this->beConstructedWith('aspell', $aspellDictionary, $globalOffsetCalculator, $textCheckerDictionaryRepository);
+    public function let(
+        AspellDictionaryInterface $aspellDictionary,
+        AspellGlobalOffsetCalculator $globalOffsetCalculator,
+        AspellLineNumberCalculator $lineNumberCalculator,
+        TextCheckerDictionaryRepository $textCheckerDictionaryRepository
+    ) {
+        $this->beConstructedWith('aspell', $aspellDictionary, $globalOffsetCalculator, $lineNumberCalculator, $textCheckerDictionaryRepository);
     }
 
     public function it_checks_test(
         Aspell $speller,
         $aspellDictionary,
         $textCheckerDictionaryRepository,
-        $globalOffsetCalculator
+        $globalOffsetCalculator,
+        $lineNumberCalculator
     ) {
         $text = 'Typos hapen.';
         $localeCode = new LocaleCode('en_US');
@@ -55,6 +61,7 @@ class AspellCheckerSpec extends ObjectBehavior
         $textCheckerDictionaryRepository->findByLocaleCode($localeCode)->willReturn([]);
 
         $globalOffsetCalculator->compute(Argument::cetera())->shouldBeCalled();
+        $lineNumberCalculator->compute(Argument::cetera())->shouldBeCalled();
 
         $result = $this->check($text, $localeCode);
 
@@ -66,7 +73,8 @@ class AspellCheckerSpec extends ObjectBehavior
         Aspell $speller,
         $aspellDictionary,
         $textCheckerDictionaryRepository,
-        $globalOffsetCalculator
+        $globalOffsetCalculator,
+        $lineNumberCalculator
     ) {
         $text = 'Typos happen.';
         $localeCode = new LocaleCode('en_US');
@@ -81,6 +89,7 @@ class AspellCheckerSpec extends ObjectBehavior
         $textCheckerDictionaryRepository->findByLocaleCode($localeCode)->willReturn([]);
 
         $globalOffsetCalculator->compute(Argument::cetera())->shouldNotBeCalled();
+        $lineNumberCalculator->compute(Argument::cetera())->shouldNotBeCalled();
 
         $result = $this->check($text, $localeCode);
 
@@ -92,7 +101,8 @@ class AspellCheckerSpec extends ObjectBehavior
         Aspell $speller,
         $aspellDictionary,
         $textCheckerDictionaryRepository,
-        $globalOffsetCalculator
+        $globalOffsetCalculator,
+        $lineNumberCalculator
     ) {
         $text = 'A text with Dior brand name not known by regular dictionary';
         $localeCode = new LocaleCode('en_US');
@@ -113,6 +123,7 @@ class AspellCheckerSpec extends ObjectBehavior
         ]);
 
         $globalOffsetCalculator->compute(Argument::cetera())->shouldNotBeCalled();
+        $lineNumberCalculator->compute(Argument::cetera())->shouldNotBeCalled();
 
         $result = $this->check($text, $localeCode);
 

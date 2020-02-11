@@ -15,10 +15,7 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributeAsMainTitleValueFromProductId;
-
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductRawValuesByAttributeQuery;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Test\Common\EntityBuilder;
 use Akeneo\Test\Integration\TestCase;
 
 final class GetAttributeAsMainTitleValueFromProductIdIntegration extends TestCase

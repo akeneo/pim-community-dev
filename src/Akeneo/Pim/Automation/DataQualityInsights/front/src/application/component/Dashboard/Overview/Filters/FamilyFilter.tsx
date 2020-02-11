@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useState, useEffect, useRef, ChangeEvent} from "react";
+import React, {ChangeEvent, FunctionComponent, useEffect, useRef, useState} from "react";
 import useFetchFamilies from "../../../../../infrastructure/hooks/useFetchFamilies";
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from "../../../../listener";
 import styled from "styled-components";

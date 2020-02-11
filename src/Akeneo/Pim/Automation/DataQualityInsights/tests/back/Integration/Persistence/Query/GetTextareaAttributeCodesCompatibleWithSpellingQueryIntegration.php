@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributesByTypeFromProductQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLocalizableAttributesByTypeFromProductQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetTextareaAttributeCodesCompatibleWithSpellingQuery;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;

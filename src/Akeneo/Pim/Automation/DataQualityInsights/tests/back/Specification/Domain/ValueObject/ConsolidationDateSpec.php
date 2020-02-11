@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use PhpSpec\ObjectBehavior;
 
 final class ConsolidationDateSpec extends ObjectBehavior

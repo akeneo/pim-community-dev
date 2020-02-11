@@ -11,27 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source;
+namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Result;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
  */
-class GlobalOffsetCalculator
+class AspellGlobalOffsetCalculator
 {
-    public function compute(string $source, int $lineNumber, int $offsetLine, string $separator = "\n"): int
+    public function compute(string $source, int $lineNumber, int $offsetFromLine, string $separator = "\n"): int
     {
-        if ($lineNumber < 0 || $offsetLine < 0) {
+        if ($lineNumber < 0 || $offsetFromLine < 0) {
             return 0;
         }
 
         $lines = explode($separator, $source);
         if ($lineNumber > count($lines)) {
-            return strlen($source);
+            return mb_strlen($source);
         }
 
-        $offset = $offsetLine;
+        $offset = $offsetFromLine;
         for ($i=1; $i < $lineNumber; $i++) {
-            $offset += (strlen($lines[$i-1]) + strlen($separator));
+            $offset += (mb_strlen($lines[$i-1]) + mb_strlen($separator));
         }
 
         return $offset;
