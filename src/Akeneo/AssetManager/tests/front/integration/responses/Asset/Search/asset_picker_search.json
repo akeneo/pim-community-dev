@@ -14,9 +14,7 @@
         {
           "field": "values.colors_designer_52609e00b7ee307e79eb100099b9a8bf",
           "operator": "IN",
-          "value": [
-            "red"
-          ],
+          "value": ["red"],
           "context": {}
         },
         {
@@ -34,10 +32,7 @@
         {
           "field": "code",
           "operator": "NOT IN",
-          "value": [
-            "starck",
-            "coco"
-          ],
+          "value": ["starck", "coco"],
           "context": {}
         }
       ]
@@ -55,15 +50,17 @@
             "en_US": "Dyson",
             "fr_FR": "Dyson"
           },
-          "image": [{
+          "image": [
+            {
               "channel": null,
               "locale": null,
               "attribute": "image_designer_ca1857d521a3e5dbc487791da82b7428",
               "data": {
-                  "filePath": "",
-                  "originalFilename": ""
+                "filePath": "",
+                "originalFilename": ""
               }
-          }],
+            }
+          ],
           "values": {
             "label_designer_d00de54460082b239164135175588647_en_US": {
               "attribute": "label_designer_d00de54460082b239164135175588647",
@@ -82,22 +79,6 @@
               "channel": null,
               "locale": null,
               "data": "red"
-            },
-            "city_designer_79eb100099b9a8bf52609e00b7ee307e": {
-              "attribute": "city_designer_79eb100099b9a8bf52609e00b7ee307e",
-              "channel": null,
-              "locale": null,
-              "data": "city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717",
-              "context": {
-                "labels": {
-                  "city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717": {
-                    "labels": {
-                      "en_US": "Paris"
-                    },
-                    "code": "paris"
-                  }
-                }
-              }
             }
           },
           "completeness": {

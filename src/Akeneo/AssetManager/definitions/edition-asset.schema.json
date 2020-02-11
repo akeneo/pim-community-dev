@@ -1,0 +1,22 @@
+{
+  "title": "BackendEditionAsset",
+  "type": "object",
+  "properties": {
+    "identifier": {"type": "string"},
+    "code": {"type": "string"},
+    "labels": {"$ref": "labels.schema.json"},
+    "image": {
+      "type": "array",
+      "items": {"$ref": "asset/edition-value.schema.json"}
+    },
+    "asset_family_identifier": {"type": "string"},
+    "values": {
+      "type": "array",
+      "items": {"$ref": "asset/edition-value.schema.json"}
+    },
+    "permission": {"$ref": "permission.schema.json"},
+    "attribute_as_main_media_identifier": {"type": "string"}
+  },
+  "required": ["identifier", "code", "labels", "values"],
+  "additionalProperties": false
+}

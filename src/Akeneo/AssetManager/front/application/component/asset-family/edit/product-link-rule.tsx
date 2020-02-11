@@ -28,13 +28,13 @@ import {
   HelperTitle,
   HelperText,
 } from 'akeneoassetmanager/platform/component/common/helper';
-
-const ajv = new Ajv({allErrors: true, verbose: true});
-const namingConventionSchema = require('akeneoassetmanager/infrastructure/model/asset-family-naming-convention.schema.json');
-const productLinkRulesSchema = require('akeneoassetmanager/infrastructure/model/asset-family-product-link-rules.schema.json');
-const securityContext = require('pim/security-context');
 import {Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import {ConfirmModal} from 'akeneoassetmanager/application/component/app/modal';
+import namingConventionSchema from 'akeneoassetmanager/infrastructure/model/asset-family/naming-convention.schema.json';
+import productLinkRulesSchema from 'akeneoassetmanager/infrastructure/model/asset-family/product-link-rules.schema.json';
+
+const ajv = new Ajv({allErrors: true, verbose: true});
+const securityContext = require('pim/security-context');
 
 interface StateProps {
   form: EditionFormState;
@@ -155,7 +155,11 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
           primaryAction={(defaultFocus: React.RefObject<any>) => (
             <ButtonContainer>
               {rights.assetFamily.execute_product_link_rules ? (
-                <Button color="outline" onClick={() => this.setState({isExecuteRulesModalOpen: true})} ref={defaultFocus}>
+                <Button
+                  color="outline"
+                  onClick={() => this.setState({isExecuteRulesModalOpen: true})}
+                  ref={defaultFocus}
+                >
                   {__(`pim_asset_manager.asset_family.button.execute_product_link_rules`)}
                 </Button>
               ) : null}

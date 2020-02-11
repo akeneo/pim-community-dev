@@ -5,10 +5,10 @@ import hydrateAll from 'akeneoassetmanager/application/hydrator/hydrator';
 import {getJSON} from 'akeneoassetmanager/tools/fetch';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
-import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import hydrateAttribute from 'akeneoassetmanager/application/hydrator/attribute';
 import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
-import validateBackendAssetFamily from 'akeneoassetmanager/infrastructure/validator/asset-family';
+import {validateBackendAssetFamily} from 'akeneoassetmanager/infrastructure/validator/asset-family';
 import {
   AssetFamilyListItem,
   createAssetFamilyListItemFromNormalized,
@@ -35,9 +35,7 @@ export class AssetFamilyFetcherImplementation implements AssetFamilyFetcher {
     return {
       assetFamily: hydrator(backendAssetFamily),
       assetCount: backendAssetFamily.asset_count,
-      attributes: backendAssetFamily.attributes.map((normalizedAttribute: NormalizedAttribute) =>
-        hydrateAttribute(normalizedAttribute)
-      ),
+      attributes: backendAssetFamily.attributes.map(hydrateAttribute),
       permission: {
         assetFamilyIdentifier: identifier,
         edit: backendAssetFamily.permission.edit,

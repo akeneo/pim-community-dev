@@ -27,9 +27,9 @@ import {
   HelperTitle,
   HelperText,
 } from 'akeneoassetmanager/platform/component/common/helper';
+import schema from 'akeneoassetmanager/infrastructure/model/asset-family/transformations.schema.json';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
-const schema = require('akeneoassetmanager/infrastructure/model/asset-family-transformations.schema.json');
 const securityContext = require('pim/security-context');
 
 interface StateProps {

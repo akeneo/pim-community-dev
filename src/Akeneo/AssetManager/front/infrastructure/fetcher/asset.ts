@@ -11,12 +11,14 @@ import AssetCode, {assetCodeStringValue} from 'akeneoassetmanager/domain/model/a
 import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
-import ListAsset, {ValueCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
-import LabelCollection from 'akeneoassetmanager/domain/model/label-collection';
-import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
+import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
+import {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {BackendEditionAsset} from 'akeneoassetmanager/infrastructure/model/edition-asset';
+import {BackendListAsset} from 'akeneoassetmanager/infrastructure/model/list-asset';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
-import {ListValueCollection} from 'akeneoassetmanager/domain/model/asset/list-value';
+import {validateBackendListAsset} from 'akeneoassetmanager/infrastructure/validator/list-asset';
+import {validateBackendEditionAsset} from 'akeneoassetmanager/infrastructure/validator/edition-asset';
+import {denormalizeAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 const routing = require('routing');
 
@@ -27,39 +29,24 @@ export type AssetResult = {
   permission: AssetFamilyPermission;
 };
 
-type BackendEditionAsset = {
-  identifier: string;
-  code: string;
-  asset_family_identifier: string;
-  labels: LabelCollection;
-  values: EditionValue[];
-};
-
 const denormalizeEditionAsset = (assetFamily: AssetFamily) => (backendAsset: BackendEditionAsset): EditionAsset => {
   return {
     identifier: backendAsset.identifier,
     code: backendAsset.code,
-    labels: backendAsset.labels,
+    labels: denormalizeLabelCollection(backendAsset.labels),
     assetFamily,
-    values: backendAsset.values,
+    values: backendAsset.values.map(backendEditionValue => ({
+      ...backendEditionValue,
+      attribute: denormalizeAttribute(backendEditionValue.attribute),
+    })),
   };
-};
-
-type BackendListAsset = {
-  identifier: string;
-  code: string;
-  completeness: NormalizedCompleteness;
-  asset_family_identifier: string;
-  labels: LabelCollection;
-  values: ValueCollection;
-  image: ListValueCollection;
 };
 
 const denormalizeListAsset = (backendAsset: BackendListAsset): ListAsset => {
   return {
     identifier: backendAsset.identifier,
     code: backendAsset.code,
-    labels: backendAsset.labels,
+    labels: denormalizeLabelCollection(backendAsset.labels),
     assetFamilyIdentifier: backendAsset.asset_family_identifier,
     values: backendAsset.values,
     image: backendAsset.image,
@@ -73,7 +60,7 @@ export class AssetFetcherImplementation implements AssetFetcher {
   } = {};
 
   async fetch(assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode): Promise<AssetResult> {
-    const [backendAsset, assetFamilyResult] = await Promise.all([
+    const [assetData, assetFamilyResult] = await Promise.all([
       await getJSON(
         routing.generate('akeneo_asset_manager_asset_get_rest', {
           assetFamilyIdentifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
@@ -83,14 +70,14 @@ export class AssetFetcherImplementation implements AssetFetcher {
       assetFamilyFetcher.fetch(denormalizeAssetFamilyIdentifier(assetFamilyIdentifier)),
     ]);
 
-    //TODO add json schema validation
-    const asset = denormalizeEditionAsset(assetFamilyResult.assetFamily)(backendAsset);
+    const backendEditionAsset = validateBackendEditionAsset(assetData);
+    const editionAsset = denormalizeEditionAsset(assetFamilyResult.assetFamily)(backendEditionAsset);
 
     return {
-      asset,
+      asset: editionAsset,
       permission: {
         assetFamilyIdentifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
-        edit: backendAsset.permission.edit,
+        edit: assetData.permission.edit,
       },
     };
   }
@@ -108,10 +95,13 @@ export class AssetFetcherImplementation implements AssetFetcher {
       query
     ).catch(errorHandler);
 
-    // TODO check json schema validation
+    const listAssets = backendAssets.items.map((assetData: any) => {
+      const backendListAsset = validateBackendListAsset(assetData);
+      return denormalizeListAsset(backendListAsset);
+    });
 
     return {
-      items: backendAssets.items.map(denormalizeListAsset),
+      items: listAssets,
       matchesCount: backendAssets.matches_count,
       totalCount: backendAssets.total_count,
     };

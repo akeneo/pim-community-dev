@@ -1,0 +1,7 @@
+{
+  "title": "BackendPermission",
+  "type": "object",
+  "patternProperties": {
+    ".+": {"type": "boolean"}
+  }
+}
