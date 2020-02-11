@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -52,7 +53,11 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_filter_with_operator_IN_LIST(SearchQueryBuilder $sqb) {
+    function it_adds_a_filter_with_operator_IN_LIST(
+        SearchQueryBuilder $sqb,
+        CategoryRepositoryInterface $categoryRepository,
+        CategoryInterface $category
+    ) {
         $sqb->addFilter(
             [
                 'terms' => [
@@ -60,12 +65,17 @@ class CategoryFilterSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalled();
+        $categoryRepository->findOneBy(['code' => 't-shirt'])->willReturn($category);
 
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter('categories', Operators::IN_LIST, ['t-shirt'], 'en_US', 'ecommerce', []);
     }
 
-    function it_adds_a_filter_with_operator_NOT_IN_LIST(SearchQueryBuilder $sqb) {
+    function it_adds_a_filter_with_operator_NOT_IN_LIST(
+        SearchQueryBuilder $sqb,
+        CategoryRepositoryInterface $categoryRepository,
+        CategoryInterface $category
+    ) {
         $sqb->addMustNot(
             [
                 'terms' => [
@@ -73,6 +83,7 @@ class CategoryFilterSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalled();
+        $categoryRepository->findOneBy(['code' => 't-shirt'])->willReturn($category);
 
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter('categories', Operators::NOT_IN_LIST, ['t-shirt'], 'en_US', 'ecommerce', []);
@@ -129,7 +140,11 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->addFieldFilter('categories', Operators::UNCLASSIFIED, [], 'en_US', 'ecommerce', []);
     }
 
-    function it_adds_a_filter_with_operator_IN_LIST_OR_UNCLASSIFIED(SearchQueryBuilder $sqb) {
+    function it_adds_a_filter_with_operator_IN_LIST_OR_UNCLASSIFIED(
+        SearchQueryBuilder $sqb,
+        CategoryRepositoryInterface $categoryRepository,
+        CategoryInterface $category
+    ) {
         $sqb->addFilter([
             'bool' => [
                 'should' => [
@@ -149,6 +164,7 @@ class CategoryFilterSpec extends ObjectBehavior
                 'minimum_should_match' => 1,
             ]
         ])->shouldBeCalled();
+        $categoryRepository->findOneBy(['code' => 't-shirt'])->willReturn($category);
 
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['t-shirt'], 'en_US', 'ecommerce', []);
@@ -257,8 +273,26 @@ class CategoryFilterSpec extends ObjectBehavior
         )->during('addFieldFilter', ['categories', Operators::IN_LIST, [false], null, null, []]);
     }
 
-    function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(SearchQueryBuilder $sqb) {
+    function it_throws_an_exception_when_the_given_category_code_is_unknown(
+        SearchQueryBuilder $sqb,
+        CategoryRepositoryInterface $categoryRepository
+    ) {
         $this->setQueryBuilder($sqb);
+        $categoryRepository->findOneBy(['code' => 'unknown-category'])->willReturn(null);
+
+        $this->shouldThrow(
+            new ObjectNotFoundException('Object "category" with code "unknown-category" does not exist')
+        )->during('addFieldFilter', ['categories', Operators::IN_LIST, ['unknown-category']]);
+    }
+
+    function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
+        SearchQueryBuilder $sqb,
+        CategoryRepositoryInterface $categoryRepository,
+        CategoryInterface $category
+    ) {
+        $this->setQueryBuilder($sqb);
+        $categoryRepository->findOneBy(['code' => 't-shirt'])->willReturn($category);
+
         $this->shouldThrow(
             InvalidOperatorException::notSupported(
                 'CONTAINS',
