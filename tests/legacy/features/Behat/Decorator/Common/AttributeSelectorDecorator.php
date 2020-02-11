@@ -62,7 +62,12 @@ class AttributeSelectorDecorator extends ElementDecorator
     public function clear()
     {
         $button = $this->spin(function () {
-            return $this->find('css', '.reset, .clear');
+            $button = $this->find('css', '.reset');
+            if (null === $button) {
+                $button = $this->find('css', '.clear');
+            }
+
+            return $button;
         }, 'Cannot find the clear button');
 
         $button->click();

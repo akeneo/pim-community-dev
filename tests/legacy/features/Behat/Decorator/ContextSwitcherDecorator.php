@@ -38,10 +38,11 @@ class ContextSwitcherDecorator extends ElementDecorator
             }
             $toggle->click();
 
-            $option = $dropdown->find(
-                'css',
-                sprintf('*[data-locale="%s"], a[href*="%s"]', $localeCode, $localeCode)
-            );
+            $option = $dropdown->find('css', sprintf('*[data-locale="%s"]', $localeCode));
+
+            if (null === $option) {
+                $option = $dropdown->find('css', sprintf('a[href*="%s"]', $localeCode));
+            }
             if (null === $option) {
                 return false;
             }
