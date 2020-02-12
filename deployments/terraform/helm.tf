@@ -37,26 +37,16 @@ data "helm_repository" "akeneo-charts" {
   url  = "gs://akeneo-charts"
 }
 
-resource "null_resource" "helm_dependencies_update" {
-  provisioner "local-exec" {
-    interpreter = ["/usr/bin/env", "bash", "-c"]
-    #FIXME: For the moment, chart definition is outside from the module
-    # For CI/dev we have a relative from the root module defined in deployments/instances/<instance_name>
-    command = <<EOF
-helm dependencies update ${path.module}/pim/
-EOF
-  }
-}
-
 resource "null_resource" "helm_release_pim" {
   triggers {
         values = "${file("./values.yaml")}"
         tf-helm-pim-values = "${data.template_file.helm_pim_config.rendered}"
   }
-  depends_on   = ["null_resource.helm_dependencies_update","local_file.helm_pim_config"]
+  depends_on   = ["local_file.helm_pim_config"]
   provisioner "local-exec" {
     interpreter = ["/usr/bin/env", "bash", "-c"]
     command = <<EOF
+helm dependencies update ${path.module}/pim/
 yq w -i ${path.module}/pim/Chart.yaml version ${var.pim_version}
 yq w -i ${path.module}/pim/Chart.yaml appVersion ${var.pim_version}
 helm upgrade --wait --install --force --timeout 1501 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
