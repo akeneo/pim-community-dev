@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Extension\MassAction;
 
+use Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -102,7 +103,13 @@ class MassActionDispatcher
         if (true === $parameters['inset']) {
             $filters = [['field' => 'id', 'operator' => 'IN', 'value' => $parameters['values']]];
         } else {
-            $filters = $datasource->getProductQueryBuilder()->getRawFilters();
+            $productQueryBuilder = $datasource->getProductQueryBuilder();
+            if ($productQueryBuilder instanceof ProductAndProductModelQueryBuilder) {
+                // PIM-9079: add automatic filters to have the same behavior as the product datagrid filters.
+                $productQueryBuilder->addAutomaticProductVisibilityFilters();
+            }
+
+            $filters = $productQueryBuilder->getRawFilters();
         }
 
         $datasourceParams = $datasource->getParameters();
@@ -303,7 +310,8 @@ class MassActionDispatcher
     {
         if ($this->areAllRowsSelected($filters)) {
             foreach ($filters as &$filter) {
-                if ('parent' === $filter['field']) {
+                // PIM-9079: If the operator is EMPTY, we want specifically entities without parent => we must not change.
+                if ('parent' === $filter['field'] && $filter['operator'] !== 'EMPTY') {
                     $filter['field'] = 'ancestor.code';
                 }
             }

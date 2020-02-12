@@ -86,10 +86,17 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      */
     public function execute()
     {
+        $this->addAutomaticProductVisibilityFilters();
+
+        return $this->pqb->execute();
+    }
+
+    public function addAutomaticProductVisibilityFilters(): void
+    {
         if ($this->shouldFilterOnlyOnProducts()) {
             $this->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
 
-            return $this->pqb->execute();
+            return;
         }
 
         if ($this->shouldSearchDocumentsWithoutParent()) {
@@ -99,8 +106,6 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
         if ($this->shouldAggregateResults()) {
             $this->searchAggregator->aggregateResults($this->getQueryBuilder(), $this->getRawFilters());
         }
-
-        return $this->pqb->execute();
     }
 
     /**
