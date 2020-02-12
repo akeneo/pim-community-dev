@@ -7,7 +7,7 @@ const path = require('path');
 
 const rootDir = process.cwd();
 
-let t = Date.now();
+// let t = Date.now();
 
 // const WebpackShellPlugin = require('webpack-shell-plugin');
 // const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
@@ -22,7 +22,7 @@ const {aliases, config} = getModulePaths(rootDir, __dirname);
 
 createModuleRegistry(aliases, rootDir);
 
-console.log(`Step ${Date.now() - t}ms`);
+// console.log(`Step ${Date.now() - t}ms`);
 
 // exit;
 
@@ -41,13 +41,13 @@ for (let [key, value] of Object.entries(aliases)){
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
 
 const webpackConfig = {
-  // stats: {
-  //   hash: false,
+  stats: {
+    hash: false,
   //   maxModules: 5,
-  //   modules: false,
+    modules: false,
   //   timings: true,
   //   version: true,
-  // },
+  },
   optimization: {
     splitChunks: {
       // minSize: 1000000,
