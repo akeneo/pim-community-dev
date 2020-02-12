@@ -14,6 +14,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource;
 use Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource;
 use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension;
+use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 
 /**
@@ -92,6 +93,7 @@ class MassActionDispatcher
      */
     public function getRawFilters(array $parameters)
     {
+        $actionName = $parameters['actionName'] ?? '';
         $parameters = $this->prepareMassActionParameters($parameters);
         $datagrid = $parameters['datagrid'];
         $datasource = $datagrid->getDatasource();
@@ -104,8 +106,10 @@ class MassActionDispatcher
             $filters = [['field' => 'id', 'operator' => 'IN', 'value' => $parameters['values']]];
         } else {
             $productQueryBuilder = $datasource->getProductQueryBuilder();
-            if ($productQueryBuilder instanceof ProductAndProductModelQueryBuilder) {
-                // PIM-9079: add automatic filters to have the same behavior as the product datagrid filters.
+            if (strpos($actionName, 'quick_export_') !== false
+                && $productQueryBuilder instanceof ProductAndProductModelQueryBuilder
+            ) {
+                // PIM-9079: add automatic filters to have the same behavior between datagrid display and export.
                 $productQueryBuilder->addAutomaticProductVisibilityFilters();
             }
 
