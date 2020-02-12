@@ -9,9 +9,8 @@
   },
   "scripts": {
     "requirements": "node $npm_package_config_source/frontend/build/check-requirements.js",
-    "build": "yarn requirements && yarn update-extensions && yarn webpack",
-    "webpack": "NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
-    "webpack-dev": "NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
+    "webpack": "yarn requirements && yarn update-extensions && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
+    "webpack-dev": "yarn requirements && yarn update-extensions && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
     "webpack-watch": "NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch",
     "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
     "before-commit": "yarn prettier && yarn lint && yarn test",

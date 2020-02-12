@@ -20,7 +20,6 @@ function replaceRequire(config) {
 }
 
 function findModuleName(options, _module) {
-
   let moduleName = _module.rawRequest;
   if (options.aliases[moduleName] !== undefined) {
     return moduleName;
@@ -46,28 +45,6 @@ module.exports = function(content) {
   if (!hasModule(content)) return content;
 
   const options = utils.getOptions(this);
-
-  // let moduleRequest = this._module.rawRequest;
-  //
-  //
-  // const aliases = chain(options.aliases)
-  //   .invert()
-  //   .mapValues(alias => alias.replace(/\$$/, ''))
-  //   .value();
-  //
-  // let modulePath = this._module.userRequest;
-  // const moduleExt = path.extname(modulePath);
-  //
-  // modulePath = modulePath.replace(moduleExt, '');
-  //
-  // const moduleName = aliases[modulePath];
-  // if(modulePath === '/home/quentin/Work/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/public/js/router') {
-  //   console.log(this._module.rawRequest);
-  //   console.log(options.aliases);
-  //   console.log(aliases);
-  //   // console.log(aliases);
-  //   // console.log(modulePath, moduleName);
-  // }
 
   const moduleName = findModuleName(options, this._module);
 
