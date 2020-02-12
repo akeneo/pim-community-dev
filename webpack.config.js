@@ -67,6 +67,7 @@ const webpackConfig = {
   },
   devtool: 'source-map',
   resolve: {
+    symlinks: false,
     alias: resolverAliases,
     modules: [path.resolve('./public/bundles'), path.resolve('./node_modules')],
     extensions: ['.js', '.json', '.ts', '.tsx']
