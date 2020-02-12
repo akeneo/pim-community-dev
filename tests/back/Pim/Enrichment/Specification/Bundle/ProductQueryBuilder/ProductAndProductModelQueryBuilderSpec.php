@@ -102,7 +102,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
-        $rawFilters =[
+        $rawFilters = [
             [
                 'field'    => 'categories',
                 'operator' => 'IN OR UNCLASSIFIED',
@@ -520,5 +520,82 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $searchAggregator->aggregateResults($sqb, $rawFilters)->shouldBeCalled();
 
         $this->execute()->shouldReturn($cursor);
+    }
+
+    function it_add_automatic_visibility_filters(
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
+        SearchQueryBuilder $sqb
+    ) {
+        $rawFilters = [
+            [
+                'field' => 'categories',
+                'operator' => 'IN OR UNCLASSIFIED',
+                'value' => ['toto'],
+                'context' => [],
+                'type' => 'field',
+            ],
+        ];
+        $pqb->getRawFilters()->willReturn($rawFilters);
+
+        $pqb->addFilter('parent', Operators::IS_EMPTY, null, [])->shouldBeCalled();
+        $pqb->getQueryBuilder()->willReturn($sqb);
+        $searchAggregator->aggregateResults($sqb, $rawFilters)->shouldBeCalled();
+
+        $this->addAutomaticProductVisibilityFilters();
+    }
+
+    function it_does_not_add_automatic_visibility_filters(
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
+        SearchQueryBuilder $sqb
+    ) {
+        $rawFilters = [
+            [
+                'field' => 'groups',
+                'operator' => 'IN',
+                'value' => ['group_A', 'group_B'],
+                'context' => [],
+                'type' => 'field',
+            ],
+        ];
+
+        $pqb->getRawFilters()->willReturn($rawFilters);
+        $pqb->addFilter('entity_type', Argument::cetera())->shouldNotBeCalled();
+        $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
+        $pqb->getQueryBuilder()->willReturn($sqb);
+        $searchAggregator->aggregateResults($sqb, $rawFilters)->shouldBeCalled();
+
+        $this->addAutomaticProductVisibilityFilters();
+    }
+
+    function it_does_not_add_automatic_visibility_filters_and_does_not_aggregate(
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
+        SearchQueryBuilder $sqb
+    ) {
+        $rawFilters = [
+            [
+                'field' => 'groups',
+                'operator' => 'IN',
+                'value' => ['group_A', 'group_B'],
+                'context' => [],
+                'type' => 'field',
+            ],
+            [
+                'field' => 'id',
+                'operator' => '=',
+                'value' => 'ID12',
+                'context' => [],
+                'type' => 'field',
+            ],
+        ];
+
+        $pqb->getRawFilters()->willReturn($rawFilters);
+        $pqb->addFilter('entity_type', Argument::cetera())->shouldNotBeCalled();
+        $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
+        $searchAggregator->aggregateResults(Argument::cetera())->shouldNotBeCalled();
+
+        $this->addAutomaticProductVisibilityFilters();
     }
 }
