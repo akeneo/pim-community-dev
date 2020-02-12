@@ -1,16 +1,22 @@
 import React, {ReactNode} from 'react';
 import styled from 'styled-components';
-import iconUrl from '../assets/icons/info.svg';
+import infoIcon from '../assets/icons/info.svg';
+import warningIcon from '../assets/icons/warning.svg';
 import {PropsWithTheme} from '../theme';
 
-const SubsectionHint = styled.div`
+interface Level {
+    level: 'info' | 'warning';
+}
+const SubsectionHint = styled.div<Level>`
     align-items: center;
-    background: ${({theme}: PropsWithTheme) => theme.color.blue10};
+    background: ${(props: PropsWithTheme & Level) =>
+        'info' === props.level ? props.theme.color.blue10 : props.theme.color.yellow10};
     display: flex;
+    margin-bottom: 1px;
 `;
 
-const HintIcon = styled.div`
-    background-image: url(${iconUrl});
+const HintIcon = styled.div<Level>`
+    background-image: url(${props => ('info' === props.level ? infoIcon : warningIcon)});
     background-position: center;
     background-repeat: no-repeat;
     background-size: 20px;
@@ -29,9 +35,14 @@ const HintTitle = styled.div`
     margin-right: 10px;
 `;
 
-export const SmallHelper = ({children}: {children: ReactNode}) => (
-    <SubsectionHint className='AknSubsection'>
-        <HintIcon />
+type Props = {
+    children: ReactNode;
+    level?: 'info' | 'warning';
+};
+
+export const SmallHelper = ({children, level = 'info'}: Props) => (
+    <SubsectionHint className='AknSubsection' level={level}>
+        <HintIcon level={level} />
         <HintTitle>{children}</HintTitle>
     </SubsectionHint>
 );

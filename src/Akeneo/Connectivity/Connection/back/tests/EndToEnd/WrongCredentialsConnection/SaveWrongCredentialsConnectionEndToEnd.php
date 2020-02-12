@@ -37,8 +37,8 @@ class SaveWrongCredentialsConnectionEndToEnd extends ApiTestCase
         );
         Assert::assertEquals(Response::HTTP_OK, $apiClient->getResponse()->getStatusCode());
 
-        $wrongCredentialsCombination = $this->findWrongCredentials($apiConnection->code());
-        Assert::isNull($wrongCredentialsCombination);
+        $wrongCredentialsCombination = $this->findAllWrongCredentialsCombination();
+        Assert::assertEmpty($wrongCredentialsCombination);
     }
 
     public function test_that_wrong_credentials_combination_is_saved_after_authentication()
@@ -62,21 +62,18 @@ class SaveWrongCredentialsConnectionEndToEnd extends ApiTestCase
         );
         Assert::assertEquals(Response::HTTP_OK, $apiClient->getResponse()->getStatusCode());
 
-        $wrongCredentialsCombination = $this->findWrongCredentials($bynderConnection->code());
+        $wrongCredentialsCombination = $this->findAllWrongCredentialsCombination();
 
         /* TODO: Assert the good thing once done */
         Assert::assertIsArray($wrongCredentialsCombination);
         Assert::assertNotEmpty($wrongCredentialsCombination);
     }
 
-    private function findWrongCredentials(string $connectionCode)
+    private function findAllWrongCredentialsCombination(): ?array
     {
         $repository = $this->get('akeneo_connectivity.connection.persistence.repository.wrong_credentials_combination');
 
-        return $repository->find(
-            new ConnectionCode($connectionCode),
-            new \DateTime('now - 1 day', new \DateTimeZone('UTC'))
-        );
+        return $repository->findAll(new \DateTime('now - 1 day', new \DateTimeZone('UTC')));
     }
 
     protected function getConfiguration(): Configuration

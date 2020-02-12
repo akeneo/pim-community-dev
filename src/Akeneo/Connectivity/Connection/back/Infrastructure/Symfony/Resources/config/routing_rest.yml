@@ -49,3 +49,8 @@ audit_source_connections_event:
     methods: [GET]
     requirements:
         event_type: '[a-zA-Z_]+'
+
+wrong_credentials_combination_list:
+    path: '/wrong-credentials-combination'
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.wrong_credentials_combination:list }
+    methods: [GET]

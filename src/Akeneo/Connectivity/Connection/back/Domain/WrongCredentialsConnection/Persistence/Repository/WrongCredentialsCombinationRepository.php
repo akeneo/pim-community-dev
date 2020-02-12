@@ -15,5 +15,5 @@ interface WrongCredentialsCombinationRepository
 {
     public function create(WrongCredentialsCombination $wrongCredentialsCombination): void;
 
-    public function find(ConnectionCode $connectionCode, \DateTime $since): ?array;
+    public function findAll(\DateTime $since): array;
 }

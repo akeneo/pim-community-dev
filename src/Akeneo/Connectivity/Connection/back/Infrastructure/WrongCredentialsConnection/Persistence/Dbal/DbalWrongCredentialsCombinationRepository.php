@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\WrongCredentialsConnection\Persistence\Dbal;
 
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write\WrongCredentialsCombination;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepository;
 use Doctrine\DBAL\Connection;
@@ -37,19 +36,40 @@ SQL;
         ]);
     }
 
-    public function find(ConnectionCode $connectionCode, \DateTime $since): ?array
+    public function findAll(\DateTime $since): array
     {
         $selectSql = <<<SQL
-SELECT connection_code, username, MAX(authentication_date)
+SELECT connection_code, username, MAX(authentication_date) as date
 FROM akeneo_connectivity_connection_wrong_credentials_combination
-WHERE connection_code = :code AND authentication_date >= :since
+WHERE authentication_date >= :since
 GROUP BY connection_code, username
 SQL;
-        $sqlParams = [
-            'code' => (string) $connectionCode,
-            'since' => $since->format('Y-m-d'),
-        ];
 
-        return $this->dbalConnection->executeQuery($selectSql, $sqlParams)->fetchAll();
+        $results = $this->dbalConnection->executeQuery(
+            $selectSql,
+            ['since' => $since->format('Y-m-d')]
+        )->fetchAll();
+
+        return $this->normalize($results);
+    }
+
+    private function normalize(?array $wrongCombinations = []): array
+    {
+        $results = [];
+        foreach ($wrongCombinations as $wrongCombination) {
+            $code = $wrongCombination['connection_code'];
+            if (!isset($results[$code])) {
+                $results[$code] = [
+                    'code' => $code,
+                    'users' => [],
+                ];
+            }
+            $results[$code]['users'][$wrongCombination['username']] = [
+                'username' => $wrongCombination['username'],
+                'date' => $wrongCombination['date'],
+            ];
+        }
+
+        return $results;
     }
 }
