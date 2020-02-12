@@ -179,7 +179,7 @@ down-pim-saas-like:
 
 .PHONY: php-image-dev
 php-image-dev:
-	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag akeneo/pim-dev/php:7.3 --target dev .
+	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag akeneo/pim-dev/php:7.4 --target dev .
 
 .PHONY: php-image-prod
 php-image-prod:
