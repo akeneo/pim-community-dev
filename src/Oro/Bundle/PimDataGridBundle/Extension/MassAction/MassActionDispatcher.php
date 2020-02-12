@@ -106,10 +106,13 @@ class MassActionDispatcher
             $filters = [['field' => 'id', 'operator' => 'IN', 'value' => $parameters['values']]];
         } else {
             $productQueryBuilder = $datasource->getProductQueryBuilder();
+
+            // PIM-9079: add automatic filters to have the same behavior between datagrid display and export.
+            // In PQB we add these filters before execution. We add then too for consistency.
+            // Only quick export is impacted, as we don't want to impact bulk actions (like edit attributes, ...)
             if (strpos($actionName, 'quick_export_') !== false
                 && $productQueryBuilder instanceof ProductAndProductModelQueryBuilder
             ) {
-                // PIM-9079: add automatic filters to have the same behavior between datagrid display and export.
                 $productQueryBuilder->addAutomaticProductVisibilityFilters();
             }
 
