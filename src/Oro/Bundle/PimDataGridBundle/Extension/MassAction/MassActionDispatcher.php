@@ -3,6 +3,7 @@
 namespace Oro\Bundle\PimDataGridBundle\Extension\MassAction;
 
 use Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -14,7 +15,6 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource;
 use Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource;
 use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension;
-use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 
 /**
@@ -315,7 +315,7 @@ class MassActionDispatcher
         if ($this->areAllRowsSelected($filters)) {
             foreach ($filters as &$filter) {
                 // PIM-9079: If the operator is EMPTY, we want specifically entities without parent => we must not change.
-                if ('parent' === $filter['field'] && $filter['operator'] !== 'EMPTY') {
+                if ('parent' === $filter['field'] && $filter['operator'] !== Operators::IS_EMPTY) {
                     $filter['field'] = 'ancestor.code';
                 }
             }
