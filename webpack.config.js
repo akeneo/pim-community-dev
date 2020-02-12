@@ -11,7 +11,7 @@ const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
 
-createModuleRegistry(aliases, rootDir);
+createModuleRegistry(Object.keys(aliases), rootDir);
 
 const resolverAliases = {};
 for (let [key, value] of Object.entries(aliases)){
