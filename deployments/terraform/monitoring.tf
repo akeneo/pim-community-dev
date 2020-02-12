@@ -38,9 +38,7 @@ resource "google_monitoring_uptime_check_config" "https" {
 
     labels = {
       project_id = "${var.google_project_id}"
-      project    = "${var.google_project_id}"
       host       = "${replace(var.dns_external, "/\\.$/", "")}"
-      pfid       = "${local.pfid}"
     }
   }
 }
