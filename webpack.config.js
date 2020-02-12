@@ -11,7 +11,7 @@ const rootDir = process.cwd();
 
 // const WebpackShellPlugin = require('webpack-shell-plugin');
 // const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
-// const TerserPlugin = require('terser-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
@@ -69,18 +69,20 @@ const webpackConfig = {
       }
     },
     // moduleIds: 'hashed',
-    // minimizer: [new TerserPlugin({
-    //   cache: true,
-    //   parallel: true,
-    //   sourceMap: false,
-    //   terserOptions: {
-    //     ecma: 6,
-    //     mangle: true,
-    //     output: {
-    //       comments: false,
-    //     },
-    //   },
-    // })]
+    minimizer: [
+      new TerserPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: !isProd,
+        terserOptions: {
+      //     ecma: 6,
+      //     mangle: true,
+          output: {
+            comments: false,
+          },
+        },
+      })
+    ]
   },
   mode: (isProd ? 'production' : 'development'),
   target: 'web',
@@ -99,7 +101,7 @@ const webpackConfig = {
     alias: resolverAliases,
     //   symlinks: false,
   //   alias: _.mapKeys(aliases, (path, key) => `${key}$`),
-  //   modules: [path.resolve('./public/bundles'), path.resolve('./node_modules')],
+    modules: [path.resolve('./public/bundles'), path.resolve('./node_modules')],
     extensions: ['.js', '.json', '.ts', '.tsx']
   },
   module: {
@@ -243,11 +245,11 @@ const webpackConfig = {
         // ],
       },
 
-    //   {
-    //     test: /\.css$/,
-    //     include: /node_modules/,
-    //     loaders: ['style-loader', 'css-loader'],
-    //   },
+      {
+        test: /\.css$/,
+        // include: /node_modules/,
+        loaders: ['style-loader', 'css-loader'],
+      },
     ],
   },
 
