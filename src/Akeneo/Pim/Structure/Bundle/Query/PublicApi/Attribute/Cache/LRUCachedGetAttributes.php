@@ -57,7 +57,8 @@ final class LRUCachedGetAttributes implements GetAttributes
     }
 
     /**
-     * This method must be used only in special cases, like tests when we want to explicitely clear clear the cache
+     * You should never clear the cache except in very special cases. For example, when you delete an attribute in the same PHP process as creating/updating a product. 
+     * It mainly occurs when you are testing the PIM, as you can load an attribute in the cache during the Arrange part of the the test, delete this attribute in Act part of the test, and try to fetch the attribute in the Assert part of the test.
      */
     public function resetCache(): void
     {
