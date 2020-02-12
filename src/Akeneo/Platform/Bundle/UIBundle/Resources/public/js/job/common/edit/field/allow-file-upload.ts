@@ -1,4 +1,4 @@
-const BaseField = require('pimui/js/job/common/edit/field/switch');
+const BaseField = require('./switch');
 const editionProvider = require('pim/edition');
 
 class AllowFileUpload extends BaseField {
@@ -11,4 +11,4 @@ class AllowFileUpload extends BaseField {
     }
 }
 
-export = AllowFileUpload;
+export default AllowFileUpload;

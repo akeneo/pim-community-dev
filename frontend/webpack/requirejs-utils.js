@@ -102,18 +102,39 @@ const utils = {
      * @param  {String} baseDir The directory of the repo executing the command
      */
     createModuleRegistry(modules, baseDir) {
-        const registryFiles = {};
+        // const registryFiles = {};
+        //
+        // modules.forEach(file => {
+        //     registryFiles[`'${file}'`] = `require.resolve('${file}')`;
+        // });
 
-        modules.forEach(file => {
-            registryFiles[`'${file}'`] = `require.resolve('${file}')`;
-        });
+        //             '${modules[module].replace(baseDir, '../..')}'
+        // console.log(baseDir);
+        //         ${Object.keys(modules).map(module => ` '${module}': import(
+        //             /* webpackChunkName: "${module.split('/')[0].replace(/[\W]+/g, '')}" */
+        //             /* webpackMode: "eager" */
+        //             /* webpackPrefetch: true */
+        //             /* webpackPreload: true */
+        //             '${module}'
+        //         )`)}
 
         const registry = `module.exports = function(moduleName) {
-            const paths = ${JSON.stringify(registryFiles).replace(/\"/g, '')};
+            const paths = {
+                ${Object.keys(modules).map(module => ` '${module}': require.resolve('${module}')`)}
+            };
 
             if (paths[moduleName] === undefined) {
                 return console.error(moduleName + ' is missing from the registry - include it in your requirejs.yml and clear the app cache');
             }
+
+            // console.log(paths);
+            // console.log(moduleName);
+            // console.log(__webpack_modules__);
+            // import(moduleName).then(module => {
+            //     console.log(module);
+            // });
+            //
+            // __webpack_modules__[require.resolveWeak(moduleName)];
 
             return __webpack_require__(paths[moduleName])
         }`;

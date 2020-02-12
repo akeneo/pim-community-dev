@@ -1,93 +1,62 @@
-/* eslint-disable */
+/* eslint-env es6 */
 const fs = require('fs');
 const process = require('process');
+const rootDir = process.cwd();
 const webpack = require('webpack');
 const path = require('path');
-// const _ = require('lodash');
+const _ = require('lodash');
 
-const rootDir = process.cwd();
 
-let t = Date.now();
-
-// const WebpackShellPlugin = require('webpack-shell-plugin');
-// const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
-// const TerserPlugin = require('terser-webpack-plugin');
+const WebpackShellPlugin = require('webpack-shell-plugin');
+const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
 
-// console.log(aliases);
-// console.log(config);
-// exit;
-
-createModuleRegistry(aliases, rootDir);
-
-console.log(`Step ${Date.now() - t}ms`);
-
-// exit;
-
-// console.log(aliases);
-const resolverAliases = {};
-for (let [key, value] of Object.entries(aliases)){
-  resolverAliases[`${key}$`] = value;
-}
-
-// console.log(aliases);
-// exit;
-
-// console.log(resolverAliases);
-// console.log(Object.entries(aliases).map())
+createModuleRegistry(Object.keys(aliases), rootDir);
 
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
 
 const webpackConfig = {
-  // stats: {
-  //   hash: false,
-  //   maxModules: 5,
-  //   modules: false,
-  //   timings: true,
-  //   version: true,
-  // },
+  stats: {
+    hash: false,
+    maxModules: 5,
+    modules: false,
+    timings: true,
+    version: true,
+  },
   optimization: {
     splitChunks: {
-      // minSize: 1000000,
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          priority: -10,
           name: "vendor",
-          filename: "[name].min.js",
+          filename: "vendor.min.js",
           chunks: "all"
         },
-        default: {
-          priority: -20,
-          reuseExistingChunk: true
+        main: {
+          filename: 'main.min.js'
         }
-        // main: {
-        //   filename: 'main.min.js'
-        // }
       }
     },
-    // moduleIds: 'hashed',
-    // minimizer: [new TerserPlugin({
-    //   cache: true,
-    //   parallel: true,
-    //   sourceMap: false,
-    //   terserOptions: {
-    //     ecma: 6,
-    //     mangle: true,
-    //     output: {
-    //       comments: false,
-    //     },
-    //   },
-    // })]
+    moduleIds: 'hashed',
+    minimizer: [new TerserPlugin({
+      cache: true,
+      parallel: true,
+      sourceMap: false,
+      terserOptions: {
+        ecma: 6,
+        mangle: true,
+        output: {
+          comments: false,
+        },
+      },
+    })]
   },
   mode: (isProd ? 'production' : 'development'),
   target: 'web',
-  entry: {
-    main: path.resolve(rootDir, './public/bundles/pimui/js/index.js'),
-  },
-  // entry: ['babel-polyfill', path.resolve(rootDir, './public/bundles/pimui/js/index.js')],
+  entry: ['babel-polyfill', path.resolve(rootDir, './public/bundles/pimui/js/index.js')],
   output: {
     path: path.resolve('./public/dist/'),
     publicPath: '/dist/',
@@ -96,10 +65,9 @@ const webpackConfig = {
   },
   devtool: 'source-map',
   resolve: {
-    alias: resolverAliases,
-    //   symlinks: false,
-  //   alias: _.mapKeys(aliases, (path, key) => `${key}$`),
-  //   modules: [path.resolve('./public/bundles'), path.resolve('./node_modules')],
+    symlinks: false,
+    alias: _.mapKeys(aliases, (path, key) => `${key}$`),
+    modules: [path.resolve('./public/bundles'), path.resolve('./node_modules')],
     extensions: ['.js', '.json', '.ts', '.tsx']
   },
   module: {
@@ -177,6 +145,7 @@ const webpackConfig = {
           },
         ],
       },
+
       // Expose the require-polyfill to window
       {
         test: path.resolve(__dirname, './frontend/webpack/require-polyfill.js'),
@@ -188,21 +157,21 @@ const webpackConfig = {
         ],
       },
 
-    //   // Process the pim webpack files with babel
-    //   {
-    //     test: /\.js$/,
-    //     include: [/public\/bundles/, /webpack/, /spec/, /node_modules\/p\-queue/],
-    //     use: [
-    //       'thread-loader',
-    //       {
-    //         loader: 'babel-loader',
-    //         options: {
-    //           presets: ['@babel/preset-env'],
-    //           cacheDirectory: 'public/cache',
-    //         },
-    //       }
-    //     ],
-    //   },
+      // Process the pim webpack files with babel
+      {
+        test: /\.js$/,
+        include: [/public\/bundles/, /webpack/, /spec/, /node_modules\/p\-queue/],
+        use: [
+          'thread-loader',
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+              cacheDirectory: 'public/cache',
+            },
+          }
+        ],
+      },
 
       {
         test: /\.(svg)$/,
@@ -219,8 +188,6 @@ const webpackConfig = {
           {
             loader: 'ts-loader',
             options: {
-              transpileOnly: true,
-              experimentalWatchApi: true,
               configFile: path.resolve(rootDir, 'tsconfig.json'),
               context: path.resolve(rootDir),
             },
@@ -233,21 +200,21 @@ const webpackConfig = {
             },
           },
         ],
-        // include: /(public\/bundles)/,
-        // exclude: [
-        //   path.resolve(rootDir, 'node_modules'),
-        //   path.resolve(rootDir, 'vendor'),
-        //   path.resolve(rootDir, 'tests'),
-        //   path.resolve(__dirname, 'tests'),
-        //   path.resolve(rootDir, 'src')
-        // ],
+        include: /(public\/bundles)/,
+        exclude: [
+          path.resolve(rootDir, 'node_modules'),
+          path.resolve(rootDir, 'vendor'),
+          path.resolve(rootDir, 'tests'),
+          path.resolve(__dirname, 'tests'),
+          path.resolve(rootDir, 'src')
+        ],
       },
 
-    //   {
-    //     test: /\.css$/,
-    //     include: /node_modules/,
-    //     loaders: ['style-loader', 'css-loader'],
-    //   },
+      {
+        test: /\.css$/,
+        include: /node_modules/,
+        loaders: ['style-loader', 'css-loader'],
+      },
     ],
   },
 
@@ -256,25 +223,25 @@ const webpackConfig = {
   },
 
   plugins: [
-    // new WebpackShellPlugin({
-    //   onBuildStart: ['yarn run less', 'yarn update-extensions'],
-    //   dev: false
-    // }),
-    //
-    // new ExtraWatchWebpackPlugin({
-    //   files: ['src/**/*{form_extensions/**/*.yml,form_extensions.yml}'],
-    // }),
+    new WebpackShellPlugin({
+      onBuildStart: ['yarn run less', 'yarn update-extensions'],
+      dev: false
+    }),
+
+    new ExtraWatchWebpackPlugin({
+      files: ['src/**/*{form_extensions/**/*.yml,form_extensions.yml}'],
+    }),
 
     // Map modules to variables for global use
     new webpack.ProvidePlugin({_: 'underscore', Backbone: 'backbone', $: 'jquery', jQuery: 'jquery'}),
 
     // Ignore these directories when webpack watches for changes
-    // new webpack.WatchIgnorePlugin([
-    //   path.resolve(rootDir, './node_modules'),
-    //   path.resolve(rootDir, './app'),
-    //   path.resolve(rootDir, './var'),
-    //   path.resolve(rootDir, './vendor'),
-    // ]),
+    new webpack.WatchIgnorePlugin([
+      path.resolve(rootDir, './node_modules'),
+      path.resolve(rootDir, './app'),
+      path.resolve(rootDir, './var'),
+      path.resolve(rootDir, './vendor'),
+    ]),
 
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
