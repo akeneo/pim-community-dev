@@ -19,7 +19,7 @@ namespace Akeneo\Platform;
 class EnterpriseVersion
 {
     /** @staticvar string */
-    const VERSION = '4.0.3';
+    const VERSION = '4.0.4';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Daisy';
