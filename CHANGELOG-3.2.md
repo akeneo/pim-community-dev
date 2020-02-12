@@ -3,6 +3,7 @@
 ## Bug fixes:
 
 - PIM-9089: Fix error when a category is unknown during a product search
+- PIM-9079: Fix quick export when select all product models in the datagrid
 
 # 3.2.37 (2020-02-04)
 
