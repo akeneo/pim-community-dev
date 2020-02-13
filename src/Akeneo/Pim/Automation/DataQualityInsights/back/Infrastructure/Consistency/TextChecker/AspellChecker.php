@@ -18,7 +18,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\DictionaryNotFoun
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source\GlobalOffsetCalculator;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Result\AspellGlobalOffsetCalculator;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Result\AspellLineNumberCalculator;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source\TextSource;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository;
 use Mekras\Speller\Aspell\Aspell;
@@ -35,24 +36,23 @@ class AspellChecker implements TextChecker
     private $aspell;
 
     private $encoding;
-    /**
-     * @var GlobalOffsetCalculator
-     */
+
     private $globalOffsetCalculator;
 
-    /** @var AspellDictionaryInterface */
     private $aspellDictionary;
 
-    /** @var TextCheckerDictionaryRepository */
     private $textCheckerDictionaryRepository;
 
-    public function __construct(string $binaryPath, AspellDictionaryInterface $aspellDictionary, GlobalOffsetCalculator $globalOffsetCalculator, TextCheckerDictionaryRepository $textCheckerDictionaryRepository, $encoding = self::DEFAULT_ENCODING)
+    private $lineNumberCalculator;
+
+    public function __construct(string $binaryPath, AspellDictionaryInterface $aspellDictionary, AspellGlobalOffsetCalculator $globalOffsetCalculator, AspellLineNumberCalculator $lineNumberCalculator, TextCheckerDictionaryRepository $textCheckerDictionaryRepository, $encoding = self::DEFAULT_ENCODING)
     {
         $this->aspell = new Aspell($binaryPath);
         $this->globalOffsetCalculator = $globalOffsetCalculator;
         $this->encoding = $encoding;
         $this->aspellDictionary = $aspellDictionary;
         $this->textCheckerDictionaryRepository = $textCheckerDictionaryRepository;
+        $this->lineNumberCalculator = $lineNumberCalculator;
     }
 
     public function check(string $text, LocaleCode $localeCode): TextCheckResultCollection
@@ -98,12 +98,15 @@ class AspellChecker implements TextChecker
                 $line = (int) $line;
             }
 
+            $lineNumber = $this->lineNumberCalculator->compute($source, $line, $offset, $issue->word);
+            $globalOffset = $this->globalOffsetCalculator->compute($source, $lineNumber, $offset);
+
             $results->add(new TextCheckResult(
                 $issue->word,
                 TextCheckResult::SPELLING_ISSUE_TYPE,
-                $this->globalOffsetCalculator->compute($source, $line, $offset),
+                $globalOffset,
                 $offset,
-                $line,
+                $lineNumber,
                 $issue->suggestions
             ));
         }

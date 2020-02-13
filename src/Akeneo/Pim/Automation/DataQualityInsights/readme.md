@@ -34,14 +34,15 @@ The migration scripts handle:
 - the tables creation
 - the new jobs creation
 - the initialization of the dictionaries by activated locales (synchronously)
-- the initialization of the evaluation of all the active products of the catalog (asynchronously with the job queue)
+- the initialization of the evaluation of all the active products of the catalog by adding all the criteria of all the products in a `PENDING` status (will be evaluated asynchronously with a job ran by a CRON (NOT THE daemon queue))
 
 ## PIM Lifecycle
 On product save, the criteria that have to be evaluated are persisted in a `PENDING` status in the `pimee_data_quality_insights_criteria_evaluation` table.  
-A Job `data_quality_insights_evaluate_products_criteria` is added to the queue with the product id in parameter.
 
-The job is consumed by the queue.
+A CRON `pimee:data-quality-insights:evaluate-products` is configured to run every 30 min.
+This CRON add a job and run it as a subprocess (to handle a logical non-concurrency behavior)
 We find all the pending criteria of the product to evaluate and loop over them.
+Each CRON instance will evaluate 2500 products maximum.
 
 Each criterion is evaluated one by one.
 
@@ -65,6 +66,10 @@ Calls the completeness service and return all the non-required attributes with n
 Scope: All textarea attributes
 
 Evaluate the number of words in a textarea that are in uppercase.
+## Textarea lowercase rule
+Scope: All textarea attributes
+
+Check if there is capital letters everywhere after punctuation, new line,...
 ## Text title formatting
 Scope: For attribute type text, localizable, attribute as main title in the family of the product to evaluate.
 
@@ -95,7 +100,7 @@ Aim:
 - Purge old data
 
 Note:
-This command line must be in the CRONTAB.
+This command line must be in the CRONTAB once a day.
 
 `pimee:data-quality-insights:generate-aspell-dictionary-from-product-values`
 
@@ -105,12 +110,13 @@ Aim:
 Behavior:
 Retrieve all the product values per locale. All the words with more than 3 letters, and used more than 10 times in the catalog are considered as part of the dictionary.
 
-`pimee:data-quality-insights:evaluate-products -p <product_id> --full-catalog`
+`pimee:data-quality-insights:evaluate-products`
 
 Aim:
-- Force the evaluation of all the criteria of a product
-- And/Or schedule the evaluation of all the catalog
-- For Administration/Support/Dev purpose
+- Launch the evaluation of all the pending criteria of all the products
+
+Note:
+Aim to be launched every 30min.
 
 `pimee:data-quality-insights:consolidate-dashboard-rates <2020-01-10>`
 
@@ -148,22 +154,11 @@ You can add the `--full-catalog-evaluation` option to evaluate all the products 
 
 ### Jobs
 
-#### Good to know
-In order to have a quick feedback loop on evaluation of the criteria, we recommend to add a dedicated daemon queue for 
-the _data_quality_insights__* jobs like the following command:  
-
-    bin/console akeneo:batch:job-queue-consumer-daemon -j data_quality_insights_evaluate_products_criteria -j data_quality_insights_periodic_tasks
-
-The regular daemon of the pim have to exclude them like the following command:
-  
-    bin/console akeneo:batch:job-queue-consumer-daemon -b data_quality_insights_evaluate_products_criteria -b data_quality_insights_periodic_tasks
-    
-
 #### List of jobs
 
 `data_quality_insights_periodic_tasks`
 
-Aim: 
+Aim:
 - Generate dictionaries per language code (en, fr) based on product values for spelling criterion
 - Consolidate dashboard rates
 - Purge old data
@@ -177,4 +172,4 @@ Aim:
 - Evaluate the criteria of product id(s) in parameter of the job.
 
 Note:
-This Job is added on product save events
+This Job is added by the CRON. This job IS NOT pushed in the job-daemon-queue, it is run as a subprocess of the CRON.

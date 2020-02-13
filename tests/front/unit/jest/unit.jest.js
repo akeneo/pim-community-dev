@@ -20,6 +20,7 @@ const eeConfig = {
     'akeneoassetmanager/application/component/app/select2',
     'akeneoassetmanager/platform/component/common/checkbox',
     'akeneofranklininsights/react',
+    'akeneodataqualityinsights/react',
     'akeneoassetmanager/application/component/asset/index/completeness-filter',
     'akeneoassetmanager/application/component/asset/list/search-bar/search-field', // cannot trigger re-render
     'akeneoassetmanager/application/component/asset/list/search-bar', // cannot test hooks + asynchronous fetching
@@ -32,6 +33,7 @@ const eeConfig = {
     'akeneoassetmanager/application/action/asset/router',
     'akeneoassetmanager/application/action/asset',
     'akeneoassetmanager/application/component/asset-family/edit/header',
+    'akeneoreferenceentity/tools',
 
     'src/Akeneo/AssetManager/front/tools',
     'vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/public/lib',
@@ -39,6 +41,7 @@ const eeConfig = {
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/platform/component/common/checkbox',
     'src/Akeneo/AssetManager/front/infrastructure/fetcher',
     'src/Akeneo/Pim/Automation/FranklinInsights/Infrastructure/Symfony/Resources/public/react',
+    'src/Akeneo/Pim/Automation/DataQualityInsights/front',
     'src/Akeneo/AssetManager/front/application/component/asset/index/completeness-filter',
     'src/Akeneo/AssetManager/front/application/component/asset/list/search-bar/search-field', // cannot test hooks + asynchronous fetching + cannot trigger re-render
     'src/Akeneo/AssetManager/front/application/component/asset/list/search-bar', // cannot test hooks + asynchronous fetching
@@ -51,6 +54,8 @@ const eeConfig = {
     'src/Akeneo/AssetManager/front/application/action/asset/router',
     'src/Akeneo/AssetManager/front/application/action/asset',
     'src/Akeneo/AssetManager/front/application/component/asset-family/edit/header',
+    'src/Akeneo/ReferenceEntity/front/tools',
+    'src/Akeneo/ReferenceEntity/front/infrastructure/tools/error-handler',
   ],
 };
 
