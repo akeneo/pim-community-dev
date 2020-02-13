@@ -8,7 +8,6 @@ const config = Object.assign({}, prodConfig, {
   entry: {
     main: path.resolve(__dirname, './tests/front/common/templates/index.js'),
   },
-  // entry: ['babel-polyfill', path.resolve(__dirname, './tests/front/common/templates/index.js')],
   output: {
     path: path.resolve('./public/test_dist/'),
     publicPath: '/dist/',

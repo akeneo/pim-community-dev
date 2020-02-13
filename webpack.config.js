@@ -7,8 +7,8 @@ const path = require('path');
 const rootDir = process.cwd();
 
 const TerserPlugin = require('terser-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
+const isStrict = process.argv && process.argv.indexOf('--strict') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
 
@@ -186,13 +186,14 @@ const webpackConfig = {
       // Process the typescript loader files
       {
         test: /\.tsx?$/,
+        exclude: /node_modules|spec/,
         use: [
           {
             loader: 'ts-loader',
             options: {
-              // transpileOnly: true,
-              // experimentalWatchApi: true,
-              // onlyCompileBundledFiles: true,
+              transpileOnly: !(isProd || isStrict),
+              experimentalWatchApi: true,
+              onlyCompileBundledFiles: true,
               configFile: path.resolve(rootDir, 'tsconfig.json'),
               context: path.resolve(rootDir),
             },
@@ -229,17 +230,6 @@ const webpackConfig = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
       'process.env.EDITION': JSON.stringify(process.env.EDITION),
-    }),
-
-    new ForkTsCheckerWebpackPlugin({
-      tsconfig: path.resolve(rootDir, 'tsconfig.json'),
-      // async: !isProd,
-      async: false,
-      // reportFiles: [
-      //   '**/*.{ts,tsx}',
-      // ],
-    //   // useTypescriptIncrementalApi: true,
-    //   // measureCompilationTime: true,
     }),
   ],
 };
