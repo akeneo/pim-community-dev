@@ -32,6 +32,7 @@ export const connectionFormReducer: Reducer<CreateFormState, CreateFormAction> =
                     ...state.controls,
                     [action.name]: {
                         ...state.controls[action.name],
+                        name: action.name,
                         value: action.value,
                         errors: {},
                         dirty: true,

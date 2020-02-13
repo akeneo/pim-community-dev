@@ -5,6 +5,7 @@ services:
     oro_translation.controller:
         class: '%oro_translation.controller.class%'
         arguments: ['@translator', '@templating', 'OroTranslationBundle:Translation:translation.js.twig', '']
+        public: true
 
     Oro\Bundle\TranslationBundle\Command\OroTranslationDumpCommand:
         arguments:

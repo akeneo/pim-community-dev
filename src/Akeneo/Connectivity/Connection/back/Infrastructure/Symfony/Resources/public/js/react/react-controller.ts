@@ -24,7 +24,7 @@ abstract class ReactController extends BaseController {
   }
 
   renderRoute() {
-    this.el.append(mountReactElementRef(this.reactElementToMount()));
+    this.$el.append(mountReactElementRef(this.reactElementToMount()));
 
     return Deferred().resolve();
   }
@@ -32,7 +32,7 @@ abstract class ReactController extends BaseController {
   remove() {
     mediator.off('route_start', this.handleRouteChange, this);
 
-    this.el.remove();
+    this.$el.remove();
 
     return super.remove();
   }

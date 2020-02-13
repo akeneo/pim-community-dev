@@ -1,5 +1,13 @@
 # 4.0.x
 
+# 4.0.4 (2020-02-12)
+
+- PIM-9094: Fix non public controller class for Oro Translation
+
+# 4.0.3 (2020-02-05)
+
+# 4.0.2 (2020-02-04)
+
 ## Bug fixes
 
 - PIM-9076: Fix product count on datagrid when more than 10000 products

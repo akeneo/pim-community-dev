@@ -149,7 +149,7 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
         Assert::assertSame($expectedResult, $result);
     }
 
-        protected function getConfiguration(): Configuration
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }
