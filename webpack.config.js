@@ -22,6 +22,18 @@ for (let [key, value] of Object.entries(aliases)){
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
 
 const webpackConfig = {
+  entry: {
+    main: path.resolve(rootDir, './public/bundles/pimui/js/index.js'),
+  },
+  target: 'web',
+  mode: (isProd ? 'production' : 'development'),
+  context: path.resolve(rootDir),
+  output: {
+    path: path.resolve('./public/dist/'),
+    publicPath: '/dist/',
+    filename: '[name].min.js',
+    chunkFilename: '[name].bundle.js',
+  },
   stats: {
     hash: false,
     modules: false,
@@ -42,30 +54,24 @@ const webpackConfig = {
         }
       }
     },
+    minimize: isProd,
     minimizer: [
       new TerserPlugin({
         cache: true,
         parallel: true,
         sourceMap: !isProd,
+        exclude: /node_modules/,
+        extractComments: false,
         terserOptions: {
           output: {
+            ecma: 2015,
+            compress: true,
+            mangle: true,
             comments: false,
           },
         },
       })
     ]
-  },
-  mode: (isProd ? 'production' : 'development'),
-  target: 'web',
-  entry: {
-    main: path.resolve(rootDir, './public/bundles/pimui/js/index.js'),
-  },
-  context: path.resolve(rootDir),
-  output: {
-    path: path.resolve('./public/dist/'),
-    publicPath: '/dist/',
-    filename: '[name].min.js',
-    chunkFilename: '[name].bundle.js',
   },
   devtool: 'source-map',
   resolve: {
@@ -85,7 +91,7 @@ const webpackConfig = {
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env'],
-              cacheDirectory: path.resolve('./public/cache/'),
+              cacheDirectory: true,
             }
           },
           {
