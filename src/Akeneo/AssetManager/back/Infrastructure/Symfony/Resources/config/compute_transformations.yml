@@ -4,6 +4,10 @@ services:
         tags:
             - { name: 'liip_imagine.filter.loader', loader: colorspace }
 
+    Akeneo\AssetManager\Infrastructure\Filesystem\PostProcessor\ConvertToJPGPostProcessor:
+        tags:
+            - { name: 'liip_imagine.filter.post_processor', post_processor: 'convert_to_jpg' }
+
     # file utils:
     Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader:
         arguments:
@@ -17,6 +21,13 @@ services:
             - !tagged akeneo_assetmanager.transformation.operation_applier
 
     Akeneo\AssetManager\Infrastructure\Transformation\Operation\ColorspaceOperationApplier:
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@filesystem'
+        tags:
+            - { name: akeneo_assetmanager.transformation.operation_applier }
+
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\OptimizeJpegOperationApplier:
         arguments:
             - '@liip_imagine.filter.manager'
             - '@filesystem'
