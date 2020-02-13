@@ -25,7 +25,6 @@ services:
 
     fos_oauth_server.server:
         class: '%fos_oauth_server.server.class%'
-#        parent: '@fos_oauth_server.server'
         arguments:
             - '@fos_oauth_server.storage'
             - '@event_dispatcher'

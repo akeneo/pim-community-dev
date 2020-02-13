@@ -50,6 +50,10 @@ class OAuth2 extends BaseOAuth2
     {
         $response = parent::grantAccessToken($request);
 
+        if (null === $request->get('username') || '' === $request->get('username')) {
+            return $response;
+        }
+
         if ($request->getMethod() === 'POST') {
             $inputData = $request->request->all();
         } else {

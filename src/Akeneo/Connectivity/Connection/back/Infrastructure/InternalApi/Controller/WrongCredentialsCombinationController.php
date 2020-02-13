@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\WrongCredentialsConnection\InternalApi;
+namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,6 +27,6 @@ class WrongCredentialsCombinationController
             new \DateTime('now - 7 day', new \DateTimeZone('UTC'))
         );
 
-        return new JsonResponse($wrongCombinations);
+        return new JsonResponse($wrongCombinations->normalize());
     }
 }

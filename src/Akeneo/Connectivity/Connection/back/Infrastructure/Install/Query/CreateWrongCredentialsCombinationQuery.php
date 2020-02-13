@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\WrongCredentialsConnection\Install;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Install\Query;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -11,11 +11,13 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\WrongCredentialsConnecti
 final class CreateWrongCredentialsCombinationQuery
 {
     const QUERY = <<<SQL
-CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection_wrong_credentials_combination
+CREATE TABLE akeneo_connectivity_connection_wrong_credentials_combination
 (
     connection_code     varchar(100) not null,
     username            varchar(100) not null,
-    authentication_date datetime     not null
+    authentication_date datetime     not null,
+    PRIMARY KEY (connection_code, username)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
+
 SQL;
 }

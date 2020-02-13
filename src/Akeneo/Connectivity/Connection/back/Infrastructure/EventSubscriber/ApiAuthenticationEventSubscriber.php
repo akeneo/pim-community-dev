@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\WrongCredentialsConnection;
+namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write\WrongCredentialsCombination;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQuery;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQuery;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepository;
-use Akeneo\Connectivity\Connection\Infrastructure\WrongCredentialsConnection\Persistence\Dbal\DbalSelectConnectionCodeByClientIdQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectConnectionCodeByClientIdQuery;
 use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

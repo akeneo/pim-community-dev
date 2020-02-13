@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\WrongCredentialsConnection\Persistence\Dbal;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository;
 
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Read\WrongCredentialsCombinations;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write\WrongCredentialsCombination;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepository;
 use Doctrine\DBAL\Connection;
@@ -27,6 +28,7 @@ class DbalWrongCredentialsCombinationRepository implements WrongCredentialsCombi
         $insertSQL = <<<SQL
 INSERT INTO akeneo_connectivity_connection_wrong_credentials_combination
 VALUES (:connection_code, :username, NOW())
+ON DUPLICATE KEY UPDATE authentication_date = NOW()
 SQL;
 
         $stmt = $this->dbalConnection->prepare($insertSQL);
@@ -36,13 +38,13 @@ SQL;
         ]);
     }
 
-    public function findAll(\DateTime $since): array
+    public function findAll(\DateTime $since): WrongCredentialsCombinations
     {
         $selectSql = <<<SQL
-SELECT connection_code, username, MAX(authentication_date) as date
+SELECT connection_code, JSON_OBJECTAGG(username, authentication_date) as users
 FROM akeneo_connectivity_connection_wrong_credentials_combination
 WHERE authentication_date >= :since
-GROUP BY connection_code, username
+GROUP BY connection_code
 SQL;
 
         $results = $this->dbalConnection->executeQuery(
@@ -50,26 +52,12 @@ SQL;
             ['since' => $since->format('Y-m-d')]
         )->fetchAll();
 
-        return $this->normalize($results);
-    }
-
-    private function normalize(?array $wrongCombinations = []): array
-    {
-        $results = [];
-        foreach ($wrongCombinations as $wrongCombination) {
-            $code = $wrongCombination['connection_code'];
-            if (!isset($results[$code])) {
-                $results[$code] = [
-                    'code' => $code,
-                    'users' => [],
-                ];
-            }
-            $results[$code]['users'][$wrongCombination['username']] = [
-                'username' => $wrongCombination['username'],
-                'date' => $wrongCombination['date'],
-            ];
+        if (null !== $results && !empty($results)) {
+            array_walk($results, function (array &$combinations) {
+                $combinations['users'] = json_decode($combinations['users'], true);
+            });
         }
 
-        return $results;
+        return new WrongCredentialsCombinations($results);
     }
 }

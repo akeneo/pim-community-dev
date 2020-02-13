@@ -4,10 +4,10 @@ export type WrongCredentialsCombinations = {
 
 export type WrongCredentialsCombination = {
     code: string;
-    users: {
-        [username: string]: {
+    users: [
+        {
             username: string;
             date: string;
-        };
-    };
+        }
+    ];
 };

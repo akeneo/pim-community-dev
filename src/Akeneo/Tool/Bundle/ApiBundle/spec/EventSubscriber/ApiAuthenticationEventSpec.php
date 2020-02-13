@@ -10,6 +10,7 @@ class ApiAuthenticationEventSpec extends ObjectBehavior
 {
     public function it_is_an_event(): void
     {
+        $this->beConstructedWith('magento', '42');
         $this->shouldHaveType(ApiAuthenticationEvent::class);
     }
 

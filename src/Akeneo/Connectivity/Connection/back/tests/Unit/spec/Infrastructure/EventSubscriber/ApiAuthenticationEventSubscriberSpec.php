@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\WrongCredentialsConnection;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write\WrongCredentialsCombination;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQuery;

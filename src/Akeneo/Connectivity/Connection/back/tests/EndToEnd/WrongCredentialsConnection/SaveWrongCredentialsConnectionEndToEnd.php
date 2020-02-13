@@ -1,10 +1,9 @@
 <?php
 declare(strict_types=1);
 
-
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\WrongCredentialsConnection;
 
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Read\WrongCredentialsCombinations;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PHPUnit\Framework\Assert;
@@ -37,8 +36,9 @@ class SaveWrongCredentialsConnectionEndToEnd extends ApiTestCase
         );
         Assert::assertEquals(Response::HTTP_OK, $apiClient->getResponse()->getStatusCode());
 
-        $wrongCredentialsCombination = $this->findAllWrongCredentialsCombination();
-        Assert::assertEmpty($wrongCredentialsCombination);
+        $wrongCredentialsCombinations = $this->findAllWrongCredentialsCombination();
+        Assert::assertInstanceOf(WrongCredentialsCombinations::class, $wrongCredentialsCombinations);
+        Assert::assertEmpty($wrongCredentialsCombinations->normalize());
     }
 
     public function test_that_wrong_credentials_combination_is_saved_after_authentication()
@@ -62,14 +62,15 @@ class SaveWrongCredentialsConnectionEndToEnd extends ApiTestCase
         );
         Assert::assertEquals(Response::HTTP_OK, $apiClient->getResponse()->getStatusCode());
 
-        $wrongCredentialsCombination = $this->findAllWrongCredentialsCombination();
-
-        /* TODO: Assert the good thing once done */
-        Assert::assertIsArray($wrongCredentialsCombination);
-        Assert::assertNotEmpty($wrongCredentialsCombination);
+        $wrongCredentialsCombinations = $this->findAllWrongCredentialsCombination();
+        Assert::assertInstanceOf(WrongCredentialsCombinations::class, $wrongCredentialsCombinations);
+        $normalizedResult = $wrongCredentialsCombinations->normalize();
+        Assert::assertArrayHasKey('bynder', $normalizedResult);
+        Assert::assertCount(1, $normalizedResult['bynder']['users']);
+        Assert::assertSame($magentoConnection->username(), $normalizedResult['bynder']['users'][0]['username']);
     }
 
-    private function findAllWrongCredentialsCombination(): ?array
+    private function findAllWrongCredentialsCombination(): WrongCredentialsCombinations
     {
         $repository = $this->get('akeneo_connectivity.connection.persistence.repository.wrong_credentials_combination');
 

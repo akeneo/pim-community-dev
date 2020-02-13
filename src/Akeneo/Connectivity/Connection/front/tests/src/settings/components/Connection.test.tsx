@@ -10,7 +10,12 @@ describe('Connection', () => {
     it('should render', () => {
         const component = createWithProviders(
             <MemoryRouter>
-                <Connection code={'google-shopping'} label={'Google Shopping'} image={'a/b/c/path.jpg'} />
+                <Connection
+                    code={'google-shopping'}
+                    label={'Google Shopping'}
+                    image={'a/b/c/path.jpg'}
+                    hasWrongCombination={false}
+                />
             </MemoryRouter>
         );
 
@@ -21,7 +26,12 @@ describe('Connection', () => {
         const history = createMemoryHistory();
         const {getByText} = renderWithProviders(
             <Router history={history}>
-                <Connection code={'google-shopping'} label={'Google Shopping'} image={'a/b/c/path.jpg'} />
+                <Connection
+                    code={'google-shopping'}
+                    label={'Google Shopping'}
+                    image={'a/b/c/path.jpg'}
+                    hasWrongCombination={false}
+                />
             </Router>
         );
 

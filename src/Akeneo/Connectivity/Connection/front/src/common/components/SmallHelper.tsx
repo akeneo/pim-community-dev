@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {PropsWithChildren} from 'react';
 import styled from 'styled-components';
 import infoIcon from '../assets/icons/info.svg';
 import warningIcon from '../assets/icons/warning.svg';
@@ -35,14 +35,15 @@ const HintTitle = styled.div`
     margin-right: 10px;
 `;
 
-type Props = {
-    children: ReactNode;
-    level?: 'info' | 'warning';
-};
+type Props = PropsWithChildren<{warning?: boolean} | {info?: boolean}>;
 
-export const SmallHelper = ({children, level = 'info'}: Props) => (
-    <SubsectionHint className='AknSubsection' level={level}>
-        <HintIcon level={level} />
-        <HintTitle>{children}</HintTitle>
-    </SubsectionHint>
-);
+export const SmallHelper = ({children, ...props}: Props) => {
+    const level = 'warning' in props ? 'warning' : 'info';
+
+    return (
+        <SubsectionHint className='AknSubsection' level={level}>
+            <HintIcon level={level} />
+            <HintTitle>{children}</HintTitle>
+        </SubsectionHint>
+    );
+};
