@@ -119,6 +119,9 @@ class MigrateAssetCategoryLabelsCommand extends Command
             $categoryCode = $categoryLabel['category_code'];
             $label = $categoryLabel['label'];
             $locale = $categoryLabel['locale'];
+            if (null === $label) {
+                continue;
+            }
 
             foreach ($options as $i => $currentOption) {
                 if ($currentOption['code'] === $categoryCode) {
