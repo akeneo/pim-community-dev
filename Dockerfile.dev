@@ -1,4 +1,4 @@
-FROM akeneo/pim-php-base:4.0
+FROM akeneo/pim-php-base:master
 
 ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
 
