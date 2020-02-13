@@ -67,16 +67,21 @@ class Scale extends AbstractTransformation
 
         if (null !== $ratio) {
             $command = sprintf('-scale %d%%', $ratio);
-        } elseif (null !== $width) {
-            if ($width > $image->getSize()->getWidth()) {
+        } else {
+            if (null !== $width && $width > $image->getSize()->getWidth()) {
                 throw new ImageWidthException($file->getPathname(), $this->getName());
             }
-            $command = sprintf('-scale %d', $width);
-        } else {
-            if ($height > $image->getSize()->getHeight()) {
+            if (null !== $height && $height > $image->getSize()->getHeight()) {
                 throw new ImageHeightException($file->getPathname(), $this->getName());
             }
-            $command = sprintf('-scale x%d', $height);
+
+            if (null !== $width && null !== $height) {
+                $command = sprintf('-scale %dx%d', $width, $height);
+            } elseif (null !== $width) {
+                $command = sprintf('-scale %d', $width);
+            } else {
+                $command = sprintf('-scale x%d', $height);
+            }
         }
 
         $this->launcher->convert($command, $file->getPathname());

@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9099: Handle both width and height in scale image transformation
+
 # 3.2.38 (2020-02-12)
 
 # 3.2.37 (2020-02-04)
