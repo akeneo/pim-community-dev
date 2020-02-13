@@ -217,31 +217,14 @@ class NavigationContext extends PimContext implements PageObjectAware
         }, sprintf('You are not on the %s grid', $pageName));
 
         $this->wait();
-    }
 
-    /**
-     * @param string $not
-     * @param string $page
-     *
-     * @Given /^I should( not)? be able to access the ([^"]*) page$/
-     */
-    public function iShouldNotBeAbleToAccessThePage($not, $page)
-    {
-        $this->spin(function () use ($not, $page) {
-            $this->iAmOnThePage($page);
-
-            if (!$not) {
-                $this->assertSession()->pageTextNotContains('Forbidden');
+        if ('products' === $pageName) {
+            $this->spin(function () {
+                $this->assertSession()->pageTextContains('CATEGORY');
 
                 return true;
-            } else {
-                $this->assertSession()->pageTextContains('Forbidden');
-
-                return true;
-            }
-
-            return false;
-        }, sprintf('Can access to the page "%s"', $page));
+            }, 'You are not on the product grid');
+        }
     }
 
     /**
