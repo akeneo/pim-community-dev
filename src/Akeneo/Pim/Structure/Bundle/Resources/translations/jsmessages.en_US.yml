@@ -40,6 +40,8 @@ pim_enrich.entity.family_variant:
             fail: The family variant could not be updated.
         create:
             success: Family variant successfully created
+        delete:
+            success: Family variant successfully deleted
     module:
         edit:
             common_attributes: Common attributes
