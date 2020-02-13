@@ -55,7 +55,12 @@ const eeConfig = {
     'src/Akeneo/AssetManager/front/application/action/asset',
     'src/Akeneo/AssetManager/front/application/component/asset-family/edit/header',
     'src/Akeneo/ReferenceEntity/front/tools',
-    'src/Akeneo/ReferenceEntity/front/infrastructure/tools/error-handler',
+    'src/Akeneo/ReferenceEntity/front/infrastructure',
+    'src/Akeneo/ReferenceEntity/front/infrastructure/tools',
+    'src/Akeneo/ReferenceEntity/tests',
+    'vendor/akeneo/pim-community-dev',
+    'src/Akeneo/AssetManager/front/infrastructure',
+    'src/Akeneo/AssetManager/tests',
   ],
 };
 

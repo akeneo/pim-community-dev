@@ -1,27 +1,27 @@
-const timeout = 5000;
-const {getRequestContract, listenRequest} = require('../../../../acceptance/cucumber/tools');
+'use strict';
+
+const {getRequestContract} = require('../../../../acceptance/cucumber/tools');
+
+import fetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
+import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {createCode} from 'akeneoreferenceentity/domain/model/code';
+import * as fetch from 'akeneoreferenceentity/tools/fetch';
+
+jest.mock('pim/router', () => {});
+jest.mock('pim/security-context', () => {}, {virtual: true});
+jest.mock('routing');
+jest.mock('akeneoreferenceentity/application/configuration/attribute');
+jest.mock('akeneoreferenceentity/application/configuration/value');
 
 describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
-  let page = global.__PAGE__;
-
-  beforeEach(async () => {
-    await page.reload();
-  }, timeout);
-
   it('It fetches one record', async () => {
     const requestContract = getRequestContract('Record/RecordDetails/ok.json');
+    // @ts-ignore
+    fetch.getJSON = jest.fn().mockImplementationOnce(() => Promise.resolve(requestContract.response.body));
 
-    await listenRequest(page, requestContract);
-
-    const response = await page.evaluate(async () => {
-      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/record').default;
-
-      const referenceEntityIdentifierModule = 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-      const referenceEntityIdentifier = require(referenceEntityIdentifierModule).createIdentifier('designer');
-      const recordIdentifier = require(referenceEntityIdentifierModule).createIdentifier('starck');
-
-      return await fetcher.fetch(referenceEntityIdentifier, recordIdentifier);
-    });
+    const referenceEntityIdentifier = createIdentifier('designer');
+    const recordIdentifier = createCode('starck');
+    const response = await fetcher.fetch(referenceEntityIdentifier, recordIdentifier);
 
     expect(response).toEqual({
       permission: {edit: true, referenceEntityIdentifier: 'designer'},
@@ -162,32 +162,28 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
 
   it('It search for records', async () => {
     const requestContract = getRequestContract('Record/Search/ok.json');
+    // @ts-ignore
+    fetch.putJSON = jest.fn().mockImplementationOnce(() => Promise.resolve(requestContract.response.body));
 
-    await listenRequest(page, requestContract);
-
-    const response = await page.evaluate(async () => {
-      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/record').default;
-
-      return await fetcher.search({
-        locale: 'en_US',
-        channel: 'ecommerce',
-        size: 200,
-        page: 0,
-        filters: [
-          {
-            field: 'full_text',
-            operator: '=',
-            value: 's',
-            context: {},
-          },
-          {
-            field: 'reference_entity',
-            operator: '=',
-            value: 'designer',
-            context: {},
-          },
-        ],
-      });
+    const response = await fetcher.search({
+      locale: 'en_US',
+      channel: 'ecommerce',
+      size: 200,
+      page: 0,
+      filters: [
+        {
+          field: 'full_text',
+          operator: '=',
+          value: 's',
+          context: {},
+        },
+        {
+          field: 'reference_entity',
+          operator: '=',
+          value: 'designer',
+          context: {},
+        },
+      ],
     });
 
     expect(response).toEqual({
@@ -294,35 +290,28 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
 
   it('It search for empty records', async () => {
     const requestContract = getRequestContract('Record/Search/no_result.json');
+    // @ts-ignore
+    fetch.putJSON = jest.fn().mockImplementationOnce(() => Promise.resolve(requestContract.response.body));
 
-    await listenRequest(page, requestContract);
-
-    const response = await page.evaluate(async () => {
-       // Sometimes this test fails on circle ci. This wait should mitigate that
-       await new Promise((resolve) => setTimeout(resolve, 500));
-
-      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/record').default;
-
-      return await fetcher.search({
-        locale: 'en_US',
-        channel: 'ecommerce',
-        size: 200,
-        page: 0,
-        filters: [
-          {
-            field: 'full_text',
-            operator: '=',
-            value: 'search',
-            context: {},
-          },
-          {
-            field: 'reference_entity',
-            operator: '=',
-            value: 'designer',
-            context: {},
-          },
-        ],
-      });
+    const response = await fetcher.search({
+      locale: 'en_US',
+      channel: 'ecommerce',
+      size: 200,
+      page: 0,
+      filters: [
+        {
+          field: 'full_text',
+          operator: '=',
+          value: 'search',
+          context: {},
+        },
+        {
+          field: 'reference_entity',
+          operator: '=',
+          value: 'designer',
+          context: {},
+        },
+      ],
     });
 
     expect(response).toEqual({
