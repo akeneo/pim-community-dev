@@ -27,7 +27,7 @@ services:
         tags:
             - { name: akeneo_assetmanager.transformation.operation_applier }
 
-    Akeneo\AssetManager\Infrastructure\Transformation\Operation\OptimizeOperationApplier:
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\OptimizeJpegOperationApplier:
         arguments:
             - '@liip_imagine.filter.manager'
             - '@filesystem'

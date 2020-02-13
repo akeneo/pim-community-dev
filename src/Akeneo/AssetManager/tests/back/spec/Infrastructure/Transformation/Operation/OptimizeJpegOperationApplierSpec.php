@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\OptimizeOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\OptimizeJpegOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplier;
-use Akeneo\AssetManager\Infrastructure\Transformation\Operation\OptimizeOperationApplier;
+use Akeneo\AssetManager\Infrastructure\Transformation\Operation\OptimizeJpegOperationApplier;
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Model\FileBinary;
@@ -30,7 +30,7 @@ use Symfony\Component\HttpFoundation\File\File;
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  */
-class OptimizeOperationApplierSpec extends ObjectBehavior
+class OptimizeJpegOperationApplierSpec extends ObjectBehavior
 {
     function let(FilterManager $filterManager, Filesystem $filesystem)
     {
@@ -44,10 +44,10 @@ class OptimizeOperationApplierSpec extends ObjectBehavior
 
     function it_is_an_optimize_operation_applier()
     {
-        $this->shouldHaveType(OptimizeOperationApplier::class);
+        $this->shouldHaveType(OptimizeJpegOperationApplier::class);
     }
 
-    function it_only_supports_optimize_operations(OptimizeOperation $operation, ResizeOperation $wrongOperation)
+    function it_only_supports_optimize_operations(OptimizeJpegOperation $operation, ResizeOperation $wrongOperation)
     {
         $this->supports($operation)->shouldReturn(true);
         $this->supports($wrongOperation)->shouldReturn(false);
@@ -56,7 +56,7 @@ class OptimizeOperationApplierSpec extends ObjectBehavior
     function it_applies_an_optimize_operation(
         FilterManager $filterManager,
         Filesystem $filesystem,
-        OptimizeOperation $operation,
+        OptimizeJpegOperation $operation,
         BinaryInterface $computedImage,
         File $file
     ) {

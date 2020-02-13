@@ -33,7 +33,7 @@
                             }
                         },
                         {
-                            "type": "optimize",
+                            "type": "optimize_jpeg",
                             "parameters": {
                                 "quality": 100
                             }
@@ -100,7 +100,7 @@
                             }
                         },
                         {
-                            "type": "optimize",
+                            "type": "optimize_jpeg",
                             "parameters": {
                                 "quality": 0
                             }

@@ -20,7 +20,7 @@ use PhpSpec\ObjectBehavior;
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  */
-class OptimizeOperationSpec extends ObjectBehavior
+class OptimizeJpegOperationSpec extends ObjectBehavior
 {
     function let()
     {
@@ -36,12 +36,12 @@ class OptimizeOperationSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Operation\OptimizeOperation::class);
+        $this->shouldHaveType(Operation\OptimizeJpegOperation::class);
     }
 
     function it_returns_its_type()
     {
-        $this::getType()->shouldBe('optimize');
+        $this::getType()->shouldBe('optimize_jpeg');
     }
 
     function it_returns_quality()
@@ -52,7 +52,7 @@ class OptimizeOperationSpec extends ObjectBehavior
     function it_can_not_be_constructed_without_quality()
     {
         $this->beConstructedThrough('create', [[]]);
-        $this->shouldThrow(new \InvalidArgumentException("The parameter 'quality' is required for the optimize operation."))
+        $this->shouldThrow(new \InvalidArgumentException("The parameter 'quality' is required for the optimize jpeg operation."))
             ->duringInstantiation();
     }
 

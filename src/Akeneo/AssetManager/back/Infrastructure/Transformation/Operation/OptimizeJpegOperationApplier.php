@@ -14,16 +14,15 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\OptimizeOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\OptimizeJpegOperation;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PostProcessor\ConvertToJPGPostProcessor;
-use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Model\FileBinary;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Webmozart\Assert\Assert;
 
-class OptimizeOperationApplier implements OperationApplier
+class OptimizeJpegOperationApplier implements OperationApplier
 {
     /** @var FilterManager */
     private $filterManager;
@@ -42,7 +41,7 @@ class OptimizeOperationApplier implements OperationApplier
      */
     public function supports(Operation $operation): bool
     {
-        return $operation instanceof OptimizeOperation;
+        return $operation instanceof OptimizeJpegOperation;
     }
 
     /**
@@ -50,7 +49,7 @@ class OptimizeOperationApplier implements OperationApplier
      */
     public function apply(File $file, Operation $optimizeOperation): File
     {
-        Assert::isInstanceOf($optimizeOperation, OptimizeOperation::class);
+        Assert::isInstanceOf($optimizeOperation, OptimizeJpegOperation::class);
 
         $oldMimeType = $file->getMimeType();
         $image = new FileBinary($file->getRealPath(), $oldMimeType);

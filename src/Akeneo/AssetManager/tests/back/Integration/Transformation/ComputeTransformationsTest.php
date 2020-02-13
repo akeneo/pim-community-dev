@@ -25,7 +25,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\OptimizeOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\OptimizeJpegOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResolutionOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ScaleOperation;
@@ -141,7 +141,7 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
      */
     public function it_applies_a_optimize_operation()
     {
-        $this->setFamilyTransformations([OptimizeOperation::create(['quality' => 70])]);
+        $this->setFamilyTransformations([OptimizeJpegOperation::create(['quality' => 70])]);
         $asset = $this->getAsset('starck');
         $this->launchTransformationJob($asset->getIdentifier());
 
@@ -154,7 +154,7 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
     public function it_applies_a_scale_and_optimize_operation()
     {
         $this->setFamilyTransformations([
-            OptimizeOperation::create(['quality' => 70]),
+            OptimizeJpegOperation::create(['quality' => 70]),
             ScaleOperation::create(['ratio' => 50]),
         ]);
         $asset = $this->getAsset('starck');

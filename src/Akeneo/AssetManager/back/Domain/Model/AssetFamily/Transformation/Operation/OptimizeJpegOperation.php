@@ -20,11 +20,11 @@ use Webmozart\Assert\Assert;
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  */
-class OptimizeOperation implements Operation
+class OptimizeJpegOperation implements Operation
 {
     use OperationExtraParameterTrait;
 
-    private const OPERATION_NAME = 'optimize';
+    private const OPERATION_NAME = 'optimize_jpeg';
 
     /** @var int */
     private $quality;
@@ -44,7 +44,7 @@ class OptimizeOperation implements Operation
 
     public static function create(array $parameters): Operation
     {
-        Assert::keyExists($parameters, 'quality', "The parameter 'quality' is required for the optimize operation.");
+        Assert::keyExists($parameters, 'quality', "The parameter 'quality' is required for the optimize jpeg operation.");
         Assert::integer($parameters['quality'], "Parameter 'quality' must be an integer.");
 
         self::assertNoExtraParameters($parameters, ['quality']);
