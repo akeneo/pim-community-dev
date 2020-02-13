@@ -22,9 +22,7 @@ for (let [key, value] of Object.entries(aliases)){
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
 
 const webpackConfig = {
-  entry: {
-    main: path.resolve(rootDir, './public/bundles/pimui/js/index.js'),
-  },
+  entry: ['babel-polyfill', path.resolve(rootDir, './public/bundles/pimui/js/index.js')],
   target: 'web',
   mode: (isProd ? 'production' : 'development'),
   context: path.resolve(rootDir),
@@ -42,7 +40,7 @@ const webpackConfig = {
     splitChunks: {
       cacheGroups: {
         vendor: {
-          test: /[\\/]node_modules[\\/]/,
+          test: /node_modules/,
           priority: -10,
           name: "vendor",
           filename: "[name].min.js",
@@ -85,7 +83,7 @@ const webpackConfig = {
       // Inject the module config (to replace module.config() from requirejs)
       {
         test: /\.js$/,
-        exclude: /node_modules\/(?!(p-queue))|spec/,
+        exclude: /node_modules\/(?!(p-queue))/,
         use: [
           {
             loader: 'babel-loader',
