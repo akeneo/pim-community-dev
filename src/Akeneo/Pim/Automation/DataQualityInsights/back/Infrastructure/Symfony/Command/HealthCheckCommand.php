@@ -144,6 +144,8 @@ SQL
         );
         $attributesTextAndTextareaScopableAndLocalizable = $stmt->fetch(\PDO::FETCH_ASSOC);
 
+        $eta = $this->estimatedTimeOfArrivalForRemainingProducts();
+
         $data = [
             [
                 'feature_activated' => $this->featureFlag->isEnabled() ? 1 : 0,
@@ -158,7 +160,8 @@ SQL
                 'number_of_attributes_text_and_textarea_total' => $attributesTextAndTextarea['number_of_attributes'],
                 'number_of_attributes_text_and_textarea_scopable' => $attributesTextAndTextareaScopable['number_of_attributes'],
                 'number_of_attributes_text_and_textarea_localizable' => $attributesTextAndTextareaLocalizable['number_of_attributes'],
-                'number_of_attributes_text_and_textarea_scopable_and_localizable' => $attributesTextAndTextareaScopableAndLocalizable['number_of_attributes']
+                'number_of_attributes_text_and_textarea_scopable_and_localizable' => $attributesTextAndTextareaScopableAndLocalizable['number_of_attributes'],
+                'estimated_time_when_every_products_will_be_evaluated' => ($eta ? $eta->format(\DateTimeInterface::ATOM) : null)
             ]
         ];
 
@@ -393,7 +396,7 @@ SQL;
         $query = <<<SQL
 SELECT
     step.step_name AS task_name,
-    AVG(TIMESTAMPDIFF(SECOND, step.start_time, step.end_time)) as execution_time_in_second,
+    AVG(TIMESTAMPDIFF(SECOND, step.start_time, step.end_time)) as average_execution_time_in_second,
     AVG(step.write_count) AS average_number_of_product_per_job,
     MAX(step.write_count) AS max_number_of_product_in_a_job
 FROM akeneo_batch_job_instance AS job
@@ -408,6 +411,57 @@ SQL;
         $stmt = $this->db->executeQuery($query);
 
         $this->outputAsTable($io, $stmt->fetchAll());
+    }
+
+    private function estimatedTimeOfArrivalForRemainingProducts(): ?\DateTimeImmutable
+    {
+        $query = <<<SQL
+SELECT
+    step.step_name AS task_name,
+    AVG(TIMESTAMPDIFF(SECOND, step.start_time, step.end_time)) as average_execution_time_in_second,
+    AVG(step.write_count) AS average_number_of_product_per_job
+FROM akeneo_batch_job_instance AS job
+    JOIN akeneo_batch_job_execution AS job_execution ON job_execution.job_instance_id = job.id
+    JOIN akeneo_batch_step_execution AS step ON step.job_execution_id = job_execution.id
+WHERE job.code = 'data_quality_insights_evaluate_products_criteria'
+    AND job_execution.status = 1
+    AND step.write_count > 0
+GROUP BY step.step_name;
+SQL;
+
+        $stmt = $this->db->executeQuery($query);
+
+        $result = $stmt->fetch();
+
+        $meanTimeOfEvaluationPerProductInSeconds = 0;
+
+        if (!empty($result) && $result['average_number_of_product_per_job'] > 0) {
+            $meanTimeOfEvaluationPerProductInSeconds = $result['average_execution_time_in_second'] / $result['average_number_of_product_per_job'];
+        }
+
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT COUNT(DISTINCT product_id) as number_of_product_to_evaluate
+FROM pimee_data_quality_insights_criteria_evaluation
+WHERE status = 'pending'
+SQL
+        );
+
+        $result = $stmt->fetch();
+
+        $delay = 0;
+
+        if (!empty($result)) {
+            $delay = $result['number_of_product_to_evaluate'] * $meanTimeOfEvaluationPerProductInSeconds;
+        }
+
+        if ($delay !== 0) {
+            $now = new \DateTimeImmutable();
+            $estimatedTimeOfArrival = $now->modify(sprintf('+%d sec', $delay));
+
+            return $estimatedTimeOfArrival;
+        }
+
+        return null;
     }
 
     private function prepareStatementWithProductIds(string $query, array $productIds): ResultStatement

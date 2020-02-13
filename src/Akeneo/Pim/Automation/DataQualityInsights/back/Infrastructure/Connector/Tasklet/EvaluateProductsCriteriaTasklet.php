@@ -24,7 +24,7 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
 {
     public const JOB_INSTANCE_NAME = 'data_quality_insights_evaluate_products_criteria';
 
-    private const NB_PRODUCTS_MAX = 10000;
+    private const NB_PRODUCTS_MAX = 2500;
     private const BULK_SIZE = 100;
 
     /** @var EvaluatePendingCriteria */
