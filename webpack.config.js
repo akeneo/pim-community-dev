@@ -7,6 +7,7 @@ const path = require('path');
 const rootDir = process.cwd();
 
 const TerserPlugin = require('terser-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
@@ -59,6 +60,7 @@ const webpackConfig = {
   entry: {
     main: path.resolve(rootDir, './public/bundles/pimui/js/index.js'),
   },
+  context: path.resolve(rootDir),
   output: {
     path: path.resolve('./public/dist/'),
     publicPath: '/dist/',
@@ -77,8 +79,15 @@ const webpackConfig = {
       // Inject the module config (to replace module.config() from requirejs)
       {
         test: /\.js$/,
-        exclude: /\/node_modules\/|\/spec\//,
+        exclude: /node_modules\/(?!(p-queue))|spec/,
         use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+              cacheDirectory: path.resolve('./public/cache/'),
+            }
+          },
           {
             loader: path.resolve(__dirname, 'frontend/webpack/config-loader'),
             options: {
@@ -181,8 +190,9 @@ const webpackConfig = {
           {
             loader: 'ts-loader',
             options: {
-              transpileOnly: true,
-              experimentalWatchApi: true,
+              // transpileOnly: true,
+              // experimentalWatchApi: true,
+              // onlyCompileBundledFiles: true,
               configFile: path.resolve(rootDir, 'tsconfig.json'),
               context: path.resolve(rootDir),
             },
@@ -219,6 +229,17 @@ const webpackConfig = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
       'process.env.EDITION': JSON.stringify(process.env.EDITION),
+    }),
+
+    new ForkTsCheckerWebpackPlugin({
+      tsconfig: path.resolve(rootDir, 'tsconfig.json'),
+      // async: !isProd,
+      async: false,
+      // reportFiles: [
+      //   '**/*.{ts,tsx}',
+      // ],
+    //   // useTypescriptIncrementalApi: true,
+    //   // measureCompilationTime: true,
     }),
   ],
 };
