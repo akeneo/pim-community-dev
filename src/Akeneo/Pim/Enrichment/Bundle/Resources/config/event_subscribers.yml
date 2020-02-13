@@ -61,6 +61,14 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    pim_catalog.event_subscriber.product.save.compute_rules:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ComputeRulesSubscriber'
+        arguments:
+            - '@akeneo_rule_engine.repository.rule_definition'
+            - '@pim_catalog.updater.property_setter'
+        tags:
+            - { name: kernel.event_subscriber }
+
     pim_catalog.event_subscriber.compute_completeness_on_family_update_subscriber:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\ComputeCompletenessOnFamilyUpdateSubscriber'
         arguments:

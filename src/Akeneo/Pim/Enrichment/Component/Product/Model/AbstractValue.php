@@ -118,4 +118,19 @@ abstract class AbstractValue implements ValueInterface
     {
         return null !== $this->scopeCode;
     }
+
+    public function copy(string $attributeCode, ?string $scope, ?string $locale): AbstractValue
+    {
+        $result = clone $this;
+
+        $result->attributeCode = $attributeCode;
+        if (null !== $scope) {
+            $result->scopeCode = $scope;
+        }
+        if (null !== $locale) {
+            $result->localeCode = $locale;
+        }
+
+        return $result;
+    }
 }

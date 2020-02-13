@@ -46,7 +46,9 @@ final class ComputeEntityRawValuesSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return [StorageEvents::PRE_SAVE => 'computeRawValues'];
+        return [
+            StorageEvents::PRE_SAVE => [['computeRawValues', 0]]
+        ];
     }
 
     /**
