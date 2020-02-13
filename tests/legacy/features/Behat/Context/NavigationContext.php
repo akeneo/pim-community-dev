@@ -220,9 +220,12 @@ class NavigationContext extends PimContext implements PageObjectAware
 
         if ('products' === $pageName) {
             $this->spin(function () {
-                $this->assertSession()->pageTextContains('CATEGORY');
+                $category = $this->getCurrentPage()->find('css', '.category-switcher > div.AknColumn-subtitle');
+                if (null === $category) {
+                    return false;
+                }
 
-                return true;
+                return $category->isVisible() && !empty($category->getText());
             }, 'You are not on the product grid');
         }
     }
