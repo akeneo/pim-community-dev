@@ -25,6 +25,7 @@ export const FlowTypeSelect = ({value, onChange}: Props) => {
                 },
                 {id: FlowType.OTHER, text: translate('akeneo_connectivity.connection.flow_type.other', undefined, 1)},
             ],
+            containerCssClass: 'flowType',
         }),
         [translate]
     );

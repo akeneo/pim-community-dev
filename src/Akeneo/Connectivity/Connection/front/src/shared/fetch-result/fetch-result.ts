@@ -2,7 +2,6 @@ import {err, ok, Result} from './result';
 
 const defaultInit: RequestInit = {
     credentials: 'include',
-    referrerPolicy: 'same-origin',
 };
 
 export const fetchResult = async <T, E>(input: RequestInfo, init?: RequestInit): Promise<Result<T, E>> => {

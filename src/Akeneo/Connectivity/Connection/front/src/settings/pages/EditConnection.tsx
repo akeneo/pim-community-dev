@@ -62,14 +62,18 @@ export const EditConnection = () => {
 
     const fetchConnection = useFetchConnection(code);
     useEffect(() => {
+        let cancelled = false;
         fetchConnection().then(result => {
             if (isErr(result)) {
                 history.push('/connections');
                 return;
             }
 
-            dispatch(connectionFetched(result.value));
+            !cancelled && dispatch(connectionFetched(result.value));
         });
+        return () => {
+            cancelled = true;
+        };
     }, [fetchConnection, dispatch, history]);
 
     const updateConnection = useUpdateConnection(code);

@@ -28,6 +28,8 @@ export const reducer: Reducer<State, Actions> = (state, action) => {
                             secret: '',
                             username: '',
                             password: null,
+                            userRoleId: '',
+                            userGroupId: null,
                             ...state[connection.code],
                             ...connection,
                         },
