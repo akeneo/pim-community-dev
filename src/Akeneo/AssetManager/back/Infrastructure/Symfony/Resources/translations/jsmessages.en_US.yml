@@ -508,3 +508,10 @@ pim_catalog_volume:
     count_asset_family: Asset families
     average_max_assets_per_asset_family: Assets per asset family
     average_max_attributes_per_asset_family: Attributes per asset family
+
+pim_import_export:
+    widget:
+        last_operations:
+            job_type:
+                asset_manager_compute_transformations: "Compute asset transformations"
+                asset_manager_link_assets_to_products: "Link assets to products"
