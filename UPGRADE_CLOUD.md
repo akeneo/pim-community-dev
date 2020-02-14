@@ -1,4 +1,4 @@
-# migrate PIM to 4x :
+# Migrate PIM to 4.x :
 
 Downscale "pim-web & pim-daemons" containers to 0, and remove cronjob :
 
@@ -47,4 +47,3 @@ Upscale pim-web & pim-daemon :
 `kubectl scale -n srnt-${INSTANCE_NAME} deploy/pim-web deploy/pim-daemon --replicas=2`
 
 In values.yaml, remove the "hook" part
-
