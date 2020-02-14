@@ -15,7 +15,7 @@ import {
   Action,
   DownloadAction,
   CopyUrlAction,
-} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media-actions';
+} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
 import {Subsection, SubsectionHeader} from 'akeneoassetmanager/application/component/app/subsection';
 
@@ -63,8 +63,8 @@ export const MainMediaPreview = ({asset, context}: MainMediaPreviewProps) => {
         <span>{__('pim_asset_manager.asset.enrich.main_media_preview')}</span>
         {!isDataEmpty(data) && (
           <Actions>
-            <DownloadAction color={akeneoTheme.color.grey100} size={20} data={data} attribute={attributeAsMainMedia} />
             <CopyUrlAction color={akeneoTheme.color.grey100} size={20} data={data} attribute={attributeAsMainMedia} />
+            <DownloadAction color={akeneoTheme.color.grey100} size={20} data={data} attribute={attributeAsMainMedia} />
             <FullscreenPreview anchor={Action} label={attributeLabel} data={data} attribute={attributeAsMainMedia}>
               <Fullscreen
                 title={__('pim_asset_manager.asset.button.fullscreen')}

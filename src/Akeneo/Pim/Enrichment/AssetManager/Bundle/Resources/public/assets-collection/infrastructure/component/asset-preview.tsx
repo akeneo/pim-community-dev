@@ -35,7 +35,7 @@ import {
   Actions,
   DownloadAction,
   CopyUrlAction,
-} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media-actions';
+} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 
 const Container = styled.div`
   position: relative;
@@ -130,16 +130,16 @@ export const AssetPreview = ({
           <StyledPreviewContainer>
             <Border>
               <MediaPreview data={data} label={selectedAssetLabel} attribute={attributeAsMainMedia} />
-              <Actions>
-                <DownloadAction
-                  data={data}
-                  attribute={attributeAsMainMedia}
-                  label={__('pim_asset_manager.asset_preview.download')}
-                />
+              <Actions margin={20}>
                 <CopyUrlAction
                   data={data}
                   attribute={attributeAsMainMedia}
                   label={__('pim_asset_manager.asset_preview.copy_url')}
+                />
+                <DownloadAction
+                  data={data}
+                  attribute={attributeAsMainMedia}
+                  label={__('pim_asset_manager.asset_preview.download')}
                 />
                 <EditAction url={editUrl} label={__('pim_asset_manager.asset_preview.edit_asset')} />
               </Actions>

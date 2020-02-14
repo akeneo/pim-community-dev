@@ -17,15 +17,24 @@ import {Copy} from 'akeneoassetmanager/application/component/app/icon/copy';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
-export const Actions = styled.div`
-  display: flex;
+export const Container = styled.div`
   align-items: center;
+  border-radius: 2px;
+  border: 1px solid ${props => props.theme.color.grey80};
+  display: flex;
+  flex: 1;
   justify-content: center;
-  padding-top: 20px;
+  max-width: 460px;
+  padding: 15px;
+`;
 
-  > :not(:first-child) {
-    margin-left: 20px;
-  }
+export const Thumbnail = styled.img`
+  border: 1px solid ${props => props.theme.color.grey70};
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+  object-fit: cover;
 `;
 
 export const Action = styled.a`
@@ -36,6 +45,22 @@ export const Action = styled.a`
     cursor: pointer;
   }
 `;
+
+export const Actions = styled.div<{margin?: number}>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: ${props => props.theme.fontSize.default};
+  line-height: initial;
+
+  > ${Action} {
+    margin-left: ${props => props.margin}px;
+  }
+`;
+
+Actions.defaultProps = {
+  margin: 15,
+};
 
 export const ActionLabel = styled.span`
   margin-left: 5px;

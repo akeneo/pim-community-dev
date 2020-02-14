@@ -279,7 +279,7 @@ pim_asset_manager:
       label: Label
       edit_subsection: Edit asset
       product_subsection: Products Link
-      main_media_preview: Asset preview
+      main_media_preview: Main media preview
     title: Assets
     create:
       header:
@@ -475,15 +475,19 @@ pim_asset_manager:
       sub_title: Asset Families
       helper:
         title: Label translations
+    media_link:
+      placeholder: Put your media link here
+      read_only: This media link is read only
+    media_file:
+      placeholder: Drag and drop to upload or click here
+      read_only: This media file is read only
+
   modal:
     delete:
       subtitle: Confirm deletion
       button:
         cancel: Cancel
         confirm: Delete
-  media_link:
-    download: Download
-    copy: Copy link to clipboard
 
 pim_enrich:
   confirmation:

@@ -26,7 +26,8 @@ const Container = styled.div`
 const LeftColumn = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
-  width: 600px;
+  width: calc(50% - 40px);
+  min-width: 460px;
 `;
 
 const Separator = styled.div`

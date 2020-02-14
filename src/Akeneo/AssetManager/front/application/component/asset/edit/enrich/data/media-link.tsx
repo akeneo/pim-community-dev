@@ -1,14 +1,13 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import Key from 'akeneoassetmanager/tools/key';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
-import styled from 'styled-components';
-import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {
   isMediaLinkData,
   mediaLinkDataFromString,
-  areMediaLinkDataEqual,
   mediaLinkDataStringValue,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
@@ -23,33 +22,25 @@ import {
   Action,
   DownloadAction,
   CopyUrlAction,
-} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media-actions';
+  Container,
+  Thumbnail,
+  Actions,
+} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 
-const Container = styled.div`
-  align-items: center;
-  border-radius: 2px;
-  border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  max-width: 460px;
-  padding: 15px;
-`;
+const MediaLinkInput = styled.input`
+  ::placeholder {
+    color: ${props => props.theme.color.grey120};
+  }
 
-const Thumbnail = styled.img`
-  border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey60};
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  margin-right: 15px;
-  object-fit: cover;
-`;
+  :disabled,
+  :read-only {
+    cursor: not-allowed;
+    border: none;
+    color: ${props => props.theme.color.grey100};
 
-const Actions = styled.div`
-  display: flex;
-
-  > ${Action} {
-    margin-left: 15px;
+    ::placeholder {
+      color: ${props => props.theme.color.grey100};
+    }
   }
 `;
 
@@ -70,17 +61,6 @@ const View = ({
     return null;
   }
 
-  const onValueChange = (text: string) => {
-    const newData = mediaLinkDataFromString(text);
-    if (areMediaLinkDataEqual(newData, value.data)) {
-      return;
-    }
-
-    const newValue = setValueData(value, newData);
-
-    onChange(newValue);
-  };
-
   const mediaPreviewUrl = getMediaPreviewUrl({
     type: MediaPreviewType.Thumbnail,
     attributeIdentifier: value.attribute.identifier,
@@ -97,26 +77,23 @@ const View = ({
   return (
     <Container>
       <Thumbnail src={mediaPreviewUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
-      <input
+      <MediaLinkInput
         id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
         autoComplete="off"
-        className={`AknTextField AknTextField--light
-        ${value.attribute.value_per_locale ? 'AknTextField--localizable' : ''}
-        ${!canEditData ? 'AknTextField--disabled' : ''}`}
+        className={`AknTextField AknTextField--light ${
+          value.attribute.value_per_locale ? 'AknTextField--localizable' : ''
+        }`}
         value={mediaLinkDataStringValue(value.data)}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          onValueChange(event.currentTarget.value);
-        }}
-        onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-          if (Key.Enter === event.key) onSubmit();
-        }}
+        onChange={e => onChange(setValueData(value, mediaLinkDataFromString(e.currentTarget.value)))}
+        onKeyDown={e => Key.Enter === e.key && onSubmit()}
         disabled={!canEditData}
         readOnly={!canEditData}
+        placeholder={__(`pim_asset_manager.attribute.media_link.${canEditData ? 'placeholder' : 'read_only'}`)}
       />
       {!isValueEmpty(value) && (
         <Actions>
-          <DownloadAction color={akeneoTheme.color.grey100} size={20} data={value.data} attribute={value.attribute} />
           <CopyUrlAction color={akeneoTheme.color.grey100} size={20} data={value.data} attribute={value.attribute} />
+          <DownloadAction color={akeneoTheme.color.grey100} size={20} data={value.data} attribute={value.attribute} />
           <FullscreenPreview anchor={Action} label={label} data={value.data} attribute={value.attribute}>
             <Fullscreen
               title={__('pim_asset_manager.asset.button.fullscreen')}

@@ -12,7 +12,7 @@ import {
   Actions,
   DownloadAction,
   CopyUrlAction,
-} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media-actions';
+} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {MediaData} from 'akeneoassetmanager/domain/model/asset/data';
 
 const Container = styled.div`
@@ -36,6 +36,10 @@ export const Border = styled.div`
   padding: 20px;
   border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
   max-height: 100%;
+
+  > :first-child {
+    margin-bottom: 20px;
+  }
 `;
 
 type FullscreenPreviewProps = {
@@ -65,16 +69,16 @@ export const FullscreenPreview = ({anchor: Anchor, label, data, attribute, child
             <PreviewContainer>
               <Border>
                 <MediaPreview label={label} data={data} attribute={attribute} />
-                <Actions>
-                  <DownloadAction
-                    data={data}
-                    attribute={attribute}
-                    label={__('pim_asset_manager.asset_preview.download')}
-                  />
+                <Actions margin={20}>
                   <CopyUrlAction
                     data={data}
                     attribute={attribute}
                     label={__('pim_asset_manager.asset_preview.copy_url')}
+                  />
+                  <DownloadAction
+                    data={data}
+                    attribute={attribute}
+                    label={__('pim_asset_manager.asset_preview.download')}
                   />
                 </Actions>
               </Border>
