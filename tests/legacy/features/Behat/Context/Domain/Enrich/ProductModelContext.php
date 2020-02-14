@@ -85,6 +85,14 @@ class ProductModelContext extends PimContext
         $page   = 'ProductModel';
         $entity = $this->getProductModel($identifier);
         $this->getNavigationContext()->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+
+        $this->spin(function() {
+            $nbOfCompleteVariantProductsDiv = $this->getCurrentPage()->find('css', '.AknTitleContainer .AknTitleContainer-meta .AknButtonList-item div');
+            if (null === $nbOfCompleteVariantProductsDiv) {
+                return false;
+            }
+            return $nbOfCompleteVariantProductsDiv->isVisible() && !empty($nbOfCompleteVariantProductsDiv->getText());
+        }, 'Product model page is not visible.');
     }
 
     /**
