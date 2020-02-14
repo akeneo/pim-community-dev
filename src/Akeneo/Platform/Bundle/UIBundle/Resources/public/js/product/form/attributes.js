@@ -10,7 +10,8 @@
 define(
     [
         'routing',
-        'pim/form/common/attributes'
+        'pim/form/common/attributes',
+        'jquery'
     ],
     function (
         Routing,
