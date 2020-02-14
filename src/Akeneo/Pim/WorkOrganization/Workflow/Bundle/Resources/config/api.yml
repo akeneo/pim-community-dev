@@ -12,6 +12,7 @@ services:
     # Controllers
     pimee_workflow.controller.external_api.product_proposal:
         class : '%pimee_workflow.controller.external_api.product_proposal.class%'
+        public: true
         arguments:
             - '@pim_api.repository.product'
             - '@pimee_workflow.repository.product_draft'
@@ -21,6 +22,7 @@ services:
 
     pimee_workflow.controller.external_api.product_draft:
         class: '%pimee_workflow.controller.external_api.product_draft.class%'
+        public: true
         arguments:
             - '@pim_api.repository.product'
             - '@pimee_workflow.repository.product_draft'
@@ -31,6 +33,7 @@ services:
 
     pimee_workflow_controller.external_api.publish_product:
         class: '%pimee_workflow_controller.external_api.publish_product.class%'
+        public: true
         arguments:
             - '@pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory_with_permissions'
             - '@pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory_with_permissions'
@@ -48,6 +51,7 @@ services:
 
     pimee_api.controller.product_model_draft:
         class: '%pimee_api.controller.product_model_draft.class%'
+        public: true
         arguments:
             - '@pim_catalog.repository.product_model'
             - '@pimee_workflow.repository.product_model_draft'
