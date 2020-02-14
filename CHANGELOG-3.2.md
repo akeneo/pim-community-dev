@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9095: Fix memory leak during family import
+
 # 3.2.38 (2020-02-12)
 
 ## Bug fixes:
