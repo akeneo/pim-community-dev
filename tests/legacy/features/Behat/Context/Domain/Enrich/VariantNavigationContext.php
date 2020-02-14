@@ -59,7 +59,7 @@ class VariantNavigationContext extends PimContext
      */
     public function iOpenTheVariantNavigationChildrenSelectorForLevel(int $level): void
     {
-        $this->spin(function() use ($level) {
+        $this->spin(function () use ($level) {
             $variantNavigation = $this->getCurrentPage()->getVariantNavigation();
 
             $selector = $variantNavigation->getChildrenSelectorForLevel($level);
@@ -67,7 +67,6 @@ class VariantNavigationContext extends PimContext
 
             return true;
         }, "Can't open variant navigation selector");
-
     }
 
     /**

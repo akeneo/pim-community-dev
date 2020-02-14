@@ -86,7 +86,7 @@ class ProductModelContext extends PimContext
         $entity = $this->getProductModel($identifier);
         $this->getNavigationContext()->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
 
-        $this->spin(function() {
+        $this->spin(function () {
             $nbOfCompleteVariantProductsDiv = $this->getCurrentPage()->find('css', '.AknTitleContainer .AknTitleContainer-meta .AknButtonList-item div');
             if (null === $nbOfCompleteVariantProductsDiv) {
                 return false;
