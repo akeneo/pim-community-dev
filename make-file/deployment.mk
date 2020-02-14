@@ -127,19 +127,10 @@ create-pim-main-tf: $(INSTANCE_DIR)
 test-prod:
 	helm test ${PFID}
 
-NEW_IMAGE_TAG = $$(grep -o "const VERSION = '.*';$$" src/Akeneo/Platform/EnterpriseVersion.php | sed "s/const VERSION = '//" | sed "s/';//")
 .PHONY: release
 release:
-	@echo Tagging Docker image v${NEW_IMAGE_TAG}
-	docker pull eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG}
-	docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG} eu.gcr.io/akeneo-ci/pim-enterprise-dev:v${NEW_IMAGE_TAG}
-	@echo Pushing Docker image v${NEW_IMAGE_TAG}
-	IMAGE_TAG=v${NEW_IMAGE_TAG} $(MAKE) push-php-image-prod
-	@echo Tagging EE dev repository
 ifeq ($(CI),true)
 	git config user.name "Michel Tag"
 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
 endif
-	git push origin master
-	git tag -a v${NEW_IMAGE_TAG} -m "Tagging SaaS version v${NEW_IMAGE_TAG}"
-	git push origin v${NEW_IMAGE_TAG}
+	bash $(PWD)/deployments/bin/release.sh ${OLD_IMAGE_TAG}
