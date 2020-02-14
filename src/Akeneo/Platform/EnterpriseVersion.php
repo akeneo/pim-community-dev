@@ -19,7 +19,7 @@ namespace Akeneo\Platform;
 class EnterpriseVersion
 {
     /** @staticvar string */
-    const VERSION = '20200213013540';
+    const VERSION = '20200214152234';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Cirrus';
