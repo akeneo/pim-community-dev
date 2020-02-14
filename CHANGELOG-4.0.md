@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.5 (2020-02-14)
+
 ## Bug fixes
 
 - PIM-9100: fix the configuration of the controllers as public service for the API.
