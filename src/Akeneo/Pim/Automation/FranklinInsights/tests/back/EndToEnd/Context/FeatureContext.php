@@ -16,8 +16,8 @@ namespace Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Context\CatalogConfigurationContext;
 use Context\EnterpriseAssertionContext;
-use Context\EnterpriseCatalogConfigurationContext;
 use Context\EnterpriseFeatureContext;
 use Context\EnterpriseFixturesContext;
 use Context\EnterpriseWebUser;
@@ -39,7 +39,7 @@ class FeatureContext extends EnterpriseFeatureContext
         $env = $scope->getEnvironment();
 
         $this->contexts['fixtures'] = $env->getContext(EnterpriseFixturesContext::class);
-        $this->contexts['catalogConfiguration'] = $env->getContext(EnterpriseCatalogConfigurationContext::class);
+        $this->contexts['catalogConfiguration'] = $env->getContext(CatalogConfigurationContext::class);
         $this->contexts['navigation'] = $env->getContext(NavigationContext::class);
         $this->contexts['hook'] = $env->getContext(HookContext::class);
         $this->contexts['assertions'] = $env->getContext(EnterpriseAssertionContext::class);

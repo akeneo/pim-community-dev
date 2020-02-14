@@ -19,7 +19,7 @@ const Modal = ({cssClass, title, subtitle, description, illustrationLink, modalC
   const modalClass = `modal in ${cssClass}`;
 
   return (
-    <div className={modalClass}>
+    <div className={modalClass} data-testid={'dqiModal'}>
       <div className="AknFullPage">
         <div className="AknFullPage-content AknFullPage-content--withIllustration">
           <div>
@@ -41,7 +41,7 @@ const Modal = ({cssClass, title, subtitle, description, illustrationLink, modalC
       </div>
 
       <div className="AknFullPage-cancel cancel" onClick={() => onDismissModal()}/>
-      <span className={`AknButton AknFullPage-ok AknButton--apply ${!enableSaveButton ? 'AknButton--disabled' : ''}`} onClick={() => enableSaveButton && onConfirm()}>
+      <span className={`AknButton AknFullPage-ok AknButton--apply ${!enableSaveButton ? 'AknButton--disabled' : ''}`} onClick={() => enableSaveButton && onConfirm()} data-testid='dqiValidateModal'>
         {__('pim_common.save')}
       </span>
 

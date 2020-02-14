@@ -6,17 +6,11 @@ Feature: Unpublish a product
 
   Background:
     Given a "footwear" catalog configuration
-    And the following attributes:
-      | code        | label-en_US | type                            | reference_data_name | group |
-      | main_fabric | Main fabric | pim_reference_data_multiselect  | fabrics             | other |
-      | main_color  | Main color  | pim_reference_data_simpleselect | color               | other |
-    And I am logged in as "Julia"
-    And the following "main_fabric" attribute reference data: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
-    And the following "main_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White
     And the following published product:
-      | sku          | main_color | main_fabric             |
-      | red-heels    | Red        | Spandex, Neoprene, Wool |
-      | yellow-heels | Yellow     | Wool                    |
+      | sku             | sole_color | sole_fabric        | family |
+      | red-heels       | red        | canvas, conductive | heels  |
+      | yellow-heels    | yellow     | conductive         | heels  |
+    And I am logged in as "Julia"
 
   Scenario: Successfully unpublish a product with reference data
     And I am on the "red-heels" published product show page

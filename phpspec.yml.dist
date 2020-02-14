@@ -12,7 +12,7 @@ suites:
     DataQualityInsights:
         namespace: Akeneo\Pim\Automation\DataQualityInsights
         psr4_prefix: Akeneo\Pim\Automation\DataQualityInsights
-        spec_path: src/Akeneo/Pim/Automation/DataQualityInsights/back/tests/
+        spec_path: src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/
         src_path: src/Akeneo/Pim/Automation/DataQualityInsights
         spec_prefix: Specification
 

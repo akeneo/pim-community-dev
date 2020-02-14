@@ -43,6 +43,7 @@ class EditAssetFamilyTransformationsContext implements Context
             'operations' => [
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
                 ['type' => 'colorspace', 'parameters' => ['colorspace' => 'grey']],
+                ['type' => 'optimize_jpeg', 'parameters' => ['quality' => 70]],
             ],
             'filename_prefix' => '1_',
             'filename_suffix' => '_3'

@@ -13,8 +13,6 @@ Feature: On a product edit/show display impacted attributes
     And the following family:
       | code       | attributes                                                     |
       | high_heels | sku,name,sole_color,new_sole_color,sole_fabric,new_sole_fabric |
-    And the following "new_sole_fabric" attribute reference data: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
-    And the following "new_sole_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White
     And I am logged in as "Julia"
 
   Scenario: Successfully create, edit and save a product with reference data
@@ -33,18 +31,15 @@ Feature: On a product edit/show display impacted attributes
           - field:    sole_fabric.code
             operator: IN
             value:
-              - PVC
-              - Nylon
+              - nylon
         actions:
           - type:   set
             field:  new_sole_color
-            value:  Yellow
+            value:  yellow
           - type:   set
             field:  new_sole_fabric
             value:
-              - PVC
-              - Nylon
-              - Neoprene
+              - neoprene
       """
     When I am on the "red-heels" product page
     Then I should see that New sole color is a smart

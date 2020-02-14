@@ -3,6 +3,6 @@ includes:
 parameters:
     excludes_analyse:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/FranklinInsights/tests
-        - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/back/tests
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/tests
     symfony:
         container_xml_path: %rootDir%/../../../var/cache/dev/srcKernelDevDebugContainer.xml

@@ -13,14 +13,17 @@ metadata:
     role: pim-onboarder-worker
 
 spec:
-  replicas: {{ .Values.pim.numDaemon }}
+  replicas: 1
   minReadySeconds: 30
   selector:
     matchLabels:
       component: {{ template "pim.fullName" . }}
       role: pim-onboarder-worker
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   template:
     metadata:
       labels:

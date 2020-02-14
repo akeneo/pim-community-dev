@@ -10,17 +10,7 @@ Feature: Update a single product by applying rules
     And I add the "french" locale to the "tablet" channel
     And the following reference data:
       | type   | code     |
-      | color  | yellow   |
-      | color  | blue     |
-      | color  | red      |
       | color  | orange   |
-      | fabric | chiffon  |
-      | fabric | satin    |
-      | fabric | wool     |
-      | fabric | kevlar   |
-      | fabric | leather  |
-      | fabric | gore-tex |
-      | fabric | toile    |
       | fabric | cashmere |
     And I am logged in as "Julia"
 

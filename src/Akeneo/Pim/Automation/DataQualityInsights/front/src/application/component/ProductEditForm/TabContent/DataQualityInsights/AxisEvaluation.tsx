@@ -39,7 +39,7 @@ const AxisEvaluation: FunctionComponent<AxisEvaluationProps> = ({evaluation, axi
       <header className="AknSubsection-title">
         <span className="group-label">
           <span className='AxisEvaluationTitle'>{axis}</span>
-          <Rate value={evaluation.rate} />
+          <Rate value={evaluation.rate}/>
         </span>
         <span>
           {canDisplayAllAttributesLink(allAttributes) && (

@@ -17,13 +17,4 @@ class HookContext extends BaseHookContext
         $environment = $scope->getEnvironment();
         $this->mainContext = $environment->getContext($this->mainContextClass);
     }
-
-    /**
-     * @BeforeScenario
-     */
-    public function registerConfigurationDirectory()
-    {
-        $this->getMainContext()->getSubcontext('catalogConfiguration')
-            ->addConfigurationDirectory(__DIR__.'/../../Context/catalog');
-    }
 }

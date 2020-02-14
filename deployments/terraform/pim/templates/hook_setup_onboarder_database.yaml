@@ -20,7 +20,7 @@ metadata:
     # job is considered part of the release.
     "helm.sh/hook": {{ .Values.onboarder.hook.setupOnboarderDatabase.hook | quote }}
     "helm.sh/hook-weight": "10"
-    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook-delete-policy": "hook-succeeded"
 spec:
   template:
     metadata:
