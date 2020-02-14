@@ -1,4 +1,4 @@
-# 20200211
+# v20200211172331
 
 Downscale "pim-web & pim-daemons" containers to 0, and remove cronjob :
 
