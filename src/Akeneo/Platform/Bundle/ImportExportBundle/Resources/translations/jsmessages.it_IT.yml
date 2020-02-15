@@ -28,6 +28,8 @@ pim_import_export:
       flash:
         create:
           success: Profilo di importazione creato correttamente
+        upload:
+          error: Impossibile caricare il file. La sua dimensione potrebbe superare la dimensione massima di upload sulla tua configurazione di PHP o del server HTTP
       page_title:
         index: "]-Inf, 1] {{ count }} Profilo di importazione|]1, Inf [{{ count }} Profili di importazione"
       module:
