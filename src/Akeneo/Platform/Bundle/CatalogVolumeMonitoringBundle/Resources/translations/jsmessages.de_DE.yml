@@ -4,13 +4,13 @@ pim_catalog_volume:
   section:
     product_values:
       hint: 'Wussten Sie, dass die Gesamtanzahl Ihrer Produktinformationen direkt mit folgenden Achsen verbunden sind? <br/> Für mehr Details, empfehlen wir Ihnen folgenden <a href="{{link}}" target="_blank">Artikel </a>.'
-      title: Achsen, die die Anzahl der Produktwerte nutzen
+      title: Kennzahlen, die die Anzahl der Produktwerte beeinflussen
     catalog_structure:
       hint: Sie wissen sicherlich, dass eine gute Katalogstruktur sehr wichtig ist und eine Voraussetzung für effizienten anreichern. Im folgenden sehen Sie die verschiedene Achsen, um Ihre Katalogstruktur zu überwachen.
-      title: Achsen, verbunden mit der Katalogstruktur
+      title: Kennzahlen zur Katalogstruktur
     variant_modelling:
       hint: Falls du Variantenmodellierung nutzt, können diese Achsen dir beim beobachten helfen.
-      title: Achsen für die Variante Modellierung
+      title: Kennzahlen zu Produktmodellen
   axis:
     count_products: Produkte
     average_max_attributes_per_family: Attribute pro Produktfamilie
@@ -21,7 +21,7 @@ pim_catalog_volume:
     count_localizable_attributes: Lokalisierbare Attribute
     count_families: Produktfamilien
     count_attributes: Attribute
-    average_max_options_per_attribute: Optionen nach Attributen
+    average_max_options_per_attribute: Optionen je Attribut
     count_categories: Kategorien
     count_category_trees: Kategorie-Strukturbäume
     count_variant_products: Produktvarianten

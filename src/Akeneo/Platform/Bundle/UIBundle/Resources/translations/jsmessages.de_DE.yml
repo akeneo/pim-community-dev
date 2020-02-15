@@ -238,18 +238,6 @@ pim_enrich.entity.fallback:
       leave: Möchten Sie diese Seite wirklich verlassen?
       discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
       discard_changes_title: Wirklich ganz sicher?
-pim_enrich.entity.api_connection:
-  flash:
-    create:
-      success: API-Connection erfolgreich hergestellt
-    delete:
-      success: API-Connection erfolgreich widerrufen
-      fail: Diese API-Verbindung kann nicht widerrufen werden.
-  page_title:
-    index: "[[]-Inf, 1]{{ count }} API Verbindung|] 1, Inf [{{ count }} API-Verbindungen"
-  module:
-    revoke:
-      confirm: Sind Sie sicher, dass Sie diese API-Verbindung widerrufen möchten?
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} Operation|]1, Inf[{{ count }} Operationen"
@@ -296,8 +284,6 @@ pim_title:
   pim_enrich_mass_edit_action_perform: Massenbearbeitung | Durchführen
   pim_enrich_job_tracker_index: Prozess-Tracker
   pim_enrich_job_tracker_show: Prozess-Tracker | Job anzeigen
-  pim_enrich_api_connection_index: API-Verbindungen
-  pim_enrich_api_connection_create: API Verbindungen | Erstellen
   pim_enrich_mass_edit_action: Massenbearbeitung
   pim_analytics_system_info_index: Systeminformationen
 pim_menu:
@@ -331,7 +317,6 @@ pim_menu:
     user_role: Rollen
     info: Systeminformationen
     job_tracker: Prozess-Tracker
-    api_connection: API-Verbindungen
     catalog_volume: Überwachung Katalogumfang
   navigation:
     activity: Navigation Übersicht
