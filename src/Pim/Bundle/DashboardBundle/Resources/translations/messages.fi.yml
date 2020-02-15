@@ -1,6 +1,4 @@
 pim_dashboard:
-  title: Ohjauspaneeli
-  version: Versio
   link.label:
     product: Tuotteiden hallinta
     category: Kategorioiden hallinta
@@ -11,13 +9,11 @@ pim_dashboard:
       title: Virhe ladatessa widgettiä
       message: Widgettiä "%alias%" ei ole
     completeness:
-      title: Kanavien ja lokaatioiden valmiusaste
+      title: Kanavien ja lokaatioiden täyttöaste
     last_operations:
       title: Viimeiset toiminnot
       empty: Toimintoja ei löytynyt
       status: Status
-      date: Päivämäärä
-      type: Tyyppi
       "profile name": Profiilinimi
       details: Lisätiedot
       job_type:
