@@ -83,7 +83,8 @@ akeneo_franklin_insights:
           family_progress:
             title: 'Anzahl der zugeordneten Attribute'
             description: "Benutze diese Leiste, um deinen Arbeitsstatus auf einen Blick zu sehen"
-            mapped_attribute_count: '{{ count }} zugeordnete Attribute'
+            mapped_attribute: '{{ mapped_count }} zugeordnete Attribute und {{ suggested_count }} schlugen vor'
+          suggested: Empfohlen
         toolbar:
           bulk_create_attribute: Attribut erstellen
           bulk_add_to_family: Zur Familie hinzufügen
@@ -215,11 +216,15 @@ akeneo_franklin_insights:
       credits: Franklin-Credits
       key_figures: Franklin Kennzahlen
     axis:
-      franklin_attribute_created: Anzahl der Attribute, die Franklin erstellt hat
-      franklin_attribute_added_to_family: Anzahl der Attribute, die Franklin einer Familie hinzugefügt hat
+      franklin_attribute_created: Attribute erstellt
+      franklin_attribute_added_to_family: Attribute einer Produktfamilie hinzugefügt
       credits_total: Credits gesamt
-      credits_consumed: Credits verbraucht
+      credits_consumed: Verbrauchte Credits
       credits_left: Credits übrig
+      franklin_values_validated: Attributwerte validiert
+      franklin_values_in_error: Attributwerte im Fehler
+      franklin_values_suggested: Attributwerte vorgeschlagen
+      franklin_names_and_values_suggested: Attributnamen und -werte vorgeschlagen
 batch_jobs:
   default_steps:
     fetch_products: Produktdaten abrufen

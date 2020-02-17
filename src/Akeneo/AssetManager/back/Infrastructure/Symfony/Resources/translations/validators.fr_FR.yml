@@ -5,16 +5,45 @@ pim_asset_manager:
         pattern: 'Ce champ ne peut être composé que de lettres, chiffres et underscores.'
         should_be_unique: 'Une famille de ressources numériques existe déjà avec le code "%asset_family_identifier%".'
         limit_reached: 'Echec de la création de la famille "%asset_family_identifier%". Vous avez atteint le nombre maximum de familles de ressources numériques, fixé à %limit%'
+      assets:
+        should_have_no_asset: 'Vous ne pouvez pas supprimer cette famille car elle comporte des ressources numériques'
+      asset_family_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'Au moins un groupe d''utilisateurs doit avoir les droits d''édition sur cette famille'
+      product_attributes:
+        should_not_be_linked: 'Vous ne pouvez pas supprimer cette famille car des attributs de produit sont liés à celle-ci'
       should_exist: 'La famille de ressources numériques "%asset_family_code%" n''existe pas.'
       rule_template:
         limit_reached: 'Vous ne pouvez pas créer la famille de ressources "%asset_family_identifier%" car vous avez atteint le nombre maximum de %limit% de produits liés'
         product_selection_cannot_be_empty: 'Vous devez spécifier au moins une sélection de produits dans votre règle de lien produits'
         product_assignment_cannot_be_empty: 'Vous devez spécifier au moins une affectation de produits dans votre règle de lien produits'
         extrapolated_attribute_should_exist: 'L''attribut "%attribute_code%" n''existe pas pour cette famille de ressource'
+        extrapolated_attribute_type_should_be_supported: 'L''attribut "%attribute_code%" de type "%attribute_type%" n''est pas pris en charge, seuls les types d''attributs suivants sont supportés pour ce champ : %supported_attribute_type%'
         channel_should_exist: 'Le canal "%channel_code%" n''existe pas'
         locale_should_exist: 'La locale "%locale_code%" n''est pas activée ou n''existe pas'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: 'L''attribut "%attribute_code%" ne peut pas être utilisé pour extrapolation car il a une valeur par canal'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: 'L''attribut "%attribute_code%" ne peut pas être utilisé pour extrapolation car il a une valeur par locale'
+        assignment_mode_not_supported: 'Mode d''affectation non valide "%assignment_mode%" trouvé dans une règle de lien de produit, qui devrait être "replace" ou "add"'
+        channel_not_supported_for_field: 'Vous ne pouvez pas spécifier de canal pour le champ "%product_field%"'
+        locale_not_supported_for_field: 'Vous ne pouvez pas spécifier de locale pour le champ "%product_field%"'
+        assignmement_attribute_does_not_support_this_asset_family: 'L''attribut de produit "%product_attribute_code%" ne peut pas contenir de ressources de la famille de ressources "%asset_family_identifier%"'
+      attribute_as_main_media:
+        not_found: 'L''attribut "%attribute_as_main_media%" défini comme média principal pour la famille de ressources n''existe pas'
+        invalid_type: 'L''attribut défini comme média principal pour la famille de ressources doit être de type : %valid_attribute_as_main_media_types%'
       transformation:
+        limit_reached: 'Vous avez atteint la limite de {{ %limit%}} transformations'
+        same_operation_twice: 'L''opération "{{ %operation_type% }}" ne peut pas être définie deux fois dans la même transformation'
+        source_can_not_be_a_target: 'La source d''attribut "%attribute_code%" ne peut pas être une cible d''attribut d''une transformation.'
         attribute_reference_should_exist: 'L''attribut "%attribute_code%" n''existe pas pour cette famille de ressource'
+        source_should_be_media_file: 'L''attribut cible doit être de type fichier média.'
+        target_should_be_media_file: 'L''attribut cible doit être de type fichier média.'
+        filename_is_not_unique: 'Une transformation avec le préfixe "%filename_prefix%" et le suffixe "%filename_suffix%" existe déjà pour la source de l''attribut "%attribute_code%"'
+        target_is_not_unique: 'Deux transformations ne peuvent pas avoir la même cible.'
+        code_is_not_unique: 'Vous ne pouvez pas définir deux transformations avec le même code "%transformation_code%"'
+        filename_prefix_suffix_empty: 'Vous devez avoir au moins les propriétés filename_prefix ou filename_suffix et l''une d''entre elles ne doit pas être une chaîne vide.'
+        empty_operation_list: 'Au moins une opération de transformation est requise.'
+      naming_convention:
+        property_should_exist: 'La propriété "%property%" n''existe pas pour cette famille de ressources'
+        not_main_media_attribute_code: 'La propriété «%property%» attendue correspond au code de l''attribut en tant que média principal.'
   asset:
     validation:
       code:
@@ -27,6 +56,7 @@ pim_asset_manager:
         extension_not_allowed: 'Les fichiers "%file_extension%" ne sont pas autorisés pour cet attribut. Les extensions autorisées sont : %allowed_file_extensions%'
         file_size_exceeded: 'Le fichier dépasse la taille maximale définie pour l''attribut.'
         should_exist: 'Le fichier "%file_path%" n''a pas été trouvé.'
+        target_readonly: 'Vous ne pouvez pas mettre à jour la valeur de "%attribute_code%" qui est la cible d''une transformation.'
       option:
         code_does_not_exist: 'Le code d''option "%option_code%" n''existe pas pour cet attribut'
       option_collection:
@@ -50,6 +80,8 @@ pim_asset_manager:
         should_be_integer: 'Ce champ devrait contenir un entier'
         integer_too_long: 'Cet entier est trop grand'
         should_be_numeric: 'Ce champ doit être une valeur numérique avec le bon séparateur de décimales'
+      main_media:
+        not_main_media_attribute: 'L''attribut attendu comme média principal est "%main_media_attribute%", "%attribute%" fourni.'
   attribute:
     validation:
       options:
@@ -91,3 +123,8 @@ pim_asset_manager:
         should_not_be_empty: 'Le suffixe ne peut pas être une chaîne vide.'
       media_type:
         not_expected: 'Le type de média donné ne correspond pas aux types attendus (%supported_media_types%).'
+      media_file:
+        cannot_contain_extension_separator: 'Les extensions ne peuvent pas contenir le séparateur d''extension ".", "%wrong_extension%" fourni.'
+        should_only_contain_lowercase_letters_and_numbers: 'Les extensions ne doivent contenir que des lettres minuscules et des chiffres, "%wrong_extension%" fourni.'
+        cannot_be_longer_than_max: 'Les extensions ne peuvent pas être plus longues que %expected_length% caractères, la longueur actuelle est de %actual_length%.'
+        there_cannot_be_duplicated_extensions: 'Il n''est pas possible d''avoir des extensions dupliquées : %duplicates% trouvées.'
