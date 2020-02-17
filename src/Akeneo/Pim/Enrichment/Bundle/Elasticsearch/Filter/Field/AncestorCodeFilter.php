@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
- * This class filters data with the ancestor code, i.e. the parent code. We cannot use ParentFilter as it this
- * field is unfortunately not in product index. It is only in product and product model index.
- * This is temporary and is used into external API product list, and will be removed after TIP-1150.
- *
- * @see src/Akeneo/Pim/Enrichment/Component/Product/Connector/UseCase/ApplyProductSearchQueryParametersToPQB.php
- *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -44,19 +40,45 @@ class AncestorCodeFilter extends AbstractFieldFilter
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = []): void
+    public function addFieldFilter($field, $operator, $values, $locale = null, $channel = null, $options = []): void
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        FieldFilterHelper::checkIdentifier($field, $value, static::class);
-        $clause = [
-            'terms' => [
-                self::ANCESTOR_CODES_ES_FIELD => [$value],
-            ],
-        ];
+        if (!is_array($values)) {
+            $values = [$values];
+        }
 
-        $this->searchQueryBuilder->addFilter($clause);
+        $this->checkValues($field, $values);
+
+        switch ($operator) {
+            case Operators::EQUALS:
+            case Operators::IN_LIST:
+                $clause = [
+                    'terms' => [
+                        self::ANCESTOR_CODES_ES_FIELD => $values,
+                    ],
+                ];
+                $this->searchQueryBuilder->addFilter($clause);
+                break;
+            case Operators::NOT_IN_LIST:
+                $mustNotClause = [
+                    'terms' => [
+                        self::ANCESTOR_CODES_ES_FIELD => $values,
+                    ],
+                ];
+                $this->searchQueryBuilder->addMustNot($mustNotClause);
+                break;
+            default:
+                throw InvalidOperatorException::notSupported($operator, static::class);
+        }
+    }
+
+    private function checkValues($field, array $values): void
+    {
+        foreach ($values as $value) {
+            FieldFilterHelper::checkIdentifier($field, $value, static::class);
+        }
     }
 }

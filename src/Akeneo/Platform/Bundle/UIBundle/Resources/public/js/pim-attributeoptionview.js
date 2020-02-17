@@ -228,7 +228,7 @@ define(
 
         var ItemCollectionView = Backbone.View.extend({
             tagName: 'table',
-            className: 'AknGrid AknGrid--unclickable table attribute-option-view',
+            className: 'AknGrid AknGrid--unclickable AknAttributeOptions-grid table attribute-option-view',
             template: _.template(indexTemplate),
             events: {
                 'click .option-add': 'addItem'

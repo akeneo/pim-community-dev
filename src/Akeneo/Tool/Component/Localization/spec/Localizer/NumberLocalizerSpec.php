@@ -81,4 +81,15 @@ class NumberLocalizerSpec extends ObjectBehavior
 
         $this->localize('-10.4', $options)->shouldReturn('-10,40');
     }
+
+    function it_returns_all_decimals_for_a_number_with_very_long_decimals (
+        $numberFactory
+    ) {
+        $options = ['locale' => 'sv_SE'];
+        $numberFormatter = new \NumberFormatter('sv_SE', \NumberFormatter::DECIMAL);
+
+        $numberFactory->create($options)->willReturn($numberFormatter);
+
+        $this->localize('-10.4789780708787980', $options)->shouldReturn('-10,478978070878798');
+    }
 }
