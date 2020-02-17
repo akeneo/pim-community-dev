@@ -37,6 +37,22 @@ services:
     networks:
       - 'pim'
 
+  pim-daemon:
+    image: 'akeneo/pim-php-dev:4.0'
+    environment:
+      APP_ENV: '${APP_ENV:-prod}'
+      PHP_IDE_CONFIG: 'serverName=pim-ce-daemon'
+      XDEBUG_ENABLED: '${XDEBUG_ENABLED:-0}'
+      XDEBUG_CONFIG: 'remote_host=172.17.0.1'
+      BLACKFIRE_CLIENT_ID: '${BLACKFIRE_CLIENT_ID:-client_id}'
+      BLACKFIRE_CLIENT_TOKEN: '${BLACKFIRE_CLIENT_TOKEN:-client_token}'
+    volumes:
+      - './:/srv/pim'
+    working_dir: '/srv/pim'
+    command: 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console akeneo:batch:job-queue-consumer-daemon"'
+    networks:
+      - 'pim'
+
   node:
     image: 'akeneo/node:10'
     environment:
