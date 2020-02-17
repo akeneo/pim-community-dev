@@ -66,17 +66,6 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     /** @var int */
     private $batchSize;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface $familyRepository
-     * @param ProductQueryBuilderFactoryInterface   $productQueryBuilderFactory
-     * @param ItemReaderInterface                   $familyReader
-     * @param BulkSaverInterface                    $productSaver
-     * @param EntityManagerClearerInterface         $cacheClearer
-     * @param JobRepositoryInterface                $jobRepository
-     * @param KeepOnlyValuesForVariation            $keepOnlyValuesForVariation
-     * @param ValidatorInterface                    $validator
-     * @param int                                   $batchSize
-     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
@@ -147,7 +136,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
 
                 if (0 === count($productsToSave) % $this->batchSize) {
                     $this->saveProducts($productsToSave);
-                    $productsToSave= [];
+                    $productsToSave = [];
                     $this->cacheClearer->clear();
                 }
             }
@@ -155,6 +144,8 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
             if (!empty($productsToSave)) {
                 $this->saveProducts($productsToSave);
             }
+
+            $this->cacheClearer->clear();
         }
     }
 
