@@ -80,7 +80,7 @@ class PurgeCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Purges the versions by batch',
-                100
+                1000
             )
             ->addOption(
                 'force',
@@ -178,8 +178,7 @@ class PurgeCommand extends Command
 
         $output->writeln(
             sprintf(
-                '<info>You are about to process %d versions %s%s than %d days.</info>',
-                $totalVersions,
+                '<info>You are about to process versions %s%s than %d days.</info>',
                 $resourceNameLabel,
                 $operatorLabel,
                 $purgeOptions['days_number']
@@ -204,7 +203,7 @@ class PurgeCommand extends Command
         $progressBar = new ProgressBar($output, $totalVersions);
         $this->eventSubscriber->setProgressBar($progressBar);
 
-        $purgeVersionsCount = $this->versionPurger->purge($purgeOptions);
+        $purgeVersionsCount = $this->versionPurger->purge($purgeOptions, $output);
 
         $progressBar->finish();
 

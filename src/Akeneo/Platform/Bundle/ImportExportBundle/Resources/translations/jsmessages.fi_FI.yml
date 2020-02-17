@@ -89,6 +89,7 @@ pim_import_export:
           file_path:
             title: Tiedostopolku
             help: Mihin kirjoittaa generoitu tiedosto tiedostorakenteessa
+            help_import: Käytettävän tiedoston tiedostopolku
           delimiter:
             title: Erotin
             help: Yhtä merkkiä käytetään kentän erottajan määrittämiseen
@@ -167,10 +168,16 @@ pim_enrich:
       module:
         delete:
           confirm: Oletko varma, että haluat poistaa tämän tuontiprofiilin?
+      flash:
+        delete:
+          success: Tuontiprofiili poistettiin onnistuneesti
     export_profile:
       module:
         delete:
           confirm: Oletko varma, että haluat poistaa tämän vientiprofiilin?
+      flash:
+        delete:
+          success: Vientiprofiili poistettiin onnistuneesti
 pim_title:
   pim_importexport_export_profile_index: Vientiprofiilien hallinta
   pim_importexport_export_profile_edit: Vientiprofiili {{ job.label }} | Muokkaa

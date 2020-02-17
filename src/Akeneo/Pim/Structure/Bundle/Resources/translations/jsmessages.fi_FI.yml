@@ -5,6 +5,7 @@ pim_enrich.entity.family:
   flash:
     update:
       success: Perheen päivittäminen onnistui.
+      fail: Perheen päivittämisessä tapahtui virhe.
       cant_remove_attribute_as_label: Otsikkona käytettyä attribuuttia ei voida poistaa
       cant_remove_attribute_as_image: Pääkuvana käytettyä attribuuttia ei voi poistaa
       cant_remove_attribute_used_as_axis: Et voi poistaa tätä attribuuttia, koska sitä on käytössä varianttiperheessä
@@ -56,6 +57,7 @@ pim_enrich.entity.family_variant:
       title: Luo uusi varianttiperhe
       description: Varianttiperheelle voit määrittää tuoterakenteen varianteille. Valitse ylläpidettävien varianttitulottuvuuksien määrä, valitse varianttiulottuvuuksien eri tasoilla käytetyt määrittävät attribuutit ja valitse sitten miten attribuutit on jaettu eri tasoille.
       variant_levels: Varianttitasot
+      axis_level: "Varianttiulottuvuuden taso {{ level }}"
     update_translations:
       title: Päivitä käännökset
     delete:
@@ -65,6 +67,7 @@ pim_enrich.entity.attribute_option:
   flash:
     create:
       success: Attribuutin vaihtoehdon luominen onnistui
+      fail: Attribuutin vaihtoehdon luonnissa tapahtui virhe
     update:
       fail: Attribuutin vaihtoehtoa ei voi tallentaa
     delete:

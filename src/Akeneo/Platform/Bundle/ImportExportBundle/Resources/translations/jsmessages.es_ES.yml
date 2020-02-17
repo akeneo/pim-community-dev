@@ -28,6 +28,8 @@ pim_import_export:
       flash:
         create:
           success: Perfil de importación creado con éxito
+        upload:
+          error: No se puede subir el archivo. Su tamaño puede exceder el tamaño máximo de carga configurado en su configuración de servidor PHP o HTTP
       page_title:
         index: "]-Inf, 1] {{ count }} perfil de importación|]1, Inf [{{ count }} perfiles de importación"
       module:
@@ -87,6 +89,7 @@ pim_import_export:
           file_path:
             title: Camino del fichero
             help: Ubicación del archivo generado dentro del servidor
+            help_import: El directorio del archivo a utilizar para la importación
           delimiter:
             title: Delimitador
             help: Único caracter utilizado para delimitar el campo

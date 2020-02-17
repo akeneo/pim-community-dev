@@ -33,3 +33,6 @@ services:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.cached_category'
             - ['family', 'categories', 'completeness', 'identifier', 'created', 'updated']
+
+    pim_api.checker.duplicate_value:
+        class: 'Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker'
