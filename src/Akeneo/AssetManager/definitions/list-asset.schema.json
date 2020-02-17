@@ -1,0 +1,23 @@
+{
+  "title": "BackendListAsset",
+  "type": "object",
+  "properties": {
+    "identifier": {"type": "string"},
+    "code": {"type": "string"},
+    "labels": {"$ref": "labels.schema.json"},
+    "image": {
+      "type": "array",
+      "items": {"$ref": "asset/list-value.schema.json"}
+    },
+    "asset_family_identifier": {"type": "string"},
+    "values": {
+      "type": "object",
+      "patternProperties": {
+        ".+": {"$ref": "asset/list-value.schema.json"}
+      }
+    },
+    "completeness": {"$ref": "completeness.schema.json"}
+  },
+  "required": ["identifier", "code", "labels", "values", "asset_family_identifier", "image", "completeness"],
+  "additionalProperties": false
+}

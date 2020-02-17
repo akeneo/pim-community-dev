@@ -1,14 +1,15 @@
 export type NormalizedMediaType = string;
-export type MediaType = 'image' | 'pdf' | 'youtube' | 'other';
+export type MediaType = MediaTypes.image | MediaTypes.pdf | MediaTypes.youtube | MediaTypes.vimeo | MediaTypes.other;
 
 export enum MediaTypes {
   image = 'image',
   pdf = 'pdf',
   youtube = 'youtube',
+  vimeo = 'vimeo',
   other = 'other',
 }
 
-const validMediaTypes = [MediaTypes.image, MediaTypes.pdf, MediaTypes.youtube, MediaTypes.other];
+const validMediaTypes = Object.values(MediaTypes);
 
 export const isValidMediaType = (mediaType: NormalizedMediaType): mediaType is MediaType => {
   return validMediaTypes.includes(mediaType as MediaTypes);

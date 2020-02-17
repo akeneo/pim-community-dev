@@ -1,0 +1,10 @@
+{
+  "title": "BackendOption",
+  "type": "object",
+  "properties": {
+    "code": {"type": "string"},
+    "labels": {"$ref": "../labels.schema.json"}
+  },
+  "required": ["code", "labels"],
+  "additionalProperties": false
+}

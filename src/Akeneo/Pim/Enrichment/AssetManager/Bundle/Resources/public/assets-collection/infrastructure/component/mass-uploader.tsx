@@ -1,18 +1,18 @@
 import * as React from 'react';
+import styled from 'styled-components';
+import __ from 'akeneoassetmanager/tools/translator';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {useChannels, ChannelFetcher} from 'akeneoassetmanager/application/hooks/channel';
 import {Button} from 'akeneoassetmanager/application/component/app/button';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
-import styled from 'styled-components';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
-import __ from 'akeneoassetmanager/tools/translator';
 
 const UploadButton = styled(Button)`
-  margin-left: 10px;
+  margin-right: 10px;
 `;
 
 type DataProvider = {

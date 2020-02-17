@@ -14,12 +14,12 @@ import Channel from 'akeneoassetmanager/domain/model/channel';
 import Select2, {Select2Options} from 'akeneoassetmanager/application/component/app/select2';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {
+  formatLocaleOption,
   getOptionsFromChannels,
   getOptionsFromLocales,
-  formatLocaleOption,
 } from 'akeneoassetmanager/application/asset-upload/utils/select2';
 
-const Container = styled.div<{status?: LineStatus}>`
+const Container = styled.div<{status?: LineStatus; isReadOnly?: boolean}>`
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
   padding: 15px 0;
 
@@ -28,6 +28,13 @@ const Container = styled.div<{status?: LineStatus}>`
     css`
       background: ${(props: ThemedProps<void>) => props.theme.color.red20};
       border-bottom: 1px solid #ffffff;
+    `}
+
+  ${props =>
+    props.isReadOnly === true &&
+    css`
+      opacity: 0.3;
+      user-select: none;
     `}
 `;
 const Cells = styled.div`
@@ -190,22 +197,10 @@ const Row = React.memo(
     valuePerLocale,
     valuePerChannel,
   }: RowProps) => {
-    const status = React.useMemo(() => {
-      return getStatusFromLine(line, valuePerLocale, valuePerChannel);
-    }, [line, valuePerLocale, valuePerChannel]);
-
-    const errors = React.useMemo(() => {
-      return getAllErrorsOfLineByTarget(line);
-    }, [line]);
-
-    const channelOptions = React.useMemo(() => {
-      return getOptionsFromChannels(channels, locale);
-    }, [channels, locale]);
-
-    const localeOptions = React.useMemo(() => {
-      return getOptionsFromLocales(channels, locales, line.channel);
-    }, [channels, locales, line.channel]);
-
+    const status = getStatusFromLine(line, valuePerLocale, valuePerChannel);
+    const errors = getAllErrorsOfLineByTarget(line);
+    const channelOptions = getOptionsFromChannels(channels, locale);
+    const localeOptions = getOptionsFromLocales(channels, locales, line.channel);
     const isReadOnly = line.isAssetCreating || line.assetCreated;
 
     const handleCodeChange = React.useCallback(
@@ -238,7 +233,7 @@ const Row = React.memo(
     }, [line, onLineRemove]);
 
     return (
-      <Container status={status}>
+      <Container status={status} isReadOnly={isReadOnly}>
         <Cells>
           <Cell width={ColumnWidths.asset}>{null !== line.thumbnail && <Thumbnail src={line.thumbnail} alt="" />}</Cell>
           <Cell width={ColumnWidths.filename}>
@@ -279,16 +274,18 @@ const Row = React.memo(
             <RowStatus status={status} progress={line.uploadProgress} />
           </Cell>
           <Cell width={ColumnWidths.retry}>
-            {line.isFileUploadFailed && (
+            {!isReadOnly && line.isFileUploadFailed && (
               <RetryUploadButton onClick={handleRetryUpload} aria-label={__('pim_asset_manager.asset.upload.retry')}>
                 <ReloadIcon />
               </RetryUploadButton>
             )}
           </Cell>
           <Cell width={ColumnWidths.remove}>
-            <RemoveLineButton onClick={handleLineRemove} aria-label={__('pim_asset_manager.asset.upload.remove')}>
-              <CrossIcon />
-            </RemoveLineButton>
+            {!isReadOnly && (
+              <RemoveLineButton onClick={handleLineRemove} aria-label={__('pim_asset_manager.asset.upload.remove')}>
+                <CrossIcon />
+              </RemoveLineButton>
+            )}
           </Cell>
         </Cells>
         <Errors>

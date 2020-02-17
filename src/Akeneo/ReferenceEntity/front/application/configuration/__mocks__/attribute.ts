@@ -1,31 +1,32 @@
+// @ts-nocheck
 'use strict';
 
 const config = {
-  'image': {
-    'denormalize': require('akeneoreferenceentity/domain/model/attribute/type/image'),
+  image: {
+    denormalize: require('akeneoreferenceentity/domain/model/attribute/type/image'),
   },
-  'text': {
-    'denormalize': require('akeneoreferenceentity/domain/model/attribute/type/text'),
+  text: {
+    denormalize: require('akeneoreferenceentity/domain/model/attribute/type/text'),
   },
-  'number': {
-    'denormalize': require('akeneoreferenceentity/domain/model/attribute/type/number'),
+  number: {
+    denormalize: require('akeneoreferenceentity/domain/model/attribute/type/number'),
   },
-  'record': {
-    'denormalize': require('akeneoreferenceentity/domain/model/attribute/type/record'),
+  record: {
+    denormalize: require('akeneoreferenceentity/domain/model/attribute/type/record'),
   },
-  'record_collection': {
-    'denormalize': require('akeneoreferenceentity/domain/model/attribute/type/record-collection'),
+  record_collection: {
+    denormalize: require('akeneoreferenceentity/domain/model/attribute/type/record-collection'),
   },
-  'option': {
-    'denormalize': require('akeneoreferenceentity/domain/model/attribute/type/option'),
+  option: {
+    denormalize: require('akeneoreferenceentity/domain/model/attribute/type/option'),
   },
-  'option_collection': {
-    'denormalize': require('akeneoreferenceentity/domain/model/attribute/type/option-collection'),
+  option_collection: {
+    denormalize: require('akeneoreferenceentity/domain/model/attribute/type/option-collection'),
   },
 };
 
 const real = jest.requireActual('akeneoreferenceentity/application/configuration/attribute');
-const mock = jest.genMockFromModule('akeneoreferenceentity/application/configuration/attribute') as any;
+const mock = jest.genMockFromModule('akeneoreferenceentity/application/configuration/attribute');
 
 mock.getAttributeTypes = real.getTypes(config);
 mock.getAttributeIcon = real.getIcon(config);

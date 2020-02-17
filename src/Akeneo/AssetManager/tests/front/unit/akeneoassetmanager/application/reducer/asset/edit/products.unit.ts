@@ -20,6 +20,7 @@ describe('akeneo > asset family > application > reducer > asset > edit --- produ
       attributes: [],
       products: [],
       totalCount: 0,
+      isLoaded: false,
     });
   });
 
@@ -86,6 +87,7 @@ describe('akeneo > asset family > application > reducer > asset > edit --- produ
           image: null,
         },
       ],
+      isLoaded: true,
     });
   });
 

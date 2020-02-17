@@ -1,8 +1,6 @@
-import validateAgainstSchema from 'akeneoassetmanager/infrastructure/tools/validator';
+import {validateAgainstSchema} from 'akeneoassetmanager/infrastructure/tools/validator';
 import {BackendAssetFamily} from 'akeneoassetmanager/infrastructure/model/asset-family';
+import schema from 'akeneoassetmanager/infrastructure/model/asset-family.schema.json';
 
-const schema = require('akeneoassetmanager/infrastructure/model/asset-family.schema.json');
-
-export default (data: any): BackendAssetFamily => {
-  return validateAgainstSchema<BackendAssetFamily>(data, schema);
-};
+export const validateBackendAssetFamily = (data: any): BackendAssetFamily =>
+  validateAgainstSchema<BackendAssetFamily>(data, schema);

@@ -16,10 +16,6 @@ namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
-use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Liip\ImagineBundle\Imagine\Data\DataManager;
-use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 
 /**
  * @author    Julien Sanchez <julien@akeneo.com>
@@ -30,9 +26,9 @@ class MediaLinkYoutubeGenerator extends AbstractPreviewGenerator
     private const YOUTUBE_PREVIEW_URL = 'https://img.youtube.com/vi/%s/hqdefault.jpg';
     public const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image'; // Should change depending on the preview type
     public const SUPPORTED_TYPES = [
-        PreviewGeneratorRegistry::THUMBNAIL_TYPE => 'am_url_image_thumbnail',
+        PreviewGeneratorRegistry::THUMBNAIL_TYPE       => 'am_url_image_thumbnail',
         PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE => 'am_url_image_thumbnail',
-        PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_url_image_preview',
+        PreviewGeneratorRegistry::PREVIEW_TYPE         => 'am_url_image_preview',
     ];
 
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool

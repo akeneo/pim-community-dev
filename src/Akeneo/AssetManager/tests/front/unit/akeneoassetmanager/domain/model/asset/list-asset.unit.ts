@@ -16,7 +16,6 @@ import {
   getAssetCodes,
   getAssetByCode,
   sortAssetCollection,
-  isMainMediaEmpty,
   assetHasCompleteness,
   createEmptyAsset,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
@@ -267,29 +266,4 @@ test('I can know if the asset has a completeness', () => {
     },
   };
   expect(assetHasCompleteness(noCompletenessAsset)).toBe(false);
-});
-
-test('I can tell if the ListAsset main media is empty for a given channel & locale', () => {
-  const emptyAsset = {
-    identifier: '',
-    code: '',
-    image: [],
-    assetFamily: {},
-    completeness: {
-      required: 10,
-      complete: 4,
-    },
-  };
-  const notEmptyAsset = {
-    ...emptyAsset,
-    image: [
-      {
-        channel: 'ecommerce',
-        locale: 'en_US',
-        data: 'image.jpg',
-      },
-    ],
-  };
-  expect(isMainMediaEmpty(emptyAsset, 'ecommerce', 'en_US')).toBe(true);
-  expect(isMainMediaEmpty(notEmptyAsset, 'ecommerce', 'en_US')).toBe(false);
 });

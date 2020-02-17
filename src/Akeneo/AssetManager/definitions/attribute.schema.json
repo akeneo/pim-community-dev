@@ -1,9 +1,14 @@
 {
-    "title": "BackendAttribute",
-    "type": "object",
-    "$comment": "See the attached README.md for specifics of this file.",
-    "anyOf": [
-        { "$ref": "attribute-media-file.schema.json" },
-        { "$ref": "attribute-any.schema.json" }
-    ]
+  "title": "BackendAttribute",
+  "type": "object",
+  "$comment": "See the attached README.md for specifics of this file.",
+  "anyOf": [
+    {"$ref": "attribute/media-file.schema.json"},
+    {"$ref": "attribute/media-link.schema.json"},
+    {"$ref": "attribute/text.schema.json"},
+    {"$ref": "attribute/number.schema.json"},
+    {"$ref": "attribute/option.schema.json"},
+    {"$ref": "attribute/option-collection.schema.json"},
+    {"$ref": "attribute/any.schema.json"}
+  ]
 }

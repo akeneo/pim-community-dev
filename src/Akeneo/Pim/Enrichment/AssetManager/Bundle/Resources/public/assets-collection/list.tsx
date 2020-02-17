@@ -1,5 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
+import styled from 'styled-components';
+import __ from 'akeneoassetmanager/tools/translator';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {
   selectAttributeGroupList,
@@ -19,8 +21,6 @@ import {
   ValueCollection,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {selectContext} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
-import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
 import {Label} from 'akeneoassetmanager/application/component/app/label';
 import {Attribute, getAttributeLabel} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {
@@ -96,7 +96,7 @@ type DisplayValuesProps = {
 const SectionTitle = styled.div`
   display: flex;
   padding: 12px 0;
-  align-items: center; //Should be baseline but the alignment is then very weird
+  align-items: center; /* Should be baseline but the alignment is then very weird */
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey140};
 `;
 
@@ -135,9 +135,11 @@ const dataProvider = {
   channelFetcher: {fetchAll: fetchAllChannels},
 };
 
-const getAttributeGroupLabel = (attributeGroups: AttributeGroupCollection, code: AttributeGroupCode, locale: LocaleCode): string => {
-  return getLabelInCollection(attributeGroups[code].labels, locale, true, code);
-};
+const getAttributeGroupLabel = (
+  attributeGroups: AttributeGroupCollection,
+  code: AttributeGroupCode,
+  locale: LocaleCode
+): string => getLabelInCollection(attributeGroups[code].labels, locale, true, code);
 
 const DisplayValues = ({
   values,
@@ -149,70 +151,69 @@ const DisplayValues = ({
   errors,
   productIdentifier,
   productLabels,
-}: DisplayValuesProps) => {
-  return (
-    <React.Fragment>
-      {values.map((value: Value) => (
+}: DisplayValuesProps) => (
+  <>
+    {values.map((value: Value) => {
+      const assetCollectionTitle = `${getAttributeGroupLabel(attributeGroups, value.attribute.group, context.locale)} / 
+      ${getAttributeLabel(value.attribute, context.locale)}`;
+
+      return (
         <AssetCollectionContainer key={value.attribute.code} data-attribute={value.attribute.code}>
           <SectionTitle>
-            {!value.editable ? (
+            {!value.editable && (
               <LockIconContainer>
                 <LockIcon />
               </LockIconContainer>
-            ) : null}
-            <AttributeBreadCrumb readonly={!value.editable}>
-              {getAttributeGroupLabel(attributeGroups, value.attribute.group, context.locale)} / {getAttributeLabel(value.attribute, context.locale)}
-            </AttributeBreadCrumb>
-            {!isValueComplete(value, family, context.channel) ? (
+            )}
+            <AttributeBreadCrumb readonly={!value.editable}>{assetCollectionTitle}</AttributeBreadCrumb>
+            {!isValueComplete(value, family, context.channel) && (
               <IncompleteIndicator>
                 <Pill />
                 <Label>{__('pim_asset_manager.attribute.is_required')}</Label>
               </IncompleteIndicator>
-            ) : null}
+            )}
             <Spacer />
             <ResultCounter count={value.data.length} labelKey={'pim_asset_manager.asset_counter'} />
             <Separator />
-            {value.channel !== null || value.locale !== null ? (
-              <React.Fragment>
+            {(value.channel !== null || value.locale !== null) && (
+              <>
                 <ContextLabel>
-                  {value.channel !== null ? <ChannelLabel channelCode={value.channel} /> : null}
-                  {value.locale !== null ? <LocaleLabel localeCode={value.locale} /> : null}
+                  {value.channel !== null && <ChannelLabel channelCode={value.channel} />}
+                  {value.locale !== null && <LocaleLabel localeCode={value.locale} />}
                 </ContextLabel>
                 <Separator />
-              </React.Fragment>
-            ) : null}
-            {value.editable ? (
-              <React.Fragment>
+              </>
+            )}
+            {value.editable && (
+              <>
+                <MassUploader
+                  dataProvider={dataProvider}
+                  assetFamilyIdentifier={value.attribute.referenceDataName}
+                  context={context}
+                  onAssetCreated={(assetCodes: AssetCode[]) =>
+                    onChange(updateValueData(value, addAssetsToCollection(value.data, assetCodes)))
+                  }
+                />
                 <AssetPicker
                   excludedAssetCollection={value.data}
                   assetFamilyIdentifier={value.attribute.referenceDataName}
                   initialContext={context}
                   productAttribute={value.attribute}
-                  onAssetPick={(assetCodes: AssetCode[]) => {
-                    onChange(updateValueData(value, addAssetsToCollection(value.data, assetCodes)));
-                  }}
+                  onAssetPick={(assetCodes: AssetCode[]) =>
+                    onChange(updateValueData(value, addAssetsToCollection(value.data, assetCodes)))
+                  }
                   productLabels={productLabels}
-                />
-                <MassUploader
-                  dataProvider={dataProvider}
-                  assetFamilyIdentifier={value.attribute.referenceDataName}
-                  context={context}
-                  onAssetCreated={(assetCodes: AssetCode[]) => {
-                    onChange(updateValueData(value, addAssetsToCollection(value.data, assetCodes)));
-                  }}
                 />
                 <MoreButton
                   elements={[
                     {
                       label: __('pim_asset_manager.asset_collection.remove_all_assets'),
-                      action: () => {
-                        onChange(updateValueData(value, emptyCollection(value.data)));
-                      },
+                      action: () => onChange(updateValueData(value, emptyCollection(value.data))),
                     },
                   ]}
                 />
-              </React.Fragment>
-            ) : null}
+              </>
+            )}
           </SectionTitle>
           <RuleNotification attributeCode={value.attribute.code} ruleRelations={ruleRelations} />
           <ValidationErrorCollection attributeCode={value.attribute.code} context={context} errors={errors} />
@@ -222,15 +223,13 @@ const DisplayValues = ({
             assetCodes={value.data}
             context={context}
             readonly={!value.editable}
-            onChange={(assetCodes: AssetCode[]) => {
-              onChange(updateValueData(value, assetCodes));
-            }}
+            onChange={(assetCodes: AssetCode[]) => onChange(updateValueData(value, assetCodes))}
           />
         </AssetCollectionContainer>
-      ))}
-    </React.Fragment>
-  );
-};
+      );
+    })}
+  </>
+);
 
 const List = ({
   values,
@@ -242,46 +241,44 @@ const List = ({
   productIdentifier,
   productLabels,
   onChange,
-}: ListStateProps & ListDispatchProps) => {
-  return (
-    <AssetCollectionList>
-      {hasValues(values) ? (
-        <DisplayValues
-          values={values}
-          attributeGroups={attributeGroups}
-          family={family}
-          context={context}
-          ruleRelations={ruleRelations}
-          onChange={onChange}
-          errors={errors}
-          productIdentifier={productIdentifier}
-          productLabels={productLabels}
-        />
-      ) : (
-        <React.Fragment>
-          <HelperSection>
-            <AssetIllustration size={80} />
-            <HelperSeparator />
-            <HelperTitle>
-              👋 {__('pim_asset_manager.asset_collection.helper.title')}
-              <HelperText>
-                {__('pim_asset_manager.asset_collection.helper.text')}
-                <br />
-                <Link href="https://help.akeneo.com/pim/v4/articles/manage-your-attributes.html" target="_blank">
-                  {__('pim_asset_manager.asset_collection.helper.link')}
-                </Link>
-              </HelperText>
-            </HelperTitle>
-          </HelperSection>
-          <NoDataSection>
-            <AssetIllustration size={256} />
-            <NoDataTitle>{__('pim_asset_manager.asset_collection.no_asset.title')}</NoDataTitle>
-          </NoDataSection>
-        </React.Fragment>
-      )}
-    </AssetCollectionList>
-  );
-};
+}: ListStateProps & ListDispatchProps) => (
+  <AssetCollectionList>
+    {hasValues(values) ? (
+      <DisplayValues
+        values={values}
+        attributeGroups={attributeGroups}
+        family={family}
+        context={context}
+        ruleRelations={ruleRelations}
+        onChange={onChange}
+        errors={errors}
+        productIdentifier={productIdentifier}
+        productLabels={productLabels}
+      />
+    ) : (
+      <>
+        <HelperSection>
+          <AssetIllustration size={80} />
+          <HelperSeparator />
+          <HelperTitle>
+            👋 {__('pim_asset_manager.asset_collection.helper.title')}
+            <HelperText>
+              {__('pim_asset_manager.asset_collection.helper.text')}
+              <br />
+              <Link href="https://help.akeneo.com/pim/v4/articles/manage-your-attributes.html" target="_blank">
+                {__('pim_asset_manager.asset_collection.helper.link')}
+              </Link>
+            </HelperText>
+          </HelperTitle>
+        </HelperSection>
+        <NoDataSection>
+          <AssetIllustration size={256} />
+          <NoDataTitle>{__('pim_asset_manager.asset_collection.no_asset.title')}</NoDataTitle>
+        </NoDataSection>
+      </>
+    )}
+  </AssetCollectionList>
+);
 
 export default connect(
   (state: AssetCollectionState): ListStateProps => ({

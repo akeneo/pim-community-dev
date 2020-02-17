@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import Tick from 'akeneoassetmanager/application/component/app/icon/tick';
 import Permission, {
   RightLevel,
@@ -8,10 +7,6 @@ import Permission, {
 } from 'akeneoassetmanager/domain/model/asset-family/permission';
 import __ from 'akeneoassetmanager/tools/translator';
 import Key from 'akeneoassetmanager/tools/key';
-
-const StyledPermissionGrid = styled.div.attrs(() => ({className: 'AknGridContainer'}))`
-  padding: 10px 0;
-`;
 
 type GroupName = string;
 
@@ -115,7 +110,7 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
     const topPosition = null !== this.tableHead.current ? this.tableHead.current.getBoundingClientRect().top - 20 : 0;
 
     return (
-      <StyledPermissionGrid>
+      <div className="AknGridContainer">
         <table className="AknPermission AknGrid">
           <thead className="AknPermission-header" ref={this.tableHead}>
             <tr className="AknGrid-bodyRow">
@@ -162,7 +157,7 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
             ))}
           </tbody>
         </table>
-      </StyledPermissionGrid>
+      </div>
     );
   }
 }

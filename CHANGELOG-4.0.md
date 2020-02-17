@@ -1,5 +1,15 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9092: Fix search by code when there is no label defined for reference entity filter on the product grid
+
+# 4.0.5 (2020-02-14)
+
+## Bug fixes
+
+- PIM-9100: fix the configuration of the controllers as public service for the API.
+
 # 4.0.4 (2020-02-12)
 
 # 4.0.3 (2020-02-05)

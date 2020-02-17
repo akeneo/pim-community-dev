@@ -39,26 +39,26 @@ class ImageNormalizer extends BaseImageNormalizer
     /**
      * {@inheritdoc}
      */
-    public function normalize(?ValueInterface $value, ?string $localeCode = null): ?array
-    {
-        if ($value instanceof AssetCollectionValue) {
-            return $this->normalizeAssetManagerFile($value);
-        }
-
-        return parent::normalize($value, $localeCode);
-    }
-
-    private function normalizeAssetManagerFile(AssetCollectionValue $value): ?array
+    public function normalize(?ValueInterface $value, ?string $localeCode = null, ?string $channelCode = null): ?array
     {
         if (null === $value) {
             return null;
         }
 
-        $data = $value->getData();
+        if ($value instanceof AssetCollectionValue) {
+            return $this->normalizeAssetManagerFile($value, $channelCode, $localeCode);
+        }
 
-        if (empty($data)) {
+        return parent::normalize($value, $localeCode, $channelCode);
+    }
+
+    private function normalizeAssetManagerFile(AssetCollectionValue $value, ?string $channelCode = null, ?string $localeCode = null): ?array
+    {
+        if (null === $value || empty($value->getData())) {
             return null;
         }
+
+        $data = $value->getData();
 
         $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
         $assetFamilyIdentifier = $attribute->getReferenceDataName();
@@ -67,8 +67,8 @@ class ImageNormalizer extends BaseImageNormalizer
         $filepath = $this->assetPreviewGenerator->getImageUrl(
             (string) $assetCode,
             $assetFamilyIdentifier,
-            $value->getScopeCode(),
-            $value->getLocaleCode(),
+            $channelCode,
+            $localeCode,
             'thumbnail'
         );
 

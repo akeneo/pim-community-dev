@@ -7,6 +7,7 @@ import hydrateAll from 'akeneoassetmanager/application/hydrator/hydrator';
 import {getJSON} from 'akeneoassetmanager/tools/fetch';
 import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {validateBackendAttribute} from 'akeneoassetmanager/infrastructure/validator/attribute';
 
 const routing = require('routing');
 
@@ -24,7 +25,7 @@ export class AttributeFetcherImplementation implements AttributeFetcher {
       })
     ).catch(errorHandler);
 
-    return backendAttributes;
+    return backendAttributes.map(validateBackendAttribute);
   }
 }
 

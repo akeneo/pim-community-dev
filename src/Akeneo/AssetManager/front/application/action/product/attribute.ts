@@ -35,6 +35,8 @@ export const updateAttributeList = (assetFamilyIdentifier: AssetFamilyIdentifier
   dispatch(productListAttributeListUpdated(linkedAttributes));
   if (linkedAttributes.length > 0) {
     dispatch(attributeSelected(linkedAttributes[0].getCode()));
+  } else {
+    dispatch(productListProductListUpdated([], 0));
   }
 };
 

@@ -19,6 +19,7 @@ import ListAsset, {
   getAssetCodes,
   getPreviousAssetCode,
   getNextAssetCode,
+  getListAssetMediaData,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
@@ -26,7 +27,15 @@ import {useAssetFamily, AssetFamilyDataProvider} from 'akeneoassetmanager/applic
 import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import {getAssetEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
-import {getPreviewModelFromCollection} from 'akeneoassetmanager/domain/model/asset/value';
+import {Border, PreviewContainer} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
+import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
+import {
+  Action,
+  ActionLabel,
+  Actions,
+  DownloadAction,
+  CopyUrlAction,
+} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 
 const Container = styled.div`
   position: relative;
@@ -34,22 +43,27 @@ const Container = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  height: 100%;
 `;
 
 const AssetContainer = styled.div`
-  overflow-x: auto;
-  flex-grow: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
   margin: 0 50px;
+  height: 100%;
+  overflow-x: auto;
 `;
 
-const PreviewContainer = styled.div`
-  display: flex;
-  height: calc(100vh - 320px);
-  min-height: 450px;
-`;
+const Header = styled.div``;
 
 const ArrowButton = styled(TransparentButton)`
   margin: 0 10px;
+`;
+
+const StyledPreviewContainer = styled(PreviewContainer)`
+  max-height: calc(100vh - 350px);
 `;
 
 type AssetPreviewProps = {
@@ -62,6 +76,13 @@ type AssetPreviewProps = {
   onClose: () => void;
   dataProvider: AssetFamilyDataProvider;
 };
+
+const EditAction = ({url, label}: {url: string; label: string}) => (
+  <Action title={label} href={url} target="_blank">
+    <Edit />
+    <ActionLabel title={label}>{label}</ActionLabel>
+  </Action>
+);
 
 export const AssetPreview = ({
   assetCollection,
@@ -89,7 +110,8 @@ export const AssetPreview = ({
 
   const selectedAssetLabel = getAssetLabel(selectedAsset, context.locale);
   const editUrl = getAssetEditUrl(selectedAsset);
-  const previewModel = getPreviewModelFromCollection(selectedAsset.image, context.channel, context.locale);
+  const data = getListAssetMediaData(selectedAsset, context.channel, context.locale);
+  const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily);
 
   return (
     <Modal data-role="asset-preview-modal">
@@ -99,18 +121,30 @@ export const AssetPreview = ({
           <Left size={44} color={akeneoTheme.color.grey100} />
         </ArrowButton>
         <AssetContainer>
-          <SubTitle>
-            {__('pim_asset_manager.breadcrumb.products')} / {productIdentifier}
-          </SubTitle>
-          <Title>{selectedAssetLabel}</Title>
-          <PreviewContainer>
-            <MediaPreview
-              previewModel={previewModel}
-              editUrl={editUrl}
-              label={selectedAssetLabel}
-              attribute={getAttributeAsMainMedia(assetFamily)}
-            />
-          </PreviewContainer>
+          <Header>
+            <SubTitle>
+              {__('pim_asset_manager.breadcrumb.products')} / {productIdentifier}
+            </SubTitle>
+            <Title>{selectedAssetLabel}</Title>
+          </Header>
+          <StyledPreviewContainer>
+            <Border>
+              <MediaPreview data={data} label={selectedAssetLabel} attribute={attributeAsMainMedia} />
+              <Actions margin={20}>
+                <CopyUrlAction
+                  data={data}
+                  attribute={attributeAsMainMedia}
+                  label={__('pim_asset_manager.asset_preview.copy_url')}
+                />
+                <DownloadAction
+                  data={data}
+                  attribute={attributeAsMainMedia}
+                  label={__('pim_asset_manager.asset_preview.download')}
+                />
+                <EditAction url={editUrl} label={__('pim_asset_manager.asset_preview.edit_asset')} />
+              </Actions>
+            </Border>
+          </StyledPreviewContainer>
           <Carousel
             context={context}
             selectedAssetCode={selectedAsset.code}
