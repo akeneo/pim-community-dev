@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9098: keep vertical scroll position of the product form after saving enrichment
+
 # 3.2.39 (2020-02-17)
 
 ## Bug fixes:

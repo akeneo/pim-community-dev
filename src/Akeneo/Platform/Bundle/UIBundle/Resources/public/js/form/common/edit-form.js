@@ -19,7 +19,8 @@ define(
         'pim/field-manager',
         'pim/form-builder',
         'require-context',
-        'oro/messenger'
+        'oro/messenger',
+        'jquery'
     ],
     function (
         _,
@@ -32,10 +33,12 @@ define(
         FieldManager,
         formBuilder,
         RequireContext,
-        messenger
+        messenger,
+        $
     ) {
         return BaseForm.extend({
             template: _.template(template),
+            formContainerPreSaveScrollTop: undefined,
 
             /**
              * {@inheritdoc}
@@ -70,6 +73,24 @@ define(
                     saveButtonsExtension.trigger('save-buttons:add-button', button);
                 }.bind(this));
 
+
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () => {
+                    const containerElement = this.el.querySelector('.edit-form');
+                    if (containerElement) {
+                        this.formContainerPreSaveScrollTop = containerElement.scrollTop;
+                    }
+                });
+
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', () => {
+                    const containerElement = this.el.querySelector('.edit-form');
+                    if (containerElement && this.formContainerPreSaveScrollTop !== undefined) {
+                        $(containerElement).animate({
+                            scrollTop: this.formContainerPreSaveScrollTop
+                        }, 600);
+                        this.formContainerPreSaveScrollTop = undefined;
+                    }
+                });
+
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
@@ -80,7 +101,6 @@ define(
                 if (!this.configured) {
                     return this;
                 }
-                const scrollPosition = this.$el.find('.edit-form').scrollTop();
 
                 this.getRoot().trigger('pim_enrich:form:render:before');
 
@@ -89,8 +109,6 @@ define(
                 this.renderExtensions();
 
                 this.getRoot().trigger('pim_enrich:form:render:after');
-
-                this.$el.find('.edit-form').scrollTop(scrollPosition);
             },
 
             /**
