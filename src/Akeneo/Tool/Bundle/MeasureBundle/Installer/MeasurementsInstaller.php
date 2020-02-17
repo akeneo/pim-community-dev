@@ -43,21 +43,22 @@ class MeasurementsInstaller implements EventSubscriberInterface
 CREATE TABLE `akeneo_measurement` (
   `code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
   `standard_unit` varchar(100) NOT NULL COMMENT '(DC2Type:datetime)',
-  `root` int NOT NULL,
-  `lvl` int NOT NULL,
-  `lft` int NOT NULL,
-  `rgt` int NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `pim_category_code_uc` (`code`),
-  KEY `IDX_350D8339727ACA70` (`parent_id`),
-  KEY `left_idx` (`lft`),
+  `units` JSON NOT NULL,
+  PRIMARY KEY (`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 SQL;
+
         $this->connection->exec($sql);
     }
 
     public function loadFixtures(InstallerEvent $event): void
     {
+        $sql = <<<SQL
+INSERT INTO `akeneo_measurement` (`code`, `standard_unit`, `units`)
+VALUES
+	('length', 'meter', '[{\"code\": \"millimeter\", \"convert\": [{\"value\": \"0.001\", \"operator\": \"mul\"}]}]');
+SQL;
 
+        $this->connection->exec($sql);
     }
 }
