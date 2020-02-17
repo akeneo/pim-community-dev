@@ -42,7 +42,9 @@ pimee_product_asset:
       need_refresh: <b>Assettien tuonti on käynnistänyt</b><br>Nähdäksesi assetit tuotelomakkeella, päivitä tuotesivu heti kun saat ilmoituksen assettien tuonnista.
     error:
       list: Jo tuotuja tiedostoja ei voida lukea
+      upload: Latauksen yhteydessä tapahtui virhe
       delete: Tiedostoa ei voida poistaa palvelimelta
+      import: Tuonnin yhteydessä tapahtui virhe
       filename: Assetin tiedostonimi ei ole pätevä
       code: Assetin koodiformaatti ei ole pätevä
       locale: Assetti on olemassa, mutta se ei ole lokalisoitavissa
@@ -62,6 +64,7 @@ pimee_product_asset:
       delete:
         confirm_content: Oletko varma, että halut poistaa valitut assetit?
         success: Valitut assetit poistettu onnistuneesti.
+        error: Valittujen assettien poistamisessa tapahtui virhe. Ole hyvä ja yritä uudelleen.
         empty_selection: Assetteja ei ole valittu
 pim_enrich:
   entity:
@@ -74,6 +77,7 @@ pim_import_export:
     last_operations:
       job_type:
         mass_upload: Massatuonti
+        compute_completeness_of_products_linked_to_assets: Laske assetteihin liitettyjen tuotteiden valmiusaste
 pim_title:
   pimee_product_asset_mass_upload: Tuo assetteja
   pimee_product_asset_index: Assetit
@@ -140,6 +144,8 @@ batch_jobs:
     perform.label: Siirrä assetit kategorioihin
   add_tags_to_assets:
     perform.label: Lisää tunnisteita asseteille
+  compute_completeness_of_products_linked_to_assets:
+    compute_completeness_of_products_linked_to_assets.label: Laske assetteihin liitettyjen tuotteiden valmiusaste
 jstree:
   asset:
     all: Kaikki assetit

@@ -82,8 +82,10 @@ pim_title:
   pimee_product_asset_mass_upload: Télécharger les ressources
   pimee_product_asset_index: Ressources
   pimee_product_asset_edit: Ressource {{ asset.label }} | Édition
+  pimee_product_asset_view: Ressource {{ asset.label }} | Visualisation
   pimee_asset_categorytree_index: Catégories
   pimee_asset_categorytree_edit: Catégorie {{ category.label }} | Édition
+  pimee_asset_categorytree_create: Catégorie | Créer
 batch_jobs:
   apply_assets_mass_upload:
     label: Téléchargement en masse de ressources

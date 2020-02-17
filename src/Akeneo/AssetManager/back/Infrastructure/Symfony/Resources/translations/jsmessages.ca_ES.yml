@@ -3,7 +3,13 @@
 #akeneo_asset_manager_asset_family_edit: Edit an asset family
 #akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: Enllaç incrustat sospitós
+        message: Ho sentim, no podem mostrar aquest article tot i ser guardat correctament
   asset_collection:
+    asset_count: '{0} Sense recurs|{1} {{ resultCount }} recurs|]1,Inf] {{ resultCount }} recursos'
     add_asset: 'Afegeix actiu'
     no_asset_in_collection: 'Ho sentim, no hi ha cap actiu en aquesta col·lecció.'
     helper:
@@ -15,6 +21,7 @@ pim_asset_manager:
       text: 'No hi ha col·lecció d''actius per a la família {{ family }}!'
     notification:
       product_rule: 'Aquesta col·lecció pot ser actualitzada per una regla de producte:'
+      limit: 'Ha arribat al límit de {{ limit }} de recursos per col·lecció. Ja no pots afegir recursos a la seva col·lecció.'
     remove_one_asset: Eliminar recurs {{ assetName }} de la col·lecció de recursos
     remove_all_assets: Eliminar tots els recursos
     other_actions: Altres accions
@@ -22,15 +29,43 @@ pim_asset_manager:
     dismiss_other_actions: Descarta altres accions
     move_asset_to_left: Desplaça el recurs {{ assetName }} a l'esquerra
     move_asset_to_right: Desplaça el recurs {{ assetName }} a la dreta
+    legacy_helper:
+      moved_to_assets_tab: Per veure la col·lecció {{ label }}, ves a la selecció d'actius del producte.
   asset_picker:
+    title: Afegeix recursos al teu producte
     no_result:
+      title: Ho sentim, no hi ha cap actiu a la seva cerca
       sub_title: Provi amb nous criteris de cerca
     filter:
       title: Filtres de recursos
     basket:
+      title: '{{ assetCount }} actiu seleccionat|{{ assetCount }} actius seleccionats'
       empty_title: La cistella és buida
       remove_one_asset: Eliminar recurs {{ assetName }} de la selecció de recursos
       remove_all_assets: Eliminar tot
+  asset_preview:
+    previous: Recurs anterior
+    next: Següent recurs
+    empty_main_image: Aquest recurs no té imatge.
+    edit_asset: Editar recurs
+    download: Baixar
+    copy_url: Copiar URL
+  close: Tancar el modal
+  breadcrumb:
+    products: Productes
+  #app:
+  #image:
+  #wide:
+  #remove: Remove the image
+  #download: Download the image
+  #upload: Drag and drop to upload or click here
+  #small:
+  #remove: Remove
+  #download: Download
+  #upload: Drag and drop to upload
+  grid:
+    counter: '{{ resultCount }} resultats'
+    counter_empty: '0 resultats'
   asset_family:
     #validation:
     #code:
@@ -169,6 +204,7 @@ pim_asset_manager:
     #delete_all:
     #confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
     grid:
+      search: Cerca a l'etiqueta, el codi i el text dels atributs
       filter:
         completeness:
           label: Complet
@@ -182,6 +218,7 @@ pim_asset_manager:
             in: A la llista
       more_result:
         title: Això no és!
+        description: Acaba de desplaçar-se a través dels primers resultats {{ maxDisplayedAssets }} del {{ total }} dels actius. Per veure més, proveu amb criteris de cerca més específics.
   #column:
   #code: Code
   #image: Image
@@ -326,4 +363,5 @@ pim_enrich:
         #section:
         #type_specific: Type specific parameters
         asset_family:
+          identifier: Família de recursos relacionada (requerit)
           default_label: Si us plau trieu un recurs de família

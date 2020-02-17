@@ -51,14 +51,17 @@ pimee_product_asset:
     flash:
       update:
         success: El recurso ha sido actualizado.
+        error: El recurso no ha sido actualizado. Se ha producido un error.
       create:
         success: El recurso ha sido creado.
+        error: El recurso no ha sido creado. Se ha producido un error.
       remove:
         success: El recurso ha sido quitado.
   enrich_reference:
     flash:
       delete:
         success: El fichero de referencia ha sido eliminado.
+        error: El archivo de referencia no ha sido eliminado. Se ha producido un error.
   enrich_variation:
     flash:
       transformation:
@@ -72,8 +75,10 @@ pimee_product_asset:
         success: Los ficheros de variaciones han sido creados con éxito.
       update:
         success: El fichero de variación ha sido actualizado.
+        error: El archivo de variación no ha sido actualizado. Se ha producido un error.
       delete:
         success: El fichero de variación ha sido eliminado.
+        error: El archivo de variación no ha sido eliminado. Se ha producido un error.
   popin.create:
     title: Crear un nuevo recurso
     is_localized: Localizable
@@ -121,6 +126,7 @@ pimee_product_asset:
     import: Importación
     executed: Carga en masa iniciada
     error:
+      upload: Se ha producido un error durante la subida
       code: Formato de código no válido para los recursos
       localizable: Existe un recurso pero no es localizable
       invalid_locale: El local está inhabilitado o es inválido

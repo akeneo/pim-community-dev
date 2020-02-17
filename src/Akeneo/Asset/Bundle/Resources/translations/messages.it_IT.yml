@@ -51,14 +51,17 @@ pimee_product_asset:
     flash:
       update:
         success: L'asset è stato aggiornato.
+        error: L'attività non è stata aggiornata. Si è verificato un errore.
       create:
         success: L'asset è stato creato.
+        error: L'attività non è stata aggiornata. Si è verificato un errore.
       remove:
         success: L'asset è stato rimosso.
   enrich_reference:
     flash:
       delete:
         success: Il file dei riferimenti è stato eliminato.
+        error: Il file di riferimento non è stato eliminato. Si è verificato un errore.
   enrich_variation:
     flash:
       transformation:
@@ -72,8 +75,10 @@ pimee_product_asset:
         success: I file di variante sono stati generati con successo.
       update:
         success: Il file di variante è stato aggiornato.
+        error: Il file di variazione non è stato aggiornato. Si è verificato un errore.
       delete:
         success: Il file di variante è stato eliminato.
+        error: Il file di variazione non è stato eliminato. Si è verificato un errore.
   popin.create:
     title: Crea un nuovo asset
     is_localized: Localizzabile
@@ -121,6 +126,7 @@ pimee_product_asset:
     import: '&Import'
     executed: Caricamento di massa eseguito
     error:
+      upload: Si è verificato un errore aggiornando
       code: Formato codice non valido per l'asset
       localizable: Un asset esiste ma non è traducibile
       invalid_locale: L'impostazione internazionale è disabilitata o non valida

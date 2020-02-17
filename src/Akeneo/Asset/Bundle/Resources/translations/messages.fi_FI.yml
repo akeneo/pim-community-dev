@@ -51,14 +51,17 @@ pimee_product_asset:
     flash:
       update:
         success: Assetti on päivitetty.
+        error: Assettia ei ole päivitetty. Tapahtui virhe.
       create:
         success: Assetti on luotu.
+        error: Assettia ei ole luotu. Tapahtui virhe.
       remove:
         success: Assetti on poistettu.
   enrich_reference:
     flash:
       delete:
         success: Viitetiedosto on poistettu.
+        error: Viitetiedostoa ei ole poistettu. Tapahtui virhe.
   enrich_variation:
     flash:
       transformation:
@@ -121,6 +124,7 @@ pimee_product_asset:
     import: Tuonti
     executed: Massatuonti suoritettu
     error:
+      upload: Latauksen yhteydessä tapahtui virhe
       code: Assetin koodiformaatti ei ole pätevä
       localizable: Assetti on olemassa, mutta se ei ole kielikohtainen
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
@@ -178,6 +182,7 @@ pim_datagrid:
   cells:
     type:
       mass_upload: Massatuo assetteja
+      compute_completeness_of_products_linked_to_assets: Laske assetteihin liitettyjen tuotteiden valmiusaste
 pim_analytics:
   info_type:
     nb_assets: Assettien lukumäärä

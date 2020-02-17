@@ -13,6 +13,8 @@ pim_reference_entity:
         remove: Rimuovere
         download: Scarica
         upload: Trascina e rilascia per caricare
+  grid:
+    counter: '{{ count }} risultato|{{ count }} risultati'
   reference_entity:
     validation:
       code:
@@ -40,6 +42,10 @@ pim_reference_entity:
       image: Immagine
     attribute:
       title: Attributi del record
+      attribute:
+        error:
+          render_list: 'Si è verificato un errore durante il rendering dell''attributo "{{ %attribute_code% }}"'
+          render_edit: 'Si è verificato un errore durante il rendering dei campi di proprietà aggiuntivi dell''attributo "{{ %attribute_code% }}"'
     module:
       delete:
         button: Elimina entità
@@ -69,10 +75,13 @@ pim_reference_entity:
     notification:
       save:
         success: Entità di riferimento aggiornata correttamente.
+        fail: Si è verificato un errore durante il salvataggio dell'entità di riferimento
       create:
         success: Entità di riferimento creata correttamente.
+        fail: Si è verificato un errore durante la creazione dell'entità di riferimento
       delete:
         success: Entità di riferimento eliminata correttamente.
+        fail: Si è verificato un errore durante l'eliminazione dell'entità di riferimento
   permission:
     notification:
       save:
@@ -105,7 +114,24 @@ pim_reference_entity:
       delete_all: Elimina tutti i record
       back: Torna all'elenco
     product:
+      attribute: Attributo prodotto
+      counter: '{{ totalCount }} risultato|{{ totalCount }} risultati'
+      dropdown:
+        attribute: Attributo prodotto
       title: Prodotti
+      no_attribute:
+        title: Nessun attributo prodotto collegato all'entità di riferimento "{{ entityLabel }}"
+        subtitle: "Per iniziare a collegare prodotti a questa entità di riferimento puoi crearne uno nuovo: "
+        link: Crea un nuovo attributo prodotto
+      not_enough_items:
+        title: Qui è un po' affollato, ti mostriamo {{ productCount }}/{{ totalCount }} prodotti.
+        subtitle:
+          usable_in_grid: Per scoprire tutti i prodotti collegati, clicca semplicemente sotto!
+          not_usable_in_grid: Per scoprire tutti i prodotti collegati, l'attributo prodotto deve essere impostato su "utilizzabile nella griglia".
+        button: Mostra tutti i prodotti
+      no_product:
+        title: Nessun prodotto collegato per l'attributo prodotto "{{ entityLabel }}"
+        subtitle: "Inizia a collegare prodotti a questo attributo per vederli qui"
     enrich:
       title: Attributi del record
       code: Codice
@@ -136,6 +162,7 @@ pim_reference_entity:
           'no': 'No'
         option:
           all: Tutto
+          no_value: Seleziona un'opzione per filtrare
           operator:
             in: In elenco
       column:
@@ -158,13 +185,17 @@ pim_reference_entity:
     notification:
       save:
         success: Record aggiornato correttamente.
+        fail: Si è verificato un errore durante il salvataggio del registro
         validation_error: Il record non può essere aggiornato
       create:
         success: Record creato correttamente.
+        fail: Si è verificato un errore durante la creazione del registro
       delete:
         success: Record "{{ code }}" eliminato correttamente.
+        fail: Si è verificato un errore durante l'eliminazione del registro
       delete_all:
         success: Tutti i record di "{{ entityIdentifier }}" sono stati eliminati correttamente.
+        fail: Si è verificato un errore durante l'eliminazione di tutti questi registri dell'entità di riferimento
     completeness:
       label: Completo
   attribute:
@@ -181,6 +212,7 @@ pim_reference_entity:
       record_collection: Collegamenti multipli entità di riferimento
       option: Singola opzione
       option_collection: Opzioni multipli
+      number: Numero
     is_required: richiesto per la completezza
     no_data:
       title: Non ci sono attributi personalizzati per {{ entityLabel }}
@@ -223,6 +255,8 @@ pim_reference_entity:
         allowed_extensions: Estensioni consentite
         validation_rule: Regola di convalida
         regular_expression: Espressione regolare
+        min_value: Valore minimo
+        max_value: Valore massimo
         manage_options:
           confirmation:
             discard_changes: Perderai le modifiche fatte all'elenco delle opzioni se lasci la pagina
@@ -237,18 +271,24 @@ pim_reference_entity:
             email: E-mail
             regular_expression: Espressione regolare
             url: URL
+        decimals_allowed: Valori decimali consentiti
     delete:
       message: Sei sicuro di voler eliminare l'attributo "{{ attributeLabel }}"?
       title: Attributo
     notification:
+      list:
+        fail: Si è verificato un errore durante l'aggiornamento dell'elenco attributo
       save:
         success: Attributo aggiornato con successo.
+        fail: Si è verificato un errore durante il salvataggio dell'attributo
         validation_error: L'attributo non può essere aggiornato
       create:
         success: Attributo creato con successo.
+        fail: Si è verificato un errore durante la creazione dell'attributo
         validation_error: L'attributo non può essere creato
       delete:
         success: Attributo eliminato correttamente.
+        fail: Si è verificato un errore durante l'eliminazione dell'attributo
     options:
       no_value: Clicca qui per selezionare un'opzione.
       sub_title: Entità di riferimento
@@ -278,5 +318,11 @@ permission:
   mass_action: Applica il diritto {{ rightLevel }} a tutti i gruppi
 #Analytics
 pim_catalog_volume:
+  section:
+    reference_entity:
+      title: Assi su entità di riferimento
+      hint: Se stai usando le entità di riferimento, qui ci sono gli assi per aiutarti a monitorare il tuo volume.
   axis:
     count_reference_entity: Entità riferimenti
+    average_max_records_per_reference_entity: Registri per entità di riferimento
+    average_max_attributes_per_reference_entity: Attributi per entità di riferimento

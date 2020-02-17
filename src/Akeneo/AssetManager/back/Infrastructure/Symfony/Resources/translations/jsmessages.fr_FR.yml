@@ -3,10 +3,48 @@
 #akeneo_asset_manager_asset_family_edit: Edit an asset family
 #akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: Lien incorporé suspect
+        message: Désolé, nous n'affichons pas cet élément intégré mais il sera correctement sauvegardé.
   asset_collection:
+    asset_count: '{0} Pas de ressource|{1} {{ resultCount }} ressource|]1,Inf] {{ resultCount }} ressources'
+    add_asset: 'Ajouter une ressource'
+    add_asset_title: 'Ouvrir le sélecteur de ressources pour ajouter des ressources à la collection'
+    no_asset_in_collection: 'Désolé, il n''y a aucune ressource dans cette collection.'
+    helper:
+      title: 'Bienvenue dans votre nouvelle zone de gestion des ressources de produits !'
+      text: 'Il n''y a pas de collection de ressources pour la famille {{ family }}  ! Comment ajouter une collection de ressources ?'
+      link: 'Comment ajouter une collection de ressources ?'
+    no_asset:
+      title: 'Désolé, il n''y a aucune ressource pour ce produit'
+      text: 'Il n''y a pas de collection de ressources pour la famille {{ family }} !'
+    notification:
+      product_rule: 'Cette collection peut être mise à jour par une règle produit :'
+      limit: 'Vous avez atteint la limite de {{ limit }} ressources par collection, vous ne pouvez plus ajouter de ressource à votre collection.'
+    remove_one_asset: Supprimer la ressource {{ assetName }} de la collection de ressources
+    remove_all_assets: Enlever toutes les ressources
     other_actions: Autres actions
+    open_other_actions: Ouvrir d'autres actions
+    dismiss_other_actions: Cacher les autres actions
+    move_asset_to_left: Déplacer la ressource {{ assetName }} à gauche
+    move_asset_to_right: Déplacer la ressource {{ assetName }} à droite
+    legacy_helper:
+      moved_to_assets_tab: Pour voir la collection de ressources {{ label }}, allez à la section des ressources du produit.
+      is_missing_required: La collection de ressources {{ label }} est requise. Enrichissez-la dans la section des ressources du produit.
   asset_picker:
+    title: Ajouter des ressources à votre produit
+    sub_title: Choisissez les ressources que vous souhaitez attacher à votre produit {{ productLabel }} dans la collection {{ attributeLabel }}
+    no_result:
+      title: Désolé, il n’y a aucune ressource pour votre recherche
+      sub_title: Essayez à nouveau avec d'autres critères de recherche
+    filter:
+      title: Filtres de ressources
     basket:
+      title: '{{ assetCount }} ressource sélectionnée|{{ assetCount }} ressources sélectionnées'
+      empty_title: Votre panier est vide
+      remove_one_asset: Supprimer la ressource {{ assetName }} de la sélection des ressources
       remove_all_assets: Tout supprimer
   asset_preview:
     previous: Ressource précédente
@@ -30,6 +68,7 @@ pim_asset_manager:
   #upload: Drag and drop to upload
   grid:
     counter: '{{ resultCount }} résultats'
+    counter_empty: '0 résultat'
   asset_family:
     #validation:
     #code:
@@ -168,6 +207,18 @@ pim_asset_manager:
     #delete_all:
     #confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
     grid:
+      search: Rechercher sur le libellé, le code et les attributs texte
+      filter:
+        completeness:
+          label: Complet
+          all: Tous
+          'yes': 'Oui'
+          'no': 'Non'
+        option:
+          all: Tous
+          no_value: Sélectionnez une option pour filtrer
+          operator:
+            in: Dans la liste
       more_result:
         title: Ce n'est pas tout !
         description: Vous venez de faire défiler les {{ maxDisplayedAssets }}} premiers résultats parmi {{ total }} ressources. Pour en voir plus, essayez avec des critères de recherche plus spécifiques.

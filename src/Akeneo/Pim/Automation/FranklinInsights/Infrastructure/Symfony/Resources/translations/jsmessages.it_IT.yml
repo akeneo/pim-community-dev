@@ -14,6 +14,7 @@ akeneo_franklin_insights:
     data_provider:
       ask_franklin_down: "Qualcosa è andato storto. Riprova più tardi."
       authentication_error: "Impossibile autenticare Franklin Insights, il tuo token non è valido. Inserisci un token valido o contattaci per avere aiuto."
+      bad_request_error: "Spiacenti, un problema si è verificato comunicando con Franklin Insights. Sei pregato di contattare il tuo amministratore."
     identifier_mapping:
       plural_label: Identificatori
       flash:
@@ -46,10 +47,13 @@ akeneo_franklin_insights:
       label: Mappatura attributi
       flash:
         do_not_map_attribute_success: 'Attributo aggiornato con successo.'
+        create_attribute_success: '{0} Spiacenti, nessuno degli attributi {{ requestCount }} è stato creato. |{1} Attributo creato ed allegato con successo alla famiglia "{{ family }}". |[2,Inf[ {{ successCount }} attributi di {{ requestCount }} sono stati creati con successo ed allegati alla famiglia "{{ family }}".'
         create_attribute_error: 'Spiacenti, si è verificato un errore durante la creazione o associando l''attributo alla famiglia.'
         suggest_attribute_mapping_error: 'L''attributo del catalogo "[{{ catalogAttributeCode }}]" è già mappato sull''attributo Franklin "{{ franklinAttributeLabel }}".'
+        add_attribute_to_family_success: '{1} Attributo allegato alla famiglia "{{ family }} " con successo. |[2,Inf[ Attributi allegati alla famiglia "{{ family }}" con successo.'
         add_attribute_to_family_error: 'Spiacenti, si è verificato un errore durante l''associazione dell''attributo alla famiglia.'
       fields:
+        search_bar.placeholder: 'Cerca sull''attributo Franklin'
         franklin_attribute: 'Attributi di Franklin'
         franklin_attribute_type: '{{ type }} attributo'
         franklin_value_sample: 'Esempio di valore:'
@@ -75,15 +79,32 @@ akeneo_franklin_insights:
           family_status:
             pending: 'Nuovi attributi Franklin da recensire'
             full: 'Tutti gli attributi Franklin mappati'
+          types_mismatch_warning: 'Attenzione : non corrispondenza dei tipi di attributi.'
           family_progress:
             title: 'Numero di attributi mappati'
             description: "Usa questa barra per vedere a priva vista lo stato del lavoro"
             mapped_attribute_count: '{{ count }} attributi mappati'
+        toolbar:
+          bulk_create_attribute: Crea attributo
+          bulk_add_to_family: Aggiungi a famiglia
+          selection_count: '{{ count }} elemento selezionato | {{ count }} elementi selezionati'
       modal:
         deactivate_franklin_attribute:
           title: "Sei sicuro di non voler mappare questo attributo?"
           subtitle: 'Franklin Insights'
           ok: "Non mappare"
+        bulk_create_attribute:
+          title: '{1} Crea 1 attributo |[2,Inf[ Crea {{ count }} attributi'
+          subtitle: 'Approfondimenti Franklin'
+          description: '{1} L''attributo selezionato sarà creato ed aggiunto alla famiglia |[2,Inf[ Gli attributi selezionati saranno creati ed aggiunti alla famiglia'
+          warning: '{1} Sei pregato di confermare la creazione di un nuovo attributo. |[2,Inf[ Sei pregato di confermare la creazione di {{ count }} nuovi attributi.'
+          ok: Conferma
+        bulk_add_to_family:
+          title: '{1} Aggiungi 1 attributo alla famiglia |[2,Inf[ Aggiungi {{ count }} attributi alla famiglia'
+          subtitle: 'Approfondimenti Franklin'
+          description: '{1} L''attributo selezionato sarà aggiunto alla famiglia |[2,Inf[ Gli attributi selezionati saranno aggiunti alla famiglia'
+          warning: '{1} Sei pregato di confermare l''aggiunta di un nuovo attributo alla famiglia. |[2,Inf[ Sei pregato di confermare l''aggiunta di {{ count }} nuovi attributi alla famiglia.'
+          ok: Conferma
       constraint:
         missing_target_key: 'Chiave di destinazione mancante per la mappatura'
         missing_attribute_key: 'Chiave {{ expectedKey }} per la mappatura mancante con chiave di destinazione "{{ targetKey }}"'
@@ -95,6 +116,9 @@ akeneo_franklin_insights:
         duplicated_pim_attribute: "La mappatura non può essere salvata perché hai mappato diversi attributi di Franklin allo stesso attributo PIM"
         attribute_not_in_family_not_allowed: 'L''attributo del PIM deve essere nella famiglia selezionata.'
         only_unknown_mapped_attributes: 'Non sono stati trovati attributi nella mappatura degli attributi'
+      search:
+        no_result_title: Spiacenti, nessun attributo Franklin per la tua ricerca.
+        no_result_subtitle: Riprova con nuovi criteri di ricerca.
     product_subscription:
       flash:
         create:
@@ -113,6 +137,7 @@ akeneo_franklin_insights:
         already_subscribed_product: 'Il prodotto è già iscritto.'
         variant_product: 'I prodotti varianti non possono essere iscritti a Franklin Insights.'
         inactive_connection: 'Impossibile iscrivere il prodotto a Franklin Insights. Configura la tua connessione a Franklin Insights.'
+        product_subscription_with_same_identifier_already_exist: 'Un altro prodotto con almeno un identificatore identico è già stato sottoscritto.'
       module:
         product_edit_form:
           family_required: 'Famiglia prodotto richiesta.'
@@ -130,6 +155,7 @@ akeneo_franklin_insights:
         edit:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} opzioni attributo'
           sub_title: 'Conosci Franklin, il tuo <span class="AknDescriptionHeader-title--highlight">assistente AI Informazioni Prodotto</span>!'
+          description: 'Per aiutare ad arricchire il tuo catalogo, Franklin necessiterà di conoscere le opzioni attributo del tuo catalogo che corrispondono alle sue. <a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">Leggi di più</a>'
   product:
     edit:
       btn.push: Suggerisci dati
@@ -139,6 +165,7 @@ akeneo_franklin_insights:
     flash:
       success: Codice di attivazione Franklin Insights salvato correttamente.
       invalid: Il codice di attivazione non è valido. Riprova con un codice valido.
+      error: Spiacenti, si è verificato un errore.
     module:
       title:
         sub_title: 'Benvenuto nell''<span class="AknDescriptionHeader-title--highlight">Assistente AI Informazioni Prodotto</span>!'
@@ -183,8 +210,10 @@ akeneo_franklin_insights:
             franklin_activation: "Si prega di <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\"> attivare </a> Franklin Insights prima di sottoscrivere i prodotti."
             invalid_mapping: "Si prega di mappare gli identificatori del prodotto su Impostazioni > Franklin Insights prima di sottoscrivere i prodotti."
   key_figures:
+    menu: Figure chiave Franklin
     section_title:
       credits: Crediti di Franklin
+      key_figures: Figure chiave Franklin
     axis:
       franklin_attribute_created: Numero di attributi creati da Franklin
       franklin_attribute_added_to_family: Numero di attributi aggiunti a una famiglia da Franklin
@@ -219,6 +248,9 @@ pim_enrich.entity.attribute:
 pim_title:
   akeneo_franklin_insights_connection_edit: Connsessione Franklin Insights
   akeneo_franklin_insights_mapping_index: Mappatura di Franklin Insights
+  akeneo_franklin_insights_identifiers_mapping_edit: Approfondimenti Franklin Modifica Mappatura Identificatori
+  akeneo_franklin_insights_attributes_mapping_edit: Approfondimenti Franklin Modifica Mappatura Attributi
+  akeneo_franklin_insights_key_figure_index: Approfondimenti Figure Chiave Franklin
 pim_notification:
   types:
     franklin_insights: Franklin Insights

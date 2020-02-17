@@ -3,16 +3,90 @@ pim_reference_entity:
     validation:
       code:
         pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
+        should_be_unique: 'Un''entità di riferimento con codice "%reference_entity_identifier%" esiste già'
+        limit_reached: 'Non puoi creare l''entità di riferimento "%reference_entity_label%" perché hai raggiunto il limite di %limit% entità di riferimento'
+      records:
+        should_have_no_record: 'Non puoi eliminare quest''entità perché esistono registri per quest''entità'
+      reference_entity_attributes:
+        should_not_be_linked: 'Non puoi eliminare quest''entità perché gli attributi dell''entità di riferimento sono correlati a quest''entità'
       reference_entity_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Almeno un gruppo utente dovrebbe avere permesso di modifica su questa entità'
+      product_attributes:
+        should_not_be_linked: 'Non puoi eliminare quest''entità perché gli attributi del prodotto sono correlati a quest''entità'
+      should_exist: 'L''entità di riferimento "%reference_entity_code%" non è stata trovata.'
   record:
     validation:
       code:
         pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
+        should_be_unique: 'Il codice di registro esiste già per l''entità di riferimento "%reference_entity_identifier%" ed il codice registro "%code%"'
+        should_exist: 'Il registro non è stato trovato'
+      text:
+        incompatible_with_regular_expression: 'Il testo non è compatibile con l''espressione regolare "%regular_expression%"'
+      file:
+        extension_not_allowed: 'I file "%file_extension%" non sono consentiti per questo attributo. Le estensioni consentite sono: %allowed_file_extensions%'
+        file_size_exceeded: 'Il file eccede la dimensione massima dei file impostata per l''attributo.'
+        should_exist: 'Il file "%file_path%" non è stato trovato.'
+      option:
+        code_does_not_exist: 'L''opzione con codice "%option_code%" non esiste per questo attributo'
+      option_collection:
+        codes_dont_exist: "I codici opzione seguenti non esistono per questo attributo : \"%option_codes%\""
+      record:
+        should_exist: 'Il registro "%record_code%" non è stato trovato.'
+      record_collection:
+        should_exist: 'I registri "%record_codes%" non sono stati trovati.'
+      limit_reached: 'Non puoi creare il registro "%record_label%" perché hai raggiunto il limite di registri %limit% per quest''entità di riferimento'
+      channel:
+        is_expected: 'Si attende un canale per l''attributo "%attribute_code%" perché ha un valore per canale.'
+        is_not_expected: 'Un canale non è atteso per l''attributo "%attribute_code%" perché non ha un valore per canale.'
+        should_exist: 'Il canale "%channel_identifier%" non esiste.'
+      locale:
+        is_expected: 'Si attende un locale per l''attributo "%attribute_code%" perché ha un valore per locale.'
+        is_not_expected: 'Non si attende un locale per l''attributo "%attribute_code%" perché non ha un valore per locale.'
+        is_not_activated: 'Il locale "%locale_identifier%" non è attivato.'
+        is_not_activated_for_channel: 'Il locale "%locale_identifier%" non è attivato per il canale "%channel_identifier%".'
+      number:
+        should_be_string: 'Questo campo dovrebbe essere una stringa'
+        should_be_integer: 'Questo campo dovrebbe essere un intero'
+        integer_too_long: 'Questo intero è troppo grande'
+        should_be_numeric: 'Questo campo dovrebbe essere un valore numerico con il separatore decimale a destra'
   attribute:
     validation:
       options:
+        should_exist: 'L''opzione non è stata trovata.'
+        duplicated: 'L''opzione "%option_code%" esiste già'
+        too_many: 'Hai raggiunto il limite di {{ limit }} opzioni attributo per l''attributo.'
         code:
           pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
+          should_not_be_blank: 'Il codice dell''opzione non dovrebbe essere vuoto'
+      max_length:
+        should_be_an_integer: 'Questo valore dovrebbe essere un intero.'
+      max_file_size:
+        should_be_a_number: 'Questo valore dovrebbe essere un numero.'
+      min_value:
+        should_be_a_number: 'Questo valore dovrebbe essere un numero con il separatore decimale a destra.'
+        cannot_be_greater_than_max: 'Il minimo non può essere più grande del massimo'
+      max_value:
+        should_be_a_number: 'Questo valore dovrebbe essere un numero con il separatore decimale a destra.'
+        cannot_be_lower_than_min: 'Il massimo non può essere inferiore del minimo'
       code:
         pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
+        reserved_codes: 'Il codice non può essere nessuno di questi valori : "{{ comma_separated_reserved_keywords }}"'
+        should_not_exist: 'L''attributo esiste già per l''entità di riferimento "{{ reference_entity_identifier }}" ed il codice attributo "{{ code }}"'
+        should_exist: 'L''attributo non è stato trovato'
+      regular_expression:
+        invalid_regular_expression: 'Questa espressione regolare non è valida. Ecco un esempio di un''espressione regolare valida: "/[a-z]+[0-9]*/"'
+        should_not_be_empty: 'L''espressione regolare non può essere vuota.'
+      should_be_a_textarea_to_update_is_rich_text_editor: 'Un attributo di testo semplice non può avere un editor di testo ricco'
+      should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'Un attributo di area di testo non può avere una regola di convalida'
+      cannot_set_a_non_empty_regular_expression: 'L''attributo non deve avere un''espressione regolare'
+      cannot_update_the_regular_expression: 'Impossibile impostare un''espressione regolare sull''attributo di testo'
+      limit_reached: 'Non puoi creare l''attributo "%attribute_label%" perché hai raggiunto il limite di %limit% attributi per quest''entità di riferimento'
+      record_type:
+        is_required: 'Devi specificare il tipo di entità di riferimento per creare un attributo di collegamento Entità di Riferimento'
+        reference_entity_should_exist: 'L''entità di riferimento "%reference_entity_code%" non è stata trovata.'
+      prefix:
+        should_not_be_empty: 'Il prefisso non può essere una stringa vuota.'
+      suffix:
+        should_not_be_empty: 'Il suffisso non può essere una stringa vuota.'
+      media_type:
+        not_expected: 'Il tipo di media dato non è corrispondente a quelli attesi (%supported_media_types%).'
