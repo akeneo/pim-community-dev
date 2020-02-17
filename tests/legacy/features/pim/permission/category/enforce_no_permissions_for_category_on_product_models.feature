@@ -45,5 +45,4 @@ Feature: Enforce no permissions for a category
       | Allowed to edit products | Redactor |
       | Allowed to own products  | Redactor |
     And I save the category
-    When I am on the "plain" product model page
-    Then I should see the text "Forbidden"
+    Then I can't access to "plain" product model page

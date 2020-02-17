@@ -80,6 +80,7 @@ Feature: Follow project completeness
       | Description | Description |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
+    And I wait 5 seconds
     And I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
     When I am on the dashboard page

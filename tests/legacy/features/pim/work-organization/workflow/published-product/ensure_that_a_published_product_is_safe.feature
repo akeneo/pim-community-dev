@@ -19,21 +19,6 @@ Feature: Ensure that a published product is safe
     Then I am on the products grid
     And I should see product my-jacket
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
-  Scenario: Fail to remove a category that is linked to a published product
-    Given I am on the "jackets" category page
-    And I press the "Delete" button and wait for modal
-    And I confirm the removal
-    Then I should see the "jackets" category under the "summer_collection" category
-
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
-  Scenario: Fail to remove a category if one of these children is linked to a published product
-    Given I am on the "summer_collection" category page
-    And I press the "Delete" button and wait for modal
-    And I confirm the removal
-    Then I am on the "jackets" category page
-    And I should see the "jackets" category under the "summer_collection" category
-
   Scenario: Successfully remove a category that is not linked to a published product
     Given I am on the "winter_top" category page
     And I should see the text "edit category - Winter tops"
@@ -41,27 +26,12 @@ Feature: Ensure that a published product is safe
     And I confirm the removal
     Then I should not see the "winter_top" category under the "winter_collection" category
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
-  Scenario: Fail to remove a family that is linked to a published product
-    Given I am on the "jackets" family page
-    And I press the "Delete" button and wait for modal
-    And I confirm the removal
-    Then I am on the families page
-    And I should see family jackets
-
   Scenario: Successfully remove a family that is not linked to a published product
     Given I am on the "pants" family page
     And I press the secondary action "Delete"
     And I confirm the removal
     When I am on the families page
     Then I should not see family Pants
-
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
-  Scenario: Fail to remove a group that is linked to a published product
-    Given I edit the "similar_jackets" product group
-    When I press the "Delete" button and wait for modal
-    And I confirm the deletion
-    Then I should see the text "Similar jackets"
 
   Scenario: Fail to remove an attribute that is linked to a published product
     Given I am on the "handmade" attribute page

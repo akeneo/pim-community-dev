@@ -38,17 +38,3 @@ Feature: Unpublish many products at once
     And I should see the text "skipped products 1"
     When I am on the published products grid
     Then the grid should contain 1 elements
-
-  @jira https://akeneo.atlassian.net/browse/PIM-4600
-  Scenario: Unpublish nothing if the user is the owner of no product
-    Given I am logged in as "Mary"
-    And I am on the published products grid
-    And I select rows unionjack, jackadi and teafortwo
-    And I press the "Bulk actions" button
-    When I choose the "Unpublish" operation
-    And I confirm mass edit
-    And I wait for the "unpublish_product" job to finish
-    Then I should see the text "You're not the owner of the product, you can't unpublish it"
-    And I should see the text "skipped products 3"
-    When I am on the published products grid
-    Then the grid should contain 3 elements

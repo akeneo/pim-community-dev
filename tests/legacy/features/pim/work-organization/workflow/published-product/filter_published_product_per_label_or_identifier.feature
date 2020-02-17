@@ -32,11 +32,3 @@ Feature: Filter published products by label or identifier field
     And I should be able to use the following filters:
       | filter              | operator | value   | result                         |
       | label_or_identifier | equals   | 125824  | 125824                         |
-      | label_or_identifier | equals   | post    | 125824                         |
-      | label_or_identifier | equals   | post it | 125824                         |
-      | label_or_identifier | equals   | paper   | 6589                           |
-      | label_or_identifier | equals   | 2412    | mug                            |
-      | label_or_identifier | equals   | pape    | 6589                           |
-      | label_or_identifier | equals   | 24      | 50_shades_of_grey              |
-      | label_or_identifier | equals   | shade   | 50_shades_of_grey              |
-      | label_or_identifier | equals   | 24      | 125824, mug, 50_shades_of_grey |
