@@ -1,0 +1,153 @@
+pim_menu.item:
+  connection_settings: Verbindungen
+  connection_audit: Verbindungs-Dashboard
+pim_title:
+  akeneo_connectivity_connection_settings_index: Verbindungen
+  akeneo_connectivity_connection_settings_any: Verbindungen
+  akeneo_connectivity_connection_audit_index: Verbindungs-Dashboard
+  akeneo_connectivity_connection_audit_any: Verbindungs-Dashboard
+akeneo_connectivity.connection:
+  connections: Verbindungen
+  secondary_actions:
+    title: Weitere Aktionen
+  connection:
+    code: Code
+    label: Bezeichnung
+    flow_type: Fluss-Typ
+    image: Bild
+    client_id: Client-ID
+    secret: Passwort (Secret)
+    username: Benutzername
+    password: Passwort
+    user_role_id: Rolle
+    user_group_id: Gruppe
+    constraint:
+      code:
+        required: Verbindungscode ist erforderlich.
+        invalid: Verbindungscode darf nur Buchstaben, Zahlen und Unterstriche enthalten.
+        too_short: Verbindungscode ist zu kurz. Es sollte mindestens 3 Zeichen lang sein.
+        too_long: Verbindungscode ist zu lang. Er sollte maximal 100 Zeichen lang sein.
+        must_be_unique: Verbindungscode muss eindeutig sein.
+      label:
+        required: Verbindungsbezeichnung ist erforderlich.
+        too_short: Verbindungsbezeichnung ist zu kurz. Sie sollte mindestens 3 Zeichen lang sein.
+        too_long: Verbindungsbezeichnung ist zu lang. Sie sollte maximal 100 Zeichen lang sein.
+      flow_type:
+        invalid: Verbindungsfluss-Typ kann nur 'data_source', 'data_destination' oder 'other' sein.
+      image:
+        must_exist: Das Bild wurde nicht gefunden. Bitte versuchen Sie es erneut.
+  flow_type:
+    data_source: Datenquelle | Datenquellen
+    data_destination: Datenziel | Datenziele
+    other: Andere | Andere
+  connection_count: '{{ count }} Verbindung | {{ count }} Verbindungen'
+  no_connection:
+    title: Noch keine Verbindung deklariert.
+    message: Fügen Sie Ihren ersten hinzu, indem Sie auf den "Erstellen"-Button oben klicken oder
+    message_link: hier klicken.
+  create_connection:
+    title: Neue Verbindung erstellen
+    description: Sie können bis zu 50 Verbindungen erstellen.
+    flash:
+      success: Verbindung wurde erfolgreich erstellt.
+      error: Beim Erstellen der Verbindung ist ein Fehler aufgetreten.
+  edit_connection:
+    subtitle: Einstellungen
+    flash:
+      success: Verbindung erfolgreich aktualisiert.
+      error: Beim Bearbeiten der Verbindung ist ein Fehler aufgetreten.
+    image_uploader:
+      extension_not_allowed: Die Datei, die Sie hochladen möchten, ist leider nicht erlaubt.
+    credentials:
+      title: Anmeldeinformationen
+      helper:
+        message: 'Hier sind die Zugangsdaten für Ihren {{ label }} -Konnektor.'
+        link: Erfahren Sie hier mehr...
+      password_helper:
+        message: Wenn Sie Ihr Passwort vergessen haben, können Sie hier ein neues erstellen.
+        link: Mehr Info…
+      clear_password_helper:
+        message: Stellen Sie sicher, dass Sie dieses Passwort irgendwo speichern, da wir es Ihnen nicht zweimal zeigen werden.
+        link: Mehr Info…
+      action:
+        copy: In die Zwischenablage kopieren
+        regenerate: Erneuern
+      flash:
+        copied: '{{ name }} in die Zwischenablage kopiert'
+    permissions:
+      title: Berechtigungen
+      helper:
+        message: 'In diesem Abschnitt können Sie Berechtigungen für Ihre {{ label }} Verbindung festlegen.'
+        link: Erfahren Sie mehr über Verbindungsberechtigungen...
+      user_role_helper:
+        message: Die Standard `{{ role }}` Rolle ist nicht die beste Wahl für deine Verbindung. Wir empfehlen Ihnen dringend, eine Rolle zu wählen, die auf Ihre Verbindungsanforderungen zugeschnitten ist.
+        link: Mehr Informationen hier...
+      user_group_helper:
+        message: Wir empfehlen Ihnen dringend, eine Gruppe auszuwählen, die auf Ihre Verbindungsanforderungen zugeschnitten ist.
+        link: Mehr Informationen hier...
+  regenerate_secret:
+    title: Regeneration bestätigen
+    description: Sind Sie sicher, dass Sie das Verbindungsgeheimnis regenerieren möchten? Sind Sie sich nicht sicher, welche Auswirkungen es gibt?
+    link: Hier ist das, was geschehen wird.
+    action:
+      regenerate: Erneuern
+    flash:
+      success: Verbindungsgeheimnis erfolgreich regeneriert.
+      error: Beim erneuten Erzeugen des Verbindungsgeheimnisses ist ein Fehler aufgetreten.
+  regenerate_password:
+    title: Regeneration bestätigen
+    description: Sind Sie sicher, dass Sie das Verbindungspasswort neu generieren möchten? Sind Sie sich nicht sicher, welche Auswirkungen es gibt?
+    link: Hier ist das, was geschehen wird.
+    action:
+      regenerate: Erneuern
+    flash:
+      success: Verbindungskennwort erfolgreich regeneriert.
+      error: Beim erneuten Erzeugen des Verbindungsgeheimnisses ist ein Fehler aufgetreten.
+  delete_connection:
+    title: Löschen bestätigen
+    description: Sind Sie sicher, dass Sie die Verbindung löschen möchten? Sind Sie sich über die Auswirkungen nicht sicher?
+    link: Hier ist das, was geschehen wird.
+    flash:
+      success: Verbindung erfolgreich gelöscht.
+  helper:
+    title: <unk> Willkommen bei der Funktion, die ihr PIM korrekt verbinden wird!
+    description: Ein PIM ohne jegliche Integration von Drittanbietern ist unnütz, oder? Dank Verbindungen können Sie alle Datenströme deklarieren, die nach innen geschoben und außerhalb Ihrer PIM gezogen werden.
+    link: Sie möchten mehr wissen? Finden Sie heraus, was eine Verbindung ist und wie Sie das Beste daraus machen können!
+  flow_type_helper:
+    message: Sie fragen sich, was "Flow Type" ist?
+    link: Wir können Ihnen hier helfen!
+  edit_image:
+    upload_helper: Ändern Sie Ihr Bild, ziehen und ablegen oder
+    remove_helper: Bild entfernen
+    click_here: hier klicken
+    flash:
+      extension_not_allowed: Die Datei, die Sie hochladen möchten, ist leider nicht erlaubt.
+  dashboard:
+    helper:
+      title: '👋 Willkommen in deinem Verbindungs-Dashboard!'
+      description: Hier können Sie alle Datenströme, die in Ihrem PIM erfasst werden, über Ihre Verbindungen verfolgen, sowie alle Datenströme, die über Ihre Verbindungen an Ihre Kanäle verteilt werden.
+      link: Möchten Sie mehr wissen? Hier geht's!
+    user_survey:
+      title: Möchten Sie weitere Daten auf diesem Dashboard?
+      content: Ihr Feedback ist für uns wirklich wertvoll. Helfen Sie uns, das nächste Widget auszuwählen, indem Sie diese Umfrage mit einer Frage beantworten!
+      button: Lass uns loslegen!
+    connection_selector:
+      title: Quellverbindungen
+      all: Alle
+    charts:
+      number_of_products_created: Anzahl der erstellten Produkte
+      number_of_products_updated: Anzahl der aktualisierten Produkte
+      legend:
+        during_the_last_seven_days: In den letzten sieben Tagen
+        today: Heute
+    no_connection:
+      title: Noch keine Quellverbindung deklariert.
+      message_with_permission:
+        link: Hier einen erstellen!
+      message_without_permission:
+        message: Bitten Sie Ihren Administrator, einen zu erstellen.
+        link: Erfahren Sie hier mehr über Verbindungen...
+  runtime_error:
+    error_message: Oh verdammt! Ein Fehler ist aufgetreten...
+    reload_helper: Bitte laden Sie die Seite neu und versuchen Sie es erneut.
+    reload_button: Neu laden

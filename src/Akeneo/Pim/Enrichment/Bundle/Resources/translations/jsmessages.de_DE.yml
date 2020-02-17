@@ -22,7 +22,7 @@ pim_enrich.entity.product:
       fail: Das Produkt konnte nicht aktualisiert werden.
       fields_not_ready: "Das Produkt kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
       already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
-      file_upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
+      file_upload: Beim Datei-Upload ist ein Fehler aufgetreten
     delete:
       success: Produkt erfolgreich gelöscht.
       fail: Das Produkt konnte nicht gelöscht werden.
@@ -68,7 +68,7 @@ pim_enrich.entity.product:
       remove_optional: Dieses Attribut entfernen
       locale_specific_unavailable: Dieses vom Gebietsschema abhängige Feld ist in diesem Gebietsschema nicht verfügbar
       locale_unavailable: Dieses lokalisierbare Feld ist für das Gebietsschema '{{ locale }}' und den Ausgabekanal '{{ channel }}' nicht verfügbar
-      to_fill_count: "{1}1 fehlendes erforderliches Attribut|]1, Inf[{{ Anzahl }}} fehlende erforderliche Attribute"
+      to_fill_count: "{1}1 fehlendes erforderliches Attribut|]1, Inf[{{ count }} fehlende erforderliche Attribute"
       add_attribute_option: Attributoption hinzufügen
       add_option: Auswahlmöglichkeit hinzufügen
     completeness:
@@ -118,6 +118,8 @@ pim_enrich.entity.product:
       header_reply: '{{ user }} antwortet auf den Kommentar'
       delete_confirm: Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?
       removed_author: Benutzer gelöscht
+    asset:
+      title: Assets
 pim_enrich.entity.product_model:
   label: Produktmodell
   uppercase_label: Produktmodell
@@ -173,6 +175,13 @@ pim_enrich.entity.group:
       button: Gruppe anlegen
     delete:
       confirm: Möchten Sie diese Gruppe wirklich löschen?
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: Möchten Sie diese Rolle wirklich löschen?
+  flash:
+    delete:
+      success: Rolle erfolgreich entfernt
 pim_enrich.entity.category:
   label: Kategorie
   uppercase_label: Kategorie
