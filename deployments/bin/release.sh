@@ -28,7 +28,7 @@ echo Tagging Docker image ${NEW_IMAGE_TAG}
 docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG} eu.gcr.io/akeneo-ci/pim-enterprise-dev:${NEW_IMAGE_TAG}
 
 echo Pushing Docker image ${NEW_IMAGE_TAG}
-IMAGE_TAG=${NEW_IMAGE_TAG} $(MAKE) push-php-image-prod
+IMAGE_TAG=${NEW_IMAGE_TAG} make push-php-image-prod
 
 echo Tagging EE dev repository
 git push origin master
