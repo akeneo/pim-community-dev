@@ -3,6 +3,7 @@ import {ThemedStyledProps} from 'styled-components';
 type AkeneoTheme = {
   color: {
     grey60: string;
+    grey70: string;
     grey80: string;
     grey100: string;
     grey120: string;
@@ -65,6 +66,7 @@ export const opacity = (color: string, opacity: number) => {
 export const akeneoTheme: AkeneoTheme = {
   color: {
     grey60: '#f9f9fb',
+    grey70: '#e8ebee',
     grey80: '#d9dde2',
     grey100: '#a1a9b7',
     grey120: '#67768a',

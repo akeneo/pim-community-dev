@@ -21,7 +21,8 @@ export type NormalizedData =
   | NormalizedOptionCollectionData
   | NormalizedTextData;
 
-type Data = MediaFileData | MediaLinkData | NumberData | OptionCollectionData | OptionData | TextData;
+export type MediaData = MediaFileData | MediaLinkData;
+type Data = MediaData | NumberData | OptionCollectionData | OptionData | TextData;
 
 export const getMediaData = (data: Data): string => {
   if (null === data) return '';
@@ -30,5 +31,7 @@ export const getMediaData = (data: Data): string => {
 
   return '';
 };
+
+export const isDataEmpty = (data: Data): boolean => null === data;
 
 export default Data;

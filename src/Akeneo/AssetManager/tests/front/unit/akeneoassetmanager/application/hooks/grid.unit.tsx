@@ -2,6 +2,7 @@
 
 import '@testing-library/jest-dom/extend-expect';
 import {useFetchResult, createQuery} from 'akeneoassetmanager/application/hooks/grid';
+import {emptySearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import {renderHook, act} from '@testing-library/react-hooks';
 
 const flushPromises = () => new Promise(setImmediate);
@@ -77,7 +78,7 @@ describe('Test grid fetching hook', () => {
     expect(handleReceivedSearchResults).toHaveBeenCalledWith(results);
   });
 
-  test('It does not do anything if the asset family identifier is null', async () => {
+  test('It returns an empty result if the asset family identifier is null', async () => {
     const search = jest.fn();
     const handleReceivedSearchResults = jest.fn();
 
@@ -99,7 +100,7 @@ describe('Test grid fetching hook', () => {
 
     await flushPromises();
     expect(search).not.toHaveBeenCalled();
-    expect(handleReceivedSearchResults).not.toHaveBeenCalled();
+    expect(handleReceivedSearchResults).toHaveBeenCalledWith(emptySearchResult());
   });
 
   test('I can ask for a search result reload', async () => {

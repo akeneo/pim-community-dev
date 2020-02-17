@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const { compile } = require('json-schema-to-typescript');
+const {compile} = require('json-schema-to-typescript');
 const $RefParser = require('json-schema-ref-parser');
 
 const JSON_SCHEMA_EXT = '.schema.json';
@@ -29,7 +29,7 @@ node ${relative_filename} schemas/ models/
   `);
 };
 
-const error = (message) => {
+const error = message => {
   console.error(`
 ${message}
 
@@ -66,7 +66,7 @@ if (fs.existsSync(target) && !fs.lstatSync(target).isDirectory()) {
 }
 
 const resolveSchema = async (jsonSchemaPath, cwd) => {
-  let schema = fs.readFileSync(jsonSchemaPath, { encoding: 'utf8' });
+  let schema = fs.readFileSync(jsonSchemaPath, {encoding: 'utf8'});
   schema = JSON.parse(schema);
 
   // Resolve $ref links into flatten schemas
@@ -84,26 +84,35 @@ const copyAndCompile = async (jsonSchemaSource, jsonSchemaTarget) => {
 
   const name = path.basename(jsonSchemaSource);
   const schema = await resolveSchema(jsonSchemaSource, cwd);
-  const typescript = await compile(schema, name, { cwd });
+  const typescript = await compile(schema, name, {cwd});
 
   fs.writeFileSync(jsonSchemaTarget, JSON.stringify(schema, null, 2));
   fs.writeFileSync(typescriptFilepath, typescript);
 };
 
-(async () => {
-  if (!fs.existsSync(target)) {
-    fs.mkdirSync(target);
-  }
-
+const recursiveLookup = async (source, target) => {
   if (fs.lstatSync(source).isDirectory()) {
-    const sources = fs.readdirSync(source);
-    for (let schemaFilename of sources) {
-      if (!schemaFilename.endsWith(JSON_SCHEMA_EXT)) {
+    const children = fs.readdirSync(source);
+
+    for (let child of children) {
+      let childPath = path.join(source, child);
+
+      if (fs.lstatSync(childPath).isDirectory()) {
+        let childTarget = path.join(target, child)
+        if (!fs.existsSync(childTarget)) {
+          fs.mkdirSync(childTarget);
+        }
+
+        await recursiveLookup(childPath, childTarget);
         continue;
       }
 
-      let jsonSchemaSource = path.join(source, schemaFilename);
-      let jsonSchemaTarget = path.join(target, schemaFilename);
+      if (!child.endsWith(JSON_SCHEMA_EXT)) {
+        continue;
+      }
+
+      let jsonSchemaSource = path.join(source, child);
+      let jsonSchemaTarget = path.join(target, child);
 
       await copyAndCompile(jsonSchemaSource, jsonSchemaTarget);
     }
@@ -114,4 +123,12 @@ const copyAndCompile = async (jsonSchemaSource, jsonSchemaTarget) => {
 
     await copyAndCompile(jsonSchemaSource, jsonSchemaTarget);
   }
+};
+
+(async () => {
+  if (!fs.existsSync(target)) {
+    fs.mkdirSync(target);
+  }
+
+  await recursiveLookup(source, target);
 })();

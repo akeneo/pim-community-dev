@@ -47,6 +47,7 @@ describe('akeneoassetmanager/infrastructure/fetcher/attribute', () => {
           },
           max_file_size: '123.4',
           allowed_extensions: ['jpg', 'png'],
+          media_type: 'image',
         },
       ])
     );
@@ -86,6 +87,7 @@ describe('akeneoassetmanager/infrastructure/fetcher/attribute', () => {
         valuePerLocale: true,
         allowedExtensions: ['jpg', 'png'],
         maxFileSize: '123.4',
+        mediaType: 'image',
       },
     ]);
   });

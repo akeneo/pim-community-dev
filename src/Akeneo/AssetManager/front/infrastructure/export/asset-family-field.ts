@@ -10,14 +10,14 @@
 import * as i18n from 'pimui/js/i18n';
 import {BackendAssetFamily} from 'akeneoassetmanager/infrastructure/model/asset-family';
 const BaseSelect = require('pim/form/common/fields/simple-select-async');
-const UserContext = require("pim/user-context");
+const UserContext = require('pim/user-context');
 const Property = require('pim/common/property');
 
 class FamilySelector extends BaseSelect {
   /**
    * {@inheritdoc}
    */
-  select2Results(response: {total: number, items: BackendAssetFamily[]}) {
+  select2Results(response: {total: number; items: BackendAssetFamily[]}) {
     const nbResults = response.total;
     const more = this.resultsPerPage === nbResults;
 
@@ -33,8 +33,8 @@ class FamilySelector extends BaseSelect {
   public convertBackendItem(item: BackendAssetFamily) {
     return {
       id: item.identifier,
-      text: i18n.getLabel(<{[locale: string]: string}> item.labels, UserContext.get('catalogLocale'), item.identifier),
-    }
+      text: i18n.getLabel(<{[locale: string]: string}>item.labels, UserContext.get('catalogLocale'), item.identifier),
+    };
   }
 
   /**

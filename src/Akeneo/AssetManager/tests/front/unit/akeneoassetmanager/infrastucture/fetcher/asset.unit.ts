@@ -100,22 +100,6 @@ describe('akeneoassetmanager/infrastructure/fetcher/asset', () => {
               data: 'Dyson',
               locale: 'fr_FR',
             },
-            city_designer_79eb100099b9a8bf52609e00b7ee307e: {
-              attribute: 'city_designer_79eb100099b9a8bf52609e00b7ee307e',
-              channel: null,
-              context: {
-                labels: {
-                  'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717': {
-                    labels: {
-                      en_US: 'Paris',
-                    },
-                    code: 'paris',
-                  },
-                },
-              },
-              data: 'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717',
-              locale: null,
-            },
             colors_designer_52609e00b7ee307e79eb100099b9a8bf: {
               attribute: 'colors_designer_52609e00b7ee307e79eb100099b9a8bf',
               channel: null,
@@ -146,22 +130,6 @@ describe('akeneoassetmanager/infrastructure/fetcher/asset', () => {
               channel: null,
               data: 'Starck',
               locale: 'en_US',
-            },
-            city_designer_79eb100099b9a8bf52609e00b7ee307e: {
-              attribute: 'city_designer_79eb100099b9a8bf52609e00b7ee307e',
-              channel: null,
-              context: {
-                labels: {
-                  'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717': {
-                    labels: {
-                      en_US: 'Paris',
-                    },
-                    code: 'paris',
-                  },
-                },
-              },
-              data: 'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717',
-              locale: null,
             },
             colors_designer_52609e00b7ee307e79eb100099b9a8bf: {
               attribute: 'colors_designer_52609e00b7ee307e79eb100099b9a8bf',

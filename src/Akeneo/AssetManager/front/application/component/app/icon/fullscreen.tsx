@@ -1,17 +1,15 @@
 import * as React from 'react';
 
-const Fullscreen = ({
+export const Fullscreen = ({
   color = '#67768A',
   title = 'Fullscreen icon',
+  size = 24,
   ...props
-}: {color?: string; title?: string} & any) => (
-  <svg viewBox="0 0 24 24" width="24" height="24" {...props}>
-    <g fill="none" fillRule="evenodd" stroke={color} strokeLinecap="round" strokeLinejoin="round" strokeWidth="1">
-      <path d="M9 21H3v-6m.5 5.5L9 15m6-12h6v6m-5.5-.5l5-5"></path>
-      <path d="M9 21H3v-6m.5 5.5L9 15m6-12h6v6m-5.5-.5l5-5" transform="rotate(-90 12 12)"></path>
+}: {color?: string; title?: string; size?: number} & any) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
+    <g stroke={color} fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M8.667 22H2v-6.667m.556 6.111l6.11-6.11M15.334 2H22v6.667m-6.111-.556l5.555-5.555M22 15.333V22h-6.667m6.111-.556l-6.11-6.11M2 8.666V2h6.667M8.11 8.111L2.556 2.556" />
     </g>
     <title>{title}</title>
   </svg>
 );
-
-export default Fullscreen;

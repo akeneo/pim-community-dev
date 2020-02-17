@@ -4,6 +4,10 @@ import {
   areMediaLinkDataEqual,
   isMediaLinkData,
   getMediaLinkUrl,
+  getYouTubeWatchUrl,
+  getYouTubeEmbedUrl,
+  getVimeoWatchUrl,
+  getVimeoEmbedUrl,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
@@ -50,5 +54,21 @@ describe('akeneo > asset family > domain > model > asset > data --- media-link',
   test('I can get the full URL of a media link', () => {
     expect(getMediaLinkUrl(mediaLinkData, mediaLinkAttribute)).toEqual('https://my-link.jpg');
     expect(() => getMediaLinkUrl(mediaLinkData, {...mediaLinkAttribute, type: 'text'})).toThrow();
+  });
+
+  test('I can get the youtube watch url of a media link data', () => {
+    expect(getYouTubeWatchUrl(mediaLinkData)).toEqual('https://youtube.com/watch?v=' + mediaLinkData);
+  });
+
+  test('I can get the youtube embed url of a media link data', () => {
+    expect(getYouTubeEmbedUrl(mediaLinkData)).toEqual('https://youtube.com/embed/' + mediaLinkData);
+  });
+
+  test('I can get the vimeo watch url of a media link data', () => {
+    expect(getVimeoWatchUrl(mediaLinkData)).toEqual('https://vimeo.com/' + mediaLinkData);
+  });
+
+  test('I can get the vimeo embed url of a media link data', () => {
+    expect(getVimeoEmbedUrl(mediaLinkData)).toEqual('https://player.vimeo.com/video/' + mediaLinkData);
   });
 });

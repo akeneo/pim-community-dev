@@ -1,7 +1,6 @@
 {
   "title": "BackendAssetFamilyTransformation",
   "type": "array",
-  "maxItems": 10,
   "items": {
     "type": "object",
     "properties": {
@@ -15,23 +14,13 @@
             "type": "string"
           },
           "channel": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           },
           "locale": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           }
         },
-        "required": [
-          "attribute",
-          "channel",
-          "locale"
-        ],
+        "required": ["attribute", "channel", "locale"],
         "additionalProperties": false
       },
       "target": {
@@ -41,28 +30,17 @@
             "type": "string"
           },
           "channel": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           },
           "locale": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           }
         },
-        "required": [
-          "attribute",
-          "channel",
-          "locale"
-        ],
+        "required": ["attribute", "channel", "locale"],
         "additionalProperties": false
       },
       "operations": {
         "type": "array",
-        "minItems": 1,
         "items": {
           "type": "object",
           "properties": {
@@ -74,9 +52,7 @@
             },
             "additionalProperties": false
           },
-          "required": [
-            "type"
-          ]
+          "required": ["type"]
         }
       },
       "filename_prefix": {
@@ -86,12 +62,7 @@
         "type": "string"
       }
     },
-    "required": [
-      "label",
-      "source",
-      "target",
-      "operations"
-    ],
+    "required": ["label", "source", "target", "operations"],
     "additionalProperties": false
   }
 }

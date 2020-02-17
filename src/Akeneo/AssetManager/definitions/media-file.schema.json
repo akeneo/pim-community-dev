@@ -1,0 +1,14 @@
+{
+  "title": "BackendMediaFile",
+  "type": "object",
+  "properties": {
+    "filePath": {"type": "string"},
+    "originalFilename": {"type": "string"},
+    "size": {"type": "number"},
+    "mimeType": {"type": "string"},
+    "extension": {"type": "string"},
+    "updatedAt": {"type": "string"}
+  },
+  "required": ["filePath", "originalFilename"],
+  "additionalProperties": false
+}

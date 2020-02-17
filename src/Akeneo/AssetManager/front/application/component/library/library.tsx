@@ -6,7 +6,7 @@ import {Context} from 'akeneoassetmanager/domain/model/context';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {SearchResult, emptySearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {useFetchResult, createQuery} from 'akeneoassetmanager/application/hooks/grid';
 import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
@@ -165,11 +165,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const [excludedAssetCollection] = React.useState<AssetCode[]>([]);
   const [selection, setSelection] = React.useState<AssetCode[]>([]);
   const [searchValue, setSearchValue] = useStoredState<string>('akeneo.asset_manager.grid.search_value', '');
-  const [searchResult, setSearchResult] = React.useState<SearchResult<ListAsset>>({
-    items: [],
-    matchesCount: 0,
-    totalCount: 0,
-  });
+  const [searchResult, setSearchResult] = React.useState<SearchResult<ListAsset>>(emptySearchResult());
   const [isInitialized, setIsInitialized] = React.useState<boolean>(false);
   const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext);
   const [isCreateAssetModalOpen, setCreateAssetModalOpen] = React.useState<boolean>(false);

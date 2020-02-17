@@ -54,6 +54,6 @@ Feature: Edit an URL attribute of an asset family
     Then there should be a validation error on the property '<property_path>' with message '<message>'
 
     Examples:
-      | invalid_media_type | property_path | message                                                                                      |
-      | "video"            | mediaType     | The media type given is not corresponding to the expected ones (image, pdf, youtube, other). |
-      | ""                 | mediaType     | The media type given is not corresponding to the expected ones (image, pdf, youtube, other). |
+      | invalid_media_type | property_path | message                                                                                             |
+      | "video"            | mediaType     | The media type given is not corresponding to the expected ones (image, pdf, youtube, vimeo, other). |
+      | ""                 | mediaType     | The media type given is not corresponding to the expected ones (image, pdf, youtube, vimeo, other). |

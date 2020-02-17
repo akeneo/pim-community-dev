@@ -58,6 +58,7 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],
             'data_locale' => 'en_US',
+            'data_channel' => 'ecommerce',
             'locales' => ['en_US'],
             'channels' => ['ecommerce'],
         ];
@@ -91,7 +92,7 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
         $publishedProduct->getLabel('en_US', 'ecommerce')->willReturn('Superb Watch');
 
         $image = MediaValue::value('picture', new FileInfo());
-        $imageNormalizer->normalize($image, 'en_US')->willReturn(['normalized_image']);
+        $imageNormalizer->normalize($image, 'en_US', 'ecommerce')->willReturn(['normalized_image']);
         $publishedProduct->getImage()->willReturn($image);
 
         $publishedProduct->getId()->willReturn(42);
@@ -107,7 +108,7 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
         $this->normalize(
             $publishedProduct,
             'datagrid',
-            ['data_locale' => 'en_US', 'locales' => ['en_US'], 'channels' => ['ecommerce']]
+            ['data_locale' => 'en_US', 'data_channel' => 'ecommerce', 'locales' => ['en_US'], 'channels' => ['ecommerce']]
         )
              ->shouldReturn(
                  [

@@ -14,7 +14,7 @@ export const Modal = styled.div`
   top: 0;
   left: 0;
   position: fixed;
-  z-index: 1050;
+  z-index: 1030;
   background: white;
   width: 100%;
   height: 100%;

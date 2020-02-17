@@ -1,12 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import __ from 'akeneoassetmanager/tools/translator';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getDataFieldView} from 'akeneoassetmanager/application/configuration/value';
 import {getErrorsView} from 'akeneoassetmanager/application/component/asset/edit/validation-error';
-import __ from 'akeneoassetmanager/tools/translator';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
@@ -14,9 +14,22 @@ import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/at
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {getValuesForChannelAndLocale, isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
+import {Lock} from 'akeneoassetmanager/application/component/app/icon/lock';
+import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 
 const NoZIndexFieldContainer = styled.div.attrs(() => ({className: 'AknFieldContainer'}))`
   z-index: unset;
+`;
+
+const ValueLabel = styled.label`
+  display: flex;
+  flex-grow: 1;
+  color: ${props => props.theme.color.grey100};
+  margin-bottom: 5px;
+
+  > :first-child {
+    margin-right: 5px;
+  }
 `;
 
 export default (
@@ -60,18 +73,15 @@ export default (
         data-code={value.attribute.code}
       >
         <div className="AknFieldContainer-header AknFieldContainer-header--light AknFieldContainer-header AknFieldContainer-header--light--small">
-          <label
-            title={attributeLabel}
-            className="AknFieldContainer-label"
-            htmlFor={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
-          >
+          <ValueLabel title={attributeLabel} htmlFor={`pim_asset_manager.asset.enrich.${value.attribute.code}`}>
+            {!canEditData && <Lock size={20} color={akeneoTheme.color.grey100} />}
             <span
               className={`AknBadge AknBadge--small AknBadge--highlight AknBadge--floating ${
                 value.attribute.is_required && isValueEmpty(value) ? '' : 'AknBadge--hidden'
               }`}
             />
             {attributeLabel}
-          </label>
+          </ValueLabel>
           <span className="AknFieldContainer-fieldInfo">
             <span>
               <span>{value.attribute.value_per_channel ? channelReferenceStringValue(value.channel) : null}</span>

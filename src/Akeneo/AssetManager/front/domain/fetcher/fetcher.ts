@@ -19,6 +19,8 @@ export interface SearchResult<Entity> {
   totalCount: number;
 }
 
+export const emptySearchResult = () => ({items: [], matchesCount: 0, totalCount: 0});
+
 export interface SearchFetcher<Entity> {
   search: (query: Query) => Promise<SearchResult<Entity>>;
 }
