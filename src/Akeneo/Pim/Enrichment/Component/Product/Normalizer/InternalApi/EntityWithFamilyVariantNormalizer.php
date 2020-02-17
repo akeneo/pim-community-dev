@@ -128,7 +128,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface, Cacheabl
             'axes_values_labels' => $this->getAxesValuesLabelsForLocales($entity, $localeCodes),
             'labels'             => $labels,
             'order'              => $this->getOrder($entity),
-            'image'              => $this->normalizeImage($image, $this->catalogContext->getLocaleCode()),
+            'image'              => $this->normalizeImage($image, $this->catalogContext->getScopeCode(), $this->catalogContext->getLocaleCode()),
             'model_type'         => $entity instanceof ProductModelInterface ? 'product_model' : 'product',
             'completeness'       => $this->getCompletenessDependingOnEntity($entity)
         ];
@@ -150,12 +150,13 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface, Cacheabl
     /**
      * @param ValueInterface $data
      * @param string         $localeCode
+     * @param string         $channelCode
      *
      * @return array|null
      */
-    private function normalizeImage(?ValueInterface $data, ?string $localeCode = null): ?array
+    private function normalizeImage(?ValueInterface $data, ?string $channelCode = null, ?string $localeCode = null): ?array
     {
-        return $this->imageNormalizer->normalize($data, $localeCode);
+        return $this->imageNormalizer->normalize($data, $localeCode, $channelCode);
     }
 
     /**

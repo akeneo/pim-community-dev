@@ -21,7 +21,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNaviga
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CompleteVariantProducts;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -184,7 +183,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('fr_FR', 'mobile')->willReturn('Tshirt bleu');
 
         $imageAsLabel->value($productModel)->willReturn($picture);
-        $imageNormalizer->normalize($picture, Argument::any())->willReturn($fileNormalized);
+        $imageNormalizer->normalize($picture, null, null)->willReturn($fileNormalized);
 
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 
@@ -352,7 +351,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('fr_FR', 'mobile')->willReturn('Tshirt bleu');
 
         $imageAsLabel->value($productModel)->willReturn(null);
-        $imageNormalizer->normalize(null, Argument::any())->willReturn(null);
+        $imageNormalizer->normalize(null, null, null)->willReturn(null);
 
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 
@@ -522,7 +521,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('fr_FR', 'mobile')->willReturn('Tshirt bleu');
 
         $imageAsLabel->value($productModel)->willReturn($picture);
-        $imageNormalizer->normalize($picture, Argument::any())->willReturn($fileNormalized);
+        $imageNormalizer->normalize($picture, null, null)->willReturn($fileNormalized);
 
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 

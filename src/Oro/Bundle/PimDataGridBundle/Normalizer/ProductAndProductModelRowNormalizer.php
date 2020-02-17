@@ -52,7 +52,7 @@ class ProductAndProductModelRowNormalizer implements NormalizerInterface, Normal
         $data['created'] = $this->normalizer->normalize($row->created(), $format, $context);
         $data['updated'] = $this->normalizer->normalize($row->updated(), $format, $context);
         $data['label'] = $row->label();
-        $data['image'] = $this->imageNormalizer->normalize($row->image(), $context['data_locale']);
+        $data['image'] = $this->imageNormalizer->normalize($row->image(), $context['data_locale'], $context['data_channel']);
         $data['completeness'] = $row->completeness();
         $data['document_type'] = $row->documentType();
         $data['technical_id'] = $row->technicalId();

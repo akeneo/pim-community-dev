@@ -62,6 +62,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $context = [
             'locales'             => ['en_US'],
             'data_locale'         => 'en_US',
+            'data_channel'        => 'ecommerce',
             'channels'            => ['ecommerce'],
             'current_product'     => $currentProduct,
             'association_type_id' => 1,
@@ -93,7 +94,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         ]));
 
         $product->getImage()->willReturn($image);
-        $imageNormalizer->normalize($image, Argument::any())->willReturn([
+        $imageNormalizer->normalize($image, 'en_US', 'ecommerce')->willReturn([
             'filePath' => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);
@@ -130,6 +131,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $context = [
             'locales'             => ['en_US'],
             'data_locale'         => 'en_US',
+            'data_channel'        => 'ecommerce',
             'channels'            => ['ecommerce'],
             'current_product'     => $currentProduct,
             'association_type_id' => 1,
@@ -160,7 +162,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         ]));
 
         $product->getImage()->willReturn($image);
-        $imageNormalizer->normalize($image, Argument::any())->willReturn([
+        $imageNormalizer->normalize($image, 'en_US', 'ecommerce')->willReturn([
             'filePath' => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);

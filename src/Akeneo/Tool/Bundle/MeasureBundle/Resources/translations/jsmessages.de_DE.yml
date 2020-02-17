@@ -148,7 +148,6 @@ pim_measure:
     GALLON: Gallone
     LITER: Liter
     MILLILITER: Milliliter
-    OUNCE: Unze
     PINT: Pint
     #Weight
     DENIER: Denier
@@ -159,6 +158,7 @@ pim_measure:
     MARC: Mark
     MILLIGRAM: Milligramm
     ONCE: Unze
+    OUNCE: Unze
     POUND: Pfund
     TON: Tonne
     #Pressure
@@ -170,7 +170,10 @@ pim_measure:
     PSI: Pfund pro Quadratzoll
     TORR: Torr
     MMHG: Millimeter Quecksilbersäule
+    #Energy
+    CALORIE: Kalorien
     KILOCALORIE: Kilokalorien
+    JOULE: Joule
     KILOJOULE: Kilojoule
     #CaseBox
     PIECE: Stück

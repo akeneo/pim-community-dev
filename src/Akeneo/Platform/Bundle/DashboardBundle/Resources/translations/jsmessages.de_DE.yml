@@ -1,19 +1,5 @@
 pim_dashboard:
   widget:
-    last_operations:
-      empty: Keine Vorgänge gefunden
-      date: Datum
-      profile_name: Profilname
-      details: Details
-      warning_count: Warnungen
-      job_type:
-        import: Import
-        export: Export
-        mass_edit: Mehrere bearbeiten
-        quick_export: Schnellexport
-        compute_family_variant_structure_changes: Änderungen in der Struktur von Varianten der Produktfamilie berechnen
-        compute_completeness_of_products_family: Vollständigkeit der Produktfamilie berechnen
-        mass_delete: Massenlöschung von Produkten
     completeness:
       load_more: 'Mehr laden...'
 pim_title:
