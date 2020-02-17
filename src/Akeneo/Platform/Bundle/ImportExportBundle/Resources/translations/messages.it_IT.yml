@@ -154,7 +154,7 @@ Summary: Riepilogo
 Start: Inizio
 End: Fine
 #Process tracker
-set_attribute_requirements: Impostare gli attributi richiesti
+set_attribute_requirements: Imposta i requisiti degli attributi
 COMPLETED: Completato
 STARTING: In avvio
 STARTED: Avviato

@@ -69,3 +69,8 @@ pim_enrich.entity.currency:
   plural_label: Währungen
   page_title:
     index: "] -Inf, 1] {{ count }} Währung|] 1, Inf [{{ count }} Währungen"
+flash:
+  currency:
+    error:
+      linked_to_channel: Sie können eine Währung, die einem Ausgabekanal zugeordnet ist, nicht deaktivieren
+    updated: Währung erfolgreich aktualisiert
