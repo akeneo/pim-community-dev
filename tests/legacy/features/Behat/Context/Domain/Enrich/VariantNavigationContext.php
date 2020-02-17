@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Pim\Behat\Context\Domain\Enrich;
 
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
 
 class VariantNavigationContext extends PimContext
 {
+    use SpinCapableTrait;
+
     /**
      * @Then /^the variant navigation selected axis values for level (\d+) should be "([^"]*)"$/
      */
@@ -56,10 +59,14 @@ class VariantNavigationContext extends PimContext
      */
     public function iOpenTheVariantNavigationChildrenSelectorForLevel(int $level): void
     {
-        $variantNavigation = $this->getCurrentPage()->getVariantNavigation();
+        $this->spin(function () use ($level) {
+            $variantNavigation = $this->getCurrentPage()->getVariantNavigation();
 
-        $selector = $variantNavigation->getChildrenSelectorForLevel($level);
-        $selector->open();
+            $selector = $variantNavigation->getChildrenSelectorForLevel($level);
+            $selector->open();
+
+            return true;
+        }, "Can't open variant navigation selector");
     }
 
     /**

@@ -43,16 +43,20 @@ class BaseDecorator extends ElementDecorator
                 return false;
             }
 
-            $toggle = $dropdown->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]');
+            $toggle = $dropdown->find('css', '.dropdown-toggle');
+            if (null === $toggle) {
+                $toggle = $dropdown->find('css', '*[data-toggle="dropdown"]');
+            }
+
             if (null === $toggle) {
                 return false;
             }
             $toggle->click();
 
-            $option = $dropdown->find(
-                'css',
-                sprintf('*[data-locale="%s"], a[href*="%s"]', $locale, $locale)
-            );
+            $option = $dropdown->find('css', sprintf('*[data-locale="%s"]', $locale));
+            if (null === $option) {
+                $option = $dropdown->find('css', sprintf('a[href*="%s"]', $locale));
+            }
 
             return $option;
         }, 'Cannot find the locale switcher. Are you sure that this attribute is localizable?');

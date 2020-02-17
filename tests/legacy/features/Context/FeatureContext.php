@@ -329,11 +329,16 @@ class FeatureContext extends MinkContext implements KernelAwareContext
      */
     public function iClickOnTheMissingRequiredAttributesOverviewLink()
     {
-        $link = $this->spin(function () {
-            return $this->getCurrentPage()->getMissingRequiredAttributesOverviewLink();
-        }, 'Cannot find the missing required attributes link');
+        $this->spin(function () {
+            $link = $this->getCurrentPage()->getMissingRequiredAttributesOverviewLink();
+            if (null === $link) {
+                return false;
+            }
 
-        $link->click();
+            $link->click();
+
+            return true;
+        }, 'Cannot click on the missing required attributes link');
     }
 
     /**

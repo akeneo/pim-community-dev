@@ -148,6 +148,7 @@ legacy:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
             default_session: symfony2
+            browser_name: 'chrome'
             javascript_session: selenium2
             show_cmd: chromium-browser %s
             sessions:
@@ -156,6 +157,7 @@ legacy:
                 selenium2:
                     selenium2:
                         wd_host: 'http://selenium:4444/wd/hub'
+                        capabilities: { "browserName": "chrome", "browser": "chrome", "chrome": {"switches":["--no-sandbox"]}}
             base_url: 'http://httpd/'
             files_path: 'tests/legacy/features/Context/fixtures/'
         Behat\Symfony2Extension:

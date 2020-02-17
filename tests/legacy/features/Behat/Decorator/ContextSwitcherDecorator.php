@@ -28,21 +28,26 @@ class ContextSwitcherDecorator extends ElementDecorator
                 return false;
             }
 
-            $toggle = $dropdown->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]');
+            $toggle = $dropdown->find('css', '.dropdown-toggle');
+            if (null === $toggle) {
+                $toggle = $dropdown->find('css', '*[data-toggle="dropdown"]');
+            }
+
             if (null === $toggle) {
                 return false;
             }
             $toggle->click();
 
-            $option = $dropdown->find(
-                'css',
-                sprintf('*[data-locale="%s"], a[href*="%s"]', $localeCode, $localeCode)
-            );
+            $option = $dropdown->find('css', sprintf('*[data-locale="%s"]', $localeCode));
+
+            if (null === $option) {
+                $option = $dropdown->find('css', sprintf('a[href*="%s"]', $localeCode));
+            }
             if (null === $option) {
                 return false;
             }
             $option->click();
-            
+
             return $this->getSelectedLocale() === $localeCode;
         }, sprintf('Could not switch locale to "%s"', $localeCode));
     }
@@ -76,19 +81,24 @@ class ContextSwitcherDecorator extends ElementDecorator
                 return false;
             }
 
-            $toggle = $dropdown->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]');
+            $toggle = $dropdown->find('css', '.dropdown-toggle');
+            if (null === $toggle) {
+                $toggle = $dropdown->find('css', '*[data-toggle="dropdown"]');
+            }
 
             if (null === $toggle) {
                 return false;
             }
             $toggle->click();
 
-            $option = $dropdown->find('css', sprintf(
-                'a[data-scope="%s"], a[href*="%s"], *[data-value="%s"]',
-                $scopeCode,
-                $scopeCode,
-                $scopeCode
-            ));
+            $option = $dropdown->find('css', sprintf('a[data-scope="%s"]', $scopeCode));
+            if (null === $option) {
+                $option = $dropdown->find('css', sprintf('a[href*="%s"]', $scopeCode));
+            }
+            if (null === $option) {
+                $option = $dropdown->find('css', sprintf('*[data-value="%s"]', $scopeCode));
+            }
+
             if (null === $option) {
                 return false;
             }
