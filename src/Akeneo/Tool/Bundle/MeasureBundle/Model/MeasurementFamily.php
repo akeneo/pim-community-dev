@@ -28,6 +28,9 @@ class MeasurementFamily
         Assert::allIsInstanceOf($units, Unit::class);
         Assert::minCount($units, 1);
 
+        // Check standard unit is available in the units
+        // Check there is no duplication of units in the array
+
         $this->code = $code;
         $this->standardUnit = $standardUnit;
         $this->units = $units;
