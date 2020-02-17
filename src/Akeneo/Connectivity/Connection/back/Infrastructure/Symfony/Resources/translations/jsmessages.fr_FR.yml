@@ -147,3 +147,7 @@ akeneo_connectivity.connection:
       message_without_permission:
         message: Demandez à votre administrateur d'en créer une.
         link: En savoir plus sur les connexions ici...
+  runtime_error:
+    error_message: Oups ! Une erreur s'est produite...
+    reload_helper: Merci de rafraîchir la page et de réessayer.
+    reload_button: Actualiser

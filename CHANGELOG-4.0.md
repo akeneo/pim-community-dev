@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.5 (2020-02-14)
+
 # 4.0.4 (2020-02-12)
 
 - PIM-9094: Fix non public controller class for Oro Translation
