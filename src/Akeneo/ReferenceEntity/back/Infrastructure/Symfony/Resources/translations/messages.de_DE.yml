@@ -31,3 +31,5 @@ pim_analytics:
     average_percentage_localizable_only_attributes: Durchschnittlicher Prozentsatz der gebietsschemaspezifischen Attribute pro Referenzentität
     average_percentage_scopable_only_attributes: Durchschnittlicher Prozentsatz der kanalspezifischen Attribute pro Referenzentität
     average_percentage_scopable_and_localizable_attributes: Durchschnittlicher Prozentsatz der gebietsschemaspezifischen und kanalspezifischen Attribute pro Referenzentität
+akeneo_reference_entity: Referenzentität Einzelverlinkung
+akeneo_reference_entity_collection: Referenzentität Mehrfachverlinkungen
