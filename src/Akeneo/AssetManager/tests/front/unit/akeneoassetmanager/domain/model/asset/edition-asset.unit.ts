@@ -59,10 +59,20 @@ describe('akeneo > asset family > domain > model > asset --- edition-asset', () 
 
   test('I can get the EditionAsset MainMediaThumbnail', () => {
     const expectedMediaPreview = {
-      type: 'thumbnail',
+      type: 'thumbnail_small',
       attributeIdentifier: mediaFileAttribute.identifier,
       data: mediaFileData.filePath,
     };
     expect(getEditionAssetMainMediaThumbnail(editionAsset, 'ecommerce', 'en_US')).toEqual(expectedMediaPreview);
+  });
+
+  test('I get an empty preview if the EditionAsset values are empty', () => {
+    const emptyEditionAsset = {...editionAsset, values: []};
+    const expectedMediaPreview = {
+      type: 'thumbnail_small',
+      attributeIdentifier: 'UNKNOWN',
+      data: '',
+    };
+    expect(getEditionAssetMainMediaThumbnail(emptyEditionAsset, 'ecommerce', 'en_US')).toEqual(expectedMediaPreview);
   });
 });

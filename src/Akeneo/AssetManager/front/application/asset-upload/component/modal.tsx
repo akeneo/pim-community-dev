@@ -23,9 +23,11 @@ import {Reducer} from 'redux';
 import {onFileDrop, retryFileUpload} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/upload';
 import {onCreateAllAsset} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-create-all-assets';
 import {hasAnUnsavedLine, getCreatedAssetCodes} from 'akeneoassetmanager/application/asset-upload/utils/utils';
+import limitFileUpload from 'akeneoassetmanager/application/asset-upload/utils/upload-limit';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
+import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-closing';
 import Key from 'akeneoassetmanager/tools/key';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
@@ -115,13 +117,15 @@ const UploadModal = ({
     }
   }, [state.lines, valuePerLocale, valuePerChannel, onCancel]);
 
-  const handleClose = React.useCallback(() => {
-    const isDirty = hasAnUnsavedLine(state.lines, valuePerLocale, valuePerChannel);
+  const isDirty = React.useCallback(() => {
+    return hasAnUnsavedLine(state.lines, valuePerLocale, valuePerChannel);
+  }, [state.lines, valuePerLocale, valuePerChannel]);
 
-    if (!isDirty || confirm(__('pim_asset_manager.asset.upload.discard_changes'))) {
+  const handleClose = React.useCallback(() => {
+    if (!isDirty() || confirm(__('pim_asset_manager.asset.upload.discard_changes'))) {
       onCancel();
     }
-  }, [state.lines, valuePerLocale, valuePerChannel, onCancel]);
+  }, [isDirty, onCancel]);
 
   const handleConfirm = React.useCallback(() => {
     onCreateAllAsset(assetFamily, state.lines, dispatch);
@@ -132,10 +136,12 @@ const UploadModal = ({
       event.preventDefault();
       event.stopPropagation();
 
-      const files = event.target.files ? Object.values(event.target.files) : [];
+      let files = event.target.files ? Object.values(event.target.files) : [];
+      files = limitFileUpload(files, state.lines.length);
+
       onFileDrop(files, assetFamily, channels, locales, dispatch);
     },
-    [assetFamily, channels, locales, dispatch]
+    [assetFamily, channels, locales, dispatch, state.lines.length]
   );
 
   const handleLineChange = React.useCallback((line: Line) => dispatch(editLineAction(line)), [dispatch]);
@@ -151,6 +157,8 @@ const UploadModal = ({
   }, [assetFamily, locale]);
 
   useShortcut(Key.Escape, handleClose);
+
+  usePreventClosing(isDirty, __('pim_asset_manager.asset.upload.discard_changes'));
 
   return (
     <Modal>

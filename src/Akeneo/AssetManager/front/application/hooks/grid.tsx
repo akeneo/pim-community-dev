@@ -6,7 +6,7 @@ import {Context} from 'akeneoassetmanager/domain/model/context';
 import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {Query, SearchResult, emptySearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 
 const MAX_RESULT = 500;
 const FIRST_PAGE_SIZE = 50;
@@ -72,6 +72,7 @@ export const useFetchResult = (
 ) => {
   const executeQuery = () => {
     if (!isOpen || null === assetFamilyIdentifier) {
+      setSearchResult(emptySearchResult());
       return;
     }
 

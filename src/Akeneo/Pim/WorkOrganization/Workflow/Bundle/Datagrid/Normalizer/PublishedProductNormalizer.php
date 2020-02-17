@@ -145,7 +145,7 @@ class PublishedProductNormalizer implements NormalizerInterface, NormalizerAware
 
     private function normalizeImage(?ValueInterface $data, array $context = []): ?array
     {
-        return $this->imageNormalizer->normalize($data, $context['data_locale']);
+        return $this->imageNormalizer->normalize($data, $context['data_locale'], $context['data_channel']);
     }
 
     private function normalizeValues(WriteValueCollection $values, $format, array $context = [])

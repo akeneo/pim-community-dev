@@ -59,7 +59,7 @@ class GetProductsLinkedToARecordActionSpec extends ObjectBehavior
         $rows = $this->get30Rows();
         $fetchProductAndProductModelRows->__invoke(Argument::type(FetchProductAndProductModelRowsParameters::class))
                                         ->willReturn($rows);
-        $linkedProductNormalizer->normalize($rows, $localeCode)->willReturn(['product_info']);
+        $linkedProductNormalizer->normalize($rows, $channel, $localeCode)->willReturn(['product_info']);
 
         $this->__invoke(new Request(['channel' => $channel, 'locale' => $localeCode]), $recordCode, $attributeCode);
     }

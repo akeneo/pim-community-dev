@@ -30,9 +30,9 @@ export const TransparentButton = styled.button`
   }
 `;
 
-export const Button = (props: ButtonProps & any) => (
-  <StyledButton {...props} onClick={props.isDisabled ? undefined : props.onClick} />
-);
+export const Button = React.forwardRef((props: ButtonProps & any, ref) => (
+  <StyledButton ref={ref} {...props} onClick={props.isDisabled ? undefined : props.onClick} />
+));
 
 const StyledButton = styled.div<ButtonProps>`
   text-align: center;
@@ -58,7 +58,7 @@ const StyledButton = styled.div<ButtonProps>`
           line-height: 23px;
           border-radius: 16px;
           font-size: ${props.theme.fontSize.default};
-          min-width: 100px;
+          min-width: 70px;
         `;
       default:
         return `
@@ -67,7 +67,7 @@ const StyledButton = styled.div<ButtonProps>`
           line-height: 30px;
           border-radius: 16px;
           font-size: ${props.theme.fontSize.default};
-          min-width: 100px;
+          min-width: 70px;
         `;
     }
   }}

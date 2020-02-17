@@ -83,7 +83,8 @@ akeneo_franklin_insights:
           family_progress:
             title: 'Nombre d’attributs mappés'
             description: "Suivez d'un seul coup d'oeil où vous en êtes dans votre travail grâce à cette barre de progression."
-            mapped_attribute_count: '{{ count }} attributs mappés'
+            mapped_attribute: '{{ mapped_count }} attributs mappés et {{ suggested_count }} proposés'
+          suggested: Suggéré
         toolbar:
           bulk_create_attribute: Créer un attribut
           bulk_add_to_family: Ajouter à la famille
@@ -215,10 +216,9 @@ akeneo_franklin_insights:
       credits: Crédits Franklin
       key_figures: Chiffres clés de Franklin
     axis:
-      franklin_attribute_created: Nombre d'attributs créés par Franklin
-      franklin_attribute_added_to_family: Nombre d'attributs ajoutés à une famille par Franklin
+      franklin_attribute_created: Attributs créés
+      franklin_attribute_added_to_family: Attributs ajoutés à une famille
       credits_total: Total des crédits
-      credits_consumed: Crédits consommés
       credits_left: Crédits restants
 batch_jobs:
   default_steps:

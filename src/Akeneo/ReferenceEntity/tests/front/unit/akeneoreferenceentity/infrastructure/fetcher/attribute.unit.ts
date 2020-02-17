@@ -2,49 +2,53 @@
 
 import fetcher from 'akeneoreferenceentity/infrastructure/fetcher/attribute';
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import * as fetch from 'akeneoreferenceentity/tools/fetch'
+import * as fetch from 'akeneoreferenceentity/tools/fetch';
 
 jest.mock('pim/router', () => {});
 jest.mock('pim/security-context', () => {}, {virtual: true});
+jest.mock('routing');
 jest.mock('akeneoreferenceentity/application/configuration/attribute');
 
 describe('Akeneoreferenceentity > infrastructure > fetcher > attribute', () => {
   it('It lists the attributes of a reference entity', async () => {
-    fetch.getJSON = jest.fn().mockImplementationOnce(() => Promise.resolve([
-      {
-        identifier: 'description_1234',
-        reference_entity_identifier: 'designer',
-        code: 'description',
-        is_required: true,
-        order: 0,
-        value_per_locale: true,
-        value_per_channel: false,
-        type: 'text',
-        labels: {
-          en_US: 'Description',
+    // @ts-ignore
+    fetch.getJSON = jest.fn().mockImplementationOnce(() =>
+      Promise.resolve([
+        {
+          identifier: 'description_1234',
+          reference_entity_identifier: 'designer',
+          code: 'description',
+          is_required: true,
+          order: 0,
+          value_per_locale: true,
+          value_per_channel: false,
+          type: 'text',
+          labels: {
+            en_US: 'Description',
+          },
+          max_length: 12,
+          is_textarea: true,
+          is_rich_text_editor: false,
+          validation_rule: 'none',
+          regular_expression: null,
         },
-        max_length: 12,
-        is_textarea: true,
-        is_rich_text_editor: false,
-        validation_rule: 'none',
-        regular_expression: null,
-      },
-      {
-        identifier: 'side_view_1234',
-        reference_entity_identifier: 'designer',
-        code: 'side_view',
-        is_required: false,
-        order: 1,
-        value_per_locale: true,
-        value_per_channel: false,
-        type: 'image',
-        labels: {
-          en_US: 'Side view',
+        {
+          identifier: 'side_view_1234',
+          reference_entity_identifier: 'designer',
+          code: 'side_view',
+          is_required: false,
+          order: 1,
+          value_per_locale: true,
+          value_per_channel: false,
+          type: 'image',
+          labels: {
+            en_US: 'Side view',
+          },
+          max_file_size: '123.4',
+          allowed_extensions: ['jpg', 'png'],
         },
-        max_file_size: '123.4',
-        allowed_extensions: ['jpg', 'png'],
-      },
-    ]));
+      ])
+    );
 
     const referenceEntityIdentifier = createIdentifier('designer');
     const response = await fetcher.fetchAll(referenceEntityIdentifier);

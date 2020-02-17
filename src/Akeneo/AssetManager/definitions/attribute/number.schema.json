@@ -1,0 +1,35 @@
+{
+  "title": "BackendAttributeNumber",
+  "type": "object",
+  "properties": {
+    "type": {"type": "string", "const": "number"},
+    "identifier": {"type": "string"},
+    "asset_family_identifier": {"type": "string"},
+    "code": {"type": "string"},
+    "labels": {"$ref": "../labels.schema.json"},
+    "is_required": {"type": "boolean"},
+    "is_read_only": {"type": "boolean"},
+    "order": {"type": "integer"},
+    "value_per_locale": {"type": "boolean"},
+    "value_per_channel": {"type": "boolean"},
+    "max_value": {"type": ["string", "null"]},
+    "min_value": {"type": ["string", "null"]},
+    "decimals_allowed": {"type": "boolean"}
+  },
+  "required": [
+    "type",
+    "identifier",
+    "asset_family_identifier",
+    "code",
+    "labels",
+    "is_required",
+    "is_read_only",
+    "order",
+    "value_per_locale",
+    "value_per_channel",
+    "max_value",
+    "min_value",
+    "decimals_allowed"
+  ],
+  "additionalProperties": false
+}

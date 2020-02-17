@@ -80,10 +80,6 @@ config:
                     enrich:
                         label: pim_asset_manager.asset.tab.enrich
                         view: '@akeneoassetmanager/application/component/asset/edit/enrich'
-                    product:
-                        label: pim_asset_manager.asset.tab.product
-                        view: '@akeneoassetmanager/application/component/asset/edit/product'
-                        acl: akeneo_assetmanager_asset_list_product
 
     paths:
         pim/controller/asset-family/list: akeneoassetmanager/infrastructure/controller/asset-family/list.tsx

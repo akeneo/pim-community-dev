@@ -1,0 +1,19 @@
+{
+  "title": "BackendEditionValue",
+  "type": "object",
+  "properties": {
+    "data": {
+      "anyOf": [
+        {"type": "null"},
+        {"type": "string"},
+        {"$ref": "../media-file.schema.json"},
+        {"type": "array", "items": {"type": "string"}}
+      ]
+    },
+    "channel": {"type": ["string", "null"]},
+    "locale": {"type": ["string", "null"]},
+    "attribute": {"$ref": "../attribute.schema.json"}
+  },
+  "required": ["data", "channel", "locale", "attribute"],
+  "additionalProperties": false
+}

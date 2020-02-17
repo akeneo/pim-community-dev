@@ -50,6 +50,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
               },
               max_file_size: '123.4',
               allowed_extensions: ['jpg', 'png'],
+              media_type: 'image',
             },
           ]),
         });
@@ -58,14 +59,13 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
 
     const response = await page.evaluate(async () => {
       // Sometimes this tests fails on circle ci. This wait should mitigate that
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       const fetcher = require('akeneoassetmanager/infrastructure/fetcher/attribute').default;
 
       return await fetcher.fetchAll('designer');
     });
 
-    // Missing properties such as "maxFileSize" and "AllowedExtensions"
     expect(response).toEqual([
       {
         code: 'description',
@@ -99,6 +99,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
         valuePerLocale: true,
         allowedExtensions: ['jpg', 'png'],
         maxFileSize: '123.4',
+        mediaType: 'image',
       },
     ]);
   });

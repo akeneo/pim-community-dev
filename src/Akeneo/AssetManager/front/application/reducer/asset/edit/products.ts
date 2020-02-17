@@ -7,6 +7,7 @@ export interface ProductsState {
   attributes: NormalizedAttribute[];
   products: NormalizedProduct[];
   totalCount: number;
+  isLoaded: boolean;
 }
 
 const initProductsState = (): ProductsState => ({
@@ -14,6 +15,7 @@ const initProductsState = (): ProductsState => ({
   attributes: [],
   products: [],
   totalCount: 0,
+  isLoaded: false,
 });
 
 const getAttribute = (state: ProductsState, attributeCode: AttributeCode): NormalizedAttribute | undefined => {
@@ -34,6 +36,7 @@ export default (
         ...state,
         products: action.products,
         totalCount: action.totalCount,
+        isLoaded: true,
       };
 
       break;

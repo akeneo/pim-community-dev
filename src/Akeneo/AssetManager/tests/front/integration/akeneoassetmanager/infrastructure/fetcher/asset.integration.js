@@ -77,6 +77,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
                 code: 'name',
                 identifier: 'name_designer_fingerprint',
                 is_required: false,
+                is_read_only: false,
                 is_rich_text_editor: false,
                 is_textarea: false,
                 labels: {fr_FR: 'Nom'},
@@ -98,6 +99,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
                 code: 'description',
                 identifier: 'description_designer_fingerprint',
                 is_required: false,
+                is_read_only: false,
                 is_rich_text_editor: true,
                 is_textarea: true,
                 labels: {fr_FR: 'Description'},
@@ -119,6 +121,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
                 code: 'description',
                 identifier: 'description_designer_fingerprint',
                 is_required: false,
+                is_read_only: false,
                 is_rich_text_editor: true,
                 is_textarea: true,
                 labels: {fr_FR: 'Description'},
@@ -140,6 +143,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
                 code: 'website',
                 identifier: 'website_designer_fingerprint',
                 is_required: true,
+                is_read_only: false,
                 is_rich_text_editor: false,
                 is_textarea: false,
                 labels: {fr_FR: 'Website'},
@@ -162,6 +166,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
                 code: 'portrait',
                 identifier: 'portrait_designer_fingerprint',
                 is_required: false,
+                is_read_only: false,
                 labels: {en_US: 'Portrait', fr_FR: 'Image autobiographique'},
                 max_file_size: '200.10',
                 media_type: 'image',
@@ -182,6 +187,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
                 identifier: 'age_designer_fingerprint',
                 decimals_allowed: false,
                 is_required: false,
+                is_read_only: false,
                 labels: {en_US: 'Age', fr_FR: 'Age'},
                 max_value: '20',
                 min_value: '10',
@@ -253,22 +259,6 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
               data: 'Dyson',
               locale: 'fr_FR',
             },
-            city_designer_79eb100099b9a8bf52609e00b7ee307e: {
-              attribute: 'city_designer_79eb100099b9a8bf52609e00b7ee307e',
-              channel: null,
-              context: {
-                labels: {
-                  'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717': {
-                    labels: {
-                      en_US: 'Paris',
-                    },
-                    code: 'paris',
-                  },
-                },
-              },
-              data: 'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717',
-              locale: null,
-            },
             colors_designer_52609e00b7ee307e79eb100099b9a8bf: {
               attribute: 'colors_designer_52609e00b7ee307e79eb100099b9a8bf',
               channel: null,
@@ -299,22 +289,6 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
               channel: null,
               data: 'Starck',
               locale: 'en_US',
-            },
-            city_designer_79eb100099b9a8bf52609e00b7ee307e: {
-              attribute: 'city_designer_79eb100099b9a8bf52609e00b7ee307e',
-              channel: null,
-              context: {
-                labels: {
-                  'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717': {
-                    labels: {
-                      en_US: 'Paris',
-                    },
-                    code: 'paris',
-                  },
-                },
-              },
-              data: 'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717',
-              locale: null,
             },
             colors_designer_52609e00b7ee307e79eb100099b9a8bf: {
               attribute: 'colors_designer_52609e00b7ee307e79eb100099b9a8bf',

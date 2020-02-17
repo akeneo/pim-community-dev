@@ -1,0 +1,10 @@
+{
+  "title": "BackendCompleteness",
+  "type": "object",
+  "properties": {
+    "required": {"type": "number"},
+    "complete": {"type": "number"}
+  },
+  "required": ["required", "complete"],
+  "additionalProperties": false
+}

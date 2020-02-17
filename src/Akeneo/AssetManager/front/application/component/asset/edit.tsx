@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {EditState as State} from 'akeneoassetmanager/application/reducer/asset/edit';
-import Sidebar from 'akeneoassetmanager/application/component/app/sidebar';
-import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
 import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
 import Breadcrumb from 'akeneoassetmanager/application/component/app/breadcrumb';
 import __ from 'akeneoassetmanager/tools/translator';
@@ -16,7 +14,6 @@ import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
-import Key from 'akeneoassetmanager/tools/key';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
@@ -32,10 +29,6 @@ import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/acti
 const securityContext = require('pim/security-context');
 
 interface StateProps {
-  sidebar: {
-    tabs: Tab[];
-    currentTab: string;
-  };
   form: {
     isDirty: boolean;
   };
@@ -77,20 +70,6 @@ class AssetEditView extends React.Component<EditProps> {
     isDeleteModalOpen: false,
   };
 
-  private backToAssetFamilyList = () => (
-    <span
-      role="button"
-      tabIndex={0}
-      className="AknColumn-navigationLink"
-      onClick={this.props.events.backToAssetFamilyList}
-      onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (Key.Space === event.key) this.props.events.backToAssetFamilyList();
-      }}
-    >
-      {__('pim_asset_manager.asset.button.back')}
-    </span>
-  );
-
   private onConfirmedDelete = () => {
     const asset = this.props.asset;
     this.props.events.onDelete(asset);
@@ -121,10 +100,8 @@ class AssetEditView extends React.Component<EditProps> {
     const editState = this.props.form.isDirty ? <EditState /> : '';
     const asset = this.props.asset;
     const label = getLabel(asset.labels, this.props.context.locale, asset.code);
-    const TabView = sidebarProvider.getView('akeneo_asset_manager_asset_edit', this.props.sidebar.currentTab);
+    const TabView = sidebarProvider.getView('akeneo_asset_manager_asset_edit', 'enrich');
     const completeness = getEditionAssetCompleteness(asset, this.props.context.channel, this.props.context.locale);
-    const isUsableSelectedAttributeOnTheGrid =
-      null !== this.props.selectedAttribute && true === this.props.selectedAttribute.useable_as_grid_filter;
 
     return (
       <React.Fragment>
@@ -133,7 +110,7 @@ class AssetEditView extends React.Component<EditProps> {
             <div className="AknDefault-thirdColumn" />
           </div>
           <div className="AknDefault-contentWithBottom">
-            <div className="AknDefault-mainContent" data-tab={this.props.sidebar.currentTab}>
+            <div className="AknDefault-mainContent" data-tab="enrich">
               <header className="AknTitleContainer">
                 <div className="AknTitleContainer-line">
                   <MainMediaThumbnail asset={asset} context={this.props.context} />
@@ -179,39 +156,19 @@ class AssetEditView extends React.Component<EditProps> {
                               viewName="pim-asset-family-index-user-navigation"
                             />
                           </div>
-                          {'product' === this.props.sidebar.currentTab ? (
-                            isUsableSelectedAttributeOnTheGrid ? (
-                              <div className="AknTitleContainer-actionsContainer AknButtonList">
-                                <div className="AknTitleContainer-rightButton">
-                                  <button
-                                    className="AknButton AknButton--big AknButton--apply AknButton--centered"
-                                    onClick={() =>
-                                      this.props.events.onRedirectToProductGrid(
-                                        (this.props.selectedAttribute as NormalizedAttribute).code,
-                                        this.props.assetCode
-                                      )
-                                    }
-                                  >
-                                    {__('pim_asset_manager.asset.product.not_enough_items.button')}
-                                  </button>
-                                </div>
+                          <div className="AknTitleContainer-actionsContainer AknButtonList">
+                            {this.getSecondaryActions(this.props.rights.asset.delete)}
+                            {this.props.rights.asset.edit ? (
+                              <div className="AknTitleContainer-rightButton">
+                                <button
+                                  className="AknButton AknButton--apply"
+                                  onClick={this.props.events.onSaveEditForm}
+                                >
+                                  {__('pim_asset_manager.asset.button.save')}
+                                </button>
                               </div>
-                            ) : null
-                          ) : (
-                            <div className="AknTitleContainer-actionsContainer AknButtonList">
-                              {this.getSecondaryActions(this.props.rights.asset.delete)}
-                              {this.props.rights.asset.edit ? (
-                                <div className="AknTitleContainer-rightButton">
-                                  <button
-                                    className="AknButton AknButton--apply"
-                                    onClick={this.props.events.onSaveEditForm}
-                                  >
-                                    {__('pim_asset_manager.asset.button.save')}
-                                  </button>
-                                </div>
-                              ) : null}
-                            </div>
-                          )}
+                            ) : null}
+                          </div>
                         </div>
                       </div>
                       <div className="AknTitleContainer-line">
@@ -247,11 +204,10 @@ class AssetEditView extends React.Component<EditProps> {
                 </div>
               </header>
               <div className="content">
-                <TabView code={this.props.sidebar.currentTab} />
+                <TabView code="enrich" />
               </div>
             </div>
           </div>
-          <Sidebar backButton={this.backToAssetFamilyList} />
         </div>
         {this.state.isDeleteModalOpen && (
           <DeleteModal
@@ -268,15 +224,9 @@ class AssetEditView extends React.Component<EditProps> {
 
 export default connect(
   (state: State): StateProps => {
-    const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
-    const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
     const locale = state.user.catalogLocale;
 
     return {
-      sidebar: {
-        tabs,
-        currentTab,
-      },
       form: {
         isDirty: state.form.state.isDirty,
       },

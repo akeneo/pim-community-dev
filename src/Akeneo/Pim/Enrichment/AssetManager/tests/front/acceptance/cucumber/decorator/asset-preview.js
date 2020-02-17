@@ -4,12 +4,12 @@ const AssetPreview = async (nodeElement, createElementDecorator, page) => {
   const getImagePreviewed = async () => {
     const getElement = createElementDecorator({
       Image: {
-        selector: `[data-role="media-file-preview"]`,
+        selector: `[data-role="media-data-preview"]`,
         decorator: Image,
       },
     });
 
-    await page.waitFor(`[data-role="media-file-preview"]`);
+    await page.waitFor(`[data-role="media-data-preview"]`);
 
     return await getElement(page, 'Image');
   };

@@ -21,5 +21,3 @@ export const validateAgainstSchema = <T>(data: any, schema: object): T => {
 
   return data;
 };
-
-export default validateAgainstSchema;

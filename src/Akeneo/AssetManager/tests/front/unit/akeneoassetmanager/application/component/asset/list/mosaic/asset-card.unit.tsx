@@ -6,6 +6,8 @@ import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import AssetCard from 'akeneoassetmanager/application/component/asset/list/mosaic/asset-card';
 
+const flushPromises = () => new Promise(setImmediate);
+
 const asset = {
   code: 'iphone',
   labels: {
@@ -51,9 +53,9 @@ describe('Test Asset create modal component', () => {
       );
     });
 
-    await setTimeout(() => new Promise(resolve => resolve), 10);
+    await flushPromises();
 
-    expect(container.querySelector('img').src).toEqual('');
+    expect(container.querySelector('img')?.src).toEqual('http://localhost/akeneo_asset_manager_image_preview');
     expect(container.querySelector('[data-checked="false"]')).toBeInTheDocument();
     expect(getByText(container, asset.labels.en_US)).toBeInTheDocument();
   });
@@ -74,9 +76,9 @@ describe('Test Asset create modal component', () => {
       );
     });
 
-    await setTimeout(() => new Promise(resolve => resolve), 10);
+    await flushPromises();
 
-    expect(container.querySelector('img').src).toEqual('');
+    expect(container.querySelector('img')?.src).toEqual('http://localhost/akeneo_asset_manager_image_preview');
     expect(container.querySelector('[data-checked="true"]')).toBeInTheDocument();
     expect(getByText(container, asset.labels.en_US)).toBeInTheDocument();
   });

@@ -688,6 +688,29 @@ class FixturesLoader
             );
         }
 
+        // Vimeo
+        if (in_array('vimeo', $this->loadedAttributes)) {
+            $attributes['vimeo'] = MediaLinkAttribute::create(
+                $this->attributeRepository->nextIdentifier(
+                    $assetFamilyIdentifier,
+                    AttributeCode::fromString('vimeo')
+                ),
+                $assetFamilyIdentifier,
+                AttributeCode::fromString('vimeo'),
+                LabelCollection::fromArray([
+                    'en_US' => 'Vimeo link',
+                ]),
+                $this->getOrderForAttribute('vimeo'),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeIsReadOnly::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                Prefix::empty(),
+                Suffix::empty(),
+                MediaLinkMediaType::fromString(MediaLinkMediaType::VIMEO)
+            );
+        }
+
         // TARGET IMAGE
         if (in_array('target_image', $this->loadedAttributes)) {
             $attributes['target_image'] = MediaFileAttribute::create(

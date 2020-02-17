@@ -7,6 +7,9 @@ import {prefixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/
 const YOUTUBE_WATCH_URL = 'https://youtube.com/watch?v=';
 const YOUTUBE_EMBED_URL = 'https://youtube.com/embed/';
 
+const VIMEO_WATCH_URL = 'https://vimeo.com/';
+const VIMEO_EMBED_URL = 'https://player.vimeo.com/video/';
+
 type MediaLinkData = string | null;
 export type NormalizedMediaLinkData = string | null;
 
@@ -37,5 +40,9 @@ export const getYouTubeWatchUrl = (data: MediaLinkData): string =>
 
 export const getYouTubeEmbedUrl = (data: MediaLinkData): string =>
   `${YOUTUBE_EMBED_URL}${mediaLinkDataStringValue(data)}`;
+
+export const getVimeoWatchUrl = (data: MediaLinkData): string => `${VIMEO_WATCH_URL}${mediaLinkDataStringValue(data)}`;
+
+export const getVimeoEmbedUrl = (data: MediaLinkData): string => `${VIMEO_EMBED_URL}${mediaLinkDataStringValue(data)}`;
 
 export default MediaLinkData;
