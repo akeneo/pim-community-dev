@@ -5,14 +5,11 @@ import Completeness from 'akeneoassetmanager/domain/model/product/completeness';
 import ProductCompletenessLabel from 'akeneoassetmanager/application/component/app/product-completeness';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
-
-const router = require('pim/router');
+import {getImageShowUrl, getProductEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
 
 const ProductLink = styled.a`
   display: inline-block;
   height: 165px;
-  margin: 0 10px 20px;
   width: 142px;
 `;
 
@@ -37,14 +34,11 @@ const Label = styled.div`
 `;
 
 export const Product = React.memo(({product, locale}: {product: NormalizedProduct; locale: string}) => {
-  const path = `#${router.generate(`pim_enrich_${product.type}_edit`, {
-    id: product.id,
-  })}`;
   const completeness = Completeness.createFromNormalized(product.completeness);
   const label = getLabelInCollection(product.labels, locale, true, product.identifier);
 
   return (
-    <ProductLink href={path} target="_blank" title={label}>
+    <ProductLink href={getProductEditUrl(product.type, product.id)} target="_blank" title={label}>
       <ThumbnailContainer>
         <Thumbnail src={getImageShowUrl(product.image, 'thumbnail')} />
       </ThumbnailContainer>

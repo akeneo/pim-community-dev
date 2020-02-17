@@ -1,13 +1,11 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
+import __ from 'akeneoassetmanager/tools/translator';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {NormalizedProduct} from 'akeneoassetmanager/domain/model/product/product';
-import {getLabel} from 'pimui/js/i18n';
-import __ from 'akeneoassetmanager/tools/translator';
 import {Subsection, SubsectionHeader} from 'akeneoassetmanager/application/component/app/subsection';
-import {ItemsCounter} from 'akeneoassetmanager/application/component/asset/list/items-counter';
 import {Product} from 'akeneoassetmanager/application/component/asset/edit/linked-products/product';
 import {NoResults} from 'akeneoassetmanager/application/component/asset/edit/linked-products/no-results';
 import {AttributeButton} from 'akeneoassetmanager/application/component/asset/edit/linked-products/attribute-button';
@@ -15,16 +13,21 @@ import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/componen
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
 import {attributeSelected} from 'akeneoassetmanager/application/action/product/attribute';
 import {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
+import {ResultCounter} from 'akeneoassetmanager/application/component/app/result-counter';
+import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {Limit} from 'akeneoassetmanager/application/component/asset/edit/linked-products/limit';
 
 const Grid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin: 10px -10px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-gap: 20px;
+  margin: 20px 0;
 `;
 
 const SubsectionHeaderRight = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 20px;
 
   .AknActionButton--light {
     padding-top: 0;
@@ -69,7 +72,7 @@ const LinkedProducts = ({
   if (!isLoaded) {
     return (
       <Subsection>
-        <SubsectionHeader>
+        <SubsectionHeader top={192}>
           <span>{__('pim_asset_manager.asset.enrich.product_subsection')}</span>
         </SubsectionHeader>
       </Subsection>
@@ -87,7 +90,7 @@ const LinkedProducts = ({
     () =>
       attributes.map(attribute => ({
         identifier: attribute.code,
-        label: getLabel(attribute.labels, context.locale, attribute.code),
+        label: getLabelInCollection(attribute.labels, context.locale, true, attribute.code),
         original: attribute,
       })),
     [attributes, context.locale]
@@ -95,10 +98,10 @@ const LinkedProducts = ({
 
   return (
     <Subsection>
-      <SubsectionHeader>
+      <SubsectionHeader top={192}>
         <span>{__('pim_asset_manager.asset.enrich.product_subsection')}</span>
         <SubsectionHeaderRight>
-          <ItemsCounter count={totalCount} />
+          <ResultCounter count={totalCount} />
           {null !== selectedAttribute && (
             <>
               <SubsectionHeaderSeparator />
@@ -120,6 +123,7 @@ const LinkedProducts = ({
         ))}
       </Grid>
       {products.length === 0 && <NoResults message={__('pim_asset_manager.asset.no_linked_products')} />}
+      <Limit productCount={products.length} totalCount={totalCount} attribute={selectedAttribute} />
     </Subsection>
   );
 };

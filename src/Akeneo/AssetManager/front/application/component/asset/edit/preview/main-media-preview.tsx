@@ -39,6 +39,10 @@ const Actions = styled.div`
   }
 `;
 
+const StyledHeader = styled(SubsectionHeader)`
+  position: initial;
+`;
+
 type MainMediaPreviewProps = {
   asset: EditionAsset;
   context: {
@@ -59,7 +63,7 @@ export const MainMediaPreview = ({asset, context}: MainMediaPreviewProps) => {
 
   return (
     <Subsection>
-      <SubsectionHeader>
+      <StyledHeader top={192}>
         <span>{__('pim_asset_manager.asset.enrich.main_media_preview')}</span>
         {!isDataEmpty(data) && (
           <Actions>
@@ -74,7 +78,7 @@ export const MainMediaPreview = ({asset, context}: MainMediaPreviewProps) => {
             </FullscreenPreview>
           </Actions>
         )}
-      </SubsectionHeader>
+      </StyledHeader>
       <Container>
         <MediaPreview data={data} label={attributeLabel} attribute={attributeAsMainMedia} />
       </Container>

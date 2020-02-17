@@ -88,7 +88,7 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
       <Container>
         <LeftColumn>
           <Subsection>
-            <SubsectionHeader>
+            <SubsectionHeader top={192}>
               <span>{__('pim_asset_manager.asset.enrich.edit_subsection')}</span>
             </SubsectionHeader>
             <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">

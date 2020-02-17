@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GetProductsLinkedToAAssetAction
 {
-    private const MAX_RESULTS = 20;
+    private const MAX_RESULTS = 10;
 
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
