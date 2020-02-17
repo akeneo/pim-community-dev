@@ -5,10 +5,13 @@ flash:
   comment:
     create:
       success: Commento creato con successo.
+      error: Si è verificato un errore durante la creazione del tuo commento.
     delete:
       success: Commento eliminato con successo.
+      error: Si è verificato un errore durante l'eliminazione del tuo commento.
     reply:
       success: Risposta creata con successo.
+      error: Si è verificato un errore durante la creazione della tua risposta.
 pim_enrich.entity.product:
   label: prodotto
   uppercase_label: Articolo
@@ -19,6 +22,7 @@ pim_enrich.entity.product:
       fail: Il prodotto non può essere aggiornato.
       fields_not_ready: "Il prodotto non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}"
       already_in_upload: Un file è già in caricamento per questo attributo nell'impostazione internazionale "{{ locale }}" e nell'ambito "{{ scope }}"
+      file_upload: Si è verificato un errore durante il caricamento del file
     delete:
       success: Prodotto eliminato correttamente.
       fail: Il prodotto non può essere eliminato.
@@ -114,6 +118,8 @@ pim_enrich.entity.product:
       header_reply: '{{ user }} risponde al commento'
       delete_confirm: Sei sicuro di voler eliminare questo commento?
       removed_author: Utente rimosso
+    asset:
+      title: Attività
 pim_enrich.entity.product_model:
   label: modello di prodotto
   uppercase_label: Modello di prodotto
@@ -169,6 +175,13 @@ pim_enrich.entity.group:
       button: Crea gruppo
     delete:
       confirm: Sei sicuro di voler eliminare questo gruppo?
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: Sicuro di voler eliminare questo ruolo?
+  flash:
+    delete:
+      success: Ruolo rimosso con successo
 pim_enrich.entity.category:
   label: Categoria
   uppercase_label: Categoria
@@ -261,6 +274,8 @@ pim_enrich.mass_edit.product:
       label: Configura
     confirm:
       label: Conferma
+    launch_error:
+      label: Si è verificato un errore durante il lancio dell'operazione di modifica di massa
     launched:
       label: L'azione di massa "{{ operation }}" è stato lanciata. Sarai avvisato quando finisce.
   operation:
@@ -302,6 +317,7 @@ pim_enrich.mass_edit.product:
       label: Rimuovi dalle categorie
       label_count: "{1}Rimuovi <span class=\"AknFullPage-title--highlight\">1 prodotti</span> dalle categorie|]1, Inf[Rimuovi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> dalle categorie"
       description: I prodotti verranno rimossi dalle seguenti categorie.
+      no_update: Non è stata selezionata alcuna categoria per rimuoverne i prodotti selezionati.
     add_to_existing_product_model:
       label: Aggiungere ad un modello di prodotto esistente
       label_count: "{1}Aggiungi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> ad un modello di prodotto esistente|]1, Inf[Aggiungi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> ad un modello di prodotto esistente"
@@ -326,6 +342,7 @@ pim_datagrid:
     delete:
       confirm_content: Sei sicuro di voler eliminare i prodotti selezionati?
       success: I prodotti selezionati sono stati eliminati con successo.
+      error: Si è verificato un errore provando ad eliminare i prodotti selezionati, sei pregato di riprovare.
     quick_export:
       csv_all: CSV (tutti gli attributi)
       csv_grid_context: CSV (Contesto di griglia)

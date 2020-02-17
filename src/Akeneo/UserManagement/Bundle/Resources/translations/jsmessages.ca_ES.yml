@@ -60,12 +60,17 @@ pim_user_management:
         new_password_repeat: Nova contrasenya (repetir)
         password: Contrasenya
         password_repeat: Contrasenya (repetir)
+        last_logged_in: Darrer inici de sessió
+        login_count: Recompte d'inicis de sessió
         ui_locale: Configuració regional de la interfície d'usuari
         timezone: Zona horària
         default_product_grid_view: Vista de quadrícula de producte per defecte
         default_published_product_grid_view: Vista de graella de productes publicats per defecte #EE Only
         proposals_to_review_notification: Quan hi hagi una nova proposta per revisar #EE Only
         proposals_state_notifications: Quan la proposta sigui acceptada o rebutjada #EE Only
+      meta:
+        created: Creat
+        updated: Actualitzat
       module:
         create:
           button: Crear usuari
