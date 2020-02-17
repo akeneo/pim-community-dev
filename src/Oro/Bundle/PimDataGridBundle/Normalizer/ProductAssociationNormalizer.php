@@ -58,7 +58,7 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
         $data['is_associated'] = $context['is_associated'];
         $data['label'] = $product->getLabel($locale, $channel);
         $data['completeness'] = $this->getCompletenessRatio($product, $context);
-        $data['image'] = $this->imageNormalizer->normalize($product->getImage(), $context['data_locale']);
+        $data['image'] = $this->imageNormalizer->normalize($product->getImage(), $context['data_locale'], $context['data_channel']);
 
         return $data;
     }

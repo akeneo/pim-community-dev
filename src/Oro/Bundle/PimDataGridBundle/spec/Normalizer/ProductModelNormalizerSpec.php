@@ -76,6 +76,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'locales'      => ['en_US'],
             'channels'     => ['ecommerce'],
             'data_locale'  => 'en_US',
+            'data_channel' => 'ecommerce',
         ];
 
         $productModel->getParent()->willReturn(null);
@@ -118,7 +119,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $imageAsLabel->value($productModel)->willReturn($image);
-        $imageNormalizer->normalize($image, Argument::any())->willReturn([
+        $imageNormalizer->normalize($image, 'en_US', 'ecommerce')->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);
@@ -184,6 +185,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'locales'      => ['en_US'],
             'channels'     => ['ecommerce'],
             'data_locale'  => 'en_US',
+            'data_channel' => 'ecommerce',
         ];
 
         $productModel->getParent()->willReturn(null);
@@ -227,7 +229,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $imageAsLabel->value($productModel)->willReturn($image);
-        $imageNormalizer->normalize($image, Argument::any())->willReturn([
+        $imageNormalizer->normalize($image, 'en_US', 'ecommerce')->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);
@@ -294,6 +296,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'locales'      => ['en_US'],
             'channels'     => ['ecommerce'],
             'data_locale'  => 'en_US',
+            'data_channel' => 'ecommerce',
         ];
 
         $productModel->getParent()->willReturn($parent);
@@ -338,7 +341,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $imageAsLabel->value($productModel)->willReturn($image);
-        $imageNormalizer->normalize($image, Argument::any())->willReturn([
+        $imageNormalizer->normalize($image, 'en_US', 'ecommerce')->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);

@@ -174,7 +174,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $mug->getLabel('en_US', 'mobile')->willReturn('A nice Mug!');
         $mug->getLabel('fr_FR', 'mobile')->willReturn('Un très beau Mug !');
         $mug->getImage()->willReturn($image);
-        $imageNormalizer->normalize($image, Argument::any())->willReturn([
+        $imageNormalizer->normalize($image, null, null)->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);
@@ -337,7 +337,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $mug->getLabel('en_US', 'mobile')->willReturn('A nice Mug!');
         $mug->getLabel('fr_FR', 'mobile')->willReturn('Un très beau Mug !');
         $mug->getImage()->willReturn($image);
-        $imageNormalizer->normalize($image, Argument::any())->willReturn([
+        $imageNormalizer->normalize($image, null, null)->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);

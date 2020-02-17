@@ -205,7 +205,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
                 'model_type'                => 'product_model',
                 'attributes_for_this_level' => $levelAttributes,
                 'attributes_axes'           => $axesAttributes,
-                'image'                     => $this->normalizeImage($closestImage, $this->catalogContext->getLocaleCode()),
+                'image'                     => $this->normalizeImage($closestImage, $this->catalogContext->getScopeCode(), $this->catalogContext->getLocaleCode()),
                 'variant_navigation'        => $this->navigationNormalizer->normalize($productModel, $format, $context),
                 'ascendant_category_ids'    => $this->ascendantCategoriesQuery->getCategoryIds($productModel),
                 'required_missing_attributes' => $requiredMissingAttributes,
@@ -271,11 +271,12 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
     /**
      * @param ValueInterface|null $data
      * @param string              $localeCode
+     * @param string              $channelCode
      *
      * @return array|null
      */
-    private function normalizeImage(?ValueInterface $data, ?string $localeCode = null): ?array
+    private function normalizeImage(?ValueInterface $data, ?string $channelCode, ?string $localeCode = null): ?array
     {
-        return $this->imageNormalizer->normalize($data, $localeCode);
+        return $this->imageNormalizer->normalize($data, $localeCode, $channelCode);
     }
 }
