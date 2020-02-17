@@ -33,7 +33,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith($objectManager, $pqbFactory, $rowNormalizer, $validator, $query);
 
-        $this->setParameters(['dataLocale' => 'fr_FR']);
+        $this->setParameters(['dataLocale' => 'fr_FR', 'scopeCode' => 'ecommerce']);
     }
 
     function it_is_initializable()
@@ -117,7 +117,8 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
         $rowNormalizer->normalize($row, 'datagrid', [
             'locales'       => ['fr_FR'],
             'channels'      => ['ecommerce'],
-            'data_locale'   => 'fr_FR'
+            'data_locale'   => 'fr_FR',
+            'data_channel' => 'ecommerce',
         ])->willReturn([
             'identifier'   => 'identifier',
             'family'       => 'family label',

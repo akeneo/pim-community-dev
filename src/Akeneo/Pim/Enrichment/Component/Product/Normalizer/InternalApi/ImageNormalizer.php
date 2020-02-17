@@ -25,14 +25,15 @@ class ImageNormalizer
     }
 
     /**
-     * Normalizes an value interface to display an image
+     * Normalizes a value interface to display an image
      *
      * @param ValueInterface|null $value
      * @param string|null         $localeCode
+     * @param string|null         $channelCode
      *
      * @return array|null
      */
-    public function normalize(?ValueInterface $value, ?string $localeCode = null): ?array
+    public function normalize(?ValueInterface $value, ?string $localeCode = null, ?string $channelCode = null): ?array
     {
         if (null === $value || null === $value->getData()) {
             return null;

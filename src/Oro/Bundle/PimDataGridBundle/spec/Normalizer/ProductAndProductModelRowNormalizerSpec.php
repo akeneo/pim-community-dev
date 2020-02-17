@@ -84,6 +84,7 @@ class ProductAndProductModelRowNormalizerSpec extends ObjectBehavior
             'locales'      => ['en_US'],
             'channels'     => ['ecommerce'],
             'data_locale'  => 'en_US',
+            'data_channel' => null,
         ];
 
         $normalizer->normalize($values, 'datagrid', $context)->willReturn([
@@ -99,7 +100,7 @@ class ProductAndProductModelRowNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($row->created(), 'datagrid', $context)->willReturn('2018-05-23T15:55:50+01:00');
         $normalizer->normalize($row->updated(), 'datagrid', $context)->willReturn('2018-05-23T15:55:50+01:00');
 
-        $imageNormalizer->normalize($row->image(), 'en_US')->willReturn([
+        $imageNormalizer->normalize($row->image(), 'en_US', null)->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);

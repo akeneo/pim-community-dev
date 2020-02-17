@@ -183,7 +183,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'completenesses'    => $this->completenessCollectionNormalizer->normalize($completenesses),
             'required_missing_attributes' => $this->missingRequiredAttributesNormalizer->normalize($completenesses),
-            'image'             => $this->normalizeImage($product->getImage(), $this->catalogContext->getLocaleCode()),
+            'image'             => $this->normalizeImage($product->getImage(), $this->catalogContext->getScopeCode(), $this->catalogContext->getLocaleCode()),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
 
         $normalizedProduct['meta']['ascendant_category_ids'] = $product->isVariant() ?
@@ -275,9 +275,9 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      *
      * @return array|null
      */
-    protected function normalizeImage(?ValueInterface $value, ?string $localeCode = null): ?array
+    protected function normalizeImage(?ValueInterface $value, ?string $channelCode = null, ?string $localeCode = null): ?array
     {
-        return $this->imageNormalizer->normalize($value, $localeCode);
+        return $this->imageNormalizer->normalize($value, $localeCode, $channelCode);
     }
 
     /**
