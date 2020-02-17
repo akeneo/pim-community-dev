@@ -49,10 +49,11 @@ class ProjectLocaleValidator extends ConstraintValidator
         }
 
         $locale = $project->getLocale();
-        if (null !== $locale && !$locale->hasChannel($project->getChannel())) {
-            $message = $this->translator->trans($constraint->message, ['{{ locale }}' => $locale->getCode()]);
+        $channel = $project->getChannel();
+        if (null !== $locale && !$locale->hasChannel($channel)) {
+            $message = $this->translator->trans($constraint->message, ['{{ locale }}' => $locale->getCode(), '{{ channel }}' => $channel->getCode()]);
 
-            $this->context->buildViolation($message)->addViolation();
+            $this->context->buildViolation($message)->atPath('locale')->addViolation();
         }
     }
 }

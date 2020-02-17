@@ -5,6 +5,7 @@
 pim_asset_manager:
   asset_collection:
     add_asset: 'Lisää assetti'
+    add_asset_title: 'Avaa assettivalitsin lisätäksesi assetteja kokoelmaan'
     no_asset_in_collection: 'Pahoittelut, tässä kokoelmassa ei ole assetteja.'
     helper:
       title: 'Tervetuloa uuteen assettien hallintaan!'
@@ -22,6 +23,31 @@ pim_asset_manager:
     dismiss_other_actions: Hylkää muut toiminnot
     move_asset_to_left: Siirrä assetti {{ assetName }} vasemmalle
     move_asset_to_right: Siirrä assetti {{ assetName }} oikealle
+  asset_picker:
+    title: Lisää assetteja tuotteellesi
+    no_result:
+      title: Valitettavasti haullesi ei löytynyt tuloksia
+      sub_title: Yritä uudelleen uusilla hakuehdoilla
+    filter:
+      title: Assettisuodattimet
+    basket:
+      title: '{{ assetCount }} assetti valittu|{{ assetCount }} assettia valittu'
+      empty_title: Korisi on tyhjä
+      remove_one_asset: Poista assetti {{ assetName }} assettivalikoimasta
+      remove_all_assets: Poista kaikki
+  asset_family:
+    #validation:
+    #code:
+    #pattern: 'This field may only contain letters, numbers and underscores.'
+    #should_be_unique: 'This code already exists for this entity.'
+    #limit_reached: 'You cannot create the asset family "{{ %asset_family_label% }}" because you have reached the limit of {{ %limit% }} asset families'
+    #button:
+    #save: Save
+    #save_permission: Save
+    #create: Create
+    #permission:
+    #title: Entity permissions
+    title: Assetit
   #breadcrumb: Asset Families
   #img: The main image of the asset family named "{{ label }}"
   #tab:
@@ -99,3 +125,112 @@ pim_asset_manager:
     #subtitle: Try again with new search criteria.
     selector:
       no_value: Klikkaa tästä valitaksesi assetin.
+    #error:
+    #value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
+    #button:
+    #save: Save
+    #create: Add new
+    #delete: Delete
+    #delete_all: Delete all assets
+    #back: Back to list
+    #product:
+    #attribute: Product attribute
+    #counter: '{{ totalCount }} result|{{ totalCount }} results'
+    #dropdown:
+    #attribute: Product attribute
+    #title: Products
+    #no_attribute:
+    #title: There is no product attribute linked to the asset family "{{ entityLabel }}"
+    #subtitle: "To start linking products to this asset family you can create a new one: "
+    #link: Create a new product attribute
+    #not_enough_items:
+    #title: Damn! You can see only {{ productCount }}/{{ totalCount }} products.
+    #subtitle:
+    #usable_in_grid: To discover all the products linked, just click below!
+    #not_usable_in_grid: To discover all the products linked, the product attribute must be set as "usable in grid".
+    #button: View all products
+    #no_product:
+    #title: There are no products linked for the product attribute "{{ entityLabel }}"
+    #subtitle: "Start linking products to this attribute to see them here"
+    #enrich:
+    #title: Asset attributes
+    #code: Code
+    #label: Label
+    #title: Assets
+    #create:
+    #header:
+    #title: Create
+    #subtitle: Asset Families
+    #title: Add new {{ entityLabel }}
+    #input:
+    #label: Label
+    #code: Code (required)
+    #create_another: Create another asset
+    #confirm: Save
+    #delete:
+    #message: Are you sure you want to delete the asset "{{ assetLabel }}"? If it's linked to products or assets, the links will be removed.
+    #title: Asset
+    #delete_all:
+    #confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
+    grid:
+      search: Esti otsikolla, koodilla tai tekstiattribuutilla
+      filter:
+        completeness:
+          label: Valmis
+          all: Kaikki
+          'yes': 'Kyllä'
+          'no': 'Ei'
+        option:
+          all: Kaikki
+          no_value: Valitse suodatettava valinta
+          operator:
+            in: Luettelossa
+      more_result:
+        title: Ei ollut se!
+        description: Selasit {{ maxDisplayedAssets }} ensimmäistä tulosta {{ total }}:sta assetista. Nähdäksesi enemmän, yritä tarkentaa hakuehtoja.
+  #column:
+  #code: Code
+  #image: Image
+  #label: Label
+  #complete: Complete
+  #action: Actions
+  #completeness:
+  #title_no_required: No attribute required
+  #title_non_complete: 0 out of {{ required }} attributes complete
+  #title_ongoing: '{{ complete }} out of {{ required }} attributes complete'
+  #title_complete: All {{ required }} attributes complete
+  #tab:
+  #enrich: Enrich
+  #product: Products
+  #notification:
+  #save:
+  #success: Asset successfully updated.
+  #fail: An error occured during the save of the asset
+  #validation_error: The asset could not be updated
+  #create:
+  #success: Asset successfully created.
+  #fail: An error occured during the creation of the asset
+  #delete:
+  #success: Asset "{{ code }}" successfully deleted.
+  #fail: An error occured during the deletion of the asset
+  #delete_all:
+  #success: All "{{ entityIdentifier }}" assets successfully deleted.
+  #fail: An error occured during the deletion of all this asset family's assets
+  #completeness:
+  #label: Complete
+  attribute:
+    #validation:
+    #limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this asset family'
+    #default:
+    #code: Code
+    #label: Label
+    #image: Image
+    #type:
+    #text: Text
+    #image: Image
+    #asset: Asset single link
+    #asset_collection: Asset multiple links
+    #option: Single option
+    #option_collection: Multiple options
+    #number: Number
+    is_required: vaadittu täyteen valmiusasteeseen

@@ -36,7 +36,14 @@ pim_reference_entity:
         should_exist: 'No se encontraron los registros "%record_codes%".'
       limit_reached: 'No puedes crear el registro "%record_label%" porque has alcanzado el límite de %limit% registros para esta entidad de referencia'
       channel:
+        is_expected: 'Se espera un canal para el atributo "%attribute_code%" porque tiene un valor por canal.'
+        is_not_expected: 'No se espera que un canal sea de atributo "%attribute_code%" porque no tiene un valor por canal.'
         should_exist: 'El canal "%channel_identifier%" no existe.'
+      locale:
+        is_expected: 'Se espera un local para el atributo "%attribute_code%" porque tiene un valor por local.'
+        is_not_expected: 'No se espera un local para el atributo "%attribute_code%" porque no tiene un valor por local.'
+        is_not_activated: 'El local "%locale_identifier%" no está activado.'
+        is_not_activated_for_channel: 'El local "%locale_identifier%" no está activado para el canal "%channel_identifier%".'
       number:
         should_be_integer: 'Este campo debe ser un entero'
         integer_too_long: 'Este entero es demasiado grande'
@@ -56,6 +63,10 @@ pim_reference_entity:
         should_be_a_number: 'Este valor debe ser un número.'
       min_value:
         should_be_a_number: 'Este valor debe ser un número con el separador decimal correcto.'
+        cannot_be_greater_than_max: 'El mínimo no puede ser mayor que el máximo'
+      max_value:
+        should_be_a_number: 'Este valor debe ser un número con el separador decimal correcto.'
+        cannot_be_lower_than_min: 'El máximo no puede ser inferior al mínimo'
       code:
         pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
         reserved_codes: 'El código no puede ser ninguno de esos valores: "{{ comma_separated_reserved_keywords }}"'

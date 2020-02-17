@@ -3,7 +3,6 @@ teamwork_assistant:
     required: Este valor não pode estar em branco.
     label_maxlength: Este valor é muito longo. Ele deve ter {{ max }} caracteres ou menos.
     project_identifier: O projeto {{ project }} não existe.
-    project_locale: A localidade do projeto {{ locale }} deve estar habilitada.
     project_due_date: Você não pode selecionar uma data do passado.
   notification:
     project_calculation:
