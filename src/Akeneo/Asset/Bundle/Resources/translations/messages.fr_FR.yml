@@ -14,7 +14,7 @@ pimee_product_asset:
       edit: Modifier une catégorie de ressources
       list: Liste des catégories de ressources
       remove: Supprimer une catégorie de ressources
-      manage: Gérer les autorisations de category de ressources
+      manage: Gérer les autorisations des catégories de ressources
       history: Afficher l'historique des catégories de ressources
   acl_group:
     asset: Ressources du produit
@@ -236,3 +236,6 @@ pimee_enrich:
       options:
         width: '%value%px de largeur'
         height: '%value%px de hauteur'
+asset_tree:
+  remove:
+    error_linked: Cet arbre de catégories ne peut pas être supprimé car il est l'arbre par défaut d'un de vos utilisateurs.

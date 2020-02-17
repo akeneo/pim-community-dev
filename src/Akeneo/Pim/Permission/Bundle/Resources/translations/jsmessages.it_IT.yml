@@ -6,18 +6,18 @@ pim_enrich:
 pimee_enrich.entity.category:
   module:
     permissions:
-      grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> in questa categoria
-      revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> in questa categoria
+      grant: Il gruppo <strong>{{ group }}</strong> avrà il permesso <strong>{{ permission }}</strong> in questa categoria
+      revoke: Il gruppo <strong>{{ group }}</strong> <strong>non avrà il permesso {{ permission }}</strong> in questa categoria
 pimee_enrich.entity.locale:
   module:
     permissions:
-      grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> in questa impostazione locale
-      revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> in questa impostazione locale
+      grant: Il gruppo <strong>{{ group }}</strong> avrà il permesso <strong>{{ permission }}</strong> in questa impostazione locale
+      revoke: Il gruppo <strong>{{ group }}</strong> <strong>non avrà il permesso {{ permission }}</strong> in questa impostazione locale
 pimee_enrich.entity.attribute group:
   module:
     permissions:
-      grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> di questo attributo di gruppo
-      revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> per questo attributo di gruppo
+      grant: Il gruppo <strong>{{ group }}</strong> avrà il permesso <strong>{{ permission }}</strong> per questo gruppo di attributi
+      revoke: Il gruppo <strong>{{ group }}</strong> <strong>non avrà il permesso {{ permission }}</strong> per questo gruppo di attributi
 pimee_enrich.entity.attribute_group:
   module:
     permissions:
@@ -34,14 +34,14 @@ pimee_enrich.entity.job_instance:
       removed: Al gruppo {{ group }} non sarà concesso il permesso {{ permission }} per il profilo del job
 batch_jobs:
   add_product_value_with_permission_and_rules:
-    label: Aggiungi il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
+    label: Aggiungi il valore del prodotto con controllo dei permessi & con l'applicazione delle regole
     perform.label: Aggiungi un valore di prodotto
   update_product_value_with_permission_and_rules:
-    label: Aggiorna il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
-    perform.label: Modifica un valore di prodotto
+    label: Aggiorna il valore del prodotto con controllo dei permessi & con l'applicazione delle regole
+    perform.label: Aggiorna il valore di prodotto
   remove_product_value_with_permission_and_rules:
-    label: Rimuovi il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
-    perform.label: Rimuovi un valore di prodotto
+    label: Rimuovi il valore del prodotto con controllo del permesso & con l'applicazione delle regole
+    perform.label: Rimuovi il valore di prodotto
   edit_common_attributes_with_permission_and_rules:
     label: Modifica gli attributi con controllo dei permessi e con l'applicazione delle regole
     perform.label: Modificare gli attributi

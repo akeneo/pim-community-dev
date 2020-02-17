@@ -220,6 +220,7 @@ pim_catalog_volume:
   section:
     assets:
       title: Kennzahlen zu Assets
+      hint: Hier können Sie den Umfang bezüglich der Assets verfolgen.
   axis:
     count_assets: Assets
     count_asset_categories: Assetkategorien

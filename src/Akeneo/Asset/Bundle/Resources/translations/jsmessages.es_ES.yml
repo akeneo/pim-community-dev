@@ -42,7 +42,7 @@ pimee_product_asset:
       need_refresh: <b>Se ha lanzado el importe de recursos</b><br> Para ver los recursos importados en la forma del producto, por favor, actualice la página del producto cuando reciba la notificación del importe.
     error:
       list: Imposible de leer los ficheros ya cargados
-      upload: Un error ha ocurrido al intentar cargar
+      upload: Se ha producido un error durante la subida
       delete: Imposible eliminar el fichero del servidor
       import: Se ha producido un error durante la importación
       filename: Nombre de fichero inválido para el recurso
@@ -64,7 +64,7 @@ pimee_product_asset:
       delete:
         confirm_content: '¿Esta seguro que desea eliminar los recursos seleccionados?'
         success: Recursos seleccionados eliminados exitosamente.
-        error: Se ha producido un error al intentar eliminar los recursos seleccionados, por favor inténtelo de nuevo.
+        error: Se ha producido un error al intentar eliminar los recursos seleccionados, por favor, inténtalo de nuevo.
         empty_selection: Ningún recurso seleccionado
 pim_enrich:
   entity:
@@ -72,6 +72,7 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Colección de recursos
+#TODO merge in 3.1: `pim_dashboard` should be renamed in `pim_import_export`
 pim_dashboard:
   widget:
     last_operations:

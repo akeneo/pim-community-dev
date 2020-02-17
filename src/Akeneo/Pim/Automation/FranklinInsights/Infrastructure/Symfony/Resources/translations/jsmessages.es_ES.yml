@@ -10,7 +10,7 @@ akeneo_franklin_insights:
     data_provider:
       ask_franklin_down: "¡Vaya, algo ha fallado! Inténtalo de nuevo más tarde."
       authentication_error: "Lo sentimos, no se pudo autenticar en Franklin Insights, tu token no es válido. Por favor, introduce un token válido o contacta con nosotros para ayuda."
-      bad_request_error: "Lo sentimos, ha ocurrido un problema al comunicarse con Franklin Insights. Por favor, póngase en contacto con su administrador."
+      bad_request_error: "Lo sentimos, se ha producido un problema al comunicarse con Franklin Insights. Por favor, póngase en contacto con su administrador."
     identifier_mapping:
       plural_label: Identificadores
       flash:
@@ -67,11 +67,12 @@ akeneo_franklin_insights:
         no_identifiers_mapping: 'Por favor, mapea los identificadores de su producto en Ajustes > Franklin Insights antes de suscribir productos.'
         insufficient_credits: "Lo sentimos, no se pudo suscribir el producto a Franklin Insights. No tienes suficiente crédito."
         invalid_mapped_values: 'Lo sentimos, no pudo suscribirse el producto a Franklin Insights. Por favor, suscriba el producto con una combinación de identificadores válida.'
-        data_provider_error: 'Franklin devolvió un error al intentar suscribir el producto'
+        data_provider_error: 'Franklin devolvió un error al intentar suscribir el producto' #TODO: check with POs
         not_subscribed: 'El producto no se ha suscrito'
         already_subscribed_product: 'El producto ya está suscrito.'
         variant_product: 'Lo sentimos, los productos variantes no pueden ser suscritos a Franklin Insights.'
         inactive_connection: 'Lo sentimos, no se pudo suscribir el producto a Franklin Insights. Por favor, configure su conexión a Franklin Insights.'
+        product_subscription_with_same_identifier_already_exist: 'Otro producto con al menos un mismo identificador ya ha sido suscrito.'
       module:
         product_edit_form:
           family_required: 'Familia de producto requerida.'
@@ -85,6 +86,7 @@ akeneo_franklin_insights:
         edit:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} opciones de atributo'
           sub_title: '¡Conoce a Franklin, su <span class="AknDescriptionHeader-title--highlight">Asistente IA de Información de Producto</span>!'
+          description: 'Para ayudar a enriquecer tu catálogo, Franklin necesitará conocer las opciones de atributos de tu catálogo que coincidan con las suyas. <a href="#" target="_blank" class="AknDescriptionHeader-link">Leer más</a>'
   product:
     edit:
       btn.push: Sugerencia de datos
@@ -94,7 +96,7 @@ akeneo_franklin_insights:
     flash:
       success: Código de activación de Franklin Insights guardado con éxito.
       invalid: Código de activación no válido, lo siento. Por favor, pruebe con uno válido.
-      error: Lo sentimos, se ha producido un error.
+      error: Lo sentimos, ha ocurrido un error.
     module:
       title:
         sub_title: '¡Bienvenido a <span class="AknDescriptionHeader-title--highlight">Asistente IA de Información de Producto</span>!'

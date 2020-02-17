@@ -37,6 +37,7 @@ akeneo_franklin_insights:
         mandatory_identifier_mapping: "Mapatge de Marca i MPN requerits"
         attribute_type: "No es pot definir el tipus d'aquest atribut com a identificador"
         localizable_not_allowed: "Els atributs localitzables no s'admeten com a identificadors"
+        locale_specific_not_allowed: "Els atributs localitzables específics no s'admeten com a identificadors"
     attributes_mapping:
       label: Mapatge dels atributs
       fields:

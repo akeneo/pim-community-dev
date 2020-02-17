@@ -236,3 +236,6 @@ pimee_enrich:
       options:
         width: '%value%px Breite'
         height: '%value%px Höhe'
+asset_tree:
+  remove:
+    error_linked: Dieser Kategoriebaum kann nicht gelöscht werden, er ist als Standard-Kategorienbaum eines Benutzers festgelegt.

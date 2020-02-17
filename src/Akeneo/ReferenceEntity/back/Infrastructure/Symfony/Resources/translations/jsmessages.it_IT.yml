@@ -8,7 +8,7 @@ pim_reference_entity:
       wide:
         remove: Rimuovi l'immagine
         download: Scarica l'immagine
-        upload: Drag and drop per caricare un file o fai click qui
+        upload: Trascina e rilascia qui un file per caricarlo o fai click qui
       small:
         remove: Rimuovere
         download: Scarica
@@ -22,7 +22,7 @@ pim_reference_entity:
     button:
       save: Salva
       save_permission: Salva
-      create: Crea
+      create: Creare
     permission:
       title: Permessi entità
     title: Entità
@@ -30,7 +30,7 @@ pim_reference_entity:
     img: Immagine principale dell'entità di riferimento denominata "{{ label }}"
     tab:
       records: Record
-      attribute: Attributi
+      attribute: Atributi
       properties: Proprietà
       permission: Autorizzazioni
     properties:
@@ -43,7 +43,7 @@ pim_reference_entity:
       attribute:
         error:
           render_list: 'Si è verificato un errore durante il rendering dell''attributo "{{ %attribute_code% }}"'
-          render_edit: 'Si è verificato un errore durante il rendering dei campi di proprietà aggiuntive dell''attributo "{{ %attribute_code% }}"'
+          render_edit: 'Si è verificato un errore durante il rendering dei campi di proprietà aggiuntivi dell''attributo "{{ %attribute_code% }}"'
     module:
       delete:
         button: Elimina entità
@@ -60,7 +60,7 @@ pim_reference_entity:
           description_part_five: Per ulteriori dettagli, ti invitiamo a leggere questo articolo.
     create:
       header:
-        title: Crea
+        title: Creare
       subtitle: Entità di riferimento
       title: Crea una nuova entità
       input:
@@ -108,7 +108,7 @@ pim_reference_entity:
     button:
       save: Salva
       create: Aggiungi nuovo
-      delete: Eliminare
+      delete: Elimina
       delete_all: Elimina tutti i record
       back: Torna all'elenco
     enrich:
@@ -118,7 +118,7 @@ pim_reference_entity:
     title: Record
     create:
       header:
-        title: Crea
+        title: Creare
       subtitle: Entità di riferimento
       title: Aggiungi nuovo {{ entityLabel }}
       input:
@@ -134,9 +134,12 @@ pim_reference_entity:
     grid:
       search: Cerca nell'etichetta, nel codice e nel testo degli attributi
       filter:
+        counter: '{{ matchesCount }} risultato|{{ matchesCount }} risultati'
         completeness:
           label: Completo
           all: TUTTO
+          'yes': 'SI'
+          'no': 'NO'
       column:
         code: Codice
         image: Immagine
@@ -156,17 +159,17 @@ pim_reference_entity:
     notification:
       save:
         success: Record aggiornato correttamente.
-        fail: Si è verificato un errore durante il salvataggio del record
+        fail: Si è verificato un errore durante il salvataggio del registro
         validation_error: Il record non può essere aggiornato
       create:
         success: Record creato correttamente.
-        fail: Si è verificato un errore durante la creazione del record
+        fail: Si è verificato un errore durante la creazione del registro
       delete:
         success: Record "{{ code }}" eliminato correttamente.
-        fail: Si è verificato un errore durante l'eliminazione del record
+        fail: Si è verificato un errore durante l'eliminazione del registro
       delete_all:
         success: Tutti i record di "{{ entityIdentifier }}" sono stati eliminati correttamente.
-        fail: Si è verificato un errore durante la cancellazione di tutti i record dell'entità di riferimento
+        fail: Si è verificato un errore durante l'eliminazione di tutti questi registri dell'entità di riferimento
     completeness:
       label: Completo
   attribute:
@@ -191,7 +194,7 @@ pim_reference_entity:
       add: Aggiungi un attributo
     create:
       header:
-        title: Crea
+        title: Creare
       subtitle: Entità di riferimento
       title: Aggiungi nuovo attributo di registrazione
       description: I parametri seguenti, ad eccezione dell'etichetta, non possono essere aggiornati dopo la creazione dell'attributo
@@ -235,7 +238,7 @@ pim_reference_entity:
               placeholder: Scrivi le tue nuove etichette opzioni qui
         options:
           validation_rule:
-            none: Nessun
+            none: Nessuno
             email: E-mail
             regular_expression: Espressione regolare
             url: URL
@@ -244,7 +247,7 @@ pim_reference_entity:
       title: Attributo
     notification:
       list:
-        fail: Si è verificato un errore durante l'aggiornamento della lista degli attributi
+        fail: Si è verificato un errore durante l'aggiornamento dell'elenco attributo
       save:
         success: Attributo aggiornato con successo.
         fail: Si è verificato un errore durante il salvataggio dell'attributo
@@ -255,7 +258,7 @@ pim_reference_entity:
         validation_error: L'attributo non può essere creato
       delete:
         success: Attributo eliminato correttamente.
-        fail: Si è verificato un errore durate la cancellazione dell'attributo
+        fail: Si è verificato un errore durante l'eliminazione dell'attributo
     options:
       no_value: Clicca qui per selezionare un'opzione.
       sub_title: Entità di riferimento
@@ -266,7 +269,7 @@ pim_reference_entity:
       subtitle: Conferma cancellazione
       button:
         cancel: Annulla
-        confirm: Eliminare
+        confirm: Elimina
 pim_enrich:
   confirmation:
     discard_changes: 'Perderai tutte le modifiche all''entità "{{ entity }}" se abbandoni la pagina.'
@@ -283,6 +286,13 @@ pim_enrich:
           default_label: Si prega di seleziona un'entità di riferimento
 permission:
   mass_action: Applica il diritto {{ rightLevel }} a tutti i gruppi
+#Analytics
 pim_catalog_volume:
+  section:
+    reference_entity:
+      title: Assi su entità di riferimento
+      hint: Se stai usando le entità di riferimento, qui ci sono gli assi per aiutarti a monitorare il tuo volume.
   axis:
     count_reference_entity: Entità riferimenti
+    average_max_records_per_reference_entity: Registri per entità di riferimento
+    average_max_attributes_per_reference_entity: Attributi per entità di riferimento

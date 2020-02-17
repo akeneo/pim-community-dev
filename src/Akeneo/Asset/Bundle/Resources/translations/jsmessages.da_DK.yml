@@ -6,8 +6,6 @@ pimee_product_asset:
       asset:
         manage: Administrer aktiver
         description: Vælge de aktiver, du vil vedhæfte til dit produkt
-        yes: true
-        no: false
     asset:
       alpha_numeric_plus_underscore: Koden skal kun være alfanumeriske eller understreg.
       unique: Koden skal være entydig. Vi har skabt en ny for dig.
