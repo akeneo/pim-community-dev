@@ -27,3 +27,10 @@ services:
         - '@pim_api.pagination.offset_hal_paginator'
         - '%akeneo_measure.measures_config%'
         - '%pim_api.configuration%'
+
+    akeneo_measure.installer.measurement_installer:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementsInstaller
+        arguments:
+            - '@doctrine.dbal.default_connection'
+        tags:
+            - { name: kernel.event_subscriber }
