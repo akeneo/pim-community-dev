@@ -96,6 +96,26 @@ class ProductModelContext extends PimContext
     }
 
     /**
+     * @param string $identifier
+     *
+     * @throws \Context\Spin\TimeoutException
+     *
+     * @Given /^I can't access to "([^"]*)" product model page$/
+     */
+    public function iCantAccessTheProductModelPage($identifier)
+    {
+        $page   = 'ProductModel';
+        $entity = $this->getProductModel($identifier);
+        $this->getNavigationContext()->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+
+        $this->spin(function () {
+            $this->assertSession()->pageTextContains("403");
+
+            return true;
+        }, 'Product model page is accessible but should not.');
+    }
+
+    /**
      * @param string $productModelCode
      * @param string $rootProductModelCode
      *

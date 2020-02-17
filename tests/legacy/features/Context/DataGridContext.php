@@ -451,7 +451,6 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     public function iShouldSeeTheColumns($columns)
     {
-        sleep(30);
         $columns = $this->getMainContext()->listToArray($columns);
 
         $expectedColumns = count($columns);
