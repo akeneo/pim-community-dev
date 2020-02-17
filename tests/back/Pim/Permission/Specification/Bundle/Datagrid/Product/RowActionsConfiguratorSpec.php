@@ -60,6 +60,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
             [
                 'show' => true,
                 'edit' => false,
+                'edit_attributes' => false,
                 'edit_categories' => false,
                 'delete' => false,
                 'toggle_status' => false,
@@ -77,6 +78,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
             [
                 'show' => false,
                 'edit' => true,
+                'edit_attributes' => true,
                 'edit_categories' => false,
                 'delete' => false,
                 'toggle_status' => false,
@@ -94,6 +96,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
             [
                 'show' => false,
                 'edit' => true,
+                'edit_attributes' => true,
                 'edit_categories' => true,
                 'delete' => true,
                 'toggle_status' => true,
@@ -111,6 +114,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
             [
                 'show' => false,
                 'edit' => true,
+                'edit_attributes' => true,
                 'edit_categories' => true,
                 'delete' => true,
                 'toggle_status' => true,
@@ -128,6 +132,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
             [
                 'show' => false,
                 'edit' => true,
+                'edit_attributes' => true,
                 'edit_categories' => true,
                 'delete' => true,
                 'toggle_status' => true,
@@ -145,6 +150,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
             [
                 'show' => true,
                 'edit' => false,
+                'edit_attributes' => false,
                 'edit_categories' => false,
                 'delete' => false,
                 'toggle_status' => false,
@@ -162,6 +168,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
             [
                 'show' => false,
                 'edit' => true,
+                'edit_attributes' => true,
                 'edit_categories' => false,
                 'delete' => false,
                 'toggle_status' => false,
@@ -179,6 +186,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
             [
                 'show' => false,
                 'edit' => true,
+                'edit_attributes' => true,
                 'edit_categories' => true,
                 'delete' => true,
                 'toggle_status' => true,
@@ -196,6 +204,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
             [
                 'show' => false,
                 'edit' => true,
+                'edit_attributes' => true,
                 'edit_categories' => true,
                 'delete' => true,
                 'toggle_status' => true,
@@ -213,6 +222,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
             [
                 'show' => false,
                 'edit' => true,
+                'edit_attributes' => true,
                 'edit_categories' => true,
                 'delete' => true,
                 'toggle_status' => true,
