@@ -45,8 +45,8 @@ javascript-prod:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(DOCKER_COMPOSE) run -e EDITION=cloud --rm node yarn run webpack
 
-.PHONY: javascript-prod-onprem-saas
-javascript-prod-onprem-saas:
+.PHONY: javascript-prod-onprem-paas
+javascript-prod-onprem-paas:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(YARN_RUN) run webpack
 
