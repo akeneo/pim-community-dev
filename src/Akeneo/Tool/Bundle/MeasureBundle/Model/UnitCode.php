@@ -22,7 +22,7 @@ final class UnitCode
         $this->code = $code;
     }
 
-    public function fromString(string $code): self
+    public static function fromString(string $code): self
     {
         return new self($code);
     }
