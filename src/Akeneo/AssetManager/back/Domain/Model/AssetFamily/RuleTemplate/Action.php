@@ -73,7 +73,7 @@ class Action
 
     public static function createFromProductLinkRule(array $action): self
     {
-        $allowedModes = implode(self::ALLOWED_MODES, ', ');
+        $allowedModes = implode(', ', self::ALLOWED_MODES);
         Assert::oneOf($action['mode'], self::ALLOWED_MODES, sprintf('The action mode allowed should be one of these : "%s"', $allowedModes));
 
         $action['field'] = $action['attribute'];

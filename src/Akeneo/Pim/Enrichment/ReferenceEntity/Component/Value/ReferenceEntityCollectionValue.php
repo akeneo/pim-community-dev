@@ -54,8 +54,14 @@ class ReferenceEntityCollectionValue extends AbstractValue implements ReferenceE
      */
     public function __toString(): string
     {
-        return null !== $this->data ? implode(array_map(function (RecordCode $recordCode) {
-            return $recordCode->__toString();
-        }, $this->data), ', ') : '';
+        return null !== $this->data ? implode(
+            ', ',
+            array_map(
+                function (RecordCode $recordCode) {
+                    return $recordCode->__toString();
+                },
+                $this->data
+            )
+        ) : '';
     }
 }

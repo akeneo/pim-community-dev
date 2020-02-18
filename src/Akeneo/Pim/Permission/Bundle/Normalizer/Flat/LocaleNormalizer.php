@@ -52,12 +52,12 @@ class LocaleNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
         $normalizedLocale = $this->localeNormalizer->normalize($locale, $format, $context);
 
         $normalizedLocale['view_permission'] = implode(
-            array_map('strval', $this->accessManager->getViewUserGroups($locale)),
-            ','
+            ',',
+            array_map('strval', $this->accessManager->getViewUserGroups($locale))
         );
         $normalizedLocale['edit_permission'] = implode(
-            array_map('strval', $this->accessManager->getEditUserGroups($locale)),
-            ','
+            ',',
+            array_map('strval', $this->accessManager->getEditUserGroups($locale))
         );
 
         return $normalizedLocale;
