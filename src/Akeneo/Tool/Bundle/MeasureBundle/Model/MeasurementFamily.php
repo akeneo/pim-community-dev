@@ -22,9 +22,8 @@ class MeasurementFamily
     /** @var array */
     private $units;
 
-    private function __construct(string $code, UnitCode $standardUnit, array $units)
+    private function __construct(MeasurementFamilyCode $code, UnitCode $standardUnit, array $units)
     {
-        Assert::stringNotEmpty($code);
         Assert::allIsInstanceOf($units, Unit::class);
         Assert::minCount($units, 1);
 
@@ -36,7 +35,7 @@ class MeasurementFamily
         $this->units = $units;
     }
 
-    public function create(string $code, UnitCode $standardUnit, array $units): self
+    public static function create(MeasurementFamilyCode $code, UnitCode $standardUnit, array $units): self
     {
         return new self($code, $standardUnit, $units);
     }
@@ -44,11 +43,11 @@ class MeasurementFamily
     public function normalize(): array
     {
         return [
-            'code' => $this->code,
+            'code' => $this->code->normalize(),
             'standard_unit' => $this->standardUnit->normalize(),
             'units' => array_map(
-                function (UnitCode $code) {
-                    return $code->normalize();
+                function (Unit $unit) {
+                    return $unit->normalize();
                 },
                 $this->units
             )
