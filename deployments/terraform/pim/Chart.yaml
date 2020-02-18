@@ -2,5 +2,5 @@ apiVersion: v1
 name: pim
 description: Akeneo PIM - Enterprise Cloud Edition
 icon: https://raw.githubusercontent.com/akeneo/pim-community-dev/master/public/favicon.ico
-# version and appVersion : are defined by parameters passed to helm package
-version: 0.0.0-1
+version: master
+appVersion: master

@@ -594,4 +594,3 @@ commands:
           shell: "/bin/bash -eo pipefail"
           command: |
             IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
-            make get-kubeconfig

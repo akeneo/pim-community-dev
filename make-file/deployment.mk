@@ -36,10 +36,6 @@ endif
 executor ?= kubectl
 migrate ?= no
 
-.PHONY: get-kubeconfig
-get-kubeconfig:
-	gcloud container clusters get-credentials $(GOOGLE_CLUSTER_NAME) --zone=$(GOOGLE_CLUSTER_ZONE) --project=$(GOOGLE_PROJECT_ID)
-
 .PHONY: helm-prepare
 helm-prepare:
 	helm init --client-only
@@ -71,7 +67,7 @@ terraform-apply:
 delete: terraform-delete purge-release-all
 
 .PHONY: purge-release-all
-purge-release-all: get-kubeconfig
+purge-release-all:
 	helm delete $(PFID) --purge || echo "WARNING: FAILED helm delete --purge $(PFID)"
 	@kubectl delete all,pvc --all -n $(PFID) --force --grace-period=0 && echo "kubectl delete all,pvc forced OK" || echo "WARNING: FAILED kubectl delete all,pvc --all -n $(PFID) --force --grace-period=0"
 	@kubectl delete ns $(PFID) && echo "kubectl delete ns OK"  || echo "WARNING: FAILED kubectl delete ns $(PFID)"
@@ -125,6 +121,7 @@ create-pim-main-tf: $(INSTANCE_DIR)
 
 .PHONY: test-prod
 test-prod:
+	export KUBECONFIG=$(INSTANCE_DIR)/.kubeconfig
 	helm test ${PFID}
 
 .PHONY: release

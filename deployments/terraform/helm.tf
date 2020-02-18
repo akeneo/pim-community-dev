@@ -39,16 +39,23 @@ data "helm_repository" "akeneo-charts" {
 
 resource "null_resource" "helm_release_pim" {
   triggers {
-        values = "${file("./values.yaml")}"
-        tf-helm-pim-values = "${data.template_file.helm_pim_config.rendered}"
+    values             = "${file("./values.yaml")}"
+    tf-helm-pim-values = "${data.template_file.helm_pim_config.rendered}"
   }
-  depends_on   = ["local_file.helm_pim_config"]
+
+  depends_on = [
+    "local_file.helm_pim_config",
+    "local_file.kubeconfig",
+  ]
+
   provisioner "local-exec" {
     interpreter = ["/usr/bin/env", "bash", "-c"]
+
     command = <<EOF
 helm dependencies update ${path.module}/pim/
 yq w -i ${path.module}/pim/Chart.yaml version ${var.pim_version}
 yq w -i ${path.module}/pim/Chart.yaml appVersion ${var.pim_version}
+export KUBECONFIG="${local_file.kubeconfig.filename}"
 helm upgrade --wait --install --force --timeout 1501 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
 EOF
   }
