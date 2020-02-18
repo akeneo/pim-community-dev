@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
 use Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -15,7 +16,6 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\Connector\Job\ComputeDataRelatedToFamilyVariantsTasklet;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -96,7 +96,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skip')->shouldNotBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
-        $cacheClearer->clear()->shouldBeCalledTimes(2);
+        $cacheClearer->clear()->shouldBeCalledTimes(3);
 
         $this->setStepExecution($stepExecution);
         $this->execute();
@@ -161,7 +161,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skip')->shouldNotBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
-        $cacheClearer->clear()->shouldBeCalledTimes(2);
+        $cacheClearer->clear()->shouldBeCalledTimes(3);
 
         $this->setStepExecution($stepExecution);
         $this->execute();
@@ -223,7 +223,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(2);
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
-        $cacheClearer->clear()->shouldBeCalledTimes(1);
+        $cacheClearer->clear()->shouldBeCalledTimes(2);
 
         $this->setStepExecution($stepExecution);
         $this->execute();

@@ -282,7 +282,7 @@
   &-expand {
     width: 32px;
     height: 32px;
-    background: url("/bundles/pimui/images/icon-right.svg") no-repeat 50%;
+    background: url('/bundles/pimui/images/icon-right.svg') no-repeat 50%;
     transition: transform 0.2s ease-in;
 
     &--expanded {
@@ -342,7 +342,7 @@
     background-size: cover;
     background-position: 50%;
     margin-bottom: 16px;
-    position:relative;
+    position: relative;
     display: block;
 
     &:before {
@@ -481,8 +481,8 @@
 
     &:after,
     &:before {
-      width: ~"calc(100% + 1px)";
-      height: ~"calc(100% + 1px)";
+      width: ~'calc(100% + 1px)';
+      height: ~'calc(100% + 1px)';
     }
   }
 
@@ -500,7 +500,7 @@
   }
 
   &-bodyCell--sixteen,
-  &-headerCell--sixteen{
+  &-headerCell--sixteen {
     width: 16%;
   }
 
@@ -534,7 +534,8 @@
     z-index: 3;
     width: auto;
 
-    & .AknGrid-bodyCell, & .AknGrid-headerCell {
+    & .AknGrid-bodyCell,
+    & .AknGrid-headerCell {
       max-width: 250px;
       white-space: nowrap;
       overflow: hidden;
@@ -546,7 +547,12 @@
     }
 
     & .AknGrid-bodyRow {
-      background: linear-gradient(to left, RGBa(255,255,255,0) 0px,RGBa(255,255,255,.9) 8px,RGBa(255,255,255,1) 100%);
+      background: linear-gradient(
+        to left,
+        RGBa(255, 255, 255, 0) 0px,
+        RGBa(255, 255, 255, 0.9) 8px,
+        RGBa(255, 255, 255, 1) 100%
+      );
     }
   }
 
@@ -560,7 +566,12 @@
     }
 
     & .AknGrid-bodyRow {
-      background: linear-gradient(to left, RGBa(255,255,255,1) 0%, RGBa(255,255,255,.9) 90%, RGBa(255,255,255,0) 100%);
+      background: linear-gradient(
+        to left,
+        RGBa(255, 255, 255, 1) 0%,
+        RGBa(255, 255, 255, 0.9) 90%,
+        RGBa(255, 255, 255, 0) 100%
+      );
     }
   }
 
@@ -577,7 +588,6 @@
 }
 
 .AknGridHistory {
-
   &-bodyCell {
     &--highlight {
       color: @AknLightPurple;
