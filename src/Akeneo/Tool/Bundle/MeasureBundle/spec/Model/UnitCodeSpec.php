@@ -12,7 +12,7 @@ class UnitCodeSpec extends ObjectBehavior
 {
     private const UNIT_CODE = 'meter';
 
-    public function let()
+    function let()
     {
         $this->beConstructedThrough('fromString', [self::UNIT_CODE]);
     }
