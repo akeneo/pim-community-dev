@@ -25,14 +25,13 @@ final class Unit
     private function __construct(UnitCode $code, array $convertFromStandard, string $symbol)
     {
         Assert::allIsInstanceOf($convertFromStandard, Operation::class);
-        Assert::string($symbol);
 
         $this->code = $code;
         $this->convertFromStandard = $convertFromStandard;
         $this->symbol = $symbol;
     }
 
-    public function create(UnitCode $code, array $convertFromStandard, string $symbol): self
+    public static function create(UnitCode $code, array $convertFromStandard, string $symbol): self
     {
         return new self($code, $convertFromStandard, $symbol);
     }
@@ -41,7 +40,12 @@ final class Unit
     {
         return [
             'code' => $this->code->normalize(),
-            'convert_from_standard' => $this->convertFromStandard,
+            'convert_from_standard' => array_map(
+                function (Operation $operation) {
+                    return $operation->normalize();
+                },
+                $this->convertFromStandard
+            ),
             'symbol' => $this->symbol,
         ];
     }
