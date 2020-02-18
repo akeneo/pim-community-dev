@@ -88,3 +88,7 @@ btn:
   Execute rules: Esegui le regole
 mass_edit_rule: Impostazioni delle Regole
 job_execution.summary.rule_calculated: Numero di regole
+pim_datagrid:
+  cells:
+    type:
+      mass_edit_rule: Impostazioni Ruoli

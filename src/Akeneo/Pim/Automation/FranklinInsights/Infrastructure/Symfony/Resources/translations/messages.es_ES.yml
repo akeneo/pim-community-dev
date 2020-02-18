@@ -11,6 +11,8 @@ akeneo_franklin_insights:
   mapping_identifier:
     success: La información ha sido guardada correctamente
     error: A ocurrido un error mientras se guardaba la información
+  notification:
+    invalid_token: 'Su código de activación de Franklin Insights no es válido. Por favor, actualice el código o póngase en contacto con nosotros para obtener ayuda.'
   entity:
     product_subscription:
       constraint:

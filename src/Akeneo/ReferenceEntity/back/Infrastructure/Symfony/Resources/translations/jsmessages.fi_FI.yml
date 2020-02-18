@@ -167,6 +167,7 @@ pim_reference_entity:
       more_result:
         description: Selasit 500 ensimmäistä tietuetta {{ total }}:sta tietueesta. Nähdäksesi enemmän, yritä tarkentaa hakukriteereitä.
       completeness:
+        title_no_required: Attribuuttia ei vaadita
         title_non_complete: 0 vaadittua attribuuttia {{ required }}:sta valmiina
         title_ongoing: '{{ complete }} vaadittua attribuuttia {{ required }}:sta valmiina'
         title_complete: Kaikki ({{ required }}) vaaditut attribuutit valmiina

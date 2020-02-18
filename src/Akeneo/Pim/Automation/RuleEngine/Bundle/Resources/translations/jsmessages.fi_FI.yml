@@ -40,11 +40,13 @@ pimee_catalog_rule:
           confirm_title: Vahvista suoritus
           confirm_content: Oletko varma, että haluat suorittaa valitut säännöt?
           success: Massatoiminto valittujen sääntöjen suorittamiseksi on käynnistetty. Sinulle ilmoitetaan, kun se on valmis
+          error: Sääntöjen suorituksessa tapahtui virhe.
           empty_selection: Sääntöjä ei ole valittu.
         delete:
           confirm_title: Vahvista suoritus
           confirm_content: Oletko varma, että haluat poistaa valitut säännöt?
           success: Säännöt poistettu onnistuneesti.
+          error: Sääntöjen poistamisessa tapahtui virhe.
           empty_selection: Sääntöjä ei ole valittu.
   form:
     attribute:

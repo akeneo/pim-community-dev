@@ -1,0 +1,5 @@
+pim_asset_manager:
+  product_value:
+    validation:
+      asset_multiple_link:
+        limit_reached: 'Has alcanzado el límite de %limit% activos por distribución, ya no puedes añadir activos a tu colección.'

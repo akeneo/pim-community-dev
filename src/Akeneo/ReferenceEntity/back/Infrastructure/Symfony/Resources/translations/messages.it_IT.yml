@@ -12,6 +12,7 @@ akeneo_referenceentity:
       edit: Modifica i record
       delete: Elimina una riga
       delete_all: Elimina tutte le righe entità
+      list_product: Elenca i prodotti collegati per registrare
     attribute:
       create: Aggiungi un attributo ad un'entità di riferimento
       edit: Modifica un attributo di un'entità di riferimento
@@ -19,3 +20,14 @@ akeneo_referenceentity:
     option:
       edit: Modifica opzioni
       delete: Rimuovi una opzione
+pim_analytics:
+  info_type:
+    nb_reference_entities: Numero di entità di riferimento
+    max_number_of_records_per_reference_entity: Numero massimo di registri per entità di riferimento
+    average_number_of_values_per_records: Numero medio di valori per registro su tutte le entità di riferimento
+    average_number_of_records_per_reference_entity: Numero medio di registri per entità di riferimento
+    max_number_of_attributes_per_reference_entity: Numero massimo di attributi per entità di riferimento
+    average_number_of_attributes_per_reference_entity: Numero medio di attributi per entità di riferimento
+    average_percentage_localizable_only_attributes: Percentuale media di attributi solo localizzabili per entità di riferimento
+    average_percentage_scopable_only_attributes: Percentuale media di attributi a solo scopo per entità di riferimento
+    average_percentage_scopable_and_localizable_attributes: Percentuale media di attributi localizzabili e di scopo per entità di riferimento
