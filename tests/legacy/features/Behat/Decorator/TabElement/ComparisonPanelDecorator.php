@@ -85,7 +85,11 @@ class ComparisonPanelDecorator extends ElementDecorator
             return $toggle;
         }, 'Dropdown action menu was not found');
 
-        $toggle->click();
+        $this->spin(function () use ($toggle) {
+            $toggle->click();
+
+            return true;
+        }, 'Could not click on dropdown menu');
 
         $option = $this->spin(function () use ($dropdown, $source) {
             $option = $dropdown->find('css', sprintf('.AknDropdown-menuLink[data-source="%s"]', $source));
