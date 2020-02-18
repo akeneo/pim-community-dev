@@ -2,7 +2,6 @@ import * as React from 'react';
 import BreadCrumb, {BreadcrumbConfiguration} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import __ from 'akeneoassetmanager/tools/translator';
 import EditState from 'akeneoassetmanager/application/component/app/edit-state';
-import Image from 'akeneoassetmanager/application/component/app/image';
 import {connect} from 'react-redux';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
@@ -70,7 +69,6 @@ export class HeaderView extends React.Component<HeaderProps> {
   render() {
     const {
       label,
-      image,
       primaryAction,
       secondaryActions,
       withChannelSwitcher,
@@ -87,9 +85,6 @@ export class HeaderView extends React.Component<HeaderProps> {
     return (
       <header className="AknTitleContainer">
         <div className="AknTitleContainer-line">
-          {null !== image ? (
-            <Image alt={__('pim_asset_manager.asset_family.img', {'{{ label }}': label})} image={image} />
-          ) : null}
           <div className="AknTitleContainer-mainContainer">
             <div>
               <div className="AknTitleContainer-line">
