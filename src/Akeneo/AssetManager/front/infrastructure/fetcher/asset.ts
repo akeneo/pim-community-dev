@@ -48,7 +48,7 @@ const denormalizeListAsset = (backendAsset: BackendListAsset): ListAsset => {
     code: backendAsset.code,
     labels: denormalizeLabelCollection(backendAsset.labels),
     assetFamilyIdentifier: backendAsset.asset_family_identifier,
-    values: backendAsset.values,
+    values: Array.isArray(backendAsset.values) ? {} : backendAsset.values,
     image: backendAsset.image,
     completeness: backendAsset.completeness,
   };
