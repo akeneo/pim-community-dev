@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2020 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Tool\Bundle\MeasureBundle\Model;
 
 use Webmozart\Assert\Assert;
@@ -29,7 +38,7 @@ class MeasurementFamily
     {
         Assert::allIsInstanceOf($units, Unit::class);
         Assert::minCount($units, 1);
-        $this->assertStandardUnitIsAlsoAUnit($standardUnitCode, $units);
+        $this->assertStandardUnitExists($standardUnitCode, $units);
         $this->assertNoDuplicatedUnits($units);
 
         $this->code = $code;
@@ -58,15 +67,15 @@ class MeasurementFamily
         ];
     }
 
-    private function assertStandardUnitIsAlsoAUnit(UnitCode $standardUnitCode, array $units): void
+    private function assertStandardUnitExists(UnitCode $standardUnitCode, array $units): void
     {
         $isStandardUnitCodePresentInUnits = !empty(
-        array_filter(
-            $units,
-            function (Unit $unit) use ($standardUnitCode) {
-                return $standardUnitCode->equals($unit->code());
-            }
-        )
+            array_filter(
+                $units,
+                function (Unit $unit) use ($standardUnitCode) {
+                    return $standardUnitCode->equals($unit->code());
+                }
+            )
         );
         Assert::true(
             $isStandardUnitCodePresentInUnits,
