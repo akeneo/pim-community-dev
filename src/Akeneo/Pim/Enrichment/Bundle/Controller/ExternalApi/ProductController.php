@@ -178,7 +178,7 @@ class ProductController
         GetConnectorProducts $getConnectorProducts,
         ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave,
         WarmupQueryCache $warmupQueryCache,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
         DuplicateValueChecker $duplicateValueChecker = null // TODO @merge master Remove this null parameter and the conditions
     ) {
         $this->normalizer = $normalizer;
