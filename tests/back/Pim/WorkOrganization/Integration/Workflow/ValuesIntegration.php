@@ -41,7 +41,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
                     ['data' => 'text', 'locale' => null, 'scope' => null]
                 ],
                 'a_number_float' => [
-                    ['data' => 15, 'locale' => null, 'scope' => null]
+                    ['data' => '15.1234567890', 'locale' => null, 'scope' => null]
                 ],
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'mon text', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
@@ -308,7 +308,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
             ],
             'a_number_float' => [
                 '<all_channels>' => [
-                    '<all_locales>' => '15.0000'
+                    '<all_locales>' => '15.123456789'
                 ]
             ],
             'a_localized_and_scopable_text_area' => [

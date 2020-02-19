@@ -3,7 +3,6 @@ teamwork_assistant:
     required: Tämä arvo ei saa olla tyhjä.
     label_maxlength: Arvo on liian pitkä. Siinä saa olla enintään {{ max }} merkkiä.
     project_identifier: Projektia "{{ project }}" ei ole olemassa.
-    project_locale: Projektin lokaali "{{ locale }}" on oltava käytössä.
     project_due_date: Et voi valita päivää menneisyydestä.
   notification:
     project_calculation:

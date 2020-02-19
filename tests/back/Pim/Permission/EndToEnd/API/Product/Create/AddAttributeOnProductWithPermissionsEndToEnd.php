@@ -78,7 +78,7 @@ JSON;
     "identifier": "my_product",
     "values": {
         "a_number_float": [
-            {"data": "10.50", "locale": null, "scope": null}
+            {"data": "10.50146513500", "locale": null, "scope": null}
         ]
     }
 }
@@ -97,7 +97,7 @@ JSON;
             'enabled'       => true,
             'values'        => [
                 'sku'            => [['locale' => null, 'scope' => null, 'data' => 'my_product']],
-                'a_number_float' => [['locale' => null, 'scope' => null, 'data' => '10.5000']],
+                'a_number_float' => [['locale' => null, 'scope' => null, 'data' => '10.501465135']],
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',

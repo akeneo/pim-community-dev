@@ -88,3 +88,8 @@ services:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\SelectAttributeLabelsFromCodesQuery
         arguments:
             - '@database_connection'
+
+    pimee_workflow.query.get_published_version_id_by_version_ids:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\GetPublishedVersionIdsByVersionIdsQuery
+        arguments:
+            - '@database_connection'

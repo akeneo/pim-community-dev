@@ -3,8 +3,12 @@ pim_reference_entity:
     validation:
       code:
         pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
+      reference_entity_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'Vähintään yhdellä käyttäjäryhmällä on oltava muokkausoikeudet tähän viitetietoon'
   record:
     validation:
+      code:
+        pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
       number:
         should_be_string: 'Arvon on oltava merkkijono'
         should_be_integer: 'Arvon on oltava kokonaisluku'
@@ -12,12 +16,17 @@ pim_reference_entity:
         should_be_numeric: 'Arvon on oltava numero, jossa on oikea desimaalierotin'
   attribute:
     validation:
+      options:
+        code:
+          pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
       min_value:
         should_be_a_number: 'Arvon on oltava numero, jossa on oikea desimaalierotin.'
         cannot_be_greater_than_max: 'Minimiarvo ei voi olla suurempi kuin maksimiarvo'
       max_value:
         should_be_a_number: 'Arvon on oltava numero, jossa on oikea desimaalierotin.'
         cannot_be_lower_than_min: 'Maksimiarvo ei voi olla pienempi kuin minimiarvo'
+      code:
+        pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
       prefix:
         should_not_be_empty: 'Etuliite ei voi olla tyhjä merkkijono.'
       suffix:

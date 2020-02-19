@@ -5,7 +5,8 @@ import Completeness from 'akeneoassetmanager/domain/model/product/completeness';
 import ProductCompletenessLabel from 'akeneoassetmanager/application/component/app/product-completeness';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import {getImageShowUrl, getProductEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {getProductEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {getMediaFilePath} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 
 const ProductLink = styled.a`
   display: inline-block;
@@ -40,7 +41,7 @@ export const Product = React.memo(({product, locale}: {product: NormalizedProduc
   return (
     <ProductLink href={getProductEditUrl(product.type, product.id)} target="_blank" title={label}>
       <ThumbnailContainer>
-        <Thumbnail src={getImageShowUrl(product.image, 'thumbnail')} />
+        <Thumbnail src={getMediaFilePath(product.image)} />
       </ThumbnailContainer>
       <ProductCompletenessLabel completeness={completeness} type={product.type} />
       <Label>{label}</Label>

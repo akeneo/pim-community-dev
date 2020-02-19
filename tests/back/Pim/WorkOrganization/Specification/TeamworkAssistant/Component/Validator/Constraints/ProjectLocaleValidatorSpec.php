@@ -48,14 +48,16 @@ class ProjectLocaleValidatorSpec extends ObjectBehavior
         $project->getLocale()->willReturn($locale);
         $locale->getCode()->willReturn('fr_FR');
         $project->getChannel()->willReturn($channel);
+        $channel->getCode()->willReturn('Ecommerce');
         $locale->hasChannel($channel)->willReturn(false);
 
-        $translator->trans('teamwork_assistant.project.project_locale', ['{{ locale }}' => 'fr_FR'])
-            ->willReturn('The project\'s locale "fr_FR" must be enabled.');
+        $translator->trans('teamwork_assistant.project.project_locale', ['{{ locale }}' => 'fr_FR', '{{ channel }}' => 'Ecommerce'])
+            ->willReturn('The locale fr_FR is not supported by the channel Ecommerce.');
 
-        $context->buildViolation('The project\'s locale "fr_FR" must be enabled.')
+        $context->buildViolation('The locale fr_FR is not supported by the channel Ecommerce.')->shouldBeCalled()
             ->willReturn($constraintViolationBuilder);
 
+        $constraintViolationBuilder->atPath('locale')->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($project, $constraint);

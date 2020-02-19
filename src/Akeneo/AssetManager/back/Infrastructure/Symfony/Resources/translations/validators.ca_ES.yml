@@ -14,6 +14,9 @@ pim_asset_manager:
         should_not_be_linked: 'No pots eliminar aquesta entitat perquè els atributs de producte estan relacionats amb aquesta entitat'
       should_exist: 'La família de recurs "%asset_family_code%" no s''ha trobat.'
       rule_template:
+        limit_reached: 'Vostè no pot crear la família de recursos "%asset_family_identifier%" perquè ha arribat al límit de regles d''enllaç de productes %limit%'
+        product_selection_cannot_be_empty: 'Té que especificar com a mínim una selecció de productes a la regla d''enllaç de productes'
+        product_assignment_cannot_be_empty: 'Té que especificar com a mínim una assignació de productes a la regla d''enllaç de productes'
         extrapolated_attribute_should_exist: 'L''atribut "%attribute_code%" no existeix per a aquesta família de recursos fixes'
         extrapolated_attribute_type_should_be_supported: 'L''atribut "%attribute_code%" de tipus "%attribute_type%" no està suportat. Només son suportats els següents atributs per a aquest camp: %supported_attribute_type%'
         channel_should_exist: 'El canal "%channel_code%" no existeix'
@@ -25,17 +28,33 @@ pim_asset_manager:
   asset:
     validation:
       code:
+        pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
+        should_be_unique: 'Ja existeix un actiu amb aquest codi "%code%"'
         should_exist: 'No s''ha trobat el recurs'
       text:
         incompatible_with_regular_expression: 'Text incompatible amb l''expressió regular "%regular_expression%"'
       file:
+        extension_not_allowed: '"%file_extension%" no es permeten arxius per a aquest atribut. Les extensions permeses son: %allowed_file_extensions%'
+        file_size_exceeded: 'L''arxiu excedeix la mida màxima establerta per l''atribut.'
         should_exist: 'L''arxiu "%file_path%" no s''ha trobat.'
+      option:
+        code_does_not_exist: 'L''opció amb el codi "%option_code%" no existeix per aquest atribut'
+      option_collection:
+        codes_dont_exist: "Els següents codis d'opcions no existeixen per aquest atribut : \"%option_codes%\""
       asset:
         should_exist: 'No s''ha trobat el recurs "%asset_code%".'
       asset_collection:
         should_exist: 'Els recursos "%asset_codes%" no s''han trobat.'
+      limit_reached: 'Vostè no pot crear l''actiu "%asset_label%" perquè ha arribat al límit d''actius per aquesta família d''actius %limit%'
       channel:
+        is_expected: 'S''espera un canal per l''atribut %attribute_code% perquè té un valor per canal.'
+        is_not_expected: 'No s''espera un canal per l''atribut "%attribute_code%" perquè no té un valor per canal.'
         should_exist: 'El canal "%channel_identifier%" no existeix.'
+      locale:
+        is_expected: 'S''espera una localització per l''atribut "%attribute_code%" perquè té un valor per local.'
+        is_not_expected: 'No s''espera una localització per l''atribut "%attribute_code%" perquè no té un valor per local.'
+        is_not_activated: 'La localització "%locale_identifier%" no està activada.'
+        is_not_activated_for_channel: 'La localització "%locale_identifier%" no està activada pel canal "%channel_identifier%".'
       number:
         should_be_integer: 'Aquest camp té que ser un enter'
         integer_too_long: 'Aquest enter és massa gran'
@@ -64,6 +83,7 @@ pim_asset_manager:
         reserved_codes: 'El codi no pot ser cap d''aquests valors: "{{ comma_separated_reserved_keywords }}"'
         should_exist: 'L''atribut no s''ha trobat'
       regular_expression:
+        invalid_regular_expression: 'Aquesta expressió regular no és vàlida. Aquí tens un exemple d''una expressió regular vàlida: "/[a-z]+[0-9]*/"'
         should_not_be_empty: 'L''expressió regular no pot estar buida.'
       should_be_a_textarea_to_update_is_rich_text_editor: 'Un atribut de text simple no pot tenir un editor de text enriquit'
       should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'Un atribut d''àrea de text no pot tenir una regla de validació'
@@ -73,3 +93,5 @@ pim_asset_manager:
       asset_type:
         is_required: 'Necessita especificar el tipus de família de recursos per crear un atribut d''enllaç de la Família de Recursos'
         asset_family_should_exist: 'La família de recurs "%asset_family_code%" no s''ha trobat.'
+      media_type:
+        not_expected: 'El tipus de medi donat no correspon al que s''espera (%supported_media_types%).'
