@@ -27,6 +27,12 @@ class UnitCodeSpec extends ObjectBehavior
         $this->normalize()->shouldReturn(self::UNIT_CODE);
     }
 
+    function it_is_comparable()
+    {
+        $this->equals(UnitCode::fromString(self::UNIT_CODE))->shouldBe(true);
+        $this->equals(UnitCode::fromString('centimeter'))->shouldBe(false);
+    }
+
     function it_cannot_be_constructed_with_an_empty_string()
     {
         $this->shouldThrow(\InvalidArgumentException::class)

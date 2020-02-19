@@ -18,6 +18,8 @@ final class MeasurementFamilyCode
 
     private function __construct(string $code)
     {
+        // Check for invalid characters
+
         Assert::stringNotEmpty($code);
         $this->code = $code;
     }

@@ -49,4 +49,9 @@ final class Unit
             'symbol' => $this->symbol,
         ];
     }
+
+    public function code(): UnitCode
+    {
+        return $this->code;
+    }
 }
