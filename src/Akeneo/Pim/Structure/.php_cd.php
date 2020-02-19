@@ -91,6 +91,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface',
+        'Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider',
 
         // TIP-914 FamilyNormalizer should not use PIM/Enrichment
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer',
