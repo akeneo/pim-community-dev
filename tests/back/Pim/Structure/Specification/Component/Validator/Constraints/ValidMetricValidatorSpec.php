@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
@@ -14,7 +15,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ValidMetricValidatorSpec extends ObjectBehavior
 {
-    function let(PropertyAccessorInterface $accessor, ExecutionContextInterface $context)
+    function let(PropertyAccessorInterface $accessor, ExecutionContextInterface $context, LegacyMeasurementProvider $provider)
     {
         $measures = [
             'measures_config' => [
@@ -26,7 +27,8 @@ class ValidMetricValidatorSpec extends ObjectBehavior
 
             ]
         ];
-        $this->beConstructedWith($accessor, $measures);
+        $provider->getMeasurementFamilies()->willReturn($measures['measures_config']);
+        $this->beConstructedWith($accessor, $provider);
         $this->initialize($context);
     }
 
