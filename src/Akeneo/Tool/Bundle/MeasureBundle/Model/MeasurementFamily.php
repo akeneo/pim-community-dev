@@ -27,7 +27,6 @@ class MeasurementFamily
 
     private function __construct(MeasurementFamilyCode $code, LabelCollection $labels, UnitCode $standardUnitCode, array $units)
     {
-        Assert::stringNotEmpty($code);
         Assert::allIsInstanceOf($units, Unit::class);
         Assert::minCount($units, 1);
         $this->assertStandardUnitIsAlsoAUnit($standardUnitCode, $units);
