@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQueryHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductsQueryValidator;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
+use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
@@ -37,6 +38,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -140,6 +142,9 @@ class ProductController
     /** @var WarmupQueryCache */
     private $warmupQueryCache;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -167,7 +172,8 @@ class ProductController
         TokenStorageInterface $tokenStorage,
         GetConnectorProducts $getConnectorProducts,
         ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave,
-        WarmupQueryCache $warmupQueryCache
+        WarmupQueryCache $warmupQueryCache,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -196,6 +202,7 @@ class ProductController
         $this->getConnectorProducts = $getConnectorProducts;
         $this->apiAggregatorForProductPostSave = $apiAggregatorForProductPostSave;
         $this->warmupQueryCache = $warmupQueryCache;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -269,6 +276,7 @@ class ProductController
             Assert::isInstanceOf($user, UserInterface::class);
 
             $product = $this->getConnectorProducts->fromProductIdentifier($code, $user->getId());
+            $this->eventDispatcher->dispatch(new ReadProductsEvent([$product->id()]));
         } catch (ObjectNotFoundException $e) {
             throw new NotFoundHttpException(sprintf('Product "%s" does not exist.', $code));
         }
