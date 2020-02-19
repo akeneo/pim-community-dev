@@ -40,7 +40,7 @@ class MeasurementFamily
 
     public static function create(MeasurementFamilyCode $code, LabelCollection $labels, UnitCode $standardUnitCode, array $units): self
     {
-        return new self($code,  $labels, $standardUnitCode, $units);
+        return new self($code, $labels, $standardUnitCode, $units);
     }
 
     public function normalize(): array
