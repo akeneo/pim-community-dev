@@ -25,10 +25,9 @@ class MeasurementFamily
     /** @var array */
     private $units;
 
-    private function __construct(MeasurementFamilyCode $code, array $labels, UnitCode $standardUnitCode, array $units)
+    private function __construct(MeasurementFamilyCode $code, LabelCollection $labels, UnitCode $standardUnitCode, array $units)
     {
         Assert::stringNotEmpty($code);
-        Assert::isInstanceOf($labels, LabelCollection::class);
         Assert::allIsInstanceOf($units, Unit::class);
         Assert::minCount($units, 1);
         $this->assertStandardUnitIsAlsoAUnit($standardUnitCode, $units);
@@ -40,7 +39,7 @@ class MeasurementFamily
         $this->units = $units;
     }
 
-    public static function create(MeasurementFamilyCode $code, array $labels, UnitCode $standardUnitCode, array $units): self
+    public static function create(MeasurementFamilyCode $code, LabelCollection $labels, UnitCode $standardUnitCode, array $units): self
     {
         return new self($code,  $labels, $standardUnitCode, $units);
     }
