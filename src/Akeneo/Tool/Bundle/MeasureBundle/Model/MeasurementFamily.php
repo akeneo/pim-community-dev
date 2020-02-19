@@ -25,7 +25,7 @@ class MeasurementFamily
     /** @var array */
     private $units;
 
-    private function __construct(string $code, array $labels, UnitCode $standardUnit, array $units)
+    private function __construct(string $code, LabelCollection $labels, UnitCode $standardUnit, array $units)
     {
         Assert::stringNotEmpty($code);
         Assert::isInstanceOf($labels, LabelCollection::class);
@@ -38,7 +38,7 @@ class MeasurementFamily
         $this->units = $units;
     }
 
-    public function create(string $code, array $labels, UnitCode $standardUnit, array $units): self
+    public function create(string $code, LabelCollection $labels, UnitCode $standardUnit, array $units): self
     {
         return new self($code, $labels, $standardUnit, $units);
     }
