@@ -37,6 +37,7 @@ Most Viewed: Più visualizzati
 "Yes": "Sì"
 "No": "No"
 required: (richiesto)
+The element could not be deleted: L'elemento non può essere eliminato
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Abilita i messaggi di caricamento
@@ -79,6 +80,7 @@ pim_enrich:
       associations_view: Visualizza le associazioni di un prodotto
       associations_edit: Aggiungi associazioni ad un prodotto
       change_family: Cambia la famiglia dell'articolo
+      change_state: Modifica lo stato di un prodotto
       add_to_groups: Aggiungi l'articolo ai gruppi
       mass_edit: Azione di modifica di massa dell'articolo
       comment: Commenta i prodotti
@@ -200,6 +202,7 @@ flash:
     removed: L'elemento è stato eliminato
   attribute:
     identifier_not_removable: L'dentificatore attributo non può essere rimosso
+    used_as_conversion_unit: Questo attributo non può essere rimosso perché è usato come unità di conversione nel canale(i) %channelCodes%.
   category:
     removed: Categoria rimossa con successo
   tree:

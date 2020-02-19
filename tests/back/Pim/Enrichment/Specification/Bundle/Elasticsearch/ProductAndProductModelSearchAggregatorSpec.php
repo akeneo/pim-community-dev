@@ -118,8 +118,17 @@ class ProductAndProductModelSearchAggregatorSpec extends ObjectBehavior
                 ],
             ]
         ])->shouldBeCalled();
-        $searchQueryBuilder->addFilter([
-            'terms' => ['attributes_for_this_level' => ['foo', 'foo_currency1', 'foo_currency2']],
+        $searchQueryBuilder->addShould([
+            [
+                'terms' => [
+                    'attributes_for_this_level' => ['foo', 'foo_currency1', 'foo_currency2'],
+                ],
+            ],
+            [
+                'terms' => [
+                    'attributes_of_ancestors' => ['foo', 'foo_currency1', 'foo_currency2'],
+                ],
+            ],
         ])->shouldBeCalled();
 
         $this->aggregateResults($searchQueryBuilder, $rawFilters)->shouldReturn($searchQueryBuilder);
@@ -142,7 +151,14 @@ class ProductAndProductModelSearchAggregatorSpec extends ObjectBehavior
                 'value'    => ['master_men'],
                 'context'  => [],
                 'type'     => 'field',
-            ]
+            ],
+            [
+                'field'    => 'bar',
+                'operator' => 'LIKE',
+                'value'    => 'test',
+                'context'  => [],
+                'type'     => 'attribute',
+            ],
         ];
 
         $categoryRepository->findOneBy(["code" => 'master_men'])->shouldBeCalled();
@@ -154,16 +170,27 @@ class ProductAndProductModelSearchAggregatorSpec extends ObjectBehavior
                         'terms' => ['attributes_of_ancestors' => ['foo']],
                     ],
                     [
+                        'terms' => ['attributes_of_ancestors' => ['bar']],
+                    ],
+                    [
                         'terms' => ['categories_of_ancestors' => ['master_men']],
                     ],
                 ],
             ]
         ])->shouldBeCalled();
-        $searchQueryBuilder->addFilter([
-            'terms' => ['attributes_for_this_level' => ['foo']],
+        $searchQueryBuilder->addShould([
+            [
+                'terms' => [
+                    'attributes_for_this_level' => ['foo'],
+                ],
+            ],
+            [
+                'terms' => [
+                    'attributes_of_ancestors' => ['foo'],
+                ],
+            ],
         ])->shouldBeCalled();
 
         $this->aggregateResults($searchQueryBuilder, $rawFilters)->shouldReturn($searchQueryBuilder);
     }
-
 }

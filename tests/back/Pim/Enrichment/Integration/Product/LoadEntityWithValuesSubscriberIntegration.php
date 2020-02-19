@@ -12,8 +12,18 @@ use Akeneo\Test\Integration\TestCase;
  */
 class LoadEntityWithValuesSubscriberIntegration extends TestCase
 {
+    public function updateFooProduct()
+    {
+        $sql = <<<SQL
+UPDATE pim_catalog_product SET raw_values = '{\"sku\": {\"<all_channels>\": {\"<all_locales>\": \"foo\"}},\"a_file\":{\"<all_channels>\":{\"<all_locales>\":\"8/b/5/c/8b5cf9bfd2e7e4725fd581e03251133ada1b2c99_fileA.txt\"}},\"an_image\":{\"<all_channels>\":{\"<all_locales>\":\"3/b/5/5/3b5548f9764c0535db2ac92f047fa448cb7cea76_imageA.jpg\"}},\"a_date\":{\"<all_channels>\":{\"<all_locales>\":\"2016-06-13T00:00:00+02:00\"}},\"a_metric\":{\"<all_channels>\":{\"<all_locales>\":{\"amount\":\"987654321987.1234\",\"unit\":\"KILOWATT\",\"base_data\":\"987654321987123.4000\",\"base_unit\":\"WATT\",\"family\":\"Power\"}}},\"a_metric_without_decimal\":{\"<all_channels>\":{\"<all_locales>\":{\"amount\":98,\"unit\":\"CENTIMETER\",\"base_data\":\"0.98\",\"base_unit\":\"METER\",\"family\":\"Length\"}}},\"a_metric_without_decimal_negative\":{\"<all_channels>\":{\"<all_locales>\":{\"amount\":-20,\"unit\":\"CELSIUS\",\"base_data\":\"253.150000000000\",\"base_unit\":\"KELVIN\",\"family\":\"Temperature\"}}},\"a_metric_negative\":{\"<all_channels>\":{\"<all_locales>\":{\"amount\":\"-20.5000\",\"unit\":\"CELSIUS\",\"base_data\":\"252.650000000000\",\"base_unit\":\"KELVIN\",\"family\":\"Temperature\"}}},\"a_multi_select\":{\"<all_channels>\":{\"<all_locales>\":[\"optionA\",\"optionB\"]}},\"a_number_float\":{\"<all_channels>\":{\"<all_locales>\":\"12.56781111111\"}},\"a_number_float_negative\":{\"<all_channels>\":{\"<all_locales>\":\"-99.87321111111\"}},\"a_number_integer\":{\"<all_channels>\":{\"<all_locales>\":42}},\"a_number_integer_negative\":{\"<all_channels>\":{\"<all_locales>\":-42}},\"a_price\":{\"<all_channels>\":{\"<all_locales>\":[{\"amount\":\"45.00\",\"currency\":\"USD\"},{\"amount\":\"56.53\",\"currency\":\"EUR\"}]}},\"a_price_without_decimal\":{\"<all_channels>\":{\"<all_locales>\":[{\"amount\":-45,\"currency\":\"USD\"},{\"amount\":56,\"currency\":\"EUR\"}]}},\"a_ref_data_multi_select\":{\"<all_channels>\":{\"<all_locales>\":[\"fabricA\",\"fabricB\"]}},\"a_ref_data_simple_select\":{\"<all_channels>\":{\"<all_locales>\":\"colorB\"}},\"a_simple_select\":{\"<all_channels>\":{\"<all_locales>\":\"optionB\"}},\"a_text\":{\"<all_channels>\":{\"<all_locales>\":\"this is a text\"}},\"123\":{\"<all_channels>\":{\"<all_locales>\":\"a text for an attribute with numerical code\"}},\"a_text_area\":{\"<all_channels>\":{\"<all_locales>\":\"this is a very very very very very long  text\"}},\"a_yes_no\":{\"<all_channels>\":{\"<all_locales>\":true}},\"a_localizable_image\":{\"<all_channels>\":{\"en_US\":\"7/1/3/3/713380965740f8838834cd58505aa329fcf448a5_imageB_en_US.jpg\",\"fr_FR\":\"0/5/1/9/05198fcf21b2b0d4596459f172e2e62b1a70bfd0_imageB_fr_FR.jpg\"}},\"a_scopable_price\":{\"ecommerce\":{\"<all_locales>\":[{\"amount\":\"15.00\",\"currency\":\"EUR\"},{\"amount\":\"20.00\",\"currency\":\"USD\"}]},\"tablet\":{\"<all_locales>\":[{\"amount\":\"17.00\",\"currency\":\"EUR\"},{\"amount\":\"24.00\",\"currency\":\"USD\"}]}},\"a_localized_and_scopable_text_area\":{\"ecommerce\":{\"en_US\":\"a text area for ecommerce in English\"},\"tablet\":{\"en_US\":\"a text area for tablets in English\",\"fr_FR\":\"une zone de texte pour les tablettes en français\"}}}'
+WHERE identifier = 'foo' ;
+SQL;
+        $this->get('database_connection')->executeQuery($sql);
+    }
+
     public function testLoadValuesForProductWithAllAttributes()
     {
+        $this->updateFooProduct();
         $product = $this->findProductByIdentifier('foo');
         $expectedValues = $this->getValuesFromStandardValues(
             $this->getStandardValuesWithAllAttributes()
@@ -51,6 +61,8 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
         $expectedValues = $this->getValuesFromStandardValues(
             $amputatedStandardValues
         );
+
+        $this->updateFooProduct();
         $product = $this->findProductByIdentifier('foo');
         $this->assertProductHasValues($expectedValues, $product);
     }
@@ -63,6 +75,8 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
         $expectedValues = $this->getValuesFromStandardValues(
             $amputatedStandardValues
         );
+
+        $this->updateFooProduct();
         $product = $this->findProductByIdentifier('foo');
         $this->assertProductHasValues($expectedValues, $product);
     }
@@ -259,10 +273,10 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
                 ['locale' => null, 'scope' => null, 'data' => ['optionA', 'optionB']],
             ],
             'a_number_float'                     => [
-                ['locale' => null, 'scope' => null, 'data' => '12.5678'],
+                ['locale' => null, 'scope' => null, 'data' => '12.56781111111'],
             ],
             'a_number_float_negative'            => [
-                ['locale' => null, 'scope' => null, 'data' => '-99.8732'],
+                ['locale' => null, 'scope' => null, 'data' => '-99.87321111111'],
             ],
             'a_number_integer'                   => [
                 ['locale' => null, 'scope' => null, 'data' => 42]
@@ -447,19 +461,5 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
             );
         }
         $this->get('pim_catalog.remover.attribute_option')->remove($attributeOptionValue);
-    }
-
-    /**
-     * @param string $attributeCode
-     *
-     * @param mixed $data
-     *
-     * @return array
-     */
-    private function setDataForAttributeOfAllStandardValues(string $attributeCode, $data): array
-    {
-        $allStandardValues = $this->getStandardValuesWithAllAttributes();
-        $allStandardValues[$attributeCode][0]['data'] = $data;
-        return $allStandardValues;
     }
 }
