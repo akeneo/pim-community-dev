@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.68 (2020-02-19)
+
 ## Bug fixes
 
 - PIM-4070: Fix permissions action rows for the asset and product grid
