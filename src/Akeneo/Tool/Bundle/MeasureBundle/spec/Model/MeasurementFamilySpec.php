@@ -50,7 +50,7 @@ class MeasurementFamilySpec extends ObjectBehavior
         $this->normalize()->shouldReturn(
             [
                 'code' => self::MEASUREMENT_FAMILY_CODE,
-                'standard_unit' => self::METER_UNIT_CODE,
+                'standard_unit_code' => self::METER_UNIT_CODE,
                 'units' => [
                     [
                         'code' => self::METER_UNIT_CODE,
