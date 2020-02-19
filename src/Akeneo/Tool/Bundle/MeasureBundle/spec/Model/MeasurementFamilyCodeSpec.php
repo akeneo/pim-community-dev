@@ -31,4 +31,15 @@ class MeasurementFamilyCodeSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('fromString', ['']);
     }
+
+    public function it_should_contain_only_letters_numbers_and_underscores()
+    {
+        $this->beConstructedThrough('fromString', ['badId!']);
+        $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
+    }
+
+    public function it_cannot_be_constructed_with_a_string_too_long()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fromString', [str_repeat('a', 256)]);
+    }
 }
