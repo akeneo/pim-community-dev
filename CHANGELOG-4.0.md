@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.6 (2020-02-19)
+
 ## Bug fixes
 
 - PIM-9092: Fix search by code when there is no label defined for reference entity filter on the product grid
