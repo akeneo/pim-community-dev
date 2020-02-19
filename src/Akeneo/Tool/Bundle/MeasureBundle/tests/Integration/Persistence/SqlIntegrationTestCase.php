@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Integration\Persistence;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementsInstaller;
+use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -26,7 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class SqlIntegrationTestCase extends KernelTestCase
 {
-    /** @var MeasurementsInstaller */
+    /** @var MeasurementInstaller */
     protected $fixturesLoader;
 
     /** @var Connection */
@@ -43,15 +43,6 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
 
         $this->resetDB();
         $this->fixturesLoader->createSchema();
-
-
-        $sql = <<<SQL
-INSERT INTO `akeneo_measurement` (`code`, `labels`, `standard_unit`, `units`)
-VALUES
-	('Area', '{\"en_US\": \"Area\", \"fr_FR\": \"Surface\"}', 'SQUARE_MILLIMETER', '[{\"code\": \"SQUARE_MILLIMETER\", \"labels\": {\"en_US\": \"Square millimeter\", \"fr_FR\": \"Millimètre carré\"}, \"symbol\": \"mm²\", \"convert\": [{\"value\": \"0.000001\", \"operator\": \"mul\"}]}, {\"code\": \"SQUARE_CENTIMETER\", \"labels\": {\"en_US\": \"Square centimeter\", \"fr_FR\": \"Centimètre carré\"}, \"symbol\": \"cm²\", \"convert\": [{\"value\": \"0.0001\", \"operator\": \"mul\"}]}]'),
-	('Binary', '{\"en_US\": \"Binary\", \"fr_FR\": \"Binaire\"}', 'BYTE', '[{\"code\": \"BIT\", \"labels\": {\"en_US\": \"Bit\", \"fr_FR\": \"Bit\"}, \"symbol\": \"b\", \"convert\": [{\"value\": \"0.125\", \"operator\": \"mul\"}]}, {\"code\": \"BYTE\", \"labels\": {\"en_US\": \"Byte\", \"fr_FR\": \"Octet\"}, \"symbol\": \"B\", \"convert\": [{\"value\": \"1\", \"operator\": \"mul\"}]}]');
-SQL;
-        $this->connection->executeQuery($sql);
     }
 
     protected function get(string $service)
