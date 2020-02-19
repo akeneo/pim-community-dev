@@ -48,7 +48,6 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
         $results = $statement->fetchAll();
-        $statement->closeCursor();
 
         foreach ($results as $result) {
             yield $this->hydrateMeasurementFamily(
