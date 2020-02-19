@@ -39,7 +39,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
 
     /**
      * @param ConfigurationRegistry         $registry
-     * @param FetchUserRightsOnAsset      $fetchUserRightsOnAsset
+     * @param FetchUserRightsOnAsset        $fetchUserRightsOnAsset
      * @param UserContext                   $userContext
      */
     public function __construct(
