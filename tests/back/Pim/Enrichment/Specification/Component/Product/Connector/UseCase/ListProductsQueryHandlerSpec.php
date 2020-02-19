@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
+use Akeneo\Pim\Enrichment\Component\Product\Event\ProductsReadEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -20,6 +21,7 @@ use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ListProductsQueryHandlerSpec extends ObjectBehavior
 {
@@ -28,7 +30,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
-        GetConnectorProducts $getConnectorProducts
+        GetConnectorProducts $getConnectorProducts,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->beConstructedWith(
             $channelRepository,
@@ -36,7 +39,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             $fromSizePqbFactory,
             $searchAfterPqbFactory,
             $primaryKeyEncrypter,
-            $getConnectorProducts
+            $getConnectorProducts,
+            $eventDispatcher
         );
     }
 
@@ -248,7 +252,6 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
 
         $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
 
-
         $getConnectorProducts
             ->fromProductQueryBuilder($pqb, 1, null, 'tablet', ['en_US', 'fr_FR'])
             ->willReturn(new ConnectorProductList(0, []));
@@ -256,5 +259,55 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
         $this->handle($query)->shouldBeLike(new ConnectorProductList(0, []));
+    }
+
+    function it_dispatches_a_read_products_event_when_querying_products(
+        ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
+        ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
+        PrimaryKeyEncrypter $primaryKeyEncrypter,
+        ProductQueryBuilderInterface $pqb,
+        GetConnectorProducts $getConnectorProducts,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $query = new ListProductsQuery();
+        $query->paginationType = PaginationTypes::SEARCH_AFTER;
+        $query->limit = 42;
+        $query->searchAfter = '69';
+        $query->userId = 1;
+
+        $primaryKeyEncrypter->decrypt('69')->shouldBeCalled()->willReturn('encoded69');
+
+        $searchAfterPqbFactory->create([
+            'limit' => 42,
+            'search_after_unique_key' => 'product_encoded69',
+            'search_after' => ['product_encoded69']
+        ])->shouldBeCalled()->willReturn($pqb);
+
+        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+
+        $connectorProduct = new ConnectorProduct(
+            5,
+            'identifier_5',
+            new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            true,
+            'family_code',
+            ['category_code_1', 'category_code_2'],
+            ['group_code_1', 'group_code_2'],
+            'parent_product_model_code',
+            [],
+            [],
+            new ReadValueCollection()
+        );
+
+        $getConnectorProducts
+            ->fromProductQueryBuilder($pqb, 1, null, null, null)
+            ->willReturn(new ConnectorProductList(1, [$connectorProduct]));
+
+        $eventDispatcher->dispatch(new ProductsReadEvent([5]))->shouldBeCalled();
+
+        $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
+
+        $this->handle($query)->shouldBeLike(new ConnectorProductList(1, [$connectorProduct]));
     }
 }
