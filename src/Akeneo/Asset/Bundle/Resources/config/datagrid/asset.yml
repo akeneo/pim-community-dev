@@ -103,6 +103,12 @@ datagrid:
                         field_options:
                             choices: '@pim_catalog.repository.channel->getLabelsIndexedByCode(@pim_user.context.user->getCurrentLocaleCode())'
         actions:
+            view:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--view
+                type:      navigate
+                label:     View the asset
+                link:      edit_link
             edit:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--edit

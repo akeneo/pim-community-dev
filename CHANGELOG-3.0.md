@@ -1,5 +1,15 @@
 # 3.0.x
 
+# 3.0.68 (2020-02-19)
+
+## Bug fixes
+
+- PIM-4070: Fix permissions action rows for the asset and product grid
+
+## BC Breaks
+
+- Changed constructor of `Akeneo\Asset\Bundle\Event\ConfigureAssetGridListener`. Added `Akeneo\Asset\Bundle\Datagrid\Configuration\RowActionsConfigurator` as first argument.
+
 # 3.0.67 (2020-02-10)
 
 # 3.0.66 (2020-02-06)
