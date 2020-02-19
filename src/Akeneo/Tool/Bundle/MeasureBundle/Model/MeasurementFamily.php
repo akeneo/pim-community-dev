@@ -26,19 +26,8 @@ class MeasurementFamily
     {
         Assert::allIsInstanceOf($units, Unit::class);
         Assert::minCount($units, 1);
-        $isStandardUnitCodePresentInUnits = !empty(
-            array_filter(
-                $units,
-                function (Unit $unit) use ($standardUnitCode) {
-                    return $standardUnitCode->equals($unit->code());
-                }
-            )
-        );
-        Assert::true(
-            $isStandardUnitCodePresentInUnits,
-            sprintf('Standard unit "%s" has not been found as a unit for this measurement family.', $standardUnitCode->normalize())
-        );
-        // Check there is no duplication of units in the array
+        $this->assertStandardUnitIsAlsoAUnit($standardUnitCode, $units);
+        $this->assertNoDuplicatedUnits($units);
 
         $this->code = $code;
         $this->standardUnitCode = $standardUnitCode;
@@ -62,5 +51,35 @@ class MeasurementFamily
                 $this->units
             )
         ];
+    }
+
+    private function assertStandardUnitIsAlsoAUnit(UnitCode $standardUnitCode, array $units): void
+    {
+        $isStandardUnitCodePresentInUnits = !empty(
+        array_filter(
+            $units,
+            function (Unit $unit) use ($standardUnitCode) {
+                return $standardUnitCode->equals($unit->code());
+            }
+        )
+        );
+        Assert::true(
+            $isStandardUnitCodePresentInUnits,
+            sprintf(
+                'Standard unit "%s" has not been found as a unit for this measurement family.',
+                $standardUnitCode->normalize()
+            )
+        );
+    }
+
+    private function assertNoDuplicatedUnits(array $units): void
+    {
+        $normalizedUnitCodes = array_map(
+            function (Unit $unit) {
+                return $unit->code()->normalize();
+            },
+            $units
+        );
+        Assert::uniqueValues($normalizedUnitCodes);
     }
 }

@@ -18,9 +18,18 @@ final class MeasurementFamilyCode
 
     private function __construct(string $code)
     {
-        // Check for invalid characters
-
         Assert::stringNotEmpty($code);
+        Assert::maxLength(
+            $code,
+            255,
+            sprintf('Measurement family code cannot be longer than 255 characters, %d string long given', strlen($code))
+        );
+        Assert::regex(
+            $code,
+            '/^[a-zA-Z0-9_]+$/',
+            sprintf('Asset code may contain only letters, numbers and underscores. "%s" given', $code)
+        );
+
         $this->code = $code;
     }
 
