@@ -25,11 +25,9 @@ final class Unit
     /** @var string */
     private $symbol;
 
-    private function __construct(UnitCode $code, array $labels, array $convertFromStandard, string $symbol)
+    private function __construct(UnitCode $code, LabelCollection $labels, array $convertFromStandard, string $symbol)
     {
         Assert::allIsInstanceOf($convertFromStandard, Operation::class);
-        Assert::isInstanceOf($labels, LabelCollection::class);
-        Assert::string($symbol);
 
         $this->code = $code;
         $this->labels = $labels;
@@ -37,7 +35,7 @@ final class Unit
         $this->symbol = $symbol;
     }
 
-    public static function create(UnitCode $code, array $labels, array $convertFromStandard, string $symbol): self
+    public static function create(UnitCode $code, LabelCollection $labels, array $convertFromStandard, string $symbol): self
     {
         return new self($code, $labels, $convertFromStandard, $symbol);
     }
