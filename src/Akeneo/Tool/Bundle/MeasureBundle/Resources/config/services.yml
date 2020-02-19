@@ -30,6 +30,6 @@ services:
         - '%pim_api.configuration%'
 
     akeneo_measure.provider.measurement_provider:
-        class: Akeneo\Tool\Bundle\MeasureBundle\Provider\MeasurementProvider
+        class: Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider
         arguments:
             - '%akeneo_measure.measures_config%'
