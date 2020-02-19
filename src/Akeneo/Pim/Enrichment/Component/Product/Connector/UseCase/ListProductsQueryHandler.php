@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
+use Akeneo\Pim\Enrichment\Component\Product\Event\ProductsReadEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
@@ -17,6 +19,7 @@ use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -45,13 +48,17 @@ final class ListProductsQueryHandler
     /** @var IdentifiableObjectRepositoryInterface */
     private $channelRepository;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $channelRepository,
         ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
-        GetConnectorProducts $getConnectorProductsQuery
+        GetConnectorProducts $getConnectorProductsQuery,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->channelRepository = $channelRepository;
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
@@ -59,6 +66,7 @@ final class ListProductsQueryHandler
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
         $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->getConnectorProductsQuery = $getConnectorProductsQuery;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -95,6 +103,11 @@ final class ListProductsQueryHandler
             $query->channelCode,
             $this->getLocales($query->channelCode, $query->localeCodes)
         );
+
+        $productIds = array_map(function(ConnectorProduct $connectorProduct) {
+            return $connectorProduct->id();
+        }, $connectorProductList->connectorProducts());
+        $this->eventDispatcher->dispatch(new ProductsReadEvent($productIds));
 
         return $connectorProductList;
     }
