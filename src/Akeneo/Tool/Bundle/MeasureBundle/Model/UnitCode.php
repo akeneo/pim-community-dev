@@ -18,6 +18,7 @@ final class UnitCode
 
     private function __construct(string $code)
     {
+        // Check for invalid characters
         Assert::stringNotEmpty($code);
         $this->code = $code;
     }
@@ -30,5 +31,10 @@ final class UnitCode
     public function normalize(): string
     {
         return $this->code;
+    }
+
+    public function equals(UnitCode $unitCode): bool
+    {
+        return $this->code === $unitCode->code;
     }
 }
