@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -40,7 +41,7 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface, 
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository,
-        int $precision = 4
+        int $precision = ProductValueNormalizer::DECIMAL_PRECISION
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->attributeOptionRepository = $attributeOptionRepository;

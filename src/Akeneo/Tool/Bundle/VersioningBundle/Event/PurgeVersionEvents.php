@@ -3,6 +3,10 @@
 namespace Akeneo\Tool\Bundle\VersioningBundle\Event;
 
 /**
+ * @deprecated Will be removed in 4.0
+ *
+ * @todo merge in master: remove this class
+ *
  * Purge version events
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>

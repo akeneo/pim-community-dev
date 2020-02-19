@@ -202,6 +202,7 @@ flash:
     removed: Artículo eliminado
   attribute:
     identifier_not_removable: El identificador de atributo no puede ser eliminado
+    used_as_conversion_unit: Este atributo no puede eliminarse porque se utiliza como unidad de conversión en el(los) canal(es) %channelCodes%.
   category:
     removed: Categoría eliminada correctamente
   tree:

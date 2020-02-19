@@ -26,7 +26,7 @@ class PartialUpdateListVariantProductEndToEnd extends AbstractProductTestCase
                     'a_price'  => [
                         'data' => ['data' => [['amount' => '50', 'currency' => 'EUR']], 'locale' => null, 'scope' => null],
                     ],
-                    'a_number_float'  => [['data' => '12.5', 'locale' => null, 'scope' => null]],
+                    'a_number_float'  => [['data' => '12.5000000000111', 'locale' => null, 'scope' => null]],
                     'a_localized_and_scopable_text_area'  => [['data' => 'my pink tshirt', 'locale' => 'en_US', 'scope' => 'ecommerce']],
                 ]
             ]
@@ -124,7 +124,7 @@ JSON;
                         [
                             "locale" => null,
                             "scope"  => null,
-                            "data"   => "12.5000",
+                            "data"   => "12.5000000000111",
                         ],
                     ],
                     "a_yes_no"                           => [
@@ -176,7 +176,7 @@ JSON;
                         [
                             "locale" => null,
                             "scope"  => null,
-                            "data"   => "12.5000",
+                            "data"   => "12.5000000000111",
                         ],
                     ],
                     "a_yes_no"                           => [

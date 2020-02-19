@@ -37,6 +37,7 @@ define(['jquery'], function($) {
             }
 
             $(container).resizable({
+                zIndex: 0,
                 maxWidth,
                 minWidth,
                 handles: 'e',
