@@ -104,7 +104,7 @@ final class ListProductsQueryHandler
             $this->getLocales($query->channelCode, $query->localeCodes)
         );
 
-        $productIds = array_map(function(ConnectorProduct $connectorProduct) {
+        $productIds = array_map(function (ConnectorProduct $connectorProduct) {
             return $connectorProduct->id();
         }, $connectorProductList->connectorProducts());
         $this->eventDispatcher->dispatch(new ReadProductsEvent($productIds));
