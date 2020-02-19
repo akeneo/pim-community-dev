@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MeasurementsInstaller implements EventSubscriberInterface
+class MeasurementInstaller implements EventSubscriberInterface
 {
     /** @var Connection */
     private $connection;
@@ -41,7 +41,7 @@ class MeasurementsInstaller implements EventSubscriberInterface
 CREATE TABLE `akeneo_measurement` (
   `code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
   `labels` JSON NOT NULL,
-  `standard_unit` varchar(100) NOT NULL COMMENT '(DC2Type:datetime)',
+  `standard_unit` varchar(100) NOT NULL,
   `units` JSON NOT NULL,
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -50,7 +50,7 @@ SQL;
         $this->connection->exec($sql);
     }
 
-    public function loadFixtures(InstallerEvent $event): void
+    public function loadFixtures(): void
     {
         $sql = <<<SQL
 INSERT INTO `akeneo_measurement` (`code`, `labels`, `standard_unit`, `units`)
