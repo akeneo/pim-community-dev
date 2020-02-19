@@ -17,34 +17,44 @@ class MeasurementFamily
     private $code;
 
     /** @var UnitCode */
-    private $standardUnit;
+    private $standardUnitCode;
 
     /** @var array */
     private $units;
 
-    private function __construct(MeasurementFamilyCode $code, UnitCode $standardUnit, array $units)
+    private function __construct(MeasurementFamilyCode $code, UnitCode $standardUnitCode, array $units)
     {
         Assert::allIsInstanceOf($units, Unit::class);
         Assert::minCount($units, 1);
-
-        // Check standard unit is available in the units
+        $isStandardUnitCodePresentInUnits = !empty(
+            array_filter(
+                $units,
+                function (Unit $unit) use ($standardUnitCode) {
+                    return $standardUnitCode->equals($unit->code());
+                }
+            )
+        );
+        Assert::true(
+            $isStandardUnitCodePresentInUnits,
+            sprintf('Standard unit "%s" has not been found as a unit for this measurement family.', $standardUnitCode->normalize())
+        );
         // Check there is no duplication of units in the array
 
         $this->code = $code;
-        $this->standardUnit = $standardUnit;
+        $this->standardUnitCode = $standardUnitCode;
         $this->units = $units;
     }
 
-    public static function create(MeasurementFamilyCode $code, UnitCode $standardUnit, array $units): self
+    public static function create(MeasurementFamilyCode $code, UnitCode $standardUnitCode, array $units): self
     {
-        return new self($code, $standardUnit, $units);
+        return new self($code, $standardUnitCode, $units);
     }
 
     public function normalize(): array
     {
         return [
             'code' => $this->code->normalize(),
-            'standard_unit' => $this->standardUnit->normalize(),
+            'standard_unit_code' => $this->standardUnitCode->normalize(),
             'units' => array_map(
                 function (Unit $unit) {
                     return $unit->normalize();
