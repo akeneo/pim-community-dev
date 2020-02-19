@@ -35,7 +35,7 @@ services:
             - '%akeneo_measure.measures_config%'
 
     akeneo_measure.installer.measurement_installer:
-        class: Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementsInstaller
+        class: Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller
         arguments:
             - '@doctrine.dbal.default_connection'
         tags:
