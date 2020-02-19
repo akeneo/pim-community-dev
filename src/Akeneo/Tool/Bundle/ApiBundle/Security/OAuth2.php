@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\ApiBundle\Security;
 
 use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
+use Akeneo\UserManagement\Component\Model\User;
 use OAuth2\IOAuth2Storage;
 use OAuth2\Model\IOAuth2AccessToken;
 use OAuth2\OAuth2 as BaseOAuth2;
@@ -33,7 +34,19 @@ class OAuth2 extends BaseOAuth2
     public function verifyAccessToken($tokenParam, $scope = null): IOAuth2AccessToken
     {
         try {
-            return parent::verifyAccessToken($tokenParam, $scope);
+            $accessToken = parent::verifyAccessToken($tokenParam, $scope);
+            $data = $accessToken->getData();
+
+            if ($data instanceof User) {
+                $this->eventDispatcher->dispatch(
+                    new ApiAuthenticationEvent(
+                        $data->getUsername(),
+                        $this->getClientIdFromPublicId($accessToken->getClientId())
+                    )
+                );
+            }
+
+            return $accessToken;
         } catch (OAuth2AuthenticateException $e) {
             throw new HttpException(Response::HTTP_UNAUTHORIZED, $e->getDescription(), $e);
         }
@@ -62,12 +75,19 @@ class OAuth2 extends BaseOAuth2
 
         $authHeaders = $this->getAuthorizationHeader($request);
         $clientCredentials = $this->getClientCredentials($inputData, $authHeaders);
-        $clientId = substr($clientCredentials[0], 0, strpos($clientCredentials[0], '_'));
 
         $this->eventDispatcher->dispatch(
-            new ApiAuthenticationEvent($request->get('username'), $clientId)
+            new ApiAuthenticationEvent(
+                $request->get('username'),
+                $this->getClientIdFromPublicId($clientCredentials[0])
+            )
         );
 
         return $response;
+    }
+
+    private function getClientIdFromPublicId(string $publicId): string
+    {
+        return substr($publicId, 0, strpos($publicId, '_'));
     }
 }

@@ -41,7 +41,7 @@ class WrongCredentialsCombination
     {
         $users = [];
         foreach ($this->users as $username => $date) {
-            $users[] = ['username' => $username, 'date' => $date->format('Y-m-d H:i:s')];
+            $users[] = ['username' => $username, 'date' => $date->format('c')];
         }
 
         return [

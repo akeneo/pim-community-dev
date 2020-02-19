@@ -1,7 +1,7 @@
 import React from 'react';
 import {useTranslate} from '../../../shared/translate';
 import {useDateFormatter} from '../../../shared/formatter/use-date-formatter';
-import {DocumentationList} from './DocumentationLink';
+import {DocumentationLink} from './DocumentationLink';
 
 type Props = {
     lastLogin: {
@@ -37,7 +37,7 @@ export const SingleWrongCombinationWarning = ({lastLogin, goodUsername}: Props) 
                 }}
             />
             <div>
-                <DocumentationList />
+                <DocumentationLink />
             </div>
         </>
     );

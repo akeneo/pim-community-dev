@@ -26,15 +26,15 @@ class WrongCredentialsCombinationsSpec extends ObjectBehavior
             [
                 'connection_code' => 'bynder',
                 'users' => [
-                    'magento' => '2019-05-15 16:25:00',
-                    'erp' => '2019-10-15 16:25:00',
+                    'magento' => '2019-05-15T16:25:00+00:00',
+                    'erp' => '2019-10-15T16:25:00+00:00',
                 ],
             ],
             [
                 'connection_code' => 'magento',
                 'users' => [
-                    'bynder' => '2020-05-15 16:25:00',
-                    'erp' => '2020-10-15 16:25:00',
+                    'bynder' => '2020-05-15T16:25:00+00:00',
+                    'erp' => '2020-10-15T16:25:00+00:00',
                 ],
             ],
         ]);
@@ -43,15 +43,15 @@ class WrongCredentialsCombinationsSpec extends ObjectBehavior
             'bynder' => [
                 'code' => 'bynder',
                 'users' => [
-                    ['username' => 'magento', 'date' => '2019-05-15 16:25:00'],
-                    ['username' => 'erp', 'date' => '2019-10-15 16:25:00'],
+                    ['username' => 'magento', 'date' => '2019-05-15T16:25:00+00:00'],
+                    ['username' => 'erp', 'date' => '2019-10-15T16:25:00+00:00'],
                 ],
             ],
             'magento' => [
                 'code' => 'magento',
                 'users' => [
-                    ['username' => 'bynder', 'date' => '2020-05-15 16:25:00'],
-                    ['username' => 'erp', 'date' => '2020-10-15 16:25:00'],
+                    ['username' => 'bynder', 'date' => '2020-05-15T16:25:00+00:00'],
+                    ['username' => 'erp', 'date' => '2020-10-15T16:25:00+00:00'],
                 ],
             ],
         ]);

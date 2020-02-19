@@ -6,6 +6,7 @@ import {Connection as ConnectionModel} from '../../model/connection';
 import {Translate} from '../../shared/translate';
 import {Connection} from './Connection';
 import {WrongCredentialsCombinations} from '../../model/wrong-credentials-combinations';
+import {DocumentationLink} from '../components/wrong-credentials/DocumentationLink';
 
 const Count = styled.div`
     color: ${({theme}: PropsWithTheme) => theme.color.purple100};
@@ -39,6 +40,9 @@ export const ConnectionGrid = ({connections, title, wrongCredentialsCombinations
         {0 !== Object.entries(wrongCredentialsCombinations).length && (
             <SmallHelper>
                 <Translate id='akeneo_connectivity.connection.grid.wrong_credentials_combination_helper' />
+                <div>
+                    <DocumentationLink />
+                </div>
             </SmallHelper>
         )}
         <Grid>

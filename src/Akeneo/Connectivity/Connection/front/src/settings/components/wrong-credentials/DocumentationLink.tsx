@@ -2,7 +2,7 @@ import React from 'react';
 import {Translate} from '../../../shared/translate';
 import {HelperLink} from '../../../common';
 
-export const DocumentationList = () => {
+export const DocumentationLink = () => {
     return (
         <>
             <HelperLink

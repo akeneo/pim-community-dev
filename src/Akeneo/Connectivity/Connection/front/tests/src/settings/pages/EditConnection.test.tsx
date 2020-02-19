@@ -7,6 +7,9 @@ import {ConnectionsProvider} from '@src/settings/connections-context';
 import {EditConnection} from '@src/settings/pages/EditConnection';
 import {renderWithProviders} from '../../../test-utils';
 import {WrongCredentialsCombinationsProvider} from '@src/settings/wrong-credentials-combinations-context';
+import {UserContext} from "@src/shared/user";
+import {DashboardProvider} from "@src/audit/dashboard-context";
+import {Dashboard} from "@src/audit/pages/Dashboard";
 
 jest.mock('@src/common/components/Select2');
 
@@ -23,7 +26,7 @@ describe('testing EditConnection page', () => {
                     users: [
                         {
                             username: 'nope',
-                            date: '2020-01-02 12:34:23',
+                            date: '2020-01-02T12:34:23+00:00',
                         },
                     ],
                 },
@@ -58,14 +61,29 @@ describe('testing EditConnection page', () => {
         fetchMock.mockResponseOnce(JSON.stringify({}));
 
         const history = createMemoryHistory({initialEntries: ['/connections/ecommerce/edit']});
+        const userContext = {
+            get: (key: string) => {
+                if ('uiLocale' === key) {
+                    return 'en_US';
+                }
+                if ('timezone' === key) {
+                    return 'UTC';
+                }
+
+                return key;
+            },
+            set: () => undefined
+        };
         const {getByText, getByLabelText} = renderWithProviders(
             <Router history={history}>
                 <Route path='/connections/:code/edit'>
-                    <WrongCredentialsCombinationsProvider>
-                        <ConnectionsProvider>
-                            <EditConnection />
-                        </ConnectionsProvider>
-                    </WrongCredentialsCombinationsProvider>
+                    <UserContext.Provider value={userContext}>
+                        <WrongCredentialsCombinationsProvider>
+                            <ConnectionsProvider>
+                                <EditConnection />
+                            </ConnectionsProvider>
+                        </WrongCredentialsCombinationsProvider>
+                    </UserContext.Provider>
                 </Route>
             </Router>
         );

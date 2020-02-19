@@ -25,7 +25,7 @@ class WrongCredentialsCombinationSpec extends ObjectBehavior
 
     public function it_adds_and_provides_users(): void
     {
-        $firstDate = new \DateTime('2019-05-15 16:25:00');
+        $firstDate = new \DateTime('2019-05-15T16:25:00+00:00');
         $this->addUser('bynder', $firstDate);
         $this->users()->shouldReturn(['bynder' => $firstDate]);
 
@@ -39,8 +39,8 @@ class WrongCredentialsCombinationSpec extends ObjectBehavior
 
     public function it_adds_and_provides_users_without_duplicating_them(): void
     {
-        $firstDate = new \DateTime('2019-05-15 16:25:00');
-        $secondDate = new \DateTime('2020-02-14 12:03:40');
+        $firstDate = new \DateTime('2019-05-15T16:25:00+00:00');
+        $secondDate = new \DateTime('2020-02-14T12:03:40+00:00');
 
         $this->addUser('bynder', $firstDate);
         $this->users()->shouldReturn(['bynder' => $firstDate]);
@@ -64,8 +64,8 @@ class WrongCredentialsCombinationSpec extends ObjectBehavior
 
     public function it_normalizes(): void
     {
-        $bynderDate = new \DateTime('2019-05-15 16:25:00');
-        $anotherDate = new \DateTime('2020-02-14 12:03:40');
+        $bynderDate = new \DateTime('2019-05-15T16:25:00+00:00');
+        $anotherDate = new \DateTime('2020-02-14T12:03:40+00:00');
         $this->addUser('bynder', $bynderDate);
         $this->addUser('dadada', $anotherDate);
 
@@ -74,11 +74,11 @@ class WrongCredentialsCombinationSpec extends ObjectBehavior
             'users' => [
                 [
                     'username' => 'bynder',
-                    'date' => '2019-05-15 16:25:00',
+                    'date' => '2019-05-15T16:25:00+00:00',
                 ],
                 [
                     'username' => 'dadada',
-                    'date' => '2020-02-14 12:03:40',
+                    'date' => '2020-02-14T12:03:40+00:00',
                 ]
             ]
         ]);

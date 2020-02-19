@@ -2,7 +2,7 @@ import React from 'react';
 import {WrongCredentialsCombination} from '../../../model/wrong-credentials-combinations';
 import {Translate, useTranslate} from '../../../shared/translate';
 import {useDateFormatter} from '../../../shared/formatter/use-date-formatter';
-import {DocumentationList} from './DocumentationLink';
+import {DocumentationLink} from './DocumentationLink';
 import styled from 'styled-components';
 
 const ListItem = styled.div`
@@ -34,7 +34,7 @@ export const WrongCombinationWarningList = ({combinations, goodUsername}: Props)
                 }}
             />
             &nbsp;
-            <DocumentationList />
+            <DocumentationLink />
             <div>
                 <Translate id='akeneo_connectivity.connection.edit_connection.credentials.wrong_credentials_combinations.list' />
             </div>
