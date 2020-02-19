@@ -14,6 +14,7 @@ akeneo_franklin_insights:
     data_provider:
       ask_franklin_down: "¡Vaya, algo ha fallado! Inténtalo de nuevo más tarde."
       authentication_error: "Lo sentimos, no se pudo autenticar en Franklin Insights, tu token no es válido. Por favor, introduce un token válido o contacta con nosotros para ayuda."
+      bad_request_error: "Lo sentimos; se ha producido un problema al comunicarse con Franklin Insights. Por favor, póngase en contacto con su administrador."
     identifier_mapping:
       plural_label: Identificadores
       flash:
@@ -41,7 +42,10 @@ akeneo_franklin_insights:
       flash:
         do_not_map_attribute_success: 'Atributo exitosamente actualizado.'
         suggest_attribute_mapping_error: 'El atributo de catálogo "[{{ catalogAttributeCode }}]" ya está mapeado en el atributo Franklin "{{ franklinAttributeLabel }}".'
+        add_attribute_to_family_success: '{1} Atributo adjunto con éxito a la familia "{{ family }}". |[2,Inf[ Atributos adjuntos con éxito a la familia "{{ family }}".'
+        add_attribute_to_family_error: 'Lo sentimos, se ha producido un error al adjuntar el atributo a la familia.'
       fields:
+        search_bar.placeholder: 'Buscar en atributo Franklin'
         franklin_attribute: 'Atributo de Franklin'
         franklin_attribute_type: 'atributo {{ type }}'
         franklin_value_sample: 'Ejemplo de valor:'
@@ -64,6 +68,25 @@ akeneo_franklin_insights:
           error: "Es necesario crear una familia en su catálogo para acceder a esta página."
           family_status:
             pending: 'Nuevos atributos de Franklin para revisar'
+          types_mismatch_warning: 'Advertencia: los tipos de atributos no coinciden.'
+        toolbar:
+          bulk_create_attribute: Crear atributo
+          bulk_add_to_family: Añadir a la Familia
+          selection_count: '{{ count }} elemento seleccionado | {{ count }} elementos seleccionados'
+      modal:
+        deactivate_franklin_attribute:
+          subtitle: 'Franklin Insights'
+          ok: "No mapear"
+        bulk_create_attribute:
+          subtitle: 'Franklin Insights'
+          description: '{1} El atributo seleccionado se creará y se añadirá a la familia |[2,Inf[ Los atributos seleccionados se crearán y se añadirán a la familia'
+          warning: '{1} Confirma la creación de un nuevo atributo. |[2,Inf[ Confirma la creación de {{ count }} nuevos atributos.'
+          ok: Confirmar
+        bulk_add_to_family:
+          title: '{1} Añadir 1 atributo a la familia |[2,Inf[ Añadir {{ count }} atributos a la familia'
+          subtitle: 'Franklin Insights'
+          description: '{1} El atributo seleccionado se añadirá a la familia |[2,Inf[ Los atributos seleccionados se añadirán a la familia'
+          ok: Confirmar
       constraint:
         attribute_not_in_family_not_allowed: 'El atributo PIM debe estar en la familia seleccionada.'
         only_unknown_mapped_attributes: 'No se puede encontrar ningún atributo en el mapeo de atributos'
@@ -107,6 +130,7 @@ akeneo_franklin_insights:
     flash:
       success: Código de activación de Franklin Insights guardado con éxito.
       invalid: Código de activación no válido, lo siento. Por favor, pruebe con uno válido.
+      error: Lo sentimos, ha ocurrido un error.
     module:
       title:
         sub_title: '¡Bienvenido a <span class="AknDescriptionHeader-title--highlight">Asistente IA de Información de Producto</span>!'
@@ -143,6 +167,15 @@ akeneo_franklin_insights:
           unsubscribe_label: Cancelar la suscripción
           constraint:
             franklin_activation: "Por favor <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">activar</a> Franklin Insights antes de suscribirse a los productos."
+  key_figures:
+    section_title:
+      credits: Créditos Franklin
+    axis:
+      franklin_attribute_created: Número de atributos creados por Franklin
+      franklin_attribute_added_to_family: Número de atributos añadidos a una familia por Franklin
+      credits_total: Total de créditos
+      credits_consumed: Créditos consumidos
+      credits_left: Créditos restantes
 batch_jobs:
   default_steps:
     fetch_products: Obtener los datos de producto

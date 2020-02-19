@@ -7,13 +7,6 @@ export const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
 
 export const copyToClipboard = (text: string) => canCopyToClipboard() && navigator.clipboard.writeText(text);
 
-export const getImageShowUrl = (image: File, filter: string): string => {
-  const path = !isFileEmpty(image) ? image.filePath : 'undefined';
-  const filename = encodeURIComponent(path);
-
-  return routing.generate('pim_enrich_media_show', {filename, filter});
-};
-
 export const getImageDownloadUrl = (image: File): string => {
   const path = !isFileEmpty(image) ? image.filePath : 'undefined';
   const filename = encodeURIComponent(path);
@@ -27,20 +20,12 @@ export const getMediaPreviewUrl = (mediaPreview: MediaPreview): string =>
     data: btoa(mediaPreview.data),
   });
 
-export const getAssetEditUrl = (asset: ListAsset): string => {
-  const assetFamilyIdentifier = asset.assetFamilyIdentifier;
-  const assetCode = asset.code;
-
-  //TODO cleaner way?
-  return (
-    '#' +
-    routing.generate('akeneo_asset_manager_asset_edit', {
-      assetFamilyIdentifier,
-      assetCode,
-      tab: 'enrich',
-    })
-  );
-};
+export const getAssetEditUrl = (asset: ListAsset): string =>
+  `#${routing.generate('akeneo_asset_manager_asset_edit', {
+    assetFamilyIdentifier: asset.assetFamilyIdentifier,
+    assetCode: asset.code,
+    tab: 'enrich',
+  })}`;
 
 export const getProductIndexUrl = () => `#${routing.generate('pim_enrich_product_index')}`;
 

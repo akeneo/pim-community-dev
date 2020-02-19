@@ -93,6 +93,8 @@ akeneo_franklin_insights:
         bulk_add_to_family:
           subtitle: 'Franklin Insights'
           ok: Vahvista
+      search:
+        no_result_subtitle: Yritä uudelleen uusilla hakuehdoilla.
     product_subscription:
       module:
         product_edit_form:

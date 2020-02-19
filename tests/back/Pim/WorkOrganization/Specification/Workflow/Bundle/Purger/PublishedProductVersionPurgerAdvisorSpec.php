@@ -2,19 +2,18 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Purger;
 
-use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurgerAdvisorInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\GetPublishedVersionIdsByVersionIdsQuery;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Purger\PublishedProductVersionPurgerAdvisor;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
-use Prophecy\Argument;
+use Akeneo\Tool\Bundle\VersioningBundle\Purger\PurgeableVersionList;
+use Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurgerAdvisorInterface;
+use PhpSpec\ObjectBehavior;
 
 class PublishedProductVersionPurgerAdvisorSpec extends ObjectBehavior
 {
 
-    function let(PublishedProductRepositoryInterface $publishedProductRepository)
+    function let(GetPublishedVersionIdsByVersionIdsQuery $getPublishedVersionIdsByVersionIdsQuery)
     {
-        $this->beConstructedWith($publishedProductRepository, 'ProductEntityClassName');
+        $this->beConstructedWith($getPublishedVersionIdsByVersionIdsQuery, 'ProductEntityClassName');
     }
 
     function it_is_initializable()
@@ -27,32 +26,21 @@ class PublishedProductVersionPurgerAdvisorSpec extends ObjectBehavior
         $this->shouldImplement(VersionPurgerAdvisorInterface::class);
     }
 
-    function it_supports_products_versions_only(VersionInterface $v1, VersionInterface $v2)
+    function it_supports_products_versions_only()
     {
-        $v1->getResourceName()->willReturn('ProductEntityClassName');
+        $v1 = new PurgeableVersionList('ProductEntityClassName', []);
         $this->supports($v1)->shouldReturn(true);
 
-        $v2->getResourceName()->willReturn('foo');
+        $v2 = new PurgeableVersionList('foo', []);
         $this->supports($v2)->shouldReturn(false);
     }
 
-    function it_advises_not_to_purge_published_version($publishedProductRepository, VersionInterface $v1)
+    function it_advises_not_to_purge_published_version(GetPublishedVersionIdsByVersionIdsQuery $getPublishedVersionIdsByVersionIdsQuery)
     {
-        $v1->getResourceId()->willReturn(1);
-        $v1->getId()->willReturn(1);
+        $versionIds = [12, 345, 653, 42];
+        $getPublishedVersionIdsByVersionIdsQuery->execute($versionIds)->willReturn([345, 42]);
 
-        $publishedProductRepository->getPublishedVersionIdByOriginalProductId(1)->willReturn(1);
-
-        $this->isPurgeable($v1, [])->shouldReturn(false);
-    }
-
-    function it_advises_to_purge_unpublished_version($publishedProductRepository, VersionInterface $v1)
-    {
-        $v1->getId()->willReturn(1);
-        $v1->getResourceId()->willReturn(1);
-
-        $publishedProductRepository->getPublishedVersionIdByOriginalProductId(1)->willReturn(3);
-
-        $this->isPurgeable($v1, [])->shouldReturn(true);
+        $purgeableVersionList = $this->isPurgeable(new PurgeableVersionList('ProductEntityClassName', $versionIds));
+        $purgeableVersionList->getVersionIds()->shouldBe([12, 653]);
     }
 }

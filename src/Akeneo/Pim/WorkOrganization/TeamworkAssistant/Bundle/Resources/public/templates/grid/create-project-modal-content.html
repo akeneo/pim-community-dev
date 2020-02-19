@@ -12,6 +12,15 @@
         <div class="AknFieldContainer-inputContainer">
             <input type="text" value="<%- localeValue %>" name="project-locale" class="AknTextField AknTextField--disabled" disabled/>
         </div>
+        <div class="AknFieldContainer-footer">
+            <div class="AknFieldContainer-validationErrors locale-errors">
+                <% _.each(_.where(errors, {field: 'locale'}), function (error) { %>
+                <div class="AknFieldContainer-validationError">
+                    <%- error.message %>
+                </div>
+                <% }); %>
+            </div>
+        </div>
     </div>
 
     <div class="AknFieldContainer">

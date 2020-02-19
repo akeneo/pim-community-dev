@@ -6,7 +6,7 @@ services:
     pimee_workflow.purger.advisor.published_products:
         class: '%pimee_workflow.purger.advisor.published_products.class%'
         arguments:
-            - '@pimee_workflow.repository.published_product'
+            - '@pimee_workflow.query.get_published_version_id_by_version_ids'
             - '%pim_catalog.entity.product.class%'
         tags:
             - { name: pim_versioning.purger.advisor, priority: 100 }

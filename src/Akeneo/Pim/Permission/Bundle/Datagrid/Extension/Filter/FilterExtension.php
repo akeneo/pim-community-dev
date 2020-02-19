@@ -95,6 +95,12 @@ class FilterExtension extends BaseFilterExtension
     {
         parent::visitMetadata($config, $data);
 
+        $enabled = $config['options']['removeFiltersNotUsableInGrid'] ?? true;
+
+        if (false === $enabled) {
+            return;
+        }
+
         $filtersState = $data->offsetGet('state');
         $filtersState = isset($filtersState['filters']) ? $filtersState['filters'] : [];
         $filtersMetaData = $data->offsetGet('filters');

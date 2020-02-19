@@ -32,16 +32,19 @@ pimee_workflow:
     partial_accept:
       modal.title: Approva le informazioni parziali
       modal.label: Lascia un commento (facoltativo)
+      modal.error: Si è verificato un errore, la proposta non è stata approvata parzialmente
       modal.success: La proposta è stata parzialmente validata con successo
     partial_approve:
       modal:
         title: Approva le modifiche parzialmente
         label: Lascia un commento (facoltativo)
+        error: Si è verificato un errore, la proposta non è stata approvata parzialmente
         success: Le modifiche sono state approvate con successo
     partial_reject:
       modal:
         title: Respingi le modifiche parzialmente
         label: Lascia un commento (facoltativo)
+        error: Si è verificato un errore, la proposta non è stata parzialmente rifiutata
         success: Le modifiche sono state respinte con successo
 batch_jobs:
   csv_published_product_export:
@@ -50,6 +53,9 @@ batch_jobs:
   csv_product_proposal_import:
     label: Importazione di proposte di prodotto in CSV
     import.label: Importazione di proposte di prodotto
+  csv_product_model_proposal_import:
+    label: Importazione proposta modello prodotto in CSV
+    import.label: Importazione proposta modello prodotto in CSV
   approve_product_draft:
     label: Approva la proposta
     perform.label: Approva la proposta
@@ -62,6 +68,9 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Importazione di proposte di prodotto in XLSX
     import.label: Importazione di proposte di prodotto in XLSX
+  xlsx_product_model_proposal_import:
+    label: Importazione proposta modello prodotto in XLSX
+    import.label: Importazione proposta modello prodotto in XLSX
   csv_published_product_quick_export:
     export.label: Esportazione rapida in CSV dei prodotti pubblicati
     perform.label: Esportazione rapida in CSV dei prodotti pubblicati
@@ -86,6 +95,7 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Proposta approvata
     pimee_workflow_product_draft_notification_refuse: Proposta respinta
     pimee_workflow_product_draft_notification_remove: Proposta eliminata
+    pimee_workflow_product_draft_notification_sent: Proposte inviate
 pimee_dashboard:
   widget:
     product_drafts:
@@ -127,6 +137,8 @@ pimee_enrich.entity.product:
     approval:
       send: Invia per approvazione
       sent: Inviata per approvazione
+      send_and_next: Invia e prosegui
+      send_and_finish: Invia e concludi
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -160,6 +172,7 @@ pimee_enrich.entity.product_draft:
     create:
       success: Bozza di prodotto inviata per approvazione
       fail: Non è possibile inviare questa bozza per l'approvazione
+      skip: La bozza del prodotto non è stata inviata per approvazione non essendo stato modificato alcun valore
   module:
     proposal:
       accept: Accetta la proposta
