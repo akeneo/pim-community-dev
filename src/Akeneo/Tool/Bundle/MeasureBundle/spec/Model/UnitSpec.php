@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Tool\Bundle\MeasureBundle\Model;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
@@ -12,6 +13,7 @@ use PhpSpec\ObjectBehavior;
 class UnitSpec extends ObjectBehavior
 {
     private const UNIT_CODE = 'meter';
+    private const UNIT_LABELS = ['fr_FR' => 'metre', 'en_US' => 'meter'];
     private const SYMBOL = 'm';
     private const OPERATION_OPERATOR = 'mul';
     private const OPERATION_VALUE = '150';
@@ -20,7 +22,12 @@ class UnitSpec extends ObjectBehavior
     {
         $this->beConstructedThrough(
             'create',
-            [UnitCode::fromString(self::UNIT_CODE), [Operation::create(self::OPERATION_OPERATOR, self::OPERATION_VALUE)], self::SYMBOL]
+            [
+                UnitCode::fromString(self::UNIT_CODE),
+                LabelCollection::fromArray(self::UNIT_LABELS),
+                [Operation::create(self::OPERATION_OPERATOR, self::OPERATION_VALUE)],
+                self::SYMBOL
+            ]
         );
     }
 
@@ -34,6 +41,7 @@ class UnitSpec extends ObjectBehavior
         $this->normalize()->shouldReturn(
             [
                 'code' => self::UNIT_CODE,
+                'labels' => self::UNIT_LABELS,
                 'convert_from_standard' => [
                     ['operator' => self::OPERATION_OPERATOR, 'value' => self::OPERATION_VALUE]
                 ],
@@ -50,8 +58,9 @@ class UnitSpec extends ObjectBehavior
                 'create',
                 [
                     UnitCode::fromString(self::UNIT_CODE),
+                    LabelCollection::fromArray(self::UNIT_LABELS),
                     [$wrongOperation],
-                    'm'
+                    self::SYMBOL
                 ]
             );
     }

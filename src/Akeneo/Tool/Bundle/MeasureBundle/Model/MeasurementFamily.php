@@ -16,13 +16,16 @@ class MeasurementFamily
     /** @var string */
     private $code;
 
+    /** @var LabelCollection */
+    private $labels;
+
     /** @var UnitCode */
     private $standardUnitCode;
 
     /** @var array */
     private $units;
 
-    private function __construct(MeasurementFamilyCode $code, UnitCode $standardUnitCode, array $units)
+    private function __construct(MeasurementFamilyCode $code, LabelCollection $labels, UnitCode $standardUnitCode, array $units)
     {
         Assert::allIsInstanceOf($units, Unit::class);
         Assert::minCount($units, 1);
@@ -30,19 +33,21 @@ class MeasurementFamily
         $this->assertNoDuplicatedUnits($units);
 
         $this->code = $code;
+        $this->labels = $labels;
         $this->standardUnitCode = $standardUnitCode;
         $this->units = $units;
     }
 
-    public static function create(MeasurementFamilyCode $code, UnitCode $standardUnitCode, array $units): self
+    public static function create(MeasurementFamilyCode $code, LabelCollection $labels, UnitCode $standardUnitCode, array $units): self
     {
-        return new self($code, $standardUnitCode, $units);
+        return new self($code,  $labels, $standardUnitCode, $units);
     }
 
     public function normalize(): array
     {
         return [
             'code' => $this->code->normalize(),
+            'labels' => $this->labels->normalize(),
             'standard_unit_code' => $this->standardUnitCode->normalize(),
             'units' => array_map(
                 function (Unit $unit) {
