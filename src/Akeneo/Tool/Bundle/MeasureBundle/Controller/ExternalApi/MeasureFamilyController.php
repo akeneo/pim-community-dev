@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
@@ -37,20 +38,20 @@ class MeasureFamilyController
      * @param ArrayConverterInterface     $measureFamilyConverter
      * @param ParameterValidatorInterface $parameterValidator
      * @param PaginatorInterface          $paginator
-     * @param array                       $measures
+     * @param LegacyMeasurementProvider   $provider
      * @param array                       $apiConfiguration
      */
     public function __construct(
         ArrayConverterInterface $measureFamilyConverter,
         ParameterValidatorInterface $parameterValidator,
         PaginatorInterface $paginator,
-        array $measures,
+        LegacyMeasurementProvider $provider,
         array $apiConfiguration
     ) {
-        $this->measuresConfig = $measures['measures_config'];
         $this->measureFamilyConverter = $measureFamilyConverter;
         $this->parameterValidator = $parameterValidator;
         $this->paginator = $paginator;
+        $this->measuresConfig = $provider->getMeasurementFamilies();
         $this->apiConfiguration = $apiConfiguration;
     }
 
