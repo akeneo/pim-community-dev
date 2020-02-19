@@ -104,4 +104,23 @@ class MeasurementFamilySpec extends ObjectBehavior
                 ]
             );
     }
+
+    function it_should_not_be_able_to_create_if_there_are_unit_duplicates()
+    {
+        $meterUnit = Unit::create(
+            UnitCode::fromString(self::METER_UNIT_CODE),
+            [],
+            self::METER_SYMBOL
+        );
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during(
+                'create',
+                [
+                    MeasurementFamilyCode::fromString(self::MEASUREMENT_FAMILY_CODE),
+                    $meterUnit->code(),
+                    [$meterUnit, $meterUnit]
+                ]
+            );
+    }
+
 }
