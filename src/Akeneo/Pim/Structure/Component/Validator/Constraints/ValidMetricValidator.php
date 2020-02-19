@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -26,16 +27,10 @@ class ValidMetricValidator extends ConstraintValidator
     /** @var PropertyAccessorInterface */
     protected $propertyAccessor;
 
-    /**
-     * Constructor
-     *
-     * @param PropertyAccessorInterface $propertyAccessor
-     * @param array                     $measures
-     */
-    public function __construct(PropertyAccessorInterface $propertyAccessor, $measures)
+    public function __construct(PropertyAccessorInterface $propertyAccessor, LegacyMeasurementProvider $provider)
     {
         $this->propertyAccessor = $propertyAccessor;
-        $this->measures = $measures['measures_config'];
+        $this->measures = $provider->getMeasurementFamilies();
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Convert;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownMeasureException;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownOperatorException;
+use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 
 /**
  * Aims to convert measures
@@ -27,14 +28,9 @@ class MeasureConverter
      */
     protected $family;
 
-    /**
-     * Constructor
-     *
-     * @param array $config Configuration parameters
-     */
-    public function __construct($config = [])
+    public function __construct(LegacyMeasurementProvider $provider)
     {
-        $this->config = $config['measures_config'];
+        $this->config = $provider->getMeasurementFamilies();
     }
 
     /**
