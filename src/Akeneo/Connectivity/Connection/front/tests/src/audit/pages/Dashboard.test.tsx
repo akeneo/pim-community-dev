@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import {UserContext} from '@src/shared/user/user-context'
+import {UserContext} from '@src/shared/user/user-context';
 import {renderWithProviders} from '../../../test-utils';
 
 describe('testing Dashboard page', () => {
@@ -62,7 +62,7 @@ describe('testing Dashboard page', () => {
 
                 return key;
             },
-            set: () => undefined
+            set: () => undefined,
         };
         const {findAllByText, queryByText, getByText} = renderWithProviders(
             <UserContext.Provider value={userContext}>

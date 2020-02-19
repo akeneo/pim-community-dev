@@ -68,6 +68,7 @@ akeneo_connectivity.connection:
             wrong_credentials_combinations:
                 single: We noticed that you are using the {{ wrong_username }} username for this connection (last use on {{ date }} at {{ time }}). We recommend using the {{ good_username }} username instead.
                 link: Discover why you should use it.
+                link_list: Discover why we recommend using this username.
                 several: We noticed that you are not using the {{ good_username }} username for this connection.
                 list: 'Here is the list of usernames that were used over the past 7 days:'
                 username_date: '{{ wrong_username }} on {{ date }} at {{ time }}'

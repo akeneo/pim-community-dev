@@ -7,9 +7,9 @@ import {ConnectionsProvider} from '@src/settings/connections-context';
 import {EditConnection} from '@src/settings/pages/EditConnection';
 import {renderWithProviders} from '../../../test-utils';
 import {WrongCredentialsCombinationsProvider} from '@src/settings/wrong-credentials-combinations-context';
-import {UserContext} from "@src/shared/user";
-import {DashboardProvider} from "@src/audit/dashboard-context";
-import {Dashboard} from "@src/audit/pages/Dashboard";
+import {UserContext} from '@src/shared/user';
+import {DashboardProvider} from '@src/audit/dashboard-context';
+import {Dashboard} from '@src/audit/pages/Dashboard';
 
 jest.mock('@src/common/components/Select2');
 
@@ -72,7 +72,7 @@ describe('testing EditConnection page', () => {
 
                 return key;
             },
-            set: () => undefined
+            set: () => undefined,
         };
         const {getByText, getByLabelText} = renderWithProviders(
             <Router history={history}>

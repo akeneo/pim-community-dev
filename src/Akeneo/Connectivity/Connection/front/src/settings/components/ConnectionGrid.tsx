@@ -1,12 +1,11 @@
 import React, {ReactNode} from 'react';
 import styled from 'styled-components';
-import {Section, SmallHelper} from '../../common';
+import {HelperLink, Section, SmallHelper} from '../../common';
 import {PropsWithTheme} from '../../common/theme';
 import {Connection as ConnectionModel} from '../../model/connection';
 import {Translate} from '../../shared/translate';
 import {Connection} from './Connection';
 import {WrongCredentialsCombinations} from '../../model/wrong-credentials-combinations';
-import {DocumentationLink} from '../components/wrong-credentials/DocumentationLink';
 
 const Count = styled.div`
     color: ${({theme}: PropsWithTheme) => theme.color.purple100};
@@ -41,7 +40,13 @@ export const ConnectionGrid = ({connections, title, wrongCredentialsCombinations
             <SmallHelper>
                 <Translate id='akeneo_connectivity.connection.grid.wrong_credentials_combination_helper' />
                 <div>
-                    <DocumentationLink />
+                    <HelperLink
+                        href='https://help.akeneo.com/pim/serenity/articles/manage-your-connections.html#why-should-you-use-the-connection-username'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
+                        <Translate id='akeneo_connectivity.connection.edit_connection.credentials.wrong_credentials_combinations.link_list' />
+                    </HelperLink>
                 </div>
             </SmallHelper>
         )}
