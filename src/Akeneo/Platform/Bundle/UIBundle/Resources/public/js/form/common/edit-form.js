@@ -19,8 +19,7 @@ define(
         'pim/field-manager',
         'pim/form-builder',
         'require-context',
-        'oro/messenger',
-        'jquery'
+        'oro/messenger'
     ],
     function (
         _,
@@ -33,12 +32,11 @@ define(
         FieldManager,
         formBuilder,
         RequireContext,
-        messenger,
-        $
+        messenger
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            formContainerPreSaveScrollTop: undefined,
+            scrollPosition: null,
 
             /**
              * {@inheritdoc}
@@ -64,6 +62,13 @@ define(
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.displayError.bind(this));
 
+                this.listenTo(this.getRoot(), 'pim_enrich:form:extension:render:before', () => {
+                    this.saveScroll();
+                });
+                this.listenTo(this.getRoot(), 'pim_enrich:form:extension:render:after', () => {
+                    this.setScroll();
+                });
+
                 this.onExtensions('save-buttons:register-button', function (button) {
                     const saveButtonsExtension = this.getExtension('save-buttons');
                     if (undefined === saveButtonsExtension) {
@@ -72,24 +77,6 @@ define(
                     }
                     saveButtonsExtension.trigger('save-buttons:add-button', button);
                 }.bind(this));
-
-
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () => {
-                    const containerElement = this.el.querySelector('.edit-form');
-                    if (containerElement) {
-                        this.formContainerPreSaveScrollTop = containerElement.scrollTop;
-                    }
-                });
-
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', () => {
-                    const containerElement = this.el.querySelector('.edit-form');
-                    if (containerElement && this.formContainerPreSaveScrollTop !== undefined) {
-                        $(containerElement).animate({
-                            scrollTop: this.formContainerPreSaveScrollTop
-                        }, 600);
-                        this.formContainerPreSaveScrollTop = undefined;
-                    }
-                });
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -101,7 +88,6 @@ define(
                 if (!this.configured) {
                     return this;
                 }
-
                 this.getRoot().trigger('pim_enrich:form:render:before');
 
                 this.$el.html(this.template());
@@ -109,6 +95,26 @@ define(
                 this.renderExtensions();
 
                 this.getRoot().trigger('pim_enrich:form:render:after');
+            },
+
+            /**
+             * Save the current scroll position
+             */
+            saveScroll: function () {
+                const containerElement = this.el.querySelector('.edit-form');
+                if (containerElement) {
+                    this.scrollPosition = containerElement.scrollTop;
+                }
+            },
+
+            /**
+             * Set the scroll position to its former value
+             */
+            setScroll: function () {
+                const containerElement = this.el.querySelector('.edit-form');
+                if (containerElement && null !== this.scrollPosition) {
+                    containerElement.scrollTop = this.scrollPosition;
+                }
             },
 
             /**

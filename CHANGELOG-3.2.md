@@ -3,6 +3,7 @@
 ## Bug fixes:
 
 - PIM-9098: keep vertical scroll position of the product form after saving enrichment
+- PIM-9103: keep vertical scroll position of the product form after switching the locale or channel
 
 # 3.2.39 (2020-02-17)
 
