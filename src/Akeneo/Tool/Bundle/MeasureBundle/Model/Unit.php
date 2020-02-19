@@ -16,31 +16,37 @@ final class Unit
     /** @var UnitCode */
     private $code;
 
+    /** @var LabelCollection */
+    private $labels;
+
     /** @var array */
     private $convertFromStandard;
 
     /** @var string */
     private $symbol;
 
-    private function __construct(UnitCode $code, array $convertFromStandard, string $symbol)
+    private function __construct(UnitCode $code, array $labels, array $convertFromStandard, string $symbol)
     {
         Assert::allIsInstanceOf($convertFromStandard, Operation::class);
+        Assert::isInstanceOf($labels, LabelCollection::class);
         Assert::string($symbol);
 
         $this->code = $code;
+        $this->labels = $labels;
         $this->convertFromStandard = $convertFromStandard;
         $this->symbol = $symbol;
     }
 
-    public function create(UnitCode $code, array $convertFromStandard, string $symbol): self
+    public function create(UnitCode $code, array $labels, array $convertFromStandard, string $symbol): self
     {
-        return new self($code, $convertFromStandard, $symbol);
+        return new self($code, $labels, $convertFromStandard, $symbol);
     }
 
     public function normalize(): array
     {
         return [
             'code' => $this->code->normalize(),
+            'labels' => $this->labels->normalize(),
             'convert_from_standard' => $this->convertFromStandard,
             'symbol' => $this->symbol,
         ];
