@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
-use Akeneo\Pim\Enrichment\Component\Product\Event\ProductsReadEvent;
+use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
@@ -107,7 +107,7 @@ final class ListProductsQueryHandler
         $productIds = array_map(function(ConnectorProduct $connectorProduct) {
             return $connectorProduct->id();
         }, $connectorProductList->connectorProducts());
-        $this->eventDispatcher->dispatch(new ProductsReadEvent($productIds));
+        $this->eventDispatcher->dispatch(new ReadProductsEvent($productIds));
 
         return $connectorProductList;
     }

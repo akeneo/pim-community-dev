@@ -10,7 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
-use Akeneo\Pim\Enrichment\Component\Product\Event\ProductsReadEvent;
+use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -304,7 +304,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             ->fromProductQueryBuilder($pqb, 1, null, null, null)
             ->willReturn(new ConnectorProductList(1, [$connectorProduct]));
 
-        $eventDispatcher->dispatch(new ProductsReadEvent([5]))->shouldBeCalled();
+        $eventDispatcher->dispatch(new ReadProductsEvent([5]))->shouldBeCalled();
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
