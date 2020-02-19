@@ -33,6 +33,7 @@ services:
         class: Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider
         arguments:
             - '%akeneo_measure.measures_config%'
+            - '@akeneo_measure.persistence.measurement_family_repository'
 
     akeneo_measure.installer.measurement_installer:
         class: Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller
@@ -40,3 +41,8 @@ services:
             - '@doctrine.dbal.default_connection'
         tags:
             - { name: kernel.event_subscriber }
+
+    akeneo_measure.persistence.measurement_family_repository:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepository
+        arguments:
+            - '@doctrine.dbal.default_connection'
