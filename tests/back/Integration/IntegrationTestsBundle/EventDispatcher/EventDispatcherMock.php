@@ -40,7 +40,10 @@ class EventDispatcherMock implements EventDispatcherInterface
          * and switch every dispatch calls arguments.
          * @see https://symfony.com/blog/new-in-symfony-4-3-simpler-event-dispatching
          */
-        if (func_get_arg(1) && is_string(func_get_arg(1))) {
+        if (2 > count(func_get_args()) && is_object(func_get_arg(0))) {
+            $event = func_get_arg(0);
+            $eventName = null;
+        } elseif (func_get_arg(1) && is_string(func_get_arg(1))) {
             $event = func_get_arg(0);
             $eventName = func_get_arg(1);
         } else {
