@@ -1,3 +1,4 @@
+---
 User: Benutzer
 Run demo: Demo starten
 Product: Produkt
@@ -61,6 +62,7 @@ pim_common:
   properties: Eigenschaften
   name: Name
   remove: Entfernen
+  code: Code
 pim_enrich:
   #ACLs
   acl:
@@ -154,8 +156,6 @@ pim_enrich:
       remove: Verbindungen von einem Produkt entfernen
     job_tracker:
       index: Prozess-Tracker ansehen
-    api_connection:
-      manage: API-Verbindungen verwalten
   acl_group:
     association_type: Verbindungstypen
     attribute: Attribute
