@@ -6,21 +6,45 @@ use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownMeasureException;
 use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Yaml\Yaml;
 
 class MeasureConverterSpec extends ObjectBehavior
 {
-    function let()
+    function let(LegacyMeasurementProvider $provider)
     {
-        $filename = realpath(dirname(__FILE__) .'/../Resources/config/measure-test.yml');
-        if (!file_exists($filename)) {
-            throw new \Exception(sprintf('Config file "%s" does not exist', $filename));
-        }
+        $yaml = <<<YAML
+measures_config:
+    Length:
+        standard: METER
+        units:
+            CENTIMETER:
+                convert: [{'div': 0.01}]
+                format: cm
+            METER:
+                convert: [{'test': 1}]
+                format: m
+    Weight:
+        standard: GRAM
+        units:
+            MILLIGRAM:
+                convert: [{'mul': 0.001}]
+                symbol: mg
+            GRAM:
+                convert: [{'mul': 1}]
+                symbol: g
+            KILOGRAM:
+                convert: [{'mul': 1000}]
+                symbol: kg
 
-        $config = Yaml::parse(file_get_contents($filename));
-        $this->beConstructedWith($config);
+YAML;
+
+        $config = Yaml::parse($yaml);
+
+        $provider->getMeasurementFamilies()->willReturn($config['measures_config']);
+        $this->beConstructedWith($provider);
     }
 
     public function it_allows_to_define_the_family()
