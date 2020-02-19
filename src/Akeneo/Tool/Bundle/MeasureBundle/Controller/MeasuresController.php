@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Controller;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -16,12 +17,9 @@ class MeasuresController
     /** @var array */
     protected $measuresConfig;
 
-    /**
-     * @param array $measures
-     */
-    public function __construct(array $measures)
+    public function __construct(LegacyMeasurementProvider $provider)
     {
-        $this->measuresConfig = $measures['measures_config'];
+        $this->measuresConfig = $provider->getMeasurementFamilies();
     }
 
     /**
