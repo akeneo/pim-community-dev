@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
  */
 final class Operation
 {
-    private const SUPPORTED_OPERATORS = ['mul','div','add','sub'];
+    private const SUPPORTED_OPERATORS = ['mul', 'div', 'add', 'sub'];
 
     /** @var string */
     private $operator;
