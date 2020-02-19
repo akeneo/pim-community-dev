@@ -105,6 +105,12 @@ services:
             - '@pimee_product_asset.repository.asset'
             - '@pimee_product_asset.remover.asset'
 
+    # Query
+    pimee_product_asset.asset_grid.query.fetch_user_rights_on_asset:
+        class: Akeneo\Asset\Bundle\Doctrine\ORM\Query\FetchUserRightsOnAsset
+        arguments:
+            - '@database_connection'
+
     # External API
     pimee_product_asset.api.repository.asset:
         class: '%pimee_product_asset.api.repository.asset.class%'

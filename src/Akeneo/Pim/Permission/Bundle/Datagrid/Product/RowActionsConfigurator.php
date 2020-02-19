@@ -91,10 +91,12 @@ class RowActionsConfigurator implements ConfiguratorInterface
     {
         $user = $this->userContext->getUser();
         $userRight = $this->fetchUserRightsOnProductModel->fetchByIdentifier($record->getValue('identifier'), $user->getId());
+        $isEditableOrisAllowedToDraft = $userRight->canApplyDraftOnProductModel() || $userRight->isProductModelEditable();
 
         return [
-            'show'            => !($userRight->canApplyDraftOnProductModel() || $userRight->isProductModelEditable()),
-            'edit'            => $userRight->canApplyDraftOnProductModel() || $userRight->isProductModelEditable(),
+            'show'            => !($isEditableOrisAllowedToDraft),
+            'edit'            => $isEditableOrisAllowedToDraft,
+            'edit_attributes' => $isEditableOrisAllowedToDraft,
             'edit_categories' => $userRight->isProductModelEditable(),
             'delete'          => $userRight->isProductModelEditable(),
             'toggle_status'   => $userRight->isProductModelEditable()
@@ -105,10 +107,12 @@ class RowActionsConfigurator implements ConfiguratorInterface
     {
         $user = $this->userContext->getUser();
         $userRight = $this->fetchUserRightsOnProduct->fetchByIdentifier($record->getValue('identifier'), $user->getId());
+        $isEditableOrisAllowedToDraft = $userRight->canApplyDraftOnProduct() || $userRight->isProductEditable();
 
         return [
-            'show'            => !($userRight->canApplyDraftOnProduct() || $userRight->isProductEditable()),
-            'edit'            => $userRight->canApplyDraftOnProduct() || $userRight->isProductEditable(),
+            'show'            => !$isEditableOrisAllowedToDraft,
+            'edit'            => $isEditableOrisAllowedToDraft,
+            'edit_attributes' => $isEditableOrisAllowedToDraft,
             'edit_categories' => $userRight->isProductEditable(),
             'delete'          => $userRight->isProductEditable(),
             'toggle_status'   => $userRight->isProductEditable()

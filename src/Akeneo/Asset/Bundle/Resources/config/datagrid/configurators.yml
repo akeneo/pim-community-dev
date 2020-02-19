@@ -7,3 +7,10 @@ services:
         arguments:
             - '@pim_datagrid.datagrid.request.parameters_extractor'
             - '@pimee_product_asset.context.user'
+
+    pimee_product_asset.datagrid.configuration.asset.row_actions_configurator:
+        class: Akeneo\Asset\Bundle\Datagrid\Configuration\RowActionsConfigurator
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.configuration_registry'
+            - '@pimee_product_asset.asset_grid.query.fetch_user_rights_on_asset'
+            - '@pim_user.context.user'
