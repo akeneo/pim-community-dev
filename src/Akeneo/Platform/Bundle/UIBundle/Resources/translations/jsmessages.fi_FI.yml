@@ -137,6 +137,7 @@ pim_common:
   history: Historia
   label: Nimike
   label_translations: Nimikkeiden käännökset
+  Label or identifier: nimike tai tunniste
   less_than: Vähemmän kuin
   loading: Ladataan...
   media_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä

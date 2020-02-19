@@ -303,12 +303,17 @@ JSON;
             "a_number_float": [{
                 "locale": null,
                 "scope": null,
-                "data": "12.5678"
+                "data": "12.56"
+            }],
+            "a_number_float_very_decimal": [{
+                "locale": null,
+                "scope": null,
+                "data": "12.56787697870"
             }],
             "a_number_float_negative": [{
                 "locale": null,
                 "scope": null,
-                "data": "-99.8732"
+                "data": "-99.873200000000"
             }],
             "a_number_integer": [{
                 "locale": null,
@@ -483,7 +488,10 @@ JSON;
                     ['locale' => null, 'scope' => null, 'data' => ['optionA', 'optionB']],
                 ],
                 'a_number_float'                     => [
-                    ['locale' => null, 'scope' => null, 'data' => '12.5678'],
+                    ['locale' => null, 'scope' => null, 'data' => '12.5600'],
+                ],
+                'a_number_float_very_decimal'                     => [
+                    ['locale' => null, 'scope' => null, 'data' => '12.5678769787'],
                 ],
                 'a_number_float_negative'            => [
                     ['locale' => null, 'scope' => null, 'data' => '-99.8732'],

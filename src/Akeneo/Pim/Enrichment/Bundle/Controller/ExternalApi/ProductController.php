@@ -21,6 +21,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Cache\WarmupQueryCache;
+use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
@@ -29,6 +30,7 @@ use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -145,6 +147,9 @@ class ProductController
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
+    /** @var DuplicateValueChecker */
+    protected $duplicateValueChecker;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -174,6 +179,7 @@ class ProductController
         ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave,
         WarmupQueryCache $warmupQueryCache,
         EventDispatcherInterface $eventDispatcher
+        DuplicateValueChecker $duplicateValueChecker = null // TODO @merge master Remove this null parameter and the conditions
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -203,6 +209,7 @@ class ProductController
         $this->apiAggregatorForProductPostSave = $apiAggregatorForProductPostSave;
         $this->warmupQueryCache = $warmupQueryCache;
         $this->eventDispatcher = $eventDispatcher;
+        $this->duplicateValueChecker = $duplicateValueChecker;
     }
 
     /**
@@ -289,9 +296,9 @@ class ProductController
     /**
      * @param string $code
      *
+     * @return Response
      * @throws NotFoundHttpException
      *
-     * @return Response
      */
     public function deleteAction($code): Response
     {
@@ -308,13 +315,25 @@ class ProductController
     /**
      * @param Request $request
      *
+     * @return Response
      * @throws BadRequestHttpException
      *
-     * @return Response
      */
     public function createAction(Request $request): Response
     {
         $data = $this->getDecodedContent($request->getContent());
+
+        if (null !== $this->duplicateValueChecker) {
+            try {
+                $this->duplicateValueChecker->check($data);
+            } catch (InvalidPropertyTypeException $e) {
+                throw new DocumentedHttpException(
+                    Documentation::URL . 'patch_products__code_',
+                    sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
+                    $e
+                );
+            }
+        }
 
         $data = $this->populateIdentifierProductValue($data);
         $data = $this->orderData($data);
@@ -338,13 +357,25 @@ class ProductController
      * @param Request $request
      * @param string  $code
      *
+     * @return Response
      * @throws HttpException
      *
-     * @return Response
      */
     public function partialUpdateAction(Request $request, $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
+
+        if (null !== $this->duplicateValueChecker) {
+            try {
+                $this->duplicateValueChecker->check($data);
+            } catch (InvalidPropertyTypeException $e) {
+                throw new DocumentedHttpException(
+                    Documentation::URL . 'patch_products__code_',
+                    sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
+                    $e
+                );
+            }
+        }
 
         $product = $this->productRepository->findOneByIdentifier($code);
         $isCreation = null === $product;
@@ -390,8 +421,10 @@ class ProductController
      * Products are saved 1 by 1, but we batch events in order to improve performances.
      *
      * @param Request $request
+     *
      * @return Response
      * @throws HttpException
+     *
      */
     public function partialUpdateListAction(Request $request): Response
     {
@@ -411,9 +444,9 @@ class ProductController
      *
      * @param string $content content of a request to decode
      *
+     * @return array
      * @throws BadRequestHttpException
      *
-     * @return array
      */
     protected function getDecodedContent($content): array
     {
@@ -430,7 +463,7 @@ class ProductController
      * Update a product. It throws an error 422 if a problem occurred during the update.
      *
      * @param ProductInterface $product category to update
-     * @param array            $data    data of the request already decoded
+     * @param array            $data data of the request already decoded
      * @param string           $anchor
      *
      * @throws DocumentedHttpException
@@ -467,9 +500,9 @@ class ProductController
      * @param ProductInterface $product
      * @param array            $data
      *
+     * @return array
      * @throws DocumentedHttpException
      *
-     * @return array
      */
     protected function filterEmptyValues(ProductInterface $product, array $data): array
     {
@@ -525,7 +558,7 @@ class ProductController
      * Get a response with a location header to the created or updated resource.
      *
      * @param ProductInterface $product
-     * @param int           $status
+     * @param int              $status
      *
      * @return Response
      */
@@ -581,8 +614,8 @@ class ProductController
 
         $data['values'][$identifierProperty][] = [
             'locale' => null,
-            'scope'  => null,
-            'data'   => $identifier,
+            'scope' => null,
+            'data' => $identifier,
         ];
 
         return $data;
@@ -661,7 +694,7 @@ class ProductController
         $queryParameters = [
             'with_count' => $query->withCount,
             'pagination_type' => $query->paginationType,
-            'limit' => $query->limit
+            'limit' => $query->limit,
         ];
 
         if ($query->search !== []) {
@@ -684,9 +717,9 @@ class ProductController
             $queryParameters = ['page' => $query->page] + $queryParameters;
 
             $paginationParameters = [
-                'query_parameters'    => $queryParameters,
-                'list_route_name'     => 'pim_api_product_list',
-                'item_route_name'     => 'pim_api_product_get',
+                'query_parameters' => $queryParameters,
+                'list_route_name' => 'pim_api_product_list',
+                'item_route_name' => 'pim_api_product_get',
                 'item_identifier_key' => 'identifier',
             ];
 
@@ -703,14 +736,14 @@ class ProductController
             $lastProduct = end($connectorProducts);
 
             $parameters = [
-                'query_parameters'    => $queryParameters,
-                'search_after'        => [
+                'query_parameters' => $queryParameters,
+                'search_after' => [
                     'next' => false !== $lastProduct ? $this->primaryKeyEncrypter->encrypt($lastProduct->id()) : null,
                     'self' => $query->searchAfter,
                 ],
-                'list_route_name'     => 'pim_api_product_list',
-                'item_route_name'     => 'pim_api_product_get',
-                'item_identifier_key' => 'identifier'
+                'list_route_name' => 'pim_api_product_list',
+                'item_route_name' => 'pim_api_product_get',
+                'item_identifier_key' => 'identifier',
             ];
 
             $paginatedProducts = $this->searchAfterPaginator->paginate(

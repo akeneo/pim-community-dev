@@ -11,8 +11,7 @@ Feature: Browse imports
 
   @ce
   Scenario Outline: Successfully filter import jobs with values
-    When I show the filter "<filter>"
-    And I filter by "<filter>" with operator "<operator>" and value "<value>"
+    When I filter by "<filter>" with operator "<operator>" and value "<value>"
     Then the grid should contain <count> elements
     And I should see entities <result>
 

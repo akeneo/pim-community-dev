@@ -123,7 +123,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'family'     => '',
             'values' => [
                 'normalized_property' => [['data' => 'a nice normalized property', 'locale' => null, 'scope' => null]],
-                'number'              => [['data' => 12.5000, 'locale' => null, 'scope' => null]],
+                'number'              => [['data' => 12.5000000000111, 'locale' => null, 'scope' => null]],
                 'metric'              => [['data' => 12.5000, 'locale' => null, 'scope' => null]],
                 'prices'              => [['data' => 12.5, 'locale' => null, 'scope' => null]],
                 'date'                => [['data' => '2015-01-31', 'locale' => null, 'scope' => null]],
@@ -284,7 +284,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'family'     => '',
             'values' => [
                 'normalized_property' => [['data' => 'a nice normalized property', 'locale' => null, 'scope' => null]],
-                'number'              => [['data' => 12.5000, 'locale' => null, 'scope' => null]],
+                'number'              => [['data' => 12.5000000000111, 'locale' => null, 'scope' => null]],
                 'metric'              => [['data' => 12.5000, 'locale' => null, 'scope' => null]],
                 'prices'              => [['data' => 12.5, 'locale' => null, 'scope' => null]],
                 'date'                => [['data' => '2015-01-31', 'locale' => null, 'scope' => null]],
