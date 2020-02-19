@@ -13,7 +13,7 @@ final class Version_5_0_20200217155537_add_measurement_table extends AbstractMig
 CREATE TABLE `akeneo_measurement` (
   `code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
   `labels` JSON NOT NULL,
-  `standard_unit` varchar(100) NOT NULL COMMENT '(DC2Type:datetime)',
+  `standard_unit` varchar(100) NOT NULL,
   `units` JSON NOT NULL,
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
