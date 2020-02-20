@@ -29,11 +29,15 @@ services:
         - '@akeneo_measure.provider.measurement_provider'
         - '%pim_api.configuration%'
 
+    akeneo_measure.provider.measurement_adapter:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementAdapter
+
     akeneo_measure.provider.measurement_provider:
         class: Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider
         arguments:
             - '%akeneo_measure.measures_config%'
             - '@akeneo_measure.persistence.measurement_family_repository'
+            - '@akeneo_measure.provider.measurement_adapter'
 
     akeneo_measure.installer.measurement_installer:
         class: Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller
