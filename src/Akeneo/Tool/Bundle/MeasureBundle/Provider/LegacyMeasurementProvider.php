@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Provider;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 
 /**
@@ -27,16 +28,30 @@ class LegacyMeasurementProvider
     /** @var MeasurementFamilyRepositoryInterface */
     protected $measurementFamilyRepository;
 
+    /** @var LegacyMeasurementAdapter */
+    private $adapter;
+
     public function __construct(
         array $config,
-        MeasurementFamilyRepositoryInterface $measurementFamilyRepository
+        MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
+        LegacyMeasurementAdapter $adapter
     ) {
         $this->config = $config['measures_config'];
         $this->measurementFamilyRepository = $measurementFamilyRepository;
+        $this->adapter = $adapter;
     }
 
     public function getMeasurementFamilies(): array
     {
-        return $this->config;
+        $measurementFamilies = array_map(function (MeasurementFamily $family) {
+            return $this->adapter->adapts($family);
+        }, iterator_to_array($this->measurementFamilyRepository->all()));
+
+        $result = [];
+        foreach ($measurementFamilies as $familyCode => $family) {
+            $result = array_merge($result, $family);
+        }
+
+        return $result;
     }
 }
