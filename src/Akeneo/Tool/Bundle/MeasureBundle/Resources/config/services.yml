@@ -35,7 +35,6 @@ services:
     akeneo_measure.provider.measurement_provider:
         class: Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider
         arguments:
-            - '%akeneo_measure.measures_config%'
             - '@akeneo_measure.persistence.measurement_family_repository'
             - '@akeneo_measure.provider.measurement_adapter'
 
