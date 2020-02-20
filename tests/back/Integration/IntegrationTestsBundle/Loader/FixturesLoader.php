@@ -166,7 +166,6 @@ class FixturesLoader implements FixturesLoaderInterface
             $this->restoreDatabase($dumpFile);
             $this->indexProductModels();
             $this->indexProducts();
-
         } else {
             $this->loadData($configuration);
             $this->dumpDatabase($dumpFile);
@@ -184,10 +183,10 @@ class FixturesLoader implements FixturesLoaderInterface
         $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
         $filesByType = $this->getFilesToLoadByType($files);
 
+        $this->measurementInstaller->loadStandardMeasurementFamilies();
         $this->loadSqlFiles($filesByType['sql']);
         $this->loadImportFiles($filesByType['import']);
         $this->loadReferenceData();
-        $this->loadMeasurements();
     }
 
     /**
@@ -456,10 +455,5 @@ class FixturesLoader implements FixturesLoaderInterface
             'index' => '_all',
             'refresh' => true
         ]);
-    }
-
-    private function loadMeasurements()
-    {
-        $this->measurementInstaller->createMeasurementTableAndStandardMeasurementFamilies();
     }
 }
