@@ -30,28 +30,17 @@ class MeasurementInstaller implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            InstallerEvents::POST_DB_CREATE => ['createSchema'],
+            InstallerEvents::POST_DB_CREATE => ['createMeasurementTableAndStandardMeasurementFamilies'],
         ];
     }
 
-    public function createSchema(): void
+    public function createMeasurementTableAndStandardMeasurementFamilies(): void
     {
-        $sql = <<<SQL
-CREATE TABLE `akeneo_measurement` (
-  `code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
-  `labels` JSON NOT NULL,
-  `standard_unit` varchar(100) NOT NULL,
-  `units` JSON NOT NULL,
-  PRIMARY KEY (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
-SQL;
-
-        $this->connection->exec($sql);
-
-        $this->loadFixtures();
+        $this->createMeasurementTable();
+        $this->loadStandardMeasurementFamilies();
     }
 
-    public function loadFixtures(): void
+    private function loadStandardMeasurementFamilies(): void
     {
         $sql = <<<SQL
 INSERT INTO `akeneo_measurement` (`code`, `labels`, `standard_unit`, `units`)
@@ -75,6 +64,21 @@ VALUES
     ('Energy', '{"ca_ES":"Energia","da_DK":"Energi","de_DE":"Energie","en_GB":"Energy","en_NZ":"Energy","en_US":"Energy","es_ES":"Energía","fi_FI":"Energia","fr_FR":"Energie","it_IT":"Energia","ja_JP":"エネルギー","pt_BR":"Energia","ru_RU":"Энергия","sv_SE":"Energi"}', 'JOULE', '[{"code":"JOULE","labels":{"de_DE":"Joule","en_US":"joule","fr_FR":"joule"},"convert_from_standard":[{"operator":"mul","value":"1"}],"symbol":"J"},{"code":"CALORIE","labels":{"de_DE":"Kalorien","en_US":"calorie","fr_FR":"calorie"},"convert_from_standard":[{"operator":"mul","value":"4.184"}],"symbol":"cal"},{"code":"KILOCALORIE","labels":{"ca_ES":"quilocalories","da_DK":"kilokalorie","de_DE":"Kilokalorien","en_GB":"kilocalorie","en_NZ":"kilocalorie","en_US":"kilocalorie","es_ES":"kilo caloría","fi_FI":"Kilokalori","fr_FR":"kilocalorie","it_IT":"kilocalorie","ja_JP":"キロカロリー","pt_BR":"quilocaloria","ru_RU":"килокалория","sv_SE":"kilokalori"},"convert_from_standard":[{"operator":"mul","value":"4184"}],"symbol":"kcal"},{"code":"KILOJOULE","labels":{"ca_ES":"kilojoule","da_DK":"kJ","de_DE":"Kilojoule","en_GB":"kilojoule","en_NZ":"kilojoule","en_US":"kilojoule","es_ES":"kilojulio","fi_FI":"kilojoule","fr_FR":"kilojoule","it_IT":"kilojoule","ja_JP":"キロジュール","pt_BR":"kilojoule","ru_RU":"килоджоуль","sv_SE":"kilojoule"},"convert_from_standard":[{"operator":"mul","value":"1000"}],"symbol":"kJ"}]'),
     ('CaseBox', '{"ca_ES":"Embalatge","da_DK":"Emballage","de_DE":"Verpackung","en_GB":"Packaging","en_NZ":"Packaging","en_US":"Packaging","es_ES":"Embalaje","fi_FI":"Pakkaus","fr_FR":"Emballage","it_IT":"Imballo","ja_JP":"包装","pt_BR":"Embalagens","ru_RU":"Упаковка","sv_SE":"Förpackning"}', 'PIECE', '[{"code":"PIECE","labels":{"ca_ES":"Peça","da_DK":"Stykke","de_DE":"Stück","en_GB":"Piece","en_NZ":"Piece","en_US":"Piece","es_ES":"Pieza","fi_FI":"Kappale","fr_FR":"Unité","it_IT":"Pezzo","ja_JP":"作品","pt_BR":"Peça","ru_RU":"шт.","sv_SE":"Stycke"},"convert_from_standard":[{"operator":"mul","value":"1"}],"symbol":"Pc"},{"code":"DOZEN","labels":{"ca_ES":"Dotzena","da_DK":"Dusin","de_DE":"Dutzend","en_GB":"Dozen","en_NZ":"Dozen","en_US":"Dozen","es_ES":"Docena","fi_FI":"Tusina","fr_FR":"Douzaine","it_IT":"Dozzina","ja_JP":"ダース","pt_BR":"Dúzia","ru_RU":"Дюжина","sv_SE":"Dussin"},"convert_from_standard":[{"operator":"mul","value":"12"}],"symbol":"Dz"}]'),
     ('Brightness', '{}', 'LUMEN', '[{"code":"LUMEN","labels":{},"convert_from_standard":[{"operator":"mul","value":"1"}],"symbol":"lm"},{"code":"NIT","labels":{},"convert_from_standard":[{"operator":"mul","value":"0.2918855809"}],"symbol":"nits"}]');
+SQL;
+
+        $this->connection->exec($sql);
+    }
+
+    private function createMeasurementTable(): void
+    {
+        $sql = <<<SQL
+CREATE TABLE `akeneo_measurement` (
+  `code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
+  `labels` JSON NOT NULL,
+  `standard_unit` varchar(100) NOT NULL,
+  `units` JSON NOT NULL,
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 SQL;
 
         $this->connection->exec($sql);
