@@ -29,7 +29,7 @@ class LegacyMeasurementAdapter
         $result = [];
         foreach ($normalizedMeasurementFamily['units'] as $unit) {
             $result[$unit['code']] = [
-                'convert' => $this->adaptOperation($unit),
+                'convert' => $this->adaptOperations($unit),
                 'symbol' => $unit['symbol']
             ];
         }
@@ -37,7 +37,7 @@ class LegacyMeasurementAdapter
         return $result;
     }
 
-    private function adaptOperation(array $unit): array
+    private function adaptOperations(array $unit): array
     {
         return array_map(function (array $operation) {
             return [
