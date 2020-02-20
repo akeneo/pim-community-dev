@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Integration\Persistence;
+namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Integration;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller;
 use Doctrine\DBAL\Connection;
@@ -42,7 +42,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
         $this->connection = $this->get('doctrine.dbal.default_connection');
 
         $this->resetDB();
-        $this->fixturesLoader->createSchema();
+        $this->fixturesLoader->createMeasurementTableAndStandardMeasurementFamilies();
     }
 
     protected function get(string $service)
