@@ -40,7 +40,7 @@ class MeasurementInstaller implements EventSubscriberInterface
         $this->loadStandardMeasurementFamilies();
     }
 
-    private function loadStandardMeasurementFamilies(): void
+    public function loadStandardMeasurementFamilies(): void
     {
         $sql = <<<SQL
 INSERT INTO `akeneo_measurement` (`code`, `labels`, `standard_unit`, `units`)
