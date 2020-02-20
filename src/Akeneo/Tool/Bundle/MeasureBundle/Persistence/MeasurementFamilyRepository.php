@@ -15,8 +15,8 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
