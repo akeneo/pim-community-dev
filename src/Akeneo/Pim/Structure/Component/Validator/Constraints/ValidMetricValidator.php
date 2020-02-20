@@ -21,16 +21,16 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ValidMetricValidator extends ConstraintValidator
 {
-    /** @var array $measures */
-    protected $measures;
-
     /** @var PropertyAccessorInterface */
     protected $propertyAccessor;
+
+    /** @var LegacyMeasurementProvider */
+    private $legacyMeasureProvider;
 
     public function __construct(PropertyAccessorInterface $propertyAccessor, LegacyMeasurementProvider $provider)
     {
         $this->propertyAccessor = $propertyAccessor;
-        $this->measures = $provider->getMeasurementFamilies();
+        $this->legacyMeasureProvider = $provider;
     }
 
     /**
@@ -63,14 +63,14 @@ class ValidMetricValidator extends ConstraintValidator
             return;
         }
 
+        $measureFamilies = $this->legacyMeasureProvider->getMeasurementFamilies();
         $family = $this->propertyAccessor->getValue($object, $familyProperty);
         $unit = $this->propertyAccessor->getValue($object, $unitProperty);
-
-        if (!array_key_exists($family, $this->measures)) {
+        if (!array_key_exists($family, $measureFamilies)) {
             $this->context->buildViolation($constraint->familyMessage)
                 ->atPath($familyProperty)
                 ->addViolation();
-        } elseif (!array_key_exists($unit, $this->measures[$family]['units'])) {
+        } elseif (!array_key_exists($unit, $measureFamilies[$family]['units'])) {
             $this->context->buildViolation($constraint->unitMessage)
                 ->atPath($unitProperty)
                 ->addViolation();

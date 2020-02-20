@@ -14,12 +14,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class MeasuresController
 {
-    /** @var array */
-    protected $measuresConfig;
+    /** @var LegacyMeasurementProvider */
+    private $provider;
 
     public function __construct(LegacyMeasurementProvider $provider)
     {
-        $this->measuresConfig = $provider->getMeasurementFamilies();
+        $this->provider = $provider;
     }
 
     /**
@@ -27,6 +27,6 @@ class MeasuresController
      */
     public function indexAction()
     {
-        return new JsonResponse($this->measuresConfig);
+        return new JsonResponse($this->provider->getMeasurementFamilies());
     }
 }
