@@ -74,7 +74,7 @@ SQL;
             return $this->hydrateUnit(
                 $normalizedUnit['code'],
                 $normalizedUnit['labels'],
-                $normalizedUnit['convert'],
+                $normalizedUnit['convert_from_standard'],
                 $normalizedUnit['symbol']
             );
         }, json_decode($normalizedUnits, true));
