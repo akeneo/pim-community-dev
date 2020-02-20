@@ -31,7 +31,6 @@ class MeasurementInstaller implements EventSubscriberInterface
     {
         return [
             InstallerEvents::POST_DB_CREATE => ['createSchema'],
-            InstallerEvents::POST_LOAD_FIXTURES => ['loadFixtures'],
         ];
     }
 
@@ -48,6 +47,8 @@ CREATE TABLE `akeneo_measurement` (
 SQL;
 
         $this->connection->exec($sql);
+
+        $this->loadFixtures();
     }
 
     public function loadFixtures(): void
