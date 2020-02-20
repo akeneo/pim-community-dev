@@ -32,11 +32,9 @@ class LegacyMeasurementProvider
     private $adapter;
 
     public function __construct(
-        array $config,
         MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
         LegacyMeasurementAdapter $adapter
     ) {
-        $this->config = $config['measures_config'];
         $this->measurementFamilyRepository = $measurementFamilyRepository;
         $this->adapter = $adapter;
     }
