@@ -2,12 +2,13 @@
 
 namespace spec\Akeneo\Tool\Bundle\MeasureBundle\Provider;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Yaml\Yaml;
 
 class LegacyMeasurementProviderSpec extends ObjectBehavior
 {
-    function let()
+    function let(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
     {
         $yaml = <<<YAML
 measures_config:
@@ -36,7 +37,7 @@ measures_config:
 YAML;
 
         $config = Yaml::parse($yaml);
-        $this->beConstructedWith($config);
+        $this->beConstructedWith($config, $measurementFamilyRepository);
     }
 
     public function it_returns_the_measurement_families()
