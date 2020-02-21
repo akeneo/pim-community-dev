@@ -68,6 +68,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
     private function loadSomeMetrics(): void
     {
         $sql = <<<SQL
+TRUNCATE TABLE `akeneo_measurement`;
 INSERT INTO `akeneo_measurement` (`code`, `labels`, `standard_unit`, `units`)
 VALUES
 	('Area', '{\"en_US\": \"Area\", \"fr_FR\": \"Surface\"}', 'SQUARE_MILLIMETER', '[{\"code\": \"SQUARE_MILLIMETER\", \"labels\": {\"en_US\": \"Square millimeter\", \"fr_FR\": \"Millimètre carré\"}, \"symbol\": \"mm²\", \"convert_from_standard\": [{\"value\": \"0.000001\", \"operator\": \"mul\"}]}, {\"code\": \"SQUARE_CENTIMETER\", \"labels\": {\"en_US\": \"Square centimeter\", \"fr_FR\": \"Centimètre carré\"}, \"symbol\": \"cm²\", \"convert_from_standard\": [{\"value\": \"0.0001\", \"operator\": \"mul\"}]}]'),
