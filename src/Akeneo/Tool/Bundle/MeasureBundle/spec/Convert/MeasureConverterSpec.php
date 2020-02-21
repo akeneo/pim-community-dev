@@ -5,7 +5,6 @@ namespace spec\Akeneo\Tool\Bundle\MeasureBundle\Convert;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownMeasureException;
-use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -38,7 +37,6 @@ measures_config:
             KILOGRAM:
                 convert: [{'mul': 1000}]
                 symbol: kg
-
 YAML;
 
         $config = Yaml::parse($yaml);
@@ -65,8 +63,8 @@ YAML;
     {
         $this->setFamily('Weight');
         $this->convert(
-            WeightFamilyInterface::KILOGRAM,
-            WeightFamilyInterface::MILLIGRAM,
+            'KILOGRAM',
+            'MILLIGRAM',
             1
         )->shouldReturn('1000000.000000000000');
     }
@@ -75,7 +73,7 @@ YAML;
     {
         $this->setFamily('Weight');
         $this->convertBaseToStandard(
-            WeightFamilyInterface::MILLIGRAM,
+              'MILLIGRAM',
             1000
         )->shouldReturn('1.000000000000');
     }
@@ -84,7 +82,7 @@ YAML;
     {
         $this->setFamily('Weight');
         $this->convertStandardToResult(
-            WeightFamilyInterface::KILOGRAM,
+              'KILOGRAM',
             10
         )->shouldReturn('0.010000000000');
     }
