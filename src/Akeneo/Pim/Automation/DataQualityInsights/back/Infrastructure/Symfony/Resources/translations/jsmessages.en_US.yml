@@ -67,7 +67,7 @@ akeneo_data_quality_insights:
                 axis_error: Due to an error, grade could not be fully calculated. Try again later.
                 criterion_error: Grade could not be calculated.
             success:
-                criterion: It's all good.
+                criterion: Everything is good.
             grading_in_progress: Grading in progress.
             axis_grading_in_progress: Grading in progress. Please come back later.
     product_edit_form:
