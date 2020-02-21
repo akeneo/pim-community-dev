@@ -32,14 +32,14 @@ class ListMeasureFamilyEndToEnd extends ApiTestCase
     "items": [
       {$measureFamilies['Area']},
       {$measureFamilies['Binary']},
+      {$measureFamilies['Brightness']},
+      {$measureFamilies['CaseBox']},
       {$measureFamilies['Decibel']},
+      {$measureFamilies['Duration']},
+      {$measureFamilies['ElectricCharge']},
+      {$measureFamilies['Energy']},
       {$measureFamilies['Frequency']},
-      {$measureFamilies['Length']},
-      {$measureFamilies['Power']},
-      {$measureFamilies['Voltage']},
-      {$measureFamilies['Intensity']},
-      {$measureFamilies['Resistance']},
-      {$measureFamilies['Speed']}
+      {$measureFamilies['Intensity']}
     ]
   }
 }
@@ -49,136 +49,6 @@ JSON;
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
-    }
-
-    public function testOutOfRangeListMeasureFamily()
-    {
-        $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/measure-families?page=3');
-
-        $expected = <<<JSON
-{
-  "_links": {
-    "self": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=3&limit=10&with_count=false"
-    },
-    "first": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=1&limit=10&with_count=false"
-    },
-    "previous": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=2&limit=10&with_count=false"
-    }
-  },
-  "current_page": 3,
-  "_embedded": {
-    "items": []
-  }
-}
-JSON;
-
-        $response = $client->getResponse();
-
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
-    }
-
-    public function testPaginationListMeasureFamily()
-    {
-        $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/measure-families?page=2&limit=3');
-        $measureFamilies = $this->getStandardizedMeasureFamilies();
-
-        $expected = <<<JSON
-{
-  "_links": {
-    "self": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=2&limit=3&with_count=false"
-    },
-    "first": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=1&limit=3&with_count=false"
-    },
-    "next": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=3&limit=3&with_count=false"
-    },
-    "previous": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=1&limit=3&with_count=false"
-    }
-  },
-  "current_page": 2,
-  "_embedded": {
-    "items": [
-      {$measureFamilies['Frequency']},
-      {$measureFamilies['Length']},
-      {$measureFamilies['Power']}
-    ]
-  }
-}
-JSON;
-
-        $response = $client->getResponse();
-
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
-    }
-
-    public function testListOfMeasureFamiliesWithCount()
-    {
-        $measureFamiliesConfig = $this->getParameter('akeneo_measure.measures_config');
-        $measureFamiliesCount = count($measureFamiliesConfig['measures_config']);
-
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', 'api/rest/v1/measure-families?with_count=true&limit=1');
-        $measureFamilies = $this->getStandardizedMeasureFamilies();
-
-        $expected = <<<JSON
-{
-  "_links": {
-    "self": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=1&limit=1&with_count=true"
-    },
-    "first": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=1&limit=1&with_count=true"
-    },
-    "next": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=2&limit=1&with_count=true"
-    }
-  },
-  "current_page": 1,
-  "items_count": {$measureFamiliesCount},
-  "_embedded": {
-    "items": [
-      {$measureFamilies['Area']}
-    ]
-  }
-}
-JSON;
-
-        $response = $client->getResponse();
-
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
-    }
-
-    public function testUnknownPaginationType()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', 'api/rest/v1/measure-families?pagination_type=search_after');
-
-        $response = $client->getResponse();
-
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $expected = '{"code":422,"message":"Pagination type is not supported."}';
-        $this->assertEquals($response->getContent(), $expected);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return $this->catalog->useTechnicalCatalog();
     }
 
     private function getStandardizedMeasureFamilies()
@@ -379,6 +249,61 @@ JSON;
 }
 JSON;
 
+        $measureFamilies['Brightness'] = <<<JSON
+{
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Brightness"
+    }
+  },
+  "code": "Brightness",
+  "standard": "LUMEN",
+  "units": [
+    {
+      "code": "LUMEN",
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "lm"
+    },
+    {
+      "code": "NIT",
+      "convert": {
+        "mul": "0.2918855809"
+      },
+      "symbol": "nits"
+    }
+  ]
+}
+JSON;
+        $measureFamilies['CaseBox'] = <<<JSON
+{
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/CaseBox"
+    }
+  },
+  "code": "CaseBox",
+  "standard": "PIECE",
+  "units": [
+    {
+      "code": "PIECE",
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "Pc"
+    },
+    {
+      "code": "DOZEN",
+      "convert": {
+        "mul": "12"
+      },
+      "symbol": "Dz"
+    }
+  ]
+}
+JSON;
+
         $measureFamilies['Decibel'] = <<<JSON
 {
   "_links": {
@@ -399,6 +324,196 @@ JSON;
   ]
 }
 JSON;
+
+        $measureFamilies['Duration'] = <<<JSON
+{
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Duration"
+    }
+  },
+  "code": "Duration",
+  "standard": "SECOND",
+  "units": [
+    {
+      "code": "MILLISECOND",
+      "convert": {
+        "mul": "0.001"
+      },
+      "symbol": "ms"
+    },
+    {
+      "code": "SECOND",
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "s"
+    },
+    {
+      "code": "MINUTE",
+      "convert": {
+        "mul": "60"
+      },
+      "symbol": "m"
+    },
+    {
+      "code": "HOUR",
+      "convert": {
+        "mul": "3600"
+      },
+      "symbol": "h"
+    },
+    {
+      "code": "DAY",
+      "convert": {
+        "mul": "86400"
+      },
+      "symbol": "d"
+    },
+    {
+      "code": "WEEK",
+      "convert": {
+        "mul": "604800"
+      },
+      "symbol": "week"
+    },
+    {
+      "code": "MONTH",
+      "convert": {
+        "mul": "18748800"
+      },
+      "symbol": "month"
+    },
+    {
+      "code": "YEAR",
+      "convert": {
+        "mul": "31536000"
+      },
+      "symbol": "year"
+    }
+  ]
+}
+JSON;
+
+        $measureFamilies['ElectricCharge'] = <<<JSON
+{
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/ElectricCharge"
+    }
+  },
+  "code": "ElectricCharge",
+  "standard": "AMPEREHOUR",
+  "units": [
+    {
+      "code": "MILLIAMPEREHOUR",
+      "convert": {
+        "mul": "0.001"
+      },
+      "symbol": "mAh"
+    },
+    {
+      "code": "AMPEREHOUR",
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "Ah"
+    },
+    {
+      "code": "MILLICOULOMB",
+      "convert": {
+        "div": "3600000"
+      },
+      "symbol": "mC"
+    },
+    {
+      "code": "CENTICOULOMB",
+      "convert": {
+        "div": "360000"
+      },
+      "symbol": "cC"
+    },
+    {
+      "code": "DECICOULOMB",
+      "convert": {
+        "div": "36000"
+      },
+      "symbol": "dC"
+    },
+    {
+      "code": "COULOMB",
+      "convert": {
+        "div": "3600"
+      },
+      "symbol": "C"
+    },
+    {
+      "code": "DEKACOULOMB",
+      "convert": {
+        "div": "360"
+      },
+      "symbol": "daC"
+    },
+    {
+      "code": "HECTOCOULOMB",
+      "convert": {
+        "div": "36"
+      },
+      "symbol": "hC"
+    },
+    {
+      "code": "KILOCOULOMB",
+      "convert": {
+        "div": "3.6"
+      },
+      "symbol": "kC"
+    }
+  ]
+}
+JSON;
+
+        $measureFamilies['Energy'] = <<<JSON
+{
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Energy"
+    }
+  },
+  "code": "Energy",
+  "standard": "JOULE",
+  "units": [
+    {
+      "code": "JOULE",
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "J"
+    },
+    {
+      "code": "CALORIE",
+      "convert": {
+        "mul": "4.184"
+      },
+      "symbol": "cal"
+    },
+    {
+      "code": "KILOCALORIE",
+      "convert": {
+        "mul": "4184"
+      },
+      "symbol": "kcal"
+    },
+    {
+      "code": "KILOJOULE",
+      "convert": {
+        "mul": "1000"
+      },
+      "symbol": "kJ"
+    }
+  ]
+}
+JSON;
+
 
         $measureFamilies['Frequency'] = <<<JSON
 {
@@ -448,6 +563,70 @@ JSON;
   ]
 }
 JSON;
+
+        $measureFamilies['Intensity'] = <<<JSON
+{
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Intensity"
+    }
+  },
+  "code": "Intensity",
+  "standard": "AMPERE",
+  "units": [
+    {
+      "code": "MILLIAMPERE",
+      "convert": {
+        "mul": "0.001"
+      },
+      "symbol": "mA"
+    },
+    {
+      "code": "CENTIAMPERE",
+      "convert": {
+        "mul": "0.01"
+      },
+      "symbol": "cA"
+    },
+    {
+      "code": "DECIAMPERE",
+      "convert": {
+        "mul": "0.1"
+      },
+      "symbol": "dA"
+    },
+    {
+      "code": "AMPERE",
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "A"
+    },
+    {
+      "code": "DEKAMPERE",
+      "convert": {
+        "mul": "10"
+      },
+      "symbol": "daA"
+    },
+    {
+      "code": "HECTOAMPERE",
+      "convert": {
+        "mul": "100"
+      },
+      "symbol": "hA"
+    },
+    {
+      "code": "KILOAMPERE",
+      "convert": {
+        "mul": "1000"
+      },
+      "symbol": "kA"
+    }
+  ]
+}
+JSON;
+
         $measureFamilies['Length'] = <<<JSON
 {
   "_links": {
@@ -608,127 +787,71 @@ JSON;
 }
 JSON;
 
-        $measureFamilies['Voltage'] = <<<JSON
+        $measureFamilies['Pressure'] = <<<JSON
 {
   "_links": {
     "self": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Voltage"
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Pressure"
     }
   },
-  "code": "Voltage",
-  "standard": "VOLT",
+  "code": "Pressure",
+  "standard": "BAR",
   "units": [
     {
-      "code": "MILLIVOLT",
-      "convert": {
-        "mul": "0.001"
-      },
-      "symbol": "mV"
-    },
-    {
-      "code": "CENTIVOLT",
-      "convert": {
-        "mul": "0.01"
-      },
-      "symbol": "cV"
-    },
-    {
-      "code": "DECIVOLT",
-      "convert": {
-        "mul": "0.1"
-      },
-      "symbol": "dV"
-    },
-    {
-      "code": "VOLT",
+      "code": "BAR",
       "convert": {
         "mul": "1"
       },
-      "symbol": "V"
+      "symbol": "Bar"
     },
     {
-      "code": "DEKAVOLT",
+      "code": "PASCAL",
       "convert": {
-        "mul": "10"
+        "mul": "0.00001"
       },
-      "symbol": "daV"
+      "symbol": "Pa"
     },
     {
-      "code": "HECTOVOLT",
-      "convert": {
-        "mul": "100"
-      },
-      "symbol": "hV"
-    },
-    {
-      "code": "KILOVOLT",
-      "convert": {
-        "mul": "1000"
-      },
-      "symbol": "kV"
-    }
-  ]
-}
-JSON;
-
-        $measureFamilies['Intensity'] = <<<JSON
-{
-  "_links": {
-    "self": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Intensity"
-    }
-  },
-  "code": "Intensity",
-  "standard": "AMPERE",
-  "units": [
-    {
-      "code": "MILLIAMPERE",
+      "code": "HECTOPASCAL",
       "convert": {
         "mul": "0.001"
       },
-      "symbol": "mA"
+      "symbol": "hPa"
     },
     {
-      "code": "CENTIAMPERE",
+      "code": "MILLIBAR",
       "convert": {
-        "mul": "0.01"
+        "mul": "0.001"
       },
-      "symbol": "cA"
+      "symbol": "mBar"
     },
     {
-      "code": "DECIAMPERE",
+      "code": "ATM",
       "convert": {
-        "mul": "0.1"
+        "mul": "0.986923"
       },
-      "symbol": "dA"
+      "symbol": "atm"
     },
     {
-      "code": "AMPERE",
+      "code": "PSI",
       "convert": {
-        "mul": "1"
+        "mul": "14.50376985373022"
       },
-      "symbol": "A"
+      "symbol": "PSI"
     },
     {
-      "code": "DEKAMPERE",
+      "code": "TORR",
       "convert": {
-        "mul": "10"
+        "mul": "750.06375541921"
       },
-      "symbol": "daA"
+      "symbol": "Torr"
     },
     {
-      "code": "HECTOAMPERE",
+      "code": "MMHG",
       "convert": {
-        "mul": "100"
+        "mul": "750.06375541921"
       },
-      "symbol": "hA"
-    },
-    {
-      "code": "KILOAMPERE",
-      "convert": {
-        "mul": "1000"
-      },
-      "symbol": "kA"
+      "symbol": "mmHg"
     }
   ]
 }
@@ -879,6 +1002,466 @@ JSON;
 }
 JSON;
 
+        $measureFamilies['Temperature'] = <<<JSON
+{
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Temperature"
+    }
+  },
+  "code": "Temperature",
+  "standard": "KELVIN",
+  "units": [
+    {
+      "code": "CELSIUS",
+      "convert": {
+        "add": "273.15"
+      },
+      "symbol": "°C"
+    },
+    {
+      "code": "FAHRENHEIT",
+      "convert": {
+        "sub": "32",
+        "div": "1.8",
+        "add": "273.15"
+      },
+      "symbol": "°F"
+    },
+    {
+      "code": "KELVIN",
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "°K"
+    },
+    {
+      "code": "RANKINE",
+      "convert": {
+        "div": "1.8"
+      },
+      "symbol": "°R"
+    },
+    {
+      "code": "REAUMUR",
+      "convert": {
+        "mul": "1.25",
+        "add": "273.15"
+      },
+      "symbol": "°r"
+    }
+  ]
+}
+JSON;
+
+        $measureFamilies['Voltage'] = <<<JSON
+{
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Voltage"
+    }
+  },
+  "code": "Voltage",
+  "standard": "VOLT",
+  "units": [
+    {
+      "code": "MILLIVOLT",
+      "convert": {
+        "mul": "0.001"
+      },
+      "symbol": "mV"
+    },
+    {
+      "code": "CENTIVOLT",
+      "convert": {
+        "mul": "0.01"
+      },
+      "symbol": "cV"
+    },
+    {
+      "code": "DECIVOLT",
+      "convert": {
+        "mul": "0.1"
+      },
+      "symbol": "dV"
+    },
+    {
+      "code": "VOLT",
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "V"
+    },
+    {
+      "code": "DEKAVOLT",
+      "convert": {
+        "mul": "10"
+      },
+      "symbol": "daV"
+    },
+    {
+      "code": "HECTOVOLT",
+      "convert": {
+        "mul": "100"
+      },
+      "symbol": "hV"
+    },
+    {
+      "code": "KILOVOLT",
+      "convert": {
+        "mul": "1000"
+      },
+      "symbol": "kV"
+    }
+  ]
+}
+JSON;
+
+        $measureFamilies['Volume'] = <<<JSON
+{
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Volume"
+    }
+  },
+  "code": "Volume",
+  "standard": "CUBIC_METER",
+  "units": [
+    {
+      "code": "CUBIC_MILLIMETER",
+      "convert": {
+        "mul": "0.000000001"
+      },
+      "symbol": "mm³"
+    },
+    {
+      "code": "CUBIC_CENTIMETER",
+      "convert": {
+        "mul": "0.000001"
+      },
+      "symbol": "cm³"
+    },
+    {
+      "code": "MILLILITER",
+      "convert": {
+        "mul": "0.000001"
+      },
+      "symbol": "ml"
+    },
+    {
+      "code": "CENTILITER",
+      "convert": {
+        "mul": "0.00001"
+      },
+      "symbol": "cl"
+    },
+    {
+      "code": "DECILITER",
+      "convert": {
+        "mul": "0.0001"
+      },
+      "symbol": "dl"
+    },
+    {
+      "code": "CUBIC_DECIMETER",
+      "convert": {
+        "mul": "0.001"
+      },
+      "symbol": "dm³"
+    },
+    {
+      "code": "LITER",
+      "convert": {
+        "mul": "0.001"
+      },
+      "symbol": "l"
+    },
+    {
+      "code": "CUBIC_METER",
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "m³"
+    },
+    {
+      "code": "OUNCE",
+      "convert": {
+        "mul": "0.00454609",
+        "div": "160"
+      },
+      "symbol": "oz"
+    },
+    {
+      "code": "PINT",
+      "convert": {
+        "mul": "0.00454609",
+        "div": "8"
+      },
+      "symbol": "pt"
+    },
+    {
+      "code": "BARREL",
+      "convert": {
+        "mul": "0.16365924"
+      },
+      "symbol": "bbl"
+    },
+    {
+      "code": "GALLON",
+      "convert": {
+        "mul": "0.00454609"
+      },
+      "symbol": "gal"
+    },
+    {
+      "code": "CUBIC_FOOT",
+      "convert": {
+        "mul": "6.54119159",
+        "div": "231"
+      },
+      "symbol": "ft³"
+    },
+    {
+      "code": "CUBIC_INCH",
+      "convert": {
+        "mul": "0.0037854118",
+        "div": "231"
+      },
+      "symbol": "in³"
+    },
+    {
+      "code": "CUBIC_YARD",
+      "convert": {
+        "mul": "0.764554861"
+      },
+      "symbol": "yd³"
+    }
+  ]
+}
+JSON;
+
+        $measureFamilies['Weight'] = <<<JSON
+{
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Weight"
+    }
+  },
+  "code": "Weight",
+  "standard": "KILOGRAM",
+  "units": [
+    {
+      "code": "MILLIGRAM",
+      "convert": {
+        "mul": "0.000001"
+      },
+      "symbol": "mg"
+    },
+    {
+      "code": "GRAM",
+      "convert": {
+        "mul": "0.001"
+      },
+      "symbol": "g"
+    },
+    {
+      "code": "KILOGRAM",
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "kg"
+    },
+    {
+      "code": "TON",
+      "convert": {
+        "mul": "1000"
+      },
+      "symbol": "t"
+    },
+    {
+      "code": "GRAIN",
+      "convert": {
+        "mul": "0.00006479891"
+      },
+      "symbol": "gr"
+    },
+    {
+      "code": "DENIER",
+      "convert": {
+        "mul": "0.001275"
+      },
+      "symbol": "denier"
+    },
+    {
+      "code": "ONCE",
+      "convert": {
+        "mul": "0.03059"
+      },
+      "symbol": "once"
+    },
+    {
+      "code": "MARC",
+      "convert": {
+        "mul": "0.24475"
+      },
+      "symbol": "marc"
+    },
+    {
+      "code": "LIVRE",
+      "convert": {
+        "mul": "0.4895"
+      },
+      "symbol": "livre"
+    },
+    {
+      "code": "OUNCE",
+      "convert": {
+        "mul": "0.45359237",
+        "div": "16"
+      },
+      "symbol": "oz"
+    },
+    {
+      "code": "POUND",
+      "convert": {
+        "mul": "0.45359237"
+      },
+      "symbol": "lb"
+    }
+  ]
+}
+JSON;
+
         return $measureFamilies;
+    }
+
+    public function testOutOfRangeListMeasureFamily()
+    {
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/measure-families?page=3');
+
+        $expected = <<<JSON
+{
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=3&limit=10&with_count=false"
+    },
+    "first": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=1&limit=10&with_count=false"
+    },
+    "previous": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=2&limit=10&with_count=false"
+    }
+  },
+  "current_page": 3,
+  "_embedded": {
+    "items": []
+  }
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
+    public function testPaginationListMeasureFamily()
+    {
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/measure-families?page=2&limit=3');
+        $measureFamilies = $this->getStandardizedMeasureFamilies();
+
+        $expected = <<<JSON
+{
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=2&limit=3&with_count=false"
+    },
+    "first": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=1&limit=3&with_count=false"
+    },
+    "previous": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=1&limit=3&with_count=false"
+    },
+    "next": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=3&limit=3&with_count=false"
+    }
+  },
+  "current_page": 2,
+  "_embedded": {
+    "items": [
+      {$measureFamilies['CaseBox']},
+      {$measureFamilies['Decibel']},
+      {$measureFamilies['Duration']}
+    ]
+  }
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
+    public function testListOfMeasureFamiliesWithCount()
+    {
+        $measureFamiliesConfig = $this->getParameter('akeneo_measure.measures_config');
+        $measureFamiliesCount = count($measureFamiliesConfig['measures_config']);
+
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/measure-families?with_count=true&limit=1');
+        $measureFamilies = $this->getStandardizedMeasureFamilies();
+
+        $expected = <<<JSON
+{
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=1&limit=1&with_count=true"
+    },
+    "first": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=1&limit=1&with_count=true"
+    },
+    "next": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=2&limit=1&with_count=true"
+    }
+  },
+  "current_page": 1,
+  "items_count": {$measureFamiliesCount},
+  "_embedded": {
+    "items": [
+      {$measureFamilies['Area']}
+    ]
+  }
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
+    public function testUnknownPaginationType()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/measure-families?pagination_type=search_after');
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $expected = '{"code":422,"message":"Pagination type is not supported."}';
+        $this->assertEquals($response->getContent(), $expected);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return $this->catalog->useTechnicalCatalog();
     }
 }
