@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9108: Fix 'unsaved changes' message wrongly displayed when switching category tree
+
 # 3.2.40 (2020-02-20)
 
 ## Bug fixes:
