@@ -3,8 +3,6 @@
 namespace Specification\Akeneo\Channel\Component\Normalizer\Standard;
 
 use Akeneo\Channel\Component\Normalizer\Standard\ChannelNormalizer;
-use Akeneo\Tool\Bundle\MeasureBundle\Family\LengthFamilyInterface;
-use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
@@ -45,8 +43,8 @@ class ChannelNormalizerSpec extends ObjectBehavior
         CurrencyInterface $currencyEUR
     ) {
         $units = [
-            'weight_attribute' => WeightFamilyInterface::GRAM,
-            'length_attribute' => LengthFamilyInterface::CENTIMETER,
+            'weight_attribute' => 'GRAM',
+            'length_attribute' => 'CENTIMETER',
         ];
 
         $channel->getCode()->willReturn('my_code');

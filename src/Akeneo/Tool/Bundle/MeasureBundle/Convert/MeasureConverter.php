@@ -24,9 +24,6 @@ class MeasureConverter
     /** @var LegacyMeasurementProvider */
     private $legacyMeasurementProvider;
 
-    /** @var array */
-    private $measurementFamilies = null;
-
     public function __construct(LegacyMeasurementProvider $provider)
     {
         $this->legacyMeasurementProvider = $provider;
@@ -43,8 +40,8 @@ class MeasureConverter
      */
     public function setFamily($family)
     {
-        $this->checkMeasurementFamilyCache();
-        if (!isset($this->measurementFamilies[$family])) {
+        $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
+        if (!isset($measurementFamilies[$family])) {
             throw new UnknownFamilyMeasureException();
         }
 
@@ -84,8 +81,8 @@ class MeasureConverter
      */
     public function convertBaseToStandard($baseUnit, $value)
     {
-        $this->checkMeasurementFamilyCache();
-        if (!isset($this->measurementFamilies[$this->family]['units'][$baseUnit])) {
+        $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
+        if (!isset($measurementFamilies[$this->family]['units'][$baseUnit])) {
             throw new UnknownMeasureException(
                 sprintf(
                     'Could not find metric unit "%s" in family "%s"',
@@ -94,7 +91,7 @@ class MeasureConverter
                 )
             );
         }
-        $conversionConfig = $this->measurementFamilies[$this->family]['units'][$baseUnit]['convert'];
+        $conversionConfig = $measurementFamilies[$this->family]['units'][$baseUnit]['convert'];
         $convertedValue = $value;
 
         foreach ($conversionConfig as $operation) {
@@ -155,8 +152,8 @@ class MeasureConverter
      */
     public function convertStandardToResult($finalUnit, $value)
     {
-        $this->checkMeasurementFamilyCache();
-        if (!isset($this->measurementFamilies[$this->family]['units'][$finalUnit])) {
+        $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
+        if (!isset($measurementFamilies[$this->family]['units'][$finalUnit])) {
             throw new UnknownMeasureException(
                 sprintf(
                     'Could not find metric unit "%s" in family "%s"',
@@ -165,7 +162,7 @@ class MeasureConverter
                 )
             );
         }
-        $conversionConfig = $this->measurementFamilies[$this->family]['units'][$finalUnit]['convert'];
+        $conversionConfig = $measurementFamilies[$this->family]['units'][$finalUnit]['convert'];
         $convertedValue = $value;
 
         // calculate result with conversion config (calculs must be reversed and operation inversed)
@@ -212,12 +209,5 @@ class MeasureConverter
         }
 
         return $processedValue;
-    }
-
-    private function checkMeasurementFamilyCache(): void
-    {
-        if (null === $this->measurementFamilies) {
-            $this->measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
-        }
     }
 }

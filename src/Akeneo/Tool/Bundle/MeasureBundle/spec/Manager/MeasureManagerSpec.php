@@ -2,7 +2,6 @@
 
 namespace spec\Akeneo\Tool\Bundle\MeasureBundle\Manager;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Yaml\Yaml;
@@ -15,7 +14,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class MeasureManagerSpec extends ObjectBehavior
 {
-    function let()
+    function let(LegacyMeasurementProvider $provider)
     {
         $yaml = <<<YAML
 measures_config:
@@ -40,12 +39,12 @@ measures_config:
             KILOGRAM:
                 convert: [{'mul': 1000}]
                 symbol: kg
-
 YAML;
 
         $config = Yaml::parse($yaml);
 
-        $this->setMeasureConfig($config['measures_config']);
+        $provider->getMeasurementFamilies()->willReturn($config['measures_config']);
+        $this->beConstructedWith($provider);
     }
 
     public function it_throws_an_exception_when_try_to_get_symbols_of_unknown_family()
@@ -66,7 +65,7 @@ YAML;
     public function it_returns_unit_symbols_list_from_a_family()
     {
         $this
-            ->getUnitSymbolsForFamily(WeightFamilyInterface::FAMILY)
+            ->getUnitSymbolsForFamily('Weight')
             ->shouldReturn(
                 [
                     'MILLIGRAM' => 'mg',
@@ -79,36 +78,36 @@ YAML;
     public function it_indicates_wether_a_unit_symbol_exists_for_a_family()
     {
         $this
-            ->unitSymbolExistsInFamily('mg', WeightFamilyInterface::FAMILY)
+            ->unitSymbolExistsInFamily('mg', 'Weight')
             ->shouldReturn(true);
 
         $this
-            ->unitSymbolExistsInFamily('foo', WeightFamilyInterface::FAMILY)
+            ->unitSymbolExistsInFamily('foo', 'Weight')
             ->shouldReturn(false);
     }
 
     public function it_returns_standard_unit_for_a_family()
     {
         $this
-            ->getStandardUnitForFamily(WeightFamilyInterface::FAMILY)
-            ->shouldReturn(WeightFamilyInterface::GRAM);
+            ->getStandardUnitForFamily('Weight')
+            ->shouldReturn('GRAM');
     }
 
     public function it_returns_unit_codes_for_a_family()
     {
         $this
-            ->getUnitCodesForFamily(WeightFamilyInterface::FAMILY)
+            ->getUnitCodesForFamily('Weight')
             ->shouldReturn(['MILLIGRAM', 'GRAM', 'KILOGRAM']);
     }
 
     public function it_indicates_wether_a_unit_code_exists_for_a_family()
     {
         $this
-            ->unitCodeExistsInFamily(WeightFamilyInterface::GRAM, WeightFamilyInterface::FAMILY)
+            ->unitCodeExistsInFamily('GRAM', 'Weight')
             ->shouldReturn(true);
 
         $this
-            ->unitCodeExistsInFamily('FOO', WeightFamilyInterface::FAMILY)
+            ->unitCodeExistsInFamily('FOO', 'Weight')
             ->shouldReturn(false);
     }
 }
