@@ -14,12 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetAttributeAsMainTitleValueFromProductIdInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetAttributesByTypeFromProductQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductRawValuesByAttributeQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 class BuildProductValues implements BuildProductValuesInterface
 {
@@ -28,7 +25,6 @@ class BuildProductValues implements BuildProductValuesInterface
 
     /** @var GetLocalesByChannelQueryInterface */
     private $localesByChannelQuery;
-
 
     public function __construct(
         GetProductRawValuesByAttributeQueryInterface $getProductRawValuesByAttributeQuery,
@@ -40,6 +36,10 @@ class BuildProductValues implements BuildProductValuesInterface
 
     public function buildForProductIdAndAttributeCodes(ProductId $productId, array $attributesCodes): array
     {
+        if (empty($attributesCodes)) {
+            return [];
+        }
+
         $rawValues = $this->getProductRawValuesByAttributeQuery->execute($productId, $attributesCodes);
 
         return $this->buildByChannelAndLocale($attributesCodes, $rawValues);

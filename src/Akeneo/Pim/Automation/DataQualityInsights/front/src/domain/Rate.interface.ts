@@ -1,7 +1,6 @@
 export default interface Rate {
-  criterion: string;
-  rate: number;
-  letterRate: string;
+  value: number | null;
+  rank: string | null;
 }
 
 export const MAX_RATE = 100;

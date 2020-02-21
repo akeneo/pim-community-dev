@@ -13,8 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductAxesRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductAxesRatesQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository;
 use Akeneo\Test\Integration\TestCase;
@@ -36,7 +42,7 @@ final class GetLatestProductAxesRatesQueryIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_it_returns_the_latest_axes_rates_by_product_ids()
+    public function test_it_returns_the_latest_axes_rates_of_a_product_by_its_id()
     {
         $rates = [
             'product_42_consistency_latest_rates' => [
@@ -72,28 +78,6 @@ final class GetLatestProductAxesRatesQueryIntegration extends TestCase
                     ]
                 ]
             ],
-            'product_123_enrichment_latest_rates' => [
-                'product_id' => 123,
-                'axis' => 'enrichment',
-                'evaluated_at' => new \DateTime('2020-01-09'),
-                'rates' => [
-                    'mobile' => [
-                        'en_US' => ['rank' => 1, 'value' => 100],
-                        'fr_FR' => ['rank' => 1, 'value' => 95],
-                    ]
-                ]
-            ],
-            'product_123_enrichment_previous_rates' => [
-                'product_id' => 123,
-                'axis' => 'enrichment',
-                'evaluated_at' => new \DateTime('2020-01-08'),
-                'rates' => [
-                    'mobile' => [
-                        'en_US' => ['rank' => 2, 'value' => 81],
-                        'fr_FR' => ['rank' => 1, 'value' => 95],
-                    ]
-                ]
-            ],
             'other_product_rates' => [
                 'product_id' => 456,
                 'axis' => 'enrichment',
@@ -109,19 +93,32 @@ final class GetLatestProductAxesRatesQueryIntegration extends TestCase
         $repository = $this->getRepository();
         $repository->save(array_values($rates));
 
-        $expectedRates = [
-            42 => new ProductAxesRates(new ProductId(42), [
-                'consistency' => $rates['product_42_consistency_latest_rates']['rates'],
-                'enrichment' => $rates['product_42_enrichment_latest_rates']['rates'],
-            ]),
-            123 => new ProductAxesRates(new ProductId(123), [
-                'enrichment' => $rates['product_123_enrichment_latest_rates']['rates'],
-            ]),
-        ];
+        $consistency = new Consistency();
+        $enrichment = new Enrichment();
+        $channelMobile = new ChannelCode('mobile');
+        $localeEn = new LocaleCode('en_US');
+        $localeFr = new LocaleCode('fr_FR');
 
-        $productAxesRates = $this->query->byProductIds([new ProductId(42), new ProductId(123), new ProductId(321)]);
+        $expectedRates = (new AxisRateCollection())
+            ->add($consistency->getCode(), (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate($rates['product_42_consistency_latest_rates']['rates']['mobile']['en_US']['value']))
+                ->addRate($channelMobile, $localeFr, new Rate($rates['product_42_consistency_latest_rates']['rates']['mobile']['fr_FR']['value']))
+            )
+            ->add($enrichment->getCode(), (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate($rates['product_42_enrichment_latest_rates']['rates']['mobile']['en_US']['value']))
+                ->addRate($channelMobile, $localeFr, new Rate($rates['product_42_enrichment_latest_rates']['rates']['mobile']['fr_FR']['value']))
+            )
+        ;
+
+        $productAxesRates = $this->query->byProductId(new ProductId(42));
 
         $this->assertEqualsCanonicalizing($expectedRates, $productAxesRates);
+    }
+
+    public function test_it_returns_an_empty_collection_if_there_are_no_axes_rates()
+    {
+        $productAxesRates = $this->query->byProductId(new ProductId(42));
+        $this->assertEquals(new AxisRateCollection(), $productAxesRates);
     }
 
     private function getRepository(): ProductAxisRateRepository

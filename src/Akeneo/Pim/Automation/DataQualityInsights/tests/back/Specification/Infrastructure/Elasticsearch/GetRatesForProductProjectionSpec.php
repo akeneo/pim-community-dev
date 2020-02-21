@@ -13,23 +13,29 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductAxesRates;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRankCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRankCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRanksQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductIdsFromProductIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use PhpSpec\ObjectBehavior;
 
 final class GetRatesForProductProjectionSpec extends ObjectBehavior
 {
     public function let(
-        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
+        GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery,
         GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery
     ) {
-        $this->beConstructedWith($getLatestProductAxesRatesQuery, $getProductIdsFromProductIdentifiersQuery);
+        $this->beConstructedWith($getLatestProductAxesRanksQuery, $getProductIdsFromProductIdentifiersQuery);
     }
 
     public function it_returns_product_rates_from_product_identifiers(
-        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
+        GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery,
         GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery
     ) {
         $productId42 = new ProductId(42);
@@ -46,30 +52,27 @@ final class GetRatesForProductProjectionSpec extends ObjectBehavior
 
         $getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers)->willReturn($productIds);
 
-        $getLatestProductAxesRatesQuery->byProductIds($productIds)->willReturn([
-            42 => new ProductAxesRates(new ProductId(42), [
-                'enrichment' => [
-                        'mobile' => [
-                            'en_US' => ['value' => 83, 'rank' => 2],
-                            'fr_FR' => ['value' => 9, 'rank' => 5],
-                        ],
-                        'ecommerce' => [
-                            'en_US' => ['value' => 78, 'rank' => 3],
-                        ],
-                    ],
-                    'consistency' => [
-                        'mobile' => [
-                            'en_US' => ['value' => 98, 'rank' => 1],
-                        ],
-                    ],
-            ]),
-            123 => new ProductAxesRates(new ProductId(123), [
-                'enrichment' => [
-                        'mobile' => [
-                            'en_US' => ['value' => 67, 'rank' => 4],
-                        ],
-                    ],
-            ])
+        $consistency = new Consistency();
+        $enrichment = new Enrichment();
+        $channelEcommerce = new ChannelCode('ecommerce');
+        $channelMobile = new ChannelCode('mobile');
+        $localeEn = new LocaleCode('en_US');
+        $localeFr = new LocaleCode('fr_FR');
+
+        $getLatestProductAxesRanksQuery->byProductIds($productIds)->willReturn([
+            42 => (new AxisRankCollection())
+                ->add($enrichment->getCode(), (new ChannelLocaleRankCollection())
+                    ->addRank($channelMobile, $localeEn, Rank::fromInt(2))
+                    ->addRank($channelMobile, $localeFr, Rank::fromInt(5))
+                    ->addRank($channelEcommerce, $localeEn, Rank::fromInt(3))
+                )
+                ->add($consistency->getCode(), (new ChannelLocaleRankCollection())
+                    ->addRank($channelMobile, $localeEn, Rank::fromInt(1))
+                ),
+            123 => (new AxisRankCollection())
+                ->add($enrichment->getCode(), (new ChannelLocaleRankCollection())
+                    ->addRank($channelMobile, $localeEn, Rank::fromInt(4))
+                ),
         ]);
 
         $this->fromProductIdentifiers($productIdentifiers)->shouldReturn([

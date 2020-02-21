@@ -14,14 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Repository;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -90,7 +88,7 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
         $createdAt = new \DateTimeImmutable();
         $criterionEvaluationId = new CriterionEvaluationId('aeb3218d-e923-42cf-a0f9-a2fc3beaf628');
 
-        $criterionEvaluation = new CriterionEvaluation(
+        $criterionEvaluation = new Write\CriterionEvaluation(
             $criterionEvaluationId,
             new CriterionCode('completeness'),
             new ProductId(567),
@@ -101,11 +99,14 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
         $criteriaEvaluationCollection->add($criterionEvaluation);
         $this->repository->create($criteriaEvaluationCollection);
 
-        $rates = new CriterionRateCollection();
-        $rates->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(75));
+        $evaluationResult = (new Write\CriterionEvaluationResult())
+            ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(75))
+            ->addStatus(new ChannelCode('mobile'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
+            ->addImprovableAttributes(new ChannelCode('mobile'), new LocaleCode('en_US'), [])
+        ;
 
         $criterionEvaluation->start();
-        $criterionEvaluation->end(new CriterionEvaluationResult($rates, ['count' => 124]));
+        $criterionEvaluation->end($evaluationResult);
         $this->repository->update($criterionEvaluation);
 
         $rawCriterionEvaluation = $this->findOneCriterionEvaluationById($criterionEvaluationId);
@@ -118,6 +119,19 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
         $this->assertEquals($criterionEvaluation->getStartedAt()->format(Clock::TIME_FORMAT), $rawCriterionEvaluation['started_at']);
         $this->assertEquals($criterionEvaluation->getEndedAt()->format(Clock::TIME_FORMAT), $rawCriterionEvaluation['ended_at']);
         $this->assertJson($rawCriterionEvaluation['result']);
+        $this->assertEquals([
+            'rates' => [
+                'mobile' => ['en_US' => 75]
+            ],
+            'status' => [
+                'mobile' => ['en_US' => CriterionEvaluationResultStatus::DONE]
+            ],
+            'data' => [
+                'attributes' => [
+                    'mobile' => ['en_US' => []]
+                ]
+            ]
+        ], json_decode($rawCriterionEvaluation['result'], true));
     }
 
     public function test_it_finds_criterion_to_evaluate()
@@ -138,42 +152,42 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
 
     public function test_it_purges_evaluations_older_than_a_given_date()
     {
-        $this->createEndedCriterionEvaluation(new CriterionEvaluation(
+        $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
             new CriterionEvaluationId('42_completeness_last_evaluation'),
             new CriterionCode('completeness'),
             new ProductId(42),
             new \DateTimeImmutable('2019-10-28 10:41:56.123'),
             CriterionEvaluationStatus::pending()
         ));
-        $this->createEndedCriterionEvaluation(new CriterionEvaluation(
+        $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
             new CriterionEvaluationId('42_completeness_young_evaluation'),
             new CriterionCode('completeness'),
             new ProductId(42),
             new \DateTimeImmutable('2019-10-28 10:41:57.123'),
             CriterionEvaluationStatus::pending()
         ));
-        $this->createEndedCriterionEvaluation(new CriterionEvaluation(
+        $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
             new CriterionEvaluationId('42_completeness_old_evaluation'),
             new CriterionCode('completeness'),
             new ProductId(42),
             new \DateTimeImmutable('2019-10-27 10:41:56.123'),
             CriterionEvaluationStatus::pending()
         ));
-        $this->createEndedCriterionEvaluation(new CriterionEvaluation(
+        $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
             new CriterionEvaluationId('42_spelling_last_evaluation'),
             new CriterionCode('spelling'),
             new ProductId(42),
             new \DateTimeImmutable('2019-10-28 11:41:56.123'),
             CriterionEvaluationStatus::pending()
         ));
-        $this->createEndedCriterionEvaluation(new CriterionEvaluation(
+        $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
             new CriterionEvaluationId('42_spelling_old_evaluation'),
             new CriterionCode('spelling'),
             new ProductId(42),
             new \DateTimeImmutable('2019-10-27 23:59:59.999'),
             CriterionEvaluationStatus::pending()
         ));
-        $this->createEndedCriterionEvaluation(new CriterionEvaluation(
+        $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
             new CriterionEvaluationId('123_spelling_last_but_old_evaluation'),
             new CriterionCode('spelling'),
             new ProductId(123),
@@ -189,17 +203,17 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
         $this->assertCriterionEvaluationExists('123_spelling_last_but_old_evaluation');
     }
 
-    private function buildCollection(): CriterionEvaluationCollection
+    private function buildCollection(): Write\CriterionEvaluationCollection
     {
-        $criteria = (new CriterionEvaluationCollection)
-            ->add(new CriterionEvaluation(
+        $criteria = (new Write\CriterionEvaluationCollection)
+            ->add(new Write\CriterionEvaluation(
                 new CriterionEvaluationId('95f124de-45cd-495e-ac58-349086ad6cd4'),
                 new CriterionCode('completeness'),
                 new ProductId(42),
                 new \DateTimeImmutable('2019-10-28 10:41:56.123'),
                 CriterionEvaluationStatus::pending()
             ))
-            ->add(new CriterionEvaluation(
+            ->add(new Write\CriterionEvaluation(
                 new CriterionEvaluationId('d7bcae1e-30c9-4626-9c4f-d06cae03e77e'),
                 new CriterionCode('completion'),
                 new ProductId(123),
@@ -234,12 +248,12 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function createEndedCriterionEvaluation(CriterionEvaluation $criterionEvaluation): void
+    private function createEndedCriterionEvaluation(Write\CriterionEvaluation $criterionEvaluation): void
     {
-        $criteria = (new CriterionEvaluationCollection)->add($criterionEvaluation);
+        $criteria = (new Write\CriterionEvaluationCollection)->add($criterionEvaluation);
         $this->repository->create($criteria);
 
-        $criterionEvaluation->end(new CriterionEvaluationResult(new CriterionRateCollection(), []));
+        $criterionEvaluation->end(new Write\CriterionEvaluationResult());
         $this->repository->update($criterionEvaluation);
     }
 

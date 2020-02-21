@@ -27,16 +27,7 @@ class BuildProductValuesSpec extends ObjectBehavior
         $this->beConstructedWith($getProductRawValuesByAttributeQuery, $localesByChannelQuery);
     }
 
-    public function it_returns_nothing_when_there_is_no_attributes(
-        $localesByChannelQuery,
-        $getProductRawValuesByAttributeQuery
-    ) {
-        $localesByChannelQuery->execute()->willReturn([]);
-
-        $getProductRawValuesByAttributeQuery
-            ->execute(new ProductId(1), [])
-            ->willReturn([]);
-
+    public function it_returns_nothing_when_there_is_no_attributes() {
         $this->buildForProductIdAndAttributeCodes(new ProductId(1), [])->shouldReturn([]);
     }
 

@@ -14,15 +14,17 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository;
@@ -66,6 +68,11 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
     {
         $completeness = new CriterionCode('completeness');
         $productId = new ProductId(42);
+        $channelEcommerce = new ChannelCode('ecommerce');
+        $channelMobile = new ChannelCode('mobile');
+        $localeEn = new LocaleCode('en_US');
+        $localeFr = new LocaleCode('fr_FR');
+
         $repository = $this->getRepository();
 
         $latestCompletenessEvaluationDone = new Write\CriterionEvaluation(
@@ -76,18 +83,26 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
             CriterionEvaluationStatus::done()
         );
 
+        $latestCompletenessEvaluationResult = (new Write\CriterionEvaluationResult())
+            ->addRate($channelEcommerce, $localeEn, new Rate(90))
+            ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
+            ->addImprovableAttributes($channelEcommerce, $localeEn, ['description'])
+
+            ->addRate($channelEcommerce, $localeFr, new Rate(75))
+            ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done())
+            ->addImprovableAttributes($channelEcommerce, $localeFr, ['description', 'weight'])
+
+            ->addRate($channelMobile, $localeEn, new Rate(100))
+            ->addStatus($channelMobile, $localeEn, CriterionEvaluationResultStatus::done())
+
+            ->addRate($channelMobile, $localeFr, new Rate(85))
+            ->addStatus($channelMobile, $localeFr, CriterionEvaluationResultStatus::done())
+            ->addImprovableAttributes($channelMobile, $localeFr, ['weight'])
+        ;
+
         $repository->create((new Write\CriterionEvaluationCollection())->add($latestCompletenessEvaluationDone));
         $latestCompletenessEvaluationDone->start();
-        $latestCompletenessEvaluationDone->end(new CriterionEvaluationResult(CriterionRateCollection::fromArray([
-            'ecommerce' => [
-                'en_US' => 90,
-                'fr_FR' => 75,
-            ],
-            'mobile' => [
-                'en_US' => 100,
-                'fr_FR' => 85,
-            ]
-        ]), []));
+        $latestCompletenessEvaluationDone->end($latestCompletenessEvaluationResult);
         $repository->update($latestCompletenessEvaluationDone);
 
         $olderCompletenessEvaluationDone = new Write\CriterionEvaluation(
@@ -100,7 +115,7 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
 
         $repository->create((new Write\CriterionEvaluationCollection())->add($olderCompletenessEvaluationDone));
         $olderCompletenessEvaluationDone->start();
-        $olderCompletenessEvaluationDone->end(new CriterionEvaluationResult(new CriterionRateCollection(), []));
+        $olderCompletenessEvaluationDone->end(new Write\CriterionEvaluationResult());
         $repository->update($olderCompletenessEvaluationDone);
     }
 
@@ -161,12 +176,17 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
 
         $repository->create((new Write\CriterionEvaluationCollection())->add($grammarEvaluationDone));
         $grammarEvaluationDone->start();
-        $grammarEvaluationDone->end(new CriterionEvaluationResult(new CriterionRateCollection(), []));
+        $grammarEvaluationDone->end(new Write\CriterionEvaluationResult());
         $repository->update($grammarEvaluationDone);
     }
 
     private function givenACompletenessEvaluationDoneForAnotherProduct(): void
     {
+        $channelEcommerce = new ChannelCode('ecommerce');
+        $channelMobile = new ChannelCode('mobile');
+        $localeEn = new LocaleCode('en_US');
+        $localeFr = new LocaleCode('fr_FR');
+
         $completenessEvaluation = new Write\CriterionEvaluation(
             new CriterionEvaluationId(),
             new CriterionCode('completeness'),
@@ -175,19 +195,27 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
             CriterionEvaluationStatus::done()
         );
 
+        $completenessEvaluationResult = (new Write\CriterionEvaluationResult())
+            ->addRate($channelEcommerce, $localeEn, new Rate(92))
+            ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
+            ->addImprovableAttributes($channelEcommerce, $localeEn, ['description'])
+
+            ->addRate($channelEcommerce, $localeFr, new Rate(78))
+            ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done())
+            ->addImprovableAttributes($channelEcommerce, $localeFr, ['description', 'weight'])
+
+            ->addRate($channelMobile, $localeEn, new Rate(100))
+            ->addStatus($channelMobile, $localeEn, CriterionEvaluationResultStatus::done())
+
+            ->addRate($channelMobile, $localeFr, new Rate(89))
+            ->addStatus($channelMobile, $localeFr, CriterionEvaluationResultStatus::done())
+            ->addImprovableAttributes($channelMobile, $localeFr, ['weight'])
+        ;
+
         $repository = $this->getRepository();
         $repository->create((new Write\CriterionEvaluationCollection())->add($completenessEvaluation));
         $completenessEvaluation->start();
-        $completenessEvaluation->end(new CriterionEvaluationResult(CriterionRateCollection::fromArray([
-            'ecommerce' => [
-                'en_US' => 90,
-                'fr_FR' => 75,
-            ],
-            'mobile' => [
-                'en_US' => 100,
-                'fr_FR' => 85,
-            ]
-        ]), []));
+        $completenessEvaluation->end($completenessEvaluationResult);
         $repository->update($completenessEvaluation);
     }
 

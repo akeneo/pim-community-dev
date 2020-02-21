@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 
@@ -28,15 +27,19 @@ final class EvaluateCompletenessOfNonRequiredAttributes implements EvaluateCrite
     /** @var CalculateProductCompletenessInterface */
     private $completenessCalculator;
 
-    public function __construct(CalculateProductCompletenessInterface $completenessCalculator)
+    /** @var EvaluateCompleteness */
+    private $evaluateCompleteness;
+
+    public function __construct(CalculateProductCompletenessInterface $completenessCalculator, EvaluateCompleteness $evaluateCompleteness)
     {
         $this->code = new CriterionCode(self::CRITERION_CODE);
         $this->completenessCalculator = $completenessCalculator;
+        $this->evaluateCompleteness = $evaluateCompleteness;
     }
 
-    public function evaluate(Write\CriterionEvaluation $criterionEvaluation): CriterionEvaluationResult
+    public function evaluate(Write\CriterionEvaluation $criterionEvaluation): Write\CriterionEvaluationResult
     {
-        return $this->completenessCalculator->calculate($criterionEvaluation->getProductId());
+        return $this->evaluateCompleteness->evaluate($this->completenessCalculator, $criterionEvaluation);
     }
 
     public function getCode(): CriterionCode

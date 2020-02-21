@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
@@ -83,15 +83,16 @@ SQL;
         return $criteriaEvaluations;
     }
 
-    private function hydrateCriterionEvaluationResult($rawResult): ?CriterionEvaluationResult
+    private function hydrateCriterionEvaluationResult($rawResult): ?Read\CriterionEvaluationResult
     {
         if (null === $rawResult) {
             return null;
         }
 
         $rawResult = json_decode($rawResult, true, JSON_THROW_ON_ERROR);
-        $rates = CriterionRateCollection::fromArray($rawResult['rates']);
+        $rates = ChannelLocaleRateCollection::fromArrayInt($rawResult['rates'] ?? []);
+        $status = CriterionEvaluationResultStatusCollection::fromArrayString($rawResult['status'] ?? []);
 
-        return new CriterionEvaluationResult($rates, $rawResult['data']);
+        return new Read\CriterionEvaluationResult($rates, $status, $rawResult['data'] ?? []);
     }
 }

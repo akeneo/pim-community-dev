@@ -41,10 +41,19 @@ class EvaluatePendingCriteria
         $this->logger = $logger;
     }
 
-    public function execute(array $productIds): void
+    public function evaluateAllCriteria(array $productIds): void
     {
         $criterionEvaluations = $this->repository->findPendingByProductIds($productIds);
         foreach ($criterionEvaluations as $criterionEvaluation) {
+            $this->evaluateCriterion($criterionEvaluation);
+        }
+    }
+
+    public function evaluateSynchronousCriteria(array $productIds): void
+    {
+        $criterionEvaluations = $this->repository->findPendingByProductIds($productIds);
+        $synchronousCriterionEvaluations = new SynchronousCriterionEvaluationsFilterIterator(new \ArrayIterator($criterionEvaluations));
+        foreach ($synchronousCriterionEvaluations as $criterionEvaluation) {
             $this->evaluateCriterion($criterionEvaluation);
         }
     }

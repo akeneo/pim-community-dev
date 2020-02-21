@@ -1,27 +1,19 @@
 import React, {FunctionComponent} from 'react';
 import Criterion from "./Criterion";
-import {Rate, Recommendation} from "../../../../../domain";
-
+import {CriterionEvaluationResult} from "../../../../../domain/Evaluation.interface";
 
 interface CriteriaListProps {
-  recommendations: Recommendation[],
-  rates: Rate[],
   axis: string;
+  criteria: CriterionEvaluationResult[];
 }
 
-const getCriterionRate = (criterion: string, rates: Rate[]) => {
-  return rates.find((item) => item.criterion === criterion);
-};
-
-const CriteriaList: FunctionComponent<CriteriaListProps> = ({axis, recommendations, rates}) => {
+const CriteriaList: FunctionComponent<CriteriaListProps> = ({axis, criteria}) => {
   return (
-    <div>
-      <ul>
-            {recommendations.map((recommendation, index) => (
-              <Criterion key={`${axis}-${index}`} recommendation={recommendation} rate={getCriterionRate(recommendation.criterion as string, rates)}/>
-              ))}
-      </ul>
-    </div>
+    <ul>
+      {criteria.map((criterionEvaluation, index) => (
+        <Criterion key={`${axis}-${index}`} evaluation={criterionEvaluation}/>
+      ))}
+    </ul>
   );
 };
 
