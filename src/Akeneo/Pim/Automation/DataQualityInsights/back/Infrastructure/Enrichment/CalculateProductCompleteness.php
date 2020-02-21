@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\CalculateProductCompletenessInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CompletenessCalculationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductIdentifierFromProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -39,29 +38,19 @@ final class CalculateProductCompleteness implements CalculateProductCompleteness
         $this->getProductIdentifierFromProductIdQuery = $getProductIdentifierFromProductIdQuery;
     }
 
-    public function calculate(ProductId $productId): CriterionEvaluationResult
+    public function calculate(ProductId $productId): CompletenessCalculationResult
     {
+        $result = new CompletenessCalculationResult();
         $productIdentifier = $this->getProductIdentifierFromProductIdQuery->execute($productId);
         $completenessCollection = $this->completenessCalculator->fromProductIdentifier(strval($productIdentifier));
 
-        $rateCollection = new CriterionRateCollection();
-        $missingAttributes = [];
         foreach ($completenessCollection as $completeness) {
-            $rateCollection->addRate(
-                new ChannelCode($completeness->channelCode()),
-                new LocaleCode($completeness->localeCode()),
-                new Rate($completeness->ratio())
-            );
-
-            if (!isset($missingAttributes[$completeness->channelCode()])) {
-                $missingAttributes[$completeness->channelCode()] = [];
-            }
-
-            $missingAttributes[$completeness->channelCode()][$completeness->localeCode()] = $completeness->missingAttributeCodes();
+            $channelCode = new ChannelCode($completeness->channelCode());
+            $localeCode = new LocaleCode($completeness->localeCode());
+            $result->addRate($channelCode, $localeCode, new Rate($completeness->ratio()));
+            $result->addMissingAttributes($channelCode, $localeCode, $completeness->missingAttributeCodes());
         }
 
-        return new CriterionEvaluationResult($rateCollection, [
-            'attributes' => $missingAttributes
-        ]);
+        return $result;
     }
 }

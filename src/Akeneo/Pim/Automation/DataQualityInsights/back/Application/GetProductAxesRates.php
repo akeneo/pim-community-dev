@@ -13,44 +13,37 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 class GetProductAxesRates
 {
-    /** @var ComputeAxisRatesInterface */
-    private $computeEnrichmentRates;
+    /** @var GetLatestProductAxesRatesQueryInterface */
+    private $getLatestProductAxesRatesQuery;
 
-    /** @var GetLatestCriteriaEvaluationsByProductIdQueryInterface */
-    private $getLatestCriteriaEvaluationsByProductIdQuery;
-
-    /** @var ComputeAxisRatesInterface*/
-    private $computeConsistencyRates;
-
-    public function __construct(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
-        ComputeAxisRatesInterface $computeEnrichmentRates,
-        ComputeAxisRatesInterface $computeConsistencyRates
-    ) {
-        $this->computeEnrichmentRates = $computeEnrichmentRates;
-        $this->getLatestCriteriaEvaluationsByProductIdQuery = $getLatestCriteriaEvaluationsByProductIdQuery;
-        $this->computeConsistencyRates = $computeConsistencyRates;
+    public function __construct(GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery)
+    {
+        $this->getLatestProductAxesRatesQuery = $getLatestProductAxesRatesQuery;
     }
 
     public function get(ProductId $productId): array
     {
-        $latestCriteriaEvaluations = $this->getLatestCriteriaEvaluationsByProductIdQuery->execute($productId);
-        $enrichmentRates = $this->computeEnrichmentRates->compute($latestCriteriaEvaluations);
-        $consistencyRates = $this->computeConsistencyRates->compute($latestCriteriaEvaluations);
+        $axesRates = $this->getLatestProductAxesRatesQuery->byProductId($productId);
+        $enrichmentRates = $axesRates->get(new AxisCode(Enrichment::AXIS_CODE)) ?? new ChannelLocaleRateCollection();
+        $consistencyRates = $axesRates->get(new AxisCode(Consistency::AXIS_CODE)) ?? new ChannelLocaleRateCollection();
 
         return [
-            'enrichment' => [
-                'code' => 'enrichment',
-                'rates' => $enrichmentRates->toArrayString(),
+            Enrichment::AXIS_CODE => [
+                'code' => Enrichment::AXIS_CODE,
+                'rates' => $enrichmentRates->toArrayLetter(),
             ],
-            'consistency' => [
-                'code' => 'consistency',
-                'rates' => $consistencyRates->toArrayString(),
+            Consistency::AXIS_CODE => [
+                'code' => Consistency::AXIS_CODE,
+                'rates' => $consistencyRates->toArrayLetter(),
             ],
         ];
     }

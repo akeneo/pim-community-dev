@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRanksQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductIdsFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
 
@@ -22,15 +22,15 @@ final class GetRatesForProductProjection implements GetAdditionalPropertiesForPr
     /** @var GetProductIdsFromProductIdentifiersQueryInterface */
     private $getProductIdsFromProductIdentifiersQuery;
 
-    /** @var GetLatestProductAxesRatesQueryInterface */
-    private $getLatestProductAxesRatesQuery;
+    /** @var GetLatestProductAxesRanksQueryInterface */
+    private $getLatestProductAxesRanksQuery;
 
     public function __construct(
-        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
+        GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery,
         GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery
     ) {
         $this->getProductIdsFromProductIdentifiersQuery = $getProductIdsFromProductIdentifiersQuery;
-        $this->getLatestProductAxesRatesQuery = $getLatestProductAxesRatesQuery;
+        $this->getLatestProductAxesRanksQuery = $getLatestProductAxesRanksQuery;
     }
 
     /**
@@ -39,13 +39,13 @@ final class GetRatesForProductProjection implements GetAdditionalPropertiesForPr
     public function fromProductIdentifiers(array $productIdentifiers): array
     {
         $productIds = $this->getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers);
-        $productRates = $this->getLatestProductAxesRatesQuery->byProductIds($productIds);
+        $productAxesRanks = $this->getLatestProductAxesRanksQuery->byProductIds($productIds);
 
         $additionalProperties = [];
         foreach ($productIds as $productIdentifier => $productId) {
             $productId = $productId->toInt();
-            if (isset($productRates[$productId])) {
-                $additionalProperties[$productIdentifier] = ['rates' => $productRates[$productId]->getRanks()];
+            if (isset($productAxesRanks[$productId])) {
+                $additionalProperties[$productIdentifier] = ['rates' => $productAxesRanks[$productId]->toArrayInt()];
             }
         }
 

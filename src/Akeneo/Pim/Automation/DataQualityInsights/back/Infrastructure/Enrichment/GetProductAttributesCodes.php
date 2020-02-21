@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCodesInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetAttributeAsMainTitleValueFromProductIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetAttributesByTypeFromProductQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalizableAttributesByTypeFromProductQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -15,19 +14,14 @@ final class GetProductAttributesCodes implements GetProductAttributesCodesInterf
     /** @var GetAttributesByTypeFromProductQueryInterface */
     private $getAttributesByTypeFromProductQuery;
 
-    /** @var GetAttributeAsMainTitleValueFromProductIdInterface */
-    private $getAttributeAsMainTitleValueFromProductId;
-
     /** @var GetLocalizableAttributesByTypeFromProductQueryInterface */
     private $getLocalizableAttributesByTypeFromProductQuery;
 
     public function __construct(
         GetAttributesByTypeFromProductQueryInterface $getAttributesByTypeFromProductQuery,
-        GetAttributeAsMainTitleValueFromProductIdInterface $getAttributeAsMainTitleValueFromProductId,
         GetLocalizableAttributesByTypeFromProductQueryInterface $getLocalizableAttributesByTypeFromProductQuery
     ) {
         $this->getAttributesByTypeFromProductQuery = $getAttributesByTypeFromProductQuery;
-        $this->getAttributeAsMainTitleValueFromProductId = $getAttributeAsMainTitleValueFromProductId;
         $this->getLocalizableAttributesByTypeFromProductQuery = $getLocalizableAttributesByTypeFromProductQuery;
     }
 
@@ -44,17 +38,5 @@ final class GetProductAttributesCodes implements GetProductAttributesCodesInterf
     public function getLocalizableText(ProductId $productId): array
     {
         return $this->getLocalizableAttributesByTypeFromProductQuery->execute($productId, AttributeTypes::TEXT);
-    }
-
-    public function getTitle(ProductId $productId): array
-    {
-        $rawValues = $this->getAttributeAsMainTitleValueFromProductId->execute($productId);
-
-        $attributeCodes = [];
-        if (array_key_first($rawValues) !== null) {
-            $attributeCodes = [array_key_first($rawValues)];
-        }
-
-        return $attributeCodes;
     }
 }

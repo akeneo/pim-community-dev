@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\EvaluateTitleFormatting;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
@@ -41,7 +41,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
     ) {
         $criterionCode = new CriterionCode('completeness');
 
-        $criterionA = new CriterionEvaluation(
+        $criterionA = new Write\CriterionEvaluation(
             new CriterionEvaluationId('95f124de-45cd-495e-ac58-349086ad6cd4'),
             $criterionCode,
             new ProductId(42),
@@ -49,7 +49,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
             CriterionEvaluationStatus::pending()
         );
 
-        $criterionB = new CriterionEvaluation(
+        $criterionB = new Write\CriterionEvaluation(
             new CriterionEvaluationId('d7bcae1e-30c9-4626-9c4f-d06cae03e77e'),
             $criterionCode,
             new ProductId(123),
@@ -60,14 +60,8 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         $repository->findPendingByProductIds([42, 123])->willreturn([$criterionA, $criterionB]);
 
         $registry->get($criterionCode)->willReturn($evaluateCriterion);
-        $evaluateCriterion->evaluate($criterionA)->willReturn(new CriterionEvaluationResult(
-            new CriterionRateCollection(),
-            []
-        ));
-        $evaluateCriterion->evaluate($criterionB)->willReturn(new CriterionEvaluationResult(
-            new CriterionRateCollection(),
-            []
-        ));
+        $evaluateCriterion->evaluate($criterionA)->willReturn(new Write\CriterionEvaluationResult());
+        $evaluateCriterion->evaluate($criterionB)->willReturn(new Write\CriterionEvaluationResult());
 
         $repository->update(Argument::that(function ($criterion) use ($criterionA) {
             return
@@ -86,7 +80,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
                 $criterionB->getId() === $criterion->getId() && $criterion->getStatus()->isDone();
         }))->shouldBeCalled();
 
-        $this->execute([42, 123]);
+        $this->evaluateAllCriteria([42, 123]);
     }
 
     public function it_continues_to_evaluate_if_an_evaluation_failed(
@@ -96,7 +90,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
     ) {
         $criterionCode = new CriterionCode('completeness');
 
-        $criterionA = new CriterionEvaluation(
+        $criterionA = new Write\CriterionEvaluation(
             new CriterionEvaluationId('95f124de-45cd-495e-ac58-349086ad6cd4'),
             $criterionCode,
             new ProductId(42),
@@ -104,7 +98,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
             CriterionEvaluationStatus::pending()
         );
 
-        $criterionB = new CriterionEvaluation(
+        $criterionB = new Write\CriterionEvaluation(
             new CriterionEvaluationId('d7bcae1e-30c9-4626-9c4f-d06cae03e77e'),
             $criterionCode,
             new ProductId(123),
@@ -116,10 +110,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
 
         $registry->get($criterionCode)->willReturn($evaluateCriterion);
         $evaluateCriterion->evaluate($criterionA)->willThrow(new \Exception('Evaluation failed'));
-        $evaluateCriterion->evaluate($criterionB)->willReturn(new CriterionEvaluationResult(
-            new CriterionRateCollection(),
-            []
-        ));
+        $evaluateCriterion->evaluate($criterionB)->willReturn(new Write\CriterionEvaluationResult());
 
         $repository->update(Argument::that(function ($criterion) use ($criterionA) {
             return
@@ -138,6 +129,48 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
                 $criterionB->getId() === $criterion->getId() && $criterion->getStatus()->isDone();
         }))->shouldBeCalled();
 
-        $this->execute([42, 123]);
+        $this->evaluateAllCriteria([42, 123]);
+    }
+
+    public function it_evaluates_synchronous_criteria_for_a_set_of_products(
+        CriterionEvaluationRepositoryInterface $repository,
+        CriteriaEvaluationRegistry $registry,
+        EvaluateCriterionInterface $evaluateCriterion
+    ) {
+        $criterionACode = new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE);
+        $criterionBCode = new CriterionCode(EvaluateTitleFormatting::CRITERION_CODE);
+
+        $criterionA = new Write\CriterionEvaluation(
+            new CriterionEvaluationId('95f124de-45cd-495e-ac58-349086ad6cd4'),
+            $criterionACode,
+            new ProductId(42),
+            new \DateTimeImmutable('2019-10-28 10:41:56'),
+            CriterionEvaluationStatus::pending()
+        );
+
+        $criterionB = new Write\CriterionEvaluation(
+            new CriterionEvaluationId('d7bcae1e-30c9-4626-9c4f-d06cae03e77e'),
+            $criterionBCode,
+            new ProductId(123),
+            new \DateTimeImmutable('2019-10-28 10:41:56'),
+            CriterionEvaluationStatus::pending()
+
+        );
+
+        $repository->findPendingByProductIds([42, 123])->willreturn([$criterionA, $criterionB]);
+
+        $registry->get($criterionACode)->willReturn($evaluateCriterion);
+        $evaluateCriterion->evaluate($criterionA)->willReturn(new Write\CriterionEvaluationResult());
+
+        $repository->update(Argument::that(function ($criterion) use ($criterionA) {
+            return
+                $criterionA->getId() === $criterion->getId() && $criterion->getStatus()->isInProgress();
+        }))->shouldBeCalled();
+        $repository->update(Argument::that(function ($criterion) use ($criterionA) {
+            return
+                $criterionA->getId() === $criterion->getId() && $criterion->getStatus()->isDone();
+        }))->shouldBeCalled();
+
+        $this->evaluateSynchronousCriteria([42, 123]);
     }
 }

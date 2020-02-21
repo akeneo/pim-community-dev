@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
@@ -84,10 +83,15 @@ WHERE id = :id
 SQL;
         $result = null;
         $criterionEvaluationResult = $criterionEvaluation->getResult();
-        if ($criterionEvaluationResult instanceof CriterionEvaluationResult) {
+
+        /**
+         * @fixme Change the format to not duplicate every channel and locale for each attribute
+         */
+        if ($criterionEvaluationResult instanceof Write\CriterionEvaluationResult) {
             $result = json_encode([
                 'rates' => $criterionEvaluationResult->getRates()->toArrayInt(),
-                'data' => $criterionEvaluationResult->getData(),
+                'status' => $criterionEvaluationResult->getStatus()->toArrayString(),
+                'data' => $criterionEvaluationResult->getDataToArray(),
             ]);
         }
 

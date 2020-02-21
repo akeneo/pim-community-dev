@@ -34,6 +34,8 @@ import {ATTRIBUTES_TAB_NAME, DATA_QUALITY_INSIGHTS_TAB_NAME} from './application
 
 import {Dashboard, DashboardHelper} from "./application/component/Dashboard";
 
+import {ProductEvaluation, CriterionEvaluationResult} from "./domain";
+
 export {
   DashboardHelper,
   Dashboard,
@@ -59,5 +61,6 @@ export {
   ATTRIBUTES_TAB_NAME,
   DATA_QUALITY_INSIGHTS_TAB_NAME,
   Rate,
-  fetchProductDataQualityEvaluation
+  fetchProductDataQualityEvaluation,
+  ProductEvaluation, CriterionEvaluationResult
 };

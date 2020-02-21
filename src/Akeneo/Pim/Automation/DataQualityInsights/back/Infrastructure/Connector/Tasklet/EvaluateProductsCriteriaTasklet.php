@@ -57,7 +57,7 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
     public function execute(): void
     {
         foreach ($this->getProductIdsToEvaluateQuery->execute(self::NB_PRODUCTS_MAX, self::BULK_SIZE) as $productIds) {
-            $this->evaluatePendingCriteria->execute($productIds);
+            $this->evaluatePendingCriteria->evaluateAllCriteria($productIds);
 
             $this->consolidateProductAxisRates->consolidate($productIds);
 

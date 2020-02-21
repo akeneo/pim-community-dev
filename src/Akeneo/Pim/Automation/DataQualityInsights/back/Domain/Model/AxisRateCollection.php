@@ -22,7 +22,7 @@ final class AxisRateCollection
 {
     private $rates = [];
 
-    public function addCriterionRateCollection(CriterionRateCollection $rateCollection): self
+    public function addCriterionRateCollection(ChannelLocaleRateCollection $rateCollection): self
     {
         foreach ($rateCollection as $channelCode => $localeCodes) {
             foreach ($localeCodes as $localeCode => $rate) {

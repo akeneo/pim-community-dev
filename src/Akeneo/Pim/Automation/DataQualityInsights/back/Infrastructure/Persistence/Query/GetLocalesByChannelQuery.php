@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
 use Doctrine\DBAL\Connection;
 
@@ -46,5 +47,12 @@ SQL;
         }
 
         return $results;
+    }
+
+    public function getChannelLocaleCollection(): ChannelLocaleCollection
+    {
+        $channelsLocales = $this->execute();
+
+        return new ChannelLocaleCollection($channelsLocales);
     }
 }

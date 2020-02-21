@@ -13,12 +13,17 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Textarea\EvaluateUppercaseWords;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
+use Webmozart\Assert\Assert;
 
 final class CriterionEvaluationCollectionSpec extends ObjectBehavior
 {
@@ -87,5 +92,56 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
             ->add($spellingEvaluation);
 
         $this->count()->shouldReturn(2);
+    }
+
+    public function it_filters_criteria_evaluations_by_axis()
+    {
+        $completenessEvaluation = new Read\CriterionEvaluation(
+            new CriterionEvaluationId(),
+            new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE),
+            new ProductId(42),
+            new \DateTimeImmutable(),
+            CriterionEvaluationStatus::pending(),
+            null,
+            null,
+            null
+        );
+
+        $spellingEvaluation = new Read\CriterionEvaluation(
+            new CriterionEvaluationId(),
+            new CriterionCode(EvaluateSpelling::CRITERION_CODE),
+            new ProductId(42),
+            new \DateTimeImmutable(),
+            CriterionEvaluationStatus::pending(),
+            null,
+            null,
+            null
+        );
+
+        $upperCaseEvaluation = new Read\CriterionEvaluation(
+            new CriterionEvaluationId(),
+            new CriterionCode(EvaluateUppercaseWords::CRITERION_CODE),
+            new ProductId(42),
+            new \DateTimeImmutable(),
+            CriterionEvaluationStatus::pending(),
+            null,
+            null,
+            null
+        );
+
+
+        $this->add($spellingEvaluation)
+            ->add($completenessEvaluation)
+            ->add($upperCaseEvaluation);
+
+        $filteredCriteriaEvaluations = $this->filterByAxis(new Consistency())->getWrappedObject();
+
+        $expectedCriteriaEvaluations = [
+            EvaluateSpelling::CRITERION_CODE => $spellingEvaluation,
+            EvaluateUppercaseWords::CRITERION_CODE => $upperCaseEvaluation,
+        ];
+
+        Assert::count($filteredCriteriaEvaluations, 2);
+        Assert::eq($expectedCriteriaEvaluations, iterator_to_array($filteredCriteriaEvaluations));
     }
 }

@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
+
 interface GetLocalesByChannelQueryInterface
 {
     /**
-     * @todo return a instance of ChannelLocaleCollection instead of an array
+     * @deprecated Use getChannelLocaleCollection instead
      */
     public function execute(): array;
+
+    public function getChannelLocaleCollection(): ChannelLocaleCollection;
 }

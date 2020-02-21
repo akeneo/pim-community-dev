@@ -37,7 +37,15 @@ final class Rate
         return $this->rate === 100;
     }
 
+    /**
+     * @deprecated
+     */
     public function __toString()
+    {
+        return $this->toLetter();
+    }
+
+    public function toLetter()
     {
         return Rank::fromRate($this)->toLetter();
     }

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Axis;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AxisRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
@@ -34,7 +34,7 @@ final class ComputeEnrichmentRatesSpec extends ObjectBehavior
         $localeUs = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
-        $rates = (new CriterionRateCollection())
+        $rates = (new ChannelLocaleRateCollection())
             ->addRate($channelCode, $localeUs, new Rate(100))
             ->addRate($channelCode, $localeFr, new Rate(90));
 
@@ -45,7 +45,7 @@ final class ComputeEnrichmentRatesSpec extends ObjectBehavior
                 new ProductId(42),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::done(),
-                new CriterionEvaluationResult($rates, []),
+                new Read\CriterionEvaluationResult($rates, new CriterionEvaluationResultStatusCollection(), []),
                 new \DateTimeImmutable(),
                 new \DateTimeImmutable(),
         ));

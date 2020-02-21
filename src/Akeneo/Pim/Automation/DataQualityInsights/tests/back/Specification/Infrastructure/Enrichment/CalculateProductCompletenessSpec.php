@@ -82,17 +82,15 @@ class CalculateProductCompletenessSpec extends ObjectBehavior
             ],
         ]);
 
-        $evaluationResult->getData()->shouldBeLike([
-            'attributes' => [
-                'ecommerce' => [
-                    'en_US' => ['name', 'description', 'weight', 'height'],
-                    'fr_FR' => ['name', 'description', 'weight', 'height', 'width', 'brand'],
-                ],
-                'print' => [
-                    'en_US' => ['name', 'description', 'weight', 'height'],
-                    'fr_FR' => ['name', 'description', 'weight', 'height', 'width', 'brand', 'color'],
-                ],
-            ]
+        $evaluationResult->getMissingAttributes()->toArray()->shouldBeLike([
+            'ecommerce' => [
+                'en_US' => ['name', 'description', 'weight', 'height'],
+                'fr_FR' => ['name', 'description', 'weight', 'height', 'width', 'brand'],
+            ],
+            'print' => [
+                'en_US' => ['name', 'description', 'weight', 'height'],
+                'fr_FR' => ['name', 'description', 'weight', 'height', 'width', 'brand', 'color'],
+            ],
         ]);
     }
 }

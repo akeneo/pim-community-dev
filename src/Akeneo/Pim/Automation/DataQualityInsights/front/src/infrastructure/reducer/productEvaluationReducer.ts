@@ -1,5 +1,4 @@
 import {Action, ActionCreator, Reducer} from "redux";
-import {isEmpty} from "lodash";
 import {AxesCollection, ProductEvaluation} from "../../domain";
 
 export interface ProductEvaluationState {
@@ -25,18 +24,6 @@ export const getProductEvaluationAction: ActionCreator<ProductEvaluationAction> 
   }
 };
 
-const GET_PRODUCT_EVALUATION_RATES = 'GET_PRODUCT_EVALUATION_RATES';
-export const getProductEvaluationRatesAction: ActionCreator<ProductEvaluationAction> = (productId: number, axisRates: AxesCollection) => {
-  return {
-    type: GET_PRODUCT_EVALUATION_RATES,
-    payload: {
-      productId: productId,
-      axisRates: axisRates
-    }
-  }
-};
-
-
 const initialState: ProductEvaluationState = {};
 const productEvaluationReducer: Reducer<ProductEvaluationState, ProductEvaluationAction> = (previousState = initialState, {type, payload}) => {
   switch (type) {
@@ -45,41 +32,6 @@ const productEvaluationReducer: Reducer<ProductEvaluationState, ProductEvaluatio
       return {
         ...previousState,
         [productId]: evaluation,
-      };
-    }
-    case GET_PRODUCT_EVALUATION_RATES: {
-      const {productId, axisRates} = payload;
-      const evaluation = {
-        ...previousState[productId],
-      };
-
-      if (axisRates) {
-        Object.entries(axisRates).forEach(([axisName, axisData]) => {
-          const initialAxisData = isEmpty(axisData.rates) ?  {} : evaluation[axisName];
-          evaluation[axisName] = {
-            ...initialAxisData,
-          };
-
-          Object.entries(axisData.rates).forEach(([channel, channelData]) => {
-            evaluation[axisName][channel] = {
-              ...evaluation[axisName][channel],
-            };
-
-            Object.entries(channelData).forEach(([locale, rateRank]) => {
-              evaluation[axisName][channel][locale] = {
-                ...evaluation[axisName][channel][locale],
-                rate: rateRank
-              };
-            });
-          });
-        });
-      }
-
-      return {
-        ...previousState,
-        [productId]: {
-          ...evaluation
-        },
       };
     }
     default:

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetAttributeAsMainTitleValueFromProductIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetAttributesByTypeFromProductQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalizableAttributesByTypeFromProductQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -24,10 +23,9 @@ class GetProductAttributesCodesSpec extends ObjectBehavior
 {
     public function let(
         GetAttributesByTypeFromProductQueryInterface $getAttributesByTypeFromProductQuery,
-        GetAttributeAsMainTitleValueFromProductIdInterface $getAttributeAsMainTitleValueFromProductId,
         GetLocalizableAttributesByTypeFromProductQueryInterface $getLocalizableAttributesByTypeFromProductQuery
     ) {
-        $this->beConstructedWith($getAttributesByTypeFromProductQuery, $getAttributeAsMainTitleValueFromProductId, $getLocalizableAttributesByTypeFromProductQuery);
+        $this->beConstructedWith($getAttributesByTypeFromProductQuery, $getLocalizableAttributesByTypeFromProductQuery);
     }
 
     public function it_returns_nothing_when_there_is_no_attributes_codes(
@@ -68,15 +66,5 @@ class GetProductAttributesCodesSpec extends ObjectBehavior
             ->willReturn(['text_localizable']);
 
         $this->getLocalizableText(new ProductId(1))->shouldReturn(['text_localizable']);
-    }
-
-    public function it_returns_title_attribute_code(
-        $getAttributeAsMainTitleValueFromProductId
-    ) {
-        $getAttributeAsMainTitleValueFromProductId
-            ->execute(new ProductId(1))
-            ->willReturn(['title_1' => '']);
-
-        $this->getTitle(new ProductId(1))->shouldReturn(['title_1']);
     }
 }

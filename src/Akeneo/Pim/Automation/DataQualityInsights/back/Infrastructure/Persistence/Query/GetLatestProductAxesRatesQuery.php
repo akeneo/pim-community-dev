@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductAxesRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
 
@@ -28,16 +30,8 @@ final class GetLatestProductAxesRatesQuery implements GetLatestProductAxesRatesQ
         $this->db = $db;
     }
 
-    public function byProductIds(array $productIds): array
+    public function byProductId(ProductId $productId): AxisRateCollection
     {
-        if (empty($productIds)) {
-            return [];
-        }
-
-        $productIds = array_map(function (ProductId $productId) {
-            return $productId->toInt();
-        }, $productIds);
-
         $query = <<<SQL
 SELECT product_id, JSON_OBJECTAGG(axis_code, rates) AS rates
 FROM (
@@ -47,7 +41,7 @@ FROM (
             ON other_eval.axis_code = latest_eval.axis_code
             AND other_eval.product_id = latest_eval.product_id
             AND latest_eval.evaluated_at < other_eval.evaluated_at
-    WHERE latest_eval.product_id IN(:product_ids)
+    WHERE latest_eval.product_id = :product_id
         AND other_eval.evaluated_at IS NULL
 ) latest_product_rates
 GROUP BY product_id
@@ -55,17 +49,25 @@ SQL;
 
         $stmt = $this->db->executeQuery(
             $query,
-            ['product_ids' => $productIds],
-            ['product_ids' => Connection::PARAM_INT_ARRAY]
+            ['product_id' => $productId->toInt()],
+            ['product_id' => \PDO::PARAM_INT]
         );
 
-        $productAxesRates = [];
-        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $productId = intval($row['product_id']);
-            $axesRates = json_decode($row['rates'], true);
-            $productAxesRates[$productId] = new ProductAxesRates(new ProductId($productId), $axesRates);
+        $axesRates = new AxisRateCollection();
+
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if (false === $result) {
+            return $axesRates;
         }
 
-        return $productAxesRates;
+        $rawAxesRates = json_decode($result['rates'], true);
+        foreach ($rawAxesRates as $axis => $rawRates) {
+            $axisRates = ChannelLocaleRateCollection::fromNormalizedRates($rawRates, function ($rawRate) {
+                return $rawRate['value'];
+            });
+            $axesRates->add(new AxisCode($axis), $axisRates);
+        }
+
+        return $axesRates;
     }
 }

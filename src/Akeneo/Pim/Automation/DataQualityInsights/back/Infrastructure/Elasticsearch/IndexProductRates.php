@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRankCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRanksQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
@@ -22,13 +23,13 @@ class IndexProductRates
     /** @var Client */
     private $esClient;
 
-    /** @var GetLatestProductAxesRatesQueryInterface */
-    private $getLatestProductAxesRatesQuery;
+    /** @var GetLatestProductAxesRanksQueryInterface */
+    private $getLatestProductAxesRanksQuery;
 
-    public function __construct(Client $esClient, GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery)
+    public function __construct(Client $esClient, GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery)
     {
         $this->esClient = $esClient;
-        $this->getLatestProductAxesRatesQuery = $getLatestProductAxesRatesQuery;
+        $this->getLatestProductAxesRanksQuery = $getLatestProductAxesRanksQuery;
     }
 
     public function execute(array $productIds): void
@@ -37,20 +38,20 @@ class IndexProductRates
             return new ProductId($productId);
         }, $productIds);
 
-        $productsAxesRates = $this->getLatestProductAxesRatesQuery->byProductIds($productIds);
+        $productsAxesRanks = $this->getLatestProductAxesRanksQuery->byProductIds($productIds);
 
-        foreach ($productsAxesRates as $productId => $productAxesRates) {
-            $this->indexProductRates($productId, $productAxesRates->getRanks());
+        foreach ($productsAxesRanks as $productId => $productAxesRanks) {
+            $this->indexProductRanks($productId, $productAxesRanks);
         }
     }
 
-    private function indexProductRates(int $productId, array $productAxesRates): void
+    private function indexProductRanks(int $productId, AxisRankCollection $productAxesRanks): void
     {
         $this->esClient->updateByQuery(
             [
                 'script' => [
                     'source' => "ctx._source.rates = params",
-                    'params' => $productAxesRates,
+                    'params' => $productAxesRanks->toArrayInt(),
                 ],
                 'query' => [
                     'term' => [
