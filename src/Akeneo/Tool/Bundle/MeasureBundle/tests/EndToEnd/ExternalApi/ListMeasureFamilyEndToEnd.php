@@ -1407,13 +1407,11 @@ JSON;
 
     public function testListOfMeasureFamiliesWithCount()
     {
-        $measureFamiliesConfig = $this->getParameter('akeneo_measure.measures_config');
-        $measureFamiliesCount = count($measureFamiliesConfig['measures_config']);
-
         $client = $this->createAuthenticatedClient();
-
         $client->request('GET', 'api/rest/v1/measure-families?with_count=true&limit=1');
+
         $measureFamilies = $this->getStandardizedMeasureFamilies();
+        $measureFamiliesCount = count($measureFamilies);
 
         $expected = <<<JSON
 {
