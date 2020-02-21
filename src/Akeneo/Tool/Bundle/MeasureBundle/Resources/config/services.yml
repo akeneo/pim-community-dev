@@ -1,7 +1,6 @@
 parameters:
     akeneo_measure.convert.measure_converter.class: Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter
     akeneo_measure.manager.measure_manager.class:   Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager
-    akeneo_measure.measures_config: ~
     pim_api.controller.measure_family.class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\MeasureFamilyController
 
 services:
