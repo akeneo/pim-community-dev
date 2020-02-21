@@ -32,28 +32,35 @@ class DbalPurgeReadProductTableIntegration extends TestCase
         $tenBefore = new \DateTime('now - 10 day', new \DateTimeZone('UTC'));
 
         $insertQuery = <<<SQL
-INSERT INTO akeneo_connectivity_connection_read_product (product_id, username, event_datetime)
+INSERT INTO akeneo_connectivity_connection_audit_read_product (product_id, connection_code, event_datetime)
 VALUES
     (1, 'magento', :now),
-    (3, 'magento', :tenBefore),
+    (3, 'magento', :lastWeek),
     (4, 'bynder', :tenBefore)
 SQL;
         $this->connection->executeUpdate(
             $insertQuery,
-            ['now' => $now->format('Y-m-d H:i:s'), 'tenBefore' => $tenBefore->format('Y-m-d H:i:s')]
+            [
+                'now' => $now->format('Y-m-d H:i:s'),
+                'lastWeek' => $lastWeek->format('Y-m-d H:i:s'),
+                'tenBefore' => $tenBefore->format('Y-m-d H:i:s')
+            ]
         );
 
         $this->purgeQuery->execute($lastWeek);
 
         $selectQuery = <<<SQL
-SELECT product_id, username, event_datetime
-FROM akeneo_connectivity_connection_read_product
+SELECT product_id, connection_code, event_datetime
+FROM akeneo_connectivity_connection_audit_read_product
 SQL;
         $result = $this->connection->executeQuery($selectQuery)->fetchAll();
-        Assert::assertCount(1, $result);
+        Assert::assertCount(2, $result);
         Assert::assertEquals('1', $result[0]['product_id']);
-        Assert::assertEquals('magento', $result[0]['username']);
+        Assert::assertEquals('magento', $result[0]['connection_code']);
         Assert::assertEquals($now->format('Y-m-d H:i:s'), $result[0]['event_datetime']);
+        Assert::assertEquals('3', $result[1]['product_id']);
+        Assert::assertEquals('magento', $result[1]['connection_code']);
+        Assert::assertEquals($lastWeek->format('Y-m-d H:i:s'), $result[1]['event_datetime']);
     }
 
     protected function getConfiguration(): Configuration

@@ -24,7 +24,7 @@ class DbalPurgeReadProductTableQuery implements PurgeReadProductTableQuery
     public function execute(\DateTime $before): int
     {
         $deleteQuery = <<<SQL
-DELETE FROM akeneo_connectivity_connection_read_product
+DELETE FROM akeneo_connectivity_connection_audit_read_product
 WHERE event_datetime < :before
 SQL;
         return $this->connection->executeUpdate(

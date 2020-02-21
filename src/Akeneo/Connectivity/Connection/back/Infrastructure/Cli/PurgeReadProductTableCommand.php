@@ -42,7 +42,7 @@ class PurgeReadProductTableCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $before = new \DateTime('now - 7 days', new \DateTimeZone('UTC'));
+        $before = new \DateTime('now - 10 days', new \DateTimeZone('UTC'));
         $count = $this->purgeQuery->execute($before);
         $output->writeln(sprintf('%s rows have been deleted.', $count));
 
