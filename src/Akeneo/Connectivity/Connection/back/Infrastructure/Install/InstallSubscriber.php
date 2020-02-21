@@ -5,6 +5,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionTableQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateWrongCredentialsCombinationQuery;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\DBAL\Driver\Connection as DbalConnection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -44,5 +45,6 @@ class InstallSubscriber implements EventSubscriberInterface
     {
         $this->dbalConnection->exec(CreateConnectionTableQuery::QUERY);
         $this->dbalConnection->exec(CreateConnectionAuditTableQuery::QUERY);
+        $this->dbalConnection->exec(CreateWrongCredentialsCombinationQuery::QUERY);
     }
 }

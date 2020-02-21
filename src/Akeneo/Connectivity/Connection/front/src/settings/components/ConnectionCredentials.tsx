@@ -2,18 +2,21 @@ import React, {FC, useContext} from 'react';
 import {useHistory} from 'react-router';
 import {HelperLink, InlineHelper, Section, SmallHelper} from '../../common';
 import {ConnectionCredentials as ConnectionCredentialsModel} from '../../model/connection-credentials';
-import {Translate, TranslateContext} from '../../shared/translate';
+import {TranslateContext, Translate} from '../../shared/translate';
 import {CopiableCredential} from './credentials/CopiableCredential';
 import {Credential, CredentialList} from './credentials/Credential';
 import {RegenerateButton} from './RegenerateButton';
+import {WrongCredentialsCombination} from '../../model/wrong-credentials-combinations';
+import {WrongCombinationsWarning} from './wrong-credentials/WrongCombinationsWarning';
 
 type Props = {
     code: string;
     label: string;
     credentials: ConnectionCredentialsModel;
+    wrongCombination?: WrongCredentialsCombination;
 };
 
-export const ConnectionCredentials: FC<Props> = ({code, label, credentials: credentials}: Props) => {
+export const ConnectionCredentials: FC<Props> = ({code, label, credentials: credentials, wrongCombination}: Props) => {
     const translate = useContext(TranslateContext);
     const history = useHistory();
 
@@ -35,6 +38,11 @@ export const ConnectionCredentials: FC<Props> = ({code, label, credentials: cred
                         <Translate id='akeneo_connectivity.connection.edit_connection.credentials.helper.link' />
                     </HelperLink>
                 </SmallHelper>
+                {wrongCombination && (
+                    <SmallHelper warning>
+                        <WrongCombinationsWarning username={credentials.username} wrongCombination={wrongCombination} />
+                    </SmallHelper>
+                )}
             </div>
 
             <CredentialList>

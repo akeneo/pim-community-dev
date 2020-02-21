@@ -65,6 +65,13 @@ akeneo_connectivity.connection:
             helper:
                 message: 'Here are the credentials to use in your {{ label }} connector.'
                 link: Learn more here...
+            wrong_credentials_combinations:
+                single: We noticed that you are using the {{ wrong_username }} username for this connection (last use on {{ date }} at {{ time }}). We recommend using the {{ good_username }} username instead.
+                link: Discover why you should use it.
+                link_list: Discover why we recommend using this username.
+                several: We noticed that you are not using the {{ good_username }} username for this connection.
+                list: 'Here is the list of usernames that were used over the past 7 days:'
+                username_date: '{{ wrong_username }} on {{ date }} at {{ time }}'
             password_helper:
                 message: If you forgot your password, you can generate a new one here.
                 link: More info…
@@ -124,6 +131,7 @@ akeneo_connectivity.connection:
         click_here: click here
         flash:
             extension_not_allowed: Sorry, the file you are trying to upload has an extension not allowed.
+    grid.wrong_credentials_combination_helper: Some of the connections below are not using their connection usernames. They are identified by a yellow warning sign.
 
     dashboard:
         helper:

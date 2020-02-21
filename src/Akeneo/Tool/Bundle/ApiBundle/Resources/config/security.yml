@@ -22,3 +22,10 @@ services:
             - 'AES-256-OFB'
             - '%env(APP_SECRET)%'
             - '%env(APP_SECRET)%'
+
+    fos_oauth_server.server:
+        class: '%fos_oauth_server.server.class%'
+        arguments:
+            - '@fos_oauth_server.storage'
+            - '@event_dispatcher'
+            - '%fos_oauth_server.server.options%'

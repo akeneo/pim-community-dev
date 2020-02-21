@@ -7,10 +7,11 @@ import {useMediaUrlGenerator} from '../use-media-url-generator';
 interface Props {
     code: string;
     label: string;
+    hasWrongCombination: boolean;
     image: string | null;
 }
 
-export const Connection = ({code, label, image}: Props) => {
+export const Connection = ({code, label, hasWrongCombination, image}: Props) => {
     const history = useHistory();
     const generateMediaUrl = useMediaUrlGenerator();
 
@@ -21,7 +22,9 @@ export const Connection = ({code, label, image}: Props) => {
                 src={null === image ? imgUrl : generateMediaUrl(image, 'thumbnail')}
                 alt={label}
             />
-            <FigureCaption title={label}>{label}</FigureCaption>
+            <FigureCaption title={label} warning={hasWrongCombination}>
+                {label}
+            </FigureCaption>
         </Figure>
     );
 };

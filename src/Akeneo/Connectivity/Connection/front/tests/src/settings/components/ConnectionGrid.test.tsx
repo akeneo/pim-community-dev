@@ -4,7 +4,9 @@ import {createWithProviders} from '../../../test-utils';
 
 describe('ConnectionGrid', () => {
     it('should render', () => {
-        const component = createWithProviders(<ConnectionGrid title={'others'} connections={[]} />);
+        const component = createWithProviders(
+            <ConnectionGrid title={'others'} connections={[]} wrongCredentialsCombinations={{}} />
+        );
 
         expect(component.toJSON()).toMatchSnapshot();
     });

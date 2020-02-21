@@ -1,10 +1,11 @@
 import React, {ReactNode} from 'react';
 import styled from 'styled-components';
-import {Section} from '../../common';
+import {HelperLink, Section, SmallHelper} from '../../common';
 import {PropsWithTheme} from '../../common/theme';
 import {Connection as ConnectionModel} from '../../model/connection';
 import {Translate} from '../../shared/translate';
 import {Connection} from './Connection';
+import {WrongCredentialsCombinations} from '../../model/wrong-credentials-combinations';
 
 const Count = styled.div`
     color: ${({theme}: PropsWithTheme) => theme.color.purple100};
@@ -20,10 +21,11 @@ const Grid = styled.div`
 
 type Props = {
     connections: ConnectionModel[];
+    wrongCredentialsCombinations: WrongCredentialsCombinations;
     title: ReactNode;
 };
 
-export const ConnectionGrid = ({connections, title}: Props) => (
+export const ConnectionGrid = ({connections, title, wrongCredentialsCombinations}: Props) => (
     <>
         <Section title={title}>
             <Count>
@@ -34,6 +36,20 @@ export const ConnectionGrid = ({connections, title}: Props) => (
                 />
             </Count>
         </Section>
+        {0 !== Object.entries(wrongCredentialsCombinations).length && (
+            <SmallHelper>
+                <Translate id='akeneo_connectivity.connection.grid.wrong_credentials_combination_helper' />
+                <div>
+                    <HelperLink
+                        href='https://help.akeneo.com/pim/serenity/articles/manage-your-connections.html#why-should-you-use-the-connection-username'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
+                        <Translate id='akeneo_connectivity.connection.edit_connection.credentials.wrong_credentials_combinations.link_list' />
+                    </HelperLink>
+                </div>
+            </SmallHelper>
+        )}
         <Grid>
             {connections.map(connection => (
                 <Connection
@@ -41,6 +57,7 @@ export const ConnectionGrid = ({connections, title}: Props) => (
                     code={connection.code}
                     label={connection.label}
                     image={connection.image}
+                    hasWrongCombination={undefined !== wrongCredentialsCombinations[connection.code]}
                 />
             ))}
         </Grid>

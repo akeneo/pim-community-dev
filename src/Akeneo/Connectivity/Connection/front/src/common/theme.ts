@@ -2,6 +2,7 @@ import {ThemedStyledProps} from 'styled-components';
 
 export const theme = {
     color: {
+        yellow10: '#fef7ec',
         blue10: '#f5f9fc',
         blue100: '#5992c7',
         grey60: '#f9f9fb',

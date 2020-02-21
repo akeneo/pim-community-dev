@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import {PropsWithTheme} from '../theme';
+import warningIconUrl from '../assets/icons/warning.svg';
 
 export const Figure = styled.div`
     cursor: pointer;
@@ -50,7 +51,19 @@ export const FigureImage = ({...props}) => (
     </>
 );
 
-export const FigureCaption = styled.div`
+export const FigureCaption = styled.div<{warning?: boolean}>`
+    ${props => {
+        if (undefined === props.warning || !props.warning) {
+            return;
+        }
+        return `
+            background-size: 20px;
+            background-image: url(${warningIconUrl});
+            background-repeat: no-repeat;
+            background-position: left;
+            padding-left: 25px;
+        `;
+    }}
     margin-top: 5px;
     height: 20px;
     line-height: 20px;

@@ -5,6 +5,7 @@ import {MemoryRouter} from 'react-router-dom';
 import {ConnectionsProvider} from '@src/settings/connections-context';
 import {ListConnections} from '@src/settings/pages/ListConnections';
 import {renderWithProviders} from '../../../test-utils';
+import {WrongCredentialsCombinationsProvider} from '@src/settings/wrong-credentials-combinations-context';
 
 describe('testing ListConnections page', () => {
     beforeEach(() => {
@@ -28,17 +29,35 @@ describe('testing ListConnections page', () => {
                 },
             ])
         );
+        fetchMock.mockResponseOnce(
+            JSON.stringify({
+                dam: {
+                    code: 'dam',
+                    users: [
+                        {
+                            username: 'not_dam',
+                            date: '2020-01-02 12:34:23',
+                        },
+                    ],
+                },
+            })
+        );
 
         const {getByText} = renderWithProviders(
             <MemoryRouter>
-                <ConnectionsProvider>
-                    <ListConnections />
-                </ConnectionsProvider>
+                <WrongCredentialsCombinationsProvider>
+                    <ConnectionsProvider>
+                        <ListConnections />
+                    </ConnectionsProvider>
+                </WrongCredentialsCombinationsProvider>
             </MemoryRouter>
         );
 
-        expect(fetchMock).toBeCalled();
+        expect(fetchMock).toBeCalledTimes(2);
         expect(fetchMock.mock.calls[0][0]).toEqual('akeneo_connectivity_connection_rest_list');
+        expect(fetchMock.mock.calls[1][0]).toEqual(
+            'akeneo_connectivity_connection_rest_wrong_credentials_combination_list'
+        );
 
         await waitForElement(() => [
             getByText('Franklin'),
