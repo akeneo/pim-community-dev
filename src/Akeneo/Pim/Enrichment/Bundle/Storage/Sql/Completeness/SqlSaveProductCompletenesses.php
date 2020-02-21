@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception\DeadlockException;
 use Doctrine\DBAL\ParameterType;
 
 /**
@@ -36,60 +37,74 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
      * We use INSERT statements with multiple VALUES lists to insert several rows at a time. Performance is 7 times better
      * on the icecat catalog this way, instead of using separate single-row INSERT statements.
      *
-     *
      * @see https://dev.mysql.com/doc/refman/5.7/en/insert-optimization.html
+     *
+     * There is retry strategy to mitigate the risk of dead lock when loading data with high concurrency.
      *
      * {@inheritdoc}
      */
     public function saveAll(array $productCompletenessCollections): void
     {
-        $this->connection->transactional(function (Connection $connection) use ($productCompletenessCollections) {
-            $productIds = array_unique(array_map(function (ProductCompletenessWithMissingAttributeCodesCollection $productCompletenessCollection) {
-                return $productCompletenessCollection->productId();
-            }, $productCompletenessCollections));
+        $retry = 0;
+        $isError = true;
+        while (true === $isError) {
+            try {
+                $this->connection->transactional(function (Connection $connection) use ($productCompletenessCollections) {
+                    $productIds = array_unique(array_map(function (ProductCompletenessWithMissingAttributeCodesCollection $productCompletenessCollection) {
+                        return $productCompletenessCollection->productId();
+                    }, $productCompletenessCollections));
 
+                    $localeIdsFromCode = $this->localeIdsIndexedByLocaleCodes();
+                    $channelIdsFromCode = $this->channelIdsIndexedByChannelCodes();
 
-            $localeIdsFromCode = $this->localeIdsIndexedByLocaleCodes();
-            $channelIdsFromCode = $this->channelIdsIndexedByChannelCodes();
+                    $connection->executeQuery(
+                        'DELETE FROM pim_catalog_completeness WHERE product_id IN (:product_ids)',
+                        ['product_ids' => $productIds],
+                        ['product_ids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+                    );
 
-            $connection->executeQuery(
-                'DELETE FROM pim_catalog_completeness WHERE product_id IN (:product_ids)',
-                ['product_ids' => $productIds],
-                ['product_ids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-            );
+                    $numberCompletenessRow = 0;
+                    foreach ($productCompletenessCollections as $productCompletenessCollection) {
+                        $numberCompletenessRow += count($productCompletenessCollection);
+                    }
+                    $placeholders = implode(',', array_fill(0, $numberCompletenessRow, '(?, ?, ?, ?, ?)'));
 
-            $numberCompletenessRow = 0;
-            foreach ($productCompletenessCollections as $productCompletenessCollection) {
-                $numberCompletenessRow += count($productCompletenessCollection);
-            }
-            $placeholders = implode(',', array_fill(0, $numberCompletenessRow, '(?, ?, ?, ?, ?)'));
+                    if (empty($placeholders)) {
+                        return;
+                    }
 
-            if (empty($placeholders)) {
-                return;
-            }
+                    $insert = <<<SQL
+                        INSERT INTO pim_catalog_completeness
+                            (locale_id, channel_id, product_id, missing_count, required_count)
+                        VALUES
+                            $placeholders
+        SQL;
 
-            $insert = <<<SQL
-                INSERT INTO pim_catalog_completeness
-                    (locale_id, channel_id, product_id, missing_count, required_count)
-                VALUES
-                    $placeholders
-SQL;
+                    $stmt = $this->connection->prepare($insert);
 
-            $stmt = $this->connection->prepare($insert);
+                    $placeholderIndex = 1;
+                    foreach ($productCompletenessCollections as $productCompletenessCollection) {
+                        foreach ($productCompletenessCollection as $productCompleteness) {
+                            $stmt->bindValue($placeholderIndex++, $localeIdsFromCode[$productCompleteness->localeCode()]);
+                            $stmt->bindValue($placeholderIndex++, $channelIdsFromCode[$productCompleteness->channelCode()]);
+                            $stmt->bindValue($placeholderIndex++, $productCompletenessCollection->productId(), ParameterType::INTEGER);
+                            $stmt->bindValue($placeholderIndex++, count($productCompleteness->missingAttributeCodes()), ParameterType::INTEGER);
+                            $stmt->bindValue($placeholderIndex++, $productCompleteness->requiredCount(), ParameterType::INTEGER);
+                        }
+                    }
 
-            $placeholderIndex = 1;
-            foreach ($productCompletenessCollections as $productCompletenessCollection) {
-                foreach ($productCompletenessCollection as $productCompleteness) {
-                    $stmt ->bindValue($placeholderIndex++, $localeIdsFromCode[$productCompleteness->localeCode()]);
-                    $stmt ->bindValue($placeholderIndex++, $channelIdsFromCode[$productCompleteness->channelCode()]);
-                    $stmt ->bindValue($placeholderIndex++, $productCompletenessCollection->productId(), ParameterType::INTEGER);
-                    $stmt ->bindValue($placeholderIndex++, count($productCompleteness->missingAttributeCodes()), ParameterType::INTEGER);
-                    $stmt ->bindValue($placeholderIndex++, $productCompleteness->requiredCount(), ParameterType::INTEGER);
+                    $stmt->execute();
+                });
+
+                $isError = false;
+            } catch (DeadlockException $e) {
+                $retry += 1;
+
+                if (3 === $retry) {
+                    throw $e;
                 }
             }
-
-            $stmt->execute();
-        });
+        }
     }
 
     private function localeIdsIndexedByLocaleCodes(): array
