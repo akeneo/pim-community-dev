@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Domain\Model;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
@@ -23,13 +23,13 @@ final class AxisRateCollectionSpec extends ObjectBehavior
 {
     public function let()
     {
-        $rateCollection1 = (new CriterionRateCollection())
+        $rateCollection1 = (new ChannelLocaleRateCollection())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(80))
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(40))
             ->addRate(new ChannelCode('print'), new LocaleCode('en_US'), new Rate(75))
             ->addRate(new ChannelCode('print'), new LocaleCode('fr_FR'), new Rate(65));
 
-        $rateCollection2 = (new CriterionRateCollection())
+        $rateCollection2 = (new ChannelLocaleRateCollection())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(90))
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(60))
             ->addRate(new ChannelCode('print'), new LocaleCode('en_US'), new Rate(60))

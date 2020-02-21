@@ -64,9 +64,12 @@ akeneo_data_quality_insights:
                 success: Your product data is fully consistent. Congratulations!
         messages:
             error:
-                no_evaluation_for_axis: The rate could not be calculated. Please try again later.
+                axis_error: Due to an error, grade could not be fully calculated. Try again later.
+                criterion_error: Grade could not be calculated.
             success:
                 criterion: It's all good.
+            grading_in_progress: Grading in progress.
+            axis_grading_in_progress: Grading in progress. Please come back later.
     product_edit_form:
         attribute_filter:
             all_missing_attributes: All missing attributes

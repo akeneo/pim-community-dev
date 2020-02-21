@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 interface GetLatestProductAxesRatesQueryInterface
 {
-    /**
-     * @param ProductId[] $productIds
-     */
-    public function byProductIds(array $productIds): array;
+    public function byProductId(ProductId $productId): AxisRateCollection;
 }

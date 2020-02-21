@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\T
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\DictionaryNotFoundException;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -33,10 +34,13 @@ class AspellChecker implements TextChecker
 {
     const DEFAULT_ENCODING = 'UTF-8';
 
-    private $aspell;
+    /** @var Aspell */
+    private $speller;
 
+    /** @var string */
     private $encoding;
 
+    /** @var GlobalOffsetCalculator */
     private $globalOffsetCalculator;
 
     private $aspellDictionary;
@@ -45,9 +49,9 @@ class AspellChecker implements TextChecker
 
     private $lineNumberCalculator;
 
-    public function __construct(string $binaryPath, AspellDictionaryInterface $aspellDictionary, AspellGlobalOffsetCalculator $globalOffsetCalculator, AspellLineNumberCalculator $lineNumberCalculator, TextCheckerDictionaryRepository $textCheckerDictionaryRepository, $encoding = self::DEFAULT_ENCODING)
+    public function __construct(Aspell $speller, AspellDictionaryInterface $aspellDictionary, AspellGlobalOffsetCalculator $globalOffsetCalculator, AspellLineNumberCalculator $lineNumberCalculator, TextCheckerDictionaryRepository $textCheckerDictionaryRepository, string $encoding = self::DEFAULT_ENCODING)
     {
-        $this->aspell = new Aspell($binaryPath);
+        $this->speller = $speller;
         $this->globalOffsetCalculator = $globalOffsetCalculator;
         $this->encoding = $encoding;
         $this->aspellDictionary = $aspellDictionary;
@@ -60,19 +64,19 @@ class AspellChecker implements TextChecker
         $source = new TextSource($text);
 
         try {
-            $this->aspell->setPersonalDictionary($this->getDictionary($localeCode));
+            $this->speller->setPersonalDictionary($this->getDictionary($localeCode));
         } catch (DictionaryNotFoundException $e) {
             //No dictionary generated yet or no words in dictionary. Use spell checker without custom dictionary.
         }
 
         try {
             return $this->adaptResult(
-                $this->aspell->checkText($source, [$localeCode->__toString()]),
+                $this->speller->checkText($source, [$localeCode->__toString()]),
                 $source->getAsString(),
                 $localeCode
             );
         } catch (PhpSpellerException $e) {
-            return new TextCheckResultCollection();
+            throw new TextCheckFailedException($e->getMessage());
         }
     }
 
@@ -85,6 +89,10 @@ class AspellChecker implements TextChecker
         foreach ($issues as $issue) {
             if (in_array($issue->word, $userGeneratedDictionary)) {
                 continue;
+            }
+
+            if (null === $issue->offset || null === $issue->line) {
+                throw new TextCheckFailedException('A check text issue must have an offset and a line.');
             }
 
             $offset = $issue->offset;

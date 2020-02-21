@@ -36,7 +36,7 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributeAsMainTitleValueFromProductId:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributeAsMainTitleFromProductId:
         arguments:
             - '@database_connection'
 
@@ -65,6 +65,10 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductAxesRanksQuery:
+        arguments:
+            - '@database_connection'
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdsFromProductIdentifiersQuery:
         arguments:
             - '@database_connection'
@@ -84,3 +88,8 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdsToEvaluateQuery:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductEvaluationQuery:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductAxesRatesQuery'

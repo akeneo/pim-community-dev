@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
-import Attribute from "./Attribute";
 import {useCatalogContext, useFetchProductFamilyInformation} from "../../../../../infrastructure/hooks";
+import Attribute from "./Attribute";
 
 interface RecommendationAttributesListProps {
   criterion: string;
@@ -23,34 +23,43 @@ const getAttributeLabel = (attributeCode: string, productFamilyInformation: any,
   return attributeItem.labels[locale];
 };
 
-const compareAttributeCode = (code1: string, code2: string) => {
-  return code1.localeCompare(code2, undefined , {sensitivity: 'base'});
-}
-
 const RecommendationAttributesList: FunctionComponent<RecommendationAttributesListProps> = ({criterion, attributes}) => {
   const {locale} = useCatalogContext();
   const productFamilyInformation = useFetchProductFamilyInformation();
 
-    return (
-      <>
-        { attributes.length == 0 ? (
-            <span className="NonApplicableAttribute">N/A</span>
-          ) : (
+  let attributesLabels: any[] = [];
+  if (locale && productFamilyInformation) {
+    attributesLabels = attributes.map((attributeCode: string) => {
+      return {
+        code: attributeCode,
+        label: getAttributeLabel(attributeCode, productFamilyInformation, locale),
+      }
+    });
+  }
+
+  const sortedAttributes = Object.values(attributesLabels).sort((attribute1: any, attribute2: any) => {
+    return attribute1.label.localeCompare(attribute2.label, undefined , {sensitivity: 'base'});
+  });
+
+  return (
+    <>
+      {
+        attributes.length == 0 ?
+          <span className="NotApplicableAttribute">N/A</span> :
           <>
-            {locale && productFamilyInformation && attributes.sort(compareAttributeCode).map((attributeCode: string, index) => {
+            {sortedAttributes.map((attribute: any, index: number) => {
               return (
-                <Attribute key={`attribute-${criterion}-${index}`} code={attributeCode}>
-                  {getAttributeLabel(attributeCode, productFamilyInformation, locale)}
+                <Attribute key={`attribute-${criterion}-${index}`} code={attribute.code}>
+                  {attribute.label}
                   {(index < (attributes.length - 1)) && <>,&thinsp;</>}
                   {(index === (attributes.length - 1)) && '.'}
                 </Attribute>
               );
             })}
           </>
-          )
-        }
-      </>
-    )
+      }
+    </>
+  )
 };
 
 export default RecommendationAttributesList;

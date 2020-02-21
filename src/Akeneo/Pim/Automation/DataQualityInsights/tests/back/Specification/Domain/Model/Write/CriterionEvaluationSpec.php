@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
@@ -36,7 +35,7 @@ final class CriterionEvaluationSpec extends ObjectBehavior
         $this->getStartedAt()->shouldBeAnInstanceOf(\DateTimeImmutable::class);
         $this->getEndedAt()->shouldBeNull();
 
-        $this->end(new CriterionEvaluationResult(new CriterionRateCollection(), []));
+        $this->end(new CriterionEvaluationResult());
         $this->getStatus()->shouldBeLike(CriterionEvaluationStatus::done());
         $this->getStartedAt()->shouldBeAnInstanceOf(\DateTimeImmutable::class);
         $this->getEndedAt()->shouldBeAnInstanceOf(\DateTimeImmutable::class);

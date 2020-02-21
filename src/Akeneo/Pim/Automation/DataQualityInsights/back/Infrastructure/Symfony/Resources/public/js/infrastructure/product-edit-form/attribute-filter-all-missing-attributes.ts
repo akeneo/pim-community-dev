@@ -1,14 +1,12 @@
 'use strict';
 
 import {
-  fetchProductDataQualityEvaluation
+  fetchProductDataQualityEvaluation,
+  CriterionEvaluationResult,
+  ProductEvaluation
 } from 'akeneodataqualityinsights-react';
 
-import {has as _has, uniq as _uniq, pick as _pick} from 'lodash';
-
-interface Recommendation {
-  attributes: string[];
-}
+import {get as _get, has as _has, pick as _pick, uniq as _uniq} from 'lodash';
 
 const $ = require('jquery');
 const __ = require('oro/translator');
@@ -29,13 +27,16 @@ class AttributeFilterAllMissingAttributes extends BaseForm
     const scope = UserContext.get('catalogScope');
     const locale = UserContext.get('catalogLocale');
 
-    const data = await fetchProductDataQualityEvaluation(productId);
+    const data: ProductEvaluation = await fetchProductDataQualityEvaluation(productId);
 
     let attributes: string[] = [];
-    if (_has(data, ['enrichment', scope, locale, 'recommendations'])) {
-      data.enrichment[scope][locale].recommendations.map((recommendation: Recommendation) => {
-        Array.prototype.push.apply(attributes, recommendation.attributes);
-      })
+    const axisCriteriaPath = ['enrichment', scope, locale, 'criteria'];
+
+    if (_has(data, axisCriteriaPath)) {
+      // @ts-ignore
+      _get(data, axisCriteriaPath).map((criterion: CriterionEvaluationResult) => {
+        attributes.push(...criterion.improvable_attributes);
+      });
     }
 
     return _uniq(attributes);

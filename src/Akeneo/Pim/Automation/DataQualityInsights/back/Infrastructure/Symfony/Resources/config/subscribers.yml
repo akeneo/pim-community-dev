@@ -28,6 +28,9 @@ services:
             $dataQualityInsightsFeature: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $createProductsCriteriaEvaluations: '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations'
             $logger: '@logger'
+            $evaluatePendingCriteria: '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria'
+            $consolidateProductAxisRates: '@Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates'
+            $indexProductRates: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
         tags:
             - { name: kernel.event_subscriber }
 

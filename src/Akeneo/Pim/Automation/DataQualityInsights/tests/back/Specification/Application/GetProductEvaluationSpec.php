@@ -17,15 +17,23 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Con
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\EvaluateTitleFormatting;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -38,30 +46,31 @@ use PhpSpec\ObjectBehavior;
 class GetProductEvaluationSpec extends ObjectBehavior
 {
     public function let(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetLatestProductEvaluationQueryInterface $getLatestProductEvaluationQuery,
         GetLocalesByChannelQueryInterface $getLocalesByChannelQuery
     ) {
-        $this->beConstructedWith($getLatestCriteriaEvaluationsByProductIdQuery, $getLocalesByChannelQuery);
+        $this->beConstructedWith($getLatestProductEvaluationQuery, $getLocalesByChannelQuery);
 
-        $getLocalesByChannelQuery->execute()->willReturn([
+        $getLocalesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
             'ecommerce' => ['en_US', 'fr_FR'],
             'mobile' => ['en_US']
-        ]);
+        ]));
     }
 
     public function it_gets_the_evaluations_of_a_product(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery
+        GetLatestProductEvaluationQueryInterface $getLatestProductEvaluationQuery
     ) {
         $productId = new ProductId(2000);
-        $rawEvaluation = $this->generateCompleteEvaluation($productId);
-        $expectedEvaluation = $this->generateExpectedCompleteEvaluation();
 
-        $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
+        $productEvaluationReadModel = $this->givenAProductEvaluation($productId);
+        $expectedEvaluation = $this->getExpectedProductEvaluation();
+
+        $getLatestProductEvaluationQuery->execute($productId)->willReturn($productEvaluationReadModel);
 
         $this->get($productId)->shouldBeLike($expectedEvaluation);
     }
 
-    private function generateCriterionEvaluation(ProductId $productId, string $code, string $status, CriterionRateCollection $resultRates, array $resultData)
+    private function generateCriterionEvaluation(ProductId $productId, string $code, string $status, ChannelLocaleRateCollection $resultRates, CriterionEvaluationResultStatusCollection $resultStatusCollection, array $resultData)
     {
         return new CriterionEvaluation(
             new CriterionEvaluationId(),
@@ -69,23 +78,37 @@ class GetProductEvaluationSpec extends ObjectBehavior
             $productId,
             new \DateTimeImmutable(),
             new CriterionEvaluationStatus($status),
-            new CriterionEvaluationResult($resultRates, $resultData),
+            new CriterionEvaluationResult($resultRates, $resultStatusCollection, $resultData),
             new \DateTimeImmutable(),
             new \DateTimeImmutable()
         );
     }
 
-    private function generateCompleteEvaluation(ProductId $productId): CriterionEvaluationCollection
+    private function givenAProductEvaluation(ProductId $productId): ProductEvaluation
     {
-        $channelCodeEcommerce = new ChannelCode('ecommerce');
-        $channelCodeMobile = new ChannelCode('mobile');
-        $localeCodeEn = new LocaleCode('en_US');
-        $localeCodeFr = new LocaleCode('fr_FR');
-
-        $completenessOfNonRequiredAttributesRates = new CriterionRateCollection();
-        $completenessOfNonRequiredAttributesRates
-            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(50))
+        $axesEvaluations = (new AxisEvaluationCollection())
+            ->add($this->givenAnEnrichmentEvaluation($productId))
+            ->add($this->givenAConsistencyEvaluation($productId))
         ;
+
+        return new ProductEvaluation($productId, $axesEvaluations);
+    }
+
+    private function givenAnEnrichmentEvaluation(ProductId $productId): AxisEvaluation
+    {
+        $enrichment = new Enrichment();
+        $channelCodeEcommerce = new ChannelCode('ecommerce');
+        $localeCodeEn = new LocaleCode('en_US');
+
+        $enrichmentRates = (new ChannelLocaleRateCollection())
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(75));
+
+        $completenessOfNonRequiredAttributesRates = (new ChannelLocaleRateCollection())
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(50));
+
+        $completenessOfNonRequiredAttributesStatus = (new CriterionEvaluationResultStatusCollection())
+            ->add($channelCodeEcommerce, $localeCodeEn, CriterionEvaluationResultStatus::done());
+
         $completenessOfNonRequiredAttributesData = [
             "attributes" => [
                 "ecommerce" => [
@@ -94,21 +117,64 @@ class GetProductEvaluationSpec extends ObjectBehavior
             ]
         ];
 
-        $completenessOfRequiredAttributesRates = new CriterionRateCollection();
-        $completenessOfRequiredAttributesRates
-            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(100))
-        ;
+        $completenessOfRequiredAttributesRates = (new ChannelLocaleRateCollection())
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(100));
+
+        $completenessOfRequiredAttributesStatus = (new CriterionEvaluationResultStatusCollection())
+            ->add($channelCodeEcommerce, $localeCodeEn, CriterionEvaluationResultStatus::done());
+
         $completenessOfRequiredAttributesData = [
             "attributes" => [
                 "ecommerce" => []
             ]
         ];
 
-        $evaluateSpellingRates = new CriterionRateCollection();
-        $evaluateSpellingRates
+        $enrichmentCriteriaEvaluations = (new CriterionEvaluationCollection())
+            ->add($this->generateCriterionEvaluation(
+                $productId,
+                EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE,
+                CriterionEvaluationStatus::DONE,
+                $completenessOfNonRequiredAttributesRates,
+                $completenessOfNonRequiredAttributesStatus,
+                $completenessOfNonRequiredAttributesData
+            ))
+            ->add($this->generateCriterionEvaluation(
+                $productId,
+                EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE,
+                CriterionEvaluationStatus::DONE,
+                $completenessOfRequiredAttributesRates,
+                $completenessOfRequiredAttributesStatus,
+                $completenessOfRequiredAttributesData
+            ))
+        ;
+
+        return new AxisEvaluation($enrichment->getCode(), $enrichmentRates, $enrichmentCriteriaEvaluations);
+    }
+
+    public function givenAConsistencyEvaluation(ProductId $productId): AxisEvaluation
+    {
+        $consistency = new Consistency();
+        $channelCodeEcommerce = new ChannelCode('ecommerce');
+        $channelCodeMobile = new ChannelCode('mobile');
+        $localeCodeEn = new LocaleCode('en_US');
+        $localeCodeFr = new LocaleCode('fr_FR');
+
+
+        $consistencyRates = (new ChannelLocaleRateCollection())
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(86))
+            ->addRate($channelCodeEcommerce, $localeCodeFr, new Rate(68))
+            ->addRate($channelCodeMobile, $localeCodeEn, new Rate(38))
+        ;
+
+        $evaluateSpellingRates = (new ChannelLocaleRateCollection())
             ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(88))
             ->addRate($channelCodeEcommerce, $localeCodeFr, new Rate(68))
             ->addRate($channelCodeMobile, $localeCodeEn, new Rate(76))
+        ;
+        $evaluateSpellingStatus = (new CriterionEvaluationResultStatusCollection())
+            ->add($channelCodeEcommerce, $localeCodeEn, CriterionEvaluationResultStatus::done())
+            ->add($channelCodeEcommerce, $localeCodeFr, CriterionEvaluationResultStatus::done())
+            ->add($channelCodeMobile, $localeCodeEn, CriterionEvaluationResultStatus::done())
         ;
         $evaluateSpellingData = [
             "attributes" => [
@@ -119,10 +185,14 @@ class GetProductEvaluationSpec extends ObjectBehavior
             ]
         ];
 
-        $evaluateTitleFormattingRates = new CriterionRateCollection();
-        $evaluateTitleFormattingRates
-            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(85))
+        $evaluateTitleFormattingRates = (new ChannelLocaleRateCollection())
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(84))
             ->addRate($channelCodeMobile, $localeCodeEn, new Rate(0))
+        ;
+        $evaluateTitleFormattingStatus = (new CriterionEvaluationResultStatusCollection())
+            ->add($channelCodeEcommerce, $localeCodeEn, CriterionEvaluationResultStatus::done())
+            ->add($channelCodeEcommerce, $localeCodeFr, CriterionEvaluationResultStatus::notApplicable())
+            ->add($channelCodeMobile, $localeCodeEn, CriterionEvaluationResultStatus::done())
         ;
         $evaluateTitleFormattingData = [
             "attributes" => [
@@ -135,27 +205,13 @@ class GetProductEvaluationSpec extends ObjectBehavior
             ]
         ];
 
-        $evaluation = new CriterionEvaluationCollection();
-        $evaluation
-            ->add($this->generateCriterionEvaluation(
-                $productId,
-                EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE,
-                CriterionEvaluationStatus::DONE,
-                $completenessOfNonRequiredAttributesRates,
-                $completenessOfNonRequiredAttributesData
-            ))
-            ->add($this->generateCriterionEvaluation(
-                $productId,
-                EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE,
-                CriterionEvaluationStatus::DONE,
-                $completenessOfRequiredAttributesRates,
-                $completenessOfRequiredAttributesData
-            ))
+        $consistencyCriteriaEvaluations = (new CriterionEvaluationCollection())
             ->add($this->generateCriterionEvaluation(
                 $productId,
                 EvaluateSpelling::CRITERION_CODE,
                 CriterionEvaluationStatus::DONE,
                 $evaluateSpellingRates,
+                $evaluateSpellingStatus,
                 $evaluateSpellingData
             ))
             ->add($this->generateCriterionEvaluation(
@@ -163,95 +219,97 @@ class GetProductEvaluationSpec extends ObjectBehavior
                 EvaluateTitleFormatting::CRITERION_CODE,
                 CriterionEvaluationStatus::DONE,
                 $evaluateTitleFormattingRates,
+                $evaluateTitleFormattingStatus,
                 $evaluateTitleFormattingData
             ))
         ;
 
-        return $evaluation;
+        return new AxisEvaluation($consistency->getCode(), $consistencyRates, $consistencyCriteriaEvaluations);
     }
 
-    private function generateExpectedCompleteEvaluation(): array
+    private function getExpectedProductEvaluation(): array
     {
         return [
             "enrichment" => [
                 "ecommerce" => [
                     "en_US" => [
-                        "rate" => "C",
-                        "recommendations" => [
-                            [
-                                "criterion" => "completeness_of_non_required_attributes",
-                                "attributes" => [
-                                    "title", "meta_title",
-                                ]
-                            ],
-                            [
-                                "criterion" => "completeness_of_required_attributes",
-                                "attributes" => []
-                            ],
+                        "rate" => [
+                            "value" => 75,
+                            "rank" => "C",
                         ],
-                        "rates" => [
+                        "criteria" => [
                             [
-                                "criterion" => "completeness_of_non_required_attributes",
-                                "rate" => 50,
-                                "letterRate" => "E",
+                                "code" => "completeness_of_non_required_attributes",
+                                "rate" => [
+                                    "value" => 50,
+                                    "rank" => "E",
+                                ],
+                                "improvable_attributes" => ["title", "meta_title"],
+                                "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                             [
-                                "criterion" => "completeness_of_required_attributes",
-                                "rate" => 100,
-                                "letterRate" => "A",
-                            ]
+                                "code" => "completeness_of_required_attributes",
+                                "rate" => [
+                                    "value" => 100,
+                                    "rank" => "A",
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::DONE,
+                            ],
                         ],
                     ],
                     "fr_FR" => [
-                        "rate" => null,
-                        "recommendations" => [
-                            [
-                                "criterion" => "completeness_of_non_required_attributes",
-                                "attributes" => []
-                            ],
-                            [
-                                "criterion" => "completeness_of_required_attributes",
-                                "attributes" => []
-                            ],
+                        "rate" => [
+                            "value" => null,
+                            "rank" => null,
                         ],
-                        "rates" => [
+                        "criteria" => [
                             [
-                                "criterion" => "completeness_of_non_required_attributes",
-                                "rate" => null,
-                                "letterRate" => null,
+                                "code" => "completeness_of_non_required_attributes",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                             [
-                                "criterion" => "completeness_of_required_attributes",
-                                "rate" => null,
-                                "letterRate" => null,
-                            ]
+                                "code" => "completeness_of_required_attributes",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
                         ],
                     ],
                 ],
                 "mobile" => [
                     "en_US" => [
-                        "rate" => null,
-                        "recommendations" => [
-                            [
-                                "criterion" => "completeness_of_non_required_attributes",
-                                "attributes" => []
-                            ],
-                            [
-                                "criterion" => "completeness_of_required_attributes",
-                                "attributes" => []
-                            ],
+                        "rate" => [
+                            "value" => null,
+                            "rank" => null,
                         ],
-                        "rates" => [
+                        "criteria" => [
                             [
-                                "criterion" => "completeness_of_non_required_attributes",
-                                "rate" => null,
-                                "letterRate" => null,
+                                "code" => "completeness_of_non_required_attributes",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                             [
-                                "criterion" => "completeness_of_required_attributes",
-                                "rate" => null,
-                                "letterRate" => null,
-                            ]
+                                "code" =>"completeness_of_required_attributes",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
                         ],
                     ],
                 ],
@@ -259,88 +317,91 @@ class GetProductEvaluationSpec extends ObjectBehavior
             "consistency" => [
                 "ecommerce" => [
                     "en_US" => [
-                        "rate" => "B",
-                        "recommendations" => [
-                            [
-                                "criterion" => "consistency_spelling",
-                                "attributes" => [
-                                    "description",
-                                ]
-                            ],
-                            [
-                                "criterion" => "consistency_text_title_formatting",
-                                "attributes" => [
-                                    "title",
-                                ]
-                            ],
+                        "rate" => [
+                            "value" => 86,
+                            "rank" => "B",
                         ],
-                        "rates" => [
+                        "criteria" => [
                             [
-                                "criterion" => "consistency_spelling",
-                                "rate" => 88,
-                                "letterRate" => "B",
+                                "code" =>"consistency_spelling",
+                                "rate" => [
+                                    "value" => 88,
+                                    "rank" => "B",
+                                ],
+                                "improvable_attributes" => [
+                                    "description",
+                                ],
+                                "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                             [
-                                "criterion" => "consistency_text_title_formatting",
-                                "rate" => 85,
-                                "letterRate" => "B",
+                                "code" =>"consistency_text_title_formatting",
+                                "rate" => [
+                                    "value" => 84,
+                                    "rank" => "B",
+                                ],
+                                "improvable_attributes" => [
+                                    "title",
+                                ],
+                                "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                         ],
                     ],
                     "fr_FR" => [
-                        "rate" => "D",
-                        "recommendations" => [
+                        "rate" => [
+                            "value" => 68,
+                            "rank" => "D",
+                        ],
+                        "criteria" => [
                             [
-                                "criterion" => "consistency_spelling",
-                                "attributes" => [
+                                "code" =>"consistency_spelling",
+                                "rate" => [
+                                    "value" => 68,
+                                    "rank" => "D",
+                                ],
+                                "improvable_attributes" => [
                                     "description",
                                     "short_description",
-                                ]
+                                ],
+                                "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                             [
-                                "criterion" => "consistency_text_title_formatting",
-                                "attributes" => []
-                            ],
-                        ],
-                        "rates" => [
-                            [
-                                "criterion" => "consistency_spelling",
-                                "rate" => 68,
-                                "letterRate" => "D",
-                            ],
-                            [
-                                "criterion" => "consistency_text_title_formatting",
-                                "rate" => null,
-                                "letterRate" => null,
+                                "code" =>"consistency_text_title_formatting",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::NOT_APPLICABLE,
                             ],
                         ],
                     ],
                 ],
                 "mobile" => [
                     "en_US" => [
-                        "rate" => "E",
-                        "recommendations" => [
-                            [
-                                "criterion" => "consistency_spelling",
-                                "attributes" => []
-                            ],
-                            [
-                                "criterion" => "consistency_text_title_formatting",
-                                "attributes" => [
-                                   "title", "meta_title",
-                                ]
-                            ],
+                        "rate" => [
+                            "value" => 38,
+                            "rank" => "E",
                         ],
-                        "rates" => [
+                        "criteria" => [
                             [
-                                "criterion" => "consistency_spelling",
-                                "rate" => 76,
-                                "letterRate" => "C",
+                                "code" =>"consistency_spelling",
+                                "rate" => [
+                                    "value" => 76,
+                                    "rank" => "C",
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                             [
-                                "criterion" => "consistency_text_title_formatting",
-                                "rate" => 0,
-                                "letterRate" => "E",
+                                "code" =>"consistency_text_title_formatting",
+                                "rate" => [
+                                    "value" => 0,
+                                    "rank" => "E",
+                                ],
+                                "improvable_attributes" => [
+                                   "title", "meta_title",
+                                ],
+                                "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                         ],
                     ],

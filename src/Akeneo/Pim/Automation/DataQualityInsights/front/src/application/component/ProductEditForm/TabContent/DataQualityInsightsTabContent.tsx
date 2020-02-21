@@ -20,9 +20,11 @@ const BaseDataQualityInsightsTabContent: FunctionComponent<DataQualityInsightsTa
         <>
         {Object.entries(productEvaluation).map(([code, axisEvaluationData]) => {
           const axisEvaluation: Evaluation = _get(axisEvaluationData, [channel, locale], {
-            rate: undefined,
-            recommendations: [],
-            rates: [],
+            rate: {
+              value: null,
+              rank: null,
+            },
+            criteria: [],
           });
 
           return (

@@ -6,7 +6,6 @@ import catalogContextReducer, {
 } from "./catalogContextReducer";
 import productEvaluationReducer, {
   getProductEvaluationAction,
-  getProductEvaluationRatesAction,
   ProductEvaluationState
 } from "./productEvaluationReducer";
 import productAxesRatesReducer, {getProductAxesRatesAction, ProductAxesRatesState} from "../reducer/productAxesRatesReducer";
@@ -48,7 +47,6 @@ export {
   // Product Evaluation Reducer
   productEvaluationReducer,
   getProductEvaluationAction,
-  getProductEvaluationRatesAction,
   ProductEvaluationState,
   // Product Evaluation Reducer
   productFamilyInformationReducer,

@@ -11,6 +11,4 @@ interface GetProductAttributesCodesInterface
     public function getText(ProductId $productId): array;
 
     public function getLocalizableText(ProductId $productId): array;
-
-    public function getTitle(ProductId $productId): array;
 }

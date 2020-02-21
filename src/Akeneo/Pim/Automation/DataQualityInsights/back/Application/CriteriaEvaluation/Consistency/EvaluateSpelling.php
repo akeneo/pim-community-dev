@@ -15,8 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluati
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
@@ -24,6 +23,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetTextareaAttributeC
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetTextAttributeCodesCompatibleWithSpellingQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 
@@ -71,32 +71,79 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         $this->getTextareaAttributeCodesCompatibleWithSpellingQuery = $getTextareaAttributeCodesCompatibleWithSpellingQuery;
     }
 
-    public function evaluate(Write\CriterionEvaluation $criterionEvaluation): CriterionEvaluationResult
+    public function evaluate(Write\CriterionEvaluation $criterionEvaluation): Write\CriterionEvaluationResult
     {
-        $localesByChannel = $this->localesByChannelQuery->execute();
-
+        $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
         $productId = $criterionEvaluation->getProductId();
 
         $textareaAttributesCodes = $this->getTextareaAttributeCodesCompatibleWithSpellingQuery->byProductId($productId);
-        $textareaValuesList = $this->buildProductValues->buildForProductIdAndAttributeCodes($productId, $textareaAttributesCodes);
+        $textareaProductValues = $this->buildProductValues->buildForProductIdAndAttributeCodes($productId, $textareaAttributesCodes);
 
         $textAttributesCodes = $this->getTextAttributeCodesCompatibleWithSpellingQuery->byProductId($productId);
-        $textValuesList = $this->buildProductValues->buildForProductIdAndAttributeCodes($productId, $textAttributesCodes);
+        $textProductValues = $this->buildProductValues->buildForProductIdAndAttributeCodes($productId, $textAttributesCodes);
 
-        $ratesByChannelAndLocaleTextarea = $this->computeAttributeRates($localesByChannel, $textareaValuesList, self::TEXTAREA_FAULT_WEIGHT);
-        $ratesByChannelAndLocaleText = $this->computeAttributeRates($localesByChannel, $textValuesList, self::TEXT_FAULT_WEIGHT);
+        $evaluationResult = new Write\CriterionEvaluationResult();
+        foreach ($localesByChannel as $channelCode => $localesCodes) {
+            foreach ($localesCodes as $localeCode) {
+                $this->evaluateChannelLocaleRate($evaluationResult, $channelCode, $localeCode, $textProductValues, $textareaProductValues);
+            }
+        }
 
-        $ratesByChannelAndLocale = array_merge_recursive(
-            $ratesByChannelAndLocaleText,
-            $ratesByChannelAndLocaleTextarea
-        );
+        return $evaluationResult;
+    }
 
-        $rates = $this->buildCriterionRateCollection($ratesByChannelAndLocale);
-        $attributesCodesToImprove = $this->computeAttributeCodesToImprove($ratesByChannelAndLocale);
+    private function evaluateChannelLocaleRate(
+        Write\CriterionEvaluationResult $evaluationResult,
+        ChannelCode $channelCode,
+        LocaleCode $localeCode,
+        array $textProductValues,
+        array $textareaProductValues
+    ): void {
+        if (!$this->supportedLocaleChecker->isSupported($localeCode)) {
+            $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::notApplicable());
+            return;
+        }
 
-        return new CriterionEvaluationResult($rates, [
-            'attributes' => $attributesCodesToImprove
-        ]);
+        try {
+            $textRates = $this->evaluateAttributesRates($channelCode, $localeCode, $textProductValues, self::TEXT_FAULT_WEIGHT);
+            $textareaRates = $this->evaluateAttributesRates($channelCode, $localeCode, $textareaProductValues, self::TEXTAREA_FAULT_WEIGHT);
+        } catch (TextCheckFailedException $exception) {
+            $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::error());
+            return;
+        }
+
+        $attributesRates = array_merge($textRates, $textareaRates);
+
+        if (empty($attributesRates)) {
+            $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::notApplicable());
+            return;
+        }
+
+        $rate = $this->calculateChannelLocaleRate($attributesRates);
+        $improvableAttributes = $this->computeImprovableAttributes($attributesRates);
+
+        $evaluationResult
+            ->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::done())
+            ->addRate($channelCode, $localeCode, $rate)
+            ->addImprovableAttributes($channelCode, $localeCode, $improvableAttributes);
+    }
+
+    private function evaluateAttributesRates(ChannelCode $channelCode, LocaleCode $localeCode, array $productValues, int $faultWeight): array
+    {
+        $attributesRates = [];
+        foreach ($productValues as $attributeCode => $productValueByChannelAndLocale) {
+            $productValue = $productValueByChannelAndLocale[strval($channelCode)][strval($localeCode)] ?? null;
+
+            if ($productValue === null || $productValue === '') {
+                continue;
+            }
+
+            $textCheckResult = $this->textChecker->check(strval($productValue), $localeCode);
+            $rate = $this->computeProductValueRate($textCheckResult, $faultWeight);
+            $attributesRates[$attributeCode] = $rate;
+        }
+
+        return $attributesRates;
     }
 
     public function getCode(): CriterionCode
@@ -104,79 +151,26 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         return new CriterionCode(self::CRITERION_CODE);
     }
 
-    private function computeAttributeRates(array $localesByChannel, array $productValues, int $faultWeight): array
-    {
-        $evaluatedValues = [];
-
-        foreach ($localesByChannel as $channelCode => $localeCodes) {
-            foreach ($localeCodes as $localeCode) {
-                $localeCode = new LocaleCode($localeCode);
-                if (!$this->supportedLocaleChecker->isSupported($localeCode)) {
-                    continue;
-                }
-
-                foreach ($productValues as $attributeCode => $productValueByChannelAndLocale) {
-                    $productValue = $productValueByChannelAndLocale[$channelCode][$localeCode->__toString()];
-
-                    if ($productValue === null) {
-                        continue;
-                    }
-
-                    $result = $this->textChecker->check($productValue, $localeCode);
-
-                    $evaluatedValues[$channelCode][$localeCode->__toString()][$attributeCode] = $this->computeProductValueRate($result, $faultWeight);
-                }
-            }
-        }
-
-        return $evaluatedValues;
-    }
-
-    private function computeProductValueRate(TextCheckResultCollection $checkTextResult, int $faultWeight): int
+    private function computeProductValueRate(TextCheckResultCollection $checkTextResult, int $faultWeight): Rate
     {
         $rate = 100 - count($checkTextResult) * $faultWeight;
 
-        if ($rate < 0) {
-            return 0;
-        }
-
-        return $rate;
+        return new Rate(max(0, $rate));
     }
 
-    private function buildCriterionRateCollection(array $ratesByChannelAndLocale): CriterionRateCollection
+    private function calculateChannelLocaleRate(array $channelLocaleRates): Rate
     {
-        $rates = new CriterionRateCollection();
-        foreach ($ratesByChannelAndLocale as $channelCode => $ratesByLocale) {
-            foreach ($ratesByLocale as $localeCode => $ratesByAttribute) {
-                $channelLocaleRate = $this->calculateChannelLocaleRate($ratesByAttribute);
-                $rates->addRate(new ChannelCode($channelCode), new LocaleCode($localeCode), new Rate($channelLocaleRate));
-            }
-        }
+        $channelLocaleRates = array_map(function (Rate $rate) {
+            return $rate->toInt();
+        }, $channelLocaleRates);
 
-        return $rates;
+        return new Rate((int) round(array_sum($channelLocaleRates) / count($channelLocaleRates), 0, PHP_ROUND_HALF_DOWN));
     }
 
-    private function computeAttributeCodesToImprove(array $ratesByChannelAndLocale): array
+    private function computeImprovableAttributes(array $attributesRates): array
     {
-        $attributesCodesToImprove = [];
-        foreach ($ratesByChannelAndLocale as $channelCode => $ratesByLocale) {
-            foreach ($ratesByLocale as $localeCode => $ratesByAttribute) {
-                $attributesWithNoPerfectRate = array_keys(
-                    array_filter($ratesByAttribute, function (int $attributeRate) {
-                        return $attributeRate < 100;
-                    })
-                );
-                if (! empty($attributesWithNoPerfectRate)) {
-                    $attributesCodesToImprove[$channelCode][$localeCode] = $attributesWithNoPerfectRate;
-                }
-            }
-        }
-
-        return $attributesCodesToImprove;
-    }
-
-    private function calculateChannelLocaleRate(array $channelLocaleRates): int
-    {
-        return (int) round(array_sum($channelLocaleRates) / count($channelLocaleRates), 0, PHP_ROUND_HALF_DOWN);
+        return array_keys(array_filter($attributesRates, function (Rate $attributeRate) {
+            return !$attributeRate->isPerfect();
+        }));
     }
 }

@@ -13,6 +13,9 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only(
         [
+            //Needed to access to the criteria codes. To remove after refactoring
+            'Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation',
+
             //External dependencies
             'Ramsey\Uuid\Uuid',
         ]

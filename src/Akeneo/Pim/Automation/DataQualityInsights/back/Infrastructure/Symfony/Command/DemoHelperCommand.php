@@ -354,7 +354,7 @@ final class DemoHelperCommand extends Command
         }, $ids);
 
         $this->createProductsCriteriaEvaluations->create($productIds);
-        $this->evaluatePendingCriteria->execute($ids);
+        $this->evaluatePendingCriteria->evaluateAllCriteria($ids);
         $this->consolidateProductAxisRates->consolidate($ids);
         $this->indexProductRates->execute($ids);
     }

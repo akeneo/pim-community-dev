@@ -13,32 +13,49 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductAxesRates;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRankCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRankCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRanksQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PhpSpec\ObjectBehavior;
 
 class IndexProductRatesSpec extends ObjectBehavior
 {
-    public function let(Client $esClient, GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery)
+    public function let(Client $esClient, GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery)
     {
-        $this->beConstructedWith($esClient, $getLatestProductAxesRatesQuery);
+        $this->beConstructedWith($esClient, $getLatestProductAxesRanksQuery);
     }
 
     public function it_indexes_product_rates(
         Client $esClient,
-        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery
+        GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery
     ) {
-        $getLatestProductAxesRatesQuery->byProductIds([new ProductId(123), new ProductId(456), new ProductId(42)])->willReturn([
-            123 => new ProductAxesRates(new ProductId(123), [
-                'consistency' => ['ecommerce' => ['en_US' => ['value' => 98, 'rank' => 1]]],
-                'enrichment' => ['ecommerce' => ['en_US' => ['value' => 86, 'rank' => 2]]],
-            ]),
-            456 => new ProductAxesRates(new ProductId(456), [
-                'consistency' => ['ecommerce' => ['en_US' => ['value' => 78, 'rank' => 3]]],
-                'enrichment' => ['ecommerce' => ['en_US' => ['value' => 11, 'rank' => 5]]],
-            ])
+        $consistency = new Consistency();
+        $enrichment = new Enrichment();
+        $channelEcommerce = new ChannelCode('ecommerce');
+        $localeEn = new LocaleCode('en_US');
+
+        $getLatestProductAxesRanksQuery->byProductIds([new ProductId(123), new ProductId(456), new ProductId(42)])->willReturn([
+            123 => (new AxisRankCollection())
+                ->add($consistency->getCode(), (new ChannelLocaleRankCollection())
+                    ->addRank($channelEcommerce, $localeEn, Rank::fromInt(1))
+                )
+                ->add($enrichment->getCode(), (new ChannelLocaleRankCollection())
+                    ->addRank($channelEcommerce, $localeEn, Rank::fromInt(2))
+                ),
+            456 => (new AxisRankCollection())
+                ->add($consistency->getCode(), (new ChannelLocaleRankCollection())
+                    ->addRank($channelEcommerce, $localeEn, Rank::fromInt(3))
+                )
+                ->add($enrichment->getCode(), (new ChannelLocaleRankCollection())
+                    ->addRank($channelEcommerce, $localeEn, Rank::fromInt(5))
+                ),
         ]);
 
         $esClient->updateByQuery([

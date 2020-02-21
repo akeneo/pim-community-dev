@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CompletenessCalculationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 interface CalculateProductCompletenessInterface
 {
-    public function calculate(ProductId $productId): CriterionEvaluationResult;
+    public function calculate(ProductId $productId): CompletenessCalculationResult;
 }

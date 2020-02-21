@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Axis;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 
 final class CriterionEvaluationCollection implements \IteratorAggregate, \Countable
@@ -45,5 +46,18 @@ final class CriterionEvaluationCollection implements \IteratorAggregate, \Counta
     public function count(): int
     {
         return count($this->criteriaEvaluations);
+    }
+
+    public function filterByAxis(Axis $axis): self
+    {
+        $filteredCollection = new self();
+
+        foreach ($this->criteriaEvaluations as $criterionEvaluation) {
+            if (in_array($criterionEvaluation->getCriterionCode(), $axis->getCriteriaCodes())) {
+                $filteredCollection->add($criterionEvaluation);
+            }
+        }
+
+        return $filteredCollection;
     }
 }

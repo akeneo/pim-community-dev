@@ -18,16 +18,17 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInte
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetTextAttributeCodesCompatibleWithSpellingQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -54,17 +55,15 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $supportedLocaleChecker,
         $getTextAttributeCodesCompatibleWithSpellingQuery,
         $getTextareaAttributeCodesCompatibleWithSpellingQuery,
-        TextCheckResultCollection $textCheckResultCollection1,
-        TextCheckResultCollection $textCheckResultCollection2,
-        TextCheckResultCollection $textCheckResultCollection3,
-        TextCheckResultCollection $textCheckResultCollection4,
-        TextCheckResultCollection $textCheckResultCollection5,
-        TextCheckResultCollection $textCheckResultCollection6,
-        TextCheckResultCollection $textCheckResultCollection7,
-        TextCheckResultCollection $textCheckResultCollection8
+        TextCheckResultCollection $textCheckResultTextareaEcommerceEn,
+        TextCheckResultCollection $textCheckResultTextareaPrintEn,
+        TextCheckResultCollection $textCheckResultTextareaEcommerceFr,
+        TextCheckResultCollection $textCheckResultTextEcommerceEn,
+        TextCheckResultCollection $textCheckResultTextEcommerceFR,
+        TextCheckResultCollection $textCheckResultTextPrintEn
     ) {
         $productId = new ProductId(1);
-        $criterionEvaluation = new CriterionEvaluation(
+        $criterionEvaluation = new Write\CriterionEvaluation(
             new CriterionEvaluationId(),
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productId,
@@ -72,22 +71,22 @@ class EvaluateSpellingSpec extends ObjectBehavior
             CriterionEvaluationStatus::pending()
         );
 
-        $localesByChannelQuery->execute()->willReturn([
-            'ecommerce' => ['en_US', 'fr_FR'],
+        $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
+            'ecommerce' => ['en_US', 'fr_FR', 'it_IT'],
             'print' => ['en_US', 'fr_FR'],
-        ]);
+        ]));
 
         $getTextareaAttributeCodesCompatibleWithSpellingQuery->byProductId($productId)->willReturn(['textarea_1']);
         $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['textarea_1'])->willReturn([
             'textarea_1' => [
                 'ecommerce' => [
                     'en_US' => '<p>Typos hapen. </p>',
-                    'fr_FR' => '<p>Les fautes de frape arivent. </p>',
+                    'fr_FR' => '<p>Les fautes de frappe arrivent. </p>',
                     'it_IT' => '<p>I refusi accadono. </p>',
                 ],
                 'print' => [
                     'en_US' => '<p>Typos happen. </p>',
-                    'fr_FR' => '<p>Les fautes de frappe arrivent. </p>',
+                    'fr_FR' => '',
                     'it_IT' => 'I refusi accadono.',
                 ],
             ]
@@ -98,65 +97,117 @@ class EvaluateSpellingSpec extends ObjectBehavior
             'text_1' => [
                 'ecommerce' => [
                     'en_US' => 'Typos happen.',
-                    'fr_FR' => 'Les fautes de frape arivent',
+                    'fr_FR' => 'Les fautes de frappe arrivent',
                     'it_IT' => 'I refusi accadono.',
                 ],
                 'print' => [
                     'en_US' => 'Typos hapen.',
-                    'fr_FR' => 'Les fautes de frappe arrivent',
+                    'fr_FR' => null,
                     'it_IT' => 'I refusi accadono.',
                 ],
             ],
         ]);
 
-        $supportedLocaleChecker->isSupported(new LocaleCode('en_US'))->willReturn(true);
-        $supportedLocaleChecker->isSupported(new LocaleCode('fr_FR'))->willReturn(true);
-        $supportedLocaleChecker->isSupported(new LocaleCode('it_IT'))->willReturn(false);
+        $channelEcommerce = new ChannelCode('ecommerce');
+        $channelPrint = new ChannelCode('print');
+        $localeEn = new LocaleCode('en_US');
+        $localeFr = new LocaleCode('fr_FR');
+        $localeIt = new LocaleCode('it_IT');
 
-        $textCheckResultCollection1->count()->willReturn(1);
-        $textCheckResultCollection2->count()->willReturn(1);
-        $textCheckResultCollection3->count()->willReturn(0);
-        $textCheckResultCollection4->count()->willReturn(0);
-        $textCheckResultCollection5->count()->willReturn(0);
-        $textCheckResultCollection6->count()->willReturn(1);
-        $textCheckResultCollection7->count()->willReturn(1);
-        $textCheckResultCollection8->count()->willReturn(0);
+        $supportedLocaleChecker->isSupported($localeEn)->willReturn(true);
+        $supportedLocaleChecker->isSupported($localeFr)->willReturn(true);
+        $supportedLocaleChecker->isSupported($localeIt)->willReturn(false);
 
-        $textChecker->check('<p>Typos hapen. </p>', 'en_US')->willReturn($textCheckResultCollection1);
-        $textChecker->check('<p>Les fautes de frape arivent. </p>', 'fr_FR')->willReturn($textCheckResultCollection2);
-        $textChecker->check('<p>Typos happen. </p>', 'en_US')->willReturn($textCheckResultCollection3);
-        $textChecker->check('<p>Les fautes de frappe arrivent. </p>', 'fr_FR')->willReturn($textCheckResultCollection4);
-        $textChecker->check('Typos happen.', 'en_US')->willReturn($textCheckResultCollection5);
-        $textChecker->check('Les fautes de frape arivent', 'fr_FR')->willReturn($textCheckResultCollection6);
-        $textChecker->check('Typos hapen.', 'en_US')->willReturn($textCheckResultCollection7);
-        $textChecker->check('Les fautes de frappe arrivent', 'fr_FR')->willReturn($textCheckResultCollection8);
+        $textCheckResultTextareaEcommerceEn->count()->willReturn(1);
+        $textCheckResultTextareaPrintEn->count()->willReturn(0);
+        $textCheckResultTextareaEcommerceFr->count()->willReturn(0);
+        $textCheckResultTextEcommerceEn->count()->willReturn(0);
+        $textCheckResultTextEcommerceFR->count()->willReturn(0);
+        $textCheckResultTextPrintEn->count()->willReturn(1);
 
+        $textChecker->check('<p>Typos hapen. </p>', $localeEn)->willReturn($textCheckResultTextareaEcommerceEn);
+        $textChecker->check('<p>Typos happen. </p>', $localeEn)->willReturn($textCheckResultTextareaPrintEn);
+        $textChecker->check('<p>Les fautes de frappe arrivent. </p>', $localeFr)->willReturn($textCheckResultTextareaEcommerceFr);
+        $textChecker->check('Typos happen.', $localeEn)->willReturn($textCheckResultTextEcommerceEn);
+        $textChecker->check('Les fautes de frappe arrivent', $localeFr)->willReturn($textCheckResultTextEcommerceFR);
+        $textChecker->check('Typos hapen.', $localeEn)->willReturn($textCheckResultTextPrintEn);
 
-        $expectedRates = new CriterionRateCollection();
-        $expectedRates
-            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(94))
-            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(82))
-            ->addRate(new ChannelCode('print'), new LocaleCode('en_US'), new Rate(88))
-            ->addRate(new ChannelCode('print'), new LocaleCode('fr_FR'), new Rate(100))
+        $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
+            ->addRate($channelEcommerce, $localeEn, new Rate(94))
+            ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
+            ->addImprovableAttributes($channelEcommerce, $localeEn, ['textarea_1'])
+
+            ->addRate($channelEcommerce, $localeFr, new Rate(100))
+            ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done())
+            ->addImprovableAttributes($channelEcommerce, $localeFr, [])
+
+            ->addStatus($channelEcommerce, $localeIt, CriterionEvaluationResultStatus::notApplicable())
+
+            ->addRate($channelPrint, $localeEn, new Rate(88))
+            ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::done())
+            ->addImprovableAttributes($channelPrint, $localeEn, ['text_1'])
+
+            ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::notApplicable())
         ;
 
-        $expectedData =  [
-            'attributes' => [
-                'ecommerce' => [
-                    'en_US' => ['textarea_1'],
-                    'fr_FR' => ['text_1', 'textarea_1'],
-                ],
+        $this->evaluate($criterionEvaluation)->shouldBeLike($expectedEvaluationResult);
+    }
+
+    public function it_sets_status_in_error_when_the_text_checking_fails(
+        TextChecker $textChecker,
+        BuildProductValuesInterface $buildProductValues,
+        GetLocalesByChannelQueryInterface $localesByChannelQuery,
+        SupportedLocaleChecker $supportedLocaleChecker,
+        GetTextAttributeCodesCompatibleWithSpellingQueryInterface $getTextAttributeCodesCompatibleWithSpellingQuery,
+        GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery,
+        TextCheckResultCollection $textCheckResultTextareaPrintEn
+    ) {
+        $productId = new ProductId(42);
+        $criterionEvaluation = new Write\CriterionEvaluation(
+            new CriterionEvaluationId(),
+            new CriterionCode(EvaluateSpelling::CRITERION_CODE),
+            $productId,
+            new \DateTimeImmutable(),
+            CriterionEvaluationStatus::pending()
+        );
+
+        $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
+            'print' => ['en_US', 'fr_FR'],
+        ]));
+
+        $getTextAttributeCodesCompatibleWithSpellingQuery->byProductId($productId)->willReturn([]);
+        $buildProductValues->buildForProductIdAndAttributeCodes($productId, [])->willReturn([]);
+
+        $getTextareaAttributeCodesCompatibleWithSpellingQuery->byProductId($productId)->willReturn(['textarea_1']);
+        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['textarea_1'])->willReturn([
+            'textarea_1' => [
                 'print' => [
-                    'en_US' => ['text_1'],
+                    'en_US' => 'Success',
+                    'fr_FR' => 'Fail',
                 ],
-            ],
-        ];
+            ]
+        ]);
 
-        $expectedEvaluationResult = new CriterionEvaluationResult($expectedRates, $expectedData);
+        $channelPrint = new ChannelCode('print');
+        $localeEn = new LocaleCode('en_US');
+        $localeFr = new LocaleCode('fr_FR');
 
-        $evaluation = $this->evaluate($criterionEvaluation);
+        $supportedLocaleChecker->isSupported($localeEn)->willReturn(true);
+        $supportedLocaleChecker->isSupported($localeFr)->willReturn(true);
 
-        $evaluation->getData()->shouldBeLike($expectedEvaluationResult->getData());
-        $evaluation->getRates()->shouldBeLike($expectedEvaluationResult->getRates());
+        $textChecker->check('Success', $localeEn)->willReturn($textCheckResultTextareaPrintEn);
+        $textCheckResultTextareaPrintEn->count()->willReturn(0);
+
+        $textChecker->check('Fail', $localeFr)->willThrow(new TextCheckFailedException());
+
+        $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
+            ->addRate($channelPrint, $localeEn, new Rate(100))
+            ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::done())
+            ->addImprovableAttributes($channelPrint, $localeEn, [])
+
+            ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::error())
+        ;
+
+        $this->evaluate($criterionEvaluation)->shouldBeLike($expectedEvaluationResult);
     }
 }

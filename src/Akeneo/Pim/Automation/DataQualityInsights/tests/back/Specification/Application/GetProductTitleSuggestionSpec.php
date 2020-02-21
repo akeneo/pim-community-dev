@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\EvaluateTitleFormatting;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetIgnoredProductTitleSuggestionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -48,7 +47,7 @@ class GetProductTitleSuggestionSpec extends ObjectBehavior
         $productId = new ProductId(1000);
         $channel = new ChannelCode('ecommerce');
         $locale = new LocaleCode('en_US');
-        $rawEvaluation = new CriterionEvaluationCollection();
+        $rawEvaluation = new Read\CriterionEvaluationCollection();
 
         $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
 
@@ -98,26 +97,26 @@ class GetProductTitleSuggestionSpec extends ObjectBehavior
         $this->get($productId, $channel, $locale)->shouldBeLike("My suggested title");
     }
 
-    private function generateCriterionEvaluation(ProductId $productId, string $code, string $status, CriterionRateCollection $resultRates, array $resultData)
+    private function generateCriterionEvaluation(ProductId $productId, string $code, string $status, ChannelLocaleRateCollection $resultRates, array $resultData)
     {
-        return new CriterionEvaluation(
+        return new Read\CriterionEvaluation(
             new CriterionEvaluationId(),
             new CriterionCode($code),
             $productId,
             new \DateTimeImmutable(),
             new CriterionEvaluationStatus($status),
-            new CriterionEvaluationResult($resultRates, $resultData),
+            new Read\CriterionEvaluationResult($resultRates, new CriterionEvaluationResultStatusCollection(), $resultData),
             new \DateTimeImmutable(),
             new \DateTimeImmutable()
         );
     }
 
-    private function generateEvaluation(ProductId $productId): CriterionEvaluationCollection
+    private function generateEvaluation(ProductId $productId): Read\CriterionEvaluationCollection
     {
         $channelCode = new ChannelCode('ecommerce');
         $localeCode = new LocaleCode('en_US');
 
-        $evaluateTitleFormattingRates = new CriterionRateCollection();
+        $evaluateTitleFormattingRates = new ChannelLocaleRateCollection();
         $evaluateTitleFormattingRates
             ->addRate($channelCode, $localeCode, new Rate(88))
         ;
@@ -134,7 +133,7 @@ class GetProductTitleSuggestionSpec extends ObjectBehavior
             ]
         ];
 
-        $evaluation = new CriterionEvaluationCollection();
+        $evaluation = new Read\CriterionEvaluationCollection();
         $evaluation
             ->add($this->generateCriterionEvaluation(
                 $productId,

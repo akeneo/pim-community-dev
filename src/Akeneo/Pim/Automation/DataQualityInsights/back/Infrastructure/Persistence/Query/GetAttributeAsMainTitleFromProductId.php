@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetAttributeAsMainTitleValueFromProductIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetAttributeAsMainTitleFromProductIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 
-class GetAttributeAsMainTitleValueFromProductId implements GetAttributeAsMainTitleValueFromProductIdInterface
+class GetAttributeAsMainTitleFromProductId implements GetAttributeAsMainTitleFromProductIdInterface
 {
     /**
      * @var Connection
@@ -20,36 +21,37 @@ class GetAttributeAsMainTitleValueFromProductId implements GetAttributeAsMainTit
         $this->db = $db;
     }
 
-    public function execute(ProductId $productId): array
+    public function execute(ProductId $productId): ?AttributeCode
     {
         $query = <<<SQL
-SELECT JSON_OBJECT(pca.code, JSON_EXTRACT(pcp.raw_values, CONCAT('$.', pca.code))) AS value
+SELECT pca.code
 FROM pim_catalog_product AS pcp
     INNER JOIN pim_catalog_family AS pcf ON (pcp.family_id = pcf.id)
     INNER JOIN pim_catalog_attribute AS pca
         ON (pcf.label_attribute_id = pca.id)
         AND pca.is_localizable = 1
-        AND pca.attribute_type = 'pim_catalog_text'
+        AND pca.attribute_type = :attribute_type
 WHERE pcp.id = :product_id
-   AND JSON_CONTAINS_PATH(pcp.raw_values, 'one', CONCAT('$.', pca.code))
 SQL;
 
         $statement = $this->db->executeQuery(
             $query,
             [
                 'product_id' => $productId->toInt(),
+                'attribute_type' => AttributeTypes::TEXT
             ],
             [
                 'product_id' => \PDO::PARAM_INT,
+                'attribute_type' => \PDO::PARAM_STR,
             ]
         );
 
-        $value = $statement->fetch(FetchMode::COLUMN, 0);
+        $titleCode = $statement->fetchColumn();
 
-        if (empty($value)) {
-            return [];
+        if (false === $titleCode) {
+            return null;
         }
 
-        return json_decode($value, true);
+        return new AttributeCode(strval($titleCode));
     }
 }
