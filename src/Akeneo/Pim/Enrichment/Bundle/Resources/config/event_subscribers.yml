@@ -65,7 +65,10 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ComputeRulesSubscriber'
         arguments:
             - '@akeneo_rule_engine.repository.rule_definition'
-            - '@pim_catalog.updater.property_setter'
+            - '@pim_catalog.updater.entity_with_values_property_setter_without_permission'
+            - '@pim_catalog.updater.property_adder'
+            - '@pim_catalog.updater.property_copier'
+            - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
 

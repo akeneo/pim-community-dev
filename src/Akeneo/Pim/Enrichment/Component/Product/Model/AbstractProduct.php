@@ -79,6 +79,8 @@ abstract class AbstractProduct implements ProductInterface
     /** @var FamilyVariantInterface */
     protected $familyVariant;
 
+    private $cachedValues = [];
+
     /**
      * Constructor
      */
@@ -179,6 +181,15 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
+        $key = join('-', [$attributeCode, $localeCode, $scopeCode]);
+        if (!isset($this->cachedValues[$key])) {
+            $this->cachedValues[$key] = $this->getCachedValue($attributeCode, $localeCode, $scopeCode);
+        }
+
+        return $this->cachedValues[$key];
+    }
+
+    private function getCachedValue($attributeCode, $localeCode, $scopeCode) {
         $value = $this->values->getByCodes($attributeCode, $scopeCode, $localeCode);
         if (null !== $value) {
             return $value;
