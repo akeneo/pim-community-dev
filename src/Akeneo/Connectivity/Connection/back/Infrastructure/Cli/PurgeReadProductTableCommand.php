@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PurgeReadProductTableCommand extends Command
 {
-    protected static $defaultName = 'akeneo:connectivity-connection:purge-read-product';
+    protected static $defaultName = 'akeneo:connectivity-audit:purge-read-product';
 
     /** @var PurgeReadProductTableQuery */
     private $purgeQuery;
