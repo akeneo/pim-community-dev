@@ -12,6 +12,8 @@ services:
 
     akeneo_measure.manager:
         class: '%akeneo_measure.manager.measure_manager.class%'
+        arguments:
+            - '@akeneo_measure.provider.measurement_provider'
 
     akeneo_measure.controller.rest.measures:
         class: 'Akeneo\Tool\Bundle\MeasureBundle\Controller\MeasuresController'
