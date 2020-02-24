@@ -40,7 +40,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
     public function it_returns_all_measurement_families()
     {
         $this->loadSomeMetrics();
-        $measurementFamilies = iterator_to_array($this->repository->all());
+        $measurementFamilies = $this->repository->all();
 
         $area = MeasurementFamily::create(
             MeasurementFamilyCode::fromString('Area'),

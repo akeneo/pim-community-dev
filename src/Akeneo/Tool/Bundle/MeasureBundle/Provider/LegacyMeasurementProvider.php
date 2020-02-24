@@ -31,7 +31,7 @@ class LegacyMeasurementProvider
     {
         $measurementFamilies = array_map(function (MeasurementFamily $family) {
             return $this->adapter->adapts($family);
-        }, iterator_to_array($this->measurementFamilyRepository->all()));
+        }, $this->measurementFamilyRepository->all());
 
         $result = [];
         foreach ($measurementFamilies as $familyCode => $family) {

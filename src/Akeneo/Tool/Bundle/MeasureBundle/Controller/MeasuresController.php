@@ -2,7 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Controller;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
+use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -14,12 +15,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class MeasuresController
 {
-    /** @var LegacyMeasurementProvider */
-    private $provider;
+    /** @var MeasurementFamilyRepositoryInterface */
+    private $measurementFamilyRepository;
 
-    public function __construct(LegacyMeasurementProvider $provider)
+    public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
     {
-        $this->provider = $provider;
+        $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
 
     /**
@@ -27,6 +28,10 @@ class MeasuresController
      */
     public function indexAction()
     {
-        return new JsonResponse($this->provider->getMeasurementFamilies());
+        $normalizedMeasurementFamilies = array_map(function (MeasurementFamily $family) {
+            return $family->normalize();
+        }, $this->measurementFamilyRepository->all());
+
+        return new JsonResponse($normalizedMeasurementFamilies);
     }
 }

@@ -15,5 +15,5 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Persistence;
 
 interface MeasurementFamilyRepositoryInterface
 {
-    public function all(): \Iterator;
+    public function all(): array;
 }

@@ -36,7 +36,7 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function all(): \Iterator
+    public function all(): array
     {
         $selectAllQuery = <<<SQL
     SELECT 
@@ -49,14 +49,14 @@ SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
         $results = $statement->fetchAll();
 
-        foreach ($results as $result) {
-            yield $this->hydrateMeasurementFamily(
+        return array_map(function (array $result) {
+            return $this->hydrateMeasurementFamily(
                 $result['code'],
                 $result['labels'],
                 $result['standard_unit'],
                 $result['units']
             );
-        }
+        }, $results);
     }
 
     private function hydrateMeasurementFamily(
