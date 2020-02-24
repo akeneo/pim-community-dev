@@ -83,6 +83,21 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->findBy(['code' => ['attribute_1', 'attribute_2']])->shouldReturn([$attribute1, $attribute2]);
     }
 
+    function it_finds_one_attribute_by_array_criteria()
+    {
+        $attribute1 = $this->createAttribute('attribute_1');
+        $attribute2 = $this->createAttribute('attribute_2');
+        $attribute3 = $this->createAttribute('attribute_3');
+
+        $this->beConstructedWith([
+            $attribute1->getCode() => $attribute1,
+            $attribute2->getCode() => $attribute2,
+            $attribute3->getCode() => $attribute3,
+        ]);
+
+        $this->findOneBy(['code' => ['attribute_1', 'attribute_2']])->shouldReturn($attribute1);
+    }
+
     function it_throws_an_exception_if_saved_object_is_not_an_attribute(\StdClass $object)
     {
         $this
@@ -120,18 +135,35 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         ]);
     }
 
-    /**
-     * @param string $code
-     * @param null|string $type
-     *
-     * @return AttributeInterface
-     */
-    private function createAttribute(string $code, string $type = null): AttributeInterface
+    function it_finds_media_attribute_codes()
+    {
+        $attribute1 = $this->createAttribute('attribute_1', null, AttributeTypes::BACKEND_TYPE_BOOLEAN);
+        $attribute2 = $this->createAttribute('attribute_2', null, AttributeTypes::BACKEND_TYPE_MEDIA);
+        $attribute3 = $this->createAttribute('attribute_3', null, AttributeTypes::BACKEND_TYPE_INTEGER);
+        $attribute4 = $this->createAttribute('attribute_4', null, AttributeTypes::BACKEND_TYPE_MEDIA);
+
+        $this->beConstructedWith(
+            [
+                $attribute1->getCode() => $attribute1,
+                $attribute2->getCode() => $attribute2,
+                $attribute3->getCode() => $attribute3,
+                $attribute4->getCode() => $attribute4,
+            ]
+        );
+
+        $this->findMediaAttributeCodes()->shouldReturn(['attribute_2', 'attribute_4']);
+    }
+
+    private function createAttribute(string $code, string $type = null, string $backendType = null): AttributeInterface
     {
         $attribute = new Attribute();
         $attribute->setCode($code);
         if (null !== $type) {
             $attribute->setType($type);
+        }
+
+        if (null !== $backendType) {
+            $attribute->setBackendType($backendType);
         }
 
         return $attribute;
