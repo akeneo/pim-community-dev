@@ -1,6 +1,3 @@
-pim_enrich_associationtype_index:
-    path: ''
-
 pim_enrich_associationtype_rest_create:
     path: ''
     defaults: { _controller: pim_enrich.controller.rest.association_type:createAction }
