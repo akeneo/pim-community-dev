@@ -19,6 +19,7 @@
 - PIM-9327: PDF generation header miss the product name when the attribute used as label is localizable 
 - PIM-9324: Fix product grid not loading when asset used as main picture is deleted
 - PIM-9356: Fix external api endpoint for products with invalid quantified associations
+- PIM-9112: remove empty metric values from the database
 
 ## New features
 
