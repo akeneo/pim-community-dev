@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Select should render 1`] = `
+<div
+  className="sc-hMqMXs byrxzM"
+>
+  <div
+    className="sc-dxgOiQ foOfVd"
+    onClick={[Function]}
+    tabIndex={0}
+  >
+    <div
+      className="sc-ckVGcZ kJeNoe"
+    >
+      label 1
+    </div>
+    <div
+      className="sc-jKJlTe eOSijO"
+    >
+      <svg
+        height="24"
+        preserveAspectRatio="xMidYMid meet"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M2 7.6667L12 17l10-9.3333L21.2857 7 12 15.6667 2.7143 7"
+          fill="#67768a"
+          fillRule="evenodd"
+        />
+      </svg>
+    </div>
+  </div>
+</div>
+`;

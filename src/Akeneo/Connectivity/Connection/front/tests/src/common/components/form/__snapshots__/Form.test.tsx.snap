@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Form should render 1`] = `
+<form
+  className="AknFormContainer"
+>
+  <div
+    className="AknFieldContainer"
+  >
+    <div
+      className="AknFieldContainer-header"
+    >
+      <label
+        className="AknFieldContainer-label"
+        htmlFor="control-id"
+      >
+        label
+         
+        pim_common.required_label
+      </label>
+    </div>
+    <div
+      className="AknFieldContainer-inputContainer"
+    >
+      <input
+        className="AknTextField"
+        id="control-id"
+        type="text"
+        value="value"
+      />
+    </div>
+    <div
+      className="AknFieldContainer-footer"
+    >
+      <div
+        className="sc-bZQynM htCPZz"
+      >
+        helper
+      </div>
+    </div>
+    <div
+      className="AknFieldContainer-footer"
+    >
+      <div
+        className="AknFieldContainer-validationErrors"
+      >
+        <span
+          className="AknFieldContainer-validationError"
+        >
+          error-1
+        </span>
+        <span
+          className="AknFieldContainer-validationError"
+        >
+          error-2
+        </span>
+      </div>
+    </div>
+  </div>
+</form>
+`;
