@@ -99,19 +99,6 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(false);
         $createProductsCriteriaEvaluations->create(Argument::any())->shouldNotBeCalled();
-        $product->isVariant()->willReturn(false);
-
-        $this->onPostSave(new GenericEvent($product->getWrappedObject()));
-    }
-
-    public function it_does_nothing_when_product_is_a_variant(
-        $dataQualityInsightsFeature,
-        $createProductsCriteriaEvaluations,
-        ProductInterface $product
-    ) {
-        $dataQualityInsightsFeature->isEnabled()->willReturn(false);
-        $createProductsCriteriaEvaluations->create(Argument::any())->shouldNotBeCalled();
-        $product->isVariant()->willReturn(true);
 
         $this->onPostSave(new GenericEvent($product->getWrappedObject()));
     }
@@ -123,7 +110,6 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     ): void {
         $dataQualityInsightsFeature->isEnabled()->shouldNotBeCalled();
         $createProductsCriteriaEvaluations->create(Argument::any())->shouldNotBeCalled();
-        $product->isVariant()->willReturn(false);
 
         $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => false]));
         $this->onPostSave(new GenericEvent($product->getWrappedObject(), []));
@@ -138,7 +124,6 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $product->getId()->willReturn(12345);
-        $product->isVariant()->willReturn(false);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->create([new ProductId(12345)])->shouldBeCalled();
 
@@ -158,7 +143,6 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $product->getId()->willReturn(12345);
-        $product->isVariant()->willReturn(false);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->create([new ProductId(12345)])->shouldBeCalled();
 
@@ -178,25 +162,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     ) {
         $product1->getId()->willReturn(12345);
         $product2->getId()->willReturn(67891);
-        $product1->isVariant()->willReturn(false);
-        $product2->isVariant()->willReturn(false);
         $dataQualityInsightsFeature->isEnabled()->willReturn(false);
-        $createProductsCriteriaEvaluations->create(Argument::any())->shouldNotBeCalled();
-
-        $this->onPostSaveAll(new GenericEvent([$product1->getWrappedObject(), $product2->getWrappedObject()]));
-    }
-
-    public function it_does_nothing_when_products_are_variant_on_post_save_all(
-        $dataQualityInsightsFeature,
-        $createProductsCriteriaEvaluations,
-        ProductInterface $product1,
-        ProductInterface $product2
-    ) {
-        $product1->getId()->willReturn(12345);
-        $product2->getId()->willReturn(67891);
-        $product1->isVariant()->willReturn(true);
-        $product2->isVariant()->willReturn(true);
-        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->create(Argument::any())->shouldNotBeCalled();
 
         $this->onPostSaveAll(new GenericEvent([$product1->getWrappedObject(), $product2->getWrappedObject()]));
@@ -213,8 +179,6 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     ) {
         $product1->getId()->willReturn(12345);
         $product2->getId()->willReturn(67891);
-        $product1->isVariant()->willReturn(false);
-        $product2->isVariant()->willReturn(false);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->create([new ProductId(12345), new ProductId(67891)])->shouldBeCalled();
 
@@ -232,7 +196,6 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $product->getId()->willReturn(12345);
-        $product->isVariant()->willReturn(false);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->create([new ProductId(12345)])->willThrow(\Exception::class);
 
