@@ -33,7 +33,8 @@ define([
                 Field.prototype.getTemplateContext.apply(this, arguments),
                 FetcherRegistry.getFetcher('measure').fetchAll()
             ).then(function (templateContext, measures) {
-                const measurementFamily = measures.find(family => family.code === templateContext.attribute.metric_family);
+                const measurementFamily = measures.find(family =>
+                    family.code === templateContext.attribute.metric_family);
                 templateContext.i18n = i18n;
                 templateContext.units = measurementFamily.units;
 

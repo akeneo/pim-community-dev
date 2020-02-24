@@ -86,7 +86,8 @@ define([
                 BaseFilter.prototype.getTemplateContext.apply(this, arguments),
                 FetcherRegistry.getFetcher('measure').fetchAll()
             ).then(function (templateContext, measures) {
-                const measurementFamily = measures.find(family => family.code === templateContext.attribute.metric_family);
+                const measurementFamily = measures.find(family =>
+                    family.code === templateContext.attribute.metric_family);
 
                 return _.extend({}, templateContext, {
                     units: measurementFamily.units,

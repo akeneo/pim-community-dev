@@ -28,7 +28,7 @@ class MeasuresController
      */
     public function indexAction()
     {
-        $normalizedMeasurementFamilies = array_map(function(MeasurementFamily $family) {
+        $normalizedMeasurementFamilies = array_map(function (MeasurementFamily $family) {
             return $family->normalize();
         }, $this->measurementFamilyRepository->all());
 
