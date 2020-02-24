@@ -58,17 +58,16 @@ define([
                     }),
                     FetcherRegistry.getFetcher('measure').fetchAll()
                 ).then(function (attributes, measures) {
-
                     this.$el.html(this.template({
                         conversionUnits: this.getFormData().conversion_units,
                         metrics: attributes,
-                        measures: measures,
+                        measures,
                         catalogLocale: this.catalogLocale,
                         label: __(this.config.label),
                         fieldBaseId: this.config.fieldBaseId,
                         doNotConvertLabel: __('pim_enrich.entity.channel.property.do_not_convert'),
-                        i18n: i18n,
-                        __, __
+                        i18n,
+                        __
                     }));
 
                     this.$('.select2').select2().on('change', this.updateState.bind(this));

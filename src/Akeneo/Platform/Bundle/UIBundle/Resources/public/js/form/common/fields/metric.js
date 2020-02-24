@@ -11,14 +11,18 @@ define([
     'pim/form/common/fields/field',
     'oro/translator',
     'pim/fetcher-registry',
-    'pim/template/form/common/fields/metric'
+    'pim/template/form/common/fields/metric',
+    'pim/user-context',
+    'pim/i18n'
 ], function (
     $,
     _,
     BaseField,
     __,
     FetcherRegistry,
-    template
+    template,
+    UserContext,
+    i18n
 ) {
     return BaseField.extend({
         events: {
@@ -91,11 +95,13 @@ define([
                 BaseField.prototype.getTemplateContext.apply(this, arguments),
                 FetcherRegistry.getFetcher('measure').fetchAll()
             ).then((parentContext, measures) => {
+                const measurementFamily = measures.find(family => family.code === this.metricFamily);
+
                 return Object.assign(
                     {},
                     parentContext,
                     {
-                        unitChoices: this.formatChoices(measures[this.metricFamily].units),
+                        unitChoices: this.formatChoices(measurementFamily.units),
                         defaultUnit: this.defaultMetricUnit
                     }
                 );
@@ -128,13 +134,12 @@ define([
          *
          * @param {Object} units
          */
-        formatChoices(units) {
-            const unitCodes = Object.keys(units);
+        formatChoices: function (units) {
+            const choices = {};
+            const locale = UserContext.get('catalogLocale');
+            units.forEach(unit => choices[unit.code] = i18n.getLabel(unit.labels, locale, unit.code));
 
-            return _.object(
-                unitCodes,
-                unitCodes.map(unitCode => __(unitCode))
-            );
+            return choices;
         },
 
         /**
