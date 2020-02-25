@@ -47,7 +47,7 @@ class MeasurementInstallerIntegration extends SqlIntegrationTestCase
                 'units' => 'string',
             ]
         );
-        $this->assertNumberOfMeasurements(19);
+        $this->assertNumberOfMeasurements(23);
     }
 
     private function dropMeasurementTable(): void
