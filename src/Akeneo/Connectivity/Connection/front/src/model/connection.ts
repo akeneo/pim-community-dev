@@ -5,4 +5,5 @@ export type Connection = {
     label: string;
     flowType: FlowType;
     image: string | null;
+    auditable: boolean;
 };

@@ -1,9 +1,9 @@
-import React, {PropsWithChildren} from 'react';
 import {FlowType} from '@src/model/flow-type.enum';
 import {useUpdateConnection} from '@src/settings/api-hooks/use-update-connection';
-import {ok, err} from '@src/shared/fetch-result/result';
+import {err, ok} from '@src/shared/fetch-result/result';
 import {NotificationLevel, NotifyContext} from '@src/shared/notify';
 import {act, renderHook} from '@testing-library/react-hooks';
+import React, {PropsWithChildren} from 'react';
 
 const notify = jest.fn();
 const wrapper = ({children}: PropsWithChildren<{}>) => (
@@ -28,6 +28,7 @@ describe('useUpdateConnection', () => {
                 label: 'Franklin',
                 flowType: FlowType.DATA_SOURCE,
                 image: null,
+                auditable: false,
                 userRoleId: '1',
                 userGroupId: '2',
             });
@@ -42,6 +43,7 @@ describe('useUpdateConnection', () => {
                 label: 'Franklin',
                 flow_type: 'data_source',
                 image: null,
+                auditable: false,
                 user_role_id: '1',
                 user_group_id: '2',
             }),
@@ -66,6 +68,7 @@ describe('useUpdateConnection', () => {
                 label: 'Franklin',
                 flowType: FlowType.DATA_SOURCE,
                 image: null,
+                auditable: false,
                 userRoleId: '1',
                 userGroupId: '2',
             });
@@ -88,6 +91,7 @@ describe('useUpdateConnection', () => {
                 label: 'Franklin',
                 flowType: FlowType.DATA_SOURCE,
                 image: null,
+                auditable: false,
                 userRoleId: '1',
                 userGroupId: '2',
             });

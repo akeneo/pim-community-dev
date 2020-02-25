@@ -2,7 +2,7 @@
 
 exports[`PageHeader should render 1`] = `
 <header
-  className="sc-jzJRlG dsEWNY"
+  className="sc-jTzLTM hbjHon"
 >
   <div
     className="AknTitleContainer-line"
