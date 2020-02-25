@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes 
+
+- PIM-9090: Add infinite scroll on variants list for Product models
+
 # 3.0.68 (2020-02-19)
 
 # 3.0.67 (2020-02-10)
