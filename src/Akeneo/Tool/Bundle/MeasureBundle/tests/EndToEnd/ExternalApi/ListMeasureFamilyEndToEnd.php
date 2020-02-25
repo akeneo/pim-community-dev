@@ -30,16 +30,16 @@ class ListMeasureFamilyEndToEnd extends ApiTestCase
   "current_page": 1,
   "_embedded": {
     "items": [
+      {$measureFamilies['Angle']},
       {$measureFamilies['Area']},
       {$measureFamilies['Binary']},
       {$measureFamilies['Brightness']},
+      {$measureFamilies['Capacitance']},
       {$measureFamilies['CaseBox']},
       {$measureFamilies['Decibel']},
       {$measureFamilies['Duration']},
       {$measureFamilies['ElectricCharge']},
-      {$measureFamilies['Energy']},
-      {$measureFamilies['Frequency']},
-      {$measureFamilies['Intensity']}
+      {$measureFamilies['Energy']}
     ]
   }
 }
@@ -53,6 +53,83 @@ JSON;
 
     private function getStandardizedMeasureFamilies()
     {
+        $measureFamilies['Angle'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Angle"
+        }
+    },
+    "code": "Angle",
+    "standard": "RADIAN",
+    "units": [
+        {
+            "code": "RADIAN",
+            "convert": {
+                "mul": "1"
+            },
+            "symbol": "rad"
+        },
+        {
+            "code": "MILLIRADIAN",
+            "convert": {
+                "mul": "0.001"
+            },
+            "symbol": "mrad"
+        },
+        {
+            "code": "MICRORADIAN",
+            "convert": {
+                "mul": "1.0E-6"
+            },
+            "symbol": "µrad"
+        },
+        {
+            "code": "DEGREE",
+            "convert": {
+                "mul": "0.01745329"
+            },
+            "symbol": "°"
+        },
+        {
+            "code": "MINUTE",
+            "convert": {
+                "mul": "0.0002908882"
+            },
+            "symbol": "'"
+        },
+        {
+            "code": "SECOND",
+            "convert": {
+                "mul": "4.848137E-6"
+            },
+            "symbol": "\""
+        },
+        {
+            "code": "GON",
+            "convert": {
+                "mul": "0.01570796"
+            },
+            "symbol": "gon"
+        },
+        {
+            "code": "MIL",
+            "convert": {
+                "mul": "0.0009817477"
+            },
+            "symbol": "mil"
+        },
+        {
+            "code": "REVOLUTION",
+            "convert": {
+                "mul": "6.283185"
+            },
+            "symbol": "rev"
+        }
+    ]
+}
+JSON;
+
         $measureFamilies['Area'] = <<<JSON
 {
   "_links": {
@@ -195,57 +272,85 @@ JSON;
 
         $measureFamilies['Binary'] = <<<JSON
 {
-  "_links": {
-    "self": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Binary"
-    }
-  },
-  "code": "Binary",
-  "standard": "BYTE",
-  "units": [
-    {
-      "code": "BIT",
-      "convert": {
-        "mul": "0.125"
-      },
-      "symbol": "b"
+    "_links": {
+        "self": {
+            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Binary"
+        }
     },
-    {
-      "code": "BYTE",
-      "convert": {
-        "mul": "1"
-      },
-      "symbol": "B"
-    },
-    {
-      "code": "KILOBYTE",
-      "convert": {
-        "mul": "1024"
-      },
-      "symbol": "kB"
-    },
-    {
-      "code": "MEGABYTE",
-      "convert": {
-        "mul": "1048576"
-      },
-      "symbol": "MB"
-    },
-    {
-      "code": "GIGABYTE",
-      "convert": {
-        "mul": "1073741824"
-      },
-      "symbol": "GB"
-    },
-    {
-      "code": "TERABYTE",
-      "convert": {
-        "mul": "1099511627776"
-      },
-      "symbol": "TB"
-    }
-  ]
+    "code": "Binary",
+    "standard": "BYTE",
+    "units": [
+        {
+            "code": "CHAR",
+            "convert": {
+                "mul": "8"
+            },
+            "symbol": "char"
+        },
+        {
+            "code": "KILOBIT",
+            "convert": {
+                "mul": "125"
+            },
+            "symbol": "kbit"
+        },
+        {
+            "code": "MEGABIT",
+            "convert": {
+                "mul": "125000"
+            },
+            "symbol": "Mbit"
+        },
+        {
+            "code": "GIGABIT",
+            "convert": {
+                "mul": "125000000"
+            },
+            "symbol": "Gbit"
+        },
+        {
+            "code": "BIT",
+            "convert": {
+                "mul": "0.125"
+            },
+            "symbol": "b"
+        },
+        {
+            "code": "BYTE",
+            "convert": {
+                "mul": "1"
+            },
+            "symbol": "B"
+        },
+        {
+            "code": "KILOBYTE",
+            "convert": {
+                "mul": "1024"
+            },
+            "symbol": "kB"
+        },
+        {
+            "code": "MEGABYTE",
+            "convert": {
+                "mul": "1048576"
+            },
+            "symbol": "MB"
+        },
+        {
+            "code": "GIGABYTE",
+            "convert": {
+                "mul": "1073741824"
+            },
+            "symbol": "GB"
+        },
+        {
+            "code": "TERABYTE",
+            "convert": {
+                "mul": "1099511627776"
+            },
+            "symbol": "TB"
+        }
+    ]
 }
 JSON;
 
@@ -276,6 +381,70 @@ JSON;
   ]
 }
 JSON;
+
+        $measureFamilies['Capacitance'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Capacitance"
+        }
+    },
+    "code": "Capacitance",
+    "standard": "FARAD",
+    "units": [
+        {
+            "code": "ATTOFARAD",
+            "convert": {
+                "div": "1000000000000000000"
+            },
+            "symbol": "aF"
+        },
+        {
+            "code": "PICOFARAD",
+            "convert": {
+                "div": "1000000000000"
+            },
+            "symbol": "pF"
+        },
+        {
+            "code": "NANOFARAD",
+            "convert": {
+                "div": "1000000000"
+            },
+            "symbol": "nF"
+        },
+        {
+            "code": "MICROFARAD",
+            "convert": {
+                "div": "1000000"
+            },
+            "symbol": "µF"
+        },
+        {
+            "code": "MILLIFARAD",
+            "convert": {
+                "div": "1000"
+            },
+            "symbol": "mF"
+        },
+        {
+            "code": "FARAD",
+            "convert": {
+                "mul": "1"
+            },
+            "symbol": "F"
+        },
+        {
+            "code": "KILOFARAD",
+            "convert": {
+                "mul": "1000"
+            },
+            "symbol": "kF"
+        }
+    ]
+}
+JSON;
+
         $measureFamilies['CaseBox'] = <<<JSON
 {
   "_links": {
@@ -514,6 +683,48 @@ JSON;
 }
 JSON;
 
+        $measureFamilies['Force'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Force"
+        }
+    },
+    "code": "Force",
+    "standard": "NEWTON",
+    "units": [
+        {
+            "code": "MILLINEWTON",
+            "convert": {
+                "mul": "0.001"
+            },
+            "symbol": "mN"
+        },
+        {
+            "code": "NEWTON",
+            "convert": {
+                "mul": "1"
+            },
+            "symbol": "N"
+        },
+        {
+            "code": "KILONEWTON",
+            "convert": {
+                "mul": "1000"
+            },
+            "symbol": "kN"
+        },
+        {
+            "code": "MEGATON",
+            "convert": {
+                "mul": "1000000"
+            },
+            "symbol": "MN"
+        }
+    ]
+}
+JSON;
+
 
         $measureFamilies['Frequency'] = <<<JSON
 {
@@ -629,113 +840,127 @@ JSON;
 
         $measureFamilies['Length'] = <<<JSON
 {
-  "_links": {
-    "self": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Length"
-    }
-  },
-  "code": "Length",
-  "standard": "METER",
-  "units": [
-    {
-      "code": "MILLIMETER",
-      "convert": {
-        "mul": "0.001"
-      },
-      "symbol": "mm"
+    "_links": {
+        "self": {
+            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Length"
+        }
     },
-    {
-      "code": "CENTIMETER",
-      "convert": {
-        "mul": "0.01"
-      },
-      "symbol": "cm"
-    },
-    {
-      "code": "DECIMETER",
-      "convert": {
-        "mul": "0.1"
-      },
-      "symbol": "dm"
-    },
-    {
-      "code": "METER",
-      "convert": {
-        "mul": "1"
-      },
-      "symbol": "m"
-    },
-    {
-      "code": "DEKAMETER",
-      "convert": {
-        "mul": "10"
-      },
-      "symbol": "dam"
-    },
-    {
-      "code": "HECTOMETER",
-      "convert": {
-        "mul": "100"
-      },
-      "symbol": "hm"
-    },
-    {
-      "code": "KILOMETER",
-      "convert": {
-        "mul": "1000"
-      },
-      "symbol": "km"
-    },
-    {
-      "code": "MIL",
-      "convert": {
-        "mul": "0.0000254"
-      },
-      "symbol": "mil"
-    },
-    {
-      "code": "INCH",
-      "convert": {
-        "mul": "0.0254"
-      },
-      "symbol": "in"
-    },
-    {
-      "code": "FEET",
-      "convert": {
-        "mul": "0.3048"
-      },
-      "symbol": "ft"
-    },
-    {
-      "code": "YARD",
-      "convert": {
-        "mul": "0.9144"
-      },
-      "symbol": "yd"
-    },
-    {
-      "code": "CHAIN",
-      "convert": {
-        "mul": "20.1168"
-      },
-      "symbol": "ch"
-    },
-    {
-      "code": "FURLONG",
-      "convert": {
-        "mul": "201.168"
-      },
-      "symbol": "fur"
-    },
-    {
-      "code": "MILE",
-      "convert": {
-        "mul": "1609.344"
-      },
-      "symbol": "mi"
-    }
-  ]
+    "code": "Length",
+    "standard": "METER",
+    "units": [
+        {
+            "code": "MICROMETER",
+            "convert": {
+                "mul": "0.000001"
+            },
+            "symbol": "μm"
+        },
+        {
+            "code": "NAUTICAL_MILE",
+            "convert": {
+                "mul": "1852"
+            },
+            "symbol": "nm"
+        },
+        {
+            "code": "MILLIMETER",
+            "convert": {
+                "mul": "0.001"
+            },
+            "symbol": "mm"
+        },
+        {
+            "code": "CENTIMETER",
+            "convert": {
+                "mul": "0.01"
+            },
+            "symbol": "cm"
+        },
+        {
+            "code": "DECIMETER",
+            "convert": {
+                "mul": "0.1"
+            },
+            "symbol": "dm"
+        },
+        {
+            "code": "METER",
+            "convert": {
+                "mul": "1"
+            },
+            "symbol": "m"
+        },
+        {
+            "code": "DEKAMETER",
+            "convert": {
+                "mul": "10"
+            },
+            "symbol": "dam"
+        },
+        {
+            "code": "HECTOMETER",
+            "convert": {
+                "mul": "100"
+            },
+            "symbol": "hm"
+        },
+        {
+            "code": "KILOMETER",
+            "convert": {
+                "mul": "1000"
+            },
+            "symbol": "km"
+        },
+        {
+            "code": "MIL",
+            "convert": {
+                "mul": "0.0000254"
+            },
+            "symbol": "mil"
+        },
+        {
+            "code": "INCH",
+            "convert": {
+                "mul": "0.0254"
+            },
+            "symbol": "in"
+        },
+        {
+            "code": "FEET",
+            "convert": {
+                "mul": "0.3048"
+            },
+            "symbol": "ft"
+        },
+        {
+            "code": "YARD",
+            "convert": {
+                "mul": "0.9144"
+            },
+            "symbol": "yd"
+        },
+        {
+            "code": "CHAIN",
+            "convert": {
+                "mul": "20.1168"
+            },
+            "symbol": "ch"
+        },
+        {
+            "code": "FURLONG",
+            "convert": {
+                "mul": "201.168"
+            },
+            "symbol": "fur"
+        },
+        {
+            "code": "MILE",
+            "convert": {
+                "mul": "1609.344"
+            },
+            "symbol": "mi"
+        }
+    ]
 }
 JSON;
         $measureFamilies['Power'] = <<<JSON
@@ -789,71 +1014,120 @@ JSON;
 
         $measureFamilies['Pressure'] = <<<JSON
 {
-  "_links": {
-    "self": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Pressure"
-    }
-  },
-  "code": "Pressure",
-  "standard": "BAR",
-  "units": [
-    {
-      "code": "BAR",
-      "convert": {
-        "mul": "1"
-      },
-      "symbol": "Bar"
+    "_links": {
+        "self": {
+            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Pressure"
+        }
     },
-    {
-      "code": "PASCAL",
-      "convert": {
-        "mul": "0.00001"
-      },
-      "symbol": "Pa"
-    },
-    {
-      "code": "HECTOPASCAL",
-      "convert": {
-        "mul": "0.001"
-      },
-      "symbol": "hPa"
-    },
-    {
-      "code": "MILLIBAR",
-      "convert": {
-        "mul": "0.001"
-      },
-      "symbol": "mBar"
-    },
-    {
-      "code": "ATM",
-      "convert": {
-        "mul": "0.986923"
-      },
-      "symbol": "atm"
-    },
-    {
-      "code": "PSI",
-      "convert": {
-        "mul": "14.50376985373022"
-      },
-      "symbol": "PSI"
-    },
-    {
-      "code": "TORR",
-      "convert": {
-        "mul": "750.06375541921"
-      },
-      "symbol": "Torr"
-    },
-    {
-      "code": "MMHG",
-      "convert": {
-        "mul": "750.06375541921"
-      },
-      "symbol": "mmHg"
-    }
-  ]
+    "code": "Pressure",
+    "standard": "BAR",
+    "units": [
+        {
+            "code": "CENTIBAR",
+            "convert": {
+                "mul": "0.01"
+            },
+            "symbol": "cbar"
+        },
+        {
+            "code": "DECIBAR",
+            "convert": {
+                "mul": "0.1"
+            },
+            "symbol": "dbar"
+        },
+        {
+            "code": "KILOBAR",
+            "convert": {
+                "mul": "1000"
+            },
+            "symbol": "kbar"
+        },
+        {
+            "code": "MEGABAR",
+            "convert": {
+                "mul": "1000000"
+            },
+            "symbol": "Mbar"
+        },
+        {
+            "code": "KILOPASCAL",
+            "convert": {
+                "mul": "0.01"
+            },
+            "symbol": "kPa"
+        },
+        {
+            "code": "MEGAPASCAL",
+            "convert": {
+                "mul": "10"
+            },
+            "symbol": "MPa"
+        },
+        {
+            "code": "GIGAPASCAL",
+            "convert": {
+                "mul": "10000"
+            },
+            "symbol": "GPa"
+        },
+        {
+            "code": "BAR",
+            "convert": {
+                "mul": "1"
+            },
+            "symbol": "Bar"
+        },
+        {
+            "code": "PASCAL",
+            "convert": {
+                "mul": "0.00001"
+            },
+            "symbol": "Pa"
+        },
+        {
+            "code": "HECTOPASCAL",
+            "convert": {
+                "mul": "0.001"
+            },
+            "symbol": "hPa"
+        },
+        {
+            "code": "MILLIBAR",
+            "convert": {
+                "mul": "0.001"
+            },
+            "symbol": "mBar"
+        },
+        {
+            "code": "ATM",
+            "convert": {
+                "mul": "0.986923"
+            },
+            "symbol": "atm"
+        },
+        {
+            "code": "PSI",
+            "convert": {
+                "mul": "14.50376985373022"
+            },
+            "symbol": "PSI"
+        },
+        {
+            "code": "TORR",
+            "convert": {
+                "mul": "750.06375541921"
+            },
+            "symbol": "Torr"
+        },
+        {
+            "code": "MMHG",
+            "convert": {
+                "mul": "750.06375541921"
+            },
+            "symbol": "mmHg"
+        }
+    ]
 }
 JSON;
 
@@ -1240,6 +1514,154 @@ JSON;
 }
 JSON;
 
+        $measureFamilies['VolumeFlow'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/VolumeFlow"
+        }
+    },
+    "code": "VolumeFlow",
+    "standard": "CUBIC_METER_PER_SECOND",
+    "units": [
+        {
+            "code": "CUBIC_METER_PER_SECOND",
+            "convert": {
+                "mul": "1"
+            },
+            "symbol": "m³/s"
+        },
+        {
+            "code": "CUBIC_METER_PER_MINUTE",
+            "convert": {
+                "mul": "60"
+            },
+            "symbol": "m³/min"
+        },
+        {
+            "code": "CUBIC_METER_PER_HOUR",
+            "convert": {
+                "mul": "3600"
+            },
+            "symbol": "m³/h"
+        },
+        {
+            "code": "CUBIC_METER_PER_DAY",
+            "convert": {
+                "mul": "86400"
+            },
+            "symbol": "m³/d"
+        },
+        {
+            "code": "MILLILITER_PER_SECOND",
+            "convert": {
+                "mul": "1.0E-6"
+            },
+            "symbol": "ml/s"
+        },
+        {
+            "code": "MILLILITER_PER_MINUTE",
+            "convert": {
+                "mul": "60"
+            },
+            "symbol": "ml/min"
+        },
+        {
+            "code": "MILLILITER_PER_HOUR",
+            "convert": {
+                "mul": "3600"
+            },
+            "symbol": "ml/h"
+        },
+        {
+            "code": "MILLILITER_PER_DAY",
+            "convert": {
+                "mul": "86400"
+            },
+            "symbol": "ml/d"
+        },
+        {
+            "code": "CUBIC_CENTIMETER_PER_SECOND",
+            "convert": {
+                "mul": "1.0E-6"
+            },
+            "symbol": "cm³/s"
+        },
+        {
+            "code": "CUBIC_CENTIMETER_PER_MINUTE",
+            "convert": {
+                "mul": "60"
+            },
+            "symbol": "cm³/min"
+        },
+        {
+            "code": "CUBIC_CENTIMETER_PER_HOUR",
+            "convert": {
+                "mul": "3600"
+            },
+            "symbol": "cm³/h"
+        },
+        {
+            "code": "CUBIC_CENTIMETER_PER_DAY",
+            "convert": {
+                "mul": "86400"
+            },
+            "symbol": "cm³/d"
+        },
+        {
+            "code": "CUBIC_DECIMETER_PER_MINUTE",
+            "convert": {
+                "mul": "60"
+            },
+            "symbol": "dm³/min"
+        },
+        {
+            "code": "CUBIC_DECIMETER_PER_HOUR",
+            "convert": {
+                "mul": "3600"
+            },
+            "symbol": "dm³/h"
+        },
+        {
+            "code": "LITER_PER_SECOND",
+            "convert": {
+                "mul": "0.001"
+            },
+            "symbol": "l/s"
+        },
+        {
+            "code": "LITER_PER_MINUTE",
+            "convert": {
+                "mul": "60"
+            },
+            "symbol": "l/min"
+        },
+        {
+            "code": "LITER_PER_HOUR",
+            "convert": {
+                "mul": "3600"
+            },
+            "symbol": "l/h"
+        },
+        {
+            "code": "LITER_PER_DAY",
+            "convert": {
+                "mul": "86400"
+            },
+            "symbol": "l/d"
+        },
+        {
+            "code": "KILOLITER_PER_HOUR",
+            "convert": {
+                "mul": "3600"
+            },
+            "symbol": "kl/h"
+        }
+    ]
+}
+JSON;
+
+
         $measureFamilies['Weight'] = <<<JSON
 {
   "_links": {
@@ -1338,22 +1760,22 @@ JSON;
     public function testOutOfRangeListMeasureFamily()
     {
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/measure-families?page=3');
+        $client->request('GET', 'api/rest/v1/measure-families?page=300');
 
         $expected = <<<JSON
 {
   "_links": {
     "self": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=3&limit=10&with_count=false"
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=300&limit=10&with_count=false"
     },
     "first": {
       "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=1&limit=10&with_count=false"
     },
     "previous": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=2&limit=10&with_count=false"
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families?page=299&limit=10&with_count=false"
     }
   },
-  "current_page": 3,
+  "current_page": 300,
   "_embedded": {
     "items": []
   }
@@ -1391,9 +1813,9 @@ JSON;
   "current_page": 2,
   "_embedded": {
     "items": [
-      {$measureFamilies['CaseBox']},
-      {$measureFamilies['Decibel']},
-      {$measureFamilies['Duration']}
+      {$measureFamilies['Brightness']},
+      {$measureFamilies['Capacitance']},
+      {$measureFamilies['CaseBox']}
     ]
   }
 }
@@ -1430,7 +1852,7 @@ JSON;
   "items_count": {$measureFamiliesCount},
   "_embedded": {
     "items": [
-      {$measureFamilies['Area']}
+      {$measureFamilies['Angle']}
     ]
   }
 }
