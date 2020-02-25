@@ -25,5 +25,5 @@ class EnterpriseVersion
     const VERSION_CODENAME = 'Cirrus';
 
     /** @staticvar string */
-    const EDITION = 'EE SaaS';
+    const EDITION = 'Serenity';
 }
