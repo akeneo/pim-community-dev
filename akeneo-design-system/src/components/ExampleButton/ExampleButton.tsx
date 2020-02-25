@@ -37,7 +37,7 @@ const StyledButton = styled.button<StyledButtonProps>`
 `;
 
 type ExampleButtonProps = {
-    children: any,
+    children: React.ReactNode,
     disabled?: boolean,
     mode?: string,
     onClick: () => {},
