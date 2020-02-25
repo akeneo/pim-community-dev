@@ -21,6 +21,7 @@ SQL;
         $updateRows = <<<SQL
 UPDATE akeneo_connectivity_connection
 SET auditable = 1
+WHERE flow_type != 'other'
 SQL;
 
         $this->addSql($alterTable);
