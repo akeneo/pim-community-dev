@@ -66,7 +66,7 @@ export const EventChart: FC<Props> = ({
         );
 
         setChartData(chartData);
-    }, [uiLocale, formatNumber, translate, connectionsAuditData, selectedConnectionCode]);
+    }, [uiLocale, formatNumber, translate, connectionsAuditData, selectedConnectionCode, formatNumber]);
 
     const total = (selectedConnectionCode && connectionsAuditData[selectedConnectionCode]?.weekly_total) || 0;
 

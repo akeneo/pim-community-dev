@@ -1,13 +1,17 @@
 import {useFormikContext} from 'formik';
 import React from 'react';
 import styled from 'styled-components';
-import {FormGroup, FormInput, InlineHelper, Section} from '../../common';
+import {Checkbox, FormGroup, FormInput, InlineHelper, Section} from '../../common';
 import {Connection} from '../../model/connection';
+import {FlowType} from '../../model/flow-type.enum';
 import {Translate} from '../../shared/translate';
 import {FormValues} from '../pages/EditConnection';
+import {AuditableHelper} from './AuditableHelper';
 import {FlowTypeHelper} from './FlowTypeHelper';
 import {FlowTypeSelect} from './FlowTypeSelect';
-import ImageUploader from './ImageUploader';
+import {ImageUploader} from './ImageUploader';
+
+const isAuditableDisabled = (flowType: FlowType) => flowType === FlowType.OTHER;
 
 interface Props {
     connection: Connection;
@@ -15,6 +19,14 @@ interface Props {
 
 export const ConnectionEditForm = ({connection}: Props) => {
     const {values, handleChange, setFieldValue, errors, setFieldError} = useFormikContext<FormValues>();
+
+    const handleFlowTypeChange = (flowType: FlowType) => {
+        setFieldValue('flowType', flowType);
+
+        if (isAuditableDisabled(flowType)) {
+            setFieldValue('auditable', false);
+        }
+    };
 
     return (
         <>
@@ -51,10 +63,26 @@ export const ConnectionEditForm = ({connection}: Props) => {
                         </InlineHelper>
                     }
                 >
-                    <FlowTypeSelect
-                        value={values.flowType}
-                        onChange={flowType => setFieldValue('flowType', flowType)}
-                    />
+                    <FlowTypeSelect value={values.flowType} onChange={handleFlowTypeChange} />
+                </FormGroup>
+
+                <FormGroup
+                    helper={
+                        isAuditableDisabled(values.flowType) && (
+                            <InlineHelper info>
+                                <AuditableHelper />
+                            </InlineHelper>
+                        )
+                    }
+                >
+                    <Checkbox
+                        name='auditable'
+                        checked={values.auditable}
+                        onChange={handleChange}
+                        disabled={isAuditableDisabled(values.flowType)}
+                    >
+                        <Translate id='akeneo_connectivity.connection.connection.auditable' />
+                    </Checkbox>
                 </FormGroup>
 
                 <FormGroup

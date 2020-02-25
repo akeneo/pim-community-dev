@@ -5,17 +5,18 @@ import {GreyButton} from './button/GreyButton';
 import {IconButton} from './button/IconButton';
 import {ImportantButton} from './button/ImportantButton';
 import {DropdownLink, SecondaryActionsDropdownButton} from './button/SecondaryActionsDropdownButton';
+import {Checkbox} from './Checkbox';
 import {Figure, FigureCaption, FigureImage} from './Figure';
 import {Form} from './form/Form';
 import {FormGroup} from './form/FormGroup';
 import {FormInput} from './form/FormInput';
 import {Helper, HelperLink, HelperTitle} from './Helper';
 import {InlineHelper} from './InlineHelper';
-import {RuntimeError} from './RuntimeError';
 import {Modal} from './Modal';
 import {PageContent} from './PageContent';
 import {PageError} from './PageError';
 import {PageHeader} from './PageHeader';
+import {RuntimeError} from './RuntimeError';
 import {Section} from './Section';
 import {Select} from './select/Select';
 import {Select2, Select2Configuration} from './Select2';
@@ -25,6 +26,7 @@ export {
     ApplyButton,
     Breadcrumb,
     BreadcrumbItem,
+    Checkbox,
     DropdownLink,
     Figure,
     FigureCaption,
