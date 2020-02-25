@@ -2,22 +2,25 @@ import React, {useLayoutEffect} from "react";
 import {useDispatch} from "react-redux";
 import {useFetchProductFamilyInformation, usePageContext, useProduct} from "../../infrastructure/hooks";
 import {createWidget, EditorElement, WidgetsCollection} from "../helper";
-import {Attribute, Family} from "../../domain";
+import {Attribute, Family, Product} from "../../domain";
 import {initializeWidgetsListAction} from "../../infrastructure/reducer";
 
 const uuidV5 = require('uuid/v5');
 
 const WIDGET_UUID_NAMESPACE = '4e34f5c2-d1b0-4cf2-96c9-dca6b95e695e';
 
-const getTextAttributes = (family: Family) => {
+const getTextAttributes = (family: Family, product: Product) => {
   const isValidTextarea = (attribute: Attribute) => (attribute.type === "pim_catalog_textarea" && attribute.localizable && !attribute.is_read_only && !attribute.wysiwyg_enabled);
   const isValidText = (attribute: Attribute) => (attribute.type === "pim_catalog_text" && attribute.localizable && !attribute.is_read_only);
+  const isVariantProduct = (product: Product) => product.meta.level !== null;
+  const isAttributeEditable = (attribute: Attribute, product: Product) => product.meta.attributes_for_this_level.includes(attribute.code);
 
   return family.attributes.filter((attribute) => {
-    return (
+    const isValid = (
       isValidTextarea(attribute) ||
       isValidText(attribute)
-    );
+    ) && (! isVariantProduct(product) || (isVariantProduct(product) && isAttributeEditable(attribute, product)));
+    return isValid;
   });
 };
 
@@ -46,7 +49,7 @@ const TextAttributesContextListener = () => {
     let observer: MutationObserver|null = null;
 
     if (family && container) {
-      const textAttributes = getTextAttributes(family);
+      const textAttributes = getTextAttributes(family, product);
       observer = new MutationObserver((mutations) => {
         let widgetList: WidgetsCollection = {};
         mutations.forEach((mutation) => {

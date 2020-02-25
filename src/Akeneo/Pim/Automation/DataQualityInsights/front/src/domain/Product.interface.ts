@@ -13,4 +13,6 @@ interface Meta {
   label: {
     [locale: string]: string;
   };
+  level: null | number;
+  attributes_for_this_level: string[];
 }

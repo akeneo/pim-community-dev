@@ -29,6 +29,8 @@ const initialState: ProductState = {
   meta: {
     id: null,
     label: {},
+    attributes_for_this_level: [],
+    level: null,
   },
 };
 
