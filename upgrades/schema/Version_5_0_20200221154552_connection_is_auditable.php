@@ -16,11 +16,11 @@ final class Version_5_0_20200221154552_connection_is_auditable extends AbstractM
     {
         $alterTable = <<<SQL
 ALTER TABLE akeneo_connectivity_connection
-ADD is_auditable tinyint(1) default 0 not null;
+ADD auditable tinyint(1) default 0 not null;
 SQL;
         $updateRows = <<<SQL
 UPDATE akeneo_connectivity_connection
-SET is_auditable = 1
+SET auditable = 1
 SQL;
 
         $this->addSql($alterTable);
