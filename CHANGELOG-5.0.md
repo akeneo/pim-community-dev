@@ -29,6 +29,10 @@
 - Change constructor of `Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager` to
      - remove `array $config`
      - add `Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider $legacyMeasurementProvider`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter` to
+    - remove `Akeneo\Tool\Component\Localization\TranslatorProxy $translatorProxy`
+    - add `Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface $measurementFamilyRepository`
+    - add `Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository $baseCachedObjectRepository`
 - Change `Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager` to remove method `setMeasureConfig(array $config)`
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\DependencyInjection\Configuration`
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\AreaFamilyInterface`
@@ -49,6 +53,8 @@
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\VoltageFamilyInterface`
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\VolumeFamilyInterface`
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface`
+- Rename `Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException` as `Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException`
+- Rename `Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownMeasureException` as `Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException`
 
 ### CLI commands
 

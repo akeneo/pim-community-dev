@@ -51,7 +51,9 @@ class ProductValuesNormalizer implements NormalizerInterface, SerializerAwareInt
             $presenter = $this->presenterRegistry->getPresenterByAttributeCode($attributeCode);
             if (null !== $presenter) {
                 $normalizedValue['data'] = $presenter->present($normalizedValue['data'], [
-                    'locale' => $this->userContext->getUiLocaleCode()
+                    // Weird that we use UiLocaleCode as the data_locale is available in the $context
+                    'locale' => $this->userContext->getUiLocaleCode(),
+                    'attribute_code' => $attributeCode
                 ]);
             }
             $result[$attributeCode][] = $normalizedValue;

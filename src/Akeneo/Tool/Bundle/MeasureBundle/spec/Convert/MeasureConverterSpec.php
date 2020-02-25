@@ -3,8 +3,8 @@
 namespace spec\Akeneo\Tool\Bundle\MeasureBundle\Convert;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
-use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownMeasureException;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -54,7 +54,7 @@ YAML;
     {
         $this
             ->shouldThrow(
-                new UnknownFamilyMeasureException()
+                new MeasurementFamilyNotFoundException()
             )
             ->during('setFamily', ['foo']);
     }
@@ -92,7 +92,7 @@ YAML;
         $this->setFamily('Weight');
         $this
             ->shouldThrow(
-                new UnknownMeasureException(
+                new UnitNotFoundException(
                     'Could not find metric unit "foo" in family "Weight"'
                 )
             )
@@ -100,7 +100,7 @@ YAML;
 
         $this
             ->shouldThrow(
-                new UnknownMeasureException(
+                new UnitNotFoundException(
                     'Could not find metric unit "foo" in family "Weight"'
                 )
             )
