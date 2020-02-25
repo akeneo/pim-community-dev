@@ -40,6 +40,8 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
      * @see https://dev.mysql.com/doc/refman/5.7/en/insert-optimization.html
      *
      * There is retry strategy to mitigate the risk of dead lock when loading data with high concurrency.
+     * To avoid to get several dead lock exceptions in a row, we sleep between the retry. It lets the database take a breath and finish the other concurrent transactions triggering the deadlock.
+     * There is a random sleep as well, to avoid to execute the retried transaction at the same time of other concurrent processes doing a retry as well.
      *
      * {@inheritdoc}
      */
@@ -100,7 +102,10 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
             } catch (DeadlockException $e) {
                 $retry += 1;
 
-                if (3 === $retry) {
+                usleep(300000);
+                usleep(rand(50000, $retry*100000));
+
+                if (5 === $retry) {
                     throw $e;
                 }
             }
