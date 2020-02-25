@@ -28,7 +28,7 @@ class DbalConnectionRepository implements ConnectionRepository
     public function create(Connection $connection): void
     {
         $insertQuery = <<<SQL
-INSERT INTO akeneo_connectivity_connection (client_id, user_id, code, label, flow_type, is_auditable)
+INSERT INTO akeneo_connectivity_connection (client_id, user_id, code, label, flow_type, auditable)
 VALUES (:client_id, :user_id, :code, :label, :flow_type, :auditable)
 SQL;
 
@@ -51,7 +51,7 @@ SQL;
     public function findOneByCode(string $code): ?Connection
     {
         $selectQuery = <<<SQL
-SELECT code, label, flow_type, image, client_id, user_id, is_auditable
+SELECT code, label, flow_type, image, client_id, user_id, auditable
 FROM akeneo_connectivity_connection
 WHERE code = :code
 SQL;
@@ -66,7 +66,7 @@ SQL;
                 (int) $dataRow['client_id'],
                 new UserId((int) $dataRow['user_id']),
                 $dataRow['image'],
-                (bool) $dataRow['is_auditable']
+                (bool) $dataRow['auditable']
             ) : null;
     }
 
@@ -74,7 +74,7 @@ SQL;
     {
         $updateQuery = <<<SQL
 UPDATE akeneo_connectivity_connection
-SET label = :label, flow_type = :flow_type, image = :image, is_auditable = :auditable
+SET label = :label, flow_type = :flow_type, image = :image, auditable = :auditable
 WHERE code = :code
 SQL;
 
