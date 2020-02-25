@@ -46,7 +46,7 @@ class Connection
         int $clientId,
         UserId $userId,
         ?string $image = null,
-        bool $auditable
+        bool $auditable = false
     ) {
         $this->code = new ConnectionCode($code);
         $this->label = new ConnectionLabel($label);
