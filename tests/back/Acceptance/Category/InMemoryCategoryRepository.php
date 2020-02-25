@@ -157,8 +157,10 @@ final class InMemoryCategoryRepository implements
             if (null === $tmpParent) {
                 continue;
             }
+
             if ($parent->getCode() === $tmpParent->getCode()) {
                 $categoryCodes[] = $category->getCode();
+                $categoryCodes = array_merge($categoryCodes, $this->getAllChildrenCodes($category, false));
             }
         }
 
