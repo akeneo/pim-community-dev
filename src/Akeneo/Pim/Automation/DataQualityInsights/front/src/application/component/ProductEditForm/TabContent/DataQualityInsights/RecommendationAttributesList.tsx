@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import {useCatalogContext, useFetchProductFamilyInformation} from "../../../../../infrastructure/hooks";
+import {useCatalogContext, useFetchProductFamilyInformation, useProduct} from "../../../../../infrastructure/hooks";
 import Attribute from "./Attribute";
 
 interface RecommendationAttributesListProps {
@@ -26,6 +26,7 @@ const getAttributeLabel = (attributeCode: string, productFamilyInformation: any,
 const RecommendationAttributesList: FunctionComponent<RecommendationAttributesListProps> = ({criterion, attributes}) => {
   const {locale} = useCatalogContext();
   const productFamilyInformation = useFetchProductFamilyInformation();
+  const product = useProduct();
 
   let attributesLabels: any[] = [];
   if (locale && productFamilyInformation) {
@@ -40,6 +41,13 @@ const RecommendationAttributesList: FunctionComponent<RecommendationAttributesLi
   const sortedAttributes = Object.values(attributesLabels).sort((attribute1: any, attribute2: any) => {
     return attribute1.label.localeCompare(attribute2.label, undefined , {sensitivity: 'base'});
   });
+
+  const isLinkAvailable = (attributeCode: string): boolean => {
+    return (
+      product.meta.level === null ||
+      product.meta.attributes_for_this_level.includes(attributeCode)
+    );
+  };
 
   return (
     <>
@@ -56,7 +64,13 @@ const RecommendationAttributesList: FunctionComponent<RecommendationAttributesLi
               );
 
               return (
-                <Attribute key={`attribute-${criterion}-${index}`} code={attribute.code} label={attribute.label} separator={separator}/>
+                <Attribute
+                  key={`attribute-${criterion}-${index}`}
+                  code={attribute.code}
+                  label={attribute.label}
+                  separator={separator}
+                  isLinkAvailable={isLinkAvailable(attribute.code)}
+                />
               );
             })}
           </>

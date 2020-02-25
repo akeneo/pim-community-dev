@@ -16,11 +16,10 @@ const getTextAttributes = (family: Family, product: Product) => {
   const isAttributeEditable = (attribute: Attribute, product: Product) => product.meta.attributes_for_this_level.includes(attribute.code);
 
   return family.attributes.filter((attribute) => {
-    const isValid = (
+    return (
       isValidTextarea(attribute) ||
       isValidText(attribute)
-    ) && (! isVariantProduct(product) || (isVariantProduct(product) && isAttributeEditable(attribute, product)));
-    return isValid;
+    ) && (!isVariantProduct(product) || (isVariantProduct(product) && isAttributeEditable(attribute, product)));
   });
 };
 

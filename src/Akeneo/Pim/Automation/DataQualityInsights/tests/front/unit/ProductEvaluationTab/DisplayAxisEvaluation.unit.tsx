@@ -329,7 +329,12 @@ function renderWithRedux(ui: React.ReactElement) {
       enabled: true,
       family: "led_tvs",
       identifier: null,
-      meta: {id: 1, label: {}},
+      meta: {
+        id: 1,
+        label: {},
+        attributes_for_this_level: [],
+        level: null,
+      },
       created: null,
       updated: null,
     },
