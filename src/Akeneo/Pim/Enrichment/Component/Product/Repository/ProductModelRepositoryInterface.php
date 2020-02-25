@@ -40,10 +40,12 @@ interface ProductModelRepositoryInterface extends
      * Find product models which are the direct children of the given $productModel
      *
      * @param ProductModelInterface $productModel
+     * @param int|null $limit
+     * @param int|null $page
      *
      * @return array|ProductModelInterface[]
      */
-    public function findChildrenProductModels(ProductModelInterface $productModel): array;
+    public function findChildrenProductModels(ProductModelInterface $productModel, ?int $limit, ?int $page): array;
 
     /**
      * Returns the identifiers of the products belonging to a product model descendants subtree
@@ -67,10 +69,12 @@ interface ProductModelRepositoryInterface extends
      * Find variant products which are the direct children of the given $productModel
      *
      * @param ProductModelInterface $productModel
+     * @param int|null $limit
+     * @param int|null $page
      *
      * @return array
      */
-    public function findChildrenProducts(ProductModelInterface $productModel): array;
+    public function findChildrenProducts(ProductModelInterface $productModel, ?int $limit, ?int $page): array;
 
     /**
      * Get root products models after the one provided. Mainly used to iterate

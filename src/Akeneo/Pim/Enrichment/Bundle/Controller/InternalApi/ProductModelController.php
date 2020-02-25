@@ -290,10 +290,14 @@ class ProductModelController
      */
     public function childrenAction(Request $request): JsonResponse
     {
+        $limit = $request->get('limit') ? (int) $request->get('limit') : null;
+        $page = $request->get('page') ? (int) $request->get('page') : null;
         $parent = $this->findProductModelOr404($request->get('id'));
-        $children = $this->productModelRepository->findChildrenProductModels($parent);
-        if (empty($children)) {
-            $children = $this->productModelRepository->findChildrenProducts($parent);
+
+        if (1 === $parent->getVariationLevel() || 1 === $parent->getFamilyVariant()->getNumberOfLevel()) {
+            $children = $this->productModelRepository->findChildrenProducts($parent, $limit, $page);
+        } else {
+            $children = $this->productModelRepository->findChildrenProductModels($parent, $limit, $page);
         }
 
         $normalizedChildren = [];
