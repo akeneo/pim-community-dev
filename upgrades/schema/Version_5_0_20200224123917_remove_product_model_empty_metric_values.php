@@ -134,7 +134,7 @@ final class Version_5_0_20200224123917_remove_product_model_empty_metric_values
             $rows = $this->connection->executeQuery($sql)->fetchAll();
 
             if (count($rows) === 0) {
-                return null;
+                break;
             }
 
             foreach ($rows as $row) {
