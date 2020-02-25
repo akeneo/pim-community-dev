@@ -36,13 +36,17 @@ class Connection
     /** @var ConnectionImage|null */
     private $image;
 
+    /** @var bool */
+    private $auditable;
+
     public function __construct(
         string $code,
         string $label,
         string $flowType,
         int $clientId,
         UserId $userId,
-        ?string $image = null
+        ?string $image = null,
+        bool $auditable
     ) {
         $this->code = new ConnectionCode($code);
         $this->label = new ConnectionLabel($label);
@@ -50,6 +54,7 @@ class Connection
         $this->clientId = new ClientId($clientId);
         $this->userId = $userId;
         $this->image = null !== $image ? new ConnectionImage($image) : null;
+        $this->auditable = $auditable;
     }
 
     public function code(): ConnectionCode
@@ -82,6 +87,11 @@ class Connection
         return $this->userId;
     }
 
+    public function auditable(): bool
+    {
+        return $this->auditable;
+    }
+
     public function setLabel(ConnectionLabel $label): void
     {
         $this->label = $label;
@@ -95,5 +105,10 @@ class Connection
     public function setImage(?ConnectionImage $image): void
     {
         $this->image = $image;
+    }
+
+    public function setAuditable(bool $auditable): void
+    {
+        $this->auditable = $auditable;
     }
 }

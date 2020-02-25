@@ -25,8 +25,8 @@ class WeeklyAuditEndToEnd extends WebTestCase
 {
     public function test_it_get_weekly_audit_for_created_product()
     {
-        $this->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE);
-        $this->createConnection('sap', 'SAP', FlowType::DATA_SOURCE);
+        $this->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE, true);
+        $this->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);
 
         $hourlyEventCountsPerConnection = $this->createHourlyEventCountsPerConnection(
             ['bynder', 'sap'],
