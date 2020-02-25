@@ -18,7 +18,7 @@ class UpdateConnectionEndToEnd extends WebTestCase
 {
     public function test_it_updates_a_connection(): void
     {
-        $connection = $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE);
+        $connection = $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE, false);
 
         $data = [
             "code" => "franklin",
@@ -26,7 +26,8 @@ class UpdateConnectionEndToEnd extends WebTestCase
             "flow_type" => FlowType::DATA_DESTINATION,
             "image" => null,
             "user_role_id" => $connection->userRoleId(),
-            "user_group_id" => $connection->userGroupId()
+            "user_group_id" => $connection->userGroupId(),
+            "auditable" => false,
         ];
 
         $this->authenticateAsAdmin();
@@ -48,7 +49,7 @@ class UpdateConnectionEndToEnd extends WebTestCase
 
     public function test_it_fails_to_update_a_connection_with_a_bad_request(): void
     {
-        $connection = $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE);
+        $connection = $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE, false);
 
         $data = [
             "code" => "wrong_code",
@@ -56,7 +57,8 @@ class UpdateConnectionEndToEnd extends WebTestCase
             "flow_type" => 'wrong_flow_type',
             "image" => null,
             "user_role_id" => $connection->userRoleId(),
-            "user_group_id" => $connection->userGroupId()
+            "user_group_id" => $connection->userGroupId(),
+            "auditable" => false,
         ];
 
         $this->authenticateAsAdmin();

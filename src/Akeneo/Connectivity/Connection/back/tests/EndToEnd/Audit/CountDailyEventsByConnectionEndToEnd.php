@@ -19,8 +19,8 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
 {
     public function test_it_finds_connections_event_by_created_product()
     {
-        $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE);
-        $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE);
+        $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE, true);
+        $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
         $this->loadAuditData('2020-01-08');
 

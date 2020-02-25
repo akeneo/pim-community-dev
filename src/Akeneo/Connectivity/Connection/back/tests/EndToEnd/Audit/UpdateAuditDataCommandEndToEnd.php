@@ -37,7 +37,7 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
 
     public function test_it_updates_audit_data(): void
     {
-        $connection = $this->createConnection('magento', 'Magento', FlowType::DATA_SOURCE);
+        $connection = $this->createConnection('magento', 'Magento', FlowType::DATA_SOURCE, true);
 
         Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_CREATED));
         Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));

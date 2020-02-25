@@ -96,7 +96,7 @@ class ConnectionController
         $data = json_decode($request->getContent(), true);
         // TODO: Valid JSON format
 
-        $command = new CreateConnectionCommand($data['code'], $data['label'], $data['flow_type']);
+        $command = new CreateConnectionCommand($data['code'], $data['label'], $data['flow_type'], $data['auditable']);
 
         try {
             $connection = $this->createConnectionHandler->handle($command);
@@ -145,7 +145,8 @@ class ConnectionController
             $data['flow_type'],
             $data['image'],
             $data['user_role_id'],
-            $data['user_group_id']
+            $data['user_group_id'],
+            $data['auditable']
         );
 
         try {

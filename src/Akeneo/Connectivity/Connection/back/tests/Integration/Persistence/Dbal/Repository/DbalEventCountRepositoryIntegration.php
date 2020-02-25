@@ -39,7 +39,7 @@ class DbalEventCountRepositoryIntegration extends TestCase
 
     public function test_it_creates_many_daily_event_count()
     {
-        $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
+        $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, true);
 
         $event1 = new DailyEventCount('magento', '2020-01-13', 13, EventTypes::PRODUCT_CREATED);
         $event2 = new DailyEventCount('magento', '2020-01-13', 23, EventTypes::PRODUCT_UPDATED);
@@ -62,7 +62,7 @@ SQL;
 
     public function test_it_updates_the_event_count_and_updated_date_on_duplicate()
     {
-        $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
+        $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, true);
 
         $event1 = new DailyEventCount('magento', '2020-01-13', 13, EventTypes::PRODUCT_CREATED);
         $event2 = new DailyEventCount('magento', '2020-01-13', 23, EventTypes::PRODUCT_UPDATED);

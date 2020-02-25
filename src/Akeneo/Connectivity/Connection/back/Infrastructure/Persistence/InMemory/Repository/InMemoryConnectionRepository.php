@@ -30,6 +30,7 @@ class InMemoryConnectionRepository implements ConnectionRepository
             'username' => (string) $connection->code(),
             'password' => uniqid(),
             'image' => null,
+            'auditable' => $connection->auditable(),
         ];
     }
 
@@ -46,7 +47,8 @@ class InMemoryConnectionRepository implements ConnectionRepository
             $dataRow['flow_type'],
             $dataRow['client_id'],
             new UserId($dataRow['user_id']),
-            $dataRow['image']
+            $dataRow['image'],
+            $dataRow['auditable']
         );
     }
 
@@ -59,6 +61,7 @@ class InMemoryConnectionRepository implements ConnectionRepository
         $this->dataRows[(string) $connection->code()]['label'] = (string) $connection->label();
         $this->dataRows[(string) $connection->code()]['flow_type'] = (string) $connection->flowType();
         $this->dataRows[(string) $connection->code()]['image'] = null !== $connection->image() ? (string) $connection->image() : null;
+        $this->dataRows[(string) $connection->code()]['auditable'] = $connection->auditable();
     }
 
     public function delete(Connection $connection): void

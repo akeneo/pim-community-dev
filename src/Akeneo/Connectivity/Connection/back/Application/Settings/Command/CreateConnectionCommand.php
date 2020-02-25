@@ -14,12 +14,14 @@ class CreateConnectionCommand
     private $code;
     private $label;
     private $flowType;
+    private $auditable;
 
-    public function __construct(string $code, string $label, string $flowType)
+    public function __construct(string $code, string $label, string $flowType, bool $auditable)
     {
         $this->code = $code;
         $this->label = $label;
         $this->flowType = $flowType;
+        $this->auditable = $auditable;
     }
 
     public function code(): string
@@ -35,5 +37,10 @@ class CreateConnectionCommand
     public function flowType(): string
     {
         return $this->flowType;
+    }
+
+    public function auditable(): bool
+    {
+        return $this->auditable;
     }
 }
