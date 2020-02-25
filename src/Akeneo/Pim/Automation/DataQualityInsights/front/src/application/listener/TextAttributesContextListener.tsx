@@ -35,7 +35,7 @@ const isTextAttributeElement = (element: Element | null, attributes: Attribute[]
   );
 };
 
-const AttributesContextListener = () => {
+const TextAttributesContextListener = () => {
   const family = useFetchProductFamilyInformation();
   const {attributesTabIsLoading} = usePageContext();
   const product = useProduct();
@@ -93,4 +93,4 @@ const AttributesContextListener = () => {
   );
 };
 
-export default AttributesContextListener;
+export default TextAttributesContextListener;

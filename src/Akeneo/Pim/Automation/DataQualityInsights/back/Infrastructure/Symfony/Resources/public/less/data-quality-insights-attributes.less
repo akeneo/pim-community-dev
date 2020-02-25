@@ -1,9 +1,20 @@
 #data-quality-insights-product-tab-content {
-    .AknDataQualityInsightsAttribute {
+
+    .AttributeLink {
         color: @AknGrey140;
-        display: inline-block;
-        font-style: italic;
-        text-transform: capitalize;
+        vertical-align: initial;
+
+        .AknDataQualityInsightsAttribute {
+            display: inline-block;
+            color: @AknLightPurple;
+            font-style: italic;
+            text-transform: capitalize;
+            transition: color 0.1s ease-in;
+        }
+
+        &:hover .AknDataQualityInsightsAttribute {
+            color: @AknPurple;
+        }
     }
 
     .AknSubsection-title {
@@ -25,7 +36,7 @@
     }
 
     .CriterionMessage {
-        line-height: normal;
+        line-height: 24px;
         width: 100%;
         margin: 20px auto;
         display: flex;
@@ -39,28 +50,29 @@
             flex: auto;
 
             .CriterionSuccessMessage {
-            color: @AknGreen120;
-            font-style: italic;
+                color: @AknGreen120;
+                font-style: italic;
+            }
+
+            .CriterionSuccessTick {
+                display: inline-block;
+                background-image: url('@{pimuiBundlePath}/images/icon-check-green.svg');
+                background-repeat: no-repeat;
+                background-position: center center;
+                width: 20px;
+                margin: 0;
+            }
         }
 
-        .CriterionSuccessTick {
-            display: inline-block;
-            background-image: url('@{pimuiBundlePath}/images/icon-check-green.svg');
-            background-repeat: no-repeat;
-            background-position: center center;
-            width: 20px;
-            margin: 0;
+        .CriterionErrorMessage {
+            color: @AknRed100;
+            font-style: italic;
+        }
+        .CriterionInProgressMessage {
+            color: @AknSlateGrey;
+            font-style: italic;
         }
     }
-    .CriterionErrorMessage {
-        color: @AknRed100;
-        font-style: italic;
-    }
-    .CriterionInProgressMessage {
-        color: @AknSlateGrey;
-        font-style: italic;
-    }
-}
 
     .CriterionRecommendationMessage {
         color: @AknGrey140;

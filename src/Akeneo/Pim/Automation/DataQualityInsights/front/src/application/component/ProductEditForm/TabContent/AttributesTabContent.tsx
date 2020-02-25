@@ -2,7 +2,7 @@ import React, {FunctionComponent} from "react";
 import WidgetsList from "./Attributes/EditorHighlight/WidgetsList";
 import Popover from "./Attributes/EditorHighlight/Popover";
 import TabContentWithPortalDecorator from "./TabContentWithPortalDecorator";
-import AttributesContextListener from "../../../listener/AttributesContextListener";
+import {TextAttributesContextListener, AttributeToImproveContextListener} from "../../../listener";
 import {ATTRIBUTES_TAB_NAME} from "../../../constant";
 
 export const CONTAINER_ELEMENT_ID = 'attributes-product-tab-content-dqi';
@@ -12,7 +12,8 @@ export interface AttributesTabContentProps {}
 const BaseAttributesTabContent: FunctionComponent<AttributesTabContentProps> = () => {
   return (
     <>
-      <AttributesContextListener />
+      <TextAttributesContextListener />
+      <AttributeToImproveContextListener />
 
       <WidgetsList/>
       <Popover/>

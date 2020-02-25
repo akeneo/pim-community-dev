@@ -20,6 +20,8 @@ import PageContextListener, {
 
 import EditorHighlightPopoverContextListener from "./EditorHighlightPopoverContextListener";
 import EditorContextListener from "./EditorContextListener";
+import TextAttributesContextListener from "./TextAttributesContextListener";
+import AttributeToImproveContextListener from "./AttributeToImproveContextListener";
 
 export {
   CatalogContextListener,
@@ -40,4 +42,6 @@ export {
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
   EditorHighlightPopoverContextListener,
   EditorContextListener,
+  TextAttributesContextListener,
+  AttributeToImproveContextListener
 }

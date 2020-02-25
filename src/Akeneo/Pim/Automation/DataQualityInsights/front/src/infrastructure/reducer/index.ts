@@ -18,7 +18,8 @@ import pageContextReducer, {
   changeProductTabAction,
   endProductAttributesTabIsLoadedAction,
   PageContextState,
-  startProductAttributesTabIsLoadingAction
+  startProductAttributesTabIsLoadingAction,
+  showDataQualityInsightsAttributeToImproveAction
 } from "./pageContextReducer";
 import productEditorHighlightReducer, {
   disableWidgetAction,
@@ -61,6 +62,7 @@ export {
   changeProductTabAction,
   startProductAttributesTabIsLoadingAction,
   endProductAttributesTabIsLoadedAction,
+  showDataQualityInsightsAttributeToImproveAction,
   PageContextState,
   // Spellcheck
   productEditorHighlightReducer,

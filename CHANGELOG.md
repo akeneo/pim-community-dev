@@ -1,3 +1,7 @@
 ## Bug fixes
 
 - PIM-9109: Fix SSO not working behind reverse proxy.
+
+## Improvements
+
+- DAPI-697: Data quality - As Julia, when I'm on the DQI page, I want to click the attributes that need improvements and land on the PEF.

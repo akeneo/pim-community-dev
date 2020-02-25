@@ -44,16 +44,19 @@ const RecommendationAttributesList: FunctionComponent<RecommendationAttributesLi
   return (
     <>
       {
-        attributes.length == 0 ?
+        attributes.length === 0 ?
           <span className="NotApplicableAttribute">N/A</span> :
           <>
             {sortedAttributes.map((attribute: any, index: number) => {
-              return (
-                <Attribute key={`attribute-${criterion}-${index}`} code={attribute.code}>
-                  {attribute.label}
+              const separator = (
+                <>
                   {(index < (attributes.length - 1)) && <>,&thinsp;</>}
                   {(index === (attributes.length - 1)) && '.'}
-                </Attribute>
+                </>
+              );
+
+              return (
+                <Attribute key={`attribute-${criterion}-${index}`} code={attribute.code} label={attribute.label} separator={separator}/>
               );
             })}
           </>

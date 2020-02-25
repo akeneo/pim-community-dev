@@ -60,7 +60,7 @@ describe('Product evaluation tab', () => {
     assertExpectedMessageNumber('N/A', 1, queryAllByText);
 
     expect(getAllByTestId('dqiAttributeWithRecommendation').length).toBe(1);
-    expect(getAllByTestId('dqiAttributeWithRecommendation')[0].innerHTML).toBe('Product description.');
+    expect(getAllByTestId('dqiAttributeWithRecommendation')[0].innerHTML).toBe('Product description');
 
     assertAllAttributesLinkClickSendsAnEvent(queryByText, 'consistency', ['description']);
   });

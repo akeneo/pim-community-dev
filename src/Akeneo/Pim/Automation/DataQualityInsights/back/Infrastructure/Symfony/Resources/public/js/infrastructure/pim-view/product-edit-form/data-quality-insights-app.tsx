@@ -18,7 +18,6 @@ import {
 
 const UserContext = require('pim/user-context');
 const BaseView = require('pimui/js/view/base');
-const FieldManager = require('pim/field-manager');
 
 interface LocaleEvent {
   localeCode: string;
@@ -28,10 +27,6 @@ interface LocaleEvent {
 interface ScopeEvent {
   scopeCode: string;
   context: string;
-}
-
-interface ShowAttributeEvent {
-  code: boolean;
 }
 
 interface FilterAttributesEvent{
@@ -72,14 +67,9 @@ class DataQualityInsightsApp extends BaseView {
       }}));
     });
 
-    window.addEventListener(DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, ((event: CustomEvent<ShowAttributeEvent>) => {
+    window.addEventListener(DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, (() => {
       this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'all');
       this.redirectToProductEditForm();
-      this.listenTo(this.getRoot(), 'pim_enrich:form:attributes:render:after', (_: ScopeEvent) => {
-        FieldManager.getField(event.detail.code).then(function (field: any) {
-          field.setFocus();
-        });
-      });
     }) as EventListener);
 
     window.addEventListener(DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES, ((_: CustomEvent<FilterAttributesEvent>) => {
