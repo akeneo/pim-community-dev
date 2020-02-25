@@ -161,12 +161,6 @@ define(
                                 };
                             }
                         }
-                        // query: (options) => {
-                        //     this.queryChildrenEntities(
-                        //         options,
-                        //         entity.meta.variant_navigation[index].selected.id
-                        //     );
-                        // }
                     };
 
                     const dropDown = initSelect2.init($select, options);
@@ -188,7 +182,7 @@ define(
              *
              * @param {Element} dropDown
              */
-            addSelect2Footer: function (dropDown) {
+            addSelect2Footer: function(dropDown) {
                 $('#select2-drop .select2-drop-footer').remove();
 
                 const targetLevel = dropDown[0].dataset.level;
@@ -207,11 +201,11 @@ define(
                                 $('#select2-drop')
                                     .append(footer)
                                     .find('.select2-drop-footer').on('click', '.add-child', () => {
-                                    dropDown.select2('close');
-                                    this.openModal(parentCode);
-                                });
+                                        dropDown.select2('close');
+                                        this.openModal(parentCode);
+                                    });
                             });
-                    });
+                    })
             },
 
             /**
@@ -221,7 +215,7 @@ define(
              *
              * @returns {Promise<boolean>}
              */
-            isCreationGranted: async function (isVariantProduct) {
+            isCreationGranted: async function(isVariantProduct) {
                 return (isVariantProduct && SecurityContext.isGranted('pim_enrich_product_create'))
                     || (!isVariantProduct && SecurityContext.isGranted('pim_enrich_product_model_create'));
             },
@@ -243,8 +237,7 @@ define(
                         .fetch(entity.parent)
                         .then((parent) => {
                             return parent.parent;
-                        })
-                        ;
+                        });
                 }
 
                 if (targetLevel > entityLevel) {
@@ -259,7 +252,7 @@ define(
              *
              * @param {String} parentCode
              */
-            openModal: function (parentCode) {
+            openModal: function(parentCode) {
                 const modalParameters = {
                     className: 'modal modal--fullPage add-product-model-child',
                     content: '',
@@ -337,7 +330,7 @@ define(
                                 const currentLevel = parent.meta.level + 1;
 
                                 return currentLevel === familyVariant.variant_attribute_sets.length;
-                            });
+                            })
                     });
             },
 
@@ -366,7 +359,7 @@ define(
                     };
                 } else {
                     const completenesses = entity.completeness.completenesses;
-                    const totalProducts = entity.completeness.total;
+                    const totalProducts  = entity.completeness.total;
                     let completeProducts = 0;
 
                     if (_.has(completenesses, catalogScope) &&
