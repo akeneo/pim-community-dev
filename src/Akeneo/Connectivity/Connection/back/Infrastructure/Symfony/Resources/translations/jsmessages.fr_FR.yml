@@ -63,6 +63,13 @@ akeneo_connectivity.connection:
       helper:
         message: 'Voici les identifiants à utiliser dans votre connecteur {{ label }}.'
         link: En savoir plus ici...
+      wrong_credentials_combinations:
+        single: Nous avons remarqué que vous utilisez le username {{ wrong_username }} pour cette connexion (dernière utilisation le {{ date }} à {{ time }}). Nous vous recommandons plutôt d'utiliser {{ good_username }} à la place.
+        link: Découvrez pourquoi ici.
+        link_list: Découvrez pourquoi nous vous recommandons d'utiliser ce username plutôt qu'un autre.
+        several: Nous avons remarqué que vous n'utilisez pas le username {{ good_username }} pour cette connexion.
+        list: 'Voici la liste des usernames qui ont été utilisés au cours des 7 derniers jours :'
+        username_date: '{{ wrong_username }} le {{ date }} à {{ time }}'
       password_helper:
         message: Si vous avez oublié votre mot de passe, vous pouvez en générer un nouveau ici.
         link: En savoir plus…
@@ -122,6 +129,7 @@ akeneo_connectivity.connection:
     click_here: cliquez ici
     flash:
       extension_not_allowed: Désolé, le fichier que vous essayé de charger a une extension non autorisée.
+  grid.wrong_credentials_combination_helper: Certaines des connexions ci-dessous n'utilisent pas leur username. Elles sont identifiées par un warning jaune.
   dashboard:
     helper:
       title: '👋 Bienvenue dans le tableau de bord de vos connexions !'
