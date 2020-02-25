@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExampleButton } from "./ExampleButton";
+import { CoreButton } from "./CoreButton";
 import {
     render,
 } from "@testing-library/react";
@@ -11,7 +11,7 @@ describe("testing button", () => {
         const myLabel = "Hello world";
         // When
         const { getByText } = render(
-            <ExampleButton disabled={false} onClick={onClick}>{myLabel}</ExampleButton>
+            <CoreButton onClick={onClick}>{myLabel}</CoreButton>
         );
         // Then
         expect(getByText("Hello world")).toBeInTheDocument();

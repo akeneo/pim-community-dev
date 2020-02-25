@@ -1,0 +1,24 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import { action } from "@storybook/addon-actions";
+import { PrimaryButton } from "./PrimaryButton.tsx";
+
+import { CoreButton, buttonType, type } from "../CoreButton";
+
+
+<Meta title="PrimaryButton" component={PrimaryButton} />
+
+# Primary button
+
+<Props of={PrimaryButton} />
+
+## Default
+
+This is the default button
+
+<Preview>
+  <Story name="Primary">
+    <PrimaryButton onClick={action("clicked")} type>
+      Click !
+    </PrimaryButton>
+  </Story>
+</Preview>
