@@ -79,7 +79,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     /**
      * {@inheritdoc}
      */
-    public function findChildrenProductModels(ProductModelInterface $productModel, ?int $limit, ?int $page): array
+    public function findChildrenProductModels(ProductModelInterface $productModel, ?int $limit = null, ?int $page = null): array
     {
         $qb = $this
             ->createQueryBuilder('pm')
@@ -87,7 +87,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
             ->orderBy('pm.id', 'ASC')
             ->setParameter('parent', $productModel);
 
-        if (null !== $limit  && null !== $page) {
+        if (null !== $limit && null !== $page) {
             $qb->setMaxResults($limit)
                 ->setFirstResult(($page - 1) * $limit);
         }
@@ -124,7 +124,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     /**
      * {@inheritdoc}
      */
-    public function findChildrenProducts(ProductModelInterface $productModel, ?int $limit, ?int $page): array
+    public function findChildrenProducts(ProductModelInterface $productModel, ?int $limit = null, ?int $page = null): array
     {
         $qb = $this
             ->_em
