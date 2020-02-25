@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Tool\Bundle\MeasureBundle\Model;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\LocaleIdentifier;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
@@ -63,5 +64,15 @@ class UnitSpec extends ObjectBehavior
                     self::SYMBOL
                 ]
             );
+    }
+
+    function it_returns_the_label_of_the_provided_locale()
+    {
+        $this->getLabel(LocaleIdentifier::fromCode('fr_FR'))->shouldReturn('metre');
+    }
+
+    function it_returns_the_code_between_brackets_when_there_is_no_label_for_the_locale()
+    {
+        $this->getLabel(LocaleIdentifier::fromCode('UNKNOWN'))->shouldReturn('[meter]');
     }
 }

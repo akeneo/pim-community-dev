@@ -86,10 +86,14 @@ class MeasurementFamily
     {
         $unit = $this->getUnit($unitCode, $this->units);
 
+        if (!$unit) {
+            throw new UnitNotFoundException();
+        }
+
         return $unit->getLabel($localeIdentifier);
     }
 
-    private function getUnit(UnitCode $standardUnitCode, array $units): Unit
+    private function getUnit(UnitCode $standardUnitCode, array $units): ?Unit
     {
         $unit = current(array_filter(
             $units,
@@ -99,7 +103,7 @@ class MeasurementFamily
         ));
 
         if (!$unit) {
-            throw new UnitNotFoundException();
+            return null;
         }
 
         return $unit;

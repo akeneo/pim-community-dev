@@ -65,7 +65,7 @@ final class Unit
         $label = $this->labels->getLabel($localeIdentifier->normalize());
 
         if (null === $label) {
-            $label = sprintf('[%s]', $this->code);
+            $label = sprintf('[%s]', $this->code->normalize());
         }
 
         return $label;
