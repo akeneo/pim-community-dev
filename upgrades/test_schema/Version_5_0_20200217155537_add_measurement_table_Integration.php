@@ -39,7 +39,7 @@ final class Version_5_0_20200217155537_add_measurement_table_Integration extends
                 'units' => 'string',
             ]
         );
-        $this->assertNumberOfMeasurements(19);
+        $this->assertNumberOfMeasurements(23);
     }
 
     private function dropMeasurementTable(): void
