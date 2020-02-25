@@ -42,3 +42,8 @@ coverage/*
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
+
+### DSM-storybook
+/akeneo-design-system/node_modules
+/akeneo-design-system/lib
+

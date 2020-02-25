@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "outDir": "lib",
+        "sourceMap": true,
+        "module": "commonjs",
+        "target": "es6",
+        "jsx": "react",
+        "allowJs": false,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "noImplicitReturns": true,
+        "strictNullChecks": true,
+        "strictPropertyInitialization": true,
+        "strictBindCallApply": true,
+        "strictFunctionTypes": true
+    },
+    "include": ["./src/**/*"],
+    "exclude": ["node_modules", "lib", "**/*.spec.ts"]
+}
