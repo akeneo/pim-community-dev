@@ -85,9 +85,12 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
             ->createQueryBuilder('pm')
             ->where('pm.parent = :parent')
             ->orderBy('pm.id', 'ASC')
-            ->setParameter('parent', $productModel)
-            ->setMaxResults($limit)
-            ->setFirstResult(($page - 1) * $limit);
+            ->setParameter('parent', $productModel);
+
+        if (null !== $limit  && null !== $page) {
+            $qb->setMaxResults($limit)
+                ->setFirstResult(($page - 1) * $limit);
+        }
 
         return $qb->getQuery()->execute();
     }
