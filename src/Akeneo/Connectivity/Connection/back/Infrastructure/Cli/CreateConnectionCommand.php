@@ -65,7 +65,7 @@ class CreateConnectionCommand extends Command
                 'auditable',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Is the connection auditable?',
+                'Enable audit for connection?',
                 false
             );
     }
