@@ -20,7 +20,7 @@ final class Version_5_0_20200224123917_remove_product_model_empty_metric_values
     implements ContainerAwareInterface
 {
     private const MYSQL_BATCH_SIZE = 1000;
-    private const ELASTICSEARCH_BATCH_SIZE = 100;
+    private const ELASTICSEARCH_BATCH_SIZE = 1000;
 
     /** @var ContainerInterface */
     private $container;
@@ -45,10 +45,6 @@ final class Version_5_0_20200224123917_remove_product_model_empty_metric_values
         $rows = $this->getAllProductModels();
         foreach ($rows as $i => $row) {
             $values = json_decode($row['raw_values'], true);
-
-            if (empty(array_intersect(array_keys($values), $metricAttributesCodes))) {
-                continue;
-            }
 
             $cleanValues = $this->cleanMetricValues($values, $metricAttributesCodes);
 
@@ -81,24 +77,27 @@ final class Version_5_0_20200224123917_remove_product_model_empty_metric_values
 
     private function cleanMetricValues(array $values, array $metricAttributesCodes): array
     {
-        $results = [];
+        foreach ($metricAttributesCodes as $metricAttributeCode) {
+            if (!isset($values[$metricAttributeCode])) {
+                continue;
+            }
 
-        foreach ($values as $attributeCode => $channelValues) {
-            foreach ($channelValues as $channel => $localeValues) {
+            $newValue = [];
+            foreach ($values[$metricAttributeCode] as $channel => $localeValues) {
                 foreach ($localeValues as $locale => $data) {
-                    if (!in_array($attributeCode, $metricAttributesCodes)) {
-                        $results[$attributeCode][$channel][$locale] = $data;
-                        continue;
-                    }
-
                     if ($this->isMetricFilled($data)) {
-                        $results[$attributeCode][$channel][$locale] = $data;
+                        $newValue[$channel][$locale] = $data;
                     }
                 }
             }
+            if (!empty($newValue)) {
+                $values[$metricAttributeCode] = $newValue;
+            } else {
+                unset($values[$metricAttributeCode]);
+            }
         }
 
-        return $results;
+        return $values;
     }
 
     private function isMetricFilled($data)
