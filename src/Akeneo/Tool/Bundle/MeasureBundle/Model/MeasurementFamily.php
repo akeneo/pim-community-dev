@@ -86,7 +86,7 @@ class MeasurementFamily
     {
         $unit = $this->getUnit($unitCode, $this->units);
 
-        if (!$unit) {
+        if (null === $unit) {
             throw new UnitNotFoundException();
         }
 
