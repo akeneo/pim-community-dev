@@ -252,7 +252,7 @@ define(
              *
              * @param {String} parentCode
              */
-            openModal: function(parentCode) {
+            openModal: function (parentCode) {
                 const modalParameters = {
                     className: 'modal modal--fullPage add-product-model-child',
                     content: '',
@@ -261,7 +261,7 @@ define(
                     okCloses: false
                 };
 
-                this.isVariantProduct(parentCode)
+                this.isVariantProduct (parentCode)
                     .then((isVariantProduct) => {
                         const initialModalState = {
                             parent: parentCode,
