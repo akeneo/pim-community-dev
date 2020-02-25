@@ -18,7 +18,7 @@ class RegenerateConnectionPasswordEndToEnd extends WebTestCase
 {
     public function test_it_regenerates_a_connection_password(): void
     {
-        $connection = $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE);
+        $connection = $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE, false);
 
         $this->authenticateAsAdmin();
         $this->client->request('POST', '/rest/connections/franklin/regenerate-password');

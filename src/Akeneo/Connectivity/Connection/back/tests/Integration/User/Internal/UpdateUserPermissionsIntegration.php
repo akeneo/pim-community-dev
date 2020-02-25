@@ -82,7 +82,7 @@ SQL;
 
     private function createConnection(string $code): ConnectionWithCredentials
     {
-        $command = new CreateConnectionCommand($code, $code, FlowType::OTHER);
+        $command = new CreateConnectionCommand($code, $code, FlowType::OTHER, false);
 
         return $this
             ->get('akeneo_connectivity.connection.application.handler.create_connection')

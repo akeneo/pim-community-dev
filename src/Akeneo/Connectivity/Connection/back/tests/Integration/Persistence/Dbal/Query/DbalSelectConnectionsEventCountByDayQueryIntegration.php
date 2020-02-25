@@ -9,7 +9,6 @@ use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoa
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
@@ -44,8 +43,8 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
 
     public function test_it_gets_data_for_connections_with_audit_data(): void
     {
-        $this->connectionLoader->createConnection('sap', 'SAP', FlowType::DATA_SOURCE);
-        $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE);
+        $this->connectionLoader->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);
+        $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE, true);
 
         array_map(function (HourlyEventCount $hourlyEventCount) {
             $this->auditLoader->insert($hourlyEventCount);
@@ -82,7 +81,7 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
 
     public function test_it_gets_data_for_connections_without_audit_data(): void
     {
-        $this->connectionLoader->createConnection('sap', 'SAP', FlowType::DATA_SOURCE);
+        $this->connectionLoader->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);
 
         $result = $this->selectConnectionsEventCountByDayQuery->execute(
             EventTypes::PRODUCT_UPDATED,

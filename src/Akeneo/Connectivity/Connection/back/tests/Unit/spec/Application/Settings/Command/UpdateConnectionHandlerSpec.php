@@ -43,13 +43,22 @@ class UpdateConnectionHandlerSpec extends ObjectBehavior
             FlowType::DATA_DESTINATION,
             null,
             '1',
-            '2'
+            '2',
+            true
         );
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($command)->willReturn($violations);
 
-        $connection = new Connection('magento', 'Magento Connector', FlowType::OTHER, 42, new UserId(50));
+        $connection = new Connection(
+            'magento',
+            'Magento Connector',
+            FlowType::OTHER,
+            42,
+            new UserId(50),
+            null,
+            false
+        );
         $repository->findOneByCode('magento')->willReturn($connection);
         $repository->update(Argument::type(Connection::class))->shouldBeCalled();
 
@@ -67,7 +76,8 @@ class UpdateConnectionHandlerSpec extends ObjectBehavior
             'Wrong flow type',
             null,
             '1',
-            '2'
+            '2',
+            true
         );
 
         $violations = new ConstraintViolationList([$violation->getWrappedObject()]);

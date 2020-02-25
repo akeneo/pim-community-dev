@@ -25,8 +25,8 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
 {
     public function test_it_finds_connections_event_by_created_product()
     {
-        $this->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE);
-        $this->createConnection('sap', 'SAP', FlowType::DATA_SOURCE);
+        $this->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE, true);
+        $this->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);
 
         $hourlyEventCountsPerConnection = $this->createHourlyEventCountsPerConnection(
             ['bynder', 'sap'],

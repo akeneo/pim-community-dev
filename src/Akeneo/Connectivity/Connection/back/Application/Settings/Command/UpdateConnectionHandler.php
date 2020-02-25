@@ -55,6 +55,7 @@ final class UpdateConnectionHandler
         $connection->setLabel(new ConnectionLabel($command->label()));
         $connection->setFlowType(new FlowType($command->flowType()));
         $connection->setImage(null !== $command->image() ? new ConnectionImage($command->image()) : null);
+        $connection->setAuditable($command->auditable());
 
         $this->updateUserPermissions->execute(
             $connection->userId(),

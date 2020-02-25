@@ -25,9 +25,9 @@ abstract class CommandTestCase extends TestCase
         $this->application = new Application($this->testKernel);
     }
 
-    protected function createConnection(string $code, string $label, string $flowType): ConnectionWithCredentials
+    protected function createConnection(string $code, string $label, string $flowType, bool $auditable): ConnectionWithCredentials
     {
-        $createConnectionCommand = new CreateConnectionCommand($code, $label, $flowType);
+        $createConnectionCommand = new CreateConnectionCommand($code, $label, $flowType, $auditable);
 
         return $this->get('akeneo_connectivity.connection.application.handler.create_connection')
             ->handle($createConnectionCommand);

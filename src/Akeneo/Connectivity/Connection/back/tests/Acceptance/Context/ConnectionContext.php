@@ -85,7 +85,7 @@ class ConnectionContext implements Context
     {
         $startCount = $this->connectionRepository->count();
 
-        $command = new CreateConnectionCommand(self::slugify($label), $label, self::defineFlowType($flowType));
+        $command = new CreateConnectionCommand(self::slugify($label), $label, self::defineFlowType($flowType), false);
         $this->createConnectionHandler->handle($command);
 
         Assert::eq($this->connectionRepository->count(), $startCount + 1);
@@ -108,7 +108,7 @@ class ConnectionContext implements Context
             $label = str_pad('A', 120, 'a');
         }
         try {
-            $command = new CreateConnectionCommand(self::slugify($label), $label, self::defineFlowType($flowType));
+            $command = new CreateConnectionCommand(self::slugify($label), $label, self::defineFlowType($flowType), false);
             $this->createConnectionHandler->handle($command);
         } catch (ConstraintViolationListException $violationList) {
             $this->violations = $violationList;
@@ -146,6 +146,7 @@ class ConnectionContext implements Context
         $newImage = $data['image'] ?? null;
         $newRole = $this->userPermissionsRepository->getRoleIdByIdentifier($data['user_role']);
         $newGroup = $this->userPermissionsRepository->getGroupIdByIdentifier($data['user_group']);
+        $newAuditable = $data['auditable'];
 
         try {
             $command = new UpdateConnectionCommand(
@@ -154,7 +155,8 @@ class ConnectionContext implements Context
                 $newFlowType,
                 $newImage,
                 (string) $newRole,
-                (string) $newGroup
+                (string) $newGroup,
+                (bool) $newAuditable
             );
             $this->updateConnectionHandler->handle($command);
         } catch (ConstraintViolationListException $violationList) {
@@ -301,6 +303,26 @@ class ConnectionContext implements Context
         $group = $this->userPermissionsRepository->getUserGroup($connection->userId()->id());
 
         Assert::eq($expectedUserGroup, $group);
+    }
+
+    /**
+     * @Then the Connection :label should be auditable
+     */
+    public function theConnectionShouldBeAuditable(string $label): void
+    {
+        $connection = $this->connectionRepository->findOneByCode(self::slugify($label));
+
+        Assert::eq(true, (bool) $connection->auditable());
+    }
+
+    /**
+     * @Then the Connection :label should not be auditable
+     */
+    public function theConnectionShouldNotBeAuditable(string $label): void
+    {
+        $connection = $this->connectionRepository->findOneByCode(self::slugify($label));
+
+        Assert::eq(false, (bool) $connection->auditable());
     }
 
     /**
