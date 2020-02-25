@@ -39,4 +39,9 @@ class CreateConnectionCommandSpec extends ObjectBehavior
     {
         $this->flowType()->shouldReturn(FlowType::DATA_DESTINATION);
     }
+
+    public function it_returns_the_auditable()
+    {
+        $this->auditable()->shouldReturn(true);
+    }
 }
