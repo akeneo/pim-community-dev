@@ -46,6 +46,10 @@ class MetricPresenter extends NumberPresenter
             $value = $this->getStructuredMetric($value, $options['versioned_attribute']);
         }
 
+        if (!isset($options['attribute_code'])) {
+            throw new \InvalidArgumentException('Expected attribute code in the context, none given.');
+        }
+
         $measurementFamilyCode = $this->baseCachedObjectRepository->findOneByIdentifier($options['attribute_code'])
             ->getMetricFamily();
         $measurementFamily = $this->measurementFamilyRepository
