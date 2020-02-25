@@ -20,6 +20,7 @@ interface ResultValue {
     label: string;
     flow_type: FlowType;
     image: string | null;
+    auditable: boolean;
     client_id: string;
     secret: string;
     username: string;

@@ -17,6 +17,7 @@ akeneo_connectivity.connection:
         label: Label
         flow_type: Flow type
         image: Image
+        auditable: Track this connection in the dashboard
         client_id: Client ID
         secret: Secret
         username: Username
@@ -125,6 +126,9 @@ akeneo_connectivity.connection:
     flow_type_helper:
         message: Wondering what flow type is?
         link: We can help you right here!
+    auditable_helper:
+        message: You can only track "Source" and "Destination" connections.
+        link: More info…
     edit_image:
         upload_helper: Change your image, drag and drop or
         remove_helper: Remove the image

@@ -1,13 +1,13 @@
 import React, {useContext, useRef, useState} from 'react';
-import {useImageUploader} from '../use-image-uploader';
-import {useMediaUrlGenerator} from '../use-media-url-generator';
-import {Translate, TranslateContext} from '../../shared/translate';
 import styled from 'styled-components';
-import {PropsWithTheme} from '../../common/theme';
 import Trash from '../../common/assets/icons/trash';
+import defaultImageUrl from '../../common/assets/illustrations/api.svg';
+import {PropsWithTheme} from '../../common/theme';
 import {isErr} from '../../shared/fetch-result/result';
 import {NotificationLevel, useNotify} from '../../shared/notify';
-import defaultImageUrl from '../../common/assets/illustrations/api.svg';
+import {Translate, TranslateContext} from '../../shared/translate';
+import {useImageUploader} from '../use-image-uploader';
+import {useMediaUrlGenerator} from '../use-media-url-generator';
 import {Loading} from './Loading';
 
 interface Props {
@@ -37,7 +37,7 @@ const Helper = styled.span`
     margin: 0 0 20px 0;
 `;
 
-const ImageUploader = ({image, onChange, onError}: Props) => {
+export const ImageUploader = ({image, onChange, onError}: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [ratio, setRatio] = useState(0);
     const [uploadingImage, setUploadingImage] = useState<string | null>();
@@ -160,5 +160,3 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
         </>
     );
 };
-
-export default ImageUploader;

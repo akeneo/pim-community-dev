@@ -1,11 +1,11 @@
 import {useContext} from 'react';
 import {Connection} from '../../model/connection';
+import {ConnectionUserPermissions} from '../../model/connection-user-permissions';
 import {fetchResult} from '../../shared/fetch-result';
 import {isErr} from '../../shared/fetch-result/result';
 import {NotificationLevel, useNotify} from '../../shared/notify';
 import {useRoute} from '../../shared/router';
 import {TranslateContext} from '../../shared/translate';
-import {ConnectionUserPermissions} from '../../model/connection-user-permissions';
 
 type RequestData = Connection & ConnectionUserPermissions;
 
@@ -31,6 +31,7 @@ export const useUpdateConnection = (code: string) => {
                 label: data.label,
                 flow_type: data.flowType,
                 image: data.image,
+                auditable: data.auditable,
                 user_role_id: data.userRoleId,
                 user_group_id: data.userGroupId,
             }),

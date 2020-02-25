@@ -51,6 +51,7 @@ describe('testing EditConnection page', () => {
                 label: 'Franklin',
                 flow_type: 'data_source',
                 image: null,
+                auditable: false,
                 client_id: '<client_id>',
                 secret: '<secret>',
                 username: 'franklin_<tag>',
@@ -73,7 +74,7 @@ describe('testing EditConnection page', () => {
         );
     });
 
-    it('creates a connection', async () => {
+    it('updates a connection', async () => {
         fetchMock.mockResponseOnce(JSON.stringify({}));
 
         const history = createMemoryHistory({initialEntries: ['/connections/ecommerce/edit']});
@@ -106,6 +107,7 @@ describe('testing EditConnection page', () => {
         const labelInput = getByLabelText(/^akeneo_connectivity\.connection\.connection\.label/) as HTMLInputElement;
         const flowTypeSelect = getByText('akeneo_connectivity.connection.flow_type.data_source')
             .parentElement as HTMLSelectElement;
+        const auditableCheckbox = getByLabelText('akeneo_connectivity.connection.connection.auditable');
         const userRoleSelect = getByText('User').parentElement as HTMLSelectElement;
         const userGroupSelect = getByText('All').parentElement as HTMLSelectElement;
         const saveButton = getByText('pim_common.save') as HTMLButtonElement;
@@ -113,6 +115,7 @@ describe('testing EditConnection page', () => {
         await act(async () => {
             await userEvent.type(labelInput, 'Magento');
             userEvent.selectOptions(flowTypeSelect, 'data_destination');
+            userEvent.click(auditableCheckbox);
             userEvent.selectOptions(userRoleSelect, '2');
             userEvent.selectOptions(userGroupSelect, '4');
             userEvent.click(saveButton);
@@ -127,6 +130,7 @@ describe('testing EditConnection page', () => {
                 label: 'Magento',
                 flow_type: 'data_destination',
                 image: null,
+                auditable: true,
                 user_role_id: '2',
                 user_group_id: '4',
             }),

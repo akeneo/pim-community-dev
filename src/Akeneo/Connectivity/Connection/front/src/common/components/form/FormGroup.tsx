@@ -21,7 +21,9 @@ export const FormGroup = ({children: control, controlId, label, errors, helper, 
             </div>
         )}
 
-        <div className='AknFieldContainer-inputContainer'>{cloneElement(control, {id: controlId})}</div>
+        <InputContainer className='AknFieldContainer-inputContainer'>
+            {cloneElement(control, {id: controlId})}
+        </InputContainer>
 
         {helper && (
             <div className='AknFieldContainer-footer'>
@@ -36,6 +38,10 @@ export const FormGroup = ({children: control, controlId, label, errors, helper, 
         )}
     </div>
 );
+
+const InputContainer = styled.div`
+    min-height: 28px;
+`;
 
 const FormControlErrors = ({errors}: {errors: string[]}) => (
     <div className='AknFieldContainer-validationErrors'>
