@@ -139,14 +139,22 @@ class ConnectionContext implements Context
         if ($newLabel === '<100chars>') {
             $newLabel = str_pad('A', 120, 'a');
         }
+
         if (!isset($data['flow_type']) || empty($data['flow_type'])) {
             throw new \InvalidArgumentException('You need to provide a new flow type to update the Connection.');
         }
         $newFlowType = $data['flow_type'];
+
         $newImage = $data['image'] ?? null;
+
         $newRole = $this->userPermissionsRepository->getRoleIdByIdentifier($data['user_role']);
+
         $newGroup = $this->userPermissionsRepository->getGroupIdByIdentifier($data['user_group']);
-        $newAuditable = $data['auditable'];
+
+        if ($data['auditable'] !== 'yes' && $data['auditable'] !== 'no') {
+            throw new \InvalidArgumentException('Audtaible must be equal to "yes" or "no".');
+        }
+        $newAuditable = ($data['auditable'] === 'yes');
 
         try {
             $command = new UpdateConnectionCommand(
