@@ -81,7 +81,7 @@ class InMemoryProductModelRepository implements IdentifiableObjectRepositoryInte
         throw new NotImplementedException(__METHOD__);
     }
 
-    public function findChildrenProductModels(ProductModelInterface $productModel): array
+    public function findChildrenProductModels(ProductModelInterface $productModel, ?int $limit, ?int $page): array
     {
         throw new NotImplementedException(__METHOD__);
     }
@@ -96,7 +96,7 @@ class InMemoryProductModelRepository implements IdentifiableObjectRepositoryInte
         throw new NotImplementedException(__METHOD__);
     }
 
-    public function findChildrenProducts(ProductModelInterface $productModel): array
+    public function findChildrenProducts(ProductModelInterface $productModel, ?int $limit, ?int $page): array
     {
         throw new NotImplementedException(__METHOD__);
     }
