@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Model;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -60,14 +61,7 @@ class MeasurementFamily
 
     private function assertStandardUnitExists(UnitCode $standardUnitCode, array $units): void
     {
-        $isStandardUnitCodePresentInUnits = !empty(
-            array_filter(
-                $units,
-                function (Unit $unit) use ($standardUnitCode) {
-                    return $standardUnitCode->equals($unit->code());
-                }
-            )
-        );
+        $isStandardUnitCodePresentInUnits = !empty($this->getUnit($standardUnitCode, $units));
         Assert::true(
             $isStandardUnitCodePresentInUnits,
             sprintf(
@@ -86,5 +80,32 @@ class MeasurementFamily
             $units
         );
         Assert::uniqueValues($normalizedUnitCodes);
+    }
+
+    public function getUnitLabel(UnitCode $unitCode, LocaleIdentifier $localeIdentifier): string
+    {
+        $unit = $this->getUnit($unitCode, $this->units);
+
+        if (null === $unit) {
+            throw new UnitNotFoundException();
+        }
+
+        return $unit->getLabel($localeIdentifier);
+    }
+
+    private function getUnit(UnitCode $standardUnitCode, array $units): ?Unit
+    {
+        $unit = current(array_filter(
+            $units,
+            function (Unit $unit) use ($standardUnitCode) {
+                return $standardUnitCode->equals($unit->code());
+            }
+        ));
+
+        if (!$unit) {
+            return null;
+        }
+
+        return $unit;
     }
 }

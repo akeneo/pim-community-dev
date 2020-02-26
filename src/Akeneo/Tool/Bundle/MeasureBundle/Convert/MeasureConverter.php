@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Convert;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
-use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownMeasureException;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownOperatorException;
 use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 
@@ -34,15 +34,15 @@ class MeasureConverter
      *
      * @param string $family
      *
-     * @throws UnknownFamilyMeasureException
      * @return MeasureConverter
      *
+     * @throws MeasurementFamilyNotFoundException
      */
     public function setFamily($family)
     {
         $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
         if (!isset($measurementFamilies[$family])) {
-            throw new UnknownFamilyMeasureException();
+            throw new MeasurementFamilyNotFoundException();
         }
 
         $this->family = $family;
@@ -74,16 +74,16 @@ class MeasureConverter
      * @param string $baseUnit Base unit for value
      * @param double $value    Value to convert
      *
-     * @throws UnknownOperatorException
-     * @throws UnknownMeasureException
      * @return string
      *
+     *@throws UnitNotFoundException
+     * @throws UnknownOperatorException
      */
     public function convertBaseToStandard($baseUnit, $value)
     {
         $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
         if (!isset($measurementFamilies[$this->family]['units'][$baseUnit])) {
-            throw new UnknownMeasureException(
+            throw new UnitNotFoundException(
                 sprintf(
                     'Could not find metric unit "%s" in family "%s"',
                     $baseUnit,
@@ -146,7 +146,7 @@ class MeasureConverter
      * @param double $value     Value to convert
      *
      * @throws UnknownOperatorException
-     * @throws UnknownMeasureException
+     * @throws UnitNotFoundException
      * @return string
      *
      */
@@ -154,7 +154,7 @@ class MeasureConverter
     {
         $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
         if (!isset($measurementFamilies[$this->family]['units'][$finalUnit])) {
-            throw new UnknownMeasureException(
+            throw new UnitNotFoundException(
                 sprintf(
                     'Could not find metric unit "%s" in family "%s"',
                     $finalUnit,

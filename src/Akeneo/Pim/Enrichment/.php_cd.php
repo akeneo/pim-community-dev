@@ -192,9 +192,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
 
         // TIP-1012: Create a Measure component
-        'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
-        'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException',
-        'Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager',
+        'Akeneo\Tool\Bundle\MeasureBundle',
 
         // TIP-1033: PIM/Enrichment should not depend on EntityRepository
         'Doctrine\ORM\EntityRepository',

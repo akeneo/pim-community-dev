@@ -92,11 +92,11 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(['locale' => 'en_US', 'scope' => 'ecommerce', 'data' => $prices]);
 
-        $userContext->getUiLocaleCode()->willReturn('en_US');
+        $userContext->getCurrentLocaleCode()->willReturn('en_US');
         $presenterRegistry->getPresenterByAttributeCode('text')->willReturn(null);
 
         $presenterRegistry->getPresenterByAttributeCode('price')->willReturn($pricePresenter);
-        $pricePresenter->present($prices, ['locale' => 'en_US'])->willReturn('$15.00, $12.50');
+        $pricePresenter->present($prices, ['locale' => 'en_US', 'attribute_code' => 'price'])->willReturn('$15.00, $12.50');
 
         $this
             ->normalize($values, 'datagrid')

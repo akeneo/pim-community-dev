@@ -18,7 +18,7 @@ services:
         class: 'Akeneo\Tool\Bundle\MeasureBundle\Controller\MeasuresController'
         public: true
         arguments:
-            - '@akeneo_measure.provider.measurement_provider'
+            - '@akeneo_measure.persistence.measurement_family_repository'
 
     pim_api.controller.measure_family:
         class: '%pim_api.controller.measure_family.class%'

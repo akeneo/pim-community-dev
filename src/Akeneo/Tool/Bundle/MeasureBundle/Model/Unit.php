@@ -59,4 +59,15 @@ final class Unit
     {
         return $this->code;
     }
+
+    public function getLabel(LocaleIdentifier $localeIdentifier): string
+    {
+        $label = $this->labels->getLabel($localeIdentifier->normalize());
+
+        if (null === $label) {
+            $label = sprintf('[%s]', $this->code->normalize());
+        }
+
+        return $label;
+    }
 }

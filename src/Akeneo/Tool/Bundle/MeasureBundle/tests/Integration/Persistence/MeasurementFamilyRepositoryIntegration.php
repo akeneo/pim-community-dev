@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Integration\Persistence;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
@@ -32,6 +33,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
         parent::setUp();
 
         $this->repository = $this->get('akeneo_measure.persistence.measurement_family_repository');
+        $this->loadSomeMetrics();
     }
 
     /**
@@ -39,9 +41,34 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
      */
     public function it_returns_all_measurement_families()
     {
-        $this->loadSomeMetrics();
-        $measurementFamilies = iterator_to_array($this->repository->all());
+        $measurementFamilies = $this->repository->all();
 
+        $this->assertCount(2, $measurementFamilies);
+        $this->assetArea($measurementFamilies[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_measurement_family_using_the_provided_code(): void
+    {
+        $measurementFamily = $this->repository->getByCode(MeasurementFamilyCode::fromString('Area'));
+
+        $this->assetArea($measurementFamily);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_the_measurement_family_does_not_exists(): void
+    {
+        $this->expectException(MeasurementFamilyNotFoundException::class);
+
+        $this->repository->getByCode(MeasurementFamilyCode::fromString('NOT_EXISTING'));
+    }
+
+    private function assetArea(MeasurementFamily $measurementFamily): void
+    {
         $area = MeasurementFamily::create(
             MeasurementFamilyCode::fromString('Area'),
             LabelCollection::fromArray(["en_US" => "Area", "fr_FR" => "Surface"]),
@@ -62,7 +89,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
             ]
         );
 
-        $this->assertEquals($area, $measurementFamilies[0]);
+        $this->assertEquals($area, $measurementFamily);
     }
 
     private function loadSomeMetrics(): void

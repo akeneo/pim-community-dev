@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Tool\Bundle\MeasureBundle\Model;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\LocaleIdentifier;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
@@ -91,7 +93,7 @@ class MeasurementFamilySpec extends ObjectBehavior
             );
     }
 
-    function it_should_not_be_able_create_a_measurement_family_having_a_standard_unit_not_being_in_the_units()
+    function it_should_not_be_able_to_create_a_measurement_family_having_a_standard_unit_not_being_in_the_units()
     {
         $unknownUnitCode = 'unknown_unit_code';
         $this->shouldThrow(\InvalidArgumentException::class)
@@ -139,4 +141,22 @@ class MeasurementFamilySpec extends ObjectBehavior
             );
     }
 
+    function it_returns_the_label_of_the_provided_unit_for_the_provided_locale()
+    {
+        $this->getUnitLabel(
+            UnitCode::fromString(self::CENTIMETER_UNIT_CODE),
+            LocaleIdentifier::fromCode('fr_FR')
+        )->shouldReturn('centimètre');
+    }
+
+    function it_should_throw_when_the_provided_unit_is_not_found()
+    {
+        $this->shouldThrow(UnitNotFoundException::class)
+            ->during('getUnitLabel',
+                [
+                    UnitCode::fromString('UNKNOWN'),
+                    LocaleIdentifier::fromCode('fr_FR')
+                ]
+            );
+    }
 }

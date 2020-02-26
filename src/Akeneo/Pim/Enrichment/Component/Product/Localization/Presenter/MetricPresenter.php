@@ -2,9 +2,13 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Model\LocaleIdentifier;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
+use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\Localization\Presenter\NumberPresenter;
-use Akeneo\Tool\Component\Localization\TranslatorProxy;
+use Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository;
 
 /**
  * Metric presenter, able to render metric data readable for a human
@@ -15,22 +19,22 @@ use Akeneo\Tool\Component\Localization\TranslatorProxy;
  */
 class MetricPresenter extends NumberPresenter
 {
-    /** @var TranslatorProxy */
-    protected $translatorProxy;
+    /** @var MeasurementFamilyRepositoryInterface */
+    private $measurementFamilyRepository;
 
-    /**
-     * @param NumberFactory   $numberFactory
-     * @param array           $attributeTypes
-     * @param TranslatorProxy $translatorProxy
-     */
+    /** @var BaseCachedObjectRepository */
+    private $baseCachedObjectRepository;
+
     public function __construct(
         NumberFactory $numberFactory,
         array $attributeTypes,
-        TranslatorProxy $translatorProxy
+        MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
+        BaseCachedObjectRepository $baseCachedObjectRepository
     ) {
         parent::__construct($numberFactory, $attributeTypes);
 
-        $this->translatorProxy = $translatorProxy;
+        $this->measurementFamilyRepository = $measurementFamilyRepository;
+        $this->baseCachedObjectRepository = $baseCachedObjectRepository;
     }
 
     /**
@@ -42,14 +46,22 @@ class MetricPresenter extends NumberPresenter
             $value = $this->getStructuredMetric($value, $options['versioned_attribute']);
         }
 
+        if (!isset($options['attribute_code'])) {
+            throw new \InvalidArgumentException('Expected attribute code in the context, none given.');
+        }
+
+        $measurementFamilyCode = $this->baseCachedObjectRepository->findOneByIdentifier($options['attribute_code'])
+            ->getMetricFamily();
+        $measurementFamily = $this->measurementFamilyRepository
+            ->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
+
         $amount = isset($value['amount']) ? parent::present($value['amount'], $options) : null;
         $unit = isset($value['unit']) && $value['unit'] !== ''
-            ? $this->translatorProxy->trans(sprintf('pim_measure.units.%s', $value['unit'])
-            ) : null;
+            ? $measurementFamily->getUnitLabel(UnitCode::fromString($value['unit']),
+                LocaleIdentifier::fromCode($options['locale']))
+            : null;
 
-        return join(' ', array_filter([ $amount, $unit ], function ($value) {
-            return $value !== null;
-        }));
+        return join(' ', array_filter([$amount, $unit]));
     }
 
     /**

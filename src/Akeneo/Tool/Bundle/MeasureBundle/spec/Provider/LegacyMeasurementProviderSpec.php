@@ -78,7 +78,7 @@ YAML;
 
         $measurementFamilies = [$measurementFamily];
         $legacyMeasurements = ['legacy measurements'];
-        $measurementFamilyRepository->all()->willReturn(new \ArrayIterator($measurementFamilies));
+        $measurementFamilyRepository->all()->willReturn($measurementFamilies);
         $legacyMeasurementAdapter->adapts($measurementFamily)->willReturn($legacyMeasurements);
 
         $this->getMeasurementFamilies()->shouldReturn($legacyMeasurements);

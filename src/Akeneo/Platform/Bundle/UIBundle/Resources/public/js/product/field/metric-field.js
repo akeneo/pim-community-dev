@@ -14,8 +14,9 @@ define([
     'oro/translator',
     'pim/fetcher-registry',
     'pim/template/product/field/metric',
-    'pim/initselect2'
-], function ($, Field, _, __, FetcherRegistry, fieldTemplate, initSelect2) {
+    'pim/initselect2',
+    'pim/i18n'
+], function ($, Field, _, __, FetcherRegistry, fieldTemplate, initSelect2, i18n) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         events: {
@@ -32,7 +33,10 @@ define([
                 Field.prototype.getTemplateContext.apply(this, arguments),
                 FetcherRegistry.getFetcher('measure').fetchAll()
             ).then(function (templateContext, measures) {
-                templateContext.measures = measures;
+                const measurementFamily = measures.find(family =>
+                    family.code === templateContext.attribute.metric_family);
+                templateContext.i18n = i18n;
+                templateContext.units = measurementFamily.units;
 
                 return templateContext;
             });

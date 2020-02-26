@@ -11,7 +11,9 @@ define([
     'oro/translator',
     'pim/form/common/fields/field',
     'pim/fetcher-registry',
-    'pim/template/form/common/fields/select'
+    'pim/template/form/common/fields/select',
+    'pim/user-context',
+    'pim/i18n'
 ],
 function (
     $,
@@ -19,7 +21,9 @@ function (
     __,
     BaseField,
     fetcherRegistry,
-    template
+    template,
+    UserContext,
+    i18n
 ) {
     return BaseField.extend({
         events: {
@@ -86,14 +90,11 @@ function (
          * @param {Object} measures
          */
         formatChoices: function (measures) {
-            const metricFamilyCodes = Object.keys(measures);
+            const choices = {};
+            const locale = UserContext.get('catalogLocale');
+            measures.forEach(family => choices[family.code] = i18n.getLabel(family.labels, locale, family.code));
 
-            return _.object(
-                metricFamilyCodes,
-                metricFamilyCodes.map((metricFamilyCode) => {
-                    return __(`pim_measure.families.${metricFamilyCode}`);
-                })
-            );
+            return choices;
         },
 
         /**

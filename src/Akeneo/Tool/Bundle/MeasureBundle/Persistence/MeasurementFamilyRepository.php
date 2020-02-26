@@ -1,16 +1,8 @@
 <?php
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Tool\Bundle\MeasureBundle\Persistence;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
@@ -22,8 +14,8 @@ use Doctrine\DBAL\Types\Type;
 
 /**
  * @author    Valentin Dijkstra <valentin.dijkstra@akeneo.com>
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2020 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterface
 {
@@ -36,7 +28,7 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function all(): \Iterator
+    public function all(): array
     {
         $selectAllQuery = <<<SQL
     SELECT 
@@ -49,14 +41,14 @@ SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
         $results = $statement->fetchAll();
 
-        foreach ($results as $result) {
-            yield $this->hydrateMeasurementFamily(
+        return array_map(function (array $result) {
+            return $this->hydrateMeasurementFamily(
                 $result['code'],
                 $result['labels'],
                 $result['standard_unit'],
                 $result['units']
             );
-        }
+        }, $results);
     }
 
     private function hydrateMeasurementFamily(
@@ -105,6 +97,36 @@ SQL;
             LabelCollection::fromArray($normalizedLabels),
             $operations,
             $symbol
+        );
+    }
+
+    public function getByCode(MeasurementFamilyCode $measurementFamilyCode): MeasurementFamily
+    {
+        $sql = <<<SQL
+    SELECT
+        code,
+        labels,
+        standard_unit,
+        units
+    FROM akeneo_measurement
+    WHERE `code` = :measurement_family_code;
+SQL;
+
+        $statement = $this->sqlConnection->executeQuery(
+            $sql,
+            ['measurement_family_code' => $measurementFamilyCode->normalize()]
+        );
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            throw new MeasurementFamilyNotFoundException();
+        }
+
+        return $this->hydrateMeasurementFamily(
+            $result['code'],
+            $result['labels'],
+            $result['standard_unit'],
+            $result['units']
         );
     }
 }
