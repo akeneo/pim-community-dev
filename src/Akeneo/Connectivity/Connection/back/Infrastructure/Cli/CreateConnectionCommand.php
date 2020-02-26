@@ -60,13 +60,6 @@ class CreateConnectionCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Label of the connection. Default will be the provided code.'
-            )
-            ->addOption(
-                'auditable',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Enable audit for connection?',
-                false
             );
     }
 
@@ -78,10 +71,9 @@ class CreateConnectionCommand extends Command
         $code = $input->getArgument('code');
         $label = $input->getOption('label') ?? $code;
         $flowType = $input->getOption('flow-type');
-        $auditable = $input->getOption('auditable');
 
         try {
-            $command = new CreationCommand($code, $label, $flowType, $auditable);
+            $command = new CreationCommand($code, $label, $flowType, false);
             $connectionWithCredentials = $this->createConnection->handle($command);
             $output->writeln([
                 '<info>A new connection has been created with the following settings:</info>',

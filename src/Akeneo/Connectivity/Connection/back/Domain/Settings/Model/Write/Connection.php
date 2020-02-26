@@ -107,8 +107,13 @@ class Connection
         $this->image = $image;
     }
 
-    public function setAuditable(bool $auditable): void
+    public function enableAudit(): void
     {
-        $this->auditable = $auditable;
+        $this->auditable = true;
+    }
+
+    public function disableAudit(): void
+    {
+        $this->auditable = false;
     }
 }
