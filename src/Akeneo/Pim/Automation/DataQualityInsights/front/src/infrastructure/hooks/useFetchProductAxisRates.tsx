@@ -46,7 +46,7 @@ const useFetchProductAxisRates = () => {
   }, [hasToBeEvaluated, retries]);
 
   useEffect(() => {
-    if (!isEmpty(axesRates)) {
+    if (axesRates !== undefined && !isEmpty(axesRates)) {
       const notEvaluatedAxesList = Object.values(axesRates).filter((axisRates) => {
         return isEmpty(axisRates.rates);
       });

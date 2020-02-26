@@ -15,7 +15,7 @@ const AxisRatesOverview: FunctionComponent<AxisRatesOverviewProps> = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (Object.keys(productAxisRates).length === 0) {
+    if (productAxisRates === undefined || Object.keys(productAxisRates).length === 0) {
       return;
     }
     setIsLoading(false);
