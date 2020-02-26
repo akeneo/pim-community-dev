@@ -1,4 +1,5 @@
 pim_title:
+  akeneo_asset_manager_asset_family_index: Gestionnaire de ressources
   akeneo_asset_manager_asset_family_edit: Modifier une famille de ressources
   akeneo_asset_manager_asset_edit: Modifier une ressource
 pim_asset_manager:
@@ -11,10 +12,15 @@ pim_asset_manager:
   asset_counter: '{0}Pas de ressource |{1} {{ count }} ressource|]1,Inf] {{ count }} ressources'
   asset_collection:
     add_asset: 'Ajouter une ressource'
+    upload_asset: 'Charger des ressources'
     add_asset_title: 'Ouvrir le sélecteur de ressources pour ajouter des ressources à la collection'
     no_asset_in_collection: 'Désolé, il n''y a aucune ressource dans cette collection.'
     helper:
+      title: 'Bienvenue dans votre nouvel espace de gestion des ressources de produits !'
+      text: 'Il n''y a pas de collection de ressources pour cette famille. Ajoutez simplement un attribut collection de ressources dans vos paramètres pour découvrir cette nouvelle fonctionnalité.'
       link: 'Comment ajouter une collection de ressources ?'
+    no_asset:
+      title: 'Désolé, il n''y a aucune ressource pour ce produit.'
     notification:
       product_rule: 'Cette collection peut être mise à jour par une règle produit :'
       limit: 'Vous avez atteint la limite de {{ limit }} ressources par collection, vous ne pouvez plus ajouter de ressource à votre collection.'
@@ -47,6 +53,7 @@ pim_asset_manager:
     previous: Ressource précédente
     next: Prochaine ressource
     empty_main_media: Cette ressource n'a pas de média.
+    other_main_media: Nous ne pouvons pas générer l'aperçu de cette ressource.
     edit_asset: Modifier l'asset
     download: Télécharger
     copy_url: Copier l'URL
@@ -83,12 +90,27 @@ pim_asset_manager:
         attribute_reference_should_exist: 'L''attribut "{{ %attribute_code% }}" n''existe pas pour cette famille de ressources'
         filename_is_not_unique: 'Une transformation avec le préfixe de nom de fichier "{{ %filename_prefix% }}" et le suffixe "{{ %filename_suffix% }}" existe déjà pour l''attribut source "{{ %attribute_code%}}"'
         code_is_not_unique: 'Vous ne pouvez pas définir deux transformations avec le même code "{{ %transformation_code%}}"'
+        unknown_extra_field: 'La propriété {{ {{ field }} }} n''était pas attendue.'
+      naming_convention:
+        property_should_exist: 'La propriété "{{ %property% }}" n''existe pas pour cette famille de ressources.'
+      rule_template:
+        product_selection_cannot_be_empty: 'Vous devez spécifier au moins une sélection de produits dans votre règle de rattachement aux produits.'
+        product_assignment_cannot_be_empty: 'Vous devez spécifier au moins une affectation de produits dans votre règle de rattachement aux produits.'
+        extrapolated_attribute_type_should_be_supported: 'L''attribut "{{ %attribute_code% }}" de type "{{ %attribute_type% }}" n''est pas pris en charge. Seuls les types d''attributs suivants sont supportés pour ce champ : {{ %supported_attribute_type% }}.'
+        channel_should_exist: 'Le canal "{{ %channel_code% }}" n''existe pas.'
+        locale_should_exist: 'La locale "{{ %locale_code% }}" n''est pas activée ou n''existe pas.'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: 'L''attribut "{{ %attribute_code% }}" ne peut pas être utilisé pour l''extrapolation car il a une valeur par canal.'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: 'L''attribut "{{ %attribute_code% }}" ne peut pas être utilisé pour l''extrapolation car il a une valeur par locale.'
+        assignment_mode_not_supported: 'Le mode d''affectation "{{ %assignment_mode% }}" trouvé dans une règle de rattachement aux produits n''est pas valide. Seuls les modes suivants sont acceptés : "remplacer" ou "ajouter".'
+        channel_not_supported_for_field: 'Vous ne pouvez pas spécifier de canal pour le champ "{{ %product_field% }}".'
+        locale_not_supported_for_field: 'Vous ne pouvez pas spécifier de locale pour le champ "{{ %product_field% }}".'
     button:
       save: Enregistrer
       save_permission: Enregistrer
       create: Créer une famille de ressources
       edit: Modifier la famille
       view: Voir la famille
+      execute_product_link_rules: Exécuter les règles
     permission:
       title: Autorisations de la famille de ressources
     title: Ressources
@@ -100,11 +122,19 @@ pim_asset_manager:
       properties: Propriétés
       permission: Autorisations
       transformations: Transformations
+      product_link_rules: Règles de rattachement aux produits
     transformations:
       help:
         description: 'Vous pouvez définir ici jusqu''à 10 transformations par famille de ressources.'
         link: 'Si vous voulez mieux comprendre comment fonctionnent les nouvelles transformations du gestionnaire de ressources, cliquez ici'
       subsection: 'Propriétés de la transformation'
+    product_link_rules:
+      naming_convention_subsection: 'Propriétés de la convention de nommage'
+      product_link_rules_subsection: 'Propriétés des règles de rattachement aux produits'
+      execute_rules:
+        confirm_title: Confirmer l’exécution
+        confirm_content: Êtes-vous certain de vouloir exécuter toutes les règles ? (cela peut prendre un certain temps)
+        execute_rules: Exécuter les règles
     properties:
       title: Propriétés de la famille de ressources
       identifier: Code
@@ -139,6 +169,8 @@ pim_asset_manager:
     delete:
       message: Êtes-vous sûr de vouloir supprimer la famille de ressources "{{ assetFamilyLabel }} " ?
       title: Attribut
+    edit:
+      discard_changes: Vous perdrez les modifications apportées à la famille de ressources "{{ assetFamilyLabel }}" si vous quittez la page.
     notification:
       save:
         success: Famille de ressources mise à jour avec succès.
@@ -148,8 +180,18 @@ pim_asset_manager:
         success: Famille de ressources supprimée avec succès.
       compute_transformations:
         success: Les transformations ont été lancées. Une fois cette tâche terminée, vous verrez vos nouvelles variations mises à jour dans vos ressources.
+      execute_product_link_rules:
+        success: Les règles de rattachement aux produits ont été lancées.
+        fail: Une erreur s'est produite lors du lancement des règles de rattachement aux produits.
+    helper:
+      title: Bienvenue dans le gestionnaire de ressources !
+      no_asset:
+        text: Il n'y a pas de ressources dans la famille {{ family }}. Cliquez sur "Créer" et choisissez si vous voulez créer une ressource vide ou si vous préférez charger en masse des ressources.
+      no_asset_family:
+        text: Une bibliothèque qui rassemble vos ressources (images, vidéos, documents...), filtrées par familles de ressources. Créez votre première famille de ressources, définissez ses attributs et chargez des ressources !
     no_data:
       no_asset:
+        title: Désolé, il n'y a pas de ressource !
         link: Cliquez ici pour ajouter une ressource
       no_asset_family:
         title: Désolé, il n'y a pas de famille de ressources !
@@ -170,8 +212,10 @@ pim_asset_manager:
       code:
         pattern: 'Ce champ ne peut être composé que de lettres, de chiffres et d''underscores.'
     no_data:
+      title: Il n'y a aucune ressource pour {{ entityLabel }}.
       subtitle: Cliquez sur le bouton "Créer" pour ajouter la première ressource
     no_result:
+      title: Il n'y a aucun résultat pour votre recherche.
       subtitle: Essayez à nouveau avec d'autres critères de recherche.
     selector:
       no_value: Cliquer ici pour sélectionner une ressource.
@@ -198,15 +242,19 @@ pim_asset_manager:
       not_enough_items:
         title: Dommage ! Vous ne pouvez voir que {{ productCount }}/{{ totalCount }} produits.
         subtitle:
-          usable_in_grid: Pour découvrir tous les produits liés, cliquez ci-dessous !
-          not_usable_in_grid: Pour découvrir tous les produits liés, l'attribut produit doit être défini comme "utilisable sur la grille".
+          usable_in_grid: Pour découvrir tous les produits liés, cliquez ci-dessous!
+          not_usable_in_grid: Pour découvrir tous les produits liés, l'attribut produit doit être défini comme "utilisable dans la grille".
         button: Voir tous les produits
       no_product:
         subtitle: 'Commencez à lier les produits à cet attribut pour les voir ici'
+    no_linked_products: Cette ressource n'est liée à aucun produit.
     enrich:
       title: Attributs de la ressource
       code: Code
       label: Libellé
+      edit_subsection: Modifier l'asset
+      product_subsection: Produits liés
+      main_media_preview: Aperçu du média principal
     title: Ressources
     create:
       header:
@@ -221,12 +269,18 @@ pim_asset_manager:
       line_count: '[0,1]{{ count }} fichier|]1,Inf] {{ count }} fichiers'
       title: Charger des ressources
       lines: Fichiers
+      retry: Réessayer
       remove: Supprimer
       remove_all: Tout supprimer
       confirm: Créer
+      add_to_product: Ajouter au produit
       drop_or_click_here: Glissez et déposez vos ressources ou cliquez ici
       will_appear_here: Chargez des ressources et elles apparaîtront juste ici!
+      files_limit: Vous essayez de charger trop de fichiers, seul les {{ limit }} premiers seront chargés.
       discard_changes: Vous perdrez vos ressources si vous fermez cette fenêtre sans les créer.
+      disabled_for_media_link: Vous ne pouvez pas charger de ressources dans cette famille car l'attribut utilisé comme média principal est un attribut de type "lien média".
+      upload_failure: Une erreur s'est produite lors du chargement du fichier.
+      cannot_retry: Une erreur s'est produite lors de la tentative de chargement du fichier.
       list:
         asset: Ressource
         filename: Nom du fichier
@@ -384,15 +438,17 @@ pim_asset_manager:
       sub_title: Familles de ressources
       helper:
         title: Traduction des libellés
+    media_link:
+      placeholder: Insérer le lien du média ici
+      read_only: Ce lien média est en lecture seule.
+    media_file:
+      read_only: Ce fichier est en lecture seule.
   modal:
     delete:
       subtitle: Confirmer la suppression
       button:
         cancel: Annuler
         confirm: Supprimer
-  media_link:
-    download: Télécharger
-    copy: Copier le lien dans le presse-papier
 pim_enrich:
   confirmation:
     discard_changes: 'Vous perdrez les modifications effectuées sur l''entité "{{ entity }}" si vous quittez la page.'
