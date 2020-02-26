@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Currency;
 
+use Akeneo\Channel\Component\Model\Currency;
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -110,7 +112,9 @@ final class InMemoryCurrencyRepository implements
      */
     public function getActivatedCurrencies()
     {
-        throw new NotImplementedException(__METHOD__);
+        return array_filter($this->currencies->toArray(), function (CurrencyInterface $currency): bool {
+            return $currency->isActivated();
+        });
     }
 
     /**
@@ -118,6 +122,15 @@ final class InMemoryCurrencyRepository implements
      */
     public function getActivatedCurrencyCodes()
     {
-        throw new NotImplementedException(__METHOD__);
+        $activatedCurrencyCodes = [];
+
+        /** @var Currency $currency */
+        foreach ($this->currencies as $currency) {
+            if ($currency->isActivated()) {
+                $activatedCurrencyCodes[] = $currency->getCode();
+            }
+        }
+
+        return $activatedCurrencyCodes;
     }
 }
