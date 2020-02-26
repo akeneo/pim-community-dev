@@ -45,6 +45,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\FileStorage',
         'Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException',
         'Akeneo\Tool\Component\FileStorage\Exception\FileTransferException',
+        'Webmozart\Assert\Assert',
 
         // TIP-960: Rule Engine should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
