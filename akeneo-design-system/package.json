@@ -1,10 +1,13 @@
 {
     "name": "akeneo-design-system",
-    "version": "0.0.1",
+    "version": "0.0.4",
     "description": "Akeneo design system",
-    "main": "index.ts",
+    "main": "/lib/index.js",
     "scripts": {
-        "build": "webpack --mode production",
+        "check-types": "tsc",
+        "check-types:watch": "yarn check-types -- --watch",
+        "build:dev": "yarn test && webpack --mode development",
+        "build:prod": "yarn test && webpack --mode production",
         "test": "jest",
         "test:watch": "jest --watch",
         "storybook": "start-storybook -p 6006",
@@ -13,6 +16,7 @@
     "author": "akeneo",
     "license": "OSL-3.0",
     "dependencies": {
+        "akeneo-design-system": "^0.0.3",
         "react": "^16.12.0",
         "react-dom": "^16.12.0",
         "styled-components": "^5.0.1"
@@ -31,16 +35,16 @@
         "@testing-library/react": "^9.4.0",
         "@types/events": "^3.0.0",
         "@types/jest": "^25.1.3",
-        "@types/react-dom": "^16.9.5",
         "@types/react": "^16.9.21",
+        "@types/react-dom": "^16.9.5",
         "@types/styled-components": "^5.0.0",
         "@typescript-eslint/eslint-plugin": "^2.21.0",
         "@typescript-eslint/parser": "^2.21.0",
         "babel-jest": "^25.1.0",
         "babel-loader": "^8.0.6",
-        "eslint-plugin-react-hooks": "^2.4.0",
-        "eslint-plugin-react": "^7.18.3",
         "eslint": "^6.8.0",
+        "eslint-plugin-react": "^7.18.3",
+        "eslint-plugin-react-hooks": "^2.4.0",
         "jest": "^25.1.0",
         "prettier": "^1.19.1",
         "react-docgen-typescript-loader": "^3.6.0",
@@ -50,7 +54,7 @@
         "ts-jest": "^25.2.1",
         "ts-loader": "^6.2.1",
         "typescript": "^3.8.2",
-        "webpack-cli": "^3.3.11",
-        "webpack": "^4.41.6"
+        "webpack": "^4.41.6",
+        "webpack-cli": "^3.3.11"
     }
 }

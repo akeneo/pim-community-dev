@@ -43,7 +43,5 @@ coverage/*
 /.web-server-pid
 ###< symfony/web-server-bundle ###
 
-### Akeneo-design-system
-/akeneo-design-system/node_modules
-/akeneo-design-system/lib
+
 
