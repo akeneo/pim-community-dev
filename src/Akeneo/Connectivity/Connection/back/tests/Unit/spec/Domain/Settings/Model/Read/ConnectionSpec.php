@@ -21,7 +21,8 @@ class ConnectionSpec extends ObjectBehavior
             'magento',
             'Magento Connector',
             FlowType::DATA_DESTINATION,
-            'a/b/c/the_path.jpg'
+            'a/b/c/the_path.jpg',
+            true
         );
     }
 
@@ -45,7 +46,9 @@ class ConnectionSpec extends ObjectBehavior
         $this->beConstructedWith(
             'magento',
             'Magento Connector',
-            FlowType::DATA_DESTINATION
+            FlowType::DATA_DESTINATION,
+            null,
+            false
         );
         $this->image()->shouldReturn(null);
     }
@@ -60,13 +63,19 @@ class ConnectionSpec extends ObjectBehavior
         $this->flowType()->shouldReturn(FlowType::DATA_DESTINATION);
     }
 
+    public function it_returns_the_auditable()
+    {
+        $this->auditable()->shouldReturn(true);
+    }
+
     public function it_normalizes_a_connection()
     {
         $this->normalize()->shouldReturn([
             'code' => 'magento',
             'label' => 'Magento Connector',
             'flowType' => FlowType::DATA_DESTINATION,
-            'image' => 'a/b/c/the_path.jpg'
+            'image' => 'a/b/c/the_path.jpg',
+            'auditable' => true
         ]);
     }
 }
