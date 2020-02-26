@@ -54,6 +54,7 @@ $rules = [
 
             //Subscribers for product updates
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
             'Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository',
