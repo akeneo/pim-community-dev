@@ -48,6 +48,10 @@ export const AttributeSelector = ({
       text: getLabel(attribute.labels, user.catalogLocale, attribute.code)
     }));
 
+  suggestedAttributeCodes = suggestedAttributeCodes.filter((attributeCode: string) =>
+    attributes.hasOwnProperty(attributeCode)
+  );
+
   const suggestedAttributes = suggestedAttributeCodes.map((attributeCode: string) => {
     const attribute = Object.values(attributes).filter(attribute => attribute.code === attributeCode)[0];
     return {

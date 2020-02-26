@@ -44,13 +44,6 @@ class AttributeMapping
     /** @var string */
     private $status;
 
-    /**
-     * @param string $targetAttributeCode
-     * @param string $targetAttributeType
-     * @param Attribute|null $attribute
-     *
-     * @throws AttributeMappingException
-     */
     public function __construct(
         string $targetAttributeCode,
         string $targetAttributeType,
@@ -128,7 +121,7 @@ class AttributeMapping
             throw AttributeMappingException::localeSpecificAttributeNotAllowed();
         }
 
-        if (!in_array($attribute->getType(), array_keys(AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS))) {
+        if (!$attribute->isTypeAllowedInFranklin()) {
             throw AttributeMappingException::incompatibleAttributeTypeMapping($attribute->getType());
         }
     }
