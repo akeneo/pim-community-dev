@@ -12,19 +12,22 @@ use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 
 class MetricPresenterSpec extends ObjectBehavior
 {
     function let(
         NumberFactory $numberFactory,
         MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
-        BaseCachedObjectRepository $baseCachedObjectRepository
+        BaseCachedObjectRepository $baseCachedObjectRepository,
+		LoggerInterface $logger
     ) {
         $this->beConstructedWith(
             $numberFactory,
             ['pim_catalog_metric'],
             $measurementFamilyRepository,
-            $baseCachedObjectRepository
+            $baseCachedObjectRepository,
+			$logger
         );
     }
 
@@ -50,12 +53,12 @@ class MetricPresenterSpec extends ObjectBehavior
             UnitCode::fromString('KILOGRAM'),
             LocaleIdentifier::fromCode('en_US'))
             ->willReturn('Kilogram');
-        $numberFactory->create(['attribute_code' => 'weight', 'locale' => 'en_US'])->willReturn($numberFormatter);
+        $numberFactory->create(['attribute' => 'weight', 'locale' => 'en_US'])->willReturn($numberFormatter);
         $numberFormatter->format(12000.34)->willReturn('12,000.34');
         $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
         $this
             ->present(['amount' => 12000.34, 'unit' => 'KILOGRAM'], [
-                'attribute_code' => 'weight',
+                'attribute' => 'weight',
                 'locale' => 'en_US'
             ])
             ->shouldReturn('12,000.34 Kilogram');

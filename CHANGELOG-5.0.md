@@ -33,6 +33,7 @@
     - remove `Akeneo\Tool\Component\Localization\TranslatorProxy $translatorProxy`
     - add `Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface $measurementFamilyRepository`
     - add `Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository $baseCachedObjectRepository`
+    - add `Psr\Log\LoggerInterface $logger`
 - Change `Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager` to remove method `setMeasureConfig(array $config)`
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\DependencyInjection\Configuration`
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\AreaFamilyInterface`
@@ -59,7 +60,7 @@
 ### CLI commands
 
 The following CLI commands have been deleted:
- 
+
 ### Services
 
 - Update `pim_catalog.validator.constraint.valid_metric` to use `akeneo_measure.provider.measurement_provider`

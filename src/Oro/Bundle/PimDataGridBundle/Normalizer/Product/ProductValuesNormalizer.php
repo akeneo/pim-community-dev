@@ -52,7 +52,7 @@ class ProductValuesNormalizer implements NormalizerInterface, SerializerAwareInt
             if (null !== $presenter) {
                 $normalizedValue['data'] = $presenter->present($normalizedValue['data'], [
                     'locale' => $this->userContext->getCurrentLocaleCode(),
-                    'attribute_code' => $attributeCode
+                    'attribute' => $attributeCode
                 ]);
             }
             $result[$attributeCode][] = $normalizedValue;

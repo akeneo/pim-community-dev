@@ -103,15 +103,15 @@ class VersionNormalizerSpec extends ObjectBehavior
         $presenterRegistry->getPresenterByAttributeType('pim_catalog_metric')->willReturn($metricPresenter);
 
         $numberPresenter
-            ->present('200.7890', $options + ['versioned_attribute' => 'maximum_frame_rate', 'attribute_code' => 'maximum_frame_rate'])
+            ->present('200.7890', $options + ['versioned_attribute' => 'maximum_frame_rate', 'attribute' => 'maximum_frame_rate'])
             ->willReturn('200,7890');
-        $pricesPresenter->present('5.00', $options + ['versioned_attribute' => 'price-EUR', 'attribute_code' => 'price'])->willReturn('5,00 €');
-        $pricesPresenter->present('5.15', $options + ['versioned_attribute' => 'price-EUR', 'attribute_code' => 'price'])->willReturn('5,15 €');
-        $metricPresenter->present('10.1234', $options + ['versioned_attribute' => 'weight', 'attribute_code' => 'weight'])->willReturn('10,1234');
+        $pricesPresenter->present('5.00', $options + ['versioned_attribute' => 'price-EUR', 'attribute' => 'price'])->willReturn('5,00 €');
+        $pricesPresenter->present('5.15', $options + ['versioned_attribute' => 'price-EUR', 'attribute' => 'price'])->willReturn('5,15 €');
+        $metricPresenter->present('10.1234', $options + ['versioned_attribute' => 'weight', 'attribute' => 'weight'])->willReturn('10,1234');
 
-        $numberPresenter->present('', $options + ['versioned_attribute' => 'maximum_frame_rate', 'attribute_code' => 'maximum_frame_rate'])->willReturn('');
+        $numberPresenter->present('', $options + ['versioned_attribute' => 'maximum_frame_rate', 'attribute' => 'maximum_frame_rate'])->willReturn('');
         $pricesPresenter->present('', $options)->willReturn('');
-        $metricPresenter->present('', $options + ['versioned_attribute' => 'weight', 'attribute_code' => 'weight'])->willReturn('');
+        $metricPresenter->present('', $options + ['versioned_attribute' => 'weight', 'attribute' => 'weight'])->willReturn('');
         $datetimePresenter->present($versionTime, $datetimePresenterOtions)->willReturn('01/01/1985 09:41 AM');
 
         $this->normalize($version, 'internal_api')->shouldReturn([

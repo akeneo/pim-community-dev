@@ -155,7 +155,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         foreach ($changeset as $valueHeader => $valueChanges) {
             $context['versioned_attribute'] = $valueHeader;
             $attributeCode = $this->extractAttributeCode($valueHeader);
-            $context['attribute_code'] = $attributeCode;
+            $context['attribute'] = $attributeCode;
 
             if (isset($attributeTypes[$attributeCode])) {
                 $presenter = $this->presenterRegistry->getPresenterByAttributeType($attributeTypes[$attributeCode]);

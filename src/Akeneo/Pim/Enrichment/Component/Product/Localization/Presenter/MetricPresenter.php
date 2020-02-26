@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LocaleIdentifier;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
@@ -9,6 +10,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInte
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\Localization\Presenter\NumberPresenter;
 use Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository;
+use Psr\Log\LoggerInterface;
 
 /**
  * Metric presenter, able to render metric data readable for a human
@@ -25,16 +27,21 @@ class MetricPresenter extends NumberPresenter
     /** @var BaseCachedObjectRepository */
     private $baseCachedObjectRepository;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
         NumberFactory $numberFactory,
         array $attributeTypes,
         MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
-        BaseCachedObjectRepository $baseCachedObjectRepository
+        BaseCachedObjectRepository $baseCachedObjectRepository,
+        LoggerInterface $logger
     ) {
         parent::__construct($numberFactory, $attributeTypes);
 
         $this->measurementFamilyRepository = $measurementFamilyRepository;
         $this->baseCachedObjectRepository = $baseCachedObjectRepository;
+        $this->logger = $logger;
     }
 
     /**
@@ -46,20 +53,26 @@ class MetricPresenter extends NumberPresenter
             $value = $this->getStructuredMetric($value, $options['versioned_attribute']);
         }
 
-        if (!isset($options['attribute_code'])) {
-            throw new \InvalidArgumentException('Expected attribute code in the context, none given.');
+        $unitLabel = '';
+        if (isset($options['attribute'])) {
+            try {
+                $measurementFamilyCode = $this->baseCachedObjectRepository->findOneByIdentifier($options['attribute'])
+                    ->getMetricFamily();
+                $measurementFamily = $this->measurementFamilyRepository
+                    ->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
+                $unitLabel = $measurementFamily->getUnitLabel(
+                    UnitCode::fromString($value['unit']),
+                    LocaleIdentifier::fromCode($options['locale'])
+                );
+            } catch (\Exception $e) {
+                $this->logger->warning('An error occured while trying to fetch the measurement family of a metric value to present it.');
+            }
+        } else {
+            $this->logger->warning('Expected to have an attribute code given in the options of the presenter, none given.');
         }
 
-        $measurementFamilyCode = $this->baseCachedObjectRepository->findOneByIdentifier($options['attribute_code'])
-            ->getMetricFamily();
-        $measurementFamily = $this->measurementFamilyRepository
-            ->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
-
         $amount = isset($value['amount']) ? parent::present($value['amount'], $options) : null;
-        $unit = isset($value['unit']) && $value['unit'] !== ''
-            ? $measurementFamily->getUnitLabel(UnitCode::fromString($value['unit']),
-                LocaleIdentifier::fromCode($options['locale']))
-            : null;
+        $unit = isset($value['unit']) && $value['unit'] !== '' ? $unitLabel : null;
 
         return join(' ', array_filter([$amount, $unit]));
     }

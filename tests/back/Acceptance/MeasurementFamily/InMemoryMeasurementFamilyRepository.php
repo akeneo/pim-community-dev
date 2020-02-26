@@ -19,47 +19,47 @@ use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInte
  */
 class InMemoryMeasurementFamilyRepository implements MeasurementFamilyRepositoryInterface
 {
-	/** @var MeasurementFamily[] */
-	private $measurementFamilies = [];
+    /** @var MeasurementFamily[] */
+    private $measurementFamilies = [];
 
-	public function all(): array
-	{
-		if (empty($this->measurementFamilies)) {
-			$this->measurementFamilies = $this->loadMeasurementFamilies();
-		}
+    public function all(): array
+    {
+        if (empty($this->measurementFamilies)) {
+            $this->measurementFamilies = $this->loadMeasurementFamilies();
+        }
 
-		return $this->measurementFamilies;
-	}
+        return $this->measurementFamilies;
+    }
 
-	public function getByCode(MeasurementFamilyCode $measurementFamilyCode): MeasurementFamily
-	{
-		if (empty($this->measurementFamilies)) {
-			$this->measurementFamilies = $this->loadMeasurementFamilies();
-		}
+    public function getByCode(MeasurementFamilyCode $measurementFamilyCode): MeasurementFamily
+    {
+        if (empty($this->measurementFamilies)) {
+            $this->measurementFamilies = $this->loadMeasurementFamilies();
+        }
 
-		return $this->measurementFamilies[$measurementFamilyCode->normalize()];
-	}
+        return $this->measurementFamilies[$measurementFamilyCode->normalize()];
+    }
 
-	private function loadMeasurementFamilies(): array
-	{
-		$frequency = MeasurementFamilyCode::fromString('Frequency');
+    private function loadMeasurementFamilies(): array
+    {
+        $frequency = MeasurementFamilyCode::fromString('Frequency');
 
-		return [
-			$frequency->normalize() => MeasurementFamily::create(
-				$frequency,
-				LabelCollection::fromArray(["en_US" => "Frequency", "fr_FR" => "Fréquence"]),
-				UnitCode::fromString('MEGAHERTZ'),
-				[
-					Unit::create(
-						UnitCode::fromString('MEGAHERTZ'),
-						LabelCollection::fromArray(["en_US" => "MEGAHERTZ"]),
-						[
-							Operation::create("mul", "1"),
-						],
-						"mghz",
-					),
-				]
-			)
-		];
-	}
+        return [
+            $frequency->normalize() => MeasurementFamily::create(
+                $frequency,
+                LabelCollection::fromArray(["en_US" => "Frequency", "fr_FR" => "Fréquence"]),
+                UnitCode::fromString('MEGAHERTZ'),
+                [
+                    Unit::create(
+                        UnitCode::fromString('MEGAHERTZ'),
+                        LabelCollection::fromArray(["en_US" => "MEGAHERTZ"]),
+                        [
+                            Operation::create("mul", "1"),
+                        ],
+                        "mghz",
+                    ),
+                ]
+            )
+        ];
+    }
 }

@@ -28,6 +28,7 @@ services:
             - ['pim_catalog_metric']
             - '@akeneo_measure.persistence.measurement_family_repository'
             - '@pim_catalog.repository.cached_attribute'
+            - '@logger'
         tags:
             - { name: pim_catalog.localization.presenter, type: 'product_value' }
 
