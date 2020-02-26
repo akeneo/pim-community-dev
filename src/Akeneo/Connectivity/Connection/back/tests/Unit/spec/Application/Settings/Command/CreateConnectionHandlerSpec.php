@@ -99,7 +99,8 @@ class CreateConnectionHandlerSpec extends ObjectBehavior
             'secret',
             'magento_app',
             'user_role_id',
-            'user_group_id'
+            'user_group_id',
+            false
         );
         $findAConnectionHandler
             ->handle(Argument::type(FindAConnectionQuery::class))
