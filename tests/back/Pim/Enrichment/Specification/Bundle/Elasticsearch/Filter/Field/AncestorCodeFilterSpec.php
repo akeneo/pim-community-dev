@@ -15,7 +15,7 @@ class AncestorCodeFilterSpec extends ObjectBehavior
         ProductModelRepositoryInterface $productModelRepository
     )
     {
-        $this->beConstructedWith($productModelRepository, ['ancestor.code'], [Operators::EQUALS, Operators::IN_LIST, Operators::NOT_IN_LIST, Operators::IS_EMPTY]);
+        $this->beConstructedWith($productModelRepository, ['ancestor.code'], [Operators::EQUALS, Operators::IN_LIST, Operators::NOT_IN_LIST]);
     }
 
     function it_is_initializable()
@@ -33,7 +33,7 @@ class AncestorCodeFilterSpec extends ObjectBehavior
         $this->supportsOperator(Operators::EQUALS)->shouldReturn(true);
         $this->supportsOperator(Operators::IN_LIST)->shouldReturn(true);
         $this->supportsOperator(Operators::NOT_IN_LIST)->shouldReturn(true);
-        $this->supportsOperator(Operators::IS_EMPTY)->shouldReturn(true);
+        $this->supportsOperator(Operators::IS_EMPTY)->shouldReturn(false);
         $this->supportsOperator(Operators::IS_NOT_EMPTY)->shouldReturn(false);
     }
 
@@ -100,27 +100,6 @@ class AncestorCodeFilterSpec extends ObjectBehavior
         $this->addFieldFilter(
             'ancestor.code',
             Operators::NOT_IN_LIST,
-            ['product_model_1', 'product_model_2'],
-            null,
-            null,
-            []
-        );
-    }
-
-    function it_adds_a_filter_with_operator_is_empty(
-        SearchQueryBuilder $sqb
-    )
-    {
-        $sqb->addMustNot(
-            [
-                'exists' => ['field' => 'ancestors.codes'],
-            ]
-        )->shouldBeCalled();
-
-        $this->setQueryBuilder($sqb);
-        $this->addFieldFilter(
-            'ancestor.code',
-            Operators::IS_EMPTY,
             ['product_model_1', 'product_model_2'],
             null,
             null,

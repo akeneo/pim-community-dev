@@ -303,7 +303,7 @@ class MassActionDispatcher
     {
         if ($this->areAllRowsSelected($filters)) {
             foreach ($filters as &$filter) {
-                if ('parent' === $filter['field']) {
+                if ('parent' === $filter['field'] && 'EMPTY' !== $filter['operator']) {
                     $filter['field'] = 'ancestor.code';
                 }
             }
