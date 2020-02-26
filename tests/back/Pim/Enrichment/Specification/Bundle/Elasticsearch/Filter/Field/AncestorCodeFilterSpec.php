@@ -116,11 +116,6 @@ class AncestorCodeFilterSpec extends ObjectBehavior
                 'exists' => ['field' => 'ancestors.codes'],
             ]
         )->shouldBeCalled();
-        $sqb->addFilter(
-            [
-                'exists' => ['field' => 'family.code'],
-            ]
-        )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter(

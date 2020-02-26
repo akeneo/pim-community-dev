@@ -77,11 +77,6 @@ class AncestorCodeFilter extends AbstractFieldFilter
                     ],
                 ];
                 $this->searchQueryBuilder->addMustNot($clause);
-
-                $familyExistsClause = [
-                    'exists' => ['field' => 'family.code']
-                ];
-                $this->searchQueryBuilder->addFilter($familyExistsClause);
                 break;
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
