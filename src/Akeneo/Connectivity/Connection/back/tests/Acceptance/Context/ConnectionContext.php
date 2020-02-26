@@ -152,7 +152,7 @@ class ConnectionContext implements Context
         $newGroup = $this->userPermissionsRepository->getGroupIdByIdentifier($data['user_group']);
 
         if ($data['auditable'] !== 'yes' && $data['auditable'] !== 'no') {
-            throw new \InvalidArgumentException('Audtaible must be equal to "yes" or "no".');
+            throw new \InvalidArgumentException('Auditable must be equal to "yes" or "no".');
         }
         $newAuditable = ($data['auditable'] === 'yes');
 
