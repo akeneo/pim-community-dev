@@ -96,7 +96,7 @@ class ConnectionController
         $data = json_decode($request->getContent(), true);
         // TODO: Valid JSON format
 
-        $command = new CreateConnectionCommand($data['code'], $data['label'], $data['flow_type'], $data['auditable']);
+        $command = new CreateConnectionCommand($data['code'], $data['label'], $data['flow_type'], false);
 
         try {
             $connection = $this->createConnectionHandler->handle($command);
@@ -146,7 +146,7 @@ class ConnectionController
             $data['image'],
             $data['user_role_id'],
             $data['user_group_id'],
-            $data['auditable']
+            $data['auditable'] ?? false // TODO: Remove default value when auditable field will be implemented in the UI
         );
 
         try {
