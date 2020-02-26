@@ -34,6 +34,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 
 class EvaluateSpellingSpec extends ObjectBehavior
 {
@@ -43,9 +45,10 @@ class EvaluateSpellingSpec extends ObjectBehavior
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleChecker $supportedLocaleChecker,
         GetTextAttributeCodesCompatibleWithSpellingQueryInterface $getTextAttributeCodesCompatibleWithSpellingQuery,
-        GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery
+        GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery,
+        LoggerInterface $logger
     ) {
-        $this->beConstructedWith($textChecker, $buildProductValues, $localesByChannelQuery, $supportedLocaleChecker, $getTextAttributeCodesCompatibleWithSpellingQuery, $getTextareaAttributeCodesCompatibleWithSpellingQuery);
+        $this->beConstructedWith($textChecker, $buildProductValues, $localesByChannelQuery, $supportedLocaleChecker, $getTextAttributeCodesCompatibleWithSpellingQuery, $getTextareaAttributeCodesCompatibleWithSpellingQuery, $logger);
     }
 
     public function it_evaluates_rates_for_textarea_and_text_values(
@@ -55,6 +58,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $supportedLocaleChecker,
         $getTextAttributeCodesCompatibleWithSpellingQuery,
         $getTextareaAttributeCodesCompatibleWithSpellingQuery,
+        $logger,
         TextCheckResultCollection $textCheckResultTextareaEcommerceEn,
         TextCheckResultCollection $textCheckResultTextareaPrintEn,
         TextCheckResultCollection $textCheckResultTextareaEcommerceFr,
@@ -125,6 +129,8 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $textCheckResultTextEcommerceFR->count()->willReturn(0);
         $textCheckResultTextPrintEn->count()->willReturn(1);
 
+        $logger->info(Argument::cetera())->shouldBeCalledTimes(6);
+
         $textChecker->check('<p>Typos hapen. </p>', $localeEn)->willReturn($textCheckResultTextareaEcommerceEn);
         $textChecker->check('<p>Typos happen. </p>', $localeEn)->willReturn($textCheckResultTextareaPrintEn);
         $textChecker->check('<p>Les fautes de frappe arrivent. </p>', $localeFr)->willReturn($textCheckResultTextareaEcommerceFr);
@@ -160,7 +166,8 @@ class EvaluateSpellingSpec extends ObjectBehavior
         SupportedLocaleChecker $supportedLocaleChecker,
         GetTextAttributeCodesCompatibleWithSpellingQueryInterface $getTextAttributeCodesCompatibleWithSpellingQuery,
         GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery,
-        TextCheckResultCollection $textCheckResultTextareaPrintEn
+        TextCheckResultCollection $textCheckResultTextareaPrintEn,
+        $logger
     ) {
         $productId = new ProductId(42);
         $criterionEvaluation = new Write\CriterionEvaluation(
@@ -194,6 +201,8 @@ class EvaluateSpellingSpec extends ObjectBehavior
 
         $supportedLocaleChecker->isSupported($localeEn)->willReturn(true);
         $supportedLocaleChecker->isSupported($localeFr)->willReturn(true);
+
+        $logger->info(Argument::cetera())->shouldBeCalledTimes(2);
 
         $textChecker->check('Success', $localeEn)->willReturn($textCheckResultTextareaPrintEn);
         $textCheckResultTextareaPrintEn->count()->willReturn(0);

@@ -26,6 +26,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
@@ -55,13 +56,17 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     /** @var GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface */
     private $getTextareaAttributeCodesCompatibleWithSpellingQuery;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
         TextChecker $textChecker,
         BuildProductValuesInterface $buildProductValues,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleChecker $supportedLocaleChecker,
         GetTextAttributeCodesCompatibleWithSpellingQueryInterface $getTextAttributeCodesCompatibleWithSpellingQuery,
-        GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery
+        GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery,
+        LoggerInterface $logger
     ) {
         $this->textChecker = $textChecker;
         $this->buildProductValues = $buildProductValues;
@@ -69,6 +74,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         $this->supportedLocaleChecker = $supportedLocaleChecker;
         $this->getTextAttributeCodesCompatibleWithSpellingQuery = $getTextAttributeCodesCompatibleWithSpellingQuery;
         $this->getTextareaAttributeCodesCompatibleWithSpellingQuery = $getTextareaAttributeCodesCompatibleWithSpellingQuery;
+        $this->logger = $logger;
     }
 
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation): Write\CriterionEvaluationResult
@@ -137,6 +143,13 @@ class EvaluateSpelling implements EvaluateCriterionInterface
             if ($productValue === null || $productValue === '') {
                 continue;
             }
+
+            $this->logger->info('spelling evaluation', [
+                'source' => 'evaluation',
+                'value' => $productValue,
+                'localeCode' => strval($localeCode),
+                'channelCode' => strval($channelCode)
+            ]);
 
             $textCheckResult = $this->textChecker->check(strval($productValue), $localeCode);
             $rate = $this->computeProductValueRate($textCheckResult, $faultWeight);
