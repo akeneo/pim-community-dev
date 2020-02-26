@@ -35,6 +35,7 @@ akeneo_data_quality_insights:
                 max_categories_msg: Sorry, you cannot add more than {{ count }} categories to track on your dashboard
             add_families: Add families
             add_categories: Add categories
+            title: Title
             no_family_helper_msg: Select the families for which you wish to measure data quality
             no_category_helper_msg: Select the categories for which you wish to measure data quality
             see_in_grid: See in grid
