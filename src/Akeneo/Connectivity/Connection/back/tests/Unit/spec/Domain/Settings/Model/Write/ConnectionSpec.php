@@ -117,7 +117,7 @@ class ConnectionSpec extends ObjectBehavior
     {
         $this->auditable()->shouldBe(true);
 
-        $this->setAuditable(false);
+        $this->disableAudit();
         $this->auditable()->shouldBe(false);
     }
 }
