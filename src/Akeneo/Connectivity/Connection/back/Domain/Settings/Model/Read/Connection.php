@@ -23,12 +23,21 @@ class Connection
     /** @var string|null */
     private $image;
 
-    public function __construct(string $code, string $label, string $flowType, ?string $image = null)
-    {
+    /** @var boolean */
+    private $auditable;
+
+    public function __construct(
+        string $code,
+        string $label,
+        string $flowType,
+        ?string $image = null,
+        bool $auditable = false
+    ) {
         $this->code = $code;
         $this->label = $label;
         $this->flowType = $flowType;
         $this->image = $image;
+        $this->auditable = $auditable;
     }
 
     public function code(): string
@@ -51,6 +60,11 @@ class Connection
         return $this->image;
     }
 
+    public function auditable(): bool
+    {
+        return $this->auditable;
+    }
+
     public function normalize(): array
     {
         return [
@@ -58,6 +72,7 @@ class Connection
             'label' => $this->label,
             'flowType' => $this->flowType,
             'image' => $this->image,
+            'auditable' => $this->auditable,
         ];
     }
 }

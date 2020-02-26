@@ -57,7 +57,8 @@ class InMemorySelectConnectionWithCredentialsByCodeQuery implements SelectConnec
             $dataRow['secret'],
             $dataRow['code'] . '_app',
             (string) $roleId,
-            (string) $groupId
+            (string) $groupId,
+            $dataRow['auditable']
         );
     }
 }
