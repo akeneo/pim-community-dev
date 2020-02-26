@@ -231,6 +231,7 @@ The following CLI commands have been deleted:
 - pim:draft:create
 - pim:proposal:approve
 - pim:asset:generate-variation-files-from-reference
+- pim:asset:send-expiration-notification
  
 ### Services
 
