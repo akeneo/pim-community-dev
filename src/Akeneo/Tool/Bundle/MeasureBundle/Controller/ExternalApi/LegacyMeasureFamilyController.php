@@ -16,8 +16,10 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated Use Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\MeasurementFamilyController instead.
  */
-class MeasureFamilyController
+class LegacyMeasureFamilyController
 {
     /** @var ArrayConverterInterface */
     protected $measureFamilyConverter;
@@ -104,8 +106,8 @@ class MeasureFamilyController
         $queryParameters = array_merge($defaultParameters, $request->query->all());
         $parameters = [
             'query_parameters' => $queryParameters,
-            'list_route_name'  => 'pim_api_measure_family_list',
-            'item_route_name'  => 'pim_api_measure_family_get',
+            'list_route_name'  => 'legacy_pim_api_measure_family_list',
+            'item_route_name'  => 'legacy_pim_api_measure_family_get',
         ];
 
         $measuresConfig = $this->legacyMeasurementProvider->getMeasurementFamilies();

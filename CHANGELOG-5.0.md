@@ -67,5 +67,6 @@ The following CLI commands have been deleted:
 - Update `akeneo_measure.measure_converter` to use `akeneo_measure.provider.measurement_provider`
 - Update `akeneo_measure.manager` to use `akeneo_measure.provider.measurement_provider`
 - Update `akeneo_measure.controller.rest.measures` to use `akeneo_measure.provider.measurement_provider`
-- Update `pim_api.controller.measure_family` to use `akeneo_measure.provider.measurement_provider`
+- Update `legacy_pim_api.controller.measure_family` to use `akeneo_measure.provider.measurement_provider`
+- Rename `pim_api.controller.measure_family` to  `legacy_pim_api.controller.measure_family`
 - Remove parameter `akeneo_measure.measures_config`

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\tests\EndToEnd\ExternalApi;
+namespace Akeneo\Tool\Bundle\MeasureBundle\tests\EndToEnd\ExternalApi\Legacy;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
