@@ -54,7 +54,7 @@ class MetricPresenter extends NumberPresenter
         }
 
         $unitLabel = '';
-        if (isset($options['attribute'])) {
+        if (isset($options['attribute']) && isset($value['unit']) && isset($options['locale'])) {
             try {
                 $measurementFamilyCode = $this->baseCachedObjectRepository->findOneByIdentifier($options['attribute'])
                     ->getMetricFamily();
