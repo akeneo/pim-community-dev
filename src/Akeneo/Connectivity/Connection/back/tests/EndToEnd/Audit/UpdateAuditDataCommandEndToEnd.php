@@ -27,12 +27,16 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
     /** @var DbalConnection */
     private $dbalConnection;
 
+    /** @var string */
+    private $productClass;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->command = $this->application->find('akeneo:connectivity-audit:update-data');
         $this->dbalConnection = self::$container->get('database_connection');
+        $this->productClass = self::$container->getParameter('pim_catalog.entity.product.class');
     }
 
     public function test_it_updates_audit_data(): void
@@ -43,7 +47,7 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));
 
         $product1 = $this->createProduct('product1', ['enabled' => false]);
-        $product2 = $this->createProduct('product2', ['enabled' => false]);
+        $this->createProduct('product2', ['enabled' => false]);
         $product3 = $this->createProduct('product3', ['enabled' => false]);
         $this->setVersioningAuthor($connection->username());
 
@@ -65,6 +69,43 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(3, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));
     }
 
+    public function test_updates_audit_data_only_for_auditable_connection()
+    {
+        $erpConnection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
+        $otherConnection = $this->createConnection('another_source', 'Another source', FlowType::DATA_SOURCE, false);
+
+        Assert::assertEquals(0, $this->getAuditCount($erpConnection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(0, $this->getAuditCount($erpConnection->code(), EventTypes::PRODUCT_UPDATED));
+        Assert::assertEquals(0, $this->getAuditCount($otherConnection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(0, $this->getAuditCount($otherConnection->code(), EventTypes::PRODUCT_UPDATED));
+
+        $product1 = $this->createProduct('product1', ['enabled' => false]);
+        $product2 = $this->createProduct('product2', ['enabled' => false]);
+        $this->setVersioningAuthor($erpConnection->username(), $product1);
+        $this->setVersioningAuthor($otherConnection->username(), $product2);
+
+        $commandTester = new CommandTester($this->command);
+        $commandTester->execute([]);
+
+        Assert::assertEquals(1, $this->getAuditCount($erpConnection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(0, $this->getAuditCount($erpConnection->code(), EventTypes::PRODUCT_UPDATED));
+        Assert::assertEquals(0, $this->getAuditCount($otherConnection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(0, $this->getAuditCount($otherConnection->code(), EventTypes::PRODUCT_UPDATED));
+
+        $this->updateProduct($product1, ['enabled' => true]);
+        $this->updateProduct($product2, ['enabled' => true]);
+        $this->setVersioningAuthor($erpConnection->username(), $product1);
+        $this->setVersioningAuthor($otherConnection->username(), $product2);
+
+        $commandTester = new CommandTester($this->command);
+        $commandTester->execute([]);
+
+        Assert::assertEquals(1, $this->getAuditCount($erpConnection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(1, $this->getAuditCount($erpConnection->code(), EventTypes::PRODUCT_UPDATED));
+        Assert::assertEquals(0, $this->getAuditCount($otherConnection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(0, $this->getAuditCount($otherConnection->code(), EventTypes::PRODUCT_UPDATED));
+    }
+
     private function getAuditCount(string $connectionCode, string $eventType): int
     {
         $sqlQuery = <<<SQL
@@ -82,17 +123,26 @@ SQL;
         return (int) $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchColumn();
     }
 
-    private function setVersioningAuthor(string $author): void
+    private function setVersioningAuthor(string $author, ?ProductInterface $product = null): void
     {
         $sqlQuery = <<<SQL
 UPDATE pim_versioning_version
 SET author = :author
+WHERE resource_name = :resource_name
 SQL;
+        $parameters = [
+            'author' => $author,
+            'resource_name' => $this->productClass,
+        ];
+        if (null !== $product) {
+            $sqlQuery .= <<<SQL
+ AND resource_id = :product_id
+SQL;
+            $parameters['product_id'] = $product->getId();
+        }
 
         $stmt = $this->dbalConnection->prepare($sqlQuery);
-        $stmt->execute([
-            'author' => $author,
-        ]);
+        $stmt->execute($parameters);
     }
 
     private function createProduct(string $identifier, array $data = []): ProductInterface
