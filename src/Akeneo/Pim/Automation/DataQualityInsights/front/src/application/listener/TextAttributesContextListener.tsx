@@ -9,7 +9,7 @@ const uuidV5 = require('uuid/v5');
 
 const WIDGET_UUID_NAMESPACE = '4e34f5c2-d1b0-4cf2-96c9-dca6b95e695e';
 
-const getTextAttributes = (family: Family, product: Product) => {
+export const getTextAttributes = (family: Family, product: Product) => {
   const isValidTextarea = (attribute: Attribute) => (attribute.type === "pim_catalog_textarea" && attribute.localizable && !attribute.is_read_only && !attribute.wysiwyg_enabled);
   const isValidText = (attribute: Attribute) => (attribute.type === "pim_catalog_text" && attribute.localizable && !attribute.is_read_only);
   const isVariantProduct = (product: Product) => product.meta.level !== null;
