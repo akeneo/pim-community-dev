@@ -1,0 +1,11 @@
+extensions:
+    pim-product-model-edit-form-data-quality-insights-app:
+        module: akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-app
+        parent: pim-product-model-edit-form
+        targetZone: content
+        position: 10
+
+    pim-product-model-edit-form-attributes-tab-content-spellcheck:
+        module: akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/attributes-tab-content
+        parent: pim-product-model-edit-form-attributes
+        position: 100

@@ -334,6 +334,7 @@ function renderWithRedux(ui: React.ReactElement) {
         label: {},
         attributes_for_this_level: [],
         level: null,
+        model_type: "product",
       },
       created: null,
       updated: null,

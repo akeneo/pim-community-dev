@@ -31,6 +31,7 @@ const initialState: ProductState = {
     label: {},
     attributes_for_this_level: [],
     level: null,
+    model_type: "product",
   },
 };
 

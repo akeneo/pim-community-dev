@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Con
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetDescendantVariantProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetIgnoredProductTitleSuggestionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -35,9 +36,14 @@ class GetProductTitleSuggestionSpec extends ObjectBehavior
 {
     public function let(
         GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
-        GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery
+        GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery,
+        GetDescendantVariantProductIdsQueryInterface $getDescendantVariantProductIdsQuery
     ) {
-        $this->beConstructedWith($getLatestCriteriaEvaluationsByProductIdQuery, $getIgnoredProductTitleSuggestionQuery);
+        $this->beConstructedWith(
+            $getLatestCriteriaEvaluationsByProductIdQuery,
+            $getIgnoredProductTitleSuggestionQuery,
+            $getDescendantVariantProductIdsQuery
+        );
     }
 
     public function it_does_not_get_product_title_suggestion_when_product_is_not_evaluated(
@@ -51,7 +57,7 @@ class GetProductTitleSuggestionSpec extends ObjectBehavior
 
         $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
 
-        $this->get($productId, $channel, $locale)->shouldBeLike(null);
+        $this->get($productId, $channel, $locale, 'product')->shouldBeLike(null);
     }
 
     public function it_does_not_get_product_title_suggestion_when_locale_is_not_supported(
@@ -65,7 +71,7 @@ class GetProductTitleSuggestionSpec extends ObjectBehavior
 
         $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
 
-        $this->get($productId, $channel, $locale)->shouldBeLike(null);
+        $this->get($productId, $channel, $locale, 'product')->shouldBeLike(null);
     }
 
     public function it_does_not_get_product_title_suggestion_when_is_ignored(
@@ -80,7 +86,7 @@ class GetProductTitleSuggestionSpec extends ObjectBehavior
         $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
         $getIgnoredProductTitleSuggestionQuery->execute($productId, $channel, $locale)->willReturn("My suggested title");
 
-        $this->get($productId, $channel, $locale)->shouldBeLike(null);
+        $this->get($productId, $channel, $locale, 'product')->shouldBeLike(null);
     }
 
     public function it_gets_product_title_suggestion(
@@ -94,7 +100,7 @@ class GetProductTitleSuggestionSpec extends ObjectBehavior
 
         $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
 
-        $this->get($productId, $channel, $locale)->shouldBeLike("My suggested title");
+        $this->get($productId, $channel, $locale, 'product')->shouldBeLike("My suggested title");
     }
 
     private function generateCriterionEvaluation(ProductId $productId, string $code, string $status, ChannelLocaleRateCollection $resultRates, array $resultData)

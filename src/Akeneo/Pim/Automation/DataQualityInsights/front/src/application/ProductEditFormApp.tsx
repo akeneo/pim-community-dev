@@ -22,7 +22,7 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
       <PageContextListener />
       <ProductContextListener product={product}/>
 
-      <AttributesTabContent/>
+      <AttributesTabContent product={product}/>
       <DataQualityInsightsTabContent />
       <AxisRatesOverviewPortal />
     </Provider>

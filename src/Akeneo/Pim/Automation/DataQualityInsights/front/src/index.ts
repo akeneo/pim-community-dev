@@ -30,7 +30,7 @@ import {
   PRODUCT_TAB_CHANGED,
 } from './application/listener';
 
-import {ATTRIBUTES_TAB_NAME, DATA_QUALITY_INSIGHTS_TAB_NAME} from './application/constant';
+import {PRODUCT_ATTRIBUTES_TAB_NAME, DATA_QUALITY_INSIGHTS_TAB_NAME} from './application/constant';
 
 import {Dashboard, DashboardHelper} from "./application/component/Dashboard";
 
@@ -58,7 +58,7 @@ export {
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
-  ATTRIBUTES_TAB_NAME,
+  PRODUCT_ATTRIBUTES_TAB_NAME,
   DATA_QUALITY_INSIGHTS_TAB_NAME,
   Rate,
   fetchProductDataQualityEvaluation,

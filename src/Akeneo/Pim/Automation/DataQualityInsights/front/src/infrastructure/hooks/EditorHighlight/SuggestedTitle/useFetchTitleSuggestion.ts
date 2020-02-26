@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {WidgetElement} from "../../../../application/helper";
 import {fetchTitleSuggestion} from "../../../fetcher";
-import {useCatalogContext} from "../../index";
+import {useCatalogContext, useProduct} from "../../index";
 import {updateWidgetContentAnalysis} from "../../../reducer";
 import useProductAxesRates from "../../useProductAxesRates";
 
@@ -10,6 +10,7 @@ const useFetchTitleSuggestion = (widget: WidgetElement) => {
   const {locale, channel} = useCatalogContext();
   const {axesRates, productId} = useProductAxesRates();
   const {analysis} = widget;
+  const product = useProduct();
   const dispatchAction = useDispatch();
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const useFetchTitleSuggestion = (widget: WidgetElement) => {
           return;
         }
 
-        const result: string | null = await fetchTitleSuggestion(productId, channel, locale);
+        const result: string|null = await fetchTitleSuggestion(product, channel, locale);
 
         if (typeof result !== "string" || result.length === 0) {
           dispatchAction(updateWidgetContentAnalysis(widget.id, []));
