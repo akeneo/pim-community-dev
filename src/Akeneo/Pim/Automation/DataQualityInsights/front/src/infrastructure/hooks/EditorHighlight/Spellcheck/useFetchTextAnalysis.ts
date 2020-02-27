@@ -1,14 +1,17 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {WidgetElement} from "../../../../application/helper";
 import {updateWidgetContentAnalysis} from "../../../reducer";
 import {fetchTextAnalysis} from "../../../fetcher";
 import {useCatalogContext} from "../../index";
+import useProduct from "../../useProduct";
 
 const useFetchTextAnalysis = (widget: WidgetElement) => {
+  const [previousContent, setPreviousContent] = useState<null | string>(null);
   const dispatchAction = useDispatch();
   const {locale} = useCatalogContext();
-  const {id, content, analysis, editorId} = widget;
+  const product = useProduct();
+  const {id, content, analysis, editorId, isActive} = widget;
   const dispatchTextAnalysis = async (content: string, locale: string) => {
     if (!locale || !content) {
       dispatchAction(updateWidgetContentAnalysis(id, []));
@@ -18,11 +21,26 @@ const useFetchTextAnalysis = (widget: WidgetElement) => {
     dispatchAction(updateWidgetContentAnalysis(id, textAnalysis));
   };
 
+  const hasContentChangedSinceLastAnalysis = () => content === null || content != previousContent;
+
   useEffect(() => {
-    (async () => {
-      await dispatchTextAnalysis(content, locale as string);
-    })();
-  }, [editorId]);
+    if(isActive && hasContentChangedSinceLastAnalysis()) {
+      (async () => {
+        setPreviousContent(content);
+        await dispatchTextAnalysis(content, locale as string);
+      })();
+    }
+  }, [editorId, isActive]);
+
+  useEffect(() => {
+    if (previousContent !== null) {
+      setPreviousContent(content);
+    }
+  }, [content]);
+
+  useEffect(() => {
+    setPreviousContent(null);
+  }, [product]);
 
   return {analysis, dispatchTextAnalysis};
 };
