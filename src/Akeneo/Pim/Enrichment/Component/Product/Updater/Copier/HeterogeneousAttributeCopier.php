@@ -73,10 +73,10 @@ class HeterogeneousAttributeCopier implements AttributeCopierInterface
         $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope);
 
         $fromValue = $fromEntityWithValues->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-        $targetData = $this->valueDataConverterRegistry->getDataConverter($fromAttribute, $toAttribute)->convert(
+        $targetData = null !== $fromValue ? $this->valueDataConverterRegistry->getDataConverter($fromAttribute, $toAttribute)->convert(
             $fromValue,
             $toAttribute
-        );
+        ) : null;
 
         $this->entityWithValuesBuilder->addOrReplaceValue(
             $toEntityWithValues,
