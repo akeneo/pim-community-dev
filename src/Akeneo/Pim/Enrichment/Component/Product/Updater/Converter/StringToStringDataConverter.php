@@ -26,6 +26,16 @@ final class StringToStringDataConverter implements ValueDataConverter
             AttributeTypes::OPTION_SIMPLE_SELECT => true,
             AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT => true,
         ],
+        AttributeTypes::OPTION_SIMPLE_SELECT => [
+            AttributeTypes::TEXT => true,
+            AttributeTypes::TEXTAREA => true,
+            AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT => true,
+        ],
+        AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT => [
+            AttributeTypes::TEXT => true,
+            AttributeTypes::TEXTAREA => true,
+            AttributeTypes::OPTION_SIMPLE_SELECT => true,
+        ],
     ];
 
     /**
