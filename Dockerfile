@@ -30,7 +30,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         gpg-agent \
         ghostscript \
         aspell \
-        aspell-en aspell-es aspell-de aspell-fr && \
+        aspell-en aspell-es aspell-de aspell-fr aspell-it aspell-sv aspell-da aspell-nl && \
     apt-get clean && \
     apt-get --yes autoremove --purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \

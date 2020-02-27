@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
  */
 class SupportedPrefixLocaleChecker implements SupportedLocaleChecker
 {
-    const AVAILABLE_LANGUAGE_CODE = ['en', 'es', 'de', 'fr'];
+    const AVAILABLE_LANGUAGE_CODE = ['en', 'es', 'de', 'fr', 'it', 'sv', 'da', 'nl'];
 
     public function isSupported(LocaleCode $localeCode): bool
     {

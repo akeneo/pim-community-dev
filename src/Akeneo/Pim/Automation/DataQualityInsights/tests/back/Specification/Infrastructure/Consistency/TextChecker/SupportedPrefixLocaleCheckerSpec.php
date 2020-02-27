@@ -36,8 +36,7 @@ class SupportedPrefixLocaleCheckerSpec extends ObjectBehavior
 
     public function it_does_not_support_locale()
     {
-        $this->isSupported(new LocaleCode('it_IT'))->shouldBe(false);
-        $this->isSupported(new LocaleCode('fi_FI'))->shouldBe(false);
+        $this->isSupported(new LocaleCode('uz_UZ'))->shouldBe(false);
 
         $this->isSupported(new LocaleCode('fr'))->shouldBe(false);
         $this->isSupported(new LocaleCode('frFR'))->shouldBe(false);
