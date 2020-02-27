@@ -31,7 +31,7 @@ define([
         return BaseForm.extend({
             className: 'tabsection',
             template: _.template(template),
-            catalogLocale: UserContext.get('catalogLocale'),
+            locale: UserContext.get('uiLocale'),
             config: null,
 
             /**
@@ -62,7 +62,7 @@ define([
                         conversionUnits: this.getFormData().conversion_units,
                         metrics: attributes,
                         measures,
-                        catalogLocale: this.catalogLocale,
+                        locale: this.locale,
                         label: __(this.config.label),
                         fieldBaseId: this.config.fieldBaseId,
                         doNotConvertLabel: __('pim_enrich.entity.channel.property.do_not_convert'),

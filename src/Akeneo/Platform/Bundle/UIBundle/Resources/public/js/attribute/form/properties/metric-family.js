@@ -91,7 +91,7 @@ function (
          */
         formatChoices: function (measures) {
             const choices = {};
-            const locale = UserContext.get('catalogLocale');
+            const locale = UserContext.get('uiLocale');
             measures.forEach(family => choices[family.code] = i18n.getLabel(family.labels, locale, family.code));
 
             return choices;

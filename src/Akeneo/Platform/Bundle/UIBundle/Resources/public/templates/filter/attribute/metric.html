@@ -12,7 +12,7 @@
     <select class="select2 unit" name="filter-unit" <%- editable ? '' : 'disabled' %>>
         <% _.each(units, function (unit) { %>
             <option value="<%- unit.code %>"<%- value.unit === unit.code ? ' selected' : '' %>>
-                <%- i18n.getLabel(unit.labels, catalogLocale, unit.code) %>
+                <%- i18n.getLabel(unit.labels, locale, unit.code) %>
             </option>
         <% }); %>
     </select>

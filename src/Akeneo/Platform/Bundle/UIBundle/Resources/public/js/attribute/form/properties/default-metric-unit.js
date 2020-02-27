@@ -102,7 +102,7 @@ function (
          */
         formatChoices: function (units) {
             const choices = {};
-            const locale = UserContext.get('catalogLocale');
+            const locale = UserContext.get('uiLocale');
             units.forEach(unit => choices[unit.code] = i18n.getLabel(unit.labels, locale, unit.code));
 
             return choices;

@@ -21,7 +21,7 @@
         <div class="AknFilterChoice-unit">
             <div class="AknDropdown unit">
                 <div class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
-                    <span class="AknActionButton-highlight"><%- i18n.getLabel(selectedUnit.labels, catalogLocale, selectedUnit.code) %></span>
+                    <span class="AknActionButton-highlight"><%- i18n.getLabel(selectedUnit.labels, locale, selectedUnit.code) %></span>
                     <span class="AknActionButton-caret"></span>
                 </div>
                 <div class="AknDropdown-menu unit">
@@ -29,7 +29,7 @@
                     <% _.each(units, function (unit) { %>
                     <div class="AknDropdown-menuLink<% if (selectedUnit.code === unit.code) { %> AknDropdown-menuLink--active active<% } %>">
                         <span class="label unit_choice" data-value="<%- unit.code %>">
-                           <%- i18n.getLabel(unit.labels, catalogLocale, unit.code) %>
+                           <%- i18n.getLabel(unit.labels, locale, unit.code) %>
                         </span>
                     </div>
                     <% }); %>

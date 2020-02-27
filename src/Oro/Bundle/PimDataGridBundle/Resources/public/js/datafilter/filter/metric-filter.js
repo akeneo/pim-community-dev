@@ -93,7 +93,7 @@ define(
                         selectedUnit: this.measurementFamily.units.find(unit => unit.code === this._getDisplayValueOrDefault().unit),
                         value: this._getDisplayValueOrDefault().value,
                         i18n,
-                        catalogLocale: UserContext.get('catalogLocale')
+                        locale: UserContext.get('uiLocale')
                     })
                 );
 

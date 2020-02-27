@@ -92,7 +92,7 @@ define([
                 return _.extend({}, templateContext, {
                     units: measurementFamily.units,
                     i18n,
-                    catalogLocale: UserContext.get('catalogLocale')
+                    locale: UserContext.get('uiLocale')
                 });
             }.bind(this));
         },
