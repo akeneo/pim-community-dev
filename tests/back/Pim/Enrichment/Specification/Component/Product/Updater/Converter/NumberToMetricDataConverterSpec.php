@@ -13,11 +13,6 @@ use PhpSpec\ObjectBehavior;
 
 class NumberToMetricDataConverterSpec extends ObjectBehavior
 {
-    function let(MeasureManager $measureManager)
-    {
-        $this->beConstructedWith($measureManager);
-    }
-
     function it_is_initializable()
     {
         $this->shouldHaveType(NumberToMetricDataConverter::class);
@@ -55,17 +50,15 @@ class NumberToMetricDataConverterSpec extends ObjectBehavior
         );
     }
 
-    function it_converts_a_number_to_a_metric(
-        MeasureManager $measureManager,
-        AttributeInterface $weight
-    ) {
+    function it_converts_a_number_to_a_metric(AttributeInterface $weight)
+    {
         $sourceValue = ScalarValue::value('number', 10.5);
         $weight->getMetricFamily()->willReturn('weight');
-        $measureManager->getStandardUnitForFamily('weight')->willReturn('KILOGRAM');
+        $weight->getDefaultMetricUnit()->willReturn('GRAM');
 
         $this->convert($sourceValue, $weight)->shouldReturn([
             'amount' => 10.5,
-            'unit' => 'KILOGRAM',
+            'unit' => 'GRAM',
         ]);
     }
 }
