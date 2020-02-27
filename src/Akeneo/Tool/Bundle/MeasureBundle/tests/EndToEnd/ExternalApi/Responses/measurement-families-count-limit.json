@@ -1,13 +1,13 @@
 {
   "_links": {
     "self": {
-      "href": "http://localhost/api/rest/v1/measurement-family?page=1&limit=1&with_count=true"
+      "href": "http://localhost/api/rest/v1/measurement-families?page=1&limit=1&with_count=true"
     },
     "first": {
-      "href": "http://localhost/api/rest/v1/measurement-family?page=1&limit=1&with_count=true"
+      "href": "http://localhost/api/rest/v1/measurement-families?page=1&limit=1&with_count=true"
     },
     "next": {
-      "href": "http://localhost/api/rest/v1/measurement-family?page=2&limit=1&with_count=true"
+      "href": "http://localhost/api/rest/v1/measurement-families?page=2&limit=1&with_count=true"
     }
   },
   "current_page": 1,

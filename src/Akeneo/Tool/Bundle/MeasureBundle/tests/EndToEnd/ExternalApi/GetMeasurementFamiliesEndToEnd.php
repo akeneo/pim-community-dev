@@ -13,7 +13,7 @@ class GetMeasurementFamiliesEndToEnd extends ApiTestCase
     public function it_returns_the_list_of_measurement_families()
     {
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/measurement-family');
+        $client->request('GET', 'api/rest/v1/measurement-families');
 
         $expected = $this->getExpectedJSON('measurement-families-first-page');
         $response = $client->getResponse();
@@ -28,19 +28,19 @@ class GetMeasurementFamiliesEndToEnd extends ApiTestCase
     public function it_returns_no_items_when_the_requested_page_is_out_of_range()
     {
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/measurement-family?page=300');
+        $client->request('GET', 'api/rest/v1/measurement-families?page=300');
 
         $expected = <<<JSON
 {
   "_links": {
     "self": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measurement-family?page=300&limit=10&with_count=false"
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measurement-families?page=300&limit=10&with_count=false"
     },
     "first": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measurement-family?page=1&limit=10&with_count=false"
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measurement-families?page=1&limit=10&with_count=false"
     },
     "previous": {
-      "href": "http:\/\/localhost\/api\/rest\/v1\/measurement-family?page=299&limit=10&with_count=false"
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measurement-families?page=299&limit=10&with_count=false"
     }
   },
   "current_page": 300,
@@ -61,7 +61,7 @@ JSON;
     public function it_returns_the_requested_page_with_the_requested_limit()
     {
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/measurement-family?page=2&limit=3');
+        $client->request('GET', 'api/rest/v1/measurement-families?page=2&limit=3');
 
         $expected = $this->getExpectedJSON('measurement-families-page-limit');
         $response = $client->getResponse();
@@ -76,7 +76,7 @@ JSON;
     public function it_returns_the_total_count_when_requested()
     {
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/measurement-family?with_count=true&limit=1');
+        $client->request('GET', 'api/rest/v1/measurement-families?with_count=true&limit=1');
 
         $expected = $this->getExpectedJSON('measurement-families-count-limit');
         $response = $client->getResponse();
@@ -91,7 +91,7 @@ JSON;
     public function it_422_when_the_pagination_is_not_supported()
     {
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/measurement-family?pagination_type=search_after');
+        $client->request('GET', 'api/rest/v1/measurement-families?pagination_type=search_after');
 
         $expected = '{"code":422,"message":"Pagination type is not supported."}';
         $response = $client->getResponse();

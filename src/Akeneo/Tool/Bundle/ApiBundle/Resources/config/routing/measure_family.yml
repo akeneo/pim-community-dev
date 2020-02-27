@@ -9,6 +9,6 @@ legacy_pim_api_measure_family_get:
     methods: [GET]
 
 pim_api_measurement_family_get:
-    path: /measurement-family
+    path: /measurement-families
     defaults: { _controller: pim_api.controller.measurement_family, _format: json }
     methods: [GET]
