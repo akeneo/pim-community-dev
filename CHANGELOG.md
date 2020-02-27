@@ -5,3 +5,7 @@
 ## Improvements
 
 - DAPI-697: Data quality - As Julia, when I'm on the DQI page, I want to click the attributes that need improvements and land on the PEF.
+
+## New features
+
+- DAPI-854: Data quality - Variant products are also evaluated
