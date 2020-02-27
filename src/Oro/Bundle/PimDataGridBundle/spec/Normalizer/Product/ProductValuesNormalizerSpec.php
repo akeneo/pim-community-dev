@@ -92,7 +92,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(['locale' => 'en_US', 'scope' => 'ecommerce', 'data' => $prices]);
 
-        $userContext->getCurrentLocaleCode()->willReturn('en_US');
+        $userContext->getUiLocaleCode()->willReturn('en_US');
         $presenterRegistry->getPresenterByAttributeCode('text')->willReturn(null);
 
         $presenterRegistry->getPresenterByAttributeCode('price')->willReturn($pricePresenter);
