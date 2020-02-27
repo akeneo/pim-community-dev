@@ -3,9 +3,9 @@ import styled from 'styled-components'
 
 type sizeMode = 'small' | 'large' | undefined;
 export interface CoreButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    ariaLabel?: string,
     sizeMode?: sizeMode
 }
-
 
 const getSizeModeValue = ({ sizeMode }: CoreButtonProps): string => {
     if (sizeMode === 'small') {
@@ -14,23 +14,41 @@ const getSizeModeValue = ({ sizeMode }: CoreButtonProps): string => {
     return '32px'
 }
 
-// height	20px
-// line-height	20px
-// Font style	body-small
 const BasicButton = styled.button<CoreButtonProps>`
-    font-size: 13px;
-    font-weight: regular;
-    text-transform: uppercase;
-    padding: 0 15px;
     border-radius: 16px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 400;
     height: ${getSizeModeValue};
     line-height: ${getSizeModeValue};
+    padding: 0 15px;
+    text-transform: uppercase;
+    &:disabled {
+        cursor: not-allowed;
+    }
 `
 const CoreButton: FunctionComponent<CoreButtonProps> =
     React.forwardRef(function CoreButton(
-        { children, className, type = 'button', sizeMode, ...rest },
+        { ariaLabel, onClick, onKeyDown, children, className, disabled, type = 'button', sizeMode, ...rest },
         forwardedRef: Ref<HTMLButtonElement>) {
-        return <BasicButton className={className} ref={forwardedRef} sizeMode={sizeMode} {...rest}>{children}</BasicButton>
+        const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+            if (onKeyDown && (event.keyCode === 32 || event.keyCode === 13)) {
+                onKeyDown(event)
+            }
+        }
+        console.log('hello world')
+        return <BasicButton
+            aria-disabled={disabled}
+            aria-label={ariaLabel}
+            className={className}
+            onKeyDown={handleKeyDown}
+            ref={forwardedRef}
+            role='button'
+            sizeMode={sizeMode}
+            {...rest}
+        >
+            {children}
+        </BasicButton>
     })
 
 export { CoreButton };
