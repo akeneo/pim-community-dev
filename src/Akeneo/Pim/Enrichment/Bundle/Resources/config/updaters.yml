@@ -536,7 +536,5 @@ services:
 
     pim_catalog.updater.value_converter.number_to_metric:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\NumberToMetricDataConverter'
-        arguments:
-            - '@akeneo_measure.manager'
         tags:
             - { name: 'pim_catalog.updater.value_data_converter' }
