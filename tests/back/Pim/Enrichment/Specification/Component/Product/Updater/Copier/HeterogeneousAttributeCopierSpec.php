@@ -14,6 +14,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class HeterogeneousAttributeCopierSpec extends ObjectBehavior
 {
@@ -58,6 +59,35 @@ class HeterogeneousAttributeCopierSpec extends ObjectBehavior
         $valueDataConverter->supportsAttributes($name, $weight)->willReturn(false);
 
         $this->supportsAttributes($name, $weight)->shouldReturn(false);
+    }
+
+    function it_copies_data_form_empty_values_without_converting_them(
+        ValueDataConverter $valueDataConverter,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
+        AttributeValidatorHelper $attrValidatorHelper
+    ) {
+        $brand = (new Attribute())->setCode('brand');
+        $brandSelect = (new Attribute())->setCode('brandSelect');
+
+        $product = new Product();
+
+        $valueDataConverter->supportsAttributes($brand, $brandSelect)->willReturn(true);
+        $valueDataConverter->convert(Argument::cetera())->shouldNotBeCalled();
+
+        $attrValidatorHelper->validateLocale($brand, null)->shouldBeCalled();
+        $attrValidatorHelper->validateScope($brand, null)->shouldBeCalled();
+        $attrValidatorHelper->validateLocale($brandSelect, null)->shouldBeCalled();
+        $attrValidatorHelper->validateScope($brandSelect, null)->shouldBeCalled();
+
+        $entityWithValuesBuilder->addOrReplaceValue($product, $brandSelect, null, null, null)->shouldBeCalled();
+
+        $this->copyAttributeData(
+            $product,
+            $product,
+            $brand,
+            $brandSelect,
+            []
+        );
     }
 
     function it_copies_data_to_a_different_attribute_type(
