@@ -22,33 +22,33 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
     /** @var Connection */
     private $sqlConnection;
 
-    public function __construct(
-        Connection $sqlConnection
-    ) {
+    /** @var MeasurementFamily[] */
+    private $measurementFamilies = [];
+
+    public function __construct(Connection $sqlConnection)
+    {
         $this->sqlConnection = $sqlConnection;
     }
 
     public function all(): array
     {
-        $selectAllQuery = <<<SQL
-    SELECT 
-        code,
-        labels,
-        standard_unit,
-        units
-    FROM akeneo_measurement;
-SQL;
-        $statement = $this->sqlConnection->executeQuery($selectAllQuery);
-        $results = $statement->fetchAll();
+        if (empty($this->measurementFamilies)) {
+            $this->measurementFamilies = $this->loadAssetFamiliesIndexByCodes();
+        }
 
-        return array_map(function (array $result) {
-            return $this->hydrateMeasurementFamily(
-                $result['code'],
-                $result['labels'],
-                $result['standard_unit'],
-                $result['units']
-            );
-        }, $results);
+        return array_values($this->measurementFamilies);
+    }
+
+    public function getByCode(MeasurementFamilyCode $measurementFamilyCode): MeasurementFamily
+    {
+        if (empty($this->measurementFamilies)) {
+            $this->measurementFamilies = $this->loadAssetFamiliesIndexByCodes();
+        }
+        if (!isset($this->measurementFamilies[$measurementFamilyCode->normalize()])) {
+            throw new MeasurementFamilyNotFoundException();
+        }
+
+        return $this->measurementFamilies[$measurementFamilyCode->normalize()];
     }
 
     private function hydrateMeasurementFamily(
@@ -100,33 +100,34 @@ SQL;
         );
     }
 
-    public function getByCode(MeasurementFamilyCode $measurementFamilyCode): MeasurementFamily
+    /**
+     * @return array
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    private function loadAssetFamiliesIndexByCodes(): array
     {
-        $sql = <<<SQL
+        $selectAllQuery = <<<SQL
     SELECT
         code,
         labels,
         standard_unit,
         units
-    FROM akeneo_measurement
-    WHERE `code` = :measurement_family_code;
+    FROM akeneo_measurement;
 SQL;
+        $statement = $this->sqlConnection->executeQuery($selectAllQuery);
+        $results = $statement->fetchAll();
 
-        $statement = $this->sqlConnection->executeQuery(
-            $sql,
-            ['measurement_family_code' => $measurementFamilyCode->normalize()]
-        );
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
-
-        if (!$result) {
-            throw new MeasurementFamilyNotFoundException();
+        $measurementFamiliesIndexByCodes = [];
+        foreach ($results as $result) {
+            $measurementFamiliesIndexByCodes[$result['code']] = $this->hydrateMeasurementFamily(
+                $result['code'],
+                $result['labels'],
+                $result['standard_unit'],
+                $result['units']
+            );
         }
 
-        return $this->hydrateMeasurementFamily(
-            $result['code'],
-            $result['labels'],
-            $result['standard_unit'],
-            $result['units']
-        );
+        return $measurementFamiliesIndexByCodes;
     }
 }
