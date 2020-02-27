@@ -1,0 +1,8 @@
+## Rename this file in phpspec.yml to customize the phpspec configuration
+suites:
+    RuleEngine:
+        namespace: Akeneo\Pim\Automation
+        psr4_prefix: Akeneo\Pim\Automation
+        src_path: src/Akeneo/Pim/Automation/RuleEngine
+        spec_path: tests/back/Pim/Automation
+        spec_prefix: Specification

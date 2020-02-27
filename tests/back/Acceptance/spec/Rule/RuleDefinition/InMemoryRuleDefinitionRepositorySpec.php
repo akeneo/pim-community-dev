@@ -66,4 +66,26 @@ class InMemoryRuleDefinitionRepositorySpec extends ObjectBehavior
             ->shouldThrow(\InvalidArgumentException::class)
             ->during('save', ['a_thing']);
     }
+
+    function it_returns_all_rule_definitions_ordered_by_priority()
+    {
+        $ruleDefinition1 = new RuleDefinition();
+        $ruleDefinition1->setCode('rule1');
+        $ruleDefinition1->setPriority(100);
+        $this->save($ruleDefinition1);
+        $ruleDefinition2 = new RuleDefinition();
+        $ruleDefinition2->setCode('rule2');
+        $ruleDefinition2->setPriority(300);
+        $this->save($ruleDefinition2);
+        $ruleDefinition3 = new RuleDefinition();
+        $ruleDefinition3->setCode('rule3');
+        $ruleDefinition3->setPriority(200);
+        $this->save($ruleDefinition3);
+
+        $list = $this->findAllOrderedByPriority();
+        $list->shouldBe([$ruleDefinition2, $ruleDefinition3, $ruleDefinition1]);
+        $list[0]->getPriority()->shouldBe(300);
+        $list[1]->getPriority()->shouldBe(200);
+        $list[2]->getPriority()->shouldBe(100);
+    }
 }

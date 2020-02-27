@@ -1,0 +1,54 @@
+services:
+    _defaults:
+        public: true
+
+    # Contexts
+    Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\DataFixturesContext:
+        arguments:
+            - '@pim_catalog.repository.product_without_permission'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.repository.attribute'
+            - '@test.family.builder'
+            - '@test.attribute.builder'
+            - '@pim_catalog.repository.attribute_group'
+            - '@test.attribute_group.builder'
+            - '@test.category.builder'
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.attribute_option'
+            - '@pim_catalog.repository.currency'
+            - '@test.attribute_option.builder'
+            - '@akeneo.pim.enrichment.factory.write_value_collection'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\UserContext:
+        arguments:
+            - '@pim_user.repository.user'
+            - '@pim_user.updater.role'
+            - '@security.token_storage'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ImportRuleContext:
+        arguments:
+            - '@pimee_catalog_rule.processor.denormalization.rule_definition'
+            - '@akeneo_rule_engine.repository.rule_definition'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ExportRuleContext:
+        arguments:
+            - '@pimee_catalog_rule.processor.denormalization.rule_definition'
+            - '@akeneo_rule_engine.repository.rule_definition'
+            - '@pimee_catalog_rule.processor.normalization.rule_definition'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ExecuteRuleContext:
+        arguments:
+            - '@pim_catalog.repository.product_without_permission'
+            - '@pimee_catalog_rule.executor.rules'
+            - '@pimee_catalog_rule.processor.denormalization.rule_definition'
+            - '@pimee_catalog_rule.applier.product.updater'
+            - '@pimee_catalog_rule.applier.product.validator'
+            - '@akeneo_rule_engine.repository.rule_definition'
+            - '@pimee_catalog_rule.builder.product'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\EventSubscriberContext:
+        tags:
+            - { name: kernel.event_subscriber }

@@ -1,0 +1,21 @@
+{
+    "code": "camcorders",
+    "attributes": [
+        "sku",
+        "pim_brand",
+        "name",
+        "picture",
+        "description",
+        "release_date",
+        "processor",
+        "price",
+        "weight",
+        "color"
+    ],
+    "attribute_as_label": "name",
+    "attribute_as_image": "picture",
+    "labels": {
+        "en_US": "Camcorders",
+        "fr_FR": "Caméscopes numériques"
+    }
+}

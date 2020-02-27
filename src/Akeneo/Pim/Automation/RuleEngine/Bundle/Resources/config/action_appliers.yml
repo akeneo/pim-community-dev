@@ -3,6 +3,7 @@ parameters:
     pimee_catalog_rule.action_applier.copier.class:  Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\CopierActionApplier
     pimee_catalog_rule.action_applier.adder.class:   Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\AdderActionApplier
     pimee_catalog_rule.action_applier.remover.class: Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier
+    pimee_catalog_rule.action_applier.concatenate.class: Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\ConcatenateActionApplier
 
 services:
     pimee_catalog_rule.action_applier.setter:
@@ -37,3 +38,49 @@ services:
             - '@pim_catalog.repository.category'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
+
+    pimee_catalog_rule.action_applier.concatenate:
+        class: '%pimee_catalog_rule.action_applier.concatenate.class%'
+        arguments:
+            - '@pim_catalog.updater.property_setter'
+            - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierRegistry'
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: akeneo_rule_engine.action_applier, priority: 100 }
+
+    # Concatenate extractors
+    Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierRegistry:
+        arguments:
+            - !tagged akeneo_rule_engine.concatenate_applier.extractor
+
+    Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\DefaultValueStringifier:
+        arguments:
+            -
+                - 'pim_catalog_identifier'
+                - 'pim_catalog_number'
+                - 'pim_catalog_simpleselect'
+                - 'pim_catalog_text'
+                - 'pim_catalog_textarea'
+        tags:
+            - { name: akeneo_rule_engine.concatenate_applier.extractor }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\DateValueStringifier:
+        arguments:
+            -
+                - 'pim_catalog_date'
+        tags:
+            - { name: akeneo_rule_engine.concatenate_applier.extractor }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\MetricValueStringifier:
+        arguments:
+            -
+                - 'pim_catalog_metric'
+        tags:
+            - { name: akeneo_rule_engine.concatenate_applier.extractor }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\PriceCollectionValueStringifier:
+        arguments:
+            -
+                - 'pim_catalog_price_collection'
+        tags:
+            - { name: akeneo_rule_engine.concatenate_applier.extractor }

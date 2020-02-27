@@ -53,5 +53,17 @@
 #
 
 .PHONY: rule-engine-coupling-back
-rule-engine-coupling-back: vendor
+rule-engine-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/RuleEngine/.php_cd.php src/Akeneo/Pim/Automation/RuleEngine
+
+.PHONY: rule-engine-unit-back
+rule-engine-unit-back: var/tests/phpspec
+ifeq ($(CI),true)
+	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --config tests/back/Pim/Automation/Specification/RuleEngine/phpspec.yml.dist --format=junit > var/tests/phpspec/rule-engine.xml
+else
+	$(PHP_RUN) vendor/bin/phpspec run --config tests/back/Pim/Automation/Specification/RuleEngine/phpspec.yml.dist $(O)
+endif
+
+.PHONY: rule-engine-acceptance-back
+rule-engine-acceptance-back: var/tests/behat/rule-engine
+	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Pim/Automation/RuleEngine/tests/behat.yml --format pim --out var/tests/behat/rule-engine --format progress --out std --colors $(O)
