@@ -81,26 +81,20 @@ final class ComputeRulesSubscriber implements EventSubscriberInterface
             }
         );
 
-        $productIdentifiers = array_map(
-            function (ProductInterface $product): string {
-                return $product->getIdentifier();
-            },
-            $products
-        );
-
-        if (empty($productIdentifiers)) {
+        if (empty($products)) {
             return;
         }
 
-        $membefore = memory_get_usage();
-        $timebefore = microtime(true);
+//        $membefore = memory_get_usage();
+//        $timebefore = microtime(true);
         $rules = $this->getRules();
 
 
 //        $rules = $this->ruleDefinitionRepository->findAll();
-        gc_collect_cycles();
+//        gc_collect_cycles();
         $memafter = memory_get_usage();
         $timeafter = microtime(true);
+//        $matching = 0;
 
         foreach ($products as $product) {
             /** @var $product ProductInterface */
@@ -113,6 +107,7 @@ final class ComputeRulesSubscriber implements EventSubscriberInterface
                 $conditions = $content['conditions'];
 //                var_dump('Match ' . json_encode($conditions) . ' ? ');
                 if ($this->matchConditions($conditions, $product, $categoryCodes)) {
+//                    $matching++;
 //                    var_dump('oui');
                     $actions = $content['actions'];
                     $this->executeActions($actions, $product);
@@ -122,19 +117,15 @@ final class ComputeRulesSubscriber implements EventSubscriberInterface
             }
         }
 
-        $timeafterafter = microtime(true);
-
-
-        var_dump([
-            'membefore' => $membefore,
-            'memafter' => $memafter,
-            'timebefore' => $timebefore,
-            'timeafter' => $timeafter,
-            'timeafterafter' => $timeafterafter,
-            'diff1' => ($membefore - $memafter) . ' octet',
-            'diff2' => ($timeafter - $timebefore),
-            'diff3' => ($timeafterafter - $timeafter),
-        ]);
+//        $timeafterafter = microtime(true);
+/*
+        print_r([
+            'Rules count               ' => count($rules),
+            'Matching rules            ' => (int) ($matching / count($rules) * 100) . '%',
+            'Memory for rules          ' => ($memafter - $membefore) / 1024 . ' ko',
+            'Timing for loading rules  ' => ($timeafter - $timebefore) * 1000 . ' ms',
+            'Timing for executing rules' => ($timeafterafter - $timeafter) * 1000 . ' ms',
+        ]);*/
     }
 
     private function matchConditions(array $conditions, ProductInterface $product, $categoryCodes): bool
@@ -152,7 +143,7 @@ final class ComputeRulesSubscriber implements EventSubscriberInterface
                         return false;
                     }
                 } else if ($operator === Operators::EQUALS) {
-                    if (!(null === $product->getFamily() || $product->getFamily()->getCode() !== $value)) {
+                    if (!(null === $product->getFamily() || $product->getFamily()->getCode() === $value)) {
                         return false;
                     }
                 } else {
@@ -161,6 +152,8 @@ final class ComputeRulesSubscriber implements EventSubscriberInterface
             } else if ($field === 'categories') {
                 if (Operators::IN_LIST === $operator) {
                     if (empty(array_intersect_key($categoryCodes, array_flip($value)))) {
+//                        var_dump($categoryCodes);
+//                        var_dump(array_flip($value));
                         return false;
                     }
                 } elseif (Operators::UNCLASSIFIED === $operator) {
@@ -185,8 +178,11 @@ final class ComputeRulesSubscriber implements EventSubscriberInterface
                         return false;
                     }
                 } else if ($operator === Operators::CONTAINS) {
-                    /** @var $productValue ScalarValue */
                     if (null === $productValue || strpos($productValue->getData(), $value) === -1) {
+                        return false;
+                    }
+                } else if ($operator === Operators::DOES_NOT_CONTAIN) {
+                    if (!(null === $productValue || strpos($productValue->getData(), $value) === -1)) {
                         return false;
                     }
                 } else if ($operator === Operators::NOT_IN_LIST) {
@@ -196,7 +192,6 @@ final class ComputeRulesSubscriber implements EventSubscriberInterface
                     }
                 } else if ($operator === Operators::NOT_EQUAL) {
                     if (($productValue ? $productValue->getData() : null) === $value) {
-//                        var_dump(json_encode('!='));
                         return false;
                     }
                 } else if ($operator === Operators::IS_NOT_EMPTY) {
@@ -208,7 +203,8 @@ final class ComputeRulesSubscriber implements EventSubscriberInterface
                         return false;
                     }
                 } else if ($operator === Operators::EQUALS) {
-                    if (!(($productValue === null && $value === '') || ($productValue !== null && $productValue->getData() === $value))) {
+                    if (!(($productValue === null && ($value === '' || $value === [] || $value === null)) ||
+                    ($productValue !== null && $productValue->getData() === $value))) {
                         return false;
                     }
                 } else {
