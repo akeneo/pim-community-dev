@@ -1,16 +1,7 @@
-import React, { FunctionComponent } from 'react'
 import styled from 'styled-components'
 
 import { CoreButton } from '../CoreButton'
 
-
-// text color	white
-// background-color	green-100
-// hover background-color	green-120
-// active background-color	green-140
-// focus border-color	$color
-// disabled background-color	green-40
-// disabled text color	white
 
 const PrimaryButton = styled(CoreButton)`
     color: white;
@@ -25,9 +16,8 @@ const PrimaryButton = styled(CoreButton)`
         border-color: blue;
     }
     &:disabled {
-        background-color: #67b373;
+        background-color: #c2e1c7;
     }
-
 `
 
 export { PrimaryButton }
