@@ -1,14 +1,21 @@
 var path = require('path');
 
 module.exports = {
-    entry: './src/index.ts',
+    entry: {
+        index: './src/index.ts',
+        vendor: 'styled-components',
+    },
     // Enable sourcemaps for debugging webpack's output.
     devtool: 'source-map',
 
     output: {
         path: path.join(__dirname, '/lib'),
-        filename: 'index.js',
+        filename: '[name].js',
         libraryTarget: 'commonjs2',
+    },
+
+    externals: {
+        'styled-components': 'styled-components',
     },
 
     resolve: {
@@ -33,5 +40,15 @@ module.exports = {
                 loader: 'source-map-loader',
             },
         ],
+    },
+    node: {
+        module: 'empty',
+        dgram: 'empty',
+        dns: 'mock',
+        fs: 'empty',
+        http2: 'empty',
+        net: 'empty',
+        tls: 'empty',
+        child_process: 'empty',
     },
 };
