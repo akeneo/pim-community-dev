@@ -42,7 +42,13 @@ class StringToStringDataConverterSpec extends ObjectBehavior
         $this->supportsAttributes($name, $description)->shouldReturn(true);
         $this->supportsAttributes($name, $color)->shouldReturn(true);
         $this->supportsAttributes($name, $designer)->shouldReturn(true);
+        $this->supportsAttributes($color, $name)->shouldReturn(true);
+        $this->supportsAttributes($color, $description)->shouldReturn(true);
+        $this->supportsAttributes($color, $designer)->shouldReturn(true);
 
+        $this->supportsAttributes($designer, $name)->shouldReturn(false);
+        $this->supportsAttributes($designer, $description)->shouldReturn(false);
+        $this->supportsAttributes($designer, $color)->shouldReturn(false);
         $this->supportsAttributes($name, $weight)->shouldReturn(false);
         $this->supportsAttributes($weight, $name)->shouldReturn(false);
     }
