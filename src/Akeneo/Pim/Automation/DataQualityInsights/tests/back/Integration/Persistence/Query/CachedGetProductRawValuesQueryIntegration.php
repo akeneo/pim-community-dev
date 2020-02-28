@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductRawValuesByAttributeQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetProductRawValuesQuery;
 use Akeneo\Test\Integration\TestCase;
 
-class GetProductRawValuesByAttributeQueryIntegration extends TestCase
+class CachedGetProductRawValuesQueryIntegration extends TestCase
 {
     public function test_it_returns_product_values_by_attribute()
     {
         $productId = $this->createProduct();
 
-        $expectedResult = [
+        $expectedRawValues = [
             'a_text' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'some text'
@@ -36,17 +36,17 @@ class GetProductRawValuesByAttributeQueryIntegration extends TestCase
             ],
         ];
 
-        $result = $this
-            ->get(GetProductRawValuesByAttributeQuery::class)
-            ->execute($productId, ['a_text', 'a_yes_no']);
+        $productRawValues = $this
+            ->get(CachedGetProductRawValuesQuery::class)
+            ->execute($productId);
 
-        $this->assertSame($expectedResult, $result);
+        $this->assertProductHasRawValues($expectedRawValues, $productRawValues);
     }
 
     public function test_it_returns_empty_array_if_product_do_not_exists()
     {
         $result = $this
-            ->get(GetProductRawValuesByAttributeQuery::class)
+            ->get(CachedGetProductRawValuesQuery::class)
             ->execute(new ProductId(1418), ['a_text', 'a_yes_no']);
 
         $this->assertSame([], $result);
@@ -67,7 +67,7 @@ class GetProductRawValuesByAttributeQueryIntegration extends TestCase
         ];
         $this->get('pim_catalog.updater.product')->update($product, $data);
 
-        $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.saver.product')->saveAll([$product]);
 
         return new ProductId((int) $product->getId());
     }
@@ -75,5 +75,13 @@ class GetProductRawValuesByAttributeQueryIntegration extends TestCase
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function assertProductHasRawValues(array $expectedRawValues, $productRawValues): void
+    {
+        foreach ($expectedRawValues as $attributeCode => $expectedAttributeRawValues) {
+            $this->assertArrayHasKey($attributeCode, $productRawValues);
+            $this->assertEquals($expectedAttributeRawValues, $productRawValues[$attributeCode]);
+        }
     }
 }

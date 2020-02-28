@@ -17,20 +17,28 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollecti
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
 use Doctrine\DBAL\Connection;
 
-class GetLocalesByChannelQuery implements GetLocalesByChannelQueryInterface
+class CachedGetLocalesByChannelQuery implements GetLocalesByChannelQueryInterface
 {
-    /**
-     * @var Connection
-     */
+    /** * @var Connection */
     private $db;
+
+    /** @var null|array */
+    private $cachedChannelLocaleArray;
+
+    /** @var null|ChannelLocaleCollection */
+    private $cachedChannelLocaleCollection;
 
     public function __construct(Connection $db)
     {
         $this->db = $db;
     }
 
-    public function execute(): array
+    public function getArray(): array
     {
+        if (null !== $this->cachedChannelLocaleArray) {
+            return $this->cachedChannelLocaleArray;
+        }
+
         $query = <<<SQL
 SELECT channel.code AS channelCode, locale.code AS localeCode
 FROM pim_catalog_channel_locale
@@ -41,18 +49,23 @@ SQL;
 
         $statement = $this->db->executeQuery($query);
 
-        $results = [];
+        $channelsLocales = [];
         foreach ($statement->fetchAll() as $channelLocale) {
-            $results[$channelLocale['channelCode']][] = $channelLocale['localeCode'];
+            $channelsLocales[$channelLocale['channelCode']][] = $channelLocale['localeCode'];
         }
 
-        return $results;
+        $this->cachedChannelLocaleArray = $channelsLocales;
+
+        return $channelsLocales;
     }
 
     public function getChannelLocaleCollection(): ChannelLocaleCollection
     {
-        $channelsLocales = $this->execute();
+        if (null === $this->cachedChannelLocaleCollection) {
+            $channelsLocales = $this->getArray();
+            $this->cachedChannelLocaleCollection = new ChannelLocaleCollection($channelsLocales);
+        }
 
-        return new ChannelLocaleCollection($channelsLocales);
+        return $this->cachedChannelLocaleCollection;
     }
 }

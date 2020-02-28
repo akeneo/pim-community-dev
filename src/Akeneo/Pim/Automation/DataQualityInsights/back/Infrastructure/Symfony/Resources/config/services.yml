@@ -34,6 +34,7 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetPendingCriteriaEvaluationsByProductIdsQuery'
             - '@logger'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates:
@@ -43,7 +44,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductEvaluation:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductEvaluationQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLocalesByChannelQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetLocalesByChannelQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TitleFormattingService:
         arguments:
@@ -101,8 +102,8 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\BuildProductValues:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductRawValuesByAttributeQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLocalesByChannelQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetProductRawValuesQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetLocalesByChannelQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\GetProductAttributesCodes:
         arguments:

@@ -17,10 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollecti
 
 interface GetLocalesByChannelQueryInterface
 {
-    /**
-     * @deprecated Use getChannelLocaleCollection instead
-     */
-    public function execute(): array;
+    public function getArray(): array;
 
     public function getChannelLocaleCollection(): ChannelLocaleCollection;
 }

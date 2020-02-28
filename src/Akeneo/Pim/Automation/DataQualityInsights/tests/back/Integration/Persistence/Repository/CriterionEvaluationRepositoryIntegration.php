@@ -83,7 +83,7 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
         $this->assertCount(2, $evaluations);
     }
 
-    public function test_it_updates_one_criteria()
+    public function test_it_updates_criteria_evaluations()
     {
         $createdAt = new \DateTimeImmutable();
         $criterionEvaluationId = new CriterionEvaluationId('aeb3218d-e923-42cf-a0f9-a2fc3beaf628');
@@ -107,7 +107,7 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
 
         $criterionEvaluation->start();
         $criterionEvaluation->end($evaluationResult);
-        $this->repository->update($criterionEvaluation);
+        $this->repository->update((new Write\CriterionEvaluationCollection())->add($criterionEvaluation));
 
         $rawCriterionEvaluation = $this->findOneCriterionEvaluationById($criterionEvaluationId);
 
@@ -132,22 +132,6 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
                 ]
             ]
         ], json_decode($rawCriterionEvaluation['result'], true));
-    }
-
-    public function test_it_finds_criterion_to_evaluate()
-    {
-        $criteria = $this->buildCollection();
-        $this->repository->create($criteria);
-
-        $evaluations = $this->repository->findPendingByProductIds([42, 123]);
-
-        $this->assertSame('95f124de-45cd-495e-ac58-349086ad6cd4', strval($evaluations[0]->getId()));
-        $this->assertSame('d7bcae1e-30c9-4626-9c4f-d06cae03e77e', strval($evaluations[1]->getId()));
-    }
-
-    public function test_it_returns_an_empty_array_if_it_founds_no_criterion_to_evaluate()
-    {
-        $this->assertEmpty($this->repository->findPendingByProductIds([456789]));
     }
 
     public function test_it_purges_evaluations_older_than_a_given_date()
@@ -254,7 +238,7 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
         $this->repository->create($criteria);
 
         $criterionEvaluation->end(new Write\CriterionEvaluationResult());
-        $this->repository->update($criterionEvaluation);
+        $this->repository->update((new Write\CriterionEvaluationCollection())->add($criterionEvaluation));
     }
 
     private function assertCountCriterionEvaluations(int $expectedCount): void

@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetPendingCriteriaEvaluationsByProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
@@ -28,44 +29,54 @@ class EvaluatePendingCriteria
     /** @var CriteriaEvaluationRegistry */
     private $registry;
 
+    /** @var GetPendingCriteriaEvaluationsByProductIdsQueryInterface */
+    private $getPendingCriteriaEvaluationsQuery;
+
     /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
         CriterionEvaluationRepositoryInterface $repository,
         CriteriaEvaluationRegistry $registry,
+        GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
         LoggerInterface $logger
     ) {
         $this->repository = $repository;
         $this->registry = $registry;
+        $this->getPendingCriteriaEvaluationsQuery = $getPendingCriteriaEvaluationsQuery;
         $this->logger = $logger;
     }
 
     public function evaluateAllCriteria(array $productIds): void
     {
-        $criterionEvaluations = $this->repository->findPendingByProductIds($productIds);
-        foreach ($criterionEvaluations as $criterionEvaluation) {
-            $this->evaluateCriterion($criterionEvaluation);
+        $productsCriteriaEvaluations = $this->getPendingCriteriaEvaluationsQuery->execute($productIds);
+        foreach ($productsCriteriaEvaluations as $productCriteria) {
+            foreach ($productCriteria as $productCriterion) {
+                $this->evaluateCriterion($productCriterion);
+            }
+            $this->repository->update($productCriteria);
         }
     }
 
     public function evaluateSynchronousCriteria(array $productIds): void
     {
-        $criterionEvaluations = $this->repository->findPendingByProductIds($productIds);
-        $synchronousCriterionEvaluations = new SynchronousCriterionEvaluationsFilterIterator(new \ArrayIterator($criterionEvaluations));
-        foreach ($synchronousCriterionEvaluations as $criterionEvaluation) {
-            $this->evaluateCriterion($criterionEvaluation);
+        $productsCriteriaEvaluations = $this->getPendingCriteriaEvaluationsQuery->execute($productIds);
+        foreach ($productsCriteriaEvaluations as $productCriteria) {
+            $evaluatedCriteria = new Write\CriterionEvaluationCollection();
+            $synchronousCriteria = new SynchronousCriterionEvaluationsFilterIterator($productCriteria->getIterator());
+            foreach ($synchronousCriteria as $synchronousCriterion) {
+                $this->evaluateCriterion($synchronousCriterion);
+                $evaluatedCriteria->add($synchronousCriterion);
+            }
+            $this->repository->update($evaluatedCriteria);
         }
     }
 
-    private function evaluateCriterion(CriterionEvaluation $criterionEvaluation): void
+    private function evaluateCriterion(Write\CriterionEvaluation $criterionEvaluation): void
     {
-        $evaluationService = $this->registry->get($criterionEvaluation->getCriterionCode());
-
-        $criterionEvaluation->start();
-        $this->repository->update($criterionEvaluation);
-
         try {
+            $evaluationService = $this->registry->get($criterionEvaluation->getCriterionCode());
+            $criterionEvaluation->start();
             $result = $evaluationService->evaluate($criterionEvaluation);
             $criterionEvaluation->end($result);
         } catch (\Exception $exception) {
@@ -75,6 +86,5 @@ class EvaluatePendingCriteria
             );
             $criterionEvaluation->flagAsError();
         }
-        $this->repository->update($criterionEvaluation);
     }
 }

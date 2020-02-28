@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductRawValuesByAttributeQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductRawValuesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
 
 class BuildProductValuesSpec extends ObjectBehavior
 {
     public function let(
-        GetProductRawValuesByAttributeQueryInterface $getProductRawValuesByAttributeQuery,
+        GetProductRawValuesQueryInterface $getProductRawValuesByAttributeQuery,
         GetLocalesByChannelQueryInterface $localesByChannelQuery
     ) {
         $this->beConstructedWith($getProductRawValuesByAttributeQuery, $localesByChannelQuery);
@@ -35,13 +35,13 @@ class BuildProductValuesSpec extends ObjectBehavior
         $localesByChannelQuery,
         $getProductRawValuesByAttributeQuery
     ) {
-        $localesByChannelQuery->execute()->willReturn([
+        $localesByChannelQuery->getArray()->willReturn([
             'ecommerce' => ['en_US', 'fr_FR'],
             'mobile' => ['en_US', 'fr_FR'],
         ]);
 
         $getProductRawValuesByAttributeQuery
-            ->execute(new ProductId(1), ['textarea_1', 'textarea_2', 'textarea_3', 'textarea_4', 'textarea_5'])
+            ->execute(new ProductId(1))
             ->willReturn([
                 'textarea_1' => [
                     '<all_channels>' => [
@@ -72,6 +72,11 @@ class BuildProductValuesSpec extends ObjectBehavior
                         'fr_FR' => 'textarea4 mobile fr_FR text',
                     ],
                 ],
+                'whatever' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'Whatever text'
+                    ],
+                ]
             ]);
 
         $this->buildForProductIdAndAttributeCodes(new ProductId(1), ['textarea_1', 'textarea_2', 'textarea_3', 'textarea_4', 'textarea_5'])->shouldReturn([
