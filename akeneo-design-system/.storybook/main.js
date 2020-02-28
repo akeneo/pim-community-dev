@@ -1,33 +1,29 @@
-const createCompiler = require('@storybook/addon-docs/mdx-compiler-plugin');
+const path = require('path');
+
 module.exports = {
-    stories: ['../src/**/*.stories.(js|mdx)'],
-    addons: [
-        '@storybook/addon-actions',
-        '@storybook/addon-links',
-        '@storybook/addon-knobs',
-        '@storybook/preset-typescript',
-        {
-            name: '@storybook/addon-docs',
-            options: {
-                configureJSX: true,
-                babelOptions: {},
-                sourceLoaderOptions: null,
-            },
-        },
-    ],
+    stories: ['../src/**/*.stories.mdx'],
+    addons: ['@storybook/addon-actions', '@storybook/addon-links', '@storybook/addon-knobs', '@storybook/addon-docs'],
     webpackFinal: async config => {
+        config.resolve.extensions.push('.ts', '.tsx');
+
         config.module.rules.push({
             test: /\.(ts|tsx)$/,
             use: [
                 {
                     loader: require.resolve('ts-loader'),
+                    options: {
+                        configFile: path.resolve(__dirname, '../tsconfig.json'),
+                    },
                 },
                 {
                     loader: require.resolve('react-docgen-typescript-loader'),
+                    options: {
+                        tsconfigPath: path.resolve(__dirname, '../tsconfig.json'),
+                    },
                 },
             ],
         });
-        config.resolve.extensions.push('.ts', '.tsx');
+
         return config;
     },
 };
