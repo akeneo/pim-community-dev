@@ -16,7 +16,7 @@ class CreateConnectionCommand
     private $flowType;
     private $auditable;
 
-    public function __construct(string $code, string $label, string $flowType, bool $auditable)
+    public function __construct(string $code, string $label, string $flowType, bool $auditable = false)
     {
         $this->code = $code;
         $this->label = $label;
