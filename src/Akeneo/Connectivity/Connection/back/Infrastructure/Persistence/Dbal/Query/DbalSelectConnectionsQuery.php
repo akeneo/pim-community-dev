@@ -26,14 +26,22 @@ class DbalSelectConnectionsQuery implements SelectConnectionsQuery
     public function execute(): array
     {
         $selectSQL = <<<SQL
-SELECT code, label, flow_type, image FROM akeneo_connectivity_connection ORDER BY created ASC
+SELECT code, label, flow_type, image, auditable
+FROM akeneo_connectivity_connection
+ORDER BY created ASC
 SQL;
 
         $dataRows = $this->dbalConnection->executeQuery($selectSQL)->fetchAll();
 
         $connections = [];
         foreach ($dataRows as $dataRow) {
-            $connections[] = new Connection($dataRow['code'], $dataRow['label'], $dataRow['flow_type'], $dataRow['image']);
+            $connections[] = new Connection(
+                $dataRow['code'],
+                $dataRow['label'],
+                $dataRow['flow_type'],
+                $dataRow['image'],
+                (bool) $dataRow['auditable']
+            );
         }
 
         return $connections;

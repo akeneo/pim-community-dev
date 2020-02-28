@@ -30,13 +30,15 @@ class ListConnectionEndToEnd extends WebTestCase
                 'code' => 'franklin',
                 'label' => 'Franklin',
                 'flowType' => FlowType::DATA_SOURCE,
-                'image' => null
+                'image' => null,
+                'auditable' => true,
             ],
             [
                 'code' => 'dam',
                 'label' => 'DAM',
                 'flowType' => FlowType::OTHER,
-                'image' => null
+                'image' => null,
+                'auditable' => false,
             ]
         ];
 
