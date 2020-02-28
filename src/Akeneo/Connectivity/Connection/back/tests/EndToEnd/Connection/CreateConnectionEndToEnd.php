@@ -43,7 +43,6 @@ class CreateConnectionEndToEnd extends WebTestCase
             'username' => '<username>',
             'password' => '<password>',
             'user_role_id' => '<user_role_id>',
-            'auditable' => '<auditable>',
         ];
         $expectedResult = array_merge(
             [
