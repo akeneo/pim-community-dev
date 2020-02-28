@@ -142,4 +142,4 @@ deploy_latest_release_for_helpdesk:
 
 .PHONY: slack_helpdesk
 slack_helpdesk:
-	curl -X POST -H 'Content-type: application/json' --data '{"text":"Serenity env has been deployed : https://$(IMAGE_TAG).preprod.cloud.akeneo.com"}' https://hooks.slack.com/services/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;
+	curl -X POST -H 'Content-type: application/json' --data '{"text":"Serenity env has been deployed with the last tag $(IMAGE_TAG) : https://pimci-helpdesk.preprod.cloud.akeneo.com"}' $${SLACK_URL_HELPDESK};
