@@ -1,27 +1,31 @@
 {
     "compilerOptions": {
-        "allowJs": true,
+        "allowJs": false,
         "allowSyntheticDefaultImports": true,
+        "baseUrl": "src",
         "declaration": true,
+        "emitDecoratorMetadata": true,
         "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
         "isolatedModules": true,
         "jsx": "react",
-        "lib": ["es6", "dom"],
+        "lib": ["es5", "es6", "es7", "es2017", "dom"],
         "module": "commonjs",
-        "moduleResolution": "node",
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "outDir": "lib",
+        "rootDir": "src",
         "sourceMap": true,
         "strictBindCallApply": true,
         "strictFunctionTypes": true,
         "strictNullChecks": true,
         "strictPropertyInitialization": true,
-        "target": "es5",
+        "suppressImplicitAnyIndexErrors": true,
+        "target": "es5"
     },
-    "include": ["src"],
-    "exclude": ["node_modules", "dist"]
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
 }
