@@ -62,6 +62,7 @@ const CoreButton =
             aria-labelledby={ariaLabelledBy}
             aria-label={ariaLabel}
             className={className}
+            disabled={disabled}
             onKeyDown={handleKeyDown}
             onClick={handleClick}
             ref={forwardedRef}

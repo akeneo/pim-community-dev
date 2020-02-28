@@ -4,8 +4,6 @@ import {
     render, fireEvent
 } from "@testing-library/react";
 
-//https://github.com/testing-library/dom-testing-library/blob/master/src/events.js
-
 describe("testing button", () => {
     test("should display a button with the given children", () => {
         // Given
