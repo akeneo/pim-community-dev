@@ -32,27 +32,27 @@ class LegacyMeasurementProvider
 
     public function getMeasurementFamilies(): array
     {
-	if (empty($this->legacyMeasurementFamily)) {
-			$this->legacyMeasurementFamily = $this->loadLegacyMeasurementFamilies();
-		}
+        if (empty($this->legacyMeasurementFamily)) {
+            $this->legacyMeasurementFamily = $this->loadLegacyMeasurementFamilies();
+        }
 
         return $this->legacyMeasurementFamily;
     }
 
-	private function loadLegacyMeasurementFamilies(): array
-	{
-		$measurementFamilies = array_map(
-			function (MeasurementFamily $family) {
-				return $this->adapter->adapts($family);
-			},
-			$this->measurementFamilyRepository->all()
-		);
+    private function loadLegacyMeasurementFamilies(): array
+    {
+        $measurementFamilies = array_map(
+            function (MeasurementFamily $family) {
+                return $this->adapter->adapts($family);
+            },
+            $this->measurementFamilyRepository->all()
+        );
 
-		$result = [];
-		foreach ($measurementFamilies as $familyCode => $family) {
-			$result = array_merge($result, $family);
-		}
+        $result = [];
+        foreach ($measurementFamilies as $familyCode => $family) {
+            $result = array_merge($result, $family);
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 }

@@ -131,9 +131,9 @@ SQL;
         return $measurementFamiliesIndexByCodes;
     }
 
-	private function loadAssetFamily(MeasurementFamilyCode $measurementFamilyCode): ?MeasurementFamily
-	{
-		$sql = <<<SQL
+    private function loadAssetFamily(MeasurementFamilyCode $measurementFamilyCode): ?MeasurementFamily
+    {
+        $sql = <<<SQL
     SELECT
         code,
         labels,
@@ -143,21 +143,21 @@ SQL;
     WHERE `code` = :measurement_family_code;
 SQL;
 
-		$statement = $this->sqlConnection->executeQuery(
-			$sql,
-			['measurement_family_code' => $measurementFamilyCode->normalize()]
-		);
-		$result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $statement = $this->sqlConnection->executeQuery(
+            $sql,
+            ['measurement_family_code' => $measurementFamilyCode->normalize()]
+        );
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
-		if (!$result) {
-			throw new MeasurementFamilyNotFoundException();
-		}
+        if (!$result) {
+            throw new MeasurementFamilyNotFoundException();
+        }
 
-		return $this->hydrateMeasurementFamily(
-			$result['code'],
-			$result['labels'],
-			$result['standard_unit'],
-			$result['units']
-		);
-	}
+        return $this->hydrateMeasurementFamily(
+            $result['code'],
+            $result['labels'],
+            $result['standard_unit'],
+            $result['units']
+        );
+    }
 }
