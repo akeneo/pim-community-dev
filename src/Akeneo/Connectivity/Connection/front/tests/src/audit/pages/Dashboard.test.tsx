@@ -18,6 +18,14 @@ describe('testing Dashboard page', () => {
                             label: 'Bynder',
                             flowType: 'data_source',
                             image: null,
+                            auditable: true,
+                        },
+                        {
+                            code: 'erp',
+                            label: 'ERP',
+                            flowType: 'data_source',
+                            image: null,
+                            auditable: false,
                         },
                     ];
                 case 'akeneo_connectivity_connection_rest_audit_source_connections_event?event_type=product_created':

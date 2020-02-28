@@ -65,6 +65,7 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
         label: translate('akeneo_connectivity.connection.dashboard.connection_selector.all'),
         flowType: connections[0].flowType,
         image: null,
+        auditable: true,
     });
 
     return (

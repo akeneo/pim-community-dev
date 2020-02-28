@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {AuditEventType} from '../../model/audit-event-type.enum';
-import {Connection} from '../../model/connection';
 import {FlowType} from '../../model/flow-type.enum';
 import {fetchResult} from '../../shared/fetch-result';
 import {isOk} from '../../shared/fetch-result/result';
@@ -9,7 +8,7 @@ import {Translate} from '../../shared/translate';
 import {sourceConnectionsFetched} from '../actions/dashboard-actions';
 import {useDashboardDispatch, useDashboardState} from '../dashboard-context';
 import {blueTheme, purpleTheme} from '../event-chart-themes';
-import {SourceConnection} from '../model/source-connection';
+import {SourceConnection, Connection} from '../model/source-connection';
 import {EventChart} from './EventChart';
 import {NoConnection} from './NoConnection';
 import {UserSurvey} from './UserSurvey';
@@ -23,7 +22,8 @@ export const Charts = () => {
         fetchResult<Connection[], never>(route).then(result => {
             if (isOk(result) && !cancelled) {
                 const sourceConnections = result.value.filter(
-                    (connection): connection is SourceConnection => FlowType.DATA_SOURCE === connection.flowType
+                    (connection): connection is SourceConnection =>
+                        FlowType.DATA_SOURCE === connection.flowType && connection.auditable
                 );
 
                 dispatch(sourceConnectionsFetched(sourceConnections));
