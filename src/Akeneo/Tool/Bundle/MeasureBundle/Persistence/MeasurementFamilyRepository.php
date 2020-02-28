@@ -23,7 +23,10 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
     private $sqlConnection;
 
     /** @var MeasurementFamily[] */
-    private $measurementFamilies = [];
+    private $allMeasurementFamiliesCache = [];
+
+    /** @var MeasurementFamily[] */
+    private $measurementFamilyCache = [];
 
     public function __construct(Connection $sqlConnection)
     {
@@ -32,23 +35,20 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
 
     public function all(): array
     {
-        if (empty($this->measurementFamilies)) {
-            $this->measurementFamilies = $this->loadAssetFamiliesIndexByCodes();
+        if (empty($this->allMeasurementFamiliesCache)) {
+            $this->allMeasurementFamiliesCache = $this->loadAssetFamiliesIndexByCodes();
         }
 
-        return array_values($this->measurementFamilies);
+        return array_values($this->allMeasurementFamiliesCache);
     }
 
     public function getByCode(MeasurementFamilyCode $measurementFamilyCode): MeasurementFamily
     {
-        if (empty($this->measurementFamilies)) {
-            $this->measurementFamilies = $this->loadAssetFamiliesIndexByCodes();
-        }
-        if (!isset($this->measurementFamilies[$measurementFamilyCode->normalize()])) {
-            throw new MeasurementFamilyNotFoundException();
+        if (!isset($this->measurementFamilyCache[$measurementFamilyCode->normalize()])) {
+            $this->measurementFamilyCache[$measurementFamilyCode->normalize()] = $this->loadAssetFamily($measurementFamilyCode);
         }
 
-        return $this->measurementFamilies[$measurementFamilyCode->normalize()];
+        return $this->measurementFamilyCache[$measurementFamilyCode->normalize()];
     }
 
     private function hydrateMeasurementFamily(
@@ -130,4 +130,34 @@ SQL;
 
         return $measurementFamiliesIndexByCodes;
     }
+
+	private function loadAssetFamily(MeasurementFamilyCode $measurementFamilyCode): ?MeasurementFamily
+	{
+		$sql = <<<SQL
+    SELECT
+        code,
+        labels,
+        standard_unit,
+        units
+    FROM akeneo_measurement
+    WHERE `code` = :measurement_family_code;
+SQL;
+
+		$statement = $this->sqlConnection->executeQuery(
+			$sql,
+			['measurement_family_code' => $measurementFamilyCode->normalize()]
+		);
+		$result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+		if (!$result) {
+			throw new MeasurementFamilyNotFoundException();
+		}
+
+		return $this->hydrateMeasurementFamily(
+			$result['code'],
+			$result['labels'],
+			$result['standard_unit'],
+			$result['units']
+		);
+	}
 }
