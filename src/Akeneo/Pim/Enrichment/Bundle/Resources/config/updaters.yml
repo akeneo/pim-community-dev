@@ -538,3 +538,13 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\NumberToMetricDataConverter'
         tags:
             - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.collection_to_string:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\CollectionToStringDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.collection_to_array:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\CollectionToArrayDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
