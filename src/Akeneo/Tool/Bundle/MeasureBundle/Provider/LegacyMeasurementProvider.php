@@ -19,6 +19,9 @@ class LegacyMeasurementProvider
     /** @var LegacyMeasurementAdapter */
     private $adapter;
 
+    /** @var array */
+    private $legacyMeasurementFamily = [];
+
     public function __construct(
         MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
         LegacyMeasurementAdapter $adapter
@@ -29,15 +32,27 @@ class LegacyMeasurementProvider
 
     public function getMeasurementFamilies(): array
     {
-        $measurementFamilies = array_map(function (MeasurementFamily $family) {
-            return $this->adapter->adapts($family);
-        }, $this->measurementFamilyRepository->all());
+	if (empty($this->legacyMeasurementFamily)) {
+			$this->legacyMeasurementFamily = $this->loadLegacyMeasurementFamilies();
+		}
 
-        $result = [];
-        foreach ($measurementFamilies as $familyCode => $family) {
-            $result = array_merge($result, $family);
-        }
-
-        return $result;
+        return $this->legacyMeasurementFamily;
     }
+
+	private function loadLegacyMeasurementFamilies(): array
+	{
+		$measurementFamilies = array_map(
+			function (MeasurementFamily $family) {
+				return $this->adapter->adapts($family);
+			},
+			$this->measurementFamilyRepository->all()
+		);
+
+		$result = [];
+		foreach ($measurementFamilies as $familyCode => $family) {
+			$result = array_merge($result, $family);
+		}
+
+		return $result;
+	}
 }
