@@ -21,7 +21,7 @@ interface ValueDataConverter
      * @param ValueInterface $sourceValue
      * @param AttributeInterface $targetAttribute
      *
-     * @return mixed
+     * @return mixed data in the expected format for the target attribute's value factory
      */
     public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute);
 }

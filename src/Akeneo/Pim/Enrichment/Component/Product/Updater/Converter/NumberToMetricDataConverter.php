@@ -15,12 +15,18 @@ use Webmozart\Assert\Assert;
  */
 final class NumberToMetricDataConverter implements ValueDataConverter
 {
+    /**
+     * {@inheritdoc}
+     */
     public function supportsAttributes(AttributeInterface $sourceAttribute, AttributeInterface $targetAttribute): bool
     {
         return AttributeTypes::NUMBER === $sourceAttribute->getType() &&
             AttributeTypes::METRIC === $targetAttribute->getType();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute)
     {
         Assert::numeric($sourceValue->getData());

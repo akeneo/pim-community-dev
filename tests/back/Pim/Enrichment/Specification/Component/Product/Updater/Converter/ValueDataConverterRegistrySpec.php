@@ -40,8 +40,8 @@ class ValueDataConverterRegistrySpec extends ObjectBehavior
         AttributeInterface $targetAttribute
     ) {
         $firstConverter->supportsAttributes($sourceAttribute, $targetAttribute)->willReturn(false);
-        $secondConverter->supportsAttributes($sourceAttribute, $targetAttribute)->willReturn(true);
+        $secondConverter->supportsAttributes($sourceAttribute, $targetAttribute)->willReturn(false);
 
-        $this->getDataConverter($sourceAttribute, $targetAttribute)->shouldReturn($secondConverter);
+        $this->getDataConverter($sourceAttribute, $targetAttribute)->shouldReturn(null);
     }
 }

@@ -61,7 +61,7 @@ class HeterogeneousAttributeCopierSpec extends ObjectBehavior
         $this->supportsAttributes($name, $weight)->shouldReturn(false);
     }
 
-    function it_copies_data_form_empty_values_without_converting_them(
+    function it_copies_null_data_if_source_value_is_empty(
         ValueDataConverter $valueDataConverter,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         AttributeValidatorHelper $attrValidatorHelper

@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NumberToStringDataConverter implements ValueDataConverter
+final class NumberToStringDataConverter implements ValueDataConverter
 {
     /** @var array */
     private $supportedAttributeTypes = [
@@ -23,12 +23,18 @@ class NumberToStringDataConverter implements ValueDataConverter
         ]
     ];
 
+    /**
+     * {@inheritdoc}
+     */
     public function supportsAttributes(AttributeInterface $sourceAttribute, AttributeInterface $targetAttribute): bool
     {
         return isset($this->supportedAttributeTypes[$sourceAttribute->getType()][$targetAttribute->getType()]);
     }
 
-    public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute)
+    /**
+     * {@inheritdoc}
+     */
+    public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute): string
     {
         Assert::numeric($sourceValue->getData());
 
