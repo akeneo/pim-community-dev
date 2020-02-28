@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\DailyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQuery;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection as DbalConnection;
 
@@ -46,14 +47,15 @@ FROM (
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
-WHERE conn.auditable = 1
+WHERE conn.auditable = 1 AND conn.flow_type = :flow_type
 GROUP BY conn.code;
 SQL;
         $sqlParams = [
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
             'end_time' => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
             'resource_name' => $this->productClass,
-            'user_type' => User::TYPE_API
+            'user_type' => User::TYPE_API,
+            'flow_type' => FlowType::DATA_SOURCE,
         ];
 
         $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
@@ -87,13 +89,14 @@ FROM (
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
-WHERE conn.auditable = 1
+WHERE conn.auditable = 1 AND conn.flow_type = :flow_type
 SQL;
         $sqlParams = [
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
             'end_time'   => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
             'resource_name' => $this->productClass,
-            'user_type' => User::TYPE_API
+            'user_type' => User::TYPE_API,
+            'flow_type' => FlowType::DATA_SOURCE,
         ];
 
         $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
@@ -127,14 +130,15 @@ FROM (
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
-WHERE conn.auditable = 1
+WHERE conn.auditable = 1 AND conn.flow_type = :flow_type
 GROUP BY conn.code;
 SQL;
         $sqlParams = [
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
             'end_time'   => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
             'resource_name' => $this->productClass,
-            'user_type' => User::TYPE_API
+            'user_type' => User::TYPE_API,
+            'flow_type' => FlowType::DATA_SOURCE,
         ];
 
         $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
@@ -168,13 +172,14 @@ FROM (
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
-WHERE conn.auditable = 1
+WHERE conn.auditable = 1 AND conn.flow_type = :flow_type
 SQL;
         $sqlParams = [
             'start_time' => $dateTime->format('Y-m-d H:i:s'),
             'end_time'   => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
             'resource_name' => $this->productClass,
-            'user_type' => User::TYPE_API
+            'user_type' => User::TYPE_API,
+            'flow_type' => FlowType::DATA_SOURCE,
         ];
 
         $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
