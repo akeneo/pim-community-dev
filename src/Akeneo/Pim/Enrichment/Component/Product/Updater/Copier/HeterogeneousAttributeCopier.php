@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * Copies attribute data from different attribute types
  */
-class HeterogeneousAttributeCopier implements AttributeCopierInterface
+final class HeterogeneousAttributeCopier implements AttributeCopierInterface
 {
     /** @var ValueDataConverterRegistry */
     private $valueDataConverterRegistry;

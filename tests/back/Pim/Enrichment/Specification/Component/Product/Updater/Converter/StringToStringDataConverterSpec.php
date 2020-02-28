@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Converter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\StringToStringDataConverter;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\ValueDataConverter;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
@@ -11,12 +12,17 @@ use PhpSpec\ObjectBehavior;
 
 class StringToStringDataConverterSpec extends ObjectBehavior
 {
-    function it_is_a_simple_data_converter()
+    function it_is_initializable()
     {
         $this->shouldHaveType(StringToStringDataConverter::class);
     }
 
-    function it_supports_a_combination_of_source_an_target_attributes(
+    function it_is_a_value_data_converter()
+    {
+        $this->shouldImplement(ValueDataConverter::class);
+    }
+
+    function it_supports_a_combination_of_source_and_target_attributes(
         AttributeInterface $sku,
         AttributeInterface $name,
         AttributeInterface $description,

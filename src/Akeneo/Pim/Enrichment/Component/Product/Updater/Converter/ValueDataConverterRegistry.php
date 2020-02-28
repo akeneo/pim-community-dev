@@ -23,8 +23,7 @@ final class ValueDataConverterRegistry
     public function getDataConverter(
         AttributeInterface $sourceAttribute,
         AttributeInterface $targetAttribute
-    ): ?ValueDataConverter
-    {
+    ): ?ValueDataConverter {
         foreach ($this->converters as $converter) {
             if ($converter->supportsAttributes($sourceAttribute, $targetAttribute)) {
                 return $converter;
