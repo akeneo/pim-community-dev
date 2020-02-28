@@ -27,7 +27,7 @@ class SaveMeasurementFamilyHandler
         $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
 
-    public function __invoke(SaveMeasurementFamilyCommand $measurementFamilyCommand): void
+    public function handle(SaveMeasurementFamilyCommand $measurementFamilyCommand): void
     {
         $units = array_map(function (array $unit) {
             $operations = array_map(function (array $operation) {

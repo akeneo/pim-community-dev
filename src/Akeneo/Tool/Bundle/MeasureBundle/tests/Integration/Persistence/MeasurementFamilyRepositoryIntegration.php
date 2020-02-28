@@ -87,11 +87,11 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
         $measurementFamilies = $this->repository->all();
         $this->assertCount(2, $measurementFamilies);
 
-        $area = $this->createMeasurementFamily('NewFamily', ["en_US" => "New family label", "fr_FR" => "Nouveau famille label"]);
-        $this->repository->save($area);
+        $newFamily = $this->createMeasurementFamily('NewFamily', ["en_US" => "New family label", "fr_FR" => "Nouveau famille label"]);
+        $this->repository->save($newFamily);
 
-        $updatedArea = $this->repository->getByCode(MeasurementFamilyCode::fromString('NewFamily'));
-        $this->assertEquals($area, $updatedArea);
+        $newFamilyFetched = $this->repository->getByCode(MeasurementFamilyCode::fromString('NewFamily'));
+        $this->assertEquals($newFamily, $newFamilyFetched);
 
         $measurementFamilies = $this->repository->all();
         $this->assertCount(3, $measurementFamilies);

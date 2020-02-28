@@ -34,7 +34,7 @@ class SaveMeasurementFamilyHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(SaveMeasurementFamilyHandler::class);
     }
 
-    function it_creates_and_save_a_new_measurement_family(
+    function it_creates_and_saves_a_new_measurement_family(
         MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
         SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand
     ) {
@@ -87,6 +87,6 @@ class SaveMeasurementFamilyHandlerSpec extends ObjectBehavior
             return true;
         }))->shouldBeCalled();
 
-        $this->__invoke($saveMeasurementFamilyCommand);
+        $this->handle($saveMeasurementFamilyCommand);
     }
 }
