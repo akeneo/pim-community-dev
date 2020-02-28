@@ -1,10 +1,13 @@
-import React, { FunctionComponent, Ref } from 'react';
+import React, { ReactNode, Ref } from 'react';
 import styled from 'styled-components'
 
 type sizeMode = 'small' | 'large' | undefined;
 export interface CoreButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     ariaLabel?: string,
-    sizeMode?: sizeMode
+    ariaLabelledBy?: string,
+    ariaDescribedBy?: string,
+    children: ReactNode,
+    sizeMode?: sizeMode,
 }
 
 const getSizeModeValue = ({ sizeMode }: CoreButtonProps): string => {
@@ -27,21 +30,40 @@ const BasicButton = styled.button<CoreButtonProps>`
         cursor: not-allowed;
     }
 `
-const CoreButton: FunctionComponent<CoreButtonProps> =
-    React.forwardRef(function CoreButton(
-        { ariaLabel, onClick, onKeyDown, children, className, disabled, type = 'button', sizeMode, ...rest },
+const CoreButton =
+    React.forwardRef<HTMLButtonElement, CoreButtonProps>(function CoreButton(
+        {
+            ariaDescribedBy,
+            ariaLabel,
+            ariaLabelledBy,
+            children,
+            className,
+            disabled,
+            onClick,
+            onKeyDown,
+            sizeMode,
+            type = 'button',
+            ...rest
+        },
         forwardedRef: Ref<HTMLButtonElement>) {
         const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
             if (onKeyDown && (event.keyCode === 32 || event.keyCode === 13)) {
                 onKeyDown(event)
             }
         }
-        console.log('hello world')
+        const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            if (onClick) {
+                onClick(event)
+            }
+        }
         return <BasicButton
             aria-disabled={disabled}
+            aria-describedby={ariaDescribedBy}
+            aria-labelledby={ariaLabelledBy}
             aria-label={ariaLabel}
             className={className}
             onKeyDown={handleKeyDown}
+            onClick={handleClick}
             ref={forwardedRef}
             role='button'
             sizeMode={sizeMode}
