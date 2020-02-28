@@ -47,69 +47,57 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
      */
     public function saveAll(array $productCompletenessCollections): void
     {
-        $retry = 0;
-        $isError = true;
-        while (true === $isError) {
-            try {
-                $this->connection->transactional(function (Connection $connection) use ($productCompletenessCollections) {
-                    $productIds = array_unique(array_map(function (ProductCompletenessWithMissingAttributeCodesCollection $productCompletenessCollection) {
-                        return $productCompletenessCollection->productId();
-                    }, $productCompletenessCollections));
+        $deleteFunction = function () use ($productCompletenessCollections) {
+            $productIds = array_unique(array_map(function (ProductCompletenessWithMissingAttributeCodesCollection $productCompletenessCollection) {
+                return $productCompletenessCollection->productId();
+            }, $productCompletenessCollections));
 
-                    $localeIdsFromCode = $this->localeIdsIndexedByLocaleCodes();
-                    $channelIdsFromCode = $this->channelIdsIndexedByChannelCodes();
+            $this->connection->executeQuery(
+                'DELETE FROM pim_catalog_completeness WHERE product_id IN (:product_ids)',
+                ['product_ids' => $productIds],
+                ['product_ids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+            );
+        };
 
-                    $connection->executeQuery(
-                        'DELETE FROM pim_catalog_completeness WHERE product_id IN (:product_ids)',
-                        ['product_ids' => $productIds],
-                        ['product_ids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-                    );
+        $insertFunction = function () use ($productCompletenessCollections) {
+            $localeIdsFromCode = $this->localeIdsIndexedByLocaleCodes();
+            $channelIdsFromCode = $this->channelIdsIndexedByChannelCodes();
 
-                    $numberCompletenessRow = 0;
-                    foreach ($productCompletenessCollections as $productCompletenessCollection) {
-                        $numberCompletenessRow += count($productCompletenessCollection);
-                    }
-                    $placeholders = implode(',', array_fill(0, $numberCompletenessRow, '(?, ?, ?, ?, ?)'));
+            $numberCompletenessRow = 0;
+            foreach ($productCompletenessCollections as $productCompletenessCollection) {
+                $numberCompletenessRow += count($productCompletenessCollection);
+            }
+            $placeholders = implode(',', array_fill(0, $numberCompletenessRow, '(?, ?, ?, ?, ?)'));
 
-                    if (empty($placeholders)) {
-                        return;
-                    }
+            if (empty($placeholders)) {
+                return;
+            }
 
-                    $insert = <<<SQL
+            $insert = <<<SQL
                         INSERT INTO pim_catalog_completeness
                             (locale_id, channel_id, product_id, missing_count, required_count)
                         VALUES
                             $placeholders
         SQL;
 
-                    $stmt = $this->connection->prepare($insert);
+            $stmt = $this->connection->prepare($insert);
 
-                    $placeholderIndex = 1;
-                    foreach ($productCompletenessCollections as $productCompletenessCollection) {
-                        foreach ($productCompletenessCollection as $productCompleteness) {
-                            $stmt->bindValue($placeholderIndex++, $localeIdsFromCode[$productCompleteness->localeCode()]);
-                            $stmt->bindValue($placeholderIndex++, $channelIdsFromCode[$productCompleteness->channelCode()]);
-                            $stmt->bindValue($placeholderIndex++, $productCompletenessCollection->productId(), ParameterType::INTEGER);
-                            $stmt->bindValue($placeholderIndex++, count($productCompleteness->missingAttributeCodes()), ParameterType::INTEGER);
-                            $stmt->bindValue($placeholderIndex++, $productCompleteness->requiredCount(), ParameterType::INTEGER);
-                        }
-                    }
-
-                    $stmt->execute();
-                });
-
-                $isError = false;
-            } catch (DeadlockException $e) {
-                $retry += 1;
-
-                usleep(300000);
-                usleep(rand(50000, $retry*100000));
-
-                if (5 === $retry) {
-                    throw $e;
+            $placeholderIndex = 1;
+            foreach ($productCompletenessCollections as $productCompletenessCollection) {
+                foreach ($productCompletenessCollection as $productCompleteness) {
+                    $stmt->bindValue($placeholderIndex++, $localeIdsFromCode[$productCompleteness->localeCode()]);
+                    $stmt->bindValue($placeholderIndex++, $channelIdsFromCode[$productCompleteness->channelCode()]);
+                    $stmt->bindValue($placeholderIndex++, $productCompletenessCollection->productId(), ParameterType::INTEGER);
+                    $stmt->bindValue($placeholderIndex++, count($productCompleteness->missingAttributeCodes()), ParameterType::INTEGER);
+                    $stmt->bindValue($placeholderIndex++, $productCompleteness->requiredCount(), ParameterType::INTEGER);
                 }
             }
-        }
+
+            $stmt->execute();
+        };
+
+        $this->executeWithRetry($deleteFunction);
+        $this->executeWithRetry($insertFunction);
     }
 
     private function localeIdsIndexedByLocaleCodes(): array
@@ -137,5 +125,27 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
         }
 
         return $result;
+    }
+
+    private function executeWithRetry(callable $function): void
+    {
+        $retry = 0;
+        $isError = true;
+        while (true === $isError) {
+            try {
+                $this->connection->transactional($function);
+
+                $isError = false;
+            } catch (DeadlockException $e) {
+                $retry += 1;
+
+                usleep(300000);
+                usleep(rand(50000, $retry * 100000));
+
+                if (5 === $retry) {
+                    throw $e;
+                }
+            }
+        }
     }
 }
