@@ -1,14 +1,16 @@
 import React, { ReactNode, Ref } from 'react';
 import styled from 'styled-components'
 
-type sizeMode = 'small' | 'large' | undefined;
-export interface CoreButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+type sizeMode = 'small' | 'large';
+
+type CoreButtonProps = {
     ariaLabel?: string,
     ariaLabelledBy?: string,
     ariaDescribedBy?: string,
     children: ReactNode,
     sizeMode?: sizeMode,
-}
+
+} & React.ButtonHTMLAttributes<HTMLButtonElement>
 
 const getSizeModeValue = ({ sizeMode }: CoreButtonProps): string => {
     if (sizeMode === 'small') {
@@ -37,23 +39,17 @@ const CoreButton =
             ariaLabel,
             ariaLabelledBy,
             children,
-            className,
             disabled,
-            onClick,
             onKeyDown,
             sizeMode,
             type = 'button',
             ...rest
         },
         forwardedRef: Ref<HTMLButtonElement>) {
+        // https://www.w3.org/TR/wai-aria-practices/#button
         const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
             if (onKeyDown && (event.keyCode === 32 || event.keyCode === 13)) {
                 onKeyDown(event)
-            }
-        }
-        const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-            if (onClick) {
-                onClick(event)
             }
         }
         return <BasicButton
@@ -61,10 +57,8 @@ const CoreButton =
             aria-describedby={ariaDescribedBy}
             aria-labelledby={ariaLabelledBy}
             aria-label={ariaLabel}
-            className={className}
             disabled={disabled}
             onKeyDown={handleKeyDown}
-            onClick={handleClick}
             ref={forwardedRef}
             role='button'
             sizeMode={sizeMode}
