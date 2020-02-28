@@ -257,6 +257,34 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
+  build_and_test_akeneo-design-system:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - restore_cache:
+                name: Restore node_modules cache
+                keys:
+                  - akeneo-design-system-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
+          - run:
+                name: Install node_modules
+                working_directory: akeneo-design-system
+                command: make _yarn
+          - save_cache:
+                name: Cache node_modules
+                paths:
+                  - node_modules
+                key: akeneo-design-system-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
+          - run:
+                name: Run tests
+                working_directory: akeneo-design-system
+                command: make test
+          - persist_to_workspace:
+                root: ~/
+                paths:
+                  - project
+
 workflows:
   version: 2
   pull_request:
@@ -293,6 +321,9 @@ workflows:
                     - test_back_data_migrations
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
+          - build_and_test_akeneo-design-system:
+                requires:
+                    - build_dev
 
   nightly:
       triggers:
@@ -317,5 +348,8 @@ workflows:
                 requires:
                     - build_dev
           - back_behat_legacy:
+                requires:
+                    - build_dev
+          - build_and_test_akeneo-design-system:
                 requires:
                     - build_dev

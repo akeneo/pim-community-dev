@@ -11,3 +11,8 @@ _yarn:
 storybook: _yarn
 	@echo "\e[7m\e[92m Start Storybook development server on http://localhost:$(DOCKER_PORT_STORYBOOK)/ \e[0m"
 	$(_YARN) run start-storybook -h 0.0.0.0 -p 80 --ci
+
+# Run the tests
+.PHONY: test
+test: _yarn
+	$(_YARN) run jest
