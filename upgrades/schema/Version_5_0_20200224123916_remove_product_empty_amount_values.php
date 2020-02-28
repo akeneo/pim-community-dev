@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * For example, the value {attr: {<all_channels>: {<all_locales>: {"amount": null, "unit": null}}}} will be removed
  * from the raw_values field.
  */
-final class Version_5_0_20200224123916_remove_product_empty_metric_values
+final class Version_5_0_20200224123916_remove_product_empty_amount_values
     extends AbstractMigration
     implements ContainerAwareInterface
 {
@@ -38,6 +38,8 @@ final class Version_5_0_20200224123916_remove_product_empty_metric_values
 
         /** @var string[] $metricAttributesCodes */
         $metricAttributesCodes = $this->findMetricAttributesCodes();
+        /** @var string[] $priceCollectionAttributesCodes */
+        $priceCollectionAttributesCodes = $this->findPriceCollectionAttributesCodes();
 
         $productIdentifiersToIndex = [];
 
@@ -46,12 +48,13 @@ final class Version_5_0_20200224123916_remove_product_empty_metric_values
             $values = json_decode($row['raw_values'], true);
 
             $cleanValues = $this->cleanMetricValues($values, $metricAttributesCodes);
+            $cleanValues = $this->cleanPriceCollectionValues($cleanValues, $priceCollectionAttributesCodes);
 
             if ($values !== $cleanValues) {
                 $this->connection->executeQuery(
                     'UPDATE pim_catalog_product SET raw_values = :rawValues WHERE identifier = :identifier',
                     [
-                        'rawValues' => json_encode($cleanValues, JSON_FORCE_OBJECT),
+                        'rawValues' => json_encode((object)$cleanValues),
                         'identifier' => $row['identifier'],
                     ], [
                         'rawValues' => Types::STRING,
@@ -74,13 +77,13 @@ final class Version_5_0_20200224123916_remove_product_empty_metric_values
 
     private function cleanMetricValues(array $values, array $metricAttributesCodes): array
     {
-        foreach ($metricAttributesCodes as $metricAttributeCode) {
-            if (!isset($values[$metricAttributeCode])) {
+        foreach ($metricAttributesCodes as $attributeCode) {
+            if (!isset($values[$attributeCode])) {
                 continue;
             }
 
             $newValue = [];
-            foreach ($values[$metricAttributeCode] as $channel => $localeValues) {
+            foreach ($values[$attributeCode] as $channel => $localeValues) {
                 foreach ($localeValues as $locale => $data) {
                     if ($this->isMetricFilled($data)) {
                         $newValue[$channel][$locale] = $data;
@@ -88,16 +91,16 @@ final class Version_5_0_20200224123916_remove_product_empty_metric_values
                 }
             }
             if (!empty($newValue)) {
-                $values[$metricAttributeCode] = $newValue;
+                $values[$attributeCode] = $newValue;
             } else {
-                unset($values[$metricAttributeCode]);
+                unset($values[$attributeCode]);
             }
         }
 
         return $values;
     }
 
-    private function isMetricFilled($data)
+    private function isMetricFilled($data): bool
     {
         if (null === $data) {
             return false;
@@ -113,6 +116,56 @@ final class Version_5_0_20200224123916_remove_product_empty_metric_values
     private function findMetricAttributesCodes(): array
     {
         $sql = "SELECT code FROM pim_catalog_attribute WHERE attribute_type = 'pim_catalog_metric'";
+
+        return $this->connection->executeQuery($sql)->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    private function cleanPriceCollectionValues(array $values, array $priceCollectionAttributesCodes): array
+    {
+        foreach ($priceCollectionAttributesCodes as $attributeCode) {
+            if (!isset($values[$attributeCode])) {
+                continue;
+            }
+
+            $newValue = [];
+            foreach ($values[$attributeCode] as $channel => $localeValues) {
+                foreach ($localeValues as $locale => $data) {
+                    if (!is_array($data)) {
+                        continue;
+                    }
+                    foreach ($data as $item) {
+                        if ($this->isPriceFilled($item)) {
+                            $newValue[$channel][$locale][] = $item;
+                        }
+                    }
+                }
+            }
+            if (!empty($newValue)) {
+                $values[$attributeCode] = $newValue;
+            } else {
+                unset($values[$attributeCode]);
+            }
+        }
+
+        return $values;
+    }
+
+    private function isPriceFilled($data): bool
+    {
+        if (null === $data) {
+            return false;
+        }
+
+        if (!is_array($data)) {
+            return false;
+        }
+
+        return isset($data['amount']);
+    }
+
+    private function findPriceCollectionAttributesCodes(): array
+    {
+        $sql = "SELECT code FROM pim_catalog_attribute WHERE attribute_type = 'pim_catalog_price_collection'";
 
         return $this->connection->executeQuery($sql)->fetchAll(\PDO::FETCH_COLUMN);
     }
