@@ -21,7 +21,6 @@
         "strictNullChecks": true,
         "strictPropertyInitialization": true,
         "target": "es5",
-        "skipLibCheck": true
     },
     "include": ["src"],
     "exclude": ["node_modules", "dist"]
