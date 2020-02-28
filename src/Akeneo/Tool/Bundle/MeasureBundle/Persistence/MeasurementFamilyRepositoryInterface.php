@@ -12,4 +12,6 @@ interface MeasurementFamilyRepositoryInterface
     public function all(): array;
 
     public function getByCode(MeasurementFamilyCode $measurementFamilyCode): MeasurementFamily;
+
+    public function save(MeasurementFamily $measurementFamily);
 }

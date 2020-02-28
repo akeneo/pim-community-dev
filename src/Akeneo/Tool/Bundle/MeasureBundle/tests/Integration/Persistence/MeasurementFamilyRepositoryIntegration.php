@@ -44,7 +44,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
         $measurementFamilies = $this->repository->all();
 
         $this->assertCount(2, $measurementFamilies);
-        $this->assetArea($measurementFamilies[0]);
+        $this->assertEquals($this->getMeasurementFamily(), $measurementFamilies[0]);
     }
 
     /**
@@ -54,7 +54,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
     {
         $measurementFamily = $this->repository->getByCode(MeasurementFamilyCode::fromString('Area'));
 
-        $this->assetArea($measurementFamily);
+        $this->assertEquals($this->getMeasurementFamily(), $measurementFamily);
     }
 
     /**
@@ -67,11 +67,41 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
         $this->repository->getByCode(MeasurementFamilyCode::fromString('NOT_EXISTING'));
     }
 
-    private function assetArea(MeasurementFamily $measurementFamily): void
+    /**
+     * @test
+     */
+    public function it_updates_an_existing_measurement_family_if_it_exists(): void
     {
-        $area = MeasurementFamily::create(
-            MeasurementFamilyCode::fromString('Area'),
-            LabelCollection::fromArray(["en_US" => "Area", "fr_FR" => "Surface"]),
+        $area = $this->getMeasurementFamily('Area', ["en_US" => "New area label", "fr_FR" => "Nouveau surface label"]);
+        $this->repository->save($area);
+
+        $updatedArea = $this->repository->getByCode(MeasurementFamilyCode::fromString('Area'));
+        $this->assertEquals($area, $updatedArea);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_an_new_measurement_family_if_the_code_is_not_present(): void
+    {
+        $measurementFamilies = $this->repository->all();
+        $this->assertCount(2, $measurementFamilies);
+
+        $area = $this->getMeasurementFamily('NewFamily', ["en_US" => "New family label", "fr_FR" => "Nouveau famille label"]);
+        $this->repository->save($area);
+
+        $updatedArea = $this->repository->getByCode(MeasurementFamilyCode::fromString('NewFamily'));
+        $this->assertEquals($area, $updatedArea);
+
+        $measurementFamilies = $this->repository->all();
+        $this->assertCount(3, $measurementFamilies);
+    }
+
+    private function getMeasurementFamily(string $code = 'Area', array $labels = ["en_US" => "Area", "fr_FR" => "Surface"]): MeasurementFamily
+    {
+        return MeasurementFamily::create(
+            MeasurementFamilyCode::fromString($code),
+            LabelCollection::fromArray($labels),
             UnitCode::fromString('SQUARE_MILLIMETER'),
             [
                 Unit::create(
@@ -88,8 +118,6 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
                 )
             ]
         );
-
-        $this->assertEquals($area, $measurementFamily);
     }
 
     private function loadSomeMetrics(): void
