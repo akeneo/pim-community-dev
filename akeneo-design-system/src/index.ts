@@ -1,5 +1,2 @@
-import { ExampleButton } from "./components/ExampleButton/ExampleButton";
+export * from './components/Buttons'
 
-export {
-    ExampleButton
-}
