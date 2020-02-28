@@ -47,7 +47,7 @@ class DbalSelectConnectionWithCredentialsByCodeQueryIntegration extends TestCase
         Assert::assertNotNull($connection->secret());
         Assert::assertNotNull($connection->username());
         Assert::assertNull($connection->image());
-        Assert::assertIsBool($connection->auditable());
+        Assert::assertFalse($connection->auditable());
     }
 
     public function test_it_does_not_find_a_connection_from_its_code()
