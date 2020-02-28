@@ -106,6 +106,43 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(0, $this->getAuditCount($otherConnection->code(), EventTypes::PRODUCT_UPDATED));
     }
 
+    public function test_updates_audit_data_only_for_data_source_connection()
+    {
+        $sourceConnection = $this->createConnection('source', 'Source', FlowType::DATA_SOURCE, true);
+        $destinationConnection = $this->createConnection('destination', 'Destination', FlowType::DATA_DESTINATION, true);
+
+        Assert::assertEquals(0, $this->getAuditCount($sourceConnection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(0, $this->getAuditCount($sourceConnection->code(), EventTypes::PRODUCT_UPDATED));
+        Assert::assertEquals(0, $this->getAuditCount($destinationConnection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(0, $this->getAuditCount($destinationConnection->code(), EventTypes::PRODUCT_UPDATED));
+
+        $product1 = $this->createProduct('product1', ['enabled' => false]);
+        $product2 = $this->createProduct('product2', ['enabled' => false]);
+        $this->setVersioningAuthor($sourceConnection->username(), $product1);
+        $this->setVersioningAuthor($destinationConnection->username(), $product2);
+
+        $commandTester = new CommandTester($this->command);
+        $commandTester->execute([]);
+
+        Assert::assertEquals(1, $this->getAuditCount($sourceConnection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(0, $this->getAuditCount($sourceConnection->code(), EventTypes::PRODUCT_UPDATED));
+        Assert::assertEquals(0, $this->getAuditCount($destinationConnection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(0, $this->getAuditCount($destinationConnection->code(), EventTypes::PRODUCT_UPDATED));
+
+        $this->updateProduct($product1, ['enabled' => true]);
+        $this->updateProduct($product2, ['enabled' => true]);
+        $this->setVersioningAuthor($sourceConnection->username(), $product1);
+        $this->setVersioningAuthor($destinationConnection->username(), $product2);
+
+        $commandTester = new CommandTester($this->command);
+        $commandTester->execute([]);
+
+        Assert::assertEquals(1, $this->getAuditCount($sourceConnection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(1, $this->getAuditCount($sourceConnection->code(), EventTypes::PRODUCT_UPDATED));
+        Assert::assertEquals(0, $this->getAuditCount($destinationConnection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(0, $this->getAuditCount($destinationConnection->code(), EventTypes::PRODUCT_UPDATED));
+    }
+
     private function getAuditCount(string $connectionCode, string $eventType): int
     {
         $sqlQuery = <<<SQL

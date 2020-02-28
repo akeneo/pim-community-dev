@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQuery;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\Types\Types;
@@ -46,7 +47,7 @@ FROM (
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
-WHERE conn.auditable = 1;
+WHERE conn.auditable = 1 AND conn.flow_type = :flow_type;
 SQL;
 
         $dataRows = $this->dbalConnection->executeQuery(
@@ -55,8 +56,9 @@ SQL;
                 'start_time' => $hourlyInterval->fromDateTime(),
                 'end_time' => $hourlyInterval->upToDateTime(),
                 'resource_name' => $this->productClass,
-                'user_type' => User::TYPE_API
-            ],
+                'user_type' => User::TYPE_API,
+            'flow_type' => FlowType::DATA_SOURCE,
+        ],
             [
                 'start_time' => Types::DATETIME_IMMUTABLE,
                 'end_time' => Types::DATETIME_IMMUTABLE,
@@ -90,7 +92,7 @@ FROM (
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
-WHERE conn.auditable = 1
+WHERE conn.auditable = 1 AND conn.flow_type = :flow_type
 SQL;
         $dataRows = $this->dbalConnection->executeQuery(
             $sqlQuery,
@@ -98,8 +100,9 @@ SQL;
                 'start_time' => $hourlyInterval->fromDateTime(),
                 'end_time' => $hourlyInterval->upToDateTime(),
                 'resource_name' => $this->productClass,
-                'user_type' => User::TYPE_API
-            ],
+                'user_type' => User::TYPE_API,
+            'flow_type' => FlowType::DATA_SOURCE,
+        ],
             [
                 'start_time' => Types::DATETIME_IMMUTABLE,
                 'end_time' => Types::DATETIME_IMMUTABLE,
@@ -133,7 +136,7 @@ FROM (
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
-WHERE conn.auditable = 1
+WHERE conn.auditable = 1 AND conn.flow_type = :flow_type
 GROUP BY conn.code;
 SQL;
         $dataRows = $this->dbalConnection->executeQuery(
@@ -142,8 +145,9 @@ SQL;
                 'start_time' => $hourlyInterval->fromDateTime(),
                 'end_time' => $hourlyInterval->upToDateTime(),
                 'resource_name' => $this->productClass,
-                'user_type' => User::TYPE_API
-            ],
+                'user_type' => User::TYPE_API,
+            'flow_type' => FlowType::DATA_SOURCE,
+        ],
             [
                 'start_time' => Types::DATETIME_IMMUTABLE,
                 'end_time' => Types::DATETIME_IMMUTABLE,
@@ -177,7 +181,7 @@ FROM (
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
-WHERE conn.auditable = 1
+WHERE conn.auditable = 1 AND conn.flow_type = :flow_type
 SQL;
         $dataRows = $this->dbalConnection->executeQuery(
             $sqlQuery,
@@ -185,8 +189,9 @@ SQL;
                 'start_time' => $hourlyInterval->fromDateTime(),
                 'end_time' => $hourlyInterval->upToDateTime(),
                 'resource_name' => $this->productClass,
-                'user_type' => User::TYPE_API
-            ],
+                'user_type' => User::TYPE_API,
+            'flow_type' => FlowType::DATA_SOURCE,
+        ],
             [
                 'start_time' => Types::DATETIME_IMMUTABLE,
                 'end_time' => Types::DATETIME_IMMUTABLE,
