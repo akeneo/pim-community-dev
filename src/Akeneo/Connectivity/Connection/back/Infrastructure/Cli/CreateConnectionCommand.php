@@ -73,7 +73,7 @@ class CreateConnectionCommand extends Command
         $flowType = $input->getOption('flow-type');
 
         try {
-            $command = new CreationCommand($code, $label, $flowType);
+            $command = new CreationCommand($code, $label, $flowType, false);
             $connectionWithCredentials = $this->createConnection->handle($command);
             $output->writeln([
                 '<info>A new connection has been created with the following settings:</info>',

@@ -23,6 +23,7 @@ class CreateConnectionEndToEnd extends WebTestCase
             "label" => "Franklin",
             "flow_type" => FlowType::DATA_SOURCE,
             "image" => null,
+            "auditable" => false,
         ];
 
         $this->authenticateAsAdmin();
@@ -68,6 +69,7 @@ class CreateConnectionEndToEnd extends WebTestCase
             "label" => "",
             "flow_type" => "wrong_flow_type",
             "image" => null,
+            "auditable" => false,
         ];
 
         $this->authenticateAsAdmin();

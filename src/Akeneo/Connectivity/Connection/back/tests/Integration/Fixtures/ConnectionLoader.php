@@ -23,9 +23,9 @@ class ConnectionLoader
         $this->createConnectionHandler = $createConnectionHandler;
     }
 
-    public function createConnection(string $code, string $label, string $flowType): ConnectionWithCredentials
+    public function createConnection(string $code, string $label, string $flowType, bool $auditable): ConnectionWithCredentials
     {
-        $command = new CreateConnectionCommand($code, $label, $flowType);
+        $command = new CreateConnectionCommand($code, $label, $flowType, $auditable);
         return $this->createConnectionHandler->handle($command);
     }
 }

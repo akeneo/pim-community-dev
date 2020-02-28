@@ -18,8 +18,8 @@ class ListConnectionEndToEnd extends WebTestCase
 {
     public function test_it_lists_connections(): void
     {
-        $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE);
-        $this->createConnection('dam', 'DAM', FlowType::OTHER);
+        $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE, true);
+        $this->createConnection('dam', 'DAM', FlowType::OTHER, false);
 
         $this->authenticateAsAdmin();
         $this->client->request('GET', '/rest/connections');

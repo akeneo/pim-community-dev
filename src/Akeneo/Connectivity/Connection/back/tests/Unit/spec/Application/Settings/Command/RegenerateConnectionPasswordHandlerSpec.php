@@ -36,7 +36,15 @@ class RegenerateConnectionPasswordHandlerSpec extends ObjectBehavior
     public function it_regenerates_a_user_password($repository, $regenerateUserPassword): void
     {
         $userId = new UserId(72);
-        $connection = new Connection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, 42, $userId);
+        $connection = new Connection(
+            'magento',
+            'Magento Connector',
+            FlowType::DATA_DESTINATION,
+            42,
+            $userId,
+            null,
+            false,
+        );
 
         $repository->findOneByCode('magento')->willReturn($connection);
         $regenerateUserPassword->execute($userId)->shouldBeCalled();

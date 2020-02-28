@@ -18,7 +18,7 @@ class GetConnectionEndToEnd extends WebTestCase
 {
     public function test_it_gets_a_connection(): void
     {
-        $connection = $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE);
+        $connection = $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE, false);
 
         $this->authenticateAsAdmin();
         $this->client->request('GET', '/rest/connections/franklin');

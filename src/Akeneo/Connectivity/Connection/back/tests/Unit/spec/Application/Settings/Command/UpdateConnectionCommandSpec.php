@@ -24,6 +24,7 @@ class UpdateConnectionCommandSpec extends ObjectBehavior
             null,
             '1',
             '2',
+            true
         );
     }
 
@@ -52,7 +53,6 @@ class UpdateConnectionCommandSpec extends ObjectBehavior
         $this->image()->shouldReturn(null);
     }
 
-
     public function it_returns_the_image()
     {
         $this->beConstructedWith(
@@ -62,6 +62,7 @@ class UpdateConnectionCommandSpec extends ObjectBehavior
             'a/b/c/the_path.jpg',
             '1',
             '2',
+            false
         );
         $this->image()->shouldReturn('a/b/c/the_path.jpg');
     }
@@ -74,5 +75,10 @@ class UpdateConnectionCommandSpec extends ObjectBehavior
     public function it_returns_the_user_group_id()
     {
         $this->userGroupId()->shouldReturn('2');
+    }
+
+    public function it_returns_the_auditable()
+    {
+        $this->auditable()->shouldReturn(true);
     }
 }

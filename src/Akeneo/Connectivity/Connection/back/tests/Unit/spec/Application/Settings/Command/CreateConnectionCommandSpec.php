@@ -17,7 +17,7 @@ class CreateConnectionCommandSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith('Magento', 'Magento Connector', FlowType::DATA_DESTINATION);
+        $this->beConstructedWith('Magento', 'Magento Connector', FlowType::DATA_DESTINATION, true);
     }
 
     public function it_is_initializable()
@@ -38,5 +38,10 @@ class CreateConnectionCommandSpec extends ObjectBehavior
     public function it_returns_the_flow_type()
     {
         $this->flowType()->shouldReturn(FlowType::DATA_DESTINATION);
+    }
+
+    public function it_returns_the_auditable()
+    {
+        $this->auditable()->shouldReturn(true);
     }
 }

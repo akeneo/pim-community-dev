@@ -18,7 +18,7 @@ class DeleteConnectionEndToEnd extends WebTestCase
 {
     public function test_it_deletes_a_connection()
     {
-        $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE);
+        $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE, false);
 
         $this->authenticateAsAdmin();
         $this->client->request('DELETE', '/rest/connections/franklin');

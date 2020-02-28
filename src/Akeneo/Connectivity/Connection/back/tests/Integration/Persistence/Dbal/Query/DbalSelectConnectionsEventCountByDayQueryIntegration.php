@@ -41,8 +41,8 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
 
     public function test_it_get_data_for_connections_with_audit_data()
     {
-        $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_SOURCE);
-        $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE);
+        $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_SOURCE, true);
+        $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE, true);
 
         $this->auditLoader->insertData('magento', new \DateTime('2020-01-01'), 5, EventTypes::PRODUCT_UPDATED);
         $this->auditLoader->insertData('magento', new \DateTime('2020-01-02'), 10, EventTypes::PRODUCT_UPDATED);
@@ -106,7 +106,7 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
 
     public function test_it_get_data_for_connections_without_audit_data()
     {
-        $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_SOURCE);
+        $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_SOURCE, true);
 
         $weeklyEventCountsPerConnection = $this->selectConnectionsEventCountByDayQuery->execute(
             EventTypes::PRODUCT_UPDATED,
