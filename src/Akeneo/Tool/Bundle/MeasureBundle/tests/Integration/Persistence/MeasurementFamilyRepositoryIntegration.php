@@ -44,7 +44,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
         $measurementFamilies = $this->repository->all();
 
         $this->assertCount(2, $measurementFamilies);
-        $this->assertEquals($this->getMeasurementFamily(), $measurementFamilies[0]);
+        $this->assertEquals($this->createMeasurementFamily(), $measurementFamilies[0]);
     }
 
     /**
@@ -54,7 +54,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
     {
         $measurementFamily = $this->repository->getByCode(MeasurementFamilyCode::fromString('Area'));
 
-        $this->assertEquals($this->getMeasurementFamily(), $measurementFamily);
+        $this->assertEquals($this->createMeasurementFamily(), $measurementFamily);
     }
 
     /**
@@ -72,7 +72,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
      */
     public function it_updates_an_existing_measurement_family_if_it_exists(): void
     {
-        $area = $this->getMeasurementFamily('Area', ["en_US" => "New area label", "fr_FR" => "Nouveau surface label"]);
+        $area = $this->createMeasurementFamily('Area', ["en_US" => "New area label", "fr_FR" => "Nouveau surface label"]);
         $this->repository->save($area);
 
         $updatedArea = $this->repository->getByCode(MeasurementFamilyCode::fromString('Area'));
@@ -87,7 +87,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
         $measurementFamilies = $this->repository->all();
         $this->assertCount(2, $measurementFamilies);
 
-        $area = $this->getMeasurementFamily('NewFamily', ["en_US" => "New family label", "fr_FR" => "Nouveau famille label"]);
+        $area = $this->createMeasurementFamily('NewFamily', ["en_US" => "New family label", "fr_FR" => "Nouveau famille label"]);
         $this->repository->save($area);
 
         $updatedArea = $this->repository->getByCode(MeasurementFamilyCode::fromString('NewFamily'));
@@ -97,7 +97,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
         $this->assertCount(3, $measurementFamilies);
     }
 
-    private function getMeasurementFamily(string $code = 'Area', array $labels = ["en_US" => "Area", "fr_FR" => "Surface"]): MeasurementFamily
+    private function createMeasurementFamily(string $code = 'Area', array $labels = ["en_US" => "Area", "fr_FR" => "Surface"]): MeasurementFamily
     {
         return MeasurementFamily::create(
             MeasurementFamilyCode::fromString($code),
