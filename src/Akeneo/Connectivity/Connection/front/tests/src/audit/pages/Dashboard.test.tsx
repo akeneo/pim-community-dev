@@ -20,6 +20,14 @@ describe('testing Dashboard page', () => {
                             label: 'Bynder',
                             flowType: 'data_source',
                             image: null,
+                            auditable: true,
+                        },
+                        {
+                            code: 'erp',
+                            label: 'ERP',
+                            flowType: 'data_source',
+                            image: null,
+                            auditable: false,
                         },
                         {
                             code: 'magento',

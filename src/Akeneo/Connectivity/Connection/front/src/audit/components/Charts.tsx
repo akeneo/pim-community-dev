@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import {FlowType} from '../../model/flow-type.enum';
 import {Connection} from '../../model/connection';
 import {fetchResult} from '../../shared/fetch-result';
 import {isOk} from '../../shared/fetch-result/result';
@@ -9,7 +10,6 @@ import {NoConnection} from './NoConnection';
 import {UserSurvey} from './UserSurvey';
 import {DataSourceCharts} from './DataSourceCharts';
 import {DataDestinationCharts} from '../components/DataDestinationCharts';
-import {FlowType} from '../../model/flow-type.enum';
 
 export const Charts = () => {
     const dispatch = useDashboardDispatch();
@@ -19,7 +19,11 @@ export const Charts = () => {
         let cancelled = false;
         fetchResult<Connection[], never>(route).then(result => {
             if (isOk(result) && !cancelled) {
-                dispatch(connectionsFetched(result.value));
+                const auditableConnections = result.value.filter(
+                    connection => connection.auditable
+                );
+
+                dispatch(connectionsFetched(auditableConnections));
             }
         });
         return () => {
