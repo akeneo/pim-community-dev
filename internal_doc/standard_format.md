@@ -1467,10 +1467,10 @@ Regarding the array `variant_attribute_sets`, an attribute present in the `axes`
           "enabled" => true
         ]
         
-| type    | data structure  | data example | notes                             |
-| ------- | --------------- | ------------ | --------------------------------- |
-| code    | string          | `"fr_FR"`    | it's the identifier of the locale |
-| enabled | boolean         | `false`      |                                   |
+| type    | data structure  | data example | notes                                             |
+| ------- | --------------- | ------------ | ------------------------------------------------- |
+| code    | string          | `"fr_FR"`    | it's the identifier of the locale                 |
+| enabled | boolean         | `false`      | readonly property, will be ignored by the updater |
 
 
 ### File info
