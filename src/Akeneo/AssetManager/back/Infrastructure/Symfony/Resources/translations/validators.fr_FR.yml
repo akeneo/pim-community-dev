@@ -41,6 +41,7 @@ pim_asset_manager:
         code_is_not_unique: 'Vous ne pouvez pas définir deux transformations avec le même code "%transformation_code%"'
         filename_prefix_suffix_empty: 'Vous devez avoir au moins les propriétés filename_prefix ou filename_suffix et l''une d''entre elles ne doit pas être une chaîne vide.'
         empty_operation_list: 'Au moins une opération de transformation est requise.'
+        unknown_extra_field: 'La propriété {{ field }} n''était pas attendue.'
       naming_convention:
         property_should_exist: 'La propriété "%property%" n''existe pas pour cette famille de ressources'
         not_main_media_attribute_code: 'La propriété «%property%» attendue correspond au code de l''attribut en tant que média principal.'
