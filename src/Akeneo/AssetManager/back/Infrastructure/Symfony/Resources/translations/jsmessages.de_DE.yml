@@ -264,9 +264,6 @@ pim_asset_manager:
         link: Ein Produkt-Attribut anlegen
       not_enough_items:
         title: Verdammt! Sie können nur {{ productCount }}/{{ totalCount }} Produkte sehen.
-        subtitle:
-          usable_in_grid: Um alle Produkte anzuzeigen, klicken Sie hier!
-          not_usable_in_grid: Um alle verknüpften Produkte zu ermitteln, muss das Produktattribut als "verwendbar im Raster" eingestellt sein.
         button: Alle Produkte anzeigen
       no_product:
         title: Dieses Asset ist mit keinem Produkt über das "{{ entityLabel }}" Produkt-Attribut verknüpft
@@ -275,6 +272,7 @@ pim_asset_manager:
       title: Asset Attribute
       code: Code
       label: Label
+      edit_subsection: Asset bearbeiten
     title: Assets
     create:
       header:
@@ -476,9 +474,6 @@ pim_asset_manager:
       button:
         cancel: Abbrechen
         confirm: Löschen
-  media_link:
-    download: Herunterladen
-    copy: Link in die Zwischenablage kopieren
 pim_enrich:
   confirmation:
     discard_changes: 'Sie verlieren Änderungen an der Entität "{{ entity }}", wenn Sie die Seite verlassen.'

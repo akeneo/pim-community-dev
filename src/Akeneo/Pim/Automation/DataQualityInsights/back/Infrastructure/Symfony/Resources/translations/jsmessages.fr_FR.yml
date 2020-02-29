@@ -32,9 +32,6 @@ akeneo_data_quality_insights:
         title: Cohérence
         attributes_link: Tous les attributs améliorables
         success: Le contenu est cohérent. Félicitations !
-    messages:
-      error:
-        no_evaluation_for_axis: La note n'a pas pu être calculée. Veuillez réessayer plus tard.
   product_edit_form:
     attribute_filter:
       all_missing_attributes: Tous les attributs manquants
@@ -43,6 +40,8 @@ akeneo_data_quality_insights:
       title: Corrections
       original_text_title: Original
       suggestions_title: Propositions
+      ignore_all_suggestions_button_label: Ignorer
+    title_suggestion_popover:
       ignore_all_suggestions_button_label: Ignorer
 pim_title:
   akeneo_data_quality_insights_dashboard: Qualité des données
