@@ -56,10 +56,14 @@ akeneo_franklin_insights:
           error: "Necessita crear una família en el catàleg per accedir a aquesta pàgina."
           family_status:
             pending: 'Nou atribut Franklin a revisar'
+            full: 'Tots els atributs Franklin mapats'
           types_mismatch_warning: 'Atenció: incompatibilitat de tipus d''atributs.'
       constraint:
         missing_target_key: 'Falta l''objectiu clau pel mapatge'
         missing_attribute_key: 'Falta {{ expectedKey }} clau pel mapatge amb l''objectiu clau "{{ targetKey }}"'
+        invalid_attribute_type_mapping: 'No s''han pogut mapar els atributs Franklin al tipus d''atributs PIM "{{ pimType }}"'
+        empty_mapping: 'No s''han pogut mapar els atributs Franklin amb un mapat buit'
+        localizable_not_allowed: 'No s''han pogut mapar els atributs Franklin a atributs localitzables PIM'
         attribute_not_in_family_not_allowed: 'L''atribut PIM ha de ser de la família seleccionada.'
         only_unknown_mapped_attributes: 'No s''han trobat atributs en el mapatge d''atributs'
     product_subscription:
@@ -132,6 +136,7 @@ akeneo_franklin_insights:
         title: 'Les estadístiques de Franklin només estan disponibles per locals en anglès.'
         sub_title: 'Estigues atent, els locals ja arriben.'
       save:
+        warning: '{1}Canviar el mapat pot afectar una subscripció. Esteu segur?|]1,+Inf[Canviar el mapat pot afectar {{ count }} subscripcions. Esteu segur?'
         title: 'Atenció!'
   mass_edit:
     product:

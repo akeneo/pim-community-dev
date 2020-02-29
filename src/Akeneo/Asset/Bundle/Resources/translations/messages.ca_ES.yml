@@ -236,3 +236,6 @@ pimee_enrich:
       options:
         width: '% value%px d''amplada'
         height: '% value%px d''alçada'
+asset_tree:
+  remove:
+    error_linked: Aquest arbre de categories no es pot eliminar. ja que està configurat com a arbre de categories de recursos per defecte d'un usuari.
