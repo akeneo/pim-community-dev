@@ -16,7 +16,6 @@
         "noUnusedParameters": true,
         "outDir": "lib",
         "rootDir": "src",
-        "skipLibCheck": true,
         "sourceMap": true,
         "strictBindCallApply": true,
         "strictFunctionTypes": true,
