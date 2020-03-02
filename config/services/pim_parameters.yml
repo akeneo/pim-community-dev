@@ -9,7 +9,7 @@ parameters:
     mailer_encryption:    ~
     mailer_user:          ~
     mailer_password:      ~
-    mailer_from_address:  no-reply@example.com
+    mailer_from_address:  '%env(MAILER_FROM_ADDRESS)%'
     mailer_from_name:     Akeneo Admin
 
     # WebSocket server config

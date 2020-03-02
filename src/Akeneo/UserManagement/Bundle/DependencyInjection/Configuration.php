@@ -30,7 +30,6 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('address')
-                            ->defaultValue('no-reply@example.com')
                             ->cannotBeEmpty()
                         ->end()
                         ->scalarNode('name')
