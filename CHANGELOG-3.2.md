@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9111: Fix the variant list when the channel does not support the selected locale
+
 # 3.2.41 (2020-02-26)
 
 ## Bug fixes:
