@@ -66,4 +66,11 @@ class InMemoryCategoryRepositorySpec extends ObjectBehavior
         $this->getAllChildrenCodes($category, true)
             ->shouldReturn(['root', 'child1', 'child11', 'child12', 'child2', 'child3']);
     }
+
+    function it_returns_all_categories()
+    {
+        $list = $this->findAll();
+        $list->shouldBeArray();
+        $list[0]->shouldBeAnInstanceOf(Category::class);
+    }
 }
