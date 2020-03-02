@@ -3,6 +3,7 @@
 ## Improvements
 
 - DAPI-810: Evaluate synchronous criteria on unitary product save
+- DAPI-874: Call spellcheck only when clicking in a field 
 
 # 4.0.6 (2020-02-19)
 
