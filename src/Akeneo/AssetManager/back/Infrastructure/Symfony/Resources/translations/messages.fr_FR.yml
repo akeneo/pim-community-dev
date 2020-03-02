@@ -8,6 +8,8 @@ akeneo_assetmanager:
       delete: Supprimer une famille de ressources
       manage_permission: Gérer les autorisations de la famille de ressources
       manage_transformation: Gérer les transformations de la famille de ressources
+      manage_product_link_rule: Gérer les règles de rattachement aux produits de la famille de ressources
+      execute_product_link_rule: Exécuter les règles de rattachement aux produits sur toutes les ressources d'une famille
     asset:
       create: Créer une ressource
       edit: Editer les ressources
@@ -21,6 +23,11 @@ akeneo_assetmanager:
     option:
       edit: Modifier les options
       delete: Supprimer une option
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "Calculer les transformations de ressources"
 #pim_analytics:
 #info_type:
 #nb_asset_families: Number of asset families

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLocalesByChannelQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetLocalesByChannelQuery;
 use Akeneo\Test\Integration\TestCase;
 
-class GetLocalesByChannelQueryIntegration extends TestCase
+class CachedGetLocalesByChannelQueryIntegration extends TestCase
 {
     public function test_it_returns_all_locales_by_channel()
     {
@@ -27,8 +27,8 @@ class GetLocalesByChannelQueryIntegration extends TestCase
         ];
 
         $result = $this
-            ->get(GetLocalesByChannelQuery::class)
-            ->execute();
+            ->get(CachedGetLocalesByChannelQuery::class)
+            ->getArray();
 
         $this->assertSame($expectedLocalesAndChanels, $result);
     }

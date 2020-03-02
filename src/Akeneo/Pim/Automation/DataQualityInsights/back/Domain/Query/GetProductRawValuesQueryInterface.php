@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
-interface GetProductRawValuesByAttributeQueryInterface
+interface GetProductRawValuesQueryInterface
 {
-    public function execute(ProductId $productId, array $attributeCodes): array;
+    public function execute(ProductId $productId): array;
 }

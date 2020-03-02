@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Con
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,11 +33,15 @@ class CheckTextController
 
     private $supportedLocaleChecker;
 
-    public function __construct(FeatureFlag $featureFlag, TextChecker $textChecker, SupportedLocaleChecker $supportedLocaleChecker)
+    /** @var LoggerInterface */
+    private $logger;
+
+    public function __construct(FeatureFlag $featureFlag, TextChecker $textChecker, SupportedLocaleChecker $supportedLocaleChecker, LoggerInterface $logger)
     {
         $this->featureFlag = $featureFlag;
         $this->textChecker = $textChecker;
         $this->supportedLocaleChecker = $supportedLocaleChecker;
+        $this->logger = $logger;
     }
 
     public function __invoke(Request $request)
@@ -52,6 +57,12 @@ class CheckTextController
         if (empty($text) || !$this->supportedLocaleChecker->isSupported($localeCode)) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
+
+        $this->logger->info('spelling evaluation', [
+            'source' => 'pef',
+            'value' => $text,
+            'localeCode' => strval($localeCode)
+        ]);
 
         $analysis = $this->textChecker->check($text, $localeCode);
 

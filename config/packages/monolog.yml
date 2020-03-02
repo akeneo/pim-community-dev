@@ -14,8 +14,14 @@ monolog:
             level: warning
             channels: ['franklin']
             formatter: 'monolog.formatter.json'
+        quality:
+            type: stream
+            path:  "php://stderr"
+            level: info
+            channels: ['quality']
+            formatter: 'monolog.formatter.json'
         authentication:
             type: service
             id: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler'
             channels: ['security']
-    channels: ['franklin']
+    channels: ['franklin', 'quality']

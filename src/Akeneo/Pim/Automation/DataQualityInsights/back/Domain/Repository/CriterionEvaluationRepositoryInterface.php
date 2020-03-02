@@ -19,14 +19,7 @@ interface CriterionEvaluationRepositoryInterface
 {
     public function create(Write\CriterionEvaluationCollection $criteriaEvaluations): void;
 
-    public function update(Write\CriterionEvaluation $criterionEvaluation): void;
-
-    /**
-     * @param array $productIds
-     *
-     * @return Write\CriterionEvaluation[]|null
-     */
-    public function findPendingByProductIds(array $productIds): ?array;
+    public function update(Write\CriterionEvaluationCollection $criteriaEvaluations): void;
 
     public function purgeUntil(\DateTimeImmutable $date): void;
 }

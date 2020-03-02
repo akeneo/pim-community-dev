@@ -1,8 +1,15 @@
 version: 2.1
 
 aliases:
-  - &envVarsDeploy
+  - &envVarsDeployDev
+      ENV_NAME: "dev"
       GOOGLE_PROJECT_ID: "akecld-saas-dev"
+      GOOGLE_COMPUTE_ZONE: "europe-west3-a"
+      CLUSTER_NAME: "europe-west3-a"
+
+  - &envVarsDeployPreprod
+      ENV_NAME: "preprod"
+      GOOGLE_PROJECT_ID: "akecld-saas-preprod"
       GOOGLE_COMPUTE_ZONE: "europe-west3-a"
       CLUSTER_NAME: "europe-west3-a"
 
@@ -11,7 +18,7 @@ aliases:
         - image: eu.gcr.io/akeneo-cloud/cloud-deployer:1
           auth:
             username: _json_key  # default username when using a JSON key file to authenticate
-            password: $GCLOUD_SERVICE_KEY  # JSON service account you created, do not encode to base64
+            password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
 jobs:
   checkout:
@@ -270,13 +277,13 @@ jobs:
 
   build_prod:
       environment:
-        <<: *envVarsDeploy
+        <<: *envVarsDeployDev
       machine:
           image: ubuntu-1604:201903-01
       steps:
           - attach_workspace:
                 at: ~/
-          - set_gcloud_config
+          - set_gcloud_config_dev
           - run:
               name: Build PROD PIM docker image
               command: IMAGE_TAG=$CIRCLE_SHA1 IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
@@ -286,12 +293,12 @@ jobs:
 
   deploy_master_environment:
       environment:
-        <<: *envVarsDeploy
+        <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
       steps:
           - attach_workspace:
                 at: ~/
-          - set_gcloud_config
+          - set_gcloud_config_dev
           - prepare_terraform
           - run:
               name: Prepare helm deployment on kubernetes
@@ -315,13 +322,13 @@ jobs:
 
   deploy_upgrade_pim3_environment:
       environment:
-        <<: *envVarsDeploy
+        <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
       steps:
           - attach_workspace:
                 at: ~/
           - add_ssh_keys
-          - set_gcloud_config
+          - set_gcloud_config_dev
           - run:
               name: PIM3 deployment on kubernetes
               command: |
@@ -349,16 +356,31 @@ jobs:
 
   release:
       environment:
-          <<: *envVarsDeploy
+          <<: *envVarsDeployDev
       machine:
           image: ubuntu-1604:201903-01
       steps:
           -   attach_workspace:
                   at: ~/
-          - set_gcloud_config
+          - set_gcloud_config_dev
           - run:
               name: make release
               command: OLD_IMAGE_TAG=$CIRCLE_SHA1 make release
+
+  deploy_helpdesk_environment:
+      environment:
+        <<: *envVarsDeployPreprod
+      <<: *dockerCloudDeployer
+      steps:
+            - attach_workspace:
+                at: ~/
+            - set_gcloud_config_preprod
+            - add_ssh_keys
+            - run:
+                name: Get latest release, generate config files and deploy
+                command: |
+                    ssh-keyscan github.com >> ~/.ssh/known_hosts
+                    ENV_NAME=preprod make deploy_latest_release_for_helpdesk
 
   test_back_missing_structure_migrations:
       machine:
@@ -462,6 +484,21 @@ workflows:
                     - test_back_data_migrations
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
+
+  nightly_helpdesk:
+      triggers:
+          - schedule:
+                cron: "30 4 * * *"
+                filters:
+                    branches:
+                        only:
+                            - master
+
+      jobs:
+          - checkout
+          - deploy_helpdesk_environment:
+                requires:
+                    - checkout
 
   nightly:
       triggers:
@@ -569,22 +606,37 @@ workflows:
                     - test_back_data_migrations
 
 commands:
-  set_gcloud_config:
+  set_gcloud_config_dev:
     description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."
     steps:
       - run:
           name: "Set Gcloud Config."
           shell: "/bin/bash -eo pipefail"
           command: |
-            echo ${GCLOUD_SERVICE_KEY} | gcloud auth activate-service-account --key-file=-
+            echo ${GCLOUD_SERVICE_KEY_DEV} | gcloud auth activate-service-account --key-file=-
             gcloud config set project ${GOOGLE_PROJECT_ID}
             gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
             gcloud container clusters get-credentials ${GOOGLE_COMPUTE_ZONE} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_COMPUTE_ZONE}
-            echo ${GCLOUD_SERVICE_KEY} > ${HOME}/gcloud-service-key.json
+            echo ${GCLOUD_SERVICE_KEY_DEV} > ${HOME}/gcloud-service-key.json
             echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
             export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
             gcloud auth configure-docker --quiet
 
+  set_gcloud_config_preprod:
+    description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."
+    steps:
+      - run:
+          name: "Set Gcloud Config."
+          shell: "/bin/bash -eo pipefail"
+          command: |
+            echo ${GCLOUD_SERVICE_KEY_PREPROD} | gcloud auth activate-service-account --key-file=-
+            gcloud config set project ${GOOGLE_PROJECT_ID}
+            gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+            gcloud container clusters get-credentials ${GOOGLE_COMPUTE_ZONE} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_COMPUTE_ZONE}
+            echo ${GCLOUD_SERVICE_KEY_PREPROD} > ${HOME}/gcloud-service-key.json
+            echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
+            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
+            gcloud auth configure-docker --quiet
 
   prepare_terraform:
     description: "Prepare terraform configuration."

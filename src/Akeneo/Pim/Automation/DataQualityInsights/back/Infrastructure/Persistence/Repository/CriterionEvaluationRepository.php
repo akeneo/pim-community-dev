@@ -16,10 +16,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
 
 final class CriterionEvaluationRepository implements CriterionEvaluationRepositoryInterface
@@ -27,13 +23,9 @@ final class CriterionEvaluationRepository implements CriterionEvaluationReposito
     /** @var Connection */
     private $db;
 
-    /** @var Clock */
-    private $clock;
-
-    public function __construct(Connection $db, Clock $clock)
+    public function __construct(Connection $db)
     {
         $this->db = $db;
-        $this->clock = $clock;
     }
 
     public function create(Write\CriterionEvaluationCollection $criteriaEvaluations): void
@@ -66,84 +58,46 @@ SQL;
         $statement->execute();
     }
 
-    public function update(Write\CriterionEvaluation $criterionEvaluation): void
+    public function update(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $sql = <<<'SQL'
 UPDATE pimee_data_quality_insights_criteria_evaluation
-SET
-    criterion_code = :criterion_code,
-    product_id = :product_id,
-    created_at = :created_at,
-    started_at = :started_at,
-    ended_at = :ended_at,
-    status = :status,
-    pending = :pending,
-    result = :result
-WHERE id = :id
+SET criterion_code = ?, product_id = ?, created_at = ?, started_at = ?, ended_at = ?, status = ?, pending = ?, result = ?
+WHERE id = ?
 SQL;
-        $result = null;
-        $criterionEvaluationResult = $criterionEvaluation->getResult();
 
-        /**
-         * @fixme Change the format to not duplicate every channel and locale for each attribute
-         */
-        if ($criterionEvaluationResult instanceof Write\CriterionEvaluationResult) {
-            $result = json_encode([
-                'rates' => $criterionEvaluationResult->getRates()->toArrayInt(),
-                'status' => $criterionEvaluationResult->getStatus()->toArrayString(),
-                'data' => $criterionEvaluationResult->getDataToArray(),
-            ]);
+        $queries = implode('; ', array_fill(0, $criteriaEvaluations->count(), $sql));
+        $statement = $this->db->prepare($queries);
+
+        $valuePlaceholderIndex = 1;
+        /** @var Write\CriterionEvaluation $criterionEvaluation */
+        foreach ($criteriaEvaluations as $criterionEvaluation) {
+            $result = null;
+            $criterionEvaluationResult = $criterionEvaluation->getResult();
+
+            /**
+             * @fixme Change the format to not duplicate every channel and locale for each attribute
+             */
+            if ($criterionEvaluationResult instanceof Write\CriterionEvaluationResult) {
+                $result = json_encode([
+                    'rates' => $criterionEvaluationResult->getRates()->toArrayInt(),
+                    'status' => $criterionEvaluationResult->getStatus()->toArrayString(),
+                    'data' => $criterionEvaluationResult->getDataToArray(),
+                ]);
+            }
+
+            $statement->bindValue($valuePlaceholderIndex++, $criterionEvaluation->getCriterionCode());
+            $statement->bindValue($valuePlaceholderIndex++, $criterionEvaluation->getProductId()->toInt(), \PDO::PARAM_INT);
+            $statement->bindValue($valuePlaceholderIndex++, $criterionEvaluation->getCreatedAt()->format(Clock::TIME_FORMAT));
+            $statement->bindValue($valuePlaceholderIndex++, $criterionEvaluation->getStartedAt() instanceof \DateTimeImmutable ? $criterionEvaluation->getStartedAt()->format(Clock::TIME_FORMAT) : null);
+            $statement->bindValue($valuePlaceholderIndex++, $criterionEvaluation->getEndedAt() instanceof \DateTimeImmutable ? $criterionEvaluation->getEndedAt()->format(Clock::TIME_FORMAT) : null);
+            $statement->bindValue($valuePlaceholderIndex++, $criterionEvaluation->getStatus());
+            $statement->bindValue($valuePlaceholderIndex++, $criterionEvaluation->isPending() ? 1 : null, \PDO::PARAM_INT);
+            $statement->bindValue($valuePlaceholderIndex++, $result);
+            $statement->bindValue($valuePlaceholderIndex++, $criterionEvaluation->getId());
         }
 
-        $params = [
-            'id' => strval($criterionEvaluation->getId()),
-            'criterion_code' => strval($criterionEvaluation->getCriterionCode()),
-            'product_id' => $criterionEvaluation->getProductId()->toInt(),
-            'created_at' => $criterionEvaluation->getCreatedAt()->format(Clock::TIME_FORMAT),
-            'started_at' => $criterionEvaluation->getStartedAt() instanceof \DateTimeImmutable ? $criterionEvaluation->getStartedAt()->format(Clock::TIME_FORMAT) : null,
-            'ended_at' => $criterionEvaluation->getEndedAt() instanceof \DateTimeImmutable ? $criterionEvaluation->getEndedAt()->format(Clock::TIME_FORMAT) : null,
-            'status' => strval($criterionEvaluation->getStatus()),
-            'pending' => $criterionEvaluation->isPending() ? 1 : null,
-            'result' => $result,
-        ];
-
-        $this->db->executeQuery($sql, $params);
-    }
-
-    public function findPendingByProductIds(array $productIds): ?array
-    {
-        if (empty($productIds)) {
-            return [];
-        }
-
-        $sql = <<<'SQL'
-SELECT * 
-FROM pimee_data_quality_insights_criteria_evaluation 
-WHERE status = :status 
-AND product_id IN(:product_ids)
-SQL;
-        $params = [
-            'status' => CriterionEvaluationStatus::PENDING,
-            'product_ids' => $productIds,
-        ];
-
-        $types = [
-            'status' => \PDO::PARAM_STR,
-            'product_ids' => Connection::PARAM_INT_ARRAY,
-        ];
-
-        $stmt = $this->db->executeQuery($sql, $params, $types);
-        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-        return array_map(function (array $result) {
-            return new Write\CriterionEvaluation(
-                new CriterionEvaluationId($result['id']),
-                new CriterionCode($result['criterion_code']),
-                new ProductId(intval($result['product_id'])),
-                $this->clock->fromString($result['created_at']),
-                new CriterionEvaluationStatus($result['status'])
-            );
-        }, $results);
+        $statement->execute();
     }
 
     public function purgeUntil(\DateTimeImmutable $date): void

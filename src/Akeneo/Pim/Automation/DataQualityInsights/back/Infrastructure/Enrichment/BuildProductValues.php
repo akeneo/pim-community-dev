@@ -15,19 +15,19 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductRawValuesByAttributeQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductRawValuesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 class BuildProductValues implements BuildProductValuesInterface
 {
-    /** @var GetProductRawValuesByAttributeQueryInterface */
+    /** @var GetProductRawValuesQueryInterface */
     private $getProductRawValuesByAttributeQuery;
 
     /** @var GetLocalesByChannelQueryInterface */
     private $localesByChannelQuery;
 
     public function __construct(
-        GetProductRawValuesByAttributeQueryInterface $getProductRawValuesByAttributeQuery,
+        GetProductRawValuesQueryInterface $getProductRawValuesByAttributeQuery,
         GetLocalesByChannelQueryInterface $localesByChannelQuery
     ) {
         $this->getProductRawValuesByAttributeQuery = $getProductRawValuesByAttributeQuery;
@@ -40,14 +40,18 @@ class BuildProductValues implements BuildProductValuesInterface
             return [];
         }
 
-        $rawValues = $this->getProductRawValuesByAttributeQuery->execute($productId, $attributesCodes);
+        $rawValues = $this->getProductRawValuesByAttributeQuery->execute($productId);
 
-        return $this->buildByChannelAndLocale($attributesCodes, $rawValues);
+        $filteredRawValues = array_filter($rawValues, function (string $attributeCode) use ($attributesCodes) {
+            return in_array($attributeCode, $attributesCodes);
+        }, ARRAY_FILTER_USE_KEY);
+
+        return $this->buildByChannelAndLocale($attributesCodes, $filteredRawValues);
     }
 
     private function buildByChannelAndLocale(array $attributeCodes, array $rawValues): array
     {
-        $localesByChannel = $this->localesByChannelQuery->execute();
+        $localesByChannel = $this->localesByChannelQuery->getArray();
 
         $result = [];
         foreach ($attributeCodes as $attributeCode) {

@@ -131,3 +131,15 @@ ifeq ($(CI),true)
 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
 endif
 	bash $(PWD)/deployments/bin/release.sh ${OLD_IMAGE_TAG}
+
+.PHONY: deploy_latest_release_for_helpdesk
+deploy_latest_release_for_helpdesk:
+	RELEASE_TO_DEPLOY=$$(cd ${PIM_SRC_DIR}; git fetch origin &> /dev/null && git tag --list | grep -E "^v?[0-9]+$$" | sort -r | head -n 1); \
+	echo $${RELEASE_TO_DEPLOY};  \
+	INSTANCE_NAME=pimci-helpdesk IMAGE_TAG=$${RELEASE_TO_DEPLOY} make create-ci-release-files; \
+	INSTANCE_NAME=pimci-helpdesk IMAGE_TAG=$${RELEASE_TO_DEPLOY} make deploy && \
+	INSTANCE_NAME=pimci-helpdesk IMAGE_TAG=$${RELEASE_TO_DEPLOY} make slack_helpdesk
+
+.PHONY: slack_helpdesk
+slack_helpdesk:
+	curl -X POST -H 'Content-type: application/json' --data '{"text":"Serenity env has been deployed with the last tag $(IMAGE_TAG) : https://pimci-helpdesk.preprod.cloud.akeneo.com"}' $${SLACK_URL_HELPDESK};

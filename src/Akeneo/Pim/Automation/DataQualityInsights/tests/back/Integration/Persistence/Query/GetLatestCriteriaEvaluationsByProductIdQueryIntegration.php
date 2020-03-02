@@ -100,10 +100,11 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
             ->addImprovableAttributes($channelMobile, $localeFr, ['weight'])
         ;
 
-        $repository->create((new Write\CriterionEvaluationCollection())->add($latestCompletenessEvaluationDone));
+        $latestEvaluations = (new Write\CriterionEvaluationCollection())->add($latestCompletenessEvaluationDone);
+        $repository->create($latestEvaluations);
         $latestCompletenessEvaluationDone->start();
         $latestCompletenessEvaluationDone->end($latestCompletenessEvaluationResult);
-        $repository->update($latestCompletenessEvaluationDone);
+        $repository->update($latestEvaluations);
 
         $olderCompletenessEvaluationDone = new Write\CriterionEvaluation(
             new CriterionEvaluationId(),
@@ -113,10 +114,11 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
             CriterionEvaluationStatus::done()
         );
 
-        $repository->create((new Write\CriterionEvaluationCollection())->add($olderCompletenessEvaluationDone));
+        $olderEvaluations = (new Write\CriterionEvaluationCollection())->add($olderCompletenessEvaluationDone);
+        $repository->create($olderEvaluations);
         $olderCompletenessEvaluationDone->start();
         $olderCompletenessEvaluationDone->end(new Write\CriterionEvaluationResult());
-        $repository->update($olderCompletenessEvaluationDone);
+        $repository->update($olderEvaluations);
     }
 
     private function givenAPendingSpellingEvaluationAndAnOlderSpellingEvaluationInProgress(): void
@@ -133,9 +135,10 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
             CriterionEvaluationStatus::pending()
         );
 
-        $repository->create((new Write\CriterionEvaluationCollection())->add($spellingEvaluationInProgress));
+        $evaluations = (new Write\CriterionEvaluationCollection())->add($spellingEvaluationInProgress);
+        $repository->create($evaluations);
         $spellingEvaluationInProgress->start();
-        $repository->update($spellingEvaluationInProgress);
+        $repository->update($evaluations);
 
         $spellingEvaluationPending = new Write\CriterionEvaluation(
             new CriterionEvaluationId(self::LATEST_SPELLING_EVALUATION_ID),
@@ -162,9 +165,10 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
             CriterionEvaluationStatus::pending()
         );
 
-        $repository->create((new Write\CriterionEvaluationCollection())->add($grammarEvaluationTimeout));
+        $evaluationsTimeout = (new Write\CriterionEvaluationCollection())->add($grammarEvaluationTimeout);
+        $repository->create($evaluationsTimeout);
         $grammarEvaluationTimeout->flagsAsTimeout();
-        $repository->update($grammarEvaluationTimeout);
+        $repository->update($evaluationsTimeout);
 
         $grammarEvaluationDone = new Write\CriterionEvaluation(
             new CriterionEvaluationId(),
@@ -174,10 +178,11 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
             CriterionEvaluationStatus::pending()
         );
 
-        $repository->create((new Write\CriterionEvaluationCollection())->add($grammarEvaluationDone));
+        $evaluationsDone = (new Write\CriterionEvaluationCollection())->add($grammarEvaluationDone);
+        $repository->create($evaluationsDone);
         $grammarEvaluationDone->start();
         $grammarEvaluationDone->end(new Write\CriterionEvaluationResult());
-        $repository->update($grammarEvaluationDone);
+        $repository->update($evaluationsDone);
     }
 
     private function givenACompletenessEvaluationDoneForAnotherProduct(): void
@@ -212,11 +217,12 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
             ->addImprovableAttributes($channelMobile, $localeFr, ['weight'])
         ;
 
+        $evaluations = (new Write\CriterionEvaluationCollection())->add($completenessEvaluation);
         $repository = $this->getRepository();
-        $repository->create((new Write\CriterionEvaluationCollection())->add($completenessEvaluation));
+        $repository->create($evaluations);
         $completenessEvaluation->start();
         $completenessEvaluation->end($completenessEvaluationResult);
-        $repository->update($completenessEvaluation);
+        $repository->update($evaluations);
     }
 
     private function getClock(): Clock
