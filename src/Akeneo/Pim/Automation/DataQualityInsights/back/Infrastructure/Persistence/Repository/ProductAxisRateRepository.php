@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductAxisRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -51,13 +54,16 @@ final class ProductAxisRateRepository implements ProductAxisRateRepositoryInterf
         $this->db = $db;
     }
 
-    public function save(array $productAxisRates): void
+    /**
+     * @param ProductAxisRates[] $productsAxesRates
+     */
+    public function save(array $productsAxesRates): void
     {
-        if (empty($productAxisRates)) {
+        if (empty($productsAxesRates)) {
             return;
         }
 
-        $valuesPlaceholders = implode(',', array_fill(0, count($productAxisRates), '(?, ?, ?, ?)'));
+        $valuesPlaceholders = implode(',', array_fill(0, count($productsAxesRates), '(?, ?, ?, ?)'));
 
         $sql = <<<SQL
 REPLACE INTO pimee_data_quality_insights_product_axis_rates (axis_code, product_id, evaluated_at, rates)
@@ -66,11 +72,17 @@ SQL;
 
         $statement = $this->db->prepare($sql);
         $valuePlaceholderIndex = 1;
-        foreach ($productAxisRates as $item) {
-            $statement->bindValue($valuePlaceholderIndex++, $item['axis']);
-            $statement->bindValue($valuePlaceholderIndex++, strval($item['product_id']));
-            $statement->bindValue($valuePlaceholderIndex++, $item['evaluated_at']->format('Y-m-d'));
-            $statement->bindValue($valuePlaceholderIndex++, json_encode($item['rates']));
+        foreach ($productsAxesRates as $productAxisRates) {
+            $rates = $productAxisRates->getRates()->mapWith(function (Rate $rate) {
+                return [
+                    'rank' => Rank::fromRate($rate)->toInt(),
+                    'value' => $rate->toInt(),
+                ];
+            });
+            $statement->bindValue($valuePlaceholderIndex++, $productAxisRates->getAxisCode());
+            $statement->bindValue($valuePlaceholderIndex++, $productAxisRates->getProductId()->toInt());
+            $statement->bindValue($valuePlaceholderIndex++, $productAxisRates->getEvaluatedAt()->format('Y-m-d'));
+            $statement->bindValue($valuePlaceholderIndex++, json_encode($rates));
         }
         $statement->execute();
     }

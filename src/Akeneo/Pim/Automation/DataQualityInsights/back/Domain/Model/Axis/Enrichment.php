@@ -51,4 +51,9 @@ final class Enrichment implements Axis
     {
         return $this->criteriaCodes;
     }
+
+    public function getCriterionCoefficient(CriterionCode $criterionCode): int
+    {
+        return 1;
+    }
 }

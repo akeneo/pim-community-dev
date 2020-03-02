@@ -1,4 +1,0 @@
-services:
-    Akeneo\Pim\Automation\DataQualityInsights\Application\Axis\ComputeEnrichmentRates: ~
-
-    Akeneo\Pim\Automation\DataQualityInsights\Application\Axis\ComputeConsistencyRates: ~

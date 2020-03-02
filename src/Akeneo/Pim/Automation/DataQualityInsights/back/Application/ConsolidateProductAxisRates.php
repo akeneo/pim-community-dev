@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Axis;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -22,56 +26,52 @@ class ConsolidateProductAxisRates
     /** @var GetLatestCriteriaEvaluationsByProductIdQueryInterface */
     private $getLatestCriteriaEvaluationsByProductIdQuery;
 
-    /** @var ComputeAxisRatesInterface */
-    private $computeEnrichmentRates;
-
-    /** @var ComputeAxisRatesInterface */
-    private $computeConsistencyRates;
-
     /** @var ProductAxisRateRepositoryInterface */
     private $productAxisRateRepository;
 
     /** @var Clock */
     private $clock;
 
+    /** @var Axis[] */
+    private $axes;
+
+    /** @var ComputeAxisRates */
+    private $computeAxisRates;
+
     public function __construct(
         GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
-        ComputeAxisRatesInterface $computeEnrichmentRates,
-        ComputeAxisRatesInterface $computeConsistencyRates,
         ProductAxisRateRepositoryInterface $productAxisRateRepository,
+        ComputeAxisRates $computeAxisRates,
         Clock $clock
     ) {
         $this->getLatestCriteriaEvaluationsByProductIdQuery = $getLatestCriteriaEvaluationsByProductIdQuery;
-        $this->computeEnrichmentRates = $computeEnrichmentRates;
-        $this->computeConsistencyRates = $computeConsistencyRates;
         $this->productAxisRateRepository = $productAxisRateRepository;
+        $this->computeAxisRates = $computeAxisRates;
         $this->clock = $clock;
+        $this->axes = [
+            new Enrichment(),
+            new Consistency(),
+        ];
     }
 
     public function consolidate(array $productIds)
     {
         $currentDateTime = $this->clock->getCurrentTime();
-        $productAxisRates = [];
+        $productsAxesRates = [];
 
         foreach ($productIds as $productId) {
-            $latestCriteriaEvaluations = $this->getLatestCriteriaEvaluationsByProductIdQuery->execute(new ProductId($productId));
-            $enrichmentRates = $this->computeEnrichmentRates->compute($latestCriteriaEvaluations);
-            $consistencyRates = $this->computeConsistencyRates->compute($latestCriteriaEvaluations);
-
-            $productAxisRates[] = [
-                'evaluated_at' => $currentDateTime,
-                'product_id' => $productId,
-                'axis' => 'enrichment',
-                'rates' => $enrichmentRates->formatForConsolidation(),
-            ];
-            $productAxisRates[] = [
-                'evaluated_at' => $currentDateTime,
-                'product_id' => $productId,
-                'axis' => 'consistency',
-                'rates' => $consistencyRates->formatForConsolidation(),
-            ];
+            $productId = new ProductId($productId);
+            $latestCriteriaEvaluations = $this->getLatestCriteriaEvaluationsByProductIdQuery->execute($productId);
+            foreach ($this->axes as $axis) {
+                $productsAxesRates[] = new Write\ProductAxisRates(
+                    $axis->getCode(),
+                    $productId,
+                    $currentDateTime,
+                    $this->computeAxisRates->compute($axis, $latestCriteriaEvaluations)
+                );
+            }
         }
 
-        $this->productAxisRateRepository->save($productAxisRates);
+        $this->productAxisRateRepository->save($productsAxesRates);
     }
 }

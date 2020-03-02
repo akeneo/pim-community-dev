@@ -33,6 +33,10 @@ final class ServiceStatusControllerEndToEnd extends TestCase
                 'file_storage' => [
                     'ok' => true,
                     'message' => 'OK'
+                ],
+                'smtp' => [
+                    'ok' => true,
+                    'message' => 'OK'
                 ]
             ]
         ];
