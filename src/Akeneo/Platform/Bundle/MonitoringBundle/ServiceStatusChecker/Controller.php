@@ -37,16 +37,21 @@ final class Controller
     /** @var string */
     private $authenticationToken;
 
+    /** @var SmtpChecker */
+    private $smtpChecker;
+
     public function __construct(
         MysqlChecker $mysqlChecker,
         ElasticsearchChecker $elasticsearchChecker,
         FileStorageChecker $fileStorageChecker,
+        SmtpChecker $smtpChecker,
         string $authenticationToken
     ) {
         $this->mysqlChecker = $mysqlChecker;
         $this->elasticsearchChecker = $elasticsearchChecker;
         $this->fileStorageChecker = $fileStorageChecker;
         $this->authenticationToken = $authenticationToken;
+        $this->smtpChecker = $smtpChecker;
     }
 
     public function getAction(Request $request): JsonResponse
@@ -59,12 +64,14 @@ final class Controller
         $mysqlStatus = $this->mysqlChecker->status();
         $esStatus = $this->elasticsearchChecker->status();
         $fileStorageStatus = $this->fileStorageChecker->status();
+        $smtpStatus = $this->smtpChecker->status();
 
         $responseStatus = Response::HTTP_OK;
 
         if (!$mysqlStatus->isOk() ||
             !$esStatus->isOk() ||
-            !$fileStorageStatus->isOk()
+            !$fileStorageStatus->isOk() ||
+            !$smtpStatus->isOk()
         ) {
             $responseStatus = Response::HTTP_INTERNAL_SERVER_ERROR;
         }
@@ -83,6 +90,10 @@ final class Controller
                     'file_storage' => [
                             'ok' => $fileStorageStatus->isOk(),
                             'message' => $fileStorageStatus->getMessage()
+                    ],
+                    'smtp' => [
+                        'ok' => $smtpStatus->isOk(),
+                        'message' => $smtpStatus->getMessage()
                     ]
                 ]
             ],

@@ -14,6 +14,11 @@ services:
         arguments:
             - '@oneup_flysystem.mount_manager'
 
+    Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\SmtpChecker:
+        class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\SmtpChecker'
+        arguments:
+            - '@swiftmailer.mailer.default.transport.real'
+
     Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\Controller:
         public: true
         class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\Controller'
@@ -21,4 +26,5 @@ services:
             - '@Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\MysqlChecker'
             - '@Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ElasticsearchChecker'
             - '@Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageChecker'
+            - '@Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\SmtpChecker'
             - '%monitoring_authentication_token%'
