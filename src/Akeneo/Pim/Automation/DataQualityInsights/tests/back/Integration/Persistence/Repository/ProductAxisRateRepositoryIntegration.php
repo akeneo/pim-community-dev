@@ -13,8 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Repository;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductAxisRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -41,116 +47,179 @@ final class ProductAxisRateRepositoryIntegration extends TestCase
         $productAxisRates = $this->findAllProductAxisRates();
         $this->assertEmpty($productAxisRates);
 
-        $consistencyRates = [
+        $channelEcommerce = new ChannelCode('ecommerce');
+        $channelPrint = new ChannelCode('print');
+        $localeEn = new LocaleCode('en_US');
+        $localeFr = new LocaleCode('fr_FR');
+
+        $consistencyRates = (new ChannelLocaleRateCollection())
+            ->addRate($channelEcommerce, $localeEn, new Rate(87))
+            ->addRate($channelEcommerce, $localeFr, new Rate(47))
+            ->addRate($channelPrint, $localeEn, new Rate(100))
+            ->addRate($channelPrint, $localeFr, new Rate(67))
+        ;
+        $enrichmentRates = (new ChannelLocaleRateCollection())
+            ->addRate($channelEcommerce, $localeEn, new Rate(65))
+            ->addRate($channelEcommerce, $localeFr, new Rate(97))
+            ->addRate($channelPrint, $localeEn, new Rate(76))
+            ->addRate($channelPrint, $localeFr, new Rate(84))
+        ;
+
+        $expectedConsistencyRates = [
             'ecommerce' => [
-                'en_US' => 'B',
-                'fr_FR' => 'E',
+                'en_US' => [
+                    'rank' => 2,
+                    'value' => 87
+                ],
+                'fr_FR' => [
+                    'rank' => 5,
+                    'value' => 47
+                ],
             ],
             'print' => [
-                'en_US' => 'A',
-                'fr_FR' => 'D',
+                'en_US' => [
+                    'rank' => 1,
+                    'value' => 100
+                ],
+                'fr_FR' => [
+                    'rank' => 4,
+                    'value' => 67
+                ],
             ],
         ];
-        $enrichmentRates = [
+        $expectedEnrichmentRates = [
             'ecommerce' => [
-                'en_US' => 'D',
-                'fr_FR' => 'A',
+                'en_US' => [
+                    'rank' => 4,
+                    'value' => 65
+                ],
+                'fr_FR' => [
+                    'rank' => 1,
+                    'value' => 97
+                ],
             ],
             'print' => [
-                'en_US' => 'C',
-                'fr_FR' => 'B',
+                'en_US' => [
+                    'rank' => 3,
+                    'value' => 76
+                ],
+                'fr_FR' => [
+                    'rank' => 2,
+                    'value' => 84
+                ],
             ],
         ];
+
         $this->repository->save([
-            [
-                'evaluated_at' => new \DateTimeImmutable(),
-                'product_id' => new ProductId(123),
-                'axis' => 'consistency',
-                'rates' => $consistencyRates,
-            ],
-            [
-                'evaluated_at' => new \DateTimeImmutable(),
-                'product_id' => new ProductId(456),
-                'axis' => 'enrichment',
-                'rates' => $enrichmentRates,
-            ]
+            new ProductAxisRates(
+                new AxisCode('consistency'),
+                new ProductId(123),
+                new \DateTimeImmutable(),
+                $consistencyRates
+            ),
+            new ProductAxisRates(
+                new AxisCode('enrichment'),
+                new ProductId(456),
+                new \DateTimeImmutable(),
+                $enrichmentRates
+            )
         ]);
 
         $productAxisRates = $this->findAllProductAxisRates();
 
         $this->assertCount(2, $productAxisRates);
         $this->assertSame(123, (int) $productAxisRates[0]['product_id']);
-        $this->assertEqualsCanonicalizing($consistencyRates, json_decode($productAxisRates[0]['rates'], true));
+        $this->assertEqualsCanonicalizing($expectedConsistencyRates, json_decode($productAxisRates[0]['rates'], true));
         $this->assertSame(456, (int) $productAxisRates[1]['product_id']);
-        $this->assertEqualsCanonicalizing($enrichmentRates, json_decode($productAxisRates[1]['rates'], true));
+        $this->assertEqualsCanonicalizing($expectedEnrichmentRates, json_decode($productAxisRates[1]['rates'], true));
 
-        $consistencyRates = [
+        $updatedConsistencyRates = (new ChannelLocaleRateCollection())
+            ->addRate($channelEcommerce, $localeEn, new Rate(68))
+            ->addRate($channelEcommerce, $localeFr, new Rate(93))
+            ->addRate($channelPrint, $localeEn, new Rate(23))
+            ->addRate($channelPrint, $localeFr, new Rate(42))
+        ;
+        $expectedUpdatedConsistencyRates = [
             'ecommerce' => [
-                'en_US' => 'D',
-                'fr_FR' => 'A',
+                'en_US' => [
+                    'rank' => 4,
+                    'value' => 68
+                ],
+                'fr_FR' => [
+                    'rank' => 1,
+                    'value' => 93
+                ],
             ],
             'print' => [
-                'en_US' => 'E',
-                'fr_FR' => 'E',
+                'en_US' => [
+                    'rank' => 5,
+                    'value' => 23
+                ],
+                'fr_FR' => [
+                    'rank' => 5,
+                    'value' => 42
+                ],
             ],
         ];
         $this->repository->save([
-            [
-                'evaluated_at' => new \DateTimeImmutable(),
-                'product_id' => new ProductId(123),
-                'axis' => 'consistency',
-                'rates' => $consistencyRates,
-            ]
+            new ProductAxisRates(
+                new AxisCode('consistency'),
+                new ProductId(123),
+                new \DateTimeImmutable(),
+                $updatedConsistencyRates
+            )
         ]);
 
         $productAxisRates = $this->findAllProductAxisRates();
 
         $this->assertCount(2, $productAxisRates);
         $this->assertSame(123, (int) $productAxisRates[0]['product_id']);
-        $this->assertEqualsCanonicalizing($consistencyRates, json_decode($productAxisRates[0]['rates'], true));
+        $this->assertEqualsCanonicalizing($expectedUpdatedConsistencyRates, json_decode($productAxisRates[0]['rates'], true));
         $this->assertSame(456, (int) $productAxisRates[1]['product_id']);
-        $this->assertEqualsCanonicalizing($enrichmentRates, json_decode($productAxisRates[1]['rates'], true));
+        $this->assertEqualsCanonicalizing($expectedEnrichmentRates, json_decode($productAxisRates[1]['rates'], true));
     }
 
     public function test_it_purges_product_axis_rates_older_than_a_given_date()
     {
+        $consistency = new AxisCode('consistency');
         $productAxisRates = [
-            'product_123_consistency_last_rates' => [
-                'evaluated_at' => new \DateTimeImmutable('2019-12-17'),
-                'product_id' => new ProductId(123),
-                'axis' => 'consistency',
-                'rates' => [],
-            ],
-            'product_123_consistency_young_rates' => [
-                'evaluated_at' => new \DateTimeImmutable('2019-12-16'),
-                'product_id' => new ProductId(123),
-                'axis' => 'consistency',
-                'rates' => [],
-            ],
-            'product_123_consistency_old_rates' => [
-                'evaluated_at' => new \DateTimeImmutable('2019-12-15'),
-                'product_id' => new ProductId(123),
-                'axis' => 'consistency',
-                'rates' => [],
-            ],
-            'product_123_enrichment_old_but_last_rates' => [
-                'evaluated_at' => new \DateTimeImmutable('2019-11-23'),
-                'product_id' => new ProductId(123),
-                'axis' => 'enrichment',
-                'rates' => [],
-            ],
-            'product_42_consistency_last_rates' => [
-                'evaluated_at' => new \DateTimeImmutable('2019-11-28'),
-                'product_id' => new ProductId(42),
-                'axis' => 'enrichment',
-                'rates' => [],
-            ],
-            'product_42_consistency_old_rates' => [
-                'evaluated_at' => new \DateTimeImmutable('2019-11-27'),
-                'product_id' => new ProductId(123),
-                'axis' => 'consistency',
-                'rates' => [],
-            ],
+            'product_123_consistency_last_rates' => new ProductAxisRates(
+                $consistency,
+                new ProductId(123),
+                new \DateTimeImmutable('2019-12-17'),
+                new ChannelLocaleRateCollection()
+            ),
+            'product_123_consistency_young_rates' => new ProductAxisRates(
+                $consistency,
+                new ProductId(123),
+                new \DateTimeImmutable('2019-12-16'),
+                new ChannelLocaleRateCollection()
+            ),
+            'product_123_consistency_old_rates' => new ProductAxisRates(
+                $consistency,
+                new ProductId(123),
+                new \DateTimeImmutable('2019-12-15'),
+                new ChannelLocaleRateCollection()
+            ),
+            'product_123_enrichment_old_but_last_rates' => new ProductAxisRates(
+                $consistency,
+                new ProductId(123),
+                new \DateTimeImmutable('2019-12-23'),
+                new ChannelLocaleRateCollection()
+            ),
+            'product_42_consistency_last_rates' => new ProductAxisRates(
+                $consistency,
+                new ProductId(42),
+                new \DateTimeImmutable('2019-11-28'),
+                new ChannelLocaleRateCollection()
+            ),
+            'product_42_consistency_old_rates' =>
+                new ProductAxisRates(
+                $consistency,
+                new ProductId(42),
+                new \DateTimeImmutable('2019-11-27'),
+                new ChannelLocaleRateCollection()
+            )
         ];
 
         $this->repository->save(array_values($productAxisRates));
@@ -187,7 +256,7 @@ final class ProductAxisRateRepositoryIntegration extends TestCase
         $this->assertSame($expectedCount, $count);
     }
 
-    private function assertProductAxisRatesExists(array $productAxisRates): void
+    private function assertProductAxisRatesExists(ProductAxisRates $productAxisRates): void
     {
         $query = <<<SQL
 SELECT 1 FROM pimee_data_quality_insights_product_axis_rates 
@@ -199,9 +268,9 @@ SQL;
         $stmt = $this->db->executeQuery(
             $query,
             [
-                'product_id' => $productAxisRates['product_id']->toInt(),
-                'axis_code' => $productAxisRates['axis'],
-                'evaluated_at' => $productAxisRates['evaluated_at']->format('Y-m-d')
+                'product_id' => $productAxisRates->getProductId()->toInt(),
+                'axis_code' => $productAxisRates->getAxisCode(),
+                'evaluated_at' => $productAxisRates->getEvaluatedAt()->format('Y-m-d')
             ]
         );
 

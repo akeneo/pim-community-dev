@@ -13,9 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductAxisRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetRanksDistributionFromProductAxisRatesQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository;
 use Akeneo\Test\Integration\TestCase;
@@ -253,24 +259,30 @@ final class GetRanksDistributionFromProductAxisRatesQueryIntegration extends Tes
             $evaluatedAt = 0 === $i ? $consolidationDate : $consolidationDate->modify(sprintf('-%d DAY', $i));
 
             $this->productAxisRateRepository->save([
-                [ // Latest rates compared to the consolidation date
-                    'axis' => $axis,
-                    'product_id' => $productId,
-                    'evaluated_at' => $evaluatedAt,
-                    'rates' => ['ecommerce' => ['en_US' => ['rank' => $rank]]]
-                ],
-                [ // Too old rates compared to the consolidation date
-                    'axis' => $axis,
-                    'product_id' => $productId,
-                    'evaluated_at' => $evaluatedAt->modify('-1 DAY'),
-                    'rates' => ['ecommerce' => ['en_US' => ['rank' => $this->getDifferentRank($rank)]]]
-                ],
-                [ // Too young rates compared to the consolidation date
-                    'axis' => $axis,
-                    'product_id' => $productId,
-                    'evaluated_at' => (new \DateTimeImmutable(self::CONSOLIDATION_DATE))->modify('+1 DAY'),
-                    'rates' => ['ecommerce' => ['en_US' => ['rank' => $this->getDifferentRank($rank)]]]
-                ]
+                // Latest rates compared to the consolidation date
+                new ProductAxisRates(
+                    new AxisCode($axis),
+                    $productId,
+                    $evaluatedAt,
+                    (new ChannelLocaleRateCollection())
+                        ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $this->getRateFromRank($rank))
+                ),
+                // Too old rates compared to the consolidation date
+                new ProductAxisRates(
+                    new AxisCode($axis),
+                    $productId,
+                    $evaluatedAt->modify('-1 DAY'),
+                    (new ChannelLocaleRateCollection())
+                        ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $this->getRateFromRank($this->getDifferentRank($rank)))
+                ),
+                // Too young rates compared to the consolidation date
+                new ProductAxisRates(
+                    new AxisCode($axis),
+                    $productId,
+                    (new \DateTimeImmutable(self::CONSOLIDATION_DATE))->modify('+1 DAY'),
+                    (new ChannelLocaleRateCollection())
+                        ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $this->getRateFromRank($this->getDifferentRank($rank)))
+                ),
             ]);
         }
     }
@@ -332,5 +344,10 @@ final class GetRanksDistributionFromProductAxisRatesQueryIntegration extends Tes
         $ranks = array_diff([1,2,3,4,5], [$rank]);
 
         return $ranks[array_rand($ranks)];
+    }
+
+    private function getRateFromRank(int $rank): Rate
+    {
+        return new Rate(100 - $rank*10);
     }
 }

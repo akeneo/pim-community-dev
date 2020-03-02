@@ -14,10 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 
 interface Axis
 {
     public function getCode(): AxisCode;
 
     public function getCriteriaCodes(): array;
+
+    public function getCriterionCoefficient(CriterionCode $criterionCode): int;
 }

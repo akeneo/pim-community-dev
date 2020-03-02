@@ -60,12 +60,15 @@ services:
             - '%env(PAPO_PROJECT_CODE_TRUNCATED)%'
             - '%env(PAPO_PROJECT_CODE_HASHED)%'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeAxisRates:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetLocalesByChannelQuery'
+
     Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Axis\ComputeEnrichmentRates'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Axis\ComputeConsistencyRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeAxisRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateDashboardRates:

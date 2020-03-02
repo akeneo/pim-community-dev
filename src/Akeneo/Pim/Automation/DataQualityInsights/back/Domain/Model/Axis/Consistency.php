@@ -32,6 +32,13 @@ final class Consistency implements Axis
         LowerCaseWords::CRITERION_CODE,
     ];
 
+    private const CRITERIA_COEFFICIENTS = [
+        EvaluateUppercaseWords::CRITERION_CODE  => 1,
+        EvaluateTitleFormatting::CRITERION_CODE => 1,
+        EvaluateSpelling::CRITERION_CODE        => 2,
+        LowerCaseWords::CRITERION_CODE          => 1,
+    ];
+
     /** @var AxisCode */
     private $code;
 
@@ -54,5 +61,10 @@ final class Consistency implements Axis
     public function getCriteriaCodes(): array
     {
         return $this->criteriaCodes;
+    }
+
+    public function getCriterionCoefficient(CriterionCode $criterionCode): int
+    {
+        return self::CRITERIA_COEFFICIENTS[strval($criterionCode)] ?? 1;
     }
 }
