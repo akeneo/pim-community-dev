@@ -2,9 +2,9 @@ import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {get as _get} from "lodash";
 
-import {fetchProductDataQualityEvaluation} from '../fetcher';
 import {getProductEvaluationAction} from "../reducer";
 import {useCatalogContext, useProductEvaluation} from "./index";
+import ProductEvaluationFetcher from "../fetcher/ProductEvaluationFetcher";
 
 const MAXIMUM_RETRIES = 10;
 const RETRY_MILLISECONDS_DELAY = 500;
@@ -27,7 +27,7 @@ const getRetryDelay = (retry: number) => {
   return Math.pow(retry, 2) * RETRY_MILLISECONDS_DELAY;
 };
 
-const useFetchProductDataQualityEvaluation = () => {
+const useFetchProductDataQualityEvaluation = (productEvaluationFetcher: ProductEvaluationFetcher) => {
   const [hasToBeEvaluated, setHasToBeEvaluated] = useState<boolean>(false);
   const [retries, setRetries] = useState<number>(0);
   const {channel, locale} = useCatalogContext();
@@ -43,7 +43,7 @@ const useFetchProductDataQualityEvaluation = () => {
           if (!productId) {
             return;
           }
-          const data = await fetchProductDataQualityEvaluation(productId);
+          const data = await productEvaluationFetcher(productId);
           dispatchAction(getProductEvaluationAction(productId, data));
         })();
       }, getRetryDelay(retries));

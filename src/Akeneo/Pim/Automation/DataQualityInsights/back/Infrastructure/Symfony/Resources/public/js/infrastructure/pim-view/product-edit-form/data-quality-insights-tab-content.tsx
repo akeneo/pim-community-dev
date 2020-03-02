@@ -1,6 +1,7 @@
 import {
   DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID,
-  DATA_QUALITY_INSIGHTS_TAB_NAME,
+  PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME,
+  PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
   DataQualityInsightsFeature,
   getDataQualityInsightsFeature,
   PRODUCT_TAB_CHANGED
@@ -44,8 +45,10 @@ class DataQualityInsightsTabContent extends BaseView {
   }
 
   private showTabContent() {
+    const productData = this.getFormData();
+    const tab = productData.meta.model_type === 'product_model' ? PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME : PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME;
     window.dispatchEvent(new CustomEvent(PRODUCT_TAB_CHANGED, {detail: {
-      currentTab: DATA_QUALITY_INSIGHTS_TAB_NAME,
+      currentTab: tab,
     }}));
   }
 }

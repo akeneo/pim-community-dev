@@ -3,20 +3,16 @@ import {Provider} from "react-redux";
 import {productEditFormStore} from "../infrastructure/store";
 import {CatalogContextListener, PageContextListener, ProductContextListener} from "./listener";
 import {Product} from "../domain";
-import {fetchProductDataQualityEvaluation} from '../infrastructure/fetcher';
-import {
-  AttributesTabContent,
-  AxisRatesOverviewPortal,
-  DataQualityInsightsTabContent,
-} from "./component/ProductEditForm";
+import {AttributesTabContent, DataQualityInsightsTabContent,} from "./component/ProductEditForm";
+import fetchProductModelEvaluation from "../infrastructure/fetcher/fetchProductModelEvaluation";
 
-interface ProductEditFormAppProps {
+interface ProductModelEditFormAppProps {
   catalogChannel: string;
   catalogLocale: string;
   product: Product;
 }
 
-const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product, catalogChannel, catalogLocale}) => {
+const ProductModelEditFormApp: FunctionComponent<ProductModelEditFormAppProps> = ({product, catalogChannel, catalogLocale}) => {
   return (
     <Provider store={productEditFormStore}>
       <CatalogContextListener catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
@@ -24,10 +20,9 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
       <ProductContextListener product={product}/>
 
       <AttributesTabContent product={product}/>
-      <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductDataQualityEvaluation}/>
-      <AxisRatesOverviewPortal />
+      <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductModelEvaluation} />
     </Provider>
   );
 };
 
-export default ProductEditFormApp;
+export default ProductModelEditFormApp;

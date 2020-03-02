@@ -13,7 +13,10 @@ import {
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
   PRODUCT_TAB_CHANGED,
-  ProductEditFormApp
+  ProductEditFormApp,
+  ProductModelEditFormApp,
+  PRODUCT_ATTRIBUTES_TAB_NAME,
+  PRODUCT_MODEL_ATTRIBUTES_TAB_NAME
 } from 'akeneodataqualityinsights-react';
 
 const UserContext = require('pim/user-context');
@@ -108,15 +111,19 @@ class DataQualityInsightsApp extends BaseView {
   }
 
   public redirectToProductEditForm() {
+
+    const productData = this.getFormData();
+    const tab = productData.meta.model_type === 'product_model' ? PRODUCT_MODEL_ATTRIBUTES_TAB_NAME : PRODUCT_ATTRIBUTES_TAB_NAME;
+
     this.getRoot().trigger('column-tab:change-tab', {
       currentTarget: {
         dataset: {
-          tab: 'pim-product-edit-form-attributes'
+          tab: tab
         }
       },
       target: {
         dataset: {
-          tab: 'pim-product-edit-form-attributes'
+          tab: tab
         }
       }
     });
@@ -132,7 +139,10 @@ class DataQualityInsightsApp extends BaseView {
     const productData = this.getFormData();
 
     ReactDOM.render(
-      <ProductEditFormApp catalogLocale={catalogLocale} catalogChannel={catalogChannel} product={productData} />,
+      productData.meta.model_type === 'product_model'
+        ? <ProductModelEditFormApp catalogLocale={catalogLocale} catalogChannel={catalogChannel} product={productData} />
+        : <ProductEditFormApp catalogLocale={catalogLocale} catalogChannel={catalogChannel} product={productData} />
+    ,
       this.el
     );
 

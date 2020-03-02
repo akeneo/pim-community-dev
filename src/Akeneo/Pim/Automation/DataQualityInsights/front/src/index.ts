@@ -1,4 +1,4 @@
-import {ProductEditFormApp} from './application';
+import {ProductEditFormApp, ProductModelEditFormApp} from './application';
 
 import {
   ATTRIBUTES_TAB_CONTENT_CONTAINER_ELEMENT_ID,
@@ -30,7 +30,7 @@ import {
   PRODUCT_TAB_CHANGED,
 } from './application/listener';
 
-import {PRODUCT_ATTRIBUTES_TAB_NAME, DATA_QUALITY_INSIGHTS_TAB_NAME} from './application/constant';
+import {PRODUCT_ATTRIBUTES_TAB_NAME, PRODUCT_MODEL_ATTRIBUTES_TAB_NAME, PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME, PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME} from './application/constant';
 
 import {Dashboard, DashboardHelper} from "./application/component/Dashboard";
 
@@ -40,6 +40,7 @@ export {
   DashboardHelper,
   Dashboard,
   ProductEditFormApp,
+  ProductModelEditFormApp,
   DataQualityInsightsFeature,
   getDataQualityInsightsFeature,
   CATALOG_CONTEXT_CHANNEL_CHANGED,
@@ -59,7 +60,9 @@ export {
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
   PRODUCT_ATTRIBUTES_TAB_NAME,
-  DATA_QUALITY_INSIGHTS_TAB_NAME,
+  PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
+  PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME,
+  PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
   Rate,
   fetchProductDataQualityEvaluation,
   ProductEvaluation, CriterionEvaluationResult

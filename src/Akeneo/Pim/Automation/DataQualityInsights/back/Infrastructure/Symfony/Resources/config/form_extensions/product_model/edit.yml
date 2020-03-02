@@ -9,3 +9,9 @@ extensions:
         module: akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/attributes-tab-content
         parent: pim-product-model-edit-form-attributes
         position: 100
+
+    pim-product-model-edit-form-data-quality-insights-tab-content:
+        module: akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-tab-content
+        parent: pim-product-model-edit-form-column-tabs
+        targetZone: container
+        position: 101

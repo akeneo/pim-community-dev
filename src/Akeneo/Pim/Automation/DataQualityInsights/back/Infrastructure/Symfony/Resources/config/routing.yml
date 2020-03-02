@@ -8,6 +8,11 @@ akeneo_data_quality_insights_product_evaluation:
     defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductEvaluationController }
     methods: [GET]
 
+akeneo_data_quality_insights_product_model_evaluation:
+    path: /data-quality-insights/product-model-evaluation/{productId}
+    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductModelEvaluationController }
+    methods: [GET]
+
 akeneo_data_quality_insights_dashboard:
     path: /data-quality-insights/dashboard
     defaults:
