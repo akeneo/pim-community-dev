@@ -25,7 +25,6 @@ services:
     Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\UserContext:
         arguments:
             - '@pim_user.repository.user'
-            - '@pim_user.updater.role'
             - '@security.token_storage'
 
     Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ImportRuleContext:
