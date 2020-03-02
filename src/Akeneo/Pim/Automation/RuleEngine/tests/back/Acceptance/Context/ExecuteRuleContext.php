@@ -147,7 +147,7 @@ rules:
                   - field: sku
                   - field: processor
                   - field: price
-                    currency: USD
+                    currency: EUR
                   - field: release_date
                     format: d/m/Y
                   - field: weight
@@ -169,7 +169,7 @@ YAML;
         EventSubscriberContext::assertNoSkipExecutionForRuleAndEntity($rule, $product);
 
         $descriptionValue = $product->getValue('description', 'en_US', 'ecommerce');
-        Assert::same($descriptionValue->getData(), 'Crown Bolt 75025 SKU75025 100 MEGAHERTZ 90 USD 01/01/2015 40');
+        Assert::same($descriptionValue->getData(), 'Crown Bolt 75025 SKU75025 100 MEGAHERTZ 99 EUR 01/01/2015 40');
     }
 
     private function getProduct(string $identifier): ProductInterface

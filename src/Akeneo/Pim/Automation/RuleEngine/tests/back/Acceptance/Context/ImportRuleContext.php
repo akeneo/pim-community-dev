@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateAction;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use AkeneoEnterprise\Test\Acceptance\Rule\RuleDefinition\InMemoryRuleDefinitionRepository;
 use Behat\Behat\Context\Context;
 use Symfony\Component\Yaml\Yaml;
 use Webmozart\Assert\Assert;
@@ -30,12 +29,12 @@ final class ImportRuleContext implements Context
     /** @var RuleDefinitionProcessor */
     private $ruleDefinitionProcessor;
 
-    /** @var RuleDefinitionRepositoryInterface */
+    /** @var InMemoryRuleDefinitionRepository */
     private $ruleDefinitionRepository;
 
     public function __construct(
         RuleDefinitionProcessor $ruleDefinitionProcessor,
-        RuleDefinitionRepositoryInterface $ruleDefinitionRepository
+        InMemoryRuleDefinitionRepository $ruleDefinitionRepository
     ) {
         $this->ruleDefinitionProcessor = $ruleDefinitionProcessor;
         $this->ruleDefinitionRepository = $ruleDefinitionRepository;

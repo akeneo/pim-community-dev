@@ -51,3 +51,13 @@ services:
     Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\EventSubscriberContext:
         tags:
             - { name: kernel.event_subscriber }
+
+    akeneo.pim.enrichment.category.get_viewable_category_codes:
+        class: Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\InMemory\InMemoryGetCategoryCodes
+        arguments:
+            - '@pim_catalog.repository.category'
+
+    pim_catalog.query.find_activated_currencies:
+        class: Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\InMemory\InMemoryFindActivatedCurrencies
+        arguments:
+            - '@pim_catalog.repository.channel'
