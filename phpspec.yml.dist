@@ -95,6 +95,11 @@ suites:
         psr4_prefix: Akeneo\Tool\Component\Versioning
         spec_path: src/Akeneo/Tool/Component/Versioning
         src_path: src/Akeneo/Tool/Component/Versioning
+    Email:
+        namespace: Akeneo\Tool\Component\Email
+        psr4_prefix: Akeneo\Tool\Component\Email
+        spec_path: src/Akeneo/Tool/Component/Email
+        src_path: src/Akeneo/Tool/Component/Email
 
     ## Akeneo Bundles
     BatchBundle:
