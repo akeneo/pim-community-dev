@@ -3,6 +3,7 @@
 parameters:
     database_unix_socket: ~
 
+    mailer_url: '%env(MAILER_URL)%'
     mailer_transport:     smtp
     mailer_host:          localhost
     mailer_port:          25
