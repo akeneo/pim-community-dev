@@ -82,7 +82,7 @@ Feature: Edit an asset family
   Scenario: Cannot update an asset family with a collection of rule templates that contains more than 2 items
     Given an empty rule template collection on the asset family 'packshot'
     When the user updates the asset family 'packshot' to set a collection of rule templates having more items than the limit
-    Then there should be a validation error with message 'You cannot create the asset family "packshot" because you have reached the limit of 2 product link rules'
+    Then there should be a validation error with message 'You have reached the limit of 2 product link rules for the "packshot" asset family.'
 
   @acceptance-back @error
   Scenario: Cannot update an asset family if one of the product link rule is not executable by the rule engine
