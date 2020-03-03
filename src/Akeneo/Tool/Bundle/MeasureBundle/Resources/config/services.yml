@@ -1,7 +1,7 @@
 parameters:
     akeneo_measure.convert.measure_converter.class: Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter
     akeneo_measure.manager.measure_manager.class:   Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager
-    pim_api.controller.measure_family.class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\MeasureFamilyController
+    legacy_pim_api.controller.measure_family.class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\LegacyMeasureFamilyController
 
 services:
     akeneo_measure.measure_converter:
@@ -20,8 +20,8 @@ services:
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'
 
-    pim_api.controller.measure_family:
-        class: '%pim_api.controller.measure_family.class%'
+    legacy_pim_api.controller.measure_family:
+        class: '%legacy_pim_api.controller.measure_family.class%'
         public: true
         arguments:
         - '@pim_api.converter.measure_family'
@@ -29,6 +29,20 @@ services:
         - '@pim_api.pagination.offset_hal_paginator'
         - '@akeneo_measure.provider.measurement_provider'
         - '%pim_api.configuration%'
+
+    pim_api.controller.measurement_family:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\GetMeasurementFamiliesAction
+        public: true
+        arguments:
+        - '@akeneo_measure.persistence.measurement_family_repository'
+        - '@pim_api.pagination.parameter_validator'
+        - '@pim_api.pagination.measurement_offset_hal_paginator'
+        - '%pim_api.configuration%'
+
+    pim_api.pagination.measurement_offset_hal_paginator:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\MeasurementOffsetHalPaginator
+        arguments:
+            - '@router'
 
     akeneo_measure.provider.measurement_adapter:
         class: Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementAdapter
