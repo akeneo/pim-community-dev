@@ -46,7 +46,7 @@ pim_asset_manager:
                 unknown_extra_field: 'The property {{ field }} was not expected.'
             naming_convention:
                 property_should_exist: 'The property "%property%" does not exist for this asset family'
-                not_main_media_attribute_code: 'Expected property "%property%" to match the code of the attribute as main media.'
+                not_main_media_attribute_code: 'Property must match the code of the attribute defined as main media'
     asset:
         validation:
             code:

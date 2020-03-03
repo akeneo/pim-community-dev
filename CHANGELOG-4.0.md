@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9117: Fix Asset Manager naming convention validation message
+
 ## Improvements
 
 - DAPI-810: Evaluate synchronous criteria on unitary product save
