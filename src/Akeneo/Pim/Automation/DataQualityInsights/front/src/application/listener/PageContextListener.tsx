@@ -5,7 +5,7 @@ import {
   endProductAttributesTabIsLoadedAction, showDataQualityInsightsAttributeToImproveAction,
   startProductAttributesTabIsLoadingAction
 } from "../../infrastructure/reducer";
-import {ATTRIBUTES_TAB_NAME} from "../constant";
+import {PRODUCT_ATTRIBUTES_TAB_NAME} from "../constant";
 import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from "./ProductContextListener";
 
 interface TabEvent {
@@ -30,7 +30,7 @@ const PageContextListener: FunctionComponent<PageContextListenerProps> = () => {
   useEffect(() => {
     const handleProductTabChanged = (event: CustomEvent<TabEvent>) => {
       dispatchAction(changeProductTabAction(event.detail.currentTab));
-      if (event.detail.currentTab !== ATTRIBUTES_TAB_NAME) {
+      if (event.detail.currentTab !== PRODUCT_ATTRIBUTES_TAB_NAME) {
         dispatchAction(showDataQualityInsightsAttributeToImproveAction(null));
       }
     };
@@ -49,7 +49,7 @@ const PageContextListener: FunctionComponent<PageContextListenerProps> = () => {
     window.addEventListener(PRODUCT_ATTRIBUTES_TAB_LOADING, handleProductAttributesTabLoading);
     window.addEventListener(DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, handleShowAttribute as EventListener);
 
-    const currentTab = sessionStorage.getItem('current_column_tab') || ATTRIBUTES_TAB_NAME;
+    const currentTab = sessionStorage.getItem('current_column_tab') || PRODUCT_ATTRIBUTES_TAB_NAME;
     dispatchAction(changeProductTabAction(currentTab));
     dispatchAction(showDataQualityInsightsAttributeToImproveAction(null));
 

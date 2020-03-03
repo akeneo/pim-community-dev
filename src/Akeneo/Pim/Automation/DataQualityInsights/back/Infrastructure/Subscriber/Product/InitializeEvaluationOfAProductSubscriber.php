@@ -84,7 +84,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
     public function onPostSave(GenericEvent $event): void
     {
         $subject = $event->getSubject();
-        if (! $subject instanceof ProductInterface || $subject->isVariant() === true) {
+        if (! $subject instanceof ProductInterface) {
             return;
         }
 
@@ -126,7 +126,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
     {
         $productIds = [];
         foreach ($subjects as $subject) {
-            if (! $subject instanceof ProductInterface || $subject->isVariant() === true) {
+            if (! $subject instanceof ProductInterface) {
                 continue;
             }
             $productIds[] = intval($subject->getId());

@@ -48,8 +48,9 @@ class CheckTitleSuggestionController
         $productId = new ProductId($request->request->getInt('productId'));
         $channelCode = new ChannelCode($request->request->get('channel'));
         $localeCode = new LocaleCode($request->request->get('locale'));
+        $productType = $request->request->get('productType');
 
-        $titleSuggestion = $this->getProductTitleSuggestion->get($productId, $channelCode, $localeCode);
+        $titleSuggestion = $this->getProductTitleSuggestion->get($productId, $channelCode, $localeCode, $productType);
 
         return new JsonResponse($titleSuggestion, Response::HTTP_OK);
     }

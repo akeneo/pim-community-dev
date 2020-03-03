@@ -5,6 +5,7 @@ interface AttributeProps {
   code: string;
   label: string;
   separator: ReactElement | null;
+  isLinkAvailable: boolean;
 }
 
 const handleClick = (attributeCode: string) => {
@@ -15,12 +16,19 @@ const handleClick = (attributeCode: string) => {
   }));
 };
 
-const Attribute: FunctionComponent<AttributeProps> = ({code, label, separator}) => {
+const Attribute: FunctionComponent<AttributeProps> = ({code, label, separator, isLinkAvailable}) => {
 
-  return (
-      <button onClick={() => handleClick(code)} className="AknActionButton AknActionButton--withoutBorder AttributeLink">
-        <span className="AknDataQualityInsightsAttribute" data-testid={"dqiAttributeWithRecommendation"}>{label}</span>
-        {separator}
+  const content =
+    <>
+      <span data-testid={"dqiAttributeWithRecommendation"}>{label}</span>
+      {separator}
+    </>;
+
+  return !isLinkAvailable ? (
+      <span className="AknDataQualityInsightsAttribute">{content}</span>
+  ) : (
+      <button onClick={() => handleClick(code)} className="AknActionButton AknActionButton--withoutBorder AknDataQualityInsightsAttribute AknDataQualityInsightsAttribute--link">
+        {content}
       </button>
   );
 };

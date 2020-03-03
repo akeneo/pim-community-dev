@@ -52,18 +52,20 @@ const useFetchProductDataQualityEvaluation = () => {
 
 
   useEffect(() => {
-    const notEvaluatedAxesList = Object.values(evaluation).filter((axisEvaluation) => {
-      // @ts-ignore
-      return _get(axisEvaluation, [channel, locale, 'rate']) === null;
-    });
+    if (evaluation !== undefined) {
+      const notEvaluatedAxesList = Object.values(evaluation).filter((axisEvaluation) => {
+        // @ts-ignore
+        return _get(axisEvaluation, [channel, locale, 'rate']) === null;
+      });
 
-    if (notEvaluatedAxesList.length === 0) {
-      setRetries(0);
-      setHasToBeEvaluated(false);
-    }
-    else {
-      setRetries(retries + 1);
-      setHasToBeEvaluated(retries < MAXIMUM_RETRIES);
+      if (notEvaluatedAxesList.length === 0) {
+        setRetries(0);
+        setHasToBeEvaluated(false);
+      }
+      else {
+        setRetries(retries + 1);
+        setHasToBeEvaluated(retries < MAXIMUM_RETRIES);
+      }
     }
   }, [evaluation]);
 

@@ -1,5 +1,5 @@
 import {Action, Reducer} from 'redux';
-import {ATTRIBUTES_TAB_NAME} from "../../application/constant";
+import {PRODUCT_ATTRIBUTES_TAB_NAME} from "../../application/constant";
 
 export interface PageContextState {
   currentTab: string;
@@ -58,7 +58,7 @@ export const showDataQualityInsightsAttributeToImproveAction = (attributeCode: s
 };
 
 const initialState: PageContextState = {
-  currentTab: ATTRIBUTES_TAB_NAME,
+  currentTab: PRODUCT_ATTRIBUTES_TAB_NAME,
   attributesTabIsLoading: false,
   attributeToImprove: null,
 };
