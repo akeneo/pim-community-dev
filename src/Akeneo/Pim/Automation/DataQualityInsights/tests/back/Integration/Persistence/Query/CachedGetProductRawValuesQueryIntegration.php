@@ -114,7 +114,7 @@ class CachedGetProductRawValuesQueryIntegration extends TestCase
 
         $result = $this
             ->get(CachedGetProductRawValuesQuery::class)
-            ->execute($productId, ['a_price', 'a_number_float', 'a_localized_and_scopable_text_area', 'a_simple_select', 'a_text', 'a_yes_no']);
+            ->execute($productId);
 
         $expectedResult = [
             'a_text' => [
@@ -154,7 +154,7 @@ class CachedGetProductRawValuesQueryIntegration extends TestCase
             ],
         ];
 
-        $this->assertSame($expectedResult, $result);
+        $this->assertProductHasRawValues($expectedResult, $result);
     }
 
     private function createProduct(): ProductId
