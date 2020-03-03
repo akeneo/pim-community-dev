@@ -68,6 +68,7 @@ services:
             - '@pim_user.form.handler.reset'
             - '@security.token_storage'
             - '@pim_user.form.reset'
+            - '%mailer_url%'
 
     pim_user.controller.role:
         public: true

@@ -1,6 +1,5 @@
 pim_user:
     email:
-        address: '%mailer_from_address%'
         name:    '%mailer_from_name%'
     privileges:
         action:
