@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9117: Fix Asset Manager naming convention validation message
+- PIM-9116: Fix Asset Manager product link rules validation message
 
 ## Improvements
 
