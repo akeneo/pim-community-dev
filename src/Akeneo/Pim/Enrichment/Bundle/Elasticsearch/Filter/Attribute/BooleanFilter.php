@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeFilterValidatorHelper;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
@@ -18,13 +18,8 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param string[]                 $supportedAttributeTypes
-     * @param string[]                 $supportedOperators
-     */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
+        AttributeFilterValidatorHelper $attrValidatorHelper,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {

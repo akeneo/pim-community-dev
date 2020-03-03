@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeFilterValidatorHelper;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
@@ -20,13 +20,8 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
 {
     const PATH_SUFFIX = 'original_filename';
 
-    /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributeTypes
-     * @param array                    $supportedOperators
-     */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
+        AttributeFilterValidatorHelper $attrValidatorHelper,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
