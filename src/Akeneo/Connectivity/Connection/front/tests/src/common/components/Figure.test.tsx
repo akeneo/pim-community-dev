@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import {Figure, FigureCaption, FigureImage} from '@src/common';
-import {createWithProviders} from '../../test-utils';
+import {createWithProviders} from '../../../test-utils';
 
 describe('Figure', () => {
     it('should render', () => {

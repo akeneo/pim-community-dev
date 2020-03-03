@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RuntimeError should render 1`] = `
+<div
+  className="sc-iwsKbI HGNsN"
+>
+  <img
+    className="sc-gZMcBi covKlk"
+    src="test-file-stub"
+  />
+  <div
+    className="sc-htoDjs kzeAkQ"
+  >
+    akeneo_connectivity.connection.runtime_error.error_message
+  </div>
+  <div
+    className="sc-dnqmqq hvgqGZ"
+  >
+    akeneo_connectivity.connection.runtime_error.reload_helper
+  </div>
+  <button
+    className="AknButton--apply AknButton"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    akeneo_connectivity.connection.runtime_error.reload_button
+  </button>
+</div>
+`;
