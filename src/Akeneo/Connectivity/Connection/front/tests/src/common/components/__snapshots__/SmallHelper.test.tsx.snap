@@ -2,7 +2,7 @@
 
 exports[`SmallHelper should render 1`] = `
 <div
-  className="sc-kkGfuU fxBVAe AknSubsection"
+  className="sc-kkGfuU kkZOph AknSubsection"
 >
   <div
     className="sc-iAyFgw iYCgxT"
