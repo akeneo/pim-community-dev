@@ -22,6 +22,7 @@ $rules = [
         'Liip\ImagineBundle',
         'Dompdf\Dompdf',
         'Webmozart\Assert\Assert',
+        'Psr\Log\LoggerInterface',
         // TODO the feature use the datagrid
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\PimDataGridBundle',
