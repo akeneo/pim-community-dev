@@ -80,7 +80,6 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
 
     function it_asserts_that_the_other_methods_are_not_implemented_yet()
     {
-        $this->shouldThrow(NotImplementedException::class)->during('findAll', []);
         $this->shouldThrow(NotImplementedException::class)->during('findBy', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('findOneBy', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('getClassName', []);
@@ -103,5 +102,22 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
     function it_returns_null_when_it_does_not_find_a_product()
     {
         $this->find(mt_rand())->shouldReturn(null);
+    }
+
+    function it_returns_all_products()
+    {
+        $product1 = new Product();
+        $product1->setIdentifier('a-product');
+        $this->save($product1);
+
+        $product2 = new Product();
+        $product2->setIdentifier('a-second-product');
+        $this->save($product2);
+
+        $products = $this->findAll();
+        $products->shouldBeArray();
+        $products->shouldHaveCount(2);
+        $products['a-product']->shouldBe($product1);
+        $products['a-second-product']->shouldBe($product2);
     }
 }

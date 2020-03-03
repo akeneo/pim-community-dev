@@ -71,12 +71,12 @@ class InMemoryCategoryRepositorySpec extends ObjectBehavior
     {
         $list = $this->findAll();
         $list->shouldBeArray();
-        $list->shouldHaveKey('root');
-        $list->shouldHaveKey('child1');
-        $list->shouldHaveKey('child11');
-        $list->shouldHaveKey('child12');
-        $list->shouldHaveKey('child2');
-        $list->shouldHaveKey('child3');
+        $list->shouldHaveCount(6);
         $list['root']->shouldBeAnInstanceOf(Category::class);
+        $list['child1']->shouldBeAnInstanceOf(Category::class);
+        $list['child11']->shouldBeAnInstanceOf(Category::class);
+        $list['child12']->shouldBeAnInstanceOf(Category::class);
+        $list['child2']->shouldBeAnInstanceOf(Category::class);
+        $list['child3']->shouldBeAnInstanceOf(Category::class);
     }
 }
