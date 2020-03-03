@@ -4,15 +4,17 @@
     "description": "Akeneo design system",
     "main": "/lib/index.js",
     "scripts": {
+        "prebuild": "rm -rf lib && yarn test && yarn ts-build",
         "ts-build": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
         "check-types": "tsc",
         "check-types:watch": "yarn check-types -- --watch",
-        "build:dev": "yarn test && yarn ts-build && webpack --mode development",
-        "build:prod": "yarn test && yarn ts-build && webpack --mode production",
+        "build:dev": "yarn prebuild && webpack --mode development",
+        "build:prod": "yarn prebuild && webpack --mode production",
         "test": "jest",
         "test:watch": "jest --watch",
         "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook"
+        "build-storybook": "build-storybook",
+        "build:analyzer": "yarn build:prod --env.analyzer"
     },
     "author": "akeneo",
     "license": "OSL-3.0",
@@ -59,6 +61,7 @@
         "ts-loader": "^6.2.1",
         "typescript": "^3.8.2",
         "webpack": "^4.41.6",
+        "webpack-bundle-analyzer": "^3.6.0",
         "webpack-cli": "^3.3.11"
     }
 }
