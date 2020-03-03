@@ -51,6 +51,41 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
         return $this->measurementFamilyCache[$measurementFamilyCode->normalize()];
     }
 
+    public function save(MeasurementFamily $measurementFamily)
+    {
+        $updateSql = <<<SQL
+    INSERT INTO akeneo_measurement
+        (code, labels, standard_unit, units)
+    VALUES
+        (:code, :labels, :standard_unit, :units)
+    ON DUPLICATE KEY UPDATE
+        labels = :labels,
+        standard_unit = :standard_unit,
+        units = :units;
+SQL;
+        $normalizedMeasurementFamily = $measurementFamily->normalize();
+
+        $affectedRows = $this->sqlConnection->executeUpdate(
+            $updateSql,
+            [
+                'code' => $normalizedMeasurementFamily['code'],
+                'labels' => json_encode($normalizedMeasurementFamily['labels']),
+                'standard_unit' => $normalizedMeasurementFamily['standard_unit_code'],
+                'units' => json_encode($normalizedMeasurementFamily['units'])
+            ]
+        );
+
+        // 1 if INSERT, 2 if UPDATE
+        if ($affectedRows !== 1 && $affectedRows !== 2) {
+            throw new \RuntimeException(
+                sprintf('Expected to create/update one measurement family, but %d were affected', $affectedRows)
+            );
+        }
+
+        $this->allMeasurementFamiliesCache[$normalizedMeasurementFamily['code']] = $measurementFamily;
+        $this->measurementFamilyCache[$normalizedMeasurementFamily['code']] = $measurementFamily;
+    }
+
     private function hydrateMeasurementFamily(
         string $code,
         string $normalizedLabels,

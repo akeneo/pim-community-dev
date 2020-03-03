@@ -62,4 +62,9 @@ class InMemoryMeasurementFamilyRepository implements MeasurementFamilyRepository
             )
         ];
     }
+
+    public function save(MeasurementFamily $measurementFamily)
+    {
+        $this->measurementFamilies[$measurementFamily->normalize()['code']] = $measurementFamily;
+    }
 }
