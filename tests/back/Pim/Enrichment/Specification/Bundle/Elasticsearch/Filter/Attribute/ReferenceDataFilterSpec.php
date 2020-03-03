@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeFilterValidatorHelper;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
@@ -21,7 +21,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryIn
 class ReferenceDataFilterSpec extends ObjectBehavior
 {
     function let(
-        AttributeValidatorHelper $attributeValidatorHelper,
+        AttributeFilterValidatorHelper $attributeValidatorHelper,
         ReferenceDataRepositoryResolver $referenceDataRepositoryResolver,
         ConfigurationRegistryInterface $registry
     ) {

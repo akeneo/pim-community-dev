@@ -12,11 +12,11 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeFilterValidatorHelper;
 
 class PriceFilterSpec extends ObjectBehavior
 {
-    function let(AttributeValidatorHelper $attributeValidatorHelper, CurrencyRepositoryInterface $currencyRepository)
+    function let(AttributeFilterValidatorHelper $attributeValidatorHelper, CurrencyRepositoryInterface $currencyRepository)
     {
         $this->beConstructedWith(
             $attributeValidatorHelper,
