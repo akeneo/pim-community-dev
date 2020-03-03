@@ -150,7 +150,7 @@ define(
                     const option = this._getChoiceOption(value.type);
                     const unit = this.measurementFamily.units.find(unit => unit.code === value.unit);
 
-                    return `${option.label} ${value.value} ${i18n.getLabel(unit.labels, UserContext.get('catalogLocale'), value.unit)}`;
+                    return `${option.label} ${value.value} ${i18n.getLabel(unit.labels, UserContext.get('uiLocale'), value.unit)}`;
                 }
             },
 
