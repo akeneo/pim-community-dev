@@ -12,6 +12,7 @@ use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
+use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller;
 use Doctrine\DBAL\Connection;
 use Elasticsearch\ClientBuilder;
 use League\Flysystem\Filesystem;
@@ -91,6 +92,9 @@ class FixturesLoader implements FixturesLoaderInterface
     /** @var \Elasticsearch\Client */
     private $nativeElasticsearchClient;
 
+    /** @var MeasurementInstaller */
+    private $measurementInstaller;
+
     public function __construct(
         KernelInterface $kernel,
         DatabaseSchemaHandler $databaseSchemaHandler,
@@ -105,6 +109,7 @@ class FixturesLoader implements FixturesLoaderInterface
         ClientRegistry $clientRegistry,
         Client $esClient,
         Connection $dbConnection,
+        MeasurementInstaller $measurementInstaller,
         string $databaseHost,
         string $databaseName,
         string $databaseUser,
@@ -137,6 +142,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $clientBuilder = new ClientBuilder();
         $clientBuilder->setHosts([$elasticsearchHost]);
         $this->nativeElasticsearchClient = $clientBuilder->build();
+        $this->measurementInstaller = $measurementInstaller;
     }
 
     public function __destruct()
@@ -160,7 +166,6 @@ class FixturesLoader implements FixturesLoaderInterface
             $this->restoreDatabase($dumpFile);
             $this->indexProductModels();
             $this->indexProducts();
-
         } else {
             $this->loadData($configuration);
             $this->dumpDatabase($dumpFile);
@@ -178,6 +183,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
         $filesByType = $this->getFilesToLoadByType($files);
 
+        $this->measurementInstaller->loadStandardMeasurementFamilies();
         $this->loadSqlFiles($filesByType['sql']);
         $this->loadImportFiles($filesByType['import']);
         $this->loadReferenceData();

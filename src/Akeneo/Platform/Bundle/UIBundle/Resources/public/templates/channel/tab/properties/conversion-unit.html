@@ -5,7 +5,7 @@
         <div class="AknFieldContainer">
             <div class="AknFieldContainer-header">
                 <label class="AknFieldContainer-label control-label" for="<%- fieldBaseId + attribute.code %>">
-                    <%- i18n.getLabel(attribute.labels, catalogLocale, attribute.code) %>
+                    <%- i18n.getLabel(attribute.labels, locale, attribute.code) %>
                 </label>
             </div>
             <div class="AknFieldContainer-inputContainer">
@@ -14,9 +14,9 @@
                     <option value="no_conversion" <%- (!isMetricConfigured) ? 'selected' : '' %>>
                         <%- doNotConvertLabel %>
                     </option>
-                    <% _.each(_.keys(measures[attribute.metric_family].units), function (unit) { %>
-                    <option value="<%- unit %>" <%- (isMetricConfigured && unit == conversionUnits[attribute.code]) ? 'selected' : '' %>>
-                        <%- __(`pim_measure.units.${unit}`) %>
+                    <% _.each(measures.find(family => family.code === attribute.metric_family).units, function (unit) { %>
+                    <option value="<%- unit.code %>" <%- (isMetricConfigured && unit.code === conversionUnits[attribute.code]) ? 'selected' : '' %>>
+                        <%- i18n.getLabel(unit.labels, locale, unit.code) %>
                     </option>
                     <% }) %>
                 </select>

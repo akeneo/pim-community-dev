@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
@@ -18,9 +19,6 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class MeasureFamilyController
 {
-    /** @var array */
-    protected $measuresConfig;
-
     /** @var ArrayConverterInterface */
     protected $measureFamilyConverter;
 
@@ -33,25 +31,28 @@ class MeasureFamilyController
     /** @var array */
     protected $apiConfiguration;
 
+    /** @var LegacyMeasurementProvider */
+    private $legacyMeasurementProvider;
+
     /**
      * @param ArrayConverterInterface     $measureFamilyConverter
      * @param ParameterValidatorInterface $parameterValidator
      * @param PaginatorInterface          $paginator
-     * @param array                       $measures
+     * @param LegacyMeasurementProvider   $legacyMeasurementProvider
      * @param array                       $apiConfiguration
      */
     public function __construct(
         ArrayConverterInterface $measureFamilyConverter,
         ParameterValidatorInterface $parameterValidator,
         PaginatorInterface $paginator,
-        array $measures,
+        LegacyMeasurementProvider $legacyMeasurementProvider,
         array $apiConfiguration
     ) {
-        $this->measuresConfig = $measures['measures_config'];
         $this->measureFamilyConverter = $measureFamilyConverter;
         $this->parameterValidator = $parameterValidator;
         $this->paginator = $paginator;
         $this->apiConfiguration = $apiConfiguration;
+        $this->legacyMeasurementProvider = $legacyMeasurementProvider;
     }
 
     /**
@@ -63,8 +64,8 @@ class MeasureFamilyController
      */
     public function getAction($code)
     {
-        $measuresConfig = [];
-        foreach ($this->measuresConfig as $key => $value) {
+        $measuresConfig = $this->legacyMeasurementProvider->getMeasurementFamilies();
+        foreach ($measuresConfig as $key => $value) {
             $measuresConfig[strtolower($key)] = $value;
         }
 
@@ -107,9 +108,9 @@ class MeasureFamilyController
             'item_route_name'  => 'pim_api_measure_family_get',
         ];
 
+        $measuresConfig = $this->legacyMeasurementProvider->getMeasurementFamilies();
         $convertedMeasureFamilies = $this->convertMeasureFamilies($queryParameters);
-
-        $count = true === $request->query->getBoolean('with_count') ? count($this->measuresConfig) : null;
+        $count = true === $request->query->getBoolean('with_count') ? count($measuresConfig) : null;
         $paginatedMeasureFamilies = $this->paginator->paginate(
             $convertedMeasureFamilies,
             $parameters,
@@ -124,10 +125,11 @@ class MeasureFamilyController
      */
     protected function convertMeasureFamilies(array $queryParameters)
     {
+        $measuresConfig = $this->legacyMeasurementProvider->getMeasurementFamilies();
         $limit = $queryParameters['limit'];
         $offset = $limit * ($queryParameters['page'] - 1);
 
-        $measureConfig = array_slice($this->measuresConfig, $offset, $queryParameters['limit']);
+        $measureConfig = array_slice($measuresConfig, $offset, $queryParameters['limit']);
 
         $convertedMeasureFamilies= [];
         foreach ($measureConfig as $familyCode => $units) {

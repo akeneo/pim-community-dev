@@ -26,7 +26,9 @@ services:
         arguments:
             - '@pim_catalog.localization.factory.number'
             - ['pim_catalog_metric']
-            - '@pim_catalog.localization.translator.proxy'
+            - '@akeneo_measure.persistence.measurement_family_repository'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@logger'
         tags:
             - { name: pim_catalog.localization.presenter, type: 'product_value' }
 

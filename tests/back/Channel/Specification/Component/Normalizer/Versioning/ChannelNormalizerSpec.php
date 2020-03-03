@@ -2,8 +2,6 @@
 
 namespace Specification\Akeneo\Channel\Component\Normalizer\Versioning;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Family\LengthFamilyInterface;
-use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Normalizer\Versioning\ChannelNormalizer;
@@ -63,8 +61,8 @@ class ChannelNormalizerSpec extends ObjectBehavior
                 'locales'          => ['fr_FR', 'en_US', 'de_DE', 'es_ES'],
                 'category_tree'    => 'winter',
                 'conversion_units' => [
-                    'weight_attribute' => WeightFamilyInterface::GRAM,
-                    'length_attribute' => LengthFamilyInterface::CENTIMETER,
+                    'weight_attribute' => 'GRAM',
+                    'length_attribute' => 'CENTIMETER',
                 ],
             ]
         );

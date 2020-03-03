@@ -4,8 +4,8 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Metric;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
-use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownMeasureException;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -81,7 +81,7 @@ class MetricFactorySpec extends ObjectBehavior
         $measureConverter
             ->convertBaseToStandard('GRAM', 42)
             ->shouldBeCalled()
-            ->willThrow(UnknownMeasureException::class);
+            ->willThrow(UnitNotFoundException::class);
 
         $measureManager->getStandardUnitForFamily(Argument::any())->shouldNotBeCalled();
 
@@ -103,7 +103,7 @@ class MetricFactorySpec extends ObjectBehavior
         $measureConverter
             ->setFamily('FooBar')
             ->shouldBeCalled()
-            ->willThrow(UnknownFamilyMeasureException::class);
+            ->willThrow(MeasurementFamilyNotFoundException::class);
 
         $measureConverter->convertBaseToStandard(Argument::any())->shouldNotBeCalled();
         $measureManager->getStandardUnitForFamily(Argument::any())->shouldNotBeCalled();

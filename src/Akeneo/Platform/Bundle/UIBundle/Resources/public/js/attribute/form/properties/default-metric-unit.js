@@ -11,7 +11,9 @@ define([
     'oro/translator',
     'pim/form/common/fields/field',
     'pim/fetcher-registry',
-    'pim/template/form/common/fields/select'
+    'pim/template/form/common/fields/select',
+    'pim/user-context',
+    'pim/i18n'
 ],
 function (
     $,
@@ -19,7 +21,9 @@ function (
     __,
     BaseField,
     fetcherRegistry,
-    template
+    template,
+    UserContext,
+    i18n
 ) {
     return BaseField.extend({
         events: {
@@ -49,11 +53,11 @@ function (
          * {@inheritdoc}
          */
         renderInput: function (templateContext) {
-            var metricFamily = this.getFormData().metric_family;
+            const measurementFamily = this.measures.find(family => family.code === this.getFormData().metric_family);
 
             return this.template(_.extend(templateContext, {
                 value: this.getFormData()[this.fieldName],
-                choices: this.formatChoices(this.measures[metricFamily].units),
+                choices: this.formatChoices(measurementFamily.units),
                 multiple: false,
                 labels: {
                     defaultLabel: __('pim_enrich.entity.attribute.property.default_metric_unit.choose')
@@ -97,14 +101,11 @@ function (
          * @param {Object} units
          */
         formatChoices: function (units) {
-            const unitCodes = Object.keys(units);
+            const choices = {};
+            const locale = UserContext.get('uiLocale');
+            units.forEach(unit => choices[unit.code] = i18n.getLabel(unit.labels, locale, unit.code));
 
-            return _.object(
-                unitCodes,
-                unitCodes.map((unitCode) => {
-                    return __(`pim_measure.units.${unitCode}`);
-                })
-            );
+            return choices;
         },
 
         /**

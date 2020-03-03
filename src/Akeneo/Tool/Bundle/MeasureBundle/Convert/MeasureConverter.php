@@ -2,9 +2,10 @@
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Convert;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
-use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownMeasureException;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownOperatorException;
+use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 
 /**
  * Aims to convert measures
@@ -17,24 +18,15 @@ class MeasureConverter
 {
     const SCALE = 12;
 
-    /**
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * @var string
-     */
+    /** * @var string */
     protected $family;
 
-    /**
-     * Constructor
-     *
-     * @param array $config Configuration parameters
-     */
-    public function __construct($config = [])
+    /** @var LegacyMeasurementProvider */
+    private $legacyMeasurementProvider;
+
+    public function __construct(LegacyMeasurementProvider $provider)
     {
-        $this->config = $config['measures_config'];
+        $this->legacyMeasurementProvider = $provider;
     }
 
     /**
@@ -42,14 +34,15 @@ class MeasureConverter
      *
      * @param string $family
      *
-     * @throws UnknownFamilyMeasureException
      * @return MeasureConverter
      *
+     * @throws MeasurementFamilyNotFoundException
      */
     public function setFamily($family)
     {
-        if (!isset($this->config[$family])) {
-            throw new UnknownFamilyMeasureException();
+        $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
+        if (!isset($measurementFamilies[$family])) {
+            throw new MeasurementFamilyNotFoundException();
         }
 
         $this->family = $family;
@@ -81,15 +74,16 @@ class MeasureConverter
      * @param string $baseUnit Base unit for value
      * @param double $value    Value to convert
      *
-     * @throws UnknownOperatorException
-     * @throws UnknownMeasureException
      * @return string
      *
+     *@throws UnitNotFoundException
+     * @throws UnknownOperatorException
      */
     public function convertBaseToStandard($baseUnit, $value)
     {
-        if (!isset($this->config[$this->family]['units'][$baseUnit])) {
-            throw new UnknownMeasureException(
+        $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
+        if (!isset($measurementFamilies[$this->family]['units'][$baseUnit])) {
+            throw new UnitNotFoundException(
                 sprintf(
                     'Could not find metric unit "%s" in family "%s"',
                     $baseUnit,
@@ -97,7 +91,7 @@ class MeasureConverter
                 )
             );
         }
-        $conversionConfig = $this->config[$this->family]['units'][$baseUnit]['convert'];
+        $conversionConfig = $measurementFamilies[$this->family]['units'][$baseUnit]['convert'];
         $convertedValue = $value;
 
         foreach ($conversionConfig as $operation) {
@@ -152,14 +146,15 @@ class MeasureConverter
      * @param double $value     Value to convert
      *
      * @throws UnknownOperatorException
-     * @throws UnknownMeasureException
+     * @throws UnitNotFoundException
      * @return string
      *
      */
     public function convertStandardToResult($finalUnit, $value)
     {
-        if (!isset($this->config[$this->family]['units'][$finalUnit])) {
-            throw new UnknownMeasureException(
+        $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
+        if (!isset($measurementFamilies[$this->family]['units'][$finalUnit])) {
+            throw new UnitNotFoundException(
                 sprintf(
                     'Could not find metric unit "%s" in family "%s"',
                     $finalUnit,
@@ -167,7 +162,7 @@ class MeasureConverter
                 )
             );
         }
-        $conversionConfig = $this->config[$this->family]['units'][$finalUnit]['convert'];
+        $conversionConfig = $measurementFamilies[$this->family]['units'][$finalUnit]['convert'];
         $convertedValue = $value;
 
         // calculate result with conversion config (calculs must be reversed and operation inversed)

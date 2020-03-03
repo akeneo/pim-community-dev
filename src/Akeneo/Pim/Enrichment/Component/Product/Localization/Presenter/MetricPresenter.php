@@ -2,9 +2,15 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\LocaleIdentifier;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
+use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\Localization\Presenter\NumberPresenter;
-use Akeneo\Tool\Component\Localization\TranslatorProxy;
+use Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository;
+use Psr\Log\LoggerInterface;
 
 /**
  * Metric presenter, able to render metric data readable for a human
@@ -15,22 +21,27 @@ use Akeneo\Tool\Component\Localization\TranslatorProxy;
  */
 class MetricPresenter extends NumberPresenter
 {
-    /** @var TranslatorProxy */
-    protected $translatorProxy;
+    /** @var MeasurementFamilyRepositoryInterface */
+    private $measurementFamilyRepository;
 
-    /**
-     * @param NumberFactory   $numberFactory
-     * @param array           $attributeTypes
-     * @param TranslatorProxy $translatorProxy
-     */
+    /** @var BaseCachedObjectRepository */
+    private $baseCachedObjectRepository;
+
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
         NumberFactory $numberFactory,
         array $attributeTypes,
-        TranslatorProxy $translatorProxy
+        MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
+        BaseCachedObjectRepository $baseCachedObjectRepository,
+        LoggerInterface $logger
     ) {
         parent::__construct($numberFactory, $attributeTypes);
 
-        $this->translatorProxy = $translatorProxy;
+        $this->measurementFamilyRepository = $measurementFamilyRepository;
+        $this->baseCachedObjectRepository = $baseCachedObjectRepository;
+        $this->logger = $logger;
     }
 
     /**
@@ -42,14 +53,28 @@ class MetricPresenter extends NumberPresenter
             $value = $this->getStructuredMetric($value, $options['versioned_attribute']);
         }
 
-        $amount = isset($value['amount']) ? parent::present($value['amount'], $options) : null;
-        $unit = isset($value['unit']) && $value['unit'] !== ''
-            ? $this->translatorProxy->trans(sprintf('pim_measure.units.%s', $value['unit'])
-            ) : null;
+        $unitLabel = '';
+        if (isset($options['attribute']) && isset($value['unit']) && isset($options['locale'])) {
+            try {
+                $measurementFamilyCode = $this->baseCachedObjectRepository->findOneByIdentifier($options['attribute'])
+                    ->getMetricFamily();
+                $measurementFamily = $this->measurementFamilyRepository
+                    ->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
+                $unitLabel = $measurementFamily->getUnitLabel(
+                    UnitCode::fromString($value['unit']),
+                    LocaleIdentifier::fromCode($options['locale'])
+                );
+            } catch (\Exception $e) {
+                $this->logger->warning('An error occured while trying to fetch the measurement family of a metric value to present it.');
+            }
+        } else {
+            $this->logger->warning('Expected to have an attribute code given in the options of the presenter, none given.');
+        }
 
-        return join(' ', array_filter([ $amount, $unit ], function ($value) {
-            return $value !== null;
-        }));
+        $amount = isset($value['amount']) ? parent::present($value['amount'], $options) : null;
+        $unit = isset($value['unit']) && $value['unit'] !== '' ? $unitLabel : null;
+
+        return join(' ', array_filter([$amount, $unit]));
     }
 
     /**
