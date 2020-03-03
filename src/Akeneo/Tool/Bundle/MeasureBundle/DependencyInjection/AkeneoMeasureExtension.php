@@ -24,6 +24,8 @@ class AkeneoMeasureExtension extends Extension
     {
         // load service
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('api.yml');
+        $loader->load('limits.yml');
         $loader->load('services.yml');
     }
 }
