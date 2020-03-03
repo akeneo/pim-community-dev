@@ -73,7 +73,7 @@ class RuleExtensionSpec extends ObjectBehavior
         $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
         $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
-        $presenter->present('toto', ['locale' => 'en_US'])->willReturn('expected');
+        $presenter->present('toto', ['locale' => 'en_US', 'attribute' => 'attribute_code'])->willReturn('expected');
         $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
 
         $this->presentRuleActionValue('toto', 'attribute_code')->shouldReturn('expected');
@@ -106,7 +106,7 @@ class RuleExtensionSpec extends ObjectBehavior
         $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
         $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
-        $presenter->present(true, ['locale' => 'en_US'])->willReturn('expected');
+        $presenter->present(true, ['locale' => 'en_US',  'attribute' => 'attribute_code'])->willReturn('expected');
         $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
 
         $this->presentRuleActionValue(true, 'attribute_code')->shouldReturn('expected');
@@ -121,7 +121,7 @@ class RuleExtensionSpec extends ObjectBehavior
         $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
         $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
-        $presenter->present(['foo', 'bar'], ['locale' => 'en_US'])->willReturn('foobar');
+        $presenter->present(['foo', 'bar'], ['locale' => 'en_US', 'attribute' => 'attribute_code'])->willReturn('foobar');
         $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
 
         $this->presentRuleActionValue(['foo', 'bar'], 'attribute_code')->shouldReturn('foobar');
@@ -136,7 +136,7 @@ class RuleExtensionSpec extends ObjectBehavior
         $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
         $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
-        $presenter->present(['foo', 'bar'], ['locale' => 'en_US'])->willReturn(['presented foo', 'presented bar']);
+        $presenter->present(['foo', 'bar'], ['locale' => 'en_US', 'attribute' => 'attribute_code'])->willReturn(['presented foo', 'presented bar']);
         $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
 
         $this->presentRuleActionValue(['foo', 'bar'], 'attribute_code')->shouldReturn('presented foo, presented bar');

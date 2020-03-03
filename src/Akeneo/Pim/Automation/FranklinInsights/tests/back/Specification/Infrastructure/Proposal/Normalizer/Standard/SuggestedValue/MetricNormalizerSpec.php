@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\Sugge
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue\MetricNormalizer;
 use Akeneo\Test\Pim\Automation\FranklinInsights\Specification\Builder\AttributeBuilder;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Yaml\Yaml;
@@ -28,15 +29,38 @@ use Symfony\Component\Yaml\Yaml;
 class MetricNormalizerSpec extends ObjectBehavior
 {
     public function let(
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        LegacyMeasurementProvider $provider
     ): void {
-        $configurationFile = __DIR__ .
-            '/../../../../../../../../../../../../../' .
-            'vendor/akeneo/pim-community-dev/src/Akeneo/Tool/Bundle/MeasureBundle/Resources/config/measure.yml';
+        $yaml = <<<YAML
+measures_config:
+    Length:
+        standard: METER
+        units:
+            CENTIMETER:
+                convert: [{'mul': 0.01}]
+                symbol: cm
+            METER:
+                convert: [{'mul': 1}]
+                symbol: m
+    Weight:
+        standard: GRAM
+        units:
+            MILLIGRAM:
+                convert: [{'mul': 0.001}]
+                symbol: mg
+            GRAM:
+                convert: [{'mul': 1}]
+                symbol: g
+            KILOGRAM:
+                convert: [{'mul': 1000}]
+                symbol: kg
+YAML;
 
-        $configuration = Yaml::parse(file_get_contents($configurationFile));
+        $config = Yaml::parse($yaml);
+        $provider->getMeasurementFamilies()->willReturn($config['measures_config']);
 
-        $measureConverter = new MeasureConverter($configuration);
+        $measureConverter = new MeasureConverter($provider->getWrappedObject());
         $this->beConstructedWith($attributeRepository, $measureConverter);
     }
 

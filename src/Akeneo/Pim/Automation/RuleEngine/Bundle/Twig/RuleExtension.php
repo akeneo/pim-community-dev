@@ -99,7 +99,7 @@ class RuleExtension extends \Twig_Extension
 
         if (is_array($value)) {
             if (null !== $presenter) {
-                $value = $presenter->present($value, ['locale' => $this->localeResolver->getCurrentLocale()]);
+                $value = $presenter->present($value, ['locale' => $this->localeResolver->getCurrentLocale(), 'attribute' => $code]);
 
                 return is_array($value) ? implode(', ', $value) : $value;
             }
@@ -122,7 +122,7 @@ class RuleExtension extends \Twig_Extension
         }
 
         if (null !== $presenter) {
-            return $presenter->present($value, ['locale' => $this->localeResolver->getCurrentLocale()]);
+            return $presenter->present($value, ['locale' => $this->localeResolver->getCurrentLocale(), 'attribute' => $code]);
         }
 
         return $value;
