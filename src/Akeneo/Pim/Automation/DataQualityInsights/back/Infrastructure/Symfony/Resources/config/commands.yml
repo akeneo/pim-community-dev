@@ -4,6 +4,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@akeneo_batch.job_repository'
+            - '@logger'
             - '%kernel.project_dir%'
         tags:
             - { name: 'console.command' }

@@ -23,6 +23,7 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityManager;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -47,6 +48,9 @@ class EvaluatePendingCriteriaCommand extends Command
     /** @var EntityManager */
     private $entityManager;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     /** @var string */
     private $projectDir;
 
@@ -54,6 +58,7 @@ class EvaluatePendingCriteriaCommand extends Command
         EntityManager $entityManager,
         JobExecutionManager $executionManager,
         JobRepositoryInterface $jobRepository,
+        LoggerInterface $logger,
         string $projectDir
     ) {
         parent::__construct();
@@ -61,6 +66,7 @@ class EvaluatePendingCriteriaCommand extends Command
         $this->executionManager = $executionManager;
         $this->jobRepository = $jobRepository;
         $this->entityManager = $entityManager;
+        $this->logger = $logger;
         $this->projectDir = $projectDir;
     }
 
@@ -73,14 +79,13 @@ class EvaluatePendingCriteriaCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new SymfonyStyle($input, $output);
         $jobInstance = $this->getJobInstance();
 
-        $this->ensureNoOtherJobExecutionIsRunning($jobInstance, $io);
+        $this->ensureNoOtherJobExecutionIsRunning($jobInstance);
 
         $jobExecution = $this->createJobExecution($jobInstance);
         $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), []);
-        $io->writeln(sprintf('Launching job execution "%s" to evaluate all pending criteria.', $jobExecution->getId()));
+        $this->logger->info('Launching job execution "{job_id}" to evaluate all pending criteria.', ['message' => 'start_evaluation_of_pending_criteria', 'job_id' => $jobExecution->getId()]);
 
         $pathFinder = new PhpExecutableFinder();
         $console = sprintf('%s%sbin%sconsole', $this->projectDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
@@ -102,11 +107,10 @@ class EvaluatePendingCriteriaCommand extends Command
             while ($process->isRunning()) {
                 sleep(self::RUNNING_PROCESS_CHECK_INTERVAL);
                 $this->executionManager->updateHealthCheck($jobExecutionMessage);
-                $this->writeProcessOutput($process, $io);
+                $this->writeProcessOutput($process);
             }
         } catch (\Throwable $e) {
-            $io->error(sprintf('An error occurred: %s', $e->getMessage()));
-            $io->error($e->getTraceAsString());
+            $this->logger->error('An error occurred: {error_message}', ['error_message' => $e->getMessage(), 'error_trace' => $e->getTraceAsString()]);
         }
 
         // update status if the job execution failed due to an uncatchable error as a fatal error
@@ -115,20 +119,20 @@ class EvaluatePendingCriteriaCommand extends Command
             $this->executionManager->markAsFailed($jobExecutionMessage);
         }
 
-        $io->success(sprintf('Job execution "%s" is finished.', $jobExecutionMessage->getJobExecutionId()));
+        $this->logger->info('Job execution "{job_id}" is finished.', ['message' => 'job_execution_finished', 'job_id' => $jobExecutionMessage->getJobExecutionId()]);
     }
 
-    private function writeProcessOutput(Process $process, SymfonyStyle $io): void
+    private function writeProcessOutput(Process $process): void
     {
-        $io->write($process->getIncrementalOutput());
+        $this->logger->info($process->getIncrementalOutput());
 
         $errors = $process->getIncrementalErrorOutput();
         if ($errors) {
-            $io->error($errors);
+            $this->logger->error($errors);
         }
     }
 
-    private function ensureNoOtherJobExecutionIsRunning(JobInstance $jobInstance, SymfonyStyle $io): void
+    private function ensureNoOtherJobExecutionIsRunning(JobInstance $jobInstance): void
     {
         $jobExecutionRunning = $this->entityManager
             ->getRepository(JobExecution::class)
@@ -141,11 +145,11 @@ class EvaluatePendingCriteriaCommand extends Command
             return;
         }
 
-        $io->warning(sprintf('Another job execution is still running (id = "%d")', $jobExecutionRunning->getId()));
+        $this->logger->warning('Another job execution is still running (id = {job_id})', ['message' => 'another_job_execution_is_still_running', 'job_id' => $jobExecutionRunning->getId()]);
 
         // In case of an old job execution that has not been marked as failed.
         if ($jobExecutionRunning->getUpdatedTime() < new \DateTime(self::OUTDATED_JOB_EXECUTION_TIME)) {
-            $io->writeln(sprintf('Job execution "%d" is outdated: let\'s mark it has failed.', $jobExecutionRunning->getId()));
+            $this->logger->info('Job execution "{job_id}" is outdated: let\'s mark it has failed.', ['message' => 'job_execution_outdated', 'job_id' => $jobExecutionRunning->getId()]);
             $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecutionRunning->getId(), []);
             $this->executionManager->markAsFailed($jobExecutionMessage);
         }
