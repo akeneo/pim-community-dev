@@ -21,7 +21,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\At
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Query\SelectFamilyAttributeCodesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Pim\Automation\FranklinInsights\Specification\Builder\AttributeBuilder;
 use PhpSpec\ObjectBehavior;
 
@@ -33,9 +35,10 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     public function let(
         AttributesMappingProviderInterface $attributesMappingProvider,
         FamilyRepositoryInterface $familyRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
     ): void {
-        $this->beConstructedWith($attributesMappingProvider, $familyRepository, $attributeRepository);
+        $this->beConstructedWith($attributesMappingProvider, $familyRepository, $attributeRepository, $selectFamilyAttributeCodesQuery);
     }
 
     public function it_is_a_get_attributes_mapping_query_handler(): void
@@ -58,7 +61,8 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     public function it_handles_a_get_attributes_mapping_query(
         $familyRepository,
         $attributesMappingProvider,
-        $attributeRepository
+        $attributeRepository,
+        $selectFamilyAttributeCodesQuery
     ): void {
         $attributeMappingCollection = new AttributeMappingCollection();
         $attributeMappingCollection->addAttribute(new AttributeMapping('color', 'Color', 'text', 'pim_color', AttributeMappingStatus::ATTRIBUTE_ACTIVE));
@@ -70,6 +74,9 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ]);
 
         $familyCode = new FamilyCode('camcorders');
+
+        $selectFamilyAttributeCodesQuery->execute($familyCode)->shouldNotBeCalled();
+
         $familyRepository->exist($familyCode)->willReturn(true);
         $attributesMappingProvider->getAttributesMapping($familyCode)->willReturn($attributeMappingCollection);
 
@@ -80,7 +87,8 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     public function it_handles_a_get_attributes_mapping_query_with_unknown_pim_attribute(
         $familyRepository,
         $attributesMappingProvider,
-        $attributeRepository
+        $attributeRepository,
+        $selectFamilyAttributeCodesQuery
     ): void {
         $attributeMappingCollection = new AttributeMappingCollection();
         $colorAttribute = new AttributeMapping('color', 'Color', 'text', 'pim_color', AttributeMappingStatus::ATTRIBUTE_ACTIVE);
@@ -88,11 +96,12 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $attributeMappingCollection->addAttribute($colorAttribute);
         $attributeMappingCollection->addAttribute($unknownAttribute);
 
+        $familyCode = new FamilyCode('camcorders');
         $attributeRepository->findByCodes(['pim_color', 'unknown_pim_attribute'])->willReturn([
             AttributeBuilder::fromCode('pim_color'),
         ]);
+        $selectFamilyAttributeCodesQuery->execute($familyCode)->shouldNotBeCalled();
 
-        $familyCode = new FamilyCode('camcorders');
         $familyRepository->exist($familyCode)->willReturn(true);
         $attributesMappingProvider->getAttributesMapping($familyCode)->willReturn($attributeMappingCollection);
 
@@ -106,7 +115,8 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     public function it_filters_unknown_attributes(
         $familyRepository,
         $attributesMappingProvider,
-        $attributeRepository
+        $attributeRepository,
+        $selectFamilyAttributeCodesQuery
     ): void {
         $attributeMappingCollection = new AttributeMappingCollection();
         $attributeMappingCollection->addAttribute(new AttributeMapping(
@@ -119,6 +129,7 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
 
         $familyCode = new FamilyCode('camcorders');
         $familyRepository->exist($familyCode)->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute($familyCode)->shouldNotBeCalled();
         $attributesMappingProvider->getAttributesMapping($familyCode)->willReturn($attributeMappingCollection);
 
         $attributeRepository->findByCodes(['unknown_pim_attr_code'])->willReturn([]);
@@ -134,5 +145,40 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             AttributeMappingStatus::ATTRIBUTE_PENDING
         ));
         $this->handle($query)->shouldBeLike($expectedMapping);
+    }
+
+    public function it_removes_invalid_attributes_from_suggestions(
+        $familyRepository,
+        $attributesMappingProvider,
+        $attributeRepository,
+        $selectFamilyAttributeCodesQuery
+    ) {
+        $attributeMappingCollection = new AttributeMappingCollection();
+        $colorAttribute = new AttributeMapping('color', 'Color', 'text', 'pim_color', AttributeMappingStatus::ATTRIBUTE_ACTIVE);
+        $sizeAttribute = new AttributeMapping('size', 'Size', 'text', null, AttributeMappingStatus::ATTRIBUTE_PENDING, null, ['pim_size', 'pim_height', 'pim_measurements', 'pim_dimensions']);
+        $attributeMappingCollection->addAttribute($colorAttribute);
+        $attributeMappingCollection->addAttribute($sizeAttribute);
+
+        $attributeRepository->findByCodes(['pim_color'])->willReturn([
+            AttributeBuilder::fromCode('pim_color'),
+        ]);
+        $attributeRepository->findByCodes(['pim_size', 'pim_height', 'pim_measurements', 'pim_dimensions'])->willReturn([
+            (new AttributeBuilder())->withCode('pim_measurements')->isScopable()->build(),
+            (new AttributeBuilder())->withCode('pim_dimensions')->build(),
+            (new AttributeBuilder())->withCode('pim_height')->withType(AttributeTypes::ASSET_COLLECTION)->build(),
+        ]);
+
+        $familyCode = new FamilyCode('camcorders');
+
+        $selectFamilyAttributeCodesQuery->execute($familyCode)->willReturn(['pim_height', 'pim_measurements', 'pim_dimensions']);
+
+        $familyRepository->exist($familyCode)->willReturn(true);
+        $attributesMappingProvider->getAttributesMapping($familyCode)->willReturn($attributeMappingCollection);
+
+        $query = new GetAttributesMappingByFamilyQuery($familyCode);
+        $expectedMappingResponse = new AttributeMappingCollection();
+        $expectedMappingResponse->addAttribute($colorAttribute);
+        $expectedMappingResponse->addAttribute(new AttributeMapping('size', 'Size', 'text', null, AttributeMappingStatus::ATTRIBUTE_PENDING, null, ['pim_dimensions']));
+        $this->handle($query)->shouldBeLike($expectedMappingResponse);
     }
 }

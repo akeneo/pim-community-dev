@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 
 /**
@@ -132,5 +133,13 @@ final class Attribute
     public function getDefaultMetricUnit(): ?string
     {
         return $this->defaultMetricUnit;
+    }
+
+    public function isTypeAllowedInFranklin()
+    {
+        return in_array(
+            $this->getType(),
+            array_keys(AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS)
+        );
     }
 }

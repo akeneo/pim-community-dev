@@ -59,6 +59,16 @@ class AttributeMappingCollection implements \IteratorAggregate
         }, array_values($attributes));
     }
 
+    public function getSuggestionAttributesCodes(): array
+    {
+        $attributeCodes = [];
+        foreach ($this->attributes as $attributeMapping) {
+            $attributeCodes = array_merge($attributeCodes, $attributeMapping->getSuggestions());
+        }
+
+        return $attributeCodes;
+    }
+
     public function isEmpty(): bool
     {
         return 0 === count($this->attributes);

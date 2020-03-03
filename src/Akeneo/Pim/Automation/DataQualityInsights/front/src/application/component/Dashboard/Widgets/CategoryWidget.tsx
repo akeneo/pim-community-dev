@@ -102,7 +102,7 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
       <table className="AknGrid AknGrid--unclickable">
         <tbody className="AknGrid-body">
           <tr>
-            <th className="AknGrid-headerCell">{__('Title')}</th>
+            <th className="AknGrid-headerCell">{__('akeneo_data_quality_insights.dqi_dashboard.widgets.title')}</th>
             <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">{__(`akeneo_data_quality_insights.product_evaluation.axis.enrichment.title`)}</th>
             <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">{__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)}</th>
             <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate"> </th>

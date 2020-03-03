@@ -35,6 +35,7 @@ akeneo_data_quality_insights:
                 max_categories_msg: Sorry, you cannot add more than {{ count }} categories to track on your dashboard
             add_families: Add families
             add_categories: Add categories
+            title: Title
             no_family_helper_msg: Select the families for which you wish to measure data quality
             no_category_helper_msg: Select the categories for which you wish to measure data quality
             see_in_grid: See in grid
@@ -67,7 +68,7 @@ akeneo_data_quality_insights:
                 axis_error: Due to an error, grade could not be fully calculated. Try again later.
                 criterion_error: Grade could not be calculated.
             success:
-                criterion: It's all good.
+                criterion: Everything is good.
             grading_in_progress: Grading in progress.
             axis_grading_in_progress: Grading in progress. Please come back later.
     product_edit_form:

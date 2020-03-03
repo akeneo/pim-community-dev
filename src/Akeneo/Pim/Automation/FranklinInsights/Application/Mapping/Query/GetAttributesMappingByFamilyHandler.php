@@ -17,9 +17,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMa
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Query\SelectFamilyAttributeCodesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 
 /**
@@ -33,14 +33,18 @@ class GetAttributesMappingByFamilyHandler
 
     private $attributeRepository;
 
+    private $selectFamilyAttributeCodesQuery;
+
     public function __construct(
         AttributesMappingProviderInterface $attributesMappingProvider,
         FamilyRepositoryInterface $familyRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
     ) {
         $this->attributesMappingProvider = $attributesMappingProvider;
         $this->familyRepository = $familyRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->selectFamilyAttributeCodesQuery = $selectFamilyAttributeCodesQuery;
     }
 
     public function handle(GetAttributesMappingByFamilyQuery $query): AttributeMappingCollection
@@ -49,7 +53,7 @@ class GetAttributesMappingByFamilyHandler
 
         $attributesMapping = $this->attributesMappingProvider->getAttributesMapping($query->getFamilyCode());
 
-        return $this->unmapUnknownAttributes($attributesMapping);
+        return $this->unmapUnknownAttributes($query->getFamilyCode(), $attributesMapping);
     }
 
     private function ensureFamilyExists(FamilyCode $familyCode): void
@@ -62,22 +66,23 @@ class GetAttributesMappingByFamilyHandler
         }
     }
 
-    private function unmapUnknownAttributes(AttributeMappingCollection $attributeMappingCollection): AttributeMappingCollection
+    private function unmapUnknownAttributes(FamilyCode $familyCode, AttributeMappingCollection $attributeMappingCollection): AttributeMappingCollection
     {
         if ($attributeMappingCollection->isEmpty()) {
             return $attributeMappingCollection;
         }
 
-        $unknownAttributeCodes = $this->computeUnknownAttributesCodes($attributeMappingCollection);
+        $unknownMappedAttributeCodes = $this->computeUnknownMappedAttributesCodes($attributeMappingCollection);
+        $invalidSuggestedAttributeCodes = $this->computeInvalidSuggestedAttributeCodes($familyCode, $attributeMappingCollection);
 
-        if (empty($unknownAttributeCodes)) {
+        if (empty($unknownMappedAttributeCodes) && empty($invalidSuggestedAttributeCodes)) {
             return $attributeMappingCollection;
         }
 
-        return $this->computeNewAttributesMapping($attributeMappingCollection, $unknownAttributeCodes);
+        return $this->computeNewAttributesMapping($attributeMappingCollection, $unknownMappedAttributeCodes, $invalidSuggestedAttributeCodes);
     }
 
-    private function computeUnknownAttributesCodes(AttributeMappingCollection $attributeMappingCollection): array
+    private function computeUnknownMappedAttributesCodes(AttributeMappingCollection $attributeMappingCollection): array
     {
         $attributeCodesFromResponse = [];
         foreach ($attributeMappingCollection as $attributeMapping) {
@@ -94,13 +99,7 @@ class GetAttributesMappingByFamilyHandler
         return array_diff($attributeCodesFromResponse, $attributesCodes);
     }
 
-    /**
-     * @param AttributeMappingCollection $attributeMappingCollection
-     * @param string[] $unknownAttributeCodes
-     *
-     * @return AttributeMappingCollection
-     */
-    private function computeNewAttributesMapping(AttributeMappingCollection $attributeMappingCollection, array $unknownAttributeCodes): AttributeMappingCollection
+    private function computeNewAttributesMapping(AttributeMappingCollection $attributeMappingCollection, array $unknownAttributeCodes, array $invalidSuggestedAttributeCodes): AttributeMappingCollection
     {
         $newMapping = new AttributeMappingCollection();
         foreach ($attributeMappingCollection as $attributeMapping) {
@@ -110,7 +109,7 @@ class GetAttributesMappingByFamilyHandler
                 $status = AttributeMappingStatus::ATTRIBUTE_PENDING;
                 $pimAttributeCode = null;
             }
-
+            $suggestions = array_values(array_diff($attributeMapping->getSuggestions(), $invalidSuggestedAttributeCodes));
             $newAttributeMapping = new AttributeMapping(
                 $attributeMapping->getTargetAttributeCode(),
                 $attributeMapping->getTargetAttributeLabel(),
@@ -118,11 +117,38 @@ class GetAttributesMappingByFamilyHandler
                 $pimAttributeCode,
                 $status,
                 $attributeMapping->getSummary(),
-                $attributeMapping->getSuggestions()
+                $suggestions
             );
             $newMapping->addAttribute($newAttributeMapping);
         }
 
         return $newMapping;
+    }
+
+    private function computeInvalidSuggestedAttributeCodes(FamilyCode $familyCode, AttributeMappingCollection $attributeMappingCollection): array
+    {
+        $suggestionAttributeCodes = $attributeMappingCollection->getSuggestionAttributesCodes();
+        if (empty($suggestionAttributeCodes)) {
+            return [];
+        }
+
+        $familyAttributeCodes = $this->selectFamilyAttributeCodesQuery->execute($familyCode);
+        $unknownSuggestionAttributeCodes = array_values(array_diff($suggestionAttributeCodes, $familyAttributeCodes));
+
+        $incompatibleAttributeCodes = $this->computeIncompatibleAttributesWithFranklin($suggestionAttributeCodes);
+
+        return array_merge($unknownSuggestionAttributeCodes, $incompatibleAttributeCodes);
+    }
+
+    private function computeIncompatibleAttributesWithFranklin(array $suggestionAttributeCodes): array
+    {
+        $attributeCodes = [];
+        foreach ($this->attributeRepository->findByCodes($suggestionAttributeCodes) as $attribute) {
+            if ($attribute->isLocalizable() || $attribute->isScopable() || $attribute->isLocaleSpecific() || !$attribute->isTypeAllowedInFranklin()) {
+                $attributeCodes[] = (string)$attribute->getCode();
+            }
+        }
+
+        return $attributeCodes;
     }
 }

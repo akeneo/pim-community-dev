@@ -213,8 +213,7 @@ class QualityHighlightsWebService extends AbstractApi implements AuthenticatedAp
 
     public function getMetrics(): QualityHighlightsMetrics
     {
-        // TODO: change this end-point. Channel and local are irrelevant.
-        $route = $this->uriGenerator->generate('/api/quality-highlights/ecommerce/en_US');
+        $route = $this->uriGenerator->generate('/api/quality-highlights');
 
         try {
             $response = $this->httpClient->request('GET', $route);
