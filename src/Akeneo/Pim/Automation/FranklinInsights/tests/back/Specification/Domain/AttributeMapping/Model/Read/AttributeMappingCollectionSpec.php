@@ -182,4 +182,18 @@ class AttributeMappingCollectionSpec extends ObjectBehavior
             [$expectedAttrWeight, $attrSize, $attrDescription]
         );
     }
+
+    public function it_gets_all_attribute_codes_from_suggestions()
+    {
+        $attrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMappingStatus::ATTRIBUTE_PENDING, null, ['pim_weight']);
+        $attrDescription = new AttributeMapping('description', 'Description', 'text', null, AttributeMappingStatus::ATTRIBUTE_INACTIVE, null, []);
+        $attrSize = new AttributeMapping('size', 'Size', 'select', 'pim_size', AttributeMappingStatus::ATTRIBUTE_PENDING, null, ['dimensions', 'measurements']);
+
+        $this
+            ->addAttribute($attrDescription)
+            ->addAttribute($attrWeight)
+            ->addAttribute($attrSize);
+
+        $this->getSuggestionAttributesCodes()->shouldBe(['dimensions', 'measurements', 'pim_weight']);
+    }
 }

@@ -3,6 +3,7 @@
 ## Improvements
 
 - DAPI-810: Evaluate synchronous criteria on unitary product save
+- DAPI-874: Call spellcheck only when clicking in a field 
 
 # 4.0.6 (2020-02-19)
 
@@ -231,6 +232,7 @@ The following CLI commands have been deleted:
 - pim:draft:create
 - pim:proposal:approve
 - pim:asset:generate-variation-files-from-reference
+- pim:asset:send-expiration-notification
  
 ### Services
 

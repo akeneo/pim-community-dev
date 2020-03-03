@@ -96,7 +96,7 @@ endif
 
 .PHONY: franklin-insights-end-to-end
 franklin-insights-end-to-end:
-	$(PHP_RUN) vendor/bin/behat -p legacy -s insights
+	$(PHP_RUN) vendor/bin/behat -p legacy -s franklin
 
 .PHONY: franklin-insights-cs-fix
 franklin-insights-cs-fix:
