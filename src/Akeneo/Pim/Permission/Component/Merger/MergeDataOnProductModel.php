@@ -57,11 +57,7 @@ class MergeDataOnProductModel implements NotGrantedDataMergerInterface
         }
 
         $fullProductModel->setCode($filteredProductModel->getCode());
-        $fullProductModel->setRoot($filteredProductModel->getRoot());
-        $fullProductModel->setLeft($filteredProductModel->getLeft());
-        $fullProductModel->setRight($filteredProductModel->getRight());
         $fullProductModel->setParent($filteredProductModel->getParent());
-        $fullProductModel->setLevel($filteredProductModel->getLevel());
         $fullProductModel->setFamilyVariant($filteredProductModel->getFamilyVariant());
 
         foreach ($this->mergers as $merger) {

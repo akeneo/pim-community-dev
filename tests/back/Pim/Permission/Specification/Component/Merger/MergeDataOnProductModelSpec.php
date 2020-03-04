@@ -50,10 +50,6 @@ class MergeDataOnProductModelSpec extends ObjectBehavior
 
         $filteredProductModel->getCode()->willReturn('my_code');
         $filteredProductModel->getFamilyVariant()->willReturn($familyVariant);
-        $filteredProductModel->getRoot()->willReturn(1);
-        $filteredProductModel->getRight()->willReturn(2);
-        $filteredProductModel->getLeft()->willReturn(3);
-        $filteredProductModel->getLevel()->willReturn(1);
         $filteredProductModel->getParent()->willReturn($parent);
         $filteredProductModel->getProductModels()->willReturn($productModels);
         $filteredProductModel->getProducts()->willReturn($products);
@@ -63,10 +59,6 @@ class MergeDataOnProductModelSpec extends ObjectBehavior
 
         $fullProductModel->setCode('my_code')->shouldBeCalled();
         $fullProductModel->setFamilyVariant($familyVariant)->shouldBeCalled();
-        $fullProductModel->setRoot(1)->shouldBeCalled();
-        $fullProductModel->setRight(2)->shouldBeCalled();
-        $fullProductModel->setLeft(3)->shouldBeCalled();
-        $fullProductModel->setLevel(1)->shouldBeCalled();
         $fullProductModel->setParent($parent)->shouldBeCalled();
 
         $valuesMerger->merge($filteredProductModel, $fullProductModel)->willReturn($fullProductModel);
