@@ -25,6 +25,6 @@ Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasureme
                                             - Type: string
                                             - Choice: [mul, div, add, sub]
                                         value:
-                                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\ConvertValue: ~
+                                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationValue: ~
     constraints:
         - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\StandardUnitCode: ~

@@ -3,7 +3,6 @@ pim_measurements:
         common:
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
-                should_be_unique: 'A measurement family already exists with code "%measurement_family_code%"'
                 limit_reached: 'You cannot create the measurement family "%measurement_family_code%" because you have reached the limit of %limit% measurement families'
         measurement_family:
             standard_unit_code_should_exist: 'The standard unit code "%standard_unit_code%" does not exist in the list of units for the measurement family.'

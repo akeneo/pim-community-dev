@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ConvertValue extends Constraint
+class OperationValue extends Constraint
 {
     const VALUE_SHOULD_BE_A_NUMBER_IN_A_STRING = 'pim_measurements.validation.measurement_family.convert.value_should_be_a_number_in_a_string';
 

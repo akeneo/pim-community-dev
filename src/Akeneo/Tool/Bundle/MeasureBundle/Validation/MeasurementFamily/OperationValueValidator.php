@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Validation;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ConvertValueValidator extends ConstraintValidator
+class OperationValueValidator extends ConstraintValidator
 {
     public function validate($convertValue, Constraint $constraint)
     {
@@ -35,7 +35,7 @@ class ConvertValueValidator extends ConstraintValidator
                 new Callback(
                     function ($value, ExecutionContextInterface $context, $payload) {
                         if (null !== $value && !is_numeric($value)) {
-                            $context->buildViolation(ConvertValue::VALUE_SHOULD_BE_A_NUMBER_IN_A_STRING)
+                            $context->buildViolation(OperationValue::VALUE_SHOULD_BE_A_NUMBER_IN_A_STRING)
                                 ->addViolation();
                         }
                     }
