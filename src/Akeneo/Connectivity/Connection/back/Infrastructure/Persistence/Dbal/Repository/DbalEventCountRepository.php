@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\DailyEventCount;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepository;
 use Doctrine\DBAL\Connection as DbalConnection;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -33,19 +34,26 @@ class DbalEventCountRepository implements EventCountRepository
         $this->dbalConnection->commit();
     }
 
-    private function insert(DailyEventCount $dailyEventCount): void
+    private function insert(HourlyEventCount $hourlyEventCount): void
     {
         $insertQuery = <<<SQL
-INSERT INTO akeneo_connectivity_connection_audit
-VALUES(:connection_code, :event_date, :event_count, :event_type, NOW())
+INSERT INTO akeneo_connectivity_connection_audit (connection_code, event_datetime, event_count, event_type, updated)
+VALUES(:connection_code, :event_datetime, :event_count, :event_type, NOW())
 ON DUPLICATE KEY UPDATE event_count = :event_count, updated = NOW()
 SQL;
-        $stmt = $this->dbalConnection->prepare($insertQuery);
-        $stmt->execute([
-            'connection_code' => $dailyEventCount->connectionCode(),
-            'event_date' => $dailyEventCount->eventDate(),
-            'event_count' => (int) $dailyEventCount->eventCount(),
-            'event_type' => (string) $dailyEventCount->eventType(),
-        ]);
+
+        $this->dbalConnection->executeUpdate(
+            $insertQuery,
+            [
+                'connection_code' => $hourlyEventCount->connectionCode(),
+                'event_datetime' => $hourlyEventCount->hourlyInterval()->upToDateTime(),
+                'event_count' => (int) $hourlyEventCount->eventCount(),
+                'event_type' => (string) $hourlyEventCount->eventType(),
+            ],
+            [
+                'event_datetime' => Types::DATETIME_IMMUTABLE,
+                'event_count' => Types::INTEGER,
+            ]
+        );
     }
 }

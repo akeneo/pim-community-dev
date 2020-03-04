@@ -6,7 +6,8 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountHandler;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectEventDatesToRefreshQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectHourlyIntervalsToRefreshQuery;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,31 +24,42 @@ class UpdateAuditDataCommand extends Command
     /** @var UpdateProductEventCountHandler */
     private $updateProductEventCountHandler;
 
-    /** @var DbalSelectEventDatesToRefreshQuery */
-    private $selectEventDatesToRefreshQuery;
+    /** @var DbalSelectHourlyIntervalsToRefreshQuery */
+    private $selectHourlyIntervalsToRefreshQuery;
 
     public function __construct(
         UpdateProductEventCountHandler $updateProductEventCountHandler,
-        DbalSelectEventDatesToRefreshQuery $selectEventDatesToRefreshQuery
+        DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery
     ) {
         parent::__construct();
 
         $this->updateProductEventCountHandler = $updateProductEventCountHandler;
-        $this->selectEventDatesToRefreshQuery = $selectEventDatesToRefreshQuery;
+        $this->selectHourlyIntervalsToRefreshQuery = $selectHourlyIntervalsToRefreshQuery;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $datesToRefresh = $this->selectEventDatesToRefreshQuery->execute();
-        if (!in_array(date('Y-m-d'), $datesToRefresh)) {
-            $datesToRefresh[] = date('Y-m-d');
+        /** @var UpdateProductEventCountCommand[] */
+        $commands = [];
+
+        $commands[] = new UpdateProductEventCountCommand(
+            HourlyInterval::createFromDateTime(
+                // new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
+                new \DateTimeImmutable('2020-02-01 13:45:00', new \DateTimeZone('UTC'))
+            )
+        );
+
+        $hourlyIntervalsToRefresh = $this->selectHourlyIntervalsToRefreshQuery->execute();
+        foreach ($hourlyIntervalsToRefresh as $hourlyInterval) {
+            // Ignore the refresh of the current hour.
+            if (true === HourlyInterval::equals($commands[0]->hourlyInterval(), $hourlyInterval)) {
+                continue;
+            }
+
+            $commands[] = new UpdateProductEventCountCommand($hourlyInterval);
         }
 
-        foreach ($datesToRefresh as $dateToRefresh) {
-            $datetime = new \DateTime($dateToRefresh, new \DateTimeZone('UTC'));
-            $datetime->setTime(0, 0, 0, 0);
-
-            $command = new UpdateProductEventCountCommand($datetime->format('Y-m-d'));
+        foreach ($commands as $command) {
             $this->updateProductEventCountHandler->handle($command);
         }
 
