@@ -42,6 +42,7 @@ const utils = {
     getRequireConfig(bundlePaths, baseDir) {
         let paths = {};
         let config = {};
+        let namespaces = {};
 
         bundlePaths.forEach((bundle) => {
             try {
@@ -53,13 +54,18 @@ const utils = {
                 const absolutePaths = _.mapValues(mergedPaths, (modulePath) => {
                     return path.resolve(baseDir, `./public/bundles/${modulePath}`);
                 });
+                const requireNamespaces = parsed.config.namespaces || {};
+                const absoluteNamespaces = _.mapValues(requireNamespaces, (namespacePath) => {
+                   return path.resolve(baseDir, `./public/bundles/${namespacePath}`);
+                });
 
                 paths = deepMerge(paths, absolutePaths);
                 config = deepMerge(config, parsed.config.config || {});
+                namespaces = deepMerge(namespaces, absoluteNamespaces);
             } catch (e) {}
         });
 
-        return { config, paths };
+        return { config, paths, namespaces };
     },
 
     /**
@@ -71,7 +77,7 @@ const utils = {
      */
     getModulePaths(baseDir, sourceDir) {
         const pathSourceFile = require(path.join(baseDir, 'public/js/require-paths.js'));
-        const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir);
+        const { config, paths, namespaces } = utils.getRequireConfig(pathSourceFile, baseDir);
         const aliases = Object.assign(paths, getFrontModules(process.cwd(), './public/bundles')(), {
           'require-polyfill': path.resolve(sourceDir, './frontend/webpack/require-polyfill.js'),
           'require-context': path.resolve(sourceDir, './frontend/webpack/require-context.js'),
@@ -91,7 +97,7 @@ const utils = {
           ),
         });
 
-        return { config, aliases };
+        return { config, aliases, namespaces };
     },
 
     /**
