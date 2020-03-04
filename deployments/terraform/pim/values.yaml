@@ -62,7 +62,6 @@ mailer:
   login: nil # Generated with terraform template
   password: nil # Generated with terraform template
   base_mailer_url: "smtp://smtp.mailgun.org:2525"
-  from_address: no-reply@akeneo.com
 
 image:
   pim:

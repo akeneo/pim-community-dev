@@ -16,7 +16,6 @@ data:
   GOOGLE_LOCATION: {{ .Values.common.googleZone | quote }}
   K8S_CLUSTER_NAME: {{ .Values.common.googleZone | quote }}
   LC_ALL: C.UTF-8
-  MAILER_FROM_ADDRESS: {{ .Values.mailer.from_address | quote }}
   MAILER_URL: {{ .Values.mailer.base_mailer_url }}?encryption=tls&auth_mode=login&username={{ .Values.mailer.login }}&password={{ .Values.mailer.password }}&sender_address=no-reply%40{{ .Values.common.pimMasterDomain }}
   MEMCACHED_SVC:  {{ .Values.memcached.fullnameOverride | quote}}
   APP_DATABASE_HOST: {{ .Values.mysql.mysql.serviceName | quote }}
