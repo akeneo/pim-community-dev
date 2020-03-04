@@ -118,7 +118,8 @@
         "symfony/intl": "^4.4.0",
         "symfony/finder": "^4.4.0",
         "symfony/templating": "^4.4.0",
-        "symfony/proxy-manager-bridge": "^4.4.0"
+        "symfony/proxy-manager-bridge": "^4.4.0",
+        "justinrainbow/json-schema": "^5.2"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
