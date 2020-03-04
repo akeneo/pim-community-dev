@@ -36,7 +36,8 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             [
                 'code'                  => 'kilogram',
                 'labels'                => [],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']]
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']],
+                'symbol' => 'Km'
             ]
         ];
 
@@ -61,7 +62,8 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             [
                 'code'                  => 'kilogram',
                 'labels'                => [],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']]
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']],
+                'symbol' => 'Km'
             ]
         ];
 
@@ -85,7 +87,8 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             [
                 'code'                  => 'kilogram',
                 'labels'                => [],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']]
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']],
+                'symbol' => 'Km'
             ]
         ];
 
@@ -113,7 +116,8 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             [
                 'code'                  => $invalidCodes,
                 'labels'                => [],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']]
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']],
+                'symbol' => 'Km'
             ]
         ];
 
@@ -138,7 +142,8 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             [
                 'code'                  => 'kilogram',
                 'labels'                => $invalidLabels,
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']]
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']],
+                'symbol' => 'Km'
             ]
         ];
 
@@ -163,7 +168,8 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             [
                 'code'                  => 'kilogram',
                 'labels'                => [],
-                'convert_from_standard' => [['operator' => $invalidOperator, 'value' => '251']]
+                'convert_from_standard' => [['operator' => $invalidOperator, 'value' => '251']],
+                'symbol' => 'Km'
             ]
         ];
 
@@ -188,7 +194,34 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             [
                 'code'                  => 'kilogram',
                 'labels'                => [],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => $invalidConvertValue]]
+                'convert_from_standard' => [['operator' => 'mul', 'value' => $invalidConvertValue]],
+                'symbol' => 'Km'
+            ]
+        ];
+
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(1, $violations->count());
+        $violation = $violations->get(0);
+        self::assertEquals($errorMessage, $violation->getMessage());
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidUnitSymbol
+     */
+    public function it_has_a_unit_with_an_invalid_unit_symbol($invalidUnitSymbol, string $errorMessage): void
+    {
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = 'WEIGHT';
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->standardUnitCode = 'kilogram';
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => 'kilogram',
+                'labels'                => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '255']],
+                'symbol' => $invalidUnitSymbol
             ]
         ];
 
@@ -202,13 +235,13 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     public function invalidCodes(): array
     {
         return [
-            'Not be too long'       => [
+            'Should not be too long' => [
                 str_repeat('a', 256),
                 'This value is too long. It should have 255 characters or less.'
             ],
-            'Not blank'             => [null, 'This value should not be blank.'],
-            'Not a string'          => [123, 'This value should be of type string.'],
-            'unsupported character' => ['--nice-', 'This field may only contain letters, numbers and underscores.']
+            'Should not blank' => [null, 'This value should not be blank.'],
+            'Should not a string' => [123, 'This value should be of type string.'],
+            'Should not have unsupported character' => ['--nice-', 'This field may only contain letters, numbers and underscores.']
         ];
     }
 
@@ -232,6 +265,14 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     {
         return [
             'Convert value is not a valid number represented as a string' => ['1.24adv', 'The conversion value should be number represented in a string (example: "0.2561")']
+        ];
+    }
+
+    public function invalidUnitSymbol()
+    {
+        return [
+            'Should not be too long' => [str_repeat('a', 256), 'This value is too long. It should have 255 characters or less.'],
+            'Should be a string' => [123, 'This value should be of type string.'],
         ];
     }
 }

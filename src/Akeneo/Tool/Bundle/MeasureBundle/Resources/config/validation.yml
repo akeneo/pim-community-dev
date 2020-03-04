@@ -12,6 +12,10 @@ Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasureme
                             - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\Code: ~
                         labels:
                             - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
+                        symbol:
+                            - Type: string
+                            - Length:
+                                max: 255
                         convert_from_standard:
                             - All:
                                 - Collection:
