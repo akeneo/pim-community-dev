@@ -43,7 +43,7 @@ SQL;
                     $this->dbalConnection->getDatabasePlatform()->getDateTimeFormatString(),
                     $dateTime,
                     new \DateTimeZone('UTC')
-                )
+                )->sub(new \DateInterval('PT1H'))
             );
         }, $dateTimes);
     }

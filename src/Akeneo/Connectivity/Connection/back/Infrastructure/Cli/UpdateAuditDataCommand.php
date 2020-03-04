@@ -44,10 +44,7 @@ class UpdateAuditDataCommand extends Command
 
         // Create a Command for the current hour.
         $commands[] = new UpdateProductEventCountCommand(
-            HourlyInterval::createFromDateTime(
-                // new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
-                new \DateTimeImmutable('2020-02-01 13:45:00', new \DateTimeZone('UTC'))
-            )
+            HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC')))
         );
 
         /*

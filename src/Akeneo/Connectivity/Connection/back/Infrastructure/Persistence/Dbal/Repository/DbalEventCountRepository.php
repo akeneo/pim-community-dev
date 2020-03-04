@@ -35,8 +35,8 @@ class DbalEventCountRepository implements EventCountRepository
     {
         $insertQuery = <<<SQL
 INSERT INTO akeneo_connectivity_connection_audit (connection_code, event_datetime, event_count, event_type, updated)
-VALUES(:connection_code, :event_datetime, :event_count, :event_type, NOW())
-ON DUPLICATE KEY UPDATE event_count = :event_count, updated = NOW()
+VALUES(:connection_code, :event_datetime, :event_count, :event_type, UTC_TIMESTAMP())
+ON DUPLICATE KEY UPDATE event_count = :event_count, updated = UTC_TIMESTAMP()
 SQL;
 
         $this->dbalConnection->executeUpdate(
