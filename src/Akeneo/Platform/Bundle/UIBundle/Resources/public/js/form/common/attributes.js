@@ -180,6 +180,7 @@ define(
                     return this;
                 }
 
+                this.getRoot().trigger('pim_enrich:form:extension:render:before');
                 this.getRoot().trigger('pim_enrich:form:attributes:render:before');
 
                 this.rendering = true;
@@ -242,6 +243,7 @@ define(
                             _.defer(this.sticky.bind(this));
                         })
                         .then(() => {
+                            this.getRoot().trigger('pim_enrich:form:extension:render:after');
                             this.getRoot().trigger('pim_enrich:form:attributes:render:after');
                         });
                     });
