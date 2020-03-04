@@ -7,3 +7,5 @@ pim_measurements:
                 limit_reached: 'You cannot create the measurement family "%measurement_family_code%" because you have reached the limit of %limit% measurement families'
         measurement_family:
             standard_unit_code_should_exist: 'The standard unit code "%standard_unit_code%" does not exist in the list of units for the measurement family.'
+            convert:
+                value_should_be_a_number_in_a_string: 'The conversion value should be number represented in a string (example: "0.2561")'

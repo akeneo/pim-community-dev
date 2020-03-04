@@ -12,9 +12,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
 
+use Akeneo\AssetManager\Infrastructure\Validation\Attribute\MaxFileSize;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Validation;
@@ -23,40 +25,26 @@ use Symfony\Component\Validator\Validation;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class StandardUnitCodeValidator extends ConstraintValidator
+class ConvertValueValidator extends ConstraintValidator
 {
-    public function validate($saveMeasurementFamilyCommand, Constraint $constraint)
+    public function validate($convertValue, Constraint $constraint)
     {
-        if (!$saveMeasurementFamilyCommand instanceof SaveMeasurementFamilyCommand) {
-            throw new \LogicException(
-                sprintf(
-                    'Expect an instance of class "%s", "%s" given',
-                    SaveMeasurementFamilyCommand::class,
-                    get_class($saveMeasurementFamilyCommand)
-                )
-            );
-        }
-        $standardUnitCode = $saveMeasurementFamilyCommand->standardUnitCode;
-
         $validator = Validation::createValidator();
         $violations = $validator->validate(
-            $saveMeasurementFamilyCommand->units,
+            $convertValue,
             [
+                new NotBlank(),
                 new Callback(
-                    function (array $units, ExecutionContextInterface $context) use ($standardUnitCode) {
-                        foreach ($units as $unit) {
-                            if ($standardUnitCode === $unit['code']) {
-                                return;
-                            }
+                    function ($value, ExecutionContextInterface $context, $payload) {
+                        if (null !== $value && !is_numeric($value)) {
+                            $context->buildViolation(ConvertValue::VALUE_SHOULD_BE_A_NUMBER_IN_A_STRING)
+                                ->addViolation();
                         }
-                        $context->buildViolation(
-                            StandardUnitCode::STANDARD_UNIT_CODE_SHOULD_EXIST,
-                            ['%standard_unit_code%' => $standardUnitCode]
-                        )->addViolation();
                     }
-                )
+                ),
             ]
         );
+
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {

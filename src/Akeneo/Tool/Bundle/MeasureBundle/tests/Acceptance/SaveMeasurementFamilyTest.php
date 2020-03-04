@@ -5,12 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Acceptance;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -33,12 +27,18 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
      * @test
      * @dataProvider invalidCodes
      */
-    public function it_does_not_create_measurement_family_because_the_code_is_invalid($invalidCode, string $errorMessage): void
+    public function it_has_an_invalid_code($invalidCode, string $errorMessage): void
     {
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = $invalidCode;
         $saveFamilyCommand->standardUnitCode = 'kilogram';
-        $saveFamilyCommand->units = [['code' => 'kilogram']];
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => 'kilogram',
+                'labels'                => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']]
+            ]
+        ];
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
@@ -51,13 +51,19 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
      * @test
      * @dataProvider invalidLabels
      */
-    public function it_does_not_create_measurement_family_because_the_standard_unit_is_invalid($invalidLabels, string $errorMessage): void
+    public function it_has_an_invalid_label($invalidLabels, string $errorMessage): void
     {
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
         $saveFamilyCommand->labels = $invalidLabels;
         $saveFamilyCommand->standardUnitCode = 'kilogram';
-        $saveFamilyCommand->units = [['code' => 'kilogram']];
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => 'kilogram',
+                'labels'                => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']]
+            ]
+        ];
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
@@ -69,27 +75,139 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_does_not_create_measurement_family_because_the_standard_unit_is_not_a_unit_of_the_measurement_family(): void
+    public function it_has_a_standard_unit_which_is_not_a_unit_of_the_measurement_family(): void
     {
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
         $saveFamilyCommand->labels = [];
         $saveFamilyCommand->standardUnitCode = 'invalid_standard_unit_code';
-        $saveFamilyCommand->units = [['code' => 'kilogram']];
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => 'kilogram',
+                'labels'                => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']]
+            ]
+        ];
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals('The standard unit code "invalid_standard_unit_code" does not exist in the list of units for the measurement family.', $violation->getMessage());
+        self::assertEquals(
+            'The standard unit code "invalid_standard_unit_code" does not exist in the list of units for the measurement family.',
+            $violation->getMessage()
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidCodes
+     */
+    public function it_has_a_unit_with_an_invalid_code($invalidCodes, string $errorMessage): void
+    {
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = 'WEIGHT';
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->standardUnitCode = $invalidCodes;
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => $invalidCodes,
+                'labels'                => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']]
+            ]
+        ];
+
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(1, $violations->count());
+        $violation = $violations->get(0);
+        self::assertEquals($errorMessage, $violation->getMessage());
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidLabels
+     */
+    public function it_has_a_unit_with_an_invalid_label($invalidLabels, string $errorMessage): void
+    {
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = 'WEIGHT';
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->standardUnitCode = 'kilogram';
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => 'kilogram',
+                'labels'                => $invalidLabels,
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']]
+            ]
+        ];
+
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(1, $violations->count());
+        $violation = $violations->get(0);
+        self::assertEquals($errorMessage, $violation->getMessage());
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidOperator
+     */
+    public function it_has_a_unit_with_an_invalid_convert_operator($invalidOperator, string $errorMessage): void
+    {
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = 'WEIGHT';
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->standardUnitCode = 'kilogram';
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => 'kilogram',
+                'labels'                => [],
+                'convert_from_standard' => [['operator' => $invalidOperator, 'value' => '251']]
+            ]
+        ];
+
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(1, $violations->count());
+        $violation = $violations->get(0);
+        self::assertEquals($errorMessage, $violation->getMessage());
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidConvertValue
+     */
+    public function it_has_a_unit_with_an_invalid_convert_value($invalidConvertValue, string $errorMessage): void
+    {
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = 'WEIGHT';
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->standardUnitCode = 'kilogram';
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => 'kilogram',
+                'labels'                => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => $invalidConvertValue]]
+            ]
+        ];
+
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(1, $violations->count());
+        $violation = $violations->get(0);
+        self::assertEquals($errorMessage, $violation->getMessage());
     }
 
     public function invalidCodes(): array
     {
         return [
-            'Not be too long' => [str_repeat('a', 256), 'This value is too long. It should have 255 characters or less.'],
-            'Not blank' => [null, 'This value should not be blank.'],
-            'Not a string' => [123, 'This value should be of type string.'],
+            'Not be too long'       => [
+                str_repeat('a', 256),
+                'This value is too long. It should have 255 characters or less.'
+            ],
+            'Not blank'             => [null, 'This value should not be blank.'],
+            'Not a string'          => [123, 'This value should be of type string.'],
             'unsupported character' => ['--nice-', 'This field may only contain letters, numbers and underscores.']
         ];
     }
@@ -98,7 +216,22 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     {
         return [
             'Locale code should be a string' => [[123 => 'my label'], 'This value should be of type string.'],
-            'Label should be a string' => [['fr_FR' => 12], 'This value should be of type string.']
+            'Label should be a string'       => [['fr_FR' => 12], 'This value should be of type string.']
+        ];
+    }
+
+    public function invalidOperator(): array
+    {
+        return [
+            'Operator cannot be blank'  => [null, 'This value should not be blank.'],
+            'Operator is not supported' => ['invalid_operator', 'The value you selected is not a valid choice.'],
+        ];
+    }
+
+    public function invalidConvertValue(): array
+    {
+        return [
+            'Convert value is not a valid number represented as a string' => ['1.24adv', 'The conversion value should be number represented in a string (example: "0.2561")']
         ];
     }
 }
