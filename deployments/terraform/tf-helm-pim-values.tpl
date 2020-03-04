@@ -26,7 +26,7 @@ backup:
 mailer:
   login: ${mailgun_login_email}
   password: ${mailgun_password}
-  from_address: no-reply@${instanceName}.${dnsZone}
+
 pim:
   storage:
     bucketName: ${bucketName}
