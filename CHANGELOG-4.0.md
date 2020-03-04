@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.7 (2020-03-04)
+
 ## Improvements
 
 - DAPI-810: Evaluate synchronous criteria on unitary product save
