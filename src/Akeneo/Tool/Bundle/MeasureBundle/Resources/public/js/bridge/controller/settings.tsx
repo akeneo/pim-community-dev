@@ -1,13 +1,13 @@
 import React from 'react';
-// import {dependencies} from '../dependencies';
+import {dependencies} from '../dependencies';
 import ReactController from '../react/react-controller';
+import App from 'akeneomeasure/js/app/index';
 
 const mediator = require('oro/mediator');
 
 class SettingsController extends ReactController {
   reactElementToMount() {
-    // return <Settings dependencies={dependencies} />;
-    return <div>Hello World</div>;
+    return <App dependencies={dependencies}/>;
   }
 
   routeGuardToUnmount() {
