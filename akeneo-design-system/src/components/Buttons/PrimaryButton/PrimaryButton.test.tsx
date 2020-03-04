@@ -26,8 +26,8 @@ test('should render the component', () => {
         }
 
         .c1 {
-          color: white;
-          background-color: #67B373;
+          color: #ffffff;
+          background-color: #67b373;
         }
 
         .c1:hover {
@@ -39,7 +39,7 @@ test('should render the component', () => {
         }
 
         .c1:focus {
-          border-color: blue;
+          border-color: #67b373;
         }
 
         .c1:disabled {
