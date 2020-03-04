@@ -32,6 +32,12 @@ const initialState: ProductState = {
     attributes_for_this_level: [],
     level: null,
     model_type: "product",
+    variant_navigation: [],
+    family_variant: {
+      variant_attribute_sets: [
+        {attributes: []}
+      ]
+    }
   },
 };
 

@@ -1,6 +1,9 @@
 import React, {FunctionComponent} from 'react';
-import {useCatalogContext, useFetchProductFamilyInformation, useProduct} from "../../../../../infrastructure/hooks";
-import Attribute from "./Attribute";
+import {useCatalogContext, useFetchProductFamilyInformation, useProduct} from '../../../../../infrastructure/hooks';
+import AttributeWithRecommendation from '../../../../../domain/AttributeWithRecommendation.interface';
+import AttributesList from './AttributesList';
+import VariantAttributesList from './VariantAttributesList';
+import {isSimpleProduct} from "../../../../helper/ProductEditForm/Product";
 
 interface RecommendationAttributesListProps {
   criterion: string;
@@ -28,7 +31,7 @@ const RecommendationAttributesList: FunctionComponent<RecommendationAttributesLi
   const productFamilyInformation = useFetchProductFamilyInformation();
   const product = useProduct();
 
-  let attributesLabels: any[] = [];
+  let attributesLabels: AttributeWithRecommendation[] = [];
   if (locale && productFamilyInformation) {
     attributesLabels = attributes.map((attributeCode: string) => {
       return {
@@ -38,42 +41,19 @@ const RecommendationAttributesList: FunctionComponent<RecommendationAttributesLi
     });
   }
 
-  const sortedAttributes = Object.values(attributesLabels).sort((attribute1: any, attribute2: any) => {
+  const sortedAttributes = Object.values(attributesLabels).sort((attribute1: AttributeWithRecommendation, attribute2: AttributeWithRecommendation) => {
     return attribute1.label.localeCompare(attribute2.label, undefined , {sensitivity: 'base'});
   });
-
-  const isLinkAvailable = (attributeCode: string): boolean => {
-    return (
-      product.meta.level === null ||
-      product.meta.attributes_for_this_level.includes(attributeCode)
-    );
-  };
 
   return (
     <>
       {
         attributes.length === 0 ?
           <span className="NotApplicableAttribute">N/A</span> :
-          <>
-            {sortedAttributes.map((attribute: any, index: number) => {
-              const separator = (
-                <>
-                  {(index < (attributes.length - 1)) && <>,&thinsp;</>}
-                  {(index === (attributes.length - 1)) && '.'}
-                </>
-              );
-
-              return (
-                <Attribute
-                  key={`attribute-${criterion}-${index}`}
-                  code={attribute.code}
-                  label={attribute.label}
-                  separator={separator}
-                  isLinkAvailable={isLinkAvailable(attribute.code)}
-                />
-              );
-            })}
-          </>
+          isSimpleProduct(product) ?
+            <AttributesList product={product} criterionCode={criterion} attributes={sortedAttributes}/> :
+            // @ts-ignore
+            <VariantAttributesList product={product} criterionCode={criterion} attributes={sortedAttributes} locale={locale}/>
       }
     </>
   )
