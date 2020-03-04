@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\VariantProductRepositoryInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * For a given ProductModel, this class retrieves the ValueInterface of its attribute as image,
@@ -59,11 +60,11 @@ class ImageAsLabel
             }
         }
 
-        if ($levelContainingAttribute <= $productModel->getLevel()) {
+        if ($levelContainingAttribute <= $this->getLevel($productModel)) {
             return $productModel->getImage();
         }
 
-        $currentLevel = $productModel->getLevel();
+        $currentLevel = $this->getLevel($productModel);
         $entity = $productModel;
 
         do {
@@ -91,5 +92,10 @@ class ImageAsLabel
         } while ($currentLevel < $levelContainingAttribute);
 
         return $entity->getImage();
+    }
+
+    private function getLevel(ProductModelInterface $productModel): int
+    {
+        return $productModel->isRoot() ? 0 : 1;
     }
 }
