@@ -340,7 +340,7 @@ services:
     pim_catalog.query.elasticsearch.filter.boolean:
         class: '%pim_catalog.query.elasticsearch.filter.boolean.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.validator.helper.attribute_filter'
             - ['pim_catalog_boolean']
             - ['=', '!=', 'NOT EMPTY']
         tags:
@@ -485,7 +485,7 @@ services:
     pim_catalog.query.elasticsearch.filter.number:
         class: '%pim_catalog.query.elasticsearch.filter.number.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.validator.helper.attribute_filter'
             - ['pim_catalog_number']
             - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'NOT EMPTY']
         tags:
@@ -496,7 +496,7 @@ services:
     pim_catalog.doctrine.query.filter.date:
         class: '%pim_catalog.query.elasticsearch.filter.date.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.validator.helper.attribute_filter'
             - ['pim_catalog_date']
             - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']
         tags:
@@ -507,7 +507,7 @@ services:
     pim_catalog.query.elasticsearch.filter.text:
         class: '%pim_catalog.query.elasticsearch.filter.text.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.validator.helper.attribute_filter'
             - ['pim_catalog_text']
             - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
         tags:
@@ -518,7 +518,7 @@ services:
     pim_catalog.query.elasticsearch.filter.text_area:
         class: '%pim_catalog.query.elasticsearch.filter.text_area.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.validator.helper.attribute_filter'
             - ['pim_catalog_textarea']
             - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
         tags:
@@ -529,7 +529,7 @@ services:
     pim_catalog.query.elasticsearch.filter.option:
         class: '%pim_catalog.query.elasticsearch.filter.option.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.validator.helper.attribute_filter'
             - '@pim_catalog.repository.attribute_option'
             - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
             - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
@@ -541,7 +541,7 @@ services:
     pim_catalog.query.elasticsearch.filter.price:
         class: '%pim_catalog.query.elasticsearch.filter.price.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.validator.helper.attribute_filter'
             - '@pim_catalog.repository.currency'
             - ['pim_catalog_price_collection']
             - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'EMPTY FOR CURRENCY', 'EMPTY ON ALL CURRENCIES', 'NOT EMPTY', 'NOT EMPTY ON AT LEAST ONE CURRENCY', 'NOT EMPTY FOR CURRENCY']
@@ -553,7 +553,7 @@ services:
     pim_catalog.query.elasticsearch.filter.metric:
         class: '%pim_catalog.query.elasticsearch.filter.metric.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.validator.helper.attribute_filter'
             - '@akeneo_measure.manager'
             - '@akeneo_measure.measure_converter'
             - ['pim_catalog_metric']
@@ -566,7 +566,7 @@ services:
     pim_catalog.query.elasticsearch.filter.media:
         class: '%pim_catalog.query.elasticsearch.filter.media.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.validator.helper.attribute_filter'
             - ['pim_catalog_file', 'pim_catalog_image']
             - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'EMPTY', 'NOT EMPTY']
         tags:
@@ -679,7 +679,7 @@ services:
     pim.reference_data.query.filter.reference_data:
         class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.validator.helper.attribute_filter'
             - '@pim_reference_data.repository_resolver'
             - '@pim_reference_data.registry'
             - ['pim_reference_data_simpleselect', 'pim_reference_data_multiselect']

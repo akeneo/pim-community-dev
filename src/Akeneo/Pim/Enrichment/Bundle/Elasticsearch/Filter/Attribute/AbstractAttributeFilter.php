@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
@@ -20,8 +20,8 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
     /** @var SearchQueryBuilder */
     protected $searchQueryBuilder = null;
 
-    /** @var AttributeValidatorHelper */
-    protected $attrValidatorHelper;
+    /** @var ElasticsearchFilterValidator */
+    protected $filterValidator;
 
     /** @var string[] */
     protected $supportedAttributeTypes;
@@ -87,8 +87,8 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
     protected function checkLocaleAndChannel(AttributeInterface $attribute, $locale, $channel)
     {
         try {
-            $this->attrValidatorHelper->validateLocale($attribute, $locale);
-            $this->attrValidatorHelper->validateScope($attribute, $channel);
+            $this->filterValidator->validateLocaleForAttribute($attribute->getCode(), $locale);
+            $this->filterValidator->validateChannelForAttribute($attribute->getCode(), $channel);
         } catch (\LogicException $e) {
             throw InvalidPropertyException::expectedFromPreviousException(
                 $attribute->getCode(),

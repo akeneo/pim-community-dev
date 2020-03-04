@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
@@ -29,21 +29,14 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     /** @var MeasureConverter */
     protected $measureConverter;
 
-    /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param MeasureManager           $measureManager
-     * @param MeasureConverter         $measureConverter
-     * @param array                    $supportedAttributeTypes
-     * @param array                    $supportedOperators
-     */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
+        ElasticsearchFilterValidator $filterValidator,
         MeasureManager $measureManager,
         MeasureConverter $measureConverter,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
+        $this->filterValidator = $filterValidator;
         $this->measureManager = $measureManager;
         $this->measureConverter = $measureConverter;
         $this->supportedAttributeTypes = $supportedAttributeTypes;

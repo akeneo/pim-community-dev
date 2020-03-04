@@ -13,17 +13,17 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 
 class MetricFilterSpec extends ObjectBehavior
 {
     function let(
-        AttributeValidatorHelper $attributeValidatorHelper,
+        ElasticsearchFilterValidator $filterValidator,
         MeasureManager $measureManager,
         MeasureConverter $measureConverter
     ) {
         $this->beConstructedWith(
-            $attributeValidatorHelper,
+            $filterValidator,
             $measureManager,
             $measureConverter,
             ['pim_catalog_metric'],
@@ -75,7 +75,7 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_lower_than(
-        $attributeValidatorHelper,
+        $filterValidator,
         $measureManager,
         $measureConverter,
         AttributeInterface $metric,
@@ -84,8 +84,8 @@ class MetricFilterSpec extends ObjectBehavior
         $metric->getCode()->willReturn('weight');
         $metric->getBackendType()->willReturn('metric');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $metric->getMetricFamily()->willReturn('Weight');
         $measureManager->getUnitSymbolsForFamily('Weight')->willReturn(['GRAM' => 1000, 'KILOGRAM' => 1]);
@@ -113,7 +113,7 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_lower_than_or_equal(
-        $attributeValidatorHelper,
+        $filterValidator,
         $measureManager,
         $measureConverter,
         AttributeInterface $metric,
@@ -122,8 +122,8 @@ class MetricFilterSpec extends ObjectBehavior
         $metric->getCode()->willReturn('weight');
         $metric->getBackendType()->willReturn('metric');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $metric->getMetricFamily()->willReturn('Weight');
         $measureManager->getUnitSymbolsForFamily('Weight')->willReturn(['GRAM' => 1000, 'KILOGRAM' => 1]);
@@ -150,7 +150,7 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_equals(
-        $attributeValidatorHelper,
+        $filterValidator,
         $measureManager,
         $measureConverter,
         AttributeInterface $metric,
@@ -159,8 +159,8 @@ class MetricFilterSpec extends ObjectBehavior
         $metric->getCode()->willReturn('weight');
         $metric->getBackendType()->willReturn('metric');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $metric->getMetricFamily()->willReturn('Weight');
         $measureManager->getUnitSymbolsForFamily('Weight')->willReturn(['GRAM' => 1000, 'KILOGRAM' => 1]);
@@ -188,7 +188,7 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_not_equals(
-        $attributeValidatorHelper,
+        $filterValidator,
         $measureManager,
         $measureConverter,
         AttributeInterface $metric,
@@ -197,8 +197,8 @@ class MetricFilterSpec extends ObjectBehavior
         $metric->getCode()->willReturn('weight');
         $metric->getBackendType()->willReturn('metric');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $metric->getMetricFamily()->willReturn('Weight');
         $measureManager->getUnitSymbolsForFamily('Weight')->willReturn(['GRAM' => 1000, 'KILOGRAM' => 1]);
@@ -234,7 +234,7 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_greater_than_or_equals(
-        $attributeValidatorHelper,
+        $filterValidator,
         $measureManager,
         $measureConverter,
         AttributeInterface $metric,
@@ -243,8 +243,8 @@ class MetricFilterSpec extends ObjectBehavior
         $metric->getCode()->willReturn('weight');
         $metric->getBackendType()->willReturn('metric');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $metric->getMetricFamily()->willReturn('Weight');
         $measureManager->getUnitSymbolsForFamily('Weight')->willReturn(['GRAM' => 1000, 'KILOGRAM' => 1]);
@@ -272,7 +272,7 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_greater_than(
-        $attributeValidatorHelper,
+        $filterValidator,
         $measureManager,
         $measureConverter,
         AttributeInterface $metric,
@@ -281,8 +281,8 @@ class MetricFilterSpec extends ObjectBehavior
         $metric->getCode()->willReturn('weight');
         $metric->getBackendType()->willReturn('metric');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $metric->getMetricFamily()->willReturn('Weight');
         $measureManager->getUnitSymbolsForFamily('Weight')->willReturn(['GRAM' => 1000, 'KILOGRAM' => 1]);
@@ -310,15 +310,15 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_empty(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $metric,
         SearchQueryBuilder $sqb
     ) {
         $metric->getCode()->willReturn('weight');
         $metric->getBackendType()->willReturn('metric');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(
             [
@@ -334,15 +334,15 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_not_empty(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $metric,
         SearchQueryBuilder $sqb
     ) {
         $metric->getCode()->willReturn('weight');
         $metric->getBackendType()->willReturn('metric');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -365,15 +365,15 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_given_value_is_not_an_array(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $metric,
         SearchQueryBuilder $sqb
     ) {
         $metric->getCode()->willReturn('weight');
         $metric->getBackendType()->willReturn('metric');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -387,15 +387,15 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_given_array_value_has_no_amount(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $metric,
         SearchQueryBuilder $sqb
     ) {
         $metric->getCode()->willReturn('weight');
         $metric->getBackendType()->willReturn('metric');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -413,15 +413,15 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_given_array_value_has_no_unit(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $metric,
         SearchQueryBuilder $sqb
     ) {
         $metric->getCode()->willReturn('weight');
         $metric->getBackendType()->willReturn('metric');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -439,12 +439,12 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_given_amount_is_null(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $metric,
         SearchQueryBuilder $sqb
     ) {
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $metric->getCode()->willReturn('weight');
 
@@ -464,15 +464,15 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_given_amount_is_not_numeric(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $metric,
         SearchQueryBuilder $sqb
     ) {
         $metric->getCode()->willReturn('weight');
         $metric->getBackendType()->willReturn('metric');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -497,15 +497,15 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_given_unit_is_not_a_string(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $metric,
         SearchQueryBuilder $sqb
     ) {
         $metric->getCode()->willReturn('weight');
         $metric->getBackendType()->willReturn('metric');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -523,15 +523,15 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_given_unit_is_not_known_of_the_metric_family(
-        $attributeValidatorHelper,
+        $filterValidator,
         $measureManager,
         AttributeInterface $metric,
         SearchQueryBuilder $sqb
     ) {
         $metric->getCode()->willReturn('weight');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $metric->getMetricFamily()->willReturn('Weight');
         $measureManager->getUnitSymbolsForFamily('Weight')->willReturn(['GRAM', 'KILOGRAM']);
@@ -553,7 +553,7 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
-        $attributeValidatorHelper,
+        $filterValidator,
         $measureManager,
         $measureConverter,
         AttributeInterface $metric,
@@ -562,8 +562,8 @@ class MetricFilterSpec extends ObjectBehavior
         $metric->getCode()->willReturn('weight');
         $metric->getBackendType()->willReturn('metric');
 
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($metric, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('weight', 'ecommerce')->shouldBeCalled();
 
         $metric->getMetricFamily()->willReturn('Weight');
         $measureManager->getUnitSymbolsForFamily('Weight')->willReturn(['GRAM' => 1000, 'KILOGRAM' => 1]);
@@ -585,7 +585,7 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_locale_validation(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $metric,
         SearchQueryBuilder $sqb
     ) {
@@ -595,7 +595,7 @@ class MetricFilterSpec extends ObjectBehavior
         $metric->getAvailableLocaleCodes('fr_FR');
 
         $e = new \LogicException('Attribute "size" expects a locale, none given.');
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->willThrow($e);
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->willThrow($e);
 
         $this->setQueryBuilder($sqb);
 
@@ -612,7 +612,7 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_scope_validation(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $metric,
         SearchQueryBuilder $sqb
     ) {
@@ -621,7 +621,7 @@ class MetricFilterSpec extends ObjectBehavior
         $metric->isScopable()->willReturn(false);
 
         $e = new \LogicException('Attribute "weight" does not expect a scope, "ecommerce" given.');
-        $attributeValidatorHelper->validateLocale($metric, 'en_US')->willThrow($e);
+        $filterValidator->validateLocaleForAttribute('weight', 'en_US')->willThrow($e);
 
         $this->setQueryBuilder($sqb);
 
