@@ -23,16 +23,16 @@ class SenderAddress
     {
         $query = parse_url($mailerUrl, PHP_URL_QUERY);
         if (null === $query) {
-            throw new \InvalidArgumentException('Impossible to create a SenderAddress with an invalid mailer URL.');
+            throw new \InvalidArgumentException('Cannot create a SenderAddress with an invalid mailer URL.');
         }
 
         parse_str($query, $queryParts);
         if (!isset($queryParts['sender_address'])) {
-            throw new \InvalidArgumentException('Impossible to create a SenderAddress if it\'s missing from the URL.');
+            throw new \InvalidArgumentException('Cannot create a SenderAddress if it\'s missing from the URL.');
         }
 
         if (false === filter_var($queryParts['sender_address'], FILTER_VALIDATE_EMAIL)) {
-            throw new \InvalidArgumentException('Impossible to create a SenderAddress if a valid email is not given.');
+            throw new \InvalidArgumentException('Cannot create a SenderAddress if a valid email is not given.');
         }
 
         return new self($queryParts['sender_address']);
