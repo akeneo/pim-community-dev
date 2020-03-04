@@ -1,6 +1,8 @@
 import React, { ReactNode, Ref } from 'react';
 import styled from 'styled-components'
 
+import { fontSize } from '../../../theme/mainTheme';
+
 type sizeMode = 'small' | 'large';
 
 type CoreButtonProps = {
@@ -22,7 +24,7 @@ const getSizeModeValue = ({ sizeMode }: CoreButtonProps): string => {
 const BasicButton = styled.button<CoreButtonProps>`
     border-radius: 16px;
     cursor: pointer;
-    font-size: 13px;
+    font-size: ${fontSize.default};
     font-weight: 400;
     height: ${getSizeModeValue};
     line-height: ${getSizeModeValue};
