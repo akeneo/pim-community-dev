@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Bundle\BatchBundle\Notification;
 
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Email\SenderAddress;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -38,7 +39,7 @@ class MailNotifier implements Notifier
     /**
      * @var string
      */
-    protected $senderEmail;
+    protected $mailerUrl;
 
     /**
      * @var string
@@ -50,20 +51,20 @@ class MailNotifier implements Notifier
      * @param TokenStorageInterface $tokenStorage
      * @param \Twig_Environment     $twig
      * @param \Swift_Mailer         $mailer
-     * @param string                $senderEmail
+     * @param string                $mailerUrl
      */
     public function __construct(
         BatchLogHandler $logger,
         TokenStorageInterface $tokenStorage,
         \Twig_Environment $twig,
         \Swift_Mailer $mailer,
-        $senderEmail
+        string $mailerUrl
     ) {
         $this->logger = $logger;
         $this->tokenStorage = $tokenStorage;
         $this->twig = $twig;
         $this->mailer = $mailer;
-        $this->senderEmail = $senderEmail;
+        $this->mailerUrl = $mailerUrl;
     }
 
     /**
@@ -95,7 +96,7 @@ class MailNotifier implements Notifier
 
         $message = $this->mailer->createMessage();
         $message->setSubject('Job has been executed');
-        $message->setFrom($this->senderEmail);
+        $message->setFrom((string) SenderAddress::fromMailerUrl($this->mailerUrl));
         $message->setTo($email);
         $message->setBody($txtBody, 'text/plain');
         $message->addPart($htmlBody, 'text/html');
