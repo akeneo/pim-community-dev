@@ -137,6 +137,26 @@ class InMemoryAttributeOptionRepositorySpec extends ObjectBehavior
             ->shouldReturn([['code' => 'blue'], ['code' => 'brown']]);
     }
 
+    function it_returns_all_attribute_options()
+    {
+        $eyeColor = (new Attribute())->setCode('eye_color');
+        $blueEyeColor = $this->createAttributeOption('blue', $eyeColor);
+        $brownEyeColor = $this->createAttributeOption('brown', $eyeColor);
+
+        $this->beConstructedWith(
+            [
+                $blueEyeColor,
+                $brownEyeColor,
+            ]
+        );
+
+        $products = $this->findAll();
+        $products->shouldBeArray();
+        $products->shouldHaveCount(2);
+        $products[0]->shouldBe($blueEyeColor);
+        $products[1]->shouldBe($brownEyeColor);
+    }
+
     private function createAttributeOption(string $code, AttributeInterface $attribute): AttributeOptionInterface
     {
         $attributeOption = new AttributeOption();
