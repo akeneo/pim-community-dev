@@ -2,7 +2,6 @@
 
 namespace Pim\Behat\Context;
 
-use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Tester\Result\StepResult;
@@ -11,8 +10,6 @@ use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Testwork\Tester\Result\TestResult;
 use Context\FeatureContext;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
 use WebDriver\Exception\UnexpectedAlertOpen;
 
 /**
@@ -29,9 +26,6 @@ class HookContext extends PimContext
     /** @var int */
     protected $windowHeight;
 
-    /** @var Process */
-    protected $jobConsumerProcess;
-
     /**
      * @param string $mainContextClass
      * @param int $windowWidth
@@ -42,26 +36,6 @@ class HookContext extends PimContext
         parent::__construct($mainContextClass);
         $this->windowWidth  = $windowWidth;
         $this->windowHeight = $windowHeight;
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function launchJobConsumer()
-    {
-        $process = new Process(sprintf('exec bin/console %s --env=behat', JobQueueConsumerCommand::COMMAND_NAME));
-        $process->setTimeout(null);
-        $process->start();
-
-        $this->jobConsumerProcess = $process;
-    }
-
-    /**
-     * @AfterScenario
-     */
-    public function stopJobConsumer()
-    {
-        $this->jobConsumerProcess->stop();
     }
 
     /**
