@@ -22,11 +22,11 @@ export interface WidgetsCollection {
   [id: string]: WidgetElement;
 }
 
-export const createWidget = (identifier: string, editor: EditorElement, attribute: string, isMainLabel: boolean = false) => {
+export const createWidget = (identifier: string, editor: EditorElement, editorId: string|null, attribute: string, isMainLabel: boolean = false) => {
   return {
     id: identifier,
     editor: editor,
-    editorId: editor.id,
+    editorId: editorId,
     attribute,
     isVisible: false,
     isActive: false,
@@ -38,4 +38,27 @@ export const createWidget = (identifier: string, editor: EditorElement, attribut
     analysis: [],
     highlights: {}
   } as WidgetElement;
+};
+
+export enum EditorTypes {
+  TEXT = 'text',
+  TEXTAREA = 'textarea',
+  RICHTEXT = 'richtext',
+  UNKNOWN = 'unknown',
+}
+
+export const getEditorType = (widget: WidgetElement) => {
+  if (widget.isTextArea) {
+    return EditorTypes.TEXTAREA;
+  }
+
+  if (widget.isTextInput) {
+    return EditorTypes.TEXT;
+  }
+
+  if (widget.isEditableContent) {
+    return EditorTypes.RICHTEXT;
+  }
+
+  return EditorTypes.UNKNOWN;
 };

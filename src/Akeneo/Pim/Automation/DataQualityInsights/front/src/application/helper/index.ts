@@ -1,9 +1,15 @@
-import WidgetElement, {createWidget, WidgetsCollection} from "./EditorHighlight/WidgetElement";
+import WidgetElement, {
+  createWidget,
+  EditorTypes,
+  getEditorType,
+  WidgetsCollection,
+} from "./EditorHighlight/WidgetElement";
 import EditorElement, {
   getEditorContent,
   isTextArea,
   isTextInput,
-  setEditorContent
+  setEditorContent,
+  convertHtmlContent,
 } from "./EditorHighlight/EditorElement";
 import HighlightElement, {
   createHighlight,
@@ -13,8 +19,8 @@ import HighlightElement, {
 import MistakeElement from "./EditorHighlight/MistakeElement";
 
 export {
-  WidgetElement, createWidget, WidgetsCollection,
-  EditorElement, getEditorContent, setEditorContent, isTextInput, isTextArea,
+  WidgetElement, createWidget, WidgetsCollection, EditorTypes, getEditorType,
+  EditorElement, getEditorContent, setEditorContent, isTextInput, isTextArea, convertHtmlContent,
   HighlightElement, createHighlight, HighlightsCollection, isIntersectingHighlight,
   MistakeElement
 };

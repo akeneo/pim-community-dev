@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useCallback} from "react";
-import {MistakeElement, setEditorContent, WidgetElement} from "../../../../../../helper";
+import {HighlightElement, setEditorContent, WidgetElement} from "../../../../../../helper";
 import {hidePopoverAction} from "../../../../../../../infrastructure/reducer";
 import {useDispatch} from "react-redux";
 import {useFetchIgnoreTextIssue} from "../../../../../../../infrastructure/hooks";
@@ -9,13 +9,14 @@ const __ = require("oro/translator");
 const SUGGESTIONS_LIMIT = 5;
 
 export interface SpellcheckPopoverContentProps {
-  mistake: MistakeElement | null;
+  highlight: HighlightElement | null;
   widget: WidgetElement | null;
 }
 
-const SpellcheckPopoverContent: FunctionComponent<SpellcheckPopoverContentProps> = ({mistake, widget}) => {
+const SpellcheckPopoverContent: FunctionComponent<SpellcheckPopoverContentProps> = ({highlight, widget}) => {
   const dispatchAction = useDispatch();
   const {dispatchIgnoreTextIssue} = useFetchIgnoreTextIssue();
+  const mistake = (highlight && highlight.mistake) ? highlight.mistake : null;
 
   const handleSuggestionClick = useCallback((suggestion: string) => {
 
@@ -28,7 +29,6 @@ const SpellcheckPopoverContent: FunctionComponent<SpellcheckPopoverContentProps>
     const end = mistake.globalOffset + mistake.text.length;
 
     setEditorContent(widget.editor, widget.content, suggestion, start, end);
-
     dispatchAction(hidePopoverAction());
   }, [widget, mistake]);
 

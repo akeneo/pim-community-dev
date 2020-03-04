@@ -74,7 +74,7 @@ const BasePopover: FunctionComponent<PopoverProps> = () => {
             <>
               {widget.isMainLabel ?
                 <SuggestedTitlePopoverContent mistake={highlight.mistake} widget={widget}/> :
-                <SpellcheckPopoverContent mistake={highlight.mistake} widget={widget}/>
+                <SpellcheckPopoverContent highlight={highlight} widget={widget}/>
               }
             </>
           )}

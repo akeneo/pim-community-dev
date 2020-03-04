@@ -1,27 +1,8 @@
 import React, {FunctionComponent, useLayoutEffect, useRef} from "react";
 import Highlight from "./Highlight";
-import {WidgetElement} from "../../../../../helper";
-import {useGetEditorHighlightScroll, useGetEditorHighlights} from "../../../../../../infrastructure/hooks";
+import {getEditorType, WidgetElement} from "../../../../../helper";
+import {useGetEditorHighlights, useGetEditorHighlightScroll} from "../../../../../../infrastructure/hooks";
 import {EditorContextListener} from "../../../../../listener";
-
-enum EditorTypes {
-  TEXT = 'text',
-  TEXTAREA = 'textarea',
-  RICHTEXT = 'richtext',
-  UNKNOWN = 'unknown',
-}
-
-const getEditorType = (widget: WidgetElement) => {
-  if (widget.isTextArea) {
-    return EditorTypes.TEXTAREA;
-  }
-
-  if (widget.isTextInput) {
-    return EditorTypes.TEXT;
-  }
-
-  return EditorTypes.UNKNOWN;
-};
 
 interface TextHighlightsWrapperProps {
   widget: WidgetElement;
@@ -41,7 +22,7 @@ const TextHighlightsWrapper: FunctionComponent<TextHighlightsWrapperProps> = ({
   };
   const clonedEditorRef = useRef<HTMLDivElement>(null);
   const {editorScrollTop, editorScrollLeft} = useGetEditorHighlightScroll(widget.editor);
-  const highlights = useGetEditorHighlights(widget, clonedEditorRef.current);
+  const highlights = useGetEditorHighlights(widget, (widget.isTextArea || widget.isTextInput) ? clonedEditorRef.current : null);
 
   useLayoutEffect(() => {
     const element = clonedEditorRef.current;
@@ -68,8 +49,11 @@ const TextHighlightsWrapper: FunctionComponent<TextHighlightsWrapperProps> = ({
           />
         ))}
       </div>
-      <div ref={clonedEditorRef} className={`AknEditorHighlight-cloned-editor AknEditorHighlight-cloned-editor--${editorType}`} aria-hidden={true} style={wrapperStyle}>{content}</div>
+      {(widget.isTextArea || widget.isTextInput) && (
+        <div ref={clonedEditorRef} className={`AknEditorHighlight-cloned-editor AknEditorHighlight-cloned-editor--${editorType}`} aria-hidden={true} style={wrapperStyle}>{content}</div>
+      )}
     </>
   );
 };
+
 export default TextHighlightsWrapper;

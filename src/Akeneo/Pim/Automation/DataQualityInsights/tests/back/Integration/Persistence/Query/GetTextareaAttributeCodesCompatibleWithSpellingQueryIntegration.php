@@ -48,7 +48,7 @@ class GetTextareaAttributeCodesCompatibleWithSpellingQueryIntegration extends Te
     {
         $productId = $this->createProduct();
 
-        $expectedAttributeCodes = ['a_localized_and_scopable_text_area'];
+        $expectedAttributeCodes = ['a_localized_and_scopable_text_area', 'a_localized_textarea_with_wysiwyg'];
 
         $result = $this
             ->get(GetTextareaAttributeCodesCompatibleWithSpellingQuery::class)

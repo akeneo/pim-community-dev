@@ -28,7 +28,7 @@ interface HighlightsContainerProps {
 }
 
 const HighlightsContainer: FunctionComponent<HighlightsContainerProps> = ({ widget }) => {
-  const { isTextArea, isTextInput, editor } = widget;
+  const { isTextArea, isTextInput, isEditableContent, editor } = widget;
   const { editorBoundingClientRect } = useGetEditorHighlightBoundingRect(editor);
 
   return (
@@ -36,7 +36,7 @@ const HighlightsContainer: FunctionComponent<HighlightsContainerProps> = ({ widg
       className="AknEditorHighlight-highlights AknEditorHighlight--box-reset"
       style={computeStyle(editorBoundingClientRect)}
     >
-      {(isTextArea || isTextInput) && (
+      {(isTextArea || isTextInput || isEditableContent) && (
         <TextHighlightsWrapper
           widget={widget}
           editorBoundingClientRect={editorBoundingClientRect}

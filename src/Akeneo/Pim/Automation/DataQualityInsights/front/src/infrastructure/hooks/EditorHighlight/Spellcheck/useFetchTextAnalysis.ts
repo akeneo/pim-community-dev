@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {WidgetElement} from "../../../../application/helper";
+import {WidgetElement, convertHtmlContent} from "../../../../application/helper";
 import {updateWidgetContentAnalysis} from "../../../reducer";
 import {fetchTextAnalysis} from "../../../fetcher";
 import {useCatalogContext} from "../../index";
@@ -11,12 +11,18 @@ const useFetchTextAnalysis = (widget: WidgetElement) => {
   const dispatchAction = useDispatch();
   const {locale} = useCatalogContext();
   const product = useProduct();
-  const {id, content, analysis, editorId, isActive} = widget;
+
+  const {id, content, analysis, editorId, isActive, isEditableContent} = widget;
   const dispatchTextAnalysis = async (content: string, locale: string) => {
     if (!locale || !content) {
       dispatchAction(updateWidgetContentAnalysis(id, []));
       return;
     }
+
+    if (isEditableContent) {
+      content = convertHtmlContent(content);
+    }
+
     const textAnalysis = await fetchTextAnalysis(content, locale);
     dispatchAction(updateWidgetContentAnalysis(id, textAnalysis));
   };

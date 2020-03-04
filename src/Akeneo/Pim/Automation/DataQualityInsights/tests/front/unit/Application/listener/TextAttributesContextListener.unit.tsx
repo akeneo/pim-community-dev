@@ -44,6 +44,7 @@ describe('Get products eligible text attributes to initialize the PEF widgets', 
     const product = buildSimpleProduct();
     expect(getTextAttributes(family, product)).toMatchObject([
       localizableTextarea,
+      localizableTextareaWysiwyg,
       localizableText
     ]);
   });

@@ -1,5 +1,9 @@
 import EditorElement from "./EditorElement";
 import MistakeElement from "./MistakeElement";
+import {
+  HTML_BREAKING_LINE_ELEMENTS_LIST,
+  HTML_BLOCK_LEVEL_ELEMENTS_LIST
+} from "../../constant";
 
 export default interface HighlightElement {
   id: string;
@@ -30,41 +34,74 @@ export const createHighlight = (id: string, mistake: MistakeElement, element: Ed
   };
 };
 
-const getTextRange = (el: EditorElement, start: number, end: number) => {
+export const getTextRange = (el: EditorElement, start: number, end: number) => {
   const range = document.createRange();
   range.selectNodeContents(el);
 
   const textNodes = getTextNodesIn(el);
   let foundStart = false;
+  let foundEnd = false;
   let charCount = 0;
   let endCharCount = 0;
+  let content = '';
 
-  for (let i = 0, textNode; (textNode = textNodes[i++] as Text); ) {
-    endCharCount = charCount + textNode.length;
+  textNodes.forEach((textNode, index) => {
+    if (foundStart && foundEnd) {
+      return;
+    }
+
+    content = textNode.wholeText;
+    endCharCount = charCount + content.length;
+
     if (
       !foundStart &&
       start >= charCount &&
-      (start < endCharCount ||
-        (start === endCharCount && i <= textNodes.length))
+      (
+        start < endCharCount ||
+        (start === charCount && index <= (textNodes.length - 1))
+      )
     ) {
       range.setStart(textNode, start - charCount);
       foundStart = true;
     }
+
     if (foundStart && end <= endCharCount) {
       range.setEnd(textNode, end - charCount);
-      break;
+      foundEnd = true;
     }
+
     charCount = endCharCount;
-  }
+  });
 
   return range;
 };
 
-const getTextNodesIn = (node: Node) => {
+export const getTextNodesIn = (node: Node): Text[] => {
   if (node.nodeType === Node.TEXT_NODE) {
-    return [node];
+    return [node as Text];
   }
-  return Array.from(node.childNodes).filter(n => n.nodeType === n.TEXT_NODE)
+
+  let nodes: Text[] = [];
+  Array.from(node.childNodes).forEach((n: Node) => {
+    nodes = [
+      ...nodes,
+      ...getTextNodesIn(n),
+    ];
+  });
+
+  if (
+    HTML_BREAKING_LINE_ELEMENTS_LIST.includes(node.nodeName.toLowerCase()) ||
+    HTML_BLOCK_LEVEL_ELEMENTS_LIST.includes(node.nodeName.toLowerCase())
+  ) {
+    const breakingLineNode: Text = document.createTextNode('\n');
+
+    nodes = [
+      ...nodes,
+      breakingLineNode
+    ];
+  }
+
+  return nodes;
 };
 
 const HIGHLIGHT_INTERSECTING_MARGIN = 2;

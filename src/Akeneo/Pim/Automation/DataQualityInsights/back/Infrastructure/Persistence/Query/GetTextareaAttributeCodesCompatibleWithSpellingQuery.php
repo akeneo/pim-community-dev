@@ -40,8 +40,7 @@ INNER JOIN pim_catalog_family_attribute pcfamatt on pim_catalog_attribute.id = p
 INNER JOIN pim_catalog_product pcp on pcp.family_id = pcfamatt.family_id
 WHERE pcp.id = :product_id
 AND pim_catalog_attribute.attribute_type = :attribute_type
-AND pim_catalog_attribute.is_localizable = 1
-AND pim_catalog_attribute.wysiwyg_enabled IS NULL;
+AND pim_catalog_attribute.is_localizable = 1;
 SQL;
 
         $statement = $this->db->executeQuery($query,
