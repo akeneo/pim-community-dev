@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeFilterValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -28,13 +28,13 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     protected $registry;
 
     public function __construct(
-        AttributeFilterValidatorHelper $attrValidatorHelper,
+        ElasticsearchFilterValidator $filterValidator,
         ReferenceDataRepositoryResolver $referenceDataRepositoryResolver,
         ConfigurationRegistryInterface $registry,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
+        $this->filterValidator = $filterValidator;
         $this->referenceDataRepositoryResolver = $referenceDataRepositoryResolver;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators = $supportedOperators;

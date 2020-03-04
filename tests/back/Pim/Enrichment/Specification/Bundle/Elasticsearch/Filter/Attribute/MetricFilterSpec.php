@@ -13,17 +13,17 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeFilterValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 
 class MetricFilterSpec extends ObjectBehavior
 {
     function let(
-        AttributeFilterValidatorHelper $attributeValidatorHelper,
+        ElasticsearchFilterValidator $filterValidator,
         MeasureManager $measureManager,
         MeasureConverter $measureConverter
     ) {
         $this->beConstructedWith(
-            $attributeValidatorHelper,
+            $filterValidator,
             $measureManager,
             $measureConverter,
             ['pim_catalog_metric'],

@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeFilterValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 
 /**
  * Date filter spec for an Elasticsearch query
@@ -25,13 +25,13 @@ class DateFilterSpec extends ObjectBehavior
     protected $timezone;
 
     function let(
-        AttributeFilterValidatorHelper $attributeValidatorHelper
+        ElasticsearchFilterValidator $filterValidator
     ) {
         $this->timezone = ini_get('date.timezone');
         ini_set('date.timezone', 'UTC');
 
         $this->beConstructedWith(
-            $attributeValidatorHelper,
+            $filterValidator,
             ['pim_catalog_date'],
             [
                 '=',

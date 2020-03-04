@@ -11,14 +11,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeFilterValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 
 class BooleanFilterSpec extends ObjectBehavior
 {
-    function let(AttributeFilterValidatorHelper $attributeValidatorHelper)
+    function let(ElasticsearchFilterValidator $filterValidator)
     {
         $this->beConstructedWith(
-            $attributeValidatorHelper,
+            $filterValidator,
             ['pim_catalog_boolean'],
             ['=', '!=']
         );
