@@ -166,7 +166,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
     /**
      * We don't catch any exception if an error occurs, because it's the last attempt to insert the data by locking the
      * completeness table.
-     * Do note that it LOCK TABLE locks also the table in READ mode for all the foreign keys (locale, channel and product tables).
+     * Do note that LOCK TABLE locks also the table in READ mode for all the foreign keys (locale, channel and product tables).
      * It means that a concurrent transaction can't insert data in the product table at the same time (just read). That's why the foreign check constraint is deactivated to avoid these locks.
      */
     private function executeWithLockOnTable(callable $function): void
