@@ -23,132 +23,139 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class SaveMeasurementFamiliesAction
 {
-	/** * @var MeasurementFamilyListValidator */
-	private $measurementFamilyListValidator;
+    /** * @var MeasurementFamilyListValidator */
+    private $measurementFamilyListValidator;
 
-	/** @var MeasurementFamilyValidator */
-	private $measurementFamilyStructureValidator;
+    /** @var MeasurementFamilyValidator */
+    private $measurementFamilyStructureValidator;
 
-	/** @var ValidatorInterface */
-	private $validator;
+    /** @var ValidatorInterface */
+    private $validator;
 
-	/** @var ViolationNormalizer */
-	private $violationNormalizer;
+    /** @var ViolationNormalizer */
+    private $violationNormalizer;
 
-	/** @var SaveMeasurementFamilyHandler */
-	private $saveMeasurementFamilyHandler;
+    /** @var SaveMeasurementFamilyHandler */
+    private $saveMeasurementFamilyHandler;
 
-	/** @var int */
-	private $maximumMeasurementFamiliesPerRequest;
+    /** @var int */
+    private $maximumMeasurementFamiliesPerRequest;
 
-	public function __construct(
-		MeasurementFamilyListValidator $measurementFamilyListValidator,
-		MeasurementFamilyValidator $measurementFamilyStructureValidator,
-		ValidatorInterface $validator,
-		ViolationNormalizer $violationNormalizer,
-		SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler,
-		int $maximumMeasurementFamiliesPerRequest
+    public function __construct(
+        MeasurementFamilyListValidator $measurementFamilyListValidator,
+        MeasurementFamilyValidator $measurementFamilyStructureValidator,
+        ValidatorInterface $validator,
+        ViolationNormalizer $violationNormalizer,
+        SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler,
+        int $maximumMeasurementFamiliesPerRequest
     ) {
-		$this->measurementFamilyListValidator = $measurementFamilyListValidator;
-		$this->measurementFamilyStructureValidator = $measurementFamilyStructureValidator;
-		$this->validator = $validator;
-		$this->violationNormalizer = $violationNormalizer;
-		$this->saveMeasurementFamilyHandler = $saveMeasurementFamilyHandler;
-		$this->maximumMeasurementFamiliesPerRequest = $maximumMeasurementFamiliesPerRequest;
-	}
+        $this->measurementFamilyListValidator = $measurementFamilyListValidator;
+        $this->measurementFamilyStructureValidator = $measurementFamilyStructureValidator;
+        $this->validator = $validator;
+        $this->violationNormalizer = $violationNormalizer;
+        $this->saveMeasurementFamilyHandler = $saveMeasurementFamilyHandler;
+        $this->maximumMeasurementFamiliesPerRequest = $maximumMeasurementFamiliesPerRequest;
+    }
 
-	public function __invoke(Request $request): Response
-	{
-		$normalizedMeasurementFamilies = $this->getNormalizedMeasurementFamiliesFromRequest($request);
-		$structureErrors = $this->measurementFamilyListValidator->validate($normalizedMeasurementFamilies);
+    public function __invoke(Request $request): Response
+    {
+        $normalizedMeasurementFamilies = $this->getNormalizedMeasurementFamiliesFromRequest($request);
+        $structureErrors = $this->measurementFamilyListValidator->validate($normalizedMeasurementFamilies);
 
-		if (!empty($structureErrors)) {
-			return new JsonResponse([
-				'code'    => Response::HTTP_BAD_REQUEST,
-				'message' => 'The list of measurement families has an invalid format.',
-				'errors'  => JsonSchemaErrorsFormatter::format($structureErrors),
-			], Response::HTTP_BAD_REQUEST);
-		}
+        if (!empty($structureErrors)) {
+            return new JsonResponse(
+                [
+                    'code'    => Response::HTTP_BAD_REQUEST,
+                    'message' => 'The list of measurement families has an invalid format.',
+                    'errors'  => JsonSchemaErrorsFormatter::format($structureErrors),
+                ], Response::HTTP_BAD_REQUEST
+            );
+        }
 
-		if (count($normalizedMeasurementFamilies) > $this->maximumMeasurementFamiliesPerRequest) {
-			return new JsonResponse([
-				'code'    => Response::HTTP_REQUEST_ENTITY_TOO_LARGE,
-				'message' => sprintf('Too many resources to process, %d is the maximum allowed.', $this->maximumMeasurementFamiliesPerRequest),
-			], Response::HTTP_REQUEST_ENTITY_TOO_LARGE);
-		}
+        if (count($normalizedMeasurementFamilies) > $this->maximumMeasurementFamiliesPerRequest) {
+            return new JsonResponse(
+                [
+                    'code'    => Response::HTTP_REQUEST_ENTITY_TOO_LARGE,
+                    'message' => sprintf(
+                        'Too many resources to process, %d is the maximum allowed.',
+                        $this->maximumMeasurementFamiliesPerRequest
+                    ),
+                ], Response::HTTP_REQUEST_ENTITY_TOO_LARGE
+            );
+        }
 
-		$responsesData = [];
-		foreach ($normalizedMeasurementFamilies as $normalizedMeasurementFamily) {
-			try {
-				$responseData = $this->createOrUpdateMeasurementFamily($normalizedMeasurementFamily);
-			} catch (\InvalidArgumentException $exception) {
-				$responseData = [
-					'code'        => $normalizedMeasurementFamily['code'],
-					'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-					'message'     => $exception->getMessage()
-				];
-			} catch (ViolationHttpException $exception) {
-				$responseData = [
-					'code'        => $normalizedMeasurementFamily['code'],
-					'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY
-				];
-				$responseData += $this->violationNormalizer->normalize($exception);
-			}
+        $responsesData = [];
+        foreach ($normalizedMeasurementFamilies as $normalizedMeasurementFamily) {
+            try {
+                $responseData = $this->createOrUpdateMeasurementFamily($normalizedMeasurementFamily);
+            } catch (\InvalidArgumentException $exception) {
+                $responseData = [
+                    'code'        => $normalizedMeasurementFamily['code'],
+                    'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                    'message'     => $exception->getMessage()
+                ];
+            } catch (ViolationHttpException $exception) {
+                $responseData = [
+                    'code'        => $normalizedMeasurementFamily['code'],
+                    'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY
+                ];
+                $responseData += $this->violationNormalizer->normalize($exception);
+            }
 
-			$responsesData[] = $responseData;
-		}
+            $responsesData[] = $responseData;
+        }
 
-		return new JsonResponse($responsesData);
-	}
+        return new JsonResponse($responsesData);
+    }
 
-	private function getNormalizedMeasurementFamiliesFromRequest(Request $request): array
-	{
-		$normalizedMeasurementFamilies = json_decode($request->getContent(), true);
+    private function getNormalizedMeasurementFamiliesFromRequest(Request $request): array
+    {
+        $normalizedMeasurementFamilies = json_decode($request->getContent(), true);
 
-		if (null === $normalizedMeasurementFamilies) {
-			throw new BadRequestHttpException('Invalid json message received');
-		}
+        if (null === $normalizedMeasurementFamilies) {
+            throw new BadRequestHttpException('Invalid json message received');
+        }
 
-		return $normalizedMeasurementFamilies;
-	}
+        return $normalizedMeasurementFamilies;
+    }
 
-	private function createOrUpdateMeasurementFamily(array $normalizedMeasurementFamily)
-	{
-		$structureErrors = $this->measurementFamilyStructureValidator->validate($normalizedMeasurementFamily);
-		if (!empty($structureErrors)) {
-			return [
-				'code'        => $normalizedMeasurementFamily['code'] ?? '',
-				'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-				'message'     => 'The measurement family has an invalid format.',
-				'errors'      => JsonSchemaErrorsFormatter::format($structureErrors),
-			];
-		}
+    private function createOrUpdateMeasurementFamily(array $normalizedMeasurementFamily)
+    {
+        $structureErrors = $this->measurementFamilyStructureValidator->validate($normalizedMeasurementFamily);
+        if (!empty($structureErrors)) {
+            return [
+                'code'        => $normalizedMeasurementFamily['code'] ?? '',
+                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message'     => 'The measurement family has an invalid format.',
+                'errors'      => JsonSchemaErrorsFormatter::format($structureErrors),
+            ];
+        }
 
-		$saveMeasurementFamilyCommand = $this->saveMeasurementFamilyCommand($normalizedMeasurementFamily);
-		$violations = $this->validator->validate($saveMeasurementFamilyCommand);
-		if ($violations->count() > 0) {
-			throw new ViolationHttpException(
-				$violations,
-				'The measurement family has data that does not comply with the business rules.'
-			);
-		}
+        $saveMeasurementFamilyCommand = $this->saveMeasurementFamilyCommand($normalizedMeasurementFamily);
+        $violations = $this->validator->validate($saveMeasurementFamilyCommand);
+        if ($violations->count() > 0) {
+            throw new ViolationHttpException(
+                $violations,
+                'The measurement family has data that does not comply with the business rules.'
+            );
+        }
 
-		$this->saveMeasurementFamilyHandler->handle($saveMeasurementFamilyCommand);
+        $this->saveMeasurementFamilyHandler->handle($saveMeasurementFamilyCommand);
 
-		return [
-			'code'        => $saveMeasurementFamilyCommand->code,
-			'status_code' => Response::HTTP_NO_CONTENT, // TODO: Should it return 201 in case it's created ?
-		];
-	}
+        return [
+            'code'        => $saveMeasurementFamilyCommand->code,
+            'status_code' => Response::HTTP_NO_CONTENT, // TODO: Should it return 201 in case it's created ?
+        ];
+    }
 
-	private function saveMeasurementFamilyCommand(array $normalizedMeasurementFamily): SaveMeasurementFamilyCommand
-	{
-		$saveMeasurementFamilyCommand = new SaveMeasurementFamilyCommand;
-		$saveMeasurementFamilyCommand->code = $normalizedMeasurementFamily['code'];
-		$saveMeasurementFamilyCommand->standardUnitCode = $normalizedMeasurementFamily['standard_unit_code'];
-		$saveMeasurementFamilyCommand->labels = $normalizedMeasurementFamily['labels'];
-		$saveMeasurementFamilyCommand->units = $normalizedMeasurementFamily['units'];
+    private function saveMeasurementFamilyCommand(array $normalizedMeasurementFamily): SaveMeasurementFamilyCommand
+    {
+        $saveMeasurementFamilyCommand = new SaveMeasurementFamilyCommand;
+        $saveMeasurementFamilyCommand->code = $normalizedMeasurementFamily['code'];
+        $saveMeasurementFamilyCommand->standardUnitCode = $normalizedMeasurementFamily['standard_unit_code'];
+        $saveMeasurementFamilyCommand->labels = $normalizedMeasurementFamily['labels'];
+        $saveMeasurementFamilyCommand->units = $normalizedMeasurementFamily['units'];
 
-		return $saveMeasurementFamilyCommand;
-	}
+        return $saveMeasurementFamilyCommand;
+    }
 }
