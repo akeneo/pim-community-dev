@@ -1,0 +1,8 @@
+Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand:
+    properties:
+        code:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\Code: ~
+        labels:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
+    constraints:
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\StandardUnitCode: ~
