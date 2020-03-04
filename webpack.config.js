@@ -12,7 +12,7 @@ const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
-const {aliases, config, namespaces} = getModulePaths(rootDir, __dirname);
+const {aliases, config} = getModulePaths(rootDir, __dirname);
 
 createModuleRegistry(Object.keys(aliases), rootDir);
 
@@ -66,7 +66,7 @@ const webpackConfig = {
   devtool: 'source-map',
   resolve: {
     symlinks: false,
-    alias: Object.assign({}, namespaces, _.mapKeys(aliases, (path, key) => `${key}$`)),
+    alias: _.mapKeys(aliases, (path, key) => `${key}$`),
     modules: [path.resolve('./public/bundles'), path.resolve('./node_modules')],
     extensions: ['.js', '.json', '.ts', '.tsx']
   },
