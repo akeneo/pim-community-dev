@@ -32,6 +32,10 @@ final class HourlyInterval
         return $this->upToDateTime;
     }
 
+    /**
+     * Create an hourly interval from a DateTime.
+     * E.g., with a (Date)Time between 10:00:00 and 10:59:59 the interval will be 10:00:00 to 11:00:00.
+     */
     public static function createFromDateTime(\DateTimeInterface $dateTime): self
     {
         if ('UTC' !== $dateTime->getTimezone()->getName()) {

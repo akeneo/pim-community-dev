@@ -24,14 +24,11 @@ class DbalEventCountRepository implements EventCountRepository
         $this->dbalConnection = $dbalConnection;
     }
 
-    public function bulkInsert(array $dailyEventCounts): void
+    public function bulkInsert(array $hourlyEventCounts): void
     {
-        $this->dbalConnection->beginTransaction();
-
-        foreach ($dailyEventCounts as $dailyEventCount) {
-            $this->insert($dailyEventCount);
+        foreach ($hourlyEventCounts as $hourlyEventCount) {
+            $this->insert($hourlyEventCount);
         }
-        $this->dbalConnection->commit();
     }
 
     private function insert(HourlyEventCount $hourlyEventCount): void

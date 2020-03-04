@@ -41,7 +41,7 @@ FROM (
     WHERE logged_at >= :start_time AND logged_at < :end_time
     AND resource_name = :resource_name
     AND version = 1
-    GROUP BY author, resource_id
+    GROUP BY author
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
@@ -85,7 +85,7 @@ FROM (
     WHERE logged_at >= :start_time AND logged_at < :end_time
     AND resource_name = :resource_name
     AND version = 1
-    GROUP BY author, resource_id
+    GROUP BY author
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 SQL;
@@ -126,7 +126,7 @@ FROM (
     WHERE logged_at >= :start_time AND logged_at < :end_time
     AND resource_name = :resource_name
     AND version != 1
-    GROUP BY author, resource_id
+    GROUP BY author
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
@@ -169,7 +169,7 @@ FROM (
     WHERE logged_at >= :start_time AND logged_at < :end_time
     AND resource_name = :resource_name
     AND version != 1
-    GROUP BY author, resource_id
+    GROUP BY author
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 SQL;

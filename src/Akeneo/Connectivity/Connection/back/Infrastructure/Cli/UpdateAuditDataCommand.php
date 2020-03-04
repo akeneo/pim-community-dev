@@ -42,6 +42,7 @@ class UpdateAuditDataCommand extends Command
         /** @var UpdateProductEventCountCommand[] */
         $commands = [];
 
+        // Create a Command for the current hour.
         $commands[] = new UpdateProductEventCountCommand(
             HourlyInterval::createFromDateTime(
                 // new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
@@ -49,9 +50,13 @@ class UpdateAuditDataCommand extends Command
             )
         );
 
+        /*
+         * Create a Command for each hour retrieved from events that are not yet complete.
+         * I.e., the last update happened before the end of the event datetime and need to be updated again.
+         */
         $hourlyIntervalsToRefresh = $this->selectHourlyIntervalsToRefreshQuery->execute();
         foreach ($hourlyIntervalsToRefresh as $hourlyInterval) {
-            // Ignore the refresh of the current hour.
+            // Ignore the current hour; already added.
             if (true === HourlyInterval::equals($commands[0]->hourlyInterval(), $hourlyInterval)) {
                 continue;
             }
