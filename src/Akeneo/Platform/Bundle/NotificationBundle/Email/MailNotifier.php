@@ -23,7 +23,7 @@ class MailNotifier
      * @param \Swift_Mailer $mailer
      * @param string        $mailerUrl
      */
-    public function __construct(\Swift_Mailer $mailer, $mailerUrl)
+    public function __construct(\Swift_Mailer $mailer, string $mailerUrl)
     {
         $this->mailer = $mailer;
         $this->mailerUrl = $mailerUrl;
