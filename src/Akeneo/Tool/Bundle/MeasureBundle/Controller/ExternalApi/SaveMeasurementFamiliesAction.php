@@ -38,23 +38,18 @@ class SaveMeasurementFamiliesAction
     /** @var SaveMeasurementFamilyHandler */
     private $saveMeasurementFamilyHandler;
 
-    /** @var int */
-    private $maximumMeasurementFamiliesPerRequest;
-
     public function __construct(
         MeasurementFamilyListValidator $measurementFamilyListValidator,
         MeasurementFamilyValidator $measurementFamilyStructureValidator,
         ValidatorInterface $validator,
         ViolationNormalizer $violationNormalizer,
-        SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler,
-        int $maximumMeasurementFamiliesPerRequest
+        SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler
     ) {
         $this->measurementFamilyListValidator = $measurementFamilyListValidator;
         $this->measurementFamilyStructureValidator = $measurementFamilyStructureValidator;
         $this->validator = $validator;
         $this->violationNormalizer = $violationNormalizer;
         $this->saveMeasurementFamilyHandler = $saveMeasurementFamilyHandler;
-        $this->maximumMeasurementFamiliesPerRequest = $maximumMeasurementFamiliesPerRequest;
     }
 
     public function __invoke(Request $request): Response
@@ -69,18 +64,6 @@ class SaveMeasurementFamiliesAction
                     'message' => 'The list of measurement families has an invalid format.',
                     'errors'  => JsonSchemaErrorsFormatter::format($structureErrors),
                 ], Response::HTTP_BAD_REQUEST
-            );
-        }
-
-        if (count($normalizedMeasurementFamilies) > $this->maximumMeasurementFamiliesPerRequest) {
-            return new JsonResponse(
-                [
-                    'code'    => Response::HTTP_REQUEST_ENTITY_TOO_LARGE,
-                    'message' => sprintf(
-                        'Too many resources to process, %d is the maximum allowed.',
-                        $this->maximumMeasurementFamiliesPerRequest
-                    ),
-                ], Response::HTTP_REQUEST_ENTITY_TOO_LARGE
             );
         }
 

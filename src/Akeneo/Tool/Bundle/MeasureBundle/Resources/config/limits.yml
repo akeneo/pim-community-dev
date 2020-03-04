@@ -1,3 +1,3 @@
 parameters:
     # Maximum number of measurement family to process in a single API request
-        measurement_maximum_measurement_families_to_process_per_request: 100 # TODO: Check if needed for this endpoint
+    maximum_measurement_families: 100
