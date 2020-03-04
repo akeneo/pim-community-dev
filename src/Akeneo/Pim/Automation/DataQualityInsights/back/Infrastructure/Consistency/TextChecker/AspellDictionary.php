@@ -4,13 +4,14 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\DictionaryNotFoundException;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\UnableToRetrieveDictionaryException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Dictionary;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LanguageCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
+use Mekras\Speller;
 
 final class AspellDictionary implements AspellDictionaryInterface
 {
@@ -65,16 +66,22 @@ final class AspellDictionary implements AspellDictionaryInterface
     }
 
     /**
-     * @throws DictionaryNotFoundException
+     * @throws UnableToRetrieveDictionaryException
      */
-    public function getUpToDateLocalDictionaryAbsoluteFilePath(LocaleCode $localeCode): string
+    public function getUpToDateSpellerDictionary(LocaleCode $localeCode): ?Speller\Dictionary
     {
         $languageCode = $this->extractLanguageCode($localeCode);
+
+        if (false === $this->isDictionaryExists($languageCode)) {
+            return null;
+        }
 
         $this->ensureDictionaryExistsLocally($languageCode);
         $this->ensureDictionaryIsUpToDate($languageCode);
 
-        return rtrim($this->localFilesystemProvider->getAbsoluteRootPath(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . ltrim($this->getRelativeFilePath($languageCode), DIRECTORY_SEPARATOR);
+        $dictionaryAbsolutePath =  rtrim($this->localFilesystemProvider->getAbsoluteRootPath(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . ltrim($this->getRelativeFilePath($languageCode), DIRECTORY_SEPARATOR);
+
+        return new Speller\Dictionary($dictionaryAbsolutePath);
     }
 
     public function getSharedDictionaryTimestamp(LanguageCode $languageCode): ?int
@@ -86,8 +93,14 @@ final class AspellDictionary implements AspellDictionaryInterface
         return null;
     }
 
+    private function isDictionaryExists(LanguageCode $languageCode): bool
+    {
+        return true === $this->localFilesystem->has($this->getRelativeFilePath($languageCode))
+            || true === $this->sharedFilesystem->has($this->getRelativeFilePath($languageCode));
+    }
+
     /**
-     * @throws DictionaryNotFoundException
+     * @throws UnableToRetrieveDictionaryException
      */
     private function ensureDictionaryExistsLocally(LanguageCode $languageCode): void
     {
@@ -98,7 +111,7 @@ final class AspellDictionary implements AspellDictionaryInterface
     }
 
     /**
-     * @throws DictionaryNotFoundException
+     * @throws UnableToRetrieveDictionaryException
      */
     private function ensureDictionaryIsUpToDate(LanguageCode $languageCode): void
     {
@@ -132,23 +145,22 @@ final class AspellDictionary implements AspellDictionaryInterface
 
     private function downloadDictionaryFromSharedFilesystem(LanguageCode $languageCode): void
     {
-        if (false === $this->sharedFilesystem->has($this->getRelativeFilePath($languageCode))) {
-            throw new DictionaryNotFoundException();
+        $dictionaryRelativePath = $this->getRelativeFilePath($languageCode);
+
+        if (false === $this->sharedFilesystem->has($dictionaryRelativePath)) {
+            throw new UnableToRetrieveDictionaryException($languageCode, sprintf('No shared file found for "%s"', $dictionaryRelativePath));
         }
 
-        $readStream = $this->sharedFilesystem->readStream($this->getRelativeFilePath($languageCode));
+        $readStream = $this->sharedFilesystem->readStream($dictionaryRelativePath);
 
         if (!is_resource($readStream)) {
-            throw new DictionaryNotFoundException();
+            throw new UnableToRetrieveDictionaryException($languageCode, sprintf('Read stream "%s" failed', $dictionaryRelativePath));
         }
 
-        $this->localFilesystem->putStream(
-            $this->getRelativeFilePath($languageCode),
-            $readStream
-        );
+        $this->localFilesystem->putStream($dictionaryRelativePath, $readStream);
 
-        if (false === $this->localFilesystem->has($this->getRelativeFilePath($languageCode))) {
-            throw new DictionaryNotFoundException();
+        if (false === $this->localFilesystem->has($dictionaryRelativePath)) {
+            throw new UnableToRetrieveDictionaryException($languageCode, sprintf('Write local file "%s" failed', $dictionaryRelativePath));
         }
     }
 

@@ -202,6 +202,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $supportedLocaleChecker->isSupported($localeEn)->willReturn(true);
         $supportedLocaleChecker->isSupported($localeFr)->willReturn(true);
 
+        $logger->error(Argument::cetera())->shouldBeCalled();
         $logger->info(Argument::cetera())->shouldBeCalledTimes(2);
 
         $textChecker->check('Success', $localeEn)->willReturn($textCheckResultTextareaPrintEn);

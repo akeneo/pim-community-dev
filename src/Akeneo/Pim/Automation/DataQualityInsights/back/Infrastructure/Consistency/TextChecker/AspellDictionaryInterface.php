@@ -3,10 +3,11 @@
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\DictionaryNotFoundException;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\UnableToRetrieveDictionaryException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Dictionary;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LanguageCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Mekras\Speller;
 
 interface AspellDictionaryInterface
 {
@@ -16,9 +17,9 @@ interface AspellDictionaryInterface
     public function persistDictionaryToSharedFilesystem(Dictionary $dictionary, LanguageCode $languageCode): void;
 
     /**
-     * @throws DictionaryNotFoundException
+     * @throws UnableToRetrieveDictionaryException
      */
-    public function getUpToDateLocalDictionaryAbsoluteFilePath(LocaleCode $localeCode): string;
+    public function getUpToDateSpellerDictionary(LocaleCode $localeCode): ?Speller\Dictionary;
 
     public function getSharedDictionaryTimestamp(LanguageCode $languageCode): ?int;
 }

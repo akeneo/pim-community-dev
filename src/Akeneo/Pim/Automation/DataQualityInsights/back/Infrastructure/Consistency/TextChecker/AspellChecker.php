@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\DictionaryNotFoundException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
@@ -23,8 +22,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChe
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Result\AspellLineNumberCalculator;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source\TextSource;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository;
-use Mekras\Speller\Aspell\Aspell;
-use Mekras\Speller\Dictionary;
 use Mekras\Speller\Exception\PhpSpellerException;
 
 /**
@@ -34,8 +31,8 @@ class AspellChecker implements TextChecker
 {
     const DEFAULT_ENCODING = 'UTF-8';
 
-    /** @var Aspell */
-    private $speller;
+    /** @var SpellerProviderInterface */
+    private $spellerProvider;
 
     /** @var string */
     private $encoding;
@@ -43,18 +40,20 @@ class AspellChecker implements TextChecker
     /** @var GlobalOffsetCalculator */
     private $globalOffsetCalculator;
 
-    private $aspellDictionary;
-
     private $textCheckerDictionaryRepository;
 
     private $lineNumberCalculator;
 
-    public function __construct(Aspell $speller, AspellDictionaryInterface $aspellDictionary, AspellGlobalOffsetCalculator $globalOffsetCalculator, AspellLineNumberCalculator $lineNumberCalculator, TextCheckerDictionaryRepository $textCheckerDictionaryRepository, string $encoding = self::DEFAULT_ENCODING)
-    {
-        $this->speller = $speller;
+    public function __construct(
+        SpellerProviderInterface $spellerProvider,
+        AspellGlobalOffsetCalculator $globalOffsetCalculator,
+        AspellLineNumberCalculator $lineNumberCalculator,
+        TextCheckerDictionaryRepository $textCheckerDictionaryRepository,
+        string $encoding = self::DEFAULT_ENCODING
+    ) {
+        $this->spellerProvider = $spellerProvider;
         $this->globalOffsetCalculator = $globalOffsetCalculator;
         $this->encoding = $encoding;
-        $this->aspellDictionary = $aspellDictionary;
         $this->textCheckerDictionaryRepository = $textCheckerDictionaryRepository;
         $this->lineNumberCalculator = $lineNumberCalculator;
     }
@@ -64,14 +63,9 @@ class AspellChecker implements TextChecker
         $source = new TextSource($text);
 
         try {
-            $this->speller->setPersonalDictionary($this->getDictionary($localeCode));
-        } catch (DictionaryNotFoundException $e) {
-            //No dictionary generated yet or no words in dictionary. Use spell checker without custom dictionary.
-        }
-
-        try {
+            $speller = $this->spellerProvider->getByLocale($localeCode);
             return $this->adaptResult(
-                $this->speller->checkText($source, [$localeCode->__toString()]),
+                $speller->checkText($source, [$localeCode->__toString()]),
                 $source->getAsString(),
                 $localeCode
             );
@@ -133,19 +127,5 @@ class AspellChecker implements TextChecker
         }
 
         return $userGeneratedDictionary;
-    }
-
-    /**
-     * @throws DictionaryNotFoundException
-     */
-    private function getDictionary(LocaleCode $localeCode): Dictionary
-    {
-        $absoluteDictionaryFilepath = $this->aspellDictionary->getUpToDateLocalDictionaryAbsoluteFilePath($localeCode);
-
-        if (false === is_file($absoluteDictionaryFilepath)) {
-            throw new DictionaryNotFoundException();
-        }
-
-        return new Dictionary($absoluteDictionaryFilepath);
     }
 }

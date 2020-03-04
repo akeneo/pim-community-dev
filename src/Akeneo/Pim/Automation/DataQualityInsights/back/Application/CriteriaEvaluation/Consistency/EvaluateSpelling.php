@@ -114,6 +114,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
             $textRates = $this->evaluateAttributesRates($channelCode, $localeCode, $textProductValues, self::TEXT_FAULT_WEIGHT);
             $textareaRates = $this->evaluateAttributesRates($channelCode, $localeCode, $textareaProductValues, self::TEXTAREA_FAULT_WEIGHT);
         } catch (TextCheckFailedException $exception) {
+            $this->logger->error('An error occurred during spelling evaluation', ['error_code' => 'error_during_spelling_evaluation', 'error_message' => $exception->getMessage()]);
             $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::error());
             return;
         }
