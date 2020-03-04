@@ -117,7 +117,7 @@ class SaveMeasurementFamiliesAction
 		$structureErrors = $this->measurementFamilyStructureValidator->validate($normalizedMeasurementFamily);
 		if (!empty($structureErrors)) {
 			return [
-				'code'        => $normalizedAsset['code'] ?? '',
+				'code'        => $normalizedMeasurementFamily['code'] ?? '',
 				'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
 				'message'     => 'The measurement family has an invalid format.',
 				'errors'      => JsonSchemaErrorsFormatter::format($structureErrors),

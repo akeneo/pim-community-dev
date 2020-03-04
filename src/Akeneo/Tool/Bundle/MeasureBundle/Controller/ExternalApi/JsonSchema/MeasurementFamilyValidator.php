@@ -21,57 +21,62 @@ use JsonSchema\Validator;
  */
 class MeasurementFamilyValidator
 {
-	public function validate(array $normalizedMeasurementFamily): array
-	{
-		$validator = new Validator();
-		$normalizedMeasurementFamilyObject = Validator::arrayToObjectRecursive($normalizedMeasurementFamily);
-		$validator->validate($normalizedMeasurementFamilyObject, $this->getJsonSchema());
+    public function validate(array $normalizedMeasurementFamily): array
+    {
+        $validator = new Validator();
+        $normalizedMeasurementFamilyObject = Validator::arrayToObjectRecursive($normalizedMeasurementFamily);
+        $validator->validate($normalizedMeasurementFamilyObject, $this->getJsonSchema());
 
-		return $validator->getErrors();
-	}
+        return $validator->getErrors();
+    }
 
-	private function getJsonSchema(): array
-	{
-		return [
-			'type' => 'object',
-			'properties' => [
-				'_links' => ['type' => 'object'],
-				'code' => ['type' => ['string'],],
-				'labels' => [
-					'type' => 'object',
-					'patternProperties' => [
-						'.+' => ['type' => 'string'],
-					],
-				],
-				'standard_unit_code' => ['type' => 'string'],
-				'units' => [
-					'type' => 'array',
-					'items' => [
-						'type' => 'object',
-						'code' => ['type' => 'string'],
-						'labels' => [
-							'type' => 'object',
-							'patternProperties' => [
-								'.+' => ['type' => 'string'],
-							],
-						],
-						'convert_from_standard' => [
-							'type' => 'array',
-							'items' => [
-								'type' => 'object',
-								'properties' => [
-									'operator' => ['type' => 'string'],
-									'value'    => ['type' => 'string']
-								]
-							]
-						],
-						'symbol' => ['type' => 'string']
-					]
-				]
-			],
-			'required' => ['code', 'units'],
-			'additionalProperties' => false,
-		];
-	}
-
+    private function getJsonSchema(): array
+    {
+        return [
+            'type'                 => 'object',
+            'properties'           => [
+                '_links'             => ['type' => 'object'],
+                'code'               => ['type' => ['string'],],
+                'labels'             => [
+                    'type'              => 'object',
+                    'patternProperties' => [
+                        '.+' => ['type' => 'string'],
+                    ],
+                ],
+                'standard_unit_code' => ['type' => 'string'],
+                'units'              => [
+                    'type'     => 'array',
+                    'minItems' => 1,
+                    'items'    => [
+                        'type'       => 'object',
+                        'required'   => ['code', 'labels', 'convert_from_standard', 'symbol'],
+                        'properties' => [
+                            'code'                  => ['type' => 'string'],
+                            'labels'                => [
+                                'type'              => 'object',
+                                'patternProperties' => [
+                                    '.+' => ['type' => 'string'],
+                                ],
+                            ],
+                            'convert_from_standard' => [
+                                'minItems' => 1,
+                                'type'     => 'array',
+                                'items'    => [
+                                    'type'       => 'object',
+                                    'properties' => [
+                                        'operator' => ['type' => 'string'],
+                                        'value'    => ['type' => 'string']
+                                    ],
+                                    'required'   => ['operator', 'value'],
+                                ]
+                            ],
+                            'symbol'                => ['type' => 'string']
+                        ]
+                    ]
+                ]
+            ],
+            'required'             => ['code', 'labels', 'units', 'standard_unit_code'],
+            'additionalProperties' => false,
+        ];
+    }
 }

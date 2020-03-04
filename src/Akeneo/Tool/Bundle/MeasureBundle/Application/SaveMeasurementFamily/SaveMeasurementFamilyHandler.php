@@ -19,49 +19,49 @@ use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInte
  */
 class SaveMeasurementFamilyHandler
 {
-	/** @var MeasurementFamilyRepositoryInterface */
-	private $measurementFamilyRepository;
+    /** @var MeasurementFamilyRepositoryInterface */
+    private $measurementFamilyRepository;
 
-	public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
-	{
-		$this->measurementFamilyRepository = $measurementFamilyRepository;
-	}
+    public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
+    {
+        $this->measurementFamilyRepository = $measurementFamilyRepository;
+    }
 
-	public function handle(SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand): void
-	{
-		$units = $this->units($saveMeasurementFamilyCommand);
-		$measurementFamily = MeasurementFamily::create(
-			MeasurementFamilyCode::fromString($saveMeasurementFamilyCommand->code),
-			LabelCollection::fromArray($saveMeasurementFamilyCommand->labels),
-			UnitCode::fromString($saveMeasurementFamilyCommand->standardUnitCode),
-			$units
-		);
+    public function handle(SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand): void
+    {
+        $units = $this->units($saveMeasurementFamilyCommand);
+        $measurementFamily = MeasurementFamily::create(
+            MeasurementFamilyCode::fromString($saveMeasurementFamilyCommand->code),
+            LabelCollection::fromArray($saveMeasurementFamilyCommand->labels),
+            UnitCode::fromString($saveMeasurementFamilyCommand->standardUnitCode),
+            $units
+        );
 
-		$this->measurementFamilyRepository->save($measurementFamily);
-	}
+        $this->measurementFamilyRepository->save($measurementFamily);
+    }
 
-	private function units(SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand): array
-	{
-		return array_map(
-			function (array $unit) {
-				$operations = array_map(
-					function (array $operation) {
-						return Operation::create(
-							$operation['operator'],
-							$operation['value']
-						);
-					},
-					$unit['convert_from_standard']
-				);
+    private function units(SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand): array
+    {
+        return array_map(
+            function (array $unit) {
+                $operations = array_map(
+                    function (array $operation) {
+                        return Operation::create(
+                            $operation['operator'],
+                            $operation['value']
+                        );
+                    },
+                    $unit['convert_from_standard']
+                );
 
-				return Unit::create(
-					UnitCode::fromString($unit['code']),
-					LabelCollection::fromArray($unit['labels']),
-					$operations,
-					$unit['symbol']
-				);
-			},
-			$saveMeasurementFamilyCommand->units
-		);
-	}
+                return Unit::create(
+                    UnitCode::fromString($unit['code']),
+                    LabelCollection::fromArray($unit['labels']),
+                    $operations,
+                    $unit['symbol']
+                );
+            },
+            $saveMeasurementFamilyCommand->units
+        );
+    }
 }
