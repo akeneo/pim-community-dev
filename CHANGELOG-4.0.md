@@ -1,5 +1,7 @@
 # 4.0.x
 
+- PIM-9129: Fix missing brightness measure translations
+
 # 4.0.7 (2020-03-04)
 
 ## Technical Improvements
