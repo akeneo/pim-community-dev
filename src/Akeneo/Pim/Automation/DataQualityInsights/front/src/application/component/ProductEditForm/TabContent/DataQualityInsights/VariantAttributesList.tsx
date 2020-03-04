@@ -1,6 +1,5 @@
-import AttributeWithRecommendation from '../../../../../domain/AttributeWithRecommendation.interface';
+import {AttributeWithRecommendation, Product} from '../../../../../domain';
 import React from 'react';
-import {Product} from '../../../../../domain';
 import AttributesList from './AttributesList';
 
 const __ = require('oro/translator');

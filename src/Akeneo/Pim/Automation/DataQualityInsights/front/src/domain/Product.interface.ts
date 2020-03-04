@@ -19,13 +19,17 @@ interface Meta {
   variant_navigation: VariantNavigation[];
   family_variant: {
     variant_attribute_sets: VariantAttributeSet[]
-  }
+  };
+  parent_attributes: string[],
 }
 
 interface VariantNavigation {
   axes: {
     [locale: string]: string;
-  }
+  };
+  selected: {
+    id: number;
+  };
 }
 
 interface VariantAttributeSet {

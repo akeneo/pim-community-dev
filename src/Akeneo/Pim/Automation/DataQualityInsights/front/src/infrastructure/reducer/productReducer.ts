@@ -37,8 +37,9 @@ const initialState: ProductState = {
       variant_attribute_sets: [
         {attributes: []}
       ]
-    }
-  },
+    },
+    parent_attributes: [],
+  }
 };
 
 const productReducer: Reducer<ProductState, ProductAction> = (previousState = initialState, {type, payload}) => {

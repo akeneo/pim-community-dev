@@ -12,14 +12,6 @@ interface AttributesListProps {
 }
 
 const AttributesList = ({product, criterionCode, attributes}: AttributesListProps) => {
-
-  const isLinkAvailable = (attributeCode: string): boolean => {
-    return (
-      product.meta.level === null ||
-      product.meta.attributes_for_this_level.includes(attributeCode)
-    );
-  };
-
   if (attributes.length === 0) {
     return (
       <span className="CriterionSuccessMessage">
@@ -41,10 +33,10 @@ const AttributesList = ({product, criterionCode, attributes}: AttributesListProp
         return (
           <Attribute
             key={`attribute-${criterionCode}-${index}`}
-            code={attribute.code}
+            attributeCode={attribute.code}
             label={attribute.label}
             separator={separator}
-            isLinkAvailable={isLinkAvailable(attribute.code)}
+            product={product}
           />
         );
       })}
