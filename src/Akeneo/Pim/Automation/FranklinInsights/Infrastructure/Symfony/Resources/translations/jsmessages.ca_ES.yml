@@ -47,6 +47,7 @@ akeneo_franklin_insights:
       flash:
         do_not_map_attribute_success: 'Atribut actualitzat correctament.'
         create_attribute_error: 'Ho sentim, s''ha produït un error al crear o adjuntar l''atribut a la família.'
+        suggest_attribute_mapping_error: 'L''atribut del catàleg "[{{ catalogAttributeCode }}]" ja està mapat a l''atribut Franklin "{{ franklinAttributeLabel }}".'
         add_attribute_to_family_error: 'Ho sentim, s''ha produït un error al adjuntar l''atribut a la família.'
       fields:
         search_bar.placeholder: 'Cerca en l''atribut Franklin'
@@ -62,21 +63,33 @@ akeneo_franklin_insights:
           btn: Crear atribut
         add_attribute_to_family:
           btn: Afegir a la família
+        secondary_actions:
+          deactivate_franklin_attribute: "No mapat"
       module:
         subscribe:
           subscribe: 'Subscriure família a Franklin'
           subscribed: 'Subscripció a Franklin'
         index:
+          family_selector:
+            title: 'Escull una família pel mapa'
           error: "Necessita crear una família en el catàleg per accedir a aquesta pàgina."
           family_status:
             pending: 'Nou atribut Franklin a revisar'
+            full: 'Tots els atributs Franklin mapats'
+          types_mismatch_warning: 'Atenció : els tipus d''atributs no coincideixen.'
+          family_progress:
+            title: 'Nombre d''atributs mapats'
+            description: "Utilitza aquesta barra per veure d'una ullada l'estat de la feina"
+            mapped_attribute_count: '{{ count }} atributs mapats'
         toolbar:
           bulk_create_attribute: Crear atribut
           bulk_add_to_family: Afegir a la família
           selection_count: '{{ count }} element seleccionat | {{ count }} elements seleccionats'
       modal:
         deactivate_franklin_attribute:
+          title: "Esteu segur de no voler mapar aquest atribut?"
           subtitle: 'Estadístiques de Franklin'
+          ok: "No mapar"
         bulk_create_attribute:
           title: '{1} Crear 1 atribut |[2,Inf[ Crear {{ count }} atributs'
           subtitle: 'Estadístiques de Franklin'
@@ -89,6 +102,9 @@ akeneo_franklin_insights:
       constraint:
         missing_target_key: 'Falta l''objectiu clau pel mapatge'
         missing_attribute_key: 'Falta {{ expectedKey }} clau pel mapatge amb l''objectiu clau "{{ targetKey }}"'
+        invalid_attribute_type_mapping: 'No s''han pogut mapar els atributs Franklin al tipus d''atributs PIM "{{ pimType }}"'
+        empty_mapping: 'No s''han pogut mapar els atributs Franklin amb un mapat buit'
+        localizable_not_allowed: 'No s''han pogut mapar els atributs Franklin a atributs localitzables PIM'
         attribute_not_in_family_not_allowed: 'L''atribut PIM ha de ser de la família seleccionada.'
         only_unknown_mapped_attributes: 'No s''han trobat atributs en el mapatge d''atributs'
       search:
@@ -118,6 +134,7 @@ akeneo_franklin_insights:
           no_identifier_filled: 'Identificadors de producte requerits.'
           invalid_mapping: "Identificadors de mapatge requerits."
     attribute_options_mapping:
+      label: 'Mapatge d''opcions d''atributs'
       fields:
         franklin_attribute_option: Opció d'atribut de Franklin
         catalog_attribute_option: Opcions d'atribut del catàleg
@@ -151,6 +168,7 @@ akeneo_franklin_insights:
   settings:
     page_title: 'Configuració de les estadístiques de Franklin'
     attributes_mapping_title: 'Mapatge dels atributs'
+    identifiers_mapping_title: 'Mapa d''identificadors'
     module:
       title:
         sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
@@ -163,6 +181,7 @@ akeneo_franklin_insights:
         title: 'Les estadístiques de Franklin només estan disponibles per locals en anglès.'
         sub_title: 'Estigues atent, els locals ja arriben.'
       save:
+        warning: '{1}Canviar el mapat pot afectar una subscripció. Esteu segur?|]1,+Inf[Canviar el mapat pot afectar {{ count }} subscripcions. Esteu segur?'
         title: 'Atenció!'
   mass_edit:
     product:
@@ -181,6 +200,7 @@ akeneo_franklin_insights:
       credits: Crèdits Franklin
     axis:
       franklin_attribute_created: Nombre d'atributs creats per Franklin
+      franklin_attribute_added_to_family: Nombre d'atributs afegits a la família per Franklin
       credits_total: Crèdits totals
       credits_consumed: Crèdits consumits
       credits_left: Crèdits restants
