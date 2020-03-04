@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.7 (2020-03-04)
+
 ## Technical Improvements
 
 - #11583: Remove useless GLOB_BRACE flag from standard Kernel
