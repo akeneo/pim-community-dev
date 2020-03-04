@@ -4,11 +4,11 @@ import catalogContextReducer, {
   changeCatalogContextLocale,
   initializeCatalogContext,
 } from "./catalogContextReducer";
-import productEvaluationReducer, {
-  getProductEvaluationAction,
-  ProductEvaluationState
-} from "./productEvaluationReducer";
-import productAxesRatesReducer, {getProductAxesRatesAction, ProductAxesRatesState} from "../reducer/productAxesRatesReducer";
+import productEvaluationReducer, {getProductEvaluationAction, ProductEvaluationState} from "./productEvaluationReducer";
+import productAxesRatesReducer, {
+  getProductAxesRatesAction,
+  ProductAxesRatesState
+} from "../reducer/productAxesRatesReducer";
 import productFamilyInformationReducer, {
   getProductFamilyInformationAction,
   ProductFamilyInformationState
@@ -18,8 +18,8 @@ import pageContextReducer, {
   changeProductTabAction,
   endProductAttributesTabIsLoadedAction,
   PageContextState,
-  startProductAttributesTabIsLoadingAction,
-  showDataQualityInsightsAttributeToImproveAction
+  showDataQualityInsightsAttributeToImproveAction,
+  startProductAttributesTabIsLoadingAction
 } from "./pageContextReducer";
 import productEditorHighlightReducer, {
   disableWidgetAction,
@@ -30,6 +30,7 @@ import productEditorHighlightReducer, {
   initializePopoverOpeningAction,
   initializeWidgetsListAction,
   ProductEditorHighlightState,
+  setHasSuggestedTitleAction,
   showPopoverAction,
   showWidgetAction,
   updateWidgetContent,
@@ -75,6 +76,7 @@ export {
   updateWidgetContentAnalysis,
   updateWidgetHighlightsAction,
   updateWidgetTitleSuggestion,
+  setHasSuggestedTitleAction,
   initializePopoverOpeningAction,
   showPopoverAction,
   hidePopoverAction,

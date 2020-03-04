@@ -4,10 +4,12 @@ import {WidgetElement} from "../../../../../helper";
 import WidgetWithContextListenerDecorator from "./WidgetWithContextListenerDecorator";
 import WidgetWithPortalDecorator from "./WidgetWithPortalDecorator";
 
-const WIDGET_PREFIX_ID = "akeneo-spellchecker-widget";
-
 export interface WidgetProps {
-  widget: WidgetElement
+  widget: WidgetElement;
+}
+
+export interface NamedWidgetProps extends WidgetProps {
+  name: string;
 }
 
 const BaseWidget: FunctionComponent<WidgetProps> = ({ widget }) => {
@@ -30,10 +32,10 @@ const WidgetWithContextListener: FunctionComponent<WidgetProps> = (props) => {
   });
 };
 
-const Widget: FunctionComponent<WidgetProps> = (props) => {
+const Widget: FunctionComponent<NamedWidgetProps> = (props) => {
   return WidgetWithPortalDecorator(WidgetWithContextListener)({
     ...props,
-    containerId: `${WIDGET_PREFIX_ID}-${props.widget.id}`,
+    containerId: `editor-highlight-${props.name}-${props.widget.id}`,
   });
 };
 

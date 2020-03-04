@@ -9,7 +9,10 @@ interface WidgetFactoryProps {
 }
 
 const WidgetItem: FunctionComponent<WidgetFactoryProps> = ({widget}) => {
-  return (widget.isMainLabel ? <SuggestedTitleWidget widget={widget} /> : <SpellcheckWidget widget={widget} />);
+  return ((widget.isMainLabel && (widget.hasSuggestedTitle === undefined || widget.hasSuggestedTitle)) ?
+    <SuggestedTitleWidget widget={widget} /> :
+    <SpellcheckWidget widget={widget} />
+  );
 };
 
 const WidgetsList = () => {

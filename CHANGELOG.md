@@ -9,6 +9,7 @@
 - DAPI-806: Improve criteria evaluations performance
 - DAPI-739: Add coefficients by criterion to the calculation of the axes rates
 - DAPI-635: Add spellcheck on WYSIWG editors
+- DAPI-798: Allow spelling suggestions after a title formatter check
 
 ## New features
 

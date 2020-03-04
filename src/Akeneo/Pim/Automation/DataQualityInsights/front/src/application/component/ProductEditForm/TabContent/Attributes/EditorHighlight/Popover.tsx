@@ -72,7 +72,7 @@ const BasePopover: FunctionComponent<PopoverProps> = () => {
              onMouseLeave={() => handleClosing()}>
           {highlight && highlight.mistake && widget && (
             <>
-              {widget.isMainLabel ?
+              {(widget.isMainLabel && (widget.hasSuggestedTitle === undefined || widget.hasSuggestedTitle)) ?
                 <SuggestedTitlePopoverContent mistake={highlight.mistake} widget={widget}/> :
                 <SpellcheckPopoverContent highlight={highlight} widget={widget}/>
               }

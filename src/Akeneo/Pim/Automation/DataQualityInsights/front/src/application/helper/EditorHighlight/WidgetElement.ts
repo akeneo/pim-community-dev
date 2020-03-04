@@ -16,6 +16,7 @@ export default interface WidgetElement {
   isTextInput: boolean;
   isEditableContent: boolean;
   isMainLabel: boolean;
+  hasSuggestedTitle: boolean|undefined;
 }
 
 export interface WidgetsCollection {
@@ -34,6 +35,7 @@ export const createWidget = (identifier: string, editor: EditorElement, editorId
     isTextInput: isTextInput(editor),
     isEditableContent: isEditableContent(editor),
     isMainLabel,
+    hasSuggestedTitle: undefined,
     content: getEditorContent(editor),
     analysis: [],
     highlights: {}

@@ -14,6 +14,8 @@ const WidgetWithPortalDecorator = <P extends WidgetProps>(WidgetComponent:  Comp
     useEffect(() => {
       const element = document.createElement("div");
       element.id = containerId;
+      element.setAttribute('data-testid', containerId);
+
       setWidgetRootElement(element);
 
       document.body.prepend(element);

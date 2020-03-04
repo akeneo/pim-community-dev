@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux';
 import {WidgetElement} from "../../../../application/helper";
 import {fetchTitleSuggestion} from "../../../fetcher";
 import {useCatalogContext, useProduct} from "../../index";
-import {updateWidgetContentAnalysis} from "../../../reducer";
+import {setHasSuggestedTitleAction, updateWidgetContentAnalysis} from "../../../reducer";
 import useProductAxesRates from "../../useProductAxesRates";
 
 const useFetchTitleSuggestion = (widget: WidgetElement) => {
@@ -21,6 +21,7 @@ const useFetchTitleSuggestion = (widget: WidgetElement) => {
         }
 
         if (!productId || !channel || !locale) {
+          dispatchAction(setHasSuggestedTitleAction(widget.id, false));
           dispatchAction(updateWidgetContentAnalysis(widget.id, []));
           return;
         }
@@ -28,12 +29,14 @@ const useFetchTitleSuggestion = (widget: WidgetElement) => {
         const result: string|null = await fetchTitleSuggestion(product, channel, locale);
 
         if (typeof result !== "string" || result.length === 0) {
+          dispatchAction(setHasSuggestedTitleAction(widget.id, false));
           dispatchAction(updateWidgetContentAnalysis(widget.id, []));
           return;
         }
 
         const suggestions: string[] = [result];
 
+        dispatchAction(setHasSuggestedTitleAction(widget.id, true));
         dispatchAction(updateWidgetContentAnalysis(widget.id, [{
           text: widget.content,
           type: "title_suggestion",

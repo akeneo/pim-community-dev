@@ -4,9 +4,12 @@ import WidgetWithSuggestedTitleDecorator from "./WidgetWithSuggestedTitleDecorat
 
 interface SuggestedTitleWidgetProps extends WidgetProps {}
 
+const WIDGET_NAME = "suggested-title";
+
 const SuggestedTitleWidget: FunctionComponent<SuggestedTitleWidgetProps> = (props) => {
   return WidgetWithSuggestedTitleDecorator(Widget)({
-    ...props
+    ...props,
+    name: WIDGET_NAME
   });
 };
 

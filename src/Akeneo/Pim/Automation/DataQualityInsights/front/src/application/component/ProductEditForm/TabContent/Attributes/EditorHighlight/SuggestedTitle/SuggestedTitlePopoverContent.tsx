@@ -1,7 +1,11 @@
 import React, {FunctionComponent, useCallback} from "react";
 import {useDispatch} from "react-redux";
 import {MistakeElement, setEditorContent, WidgetElement} from "../../../../../../helper";
-import {hidePopoverAction, updateWidgetContentAnalysis} from "../../../../../../../infrastructure/reducer";
+import {
+  hidePopoverAction,
+  setHasSuggestedTitleAction,
+  updateWidgetContentAnalysis
+} from "../../../../../../../infrastructure/reducer";
 import useFetchIgnoreTitleSuggestion
   from "../../../../../../../infrastructure/hooks/EditorHighlight/SuggestedTitle/useFetchIgnoreTitleSuggestion";
 
@@ -35,6 +39,7 @@ const SuggestedTitlePopoverContent: FunctionComponent<SuggestedTitlePopoverConte
     const end = mistake.globalOffset + mistake.text.length;
 
     setEditorContent(widget.editor, widget.content, suggestion, start, end);
+    dispatchAction(setHasSuggestedTitleAction(widget.id, false));
     dispatchAction(hidePopoverAction());
   }, [widget, mistake]);
 
@@ -45,6 +50,7 @@ const SuggestedTitlePopoverContent: FunctionComponent<SuggestedTitlePopoverConte
     }
 
     dispatchIgnoreTitleSuggestion(suggestion);
+    dispatchAction(setHasSuggestedTitleAction(widget.id, false));
     dispatchAction(updateWidgetContentAnalysis(widget.id, []));
     dispatchAction(hidePopoverAction());
   }, [widget, mistake]);

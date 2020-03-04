@@ -4,9 +4,12 @@ import WidgetWithSpellcheckDecorator from "./WidgetWithSpellcheckDecorator";
 
 interface SpellcheckWidgetProps extends WidgetProps {}
 
+const WIDGET_NAME = "spellcheck";
+
 const SpellcheckWidget: FunctionComponent<SpellcheckWidgetProps> = (props) => {
   return WidgetWithSpellcheckDecorator(Widget)({
-    ...props
+    ...props,
+    name: WIDGET_NAME
   });
 };
 

@@ -32,6 +32,7 @@ export interface WidgetAction extends Action {
       analysis?: MistakeElement[],
       highlights?: HighlightElement[];
       highlightId?: string;
+      hasSuggestedTitle?: boolean;
     };
   }
 }
@@ -141,7 +142,6 @@ export const updateWidgetTitleSuggestion: ActionCreator<WidgetAction> = (id: str
   };
 };
 
-
 const UPDATE_WIDGET_HIGHLIGHTS = "UPDATE_WIDGET_HIGHLIGHTS";
 export const updateWidgetHighlightsAction: ActionCreator<WidgetAction> = (id: string, highlights: HighlightElement[]) => {
   return {
@@ -167,6 +167,20 @@ export const enableWidgetHighlightAction: ActionCreator<WidgetAction> = (id: str
     }
   };
 };
+
+const SET_HAS_SUGGESTED_TITLE = 'SET_HAS_SUGGESTED_TITLE';
+export const setHasSuggestedTitleAction: ActionCreator<WidgetAction> = (id: string, hasSuggestedTitle: boolean) => {
+  return {
+    type: SET_HAS_SUGGESTED_TITLE,
+    payload: {
+      widget: {
+        id,
+        hasSuggestedTitle
+      }
+    }
+  }
+};
+
 const DISABLE_WIDGET_HIGHLIGHT = 'DISABLE_WIDGET_HIGHLIGHT';
 export const disableWidgetHighlightAction: ActionCreator<WidgetElementsAction> = () => {
   return {
@@ -176,6 +190,7 @@ export const disableWidgetHighlightAction: ActionCreator<WidgetElementsAction> =
     }
   };
 };
+
 const SHOW_POPOVER = 'SHOW_POPOVER';
 export const showPopoverAction: ActionCreator<PopoverAction> = (widgetId: string, highlight: HighlightElement) => {
   return {
@@ -188,6 +203,7 @@ export const showPopoverAction: ActionCreator<PopoverAction> = (widgetId: string
     }
   }
 };
+
 const HIDE_POPOVER = 'HIDE_POPOVER';
 export const hidePopoverAction: ActionCreator<PopoverAction> = () => {
   return {
@@ -197,6 +213,7 @@ export const hidePopoverAction: ActionCreator<PopoverAction> = () => {
     }
   }
 };
+
 const INITIALIZE_POPOVER_OPENING = 'INITIALIZE_POPOVER_OPENING';
 export const initializePopoverOpeningAction: ActionCreator<PopoverAction> = (handleOpening, handleClosing) => {
   return {
@@ -217,6 +234,7 @@ const initialPopoverState = {
   handleOpening: () => {},
   handleClosing: () => {},
 };
+
 const initialState: ProductEditorHighlightState = {
   widgets: {},
   popover: initialPopoverState,
@@ -375,6 +393,18 @@ const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction>
       });
 
       return state;
+    }
+
+    case SET_HAS_SUGGESTED_TITLE: {
+      const {widget} = payload;
+
+      return {
+        ...previousState,
+        [widget.id]: {
+          ...previousState[widget.id],
+          hasSuggestedTitle: (widget.hasSuggestedTitle === true),
+        }
+      }
     }
 
     default:
