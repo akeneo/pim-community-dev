@@ -87,8 +87,8 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
     protected function checkLocaleAndChannel(AttributeInterface $attribute, $locale, $channel)
     {
         try {
-            $this->filterValidator->isLocaleValidForAttribute($attribute->getCode(), $locale);
-            $this->filterValidator->isChannelValidForAttribute($attribute->getCode(), $channel);
+            $this->filterValidator->validateLocaleForAttribute($attribute->getCode(), $locale);
+            $this->filterValidator->validateChannelForAttribute($attribute->getCode(), $channel);
         } catch (\LogicException $e) {
             throw InvalidPropertyException::expectedFromPreviousException(
                 $attribute->getCode(),

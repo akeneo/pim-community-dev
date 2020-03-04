@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  * @copyright 2020 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class ElasticsearchFilterValidator
+class ElasticsearchFilterValidator
 {
     /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
@@ -28,7 +28,7 @@ final class ElasticsearchFilterValidator
         $this->attributeValidator = $attributeValidator;
     }
 
-    public function isLocaleValidForAttribute(string $attributeCode, ?string $localeCode): bool
+    public function validateLocaleForAttribute(string $attributeCode, ?string $localeCode)
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
@@ -38,16 +38,12 @@ final class ElasticsearchFilterValidator
             // We don't throw anything if the provided locale is not available
             // See https://akeneo.atlassian.net/browse/PIM-9113
         }
-
-        return true;
     }
 
-    public function isChannelValidForAttribute(string $attributeCode, ?string $channelCode): bool
+    public function validateChannelForAttribute(string $attributeCode, ?string $channelCode)
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
         $this->attributeValidator->validateScope($attribute, $channelCode);
-
-        return true;
     }
 }

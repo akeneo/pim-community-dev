@@ -80,15 +80,15 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_equals(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
         $publishedOn->getCode()->willReturn('publishedOn');
         $publishedOn->getBackendType()->willReturn('date');
 
-        $attributeValidatorHelper->validateLocale($publishedOn, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($publishedOn, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('publishedOn', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('publishedOn', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -118,15 +118,15 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_lower_than(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
         $publishedOn->getCode()->willReturn('publishedOn');
         $publishedOn->getBackendType()->willReturn('date');
 
-        $attributeValidatorHelper->validateLocale($publishedOn, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($publishedOn, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('publishedOn', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('publishedOn', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -156,15 +156,15 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_greater_than(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
         $publishedOn->getCode()->willReturn('publishedOn');
         $publishedOn->getBackendType()->willReturn('date');
 
-        $attributeValidatorHelper->validateLocale($publishedOn, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($publishedOn, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('publishedOn', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('publishedOn', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -194,15 +194,15 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_between(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
         $publishedOn->getCode()->willReturn('publishedOn');
         $publishedOn->getBackendType()->willReturn('date');
 
-        $attributeValidatorHelper->validateLocale($publishedOn, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($publishedOn, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('publishedOn', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('publishedOn', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -235,15 +235,15 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_not_between(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
         $publishedOn->getCode()->willReturn('publishedOn');
         $publishedOn->getBackendType()->willReturn('date');
 
-        $attributeValidatorHelper->validateLocale($publishedOn, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($publishedOn, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('publishedOn', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('publishedOn', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(
             [
@@ -278,15 +278,15 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_empty(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
         $publishedOn->getCode()->willReturn('publishedOn');
         $publishedOn->getBackendType()->willReturn('date');
 
-        $attributeValidatorHelper->validateLocale($publishedOn, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($publishedOn, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('publishedOn', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('publishedOn', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(['exists' => ['field' => 'values.publishedOn-date.ecommerce.en_US']])->shouldBeCalled();
         $sqb->addFilter(['exists' => ['field' => 'family.code']])->shouldBeCalled();
@@ -303,15 +303,15 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_not_empty(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
         $publishedOn->getCode()->willReturn('publishedOn');
         $publishedOn->getBackendType()->willReturn('date');
 
-        $attributeValidatorHelper->validateLocale($publishedOn, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($publishedOn, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('publishedOn', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('publishedOn', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(['exists' => ['field' => 'values.publishedOn-date.ecommerce.en_US']])->shouldBeCalled();
 
@@ -327,15 +327,15 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_not_equal(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
         $publishedOn->getCode()->willReturn('publishedOn');
         $publishedOn->getBackendType()->willReturn('date');
 
-        $attributeValidatorHelper->validateLocale($publishedOn, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($publishedOn, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('publishedOn', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('publishedOn', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(
             [

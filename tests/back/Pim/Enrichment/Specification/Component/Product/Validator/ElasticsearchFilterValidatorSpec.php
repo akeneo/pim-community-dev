@@ -36,8 +36,7 @@ class ElasticsearchFilterValidatorSpec extends ObjectBehavior
         $attributeValidator->validateLocale($attribute, 'it_IT')
             ->willThrow(UnavailableSpecificLocaleException::class);
 
-        $this->isLocaleValidForAttribute('attributeCode', 'it_IT')
-            ->shouldReturn(true);
+        $this->validateLocaleForAttribute('attributeCode', 'it_IT');
     }
 
     function it_does_not_catch_other_exceptions(
@@ -51,6 +50,6 @@ class ElasticsearchFilterValidatorSpec extends ObjectBehavior
             ->willThrow(UnavailableLocaleException::class);
 
         $this->shouldThrow(UnavailableLocaleException::class)
-            ->during('isLocaleValidForAttribute', ['attributeCode', 'de_DE']);
+            ->during('validateLocaleForAttribute', ['attributeCode', 'de_DE']);
     }
 }
