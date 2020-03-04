@@ -1,7 +1,6 @@
 parameters:
     akeneo_measure.convert.measure_converter.class: Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter
     akeneo_measure.manager.measure_manager.class:   Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager
-    legacy_pim_api.controller.measure_family.class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\LegacyMeasureFamilyController
 
 services:
     akeneo_measure.measure_converter:
@@ -13,36 +12,6 @@ services:
         class: '%akeneo_measure.manager.measure_manager.class%'
         arguments:
             - '@akeneo_measure.provider.measurement_provider'
-
-    akeneo_measure.controller.rest.measures:
-        class: 'Akeneo\Tool\Bundle\MeasureBundle\Controller\MeasuresController'
-        public: true
-        arguments:
-            - '@akeneo_measure.persistence.measurement_family_repository'
-
-    legacy_pim_api.controller.measure_family:
-        class: '%legacy_pim_api.controller.measure_family.class%'
-        public: true
-        arguments:
-        - '@pim_api.converter.measure_family'
-        - '@pim_api.pagination.parameter_validator'
-        - '@pim_api.pagination.offset_hal_paginator'
-        - '@akeneo_measure.provider.measurement_provider'
-        - '%pim_api.configuration%'
-
-    pim_api.controller.measurement_family:
-        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\GetMeasurementFamiliesAction
-        public: true
-        arguments:
-        - '@akeneo_measure.persistence.measurement_family_repository'
-        - '@pim_api.pagination.parameter_validator'
-        - '@pim_api.pagination.measurement_offset_hal_paginator'
-        - '%pim_api.configuration%'
-
-    pim_api.pagination.measurement_offset_hal_paginator:
-        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\MeasurementOffsetHalPaginator
-        arguments:
-            - '@router'
 
     akeneo_measure.provider.measurement_adapter:
         class: Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementAdapter
@@ -64,3 +33,8 @@ services:
         class: Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepository
         arguments:
             - '@doctrine.dbal.default_connection'
+
+    akeneo_measure.application.save_measurement_family_handler:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyHandler
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'

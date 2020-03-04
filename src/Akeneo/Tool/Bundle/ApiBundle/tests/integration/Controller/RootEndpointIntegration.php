@@ -400,6 +400,12 @@ class RootEndpointIntegration extends ApiTestCase
       "methods": [
         "GET"
       ]
+    },
+    "pim_api_measurement_family_create_or_update": {
+      "route": "/api/rest/v1/measurement-families",
+      "methods": [
+        "PATCH"
+      ]
     }
   }
 }
