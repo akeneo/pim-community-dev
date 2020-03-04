@@ -29,7 +29,7 @@ class MeasurementFamilyListValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($measurementFamilyList);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount();
+        $errors->shouldHaveCount(2);
     }
 
     function it_returns_an_empty_array_if_the_list_of_measurement_families_is_valid()
