@@ -15,16 +15,16 @@ Feature: Display available field options
     Then I should see the <fields> fields
 
     Examples:
-      | type       | fields                                                                                 |
-      | Identifier | Max characters, Validation rule                                                        |
-      | Date       | Min date, Max date                                                                     |
-      | File       | Max file size (MB), Allowed extensions                                                 |
-      | Image      | Max file size (MB), Allowed extensions                                                 |
-      | Metric     | Min number, Max number, Decimal values allowed, Negative values allowed, Metric family |
-      | Price      | Min number, Max number, Decimal values allowed                                         |
-      | Number     | Min number, Max number, Decimal values allowed, Negative values allowed                |
-      | Text Area  | Max characters, Rich text editor enabled                                               |
-      | Text       | Max characters, Validation rule                                                        |
+      | type        | fields                                                                                 |
+      | Identifier  | Max characters, Validation rule                                                        |
+      | Date        | Min date, Max date                                                                     |
+      | File        | Max file size (MB), Allowed extensions                                                 |
+      | Image       | Max file size (MB), Allowed extensions                                                 |
+      | Measurement | Min number, Max number, Decimal values allowed, Negative values allowed, Metric family |
+      | Price       | Min number, Max number, Decimal values allowed                                         |
+      | Number      | Min number, Max number, Decimal values allowed, Negative values allowed                |
+      | Text Area   | Max characters, Rich text editor enabled                                               |
+      | Text        | Max characters, Validation rule                                                        |
 
   Scenario Outline: Successfully display available values fields for attribute types
     Given I create a "<type>" attribute
