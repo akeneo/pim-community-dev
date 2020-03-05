@@ -33,7 +33,7 @@
                         id: tree_select_id,
                         'class': 'input-large'
                     });
-                    tree_select.addClass('jstree-tree-select');
+                    tree_select.addClass('jstree-tree-select').addClass('exclude');
 
                     tree_select.bind('change', function () {
                         _this.switch_tree();
