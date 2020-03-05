@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9128: Fix asset manager transformation job failing on non supported file types
+
 # 4.0.7 (2020-03-04)
 
 ## Improvements
