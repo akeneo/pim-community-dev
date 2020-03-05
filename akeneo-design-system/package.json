@@ -12,7 +12,7 @@
         "test:watch": "jest --watch",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
-        "build:prod": "yarn prebuild && export NODE_ENV=production && rollup -c --config-production",
+        "build:prod": "yarn prebuild && export NODE_ENV=production && rollup -c",
         "build:analyze": "yarn build:prod --config-analyze"
     },
     "author": "akeneo",
@@ -64,7 +64,6 @@
         "rollup-plugin-commonjs": "^10.1.0",
         "rollup-plugin-node-resolve": "^5.2.0",
         "rollup-plugin-replace": "^2.2.0",
-        "rollup-plugin-terser": "^5.2.0",
         "source-map-loader": "^0.2.4",
         "styled-components": "^5.0.1",
         "ts-jest": "^25.2.1",

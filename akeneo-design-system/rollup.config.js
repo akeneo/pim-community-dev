@@ -3,7 +3,6 @@ import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import analyze from 'rollup-plugin-analyzer';
 import resolve from 'rollup-plugin-node-resolve';
-import {terser} from 'rollup-plugin-terser';
 import replace from '@rollup/plugin-replace';
 
 import pkg from './package.json';
@@ -35,9 +34,6 @@ const rollUpConf = args => {
                 summaryOnly: true,
             })
         );
-    }
-    if (args['config-production']) {
-        plugins.push(terser());
     }
     return {
         input: 'src/index.ts',
