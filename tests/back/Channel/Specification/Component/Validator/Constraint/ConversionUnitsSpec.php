@@ -25,11 +25,11 @@ class ConversionUnitsSpec extends ObjectBehavior
 
     function it_has_not_a_metric_attribute_message()
     {
-        $this->notAMetricAttribute->shouldBe('The attribute "%attributeCode%" is not a metric attribute.');
+        $this->notAMetricAttribute->shouldBe('The attribute "%attributeCode%" is not a measurement attribute.');
     }
 
     function it_has_invalid_unit_code_message()
     {
-        $this->invalidUnitCode->shouldBe('The unit "%unitCode%" does not exist or does not belong to the default metric family of the given attribute "%attributeCode%".');
+        $this->invalidUnitCode->shouldBe('The unit "%unitCode%" does not exist or does not belong to the default measurement family of the given attribute "%attributeCode%".');
     }
 }
