@@ -66,6 +66,6 @@ final class HourlyInterval
 
     public static function equals(self $firstInterval, self $secondInterval): bool
     {
-        return $firstInterval->upToDateTime() == $secondInterval->upToDateTime();
+        return $firstInterval->upToDateTime()->getTimestamp() === $secondInterval->upToDateTime()->getTimestamp();
     }
 }
