@@ -104,7 +104,7 @@ class MetricIntegration extends AbstractAttributeTestCase
         $violations = $this->validateAttribute($attribute);
 
         $this->assertCount(1, $violations);
-        $this->assertSame('Please specify a valid metric family', $violations->get(0)->getMessage());
+        $this->assertSame('Please specify a valid measurement family', $violations->get(0)->getMessage());
         $this->assertSame('metricFamily', $violations->get(0)->getPropertyPath());
     }
 
@@ -128,7 +128,7 @@ class MetricIntegration extends AbstractAttributeTestCase
         $violations = $this->validateAttribute($attribute);
 
         $this->assertCount(1, $violations);
-        $this->assertSame('Please specify a valid metric unit', $violations->get(0)->getMessage());
+        $this->assertSame('Please specify a valid measurement unit', $violations->get(0)->getMessage());
         $this->assertSame('defaultMetricUnit', $violations->get(0)->getPropertyPath());
     }
 
