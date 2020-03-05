@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import {PageHeader} from 'akeneomeasure/js/app/shared/components/PageHeader';
+import {PageContent} from 'akeneomeasure/js/app/shared/components/PageContent';
 import {PimView} from 'akeneomeasure/js/app/shared/legacy/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/js/app/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/js/app/shared/components/BreadcrumbItem';
@@ -28,10 +29,10 @@ export const Index = () => {
                     </Breadcrumb>
                 }
             >
-                {__('pim_menu.item.measurements')}
+                {__('measurements.families', {itemsCount: '0'}, 0)}
             </PageHeader>
 
-            <div>Foo</div>
+            <PageContent>{/* TODO */}</PageContent>
         </>
     );
 };
