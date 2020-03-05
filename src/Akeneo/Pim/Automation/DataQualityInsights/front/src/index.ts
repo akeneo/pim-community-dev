@@ -13,6 +13,7 @@ import {
 } from './infrastructure/fetcher/data-quality-insights-feature';
 
 import fetchProductDataQualityEvaluation from './infrastructure/fetcher/fetchProductDataQualityEvaluation';
+import fetchProductModelEvaluation from './infrastructure/fetcher/fetchProductModelEvaluation';
 
 import {
   CATALOG_CONTEXT_CHANNEL_CHANGED,
@@ -65,5 +66,6 @@ export {
   PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
   Rate,
   fetchProductDataQualityEvaluation,
+  fetchProductModelEvaluation,
   ProductEvaluation, CriterionEvaluationResult
 };

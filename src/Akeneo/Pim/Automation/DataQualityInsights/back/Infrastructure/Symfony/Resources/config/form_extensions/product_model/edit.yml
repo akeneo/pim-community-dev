@@ -15,3 +15,13 @@ extensions:
         parent: pim-product-model-edit-form-column-tabs
         targetZone: container
         position: 101
+
+    pim-product-model-edit-form-attribute-filter-all-missing-attributes:
+        module: pim/product-edit-form/attribute-filter-all-missing-attributes
+        parent: pim-product-model-edit-form-attribute-filter
+        position: 130
+
+    pim-product-model-edit-form-attribute-filter-all-improvable-attributes:
+        module: pim/product-edit-form/attribute-filter-all-improvable-attributes
+        parent: pim-product-model-edit-form-attribute-filter
+        position: 140

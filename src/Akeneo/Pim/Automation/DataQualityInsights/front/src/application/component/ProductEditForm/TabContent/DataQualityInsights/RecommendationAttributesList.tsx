@@ -1,13 +1,15 @@
 import React, {FunctionComponent} from 'react';
-import {useCatalogContext, useFetchProductFamilyInformation, useProduct} from '../../../../../infrastructure/hooks';
+import {useCatalogContext, useFetchProductFamilyInformation} from '../../../../../infrastructure/hooks';
 import AttributeWithRecommendation from '../../../../../domain/AttributeWithRecommendation.interface';
 import AttributesList from './AttributesList';
 import VariantAttributesList from './VariantAttributesList';
 import {isSimpleProduct} from "../../../../helper/ProductEditForm/Product";
+import {Product} from "../../../../../domain";
 
 interface RecommendationAttributesListProps {
   criterion: string;
   attributes: string[];
+  product: Product;
 }
 
 const getAttributeLabel = (attributeCode: string, productFamilyInformation: any, locale: string) => {
@@ -26,10 +28,9 @@ const getAttributeLabel = (attributeCode: string, productFamilyInformation: any,
   return attributeItem.labels[locale];
 };
 
-const RecommendationAttributesList: FunctionComponent<RecommendationAttributesListProps> = ({criterion, attributes}) => {
+const RecommendationAttributesList: FunctionComponent<RecommendationAttributesListProps> = ({criterion, attributes, product}) => {
   const {locale} = useCatalogContext();
   const productFamilyInformation = useFetchProductFamilyInformation();
-  const product = useProduct();
 
   let attributesLabels: AttributeWithRecommendation[] = [];
   if (locale && productFamilyInformation) {

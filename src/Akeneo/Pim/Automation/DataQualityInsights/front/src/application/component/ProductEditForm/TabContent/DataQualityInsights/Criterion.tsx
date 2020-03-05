@@ -49,7 +49,7 @@ const Criterion: FunctionComponent<CriterionProps> = ({evaluation}) => {
         <span className="CriterionSuccessTick"/>
       </div>;
   } else {
-    criterionContent = <RecommendationAttributesList criterion={criterion} attributes={attributes}/>;
+    criterionContent = <RecommendationAttributesList criterion={criterion} attributes={attributes} product={product}/>;
   }
 
   return (

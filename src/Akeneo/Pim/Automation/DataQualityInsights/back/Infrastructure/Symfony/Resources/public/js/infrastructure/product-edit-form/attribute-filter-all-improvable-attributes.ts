@@ -2,6 +2,7 @@
 
 import {
   fetchProductDataQualityEvaluation,
+  fetchProductModelEvaluation,
   CriterionEvaluationResult,
   ProductEvaluation
 } from 'akeneodataqualityinsights-react';
@@ -16,18 +17,20 @@ const UserContext = require('pim/user-context');
 class AttributeFilterAllImprovableAttributes extends BaseForm
 {
   async filterValues(values: any) {
-    const productId: number = this.getFormData().meta.id;
-    const missing_attributes = await this.fetchProductEvaluation(productId);
+    const product = this.getFormData();
+    const missing_attributes = await this.fetchProductEvaluation(product);
     const valuesToFill = _pick(values, missing_attributes);
 
     return $.Deferred().resolve(valuesToFill).promise();
   }
 
-  async fetchProductEvaluation(productId: number) {
+  async fetchProductEvaluation(product: any) {
     const scope = UserContext.get('catalogScope');
     const locale = UserContext.get('catalogLocale');
 
-    const data: ProductEvaluation = await fetchProductDataQualityEvaluation(productId);
+    const fetcher = product.meta.model_type === 'product_model' ? fetchProductModelEvaluation : fetchProductDataQualityEvaluation;
+
+    const data: ProductEvaluation = await fetcher(product.meta.id);
 
     let attributes: string[] = [];
     const axisCriteriaPath = ['consistency', scope, locale, 'criteria'];
