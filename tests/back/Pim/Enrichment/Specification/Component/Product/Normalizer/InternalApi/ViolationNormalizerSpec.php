@@ -16,13 +16,13 @@ class ViolationNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_property_violation(ConstraintViolation $violation) {
         $violation->getPropertyPath()->willReturn('metricFamily');
-        $violation->getMessage()->willReturn('Please specify a valid measurement family');
+        $violation->getMessage()->willReturn('Please specify a valid metric family');
         $constraint = new ValidMetric();
         $violation->getConstraint()->willReturn($constraint);
 
         $this->normalize($violation, 'internal_api')->shouldReturn([
             'path'    => 'metric_family',
-            'message' => 'Please specify a valid measurement family',
+            'message' => 'Please specify a valid metric family',
             'global'  => false,
         ]);
     }
