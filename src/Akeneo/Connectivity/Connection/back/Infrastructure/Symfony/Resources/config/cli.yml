@@ -4,6 +4,7 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.application.audit.handler.update_product_event_count'
             - '@akeneo_connectivity_connection.persistence.query.select_hourly_intervals_to_refresh'
+            - '@database_connection'
         tags:
             - { name: 'console.command' }
 
