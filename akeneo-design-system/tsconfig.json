@@ -7,8 +7,9 @@
         "forceConsistentCasingInFileNames": true,
         "isolatedModules": true,
         "jsx": "react",
-        "lib": ["es5", "es6", "es7", "es2017", "dom"],
-        "module": "commonjs",
+        "lib": ["es6", "dom"],
+        "module": "es6",
+        "moduleResolution": "node",
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
@@ -23,6 +24,6 @@
         "strictNullChecks": true,
         "strictPropertyInitialization": true,
         "suppressImplicitAnyIndexErrors": true,
-        "target": "es5"
+        "target": "es6"
     }
 }
