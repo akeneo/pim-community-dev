@@ -274,7 +274,7 @@ class EditAssetFamilyNamingConventionContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheProvidedAttributeCodeIsInvalid()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'Expected property "external_image" to match the code of the attribute as main media.'
+            'Property must match the code of the attribute defined as main media'
         );
     }
 

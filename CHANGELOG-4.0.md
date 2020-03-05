@@ -1,5 +1,16 @@
 # 4.0.x
 
+# 4.0.8 (2020-03-05)
+
+## Bug fixes
+
+- PIM-9128: Fix asset manager transformation job failing on non supported file types
+- PIM-9117: Fix Asset Manager naming convention validation message
+- PIM-9116: Fix Asset Manager product link rules validation message
+- PIM-9118: Fix Asset Manager asset deletion message
+
+# 4.0.7 (2020-03-04)
+
 ## Improvements
 
 - DAPI-810: Evaluate synchronous criteria on unitary product save
