@@ -60,9 +60,6 @@ akeneo_data_quality_insights:
         title: Konsistenz
         attributes_link: Alle verbesserbaren Attribute anzeigen
         success: Ihre Produktdaten sind konsistent. Herzlichen Glückwunsch!
-    messages:
-      success:
-        criterion: Es ist alles gut.
   product_edit_form:
     attribute_filter:
       all_missing_attributes: Alle fehlenden Attribute
