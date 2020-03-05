@@ -46,6 +46,7 @@ $rules = [
         'Akeneo\Pim\Automation\RuleEngine',
         'Psr\Log\LoggerInterface',
         'Imagine\Image',
+        'Imagine\Exception',
         'League\Flysystem\FilesystemInterface',
 
         // TODO: asset families should not depend on PIM

@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Transformation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationException;
 use Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplierRegistry;
+use Imagine\Exception\RuntimeException;
 use Liip\ImagineBundle\Exception\ExceptionInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -35,7 +36,7 @@ class FileTransformer
             $applier = $this->operationApplierRegistry->getApplier($operation);
             try {
                 $sourceFile = $applier->apply($sourceFile, $operation);
-            } catch (ExceptionInterface $e) {
+            } catch (ExceptionInterface | RuntimeException $e) {
                 throw new TransformationException($e->getMessage(), $e->getCode(), $e);
             }
         }
