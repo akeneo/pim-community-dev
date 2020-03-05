@@ -5,7 +5,7 @@ services:
     pim.reference_entity.query.filter.reference_entity:
         class: '%akeneo_reference_entity.query.elasticsearch.filter.reference_entity.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.validator.helper.attribute_filter'
             - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - ['akeneo_reference_entity_collection', 'akeneo_reference_entity']
