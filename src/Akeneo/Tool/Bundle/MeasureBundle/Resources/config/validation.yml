@@ -17,6 +17,7 @@ Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasureme
                             - Length:
                                 max: 255
                         convert_from_standard:
+                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationCount: ~
                             - All:
                                 - Collection:
                                     fields:

@@ -1,6 +1,7 @@
 parameters:
     akeneo_measure.convert.measure_converter.class: Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter
     akeneo_measure.manager.measure_manager.class:   Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager
+    akeneo_measure.validation.measurement_family.operations_max: 5
 
 services:
     akeneo_measure.measure_converter:
@@ -38,3 +39,10 @@ services:
         class: Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyHandler
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'
+
+    akeneo_measure.validation.measurement_family.operation_count:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationCountValidator
+        arguments:
+            - '%akeneo_measure.validation.measurement_family.operations_max%'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_measure.validation.measurement_family.operation_count' }
