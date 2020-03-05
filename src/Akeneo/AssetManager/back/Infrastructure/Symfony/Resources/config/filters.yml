@@ -5,7 +5,7 @@ services:
     pim.asset_family.query.filter.asset_family:
         class: '%akeneo_asset.query.elasticsearch.filter.asset_family.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.validator.helper.attribute_filter'
             - '@akeneo_assetmanager.infrastructure.persistence.query.asset_exists'
             - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
             - ['pim_catalog_asset_collection']
