@@ -97,7 +97,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
         self::assertEquals(
-            'The standard unit code "invalid_standard_unit_code" does not exist in the list of units for the measurement family.',
+            'The "invalid_standard_unit_code" standard unit code does not exist in the list of units for the measurement family.',
             $violation->getMessage()
         );
     }
@@ -237,11 +237,11 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         return [
             'Should not be too long' => [
                 str_repeat('a', 256),
-                'This value is too long. It should have 255 characters or less.'
+                'This value is too long. It should be 255 characters or less.'
             ],
             'Should not blank' => [null, 'This value should not be blank.'],
             'Should not a string' => [123, 'This value should be of type string.'],
-            'Should not have unsupported character' => ['--nice-', 'This field may only contain letters, numbers and underscores.']
+            'Should not have unsupported character' => ['--nice-', 'This field can only contain letters, numbers and underscores.']
         ];
     }
 
@@ -257,21 +257,21 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     {
         return [
             'Operator cannot be blank'  => [null, 'This value should not be blank.'],
-            'Operator is not supported' => ['invalid_operator', 'The value you selected is not a valid choice.'],
+            'Operator is not supported' => ['invalid_operator', 'The value you selected is not valid.'],
         ];
     }
 
     public function invalidConvertValue(): array
     {
         return [
-            'Convert value is not a valid number represented as a string' => ['1.24adv', 'The conversion value should be number represented in a string (example: "0.2561")']
+            'The convert value is not a valid number represented as a string' => ['1.24adv', 'The conversion value should be a number represented as a string (example: "0.2561")']
         ];
     }
 
     public function invalidUnitSymbol()
     {
         return [
-            'Should not be too long' => [str_repeat('a', 256), 'This value is too long. It should have 255 characters or less.'],
+            'Should not be too long' => [str_repeat('a', 256), 'This value is too long. It should be 255 characters or less.'],
             'Should be a string' => [123, 'This value should be of type string.'],
         ];
     }
