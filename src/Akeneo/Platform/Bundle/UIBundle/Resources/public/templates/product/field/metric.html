@@ -7,7 +7,7 @@
     <select class="AknMetricField-unit unit select-field" data-locale="<%- value ? value.locale : null %>" data-scope="<%- value ? value.scope : null %>" <%- editMode === 'view' ? 'disabled' : '' %>>
         <% _.each(units, function(unit) { %>
             <option value="<%- unit.code %>"<% if (undefined !== value && ((null === value.data.unit && unit.code === attribute.empty_value.unit) || value.data.unit === unit.code)) { %> selected<% } %>>
-                <%- i18n.getLabel(unit.labels, locale, unit.code) %>
+                <%- i18n.getLabel(unit.labels, uiLocale, unit.code) %>
             </option>
         <% }); %>
     </select>
