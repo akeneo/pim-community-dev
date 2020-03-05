@@ -7,7 +7,7 @@ import replace from '@rollup/plugin-replace';
 
 import pkg from './package.json';
 
-const extensions = ['.js', '.ts', '.tsx'];
+const extensions = ['.ts', '.tsx'];
 const babelConfig = {
     extensions,
     test: /\.ts(x?)$/,
