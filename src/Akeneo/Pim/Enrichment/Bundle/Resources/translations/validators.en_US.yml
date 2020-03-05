@@ -26,8 +26,8 @@ file.extensions.message:                                                        
 "This type of value expects the use of the format {{ date_format }} for dates.": This type of value expects the use of the format {{ date_format }} for dates.
 The category "%category%" has to be a root category.: The category "%category%" has to be a root category.
 The attribute "%attributeCode%" does not exist.: The attribute "%attributeCode%" does not exist.
-The attribute "%attributeCode%" is not a metric attribute.: The attribute "%attributeCode%" is not a metric attribute.
-The unit "%unitCode%" does not exist or does not belong to the default metric family of the given attribute "%attributeCode%".: The unit "%unitCode%" does not exist or does not belong to the default metric family of the given attribute "%attributeCode%".
+The attribute "%attributeCode%" is not a metric attribute.: The attribute "%attributeCode%" is not a measurement attribute.
+The unit "%unitCode%" does not exist or does not belong to the default metric family of the given attribute "%attributeCode%".: The unit "%unitCode%" does not exist or does not belong to the default measurement family of the given attribute "%attributeCode%".
 The currency "%currency%" has to be activated.: The currency "%currency%" has to be activated.
 product_model.code.not_blank.message: The product model code must not be empty.
 product_model.code.unique.message: The same code is already set on another product model.
@@ -52,7 +52,7 @@ pim_catalog:
         family_variant_axes_unique: Variant axes must be unique, "%attributes%" are used several times in variant attributes sets
         family_variant_axes_immutable: 'Variant axes cannot be modified for the level "%level%"'
         family_variant_axes_attribute_type_unique: Variant axes "%axis%" cannot be unique or an identifier
-        family_variant_axes_attribute_type: Variant axes "%axis%" must be a boolean, a simple select, a simple reference data or a metric
+        family_variant_axes_attribute_type: Variant axes "%axis%" must be a boolean, a simple select, a simple reference data or a measurement
         family_variant_axes_wrong_type: Variant axes "%axis%" cannot be localizable, not scopable and not locale specific
         family_variant_axes_number_of_axes: 'A variant attribute set cannot have more than %max_axes_number% axes'
         family_variant_no_axis: There should be at least one attribute defined as axis for the attribute set for level "%level%"
