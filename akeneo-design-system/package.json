@@ -3,9 +3,8 @@
     "version": "0.0.1",
     "description": "Akeneo design system",
     "main": "lib/index.js",
-    "module": "lib/index.es.js",
     "scripts": {
-        "prebuild": "rm -rf lib && yarn test && yarn ts-build",
+        "prebuild": "rimraf lib && yarn test && yarn ts-build",
         "ts-build": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
         "check-types": "tsc",
         "check-types:watch": "yarn check-types -- --watch",
@@ -58,6 +57,7 @@
         "prettier": "^1.19.1",
         "react-docgen-typescript-loader": "^3.6.0",
         "react-hooks-testing-library": "^0.6.0",
+        "rimraf": "^3.0.2",
         "rollup": "^1.32.0",
         "rollup-plugin-analyzer": "^3.2.2",
         "rollup-plugin-babel": "^4.3.3",
