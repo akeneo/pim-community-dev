@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Command;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountCommand;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -14,25 +15,25 @@ use PhpSpec\ObjectBehavior;
  */
 class UpdateProductEventCountCommandSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
-        $this->beConstructedWith('2019-O9-13');
+        $this->beConstructedWith(HourlyInterval::createFromDateTime(
+            new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))
+        ));
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(UpdateProductEventCountCommand::class);
     }
 
-    function it_returns_the_event_date()
+    public function it_returns_the_hourly_interval(): void
     {
-        $this->beConstructedWith('2019-09-13');
-        $this->eventDate()->shouldReturn('2019-09-13');
-    }
+        $hourlyInterval = HourlyInterval::createFromDateTime(
+            new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))
+        );
+        $this->beConstructedWith($hourlyInterval);
 
-    function it_throws_an_exception_is_the_event_date_is_not_a_correct_date_format()
-    {
-        $this->beConstructedWith('2019-091');
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->hourlyInterval()->shouldReturn($hourlyInterval);
     }
 }

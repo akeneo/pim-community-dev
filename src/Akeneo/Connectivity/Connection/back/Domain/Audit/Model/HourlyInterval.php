@@ -35,10 +35,12 @@ final class HourlyInterval
     /**
      * Create an hourly interval from a DateTime.
      * E.g., with a (Date)Time between 10:00:00 and 10:59:59 the interval will be 10:00:00 to 11:00:00.
+     *
+     * @param \DateTimeInterface $dateTime DateTimeInterface should have a TimeZone in 'UTC'.
      */
     public static function createFromDateTime(\DateTimeInterface $dateTime): self
     {
-        if ('UTC' !== $dateTime->getTimezone()->getName()) {
+        if ('UTC' !== $dateTime->getTimezone()->getName() && '+00:00' !== $dateTime->getTimezone()->getName()) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Parameter `$dateTime` "%s" with timezone "%s" should have a timezone "UTC".',
@@ -51,7 +53,11 @@ final class HourlyInterval
         $fromDateTime = \DateTimeImmutable::createFromFormat(
             \DateTimeInterface::ATOM,
             $dateTime->format(\DateTimeInterface::ATOM)
-        )->setTime((int) $dateTime->format('H'), 0, 0);
+        );
+        if (false === $fromDateTime) {
+            throw new \RuntimeException();
+        }
+        $fromDateTime = $fromDateTime->setTime((int) $dateTime->format('H'), 0, 0);
 
         $upToDateTime = $fromDateTime->add(new \DateInterval('PT1H'));
 

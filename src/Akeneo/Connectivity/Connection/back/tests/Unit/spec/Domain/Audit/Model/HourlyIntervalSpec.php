@@ -1,0 +1,76 @@
+<?php
+
+declare(strict_types=1);
+
+namespace spec\Akeneo\Connectivity\Connection\Domain\Audit\Model;
+
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use PhpSpec\ObjectBehavior;
+
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+class HourlyIntervalSpec extends ObjectBehavior
+{
+    public function let(): void
+    {
+        $this->beConstructedThrough('createFromDateTime', [
+            new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))
+        ]);
+    }
+
+    public function it_returns_from_datetime(): void
+    {
+        $this->beConstructedThrough('createFromDateTime', [
+            new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))
+        ]);
+
+        $this->fromDateTime()->shouldBeLike(
+            new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))
+        );
+    }
+
+    public function it_returns_up_to_datetime(): void
+    {
+        $this->beConstructedThrough('createFromDateTime', [
+            new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))
+        ]);
+
+        $this->upToDateTime()->shouldBeLike(
+            new \DateTimeImmutable('2020-01-01 11:00:00', new \DateTimeZone('UTC'))
+        );
+    }
+
+    public function it_is_initializable(): void
+    {
+        $this->shouldHaveType(HourlyInterval::class);
+    }
+
+    public function it_throws_when_the_timezone_is_not_utc(): void
+    {
+        $this->beConstructedThrough('createFromDateTime', [
+            new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('europe/paris'))
+        ]);
+
+        $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
+    }
+
+    public function it_compares_two_hourly_intervals(): void
+    {
+        $this::equals(
+            HourlyInterval::createFromDateTime(new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))),
+            HourlyInterval::createFromDateTime(new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC')))
+        )->shouldReturn(true);
+
+        $this::equals(
+            HourlyInterval::createFromDateTime(new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))),
+            HourlyInterval::createFromDateTime(new \DateTimeImmutable('2020-01-01 10:59:59', new \DateTimeZone('UTC')))
+        )->shouldReturn(true);
+
+        $this::equals(
+            HourlyInterval::createFromDateTime(new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))),
+            HourlyInterval::createFromDateTime(new \DateTimeImmutable('2020-01-01 11:00:00', new \DateTimeZone('UTC')))
+        )->shouldReturn(false);
+    }
+}
