@@ -51,7 +51,7 @@ echo "Checkout PR branch..."
 git checkout $PR_BRANCH
 if [ -d "vendor/akeneo/pim-community-dev" ]; then
     pushd vendor/akeneo/pim-community-dev
-    (curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${PR_BRANCH} && git checkout $PR_BRANCH) || true
+    (curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${PR_BRANCH} && git checkout $PR_BRANCH) || git checkout master
     popd
 fi
 
