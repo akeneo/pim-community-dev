@@ -15,7 +15,7 @@ export const Index = () => {
                 userButtons={
                     <PimView
                         className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-                        viewName='pim-connectivity-connection-user-navigation'
+                        viewName='pim-measurements-user-navigation'
                     />
                 }
                 breadcrumb={
