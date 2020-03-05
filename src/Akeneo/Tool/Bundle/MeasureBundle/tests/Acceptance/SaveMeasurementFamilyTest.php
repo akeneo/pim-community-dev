@@ -258,6 +258,32 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals($errorMessage, $violation->getMessage());
     }
 
+    /**
+     * @test
+     * @dataProvider invalidUnitCount
+     */
+    public function it_has_an_invalid_amount_of_units($invalidUnitCount, string $errorMessage): void
+    {
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = 'WEIGHT';
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->standardUnitCode = 'unit_0';
+        $saveFamilyCommand->units = array_map(function ($i) {
+            return [
+                'code' => sprintf('unit_%d', $i),
+                'labels' => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
+                'symbol' => 'Kg',
+            ];
+        }, range(0, $invalidUnitCount - 1));
+
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(1, $violations->count());
+        $violation = $violations->get(0);
+        self::assertEquals($errorMessage, $violation->getMessage());
+    }
+
     public function invalidCodes(): array
     {
         return [
@@ -307,6 +333,13 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         return [
             'Should have at least one operation' => [0, 'A minimum of one conversion operation per unit is required.'],
             'Should have max 5 operations' => [6, 'You’ve reached the limit of 5 conversion operations per unit.'],
+        ];
+    }
+
+    public function invalidUnitCount()
+    {
+        return [
+            'Should have at least one operation' => [51, 'You’ve reached the limit of 50 conversion operations per unit.'],
         ];
     }
 }

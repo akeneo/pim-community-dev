@@ -14,13 +14,12 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
 
 use Symfony\Component\Validator\Constraint;
 
-class OperationCount extends Constraint
+class UnitCount extends Constraint
 {
-    public $minMessage = 'pim_measurements.validation.measurement_family.convert.should_contain_min_elements';
-    public $maxMessage = 'pim_measurements.validation.measurement_family.convert.should_contain_max_elements';
+    public $maxMessage = 'pim_measurements.validation.measurement_family.units.should_contain_max_elements';
 
     public function validatedBy()
     {
-        return 'akeneo_measure.validation.measurement_family.operation_count';
+        return 'akeneo_measure.validation.measurement_family.unit_count';
     }
 }

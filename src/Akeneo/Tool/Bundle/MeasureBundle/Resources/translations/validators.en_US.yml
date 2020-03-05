@@ -10,3 +10,6 @@ pim_measurements:
                 value_should_be_a_number_in_a_string: 'The conversion value should be a number represented in a string (example: "0.2561")'
                 should_contain_min_elements: 'A minimum of one conversion operation per unit is required.'
                 should_contain_max_elements: 'You’ve reached the limit of {{ limit }} conversion operations per unit.'
+            units:
+                should_contain_min_elements: 'A minimum of one conversion operation per unit is required.'
+                should_contain_max_elements: 'You’ve reached the limit of {{ limit }} conversion operations per unit.'

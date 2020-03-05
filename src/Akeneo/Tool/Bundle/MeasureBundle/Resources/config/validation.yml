@@ -5,6 +5,7 @@ Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasureme
         labels:
             - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
         units:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\UnitCount: ~
             - All:
                 - Collection:
                     fields:

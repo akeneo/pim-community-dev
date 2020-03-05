@@ -17,9 +17,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
-class OperationCountValidator extends ConstraintValidator
+class UnitCountValidator extends ConstraintValidator
 {
-    private $min = 1;
     private $max;
 
     public function __construct(int $max)
@@ -32,8 +31,8 @@ class OperationCountValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof OperationCount) {
-            throw new UnexpectedTypeException($constraint, OperationCount::class);
+        if (!$constraint instanceof UnitCount) {
+            throw new UnexpectedTypeException($constraint, UnitCount::class);
         }
 
         if (null === $value) {
@@ -52,17 +51,6 @@ class OperationCountValidator extends ConstraintValidator
                 ->setParameter('{{ limit }}', $this->max)
                 ->setInvalidValue($value)
                 ->setPlural((int)$this->max)
-                ->addViolation();
-
-            return;
-        }
-
-        if ($count < $this->min) {
-            $this->context->buildViolation($constraint->minMessage)
-                ->setParameter('{{ count }}', $count)
-                ->setParameter('{{ limit }}', $this->min)
-                ->setInvalidValue($value)
-                ->setPlural((int)$this->min)
                 ->addViolation();
         }
     }
