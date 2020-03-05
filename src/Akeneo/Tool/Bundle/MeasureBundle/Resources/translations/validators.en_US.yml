@@ -1,0 +1,10 @@
+pim_measurements:
+    validation:
+        common:
+            code:
+                pattern: 'This field can only contain letters, numbers, and underscores.'
+                limit_reached: 'You cannot create the "%measurement_family_code%" measurement family  because you have reached the limit of %limit% measurement families'
+        measurement_family:
+            standard_unit_code_should_exist: 'The "%standard_unit_code%" standard unit code does not exist in the list of units for the measurement family.'
+            convert:
+                value_should_be_a_number_in_a_string: 'The conversion value should be a number represented in a string (example: "0.2561")'

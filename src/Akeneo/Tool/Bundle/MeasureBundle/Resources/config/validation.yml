@@ -1,0 +1,30 @@
+Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand:
+    properties:
+        code:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\Code: ~
+        labels:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
+        units:
+            - All:
+                - Collection:
+                    fields:
+                        code:
+                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\Code: ~
+                        labels:
+                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
+                        symbol:
+                            - Type: string
+                            - Length:
+                                max: 255
+                        convert_from_standard:
+                            - All:
+                                - Collection:
+                                    fields:
+                                        operator:
+                                            - NotBlank: ~
+                                            - Type: string
+                                            - Choice: [mul, div, add, sub]
+                                        value:
+                                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationValue: ~
+    constraints:
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\StandardUnitCode: ~
