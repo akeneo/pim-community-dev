@@ -17,3 +17,4 @@ services:
         class: 'Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\AuditController'
         arguments:
             - '@akeneo_connectivity.connection.application.audit.handler.count_daily_events_by_connection'
+            - '@pim_user.context.user'

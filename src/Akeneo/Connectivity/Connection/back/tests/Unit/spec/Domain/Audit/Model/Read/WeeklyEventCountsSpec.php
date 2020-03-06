@@ -16,7 +16,7 @@ class WeeklyEventCountsSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith('magento', '2020-01-20', '2020-01-28', []);
+        $this->beConstructedWith('magento', '2020-01-20', '2020-01-28', 'Europe/Paris', []);
     }
 
     public function it_is_initializable(): void
@@ -26,7 +26,7 @@ class WeeklyEventCountsSpec extends ObjectBehavior
 
     public function it_normalizes_a_connection_without_data(): void
     {
-        $this->beConstructedWith('magento', '2020-01-01', '2020-01-08', []);
+        $this->beConstructedWith('magento', '2020-01-01', '2020-01-08', 'Europe/Paris', []);
 
         $this->normalize()->shouldReturn(
             [
@@ -46,10 +46,10 @@ class WeeklyEventCountsSpec extends ObjectBehavior
 
     public function it_normalizes_a_connection_with_partial_data(): void
     {
-        $this->beConstructedWith('magento', '2020-01-01', '2020-01-08', [
-            '2020-01-02' => 2,
-            '2020-01-03' => 10,
-            '2020-01-10' => 5,
+        $this->beConstructedWith('magento', '2020-01-01', '2020-01-08', 'Europe/Paris', [
+            [new \DateTimeImmutable('2020-01-02 12:00:00', new \DateTimeZone('UTC')), 2],
+            [new \DateTimeImmutable('2020-01-03 12:00:00', new \DateTimeZone('UTC')), 10],
+            [new \DateTimeImmutable('2020-01-10 12:00:00', new \DateTimeZone('UTC')), 5],
         ]);
 
         $this->normalize()->shouldReturn(

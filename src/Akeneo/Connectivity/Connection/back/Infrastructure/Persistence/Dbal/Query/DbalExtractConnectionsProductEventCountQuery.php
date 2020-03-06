@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
@@ -106,7 +107,7 @@ SQL;
         $dailyEventCount = [];
         foreach ($dataRows as $dataRow) {
             $dailyEventCount[] = new HourlyEventCount(
-                '<all>',
+                AllConnectionCode::CODE,
                 $hourlyInterval,
                 (int) $dataRow['event_count'],
                 EventTypes::PRODUCT_CREATED
@@ -190,7 +191,7 @@ SQL;
         $dailyEventCount = [];
         foreach ($dataRows as $dataRow) {
             $dailyEventCount[] = new HourlyEventCount(
-                '<all>',
+                AllConnectionCode::CODE,
                 $hourlyInterval,
                 (int) $dataRow['event_count'],
                 EventTypes::PRODUCT_UPDATED
