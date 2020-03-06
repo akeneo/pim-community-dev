@@ -47,7 +47,6 @@ class UnitCountValidator extends ConstraintValidator
 
         if ($count > $this->max) {
             $this->context->buildViolation($constraint->maxMessage)
-                ->setParameter('{{ count }}', $count)
                 ->setParameter('{{ limit }}', $this->max)
                 ->setInvalidValue($value)
                 ->setPlural((int)$this->max)

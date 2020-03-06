@@ -14,4 +14,6 @@ interface MeasurementFamilyRepositoryInterface
     public function getByCode(MeasurementFamilyCode $measurementFamilyCode): MeasurementFamily;
 
     public function save(MeasurementFamily $measurementFamily);
+
+    public function countAllOthers(MeasurementFamilyCode $excludedMeasurementFamilyCode): int;
 }

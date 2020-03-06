@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Acceptance\MeasurementFamily;
+namespace Akeneo\Test\Acceptance\MeasurementFamily;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
@@ -66,5 +66,21 @@ class InMemoryMeasurementFamilyRepository implements MeasurementFamilyRepository
     public function save(MeasurementFamily $measurementFamily)
     {
         $this->measurementFamilies[$measurementFamily->normalize()['code']] = $measurementFamily;
+    }
+
+    public function countAllOthers(MeasurementFamilyCode $excludedMeasurementFamilyCode): int
+    {
+        if (empty($this->measurementFamilies)) {
+            $this->measurementFamilies = $this->loadMeasurementFamilies();
+        }
+
+        return isset($this->measurementFamilies[$excludedMeasurementFamilyCode->normalize()])
+            ? count($this->measurementFamilies) - 1
+            : count($this->measurementFamilies);
+    }
+
+    public function clear(): void
+    {
+        $this->measurementFamilies = [];
     }
 }

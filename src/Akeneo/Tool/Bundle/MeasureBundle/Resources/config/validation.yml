@@ -30,3 +30,4 @@ Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasureme
                                             - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationValue: ~
     constraints:
         - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\StandardUnitCode: ~
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\Count: ~
