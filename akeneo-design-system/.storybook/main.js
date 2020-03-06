@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
     stories: ['../src/**/*.stories.mdx'],
-    addons: ['@storybook/addon-actions', '@storybook/addon-links', '@storybook/addon-knobs', '@storybook/addon-docs'],
+    addons: ['@storybook/addon-actions', '@storybook/addon-links', '@storybook/addon-knobs', '@storybook/addon-docs', '@storybook/addon-a11y/register'],
     webpackFinal: async config => {
         config.resolve.extensions.push('.ts', '.tsx');
 
