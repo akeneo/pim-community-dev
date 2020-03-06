@@ -11,25 +11,14 @@ resource "local_file" "kubeconfig" {
 
   content = <<EOF
 apiVersion: v1
-clusters:
-- cluster:
-    certificate-authority-data: ${data.google_container_cluster.main.master_auth.0.cluster_ca_certificate}
-    server: https://${data.google_container_cluster.main.endpoint}
-  name: ${data.google_container_cluster.main.name}
-contexts:
-- context:
-    cluster: ${data.google_container_cluster.main.name}
-    user: ${data.google_container_cluster.main.master_auth.0.username}
-  name: ${data.google_container_cluster.main.name}
-current-context: ${data.google_container_cluster.main.name}
 kind: Config
-preferences: {}
-users:
-- name: ${data.google_container_cluster.main.master_auth.0.username}
-  user:
-    client-certificate-data: ${data.google_container_cluster.main.master_auth.0.client_certificate}
-    client-key-data: ${data.google_container_cluster.main.master_auth.0.client_key}
-    password: ${data.google_container_cluster.main.master_auth.0.password}
-    username: ${data.google_container_cluster.main.master_auth.0.username}
+current-context: ${data.google_container_cluster.main.name}
+contexts: [{name: ${data.google_container_cluster.main.name}, context: {cluster: ${data.google_container_cluster.main.name}, user: user}}]
+users: [{name: user, user: {auth-provider: {name: gcp}}}]
+clusters:
+- name: ${data.google_container_cluster.main.name}
+  cluster:
+    server: https://${data.google_container_cluster.main.endpoint}
+    certificate-authority-data: ${data.google_container_cluster.main.master_auth.0.cluster_ca_certificate}                                                                                                 
 EOF
 }
