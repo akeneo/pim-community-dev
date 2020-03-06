@@ -56,23 +56,23 @@ SQL;
             $statement->bindValue($valuePlaceholderIndex++, $criterionEvaluation->isPending() ? 1 : null, \PDO::PARAM_INT);
         }
 
-         $success = false;
-         $retry = 0;
+        $success = false;
+        $retry = 0;
  
-         while (!$success) {
-             try {
-                 $statement->execute();
-                 $success = true;
-             } catch (DeadlockException $e) {
-                 $retry++;
-                 if ($retry == 5) {
+        while (!$success) {
+            try {
+                $statement->execute();
+                $success = true;
+            } catch (DeadlockException $e) {
+                $retry++;
+                if ($retry == 5) {
                     $this->executeWithLock($statement);
                     $success = true;
-                 } else {
-                     usleep(rand(100000, 500000 * 2**$retry));
-                 }
-             }
-         }
+                } else {
+                    usleep(rand(100000, 500000 * 2**$retry));
+                }
+            }
+        }
     }
 
     /**
@@ -83,7 +83,8 @@ SQL;
      * foreign keys. In order to ovoid stacking waiting transaction, we disable
      * foreign key checks during this process.
      */
-    private function executeWithLock(\PDOStatement $statement): void {
+    private function executeWithLock(\PDOStatement $statement): void
+    {
         $value = $this->db->executeQuery('SELECT @@autocommit')->fetch();
         if (!isset($value['@@autocommit']) && ((int) $value['@@autocommit'] !== 1 || (int) $value['@@autocommit'] !== 0)) {
             throw new \LogicException('Error when getting autocommit parameter from Mysql.');
