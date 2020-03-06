@@ -150,7 +150,7 @@ class MigrateAssetCategoryLabelsCommand extends Command
     private function getPAMCategoryLabelsFromCategoryCodes(array $attributeOptionCodes): array
     {
         $query = <<<SQL
-SELECT 
+SELECT
   c.code AS category_code,
   t.label AS label,
   t.locale AS locale
