@@ -140,7 +140,7 @@ class InMemoryAttributeOptionRepository implements AttributeOptionRepositoryInte
      */
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->attributeOptions;
     }
 
     /**
