@@ -29,8 +29,7 @@ class CountValidator extends ConstraintValidator
     public function __construct(
         MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
         int $max
-    )
-    {
+    ) {
         $this->measurementFamilyRepository = $measurementFamilyRepository;
         $this->max = $max;
     }

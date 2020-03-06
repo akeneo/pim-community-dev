@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Acceptance;
 
+use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
@@ -11,7 +12,6 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
-use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SaveMeasurementFamilyTest extends AcceptanceTestCase
