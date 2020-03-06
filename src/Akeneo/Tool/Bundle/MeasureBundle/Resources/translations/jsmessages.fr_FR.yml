@@ -1,0 +1,180 @@
+pim_measure:
+  families:
+    Area: Surface
+    Binary: Binaire
+    Decibel: Décibel
+    Frequency: Fréquence
+    Length: Longueur
+    Power: Puissance
+    Resistance: Résistance
+    Voltage: Tension
+    Intensity: Intensité
+    ElectricCharge: Charge électrique
+    Duration: Durée
+    Speed: Vitesse
+    Temperature: Température
+    Volume: Volume
+    Weight: Poids
+    Pressure: Pression
+    Energy: Energie
+    CaseBox: Emballage
+  units:
+    #Area
+    ACRE: Acre
+    ARE: Are
+    ARPENT: Arpent
+    CENTIARE: Centiare
+    HECTARE: Hectare
+    SQUARE_CENTIMETER: Centimètre carré
+    SQUARE_DECIMETER: Décimètre carré
+    SQUARE_DEKAMETER: Décamètre carré
+    SQUARE_FOOT: Pied carré
+    SQUARE_FURLONG: Furlong carré
+    SQUARE_HECTOMETER: Hectomètre carré
+    SQUARE_INCH: Pouce carré
+    SQUARE_KILOMETER: Kilomètre carré
+    SQUARE_METER: Mètre carré
+    SQUARE_MIL: Mil carré
+    SQUARE_MILE: Mile carré
+    SQUARE_MILLIMETER: Millimètre carré
+    SQUARE_YARD: Yard carré
+    #Binary
+    BIT: Bit
+    BYTE: Octet
+    KILOBYTE: Kilo-octet
+    MEGABYTE: Mégaoctet
+    GIGABYTE: Gigaoctet
+    TERABYTE: Téraoctet
+    #Decibel
+    DECIBEL: Décibel
+    #Frequency
+    GIGAHERTZ: Gigahertz
+    KILOHERTZ: Kilohertz
+    MEGAHERTZ: Mégahertz
+    TERAHERTZ: Térahertz
+    HERTZ: Hertz
+    #Length
+    CENTIMETER: Centimètre
+    CHAIN: Chaîne
+    DECIMETER: Décimètre
+    DEKAMETER: Décamètre
+    FEET: Pieds
+    FURLONG: Furlong
+    INCH: Pouce
+    HECTOMETER: Hectomètre
+    KILOMETER: Kilomètre
+    METER: Mètre
+    MIL: Mil
+    MILE: Mile
+    MILLIMETER: Millimètre
+    YARD: Yard
+    #Power
+    GIGAWATT: Gigawatt
+    KILOWATT: Kilowatt
+    MEGAWATT: Mégawatt
+    TERAWATT: Térawatt
+    WATT: Watt
+    #Resistance
+    MILLIOHM: Milliohm
+    CENTIOHM: Centiohm
+    DECIOHM: Déciohm
+    OHM: Ohm
+    DEKAOHM: Decaohm
+    HECTOHM: Hectohm
+    KILOHM: Kilohm
+    MEGOHM: Mégohm
+    #Voltage
+    MILLIVOLT: Millivolt
+    CENTIVOLT: Centivolt
+    DECIVOLT: Décivolt
+    VOLT: Volt
+    DEKAVOLT: Décavolt
+    HECTOVOLT: Hectovolt
+    KILOVOLT: Kilovolt
+    #Intensity
+    MILLIAMPERE: Milliampères
+    CENTIAMPERE: Centiampere
+    DECIAMPERE: Deciampere
+    AMPERE: Ampère
+    DEKAMPERE: Décaampere
+    HECTOAMPERE: Hectoampere
+    KILOAMPERE: Kiloampère
+    MEGAAMPERE: Mégaampere
+    #ElectricCharge
+    MILLIAMPEREHOUR: Milliampères heure
+    AMPEREHOUR: Ampère heure
+    MILLICOULOMB: Millicoulomb
+    CENTICOULOMB: Centicoulomb
+    DECICOULOMB: Décicoulomb
+    COULOMB: Coulomb
+    DEKACOULOMB: Décacoulomb
+    HECTOCOULOMB: Hectocoulomb
+    KILOCOULOMB: Kilocoulomb
+    #Duration
+    MILLISECOND: Milliseconde
+    SECOND: Seconde
+    MINUTE: Minute
+    HOUR: Heure
+    DAY: Jour
+    WEEK: Semaine
+    MONTH: Mois
+    YEAR: Année
+    #Speed
+    FOOT_PER_SECOND: Pied par seconde
+    FOOT_PER_HOUR: Pied / heure
+    KILOMETER_PER_HOUR: Kilomètre par heure
+    METER_PER_HOUR: Mètre par heure
+    METER_PER_MINUTE: Mètre par minute
+    METER_PER_SECOND: Mètre par seconde
+    MILE_PER_HOUR: Mile par heure
+    YARD_PER_HOUR: Yard par heure
+    #Temperature
+    CELSIUS: Celsius
+    FAHRENHEIT: Fahrenheit
+    KELVIN: Kelvin
+    RANKINE: Rankine
+    REAUMUR: Réaumur
+    #Volume
+    BARREL: Baril
+    CENTILITER: Centilitre
+    CUBIC_CENTIMETER: Centimètre cube
+    CUBIC_DECIMETER: Décimètre cube
+    CUBIC_FOOT: Pied cube
+    CUBIC_INCH: Pouce cube
+    CUBIC_METER: Mètre cube
+    CUBIC_MILLIMETER: Millimètre cube
+    CUBIC_YARD: Yard cube
+    DECILITER: Décilitre
+    GALLON: Gallon
+    LITER: Litre
+    MILLILITER: Millilitre
+    PINT: Pinte
+    #Weight
+    DENIER: Denier
+    GRAIN: Grain
+    GRAM: Gramme
+    KILOGRAM: Kilogramme
+    LIVRE: Livre française
+    MARC: Marc
+    MILLIGRAM: Milligramme
+    ONCE: Once française
+    OUNCE: Once
+    POUND: Livre
+    TON: Tonne
+    #Pressure
+    BAR: Bar
+    PASCAL: Pascal
+    HECTOPASCAL: HectoPascal
+    MILLIBAR: Millibar
+    ATM: Atmosphère
+    PSI: Livre par pouce carré
+    TORR: Torr
+    MMHG: Millimètre de mercure
+    #Energy
+    CALORIE: calorie
+    KILOCALORIE: kilocalorie
+    JOULE: joule
+    KILOJOULE: kilojoule
+    #CaseBox
+    PIECE: Unité
+    DOZEN: Douzaine
