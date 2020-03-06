@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Acceptance;
 
+use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
+use Akeneo\Test\Acceptance\Attribute\InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyStub;
 use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
+use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyHandler;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
+use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SaveMeasurementFamilyTest extends AcceptanceTestCase
@@ -22,12 +26,58 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     /** @var InMemoryMeasurementFamilyRepository */
     private $measurementFamilyRepository;
 
+    /** @var SaveMeasurementFamilyHandler */
+    private $saveMeasurementFamilyHandler;
+
+    /** @var InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyStub */
+    private $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
+
     public function setUp(): void
     {
         parent::setUp();
         $this->validator = $this->get('validator');
         $this->measurementFamilyRepository = $this->get('akeneo_measure.persistence.measurement_family_repository');
         $this->measurementFamilyRepository->clear();
+        $this->saveMeasurementFamilyHandler = $this->get('akeneo_measure.application.save_measurement_family_handler');
+        $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily = $this->get('akeneo.pim.structure.query.is_there_at_least_one_attribute_configured_with_measurement_family');
+    }
+
+    // TODO: Nominal cases
+    // It can create
+    // It can update
+    // It can add & remove units
+    // It can update units
+
+    /**
+     * @test
+     */
+    public function it_can_change_the_standard_unit_code(): void
+    {
+        $measurementFamilyCode = 'WEIGHT';
+        $this->createMeasurementFamilyWithUnitsAndStandardUnit($measurementFamilyCode, ['KILOGRAM', 'GRAM'], 'KILOGRAM');
+        $this->thereIsAProductAttributeLinkedToThisMeasurementFamily();
+
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = $measurementFamilyCode;
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->standardUnitCode = 'KILOGRAM';
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => 'KILOGRAM',
+                'labels'                => ['fr_FR' => 'Kilogrammes'],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
+                'symbol' => 'km'
+            ],
+            [
+                'code'                  => 'GRAM',
+                'labels'                => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
+                'symbol' => 'km'
+            ]
+        ];
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(0, $violations->count());
     }
 
     /**
@@ -334,6 +384,71 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals('You’ve reached the limit of 100 measurement families.', $violation->getMessage());
     }
 
+    /**
+     * @test
+     */
+    public function it_does_not_allow_measurement_family_standard_unit_update_when_linked_to_a_product_attribute(): void
+    {
+        $measurementFamilyCode = 'WEIGHT';
+        $this->createMeasurementFamilyWithUnitsAndStandardUnit($measurementFamilyCode, ['KILOGRAM', 'GRAM'], 'KILOGRAM');
+        $this->thereIsAProductAttributeLinkedToThisMeasurementFamily();
+
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = $measurementFamilyCode;
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->standardUnitCode = 'GRAM';
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => 'KILOGRAM',
+                'labels'                => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
+                'symbol' => 'km'
+            ],
+            [
+                'code'                  => 'GRAM',
+                'labels'                => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
+                'symbol' => 'km'
+            ]
+        ];
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(1, $violations->count());
+        $violation = $violations->get(0);
+        self::assertEquals('The update of the "WEIGHT" measurement family standard unit code is not allowed because it is linked to a product attribute.', $violation->getMessage());
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_allow_to_remove_a_unit_when_linked_to_a_product_attribute(): void
+    {
+        $measurementFamilyCode = 'WEIGHT';
+        $this->createMeasurementFamilyWithUnitsAndStandardUnit($measurementFamilyCode, ['KILOGRAM', 'GRAM'], 'KILOGRAM');
+        $this->thereIsAProductAttributeLinkedToThisMeasurementFamily();
+
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = $measurementFamilyCode;
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->standardUnitCode = 'KILOGRAM';
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => 'KILOGRAM',
+                'labels'                => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
+                'symbol' => 'km'
+            ],
+            // Missing GRAM
+        ];
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(1, $violations->count());
+        $violation = $violations->get(0);
+        self::assertEquals('The removal of the GRAM unit(s) in the "WEIGHT" measurement family is not allowed because it is linked to a product attribute.', $violation->getMessage());
+    }
+
+    // Cannot edit convert operations
+
     public function invalidCodes(): array
     {
         return [
@@ -377,6 +492,33 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             'Should be a string' => [123, 'This value should be of type string.'],
         ];
     }
+
+    private function thereIsAProductAttributeLinkedToThisMeasurementFamily(): void
+    {
+        $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily->setStub(true);
+    }
+
+    private function createMeasurementFamilyWithUnitsAndStandardUnit(string $measurementFamilyCode, array $unitCodes, string $standardUnitCode): void
+    {
+        $this->measurementFamilyRepository->save(
+            MeasurementFamily::create(
+                MeasurementFamilyCode::fromString($measurementFamilyCode),
+                LabelCollection::fromArray([]),
+                UnitCode::fromString($standardUnitCode),
+                array_map(function (string $unitCode) {
+                    return Unit::create(
+                        UnitCode::fromString($unitCode),
+                        LabelCollection::fromArray([]),
+                        [
+                            Operation::create("mul", "0.000001"),
+                        ],
+                        "km",
+                        );
+                }, $unitCodes)
+            )
+        );
+    }
+
 
     public function invalidOperationCount()
     {

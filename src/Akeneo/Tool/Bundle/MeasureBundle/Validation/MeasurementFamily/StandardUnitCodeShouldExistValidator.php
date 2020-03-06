@@ -19,7 +19,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Validation;
 
-class StandardUnitCodeValidator extends ConstraintValidator
+class StandardUnitCodeShouldExistValidator extends ConstraintValidator
 {
     public function validate($saveMeasurementFamilyCommand, Constraint $constraint)
     {
@@ -46,7 +46,7 @@ class StandardUnitCodeValidator extends ConstraintValidator
                             }
                         }
                         $context->buildViolation(
-                            StandardUnitCode::STANDARD_UNIT_CODE_SHOULD_EXIST,
+                            StandardUnitCodeShouldExist::STANDARD_UNIT_CODE_SHOULD_EXIST,
                             ['%standard_unit_code%' => $standardUnitCode]
                         )->addViolation();
                     }
