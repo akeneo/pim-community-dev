@@ -9,6 +9,11 @@ services:
         arguments:
             $connection: '@database_connection'
 
+    akeneo.pim.structure.query.is_there_at_least_one_attribute_configured_with_measurement_family:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.structure.query.get_attributes:
         class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Cache\LRUCachedGetAttributes'
         arguments:
