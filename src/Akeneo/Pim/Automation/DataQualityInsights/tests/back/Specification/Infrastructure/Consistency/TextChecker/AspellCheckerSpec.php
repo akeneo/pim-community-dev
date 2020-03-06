@@ -18,10 +18,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckerDicti
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Result\AspellGlobalOffsetCalculator;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Result\AspellLineNumberCalculator;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Source\TextSource;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SpellerProviderInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository;
 use Mekras\Speller\Aspell\Aspell;
 use Mekras\Speller\Exception\RuntimeException;
@@ -35,16 +35,19 @@ use Prophecy\Argument;
 class AspellCheckerSpec extends ObjectBehavior
 {
     public function let(
-        Aspell $speller, AspellDictionaryInterface $aspellDictionary, AspellGlobalOffsetCalculator $globalOffsetCalculator,
+        Aspell $speller,
+        SpellerProviderInterface $spellerProvider,
+        AspellGlobalOffsetCalculator $globalOffsetCalculator,
         AspellLineNumberCalculator $lineNumberCalculator,
         TextCheckerDictionaryRepository $textCheckerDictionaryRepository
     ) {
-        $this->beConstructedWith($speller, $aspellDictionary, $globalOffsetCalculator, $lineNumberCalculator, $textCheckerDictionaryRepository);
+        $this->beConstructedWith($spellerProvider, $globalOffsetCalculator, $lineNumberCalculator, $textCheckerDictionaryRepository);
+
+        $spellerProvider->getByLocale(Argument::any())->willReturn($speller);
     }
 
     public function it_checks_test(
         $speller,
-        $aspellDictionary,
         $textCheckerDictionaryRepository,
         $globalOffsetCalculator,
         $lineNumberCalculator
@@ -52,8 +55,6 @@ class AspellCheckerSpec extends ObjectBehavior
         $text = 'Typos hapen.';
         $source = new TextSource($text);
         $localeCode = new LocaleCode('en_US');
-
-        $aspellDictionary->getUpToDateLocalDictionaryAbsoluteFilePath($localeCode)->willReturn('/an/absolute/filepath-en.pws');
 
         $issue = new Issue('hapen', 'ANY_ASPELL_RETURN_CODE');
         $issue->offset = 0;
@@ -75,7 +76,6 @@ class AspellCheckerSpec extends ObjectBehavior
 
     public function it_checks_test_without_issue(
         $speller,
-        $aspellDictionary,
         $textCheckerDictionaryRepository,
         $globalOffsetCalculator,
         $lineNumberCalculator
@@ -84,12 +84,7 @@ class AspellCheckerSpec extends ObjectBehavior
         $source = new TextSource($text);
         $localeCode = new LocaleCode('en_US');
 
-        $aspellDictionary->getUpToDateLocalDictionaryAbsoluteFilePath($localeCode)->willReturn('/an/absolute/filepath-en.pw');
-
-        $aspellCheckResult = [
-        ];
-
-        $speller->checkText($source, ['en_US'])->willReturn($aspellCheckResult);
+        $speller->checkText($source, ['en_US'])->willReturn([]);
 
         $textCheckerDictionaryRepository->findByLocaleCode($localeCode)->willReturn([]);
 
@@ -104,7 +99,6 @@ class AspellCheckerSpec extends ObjectBehavior
 
     public function it_checks_test_without_issue_with_user_generated_dictionary(
         $speller,
-        $aspellDictionary,
         $textCheckerDictionaryRepository,
         $globalOffsetCalculator,
         $lineNumberCalculator
@@ -112,9 +106,6 @@ class AspellCheckerSpec extends ObjectBehavior
         $text = 'A text with Dior brand name not known by regular dictionary';
         $source = new TextSource($text);
         $localeCode = new LocaleCode('en_US');
-
-        $aspellDictionary->getUpToDateLocalDictionaryAbsoluteFilePath($localeCode)->willReturn('/an/absolute/filepath-en.pw');
-
 
         $issue = new Issue('Dior', 'ANY_ASPELL_RETURN_CODE');
         $issue->offset = 0;
@@ -139,14 +130,10 @@ class AspellCheckerSpec extends ObjectBehavior
         $result->count()->shouldBe(0);
     }
 
-    public function it_throws_an_exception_if_an_error_occurs_during_text_checking(
-        $speller,
-        $aspellDictionary
-    ) {
+    public function it_throws_an_exception_if_an_error_occurs_during_text_checking($speller)
+    {
         $text = 'Typos hapen.';
         $localeCode = new LocaleCode('en_US');
-
-        $aspellDictionary->getUpToDateLocalDictionaryAbsoluteFilePath($localeCode)->willReturn('/an/absolute/filepath-en.pws');
 
         $speller->checkText(Argument::cetera())->willThrow(new RuntimeException());
 
