@@ -15,7 +15,7 @@
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
         "build:analyzer": "yarn build:prod --env.analyzer",
-        "prettier": "prettier --config .prettierrc --parser typescript --write \"./src/**/*.ts\";"
+        "prettier": "prettier --config .prettierrc --write \"./src/**/*.ts\";"
     },
     "author": "akeneo",
     "license": "OSL-3.0",
