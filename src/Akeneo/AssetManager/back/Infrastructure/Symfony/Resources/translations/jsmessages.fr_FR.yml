@@ -296,7 +296,6 @@ pim_asset_manager:
         invalid: erreur
         created: créé
     delete:
-      message: Êtes-vous sûr de vouloir supprimer la ressource "{{ assetLabel }}" ? Si elle est liée à des produits ou des ressources, les liens vers ces derniers seront supprimés.
       title: Ressource
     delete_all:
       confirm: Êtes-vous sûr de vouloir supprimer toutes les ressources "{{ entityIdentifier }}" ? Si elles sont liées à des produits, les liens vers les produits seront supprimés.
