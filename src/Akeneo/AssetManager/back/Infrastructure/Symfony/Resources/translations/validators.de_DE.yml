@@ -15,7 +15,6 @@ pim_asset_manager:
         should_not_be_linked: 'Sie können diese Produktfamilie nicht löschen, da Produktattribute mit dieser Produktfamilie verknüpft sind'
       should_exist: 'Die Asset-Familie "%asset_family_code%" wurde nicht gefunden.'
       rule_template:
-        limit_reached: 'Sie können die Asset-Familie "%asset_family_label%" nicht erstellen, da Sie die Grenze der Produktlink-Regeln von %limit% erreicht haben'
         product_selection_cannot_be_empty: 'Sie müssen mindestens eine Produktauswahl in Ihrer Produktlink-Regel angeben'
         product_assignment_cannot_be_empty: 'Sie müssen mindestens eine Produktauswahl in Ihrer Produktlink-Regel angeben'
         extrapolated_attribute_should_exist: 'Das Attribut "%attribute_code%" existiert nicht für diese Asset-Familie'
@@ -46,7 +45,6 @@ pim_asset_manager:
         unknown_extra_field: 'Das Objekt {{ field }} wurde nicht erwartet.'
       naming_convention:
         property_should_exist: 'Das Objekt "%property%" existiert für diese Asset-Familie nicht'
-        not_main_media_attribute_code: 'Erwartete Eigenschaft "%property%" entspricht dem Code des Attributs als Hauptmedium.'
   asset:
     validation:
       code:

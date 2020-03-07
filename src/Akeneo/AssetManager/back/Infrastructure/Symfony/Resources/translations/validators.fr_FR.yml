@@ -13,7 +13,6 @@ pim_asset_manager:
         should_not_be_linked: 'Vous ne pouvez pas supprimer cette famille car des attributs de produit sont liés à celle-ci'
       should_exist: 'La famille de ressources numériques "%asset_family_code%" n''existe pas.'
       rule_template:
-        limit_reached: 'Vous ne pouvez pas créer la famille de ressources "%asset_family_identifier%" car vous avez atteint le nombre maximum de %limit% de produits liés'
         product_selection_cannot_be_empty: 'Vous devez spécifier au moins une sélection de produits dans votre règle de lien produits'
         product_assignment_cannot_be_empty: 'Vous devez spécifier au moins une affectation de produits dans votre règle de lien produits'
         extrapolated_attribute_should_exist: 'L''attribut "%attribute_code%" n''existe pas pour cette famille de ressource'
@@ -44,7 +43,6 @@ pim_asset_manager:
         unknown_extra_field: 'La propriété {{ field }} n''était pas attendue.'
       naming_convention:
         property_should_exist: 'La propriété "%property%" n''existe pas pour cette famille de ressources'
-        not_main_media_attribute_code: 'La propriété «%property%» attendue correspond au code de l''attribut en tant que média principal.'
   asset:
     validation:
       code:
