@@ -11,6 +11,7 @@ const WebpackShellPlugin = require('webpack-shell-plugin');
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
+const isStrict = process.argv && process.argv.indexOf('--strict') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
 
@@ -188,6 +189,8 @@ const webpackConfig = {
           {
             loader: 'ts-loader',
             options: {
+              transpileOnly: !isStrict,
+              experimentalWatchApi: true,
               configFile: path.resolve(rootDir, 'tsconfig.json'),
               context: path.resolve(rootDir),
             },
