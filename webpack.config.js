@@ -17,7 +17,7 @@ const {aliases, config} = getModulePaths(rootDir, __dirname);
 
 createModuleRegistry(Object.keys(aliases), rootDir);
 
-console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
+console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode', isStrict ? 'with typechecking' : '');
 
 const webpackConfig = {
   stats: {
