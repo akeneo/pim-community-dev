@@ -45,7 +45,7 @@ javascript-dev:
 	$(YARN_RUN) run webpack-dev
 
 .PHONY: javascript-dev-strict
-javascript-dev:
+javascript-dev-strict:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(YARN_RUN) run webpack-dev --strict
 
