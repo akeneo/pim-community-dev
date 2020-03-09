@@ -62,6 +62,8 @@ rules:
                     locale: en_US
               to:
                   field: description
+                  locale: en_US
+                  scope: ecommerce
 YAML;
         $this->importRules($rulesConfig);
     }
@@ -112,6 +114,8 @@ rules:
                     locale: en_US
               to:
                   field: description
+                  locale: en_US
+                  scope: ecommerce
 YAML;
         $this->importRules($rulesConfig);
     }

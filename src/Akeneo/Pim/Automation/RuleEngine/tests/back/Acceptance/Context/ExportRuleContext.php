@@ -91,6 +91,7 @@ rules:
         from:
           - field: pim_brand
           - field: name
+            locale: en_US
         to:
           field: description
           locale: en_US

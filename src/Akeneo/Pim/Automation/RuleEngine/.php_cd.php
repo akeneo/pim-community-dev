@@ -51,6 +51,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\AttributeTypes',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
 
         // TIP-961: Remove dependency to ProductRepositoryInterface
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',

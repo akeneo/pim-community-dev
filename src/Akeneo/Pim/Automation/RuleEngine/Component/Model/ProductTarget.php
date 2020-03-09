@@ -32,7 +32,7 @@ class ProductTarget
 
     private function __construct(string $field, ?string $scope, ?string $locale)
     {
-        $this->field = $field;
+        $this->field = strtolower($field);
         $this->scope = $scope;
         $this->locale = $locale;
     }

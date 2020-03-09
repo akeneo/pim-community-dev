@@ -224,7 +224,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
             Argument::any()
         )->shouldNotBeCalled();
 
-        $this->shouldThrow(\LogicException::class)->during('applyAction', [$concatenateAction, [$entity]]);
+        $this->applyAction($concatenateAction, [$entity]);
     }
 
     function it_throws_an_exception_when_a_stringifier_is_not_found(
@@ -274,7 +274,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
             Argument::any()
         )->shouldNotBeCalled();
 
-        $this->shouldThrow(\LogicException::class)->during('applyAction', [$concatenateAction, [$entity]]);
+        $this->applyAction($concatenateAction, [$entity]);
     }
 
     function it_does_not_apply_concatenate_action_on_entity_with_family_variant_if_variation_level_is_not_right(

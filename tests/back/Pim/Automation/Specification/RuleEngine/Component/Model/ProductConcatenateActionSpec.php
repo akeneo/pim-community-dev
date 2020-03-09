@@ -15,9 +15,11 @@ namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Model;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSource;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSourceCollection;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductTarget;
 use PhpSpec\ObjectBehavior;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -44,6 +46,23 @@ class ProductConcatenateActionSpec extends ObjectBehavior
     function it_implements_the_correct_action_interface()
     {
         $this->shouldBeAnInstanceOf(ProductConcatenateActionInterface::class);
+    }
+
+    function it_handles_uppercases_in_fields()
+    {
+        $this->beConstructedWith([
+            'from' => [
+                ['field' => 'MODel', 'scope' => 'ecommerce', 'locale' => 'en_US'],
+                ['field' => 'COLOR'],
+            ],
+            'to' => ['field' => 'title', 'scope' => 'ecommerce', 'locale' => 'en_US'],
+        ]);
+
+        /** @var ProductSource $source */
+        foreach ($this->getSourceCollection()->getWrappedObject() as $source) {
+            Assert::same($source->getField(), 'model');
+            break;
+        }
     }
 
     function it_cannot_be_created_with_no_from()

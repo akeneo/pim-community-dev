@@ -31,12 +31,9 @@ class ProductSetAction implements ProductSetActionInterface
     /** @var array */
     protected $options = [];
 
-    /**
-     * @param array $data
-     */
     public function __construct(array $data)
     {
-        $this->field = isset($data['field']) ? $data['field'] : null;
+        $this->field = isset($data['field']) ? strtolower($data['field']) : null;
         $this->value = isset($data['value']) ? $data['value'] : null;
         $this->options = [
             'locale' => isset($data['locale']) ? $data['locale'] : null,

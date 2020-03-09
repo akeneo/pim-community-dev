@@ -6,6 +6,7 @@
         "name",
         "picture",
         "description",
+        "sub_description",
         "release_date",
         "processor",
         "price",

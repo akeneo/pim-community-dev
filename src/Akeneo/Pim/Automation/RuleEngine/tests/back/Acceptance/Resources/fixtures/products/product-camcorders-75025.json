@@ -47,7 +47,12 @@
         },
         "description": {
             "ecommerce": {
-                "en_US": "this is the description"
+                "en_US": "<p>this is the description<br></p>"
+            }
+        },
+        "sub_description": {
+            "<all_channels>": {
+                "<all_locales>": "<p>this is the sub description<br></p>"
             }
         }
     }

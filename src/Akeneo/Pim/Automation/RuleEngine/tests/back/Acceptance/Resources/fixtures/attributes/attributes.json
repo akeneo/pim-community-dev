@@ -43,6 +43,16 @@
       "en_US": "Description"
     }
   },
+  "sub_description": {
+    "code": "sub_description",
+    "type": "pim_catalog_textarea",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Sub Description"
+    }
+  },
   "memory": {
     "code": "memory",
     "type": "pim_catalog_text",

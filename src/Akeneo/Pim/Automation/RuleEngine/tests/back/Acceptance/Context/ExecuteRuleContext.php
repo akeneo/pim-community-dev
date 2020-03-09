@@ -33,6 +33,11 @@ use Webmozart\Assert\Assert;
  */
 final class ExecuteRuleContext implements Context
 {
+    const NON_IMPACTED_PRODUCT_IDENTIFIER = '75024';
+    const UPDATED_PRODUCT_IDENTIFIER = '75025';
+    const UPDATED_TEXT_ATTRIBUTE_CODE = 'name';
+    const UPDATED_TEXTAREA_ATTRIBUTE_CODE = 'description';
+
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
@@ -101,14 +106,13 @@ YAML;
     }
 
     /**
-     * @When /^I execute the concatenate rule on product "([^"]*)"$/
+     * @When /^I execute the concatenate rule on products$/
      */
-    public function executeTheConcatenateRuleOnProduct(string $identifier): void
+    public function executeTheConcatenateRuleOnProducts(): void
     {
-        $product = $this->getProduct($identifier);
         $rule = $this->getRule('concatenate_rule');
 
-        $this->executeRulesOnSubjects([$rule], [$product]);
+        $this->executeRulesOnSubjects([$rule], $this->productRepository->findAll());
     }
 
     /**
@@ -125,9 +129,66 @@ YAML;
     }
 
     /**
-     * @Given /^A rule with complex concatenate action$/
+     * @Given /^A rule with a condition on a family that concatenates given attribute values to a text attribute value$/
      */
-    public function aRuleWithComplexConcatenateAction(): void
+    public function aRuleWithAConditionOnAFamilyThatConcatenatesGivenAttributeValuesToATextAttributeValue(): void
+    {
+        $rulesConfig = <<<YAML
+rules:
+    concatenate_rule:
+        priority: 90
+        conditions:
+            - field: family
+              operator: IN
+              value:
+                  - camcorders
+        actions:
+            - type: concatenate
+              from:
+                  - field: pim_brand
+                  - field: description
+                    scope: ecommerce
+                    locale: en_US
+                  - field: sku
+                  - field: processor
+                  - field: price
+                    currency: EUR
+                  - field: release_date
+                  - field: relEASE_DAte
+                    format: d/m/Y
+                  - field: weight
+              to:
+                  field: name
+                  locale: en_US
+YAML;
+        $this->importRules($rulesConfig);
+    }
+
+    /**
+     * @Then the text attribute is successfully updated with the concatenation of the given attribute values
+     */
+    public function theTextAttributeIsSuccessfullyUpdatedWithTheConcatenationOfTheGivenAttributeValues(): void
+    {
+        $rule = $this->getRule('concatenate_rule');
+
+        // Check updated product.
+        $product = $this->getProduct(static::UPDATED_PRODUCT_IDENTIFIER);
+        EventSubscriberContext::assertNoSkipExecutionForRuleAndEntity($rule, $product);
+        $textValue = $product->getValue(static::UPDATED_TEXT_ATTRIBUTE_CODE, 'en_US', null);
+        Assert::notNull($textValue);
+        Assert::same($textValue->getData(), 'Crown Bolt <p>this is the description<br></p> SKU75025 100 MEGAHERTZ 99 EUR 2015-01-01 01/01/2015 40');
+
+        // Check non impacted product.
+        $product = $this->getProduct(static::NON_IMPACTED_PRODUCT_IDENTIFIER);
+        $textValue = $product->getValue(static::UPDATED_TEXT_ATTRIBUTE_CODE, 'en_US', null);
+        Assert::notNull($textValue);
+        Assert::same($textValue->getData(), '75024');
+    }
+
+    /**
+     * @Given /^A rule with a condition on a family that concatenates given attribute values to a textarea attribute value$/
+     */
+    public function aRuleWithAConditionOnAFamilyThatConcatenatesGivenAttributeValuesToATextareaAttributeValue(): void
     {
         $rulesConfig = <<<YAML
 rules:
@@ -149,8 +210,10 @@ rules:
                   - field: price
                     currency: EUR
                   - field: release_date
+                  - field: relEASE_DAte
                     format: d/m/Y
                   - field: weight
+                  - field: sub_description
               to:
                   field: description
                   scope: ecommerce
@@ -160,16 +223,24 @@ YAML;
     }
 
     /**
-     * @Then /^the product "([^"]*)" is successfully updated by the complex concatenate rule$/
+     * @Then the textarea attribute is successfully updated with the concatenation of the given attribute values
      */
-    public function theProductIsSuccessfullyUpdatedByComplexConcatenateRule(string $identifier): void
+    public function theTextareaAttributeIsSuccessfullyUpdatedWithTheConcatenationOfTheGivenAttributeValues(): void
     {
-        $product = $this->getProduct($identifier);
         $rule = $this->getRule('concatenate_rule');
-        EventSubscriberContext::assertNoSkipExecutionForRuleAndEntity($rule, $product);
 
-        $descriptionValue = $product->getValue('description', 'en_US', 'ecommerce');
-        Assert::same($descriptionValue->getData(), 'Crown Bolt 75025 SKU75025 100 MEGAHERTZ 99 EUR 01/01/2015 40');
+        // Check updated product.
+        $product = $this->getProduct(static::UPDATED_PRODUCT_IDENTIFIER);
+        EventSubscriberContext::assertNoSkipExecutionForRuleAndEntity($rule, $product);
+        $textareaValue = $product->getValue(static::UPDATED_TEXTAREA_ATTRIBUTE_CODE, 'en_US', 'ecommerce');
+        Assert::notNull($textareaValue);
+        Assert::same($textareaValue->getData(), 'Crown Bolt 75025 SKU75025 100 MEGAHERTZ 99 EUR 2015-01-01 01/01/2015 40 <p>this is the sub description<br></p>');
+
+        // Check non impacted product.
+        $product = $this->getProduct(static::NON_IMPACTED_PRODUCT_IDENTIFIER);
+        $textareaValue = $product->getValue(static::UPDATED_TEXTAREA_ATTRIBUTE_CODE, 'en_US', 'ecommerce');
+        Assert::notNull($textareaValue);
+        Assert::same($textareaValue->getData(), 'this is the description');
     }
 
     private function getProduct(string $identifier): ProductInterface

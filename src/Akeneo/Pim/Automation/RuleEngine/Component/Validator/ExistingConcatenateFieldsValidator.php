@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSource;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingConcatenateFields;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -74,9 +75,12 @@ final class ExistingConcatenateFieldsValidator extends ConstraintValidator
             if (null === $attribute) {
                 $this->context->buildViolation($constraint->messageAttributeNotFound, ['%field%' => $source->getField()])
                     ->addViolation();
-            } elseif (null === $this->valueStringifierRegistry->getStringifier($attribute->type())) {
-                $this->context->buildViolation($constraint->messageErrorSource, ['%field%' => $source->getField()])
-                    ->addViolation();
+            } else {
+                $this->checkAttributeIsScopableLocalizable($attribute, $source->getLocale(), $source->getScope());
+                if (null === $this->valueStringifierRegistry->getStringifier($attribute->type())) {
+                    $this->context->buildViolation($constraint->messageErrorSource, ['%field%' => $source->getField()])
+                        ->addViolation();
+                }
             }
         }
 
@@ -87,6 +91,12 @@ final class ExistingConcatenateFieldsValidator extends ConstraintValidator
                 ->addViolation();
 
             return;
+        } else {
+            $this->checkAttributeIsScopableLocalizable(
+                $targetAttribute,
+                $action->getTarget()->getLocale(),
+                $action->getTarget()->getScope()
+            );
         }
 
         if (!in_array($targetAttribute->type(), static::VALID_TARGET_TYPES)) {
@@ -105,5 +115,31 @@ final class ExistingConcatenateFieldsValidator extends ConstraintValidator
     {
         $this->context->buildViolation($constraint->messageErrorTarget, ['%field%' => $targetField])
             ->addViolation();
+    }
+
+    private function checkAttributeIsScopableLocalizable(
+        Attribute $attribute,
+        ?string $locale,
+        ?string $channel
+    ): void {
+        if ($attribute->isLocalizable() && null === $locale) {
+            $this->context
+                ->buildViolation(sprintf('The "%s" attribute code is localizable and no locale is provided.', $attribute->code()))
+                ->addViolation();
+        } elseif (!$attribute->isLocalizable() && null !== $locale) {
+            $this->context
+                ->buildViolation(sprintf('The "%s" attribute code is not localizable and a locale is provided.', $attribute->code()))
+                ->addViolation();
+        }
+
+        if ($attribute->isScopable() && null === $channel) {
+            $this->context
+                ->buildViolation(sprintf('The "%s" attribute code is scopable and no channel is provided.', $attribute->code()))
+                ->addViolation();
+        } elseif (!$attribute->isScopable() && null !== $channel) {
+            $this->context
+                ->buildViolation(sprintf('The "%s" attribute code is not scopable and a channel is provided.', $attribute->code()))
+                ->addViolation();
+        }
     }
 }

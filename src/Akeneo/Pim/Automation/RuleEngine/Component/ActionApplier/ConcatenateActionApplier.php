@@ -67,7 +67,16 @@ final class ConcatenateActionApplier implements ActionApplierInterface
         }
 
         foreach ($entitiesWithValues as $entityWithValues) {
-            $this->concatenateDataOnEntityWithFamilyVariant($entityWithValues, $action);
+            try {
+                $this->concatenateDataOnEntityWithFamilyVariant($entityWithValues, $action);
+            } catch (\LogicException $e) {
+                // Throw exception when the runner will be executed in a job.
+                // For now just skip the exception otherwise the process will stop.
+//                throw new InvalidItemException(
+//                    $e->getMessage(),
+//                    new DataInvalidItem(['identifier' => $entityWithValues->getIdentifier()])
+//                );
+            }
         }
     }
 
@@ -122,7 +131,9 @@ final class ConcatenateActionApplier implements ActionApplierInterface
             $stringifier = $this->getStringifier($attributeCode, $attribute->type());
             $stringValue = $stringifier->stringify($value, $source->getOptions());
             if ('' === $stringValue) {
-                throw new \LogicException(sprintf('The value for the "%s" attribute code is empty for the entity.', $attributeCode));
+                throw new \LogicException(
+                    sprintf('The value for the "%s" attribute code is empty for the entity.', $attributeCode)
+                );
             }
 
             $stringValues[] = $stringValue;
