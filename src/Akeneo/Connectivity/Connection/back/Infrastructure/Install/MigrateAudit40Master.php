@@ -32,7 +32,7 @@ class MigrateAudit40Master
         $this->updateProductEventCountHandler = $updateProductEventCountHandler;
     }
 
-    public function migrateIfNeeded(): void
+    public function migrateIfNeeded(): array
     {
         if ($this->needsMigration()) {
             $createNewAuditTableSql = <<<SQL
@@ -49,8 +49,10 @@ SQL;
             $this->dbalConnection->exec($createNewAuditTableSql);
             $this->dbalConnection->exec('DROP TABLE akeneo_connectivity_connection_audit');
 
-            $this->recalculateAuditForLastDays();
+            return $this->recalculateAuditForLastDays();
         }
+
+        return [];
     }
 
     public function needsMigration(): bool
@@ -62,17 +64,17 @@ SQL;
         return false === $this->dbalConnection->fetchArray($checkDbSchemaSql);
     }
 
-    private function recalculateAuditForLastDays(): void
+    private function recalculateAuditForLastDays(): array
     {
         $datetime = new \DateTime('now', new \DateTimeZone('UTC'));
         $datetime->setTime((int) $datetime->format('H'), 0);
         $hourInterval = new \DateInterval('PT1H');
 
+        $hourlyIntervals = [];
         for ($i = 24*8; $i > 0; $i--) {
-            $command = new UpdateProductEventCountCommand(
-                HourlyInterval::createFromDateTime($datetime->sub($hourInterval))
-            );
-            $this->updateProductEventCountHandler->handle($command);
+            $hourlyIntervals[] = HourlyInterval::createFromDateTime($datetime->sub($hourInterval));
         }
+
+        return $hourlyIntervals;
     }
 }

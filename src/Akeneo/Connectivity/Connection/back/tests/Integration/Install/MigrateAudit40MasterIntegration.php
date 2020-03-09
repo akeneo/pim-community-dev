@@ -49,8 +49,9 @@ class MigrateAudit40MasterIntegration extends TestCase
         $this->ensureDbSchemaWithAuditTable();
         $this->assertTrue($this->migrationAudit->needsMigration());
 
-        $this->migrationAudit->migrateIfNeeded();
+        $hourlyIntervals = $this->migrationAudit->migrateIfNeeded();
         $this->assertFalse($this->migrationAudit->needsMigration());
+        $this->assertCount(192, $hourlyIntervals);
     }
 
     protected function getConfiguration(): Configuration

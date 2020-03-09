@@ -46,10 +46,15 @@ class UpdateAuditDataCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // TODO: To remove when pullup on master
-        $this->migrateAudit40Master->migrateIfNeeded();
+        $hourlyIntervalsToRecalculate = $this->migrateAudit40Master->migrateIfNeeded();
+        if (!empty($hourlyIntervalsToRecalculate)) {
+            foreach ($hourlyIntervalsToRecalculate as $hourlyInterval) {
+                $command = new UpdateProductEventCountCommand($hourlyInterval);
+                $this->updateProductEventCountHandler->handle($command);
+            }
 
-        /** @var UpdateProductEventCountCommand[] */
-        $commands = [];
+            return 0;
+        }
 
         // Create a Command for the current hour.
         $commands[] = new UpdateProductEventCountCommand(
@@ -67,11 +72,7 @@ class UpdateAuditDataCommand extends Command
                 continue;
             }
 
-            $commands[] = new UpdateProductEventCountCommand($hourlyInterval);
-        }
-
-        foreach ($commands as $command) {
-            $this->updateProductEventCountHandler->handle($command);
+            $this->updateProductEventCountHandler->handle(new UpdateProductEventCountCommand($hourlyInterval));
         }
 
         return 0;
