@@ -24,11 +24,17 @@ final class CollectionToArrayDataConverter implements ValueDataConverter
         ],
     ];
 
+    /**
+     * {@inheritdoc}
+     */
     public function supportsAttributes(AttributeInterface $sourceAttribute, AttributeInterface $targetAttribute): bool
     {
         return isset($this->supportedAttributeTypes[$sourceAttribute->getType()][$targetAttribute->getType()]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute)
     {
         Assert::isIterable($sourceValue->getData());
