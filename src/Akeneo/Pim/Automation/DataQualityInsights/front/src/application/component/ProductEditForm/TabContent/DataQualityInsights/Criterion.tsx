@@ -7,6 +7,8 @@ import {
   CRITERION_IN_PROGRESS, CRITERION_NOT_APPLICABLE,
   CriterionEvaluationResult
 } from "../../../../../domain/Evaluation.interface";
+import {useProduct} from "../../../../../infrastructure/hooks";
+import {isSimpleProduct} from "../../../../helper/ProductEditForm/Product";
 
 const __ = require('oro/translator');
 
@@ -19,10 +21,12 @@ const isSuccess = (rate: Rate) => {
 };
 
 const Criterion: FunctionComponent<CriterionProps> = ({evaluation}) => {
+  const product = useProduct();
+
   const criterion = evaluation.code;
   const attributes = evaluation.improvable_attributes || [] as string[];
 
-  let criterionContent = <RecommendationAttributesList criterion={criterion} attributes={attributes}/>;
+  let criterionContent: any;
   if(evaluation.status === CRITERION_ERROR) {
     criterionContent =
       <span className="CriterionErrorMessage">
@@ -44,11 +48,13 @@ const Criterion: FunctionComponent<CriterionProps> = ({evaluation}) => {
         </span>
         <span className="CriterionSuccessTick"/>
       </div>;
+  } else {
+    criterionContent = <RecommendationAttributesList criterion={criterion} attributes={attributes} product={product}/>;
   }
 
   return (
     <li className="AknVerticalList-item" data-testid={"dqiProductEvaluationCriterion"}>
-      <div className="CriterionMessage">
+      <div className={`CriterionMessage ${!isSimpleProduct(product) ? 'CriterionMessage--Variant' : ''}`}>
         <span className="CriterionRecommendationMessage">
           {__(`akeneo_data_quality_insights.product_evaluation.criteria.${criterion}.recommendation`)}:&nbsp;
         </span>

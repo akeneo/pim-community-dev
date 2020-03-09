@@ -44,17 +44,22 @@
         display: flex;
         justify-content: start;
         flex-wrap: wrap;
+        color: @AknGrey140;
+
+        &--Variant {
+            flex-wrap: nowrap;
+        }
+
+        .CriterionSuccessMessage {
+            color: @AknGreen120;
+            font-style: italic;
+        }
 
         .CriterionSuccessContainer {
             display: flex;
             justify-content: space-between;
             flex-direction: row;
             flex: auto;
-
-            .CriterionSuccessMessage {
-                color: @AknGreen120;
-                font-style: italic;
-            }
 
             .CriterionSuccessTick {
                 display: inline-block;
@@ -73,6 +78,19 @@
         .CriterionInProgressMessage {
             color: @AknSlateGrey;
             font-style: italic;
+        }
+    }
+
+    .CriterionVariantRecommendations {
+        margin-left: 20px;
+
+        .attributeList:nth-child(2) {
+            margin-left: 25px;
+            margin-top: 15px;
+        }
+        .attributeList:nth-child(3) {
+            margin-left: 50px;
+            margin-top: 15px;
         }
     }
 
