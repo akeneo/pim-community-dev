@@ -1,5 +1,9 @@
 # 5.0.0
 
+## Bug fixes
+
+- PIM-9133: Fix product save when the user has no permission on some attribute groups
+
 ## New features
 
 - MET-14: Measurements (or metrics) are now stored in database
