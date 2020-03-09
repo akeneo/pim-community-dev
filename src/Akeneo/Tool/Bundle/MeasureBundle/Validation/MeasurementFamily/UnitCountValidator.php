@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class UnitCountValidator extends ConstraintValidator
 {
+    /** @var int */
     private $max;
 
     public function __construct(int $max)

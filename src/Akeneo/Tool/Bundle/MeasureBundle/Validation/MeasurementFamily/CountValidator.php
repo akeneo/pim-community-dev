@@ -47,11 +47,7 @@ class CountValidator extends ConstraintValidator
             throw new UnexpectedTypeException($saveMeasurementFamilyCommand, SaveMeasurementFamilyCommand::class);
         }
 
-        try {
-            $excludedMeasurementFamilyCode = MeasurementFamilyCode::fromString($saveMeasurementFamilyCommand->code);
-        } catch (\Throwable $ex) {
-            return;
-        }
+        $excludedMeasurementFamilyCode = MeasurementFamilyCode::fromString($saveMeasurementFamilyCommand->code);
 
         $count = $this->measurementFamilyRepository->countAllOthers($excludedMeasurementFamilyCode);
 
