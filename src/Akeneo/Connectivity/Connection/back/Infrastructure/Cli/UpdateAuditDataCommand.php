@@ -7,8 +7,8 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Infrastructure\Install\MigrateAudit40Master;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectHourlyIntervalsToRefreshQuery;
-use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,25 +28,31 @@ class UpdateAuditDataCommand extends Command
     /** @var DbalSelectHourlyIntervalsToRefreshQuery */
     private $selectHourlyIntervalsToRefreshQuery;
 
-    /** @var Connection */
-    private $dbalConnection;
+    /** @var MigrateAudit40Master */
+    private $migrateAudit40Master;
 
     public function __construct(
         UpdateProductEventCountHandler $updateProductEventCountHandler,
         DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery,
-        Connection $dbalConnection
+        MigrateAudit40Master $migrateAudit40Master
     ) {
         parent::__construct();
 
         $this->updateProductEventCountHandler = $updateProductEventCountHandler;
         $this->selectHourlyIntervalsToRefreshQuery = $selectHourlyIntervalsToRefreshQuery;
-        $this->dbalConnection = $dbalConnection;
+        $this->migrateAudit40Master = $migrateAudit40Master;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // TODO: To remove when pullup on master
-        $this->migrate();
+        if ($this->migrateAudit40Master->needsMigration()) {
+            $this->migrateAudit40Master->migrateDbSchema();
+            $this->migrateAudit40Master->recalculateAuditForLastDays();
+        }
+        if ($this->migrateAudit40Master->needsRecalculation()) {
+            $this->migrateAudit40Master->recalculateAuditForLastDays();
+        }
 
         /** @var UpdateProductEventCountCommand[] */
         $commands = [];
@@ -75,49 +81,5 @@ class UpdateAuditDataCommand extends Command
         }
 
         return 0;
-    }
-
-    private function migrate()
-    {
-        if ($this->needsMigration()) {
-            $createNewAuditTableSql = <<<SQL
-CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection_audit_product(
-    connection_code VARCHAR(100) NOT NULL,
-    event_datetime DATETIME NOT NULL,
-    event_count INT NOT NULL,
-    event_type VARCHAR(100) NOT NULL,
-    updated DATETIME NOT NULL,
-    PRIMARY KEY (connection_code, event_datetime, event_type)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
-SQL;
-
-            $this->dbalConnection->exec($createNewAuditTableSql);
-            $this->dbalConnection->exec('DROP TABLE akeneo_connectivity_connection_audit');
-
-            $this->recalculateAuditForLastDays();
-        }
-    }
-
-    private function needsMigration(): bool
-    {
-        $checkDbSchemaSql = <<<SQL
-SELECT table_name FROM information_schema.tables 
-WHERE table_name = 'akeneo_connectivity_connection_audit_product'
-SQL;
-        return false === $this->dbalConnection->fetchArray($checkDbSchemaSql);
-    }
-
-    private function recalculateAuditForLastDays()
-    {
-        $datetime = new \DateTime('now', new \DateTimeZone('UTC'));
-        $datetime->setTime((int) $datetime->format('H'), 0);
-        $hourInterval = new \DateInterval('PT1H');
-
-        for ($i = 24*8; $i > 0; $i--) {
-            $command = new UpdateProductEventCountCommand(
-                HourlyInterval::createFromDateTime($datetime->sub($hourInterval))
-            );
-            $this->updateProductEventCountHandler->handle($command);
-        }
     }
 }
