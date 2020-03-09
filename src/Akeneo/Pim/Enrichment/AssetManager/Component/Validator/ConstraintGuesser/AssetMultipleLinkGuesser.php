@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Validator\ConstraintGuesser;
 
+use Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints\AssetShouldExist;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints\ThereShouldBeLessAssetsInValueThanLimit;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -36,6 +37,9 @@ class AssetMultipleLinkGuesser implements ConstraintGuesserInterface
 
     public function guessConstraints(AttributeInterface $attribute)
     {
-        return [new ThereShouldBeLessAssetsInValueThanLimit()];
+        return [
+            new AssetShouldExist(),
+            new ThereShouldBeLessAssetsInValueThanLimit()
+        ];
     }
 }

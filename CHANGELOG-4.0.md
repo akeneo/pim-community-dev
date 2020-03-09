@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9121: Check Asset exists before importing it in a Product
+
 # 4.0.8 (2020-03-05)
 
 ## Bug fixes
