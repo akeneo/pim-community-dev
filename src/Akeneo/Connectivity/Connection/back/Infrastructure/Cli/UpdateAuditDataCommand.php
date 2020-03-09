@@ -57,9 +57,8 @@ class UpdateAuditDataCommand extends Command
         }
 
         // Create a Command for the current hour.
-        $commands[] = new UpdateProductEventCountCommand(
-            HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC')))
-        );
+        $nowHourlyInterval = HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
+        $this->updateProductEventCount($nowHourlyInterval);
 
         /*
          * Create a Command for each hour retrieved from events that are not yet complete.
@@ -68,13 +67,20 @@ class UpdateAuditDataCommand extends Command
         $hourlyIntervalsToRefresh = $this->selectHourlyIntervalsToRefreshQuery->execute();
         foreach ($hourlyIntervalsToRefresh as $hourlyInterval) {
             // Ignore the current hour; already added.
-            if (true === HourlyInterval::equals($commands[0]->hourlyInterval(), $hourlyInterval)) {
+            if (true === HourlyInterval::equals($nowHourlyInterval, $hourlyInterval)) {
                 continue;
             }
 
-            $this->updateProductEventCountHandler->handle(new UpdateProductEventCountCommand($hourlyInterval));
+            $this->updateProductEventCount($hourlyInterval);
         }
 
         return 0;
+    }
+
+    private function updateProductEventCount(HourlyInterval $hourlyInterval): void
+    {
+        $this->updateProductEventCountHandler->handle(
+            new UpdateProductEventCountCommand($hourlyInterval)
+        );
     }
 }

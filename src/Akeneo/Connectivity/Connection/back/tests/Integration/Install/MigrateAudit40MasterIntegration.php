@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Install;
 
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\MigrateAudit40Master;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -44,14 +45,18 @@ class MigrateAudit40MasterIntegration extends TestCase
         $this->assertFalse($this->migrationAudit->needsMigration());
     }
 
-    public function test_it_migrates_db()
+    public function test_it_migrates_db_and_returns_datetime_to_check()
     {
         $this->ensureDbSchemaWithAuditTable();
         $this->assertTrue($this->migrationAudit->needsMigration());
 
+        $expectedLastHourlyInterval = HourlyInterval::createFromDateTime(new \DateTime('now', new \DateTimeZone('UTC')));
+
         $hourlyIntervals = $this->migrationAudit->migrateIfNeeded();
         $this->assertFalse($this->migrationAudit->needsMigration());
-        $this->assertCount(192, $hourlyIntervals);
+        $this->assertCount(193, $hourlyIntervals);
+
+        $this->assertTrue(HourlyInterval::equals($expectedLastHourlyInterval, $hourlyIntervals[0]));
     }
 
     protected function getConfiguration(): Configuration

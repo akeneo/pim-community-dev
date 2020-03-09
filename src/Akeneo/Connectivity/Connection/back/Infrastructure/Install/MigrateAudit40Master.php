@@ -70,7 +70,7 @@ SQL;
         $datetime->setTime((int) $datetime->format('H'), 0);
         $hourInterval = new \DateInterval('PT1H');
 
-        $hourlyIntervals = [];
+        $hourlyIntervals[] = HourlyInterval::createFromDateTime($datetime);
         for ($i = 24*8; $i > 0; $i--) {
             $hourlyIntervals[] = HourlyInterval::createFromDateTime($datetime->sub($hourInterval));
         }
