@@ -39,7 +39,7 @@ services:
         class: 'Akeneo\Test\Acceptance\AssociationType\InMemoryAssociationTypeRepository'
 
     akeneo_measure.persistence.measurement_family_repository:
-        class: AkeneoTest\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository
+        class: 'Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository'
 
     ### Structure
     pim_catalog.repository.family:

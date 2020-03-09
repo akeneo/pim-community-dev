@@ -60,6 +60,22 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
     /**
      * @test
      */
+    public function it_returns_the_amount_of_measurement_families_if_the_code_does_not_exists(): void
+    {
+        $this->assertEquals(2, $this->repository->countAllOthers(MeasurementFamilyCode::fromString('NOT_EXISTING')));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_the_amount_of_others_measurement_families_if_the_code_exists(): void
+    {
+        $this->assertEquals(1, $this->repository->countAllOthers(MeasurementFamilyCode::fromString('Area')));
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_the_measurement_family_does_not_exists(): void
     {
         $this->expectException(MeasurementFamilyNotFoundException::class);

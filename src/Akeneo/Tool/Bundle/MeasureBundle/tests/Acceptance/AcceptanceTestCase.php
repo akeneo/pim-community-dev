@@ -37,7 +37,7 @@ abstract class AcceptanceTestCase extends KernelTestCase
      */
     protected function setUp(): void
     {
-        static::bootKernel(['debug' => false, 'env' => 'test_fake']);
+        static::bootKernel(['debug' => false, 'environment' => 'test_fake']);
         $this->connection = $this->get('doctrine.dbal.default_connection');
     }
 
@@ -51,9 +51,6 @@ abstract class AcceptanceTestCase extends KernelTestCase
      */
     protected function tearDown(): void
     {
-        $connectionCloser = $this->get('akeneo_integration_tests.doctrine.connection.connection_closer');
-        $connectionCloser->closeConnections();
-
         $this->ensureKernelShutdown();
     }
 }

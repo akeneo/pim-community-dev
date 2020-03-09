@@ -1,10 +1,14 @@
 Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand:
+    group_sequence:
+        - SaveMeasurementFamilyCommand
+        - other_constraints
     properties:
         code:
             - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\Code: ~
         labels:
             - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
         units:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\UnitCount: ~
             - All:
                 - Collection:
                     fields:
@@ -17,6 +21,7 @@ Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasureme
                             - Length:
                                 max: 255
                         convert_from_standard:
+                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationCount: ~
                             - All:
                                 - Collection:
                                     fields:
@@ -28,3 +33,4 @@ Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasureme
                                             - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationValue: ~
     constraints:
         - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\StandardUnitCode: ~
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\Count: { groups: [other_constraints] }

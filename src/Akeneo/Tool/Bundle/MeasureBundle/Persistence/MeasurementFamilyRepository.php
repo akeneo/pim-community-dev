@@ -86,6 +86,21 @@ SQL;
         $this->measurementFamilyCache[$normalizedMeasurementFamily['code']] = $measurementFamily;
     }
 
+    public function countAllOthers(MeasurementFamilyCode $excludedMeasurementFamilyCode): int
+    {
+        $countQuery = <<<SQL
+    SELECT COUNT(code)
+    FROM akeneo_measurement
+    WHERE code != :code;
+SQL;
+
+        $statement = $this->sqlConnection->executeQuery($countQuery, [
+            'code' => $excludedMeasurementFamilyCode->normalize(),
+        ]);
+
+        return (int) $statement->fetch(\PDO::FETCH_COLUMN);
+    }
+
     private function hydrateMeasurementFamily(
         string $code,
         string $normalizedLabels,

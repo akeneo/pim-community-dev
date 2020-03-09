@@ -14,12 +14,13 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
 
 use Symfony\Component\Validator\Constraint;
 
-class StandardUnitCode extends Constraint
+class OperationCount extends Constraint
 {
-    public const STANDARD_UNIT_CODE_SHOULD_EXIST = 'pim_measurements.validation.measurement_family.standard_unit_code_should_exist';
+    public $minMessage = 'pim_measurements.validation.measurement_family.convert.should_contain_min_elements';
+    public $maxMessage = 'pim_measurements.validation.measurement_family.convert.should_contain_max_elements';
 
-    public function getTargets()
+    public function validatedBy()
     {
-        return self::CLASS_CONSTRAINT;
+        return 'akeneo_measure.validation.measurement_family.operation_count';
     }
 }
