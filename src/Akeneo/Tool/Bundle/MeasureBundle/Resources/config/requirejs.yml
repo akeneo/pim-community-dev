@@ -7,4 +7,4 @@ config:
                     aclResourceId: akeneo_measurements_manage_settings
 
     paths:
-        pim/controller/measurements/settings: akeneomeasure/js/bridge/controller/settings.tsx
+        pim/controller/measurements/settings: akeneomeasure/bridge/controller/settings.tsx
