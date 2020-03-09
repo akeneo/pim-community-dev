@@ -46,13 +46,7 @@ class UpdateAuditDataCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // TODO: To remove when pullup on master
-        if ($this->migrateAudit40Master->needsMigration()) {
-            $this->migrateAudit40Master->migrateDbSchema();
-            $this->migrateAudit40Master->recalculateAuditForLastDays();
-        }
-        if ($this->migrateAudit40Master->needsRecalculation()) {
-            $this->migrateAudit40Master->recalculateAuditForLastDays();
-        }
+        $this->migrateAudit40Master->migrateIfNeeded();
 
         /** @var UpdateProductEventCountCommand[] */
         $commands = [];

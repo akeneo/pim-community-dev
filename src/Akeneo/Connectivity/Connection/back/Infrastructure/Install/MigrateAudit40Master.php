@@ -32,26 +32,10 @@ class MigrateAudit40Master
         $this->updateProductEventCountHandler = $updateProductEventCountHandler;
     }
 
-    public function needsMigration(): bool
+    public function migrateIfNeeded(): void
     {
-        $checkDbSchemaSql = <<<SQL
-SELECT table_name FROM information_schema.tables 
-WHERE table_name = 'akeneo_connectivity_connection_audit_product'
-SQL;
-        return false === $this->dbalConnection->fetchArray($checkDbSchemaSql);
-    }
-
-    public function needsRecalculation(): bool
-    {
-        $checkEmptyAuditSql = <<<SQL
-SELECT COUNT(true) FROM akeneo_connectivity_connection_audit_product
-SQL;
-        return false === $this->dbalConnection->fetchArray($checkEmptyAuditSql);
-    }
-
-    public function migrateDbSchema(): void
-    {
-        $createNewAuditTableSql = <<<SQL
+        if ($this->needsMigration()) {
+            $createNewAuditTableSql = <<<SQL
 CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection_audit_product(
     connection_code VARCHAR(100) NOT NULL,
     event_datetime DATETIME NOT NULL,
@@ -62,11 +46,23 @@ CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection_audit_product(
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
 SQL;
 
-        $this->dbalConnection->exec($createNewAuditTableSql);
-        $this->dbalConnection->exec('DROP TABLE akeneo_connectivity_connection_audit');
+            $this->dbalConnection->exec($createNewAuditTableSql);
+            $this->dbalConnection->exec('DROP TABLE akeneo_connectivity_connection_audit');
+
+            $this->recalculateAuditForLastDays();
+        }
     }
 
-    public function recalculateAuditForLastDays(): void
+    public function needsMigration(): bool
+    {
+        $checkDbSchemaSql = <<<SQL
+SELECT table_name FROM information_schema.tables 
+WHERE table_name = 'akeneo_connectivity_connection_audit_product'
+SQL;
+        return false === $this->dbalConnection->fetchArray($checkDbSchemaSql);
+    }
+
+    private function recalculateAuditForLastDays(): void
     {
         $datetime = new \DateTime('now', new \DateTimeZone('UTC'));
         $datetime->setTime((int) $datetime->format('H'), 0);
