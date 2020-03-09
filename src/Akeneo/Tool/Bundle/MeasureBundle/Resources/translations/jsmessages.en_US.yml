@@ -1,0 +1,8 @@
+pim_menu.item:
+    measurements: Measurements
+
+pim_title:
+    akeneo_measurements_settings_index: Measurements
+
+measurements:
+    families: "{0}0 Measurement families|{1}1 Measurement family|]1, Inf[{{ itemsCount }} Measurement families"
