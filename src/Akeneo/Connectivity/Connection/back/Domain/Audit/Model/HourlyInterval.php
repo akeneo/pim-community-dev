@@ -36,7 +36,7 @@ final class HourlyInterval
      * Create an hourly interval from a DateTime.
      * E.g., with a (Date)Time between 10:00:00 and 10:59:59 the interval will be 10:00:00 to 11:00:00.
      *
-     * @param \DateTimeInterface $dateTime DateTimeInterface should have a TimeZone in 'UTC'.
+     * @param \DateTimeInterface $dateTime DateTimeInterface must have a TimeZone in 'UTC'.
      */
     public static function createFromDateTime(\DateTimeInterface $dateTime): self
     {
