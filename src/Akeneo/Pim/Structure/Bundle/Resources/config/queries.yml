@@ -4,7 +4,8 @@ services:
         arguments:
             $connection: '@database_connection'
 
-    Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql\SqlGetAttributeOptionValues:
+    akeneo.pim.structure.query.get_attribute_option_values:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql\SqlGetAttributeOptionValues
         arguments:
             - '@database_connection'
 

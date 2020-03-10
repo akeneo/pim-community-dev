@@ -57,7 +57,7 @@ final class SqlGetAttributeOptionValuesIntegration extends TestCase
 
     public function getSqlGetAttributeOptionValues(): SqlGetAttributeOptionValues
     {
-        return $this->get(SqlGetAttributeOptionValues::class);
+        return $this->get('akeneo.pim.structure.query.get_attribute_option_values');
     }
 
     private function createAttributes(array $codes): void
