@@ -1,23 +1,21 @@
 import styled from 'styled-components'
-
 import { CoreButton } from '../CoreButton'
-
+import * as theme from '../../../theme/mainTheme';
 
 const PrimaryButton = styled(CoreButton)`
-    color: white;
-    background-color: #67B373;
+    color: ${theme.color.white};
+    background-color: ${theme.color.green100};
     &:hover {
-        background-color: #528f5c;
+        background-color: ${theme.color.green120};
     }
     &:active {
-        background-color: #3d6b45;
+        background-color: ${theme.color.green140};
     }
     &:focus {
-        border-color: blue;
+        border-color: ${theme.color.green100};
     }
     &:disabled {
-        background-color: #c2e1c7;
+        background-color: ${theme.color.green40};
     }
 `
-
 export { PrimaryButton }
