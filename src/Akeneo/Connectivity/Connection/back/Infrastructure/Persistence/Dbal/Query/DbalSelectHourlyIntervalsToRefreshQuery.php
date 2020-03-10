@@ -10,7 +10,7 @@ use Doctrine\DBAL\FetchMode;
 
 /**
  * Retrieve all hours from events that are not yet complete.
- * I.e., the last update happened before the end of the event datetime and need to be updated again.
+ * I.e., the last update happened before the end of the event and need to be updated again.
  *
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -33,7 +33,7 @@ class DbalSelectHourlyIntervalsToRefreshQuery
     {
         $selectSQL = <<<SQL
 SELECT DISTINCT event_datetime FROM akeneo_connectivity_connection_audit_product
-WHERE updated < event_datetime ORDER BY event_datetime
+WHERE updated < DATE_ADD(event_datetime, INTERVAL 1 HOUR) ORDER BY event_datetime
 SQL;
         $dateTimes = $this->dbalConnection->executeQuery($selectSQL)->fetchAll(FetchMode::COLUMN);
 
@@ -43,7 +43,7 @@ SQL;
                     $this->dbalConnection->getDatabasePlatform()->getDateTimeFormatString(),
                     $dateTime,
                     new \DateTimeZone('UTC')
-                )->sub(new \DateInterval('PT1H'))
+                )
             );
         }, $dateTimes);
     }

@@ -62,7 +62,7 @@ class UpdateAuditDataCommand extends Command
 
         /*
          * Create a Command for each hour retrieved from events that are not yet complete.
-         * I.e., the last update happened before the end of the event datetime and need to be updated again.
+         * I.e., the last update happened before the end of the event and need to be updated again.
          */
         $hourlyIntervalsToRefresh = $this->selectHourlyIntervalsToRefreshQuery->execute();
         foreach ($hourlyIntervalsToRefresh as $hourlyInterval) {

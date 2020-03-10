@@ -60,7 +60,7 @@ class AuditLoader
             ],
             [
                 'connection_code' => $connectionCode,
-                'event_datetime' => $hourlyInterval->upToDateTime(),
+                'event_datetime' => $hourlyInterval->fromDateTime(),
                 'event_type' => $eventType,
             ],
             [

@@ -87,7 +87,7 @@ SQL;
             $actual['connection_code']
         );
         Assert::assertEquals(
-            $expected->hourlyInterval()->upToDateTime()->format('Y-m-d H:i:s'),
+            $expected->hourlyInterval()->fromDateTime()->format('Y-m-d H:i:s'),
             $actual['event_datetime']
         );
         Assert::assertEquals(
