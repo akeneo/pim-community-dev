@@ -54,7 +54,7 @@ class AuditLoader
         \DateTimeInterface $updated
     ): void {
         $this->dbalConnection->update(
-            'akeneo_connectivity_connection_audit',
+            'akeneo_connectivity_connection_audit_product',
             [
                 'updated' => $updated
             ],

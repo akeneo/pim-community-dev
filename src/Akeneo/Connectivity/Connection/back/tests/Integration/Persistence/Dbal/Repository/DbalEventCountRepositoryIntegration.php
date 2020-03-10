@@ -37,7 +37,7 @@ class DbalEventCountRepositoryIntegration extends TestCase
 
         $sql = <<<SQL
 SELECT connection_code, event_datetime, event_count, event_type, updated
-FROM akeneo_connectivity_connection_audit
+FROM akeneo_connectivity_connection_audit_product
 ORDER BY event_type, event_datetime
 SQL;
         $eventCounts = $this->getDbalConnection()->fetchAll($sql);
@@ -71,7 +71,7 @@ SQL;
 
         $sql = <<<SQL
 SELECT connection_code, event_datetime, event_count, event_type, updated
-FROM akeneo_connectivity_connection_audit
+FROM akeneo_connectivity_connection_audit_product
 ORDER BY event_type, event_datetime
 SQL;
         $eventCounts = $this->getDbalConnection()->fetchAll($sql);
