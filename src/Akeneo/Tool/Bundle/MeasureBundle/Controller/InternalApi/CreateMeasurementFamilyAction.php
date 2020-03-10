@@ -53,8 +53,8 @@ class CreateMeasurementFamilyAction
             return new RedirectResponse('/');
         }
 
-        $normalizedRequest = $this->normalizeRequest($request);
-        $structureErrors = $this->validateNormalizedRequest($normalizedRequest);
+        $decodedRequest = $this->decodeRequest($request);
+        $structureErrors = $this->validateDecodedRequest($decodedRequest);
 
         if (!empty($structureErrors)) {
             return new JsonResponse(
@@ -67,7 +67,7 @@ class CreateMeasurementFamilyAction
             );
         }
 
-        $saveMeasurementFamilyCommand = $this->createSaveMeasurementFamilyCommand($normalizedRequest);
+        $saveMeasurementFamilyCommand = $this->createSaveMeasurementFamilyCommand($decodedRequest);
 
         try {
             $this->validateSaveMeasurementFamilyCommand($saveMeasurementFamilyCommand);
@@ -90,7 +90,7 @@ class CreateMeasurementFamilyAction
         return new Response(null, Response::HTTP_CREATED);
     }
 
-    private function normalizeRequest(Request $request): array
+    private function decodeRequest(Request $request): array
     {
         $normalizedRequest = json_decode($request->getContent(), true);
 
@@ -101,9 +101,9 @@ class CreateMeasurementFamilyAction
         return $normalizedRequest;
     }
 
-    private function validateNormalizedRequest(array $normalizedRequest): array
+    private function validateDecodedRequest(array $decodedRequest): array
     {
-        return $this->measurementFamilyStructureValidator->validate($normalizedRequest);
+        return $this->measurementFamilyStructureValidator->validate($decodedRequest);
     }
 
     private function createSaveMeasurementFamilyCommand(
