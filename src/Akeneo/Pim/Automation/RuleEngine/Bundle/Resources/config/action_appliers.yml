@@ -51,7 +51,7 @@ services:
     # Concatenate extractors
     Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierRegistry:
         arguments:
-            - !tagged akeneo_rule_engine.concatenate_applier.extractor
+            - !tagged akeneo_rule_engine.concatenate_applier.stringifier
 
     Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\DefaultValueStringifier:
         arguments:
@@ -60,27 +60,34 @@ services:
                 - 'pim_catalog_number'
                 - 'pim_catalog_simpleselect'
                 - 'pim_catalog_text'
-                - 'pim_catalog_textarea'
         tags:
-            - { name: akeneo_rule_engine.concatenate_applier.extractor }
+            - { name: akeneo_rule_engine.concatenate_applier.stringifier }
 
     Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\DateValueStringifier:
         arguments:
             -
                 - 'pim_catalog_date'
         tags:
-            - { name: akeneo_rule_engine.concatenate_applier.extractor }
+            - { name: akeneo_rule_engine.concatenate_applier.stringifier }
 
     Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\MetricValueStringifier:
         arguments:
             -
                 - 'pim_catalog_metric'
         tags:
-            - { name: akeneo_rule_engine.concatenate_applier.extractor }
+            - { name: akeneo_rule_engine.concatenate_applier.stringifier }
 
     Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\PriceCollectionValueStringifier:
         arguments:
             -
                 - 'pim_catalog_price_collection'
         tags:
-            - { name: akeneo_rule_engine.concatenate_applier.extractor }
+            - { name: akeneo_rule_engine.concatenate_applier.stringifier }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\TextareaValueStringifier:
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            -
+                - 'pim_catalog_textarea'
+        tags:
+            - { name: akeneo_rule_engine.concatenate_applier.stringifier }

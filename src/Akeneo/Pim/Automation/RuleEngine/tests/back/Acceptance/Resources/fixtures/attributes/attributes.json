@@ -39,6 +39,7 @@
     "group": "other",
     "localizable": true,
     "scopable": true,
+    "wysiwyg_enabled": true,
     "labels": {
       "en_US": "Description"
     }
@@ -49,6 +50,7 @@
     "group": "other",
     "localizable": false,
     "scopable": false,
+    "wysiwyg_enabled": false,
     "labels": {
       "en_US": "Sub Description"
     }

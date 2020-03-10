@@ -129,7 +129,10 @@ final class ConcatenateActionApplier implements ActionApplierInterface
             }
 
             $stringifier = $this->getStringifier($attributeCode, $attribute->type());
-            $stringValue = $stringifier->stringify($value, $source->getOptions());
+            $stringValue = $stringifier->stringify($value, array_merge(
+                $source->getOptions(),
+                ['target_attribute_code' => $action->getTarget()->getField()]
+            ));
             if ('' === $stringValue) {
                 throw new \LogicException(
                     sprintf('The value for the "%s" attribute code is empty for the entity.', $attributeCode)

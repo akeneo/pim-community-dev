@@ -109,11 +109,11 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
 
         $getAttributes->forCode('model')->willReturn($this->buildAttribute('model', 'type1'));
         $valueStringifierRegistry->getStringifier('type1')->willReturn($valueStringifier1);
-        $valueStringifier1->stringify($value1, [])->willReturn('model_value');
+        $valueStringifier1->stringify($value1, ['target_attribute_code' => 'description'])->willReturn('model_value');
 
         $getAttributes->forCode('title')->willReturn($this->buildAttribute('title', 'type2'));
         $valueStringifierRegistry->getStringifier('type2')->willReturn($valueStringifier2);
-        $valueStringifier2->stringify($value2, [])->willReturn('title_value');
+        $valueStringifier2->stringify($value2, ['target_attribute_code' => 'description'])->willReturn('title_value');
 
         $propertySetter->setData(
             $product,
@@ -163,12 +163,12 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
         $productModel->getValue('model', null, null)->willReturn($value1);
         $getAttributes->forCode('model')->willReturn($this->buildAttribute('model', 'type1'));
         $valueStringifierRegistry->getStringifier('type1')->willReturn($valueStringifier1);
-        $valueStringifier1->stringify($value1, [])->willReturn('model_value');
+        $valueStringifier1->stringify($value1, ['target_attribute_code' => 'description'])->willReturn('model_value');
 
         $productModel->getValue('title', 'en_US', 'ecommerce')->willReturn($value2);
         $getAttributes->forCode('title')->willReturn($this->buildAttribute('title', 'type2'));
         $valueStringifierRegistry->getStringifier('type2')->willReturn($valueStringifier2);
-        $valueStringifier2->stringify($value2, [])->willReturn('title_value');
+        $valueStringifier2->stringify($value2, ['target_attribute_code' => 'description'])->willReturn('title_value');
 
         $propertySetter->setData(
             $productModel,
@@ -213,7 +213,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
         $entity->getValue('model', null, null)->willReturn($value);
         $getAttributes->forCode('model')->willReturn($this->buildAttribute('model', 'type1'));
         $valueStringifierRegistry->getStringifier('type1')->willReturn($valueStringifier);
-        $valueStringifier->stringify($value, [])->willReturn('model_value');
+        $valueStringifier->stringify($value, ['target_attribute_code' => 'description'])->willReturn('model_value');
 
         $entity->getValue('title', 'en_US', 'ecommerce')->willReturn(null);
 
@@ -261,7 +261,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
         $entity->getValue('model', null, null)->willReturn($value1);
         $getAttributes->forCode('model')->willReturn($this->buildAttribute('model', 'type1'));
         $valueStringifierRegistry->getStringifier('type1')->willReturn($valueStringifier1);
-        $valueStringifier1->stringify($value1, [])->willReturn('model_value');
+        $valueStringifier1->stringify($value1, ['target_attribute_code' => 'description'])->willReturn('model_value');
 
         $entity->getValue('title', 'en_US', 'ecommerce')->willReturn($value2);
         $getAttributes->forCode('title')->willReturn($this->buildAttribute('title', 'type2'));
