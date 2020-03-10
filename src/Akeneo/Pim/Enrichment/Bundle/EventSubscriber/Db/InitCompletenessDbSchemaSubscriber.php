@@ -49,7 +49,6 @@ CREATE TABLE IF NOT EXISTS `pim_catalog_completeness` (
     KEY `IDX_113BA854E559DFD1` (`locale_id`),
     KEY `IDX_113BA85472F5A1AA` (`channel_id`),
     KEY `IDX_113BA8544584665A` (`product_id`),
-    CONSTRAINT `FK_113BA8544584665A` FOREIGN KEY (`product_id`) REFERENCES `pim_catalog_product` (`id`) ON DELETE CASCADE,
     CONSTRAINT `FK_113BA85472F5A1AA` FOREIGN KEY (`channel_id`) REFERENCES `pim_catalog_channel` (`id`) ON DELETE CASCADE,
     CONSTRAINT `FK_113BA854E559DFD1` FOREIGN KEY (`locale_id`) REFERENCES `pim_catalog_locale` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci

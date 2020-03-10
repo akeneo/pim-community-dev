@@ -181,14 +181,12 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
         $formerAutocommitValue = (int) $value['@@autocommit'];
         try {
             $this->connection->executeQuery('SET autocommit=0');
-            $this->connection->executeQuery('SET foreign_key_checks=0');
             $this->connection->executeQuery('LOCK TABLES pim_catalog_completeness WRITE');
             $function();
             $this->connection->executeQuery('COMMIT');
-            $this->connection->executeQuery('UNLOCK TABLES');
         } finally {
+            $this->connection->executeQuery('UNLOCK TABLES');
             $this->connection->executeQuery(sprintf('SET autocommit=%d', $formerAutocommitValue));
-            $this->connection->executeQuery('SET foreign_key_checks=1');
         }
     }
 }
