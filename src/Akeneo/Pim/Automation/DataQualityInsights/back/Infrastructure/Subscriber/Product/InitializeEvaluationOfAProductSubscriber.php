@@ -59,7 +59,6 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
             WordIgnoredEvent::WORD_IGNORED => 'onIgnoredWord',
             TitleSuggestionIgnoredEvent::TITLE_SUGGESTION_IGNORED => 'onIgnoredTitleSuggestion',
             StorageEvents::POST_SAVE => 'onPostSave',
-            StorageEvents::POST_SAVE_ALL => 'onPostSaveAll',
         ];
     }
 
@@ -69,7 +68,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
             return;
         }
 
-        $this->initializeCriteria([$event->getProductId()->toInt()]);
+        $this->initializeCriteria($event->getProductId()->toInt());
     }
 
     public function onIgnoredTitleSuggestion(TitleSuggestionIgnoredEvent $event)
@@ -78,7 +77,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
             return;
         }
 
-        $this->initializeCriteria([$event->getProductId()->toInt()]);
+        $this->initializeCriteria($event->getProductId()->toInt());
     }
 
     public function onPostSave(GenericEvent $event): void
@@ -96,55 +95,25 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
             return;
         }
 
-        $productIds = [intval($subject->getId())];
-        $this->initializeCriteria($productIds);
-        $this->evaluatePendingCriteria->evaluateSynchronousCriteria($productIds);
-        $this->consolidateProductAxisRates->consolidate($productIds);
-        $this->indexProductRates->execute($productIds);
+        $productId = intval($subject->getId());
+        $this->initializeCriteria($productId);
+        $this->evaluatePendingCriteria->evaluateSynchronousCriteria([$productId]);
+        $this->consolidateProductAxisRates->consolidate([$productId]);
+        $this->indexProductRates->execute([$productId]);
     }
 
-    public function onPostSaveAll(GenericEvent $event): void
-    {
-        $subjects = $event->getSubject();
-        if (! is_array($subjects)) {
-            return;
-        }
-
-        if (! $this->dataQualityInsightsFeature->isEnabled()) {
-            return;
-        }
-
-        $productIds = $this->getProductIds($subjects);
-        if (empty($productIds)) {
-            return;
-        }
-
-        $this->initializeCriteria($productIds);
-    }
-
-    private function getProductIds($subjects): array
-    {
-        $productIds = [];
-        foreach ($subjects as $subject) {
-            if (! $subject instanceof ProductInterface || $subject->isVariant() === true) {
-                continue;
-            }
-            $productIds[] = intval($subject->getId());
-        }
-
-        return $productIds;
-    }
-
-    private function initializeCriteria(array $productIds)
+    private function initializeCriteria($productId)
     {
         try {
-            $this->createProductsCriteriaEvaluations->create(
-                array_map(function (int $productId) {
-                    return new ProductId($productId);
-                }, $productIds)
-            );
+            $this->createProductsCriteriaEvaluations->create([new ProductId($productId)]);
         } catch (\Throwable $e) {
-            $this->logger->error($e->getMessage());
+            $this->logger->error(
+                'Unable to create product criteria evaluation',
+                [
+                    'error_code' => 'unable_to_create_product_criteria_evaluation',
+                    'error_message' => $e->getMessage(),
+                ]
+            );
         }
     }
 }

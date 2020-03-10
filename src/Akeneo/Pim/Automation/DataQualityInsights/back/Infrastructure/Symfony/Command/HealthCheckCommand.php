@@ -78,6 +78,21 @@ SQL
         $products = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         $stmt = $this->db->executeQuery(<<<SQL
+SELECT count(*) AS number_of_variant_products
+FROM pim_catalog_product
+WHERE product_model_id IS NOT NULL
+SQL
+        );
+        $variant_products = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT count(*) AS number_of_product_models
+FROM pim_catalog_product_model
+SQL
+        );
+        $product_models = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        $stmt = $this->db->executeQuery(<<<SQL
 SELECT JSON_ARRAYAGG(code) as codes
 FROM pim_catalog_locale
 WHERE is_activated = 1
@@ -151,6 +166,8 @@ SQL
                 'feature_activated' => $this->featureFlag->isEnabled() ? 1 : 0,
                 'debug_date' => (new \DateTimeImmutable())->format(\DateTimeInterface::ATOM),
                 'number_of_products' => $products['number_of_products'],
+                'number_of_variant_products' => $variant_products['number_of_variant_products'],
+                'number_of_product_models' => $product_models['number_of_product_models'],
                 'number_of_activated_locales' => count(json_decode($locales['codes'])),
                 'activated_locales' => $locales['codes'],
                 'number_of_channels' => count(json_decode($channels['codes'])),
