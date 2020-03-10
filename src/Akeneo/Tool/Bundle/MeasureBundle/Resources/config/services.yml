@@ -65,7 +65,7 @@ services:
             - { name: 'validator.constraint_validator', alias: 'akeneo_measure.validation.measurement_family.count' }
 
     # Validation
-    akeneo_measure.validation.measure_family.when_used_in_a_product_attribute_should_be_able_to_update_only_labels_and_symbol_and_add_units:
+    akeneo_measure.validation.measurement_family.when_used_in_a_product_attribute_should_be_able_to_update_only_labels_and_symbol_and_add_units:
         class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnitsValidator
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'

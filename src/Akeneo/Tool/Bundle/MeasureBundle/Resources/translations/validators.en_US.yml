@@ -7,7 +7,7 @@ pim_measurements:
         measurement_family:
             standard_unit_code:
                 is_required: 'The standard unit is required.'
-                should_be_in_the_list_of_units: 'The "%standard_unit_code%" standard unit code does not exist in the list of units for the measurement family.'
+                should_be_in_the_list_of_units: 'The "%standard_unit_code%" standard unit code does not exist in the list of units for the "%measurement_family_code%" measurement family.'
             should_contain_max_elements: 'You’ve reached the limit of {{ limit }} measurement families.'
             convert:
                 value_should_be_a_number_in_a_string: 'The conversion value should be a number represented in a string (example: "0.2561")'
@@ -19,3 +19,5 @@ pim_measurements:
             units:
                 should_contain_min_elements: 'A minimum of one conversion operation per unit is required.'
                 should_contain_max_elements: 'You’ve reached the limit of {{ limit }} conversion operations per unit.'
+                operation:
+                    invalid_operator: 'The {{ value }} operator is invalid, please use {{ choices }} instead.'

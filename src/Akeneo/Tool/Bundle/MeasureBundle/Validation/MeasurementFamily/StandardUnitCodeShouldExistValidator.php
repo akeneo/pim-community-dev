@@ -41,11 +41,14 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
+        $measurementFamilyCode = $saveMeasurementFamilyCommand->code;
         $violations = $validator->validate(
             $saveMeasurementFamilyCommand->units,
             [
                 new Callback(
-                    function (array $units, ExecutionContextInterface $context) use ($standardUnitCode) {
+                    function (array $units, ExecutionContextInterface $context)
+                    use ($standardUnitCode, $measurementFamilyCode)
+                    {
                         foreach ($units as $unit) {
                             if ($standardUnitCode === $unit['code']) {
                                 return;
@@ -53,7 +56,7 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
                         }
                         $context->buildViolation(
                             StandardUnitCodeShouldExist::STANDARD_UNIT_CODE_SHOULD_EXIST_IN_THE_LIST_OF_UNITS,
-                            ['%standard_unit_code%' => $standardUnitCode]
+                            ['%standard_unit_code%' => $standardUnitCode, '%measurement_family_code%' => $measurementFamilyCode]
                         )->addViolation();
                     }
                 )

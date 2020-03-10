@@ -110,12 +110,7 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
             return $unit['code'];
         }, $saveMeasurementFamily->units);
 
-        return array_unique(
-            array_merge(
-                array_diff($actualUnitCodes, $unitCodesToUpdate),
-                array_diff($unitCodesToUpdate, $actualUnitCodes)
-            )
-        );
+        return array_diff($actualUnitCodes, $unitCodesToUpdate);
     }
 
     private function isTryingToUpdateTheConvertionOperations(

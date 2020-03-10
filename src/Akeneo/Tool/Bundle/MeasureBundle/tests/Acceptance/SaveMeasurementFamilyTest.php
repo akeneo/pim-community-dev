@@ -192,6 +192,44 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
     /**
      * @test
+     */
+    public function it_add_a_unit_even_if_the_measurement_family_is_linked_to_a_product_attribute(): void
+    {
+        $measurementFamilyCode = 'WEIGHT';
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = $measurementFamilyCode;
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->standardUnitCode = 'KILOGRAM';
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => 'KILOGRAM',
+                'labels'                => ['fr_FR' => 'Kilogrammes'],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
+                'symbol' => 'km'
+            ],
+            [
+                'code'                  => 'GRAM',
+                'labels'                => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
+                'symbol' => 'km'
+            ],
+            [
+                'code'                  => 'CENTIGRAM',
+                'labels'                => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.001']],
+                'symbol' => 'cm'
+            ]
+        ];
+        $this->createMeasurementFamilyWithUnitsAndStandardUnit($measurementFamilyCode, ['KILOGRAM', 'GRAM'], 'KILOGRAM');
+        $this->assertThereIsAProductAttributeLinkedToThisMeasurementFamily();
+
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(0, $violations->count());
+    }
+
+    /**
+     * @test
      * @dataProvider invalidCodes
      */
     public function it_has_an_invalid_code($invalidCode, string $errorMessage): void
@@ -288,7 +326,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
         self::assertEquals(
-            'The "invalid_standard_unit_code" standard unit code does not exist in the list of units for the measurement family.',
+            'The "invalid_standard_unit_code" standard unit code does not exist in the list of units for the "WEIGHT" measurement family.',
             $violation->getMessage()
         );
     }
@@ -297,15 +335,15 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
      * @test
      * @dataProvider invalidCodes
      */
-    public function it_has_a_unit_with_an_invalid_code($invalidCodes, string $errorMessage): void
+    public function it_has_a_unit_with_an_invalid_code($invalidCode, string $errorMessage): void
     {
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
         $saveFamilyCommand->labels = [];
-        $saveFamilyCommand->standardUnitCode = $invalidCodes;
+        $saveFamilyCommand->standardUnitCode = $invalidCode;
         $saveFamilyCommand->units = [
             [
-                'code' => $invalidCodes,
+                'code' => $invalidCode,
                 'labels' => [],
                 'convert_from_standard' => [['operator' => 'mul', 'value' => '153']],
                 'symbol' => 'Km'
@@ -314,9 +352,13 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals($errorMessage, $violation->getMessage());
+        self::assertGreaterThan(0, $violations->count());
+        foreach ($violations as $violation) {
+            if ($errorMessage === $violation->getMessage()) {
+                return;
+            }
+        }
+        self::assertTrue(false, sprintf('Expected to have a violation with message "%s"', $errorMessage));
     }
 
     /**
@@ -549,7 +591,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals('The update of the "WEIGHT" measurement family standard unit code is not allowed because it is linked to a product attribute.', $violation->getMessage());
+        self::assertEquals('A product attribute is linked to this measurement family, you can only edit its translated labels.', $violation->getMessage());
     }
 
     /**
@@ -578,7 +620,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals('The removal of the GRAM unit(s) in the "WEIGHT" measurement family is not allowed because it is linked to a product attribute.', $violation->getMessage());
+        self::assertEquals('A product attribute is linked to this measurement family, you can only edit the translated labels and symbol of a unit', $violation->getMessage());
     }
 
     /**
@@ -622,7 +664,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals('The update of the convert operations for the KILOGRAM unit(s) in the "WEIGHT" measurement family is not allowed because it is linked to a product attribute.', $violation->getMessage());
+        self::assertEquals('A product attribute is linked to this measurement family, you can only edit the translated labels and symbol of a unit', $violation->getMessage());
     }
 
     public function invalidCodes(): array
@@ -650,7 +692,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     {
         return [
             'Operator cannot be blank' => [null, 'This value should not be blank.'],
-            'Operator is not supported' => ['invalid_operator', 'The value you selected is not a valid choice.'],
+            'Operator is not supported' => ['invalid_operator', 'The "invalid_operator" operator is invalid, please use "mul", "div", "add", "sub" instead.'],
         ];
     }
 

@@ -21,5 +21,5 @@ class SaveMeasurementFamilyCommand
     public $standardUnitCode;
 
     /** @var array */
-    public $units = [];
+    public $units;
 }

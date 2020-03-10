@@ -28,7 +28,9 @@ Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasureme
                                         operator:
                                             - NotBlank: ~
                                             - Type: string
-                                            - Choice: [mul, div, add, sub]
+                                            - Choice:
+                                                choices: [mul, div, add, sub]
+                                                message: pim_measurements.validation.measurement_family.units.operation.invalid_operator
                                         value:
                                             - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationValue: ~
     constraints:
