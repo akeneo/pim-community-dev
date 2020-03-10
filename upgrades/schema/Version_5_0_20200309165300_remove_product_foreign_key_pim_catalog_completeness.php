@@ -9,9 +9,30 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class Version_5_0_20200309165300_remove_product_foreign_key_pim_catalog_completeness extends AbstractMigration
 {
+    private function getForeignKeyIds(): array
+    {
+        $sql = <<<SQL
+SELECT
+  fk.id
+FROM information_schema.INNODB_FOREIGN AS fk
+  JOIN information_schema.INNODB_FOREIGN_COLS AS fk_cols
+    ON fk.id = fk_cols.id
+WHERE
+  fk.for_name = 'akeneo_pim/pim_catalog_completeness'
+  AND fk.ref_name = 'akeneo_pim/pim_catalog_product'
+  AND fk_cols.for_col_name = 'product_id'
+  AND fk_cols.ref_col_name = 'id'
+SQL;
+
+        return $this->connection->executeQuery($sql)->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
     public function up(Schema $schema) : void
     {
-        $this->addSql('ALTER TABLE pim_catalog_completeness DROP FOREIGN KEY pim_catalog_completeness_ibfk_1');
+        $foreign_key_ids = $this->getForeignKeyIds();
+        foreach ($foreign_key_ids as $id) {
+            $this->addSql(sprintf("ALTER TABLE pim_catalog_completeness DROP FOREIGN KEY %s", substr($id, strpos($id, '/') + 1)));
+        }
     }
 
     public function down(Schema $schema) : void
