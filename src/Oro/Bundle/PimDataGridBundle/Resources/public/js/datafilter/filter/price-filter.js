@@ -52,7 +52,7 @@ define(
                 NumberFilter.prototype.initialize.apply(this, arguments);
 
                 this.emptyValue = {
-                    currency: _.first(_.keys(this.currencies)),
+                    currency: this._firstCurrency(),
                     type: _.findWhere(this.choices, { label: '=' }).data,
                     value: ''
                 };
@@ -80,7 +80,7 @@ define(
                         updateLabel: __('pim_common.update'),
                         currencies: this.currencies,
                         currencyLabel: __('pim_datagrid.filters.price_filter.label'),
-                        selectedCurrency: this._getDisplayValue().currency,
+                        selectedCurrency: this._getDisplayValue().currency || this._firstCurrency(),
                         value: this._getDisplayValue().value
                     })
                 );
@@ -189,6 +189,10 @@ define(
                 this._highlightDropdown(value, '.currency');
 
                 e.preventDefault();
+            },
+
+            _firstCurrency() {
+                return _.first(_.keys(this.currencies));
             },
 
             /**
