@@ -62,36 +62,6 @@ describe('testing button', () => {
         // Then
         expect(ref.current).toEqual(container.firstChild);
     });
-    test('should render the component, not disabled and in large mode', () => {
-        // Given
-        const myLabel = 'Click Here';
-        // When
-        const { container } = render(<CoreButton>{myLabel}</CoreButton>);
-        // Then
-        expect(container.firstChild).toMatchInlineSnapshot(`
-            .c0 {
-              border-radius: 16px;
-              cursor: pointer;
-              font-size: 13px;
-              font-weight: 400;
-              height: 32px;
-              line-height: 32px;
-              padding: 0 15px;
-              text-transform: uppercase;
-            }
-
-            .c0:disabled {
-              cursor: not-allowed;
-            }
-
-            <button
-              class="c0"
-              role="button"
-            >
-              Click Here
-            </button>
-        `);
-    });
     test('should render the component in small mode', () => {
         // Given
         const myLabel = 'Click Here';
