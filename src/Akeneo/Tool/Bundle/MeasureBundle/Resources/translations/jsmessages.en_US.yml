@@ -6,3 +6,5 @@ pim_title:
 
 measurements:
     families: "{0}0 Measurement families|{1}1 Measurement family|]1, Inf[{{ itemsCount }} Measurement families"
+    list:
+        result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"

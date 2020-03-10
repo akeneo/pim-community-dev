@@ -1,5 +1,5 @@
 import {createContext} from 'react';
-import {ViewBuilder} from 'akeneomeasure/shared/legacy/pim-view/view-builder';
+import {ViewBuilder} from 'akeneomeasure/shared/components/pim-view/view-builder';
 
 export type LegacyContextValue = {
   viewBuilder?: ViewBuilder;
