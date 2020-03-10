@@ -15,11 +15,13 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -59,12 +61,17 @@ class GetProductEvaluation
     /** @var GetLocalesByChannelQueryInterface */
     private $getLocalesByChannelQuery;
 
+    /** @var AxisRegistry */
+    private $axisRegistry;
+
     public function __construct(
         GetLatestProductEvaluationQueryInterface $getLatestProductEvaluationQuery,
-        GetLocalesByChannelQueryInterface $getLocalesByChannelQuery
+        GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
+        AxisRegistry $axisRegistry
     ) {
         $this->getLatestCriteriaEvaluationsByProductIdQuery = $getLatestProductEvaluationQuery;
         $this->getLocalesByChannelQuery = $getLocalesByChannelQuery;
+        $this->axisRegistry = $axisRegistry;
     }
 
     public function get(ProductId $productId): array
@@ -109,24 +116,47 @@ class GetProductEvaluation
     private function formatAxisCriteria(AxisEvaluation $axisEvaluation, ChannelCode $channelCode, LocaleCode $localeCode): array
     {
         $criteriaRates = [];
-        /** @var CriterionEvaluation $criterionEvaluation */
-        foreach ($axisEvaluation->getCriteriaEvaluations() as $criterionEvaluation) {
-            $evaluationResult = $criterionEvaluation->getResult();
-            $rate = null !== $evaluationResult ? $evaluationResult->getRates()->getByChannelAndLocale($channelCode, $localeCode) : null;
-            $attributes = null !== $evaluationResult ? $evaluationResult->getAttributes()->getByChannelAndLocale($channelCode, $localeCode) : [];
-            $status = null !== $evaluationResult ? $evaluationResult->getStatus()->get($channelCode, $localeCode) : null;
 
-            $criteriaRates[] = [
-                'code' => strval($criterionEvaluation->getCriterionCode()),
-                'rate' => [
-                    "value" => null !== $rate ? $rate->toInt() : null,
-                    "rank" => null !== $rate ? $rate->toLetter() : null,
-                ],
-                'improvable_attributes' => $attributes ?? [],
-                'status' => null !== $status ? strval($status) : CriterionEvaluationResultStatus::IN_PROGRESS,
-            ];
+        foreach ($axisEvaluation->getCriteriaEvaluations() as $criterionEvaluation) {
+            $criteriaRates[] = $this->formatCriterionEvaluation($criterionEvaluation->getCriterionCode(), $criterionEvaluation->getResult(), $channelCode, $localeCode);
+        }
+
+        if (empty($criteriaRates)) {
+            $criteriaRates = $this->formatEmptyAxisCriteria($axisEvaluation->getAxisCode(), $channelCode, $localeCode);
         }
 
         return $criteriaRates;
+    }
+
+    private function formatCriterionEvaluation(CriterionCode $criterionCode, ?CriterionEvaluationResult $evaluationResult, ChannelCode $channelCode, LocaleCode $localeCode): array
+    {
+        $rate = null !== $evaluationResult ? $evaluationResult->getRates()->getByChannelAndLocale($channelCode, $localeCode) : null;
+        $attributes = null !== $evaluationResult ? $evaluationResult->getAttributes()->getByChannelAndLocale($channelCode, $localeCode) : [];
+        $status = null !== $evaluationResult ? $evaluationResult->getStatus()->get($channelCode, $localeCode) : null;
+
+        return [
+            'code' => strval($criterionCode),
+            'rate' => [
+                "value" => null !== $rate ? $rate->toInt() : null,
+                "rank" => null !== $rate ? $rate->toLetter() : null,
+            ],
+            'improvable_attributes' => $attributes ?? [],
+            'status' => null !== $status ? strval($status) : CriterionEvaluationResultStatus::IN_PROGRESS,
+        ];
+    }
+
+    private function formatEmptyAxisCriteria(AxisCode $axisCode, ChannelCode $channelCode, LocaleCode $localeCode): array
+    {
+        $axis = $this->axisRegistry->get($axisCode);
+        if (null === $axis) {
+            return [];
+        }
+
+        $criteriaEvaluations = [];
+        foreach ($axis->getCriteriaCodes() as $criterionCode) {
+            $criteriaEvaluations[] = $this->formatCriterionEvaluation($criterionCode, null, $channelCode, $localeCode);
+        }
+
+        return $criteriaEvaluations;
     }
 }

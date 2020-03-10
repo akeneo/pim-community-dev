@@ -95,9 +95,7 @@ pim_asset_manager:
         unknown_extra_field: 'Die Eigenschaft {{ {{ field }} }} wurde nicht erwartet.'
       naming_convention:
         property_should_exist: 'Die Eigenschaft "{{ %property% }}" existiert nicht für diese Asset Familie'
-        not_main_media_attribute_code: 'Die Eigenschaft "{{ %property% }}" wurde erwartet, um den Code des Attributs als Hauptmedium zu entsprechen.'
       rule_template:
-        limit_reached: 'Sie können die Produktfamilie "{{ %asset_family_identifier% }}" nicht erstellen, weil Sie die Grenze von {{ %limit% }} Produktlink-Regeln erreicht haben'
         product_selection_cannot_be_empty: 'Sie müssen mindestens eine Produktauswahl in Ihrer Produktlink-Regel angeben'
         product_assignment_cannot_be_empty: 'Sie müssen mindestens eine Produktauswahl in Ihrer Produktlink-Regel angeben'
         extrapolated_attribute_should_exist: 'Das Attribut "{{ %attribute_code% }}" existiert nicht für diese Asset-Familie'
@@ -315,7 +313,6 @@ pim_asset_manager:
         invalid: Fehler
         created: erstellt
     delete:
-      message: Sind Sie sicher, dass Sie das Asset "{{ assetLabel }}" löschen möchten? Wenn es mit Produkten oder Assets verlinkt ist, werden die Links entfernt.
       title: Asset
     delete_all:
       confirm: Sind Sie sicher, dass Sie alle "{{ entityIdentifier }}" Assets löschen möchten? Wenn sie mit Produkten verlinkt sind, werden die Verknüpfungen zu den Produkten entfernt.

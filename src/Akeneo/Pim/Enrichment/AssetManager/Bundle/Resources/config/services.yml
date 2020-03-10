@@ -6,6 +6,13 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: limited_assets_in_value }
 
+    akeneo_assetmanager.validator.constraint.asset_should_exist:
+        class: Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints\AssetShouldExistValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_exists'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_enrichment_asset_should_exist }
+
     akeneo_assetmanager.validator.constraint_guesser.asset_multiple_link:
         public: false
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Validator\ConstraintGuesser\AssetMultipleLinkGuesser
