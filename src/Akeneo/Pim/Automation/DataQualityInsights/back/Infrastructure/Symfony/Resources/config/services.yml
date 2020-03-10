@@ -27,9 +27,16 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateMissingProductsCriteriaEvaluations:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpdatedProductsWithoutUpToDateEvaluationQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations'
+
     Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry:
         arguments:
             - !tagged akeneo.pim.automation.data_quality_insights.evaluate_criterion
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\AxisRegistry: ~
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria:
         arguments:
@@ -40,12 +47,13 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductAxesRatesQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpToDateLatestProductAxesRatesQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductEvaluation:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductEvaluationQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpToDateLatestProductEvaluationQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetLocalesByChannelQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\AxisRegistry'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TitleFormattingService:
         arguments:

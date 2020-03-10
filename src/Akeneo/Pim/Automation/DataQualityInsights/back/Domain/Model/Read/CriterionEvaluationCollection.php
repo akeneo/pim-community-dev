@@ -64,6 +64,11 @@ final class CriterionEvaluationCollection implements \IteratorAggregate, \Counta
         return count($this->criteriaEvaluations);
     }
 
+    public function isEmpty(): bool
+    {
+        return empty($this->criteriaEvaluations);
+    }
+
     public function filterByAxis(Axis $axis): self
     {
         $filteredCollection = new self();

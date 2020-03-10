@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\AxisRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
@@ -39,13 +40,13 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 
-final class GetLatestProductEvaluationQuerySpec extends ObjectBehavior
+final class GetUpToDateLatestProductEvaluationQuerySpec extends ObjectBehavior
 {
     public function let(
         GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
         GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery
     ) {
-        $this->beConstructedWith($getLatestCriteriaEvaluationsByProductIdQuery, $getLatestProductAxesRatesQuery);
+        $this->beConstructedWith($getLatestCriteriaEvaluationsByProductIdQuery, $getLatestProductAxesRatesQuery, new AxisRegistry());
     }
 
     public function it_returns_the_latest_product_evaluation_for_a_product_id(

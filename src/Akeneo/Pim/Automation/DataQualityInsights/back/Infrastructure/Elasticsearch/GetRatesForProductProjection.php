@@ -44,9 +44,9 @@ final class GetRatesForProductProjection implements GetAdditionalPropertiesForPr
         $additionalProperties = [];
         foreach ($productIds as $productIdentifier => $productId) {
             $productId = $productId->toInt();
-            if (isset($productAxesRanks[$productId])) {
-                $additionalProperties[$productIdentifier] = ['rates' => $productAxesRanks[$productId]->toArrayInt()];
-            }
+            $additionalProperties[$productIdentifier] = [
+                'rates' => isset($productAxesRanks[$productId]) ? $productAxesRanks[$productId]->toArrayInt() : []
+            ];
         }
 
         return $additionalProperties;

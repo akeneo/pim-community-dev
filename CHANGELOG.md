@@ -4,6 +4,7 @@
 
 ## Improvements
 
+- DAPI-834: Data quality - As Julia, when I'm overing the dashboard, I'd like to see the medium grade for a given column.
 - DAPI-697: Data quality - As Julia, when I'm on the DQI page, I want to click the attributes that need improvements and land on the PEF.
 - DAPI-830: Add more supported languages for data quality text checking
 - DAPI-806: Improve criteria evaluations performance

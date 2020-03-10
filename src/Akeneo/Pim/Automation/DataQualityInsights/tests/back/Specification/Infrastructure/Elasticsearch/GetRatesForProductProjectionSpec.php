@@ -103,6 +103,9 @@ final class GetRatesForProductProjectionSpec extends ObjectBehavior
                     ],
                 ],
             ],
+            'product_without_rates' => [
+                'rates' => [],
+            ],
         ]);
     }
 }

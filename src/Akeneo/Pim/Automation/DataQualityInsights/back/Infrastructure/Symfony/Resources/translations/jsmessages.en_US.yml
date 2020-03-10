@@ -21,6 +21,7 @@ akeneo_data_quality_insights:
             average: Average
             below_average: Below average
             to_improve: To improve
+        average_grade: Average grade
         category_modal_filter:
             subtitle: Filter on a category
             message: Choose the category to explore on your dashboard

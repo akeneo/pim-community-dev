@@ -12,6 +12,11 @@ services:
             - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpToDateLatestCriteriaEvaluationsByProductIdQuery:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\HasUpToDateEvaluationQuery'
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetLocalesByChannelQuery:
         arguments:
             - '@database_connection'
@@ -65,9 +70,19 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpToDateLatestProductAxesRatesQuery:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductAxesRatesQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\HasUpToDateEvaluationQuery'
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductAxesRanksQuery:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpToDateLatestProductAxesRanksQuery:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductAxesRanksQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\HasUpToDateEvaluationQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdsFromProductIdentifiersQuery:
         arguments:
@@ -89,10 +104,19 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductEvaluationQuery:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpdatedProductsWithoutUpToDateEvaluationQuery:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductAxesRatesQuery'
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpToDateLatestProductEvaluationQuery:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpToDateLatestCriteriaEvaluationsByProductIdQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpToDateLatestProductAxesRatesQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\AxisRegistry'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\HasUpToDateEvaluationQuery:
+        arguments:
+            - '@database_connection'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetPendingCriteriaEvaluationsByProductIdsQuery:
         arguments:
