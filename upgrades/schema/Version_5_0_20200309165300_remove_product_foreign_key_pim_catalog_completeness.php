@@ -19,11 +19,12 @@ FROM information_schema.INNODB_FOREIGN AS fk
     ON fk.id = fk_cols.id
 WHERE
   fk.for_name = 'akeneo_pim/pim_catalog_completeness'
-  AND fk.ref_name = 'akeneo_pim/pim_catalog_product'
+  AND fk.ref_name = '{db_name}/pim_catalog_product'
   AND fk_cols.for_col_name = 'product_id'
   AND fk_cols.ref_col_name = 'id'
 SQL;
 
+        $sql = strtr($sql, ['{db_name}' => $this->connection->getDatabase()]);
         return $this->connection->executeQuery($sql)->fetchAll(\PDO::FETCH_COLUMN);
     }
 
