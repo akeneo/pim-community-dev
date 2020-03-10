@@ -12,6 +12,7 @@ const Container = styled.tr`
   height: 54px;
   border-bottom: 1px solid ${akeneoTheme.color.grey70};
 `;
+
 const MeasurementFamilyLabelCell = styled.td`
   color: ${akeneoTheme.color.purple100};
   font-style: italic;

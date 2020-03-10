@@ -31,7 +31,7 @@ const SearchInput = styled.input`
 `;
 
 type SearchBarProps = {
-  count: number | null;
+  count: number;
 };
 
 export const SearchBar = ({count}: SearchBarProps) => {
@@ -43,7 +43,7 @@ export const SearchBar = ({count}: SearchBarProps) => {
         <SearchIcon />
         <SearchInput placeholder={__('measurements.search.placeholder')} />
       </SearchContainer>
-      <ResultCount count={null !== count ? count : 0} />
+      <ResultCount count={count} />
     </Container>
   );
 };

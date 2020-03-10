@@ -36,6 +36,20 @@ const TableHeader = styled.thead`
 
 const TableBody = styled.tbody``;
 
+const PageHeaderPlaceholder = styled.div`
+  width: 200px;
+  height: 34px;
+`;
+
+const TablePlaceholder = styled.div`
+  display: grid;
+  grid-row-gap: 10px;
+
+  > div {
+    height: 54px;
+  }
+`;
+
 export const Index = () => {
   const __ = useContext(TranslateContext);
   const measurementFamilies = useMeasurementFamilies();
@@ -56,10 +70,16 @@ export const Index = () => {
           </Breadcrumb>
         }
       >
-        {__(
-          'measurements.family.result_count',
-          {itemsCount: (measurementFamilies ? measurementFamilies.length : 0).toString()},
-          measurementFamilies ? measurementFamilies.length : 0
+        {null === measurementFamilies ? (
+          <div className={`AknLoadingPlaceHolderContainer`}>
+            <PageHeaderPlaceholder />
+          </div>
+        ) : (
+          __(
+            'measurements.family.result_count',
+            {itemsCount: (measurementFamilies ? measurementFamilies.length : 0).toString()},
+            measurementFamilies ? measurementFamilies.length : 0
+          )
         )}
       </PageHeader>
 
@@ -77,38 +97,46 @@ export const Index = () => {
             </HelperText>
           </HelperTitle>
         </Helper>
-        {null === measurementFamilies || measurementFamilies.length === 0 ? (
-          <NoDataSection>
-            <MeasurementFamilyIllustration size={256} />
-            <NoDataTitle>{__('measurements.family.no_data.title')}</NoDataTitle>
-            <NoDataText>
-              <Link
-                onClick={() => {
-                  // TODO connect create button
-                }}
-              >
-                {__('measurements.family.no_data.link')}
-              </Link>
-            </NoDataText>
-          </NoDataSection>
+        {null === measurementFamilies ? (
+          <TablePlaceholder className={`AknLoadingPlaceHolderContainer`}>
+            {[...Array(5)].map((_e, i) => (
+              <div key={i} />
+            ))}
+          </TablePlaceholder>
         ) : (
           <Container>
-            <SearchBar count={null === measurementFamilies ? null : measurementFamilies.length} />
-            <Table>
-              <TableHeader>
-                <tr>
-                  <td>{__('measurements.list.header.label')}</td>
-                  <td>{__('measurements.list.header.code')}</td>
-                  <td>{__('measurements.list.header.standard_unit')}</td>
-                  <td>{__('measurements.list.header.unit_count')}</td>
-                </tr>
-              </TableHeader>
-              <TableBody>
-                {measurementFamilies?.map(measurementFamily => (
-                  <MeasurementFamilyRow key={measurementFamily.code} measurementFamily={measurementFamily} />
-                ))}
-              </TableBody>
-            </Table>
+            <SearchBar count={measurementFamilies.length} />
+            {measurementFamilies.length === 0 ? (
+              <NoDataSection>
+                <MeasurementFamilyIllustration size={256} />
+                <NoDataTitle>{__('measurements.family.no_data.title')}</NoDataTitle>
+                <NoDataText>
+                  <Link
+                    onClick={() => {
+                      // TODO connect create button
+                    }}
+                  >
+                    {__('measurements.family.no_data.link')}
+                  </Link>
+                </NoDataText>
+              </NoDataSection>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <tr>
+                    <td>{__('measurements.list.header.label')}</td>
+                    <td>{__('measurements.list.header.code')}</td>
+                    <td>{__('measurements.list.header.standard_unit')}</td>
+                    <td>{__('measurements.list.header.unit_count')}</td>
+                  </tr>
+                </TableHeader>
+                <TableBody>
+                  {measurementFamilies.map(measurementFamily => (
+                    <MeasurementFamilyRow key={measurementFamily.code} measurementFamily={measurementFamily} />
+                  ))}
+                </TableBody>
+              </Table>
+            )}
           </Container>
         )}
       </PageContent>
