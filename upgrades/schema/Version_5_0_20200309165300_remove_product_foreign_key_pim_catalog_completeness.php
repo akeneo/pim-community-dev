@@ -18,7 +18,7 @@ FROM information_schema.INNODB_FOREIGN AS fk
   JOIN information_schema.INNODB_FOREIGN_COLS AS fk_cols
     ON fk.id = fk_cols.id
 WHERE
-  fk.for_name = 'akeneo_pim/pim_catalog_completeness'
+  fk.for_name = '{db_name}/pim_catalog_completeness'
   AND fk.ref_name = '{db_name}/pim_catalog_product'
   AND fk_cols.for_col_name = 'product_id'
   AND fk_cols.ref_col_name = 'id'
