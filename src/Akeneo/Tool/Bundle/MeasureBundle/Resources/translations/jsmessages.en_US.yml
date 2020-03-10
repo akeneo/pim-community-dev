@@ -25,3 +25,4 @@ measurements:
             code: Code
             standard_unit: Standard unit
             unit_count: Number of units
+    close: Close

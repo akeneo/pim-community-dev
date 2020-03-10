@@ -20,14 +20,18 @@ const ResultCount = styled.div``;
 
 export const Index = () => {
   const __ = useContext(TranslateContext);
+  // !todo make a better hook
   const [createMeasurementFamilyModalIsOpen, setCreateMeasurementFamilyModalIsOpen] = useState<boolean>(false);
-  const handleCreateMeasurementFamilyClick = useCallback(() => {
+  const openCreateMeasurementFamily = useCallback(() => {
     setCreateMeasurementFamilyModalIsOpen(true);
+  }, [setCreateMeasurementFamilyModalIsOpen]);
+  const closeCreateMeasurementFamily = useCallback(() => {
+    setCreateMeasurementFamilyModalIsOpen(false);
   }, [setCreateMeasurementFamilyModalIsOpen]);
 
   return (
     <>
-      {createMeasurementFamilyModalIsOpen && <CreateMeasurementFamily/>}
+      {createMeasurementFamilyModalIsOpen && <CreateMeasurementFamily onClose={closeCreateMeasurementFamily}/>}
 
       <PageHeader
         userButtons={
@@ -37,7 +41,7 @@ export const Index = () => {
           />
         }
         buttons={[
-          <Button classNames={['AknButton--apply']} onClick={handleCreateMeasurementFamilyClick}>Create</Button>
+          <Button classNames={['AknButton--apply']} onClick={openCreateMeasurementFamily}>Create</Button>
         ]}
         breadcrumb={
           <Breadcrumb>
