@@ -55,7 +55,7 @@ class MigrateAudit40MasterIntegration extends TestCase
         $this->assertCount(193, $hourlyIntervals);
 
         $expectedLastHourlyInterval = HourlyInterval::createFromDateTime(new \DateTime('now', new \DateTimeZone('UTC')));
-        $this->assertTrue(HourlyInterval::equals($expectedLastHourlyInterval, $hourlyIntervals[0]));
+        $this->assertTrue($expectedLastHourlyInterval->equals($hourlyIntervals[0]));
     }
 
     protected function getConfiguration(): Configuration

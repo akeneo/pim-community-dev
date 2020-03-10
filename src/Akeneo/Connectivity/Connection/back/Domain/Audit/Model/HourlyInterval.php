@@ -64,8 +64,11 @@ final class HourlyInterval
         return new self($fromDateTime, $upToDateTime);
     }
 
-    public static function equals(self $firstInterval, self $secondInterval): bool
+    /**
+     * Check if the hourly interval is equals to the given one.
+     */
+    public function equals(self $hourlyInterval): bool
     {
-        return $firstInterval->upToDateTime()->getTimestamp() === $secondInterval->upToDateTime()->getTimestamp();
+        return $this->upToDateTime()->getTimestamp() === $hourlyInterval->upToDateTime()->getTimestamp();
     }
 }

@@ -83,8 +83,8 @@ class DbalSelectHourlyIntervalsToRefreshQueryIntegration extends TestCase
         $result = $this->getSelectHourlyIntervalsToRefreshQuery()->execute();
 
         Assert::assertCount(2, $expectedResult);
-        Assert::assertTrue(HourlyInterval::equals($expectedResult[0], $result[0]));
-        Assert::assertTrue(HourlyInterval::equals($expectedResult[1], $result[1]));
+        Assert::assertTrue($expectedResult[0]->equals($result[0]));
+        Assert::assertTrue($expectedResult[1]->equals($result[1]));
     }
 
     protected function getConfiguration(): Configuration

@@ -67,7 +67,7 @@ class UpdateAuditDataCommand extends Command
         $hourlyIntervalsToRefresh = $this->selectHourlyIntervalsToRefreshQuery->execute();
         foreach ($hourlyIntervalsToRefresh as $hourlyInterval) {
             // Ignore the current hour; already added.
-            if (true === HourlyInterval::equals($nowHourlyInterval, $hourlyInterval)) {
+            if (true === $nowHourlyInterval->equals($hourlyInterval)) {
                 continue;
             }
 

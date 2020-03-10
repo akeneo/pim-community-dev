@@ -56,21 +56,42 @@ class HourlyIntervalSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 
-    public function it_compares_two_hourly_intervals(): void
+    public function it_compares_two_equals_hourly_intervals_created_with_the_same_hours(): void
     {
-        $this::equals(
-            HourlyInterval::createFromDateTime(new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))),
-            HourlyInterval::createFromDateTime(new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC')))
-        )->shouldReturn(true);
+        $this->beConstructedThrough('createFromDateTime', [
+            new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))
+        ]);
 
-        $this::equals(
-            HourlyInterval::createFromDateTime(new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))),
-            HourlyInterval::createFromDateTime(new \DateTimeImmutable('2020-01-01 10:59:59', new \DateTimeZone('UTC')))
-        )->shouldReturn(true);
+        $hourlyInterval = HourlyInterval::createFromDateTime(
+            new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))
+        );
 
-        $this::equals(
-            HourlyInterval::createFromDateTime(new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))),
-            HourlyInterval::createFromDateTime(new \DateTimeImmutable('2020-01-01 11:00:00', new \DateTimeZone('UTC')))
-        )->shouldReturn(false);
+        $this->equals($hourlyInterval)->shouldReturn(true);
+    }
+
+    public function it_compares_two_equals_hourly_intervals_created_with_differents_hours(): void
+    {
+        $this->beConstructedThrough('createFromDateTime', [
+            new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))
+        ]);
+
+        $hourlyInterval = HourlyInterval::createFromDateTime(
+            new \DateTimeImmutable('2020-01-01 10:59:59', new \DateTimeZone('UTC'))
+        );
+
+        $this->equals($hourlyInterval)->shouldReturn(true);
+    }
+
+    public function it_compares_two_differents_hourly_intervals(): void
+    {
+        $this->beConstructedThrough('createFromDateTime', [
+            new \DateTimeImmutable('2020-01-01 10:00:00', new \DateTimeZone('UTC'))
+        ]);
+
+        $hourlyInterval = HourlyInterval::createFromDateTime(
+            new \DateTimeImmutable('2020-01-01 11:00:00', new \DateTimeZone('UTC'))
+        );
+
+        $this->equals($hourlyInterval)->shouldReturn(false);
     }
 }
