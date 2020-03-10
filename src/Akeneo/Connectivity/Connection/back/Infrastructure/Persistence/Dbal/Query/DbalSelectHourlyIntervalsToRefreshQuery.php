@@ -32,7 +32,7 @@ class DbalSelectHourlyIntervalsToRefreshQuery
     public function execute(): array
     {
         $selectSQL = <<<SQL
-SELECT DISTINCT event_datetime FROM akeneo_connectivity_connection_audit
+SELECT DISTINCT event_datetime FROM akeneo_connectivity_connection_audit_product
 WHERE updated < event_datetime ORDER BY event_datetime
 SQL;
         $dateTimes = $this->dbalConnection->executeQuery($selectSQL)->fetchAll(FetchMode::COLUMN);

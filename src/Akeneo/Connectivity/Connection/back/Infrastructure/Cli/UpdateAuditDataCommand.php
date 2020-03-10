@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Infrastructure\Install\MigrateAudit40Master;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectHourlyIntervalsToRefreshQuery;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,25 +28,37 @@ class UpdateAuditDataCommand extends Command
     /** @var DbalSelectHourlyIntervalsToRefreshQuery */
     private $selectHourlyIntervalsToRefreshQuery;
 
+    /** @var MigrateAudit40Master */
+    private $migrateAudit40Master;
+
     public function __construct(
         UpdateProductEventCountHandler $updateProductEventCountHandler,
-        DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery
+        DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery,
+        MigrateAudit40Master $migrateAudit40Master
     ) {
         parent::__construct();
 
         $this->updateProductEventCountHandler = $updateProductEventCountHandler;
         $this->selectHourlyIntervalsToRefreshQuery = $selectHourlyIntervalsToRefreshQuery;
+        $this->migrateAudit40Master = $migrateAudit40Master;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var UpdateProductEventCountCommand[] */
-        $commands = [];
+        // TODO: To remove when pullup on master
+        $hourlyIntervalsToRecalculate = $this->migrateAudit40Master->migrateIfNeeded();
+        if (!empty($hourlyIntervalsToRecalculate)) {
+            foreach ($hourlyIntervalsToRecalculate as $hourlyInterval) {
+                $command = new UpdateProductEventCountCommand($hourlyInterval);
+                $this->updateProductEventCountHandler->handle($command);
+            }
+
+            return 0;
+        }
 
         // Create a Command for the current hour.
-        $commands[] = new UpdateProductEventCountCommand(
-            HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC')))
-        );
+        $nowHourlyInterval = HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
+        $this->updateProductEventCount($nowHourlyInterval);
 
         /*
          * Create a Command for each hour retrieved from events that are not yet complete.
@@ -54,17 +67,20 @@ class UpdateAuditDataCommand extends Command
         $hourlyIntervalsToRefresh = $this->selectHourlyIntervalsToRefreshQuery->execute();
         foreach ($hourlyIntervalsToRefresh as $hourlyInterval) {
             // Ignore the current hour; already added.
-            if (true === HourlyInterval::equals($commands[0]->hourlyInterval(), $hourlyInterval)) {
+            if (true === HourlyInterval::equals($nowHourlyInterval, $hourlyInterval)) {
                 continue;
             }
 
-            $commands[] = new UpdateProductEventCountCommand($hourlyInterval);
-        }
-
-        foreach ($commands as $command) {
-            $this->updateProductEventCountHandler->handle($command);
+            $this->updateProductEventCount($hourlyInterval);
         }
 
         return 0;
+    }
+
+    private function updateProductEventCount(HourlyInterval $hourlyInterval): void
+    {
+        $this->updateProductEventCountHandler->handle(
+            new UpdateProductEventCountCommand($hourlyInterval)
+        );
     }
 }
