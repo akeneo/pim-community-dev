@@ -8,6 +8,7 @@ use Akeneo\Test\Acceptance\Attribute\InMemoryIsThereAtLeastOneAttributeConfigure
 use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyHandler;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
@@ -40,11 +41,122 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily = $this->get('akeneo.pim.structure.query.is_there_at_least_one_attribute_configured_with_measurement_family');
     }
 
-    // TODO: Nominal cases
-    // It can create
-    // It can update
-    // It can add & remove units
-    // It can update units
+    /**
+     * @test
+     */
+    public function it_can_create_a_measurement_family(): void
+    {
+        $measurementFamilyCode = 'weight';
+        $measurementFamilyLabels = ['fr_FR' => 'Poids', 'en_US' => 'Weight'];
+        // kilogram unit
+        $kilogramUnitCode = 'kilogram';
+        $kilogramLabels = ['fr_FR' => 'kilogramme', 'en_US' => 'Kilogram'];
+        $kilogramConversion = ['operator' => 'mul', 'value' => '1'];
+        $kilogramSymbol = 'Km';
+        // gram unit
+        $gramUnitCode = 'gram';
+        $gramLabels = ['fr_FR' => 'Gramme', 'en_US' => 'Gram'];
+        $gramConversion = ['operator' => 'mul', 'value' => '0.001'];
+        $gramSymbol = 'g';
+        //command
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = $measurementFamilyCode;
+        $saveFamilyCommand->labels = $measurementFamilyLabels;
+        $saveFamilyCommand->standardUnitCode = $kilogramUnitCode;
+        $saveFamilyCommand->units = [
+            [
+                'code' => $kilogramUnitCode,
+                'labels' => $kilogramLabels,
+                'convert_from_standard' => [$kilogramConversion],
+                'symbol' => $kilogramSymbol
+            ],
+            [
+                'code' => $gramUnitCode,
+                'labels' => $gramLabels,
+                'convert_from_standard' => [$gramConversion],
+                'symbol' => $gramSymbol
+            ]
+        ];
+        $this->assertMeasurementFamilyDoesNotExists($measurementFamilyCode);
+
+        $violations = $this->validator->validate($saveFamilyCommand);
+        $this->saveMeasurementFamilyHandler->handle($saveFamilyCommand);
+
+        self::assertEquals(0, $violations->count());
+        $expectedMeasurementFamily = MeasurementFamily::create(
+            MeasurementFamilyCode::fromString($measurementFamilyCode),
+            LabelCollection::fromArray($measurementFamilyLabels),
+            UnitCode::fromString($kilogramUnitCode),
+            [
+                Unit::create(
+                    UnitCode::fromString($kilogramUnitCode),
+                    LabelCollection::fromArray($kilogramLabels),
+                    [Operation::create($kilogramConversion['operator'], $kilogramConversion['value'])],
+                    $kilogramSymbol
+                ),
+                Unit::create(
+                    UnitCode::fromString($gramUnitCode),
+                    LabelCollection::fromArray($gramLabels),
+                    [Operation::create($gramConversion['operator'], $gramConversion['value'])],
+                    $gramSymbol
+                )
+            ]
+        );
+        $actualMeasurementFamily = $this->measurementFamilyRepository->getByCode(
+            MeasurementFamilyCode::fromString($measurementFamilyCode)
+        );
+        $this->assertEquals($expectedMeasurementFamily, $actualMeasurementFamily);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_update_an_existing_measurement_family(): void
+    {
+        $measurementFamilyCode = 'weight';
+        // ton
+        $updatedMeasurementFamilyLabel = ['fr_FR' => 'Another LABEL'];
+        $tonUnitCode = 'ton';
+        $tonLabels = ['fr_FR' => 'Tonne', 'en_US' => 'Ton'];
+        $tonConversionOperator = ['operator' => 'mul', 'value' => '1'];
+        $tonSymbol = 'T';
+        //command
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = $measurementFamilyCode;
+        $saveFamilyCommand->labels = $updatedMeasurementFamilyLabel;
+        $saveFamilyCommand->standardUnitCode = $tonUnitCode;
+        $saveFamilyCommand->units = [
+            [
+                'code' => $tonUnitCode,
+                'labels' => $tonLabels,
+                'convert_from_standard' => [$tonConversionOperator],
+                'symbol' => $tonSymbol
+            ],
+        ];
+        $this->createMeasurementFamilyWithUnitsAndStandardUnit($measurementFamilyCode, ['KILOGRAM', 'GRAM'], 'KILOGRAM');
+
+        $violations = $this->validator->validate($saveFamilyCommand);
+        $this->saveMeasurementFamilyHandler->handle($saveFamilyCommand);
+
+        self::assertEquals(0, $violations->count());
+        $measurementFamily = MeasurementFamily::create(
+            MeasurementFamilyCode::fromString($measurementFamilyCode),
+            LabelCollection::fromArray($updatedMeasurementFamilyLabel),
+            UnitCode::fromString($tonUnitCode),
+            [
+                Unit::create(
+                    UnitCode::fromString($tonUnitCode),
+                    LabelCollection::fromArray($tonLabels),
+                    [Operation::create($tonConversionOperator['operator'], $tonConversionOperator['value'])],
+                    $tonSymbol
+                ),
+            ]
+        );
+        $actualMeasurementFamily = $this->measurementFamilyRepository->getByCode(
+            MeasurementFamilyCode::fromString($measurementFamilyCode)
+        );
+        $this->assertEquals($measurementFamily, $actualMeasurementFamily);
+    }
 
     /**
      * @test
@@ -489,8 +601,6 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals('The update of the convert operations for the KILOGRAM unit(s) in the "WEIGHT" measurement family is not allowed because it is linked to a product attribute.', $violation->getMessage());
     }
 
-    // Cannot edit convert operations
-
     public function invalidCodes(): array
     {
         return [
@@ -583,5 +693,19 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             'Cannot update an existing operation' => [[['operator' => 'mul', 'value' => '50']]],
             'Cannot add an operation' => [[['operator' => 'mul', 'value' => '0.000001'], ['operator' => 'add', 'value' => '50']]],
         ];
+    }
+
+    private function assertMeasurementFamilyDoesNotExists(string $measurementFamilyCode): void
+    {
+        try {
+            $this->measurementFamilyRepository->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
+        } catch (MeasurementFamilyNotFoundException $e) {
+            return;
+        }
+
+        self::assertTrue(
+            false,
+            sprintf('Measurement family "%s" exists, expected not to exist', $measurementFamilyCode)
+        );
     }
 }
