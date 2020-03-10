@@ -52,7 +52,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
 
         foreach ($collection as $type => $data) {
             if ($this->isAllowed($product, $type)) {
-                $newProductData[$type] = $data;
+                $newProductData[$type] = $this->filterData($type, $data);
             }
         }
 
@@ -65,6 +65,15 @@ class ProductEditDataFilter implements CollectionFilterInterface
     public function supportsCollection($collection, $type, array $options = [])
     {
         return false;
+    }
+
+    private function filterData(string $type, $data)
+    {
+        if ('values' === $type) {
+            $data = $this->productValuesFilter->filterCollection($data, 'pim.internal_api.product_values_data.edit');
+        }
+
+        return $data;
     }
 
     /**
