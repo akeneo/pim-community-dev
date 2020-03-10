@@ -244,6 +244,30 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     /**
      * @test
      */
+    public function it_does_not_specify_a_standard_unit_code(): void
+    {
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = 'WEIGHT';
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->units = [
+            [
+                'code' => 'kilogram',
+                'labels' => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']],
+                'symbol' => 'Km'
+            ]
+        ];
+
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(1, $violations->count());
+        $violation = $violations->get(0);
+        self::assertEquals('The standard unit is required.', $violation->getMessage());
+    }
+
+    /**
+     * @test
+     */
     public function it_has_a_standard_unit_which_is_not_a_unit_of_the_measurement_family(): void
     {
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();

@@ -5,15 +5,17 @@ pim_measurements:
                 pattern: 'This field can only contain letters, numbers, and underscores.'
                 limit_reached: 'You cannot create the "%measurement_family_code%" measurement family because you have reached the limit of %limit% measurement families'
         measurement_family:
-            standard_unit_code_should_exist: 'The "%standard_unit_code%" standard unit code does not exist in the list of units for the measurement family.'
+            standard_unit_code:
+                is_required: 'The standard unit is required.'
+                should_be_in_the_list_of_units: 'The "%standard_unit_code%" standard unit code does not exist in the list of units for the measurement family.'
             should_contain_max_elements: 'You’ve reached the limit of {{ limit }} measurement families.'
             convert:
                 value_should_be_a_number_in_a_string: 'The conversion value should be a number represented in a string (example: "0.2561")'
                 should_contain_min_elements: 'A minimum of one conversion operation per unit is required.'
                 should_contain_max_elements: 'You’ve reached the limit of {{ limit }} conversion operations per unit.'
-            measurement_family_standard_unit_code_is_locked_for_updates: 'The update of the "%measurement_family_code%" measurement family standard unit code is not allowed because it is linked to a product attribute.'
-            measurement_family_units_is_locked_for_updates: 'The removal of the %unit_code% unit(s) in the "%measurement_family_code%" measurement family is not allowed because it is linked to a product attribute.'
-            measurement_family_unit_operations_locked_for_updates: 'The update of the convert operations for the %unit_code% unit(s) in the "%measurement_family_code%" measurement family is not allowed because it is linked to a product attribute.'
+            measurement_family_standard_unit_code_is_locked_for_updates: 'A product attribute is linked to this measurement family, you can only edit its translated labels.'
+            measurement_family_units_is_locked_for_updates: 'A product attribute is linked to this measurement family, you can only edit the translated labels and symbol of a unit'
+            measurement_family_unit_operations_locked_for_updates: 'A product attribute is linked to this measurement family, you can only edit the translated labels and symbol of a unit'
             units:
                 should_contain_min_elements: 'A minimum of one conversion operation per unit is required.'
                 should_contain_max_elements: 'You’ve reached the limit of {{ limit }} conversion operations per unit.'

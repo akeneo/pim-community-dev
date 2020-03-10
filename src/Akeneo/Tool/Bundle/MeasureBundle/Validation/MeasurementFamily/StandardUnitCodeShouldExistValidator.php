@@ -33,6 +33,12 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
             );
         }
         $standardUnitCode = $saveMeasurementFamilyCommand->standardUnitCode;
+        if (empty($standardUnitCode)) {
+            $this->context->buildViolation(StandardUnitCodeShouldExist::STANDARD_UNIT_CODE_IS_REQUIRED)
+                ->addViolation();
+
+            return;
+        }
 
         $validator = Validation::createValidator();
         $violations = $validator->validate(
@@ -46,7 +52,7 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
                             }
                         }
                         $context->buildViolation(
-                            StandardUnitCodeShouldExist::STANDARD_UNIT_CODE_SHOULD_EXIST,
+                            StandardUnitCodeShouldExist::STANDARD_UNIT_CODE_SHOULD_EXIST_IN_THE_LIST_OF_UNITS,
                             ['%standard_unit_code%' => $standardUnitCode]
                         )->addViolation();
                     }
