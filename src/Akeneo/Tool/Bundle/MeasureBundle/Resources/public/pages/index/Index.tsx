@@ -18,6 +18,7 @@ import {Search as SearchIcon} from 'akeneomeasure/shared/icons/search';
 import {MeasurementFamily as MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/measurement-family';
 import {HelperTitle, HelperText, Helper} from 'akeneomeasure/shared/components/helper';
 import {Link} from 'akeneomeasure/shared/components/link';
+import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/components/no-data';
 
 const List = styled.div``;
 
@@ -160,7 +161,7 @@ export const Index = () => {
         }
       >
         {__(
-          'measurements.families',
+          'measurements.family.result_count',
           {itemsCount: (measurementFamilies ? measurementFamilies.length : 0).toString()},
           measurementFamilies ? measurementFamilies.length : 0
         )}
@@ -172,7 +173,7 @@ export const Index = () => {
           <HelperTitle>
             👋 {__('measurements.helper.title')}
             <HelperText>
-              {__('measurements.helper.message')}
+              {__('measurements.helper.text')}
               <br />
               <Link href="https://help.akeneo.com/" target="_blank">
                 {__('measurements.helper.link')}
@@ -180,30 +181,46 @@ export const Index = () => {
             </HelperText>
           </HelperTitle>
         </Helper>
-        <List>
-          <SearchBar>
-            <SearchContainer>
-              <SearchIcon />
-              <SearchInput placeholder={__('measurements.search.placeholder')} />
-            </SearchContainer>
-            <ResultCount count={measurementFamilies ? measurementFamilies.length : 0} />
-          </SearchBar>
-          <Table>
-            <TableHeader>
-              <tr>
-                <td>{__('measurements.list.header.label')}</td>
-                <td>{__('measurements.list.header.code')}</td>
-                <td>{__('measurements.list.header.standard_unit')}</td>
-                <td>{__('measurements.list.header.unit_count')}</td>
-              </tr>
-            </TableHeader>
-            <TableBody>
-              {measurementFamilies?.map(measurementFamily => (
-                <MeasurementFamilyRow key={measurementFamily.code} measurementFamily={measurementFamily} />
-              ))}
-            </TableBody>
-          </Table>
-        </List>
+        {null === measurementFamilies || measurementFamilies.length === 0 ? (
+          <NoDataSection>
+            <MeasurementFamilyIllustration size={256} />
+            <NoDataTitle>{__('measurements.family.no_data.title')}</NoDataTitle>
+            <NoDataText>
+              <Link
+                onClick={() => {
+                  // TODO connect create button
+                }}
+              >
+                {__('measurements.family.no_data.link')}
+              </Link>
+            </NoDataText>
+          </NoDataSection>
+        ) : (
+          <List>
+            <SearchBar>
+              <SearchContainer>
+                <SearchIcon />
+                <SearchInput placeholder={__('measurements.search.placeholder')} />
+              </SearchContainer>
+              <ResultCount count={measurementFamilies ? measurementFamilies.length : 0} />
+            </SearchBar>
+            <Table>
+              <TableHeader>
+                <tr>
+                  <td>{__('measurements.list.header.label')}</td>
+                  <td>{__('measurements.list.header.code')}</td>
+                  <td>{__('measurements.list.header.standard_unit')}</td>
+                  <td>{__('measurements.list.header.unit_count')}</td>
+                </tr>
+              </TableHeader>
+              <TableBody>
+                {measurementFamilies?.map(measurementFamily => (
+                  <MeasurementFamilyRow key={measurementFamily.code} measurementFamily={measurementFamily} />
+                ))}
+              </TableBody>
+            </Table>
+          </List>
+        )}
       </PageContent>
     </>
   );
