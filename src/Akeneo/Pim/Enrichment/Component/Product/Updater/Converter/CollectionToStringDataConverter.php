@@ -24,13 +24,23 @@ final class CollectionToStringDataConverter implements ValueDataConverter
             AttributeTypes::TEXT => true,
             AttributeTypes::TEXTAREA => true,
         ],
+        AttributeTypes::PRICE_COLLECTION => [
+            AttributeTypes::TEXT => true,
+            AttributeTypes::TEXTAREA => true,
+        ],
     ];
 
+    /**
+     * {@inheritdoc}
+     */
     public function supportsAttributes(AttributeInterface $sourceAttribute, AttributeInterface $targetAttribute): bool
     {
         return isset($this->supportedAttributeTypes[$sourceAttribute->getType()][$targetAttribute->getType()]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute)
     {
         Assert::isIterable($sourceValue->getData());
