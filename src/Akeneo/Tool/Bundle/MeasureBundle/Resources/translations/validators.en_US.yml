@@ -11,8 +11,9 @@ pim_measurements:
                 value_should_be_a_number_in_a_string: 'The conversion value should be a number represented in a string (example: "0.2561")'
                 should_contain_min_elements: 'A minimum of one conversion operation per unit is required.'
                 should_contain_max_elements: 'You’ve reached the limit of {{ limit }} conversion operations per unit.'
-                measurement_family_standard_unit_code_is_locked_for_updates: 'The update of the "%measurement_family_code%" measurement family standard unit code is not allowed because it is linked to a product attribute.'
-                measurement_family_units_is_locked_for_updates: 'The removal of the %unit_code% unit(s) in the "%measurement_family_code%" measurement family is not allowed because it is linked to a product attribute.'
+            measurement_family_standard_unit_code_is_locked_for_updates: 'The update of the "%measurement_family_code%" measurement family standard unit code is not allowed because it is linked to a product attribute.'
+            measurement_family_units_is_locked_for_updates: 'The removal of the %unit_code% unit(s) in the "%measurement_family_code%" measurement family is not allowed because it is linked to a product attribute.'
+            measurement_family_unit_operations_locked_for_updates: 'The update of the convert operations for the %unit_code% unit(s) in the "%measurement_family_code%" measurement family is not allowed because it is linked to a product attribute.'
             units:
                 should_contain_min_elements: 'A minimum of one conversion operation per unit is required.'
                 should_contain_max_elements: 'You’ve reached the limit of {{ limit }} conversion operations per unit.'

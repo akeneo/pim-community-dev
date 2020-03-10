@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Acceptance;
 
-use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Acceptance\Attribute\InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyStub;
 use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
@@ -15,7 +14,6 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
-use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SaveMeasurementFamilyTest extends AcceptanceTestCase
@@ -55,7 +53,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     {
         $measurementFamilyCode = 'WEIGHT';
         $this->createMeasurementFamilyWithUnitsAndStandardUnit($measurementFamilyCode, ['KILOGRAM', 'GRAM'], 'KILOGRAM');
-        $this->thereIsAProductAttributeLinkedToThisMeasurementFamily();
+        $this->assertThereIsAProductAttributeLinkedToThisMeasurementFamily();
 
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = $measurementFamilyCode;
@@ -391,7 +389,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     {
         $measurementFamilyCode = 'WEIGHT';
         $this->createMeasurementFamilyWithUnitsAndStandardUnit($measurementFamilyCode, ['KILOGRAM', 'GRAM'], 'KILOGRAM');
-        $this->thereIsAProductAttributeLinkedToThisMeasurementFamily();
+        $this->assertThereIsAProductAttributeLinkedToThisMeasurementFamily();
 
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = $measurementFamilyCode;
@@ -425,7 +423,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     {
         $measurementFamilyCode = 'WEIGHT';
         $this->createMeasurementFamilyWithUnitsAndStandardUnit($measurementFamilyCode, ['KILOGRAM', 'GRAM'], 'KILOGRAM');
-        $this->thereIsAProductAttributeLinkedToThisMeasurementFamily();
+        $this->assertThereIsAProductAttributeLinkedToThisMeasurementFamily();
 
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = $measurementFamilyCode;
@@ -445,6 +443,50 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
         self::assertEquals('The removal of the GRAM unit(s) in the "WEIGHT" measurement family is not allowed because it is linked to a product attribute.', $violation->getMessage());
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidConvertionOperations
+     */
+    public function it_does_not_allow_to_update_the_convertion_of_a_unit_when_linked_to_a_product_attribute(array $invalidOperations): void
+    {
+        $measurementFamilyCode = 'WEIGHT';
+        $conversion = [Operation::create("mul", "0.000001")];
+        $this->measurementFamilyRepository->save(
+            MeasurementFamily::create(
+                MeasurementFamilyCode::fromString($measurementFamilyCode),
+                LabelCollection::fromArray([]),
+                UnitCode::fromString('KILOGRAM'),
+                [
+                    Unit::create(
+                        UnitCode::fromString('KILOGRAM'),
+                        LabelCollection::fromArray([]),
+                        $conversion,
+                        "km",
+                    )
+                ]
+            )
+        );
+        $this->assertThereIsAProductAttributeLinkedToThisMeasurementFamily();
+
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = $measurementFamilyCode;
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->standardUnitCode = 'KILOGRAM';
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => 'KILOGRAM',
+                'labels'                => [],
+                'convert_from_standard' => $invalidOperations,
+                'symbol' => 'km'
+            ],
+        ];
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(1, $violations->count());
+        $violation = $violations->get(0);
+        self::assertEquals('The update of the convert operations for the KILOGRAM unit(s) in the "WEIGHT" measurement family is not allowed because it is linked to a product attribute.', $violation->getMessage());
     }
 
     // Cannot edit convert operations
@@ -493,7 +535,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         ];
     }
 
-    private function thereIsAProductAttributeLinkedToThisMeasurementFamily(): void
+    private function assertThereIsAProductAttributeLinkedToThisMeasurementFamily(): void
     {
         $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily->setStub(true);
     }
@@ -532,6 +574,14 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     {
         return [
             'Should have at least one operation' => [51, 'You’ve reached the limit of 50 conversion operations per unit.'],
+        ];
+    }
+
+    public function invalidConvertionOperations()
+    {
+        return [
+            'Cannot update an existing operation' => [[['operator' => 'mul', 'value' => '50']]],
+            'Cannot add an operation' => [[['operator' => 'mul', 'value' => '0.000001'], ['operator' => 'add', 'value' => '50']]],
         ];
     }
 }

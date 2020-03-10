@@ -73,6 +73,19 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
             )->addViolation();
         }
 
+        $unitsBeingUpdated = $this->isTryingToUpdateTheConvertionOperations(
+            $measurementFamily,
+            $saveMeasurementFamily
+        );
+        if ($unitsBeingUpdated) {
+            $this->context->buildViolation(
+                WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnits::MEASUREMENT_FAMILY_OPERATION_UPDATE_NOT_ALLOWED,
+                [
+                    '%unit_code%'               => implode(',', $unitsBeingUpdated),
+                    '%measurement_family_code%' => $saveMeasurementFamily->code
+                ]
+            )->addViolation();
+        }
     }
 
     private function isTryingToUpdateStandardUnitCode(
@@ -103,5 +116,56 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
                 array_diff($unitCodesToUpdate, $actualUnitCodes)
             )
         );
+    }
+
+    private function isTryingToUpdateTheConvertionOperations(
+        MeasurementFamily $measurementFamily,
+        SaveMeasurementFamilyCommand $saveMeasurementFamily
+    ): array {
+        $serializedUpdatedOperationsPerUnit = $this->serializeUpdatedOperationsPerUnit($saveMeasurementFamily);
+        $serializedActualOperationsPerUnit = $this->serializeActualOperationsPerUnit($measurementFamily);
+
+        $unitsBeingUpdated = [];
+        foreach ($serializedActualOperationsPerUnit as $unitCode => $serializedActualUnitOperations) {
+            if (isset($serializedUpdatedOperationsPerUnit[$unitCode])
+                && $serializedUpdatedOperationsPerUnit[$unitCode] !== $serializedActualUnitOperations) {
+                $unitsBeingUpdated[] = $unitCode;
+            }
+        }
+
+        return $unitsBeingUpdated;
+    }
+
+    private function serializeUpdatedOperationsPerUnit(SaveMeasurementFamilyCommand $saveMeasurementFamily): array
+    {
+        $operationsPerUnit = [];
+        foreach ($saveMeasurementFamily->units as $unit) {
+            $unitCode = $unit['code'];
+            $serializedOperations = array_map(
+                function (array $unit) {
+                    return json_encode($unit);
+                },
+                $unit['convert_from_standard']
+            );
+            $operationsPerUnit[$unitCode] = $serializedOperations;
+        }
+
+        return $operationsPerUnit;
+    }
+
+    private function serializeActualOperationsPerUnit(MeasurementFamily $measurementFamily): array
+    {
+        $operationsPerUnit = [];
+        $normalizedUnits = $measurementFamily->normalize()['units'];
+        foreach ($normalizedUnits as $unit) {
+            $unitCode = $unit['code'];
+            $serializedOperations = array_map(
+                function (array $unit) {
+                    return json_encode($unit);
+                },$unit['convert_from_standard']);
+            $operationsPerUnit[$unitCode] = $serializedOperations;
+        }
+
+        return $operationsPerUnit;
     }
 }
