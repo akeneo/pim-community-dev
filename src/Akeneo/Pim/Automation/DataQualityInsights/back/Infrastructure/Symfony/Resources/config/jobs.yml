@@ -67,6 +67,8 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdsToEvaluateQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateMissingProductsCriteriaEvaluations'
+            - '@logger'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\ConsolidateDashboardRatesTasklet:
         arguments:

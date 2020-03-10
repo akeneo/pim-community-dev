@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\AxisRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\EvaluateTitleFormatting;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
@@ -45,16 +46,18 @@ use PhpSpec\ObjectBehavior;
  */
 class GetProductEvaluationSpec extends ObjectBehavior
 {
+    private const CHANNELS_LOCALES = [
+        'ecommerce' => ['en_US', 'fr_FR'],
+        'mobile' => ['en_US']
+    ];
+
     public function let(
         GetLatestProductEvaluationQueryInterface $getLatestProductEvaluationQuery,
         GetLocalesByChannelQueryInterface $getLocalesByChannelQuery
     ) {
-        $this->beConstructedWith($getLatestProductEvaluationQuery, $getLocalesByChannelQuery);
+        $this->beConstructedWith($getLatestProductEvaluationQuery, $getLocalesByChannelQuery, new AxisRegistry());
 
-        $getLocalesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
-            'ecommerce' => ['en_US', 'fr_FR'],
-            'mobile' => ['en_US']
-        ]));
+        $getLocalesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(self::CHANNELS_LOCALES));
     }
 
     public function it_gets_the_evaluations_of_a_product(
@@ -66,6 +69,18 @@ class GetProductEvaluationSpec extends ObjectBehavior
         $expectedEvaluation = $this->getExpectedProductEvaluation();
 
         $getLatestProductEvaluationQuery->execute($productId)->willReturn($productEvaluationReadModel);
+
+        $this->get($productId)->shouldBeLike($expectedEvaluation);
+    }
+
+    public function it_returns_default_values_if_the_product_has_no_evaluation(
+        GetLatestProductEvaluationQueryInterface $getLatestProductEvaluationQuery
+    ) {
+        $productId = new ProductId(42);
+        $productEvaluation = $this->givenAnEmptyProductEvaluation($productId);
+        $getLatestProductEvaluationQuery->execute($productId)->willReturn($productEvaluation);
+
+        $expectedEvaluation = $this->getExpectedEmptyProductEvaluation();
 
         $this->get($productId)->shouldBeLike($expectedEvaluation);
     }
@@ -408,5 +423,53 @@ class GetProductEvaluationSpec extends ObjectBehavior
                 ],
             ],
         ];
+    }
+
+    private function givenAnEmptyProductEvaluation(ProductId $productId)
+    {
+        $axesRegistry = new AxisRegistry();
+        $axesEvaluations = new AxisEvaluationCollection();
+
+        foreach ($axesRegistry->all() as $axis) {
+            $axesEvaluations->add(new AxisEvaluation(
+                $axis->getCode(),
+                new ChannelLocaleRateCollection(),
+                new CriterionEvaluationCollection()
+            ));
+        }
+
+        return new ProductEvaluation($productId, $axesEvaluations);
+    }
+
+    private function getExpectedEmptyProductEvaluation(): array
+    {
+        $productEvaluations = [];
+        $axesRegistry = new AxisRegistry();
+
+        foreach ($axesRegistry->all() as $axis) {
+            $axisCode = strval($axis->getCode());
+            $productEvaluations[$axisCode] = [];
+            foreach (self::CHANNELS_LOCALES as $channel => $locales) {
+                foreach ($locales as $locale) {
+                    $productEvaluations[$axisCode][$channel][$locale]['rate'] = [
+                        "value" => null,
+                        "rank" => null,
+                    ];
+                    foreach ($axis->getCriteriaCodes() as $criterionCode) {
+                        $productEvaluations[$axisCode][$channel][$locale]['criteria'][] = [
+                            "code" => strval($criterionCode),
+                            "rate" => [
+                                "value" => null,
+                                "rank" => null,
+                            ],
+                            "improvable_attributes" => [],
+                            "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $productEvaluations;
     }
 }

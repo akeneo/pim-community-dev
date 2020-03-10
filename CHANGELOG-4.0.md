@@ -1,5 +1,13 @@
 # 4.0.x
 
+## Improvements
+
+- DAPI-910: Do not insert evaluation criteria on post_save_all event, rely on product updated_at date
+
+## Bug fixes
+
+- PIM-9121: Check Asset exists before importing it in a Product
+
 # 4.0.8 (2020-03-05)
 
 ## Bug fixes
