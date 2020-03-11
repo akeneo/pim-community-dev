@@ -1,7 +1,6 @@
 import React, {useContext, useState} from 'react';
 import styled from 'styled-components';
 import {PageHeader} from 'akeneomeasure/shared/components/PageHeader';
-import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {PimView} from 'akeneomeasure/shared/components/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
@@ -18,6 +17,9 @@ import {UserContext} from 'akeneomeasure/context/user-context';
 import {Direction, Caret} from 'akeneomeasure/shared/components/Caret';
 
 const Container = styled.div``;
+const PageContent = styled.div`
+  padding: 0 40px 0 40px;
+`;
 
 const Table = styled.table`
   width: 100%;
@@ -50,6 +52,11 @@ const TablePlaceholder = styled.div`
   > div {
     height: 54px;
   }
+`;
+
+const StickySearchBar = styled(SearchBar)`
+  position: sticky;
+  top: 126px;
 `;
 
 const SortableTableCell = styled.td`
@@ -163,7 +170,7 @@ export const Index = () => {
         )}
         {null !== filteredMeasurementFamilies && (
           <Container>
-            <SearchBar
+            <StickySearchBar
               count={filteredMeasurementFamiliesCount}
               searchValue={searchValue}
               onSearchChange={(newSearchValue: string) => {

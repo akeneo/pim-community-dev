@@ -8,6 +8,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid ${props => props.theme.color.grey100};
+  background: ${props => props.theme.color.white};
   padding: 13px 0;
   margin: 20px 0;
 `;
@@ -30,16 +31,17 @@ const SearchInput = styled.input`
 `;
 
 type SearchBarProps = {
+  className?: string;
   count: number;
   searchValue: string;
   onSearchChange: (searchValue: string) => void;
 };
 
-export const SearchBar = ({count, searchValue, onSearchChange}: SearchBarProps) => {
+export const SearchBar = ({className, count, searchValue, onSearchChange}: SearchBarProps) => {
   const __ = useContext(TranslateContext);
 
   return (
-    <Container>
+    <Container className={className}>
       <SearchContainer>
         <SearchIcon />
         <SearchInput

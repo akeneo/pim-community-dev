@@ -20,7 +20,7 @@
 
   &-horizontalScrollContainer {
     overflow-x: auto;
-    height: ~"calc(100vh - 246px)";
+    height: ~'calc(100vh - 246px)';
   }
 
   &-horizontalScroller {
@@ -44,13 +44,13 @@
       font-style: italic;
 
       &:before {
-        content: url("/bundles/pimui/images/quote-left.svg");
+        content: url('/bundles/pimui/images/quote-left.svg');
         position: relative;
         top: -10px;
       }
 
       &:after {
-        content: url("/bundles/pimui/images/quote-right.svg");
+        content: url('/bundles/pimui/images/quote-right.svg');
         position: relative;
         bottom: -@AknTitleFontSize + -10px;
       }
@@ -103,7 +103,7 @@
   }
 
   &-horizontalscrollContainer {
-      overflow-x: scroll;
+    overflow-x: scroll;
   }
 
   &-thirdColumnContainer {
@@ -132,7 +132,7 @@
   &-thirdColumnButton {
     position: absolute;
     bottom: 90px;
-    width: ~"calc(100% - 40px)";
+    width: ~'calc(100% - 40px)';
     text-align: center;
     padding: 20px;
     border-top: 1px solid @AknBorderColor;
@@ -147,9 +147,7 @@
     flex-basis: @AknBottomPanelHeight;
     min-height: @AknBottomPanelHeight;
     z-index: 1;
-    transition:
-      flex-basis 0.3s ease-in-out,
-      min-height 0.3s ease-in-out;
+    transition: flex-basis 0.3s ease-in-out, min-height 0.3s ease-in-out;
 
     &--hidden {
       flex-basis: 0;
