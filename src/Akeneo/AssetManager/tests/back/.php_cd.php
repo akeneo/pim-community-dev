@@ -33,7 +33,7 @@ $rules = [
         'Akeneo\Tool\Bundle\RuleEngineBundle\Model',
         'Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface',
         'Akeneo\Tool\Bundle\ElasticsearchBundle',
-        'Doctrine\DBAL',
+        'Doctrine',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Akeneo\Platform\Bundle\InstallerBundle',
         'Ramsey\Uuid\Uuid',
