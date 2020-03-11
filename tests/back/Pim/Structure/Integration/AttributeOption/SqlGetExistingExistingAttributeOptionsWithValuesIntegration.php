@@ -33,17 +33,17 @@ final class SqlGetExistingExistingAttributeOptionsWithValuesIntegration extends 
 
     public function test_it_returns_option_values()
     {
+        $actual = $this->getQuery()->fromAttributeCodeAndOptionCodes('attribute_2', []);
+        \PHPUnit\Framework\Assert::assertEqualsCanonicalizing([], $actual);
+
         $actual = $this->getQuery()->fromAttributeCodeAndOptionCodes('attribute_2', ['option_A', 'option_B']);
-
         $expected = ['option_A' => ['en_US' => 'option A (2)']];
-
         \PHPUnit\Framework\Assert::assertEqualsCanonicalizing($expected, $actual);
 
         $actual = $this->getQuery()->fromAttributeCodeAndOptionCodes(
             'attribute_1',
             ['option_A', 'option_D', 'option_C']
         );
-
         $expected = [
             'option_A' => [
                 'fr_FR' => 'option A',
@@ -51,8 +51,13 @@ final class SqlGetExistingExistingAttributeOptionsWithValuesIntegration extends 
             ],
             'option_C' => [],
         ];
-
         \PHPUnit\Framework\Assert::assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    public function test_it_returns_option_values_for_unknown_attribute_code()
+    {
+        $actual = $this->getQuery()->fromAttributeCodeAndOptionCodes('unknown', ['option_A', 'option_B']);
+        \PHPUnit\Framework\Assert::assertEqualsCanonicalizing([], $actual);
     }
 
     public function getQuery(): SqlGetExistingExistingAttributeOptionsWithValues
