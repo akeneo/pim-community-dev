@@ -1,4 +1,5 @@
 import {getLabel} from 'pimui/js/i18n';
+import {Direction} from 'akeneomeasure/shared/components/Caret';
 
 type LocaleCode = string;
 
@@ -46,3 +47,14 @@ export const filterMeasurementFamily = (
   -1 !== measurementFamily.code.toLowerCase().indexOf(searchValue.toLowerCase()) ||
   (undefined !== measurementFamily.labels[locale] &&
     -1 !== measurementFamily.labels[locale].toLowerCase().indexOf(searchValue.toLowerCase()));
+
+export const sortMeasurementFamily = (sortDirection: Direction, locale: LocaleCode) => (
+  first: MeasurementFamily,
+  second: MeasurementFamily
+) => {
+  const directionInverter = sortDirection === Direction.Descending ? -1 : 1;
+  const firstLabel = getMeasurementFamilyLabel(first, locale);
+  const secondLabel = getMeasurementFamilyLabel(second, locale);
+
+  return directionInverter * firstLabel.localeCompare(secondLabel);
+};

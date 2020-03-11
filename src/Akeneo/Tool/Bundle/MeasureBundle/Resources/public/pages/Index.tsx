@@ -14,8 +14,9 @@ import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/compo
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {MeasurementFamilyRow} from 'akeneomeasure/pages/index/measurement-family-row';
 import {SearchBar} from 'akeneomeasure/shared/components/search-bar';
-import {filterMeasurementFamily} from 'akeneomeasure/model/measurement-family';
+import {filterMeasurementFamily, sortMeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
+import {Direction, Caret} from 'akeneomeasure/shared/components/Caret';
 
 const Container = styled.div``;
 
@@ -55,15 +56,16 @@ const TablePlaceholder = styled.div`
 export const Index = () => {
   const __ = useContext(TranslateContext);
   const [searchValue, setSearchValue] = React.useState('');
+  const [sortDirection, setSortDirection] = React.useState(Direction.Ascending);
   const measurementFamilies = useMeasurementFamilies();
   const locale = useContext(UserContext)('uiLocale');
 
   const filteredMeasurementFamilies =
     null === measurementFamilies
       ? null
-      : measurementFamilies.filter(measurementFamily =>
-          filterMeasurementFamily(measurementFamily, searchValue, locale)
-        );
+      : measurementFamilies
+          .filter(measurementFamily => filterMeasurementFamily(measurementFamily, searchValue, locale))
+          .sort(sortMeasurementFamily(sortDirection, locale));
 
   const measurementFamiliesCount = null === measurementFamilies ? 0 : measurementFamilies.length;
   const filteredMeasurementFamiliesCount =
@@ -153,7 +155,10 @@ export const Index = () => {
               <Table>
                 <TableHeader>
                   <tr>
-                    <td>{__('measurements.list.header.label')}</td>
+                    <td>
+                      {__('measurements.list.header.label')}{' '}
+                      <Caret direction={sortDirection} onChange={newDirection => setSortDirection(newDirection)} />
+                    </td>
                     <td>{__('measurements.list.header.code')}</td>
                     <td>{__('measurements.list.header.standard_unit')}</td>
                     <td>{__('measurements.list.header.unit_count')}</td>
@@ -168,54 +173,6 @@ export const Index = () => {
             )}
           </Container>
         )}
-        {/*
-        {null === filteredMeasurementFamilies ? (
-          <TablePlaceholder className={`AknLoadingPlaceHolderContainer`}>
-            {[...Array(5)].map((_e, i) => (
-              <div key={i} />
-            ))}
-          </TablePlaceholder>
-        ) : (
-          <Container>
-            <SearchBar
-              count={filteredMeasurementFamiliesCount}
-              searchValue={searchValue}
-              onSearchChange={(newSearchValue: string) => {
-                setSearchValue(newSearchValue);
-              }}
-            />
-            {filteredMeasurementFamiliesCount === 0 ? (
-              <NoDataSection>
-                <MeasurementFamilyIllustration size={256} />
-                <NoDataTitle>{__('measurements.family.no_data.title')}</NoDataTitle>
-                <NoDataText>
-                  <Link
-                    onClick={() => {
-                      // TODO connect create button
-                    }}
-                  >
-                    {__('measurements.family.no_data.link')}
-                  </Link>
-                </NoDataText>
-              </NoDataSection>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <tr>
-                    <td>{__('measurements.list.header.label')}</td>
-                    <td>{__('measurements.list.header.code')}</td>
-                    <td>{__('measurements.list.header.standard_unit')}</td>
-                    <td>{__('measurements.list.header.unit_count')}</td>
-                  </tr>
-                </TableHeader>
-                <TableBody>
-                  {filteredMeasurementFamilies.map(measurementFamily => (
-                    <MeasurementFamilyRow key={measurementFamily.code} measurementFamily={measurementFamily} />
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </Container> */}
       </PageContent>
     </>
   );
