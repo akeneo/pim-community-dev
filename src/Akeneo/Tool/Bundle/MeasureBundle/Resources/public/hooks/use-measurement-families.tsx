@@ -17,6 +17,12 @@ const fetchMeasurementFamilies = (): Promise<MeasurementFamily[]> =>
                 symbol: 'm2',
                 convert_from_standard: [{operator: 'mul', value: '1'}],
               },
+              {
+                code: 'SQUARE_METER',
+                labels: {en_US: 'Square meter', fr_FR: 'metre carre'},
+                symbol: 'm2',
+                convert_from_standard: [{operator: 'mul', value: '1'}],
+              },
             ],
           },
           {

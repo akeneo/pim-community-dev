@@ -52,10 +52,36 @@ const TablePlaceholder = styled.div`
   }
 `;
 
+const SortableTableCell = styled.td`
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const useSorting = (
+  defaultColumn: string
+): [string, (columnCode: string) => Direction, (columnCode: string) => void] => {
+  const [sortDirection, setSortDirection] = useState(Direction.Ascending);
+  const [sortColumn, setSortColumn] = useState(defaultColumn);
+
+  return [
+    sortColumn,
+    (columnCode: string): Direction => (sortColumn === columnCode ? sortDirection : Direction.Descending),
+    (columnCode: string) => {
+      const currentSortDirection = sortColumn === columnCode ? sortDirection : Direction.Descending;
+
+      setSortDirection(Direction.Ascending === currentSortDirection ? Direction.Descending : Direction.Ascending);
+      setSortColumn(columnCode);
+    },
+  ];
+};
+
 export const Index = () => {
   const __ = useContext(TranslateContext);
   const [searchValue, setSearchValue] = useState('');
-  const [sortDirection, setSortDirection] = useState(Direction.Ascending);
+
+  const [sortColumn, getSortDirection, toggleSortDirection] = useSorting('label');
+
   const measurementFamilies = useMeasurementFamilies();
   const locale = useContext(UserContext)('uiLocale');
 
@@ -64,7 +90,7 @@ export const Index = () => {
       ? null
       : measurementFamilies
           .filter(measurementFamily => filterMeasurementFamily(measurementFamily, searchValue, locale))
-          .sort(sortMeasurementFamily(sortDirection, locale));
+          .sort(sortMeasurementFamily(getSortDirection(sortColumn), locale, sortColumn));
 
   const measurementFamiliesCount = null === measurementFamilies ? 0 : measurementFamilies.length;
   const filteredMeasurementFamiliesCount =
@@ -154,13 +180,22 @@ export const Index = () => {
               <Table>
                 <TableHeader>
                   <tr>
-                    <td>
+                    <SortableTableCell onClick={() => toggleSortDirection('label')}>
                       {__('measurements.list.header.label')}
-                      <Caret direction={sortDirection} onChange={newDirection => setSortDirection(newDirection)} />
-                    </td>
-                    <td>{__('measurements.list.header.code')}</td>
-                    <td>{__('measurements.list.header.standard_unit')}</td>
-                    <td>{__('measurements.list.header.unit_count')}</td>
+                      <Caret direction={getSortDirection('label')} />
+                    </SortableTableCell>
+                    <SortableTableCell onClick={() => toggleSortDirection('code')}>
+                      {__('measurements.list.header.code')}
+                      <Caret direction={getSortDirection('code')} />
+                    </SortableTableCell>
+                    <SortableTableCell onClick={() => toggleSortDirection('standard_unit')}>
+                      {__('measurements.list.header.standard_unit')}
+                      <Caret direction={getSortDirection('standard_unit')} />
+                    </SortableTableCell>
+                    <SortableTableCell onClick={() => toggleSortDirection('unit_count')}>
+                      {__('measurements.list.header.unit_count')}
+                      <Caret direction={getSortDirection('unit_count')} />
+                    </SortableTableCell>
                   </tr>
                 </TableHeader>
                 <TableBody>

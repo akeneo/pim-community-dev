@@ -48,13 +48,27 @@ export const filterMeasurementFamily = (
   (undefined !== measurementFamily.labels[locale] &&
     -1 !== measurementFamily.labels[locale].toLowerCase().indexOf(searchValue.toLowerCase()));
 
-export const sortMeasurementFamily = (sortDirection: Direction, locale: LocaleCode) => (
+export const sortMeasurementFamily = (sortDirection: Direction, locale: LocaleCode, sortColumn: string) => (
   first: MeasurementFamily,
   second: MeasurementFamily
 ) => {
   const directionInverter = sortDirection === Direction.Descending ? -1 : 1;
-  const firstLabel = getMeasurementFamilyLabel(first, locale);
-  const secondLabel = getMeasurementFamilyLabel(second, locale);
 
-  return directionInverter * firstLabel.localeCompare(secondLabel);
+  switch (sortColumn) {
+    case 'label':
+      return (
+        directionInverter *
+        getMeasurementFamilyLabel(first, locale).localeCompare(getMeasurementFamilyLabel(second, locale))
+      );
+    case 'code':
+      return directionInverter * first.code.localeCompare(second.code);
+    case 'standard_unit':
+      return (
+        directionInverter * getStandardUnitLabel(first, locale).localeCompare(getStandardUnitLabel(second, locale))
+      );
+    case 'unit_count':
+      return directionInverter * (first.units.length - second.units.length);
+    default:
+      return 1;
+  }
 };

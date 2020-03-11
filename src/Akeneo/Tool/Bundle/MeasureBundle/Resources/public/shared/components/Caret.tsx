@@ -27,12 +27,12 @@ const AscendingCaret = styled(CaretContainer)`
 
 type CaretProps = {
   direction: Direction;
-  onChange: (newDirection: Direction) => void;
+  onChange?: (newDirection: Direction) => void;
 };
 
 export const Caret = ({direction, onChange}: CaretProps) =>
   direction === Direction.Ascending ? (
-    <AscendingCaret onClick={() => onChange(Direction.Descending)} />
+    <AscendingCaret onClick={() => onChange && onChange(Direction.Descending)} />
   ) : (
-    <DescendingCaret onClick={() => onChange(Direction.Ascending)} />
+    <DescendingCaret onClick={() => onChange && onChange(Direction.Ascending)} />
   );
