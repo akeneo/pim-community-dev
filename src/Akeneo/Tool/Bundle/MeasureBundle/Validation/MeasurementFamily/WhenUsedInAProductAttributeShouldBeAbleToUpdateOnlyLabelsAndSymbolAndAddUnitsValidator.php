@@ -157,7 +157,7 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
             $serializedOperations = array_map(
                 function (array $unit) {
                     return json_encode($unit);
-                },$unit['convert_from_standard']);
+                }, $unit['convert_from_standard']);
             $operationsPerUnit[$unitCode] = $serializedOperations;
         }
 

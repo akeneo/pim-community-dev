@@ -46,9 +46,7 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
             $saveMeasurementFamilyCommand->units,
             [
                 new Callback(
-                    function (array $units, ExecutionContextInterface $context)
-                    use ($standardUnitCode, $measurementFamilyCode)
-                    {
+                    function (array $units, ExecutionContextInterface $context) use ($standardUnitCode, $measurementFamilyCode) {
                         foreach ($units as $unit) {
                             if ($standardUnitCode === $unit['code']) {
                                 return;
