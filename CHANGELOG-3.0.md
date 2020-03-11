@@ -1,5 +1,12 @@
 # 3.0.x
 
+# 3.0.69 (2020-03-11)
+
+## Bug fixes
+
+- PIM-9135: Currency is not set by default on price filter on datagrid
+- PIM-9137: do not export headers if no data to export and attribute used as filters
+
 # 3.0.68 (2020-02-19)
 
 # 3.0.67 (2020-02-10)
