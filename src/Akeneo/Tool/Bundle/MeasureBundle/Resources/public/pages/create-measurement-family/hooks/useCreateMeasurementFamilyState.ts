@@ -23,6 +23,10 @@ export const useCreateMeasurementFamilyState = (): [FormState, SetValue, ClearVa
 
   const setValue = useCallback(
     (path: string, value: string) => {
+      if (!(path in state)) {
+        throw Error(`The field ${path} does not belong to this form.`);
+      }
+
       setState({
         ...state,
         [path]: value,
