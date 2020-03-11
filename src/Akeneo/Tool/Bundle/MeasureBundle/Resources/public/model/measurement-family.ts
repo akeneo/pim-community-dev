@@ -29,7 +29,7 @@ export type MeasurementFamily = {
 export const getMeasurementFamilyLabel = (measurementFamily: MeasurementFamily, locale: LocaleCode) =>
   getLabel(measurementFamily.labels, locale, measurementFamily.code);
 
-export const getUnitLabel = (unit: Unit, locale: LocaleCode) => getLabel(unit.labels, locale, unit.code);
+const getUnitLabel = (unit: Unit, locale: LocaleCode) => getLabel(unit.labels, locale, unit.code);
 
 export const getStandardUnitLabel = (measurementFamily: MeasurementFamily, locale: LocaleCode) => {
   const unit = measurementFamily.units.find(unit => unit.code === measurementFamily.standard_unit_code);
@@ -69,6 +69,6 @@ export const sortMeasurementFamily = (sortDirection: Direction, locale: LocaleCo
     case 'unit_count':
       return directionInverter * (first.units.length - second.units.length);
     default:
-      return 1;
+      return 0;
   }
 };
