@@ -37,14 +37,17 @@ class AuditController
         $eventType = $request->get('event_type');
 
         $timezone = $this->userContext->getUserTimezone();
-        $endDateTime = \DateTimeImmutable::createFromFormat(
-            'Y-m-d',
-            $request->get('end_date', date('Y-m-d')),
-            new \DateTimeZone($timezone)
-        );
+
+        $endDate = $request->get('end_date', date('Y-m-d'));
+        $endDateTime = \DateTimeImmutable::createFromFormat('Y-m-d', $endDate, new \DateTimeZone($timezone));
+        if (false === $endDateTime) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unexpected format for the `end_date` parameter "%s". Format must be `Y-m-d`',
+                $endDate
+            ));
+        }
 
         $startDate = $endDateTime->sub(new \DateInterval('P7D'))->format('Y-m-d');
-        $endDate = $endDateTime->format('Y-m-d');
 
         $query = new CountDailyEventsByConnectionQuery($eventType, $startDate, $endDate, $timezone);
         $dailyEventCountsPerConnection = $this->countDailyEventsByConnectionHandler->handle($query);

@@ -6,8 +6,10 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Audit;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditLoader;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Test\Integration\Configuration;
@@ -23,10 +25,22 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
 {
     public function test_it_finds_connections_event_by_created_product()
     {
-        $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE);
-        $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE);
+        $this->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE);
+        $this->createConnection('sap', 'SAP', FlowType::DATA_SOURCE);
 
-        // $this->createDailyEventCountsPerConnection(['erp', 'franklin'], '2019-12-28', 'Asia/Tokyo', 15);
+        $hourlyEventCountsPerConnection = $this->createHourlyEventCountsPerConnection(
+            ['bynder', 'sap'],
+            (new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('Asia/Tokyo')))
+                ->setTimezone(new \DateTimeZone('UTC')),
+            (new \DateTimeImmutable('2020-01-08 00:00:00', new \DateTimeZone('Asia/Tokyo')))
+                ->setTimezone(new \DateTimeZone('UTC')),
+        );
+        $weeklyEventCountsPerConnection = $this->hourlyToWeeklyEventCounts(
+            '2020-01-01',
+            '2020-01-08',
+            'Asia/Tokyo',
+            $hourlyEventCountsPerConnection
+        );
 
         $user = $this->authenticateAsAdmin();
         $user->setTimezone('Asia/Tokyo');
@@ -41,57 +55,83 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
             ],
         );
         $result = json_decode($this->client->getResponse()->getContent(), true);
-
-        dd($result);
-
-        Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals($expectedResult, $result);
-    }
-
-    private function createDailyEventCountsPerConnection(
-        array $connectionCodes,
-        string $startDate,
-        string $timezone,
-        int $numberOfDays = 8
-    ): void {
-        $dateTimeZ = new \DateTimeImmutable($startDate, new \DateTimeZone($timezone));
-
-        $utcDateTime = $dateTimeZ->setTimezone(new \DateTimeZone('UTC'));
-        $numberOfHours = $numberOfDays * 24;
-
-        $data = array_reduce(
-            $connectionCodes,
-            function (array $data, string $connectionCode) use ($utcDateTime, $numberOfHours) {
-                $utcHours = [];
-
-                for ($hour = 0; $hour < $numberOfHours; $hour++) {
-                    $utcHours[] = $utcDateTime->add(new \DateInterval('PT' . $hour . 'H'));
-                }
-
-                $data[$connectionCode] = array_map(
-                    function (\DateTimeImmutable $utcHour) {
-                        return [$utcHour, rand(0, 100)];
-                    },
-                    $utcHours
-                );
-
-                return $data;
+        $expectedResult = array_reduce(
+            $weeklyEventCountsPerConnection,
+            function (array $data, WeeklyEventCounts $weeklyEventCounts) {
+                return array_merge($data, $weeklyEventCounts->normalize());
             },
             []
         );
 
-        foreach ($data as $connectionCode => $utcHours) {
-            foreach ($utcHours as [$utcHour, $count]) {
-                $this->getAuditLoader()->insert(
-                    new HourlyEventCount(
-                        $connectionCode,
-                        HourlyInterval::createFromDateTime($utcHour),
-                        $count,
-                        EventTypes::PRODUCT_CREATED
-                    )
+        Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        // dump($expectedResult, $result);
+        Assert::assertEquals($expectedResult, $result);
+    }
+
+    private function createHourlyEventCountsPerConnection(
+        array $connectionCodes,
+        \DateTimeImmutable $startDateTime,
+        \DateTimeImmutable $endDateTime
+    ): array {
+        $period = new \DatePeriod($startDateTime, new \DateInterval('PT1H'), $endDateTime);
+        $hourlyEventCountsPerConnection = [];
+
+        foreach ($period as $dateTime) {
+            $allCount = 0;
+
+            foreach ($connectionCodes as $connectionCode) {
+                $count = rand(0, 5);
+                $allCount += $count;
+
+                $hourlyEventCountsPerConnection[$connectionCode][] = new HourlyEventCount(
+                    $connectionCode,
+                    HourlyInterval::createFromDateTime($dateTime),
+                    $count,
+                    EventTypes::PRODUCT_CREATED
                 );
             }
+
+            $hourlyEventCountsPerConnection[AllConnectionCode::CODE][] = new HourlyEventCount(
+                AllConnectionCode::CODE,
+                HourlyInterval::createFromDateTime($dateTime),
+                $allCount,
+                EventTypes::PRODUCT_CREATED
+            );
         }
+
+        foreach (array_merge($connectionCodes, [AllConnectionCode::CODE]) as $connectionCode) {
+            foreach ($hourlyEventCountsPerConnection[$connectionCode] as $hourlyEventCounts) {
+                $this->getAuditLoader()->insert($hourlyEventCounts);
+            }
+        }
+
+        return $hourlyEventCountsPerConnection;
+    }
+
+    private function hourlyToWeeklyEventCounts(
+        string $startDate,
+        string $endDate,
+        string $timezone,
+        array $hourlyEventCountsPerConnection
+    ): array {
+        $weeklyEventCountsPerConnection = [];
+
+        foreach ($hourlyEventCountsPerConnection as $connectionCode => $hourlyEventCounts) {
+            $weeklyEventCountsPerConnection[] = new WeeklyEventCounts(
+                $connectionCode,
+                $startDate,
+                $endDate,
+                $timezone,
+                array_map(
+                    function (HourlyEventCount $hourlyEventCount) {
+                        return [$hourlyEventCount->hourlyInterval()->fromDateTime(), $hourlyEventCount->eventCount()];
+                    },
+                    $hourlyEventCounts
+                )
+            );
+        }
+
+        return $weeklyEventCountsPerConnection;
     }
 
     protected function getConfiguration(): Configuration
