@@ -1,5 +1,7 @@
 # 4.0.x
 
+- PIM-9134: Remove error notif when a user saves a product and they have no view rights on the attribute used as label 
+
 # 4.0.8 (2020-03-05)
 
 - PIM-9129: Fix missing brightness measure translations
