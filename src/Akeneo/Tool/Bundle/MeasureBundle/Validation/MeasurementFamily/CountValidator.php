@@ -23,6 +23,7 @@ class CountValidator extends ConstraintValidator
 {
     /** @var MeasurementFamilyRepositoryInterface */
     private $measurementFamilyRepository;
+
     /** @var int */
     private $max;
 

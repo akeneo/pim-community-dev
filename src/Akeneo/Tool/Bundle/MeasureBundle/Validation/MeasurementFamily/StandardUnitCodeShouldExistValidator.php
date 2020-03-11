@@ -19,7 +19,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Validation;
 
-class StandardUnitCodeValidator extends ConstraintValidator
+class StandardUnitCodeShouldExistValidator extends ConstraintValidator
 {
     public function validate($saveMeasurementFamilyCommand, Constraint $constraint)
     {
@@ -33,21 +33,28 @@ class StandardUnitCodeValidator extends ConstraintValidator
             );
         }
         $standardUnitCode = $saveMeasurementFamilyCommand->standardUnitCode;
+        if (empty($standardUnitCode)) {
+            $this->context->buildViolation(StandardUnitCodeShouldExist::STANDARD_UNIT_CODE_IS_REQUIRED)
+                ->addViolation();
+
+            return;
+        }
 
         $validator = Validation::createValidator();
+        $measurementFamilyCode = $saveMeasurementFamilyCommand->code;
         $violations = $validator->validate(
             $saveMeasurementFamilyCommand->units,
             [
                 new Callback(
-                    function (array $units, ExecutionContextInterface $context) use ($standardUnitCode) {
+                    function (array $units, ExecutionContextInterface $context) use ($standardUnitCode, $measurementFamilyCode) {
                         foreach ($units as $unit) {
                             if ($standardUnitCode === $unit['code']) {
                                 return;
                             }
                         }
                         $context->buildViolation(
-                            StandardUnitCode::STANDARD_UNIT_CODE_SHOULD_EXIST,
-                            ['%standard_unit_code%' => $standardUnitCode]
+                            StandardUnitCodeShouldExist::STANDARD_UNIT_CODE_SHOULD_EXIST_IN_THE_LIST_OF_UNITS,
+                            ['%standard_unit_code%' => $standardUnitCode, '%measurement_family_code%' => $measurementFamilyCode]
                         )->addViolation();
                     }
                 )

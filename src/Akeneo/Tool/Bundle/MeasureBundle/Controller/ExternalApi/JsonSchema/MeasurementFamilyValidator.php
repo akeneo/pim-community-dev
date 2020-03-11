@@ -38,7 +38,7 @@ class MeasurementFamilyValidator
                 '_links'             => ['type' => 'object'],
                 'code'               => ['type' => ['string'],],
                 'labels'             => [
-                    'type'              => 'object',
+                    'type'              => ['object', 'array'],
                     'patternProperties' => [
                         '.+' => ['type' => 'string'],
                     ],
@@ -53,7 +53,7 @@ class MeasurementFamilyValidator
                         'properties' => [
                             'code'                  => ['type' => 'string'],
                             'labels'                => [
-                                'type'              => 'object',
+                                'type'              => ['object', 'array'],
                                 'patternProperties' => [
                                     '.+' => ['type' => 'string'],
                                 ],

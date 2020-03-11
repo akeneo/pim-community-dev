@@ -21,6 +21,7 @@ class OperationCountValidator extends ConstraintValidator
 {
     /** @var int */
     private $min = 1;
+
     /** @var int */
     private $max;
 
