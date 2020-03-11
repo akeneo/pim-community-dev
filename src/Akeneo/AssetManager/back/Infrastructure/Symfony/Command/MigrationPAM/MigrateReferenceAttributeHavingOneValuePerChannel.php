@@ -13,7 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\CountAssets;
+use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -29,13 +33,25 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
     private const DEFAULT_REFERENCE_LOCALIZABLE_CODE = 'reference_localizable';
 
     /** @var Connection */
-    private $connection;
+    private $readConnection;
 
-    public function __construct(Connection $connection)
+    /** @var Connection */
+    private $writeConnection;
+
+    /** @var SymfonyStyle */
+    private $io;
+
+    /** @var CountAssets */
+    private $countAssets;
+
+    public function __construct(ConnectionFactory $connectionFactory, Connection $connection, CountAssets $countAssets)
     {
         parent::__construct($this::$defaultName);
 
-        $this->connection = $connection;
+        $this->writeConnection = $connection;
+        $this->readConnection = $connectionFactory->createConnection($connection->getParams());
+        $this->readConnection->getWrappedConnection()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
+        $this->countAssets = $countAssets;
     }
 
     protected function configure()
@@ -43,8 +59,17 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
         $this
             ->setHidden(true)
             ->setDescription('Switch the value per channel attribute of asset family to a simple attribute')
-            ->addArgument('asset-family-code', InputArgument::REQUIRED, 'The asset family code to migrate (if you want to force it)')
-            ->addArgument('reference-code', InputArgument::OPTIONAL, 'the reference attribute code', self::DEFAULT_REFERENCE_CODE)
+            ->addArgument(
+                'asset-family-code',
+                InputArgument::REQUIRED,
+                'The asset family code to migrate (if you want to force it)'
+            )
+            ->addArgument(
+                'reference-code',
+                InputArgument::OPTIONAL,
+                'the reference attribute code',
+                self::DEFAULT_REFERENCE_CODE
+            )
             ->addArgument(
                 'reference-localizable-code',
                 InputArgument::OPTIONAL,
@@ -55,37 +80,50 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new SymfonyStyle($input, $output);
-        $io->title(sprintf('Convertion of reference attribute to non scopable reference attributes'));
+        $this->io = new SymfonyStyle($input, $output);
+        $this->io->title(sprintf('Convertion of reference attribute to non scopable reference attributes'));
         $familyCode = $input->getArgument('asset-family-code');
         $referenceCode = $input->getArgument('reference-code');
         $referenceLocalizableCode = $input->getArgument('reference-localizable-code');
 
-        if ($this->isAssetFamilyImpacted($familyCode, $referenceCode, $referenceLocalizableCode)) {
-            $this->fixAllAssetsInFamily($familyCode, $referenceCode, $referenceLocalizableCode);
-            $this->convertReferenceAttributesToNonScopable($familyCode, $referenceCode, $referenceLocalizableCode);
-            $this->reIndexAssets($familyCode, $output);
-        } else {
-            $io->error(sprintf('The family %s doesn\'t seems to be impacted by the problem', $familyCode));
+        if (!$this->isAssetFamilyImpacted($familyCode, $referenceCode, $referenceLocalizableCode)) {
+            $this->io->error(sprintf('The family %s doesn\'t seems to be impacted by the problem', $familyCode));
+
+            return;
         }
 
-        $io->success(sprintf('The family %s has been converted to a non scopable reference', $familyCode));
+        $this->fixAllAssetsInFamily($familyCode, $referenceCode, $referenceLocalizableCode);
+        $this->convertReferenceAttributesToNonScopable($familyCode, $referenceCode, $referenceLocalizableCode);
+        $this->reIndexAssets($familyCode, $output);
     }
 
-    private function fixAllAssetsInFamily(string $assetFamilyCode, string $referenceCode, string $referenceLocalizableCode): void
-    {
+    private function fixAllAssetsInFamily(
+        string $assetFamilyCode,
+        string $referenceCode,
+        string $referenceLocalizableCode
+    ): void {
         $referenceAttributeIdentifiers = $this->getReferenceAttributeIdentifiers(
             $assetFamilyCode,
             $referenceCode,
             $referenceLocalizableCode
         );
 
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyCode);
+        $max = $this->countAssets->forAssetFamily($assetFamilyIdentifier);
+        if (0 === $max) {
+            $this->io->warning(sprintf('There was no assets found for asset family "%s"', $assetFamilyCode));
+
+            return;
+        }
+
+        $this->io->progressStart($max);
         $batchSize = 100;
         $updatedAssets = [];
         foreach ($this->getAllAssets($assetFamilyCode) as $asset) {
             $updatedAssets[] = $this->fixAssetValues($asset, $referenceAttributeIdentifiers);
 
             if (count($updatedAssets) === $batchSize) {
+                $this->io->progressAdvance($batchSize);
                 $this->writeFixedAssetsInDB($updatedAssets);
                 $updatedAssets = [];
             }
@@ -94,33 +132,34 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
         if (0 !== count($updatedAssets)) {
             $this->writeFixedAssetsInDB($updatedAssets);
         }
+        $this->io->progressFinish();
     }
 
     private function writeFixedAssetsInDB($assets): void
     {
-        $this->connection->beginTransaction();
+        $this->writeConnection->beginTransaction();
 
         try {
             foreach ($assets as $asset) {
                 $sqlAssetUpdate = <<<SQL
             UPDATE akeneo_asset_manager_asset SET value_collection = :value_collection WHERE identifier = :asset_identifier;
-        SQL;
-                $this->connection->executeUpdate(
+SQL;
+                $this->writeConnection->executeUpdate(
                     $sqlAssetUpdate,
                     [
                         'value_collection' => $asset['value_collection'],
-                        'asset_identifier' => $asset['identifier']
+                        'asset_identifier' => $asset['identifier'],
                     ],
                     [
                         'value_collection' => \PDO::PARAM_STR,
-                        'asset_identifier' => \PDO::PARAM_STR
+                        'asset_identifier' => \PDO::PARAM_STR,
                     ]
                 );
             }
 
-            $this->connection->commit();
+            $this->writeConnection->commit();
         } catch (\Exception $e) {
-            $this->connection->rollBack();
+            $this->writeConnection->rollBack();
             throw $e;
         }
     }
@@ -143,17 +182,15 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
 
     private function getAllAssets($assetFamilyCode): \Generator
     {
-        $stmt = $this->connection->executeQuery(<<<SQL
+        $allAssetsQuery = <<<SQL
 SELECT *
 FROM akeneo_asset_manager_asset
 WHERE asset_family_identifier = :asset_family_identifier
-SQL,
-            [
-                'asset_family_identifier' => $assetFamilyCode
-            ],
-            [
-                'asset_family_identifier' => \PDO::PARAM_STR,
-            ]
+SQL;
+        $stmt = $this->readConnection->executeQuery(
+            $allAssetsQuery,
+            ['asset_family_identifier' => $assetFamilyCode],
+            ['asset_family_identifier' => \PDO::PARAM_STR]
         );
 
         while ($asset = $stmt->fetch()) {
@@ -174,18 +211,26 @@ WHERE (code = :reference_code OR code = :reference_localizable_code)
     AND value_per_channel = 1
     AND asset_family_identifier = :asset_family_identifier
 SQL;
-        $this->connection->executeQuery(
+        $this->readConnection->executeQuery(
             $sqlReferenceAttributeUpdate,
             [
                 'reference_code' => $referenceCode,
                 'reference_localizable_code' => $referenceLocalizableCode,
-                'asset_family_identifier' => $assetFamilyCode
+                'asset_family_identifier' => $assetFamilyCode,
             ],
             [
                 'asset_family_identifier' => \PDO::PARAM_STR,
                 'reference_code' => \PDO::PARAM_STR,
-                'reference_localizable_code' => \PDO::PARAM_STR
+                'reference_localizable_code' => \PDO::PARAM_STR,
             ]
+        );
+        $this->io->success(
+            sprintf(
+                'The "%s" and "%s" attributes of the "%s" asset family are now non-scopable',
+                $referenceCode,
+                $referenceLocalizableCode,
+                $assetFamilyCode
+            )
         );
     }
 
@@ -203,7 +248,9 @@ SQL;
         string $referenceCode,
         string $referenceLocalizableCode
     ): bool {
-        return count($this->getReferenceAttributeIdentifiers($assetFamilyCode, $referenceCode, $referenceLocalizableCode)) >= 1;
+        return count(
+                $this->getReferenceAttributeIdentifiers($assetFamilyCode, $referenceCode, $referenceLocalizableCode)
+            ) >= 1;
     }
 
     /**
@@ -227,20 +274,23 @@ WHERE (code = :reference_code OR code = :reference_localizable_code)
     AND asset_family_identifier = :asset_family_identifier
 SQL;
 
-        return array_map(function ($row) {
-            return $row['identifier'];
-        }, $this->connection->fetchAll(
-            $sqlReferenceAttributes,
-            [
-                'reference_code' => $referenceCode,
-                'reference_localizable_code' => $referenceLocalizableCode,
-                'asset_family_identifier' => $assetFamilyCode
-            ],
-            [
-                'asset_family_identifier' => \PDO::PARAM_STR,
-                'reference_code' => \PDO::PARAM_STR,
-                'reference_localizable_code' => \PDO::PARAM_STR
-            ]
-        ));
+        return array_map(
+            function ($row) {
+                return $row['identifier'];
+            },
+            $this->readConnection->fetchAll(
+                $sqlReferenceAttributes,
+                [
+                    'reference_code' => $referenceCode,
+                    'reference_localizable_code' => $referenceLocalizableCode,
+                    'asset_family_identifier' => $assetFamilyCode,
+                ],
+                [
+                    'asset_family_identifier' => \PDO::PARAM_STR,
+                    'reference_code' => \PDO::PARAM_STR,
+                    'reference_localizable_code' => \PDO::PARAM_STR,
+                ]
+            )
+        );
     }
 }
