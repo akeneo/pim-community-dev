@@ -8,3 +8,4 @@ services:
         class: 'Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditLoader'
         arguments:
             - '@database_connection'
+            - '@akeneo_connectivity.connection.persistence.repository.event_count'

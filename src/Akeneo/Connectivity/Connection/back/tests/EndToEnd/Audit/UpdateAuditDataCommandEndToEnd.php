@@ -68,7 +68,7 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
     {
         $sqlQuery = <<<SQL
 SELECT event_count
-FROM akeneo_connectivity_connection_audit
+FROM akeneo_connectivity_connection_audit_product
 WHERE connection_code = :connection_code
 AND event_type = :event_type
 SQL;
