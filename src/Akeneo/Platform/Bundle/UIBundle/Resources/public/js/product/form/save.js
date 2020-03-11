@@ -76,6 +76,7 @@ define(
 
                 return ProductSaver
                     .save(productId, product)
+                    .fail(this.fail.bind(this))
                     .then(function (data) {
                         this.postSave();
 
@@ -83,7 +84,6 @@ define(
 
                         this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
                     }.bind(this))
-                    .fail(this.fail.bind(this))
                     .always(this.hideLoadingMask.bind(this));
             }
         });
