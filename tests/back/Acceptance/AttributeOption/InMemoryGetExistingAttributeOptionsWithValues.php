@@ -23,16 +23,14 @@ final class InMemoryGetExistingAttributeOptionsWithValues implements GetExisting
         $this->attributeOptionRepository = $attributeOptionRepository;
     }
 
-    public function fromAttributeCodeAndOptionCodes(string $attributeCode, array $optionCodes): array
+    public function fromAttributeCodeAndOptionCodes(array $keys): array
     {
         $attributeOptions = $this->attributeOptionRepository->findAll();
 
         $results = [];
         /** @var AttributeOption $attributeOption */
         foreach ($attributeOptions as $attributeOption) {
-            if ($attributeOption->getAttribute()->getCode() !== $attributeCode
-                || !in_array($attributeOption->getCode(), $optionCodes)
-            ) {
+            if (!$this->findInKeys($keys, $attributeOption->getAttribute()->getCode(), $attributeOption->getCode())) {
                 continue;
             }
 
@@ -45,5 +43,17 @@ final class InMemoryGetExistingAttributeOptionsWithValues implements GetExisting
         }
 
         return $results;
+    }
+
+    private function findInKeys(array $keys, string $attributeCode, string $optionCode): bool
+    {
+        foreach ($keys as $key) {
+            $chunks = explode('.', $key);
+            if ($attributeCode === $chunks[0] && $optionCode === $chunks[1]) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

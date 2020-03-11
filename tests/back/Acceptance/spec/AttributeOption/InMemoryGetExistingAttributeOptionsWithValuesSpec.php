@@ -59,22 +59,16 @@ class InMemoryGetExistingAttributeOptionsWithValuesSpec extends ObjectBehavior
 
     function it_returns_attribute_options_with_values()
     {
-        $this->fromAttributeCodeAndOptionCodes('color', ['red', 'green', 'blue'])
+        $this->fromAttributeCodeAndOptionCodes(['color.red', 'color.green', 'color.blue'])
             ->shouldReturn([
                 'red' => ['en_US' => 'red', 'fr_FR' => 'rouge'],
                 'green' => [],
             ]);
     }
 
-    function it_returns_empty_array_for_unknown_attribute()
-    {
-        $this->fromAttributeCodeAndOptionCodes('unknown', ['red', 'green', 'blue', 's'])
-            ->shouldReturn([]);
-    }
-
     function it_returns_empty_array_for_unknown_options()
     {
-        $this->fromAttributeCodeAndOptionCodes('sizes', ['red', 'green', 'blue'])
+        $this->fromAttributeCodeAndOptionCodes(['unknown.red', 'unknown.green', 'color.unknown'])
             ->shouldReturn([]);
     }
 
