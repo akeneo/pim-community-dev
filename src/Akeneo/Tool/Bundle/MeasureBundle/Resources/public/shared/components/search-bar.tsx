@@ -32,16 +32,24 @@ const SearchInput = styled.input`
 
 type SearchBarProps = {
   count: number;
+  searchValue: string;
+  onSearchChange: (searchValue: string) => void;
 };
 
-export const SearchBar = ({count}: SearchBarProps) => {
+export const SearchBar = ({count, searchValue, onSearchChange}: SearchBarProps) => {
   const __ = useContext(TranslateContext);
 
   return (
     <Container>
       <SearchContainer>
         <SearchIcon />
-        <SearchInput placeholder={__('measurements.search.placeholder')} />
+        <SearchInput
+          placeholder={__('measurements.search.placeholder')}
+          value={searchValue}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            onSearchChange(event.target.value);
+          }}
+        />
       </SearchContainer>
       <ResultCount count={count} />
     </Container>

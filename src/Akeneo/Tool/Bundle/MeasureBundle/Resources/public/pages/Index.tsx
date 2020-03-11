@@ -14,6 +14,8 @@ import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/compo
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {MeasurementFamilyRow} from 'akeneomeasure/pages/index/measurement-family-row';
 import {SearchBar} from 'akeneomeasure/shared/components/search-bar';
+import {filterMeasurementFamily} from 'akeneomeasure/model/measurement-family';
+import {UserContext} from 'akeneomeasure/context/user-context';
 
 const Container = styled.div``;
 
@@ -52,7 +54,20 @@ const TablePlaceholder = styled.div`
 
 export const Index = () => {
   const __ = useContext(TranslateContext);
+  const [searchValue, setSearchValue] = React.useState('');
   const measurementFamilies = useMeasurementFamilies();
+  const locale = useContext(UserContext)('uiLocale');
+
+  const filteredMeasurementFamilies =
+    null === measurementFamilies
+      ? null
+      : measurementFamilies.filter(measurementFamily =>
+          filterMeasurementFamily(measurementFamily, searchValue, locale)
+        );
+
+  const measurementFamiliesCount = null === measurementFamilies ? 0 : measurementFamilies.length;
+  const filteredMeasurementFamiliesCount =
+    null === filteredMeasurementFamilies ? 0 : filteredMeasurementFamilies.length;
 
   return (
     <>
@@ -70,15 +85,15 @@ export const Index = () => {
           </Breadcrumb>
         }
       >
-        {null === measurementFamilies ? (
+        {null === filteredMeasurementFamilies ? (
           <div className={`AknLoadingPlaceHolderContainer`}>
             <PageHeaderPlaceholder />
           </div>
         ) : (
           __(
             'measurements.family.result_count',
-            {itemsCount: (measurementFamilies ? measurementFamilies.length : 0).toString()},
-            measurementFamilies ? measurementFamilies.length : 0
+            {itemsCount: measurementFamiliesCount.toString()},
+            measurementFamiliesCount
           )
         )}
       </PageHeader>
@@ -97,7 +112,64 @@ export const Index = () => {
             </HelperText>
           </HelperTitle>
         </Helper>
-        {null === measurementFamilies ? (
+        {null === filteredMeasurementFamilies && (
+          <TablePlaceholder className={`AknLoadingPlaceHolderContainer`}>
+            {[...Array(5)].map((_e, i) => (
+              <div key={i} />
+            ))}
+          </TablePlaceholder>
+        )}
+        {null !== filteredMeasurementFamilies && 0 === measurementFamiliesCount && (
+          <NoDataSection>
+            <MeasurementFamilyIllustration size={256} />
+            <NoDataTitle>{__('measurements.family.no_data.title')}</NoDataTitle>
+            <NoDataText>
+              <Link
+                onClick={() => {
+                  // TODO connect create button
+                }}
+              >
+                {__('measurements.family.no_data.link')}
+              </Link>
+            </NoDataText>
+          </NoDataSection>
+        )}
+        {null !== filteredMeasurementFamilies && (
+          <Container>
+            <SearchBar
+              count={filteredMeasurementFamiliesCount}
+              searchValue={searchValue}
+              onSearchChange={(newSearchValue: string) => {
+                setSearchValue(newSearchValue);
+              }}
+            />
+            {0 === filteredMeasurementFamiliesCount && (
+              <NoDataSection>
+                <MeasurementFamilyIllustration size={256} />
+                <NoDataTitle>{__('measurements.family.no_result.title')}</NoDataTitle>
+              </NoDataSection>
+            )}
+            {0 < filteredMeasurementFamiliesCount && (
+              <Table>
+                <TableHeader>
+                  <tr>
+                    <td>{__('measurements.list.header.label')}</td>
+                    <td>{__('measurements.list.header.code')}</td>
+                    <td>{__('measurements.list.header.standard_unit')}</td>
+                    <td>{__('measurements.list.header.unit_count')}</td>
+                  </tr>
+                </TableHeader>
+                <TableBody>
+                  {filteredMeasurementFamilies.map(measurementFamily => (
+                    <MeasurementFamilyRow key={measurementFamily.code} measurementFamily={measurementFamily} />
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </Container>
+        )}
+        {/*
+        {null === filteredMeasurementFamilies ? (
           <TablePlaceholder className={`AknLoadingPlaceHolderContainer`}>
             {[...Array(5)].map((_e, i) => (
               <div key={i} />
@@ -105,8 +177,14 @@ export const Index = () => {
           </TablePlaceholder>
         ) : (
           <Container>
-            <SearchBar count={measurementFamilies.length} />
-            {measurementFamilies.length === 0 ? (
+            <SearchBar
+              count={filteredMeasurementFamiliesCount}
+              searchValue={searchValue}
+              onSearchChange={(newSearchValue: string) => {
+                setSearchValue(newSearchValue);
+              }}
+            />
+            {filteredMeasurementFamiliesCount === 0 ? (
               <NoDataSection>
                 <MeasurementFamilyIllustration size={256} />
                 <NoDataTitle>{__('measurements.family.no_data.title')}</NoDataTitle>
@@ -131,14 +209,13 @@ export const Index = () => {
                   </tr>
                 </TableHeader>
                 <TableBody>
-                  {measurementFamilies.map(measurementFamily => (
+                  {filteredMeasurementFamilies.map(measurementFamily => (
                     <MeasurementFamilyRow key={measurementFamily.code} measurementFamily={measurementFamily} />
                   ))}
                 </TableBody>
               </Table>
             )}
-          </Container>
-        )}
+          </Container> */}
       </PageContent>
     </>
   );

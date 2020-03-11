@@ -16,6 +16,8 @@ measurements:
         no_data:
             title: Sorry there is no measurement family!
             link: Click here to add one
+        no_result:
+            title: Sorry, there is no result for your search!
     list:
         result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"
         header:
