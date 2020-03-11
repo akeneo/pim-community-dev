@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import {akeneoTheme} from 'akeneomeasure/shared/theme';
 
 export const NoDataSection = styled.div`
   text-align: center;
@@ -7,14 +6,14 @@ export const NoDataSection = styled.div`
 `;
 
 export const NoDataTitle = styled.div`
-  color: ${akeneoTheme.color.grey140};
-  font-size: ${akeneoTheme.fontSize.title};
+  color: ${props => props.theme.color.grey140};
+  font-size: ${props => props.theme.fontSize.title};
   text-align: center;
   margin: 30px 0 20px 0;
 `;
 
 export const NoDataText = styled.div`
-  color: ${akeneoTheme.color.grey120};
-  font-size: ${akeneoTheme.fontSize.bigger};
+  color: ${props => props.theme.color.grey120};
+  font-size: ${props => props.theme.fontSize.bigger};
   text-align: center;
 `;

@@ -46,7 +46,7 @@ const fetchMeasurementFamilies = (): Promise<MeasurementFamily[]> =>
             ],
           },
         ]),
-      20
+      400
     )
   );
 

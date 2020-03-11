@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import styled from 'styled-components';
-import {akeneoTheme} from 'akeneomeasure/shared/theme';
 import {
   MeasurementFamily,
   getMeasurementFamilyLabel,
@@ -10,11 +9,11 @@ import {UserContext} from 'akeneomeasure/context/user-context';
 
 const Container = styled.tr`
   height: 54px;
-  border-bottom: 1px solid ${akeneoTheme.color.grey70};
+  border-bottom: 1px solid ${props => props.theme.color.grey70};
 `;
 
 const MeasurementFamilyLabelCell = styled.td`
-  color: ${akeneoTheme.color.purple100};
+  color: ${props => props.theme.color.purple100};
   font-style: italic;
   font-weight: bold;
 `;

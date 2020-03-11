@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import styled from 'styled-components';
 import {PageHeader} from 'akeneomeasure/shared/components/PageHeader';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
@@ -6,7 +6,6 @@ import {PimView} from 'akeneomeasure/shared/components/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
-import {akeneoTheme} from 'akeneomeasure/shared/theme';
 import {MeasurementFamily as MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/measurement-family';
 import {HelperTitle, HelperText, Helper} from 'akeneomeasure/shared/components/helper';
 import {Link} from 'akeneomeasure/shared/components/link';
@@ -22,7 +21,7 @@ const Container = styled.div``;
 
 const Table = styled.table`
   width: 100%;
-  color: ${akeneoTheme.color.grey140};
+  color: ${props => props.theme.color.grey140};
   border-collapse: collapse;
 
   td {
@@ -33,7 +32,7 @@ const Table = styled.table`
 const TableHeader = styled.thead`
   tr {
     height: 43px;
-    border-bottom: 1px solid ${akeneoTheme.color.grey120};
+    border-bottom: 1px solid ${props => props.theme.color.grey120};
   }
 `;
 
@@ -55,8 +54,8 @@ const TablePlaceholder = styled.div`
 
 export const Index = () => {
   const __ = useContext(TranslateContext);
-  const [searchValue, setSearchValue] = React.useState('');
-  const [sortDirection, setSortDirection] = React.useState(Direction.Ascending);
+  const [searchValue, setSearchValue] = useState('');
+  const [sortDirection, setSortDirection] = useState(Direction.Ascending);
   const measurementFamilies = useMeasurementFamilies();
   const locale = useContext(UserContext)('uiLocale');
 
@@ -156,7 +155,7 @@ export const Index = () => {
                 <TableHeader>
                   <tr>
                     <td>
-                      {__('measurements.list.header.label')}{' '}
+                      {__('measurements.list.header.label')}
                       <Caret direction={sortDirection} onChange={newDirection => setSortDirection(newDirection)} />
                     </td>
                     <td>{__('measurements.list.header.code')}</td>

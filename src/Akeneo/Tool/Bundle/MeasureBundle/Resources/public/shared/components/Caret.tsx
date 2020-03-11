@@ -1,34 +1,36 @@
-import styled from 'styled-components';
 import React from 'react';
+import styled from 'styled-components';
 
 export enum Direction {
   Ascending = 'Ascending',
   Descending = 'Descending',
 }
 
-const DescendingCaret = styled.span`
+const CaretContainer = styled.span`
   display: inline-block;
   width: 0;
   height: 0;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  content: '';
+  margin-bottom: 2px;
+  margin-left: 5px;
+`;
+
+const DescendingCaret = styled(CaretContainer)`
   border-top: 4px solid ${props => props.theme.color.grey120};
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
-  content: '';
-  margin-bottom: 2px;
 `;
 
-const AscendingCaret = styled.span`
-  display: inline-block;
-  width: 0;
-  height: 0;
+const AscendingCaret = styled(CaretContainer)`
   border-bottom: 4px solid ${props => props.theme.color.grey120};
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
-  content: '';
-  margin-bottom: 2px;
 `;
 
-export const Caret = ({direction, onChange}: {direction: Direction; onChange: (newDirection: Direction) => void}) =>
+type CaretProps = {
+  direction: Direction;
+  onChange: (newDirection: Direction) => void;
+};
+
+export const Caret = ({direction, onChange}: CaretProps) =>
   direction === Direction.Ascending ? (
     <AscendingCaret onClick={() => onChange(Direction.Descending)} />
   ) : (

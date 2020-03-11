@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import {akeneoTheme} from 'akeneomeasure/shared/theme';
 
 export const Helper = styled.div`
-  background-color: ${akeneoTheme.color.blue10};
+  background-color: ${props => props.theme.color.blue10};
   display: flex;
   align-items: center;
   padding: 20px;
@@ -13,16 +12,16 @@ export const Helper = styled.div`
 `;
 
 export const HelperTitle = styled.div`
-  color: ${akeneoTheme.color.grey140};
-  font-size: ${akeneoTheme.fontSize.bigger};
+  color: ${props => props.theme.color.grey140};
+  font-size: ${props => props.theme.fontSize.bigger};
   font-weight: 600;
   margin-left: 20px;
-  border-left: 1px solid ${akeneoTheme.color.grey80};
+  border-left: 1px solid ${props => props.theme.color.grey80};
   padding-left: 20px;
 `;
 
 export const HelperText = styled.div`
-  color: ${akeneoTheme.color.grey120};
-  font-size: ${akeneoTheme.fontSize.default};
+  color: ${props => props.theme.color.grey120};
+  font-size: ${props => props.theme.fontSize.default};
   font-weight: 400;
 `;
