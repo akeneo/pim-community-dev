@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.69 (2020-03-11)
+
 ## Bug fixes
 
 - PIM-9135: Currency is not set by default on price filter on datagrid
