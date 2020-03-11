@@ -1,5 +1,5 @@
-// const router = require('pim/router');
 import * as trans from 'pimui/lib/translator';
+const router = require('pim/router');
 const viewBuilder = require('pim/form-builder');
 // const messenger = require('oro/messenger');
 const userContext = require('pim/user-context');
@@ -12,7 +12,7 @@ const __ = (key: string, placeholders: any = {}, number: number = 1) => {
 };
 
 export const dependencies = {
-  // router,
+  router,
   translate: __,
   legacy: {
     viewBuilder,

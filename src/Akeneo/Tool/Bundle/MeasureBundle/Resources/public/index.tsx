@@ -6,12 +6,14 @@ import {Index} from 'akeneomeasure/pages/Index';
 import {LegacyContext, LegacyContextValue} from 'akeneomeasure/context/legacy-context';
 import {TranslateContext, TranslateContextValue} from 'akeneomeasure/context/translate-context';
 import {UserContext, UserContextValue} from 'akeneomeasure/context/user-context';
+import {RouterContextValue, RouterContext} from 'akeneomeasure/context/router-context';
 
 interface Props {
   dependencies: {
     legacy: LegacyContextValue;
     translate: TranslateContextValue;
     user: UserContextValue;
+    router: RouterContextValue;
   };
 }
 
@@ -20,15 +22,17 @@ export default ({dependencies}: Props) => (
     <TranslateContext.Provider value={dependencies.translate}>
       <LegacyContext.Provider value={dependencies.legacy}>
         <UserContext.Provider value={dependencies.user}>
-          <ThemeProvider theme={akeneoTheme}>
-            <Router>
-              <Switch>
-                <Route path="/configuration/measurement">
-                  <Index />
-                </Route>
-              </Switch>
-            </Router>
-          </ThemeProvider>
+          <RouterContext.Provider value={dependencies.router}>
+            <ThemeProvider theme={akeneoTheme}>
+              <Router>
+                <Switch>
+                  <Route path="/configuration/measurement">
+                    <Index />
+                  </Route>
+                </Switch>
+              </Router>
+            </ThemeProvider>
+          </RouterContext.Provider>
         </UserContext.Provider>
       </LegacyContext.Provider>
     </TranslateContext.Provider>
