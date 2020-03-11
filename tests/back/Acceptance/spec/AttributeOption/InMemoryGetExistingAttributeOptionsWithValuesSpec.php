@@ -61,8 +61,8 @@ class InMemoryGetExistingAttributeOptionsWithValuesSpec extends ObjectBehavior
     {
         $this->fromAttributeCodeAndOptionCodes(['color.red', 'color.green', 'color.blue'])
             ->shouldReturn([
-                'red' => ['en_US' => 'red', 'fr_FR' => 'rouge'],
-                'green' => [],
+                'color.red' => ['en_US' => 'red', 'fr_FR' => 'rouge'],
+                'color.green' => [],
             ]);
     }
 

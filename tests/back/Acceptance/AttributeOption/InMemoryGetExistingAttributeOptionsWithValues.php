@@ -34,11 +34,12 @@ final class InMemoryGetExistingAttributeOptionsWithValues implements GetExisting
                 continue;
             }
 
-            $results[$attributeOption->getCode()] = [];
+            $key = sprintf('%s.%s', $attributeOption->getAttribute()->getCode(), $attributeOption->getCode());
+            $results[$key] = [];
 
             /** @var AttributeOptionValue $value */
             foreach ($attributeOption->getOptionValues() as $value) {
-                $results[$attributeOption->getCode()][$value->getLocale()] = $value->getValue();
+                $results[$key][$value->getLocale()] = $value->getValue();
             }
         }
 
