@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\DeadlockException;
+use Doctrine\DBAL\Statement;
 
 final class CriterionEvaluationRepository implements CriterionEvaluationRepositoryInterface
 {
@@ -83,7 +84,7 @@ SQL;
      * foreign keys. In order to ovoid stacking waiting transaction, we disable
      * foreign key checks during this process.
      */
-    private function executeWithLock(\PDOStatement $statement): void
+    private function executeWithLock(Statement $statement): void
     {
         $value = $this->db->executeQuery('SELECT @@autocommit')->fetch();
         if (!isset($value['@@autocommit']) && ((int) $value['@@autocommit'] !== 1 || (int) $value['@@autocommit'] !== 0)) {
