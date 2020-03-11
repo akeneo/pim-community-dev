@@ -1,6 +1,5 @@
 import React, {useCallback, useContext} from 'react';
-import {Modal, ModalHeader, ModalBodyWithIllustration} from 'akeneomeasure/shared/components/Modal';
-import {CloseButton} from 'akeneomeasure/shared/components/CloseButton';
+import {Modal, ModalBodyWithIllustration, ModalCloseButton, ModalTitle} from 'akeneomeasure/shared/components/Modal';
 import {TranslateContext} from 'akeneomeasure/shared/translate/translate-context';
 import {MeasureFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasureFamilyIllustration';
 
@@ -12,15 +11,16 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
   const __ = useContext(TranslateContext);
   const handleClose = useCallback(() => {
     onClose();
-  }, []);
+  }, [onClose]);
 
   return (
     <Modal>
-      <ModalHeader>
-        <CloseButton title={__('measurements.close')} onClick={handleClose}/>
-      </ModalHeader>
+      <ModalCloseButton title={__('measurements.close')} onClick={handleClose}/>
       <ModalBodyWithIllustration illustration={<MeasureFamilyIllustration/>}>
-        <div>Hello World</div>
+        <ModalTitle
+          title={__('measurements.add_new_measurement_family')}
+          subtitle={__('measurements.title.measurement')}
+        />
       </ModalBodyWithIllustration>
     </Modal>
   );

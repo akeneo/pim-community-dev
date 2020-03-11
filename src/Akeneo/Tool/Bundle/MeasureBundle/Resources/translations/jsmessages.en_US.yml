@@ -26,3 +26,6 @@ measurements:
             standard_unit: Standard unit
             unit_count: Number of units
     close: Close
+    add_new_measurement_family: Add a new measurement family
+    title:
+        measurement: Measurement

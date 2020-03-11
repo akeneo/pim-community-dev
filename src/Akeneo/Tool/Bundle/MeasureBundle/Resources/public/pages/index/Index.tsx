@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
 import {PageHeader} from 'akeneomeasure/shared/components/PageHeader';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
@@ -8,6 +8,7 @@ import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
 import {TranslateContext} from 'akeneomeasure/shared/translate/translate-context';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
+import {useToggleState} from 'akeneomeasure/shared/hooks/useToggleState';
 
 const Helper = styled.div``;
 const List = styled.div``;
@@ -20,18 +21,11 @@ const ResultCount = styled.div``;
 
 export const Index = () => {
   const __ = useContext(TranslateContext);
-  // !todo make a better hook
-  const [createMeasurementFamilyModalIsOpen, setCreateMeasurementFamilyModalIsOpen] = useState<boolean>(false);
-  const openCreateMeasurementFamily = useCallback(() => {
-    setCreateMeasurementFamilyModalIsOpen(true);
-  }, [setCreateMeasurementFamilyModalIsOpen]);
-  const closeCreateMeasurementFamily = useCallback(() => {
-    setCreateMeasurementFamilyModalIsOpen(false);
-  }, [setCreateMeasurementFamilyModalIsOpen]);
+  const [isCreateModalOpen, openCreateModal, closeCreateModal] = useToggleState(false);
 
   return (
     <>
-      {createMeasurementFamilyModalIsOpen && <CreateMeasurementFamily onClose={closeCreateMeasurementFamily}/>}
+      {isCreateModalOpen && <CreateMeasurementFamily onClose={closeCreateModal}/>}
 
       <PageHeader
         userButtons={
@@ -41,7 +35,7 @@ export const Index = () => {
           />
         }
         buttons={[
-          <Button classNames={['AknButton--apply']} onClick={openCreateMeasurementFamily}>Create</Button>
+          <Button classNames={['AknButton--apply']} onClick={openCreateModal}>Create</Button>
         ]}
         breadcrumb={
           <Breadcrumb>
