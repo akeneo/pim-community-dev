@@ -21,7 +21,7 @@ const ResultCount = styled.div``;
 
 export const Index = () => {
   const __ = useContext(TranslateContext);
-  const [isCreateModalOpen, openCreateModal, closeCreateModal] = useToggleState(false);
+  const [isCreateModalOpen, openCreateModal, closeCreateModal] = useToggleState(true);
 
   return (
     <>

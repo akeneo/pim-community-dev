@@ -1,15 +1,9 @@
-import React, {PropsWithChildren, ReactElement, ReactNode} from 'react';
+import React, {PropsWithChildren, ReactElement} from 'react';
 import styled from 'styled-components';
 import {akeneoTheme} from 'akeneomeasure/shared/theme';
 import {CloseIcon} from 'akeneomeasure/shared/icons/CloseIcon';
 
-export const Modal = ({children}: { children?: ReactNode; }) => {
-  return (
-    <div className="AknFullPage">
-      {children}
-    </div>
-  );
-};
+export const Modal = styled.div.attrs(() => ({className: 'AknFullPage'}))``;
 
 const ModalCloseButtonContainer = styled.button`
   background: none;
@@ -49,6 +43,10 @@ export const ModalBodyWithIllustration = ({
   );
 };
 
+const ModalTitleContainer = styled.div.attrs(() => ({className: 'AknFullPage-titleContainer'}))`
+  margin-bottom: 16px;
+`;
+
 type ModalTitleProps = {
   title: string;
   subtitle?: string;
@@ -56,9 +54,9 @@ type ModalTitleProps = {
 
 export const ModalTitle = ({title, subtitle}: ModalTitleProps) => {
   return (
-    <div className="AknFullPage-titleContainer">
+    <ModalTitleContainer>
       {subtitle && <div className="AknFullPage-subTitle">{subtitle}</div>}
       <div className="AknFullPage-title">{title}</div>
-    </div>
+    </ModalTitleContainer>
   )
 };
