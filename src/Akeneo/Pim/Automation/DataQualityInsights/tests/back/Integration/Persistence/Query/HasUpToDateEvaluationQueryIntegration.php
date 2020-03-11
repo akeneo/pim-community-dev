@@ -38,7 +38,7 @@ final class HasUpToDateEvaluationQueryIntegration extends TestCase
 
     protected function getConfiguration()
     {
-        return $this->catalog->useMinimalCatalog();
+        return $this->catalog->useTechnicalCatalog();
     }
 
     public function test_it_returns_true_if_a_product_has_an_up_to_date_evaluation()
@@ -50,6 +50,10 @@ final class HasUpToDateEvaluationQueryIntegration extends TestCase
 
         $productHasUpToDateEvaluation = $this->query->forProductId($productId);
         $this->assertTrue($productHasUpToDateEvaluation);
+
+        $productVariantId = $this->givenAProductVariantWithAnUpToDateEvaluation($today);
+        $productVariantHasUpToDateEvaluation = $this->query->forProductId($productVariantId);
+        $this->assertTrue($productVariantHasUpToDateEvaluation);
     }
 
     public function test_it_returns_false_if_a_product_has_outdated_evaluations()
@@ -59,9 +63,16 @@ final class HasUpToDateEvaluationQueryIntegration extends TestCase
         $productId = $this->givenAnUpdatedProductWithAnOutdatedEvaluation($today);
         $this->givenAProductWithAnUpToDateEvaluation($today);
 
-
         $productHasUpToDateEvaluation = $this->query->forProductId($productId);
         $this->assertFalse($productHasUpToDateEvaluation);
+
+        $levelOneProductVariantId = $this->givenAProductVariantWithAnOutdatedEvaluationComparedToItsParent($today);
+        $levelOneProductVariantHasUpToDateEvaluation = $this->query->forProductId($levelOneProductVariantId);
+        $this->assertFalse($levelOneProductVariantHasUpToDateEvaluation);
+
+        $levelTwoProductVariantId = $this->givenAProductVariantWithAnOutdatedEvaluationComparedToItsGrandParent($today);
+        $levelTwoProductVariantHasUpToDateEvaluation = $this->query->forProductId($levelTwoProductVariantId);
+        $this->assertFalse($levelTwoProductVariantHasUpToDateEvaluation);
     }
 
     public function test_it_returns_the_ids_of_the_products_that_have_up_to_date_evaluation()
@@ -70,10 +81,11 @@ final class HasUpToDateEvaluationQueryIntegration extends TestCase
         $expectedProductIdA = $this->givenAProductWithAnUpToDateEvaluation($today);
         $expectedProductIdB = $this->givenAProductWithAnUpToDateEvaluation($today);
         $outdatedProductId = $this->givenAnUpdatedProductWithAnOutdatedEvaluation($today);
+        $outdatedProductVariantId = $this->givenAProductVariantWithAnOutdatedEvaluationComparedToItsParent($today);
         $this->givenAProductWithAnUpToDateEvaluation($today);
 
-        $productIdsWithUpToDateEvaluation = $this->query->forProductIds([$outdatedProductId, $expectedProductIdA, $expectedProductIdB]);
-        $this->assertEquals([$expectedProductIdA, $expectedProductIdB], $productIdsWithUpToDateEvaluation);
+        $productIdsWithUpToDateEvaluation = $this->query->forProductIds([$outdatedProductId, $outdatedProductVariantId, $expectedProductIdA, $expectedProductIdB]);
+        $this->assertEqualsCanonicalizing([$expectedProductIdA, $expectedProductIdB], $productIdsWithUpToDateEvaluation);
     }
 
     public function test_it_returns_an_empty_array_if_no_product_has_up_to_date_evaluation()
@@ -90,6 +102,19 @@ final class HasUpToDateEvaluationQueryIntegration extends TestCase
             ->withIdentifier(strval(Uuid::uuid4()))
             ->build();
 
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        return new ProductId((int) $product->getId());
+    }
+
+    private function createProductVariant(string $parentCode): ProductId
+    {
+        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
+            ->withIdentifier(strval(Uuid::uuid4()))
+            ->withFamily('familyA')
+            ->build();
+
+        $this->get('pim_catalog.updater.product')->update($product, ['parent' => $parentCode]);
         $this->get('pim_catalog.saver.product')->save($product);
 
         return new ProductId((int) $product->getId());
@@ -113,6 +138,62 @@ final class HasUpToDateEvaluationQueryIntegration extends TestCase
         return $productId;
     }
 
+    private function givenAProductVariantWithAnUpToDateEvaluation(\DateTimeImmutable $parentUpdatedAt): ProductId
+    {
+        $this->givenAProductModel('a_product_model', 'familyVariantA2', $parentUpdatedAt);
+        $productId = $this->createProductVariant('a_product_model');
+        $this->updateProductAt($productId, $parentUpdatedAt->modify('-1 DAY'));
+        $this->updateProductEvaluationsAt($productId, $parentUpdatedAt->modify('+1 SECOND'));
+
+        return $productId;
+    }
+
+    private function givenAProductVariantWithAnOutdatedEvaluationComparedToItsParent(\DateTimeImmutable $parentUpdatedAt): ProductId
+    {
+        $this->givenAProductModel('a_product_model', 'familyVariantA2', $parentUpdatedAt);
+        $productId = $this->createProductVariant('a_product_model');
+        $this->updateProductAt($productId, $parentUpdatedAt->modify('-1 DAY'));
+        $this->updateProductEvaluationsAt($productId, $parentUpdatedAt->modify('-1 SECOND'));
+
+        return $productId;
+    }
+
+    private function givenAProductVariantWithAnOutdatedEvaluationComparedToItsGrandParent(\DateTimeImmutable $grandParentUpdatedAt): ProductId
+    {
+        $this->givenAProductModel('a_product_model_with_two_variant_levels', 'familyVariantA1', $grandParentUpdatedAt);
+        $this->givenASubProductModel('a_recently_updated_sub_product_model', 'familyVariantA1', 'a_product_model_with_two_variant_levels', $grandParentUpdatedAt->modify('-2 HOUR'));
+
+        $productId = $this->createProductVariant('a_recently_updated_sub_product_model');
+        $this->updateProductAt($productId, $grandParentUpdatedAt->modify('-1 HOUR'));
+        $this->updateProductEvaluationsAt($productId, $grandParentUpdatedAt->modify('-1 SECOND'));
+
+        return $productId;
+    }
+
+    private function givenAProductModel(string $productModelCode, string $familyVariant, \DateTimeImmutable $updatedAt)
+    {
+        $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
+            ->withCode($productModelCode)
+            ->withFamilyVariant($familyVariant)
+            ->build();
+
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+        $this->updateProductModelAt($productModelCode, $updatedAt);
+    }
+
+    private function givenASubProductModel(string $productModelCode, string $familyVariant, string $parentCode, \DateTimeImmutable $updatedAt)
+    {
+        $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
+            ->withCode($productModelCode)
+            ->withFamilyVariant($familyVariant)
+            ->withParent($parentCode)
+            ->build();
+
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+
+        $this->updateProductModelAt($productModelCode, $updatedAt);
+    }
+
     private function updateProductAt(ProductId $productId, \DateTimeImmutable $updatedAt): void
     {
         $query = <<<SQL
@@ -122,6 +203,18 @@ SQL;
         $this->db->executeQuery($query, [
             'updated_at' => $updatedAt->format('Y-m-d H:i:s'),
             'product_id' => $productId->toInt(),
+        ]);
+    }
+
+    private function updateProductModelAt(string $productModelCode, \DateTimeImmutable $updatedAt)
+    {
+        $query = <<<SQL
+UPDATE pim_catalog_product_model SET updated = :updated_at WHERE code = :code;
+SQL;
+
+        $this->db->executeQuery($query, [
+            'updated_at' => $updatedAt->format('Y-m-d H:i:s'),
+            'code' => $productModelCode,
         ]);
     }
 
