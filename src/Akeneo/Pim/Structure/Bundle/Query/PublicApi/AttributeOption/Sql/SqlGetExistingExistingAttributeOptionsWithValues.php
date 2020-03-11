@@ -30,35 +30,7 @@ final class SqlGetExistingExistingAttributeOptionsWithValues implements GetExist
     /**
      * {@inheritDoc}
      */
-    public function fromAttributeCodeAndOptionCodes(string $attributeCode, array $optionCodes): array
-    {
-        if (empty($optionCodes)) {
-            return [];
-        }
-
-        $keys = array_map(function ($optionCode) use ($attributeCode) {
-            return $this->buildKey($attributeCode, $optionCode);
-        }, $optionCodes);
-
-        $resultsFromCache = $this->cache->getForKeys($keys, \Closure::fromCallable([$this, 'getFromKeys']));
-
-        $results = [];
-        $attributeCode = '';
-        $optionCode = '';
-        foreach ($resultsFromCache as $key => $result) {
-            $this->extractFromKey($key, $attributeCode, $optionCode);
-            $results[$optionCode] = $result;
-        }
-
-        return $results;
-    }
-
-    /**
-     * @param string[] $keys
-     * @return array
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    private function getFromKeys(array $keys): array
+    public function fromAttributeCodeAndOptionCodes(array $keys): array
     {
         if (empty($keys)) {
             return [];
@@ -66,25 +38,23 @@ final class SqlGetExistingExistingAttributeOptionsWithValues implements GetExist
 
         $queryParams = [];
         $queryStringParams = [];
-        $optionCode = '';
-        $attributeCode = '';
         foreach ($keys as $key) {
-            $this->extractFromKey($key, $attributeCode, $optionCode);
-            $queryParams[] = $attributeCode;
-            $queryParams[] = $optionCode;
+            $queryParams[] = $this->getAttributeCodeFromKey($key);
+            $queryParams[] = $this->getOptionCodeFromKey($key);
             $queryStringParams[] = "(?, ?)";
         }
 
         $query = <<<SQL
+WITH active_locales as (select code from pim_catalog_locale where is_activated is true)
 SELECT
-    attribute.code        AS attribute_code,
-    attribute_option.code AS option_code,
-    option_value.locale_code,
-    option_value.value
-FROM pim_catalog_attribute attribute
-    INNER JOIN pim_catalog_attribute_option attribute_option ON attribute.id = attribute_option.attribute_id
-    LEFT JOIN pim_catalog_attribute_option_value option_value ON attribute_option.id = option_value.option_id
+    CONCAT(attribute.code, '.', attribute_option.code) as option_key,
+    JSON_OBJECTAGG(active_locales.code, option_value.value) as labels
+FROM active_locales
+    CROSS JOIN pim_catalog_attribute attribute
+    INNER JOIN pim_catalog_attribute_option attribute_option on attribute.id = attribute_option.attribute_id
+    LEFT JOIN pim_catalog_attribute_option_value option_value on attribute_option.id = option_value.option_id
 WHERE (attribute.code, attribute_option.code) IN (%s)
+GROUP BY attribute.code, attribute_option.code
 SQL;
 
         $rawResults = $this->connection->executeQuery(
@@ -92,32 +62,25 @@ SQL;
             $queryParams
         )->fetchAll();
 
-        $results = [];
+        $indexedResults = [];
         foreach ($rawResults as $rawResult) {
-            $key = $this->buildKey($rawResult['attribute_code'], $rawResult['option_code']);
-            if (!isset($results[$key])) {
-                $results[$key] = [];
-            }
-
-            $localeCode = $rawResult['locale_code'];
-            if (null !== $localeCode) {
-                $results[$key][$localeCode] = $rawResult['value'];
-            }
+            $indexedResults[$rawResult['option_key']] = json_decode($rawResult['labels'], true);
         }
 
-        return $results;
+        return $indexedResults;
     }
 
-    private function buildKey(string $attributeCode, string $optionCode): string
+    private function getAttributeCodeFromKey(string $key): string
     {
-        return sprintf('%s|%s', $attributeCode, $optionCode);
+        $chunks = explode('.', $key);
+
+        return $chunks[0];
     }
 
-    private function extractFromKey(string $key, string &$attributeCode, string &$optionCode): void
+    private function getOptionCodeFromKey(string $key): string
     {
-        $chunks = explode('|', $key);
+        $chunks = explode('.', $key);
 
-        $attributeCode = $chunks[0];
-        $optionCode = $chunks[1];
+        return $chunks[1];
     }
 }

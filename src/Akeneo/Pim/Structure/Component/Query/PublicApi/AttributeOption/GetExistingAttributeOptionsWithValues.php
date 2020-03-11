@@ -12,16 +12,13 @@ namespace Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption;
 interface GetExistingAttributeOptionsWithValues
 {
     /**
-     * @param string $attributeCode
-     * @param string[]  $optionCodes
-     * @return array
-     *
-     * Return format:
+     * @param string[] $optionKeys Format: ["<attribute_code>.<option_code>", "color.red", ...]
+     * @return array Format:
      *  [
-     *      'blue' => ['fr_FR' => '...', 'en_US' => '...'],
-     *      'red' => ['fr_FR' => '...', 'en_US' => '...'],
+     *      'color.red' => ['fr_FR' => '...', 'en_US' => '...'],
+     *      'color.blue' => ['fr_FR' => '...', 'en_US' => '...'],
      *      ...
      *  ]
      */
-    public function fromAttributeCodeAndOptionCodes(string $attributeCode, array $optionCodes): array;
+    public function fromAttributeCodeAndOptionCodes(array $optionKeys): array;
 }
