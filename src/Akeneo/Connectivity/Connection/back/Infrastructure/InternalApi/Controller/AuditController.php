@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,27 +21,48 @@ class AuditController
     /** @var CountDailyEventsByConnectionHandler */
     private $countDailyEventsByConnectionHandler;
 
-    public function __construct(CountDailyEventsByConnectionHandler $countDailyEventsByConnectionHandler)
-    {
+    /** @var UserContext */
+    private $userContext;
+
+    public function __construct(
+        CountDailyEventsByConnectionHandler $countDailyEventsByConnectionHandler,
+        UserContext $userContext
+    ) {
+        $this->userContext = $userContext;
         $this->countDailyEventsByConnectionHandler = $countDailyEventsByConnectionHandler;
     }
 
     public function sourceConnectionsEvent(Request $request): JsonResponse
     {
-        $eventType = $request->get('event_type', '');
-        $endDate = $request->get(
-            'end_date',
-            (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d')
-        );
-        $startDate = (new \DateTime($endDate, new \DateTimeZone('UTC')))->modify('-7 day')->format('Y-m-d');
+        $eventType = $request->get('event_type');
+        $endDateUser = $request->get('end_date');
+        $timezone = $this->userContext->getUserTimezone();
 
-        $query = new CountDailyEventsByConnectionQuery($eventType, $startDate, $endDate);
-        $countDailyEventsByConnection = $this->countDailyEventsByConnectionHandler->handle($query);
+        if (null === $endDateUser) {
+            $endDateUser = (new \DateTimeImmutable('now', new \DateTimeZone($timezone)))->format('Y-m-d');
+        }
+
+        $endDateTimeUser = \DateTimeImmutable::createFromFormat(
+            'Y-m-d',
+            $endDateUser,
+            new \DateTimeZone($timezone)
+        );
+        if (false === $endDateTimeUser) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unexpected format for the `end_date` parameter "%s". Format must be `Y-m-d`',
+                $endDateUser
+            ));
+        }
+
+        $startDateUser = $endDateTimeUser->sub(new \DateInterval('P7D'))->format('Y-m-d');
+
+        $query = new CountDailyEventsByConnectionQuery($eventType, $startDateUser, $endDateUser, $timezone);
+        $dailyEventCountsPerConnection = $this->countDailyEventsByConnectionHandler->handle($query);
 
         $data = \array_reduce(
-            $countDailyEventsByConnection,
-            function (array $data, WeeklyEventCounts $connectionEventCounts) {
-                return array_merge($data, $connectionEventCounts->normalize());
+            $dailyEventCountsPerConnection,
+            function (array $data, WeeklyEventCounts $weeklyEventCounts) {
+                return array_merge($data, $weeklyEventCounts->normalize());
             },
             []
         );

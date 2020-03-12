@@ -89,6 +89,8 @@ $rules = [
             'Symfony\Component\Security\Core\Exception\AccessDeniedException',
             'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
+            // Dependency to retrieve the current User (and his timezone).
+            'Akeneo\UserManagement\Bundle\Context\UserContext',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\InternalApi'),
 
