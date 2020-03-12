@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\AttributeOption;
 
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Cache\LruCachedGetExistingExistingAttributeOptionsWithValues;
+use Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql\SqlGetExistingAttributeOptionsWithValues;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class LruCachedGetExistingExistingAttributeOptionsWithValuesIntegration extends TestCase
+final class SqlGetExistingAttributeOptionsWithValuesIntegration extends TestCase
 {
     public function setUp(): void
     {
@@ -69,9 +69,9 @@ final class LruCachedGetExistingExistingAttributeOptionsWithValuesIntegration ex
         }
     }
 
-    private function getQuery(): LruCachedGetExistingExistingAttributeOptionsWithValues
+    private function getQuery(): SqlGetExistingAttributeOptionsWithValues
     {
-        return $this->get('akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values');
+        return $this->get('akeneo.pim.structure.query.get_existing_attribute_options_with_values');
     }
 
     private function createAttributes(array $codes): void
