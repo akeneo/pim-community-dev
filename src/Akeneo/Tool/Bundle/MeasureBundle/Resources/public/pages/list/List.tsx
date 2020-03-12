@@ -1,17 +1,17 @@
 import React, {useContext, useState} from 'react';
 import styled from 'styled-components';
 import {PageHeader} from 'akeneomeasure/shared/components/PageHeader';
-import {PimView} from 'akeneomeasure/shared/components/pim-view/PimView';
+import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
-import {MeasurementFamily as MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/measurement-family';
-import {HelperTitle, HelperText, Helper} from 'akeneomeasure/shared/components/helper';
-import {Link} from 'akeneomeasure/shared/components/link';
-import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/components/no-data';
+import {MeasurementFamily as MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamily';
+import {HelperTitle, HelperText, Helper} from 'akeneomeasure/shared/components/Helper';
+import {Link} from 'akeneomeasure/shared/components/Link';
+import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/components/NoData';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
-import {MeasurementFamilyRow} from 'akeneomeasure/pages/index/measurement-family-row';
-import {SearchBar} from 'akeneomeasure/shared/components/search-bar';
+import {MeasurementFamilyRow} from 'akeneomeasure/pages/list/MeasurementFamilyRow';
+import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
 import {filterMeasurementFamily, sortMeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
 import {Direction, Caret} from 'akeneomeasure/shared/components/Caret';
@@ -83,7 +83,7 @@ const useSorting = (
   ];
 };
 
-export const Index = () => {
+export const List = () => {
   const __ = useContext(TranslateContext);
   const [searchValue, setSearchValue] = useState('');
 
@@ -173,9 +173,7 @@ export const Index = () => {
             <StickySearchBar
               count={filteredMeasurementFamiliesCount}
               searchValue={searchValue}
-              onSearchChange={(newSearchValue: string) => {
-                setSearchValue(newSearchValue);
-              }}
+              onSearchChange={setSearchValue}
             />
             {0 === filteredMeasurementFamiliesCount && (
               <NoDataSection>

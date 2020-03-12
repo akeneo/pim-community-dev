@@ -15,13 +15,7 @@ type ResultCountProps = {
   labelKey?: string;
 };
 
-export const ResultCount = ({count = null, labelKey}: ResultCountProps) =>
+export const ResultCount = ({count = null, labelKey = 'measurements.list.result_count'}: ResultCountProps) =>
   count === null ? null : (
-    <Container>
-      {useContext(TranslateContext)(
-        labelKey || 'measurements.list.result_count',
-        {itemsCount: count.toString()},
-        count
-      )}
-    </Container>
+    <Container>{useContext(TranslateContext)(labelKey, {itemsCount: count.toString()}, count)}</Container>
   );

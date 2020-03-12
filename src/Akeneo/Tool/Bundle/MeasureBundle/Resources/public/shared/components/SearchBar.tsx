@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import styled from 'styled-components';
-import {Search as SearchIcon} from 'akeneomeasure/shared/icons/search';
-import {ResultCount} from 'akeneomeasure/shared/components/result-count';
+import {Search as SearchIcon} from 'akeneomeasure/shared/icons/Search';
+import {ResultCount} from 'akeneomeasure/shared/components/ResultCount';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 
 const Container = styled.div`

@@ -2,7 +2,7 @@ import React, {StrictMode} from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneomeasure/shared/theme';
-import {Index} from 'akeneomeasure/pages/Index';
+import {List} from 'akeneomeasure/pages/list';
 import {LegacyContext, LegacyContextValue} from 'akeneomeasure/context/legacy-context';
 import {TranslateContext, TranslateContextValue} from 'akeneomeasure/context/translate-context';
 import {UserContext, UserContextValue} from 'akeneomeasure/context/user-context';
@@ -27,7 +27,7 @@ export default ({dependencies}: Props) => (
               <Router>
                 <Switch>
                   <Route path="/configuration/measurement">
-                    <Index />
+                    <List />
                   </Route>
                 </Switch>
               </Router>
