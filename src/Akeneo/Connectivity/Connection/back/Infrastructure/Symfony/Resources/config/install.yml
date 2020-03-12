@@ -12,9 +12,3 @@ services:
             - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
-
-    Akeneo\Connectivity\Connection\Infrastructure\Install\MigrateAudit40Master:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Install\MigrateAudit40Master
-        arguments:
-            - '@database_connection'
-            - '@akeneo_connectivity.connection.application.audit.handler.update_product_event_count'

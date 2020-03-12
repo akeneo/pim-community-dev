@@ -7,7 +7,6 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
-use Akeneo\Connectivity\Connection\Infrastructure\Install\MigrateAudit40Master;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectHourlyIntervalsToRefreshQuery;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,25 +27,18 @@ class UpdateAuditDataCommand extends Command
     /** @var DbalSelectHourlyIntervalsToRefreshQuery */
     private $selectHourlyIntervalsToRefreshQuery;
 
-    /** @var MigrateAudit40Master */
-    private $migrateAudit40Master;
-
     public function __construct(
         UpdateProductEventCountHandler $updateProductEventCountHandler,
-        DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery,
-        MigrateAudit40Master $migrateAudit40Master
+        DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery
     ) {
         parent::__construct();
 
         $this->updateProductEventCountHandler = $updateProductEventCountHandler;
         $this->selectHourlyIntervalsToRefreshQuery = $selectHourlyIntervalsToRefreshQuery;
-        $this->migrateAudit40Master = $migrateAudit40Master;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // TODO: To remove when pullup on master
-        $hourlyIntervalsToRecalculate = $this->migrateAudit40Master->migrateIfNeeded();
         if (!empty($hourlyIntervalsToRecalculate)) {
             foreach ($hourlyIntervalsToRecalculate as $hourlyInterval) {
                 $command = new UpdateProductEventCountCommand($hourlyInterval);
