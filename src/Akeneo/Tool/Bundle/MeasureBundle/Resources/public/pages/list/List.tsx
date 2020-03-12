@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import styled from 'styled-components';
 import {PageHeader} from 'akeneomeasure/shared/components/PageHeader';
 import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
@@ -17,6 +17,7 @@ import {Direction} from 'akeneomeasure/shared/components/Caret';
 import {Table} from 'akeneomeasure/pages/list/Table';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
+import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
 
 const Container = styled.div``;
 const PageContent = styled.div`
@@ -67,10 +68,7 @@ const List = () => {
   const measurementFamilies = useMeasurementFamilies();
   const locale = useContext(UserContext)('uiLocale');
 
-  const [createMeasurementFamilyModalIsOpen, setCreateMeasurementFamilyModalIsOpen] = useState<boolean>(false);
-  const handleCreateMeasurementFamilyClick = useCallback(() => {
-    setCreateMeasurementFamilyModalIsOpen(true);
-  }, [setCreateMeasurementFamilyModalIsOpen]);
+  const [isCreateModalOpen, openCreateModal, closeCreateModal] = useToggleState(false);
 
   const filteredMeasurementFamilies =
     null === measurementFamilies
@@ -85,7 +83,7 @@ const List = () => {
 
   return (
     <>
-      {createMeasurementFamilyModalIsOpen && <CreateMeasurementFamily/>}
+      {isCreateModalOpen && <CreateMeasurementFamily onClose={closeCreateModal}/>}
 
       <PageHeader
         userButtons={
@@ -95,7 +93,7 @@ const List = () => {
           />
         }
         buttons={[
-          <Button classNames={['AknButton--apply']} onClick={handleCreateMeasurementFamilyClick}>Create</Button>
+          <Button classNames={['AknButton--apply']} onClick={openCreateModal}>Create</Button>
         ]}
         breadcrumb={
           <Breadcrumb>

@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, ReactElement, ReactNode, Fragment} from 'react';
+import React, {Fragment, PropsWithChildren, ReactElement, ReactNode} from 'react';
 import styled from 'styled-components';
 
 const Header = styled.header`
@@ -9,15 +9,15 @@ const Header = styled.header`
   z-index: 10;
 `;
 
-type PageHeaderProps = PropsWithChildren<{
+type PageHeaderProps = {
   breadcrumb?: ReactElement;
   buttons?: ReactElement[];
   userButtons?: ReactNode;
   state?: ReactNode;
   imageSrc?: string;
-}>;
+};
 
-const PageHeader = ({children: title, breadcrumb, buttons, userButtons, state, imageSrc}: PageHeaderProps) => (
+const PageHeader = ({children: title, breadcrumb, buttons, userButtons, state, imageSrc}: PropsWithChildren<PageHeaderProps>) => (
   <Header>
     <div className="AknTitleContainer-line">
       {imageSrc && (

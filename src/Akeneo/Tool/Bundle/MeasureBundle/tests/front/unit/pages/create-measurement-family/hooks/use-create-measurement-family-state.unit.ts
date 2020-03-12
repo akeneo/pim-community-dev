@@ -2,7 +2,7 @@
 
 import '@testing-library/jest-dom/extend-expect';
 import {act, renderHook} from '@testing-library/react-hooks';
-import {useCreateMeasurementFamilyState} from 'akeneomeasure/pages/create-measurement-family/hooks/useCreateMeasurementFamilyState';
+import {useCreateMeasurementFamilyState} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-state';
 
 const initialFields = Object.freeze({
   family_code: '',

@@ -1,13 +1,13 @@
 import React, {FormEvent, useCallback, useContext} from 'react';
 import {Modal, ModalBodyWithIllustration, ModalCloseButton, ModalTitle} from 'akeneomeasure/shared/components/Modal';
-import {TranslateContext} from 'akeneomeasure/shared/translate/translate-context';
-import {MeasureFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasureFamilyIllustration';
+import {TranslateContext} from 'akeneomeasure/context/translate-context';
+import {MeasurementFamily as MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamily';
 import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {SubsectionHelper, HELPER_LEVEL_WARNING} from 'akeneomeasure/shared/components/SubsectionHelper';
 import {InputText} from 'akeneomeasure/shared/components/InputText';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {Button} from 'akeneomeasure/shared/components/Button';
-import {useCreateMeasurementFamilyState} from 'akeneomeasure/pages/create-measurement-family/hooks/useCreateMeasurementFamilyState';
+import {useCreateMeasurementFamilyState} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-state';
 
 type CreateMeasurementFamilyProps = {
   onClose: () => void;
@@ -29,9 +29,9 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
   return (
     <Modal>
       <ModalCloseButton title={__('measurements.close')} onClick={handleClose}/>
-      <ModalBodyWithIllustration illustration={<MeasureFamilyIllustration/>}>
+      <ModalBodyWithIllustration illustration={<MeasurementFamilyIllustration/>}>
         <ModalTitle
-          title={__('measurements.add_new_measurement_family')}
+          title={__('measurements.family.add_new_measurement_family')}
           subtitle={__('measurements.title.measurement')}
         />
         <Subsection>

@@ -1,7 +1,7 @@
 import React, {ChangeEventHandler, useContext} from 'react';
-import {ValidationError} from 'akeneomeasure/shared/model/ValidationError';
+import {ValidationError} from 'akeneomeasure/model/validation-error';
 import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
-import {TranslateContext} from 'akeneomeasure/shared/translate/translate-context';
+import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Flag} from 'akeneomeasure/shared/components/Flag';
 
 type InputTextProps = {

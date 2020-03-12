@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
-import {ValidationError} from 'akeneomeasure/shared/model/ValidationError';
-import {TranslateContext} from 'akeneomeasure/shared/translate/translate-context';
+import {ValidationError} from 'akeneomeasure/model/validation-error';
+import {TranslateContext} from 'akeneomeasure/context/translate-context';
 
 const samePropertyPath = (propertyPath: string) => (error: ValidationError) => propertyPath === error.propertyPath;
 

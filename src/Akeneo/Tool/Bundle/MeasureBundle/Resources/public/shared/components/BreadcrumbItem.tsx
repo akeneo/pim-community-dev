@@ -19,4 +19,4 @@ const BreadcrumbItem = ({children: label, onClick, isLast}: PropsWithChildren<Br
   return <span className={className}>{label}</span>;
 };
 
-export {BreadcrumbItemProps, BreadcrumbItem};
+export {BreadcrumbItem, BreadcrumbItemProps};
