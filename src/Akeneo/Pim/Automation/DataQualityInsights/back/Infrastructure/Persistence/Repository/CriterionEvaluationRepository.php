@@ -24,9 +24,13 @@ final class CriterionEvaluationRepository implements CriterionEvaluationReposito
     /** @var Connection */
     private $db;
 
-    public function __construct(Connection $db)
+    /** @var string */
+    private $tableName;
+
+    public function __construct(Connection $db, string $tableName)
     {
         $this->db = $db;
+        $this->tableName = $tableName;
     }
 
     public function create(Write\CriterionEvaluationCollection $criteriaEvaluations): void
@@ -37,14 +41,13 @@ final class CriterionEvaluationRepository implements CriterionEvaluationReposito
 
         $valuesPlaceholders = implode(',', array_fill(0, $criteriaEvaluations->count(), '(?, ?, ?, ?, ?, ?)'));
 
-        $sql = <<<SQL
-INSERT IGNORE INTO pimee_data_quality_insights_criteria_evaluation
-    (id, criterion_code, product_id, created_at, status, pending)
-VALUES
-    $valuesPlaceholders
-SQL;
+        $query = sprintf(
+            'INSERT IGNORE INTO %s (id, criterion_code, product_id, created_at, status, pending) VALUES %s',
+            $this->tableName,
+            $valuesPlaceholders
+        );
 
-        $statement = $this->db->prepare($sql);
+        $statement = $this->db->prepare($query);
 
         $valuePlaceholderIndex = 1;
         foreach ($criteriaEvaluations as $criterionEvaluation) {
@@ -58,7 +61,7 @@ SQL;
 
         $success = false;
         $retry = 0;
- 
+
         while (!$success) {
             try {
                 $statement->execute();
@@ -106,8 +109,10 @@ SQL;
 
     public function update(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
-        $sql = <<<'SQL'
-UPDATE pimee_data_quality_insights_criteria_evaluation
+        $criterionEvaluationTable = $this->tableName;
+
+        $sql = <<<SQL
+UPDATE $criterionEvaluationTable
 SET criterion_code = ?, product_id = ?, created_at = ?, started_at = ?, ended_at = ?, status = ?, pending = ?, result = ?
 WHERE id = ?
 SQL;
@@ -148,10 +153,12 @@ SQL;
 
     public function purgeUntil(\DateTimeImmutable $date): void
     {
+        $criterionEvaluationTable = $this->tableName;
+
         $query = <<<SQL
 DELETE old_evaluations
-FROM pimee_data_quality_insights_criteria_evaluation AS old_evaluations
-INNER JOIN pimee_data_quality_insights_criteria_evaluation AS younger_evaluations
+FROM $criterionEvaluationTable AS old_evaluations
+INNER JOIN $criterionEvaluationTable AS younger_evaluations
     ON younger_evaluations.product_id = old_evaluations.product_id
     AND younger_evaluations.criterion_code = old_evaluations.criterion_code
     AND younger_evaluations.created_at > old_evaluations.created_at

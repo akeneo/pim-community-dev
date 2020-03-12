@@ -24,7 +24,7 @@ services:
         public: true
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository'
+            - '@akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateMissingProductsCriteriaEvaluations:
@@ -40,7 +40,7 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository'
+            - '@akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetPendingCriteriaEvaluationsByProductIdsQuery'
             - '@logger'
@@ -90,7 +90,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Application\PurgeOutdatedData:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository'
+            - '@akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository'
 
 # PIM enrichment BC anti-corruption layers
