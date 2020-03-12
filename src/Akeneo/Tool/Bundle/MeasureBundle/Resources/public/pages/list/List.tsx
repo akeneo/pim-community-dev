@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import styled from 'styled-components';
 import {PageHeader} from 'akeneomeasure/shared/components/PageHeader';
 import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
@@ -17,7 +17,7 @@ import {Direction} from 'akeneomeasure/shared/components/Caret';
 import {Table} from 'akeneomeasure/pages/list/Table';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
-import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
+import {useToggleState} from 'akeneomeasure/hooks/use-toggle-state';
 
 const Container = styled.div``;
 const PageContent = styled.div`
@@ -65,10 +65,16 @@ const List = () => {
   const __ = useContext(TranslateContext);
   const [searchValue, setSearchValue] = useState('');
   const [sortColumn, getSortDirection, toggleSortDirection] = useSorting('label');
-  const measurementFamilies = useMeasurementFamilies();
+
+  const [measurementFamilies, fetchMeasurementFamilies] = useMeasurementFamilies();
   const locale = useContext(UserContext)('uiLocale');
 
   const [isCreateModalOpen, openCreateModal, closeCreateModal] = useToggleState(false);
+
+  const handleModalClose = useCallback(() => {
+    closeCreateModal();
+    fetchMeasurementFamilies();
+  }, [closeCreateModal, fetchMeasurementFamilies]);
 
   const filteredMeasurementFamilies =
     null === measurementFamilies
@@ -83,7 +89,7 @@ const List = () => {
 
   return (
     <>
-      {isCreateModalOpen && <CreateMeasurementFamily onClose={closeCreateModal}/>}
+      {isCreateModalOpen && <CreateMeasurementFamily onClose={handleModalClose}/>}
 
       <PageHeader
         userButtons={
@@ -142,9 +148,7 @@ const List = () => {
             <NoDataTitle>{__('measurements.family.no_data.title')}</NoDataTitle>
             <NoDataText>
               <Link
-                onClick={() => {
-                  // TODO connect create button
-                }}
+                onClick={openCreateModal}
               >
                 {__('measurements.family.no_data.link')}
               </Link>

@@ -1,0 +1,46 @@
+import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
+
+type LocaleCode = string;
+
+export type FormState = {
+  family_code: string;
+  family_label: string;
+  standard_unit_code: string;
+  standard_unit_label: string;
+  standard_unit_symbol: string;
+};
+
+export const createFormState = () => {
+  return Object.freeze({
+    family_code: '',
+    family_label: '',
+    standard_unit_code: '',
+    standard_unit_label: '',
+    standard_unit_symbol: '',
+  });
+};
+
+export const createMeasurementFamilyFromFormState = (data: FormState, locale: LocaleCode): MeasurementFamily => {
+  return {
+    code: data.family_code,
+    labels: {
+      [locale]: data.family_label,
+    },
+    standard_unit_code: data.standard_unit_code,
+    units: [
+      {
+        code: data.standard_unit_code,
+        labels: {
+          [locale]: data.standard_unit_label,
+        },
+        symbol: data.standard_unit_symbol,
+        convert_from_standard: [
+          {
+            operator: 'mul',
+            value: '1',
+          },
+        ],
+      },
+    ],
+  };
+};

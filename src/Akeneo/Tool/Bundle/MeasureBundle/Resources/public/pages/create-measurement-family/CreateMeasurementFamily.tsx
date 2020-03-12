@@ -1,13 +1,21 @@
-import React, {FormEvent, useCallback, useContext} from 'react';
+import React, {FormEvent, useCallback, useContext, useState} from 'react';
 import {Modal, ModalBodyWithIllustration, ModalCloseButton, ModalTitle} from 'akeneomeasure/shared/components/Modal';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
+import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-context';
+import {UserContext} from 'akeneomeasure/context/user-context';
 import {MeasurementFamily as MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamily';
 import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
-import {SubsectionHelper, HELPER_LEVEL_WARNING} from 'akeneomeasure/shared/components/SubsectionHelper';
+import {HELPER_LEVEL_WARNING, SubsectionHelper} from 'akeneomeasure/shared/components/SubsectionHelper';
 import {InputText} from 'akeneomeasure/shared/components/InputText';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {useCreateMeasurementFamilyState} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-state';
+import {
+  SaverResult,
+  useCreateMeasurementFamilySaver,
+} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-saver';
+import {createMeasurementFamilyFromFormState} from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
+import {ValidationError} from 'akeneomeasure/model/validation-error';
 
 type CreateMeasurementFamilyProps = {
   onClose: () => void;
@@ -15,16 +23,39 @@ type CreateMeasurementFamilyProps = {
 
 export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
   const __ = useContext(TranslateContext);
-  const locale = 'en_US'; // @todo load from user context
+  const notify = useContext(NotifyContext);
+  const locale = useContext(UserContext)('uiLocale');
 
-  const [fields, setFieldValue] = useCreateMeasurementFamilyState();
+  const [form, setFieldValue] = useCreateMeasurementFamilyState();
+  const saveMeasurementFamily = useCreateMeasurementFamilySaver();
+  const [errors, setErrors] = useState<ValidationError[]>([]);
 
   const handleClose = useCallback(() => {
     onClose();
   }, [onClose]);
+
+  const handleSaverResult = useCallback((result: SaverResult) => {
+    if (result.success) {
+      notify(NotificationLevel.SUCCESS, __('measurements.create_family.flash.success'));
+      return handleClose();
+    }
+
+    if (!result.success && result.errors) {
+      return setErrors(result.errors);
+    }
+
+    throw Error('Unexpected saver response');
+  }, [handleClose, setErrors, notify, __]);
+
   const handleSave = useCallback(() => {
-    // @todo
-  }, [fields]);
+    const measurementFamily = createMeasurementFamilyFromFormState(form, locale);
+    saveMeasurementFamily(measurementFamily)
+      .then(handleSaverResult)
+      .catch((e: string) => {
+        console.warn(e);
+        notify(NotificationLevel.ERROR, __('measurements.create_family.flash.error'));
+      });
+  }, [form, locale, saveMeasurementFamily, notify, __, handleSaverResult]);
 
   return (
     <Modal>
@@ -41,14 +72,16 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
           <InputText
             id="measurements.create_measurement_family.family_code"
             label={__('measurements.form.input.code')}
-            value={fields.family_code}
+            value={form.family_code}
             onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('family_code', e.currentTarget.value)}
             required={true}
+            errors={errors}
+            propertyPath="code"
           />
           <InputText
             id="measurements.create_measurement_family.family_label"
             label={__('measurements.form.input.label')}
-            value={fields.family_label}
+            value={form.family_label}
             onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('family_label', e.currentTarget.value)}
             flag={locale}
           />
@@ -63,22 +96,26 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
           <InputText
             id="measurements.create_measurement_family.standard_unit_code"
             label={__('measurements.form.input.code')}
-            value={fields.standard_unit_code}
+            value={form.standard_unit_code}
             onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('standard_unit_code', e.currentTarget.value)}
             required={true}
+            errors={errors}
+            propertyPath="units[0][code]"
           />
           <InputText
             id="measurements.create_measurement_family.standard_unit_label"
             label={__('measurements.form.input.label')}
-            value={fields.standard_unit_label}
+            value={form.standard_unit_label}
             onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('standard_unit_label', e.currentTarget.value)}
             flag={locale}
           />
           <InputText
             id="measurements.create_measurement_family.standard_unit_symbol"
             label={__('measurements.form.input.symbol')}
-            value={fields.standard_unit_symbol}
+            value={form.standard_unit_symbol}
             onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('standard_unit_symbol', e.currentTarget.value)}
+            errors={errors}
+            propertyPath="units[0][standard_unit_symbol]"
           />
         </FormGroup>
         <Button classNames={['AknButton--apply']} onClick={handleSave}>{__('measurements.form.save')}</Button>

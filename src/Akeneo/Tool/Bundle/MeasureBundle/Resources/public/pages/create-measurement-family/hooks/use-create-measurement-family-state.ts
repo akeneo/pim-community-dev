@@ -1,25 +1,11 @@
 import {useCallback, useState} from 'react';
+import {FormState, createFormState} from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
 
-type FormState = {
-  family_code: string;
-  family_label: string;
-  standard_unit_code: string;
-  standard_unit_label: string;
-  standard_unit_symbol: string;
-};
 type SetValue = (path: string, value: string) => void;
 type ClearValues = () => void;
 
-const initialFormState = Object.freeze({
-  family_code: '',
-  family_label: '',
-  standard_unit_code: '',
-  standard_unit_label: '',
-  standard_unit_symbol: '',
-});
-
 export const useCreateMeasurementFamilyState = (): [FormState, SetValue, ClearValues] => {
-  const [state, setState] = useState<FormState>(initialFormState);
+  const [state, setState] = useState<FormState>(createFormState());
 
   const setValue = useCallback(
     (path: string, value: string) => {
@@ -36,7 +22,7 @@ export const useCreateMeasurementFamilyState = (): [FormState, SetValue, ClearVa
   );
 
   const clear = useCallback(() => {
-    setState(initialFormState);
+    setState(createFormState());
   }, [setState]);
 
   return [state, setValue, clear];

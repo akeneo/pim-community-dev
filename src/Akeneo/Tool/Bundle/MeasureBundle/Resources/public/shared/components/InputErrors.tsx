@@ -1,8 +1,7 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {ValidationError} from 'akeneomeasure/model/validation-error';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
 
-const samePropertyPath = (propertyPath: string) => (error: ValidationError) => propertyPath === error.propertyPath;
+const samePropertyPath = (propertyPath: string) => (error: ValidationError) => propertyPath === error.property;
 
 type InputErrorsProps = {
   errors: ValidationError[];
@@ -11,17 +10,14 @@ type InputErrorsProps = {
 }
 
 export const InputErrors = ({errors, propertyPath, searchMethod = samePropertyPath}: InputErrorsProps) => {
-  const __ = useContext(TranslateContext);
-
   return (
     <div className="AknFieldContainer-footer AknFieldContainer-validationErrors">
       {errors.filter(searchMethod(propertyPath)).map((error: ValidationError, key: number) => {
-        const path = error.propertyPath.substring(propertyPath.length);
-        const errorMessage = __(error.messageTemplate, error.parameters);
+        const path = error.property.substring(propertyPath.length);
         return (
           <span className="AknFieldContainer-validationError error-message" key={key}>
             {path !== '' ? path + ': ' : null}
-            {errorMessage}
+            {error.message}
           </span>
         );
       })}

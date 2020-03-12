@@ -1,9 +1,4 @@
-export interface ValidationError {
-  messageTemplate: string;
-  parameters: {
-    [key: string]: string;
-  };
+export type ValidationError = {
+  property: string;
   message: string;
-  propertyPath: string;
-  invalidValue: any;
-}
+};
