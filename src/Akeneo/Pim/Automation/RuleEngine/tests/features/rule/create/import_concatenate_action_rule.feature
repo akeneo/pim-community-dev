@@ -17,12 +17,12 @@ Feature: Import concatenate action rules
   @acceptance-back
   Scenario: Import a concatenate rule with invalid source attributes
     When I import a concatenate rule with invalid source attributes
-    And an exception with message "actions[0]: The \"categories\" attribute code do not exist.: Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateAction" has been thrown
+    And an exception with message "actions[0]: The \"categories\" attribute code does not exist.: Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateAction" has been thrown
 
   @acceptance-back
   Scenario: Import a concatenate rule with unknown target attribute
     When I import a concatenate rule with unknown target attribute
-    And an exception with message "actions[0]: The \"unknown\" attribute code do not exist.: Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateAction" has been thrown
+    And an exception with message "actions[0]: The \"unknown\" attribute code does not exist.: Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateAction" has been thrown
 
   @acceptance-back
   Scenario: Import a concatenate rule with invalid target attribute

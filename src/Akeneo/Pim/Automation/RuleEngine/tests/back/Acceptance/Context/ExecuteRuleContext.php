@@ -157,6 +157,12 @@ rules:
                   - field: relEASE_DAte
                     format: d/m/Y
                   - field: weight
+                  - field: color
+                  - field: color
+                    label_locale: fr_FR
+                  - field: connectivity
+                  - field: connectivity
+                    label_locale: fr_FR
               to:
                   field: name
                   locale: en_US
@@ -212,6 +218,12 @@ rules:
                     format: d/m/Y
                   - field: weight
                   - field: sub_description
+                  - field: color
+                  - field: color
+                    label_locale: fr_FR
+                  - field: connectivity
+                  - field: connectivity
+                    label_locale: fr_FR
               to:
                   field: description
                   scope: ecommerce

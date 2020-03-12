@@ -52,6 +52,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\AttributeTypes',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues',
 
         // TIP-961: Remove dependency to ProductRepositoryInterface
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
@@ -66,6 +67,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Value\DateValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface',

@@ -11,7 +11,8 @@
         "processor",
         "price",
         "weight",
-        "color"
+        "color",
+        "connectivity"
     ],
     "attribute_as_label": "name",
     "attribute_as_image": "picture",

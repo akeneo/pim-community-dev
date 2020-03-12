@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
 use Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository;
@@ -208,7 +209,7 @@ final class DataFixturesContext implements Context
     /**
      * @Given /^the following categories:$/
      */
-    public function theFollowingCategories(TableNode $table)
+    public function theFollowingCategories(TableNode $table): void
     {
         foreach ($table->getHash() as $data) {
             $category = new Category();
@@ -225,7 +226,7 @@ final class DataFixturesContext implements Context
     /**
      * @Given /^some currencies$/
      */
-    public function someCurrencies()
+    public function someCurrencies(): void
     {
         $eurCurrency = new Currency();
         $eurCurrency->setCode('EUR');
@@ -241,10 +242,8 @@ final class DataFixturesContext implements Context
     /**
      * Loads attributes according to a provided list of attribute codes and a default attribute group.
      * Fixture content is in a file in "Resources/config/fixtures/attributes/".
-     *
-     * @param array $attributeCodes
      */
-    private function loadAttributes(array $attributeCodes)
+    private function loadAttributes(array $attributeCodes): array
     {
         $normalizedAttributes = $this->loadJsonFileAsArray('attributes/attributes.json');
 
@@ -258,20 +257,22 @@ final class DataFixturesContext implements Context
 
             if ('pim_catalog_simpleselect' === $attribute->getType() ||
                 'pim_catalog_multiselect' === $attribute->getType()) {
-                $this->loadAttributeOptions($attributeCode);
+                $this->loadAttributeOptions($attribute, $attributeCode);
             }
+            $this->attributeRepository->save($attribute);
             $attributes[] = $attribute;
         }
 
         return $attributes;
     }
 
-    private function loadAttributeOptions(string $attributeCode): void
+    private function loadAttributeOptions(Attribute $attribute, string $attributeCode): void
     {
         $flatOptions = $this->loadJsonFileAsArray(sprintf('options/%s-options.json', $attributeCode));
         foreach ($flatOptions as $flatOption) {
             $option = $this->optionBuilder->build($flatOption, false);
             $this->attributeOptionRepository->save($option);
+            $attribute->addOption($option);
         }
     }
 

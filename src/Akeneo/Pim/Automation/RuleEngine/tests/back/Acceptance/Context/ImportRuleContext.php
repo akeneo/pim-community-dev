@@ -60,6 +60,21 @@ rules:
                   - field: pim_brand
                   - field: name
                     locale: en_US
+                  - field: sku
+                  - field: processor
+                  - field: price
+                    currency: EUR
+                  - field: release_date
+                  - field: relEASE_DAte
+                    format: d/m/Y
+                  - field: weight
+                  - field: sub_description
+                  - field: color
+                  - field: color
+                    label_locale: fr_FR
+                  - field: connectivity
+                  - field: connectivity
+                    label_locale: fr_FR
               to:
                   field: description
                   locale: en_US

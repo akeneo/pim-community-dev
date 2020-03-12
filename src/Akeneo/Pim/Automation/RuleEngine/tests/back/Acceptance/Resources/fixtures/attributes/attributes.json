@@ -176,7 +176,7 @@
   },
   "connectivity": {
     "code": "connectivity",
-    "type": "pim_catalog_text",
+    "type": "pim_catalog_multiselect",
     "group": "other",
     "localizable": false,
     "scopable": false,

@@ -54,6 +54,11 @@
             "<all_channels>": {
                 "<all_locales>": "this\nis\nthe\nsub\ndescription"
             }
+        },
+        "connectivity": {
+            "<all_channels>": {
+                "<all_locales>": ["wi_fi", "hdmi", "usb"]
+            }
         }
     }
 }

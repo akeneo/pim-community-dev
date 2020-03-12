@@ -61,3 +61,8 @@ services:
         class: Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\InMemory\InMemoryFindActivatedCurrencies
         arguments:
             - '@pim_catalog.repository.channel'
+
+    akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes:
+        class: 'AkeneoEnterprise\Test\Acceptance\Rule\RuleDefinition\InMemoryGetExistingAttributeOptionCodes'
+        arguments:
+            - '@pim_catalog.repository.attribute_option'

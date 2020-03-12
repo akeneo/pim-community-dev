@@ -92,6 +92,11 @@ rules:
           - field: pim_brand
           - field: name
             locale: en_US
+          - field: color
+            label_locale: en_US
+          - field: connectivity
+          - field: connectivity
+            label_locale: fr_FR
         to:
           field: description
           locale: en_US

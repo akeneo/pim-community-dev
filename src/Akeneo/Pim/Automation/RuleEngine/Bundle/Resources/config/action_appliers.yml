@@ -58,7 +58,6 @@ services:
             -
                 - 'pim_catalog_identifier'
                 - 'pim_catalog_number'
-                - 'pim_catalog_simpleselect'
                 - 'pim_catalog_text'
         tags:
             - { name: akeneo_rule_engine.concatenate_applier.stringifier }
@@ -89,5 +88,14 @@ services:
             - '@pim_catalog.repository.attribute'
             -
                 - 'pim_catalog_textarea'
+        tags:
+            - { name: akeneo_rule_engine.concatenate_applier.stringifier }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\OptionValueStringifier:
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_options_with_values'
+            -
+                - 'pim_catalog_simpleselect'
+                - 'pim_catalog_multiselect'
         tags:
             - { name: akeneo_rule_engine.concatenate_applier.stringifier }

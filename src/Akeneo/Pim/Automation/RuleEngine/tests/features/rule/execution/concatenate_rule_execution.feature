@@ -24,7 +24,7 @@ Feature: Execute concatenate rules
     Given A rule that concatenates given attribute values to a text attribute value
     When I execute the concatenate rule on products
     Then no exception has been thrown
-    And the en_US unscoped name of "75025" should be "Crown Bolt this is the "description" SKU75025 100 MEGAHERTZ 99 EUR 2015-01-01 01/01/2015 40"
+    And the en_US unscoped name of "75025" should be "Crown Bolt this is the "description" SKU75025 100 MEGAHERTZ 99 EUR 2015-01-01 01/01/2015 40 color1 couleur 1 hdmi, usb, wi_fi HDMI, USB, Sans fil"
     And the en_US unscoped name of "75024" should be "75024"
 
   @acceptance-back
@@ -32,7 +32,7 @@ Feature: Execute concatenate rules
     Given A rule that concatenates given attribute values to a textarea attribute value
     When I execute the concatenate rule on products
     Then no exception has been thrown
-    And the en_US ecommerce description of "75025" should be "Crown Bolt 75025 SKU75025 100 MEGAHERTZ 99 EUR 2015-01-01 01/01/2015 40 this<br/>is<br/>the<br/>sub<br/>description"
+    And the en_US ecommerce description of "75025" should be "Crown Bolt 75025 SKU75025 100 MEGAHERTZ 99 EUR 2015-01-01 01/01/2015 40 this<br/>is<br/>the<br/>sub<br/>description color1 couleur 1 hdmi, usb, wi_fi HDMI, USB, Sans fil"
     And the en_US ecommerce description of "75024" should be "this is the description"
 
   @acceptance-back
