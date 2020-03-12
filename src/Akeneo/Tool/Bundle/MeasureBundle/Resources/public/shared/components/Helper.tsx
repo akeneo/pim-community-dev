@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Helper = styled.div`
+const Helper = styled.div`
   background-color: ${props => props.theme.color.blue10};
   display: flex;
   align-items: center;
@@ -11,7 +11,7 @@ export const Helper = styled.div`
   line-height: 25px;
 `;
 
-export const HelperTitle = styled.div`
+const HelperTitle = styled.div`
   color: ${props => props.theme.color.grey140};
   font-size: ${props => props.theme.fontSize.bigger};
   font-weight: 600;
@@ -20,8 +20,11 @@ export const HelperTitle = styled.div`
   padding-left: 20px;
 `;
 
-export const HelperText = styled.div`
+const HelperText = styled.div`
   color: ${props => props.theme.color.grey120};
   font-size: ${props => props.theme.fontSize.default};
   font-weight: 400;
+  line-height: 1.5;
 `;
+
+export {Helper, HelperTitle, HelperText};

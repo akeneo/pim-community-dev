@@ -55,9 +55,9 @@ type AkeneoTheme = {
   };
 };
 
-export type ThemedProps<P> = ThemedStyledProps<P, AkeneoTheme>;
+type ThemedProps<P> = ThemedStyledProps<P, AkeneoTheme>;
 
-export const akeneoTheme: AkeneoTheme = {
+const akeneoTheme: AkeneoTheme = {
   color: {
     grey60: '#f9f9fb',
     grey70: '#e8ebee',
@@ -111,3 +111,5 @@ export const akeneoTheme: AkeneoTheme = {
     small: '11px',
   },
 };
+
+export {akeneoTheme, ThemedProps};

@@ -1,5 +1,5 @@
 import {Deferred} from 'jquery';
-import {mountReactElementRef, unmoundReactElementRef} from './react-element-helper';
+import {mountReactElementRef, unmountReactElementRef} from './react-element-helper';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -45,7 +45,7 @@ abstract class ReactController extends BaseController {
       return;
     }
 
-    unmoundReactElementRef();
+    unmountReactElementRef();
   }
 }
 

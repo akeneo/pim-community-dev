@@ -39,7 +39,7 @@ type SearchBarProps = {
   onSearchChange: (searchValue: string) => void;
 };
 
-export const SearchBar = ({className, count, searchValue, onSearchChange}: SearchBarProps) => {
+const SearchBar = ({className, count, searchValue, onSearchChange}: SearchBarProps) => {
   const __ = useContext(TranslateContext);
   const [searchFocusRef] = useFocus();
 
@@ -58,3 +58,5 @@ export const SearchBar = ({className, count, searchValue, onSearchChange}: Searc
     </Container>
   );
 };
+
+export {SearchBar};

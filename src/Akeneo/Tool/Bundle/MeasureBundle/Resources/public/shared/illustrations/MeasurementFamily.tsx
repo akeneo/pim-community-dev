@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const MeasurementFamily = ({
+const MeasurementFamily = ({
   title = 'Measurement Family icon',
   size = 256,
   ...props
@@ -2601,3 +2601,5 @@ export const MeasurementFamily = ({
     </g>
   </svg>
 );
+
+export {MeasurementFamily};
