@@ -12,7 +12,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class SaveMeasurementFamiliesEndToEnd extends ApiTestCase
+class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
 {
     /** @var MeasurementFamilyRepositoryInterface */
     private $measurementFamilyRepository;

@@ -25,7 +25,6 @@ services:
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'
             - '@pim_api.pagination.parameter_validator'
-            - '@pim_api.pagination.measurement_offset_hal_paginator'
             - '%pim_api.configuration%'
 
     pim_api.controller.create_update_measurement_families:
