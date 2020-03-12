@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {Search as SearchIcon} from 'akeneomeasure/shared/icons/Search';
 import {ResultCount} from 'akeneomeasure/shared/components/ResultCount';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
+import {useFocus} from 'akeneomeasure/shared/hooks/use-focus';
 
 const Container = styled.div`
   display: flex;
@@ -15,12 +16,13 @@ const Container = styled.div`
 
 const SearchContainer = styled.div`
   display: flex;
+  flex: 1;
   align-items: center;
 `;
 
 const SearchInput = styled.input`
   border: none;
-  width: 180px;
+  flex: 1;
   margin-left: 5px;
   color: ${props => props.theme.color.grey120};
   outline: none;
@@ -39,12 +41,14 @@ type SearchBarProps = {
 
 export const SearchBar = ({className, count, searchValue, onSearchChange}: SearchBarProps) => {
   const __ = useContext(TranslateContext);
+  const [searchFocusRef] = useFocus();
 
   return (
     <Container className={className}>
       <SearchContainer>
         <SearchIcon />
         <SearchInput
+          ref={searchFocusRef}
           placeholder={__('measurements.search.placeholder')}
           value={searchValue}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => onSearchChange(event.target.value)}

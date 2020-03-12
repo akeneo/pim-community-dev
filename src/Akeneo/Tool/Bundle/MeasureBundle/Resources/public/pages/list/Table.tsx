@@ -15,18 +15,14 @@ const Container = styled.table`
   }
 `;
 
-const TableHeader = styled.thead`
-  tr {
-    height: 43px;
-    border-bottom: 1px solid ${props => props.theme.color.grey120};
-  }
-`;
-
-const TableBody = styled.tbody``;
-
 const SortableTableCell = styled.th`
   text-align: left;
   font-weight: normal;
+  position: sticky;
+  top: 177px;
+  height: 43px;
+  box-shadow: 0 1px 0 ${props => props.theme.color.grey120};
+  background: ${props => props.theme.color.white};
 
   &:hover {
     cursor: pointer;
@@ -44,7 +40,7 @@ const Table = ({measurementFamilies, toggleSortDirection, getSortDirection}: Tab
 
   return (
     <Container>
-      <TableHeader>
+      <thead>
         <tr>
           <SortableTableCell title={__('measurements.list.header.label')} onClick={() => toggleSortDirection('label')}>
             {__('measurements.list.header.label')}
@@ -69,12 +65,12 @@ const Table = ({measurementFamilies, toggleSortDirection, getSortDirection}: Tab
             <Caret direction={getSortDirection('unit_count')} />
           </SortableTableCell>
         </tr>
-      </TableHeader>
-      <TableBody>
+      </thead>
+      <tbody>
         {measurementFamilies.map(measurementFamily => (
           <MeasurementFamilyRow key={measurementFamily.code} measurementFamily={measurementFamily} />
         ))}
-      </TableBody>
+      </tbody>
     </Container>
   );
 };
