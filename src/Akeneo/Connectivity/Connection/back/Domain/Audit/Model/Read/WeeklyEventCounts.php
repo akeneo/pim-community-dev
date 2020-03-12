@@ -17,13 +17,39 @@ final class WeeklyEventCounts
     /** @var DailyEventCount[] */
     private $dailyEventCounts = [];
 
-    public function __construct(string $connectionCode, string $startDate, string $endDate, array $eventData)
-    {
+    /**
+     * @param string $startDate Format 'Y-m-d'
+     * @param string $endDate Format 'Y-m-d'
+     * @param string $timezone Timezone for the startDate and endDate
+     * @param array $hourlyEventCounts
+     * Type: { '<all>': Array<[DateTime, int]>, [connectionCode: string]: Array<[DateTime, int]> }
+     */
+    public function __construct(
+        string $connectionCode,
+        string $startDate,
+        string $endDate,
+        string $timezone,
+        array $hourlyEventCounts
+    ) {
+        $startDateTime = \DateTimeImmutable::createFromFormat('Y-m-d', $startDate, new \DateTimeZone($timezone));
+        if (false === $startDateTime) {
+            throw new \RuntimeException();
+        }
+        $endDateTime = \DateTimeImmutable::createFromFormat('Y-m-d', $endDate, new \DateTimeZone($timezone));
+        if (false === $endDateTime) {
+            throw new \RuntimeException();
+        }
+
         $this->connectionCode = $connectionCode;
+
+        $dailyTimezonedEventCountsData = $this->groupByDailyTimezonedEventCount(
+            $hourlyEventCounts,
+            new \DateTimeZone($timezone)
+        );
         $this->dailyEventCounts = $this->hydrateDailyEventCounts(
-            new \DateTime($startDate, new \DateTimeZone('UTC')),
-            new \DateTime($endDate, new \DateTimeZone('UTC')),
-            $eventData
+            $startDateTime,
+            $endDateTime,
+            $dailyTimezonedEventCountsData
         );
     }
 
@@ -40,7 +66,23 @@ final class WeeklyEventCounts
         ];
     }
 
-    private function hydrateDailyEventCounts(\DateTime $start, \DateTime $end, $eventData)
+    private function groupByDailyTimezonedEventCount(array $hourlyEvents, \DateTimeZone $dateTimeZone): array
+    {
+        return array_reduce($hourlyEvents, function (array $dailyEvents, array $hourlyEvent) use ($dateTimeZone) {
+            [$eventDateTime, $eventCount] = $hourlyEvent;
+
+            $eventDate = $eventDateTime->setTimezone($dateTimeZone)->format('Y-m-d');
+
+            if (false === isset($dailyEvents[$eventDate])) {
+                $dailyEvents[$eventDate] = 0;
+            }
+            $dailyEvents[$eventDate] += $eventCount;
+
+            return $dailyEvents;
+        }, []);
+    }
+
+    private function hydrateDailyEventCounts(\DateTimeImmutable $start, \DateTimeImmutable $end, $eventData)
     {
         $period = new \DatePeriod(
             $start,
@@ -49,13 +91,10 @@ final class WeeklyEventCounts
         );
 
         $dailyEventCounts = [];
-        foreach ($period as $date) {
-            $count = $eventData[$date->format('Y-m-d')] ?? 0;
+        foreach ($period as $dateTime) {
+            $date = $dateTime->format('Y-m-d');
 
-            $dailyEventCounts[] = new DailyEventCount(
-                (int) $count,
-                $date
-            );
+            $dailyEventCounts[] = new DailyEventCount($date, (int) ($eventData[$date] ?? 0));
         }
 
         return $dailyEventCounts;

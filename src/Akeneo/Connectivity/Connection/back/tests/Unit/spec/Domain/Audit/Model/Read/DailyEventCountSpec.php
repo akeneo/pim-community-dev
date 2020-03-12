@@ -16,8 +16,7 @@ class DailyEventCountSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $eventDate = new \DateTime('2019-12-03', new \DateTimeZone('UTC'));
-        $this->beConstructedWith(5, $eventDate);
+        $this->beConstructedWith('2019-12-03', 5);
     }
 
     public function it_is_initializable(): void
