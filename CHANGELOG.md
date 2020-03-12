@@ -1,6 +1,7 @@
 ## Bug fixes
 
 - PIM-9109: Fix SSO not working behind reverse proxy.
+- PIM-9133: Fix product and product model save when the user has no permission on some attribute groups
 
 ## Improvements
 
