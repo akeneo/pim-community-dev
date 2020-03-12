@@ -7,6 +7,7 @@
 ## Bug fixes
 
 - PIM-9121: Check Asset exists before importing it in a Product
+- DAPI-900: Accept "ignored words" with any kind of letter from any language
 
 # 4.0.8 (2020-03-05)
 
