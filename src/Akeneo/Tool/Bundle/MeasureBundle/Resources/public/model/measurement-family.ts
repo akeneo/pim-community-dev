@@ -17,7 +17,7 @@ type Unit = {
   convert_from_standard: Operation[];
 };
 
-export type MeasurementFamily = {
+type MeasurementFamily = {
   code: string;
   labels: {
     [locale: string]: string;
@@ -26,12 +26,12 @@ export type MeasurementFamily = {
   units: Unit[];
 };
 
-export const getMeasurementFamilyLabel = (measurementFamily: MeasurementFamily, locale: LocaleCode) =>
+const getMeasurementFamilyLabel = (measurementFamily: MeasurementFamily, locale: LocaleCode) =>
   getLabel(measurementFamily.labels, locale, measurementFamily.code);
 
 const getUnitLabel = (unit: Unit, locale: LocaleCode) => getLabel(unit.labels, locale, unit.code);
 
-export const getStandardUnitLabel = (measurementFamily: MeasurementFamily, locale: LocaleCode) => {
+const getStandardUnitLabel = (measurementFamily: MeasurementFamily, locale: LocaleCode) => {
   const unit = measurementFamily.units.find(unit => unit.code === measurementFamily.standard_unit_code);
 
   if (undefined === unit) return `[${measurementFamily.standard_unit_code}]`;
@@ -39,7 +39,7 @@ export const getStandardUnitLabel = (measurementFamily: MeasurementFamily, local
   return getUnitLabel(unit, locale);
 };
 
-export const filterMeasurementFamily = (
+const filterMeasurementFamily = (
   measurementFamily: MeasurementFamily,
   searchValue: string,
   locale: LocaleCode
@@ -48,7 +48,7 @@ export const filterMeasurementFamily = (
   (undefined !== measurementFamily.labels[locale] &&
     -1 !== measurementFamily.labels[locale].toLowerCase().indexOf(searchValue.toLowerCase()));
 
-export const sortMeasurementFamily = (sortDirection: Direction, locale: LocaleCode, sortColumn: string) => (
+const sortMeasurementFamily = (sortDirection: Direction, locale: LocaleCode, sortColumn: string) => (
   first: MeasurementFamily,
   second: MeasurementFamily
 ) => {
@@ -71,4 +71,12 @@ export const sortMeasurementFamily = (sortDirection: Direction, locale: LocaleCo
     default:
       return 0;
   }
+};
+
+export {
+  MeasurementFamily,
+  getMeasurementFamilyLabel,
+  getStandardUnitLabel,
+  filterMeasurementFamily,
+  sortMeasurementFamily,
 };

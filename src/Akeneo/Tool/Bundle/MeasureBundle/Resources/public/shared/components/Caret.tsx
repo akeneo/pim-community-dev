@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export enum Direction {
+enum Direction {
   Ascending = 'Ascending',
   Descending = 'Descending',
 }
@@ -27,12 +27,9 @@ const AscendingCaret = styled(CaretContainer)`
 
 type CaretProps = {
   direction: Direction;
-  onChange?: (newDirection: Direction) => void;
 };
 
-export const Caret = ({direction, onChange}: CaretProps) =>
-  direction === Direction.Ascending ? (
-    <AscendingCaret onClick={() => onChange && onChange(Direction.Descending)} />
-  ) : (
-    <DescendingCaret onClick={() => onChange && onChange(Direction.Ascending)} />
-  );
+const Caret = ({direction}: CaretProps) =>
+  direction === Direction.Ascending ? <AscendingCaret /> : <DescendingCaret />;
+
+export {Direction, Caret};

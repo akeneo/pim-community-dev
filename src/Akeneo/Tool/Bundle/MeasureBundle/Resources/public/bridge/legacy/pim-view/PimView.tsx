@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import {LegacyContext} from 'akeneomeasure/context/legacy-context';
 import {View} from 'backbone';
 
-interface Props {
+type Props = {
   viewName: string;
   className: string;
-}
+};
 
 const StyledPimView = styled.div<{rendered: boolean}>`
   visibility: ${({rendered}) => (rendered ? 'visible' : 'hidden')};
@@ -14,7 +14,7 @@ const StyledPimView = styled.div<{rendered: boolean}>`
   transition: opacity 0.5s linear;
 `;
 
-export const PimView = ({viewName, className}: Props) => {
+const PimView = ({viewName, className}: Props) => {
   const el = useRef<HTMLDivElement>(null);
   const [view, setView] = useState<View | null>(null);
 
@@ -38,3 +38,5 @@ export const PimView = ({viewName, className}: Props) => {
 
   return <StyledPimView className={className} ref={el} rendered={null !== view} />;
 };
+
+export {PimView};

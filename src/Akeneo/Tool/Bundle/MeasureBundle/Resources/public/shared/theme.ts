@@ -57,12 +57,6 @@ type AkeneoTheme = {
 
 export type ThemedProps<P> = ThemedStyledProps<P, AkeneoTheme>;
 
-export const opacity = (color: string, opacity: number) => {
-  const transparencyHexValue = Math.round(opacity * 255).toString(16);
-
-  return `${color}${transparencyHexValue.length < 2 ? '0' : ''}${transparencyHexValue}`;
-};
-
 export const akeneoTheme: AkeneoTheme = {
   color: {
     grey60: '#f9f9fb',
