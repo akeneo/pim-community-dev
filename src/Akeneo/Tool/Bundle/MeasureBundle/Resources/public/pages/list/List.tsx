@@ -141,7 +141,7 @@ const List = () => {
             </NoDataText>
           </NoDataSection>
         )}
-        {null !== filteredMeasurementFamilies && (
+        {null !== filteredMeasurementFamilies && 0 < measurementFamiliesCount && (
           <Container>
             <StickySearchBar
               count={filteredMeasurementFamiliesCount}
