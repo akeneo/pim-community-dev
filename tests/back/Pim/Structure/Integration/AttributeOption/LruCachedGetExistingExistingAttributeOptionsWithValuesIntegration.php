@@ -38,7 +38,7 @@ final class LruCachedGetExistingExistingAttributeOptionsWithValuesIntegration ex
 
         $actual = $this->getQuery()->fromAttributeCodeAndOptionCodes(['attribute_2.option_A', 'attribute_2.option_B']);
         $expected = ['attribute_2.option_A' => ['en_US' => 'option A (2)']];
-        \PHPUnit\Framework\Assert::assertEqualsCanonicalizing($expected, $actual);
+        $this->assertArrayEquals($expected, $actual);
 
         $actual = $this->getQuery()->fromAttributeCodeAndOptionCodes(
             ['attribute_1.option_A', 'attribute_1.option_D', 'attribute_1.option_C']
@@ -49,7 +49,7 @@ final class LruCachedGetExistingExistingAttributeOptionsWithValuesIntegration ex
             ],
             'attribute_1.option_C' => ['en_US' => null],
         ];
-        \PHPUnit\Framework\Assert::assertEqualsCanonicalizing($expected, $actual);
+        $this->assertArrayEquals($expected, $actual);
     }
 
     public function test_it_returns_an_empty_array_for_unknown_attribute_code()
@@ -58,7 +58,18 @@ final class LruCachedGetExistingExistingAttributeOptionsWithValuesIntegration ex
         \PHPUnit\Framework\Assert::assertEqualsCanonicalizing([], $actual);
     }
 
-    public function getQuery(): LruCachedGetExistingExistingAttributeOptionsWithValues
+    private function assertArrayEquals(array $expected, array $actual): void
+    {
+        // We want to check the arrays are equl no matter the order.
+        // assertEqualsCanonicalizing works only for first level, not for second, third, etc.. levels.
+        // As you know our arrays have only 2 levels, we can perform a assertEqualsCanonicalizing on second level only.
+        \PHPUnit\Framework\Assert::assertEqualsCanonicalizing(array_keys($expected), array_keys($actual));
+        foreach ($expected as $key => $values) {
+            \PHPUnit\Framework\Assert::assertEqualsCanonicalizing($values, $actual[$key]);
+        }
+    }
+
+    private function getQuery(): LruCachedGetExistingExistingAttributeOptionsWithValues
     {
         return $this->get('akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values');
     }
