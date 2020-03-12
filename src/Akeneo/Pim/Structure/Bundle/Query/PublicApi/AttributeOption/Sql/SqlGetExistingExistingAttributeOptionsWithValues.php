@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues;
-use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -18,13 +17,9 @@ final class SqlGetExistingExistingAttributeOptionsWithValues implements GetExist
     /** @var Connection */
     private $connection;
 
-    /** @var LRUCache */
-    private $cache;
-
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->cache = new LRUCache(10000);
     }
 
     /**
@@ -51,8 +46,9 @@ SELECT
     JSON_OBJECTAGG(active_locales.code, option_value.value) as labels
 FROM active_locales
     CROSS JOIN pim_catalog_attribute attribute
-    INNER JOIN pim_catalog_attribute_option attribute_option on attribute.id = attribute_option.attribute_id
-    LEFT JOIN pim_catalog_attribute_option_value option_value on attribute_option.id = option_value.option_id
+    INNER JOIN pim_catalog_attribute_option attribute_option ON attribute.id = attribute_option.attribute_id
+    LEFT JOIN pim_catalog_attribute_option_value option_value ON attribute_option.id = option_value.option_id
+                                                              AND active_locales.code = option_value.locale_code
 WHERE (attribute.code, attribute_option.code) IN (%s)
 GROUP BY attribute.code, attribute_option.code
 SQL;
