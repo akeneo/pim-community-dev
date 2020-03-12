@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, ChangeEvent} from 'react';
 import styled from 'styled-components';
 import {Search as SearchIcon} from 'akeneomeasure/shared/icons/Search';
 import {ResultCount} from 'akeneomeasure/shared/components/ResultCount';
@@ -51,7 +51,7 @@ const SearchBar = ({className, count, searchValue, onSearchChange}: SearchBarPro
           ref={searchFocusRef}
           placeholder={__('measurements.search.placeholder')}
           value={searchValue}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => onSearchChange(event.target.value)}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => onSearchChange(event.target.value)}
         />
       </SearchContainer>
       <ResultCount count={count} />
