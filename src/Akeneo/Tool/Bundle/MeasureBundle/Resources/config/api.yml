@@ -43,9 +43,3 @@ services:
 
     pim_api.controller.external_api.json_schema.measurement_family_validator:
         class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\JsonSchema\MeasurementFamilyValidator
-
-    # tools
-    pim_api.pagination.measurement_offset_hal_paginator:
-        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\MeasurementOffsetHalPaginator
-        arguments:
-            - '@router'
