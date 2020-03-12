@@ -35,21 +35,28 @@ class AuditController
     public function sourceConnectionsEvent(Request $request): JsonResponse
     {
         $eventType = $request->get('event_type');
-
+        $endDateUser = $request->get('end_date');
         $timezone = $this->userContext->getUserTimezone();
 
-        $endDate = $request->get('end_date', date('Y-m-d'));
-        $endDateTime = \DateTimeImmutable::createFromFormat('Y-m-d', $endDate, new \DateTimeZone($timezone));
-        if (false === $endDateTime) {
+        if (null === $endDateUser) {
+            $endDateUser = (new \DateTimeImmutable('now', new \DateTimeZone($timezone)))->format('Y-m-d');
+        }
+
+        $endDateTimeUser = \DateTimeImmutable::createFromFormat(
+            'Y-m-d',
+            $endDateUser,
+            new \DateTimeZone($timezone)
+        );
+        if (false === $endDateTimeUser) {
             throw new \InvalidArgumentException(sprintf(
                 'Unexpected format for the `end_date` parameter "%s". Format must be `Y-m-d`',
-                $endDate
+                $endDateUser
             ));
         }
 
-        $startDate = $endDateTime->sub(new \DateInterval('P7D'))->format('Y-m-d');
+        $startDateUser = $endDateTimeUser->sub(new \DateInterval('P7D'))->format('Y-m-d');
 
-        $query = new CountDailyEventsByConnectionQuery($eventType, $startDate, $endDate, $timezone);
+        $query = new CountDailyEventsByConnectionQuery($eventType, $startDateUser, $endDateUser, $timezone);
         $dailyEventCountsPerConnection = $this->countDailyEventsByConnectionHandler->handle($query);
 
         $data = \array_reduce(

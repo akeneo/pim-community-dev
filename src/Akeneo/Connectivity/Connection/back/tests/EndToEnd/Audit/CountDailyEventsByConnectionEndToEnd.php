@@ -32,7 +32,7 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
             ['bynder', 'sap'],
             (new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('Asia/Tokyo')))
                 ->setTimezone(new \DateTimeZone('UTC')),
-            (new \DateTimeImmutable('2020-01-08 00:00:00', new \DateTimeZone('Asia/Tokyo')))
+            (new \DateTimeImmutable('2020-01-09 00:00:00', new \DateTimeZone('Asia/Tokyo')))
                 ->setTimezone(new \DateTimeZone('UTC')),
         );
         $weeklyEventCountsPerConnection = $this->hourlyToWeeklyEventCounts(
@@ -64,7 +64,6 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
         );
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        // dump($expectedResult, $result);
         Assert::assertEquals($expectedResult, $result);
     }
 
