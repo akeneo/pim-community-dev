@@ -8,7 +8,6 @@ import {Translate} from '../../shared/translate';
 
 interface Props {
     connections: Connection[];
-    code: string;
     onChange: (code?: string) => void;
 }
 
