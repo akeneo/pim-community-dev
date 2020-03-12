@@ -1,6 +1,6 @@
 import React, {useRef, useContext, useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {LegacyContext} from 'akeneomeasure/shared/legacy/legacy-context';
+import {LegacyContext} from 'akeneomeasure/context/legacy-context';
 import {View} from 'backbone';
 
 interface Props {

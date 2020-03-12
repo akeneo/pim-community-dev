@@ -1,19 +1,14 @@
-// const router = require('pim/router');
-const translate = require('oro/translator');
+import {__} from 'akeneomeasure/bridge/legacy/translator';
+
+const router = require('pim/router');
 const viewBuilder = require('pim/form-builder');
-// const messenger = require('oro/messenger');
-// const userContext = require('pim/user-context');
-// const securityContext = require('pim/security-context');
+const userContext = require('pim/user-context');
 
 export const dependencies = {
-  // router,
-  translate,
+  router,
+  translate: __,
   legacy: {
     viewBuilder,
   },
-  // notify: messenger.notify.bind(messenger),
-  // user: userContext,
-  // security: {
-  //   isGranted: securityContext.isGranted.bind(securityContext),
-  // },
+  user: userContext.get,
 };

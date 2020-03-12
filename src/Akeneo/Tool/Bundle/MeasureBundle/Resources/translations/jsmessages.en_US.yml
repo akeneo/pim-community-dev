@@ -5,4 +5,23 @@ pim_title:
     akeneo_measurements_settings_index: Measurements
 
 measurements:
-    families: "{0}0 Measurement families|{1}1 Measurement family|]1, Inf[{{ itemsCount }} Measurement families"
+    helper:
+        title: Welcome to the measurements!
+        text: Here, you will be able to create your own measurement families with their units or add units to the existing measurement families.
+        link: Want to know more? Here you go!
+    search:
+        placeholder: Search on label or code
+    family:
+        result_count: "{0}0 Measurement families|{1}1 Measurement family|]1, Inf[{{ itemsCount }} Measurement families"
+        no_data:
+            title: Sorry there is no measurement family!
+            link: Click here to add one
+        no_result:
+            title: Sorry, there is no result for your search!
+    list:
+        result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"
+        header:
+            label: Label
+            code: Code
+            standard_unit: Standard unit
+            unit_count: Number of units
