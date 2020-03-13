@@ -36,6 +36,11 @@ services:
         class: Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepository
         arguments:
             - '@doctrine.dbal.default_connection'
+            -
+    akeneo_measure.persistence.get_measurement_family_code:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Persistence\GetMeasurementFamilyCode
+        arguments:
+            - '@doctrine.dbal.default_connection'
 
     akeneo_measure.application.save_measurement_family_handler:
         class: Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyHandler
