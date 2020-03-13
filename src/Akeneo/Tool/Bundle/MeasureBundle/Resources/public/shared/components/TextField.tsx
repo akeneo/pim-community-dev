@@ -4,7 +4,7 @@ import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Flag} from 'akeneomeasure/shared/components/Flag';
 
-type InputTextProps = {
+type TextFieldProps = {
   id: string;
   name: string;
   label: string;
@@ -19,7 +19,7 @@ type InputTextProps = {
   propertyPath?: string;
 }
 
-export const InputText = ({
+export const TextField = ({
   id,
   label,
   errors,
@@ -27,7 +27,7 @@ export const InputText = ({
   required = false,
   flag,
   ...props
-}: InputTextProps & any) => {
+}: TextFieldProps & any) => {
   const __ = useContext(TranslateContext);
 
   return (

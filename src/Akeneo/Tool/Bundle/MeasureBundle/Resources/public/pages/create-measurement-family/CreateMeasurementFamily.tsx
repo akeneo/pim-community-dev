@@ -6,7 +6,7 @@ import {UserContext} from 'akeneomeasure/context/user-context';
 import {MeasurementFamily as MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamily';
 import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {HELPER_LEVEL_WARNING, SubsectionHelper} from 'akeneomeasure/shared/components/SubsectionHelper';
-import {InputText} from 'akeneomeasure/shared/components/InputText';
+import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {useCreateMeasurementFamilyState} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-state';
@@ -43,6 +43,7 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
           break;
 
         case false:
+          notify(NotificationLevel.ERROR, __('measurements.create_family.flash.error'));
           setErrors(response.errors);
           break;
       }
@@ -64,7 +65,7 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
           <SubsectionHeader>{__('measurements.family.properties')}</SubsectionHeader>
         </Subsection>
         <FormGroup>
-          <InputText
+          <TextField
             id="measurements.measurement_family.create.family_code"
             label={__('measurements.form.input.code')}
             value={form.family_code}
@@ -73,22 +74,24 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
             errors={errors}
             propertyPath="code"
           />
-          <InputText
+          <TextField
             id="measurements.measurement_family.create.family_label"
             label={__('measurements.form.input.label')}
             value={form.family_label}
             onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('family_label', e.currentTarget.value)}
             flag={locale}
+            errors={errors}
+            propertyPath="labels"
           />
         </FormGroup>
         <Subsection>
           <SubsectionHeader>{__('measurements.family.standard_unit')}</SubsectionHeader>
+          <SubsectionHelper level={HELPER_LEVEL_WARNING}>
+            {__('measurements.family.standard_unit_is_not_editable_after_creation')}
+          </SubsectionHelper>
         </Subsection>
-        <SubsectionHelper level={HELPER_LEVEL_WARNING}>
-          {__('measurements.family.standard_unit_is_not_editable_after_creation')}
-        </SubsectionHelper>
         <FormGroup>
-          <InputText
+          <TextField
             id="measurements.measurement_family.create.standard_unit_code"
             label={__('measurements.form.input.code')}
             value={form.standard_unit_code}
@@ -97,20 +100,22 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
             errors={errors}
             propertyPath="units[0][code]"
           />
-          <InputText
+          <TextField
             id="measurements.measurement_family.create.standard_unit_label"
             label={__('measurements.form.input.label')}
             value={form.standard_unit_label}
             onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('standard_unit_label', e.currentTarget.value)}
             flag={locale}
+            errors={errors}
+            propertyPath="units[0][labels]"
           />
-          <InputText
+          <TextField
             id="measurements.measurement_family.create.standard_unit_symbol"
             label={__('measurements.form.input.symbol')}
             value={form.standard_unit_symbol}
             onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('standard_unit_symbol', e.currentTarget.value)}
             errors={errors}
-            propertyPath="units[0][standard_unit_symbol]"
+            propertyPath="units[0][symbol]"
           />
         </FormGroup>
         <Button classNames={['AknButton--apply']} onClick={handleSave}>{__('measurements.form.save')}</Button>

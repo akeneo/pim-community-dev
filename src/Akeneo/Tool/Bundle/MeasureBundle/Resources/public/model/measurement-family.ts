@@ -3,6 +3,13 @@ import {Direction} from 'akeneomeasure/shared/components/Caret';
 
 type LocaleCode = string;
 
+export enum Operator {
+  MUL = 'mul',
+  DIV = 'div',
+  ADD = 'add',
+  SUB = 'sub',
+}
+
 type Operation = {
   operator: string;
   value: string;

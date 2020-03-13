@@ -1,4 +1,4 @@
-import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
+import {MeasurementFamily, Operator} from 'akeneomeasure/model/measurement-family';
 
 type LocaleCode = string;
 
@@ -36,7 +36,7 @@ export const createMeasurementFamilyFromFormState = (data: FormState, locale: Lo
         symbol: data.standard_unit_symbol,
         convert_from_standard: [
           {
-            operator: 'mul',
+            operator: Operator.MUL,
             value: '1',
           },
         ],
