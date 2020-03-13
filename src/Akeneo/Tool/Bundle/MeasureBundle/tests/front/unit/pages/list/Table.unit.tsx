@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {act, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import {RootProvider} from 'akeneomeasure/shared/components/RootProvider';
+import {AkeneoThemeProvider} from 'akeneomeasure/AkeneoThemeProvider';
 import {Table} from 'akeneomeasure/pages/list/Table';
 
 const dependencies = {
@@ -10,6 +10,7 @@ const dependencies = {
   translate: (key: string) => key,
   user: () => 'en_US',
   router: {},
+  notify: () => {},
 };
 
 const measurementFamilies = [
@@ -58,9 +59,9 @@ afterEach(() => {
 test('It displays an empty table', async () => {
   await act(async () => {
     ReactDOM.render(
-      <RootProvider dependencies={dependencies}>
+      <AkeneoThemeProvider>
         <Table measurementFamilies={[]} toggleSortDirection={() => {}} getSortDirection={() => {}} />
-      </RootProvider>,
+      </AkeneoThemeProvider>,
       container
     );
   });
@@ -72,9 +73,9 @@ test('It displays an empty table', async () => {
 test('It displays some measurement families', async () => {
   await act(async () => {
     ReactDOM.render(
-      <RootProvider dependencies={dependencies}>
+      <AkeneoThemeProvider>
         <Table measurementFamilies={measurementFamilies} toggleSortDirection={() => {}} getSortDirection={() => {}} />
-      </RootProvider>,
+      </AkeneoThemeProvider>,
       container
     );
   });
@@ -92,13 +93,13 @@ test('It toggles the sort direction on the columns', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <RootProvider dependencies={dependencies}>
+      <AkeneoThemeProvider>
         <Table
           measurementFamilies={measurementFamilies}
           toggleSortDirection={(columnCode: string) => (sortDirections[columnCode] = 'Descending')}
           getSortDirection={(columnCode: string) => sortDirections[columnCode]}
         />
-      </RootProvider>,
+      </AkeneoThemeProvider>,
       container
     );
   });

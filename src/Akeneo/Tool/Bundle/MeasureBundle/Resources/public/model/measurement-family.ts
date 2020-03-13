@@ -1,7 +1,18 @@
 import {getLabel} from 'pimui/js/i18n';
-import {Direction} from 'akeneomeasure/shared/components/Caret';
 
 type LocaleCode = string;
+
+export enum Direction {
+  Ascending = 'Ascending',
+  Descending = 'Descending',
+}
+
+export enum Operator {
+  MUL = 'mul',
+  DIV = 'div',
+  ADD = 'add',
+  SUB = 'sub',
+}
 
 type Operation = {
   operator: string;

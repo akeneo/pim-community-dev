@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import styled from 'styled-components';
 import {PageHeader} from 'akeneomeasure/shared/components/PageHeader';
 import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
@@ -11,10 +11,12 @@ import {Link} from 'akeneomeasure/shared/components/Link';
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/components/NoData';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
-import {filterMeasurementFamily, sortMeasurementFamily} from 'akeneomeasure/model/measurement-family';
+import {filterMeasurementFamily, sortMeasurementFamily, Direction} from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
-import {Direction} from 'akeneomeasure/shared/components/Caret';
 import {Table} from 'akeneomeasure/pages/list/Table';
+import {Button} from 'akeneomeasure/shared/components/Button';
+import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
+import {useToggleState} from 'akeneomeasure/hooks/use-toggle-state';
 
 const Container = styled.div``;
 const PageContent = styled.div`
@@ -62,8 +64,16 @@ const List = () => {
   const __ = useContext(TranslateContext);
   const [searchValue, setSearchValue] = useState('');
   const [sortColumn, getSortDirection, toggleSortDirection] = useSorting('label');
-  const measurementFamilies = useMeasurementFamilies();
+
+  const [measurementFamilies, fetchMeasurementFamilies] = useMeasurementFamilies();
   const locale = useContext(UserContext)('uiLocale');
+
+  const [isCreateModalOpen, openCreateModal, closeCreateModal] = useToggleState(false);
+
+  const handleModalClose = useCallback(() => {
+    closeCreateModal();
+    fetchMeasurementFamilies();
+  }, [closeCreateModal, fetchMeasurementFamilies]);
 
   const filteredMeasurementFamilies =
     null === measurementFamilies
@@ -78,6 +88,8 @@ const List = () => {
 
   return (
     <>
+      {isCreateModalOpen && <CreateMeasurementFamily onClose={handleModalClose} />}
+
       <PageHeader
         userButtons={
           <PimView
@@ -85,6 +97,11 @@ const List = () => {
             viewName="pim-measurements-user-navigation"
           />
         }
+        buttons={[
+          <Button onClick={openCreateModal}>
+            Create
+          </Button>,
+        ]}
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbItem>{__('pim_menu.tab.settings')}</BreadcrumbItem>
@@ -131,13 +148,7 @@ const List = () => {
             <MeasurementFamilyIllustration size={256} />
             <NoDataTitle>{__('measurements.family.no_data.title')}</NoDataTitle>
             <NoDataText>
-              <Link
-                onClick={() => {
-                  // TODO connect create button
-                }}
-              >
-                {__('measurements.family.no_data.link')}
-              </Link>
+              <Link onClick={openCreateModal}>{__('measurements.family.no_data.link')}</Link>
             </NoDataText>
           </NoDataSection>
         )}
