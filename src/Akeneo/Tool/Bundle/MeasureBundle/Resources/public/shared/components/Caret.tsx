@@ -1,10 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
-enum Direction {
-  Ascending = 'Ascending',
-  Descending = 'Descending',
-}
+import {Direction} from 'akeneomeasure/model/measurement-family';
 
 const CaretContainer = styled.span`
   display: inline-block;

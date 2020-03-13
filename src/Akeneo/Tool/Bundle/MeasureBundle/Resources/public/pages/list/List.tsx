@@ -11,7 +11,7 @@ import {Link} from 'akeneomeasure/shared/components/Link';
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/components/NoData';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
-import {filterMeasurementFamily, sortMeasurementFamily} from 'akeneomeasure/model/measurement-family';
+import {filterMeasurementFamily, sortMeasurementFamily, Direction} from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
 import {Direction} from 'akeneomeasure/shared/components/Caret';
 import {Table} from 'akeneomeasure/pages/list/Table';
@@ -89,7 +89,7 @@ const List = () => {
 
   return (
     <>
-      {isCreateModalOpen && <CreateMeasurementFamily onClose={handleModalClose}/>}
+      {isCreateModalOpen && <CreateMeasurementFamily onClose={handleModalClose} />}
 
       <PageHeader
         userButtons={
@@ -99,7 +99,9 @@ const List = () => {
           />
         }
         buttons={[
-          <Button classNames={['AknButton--apply']} onClick={openCreateModal}>Create</Button>
+          <Button classNames={['AknButton--apply']} onClick={openCreateModal}>
+            Create
+          </Button>,
         ]}
         breadcrumb={
           <Breadcrumb>
@@ -147,11 +149,7 @@ const List = () => {
             <MeasurementFamilyIllustration size={256} />
             <NoDataTitle>{__('measurements.family.no_data.title')}</NoDataTitle>
             <NoDataText>
-              <Link
-                onClick={openCreateModal}
-              >
-                {__('measurements.family.no_data.link')}
-              </Link>
+              <Link onClick={openCreateModal}>{__('measurements.family.no_data.link')}</Link>
             </NoDataText>
           </NoDataSection>
         )}
