@@ -39,15 +39,6 @@ class UpdateAuditDataCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (!empty($hourlyIntervalsToRecalculate)) {
-            foreach ($hourlyIntervalsToRecalculate as $hourlyInterval) {
-                $command = new UpdateProductEventCountCommand($hourlyInterval);
-                $this->updateProductEventCountHandler->handle($command);
-            }
-
-            return 0;
-        }
-
         // Create a Command for the current hour.
         $nowHourlyInterval = HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
         $this->updateProductEventCount($nowHourlyInterval);
