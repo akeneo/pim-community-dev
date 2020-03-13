@@ -3,9 +3,9 @@ import {RouterContext} from 'akeneomeasure/context/router-context';
 import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {ValidationError} from 'akeneomeasure/model/validation-error';
 
-export type SaverResult = {
-  success?: boolean;
-  errors?: ValidationError[];
+type SaverResult = {
+  success: boolean;
+  errors: ValidationError[];
 };
 
 type Saver = (data: MeasurementFamily) => Promise<SaverResult>;
@@ -32,6 +32,7 @@ export const useCreateMeasurementFamilySaver = (): Saver => {
 
     return {
       success: true,
+      errors: [],
     };
   };
 };
