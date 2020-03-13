@@ -179,6 +179,31 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     /**
      * @test
      */
+    public function it_cannot_create_if_the_standard_unit_code_operation_is_not_mul_1(): void
+    {
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = 'WEIGHT';
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->standardUnitCode = 'KILOGRAM';
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => 'KILOGRAM',
+                'labels'                => ['fr_FR' => 'Kilogrammes'],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.1']],
+                'symbol' => 'kg'
+            ]
+        ];
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(1, $violations->count());
+        $violation = $violations->get(0);
+        self::assertEquals('The standard unit code of the "WEIGHT" measurement family should be a multiply by 1 operation', $violation->getMessage());
+        self::assertEquals('units[0].convert_from_standard', $violation->getPropertyPath());
+    }
+
+    /**
+     * @test
+     */
     public function it_cannot_change_the_standard_unit_code(): void
     {
         $measurementFamilyCode = 'WEIGHT';
@@ -198,7 +223,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             [
                 'code'                  => 'GRAM',
                 'labels'                => ['fr_FR' => 'Gram'],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.001']],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
                 'symbol' => 'km'
             ]
         ];
@@ -216,6 +241,8 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     public function it_adds_a_unit_even_if_the_measurement_family_is_linked_to_a_product_attribute(): void
     {
         $measurementFamilyCode = 'WEIGHT';
+        $this->createMeasurementFamilyWithUnitsAndStandardUnit($measurementFamilyCode, ['KILOGRAM', 'GRAM'], 'KILOGRAM');
+        $this->assertThereIsAProductAttributeLinkedToThisMeasurementFamily();
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = $measurementFamilyCode;
         $saveFamilyCommand->labels = [];
@@ -224,13 +251,13 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             [
                 'code'                  => 'KILOGRAM',
                 'labels'                => ['fr_FR' => 'Kilogrammes'],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
                 'symbol' => 'km'
             ],
             [
                 'code'                  => 'GRAM',
                 'labels'                => [],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
                 'symbol' => 'km'
             ],
             [
@@ -240,8 +267,6 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
                 'symbol' => 'cm'
             ]
         ];
-        $this->createMeasurementFamilyWithUnitsAndStandardUnit($measurementFamilyCode, ['KILOGRAM', 'GRAM'], 'KILOGRAM');
-        $this->assertThereIsAProductAttributeLinkedToThisMeasurementFamily();
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
@@ -622,7 +647,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             [
                 'code'                  => 'KILOGRAM',
                 'labels'                => [],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
                 'symbol' => 'km'
             ],
             // Missing GRAM
@@ -642,7 +667,6 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     public function it_does_not_allow_to_update_the_conversion_of_a_unit_when_linked_to_a_product_attribute(array $invalidOperations): void
     {
         $measurementFamilyCode = 'WEIGHT';
-        $conversion = [Operation::create("mul", "0.000001")];
         $this->measurementFamilyRepository->save(
             MeasurementFamily::create(
                 MeasurementFamilyCode::fromString($measurementFamilyCode),
@@ -652,7 +676,13 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
                     Unit::create(
                         UnitCode::fromString('KILOGRAM'),
                         LabelCollection::fromArray([]),
-                        $conversion,
+                        [Operation::create("mul", "1")],
+                        "km",
+                    ),
+                    Unit::create(
+                        UnitCode::fromString('GRAM'),
+                        LabelCollection::fromArray([]),
+                        [Operation::create("mul", "0.000001")],
                         "km",
                     )
                 ]
@@ -667,6 +697,12 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         $saveFamilyCommand->units = [
             [
                 'code'                  => 'KILOGRAM',
+                'labels'                => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
+                'symbol' => 'km'
+            ],
+            [
+                'code'                  => 'GRAM',
                 'labels'                => [],
                 'convert_from_standard' => $invalidOperations,
                 'symbol' => 'km'
@@ -800,7 +836,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
                         UnitCode::fromString($unitCode),
                         LabelCollection::fromArray([]),
                         [
-                            Operation::create("mul", "0.000001"),
+                            Operation::create("mul", "1"),
                         ],
                         "km",
                         );
