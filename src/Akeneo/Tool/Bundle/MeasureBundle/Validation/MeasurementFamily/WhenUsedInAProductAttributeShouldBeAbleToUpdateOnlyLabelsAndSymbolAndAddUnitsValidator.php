@@ -70,7 +70,9 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
                     '%unit_code%'               => implode(',', $removedUnits),
                     '%measurement_family_code%' => $saveMeasurementFamily->code
                 ]
-            )->addViolation();
+            )
+                ->atPath('units')
+                ->addViolation();
         }
 
         $unitsBeingUpdated = $this->isTryingToUpdateTheConvertionOperations(
@@ -84,7 +86,8 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
                     '%unit_code%'               => implode(',', $unitsBeingUpdated),
                     '%measurement_family_code%' => $saveMeasurementFamily->code
                 ]
-            )->addViolation();
+            )
+                ->addViolation();
         }
     }
 

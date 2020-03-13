@@ -14,6 +14,8 @@ use Webmozart\Assert\Assert;
  */
 class MeasurementFamily
 {
+    public const MIN_UNIT_COUNT = 1;
+
     /** @var string */
     private $code;
 
@@ -29,7 +31,7 @@ class MeasurementFamily
     private function __construct(MeasurementFamilyCode $code, LabelCollection $labels, UnitCode $standardUnitCode, array $units)
     {
         Assert::allIsInstanceOf($units, Unit::class);
-        Assert::minCount($units, 1);
+        Assert::minCount($units, self::MIN_UNIT_COUNT);
         $this->assertStandardUnitExists($standardUnitCode, $units);
         $this->assertNoDuplicatedUnits($units);
 

@@ -193,7 +193,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_add_a_unit_even_if_the_measurement_family_is_linked_to_a_product_attribute(): void
+    public function it_adds_a_unit_even_if_the_measurement_family_is_linked_to_a_product_attribute(): void
     {
         $measurementFamilyCode = 'WEIGHT';
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
@@ -232,7 +232,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
      * @test
      * @dataProvider invalidCodes
      */
-    public function it_has_an_invalid_code($invalidCode, string $errorMessage): void
+    public function it_has_an_invalid_code($invalidCode, string $expectedErrorMessage): void
     {
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = $invalidCode;
@@ -250,14 +250,15 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals($errorMessage, $violation->getMessage());
+        self::assertEquals($expectedErrorMessage, $violation->getMessage());
+        self::assertEquals('code', $violation->getPropertyPath());
     }
 
     /**
      * @test
      * @dataProvider invalidLabels
      */
-    public function it_has_an_invalid_label($invalidLabels, string $errorMessage): void
+    public function it_has_an_invalid_label($invalidLabels, string $expectedErrorMessage): void
     {
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
@@ -276,7 +277,8 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals($errorMessage, $violation->getMessage());
+        self::assertEquals($expectedErrorMessage, $violation->getMessage());
+        self::assertEquals('labels', $violation->getPropertyPath());
     }
 
     /**
@@ -301,6 +303,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
         self::assertEquals('The standard unit is required.', $violation->getMessage());
+        self::assertEquals('standard_unit_code', $violation->getPropertyPath());
     }
 
     /**
@@ -329,14 +332,16 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             'The "invalid_standard_unit_code" standard unit code does not exist in the list of units for the "WEIGHT" measurement family.',
             $violation->getMessage()
         );
+        self::assertEquals('standard_unit_code', $violation->getPropertyPath());
     }
 
     /**
      * @test
      * @dataProvider invalidCodes
      */
-    public function it_has_a_unit_with_an_invalid_code($invalidCode, string $errorMessage): void
+    public function it_has_a_unit_with_an_invalid_code($invalidCode, string $expectedErrorMessage): void
     {
+        $expectedPropertyPath = 'units[0][code]';
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
         $saveFamilyCommand->labels = [];
@@ -351,21 +356,25 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         ];
 
         $violations = $this->validator->validate($saveFamilyCommand);
-
-        self::assertGreaterThan(0, $violations->count());
+        $actualViolation = null;
         foreach ($violations as $violation) {
-            if ($errorMessage === $violation->getMessage()) {
-                return;
+            if ($violation->getMessage() === $expectedErrorMessage) {
+                $actualViolation = $violation;
             }
         }
-        self::assertTrue(false, sprintf('Expected to have a violation with message "%s"', $errorMessage));
+        self::assertNotNull(
+            $actualViolation,
+            sprintf('Expected to have a violation with message "%s" at path "%s"', $expectedErrorMessage, $expectedPropertyPath)
+        );
+        self::assertEquals($expectedErrorMessage, $violation->getMessage());
+        self::assertEquals($expectedPropertyPath, $violation->getPropertyPath());
     }
 
     /**
      * @test
      * @dataProvider invalidLabels
      */
-    public function it_has_a_unit_with_an_invalid_label($invalidLabels, string $errorMessage): void
+    public function it_has_a_unit_with_an_invalid_label($invalidLabels, string $expectedErrorMessage): void
     {
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
@@ -384,14 +393,15 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals($errorMessage, $violation->getMessage());
+        self::assertEquals($expectedErrorMessage, $violation->getMessage());
+        self::assertEquals('units[0][labels]', $violation->getPropertyPath());
     }
 
     /**
      * @test
      * @dataProvider invalidOperator
      */
-    public function it_has_a_unit_with_an_invalid_convert_operator($invalidOperator, string $errorMessage): void
+    public function it_has_a_unit_with_an_invalid_convert_operator($invalidOperator, string $expectedErrorMessage): void
     {
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
@@ -410,14 +420,15 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals($errorMessage, $violation->getMessage());
+        self::assertEquals($expectedErrorMessage, $violation->getMessage());
+        self::assertEquals('units[0][convert_from_standard][0][operator]', $violation->getPropertyPath());
     }
 
     /**
      * @test
      * @dataProvider invalidConvertValue
      */
-    public function it_has_a_unit_with_an_invalid_convert_value($invalidConvertValue, string $errorMessage): void
+    public function it_has_a_unit_with_an_invalid_convert_value($invalidConvertValue, string $expectedErrorMessage): void
     {
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
@@ -436,14 +447,15 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals($errorMessage, $violation->getMessage());
+        self::assertEquals($expectedErrorMessage, $violation->getMessage());
+        self::assertEquals('units[0][convert_from_standard][0][value]', $violation->getPropertyPath());
     }
 
     /**
      * @test
      * @dataProvider invalidUnitSymbol
      */
-    public function it_has_a_unit_with_an_invalid_unit_symbol($invalidUnitSymbol, string $errorMessage): void
+    public function it_has_a_unit_with_an_invalid_unit_symbol($invalidUnitSymbol, string $expectedErrorMessage): void
     {
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
@@ -462,14 +474,15 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals($errorMessage, $violation->getMessage());
+        self::assertEquals($expectedErrorMessage, $violation->getMessage());
+        self::assertEquals('units[0][symbol]', $violation->getPropertyPath());
     }
 
     /**
      * @test
      * @dataProvider invalidOperationCount
      */
-    public function it_has_an_invalid_amount_of_operations($invalidOperationCount, string $errorMessage): void
+    public function it_has_an_invalid_amount_of_operations($invalidOperationCount, string $expectedErrorMessage): void
     {
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
@@ -488,39 +501,50 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals($errorMessage, $violation->getMessage());
+        self::assertEquals($expectedErrorMessage, $violation->getMessage());
+        self::assertEquals('units[0][convert_from_standard]', $violation->getPropertyPath());
     }
 
     /**
      * @test
      * @dataProvider invalidUnitCount
      */
-    public function it_has_an_invalid_amount_of_units($invalidUnitCount, string $errorMessage): void
+    public function it_has_an_invalid_amount_of_units($numberOfUnits, string $expectedErrorMessage): void
     {
+        $expectedPropertyPath = 'units';
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
         $saveFamilyCommand->labels = [];
-        $saveFamilyCommand->standardUnitCode = 'unit_0';
-        $saveFamilyCommand->units = array_map(function ($i) {
+        $saveFamilyCommand->standardUnitCode = 0 === $numberOfUnits ? null : 'unit_0';
+        $saveFamilyCommand->units = 0 === $numberOfUnits ? [] : array_map(function ($i) {
             return [
                 'code' => sprintf('unit_%d', $i),
                 'labels' => [],
                 'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
                 'symbol' => 'Kg',
             ];
-        }, range(0, $invalidUnitCount - 1));
+        }, range(0, $numberOfUnits - 1));
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals($errorMessage, $violation->getMessage());
+        $actualViolation = null;
+        foreach ($violations as $violation) {
+            if ($violation->getMessage() === $expectedErrorMessage) {
+                $actualViolation = $violation;
+            }
+        }
+        self::assertNotNull(
+            $actualViolation,
+            sprintf('Expected to have a violation with message "%s" at path "%s"', $expectedErrorMessage, $expectedPropertyPath)
+        );
+        self::assertEquals($expectedErrorMessage, $violation->getMessage());
+        self::assertEquals($expectedPropertyPath, $violation->getPropertyPath());
     }
 
     /**
      * @test
      */
-    public function is_cannot_create_too_many_measurement_families(): void
+    public function it_cannot_create_too_many_measurement_families(): void
     {
         for ($i = 0; $i < 100; $i++) {
             $measurementFamily = MeasurementFamily::create(
@@ -558,6 +582,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
         self::assertEquals('You’ve reached the limit of 100 measurement families.', $violation->getMessage());
+        self::assertEquals('', $violation->getPropertyPath());
     }
 
     /**
@@ -592,6 +617,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
         self::assertEquals('A product attribute is linked to this measurement family, you can only edit its translated labels.', $violation->getMessage());
+        self::assertEquals('', $violation->getPropertyPath());
     }
 
     /**
@@ -621,13 +647,14 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
         self::assertEquals('A product attribute is linked to this measurement family, you can only edit the translated labels and symbol of a unit', $violation->getMessage());
+        self::assertEquals('units', $violation->getPropertyPath());
     }
 
     /**
      * @test
      * @dataProvider invalidConvertionOperations
      */
-    public function it_does_not_allow_to_update_the_convertion_of_a_unit_when_linked_to_a_product_attribute(array $invalidOperations): void
+    public function it_does_not_allow_to_update_the_conversion_of_a_unit_when_linked_to_a_product_attribute(array $invalidOperations): void
     {
         $measurementFamilyCode = 'WEIGHT';
         $conversion = [Operation::create("mul", "0.000001")];
@@ -665,6 +692,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
         self::assertEquals('A product attribute is linked to this measurement family, you can only edit the translated labels and symbol of a unit', $violation->getMessage());
+        self::assertEquals('', $violation->getPropertyPath());
     }
 
     public function invalidCodes(): array
@@ -737,7 +765,6 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         );
     }
 
-
     public function invalidOperationCount()
     {
         return [
@@ -749,7 +776,8 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     public function invalidUnitCount()
     {
         return [
-            'Should have at least one operation' => [51, 'You’ve reached the limit of 50 conversion operations per unit.'],
+            'Should have at least one operation' => [0, 'pim_measurements.validation.measurement_family.units.should_contain_at_least_one_unit'],
+            'Cannot have more than 50 operations' => [51, 'You’ve reached the limit of 50 conversion operations per unit.'],
         ];
     }
 

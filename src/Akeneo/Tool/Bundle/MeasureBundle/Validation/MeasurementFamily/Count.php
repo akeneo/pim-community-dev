@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraint;
 
 class Count extends Constraint
 {
-    public $maxMessage = 'pim_measurements.validation.measurement_family.should_contain_max_elements';
+    public const MAX_MESSAGE = 'pim_measurements.validation.measurement_family.should_contain_max_elements';
 
     public function validatedBy()
     {
