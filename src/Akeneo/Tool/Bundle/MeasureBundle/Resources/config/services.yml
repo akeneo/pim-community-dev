@@ -69,6 +69,13 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_measure.validation.measurement_family.count' }
 
+    akeneo_measure.validation.measurement_family.units.unit_code_should_be_unique:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\UnitCodeShouldBeUniqueValidator
+        arguments:
+            - '@akeneo_measure.persistence.get_measurement_family_code'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_measure.validation.measurement_family.units.unit_code_should_be_unique' }
+
     # Validation
     akeneo_measure.validation.measurement_family.when_used_in_a_product_attribute_should_be_able_to_update_only_labels_and_symbol_and_add_units:
         class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnitsValidator

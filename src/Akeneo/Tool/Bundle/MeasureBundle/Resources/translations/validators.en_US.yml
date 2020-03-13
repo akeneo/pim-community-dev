@@ -17,6 +17,7 @@ pim_measurements:
             measurement_family_units_is_locked_for_updates: 'A product attribute is linked to this measurement family, you can only edit the translated labels and symbol of a unit'
             measurement_family_unit_operations_locked_for_updates: 'A product attribute is linked to this measurement family, you can only edit the translated labels and symbol of a unit'
             units:
+                should_be_unique: 'The "%unit_code%" unit already exists in the "%measurement_family_code%" measurement family.'
                 should_contain_min_elements: 'A minimum of one conversion operation per unit is required.'
                 should_contain_max_elements: 'You’ve reached the limit of %limit% conversion operations per unit.'
                 operation:

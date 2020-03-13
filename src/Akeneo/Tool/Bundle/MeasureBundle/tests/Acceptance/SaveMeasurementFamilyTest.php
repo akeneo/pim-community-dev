@@ -726,6 +726,34 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals('units', $violation->getPropertyPath());
     }
 
+    /**
+     * @test
+     */
+    public function it_cannot_save_if_the_unit_already_exists_in_another_measurement_family(): void
+    {
+        $duplicatedUnitCode = 'KILOGRAM';
+        $this->createMeasurementFamilyWithUnitsAndStandardUnit('WEIGHT', [$duplicatedUnitCode], $duplicatedUnitCode);
+
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = 'BRIGHTNESS';
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->standardUnitCode = $duplicatedUnitCode;
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => $duplicatedUnitCode,
+                'labels'                => ['fr_FR' => 'Kilogramme'],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
+                'symbol' => 'km'
+            ]
+        ];
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(1, $violations->count());
+        $violation = $violations->get(0);
+        self::assertEquals('The "KILOGRAM" unit already exists in the "WEIGHT" measurement family.', $violation->getMessage());
+        self::assertEquals('units[0][code]', $violation->getPropertyPath());
+    }
+
     public function invalidCodes(): array
     {
         return [

@@ -42,7 +42,9 @@ services:
         class: 'Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository'
 
     akeneo_measure.persistence.get_measurement_family_code:
-        class: 'Akeneo\Test\Acceptance\MeasurementFamily\InMemoryGetMeasurementFamilyCodeStub'
+        class: 'Akeneo\Test\Acceptance\MeasurementFamily\InMemoryGetMeasurementFamilyCode'
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'
 
     ### Structure
     pim_catalog.repository.family:

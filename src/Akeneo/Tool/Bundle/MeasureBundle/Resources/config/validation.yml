@@ -15,6 +15,7 @@ Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasureme
                     fields:
                         code:
                             - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\Code: ~
+                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\UnitCodeShouldBeUnique: ~
                         labels:
                             - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
                         symbol:
