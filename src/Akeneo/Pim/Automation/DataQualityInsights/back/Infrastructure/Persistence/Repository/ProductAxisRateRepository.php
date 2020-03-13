@@ -49,9 +49,13 @@ final class ProductAxisRateRepository implements ProductAxisRateRepositoryInterf
     /** @var Connection */
     private $db;
 
-    public function __construct(Connection $db)
+    /** @var string */
+    private $tableName;
+
+    public function __construct(Connection $db, string $tableName)
     {
         $this->db = $db;
+        $this->tableName = $tableName;
     }
 
     /**
@@ -63,10 +67,11 @@ final class ProductAxisRateRepository implements ProductAxisRateRepositoryInterf
             return;
         }
 
+        $productAxisRateTable = $this->tableName;
         $valuesPlaceholders = implode(',', array_fill(0, count($productsAxesRates), '(?, ?, ?, ?)'));
 
         $sql = <<<SQL
-REPLACE INTO pimee_data_quality_insights_product_axis_rates (axis_code, product_id, evaluated_at, rates)
+REPLACE INTO $productAxisRateTable (axis_code, product_id, evaluated_at, rates)
 VALUES $valuesPlaceholders;
 SQL;
 
@@ -89,10 +94,12 @@ SQL;
 
     public function purgeUntil(\DateTimeImmutable $date): void
     {
+        $productAxisRateTable = $this->tableName;
+
         $query = <<<SQL
 DELETE old_rates
-FROM pimee_data_quality_insights_product_axis_rates AS old_rates
-INNER JOIN pimee_data_quality_insights_product_axis_rates AS younger_rates
+FROM $productAxisRateTable AS old_rates
+INNER JOIN $productAxisRateTable AS younger_rates
     ON younger_rates.product_id = old_rates.product_id
     AND younger_rates.axis_code = old_rates.axis_code
     AND younger_rates.evaluated_at > old_rates.evaluated_at

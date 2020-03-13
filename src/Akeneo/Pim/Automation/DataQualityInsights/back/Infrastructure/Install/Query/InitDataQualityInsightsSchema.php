@@ -57,6 +57,15 @@ CREATE TABLE pimee_data_quality_insights_product_axis_rates (
     INDEX evaluated_at_index (evaluated_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE pimee_data_quality_insights_product_model_axis_rates (
+    product_id INT NOT NULL,
+    axis_code VARCHAR(40) NOT NULL,
+    evaluated_at DATE NOT NULL,
+    rates JSON NOT NULL,
+    PRIMARY KEY (product_id, axis_code, evaluated_at),
+    INDEX evaluated_at_index (evaluated_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE pimee_data_quality_insights_dashboard_rates_projection (
     type VARCHAR(15) NOT NULL,
     code VARCHAR(100) NOT NULL,

@@ -76,7 +76,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository'
+            - '@akeneo.pim.automation.data_quality_insights.repository.product_axis_rate'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeAxisRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
@@ -91,7 +91,7 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository'
             - '@akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository'
+            - '@akeneo.pim.automation.data_quality_insights.repository.product_axis_rate'
 
 # PIM enrichment BC anti-corruption layers
     akeneo.pim.automation.calculate_completeness_of_required_attributes:
