@@ -66,6 +66,7 @@ test('It displays an empty table', async () => {
   });
 
   expect(container.querySelector('table')).toBeInTheDocument();
+  expect(container.querySelector('tbody tr')).not.toBeInTheDocument();
 });
 
 test('It displays some measurement families', async () => {

@@ -18,7 +18,7 @@ import {Table} from 'akeneomeasure/pages/list/Table';
 
 const Container = styled.div``;
 const PageContent = styled.div`
-  padding: 0 40px 0 40px;
+  padding: 0 40px;
 `;
 
 const PageHeaderPlaceholder = styled.div`

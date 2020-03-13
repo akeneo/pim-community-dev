@@ -1,11 +1,11 @@
 import React, {ReactElement, Children, cloneElement} from 'react';
 import {BreadcrumbItemProps} from 'akeneomeasure/shared/components/BreadcrumbItem';
 
-type Props = {
+type BreadcrumbProps = {
   children: ReactElement<BreadcrumbItemProps> | Array<ReactElement<BreadcrumbItemProps>>;
 };
 
-const Breadcrumb = ({children}: Props) => {
+const Breadcrumb = ({children}: BreadcrumbProps) => {
   const count = Children.count(children);
 
   return (
