@@ -53,5 +53,4 @@ class StandardUnitCodeCannotBeChangedValidator extends ConstraintValidator
     {
         return $measurementFamily->normalize()['standard_unit_code'];
     }
-
 }

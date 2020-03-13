@@ -19,7 +19,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Validation;
 
-
 class StandardUnitCodeShouldExistValidator extends ConstraintValidator
 {
     private const PROPERTY_PATH = 'standard_unit_code';
