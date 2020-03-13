@@ -15,7 +15,6 @@ Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasureme
                     fields:
                         code:
                             - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\Code: ~
-                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\UnitCodeShouldBeUnique: ~
                         labels:
                             - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
                         symbol:
@@ -37,5 +36,7 @@ Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasureme
                                             - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationValue: ~
     constraints:
         - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\StandardUnitCodeShouldExist: ~
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\StandardUnitCodeCannotBeChanged: { groups: [other_constraints] }
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\UnitCodesShouldBeUniqueAcrossMeasurementFamilies: { groups: [other_constraints] }
         - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnits: { groups: [other_constraints] }
         - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\Count: { groups: [other_constraints] }

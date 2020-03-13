@@ -20,7 +20,7 @@ class Count extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_measure.validation.measurement_family.count';
+        return 'akeneo_measurement.validation.measurement_family.count';
     }
 
     public function getTargets()

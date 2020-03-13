@@ -114,6 +114,13 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     public function it_can_update_an_existing_measurement_family(): void
     {
         $measurementFamilyCode = 'weight';
+        $standardUnitCode = 'KILOGRAM';
+        $this->createMeasurementFamilyWithUnitsAndStandardUnit(
+            $measurementFamilyCode,
+            [$standardUnitCode],
+            $standardUnitCode
+        );
+
         // ton
         $updatedMeasurementFamilyLabel = ['fr_FR' => 'Another LABEL'];
         $tonUnitCode = 'ton';
@@ -124,8 +131,14 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = $measurementFamilyCode;
         $saveFamilyCommand->labels = $updatedMeasurementFamilyLabel;
-        $saveFamilyCommand->standardUnitCode = $tonUnitCode;
+        $saveFamilyCommand->standardUnitCode = $standardUnitCode;
         $saveFamilyCommand->units = [
+            [
+                'code' => $standardUnitCode,
+                'labels' => [],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
+                'symbol' => 'kg'
+            ],
             [
                 'code' => $tonUnitCode,
                 'labels' => $tonLabels,
@@ -133,7 +146,6 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
                 'symbol' => $tonSymbol
             ],
         ];
-        $this->createMeasurementFamilyWithUnitsAndStandardUnit($measurementFamilyCode, ['KILOGRAM', 'GRAM'], 'KILOGRAM');
 
         $violations = $this->validator->validate($saveFamilyCommand);
         $this->saveMeasurementFamilyHandler->handle($saveFamilyCommand);
@@ -142,8 +154,14 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         $measurementFamily = MeasurementFamily::create(
             MeasurementFamilyCode::fromString($measurementFamilyCode),
             LabelCollection::fromArray($updatedMeasurementFamilyLabel),
-            UnitCode::fromString($tonUnitCode),
+            UnitCode::fromString($standardUnitCode),
             [
+                Unit::create(
+                    UnitCode::fromString($standardUnitCode),
+                    LabelCollection::fromArray([]),
+                    [Operation::create("mul", "1")],
+                    "kg"
+                ),
                 Unit::create(
                     UnitCode::fromString($tonUnitCode),
                     LabelCollection::fromArray($tonLabels),
@@ -161,33 +179,35 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_can_change_the_standard_unit_code(): void
+    public function it_cannot_change_the_standard_unit_code(): void
     {
         $measurementFamilyCode = 'WEIGHT';
         $this->createMeasurementFamilyWithUnitsAndStandardUnit($measurementFamilyCode, ['KILOGRAM', 'GRAM'], 'KILOGRAM');
-        $this->assertThereIsAProductAttributeLinkedToThisMeasurementFamily();
 
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = $measurementFamilyCode;
         $saveFamilyCommand->labels = [];
-        $saveFamilyCommand->standardUnitCode = 'KILOGRAM';
+        $saveFamilyCommand->standardUnitCode = 'GRAM';
         $saveFamilyCommand->units = [
             [
                 'code'                  => 'KILOGRAM',
                 'labels'                => ['fr_FR' => 'Kilogrammes'],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
                 'symbol' => 'km'
             ],
             [
                 'code'                  => 'GRAM',
-                'labels'                => [],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
+                'labels'                => ['fr_FR' => 'Gram'],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.001']],
                 'symbol' => 'km'
             ]
         ];
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        self::assertEquals(0, $violations->count());
+        self::assertEquals(1, $violations->count());
+        $violation = $violations->get(0);
+        self::assertEquals('The standard unit code of the "WEIGHT" measurement family cannot be changed', $violation->getMessage());
+        self::assertEquals('standard_unit_code', $violation->getPropertyPath());
     }
 
     /**
@@ -515,7 +535,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
         $saveFamilyCommand->labels = [];
-        $saveFamilyCommand->standardUnitCode = 0 === $numberOfUnits ? null : 'unit_0';
+        $saveFamilyCommand->standardUnitCode = 0 === $numberOfUnits ? '' : 'unit_0';
         $saveFamilyCommand->units = 0 === $numberOfUnits ? [] : array_map(function ($i) {
             return [
                 'code' => sprintf('unit_%d', $i),
@@ -582,41 +602,6 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
         self::assertEquals('You’ve reached the limit of 100 measurement families.', $violation->getMessage());
-        self::assertEquals('', $violation->getPropertyPath());
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_allow_measurement_family_standard_unit_update_when_linked_to_a_product_attribute(): void
-    {
-        $measurementFamilyCode = 'WEIGHT';
-        $this->createMeasurementFamilyWithUnitsAndStandardUnit($measurementFamilyCode, ['KILOGRAM', 'GRAM'], 'KILOGRAM');
-        $this->assertThereIsAProductAttributeLinkedToThisMeasurementFamily();
-
-        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
-        $saveFamilyCommand->code = $measurementFamilyCode;
-        $saveFamilyCommand->labels = [];
-        $saveFamilyCommand->standardUnitCode = 'GRAM';
-        $saveFamilyCommand->units = [
-            [
-                'code'                  => 'KILOGRAM',
-                'labels'                => [],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
-                'symbol' => 'km'
-            ],
-            [
-                'code'                  => 'GRAM',
-                'labels'                => [],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
-                'symbol' => 'km'
-            ]
-        ];
-        $violations = $this->validator->validate($saveFamilyCommand);
-
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals('A product attribute is linked to this measurement family, you can only edit its translated labels.', $violation->getMessage());
         self::assertEquals('', $violation->getPropertyPath());
     }
 
@@ -835,7 +820,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     public function invalidUnitCount()
     {
         return [
-            'Should have at least one operation' => [0, 'pim_measurements.validation.measurement_family.units.should_contain_at_least_one_unit'],
+            'Should have at least one operation' => [0, 'There should be at least 1 unit in the measurement family.'],
             'Cannot have more than 50 operations' => [51, 'You’ve reached the limit of 50 conversion operations per unit.'],
         ];
     }

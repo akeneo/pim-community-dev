@@ -21,6 +21,6 @@ class UnitCount extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_measure.validation.measurement_family.unit_count';
+        return 'akeneo_measurement.validation.measurement_family.unit_count';
     }
 }

@@ -1,9 +1,9 @@
 parameters:
     akeneo_measure.convert.measure_converter.class: Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter
     akeneo_measure.manager.measure_manager.class:   Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager
-    akeneo_measure.validation.measurement_family.operations_max: 5
-    akeneo_measure.validation.measurement_family.units_max: 50
-    akeneo_measure.validation.measurement_family.families_max: 100
+    akeneo_measurement.validation.measurement_family.operations_max: 5
+    akeneo_measurement.validation.measurement_family.units_max: 50
+    akeneo_measurement.validation.measurement_family.families_max: 100
 
 services:
     akeneo_measure.measure_converter:
@@ -47,37 +47,44 @@ services:
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'
 
-    akeneo_measure.validation.measurement_family.operation_count:
+    akeneo_measurement.validation.measurement_family.operation_count:
         class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationCountValidator
         arguments:
-            - '%akeneo_measure.validation.measurement_family.operations_max%'
+            - '%akeneo_measurement.validation.measurement_family.operations_max%'
         tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_measure.validation.measurement_family.operation_count' }
+            - { name: 'validator.constraint_validator', alias: 'akeneo_measurement.validation.measurement_family.operation_count' }
 
-    akeneo_measure.validation.measurement_family.unit_count:
+    akeneo_measurement.validation.measurement_family.unit_count:
         class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\UnitCountValidator
         arguments:
-            - '%akeneo_measure.validation.measurement_family.units_max%'
+            - '%akeneo_measurement.validation.measurement_family.units_max%'
         tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_measure.validation.measurement_family.unit_count' }
+            - { name: 'validator.constraint_validator', alias: 'akeneo_measurement.validation.measurement_family.unit_count' }
 
-    akeneo_measure.validation.measurement_family.count:
+    akeneo_measurement.validation.measurement_family.count:
         class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\CountValidator
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'
-            - '%akeneo_measure.validation.measurement_family.families_max%'
+            - '%akeneo_measurement.validation.measurement_family.families_max%'
         tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_measure.validation.measurement_family.count' }
+            - { name: 'validator.constraint_validator', alias: 'akeneo_measurement.validation.measurement_family.count' }
 
-    akeneo_measure.validation.measurement_family.units.unit_code_should_be_unique:
-        class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\UnitCodeShouldBeUniqueValidator
+    akeneo_measurement.validation.measurement_family.units.unit_code_should_be_unique_across_measurement_families:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\UnitCodesShouldBeUniqueAcrossMeasurementFamiliesValidator
         arguments:
             - '@akeneo_measure.persistence.get_measurement_family_code'
         tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_measure.validation.measurement_family.units.unit_code_should_be_unique' }
+            - { name: 'validator.constraint_validator', alias: 'akeneo_measurement.validation.measurement_family.units.unit_code_should_be_unique_across_measurement_families' }
+
+    akeneo_measurement.validation.measurement_family.standard_unit_code_cannot_be_changed:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\StandardUnitCodeCannotBeChangedValidator
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_measurement.validation.measurement_family.standard_unit_code_cannot_be_changed' }
 
     # Validation
-    akeneo_measure.validation.measurement_family.when_used_in_a_product_attribute_should_be_able_to_update_only_labels_and_symbol_and_add_units:
+    akeneo_measurement.validation.measurement_family.when_used_in_a_product_attribute_should_be_able_to_update_only_labels_and_symbol_and_add_units:
         class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnitsValidator
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'

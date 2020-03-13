@@ -55,13 +55,6 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
             return;
         }
 
-        if ($this->isTryingToUpdateStandardUnitCode($measurementFamily, $saveMeasurementFamily)) {
-            $this->context->buildViolation(
-                WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnits::MEASUREMENT_FAMILY_STANDARD_UNIT_CODE_IS_NOT_ALLOWED,
-                ['%measurement_family_code%' => $saveMeasurementFamily->code]
-            )->addViolation();
-        }
-
         $removedUnits = $this->isTryingToRemoveAUnit($measurementFamily, $saveMeasurementFamily);
         if (0 !== \count($removedUnits)) {
             $this->context->buildViolation(
@@ -89,15 +82,6 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
             )
                 ->addViolation();
         }
-    }
-
-    private function isTryingToUpdateStandardUnitCode(
-        MeasurementFamily $measurementFamily,
-        SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand
-    ): bool {
-        $normalizedMeasurementFamily = $measurementFamily->normalize();
-
-        return $normalizedMeasurementFamily['standard_unit_code'] !== $saveMeasurementFamilyCommand->standardUnitCode;
     }
 
     private function isTryingToRemoveAUnit(MeasurementFamily $measurementFamily, SaveMeasurementFamilyCommand $saveMeasurementFamily): array
