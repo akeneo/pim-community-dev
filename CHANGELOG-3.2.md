@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.44 (2020-03-13)
+
 ## Bug fixes
 
 - PIM-9145: Allow reference entity attribute to be used as a default filter in the product grid
