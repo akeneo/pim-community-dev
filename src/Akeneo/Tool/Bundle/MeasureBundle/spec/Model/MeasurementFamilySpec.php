@@ -109,13 +109,13 @@ class MeasurementFamilySpec extends ObjectBehavior
                         Unit::create(
                             UnitCode::fromString(self::METER_UNIT_CODE),
                             LabelCollection::fromArray(self::METER_LABELS),
-                            [],
+                            [Operation::create('mul', '1')],
                             self::METER_SYMBOL
                         ),
                         Unit::create(
                             UnitCode::fromString(self::CENTIMETER_SYMBOL),
                             LabelCollection::fromArray(self::CENTIMETER_LABELS),
-                            [],
+                            [Operation::create('mul', '1')],
                             self::CENTIMETER_SYMBOL
                         ),
                     ]
@@ -128,7 +128,7 @@ class MeasurementFamilySpec extends ObjectBehavior
         $meterUnit = Unit::create(
             UnitCode::fromString(self::METER_UNIT_CODE),
             LabelCollection::fromArray(self::METER_LABELS),
-            [],
+            [Operation::create('mul', '1')],
             self::METER_SYMBOL
         );
         $this->shouldThrow(\InvalidArgumentException::class)

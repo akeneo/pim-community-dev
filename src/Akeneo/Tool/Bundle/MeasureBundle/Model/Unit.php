@@ -29,7 +29,7 @@ final class Unit
     private function __construct(UnitCode $code, LabelCollection $labels, array $convertFromStandard, string $symbol)
     {
         Assert::allIsInstanceOf($convertFromStandard, Operation::class);
-        Assert::greaterThanEq(\count($convertFromStandard), 1, 'Expected unit to have at least one operation');
+        Assert::notEmpty($convertFromStandard, 'Expected unit to have at least one operation');
 
         $this->code = $code;
         $this->labels = $labels;
