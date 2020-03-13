@@ -28,23 +28,22 @@ class LegacyMeasurementProviderSpec extends ObjectBehavior
     ) {
         $measurementFamily = MeasurementFamily::create(
             MeasurementFamilyCode::fromString('Area'),
-            LabelCollection::fromArray(["en_US" => "Area", "fr_FR" => "Surface"]),
+            LabelCollection::fromArray(['en_US' => 'Area', 'fr_FR' => 'Surface']),
             UnitCode::fromString('SQUARE_MILLIMETER'),
             [
                 Unit::create(
                     UnitCode::fromString('SQUARE_MILLIMETER'),
-                    LabelCollection::fromArray(["en_US" => "Square millimeter", "fr_FR" => "Millimètre carré"]),
+                    LabelCollection::fromArray(['en_US' => 'Square millimeter', 'fr_FR' => 'Millimètre carré']),
                     [
-                        Operation::create("mul", "0.000001"),
-                        Operation::create("add", "4")
+                        Operation::create('mul', '1'),
                     ],
-                    "mm²",
+                    'mm²',
                     ),
                 Unit::create(
                     UnitCode::fromString('SQUARE_CENTIMETER'),
-                    LabelCollection::fromArray(["en_US" => "Square centimeter", "fr_FR" => "Centimètre carré"]),
-                    [Operation::create("mul", "0.0001")],
-                    "cm²",
+                    LabelCollection::fromArray(['en_US' => 'Square centimeter', 'fr_FR' => 'Centimètre carré']),
+                    [Operation::create('mul', '0.0001'),Operation::create('add', '4'),],
+                    'cm²',
                     )
             ]
         );
