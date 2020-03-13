@@ -3,7 +3,7 @@ import styled, {css} from 'styled-components';
 
 type ButtonProps = {
   size?: 'micro' | 'default';
-  color: 'green' | 'blue' | 'red' | 'grey' | 'outline';
+  color?: 'green' | 'blue' | 'red' | 'grey' | 'outline';
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const StyledButton = styled.button<ButtonProps>`
@@ -11,8 +11,8 @@ const StyledButton = styled.button<ButtonProps>`
   text-transform: uppercase;
   white-space: nowrap;
   outline: none;
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
   cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
-  opacity: ${props => (props.disabled ? 0.5 : 1)};
 
   ${props => {
     switch (props.size) {
@@ -44,17 +44,42 @@ const StyledButton = styled.button<ButtonProps>`
           color: ${props.theme.color.grey120};
           background-color: white;
           border: 1px solid ${props.theme.color.grey80};
+
+          :not(:disabled) {
+            :hover {
+              background-color: ${props.theme.color.grey60};
+              border-color: ${props.theme.color.grey100};
+            }
+            :active {
+              background-color: ${props.theme.color.grey80};
+              border-color: ${props.theme.color.grey100};
+            }
+          }
         `;
       default:
         return css`
           color: white;
           background-color: ${props.theme.color[`${props.color}100`]};
           border: 1px solid transparent;
+
+          :not(:disabled) {
+            :hover {
+              background-color: ${props.theme.color[`${props.color}120`]};
+            }
+            :active {
+              background-color: ${props.theme.color[`${props.color}140`]};
+            }
+          }
         `;
     }
   }}
 `;
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => <StyledButton ref={ref} {...props} />);
+
+Button.defaultProps = {
+  color: 'green',
+  size: 'default',
+};
 
 export {Button};
