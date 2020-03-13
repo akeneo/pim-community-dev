@@ -33,6 +33,7 @@ class MeasurementFamily
         Assert::allIsInstanceOf($units, Unit::class);
         Assert::minCount($units, self::MIN_UNIT_COUNT);
         $this->assertStandardUnitExists($standardUnitCode, $units);
+        $this->assertStandardUnitOperationIsAMultiplyByOne($standardUnitCode, $units);
         $this->assertNoDuplicatedUnits($units);
 
         $this->code = $code;
@@ -109,5 +110,12 @@ class MeasurementFamily
         }
 
         return $unit;
+    }
+
+    private function assertStandardUnitOperationIsAMultiplyByOne(UnitCode $standardUnitCode, array $units): void
+    {
+        /** @var Unit $unit */
+        $unit = $this->getUnit($standardUnitCode, $units);
+        Assert::true($unit->canBeAStandardUnit(), sprintf('Standard unit "%s" cannot be a standard unit', $unit->code()->normalize()));
     }
 }

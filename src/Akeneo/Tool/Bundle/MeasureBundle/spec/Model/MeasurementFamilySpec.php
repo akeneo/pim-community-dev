@@ -9,6 +9,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LocaleIdentifier;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
 use PhpSpec\ObjectBehavior;
@@ -30,15 +31,15 @@ class MeasurementFamilySpec extends ObjectBehavior
         $meterUnit = Unit::create(
             $standardUnitCode,
             LabelCollection::fromArray(self::METER_LABELS),
-            [],
+            [Operation::create('mul', '1')],
             self::METER_SYMBOL,
-        );
+            );
         $centimeterUnit = Unit::create(
             UnitCode::fromString(self::CENTIMETER_UNIT_CODE),
             LabelCollection::fromArray(self::CENTIMETER_LABELS),
-            [],
+            [Operation::create('mul', '5')],
             self::CENTIMETER_SYMBOL,
-        );
+            );
         $this->beConstructedThrough(
             'create',
             [
@@ -46,7 +47,8 @@ class MeasurementFamilySpec extends ObjectBehavior
                 LabelCollection::fromArray(self::MEASUREMENT_FAMILY_LABEL),
                 $standardUnitCode,
                 [$meterUnit, $centimeterUnit]
-            ]);
+            ]
+        );
     }
 
     function it_is_initializable()
@@ -58,21 +60,21 @@ class MeasurementFamilySpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn(
             [
-                'code' => self::MEASUREMENT_FAMILY_CODE,
-                'labels' => self::MEASUREMENT_FAMILY_LABEL,
+                'code'               => self::MEASUREMENT_FAMILY_CODE,
+                'labels'             => self::MEASUREMENT_FAMILY_LABEL,
                 'standard_unit_code' => self::METER_UNIT_CODE,
-                'units' => [
+                'units'              => [
                     [
-                        'code' => self::METER_UNIT_CODE,
-                        'labels' => self::METER_LABELS,
-                        'convert_from_standard' => [],
-                        'symbol' => self::METER_SYMBOL,
+                        'code'                  => self::METER_UNIT_CODE,
+                        'labels'                => self::METER_LABELS,
+                        'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
+                        'symbol'                => self::METER_SYMBOL,
                     ],
                     [
-                        'code' => self::CENTIMETER_UNIT_CODE,
-                        'labels' => self::CENTIMETER_LABELS,
-                        'convert_from_standard' => [],
-                        'symbol' => self::CENTIMETER_SYMBOL,
+                        'code'                  => self::CENTIMETER_UNIT_CODE,
+                        'labels'                => self::CENTIMETER_LABELS,
+                        'convert_from_standard' => [['operator' => 'mul', 'value' => '5']],
+                        'symbol'                => self::CENTIMETER_SYMBOL,
                     ]
                 ]
             ]
@@ -152,10 +154,33 @@ class MeasurementFamilySpec extends ObjectBehavior
     function it_should_throw_when_the_provided_unit_is_not_found()
     {
         $this->shouldThrow(UnitNotFoundException::class)
-            ->during('getUnitLabel',
+            ->during(
+                'getUnitLabel',
                 [
                     UnitCode::fromString('UNKNOWN'),
                     LocaleIdentifier::fromCode('fr_FR')
+                ]
+            );
+    }
+
+    function it_should_not_be_able_to_create_if_the_standard_unit_conversion_is_not_a_multiply_by_one()
+    {
+        $invalidStandardUnitOperation = Operation::create('mul', '5');
+        $this->shouldThrow(\Exception::class)
+            ->during(
+                'create',
+                [
+                    MeasurementFamilyCode::fromString(self::MEASUREMENT_FAMILY_CODE),
+                    LabelCollection::fromArray(self::MEASUREMENT_FAMILY_LABEL),
+                    UnitCode::fromString('invalid_standard_unit_code'),
+                    [
+                        Unit::create(
+                            UnitCode::fromString('invalid_standard_unit_code'),
+                            LabelCollection::fromArray([]),
+                            [$invalidStandardUnitOperation],
+                            ''
+                        )
+                    ]
                 ]
             );
     }

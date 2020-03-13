@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Webmozart\Assert\Assert;
 
 /**
@@ -28,6 +29,7 @@ final class Unit
     private function __construct(UnitCode $code, LabelCollection $labels, array $convertFromStandard, string $symbol)
     {
         Assert::allIsInstanceOf($convertFromStandard, Operation::class);
+        Assert::greaterThanEq(\count($convertFromStandard), 1, 'Expected unit to have at least one operation');
 
         $this->code = $code;
         $this->labels = $labels;
@@ -69,5 +71,12 @@ final class Unit
         }
 
         return $label;
+    }
+
+    public function canBeAStandardUnit(): bool
+    {
+        return 1 === \count($this->convertFromStandard)
+            && Operation::STANDARD_OPERATOR === ($this->convertFromStandard[0])->operator()
+            && Operation::STANDARD_VALUE === $this->convertFromStandard[0]->value();
     }
 }
