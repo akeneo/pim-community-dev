@@ -313,7 +313,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             [
                 'code' => 'kilogram',
                 'labels' => [],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '153']],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
                 'symbol' => 'Km'
             ]
         ];
@@ -792,7 +792,9 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     {
         return [
             'Locale code should be a string' => [[123 => 'my label'], 'This value should be of type string.'],
-            'Label should be a string' => [['fr_FR' => 12], 'This value should be of type string.']
+            'Locale code cannot be too long' => [[str_repeat('a', 101) => 'my label'], 'This value is too long. It should have 100 characters or less.'],
+            'Label should be a string' => [['fr_FR' => 12], 'This value should be of type string.'],
+            'Label cannot be too long' => [['fr_FR' => str_repeat('a', 101)], 'This value is too long. It should have 100 characters or less.']
         ];
     }
 
