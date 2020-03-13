@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9148: Fix UI attribute group display in association panel
+
 # 3.2.43 (2020-03-11)
 
 # 3.2.42 (2020-03-04)
