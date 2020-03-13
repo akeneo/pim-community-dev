@@ -22,3 +22,4 @@ pim_measurements:
                 operation:
                     invalid_operator: 'The {{ value }} operator is invalid, please use {{ choices }} instead.'
                 should_contain_at_least_one_unit: 'There should be at least %limit% unit in the measurement family.'
+                should_not_contain_duplicates: 'There was some duplicated units found in the measurement family. The measurement family is expected to have unique units.'

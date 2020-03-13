@@ -695,6 +695,37 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals('', $violation->getPropertyPath());
     }
 
+    /**
+     * @test
+     */
+    public function it_cannot_have_the_same_unit_code_twice(): void
+    {
+        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
+        $saveFamilyCommand->code = 'WEIGHT';
+        $saveFamilyCommand->labels = [];
+        $saveFamilyCommand->standardUnitCode = 'KILOGRAM';
+        $saveFamilyCommand->units = [
+            [
+                'code'                  => 'KILOGRAM',
+                'labels'                => ['fr_FR' => 'Kilogramme'],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
+                'symbol' => 'km'
+            ],
+            [
+                'code'                  => 'KILOGRAM',
+                'labels'                => ['fr_FR' => 'New Kilogramme'],
+                'convert_from_standard' => [['operator' => 'mul', 'value' => '0.000001']],
+                'symbol' => 'km'
+            ],
+        ];
+        $violations = $this->validator->validate($saveFamilyCommand);
+
+        self::assertEquals(1, $violations->count());
+        $violation = $violations->get(0);
+        self::assertEquals('There was some duplicated units found in the measurement family. The measurement family is expected to have unique units.', $violation->getMessage());
+        self::assertEquals('units', $violation->getPropertyPath());
+    }
+
     public function invalidCodes(): array
     {
         return [
