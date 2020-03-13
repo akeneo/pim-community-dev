@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection_audit_product(
     event_datetime DATETIME NOT NULL,
     event_count INT NOT NULL,
     event_type VARCHAR(100) NOT NULL,
-    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated DATETIME NOT NULL,
     PRIMARY KEY (event_datetime, connection_code, event_type)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
 SQL;
