@@ -116,6 +116,44 @@ class CreateMeasurementFamilyEndToEnd extends ApiTestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_returns_an_error_when_the_measurement_family_code_already_exists()
+    {
+        $measurementFamily = self::createMeasurementFamily('custom_metric_1');
+        $normalizedMeasurementFamily = $measurementFamily->normalize();
+
+        $client = $this->createAuthenticatedClient();
+
+        $client->request(
+            'POST',
+            'rest/measurement-families',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ],
+            json_encode($normalizedMeasurementFamily)
+        );
+
+        $client->restart();
+
+        $client->request(
+            'POST',
+            'rest/measurement-families',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ],
+            json_encode($normalizedMeasurementFamily)
+        );
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
     private static function createMeasurementFamily(string $code): MeasurementFamily
     {
         return MeasurementFamily::create(

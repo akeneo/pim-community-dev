@@ -42,6 +42,18 @@ services:
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'
 
+    akeneo_measure.application.create_measurement_family_handler:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyHandler
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'
+
+    akeneo_measure.validation.create_measurement_family.code_must_be_unique:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\CodeMustBeUniqueValidator
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_measure.validation.create_measurement_family.code_must_be_unique' }
+
     akeneo_measurement.validation.measurement_family.operation_count:
         class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationCountValidator
         arguments:
