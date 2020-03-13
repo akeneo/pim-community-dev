@@ -108,7 +108,6 @@ class ReferenceEntityRecordFilter extends ChoiceFilter
     {
         $metadata = parent::getMetadata();
         $metadata[FilterUtility::TYPE_KEY] = 'reference-entity-collection';
-        $metadata[FilterUtility::ENABLED_KEY] = false;
 
         return $metadata;
     }
