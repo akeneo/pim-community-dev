@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const WarningIcon = ({
+const WarningIcon = ({
   color = '#A1A9B7',
   title,
   size = 24,
@@ -19,3 +19,5 @@ export const WarningIcon = ({
     </g>
   </svg>
 );
+
+export {WarningIcon};

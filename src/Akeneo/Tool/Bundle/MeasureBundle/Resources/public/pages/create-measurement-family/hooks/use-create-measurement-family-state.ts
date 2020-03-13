@@ -1,10 +1,13 @@
 import {useCallback, useState} from 'react';
-import {FormState, createFormState} from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
+import {
+  FormState,
+  createFormState,
+} from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
 
 type SetValue = (path: string, value: string) => void;
 type ClearValues = () => void;
 
-export const useCreateMeasurementFamilyState = (): [FormState, SetValue, ClearValues] => {
+const useCreateMeasurementFamilyState = (): [FormState, SetValue, ClearValues] => {
   const [state, setState] = useState<FormState>(createFormState());
 
   const setValue = useCallback(
@@ -27,3 +30,5 @@ export const useCreateMeasurementFamilyState = (): [FormState, SetValue, ClearVa
 
   return [state, setValue, clear];
 };
+
+export {useCreateMeasurementFamilyState};

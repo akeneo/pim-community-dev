@@ -1,6 +1,6 @@
 import React, {useContext, ChangeEvent} from 'react';
 import styled from 'styled-components';
-import {Search as SearchIcon} from 'akeneomeasure/shared/icons/Search';
+import {SearchIcon} from 'akeneomeasure/shared/icons/SearchIcon';
 import {ResultCount} from 'akeneomeasure/shared/components/ResultCount';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {useFocus} from 'akeneomeasure/shared/hooks/use-focus';

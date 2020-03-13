@@ -2,12 +2,12 @@ import {getLabel} from 'pimui/js/i18n';
 
 type LocaleCode = string;
 
-export enum Direction {
+enum Direction {
   Ascending = 'Ascending',
   Descending = 'Descending',
 }
 
-export enum Operator {
+enum Operator {
   MUL = 'mul',
   DIV = 'div',
   ADD = 'add',
@@ -85,6 +85,8 @@ const sortMeasurementFamily = (sortDirection: Direction, locale: LocaleCode, sor
 };
 
 export {
+  Direction,
+  Operator,
   MeasurementFamily,
   getMeasurementFamilyLabel,
   getStandardUnitLabel,

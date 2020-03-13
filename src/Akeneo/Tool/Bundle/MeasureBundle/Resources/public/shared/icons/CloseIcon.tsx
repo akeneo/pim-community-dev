@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const CloseIcon = ({
+const CloseIcon = ({
   color = '#67768A',
   title,
   size = 24,
@@ -8,7 +8,7 @@ export const CloseIcon = ({
 }: {
   color: string;
   title?: string;
-  size: number
+  size: number;
 } & any) => (
   <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
     <g fillRule="nonzero" stroke={color} fill="none" strokeLinecap="round">
@@ -17,3 +17,5 @@ export const CloseIcon = ({
     <title>{title}</title>
   </svg>
 );
+
+export {CloseIcon};

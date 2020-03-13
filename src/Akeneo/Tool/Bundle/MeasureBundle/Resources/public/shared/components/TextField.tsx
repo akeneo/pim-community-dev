@@ -1,9 +1,9 @@
 import React, {ChangeEventHandler, useContext} from 'react';
+import styled, {css} from 'styled-components';
 import {ValidationError} from 'akeneomeasure/model/validation-error';
 import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Flag} from 'akeneomeasure/shared/components/Flag';
-import styled, {css} from 'styled-components';
 
 const Input = styled.input.attrs(() => ({className: 'AknTextField'}))<{invalid: boolean}>`
   ${props =>
@@ -25,17 +25,9 @@ type TextFieldProps = {
   onChange: ChangeEventHandler<Element>;
 
   errors?: ValidationError[];
-}
+};
 
-export const TextField = ({
-  id,
-  label,
-  errors,
-  propertyPath,
-  required = false,
-  flag,
-  ...props
-}: TextFieldProps & any) => {
+const TextField = ({id, label, errors, propertyPath, required = false, flag, ...props}: TextFieldProps & any) => {
   const __ = useContext(TranslateContext);
 
   return (
@@ -44,17 +36,14 @@ export const TextField = ({
         <label className="AknFieldContainer-label" htmlFor={id}>
           {label} {required && __('measurements.form.required_suffix')}
         </label>
-        {flag && <Flag localeCode={flag}/>}
+        {flag && <Flag localeCode={flag} />}
       </div>
       <div className="AknFieldContainer-inputContainer">
-        <Input
-          type="text"
-          autoComplete="off"
-          invalid={errors && errors.length > 0}
-          {...props}
-        />
+        <Input type="text" autoComplete="off" invalid={errors && errors.length > 0} {...props} />
       </div>
-      {errors && <InputErrors errors={errors}/>}
+      {errors && <InputErrors errors={errors} />}
     </div>
-  )
+  );
 };
+
+export {TextField};
