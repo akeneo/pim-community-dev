@@ -157,3 +157,5 @@ services:
             $getLatestCriteriaEvaluationsByProductIdQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery'
             $getIgnoredProductTitleSuggestionQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetIgnoredProductTitleSuggestionQuery'
             $getDescendantVariantProductIdsQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetDescendantVariantProductIds'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Structure\MapAttributeType: ~

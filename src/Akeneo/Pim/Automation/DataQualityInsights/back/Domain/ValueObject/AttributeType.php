@@ -15,8 +15,13 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
 
 final class AttributeType
 {
-    const TEXT = 'text';
-    const TEXTAREA = 'textarea';
+    public const TEXT = 'text';
+    public const TEXTAREA = 'textarea';
+
+    public const EVALUABLE_ATTRIBUTE_TYPES = [
+        self::TEXT,
+        self::TEXTAREA
+    ];
 
     /** @var string */
     private $type;
