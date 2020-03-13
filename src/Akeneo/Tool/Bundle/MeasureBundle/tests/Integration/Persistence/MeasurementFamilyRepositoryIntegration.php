@@ -123,7 +123,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
                 Unit::create(
                     UnitCode::fromString('SQUARE_MILLIMETER'),
                     LabelCollection::fromArray(["en_US" => "Square millimeter", "fr_FR" => "Millimètre carré"]),
-                    [Operation::create("mul", "0.000001")],
+                    [Operation::create("mul", "1")],
                     "mm²",
                 ),
                 Unit::create(
@@ -142,8 +142,8 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
 TRUNCATE TABLE `akeneo_measurement`;
 INSERT INTO `akeneo_measurement` (`code`, `labels`, `standard_unit`, `units`)
 VALUES
-	('Area', '{\"en_US\": \"Area\", \"fr_FR\": \"Surface\"}', 'SQUARE_MILLIMETER', '[{\"code\": \"SQUARE_MILLIMETER\", \"labels\": {\"en_US\": \"Square millimeter\", \"fr_FR\": \"Millimètre carré\"}, \"symbol\": \"mm²\", \"convert_from_standard\": [{\"value\": \"0.000001\", \"operator\": \"mul\"}]}, {\"code\": \"SQUARE_CENTIMETER\", \"labels\": {\"en_US\": \"Square centimeter\", \"fr_FR\": \"Centimètre carré\"}, \"symbol\": \"cm²\", \"convert_from_standard\": [{\"value\": \"0.0001\", \"operator\": \"mul\"}]}]'),
-	('Binary', '{\"en_US\": \"Binary\", \"fr_FR\": \"Binaire\"}', 'BYTE', '[{\"code\": \"BIT\", \"labels\": {\"en_US\": \"Bit\", \"fr_FR\": \"Bit\"}, \"symbol\": \"b\", \"convert_from_standard\": [{\"value\": \"0.125\", \"operator\": \"mul\"}]}, {\"code\": \"BYTE\", \"labels\": {\"en_US\": \"Byte\", \"fr_FR\": \"Octet\"}, \"symbol\": \"B\", \"convert_from_standard\": [{\"value\": \"1\", \"operator\": \"mul\"}]}]');
+	('Area', '{\"en_US\": \"Area\", \"fr_FR\": \"Surface\"}', 'SQUARE_MILLIMETER', '[{\"code\": \"SQUARE_MILLIMETER\", \"labels\": {\"en_US\": \"Square millimeter\", \"fr_FR\": \"Millimètre carré\"}, \"symbol\": \"mm²\", \"convert_from_standard\": [{\"value\": \"1\", \"operator\": \"mul\"}]}, {\"code\": \"SQUARE_CENTIMETER\", \"labels\": {\"en_US\": \"Square centimeter\", \"fr_FR\": \"Centimètre carré\"}, \"symbol\": \"cm²\", \"convert_from_standard\": [{\"value\": \"0.0001\", \"operator\": \"mul\"}]}]'),
+	('Binary', '{\"en_US\": \"Binary\", \"fr_FR\": \"Binaire\"}', 'BYTE', '[{\"code\": \"BIT\", \"labels\": {\"en_US\": \"Bit\", \"fr_FR\": \"Bit\"}, \"symbol\": \"b\", \"convert_from_standard\": [{\"value\": \"1\", \"operator\": \"mul\"}]}, {\"code\": \"BYTE\", \"labels\": {\"en_US\": \"Byte\", \"fr_FR\": \"Octet\"}, \"symbol\": \"B\", \"convert_from_standard\": [{\"value\": \"1\", \"operator\": \"mul\"}]}]');
 SQL;
         $this->connection->executeQuery($sql);
     }

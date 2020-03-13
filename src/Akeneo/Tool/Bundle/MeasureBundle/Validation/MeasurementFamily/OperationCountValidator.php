@@ -51,7 +51,7 @@ class OperationCountValidator extends ConstraintValidator
 
         if ($count > $this->max) {
             $this->context->buildViolation($constraint->maxMessage)
-                ->setParameter('{{ limit }}', $this->max)
+                ->setParameter('%limit%', $this->max)
                 ->setInvalidValue($value)
                 ->setPlural((int)$this->max)
                 ->addViolation();
@@ -61,7 +61,7 @@ class OperationCountValidator extends ConstraintValidator
 
         if ($count < $this->min) {
             $this->context->buildViolation($constraint->minMessage)
-                ->setParameter('{{ limit }}', $this->min)
+                ->setParameter('%limit%', $this->min)
                 ->setInvalidValue($value)
                 ->setPlural((int)$this->min)
                 ->addViolation();

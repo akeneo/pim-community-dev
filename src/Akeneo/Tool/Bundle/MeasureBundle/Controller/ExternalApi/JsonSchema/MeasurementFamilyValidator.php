@@ -45,9 +45,8 @@ class MeasurementFamilyValidator
                 ],
                 'standard_unit_code' => ['type' => 'string'],
                 'units'              => [
-                    'type'     => 'array',
-                    'minItems' => 1,
-                    'items'    => [
+                    'type'  => 'array',
+                    'items' => [
                         'type'       => 'object',
                         'required'   => ['code', 'labels', 'convert_from_standard', 'symbol'],
                         'properties' => [
@@ -59,9 +58,8 @@ class MeasurementFamilyValidator
                                 ],
                             ],
                             'convert_from_standard' => [
-                                'minItems' => 1,
-                                'type'     => 'array',
-                                'items'    => [
+                                'type'  => 'array',
+                                'items' => [
                                     'type'       => 'object',
                                     'properties' => [
                                         'operator' => ['type' => 'string'],

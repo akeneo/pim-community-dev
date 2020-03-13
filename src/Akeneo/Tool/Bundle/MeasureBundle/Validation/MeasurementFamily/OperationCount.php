@@ -21,6 +21,6 @@ class OperationCount extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_measure.validation.measurement_family.operation_count';
+        return 'akeneo_measurement.validation.measurement_family.operation_count';
     }
 }

@@ -21,6 +21,8 @@ use Symfony\Component\Validator\Validation;
 
 class StandardUnitCodeShouldExistValidator extends ConstraintValidator
 {
+    private const PROPERTY_PATH = 'standard_unit_code';
+
     public function validate($saveMeasurementFamilyCommand, Constraint $constraint)
     {
         if (!$saveMeasurementFamilyCommand instanceof SaveMeasurementFamilyCommand) {
@@ -34,7 +36,9 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
         }
         $standardUnitCode = $saveMeasurementFamilyCommand->standardUnitCode;
         if (empty($standardUnitCode)) {
-            $this->context->buildViolation(StandardUnitCodeShouldExist::STANDARD_UNIT_CODE_IS_REQUIRED)
+            $this->context
+                ->buildViolation(StandardUnitCodeShouldExist::STANDARD_UNIT_CODE_IS_REQUIRED)
+                ->atPath(self::PROPERTY_PATH)
                 ->addViolation();
 
             return;
@@ -63,10 +67,13 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
-                $this->context->addViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters()
-                );
+                $this->context->buildViolation($violation->getMessage())
+                    ->setParameters($violation->getParameters())
+                    ->atPath(self::PROPERTY_PATH)
+                    ->setCode($violation->getCode())
+                    ->setPlural($violation->getPlural())
+                    ->setInvalidValue($violation->getInvalidValue())
+                    ->addViolation();
             }
         }
     }

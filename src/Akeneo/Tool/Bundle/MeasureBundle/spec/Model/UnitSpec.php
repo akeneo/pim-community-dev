@@ -41,12 +41,12 @@ class UnitSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn(
             [
-                'code' => self::UNIT_CODE,
-                'labels' => self::UNIT_LABELS,
+                'code'                  => self::UNIT_CODE,
+                'labels'                => self::UNIT_LABELS,
                 'convert_from_standard' => [
                     ['operator' => self::OPERATION_OPERATOR, 'value' => self::OPERATION_VALUE]
                 ],
-                'symbol' => self::SYMBOL,
+                'symbol'                => self::SYMBOL,
             ]
         );
     }
@@ -66,7 +66,20 @@ class UnitSpec extends ObjectBehavior
             );
     }
 
-    function it_returns_the_label_of_the_provided_locale()
+    function it_should_be_created_with_at_least_one_operation()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during(
+                'create',
+                [
+                    UnitCode::fromString(self::UNIT_CODE),
+                    LabelCollection::fromArray(self::UNIT_LABELS),
+                    [],
+                    self::SYMBOL
+                ]
+            );
+    }
+        function it_returns_the_label_of_the_provided_locale()
     {
         $this->getLabel(LocaleIdentifier::fromCode('fr_FR'))->shouldReturn('metre');
     }
@@ -74,5 +87,23 @@ class UnitSpec extends ObjectBehavior
     function it_returns_the_code_between_brackets_when_there_is_no_label_for_the_locale()
     {
         $this->getLabel(LocaleIdentifier::fromCode('UNKNOWN'))->shouldReturn('[meter]');
+    }
+
+    function it_tells_if_it_is_a_standard_unit()
+    {
+        $this->beConstructedThrough(
+            'create',
+            [
+                UnitCode::fromString(self::UNIT_CODE),
+                LabelCollection::fromArray(self::UNIT_LABELS),
+                [Operation::create('mul', '1')],
+                self::SYMBOL
+            ]
+        );
+    }
+
+    function it_tells_if_it_is_not_be_a_standard_unit()
+    {
+        $this->canBeAStandardUnit()->shouldReturn(false);
     }
 }
