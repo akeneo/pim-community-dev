@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\PurgeAuditProductQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\MigrateAudit40Master;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectHourlyIntervalsToRefreshQuery;
 use Symfony\Component\Console\Command\Command;
@@ -31,9 +32,13 @@ class UpdateAuditDataCommand extends Command
     /** @var MigrateAudit40Master */
     private $migrateAudit40Master;
 
+    /** @var PurgeAuditProductQuery */
+    private $purgeQuery;
+
     public function __construct(
         UpdateProductEventCountHandler $updateProductEventCountHandler,
         DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery,
+        PurgeAuditProductQuery $purgeQuery,
         MigrateAudit40Master $migrateAudit40Master
     ) {
         parent::__construct();
@@ -41,12 +46,14 @@ class UpdateAuditDataCommand extends Command
         $this->updateProductEventCountHandler = $updateProductEventCountHandler;
         $this->selectHourlyIntervalsToRefreshQuery = $selectHourlyIntervalsToRefreshQuery;
         $this->migrateAudit40Master = $migrateAudit40Master;
+        $this->purgeQuery = $purgeQuery;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // TODO: To remove when pullup on master
         $hourlyIntervalsToRecalculate = $this->migrateAudit40Master->migrateIfNeeded();
+        $this->purgeOlderThanXDays(10);
         if (!empty($hourlyIntervalsToRecalculate)) {
             foreach ($hourlyIntervalsToRecalculate as $hourlyInterval) {
                 $command = new UpdateProductEventCountCommand($hourlyInterval);
@@ -75,6 +82,13 @@ class UpdateAuditDataCommand extends Command
         }
 
         return 0;
+    }
+
+    private function purgeOlderThanXDays(int $days): void
+    {
+        $before = new \DateTimeImmutable("now - $days days", new \DateTimeZone('UTC'));
+        $before->setTime((int) $before->format('H'), 0, 0);
+        $this->purgeQuery->execute($before);
     }
 
     private function updateProductEventCount(HourlyInterval $hourlyInterval): void
