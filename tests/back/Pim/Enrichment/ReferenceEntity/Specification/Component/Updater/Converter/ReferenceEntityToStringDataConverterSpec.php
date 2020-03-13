@@ -56,7 +56,7 @@ class ReferenceEntityToStringDataConverterSpec extends ObjectBehavior
         );
     }
 
-    function it_converts_areference_entity_single_link_to_a_string()
+    function it_converts_a_reference_entity_single_link_to_a_string()
     {
         $sourceValue = ReferenceEntityValue::value('designers', RecordCode::fromString('starck'));
 
