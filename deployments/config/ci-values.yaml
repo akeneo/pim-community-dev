@@ -15,6 +15,9 @@ pim:
       enabled: true
     installPim:
       enabled: true
+    upgradePim:
+      enabled: false # Set me to true when upgrading to a minor version
+      hook: "post-upgrade"
     upgradeES:
       enabled: false
   resources:
