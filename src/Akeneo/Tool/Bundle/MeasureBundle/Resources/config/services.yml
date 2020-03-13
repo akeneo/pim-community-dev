@@ -36,11 +36,6 @@ services:
         class: Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepository
         arguments:
             - '@doctrine.dbal.default_connection'
-            -
-    akeneo_measure.persistence.get_measurement_family_code:
-        class: Akeneo\Tool\Bundle\MeasureBundle\Persistence\GetMeasurementFamilyCode
-        arguments:
-            - '@doctrine.dbal.default_connection'
 
     akeneo_measure.application.save_measurement_family_handler:
         class: Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyHandler
@@ -68,13 +63,6 @@ services:
             - '%akeneo_measurement.validation.measurement_family.families_max%'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_measurement.validation.measurement_family.count' }
-
-    akeneo_measurement.validation.measurement_family.units.unit_code_should_be_unique_across_measurement_families:
-        class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\UnitCodesShouldBeUniqueAcrossMeasurementFamiliesValidator
-        arguments:
-            - '@akeneo_measure.persistence.get_measurement_family_code'
-        tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_measurement.validation.measurement_family.units.unit_code_should_be_unique_across_measurement_families' }
 
     akeneo_measurement.validation.measurement_family.standard_unit_code_cannot_be_changed:
         class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\StandardUnitCodeCannotBeChangedValidator
