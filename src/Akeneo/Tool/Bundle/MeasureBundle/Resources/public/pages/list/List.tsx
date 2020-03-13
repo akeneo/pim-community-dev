@@ -10,35 +10,16 @@ import {HelperTitle, HelperText, Helper} from 'akeneomeasure/shared/components/H
 import {Link} from 'akeneomeasure/shared/components/Link';
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/components/NoData';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
-import {MeasurementFamilyRow} from 'akeneomeasure/pages/list/MeasurementFamilyRow';
 import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
 import {filterMeasurementFamily, sortMeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
-import {Direction, Caret} from 'akeneomeasure/shared/components/Caret';
+import {Direction} from 'akeneomeasure/shared/components/Caret';
+import {Table} from 'akeneomeasure/pages/list/Table';
 
 const Container = styled.div``;
 const PageContent = styled.div`
-  padding: 0 40px 0 40px;
+  padding: 0 40px;
 `;
-
-const Table = styled.table`
-  width: 100%;
-  color: ${props => props.theme.color.grey140};
-  border-collapse: collapse;
-
-  td {
-    width: 25%;
-  }
-`;
-
-const TableHeader = styled.thead`
-  tr {
-    height: 43px;
-    border-bottom: 1px solid ${props => props.theme.color.grey120};
-  }
-`;
-
-const TableBody = styled.tbody``;
 
 const PageHeaderPlaceholder = styled.div`
   width: 200px;
@@ -59,12 +40,6 @@ const StickySearchBar = styled(SearchBar)`
   top: 126px;
 `;
 
-const SortableTableCell = styled.td`
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
 const useSorting = (
   defaultColumn: string
 ): [string, (columnCode: string) => Direction, (columnCode: string) => void] => {
@@ -83,12 +58,10 @@ const useSorting = (
   ];
 };
 
-export const List = () => {
+const List = () => {
   const __ = useContext(TranslateContext);
   const [searchValue, setSearchValue] = useState('');
-
   const [sortColumn, getSortDirection, toggleSortDirection] = useSorting('label');
-
   const measurementFamilies = useMeasurementFamilies();
   const locale = useContext(UserContext)('uiLocale');
 
@@ -168,7 +141,7 @@ export const List = () => {
             </NoDataText>
           </NoDataSection>
         )}
-        {null !== filteredMeasurementFamilies && (
+        {null !== filteredMeasurementFamilies && 0 < measurementFamiliesCount && (
           <Container>
             <StickySearchBar
               count={filteredMeasurementFamiliesCount}
@@ -182,33 +155,11 @@ export const List = () => {
               </NoDataSection>
             )}
             {0 < filteredMeasurementFamiliesCount && (
-              <Table>
-                <TableHeader>
-                  <tr>
-                    <SortableTableCell onClick={() => toggleSortDirection('label')}>
-                      {__('measurements.list.header.label')}
-                      <Caret direction={getSortDirection('label')} />
-                    </SortableTableCell>
-                    <SortableTableCell onClick={() => toggleSortDirection('code')}>
-                      {__('measurements.list.header.code')}
-                      <Caret direction={getSortDirection('code')} />
-                    </SortableTableCell>
-                    <SortableTableCell onClick={() => toggleSortDirection('standard_unit')}>
-                      {__('measurements.list.header.standard_unit')}
-                      <Caret direction={getSortDirection('standard_unit')} />
-                    </SortableTableCell>
-                    <SortableTableCell onClick={() => toggleSortDirection('unit_count')}>
-                      {__('measurements.list.header.unit_count')}
-                      <Caret direction={getSortDirection('unit_count')} />
-                    </SortableTableCell>
-                  </tr>
-                </TableHeader>
-                <TableBody>
-                  {filteredMeasurementFamilies.map(measurementFamily => (
-                    <MeasurementFamilyRow key={measurementFamily.code} measurementFamily={measurementFamily} />
-                  ))}
-                </TableBody>
-              </Table>
+              <Table
+                measurementFamilies={filteredMeasurementFamilies}
+                toggleSortDirection={toggleSortDirection}
+                getSortDirection={getSortDirection}
+              />
             )}
           </Container>
         )}
@@ -216,3 +167,5 @@ export const List = () => {
     </>
   );
 };
+
+export {List};

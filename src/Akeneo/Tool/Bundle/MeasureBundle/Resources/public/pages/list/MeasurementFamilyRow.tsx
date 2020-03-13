@@ -22,7 +22,7 @@ type MeasurementFamilyRowProps = {
   measurementFamily: MeasurementFamily;
 };
 
-export const MeasurementFamilyRow = ({measurementFamily}: MeasurementFamilyRowProps) => {
+const MeasurementFamilyRow = ({measurementFamily}: MeasurementFamilyRowProps) => {
   const locale = useContext(UserContext)('uiLocale');
 
   return (
@@ -34,3 +34,5 @@ export const MeasurementFamilyRow = ({measurementFamily}: MeasurementFamilyRowPr
     </Container>
   );
 };
+
+export {MeasurementFamilyRow};

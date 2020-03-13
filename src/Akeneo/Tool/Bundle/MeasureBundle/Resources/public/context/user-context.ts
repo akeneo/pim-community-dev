@@ -1,5 +1,7 @@
 import {createContext} from 'react';
 
-export type UserContextValue = (key: string) => string;
+type UserContextValue = (key: string) => string;
 
-export const UserContext = createContext<UserContextValue>(() => '');
+const UserContext = createContext<UserContextValue>(() => '');
+
+export {UserContextValue, UserContext};

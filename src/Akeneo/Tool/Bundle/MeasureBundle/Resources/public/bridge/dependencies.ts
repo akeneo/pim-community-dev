@@ -4,7 +4,7 @@ const router = require('pim/router');
 const viewBuilder = require('pim/form-builder');
 const userContext = require('pim/user-context');
 
-export const dependencies = {
+const dependencies = {
   router,
   translate: __,
   legacy: {
@@ -12,3 +12,5 @@ export const dependencies = {
   },
   user: userContext.get,
 };
+
+export {dependencies};
