@@ -59,10 +59,6 @@ class LabelCollectionValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param ValidatorInterface $validator
-     * @param mixed              $label
-     */
     private function validateLabelForLocale(ValidatorInterface $validator, $label): void
     {
         $violations = $validator->validate($label, [
