@@ -13,7 +13,7 @@ const initialFields = Object.freeze({
 });
 
 describe('useCreateMeasurementFamilyState', () => {
-  test('It retreive a default state with empty values', () => {
+  test('It retrieves a default state with empty values', () => {
     const {result} = renderHook(() => useCreateMeasurementFamilyState());
     let [fields] = result.current;
 

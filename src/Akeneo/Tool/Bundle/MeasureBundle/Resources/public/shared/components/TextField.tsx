@@ -3,6 +3,15 @@ import {ValidationError} from 'akeneomeasure/model/validation-error';
 import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Flag} from 'akeneomeasure/shared/components/Flag';
+import styled, {css} from 'styled-components';
+
+const Input = styled.input.attrs(() => ({className: 'AknTextField'}))<{invalid: boolean}>`
+  ${props =>
+    props.invalid === true &&
+    css`
+      border-color: ${props => props.theme.color.red100};
+    `}
+`;
 
 type TextFieldProps = {
   id: string;
@@ -16,7 +25,6 @@ type TextFieldProps = {
   onChange: ChangeEventHandler<Element>;
 
   errors?: ValidationError[];
-  propertyPath?: string;
 }
 
 export const TextField = ({
@@ -39,14 +47,14 @@ export const TextField = ({
         {flag && <Flag localeCode={flag}/>}
       </div>
       <div className="AknFieldContainer-inputContainer">
-        <input
+        <Input
           type="text"
           autoComplete="off"
-          className="AknTextField"
+          invalid={errors && errors.length > 0}
           {...props}
         />
       </div>
-      {errors && <InputErrors errors={errors} propertyPath={propertyPath}/>}
+      {errors && <InputErrors errors={errors}/>}
     </div>
   )
 };

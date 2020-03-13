@@ -71,8 +71,7 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
             value={form.family_code}
             onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('family_code', e.currentTarget.value)}
             required={true}
-            errors={errors}
-            propertyPath="code"
+            errors={errors.filter(error => error.property === 'code')}
           />
           <TextField
             id="measurements.measurement_family.create.family_label"
@@ -80,8 +79,7 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
             value={form.family_label}
             onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('family_label', e.currentTarget.value)}
             flag={locale}
-            errors={errors}
-            propertyPath="labels"
+            errors={errors.filter(error => error.property === 'labels')}
           />
         </FormGroup>
         <Subsection>
@@ -97,8 +95,7 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
             value={form.standard_unit_code}
             onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('standard_unit_code', e.currentTarget.value)}
             required={true}
-            errors={errors}
-            propertyPath="units[0][code]"
+            errors={errors.filter(error => error.property === 'units[0][code]')}
           />
           <TextField
             id="measurements.measurement_family.create.standard_unit_label"
@@ -106,16 +103,14 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
             value={form.standard_unit_label}
             onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('standard_unit_label', e.currentTarget.value)}
             flag={locale}
-            errors={errors}
-            propertyPath="units[0][labels]"
+            errors={errors.filter(error => error.property === 'units[0][labels]')}
           />
           <TextField
             id="measurements.measurement_family.create.standard_unit_symbol"
             label={__('measurements.form.input.symbol')}
             value={form.standard_unit_symbol}
             onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('standard_unit_symbol', e.currentTarget.value)}
-            errors={errors}
-            propertyPath="units[0][symbol]"
+            errors={errors.filter(error => error.property === 'units[0][symbol]')}
           />
         </FormGroup>
         <Button classNames={['AknButton--apply']} onClick={handleSave}>{__('measurements.form.save')}</Button>
