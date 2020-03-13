@@ -113,7 +113,7 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
             errors={errors.filter(error => error.property === 'units[0][symbol]')}
           />
         </FormGroup>
-        <Button classNames={['AknButton--apply']} onClick={handleSave}>{__('measurements.form.save')}</Button>
+        <Button onClick={handleSave}>{__('measurements.form.save')}</Button>
       </ModalBodyWithIllustration>
     </Modal>
   );

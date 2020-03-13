@@ -13,7 +13,6 @@ import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-famili
 import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
 import {filterMeasurementFamily, sortMeasurementFamily, Direction} from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
-import {Direction} from 'akeneomeasure/shared/components/Caret';
 import {Table} from 'akeneomeasure/pages/list/Table';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
@@ -99,7 +98,7 @@ const List = () => {
           />
         }
         buttons={[
-          <Button classNames={['AknButton--apply']} onClick={openCreateModal}>
+          <Button onClick={openCreateModal}>
             Create
           </Button>,
         ]}
