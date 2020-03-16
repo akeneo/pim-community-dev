@@ -55,6 +55,7 @@ $rules = [
 
         // TIP-996: Permission should not be linked to Workflow
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface',
+        'Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\PublishedProductConsistencyException',
 
         // TIP-1002: Permissions should not be linked to Channel
         'Akeneo\Channel\Component\Model\ChannelInterface',
