@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetProductRawValuesQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductRawValuesQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\TestCase;
 
-class CachedGetProductRawValuesQueryIntegration extends TestCase
+class GetProductRawValuesQueryIntegration extends TestCase
 {
     public function test_it_returns_product_values_by_attribute()
     {
@@ -38,7 +38,7 @@ class CachedGetProductRawValuesQueryIntegration extends TestCase
         ];
 
         $productRawValues = $this
-            ->get(CachedGetProductRawValuesQuery::class)
+            ->get(GetProductRawValuesQuery::class)
             ->execute($productId);
 
         $this->assertProductHasRawValues($expectedRawValues, $productRawValues);
@@ -47,7 +47,7 @@ class CachedGetProductRawValuesQueryIntegration extends TestCase
     public function test_it_returns_empty_array_if_product_do_not_exists()
     {
         $result = $this
-            ->get(CachedGetProductRawValuesQuery::class)
+            ->get(GetProductRawValuesQuery::class)
             ->execute(new ProductId(1418), ['a_text', 'a_yes_no']);
 
         $this->assertSame([], $result);
@@ -113,7 +113,7 @@ class CachedGetProductRawValuesQueryIntegration extends TestCase
         );
 
         $result = $this
-            ->get(CachedGetProductRawValuesQuery::class)
+            ->get(GetProductRawValuesQuery::class)
             ->execute($productId);
 
         $expectedResult = [

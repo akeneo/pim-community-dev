@@ -17,16 +17,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductRawValuesQu
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
 
-class CachedGetProductRawValuesQuery implements GetProductRawValuesQueryInterface
+class GetProductRawValuesQuery implements GetProductRawValuesQueryInterface
 {
     /** * @var Connection */
     private $db;
-
-    /** @var null|int */
-    private $cachedProductId;
-
-    /** @var array */
-    private $cachedProductValues = [];
 
     public function __construct(Connection $db)
     {
@@ -35,11 +29,6 @@ class CachedGetProductRawValuesQuery implements GetProductRawValuesQueryInterfac
 
     public function execute(ProductId $productId): array
     {
-        $productId = $productId->toInt();
-        if ($productId === $this->cachedProductId) {
-            return $this->cachedProductValues;
-        }
-
         $query = <<<SQL
 SELECT
     JSON_MERGE(
@@ -55,7 +44,7 @@ SQL;
 
         $statement = $this->db->executeQuery($query,
             [
-                'product_id' => $productId,
+                'product_id' => $productId->toInt(),
             ],
             [
                 'product_id' => \PDO::PARAM_INT,
@@ -63,11 +52,6 @@ SQL;
         );
 
         $result = $statement->fetchColumn();
-        $rawValues = false === $result ? [] : json_decode($result, true);
-
-        $this->cachedProductId = $productId;
-        $this->cachedProductValues = $rawValues;
-
-        return $rawValues;
+        return false === $result ? [] : json_decode($result, true);
     }
 }
