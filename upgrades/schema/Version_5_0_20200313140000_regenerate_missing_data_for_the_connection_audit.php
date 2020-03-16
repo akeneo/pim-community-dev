@@ -38,7 +38,7 @@ final class Version_5_0_20200313140000_regenerate_missing_data_for_the_connectio
     private function recalculateForDateTime(\DateTime $startDateTime): void
     {
         $endDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', $startDateTime->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'));
-        $endDateTime->setTime((int) $endDateTime->format('H'), 59, 59);
+        $endDateTime->setTime((int) $endDateTime->format('H')+1, 0, 0);
 
         // Recalculate created
         $this->recalculateCreatedForDateTime($startDateTime, $endDateTime);

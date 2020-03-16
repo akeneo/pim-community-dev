@@ -55,7 +55,7 @@ final class Version_5_0_20200313140000_regenerate_missing_data_for_the_connectio
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
-//        $this->assertAuditProductTableEntryCount(648);
+        $this->assertAuditProductTableEntryCount(648);
     }
 
     //TODO: Test if no connections
@@ -81,11 +81,11 @@ SQL;
         $this->assertEquals($expectedCount, $stmt->fetchColumn());
     }
 
-    private function insertVersionRow(string $userApi, bool $created, $loggedAt): void
+    private function insertVersionRow(string $userApi, int $resourceId, bool $created, $loggedAt): void
     {
         $insertVersioningSql = <<<SQL
 INSERT INTO pim_versioning_version (author, resource_name, resource_id, version, logged_at, changeset, pending)
-VALUES (:user_api, 'Akeneo\\\\Pim\\\\Enrichment\\\\Component\\\\Product\\\\Model\\\\Product', 1, :version, :logged_at, '{}', 0);
+VALUES (:user_api, 'Akeneo\\\\Pim\\\\Enrichment\\\\Component\\\\Product\\\\Model\\\\Product', :resource_id, :version, :logged_at, '{}', 0);
 SQL;
         $insertParams = [
             'user_api' => $userApi,
