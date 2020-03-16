@@ -42,7 +42,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetPendingCriteriaEvaluationsByProductIdsQuery'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_pending_criteria_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetEvaluableProductValuesQuery'
             - '@logger'
 

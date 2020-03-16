@@ -30,10 +30,14 @@ final class GetPendingCriteriaEvaluationsByProductIdsQuery implements GetPending
     /** @var Clock */
     private $clock;
 
-    public function __construct(Connection $dbConnection, Clock $clock)
+    /** @var string */
+    private $tableName;
+
+    public function __construct(Connection $dbConnection, Clock $clock, string $tableName)
     {
         $this->dbConnection = $dbConnection;
         $this->clock = $clock;
+        $this->tableName = $tableName;
     }
 
     /**
@@ -45,14 +49,16 @@ final class GetPendingCriteriaEvaluationsByProductIdsQuery implements GetPending
             return [];
         }
 
-        $sql = <<<'SQL'
+        $criterionEvaluationTable = $this->tableName;
+
+        $sql = <<<SQL
 SELECT product_id, JSON_ARRAYAGG(JSON_OBJECT(
     'id', id,
     'criterion_code', criterion_code,
     'created_at', created_at,
     'status', status
 )) as criteria
-FROM pimee_data_quality_insights_criteria_evaluation
+FROM $criterionEvaluationTable
 WHERE status = :status 
 AND product_id IN(:product_ids)
 GROUP BY product_id

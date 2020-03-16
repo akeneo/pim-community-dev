@@ -20,25 +20,23 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetPendingCriteriaEvaluationsByProductIdsQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends TestCase
 {
     /** @var CriterionEvaluationRepositoryInterface */
-    private $repository;
+    private $productCriterionEvaluationRepository;
 
-    /** @var GetPendingCriteriaEvaluationsByProductIdsQuery */
-    private $query;
+    /** @var CriterionEvaluationRepositoryInterface */
+    private $productModelCriterionEvaluationRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->repository = $this->get(CriterionEvaluationRepository::class);
-        $this->query = $this->get(GetPendingCriteriaEvaluationsByProductIdsQuery::class);
+        $this->productCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
+        $this->productModelCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation');
     }
 
     protected function getConfiguration(): Configuration
@@ -46,9 +44,109 @@ final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends Te
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_it_finds_pending_criteria_evaluations_by_product_ids()
+    public function test_it_finds_product_pending_criteria_evaluations()
     {
-        $criteriaEvaluations = [
+        $criteriaEvaluations = $this->getCriteriaEvaluationsSample();
+        $this->persistProductCriteriaEvaluations($criteriaEvaluations);
+
+        $evaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_pending_criteria_evaluations')
+            ->execute([42, 123]);
+
+        $expectedCriteriaEvaluationsProduct42 = (new Write\CriterionEvaluationCollection())
+            ->add($criteriaEvaluations['product_42_pending_completeness'])
+            ->add($criteriaEvaluations['product_42_pending_spelling'])
+        ;
+        $expectedCriteriaEvaluationsProduct123 = (new Write\CriterionEvaluationCollection())
+            ->add($criteriaEvaluations['product_123_pending_spelling'])
+        ;
+
+        $this->assertCount(2, $evaluations);
+        $this->assertArrayHasKey(42, $evaluations);
+        $this->assertArrayHasKey(123, $evaluations);
+        $this->assertEqualsCriteriaEvaluations($expectedCriteriaEvaluationsProduct42, $evaluations[42]);
+        $this->assertEqualsCriteriaEvaluations($expectedCriteriaEvaluationsProduct123, $evaluations[123]);
+    }
+
+    public function test_it_finds_product_models_pending_criteria_evaluations()
+    {
+        $criteriaEvaluations = $this->getCriteriaEvaluationsSample();
+        $this->persistProductModelCriteriaEvaluations($criteriaEvaluations);
+
+        $evaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_model_pending_criteria_evaluations')
+            ->execute([42, 123]);
+
+        $expectedCriteriaEvaluationsProduct42 = (new Write\CriterionEvaluationCollection())
+            ->add($criteriaEvaluations['product_42_pending_completeness'])
+            ->add($criteriaEvaluations['product_42_pending_spelling'])
+        ;
+        $expectedCriteriaEvaluationsProduct123 = (new Write\CriterionEvaluationCollection())
+            ->add($criteriaEvaluations['product_123_pending_spelling'])
+        ;
+
+        $this->assertCount(2, $evaluations);
+        $this->assertArrayHasKey(42, $evaluations);
+        $this->assertArrayHasKey(123, $evaluations);
+        $this->assertEqualsCriteriaEvaluations($expectedCriteriaEvaluationsProduct42, $evaluations[42]);
+        $this->assertEqualsCriteriaEvaluations($expectedCriteriaEvaluationsProduct123, $evaluations[123]);
+    }
+
+    public function test_it_returns_an_empty_array_if_there_is_no_pending_criteria_evaluations()
+    {
+        $this->assertEmpty($this->get('akeneo.pim.automation.data_quality_insights.query.get_product_pending_criteria_evaluations')
+            ->execute([42]));
+    }
+
+    private function persistProductCriteriaEvaluations(array $criteriaEvaluations): void
+    {
+        $criterionEvaluationCollection = new Write\CriterionEvaluationCollection();
+        foreach ($criteriaEvaluations as $criterionEvaluation) {
+            $criterionEvaluationCollection->add($criterionEvaluation);
+        }
+
+        $this->productCriterionEvaluationRepository->create($criterionEvaluationCollection);
+    }
+
+    private function persistProductModelCriteriaEvaluations(array $criteriaEvaluations): void
+    {
+        $criterionEvaluationCollection = new Write\CriterionEvaluationCollection();
+        foreach ($criteriaEvaluations as $criterionEvaluation) {
+            $criterionEvaluationCollection->add($criterionEvaluation);
+        }
+
+        $this->productModelCriterionEvaluationRepository->create($criterionEvaluationCollection);
+    }
+
+    private function assertEqualsCriteriaEvaluations(Write\CriterionEvaluationCollection $expectedCriteriaEvaluations, Write\CriterionEvaluationCollection $criteriaEvaluations): void
+    {
+        $this->assertCount(count($expectedCriteriaEvaluations), $criteriaEvaluations);
+
+        foreach ($criteriaEvaluations as $criterionEvaluation) {
+            $expectedCriterionEvaluation = $this->findCriterionEvaluationById($expectedCriteriaEvaluations, $criterionEvaluation->getId());
+            $this->assertNotNull($expectedCriterionEvaluation);
+            $this->assertEqualsCriterionEvaluation($expectedCriterionEvaluation, $criterionEvaluation);
+        }
+    }
+
+    private function assertEqualsCriterionEvaluation(Write\CriterionEvaluation $expectedCriterionEvaluation, Write\CriterionEvaluation $criterionEvaluation): void
+    {
+        $this->assertEquals($expectedCriterionEvaluation->getId(), $criterionEvaluation->getId());
+        $this->assertEquals($expectedCriterionEvaluation->getCriterionCode(), $criterionEvaluation->getCriterionCode());
+        $this->assertEquals($expectedCriterionEvaluation->getStatus(), $criterionEvaluation->getStatus());
+        $this->assertEquals($expectedCriterionEvaluation->getCreatedAt()->format(Clock::TIME_FORMAT), $criterionEvaluation->getCreatedAt()->format(Clock::TIME_FORMAT));
+    }
+
+    private function findCriterionEvaluationById(Write\CriterionEvaluationCollection $criteriaEvaluations, CriterionEvaluationId $id): ?Write\CriterionEvaluation
+    {
+        foreach ($criteriaEvaluations as $criterionEvaluation) {
+            if ($criterionEvaluation->getId() == $id) {
+                return $criterionEvaluation;
+            }
+        }
+    }
+
+    private function getCriteriaEvaluationsSample(): array
+    {
+        return [
             'product_42_pending_completeness' => new Write\CriterionEvaluation(
                 new CriterionEvaluationId('95f124de-45cd-495e-ac58-349086ad6cd4'),
                 new CriterionCode('completeness'),
@@ -85,66 +183,5 @@ final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends Te
                 CriterionEvaluationStatus::pending()
             )
         ];
-
-        $this->persistCriteriaEvaluations($criteriaEvaluations);
-
-        $evaluations = $this->query->execute([42, 123]);
-
-        $expectedCriteriaEvaluationsProduct42 = (new Write\CriterionEvaluationCollection())
-            ->add($criteriaEvaluations['product_42_pending_completeness'])
-            ->add($criteriaEvaluations['product_42_pending_spelling'])
-        ;
-        $expectedCriteriaEvaluationsProduct123 = (new Write\CriterionEvaluationCollection())
-            ->add($criteriaEvaluations['product_123_pending_spelling'])
-        ;
-
-        $this->assertCount(2, $evaluations);
-        $this->assertArrayHasKey(42, $evaluations);
-        $this->assertArrayHasKey(123, $evaluations);
-        $this->assertEqualsCriteriaEvaluations($expectedCriteriaEvaluationsProduct42, $evaluations[42]);
-        $this->assertEqualsCriteriaEvaluations($expectedCriteriaEvaluationsProduct123, $evaluations[123]);
-    }
-
-    public function test_it_returns_an_empty_array_if_there_is_no_pending_criteria_evaluations()
-    {
-        $this->assertEmpty($this->query->execute([42]));
-    }
-
-    private function persistCriteriaEvaluations(array $criteriaEvaluations): void
-    {
-        $criterionEvaluationCollection = new Write\CriterionEvaluationCollection();
-        foreach ($criteriaEvaluations as $criterionEvaluation) {
-            $criterionEvaluationCollection->add($criterionEvaluation);
-        }
-
-        $this->repository->create($criterionEvaluationCollection);
-    }
-
-    private function assertEqualsCriteriaEvaluations(Write\CriterionEvaluationCollection $expectedCriteriaEvaluations, Write\CriterionEvaluationCollection $criteriaEvaluations): void
-    {
-        $this->assertCount(count($expectedCriteriaEvaluations), $criteriaEvaluations);
-
-        foreach ($criteriaEvaluations as $criterionEvaluation) {
-            $expectedCriterionEvaluation = $this->findCriterionEvaluationById($expectedCriteriaEvaluations, $criterionEvaluation->getId());
-            $this->assertNotNull($expectedCriterionEvaluation);
-            $this->assertEqualsCriterionEvaluation($expectedCriterionEvaluation, $criterionEvaluation);
-        }
-    }
-
-    private function assertEqualsCriterionEvaluation(Write\CriterionEvaluation $expectedCriterionEvaluation, Write\CriterionEvaluation $criterionEvaluation): void
-    {
-        $this->assertEquals($expectedCriterionEvaluation->getId(), $criterionEvaluation->getId());
-        $this->assertEquals($expectedCriterionEvaluation->getCriterionCode(), $criterionEvaluation->getCriterionCode());
-        $this->assertEquals($expectedCriterionEvaluation->getStatus(), $criterionEvaluation->getStatus());
-        $this->assertEquals($expectedCriterionEvaluation->getCreatedAt()->format(Clock::TIME_FORMAT), $criterionEvaluation->getCreatedAt()->format(Clock::TIME_FORMAT));
-    }
-
-    private function findCriterionEvaluationById(Write\CriterionEvaluationCollection $criteriaEvaluations, CriterionEvaluationId $id): ?Write\CriterionEvaluation
-    {
-        foreach ($criteriaEvaluations as $criterionEvaluation) {
-            if ($criterionEvaluation->getId() == $id) {
-                return $criterionEvaluation;
-            }
-        }
     }
 }
