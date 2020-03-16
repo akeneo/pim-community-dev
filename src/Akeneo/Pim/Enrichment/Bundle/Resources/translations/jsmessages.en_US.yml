@@ -274,7 +274,7 @@ pim_enrich.export.product:
 
 pim_enrich.mass_edit.product:
     title: Products bulk action
-    confirm: "{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
+    confirm: "{0}You are about to update some products with the following information, please confirm.|{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
     step:
         select:
             label: Choose products
@@ -294,54 +294,54 @@ pim_enrich.mass_edit.product:
             select_attributes: Select attributes
         change_status:
             label: Change status
-            label_count: "{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+            label_count: "{0}Change the status of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
             description: The selected products will be enabled or disabled.
             field: To enable
         edit_common:
             label: Edit attributes values
-            label_count: "{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+            label_count: "{0}Edit attributes values of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
             description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
             no_update: Please select at least one field to update
         add_attribute_value:
             label: Add attributes values
-            label_count: "{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+            label_count: "{0}Add attributes values for some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
             description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
         change_family:
             label: Change family
-            label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+            label_count: "{0}Change the family of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
             description: The family of the selected products will be changed to the chosen family
         add_to_group:
             label: Add to groups
-            label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
+            label_count: "{0}Add some <span class=\"AknFullPage-title--highlight\">products</span> to groups|{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
             description: Select the groups in which to add the selected products
             field: Groups
             no_update: Please select a group before to continue
         add_to_category:
             label: Add to categories
-            label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
+            label_count: "{0}Add some <span class=\"AknFullPage-title--highlight\">products</span> to categories|{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
             description: The products will be classified into following categories, the existing classification is kept.
         move_to_category:
             label: Move between categories
-            label_count: "{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|]1, Inf[Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
+            label_count: "{0}Move some <span class=\"AknFullPage-title--highlight\">products</span> between categories|{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|]1, Inf[Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
             description: The products will be classified into following categories, the existing classification is lost.
         remove_from_category:
             label: Remove from categories
-            label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|]1, Inf[Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
+            label_count: "{0}Remove some <span class=\"AknFullPage-title--highlight\">products</span> from categories|{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|]1, Inf[Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
             description: The products will be removed from the following categories.
             no_update: There is no category checked to remove the selected products from.
         add_to_existing_product_model:
             label: Add to an existing product model
-            label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
+            label_count: "{0}Add some <span class=\"AknFullPage-title--highlight\">products</span> to an existing product model|{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
             description: The product model selected will gather the products and allows the enrichment of their common properties.
             no_update: Please select a product model before to continue
         associate_to_product_and_product_model:
             label: Associate
-            label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
+            label_count: "{0}Associate some <span class=\"AknFullPage-title--highlight\">products</span> to products or product models|{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
             description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
             validate: Please add association before going to the next step
         change_parent_product_model:
             label: Change the parent product model
-            label_count: "{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+            label_count: "{0}Change parent product model of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
             description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
 
 pim_datagrid:

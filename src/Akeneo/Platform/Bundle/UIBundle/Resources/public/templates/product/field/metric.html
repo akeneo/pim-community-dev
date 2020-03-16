@@ -5,9 +5,9 @@
     <% } %>
     <input class="AknTextField AknTextField--noRightRadius data" id="<%- fieldId %>" type="text" data-locale="<%- locale %>" data-scope="<%- scope %>" value="<%- value ? value.data.amount : null %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
     <select class="AknMetricField-unit unit select-field" data-locale="<%- value ? value.locale : null %>" data-scope="<%- value ? value.scope : null %>" <%- editMode === 'view' ? 'disabled' : '' %>>
-        <% _.each(_.keys(measures[attribute.metric_family].units), function(unit) { %>
-            <option value="<%- unit %>"<% if (undefined !== value && ((null === value.data.unit && unit === attribute.empty_value.unit) || value.data.unit === unit)) { %> selected<% } %>>
-                <%- __(`pim_measure.units.${unit}`) %>
+        <% _.each(units, function(unit) { %>
+            <option value="<%- unit.code %>"<% if (undefined !== value && ((null === value.data.unit && unit.code === attribute.empty_value.unit) || value.data.unit === unit.code)) { %> selected<% } %>>
+                <%- i18n.getLabel(unit.labels, uiLocale, unit.code) %>
             </option>
         <% }); %>
     </select>

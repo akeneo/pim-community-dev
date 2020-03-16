@@ -19,14 +19,14 @@ describe('Dashboard reducer', () => {
                 label: 'Franklin',
                 flowType: FlowType.DATA_SOURCE,
                 image: null,
-                auditable: false,
+                auditable: true,
             },
             {
                 code: 'bynder',
                 label: 'Bynder',
                 flowType: FlowType.DATA_SOURCE,
                 image: null,
-                auditable: false,
+                auditable: true,
             },
         ]);
 
@@ -39,14 +39,14 @@ describe('Dashboard reducer', () => {
                     label: 'Franklin',
                     flowType: FlowType.DATA_SOURCE,
                     image: null,
-                    auditable: false,
+                    auditable: true,
                 },
                 bynder: {
                     code: 'bynder',
                     label: 'Bynder',
                     flowType: FlowType.DATA_SOURCE,
                     image: null,
-                    auditable: false,
+                    auditable: true,
                 },
             },
             events: {

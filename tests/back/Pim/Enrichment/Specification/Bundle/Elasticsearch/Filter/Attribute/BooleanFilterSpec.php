@@ -11,14 +11,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 
 class BooleanFilterSpec extends ObjectBehavior
 {
-    function let(AttributeValidatorHelper $attributeValidatorHelper)
+    function let(ElasticsearchFilterValidator $filterValidator)
     {
         $this->beConstructedWith(
-            $attributeValidatorHelper,
+            $filterValidator,
             ['pim_catalog_boolean'],
             ['=', '!=']
         );
@@ -45,15 +45,15 @@ class BooleanFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_equals(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $booleanAttribute,
         SearchQueryBuilder $sqb
     ) {
         $booleanAttribute->getCode()->willReturn('boolean');
         $booleanAttribute->getBackendType()->willReturn('boolean');
 
-        $attributeValidatorHelper->validateLocale($booleanAttribute, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($booleanAttribute, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('boolean', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('boolean', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter([
                 'term' => [
@@ -67,15 +67,15 @@ class BooleanFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_not_equal(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $booleanAttribute,
         SearchQueryBuilder $sqb
     ) {
         $booleanAttribute->getCode()->willReturn('boolean');
         $booleanAttribute->getBackendType()->willReturn('boolean');
 
-        $attributeValidatorHelper->validateLocale($booleanAttribute, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($booleanAttribute, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('boolean', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('boolean', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot([
                 'term' => [
@@ -102,15 +102,15 @@ class BooleanFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_given_value_is_not_a_boolean(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $booleanAttribute,
         SearchQueryBuilder $sqb
     ) {
         $booleanAttribute->getCode()->willReturn('boolean');
         $booleanAttribute->getBackendType()->willReturn('boolean');
 
-        $attributeValidatorHelper->validateLocale($booleanAttribute, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($booleanAttribute, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('boolean', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('boolean', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -124,15 +124,15 @@ class BooleanFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $booleanAttribute,
         SearchQueryBuilder $sqb
     ) {
         $booleanAttribute->getCode()->willReturn('boolean');
         $booleanAttribute->getBackendType()->willReturn('boolean');
 
-        $attributeValidatorHelper->validateLocale($booleanAttribute, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($booleanAttribute, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('boolean', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('boolean', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -151,7 +151,7 @@ class BooleanFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_locale_validation(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $booleanAttribute,
         SearchQueryBuilder $sqb
     ) {
@@ -161,7 +161,7 @@ class BooleanFilterSpec extends ObjectBehavior
         $booleanAttribute->getAvailableLocaleCodes('fr_FR');
 
         $e = new \LogicException('Attribute "name" expects a locale, none given.');
-        $attributeValidatorHelper->validateLocale($booleanAttribute, 'en_US')->willThrow($e);
+        $filterValidator->validateLocaleForAttribute('boolean', 'en_US')->willThrow($e);
 
         $this->setQueryBuilder($sqb);
 
@@ -175,7 +175,7 @@ class BooleanFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_scope_validation(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $booleanAttribute,
         SearchQueryBuilder $sqb
     ) {
@@ -184,7 +184,7 @@ class BooleanFilterSpec extends ObjectBehavior
         $booleanAttribute->isScopable()->willReturn(false);
 
         $e = new \LogicException('Attribute "name" does not expect a scope, "ecommerce" given.');
-        $attributeValidatorHelper->validateLocale($booleanAttribute, 'en_US')->willThrow($e);
+        $filterValidator->validateLocaleForAttribute('boolean', 'en_US')->willThrow($e);
 
         $this->setQueryBuilder($sqb);
 

@@ -13,17 +13,17 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 
 class OptionFilterSpec extends ObjectBehavior
 {
     function let(
-        AttributeValidatorHelper $attributeValidatorHelper,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeOptionRepository $attributeOptionRepository
     ) {
         $operators = ['IN', 'EMPTY', 'NOT_EMPTY', 'NOT IN'];
         $this->beConstructedWith(
-            $attributeValidatorHelper,
+            $filterValidator,
             $attributeOptionRepository,
             ['pim_catalog_simpleselect', 'pim_catalog_multiselect'],
             $operators
@@ -70,15 +70,15 @@ class OptionFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_empty(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $color,
         SearchQueryBuilder $sqb
     ) {
         $color->getCode()->willReturn('color');
         $color->getBackendType()->willReturn('option');
 
-        $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('color', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('color', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(
             [
@@ -94,7 +94,7 @@ class OptionFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_in_list(
-        $attributeValidatorHelper,
+        $filterValidator,
         $attributeOptionRepository,
         AttributeInterface $color,
         SearchQueryBuilder $sqb
@@ -104,8 +104,8 @@ class OptionFilterSpec extends ObjectBehavior
 
         $attributeOptionRepository->findCodesByIdentifiers('color', ['black'])->willReturn([['code' => 'black']]);
 
-        $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('color', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('color', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -120,15 +120,15 @@ class OptionFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_not_empty(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $color,
         SearchQueryBuilder $sqb
     ) {
         $color->getCode()->willReturn('color');
         $color->getBackendType()->willReturn('option');
 
-        $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('color', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('color', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -143,7 +143,7 @@ class OptionFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_not_in_list(
-        $attributeValidatorHelper,
+        $filterValidator,
         $attributeOptionRepository,
         AttributeInterface $color,
         SearchQueryBuilder $sqb
@@ -153,8 +153,8 @@ class OptionFilterSpec extends ObjectBehavior
 
         $attributeOptionRepository->findCodesByIdentifiers('color', ['black'])->willReturn([['code' => 'black']]);
 
-        $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('color', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('color', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(
             [
@@ -177,15 +177,15 @@ class OptionFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_given_value_is_not_an_array(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $color,
         SearchQueryBuilder $sqb
     ) {
         $color->getCode()->willReturn('color');
         $color->getBackendType()->willReturn('option');
 
-        $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('color', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('color', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -199,15 +199,15 @@ class OptionFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_given_value_is_not_an_identifier(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $color,
         SearchQueryBuilder $sqb
     ) {
         $color->getCode()->willReturn('color');
         $color->getBackendType()->willReturn('option');
 
-        $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('color', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('color', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -221,7 +221,7 @@ class OptionFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_search_values_does_not_exists(
-        $attributeValidatorHelper,
+        $filterValidator,
         $attributeOptionRepository,
         AttributeInterface $color,
         SearchQueryBuilder $sqb
@@ -231,8 +231,8 @@ class OptionFilterSpec extends ObjectBehavior
 
         $attributeOptionRepository->findCodesByIdentifiers('color', ['black'])->willReturn([]);
 
-        $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('color', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('color', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -248,7 +248,7 @@ class OptionFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
-        $attributeValidatorHelper,
+        $filterValidator,
         $attributeOptionRepository,
         AttributeInterface $color,
         SearchQueryBuilder $sqb
@@ -258,8 +258,8 @@ class OptionFilterSpec extends ObjectBehavior
 
         $attributeOptionRepository->findCodesByIdentifiers('color', ['black'])->willReturn([['code' => 'black']]);
 
-        $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('color', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('color', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -272,7 +272,7 @@ class OptionFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_locale_validation(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $color,
         SearchQueryBuilder $sqb
     ) {
@@ -282,7 +282,7 @@ class OptionFilterSpec extends ObjectBehavior
         $color->getAvailableLocaleCodes('fr_FR');
 
         $e = new \LogicException('Attribute "color" expects a locale, none given.');
-        $attributeValidatorHelper->validateLocale($color, 'en_US')->willThrow($e);
+        $filterValidator->validateLocaleForAttribute('color', 'en_US')->willThrow($e);
 
         $this->setQueryBuilder($sqb);
 
@@ -296,7 +296,7 @@ class OptionFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_scope_validation(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $color,
         SearchQueryBuilder $sqb
     ) {
@@ -305,7 +305,7 @@ class OptionFilterSpec extends ObjectBehavior
         $color->isScopable()->willReturn(false);
 
         $e = new \LogicException('Attribute "color" does not expect a scope, "ecommerce" given.');
-        $attributeValidatorHelper->validateLocale($color, 'en_US')->willThrow($e);
+        $filterValidator->validateLocaleForAttribute('color', 'en_US')->willThrow($e);
 
         $this->setQueryBuilder($sqb);
 

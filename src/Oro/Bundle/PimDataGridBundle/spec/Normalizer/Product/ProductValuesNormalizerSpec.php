@@ -96,7 +96,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $presenterRegistry->getPresenterByAttributeCode('text')->willReturn(null);
 
         $presenterRegistry->getPresenterByAttributeCode('price')->willReturn($pricePresenter);
-        $pricePresenter->present($prices, ['locale' => 'en_US'])->willReturn('$15.00, $12.50');
+        $pricePresenter->present($prices, ['locale' => 'en_US', 'attribute' => 'price'])->willReturn('$15.00, $12.50');
 
         $this
             ->normalize($values, 'datagrid')

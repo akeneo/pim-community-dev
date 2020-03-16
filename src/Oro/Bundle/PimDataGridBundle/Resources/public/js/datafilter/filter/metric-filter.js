@@ -5,7 +5,10 @@ define(
         'oro/translator',
         'oro/datafilter/number-filter',
         'oro/app',
-        'pim/template/datagrid/filter/metric-filter'
+        'pim/template/datagrid/filter/metric-filter',
+        'pim/i18n',
+        'pim/user-context',
+        'pim/fetcher-registry'
     ],
     function (
         $,
@@ -13,7 +16,10 @@ define(
         __,
         NumberFilter,
         app,
-        template
+        template,
+        i18n,
+        UserContext,
+        FetcherRegistry
     ) {
         'use strict';
 
@@ -54,6 +60,11 @@ define(
 
                 this.on('disable', this._onDisable, this);
 
+                FetcherRegistry.getFetcher('measure').fetchAll()
+                    .then(function (measures) {
+                        this.measurementFamily = measures.find(family => family.code === this.family);
+                        this.render();
+                    }.bind(this));
             },
 
             _onDisable: function() {
@@ -65,9 +76,11 @@ define(
              * @inheritDoc
              */
             _renderCriteria: function (el) {
+                if (!this.measurementFamily) return this;
+
                 $(el).append(
                     this.popupCriteriaTemplate({
-                        __: __,
+                        __,
                         label: this.label,
                         operatorChoices: this._getOperatorChoices(),
                         selectedOperator: this._getDisplayValueOrDefault().type,
@@ -75,12 +88,15 @@ define(
                         selectedOperatorLabel: this._getOperatorChoices()[this._getDisplayValueOrDefault().type],
                         operatorLabel: __('pim_common.operator'),
                         updateLabel: __('pim_common.update'),
-                        units: this.units,
+                        units: this.measurementFamily.units,
                         unitLabel: __('pim_datagrid.filters.metric_filter.label'),
-                        selectedUnit: this._getDisplayValueOrDefault().unit,
-                        value: this._getDisplayValueOrDefault().value
+                        selectedUnit: this.measurementFamily.units.find(unit => unit.code === this._getDisplayValueOrDefault().unit),
+                        value: this._getDisplayValueOrDefault().value,
+                        i18n,
+                        locale: UserContext.get('uiLocale')
                     })
                 );
+
                 return this;
             },
 
@@ -128,11 +144,13 @@ define(
                 if (_.contains(['empty', 'not empty'], value.type)) {
                     return this._getChoiceOption(value.type).label;
                 }
-                if (!value.value) {
+                if (!value.value || !this.measurementFamily) {
                     return this.placeholder;
                 } else {
                     const option = this._getChoiceOption(value.type);
-                    return option.label + ' ' + value.value + ' ' + __(`pim_measure.units.${value.unit}`);
+                    const unit = this.measurementFamily.units.find(unit => unit.code === value.unit);
+
+                    return `${option.label} ${value.value} ${i18n.getLabel(unit.labels, UserContext.get('uiLocale'), value.unit)}`;
                 }
             },
 

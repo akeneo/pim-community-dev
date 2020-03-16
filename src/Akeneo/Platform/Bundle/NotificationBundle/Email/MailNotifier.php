@@ -2,6 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\NotificationBundle\Email;
 
+use Akeneo\Tool\Component\Email\SenderAddress;
+
 /**
  * Notify by email
  *
@@ -15,16 +17,16 @@ class MailNotifier
     protected $mailer;
 
     /** @var string */
-    protected $senderEmail;
+    protected $mailerUrl;
 
     /**
      * @param \Swift_Mailer $mailer
-     * @param string        $senderEmail
+     * @param string        $mailerUrl
      */
-    public function __construct(\Swift_Mailer $mailer, $senderEmail)
+    public function __construct(\Swift_Mailer $mailer, string $mailerUrl)
     {
         $this->mailer = $mailer;
-        $this->senderEmail = $senderEmail;
+        $this->mailerUrl = $mailerUrl;
     }
 
     /**
@@ -35,7 +37,7 @@ class MailNotifier
         foreach ($users as $user) {
             $message = $this->mailer->createMessage();
             $message->setSubject($subject)
-                ->setFrom($this->senderEmail)
+                ->setFrom((string) SenderAddress::fromMailerUrl($this->mailerUrl))
                 ->setTo($user->getEmail())
                 ->setCharset('UTF-8')
                 ->setContentType('text/html')
