@@ -25,13 +25,13 @@ class Version_4_0_20200117080512_remove_product_model_empty_raw_values_Integrati
         $familyId = $familySearch[0];
         $sql = <<<SQL
 INSERT INTO pim_catalog_product_model VALUES
-    (NULL, NULL, :familyId, 'pm1', '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm2', '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm3', '{"name": {"<all_channels>": {"<all_locales>": [""]}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm4', '{"name": {"<all_channels>": {"<all_locales>": null}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm5', '{"name": {"<all_channels>": {"<all_locales>": ""}}, "foo": {"<all_channels>": {"<all_locales>": "bar"}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm6', '{"name": {"<all_channels>": {"fr_FR": "", "en_US": "bar"}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm7', '{"name": {"ecommerce": {"<all_locales>": ""}, "mobile": {"<all_locales>": "bar"}}}', NOW(), NOW(), 0, 0, 0, 0)
+    (NULL, NULL, :familyId, 'pm1', '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW()),
+    (NULL, NULL, :familyId, 'pm2', '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW()),
+    (NULL, NULL, :familyId, 'pm3', '{"name": {"<all_channels>": {"<all_locales>": [""]}}}', NOW(), NOW()),
+    (NULL, NULL, :familyId, 'pm4', '{"name": {"<all_channels>": {"<all_locales>": null}}}', NOW(), NOW()),
+    (NULL, NULL, :familyId, 'pm5', '{"name": {"<all_channels>": {"<all_locales>": ""}}, "foo": {"<all_channels>": {"<all_locales>": "bar"}}}', NOW(), NOW()),
+    (NULL, NULL, :familyId, 'pm6', '{"name": {"<all_channels>": {"fr_FR": "", "en_US": "bar"}}}', NOW(), NOW()),
+    (NULL, NULL, :familyId, 'pm7', '{"name": {"ecommerce": {"<all_locales>": ""}, "mobile": {"<all_locales>": "bar"}}}', NOW(), NOW())
 SQL;
         $this->getConnection()->executeQuery($sql, ['familyId' => $familyId]);
 

@@ -4,6 +4,10 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\LocalizableAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\NotLocalizableAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnavailableLocaleException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnavailableSpecificLocaleException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
@@ -54,7 +58,7 @@ class AttributeValidatorHelper
         }
 
         if ($attribute->isLocalizable() && null === $locale) {
-            throw new \LogicException(
+            throw new LocalizableAttributeException(
                 sprintf(
                     'Attribute "%s" expects a locale, none given.',
                     $attribute->getCode()
@@ -63,7 +67,7 @@ class AttributeValidatorHelper
         }
 
         if (!$attribute->isLocalizable() && null !== $locale) {
-            throw new \LogicException(
+            throw new NotLocalizableAttributeException(
                 sprintf(
                     'Attribute "%s" does not expect a locale, "%s" given.',
                     $attribute->getCode(),
@@ -77,7 +81,7 @@ class AttributeValidatorHelper
         }
 
         if (!in_array($locale, $this->localeCodes)) {
-            throw new \LogicException(
+            throw new UnavailableLocaleException(
                 sprintf(
                     'Attribute "%s" expects an existing and activated locale, "%s" given.',
                     $attribute->getCode(),
@@ -87,7 +91,7 @@ class AttributeValidatorHelper
         }
 
         if ($attribute->isLocaleSpecific() && !in_array($locale, $attribute->getAvailableLocaleCodes())) {
-            throw new \LogicException(
+            throw new UnavailableSpecificLocaleException(
                 sprintf(
                     'Attribute "%s" is locale specific and expects one of these locales: %s, "%s" given.',
                     $attribute->getCode(),

@@ -1,0 +1,4 @@
+akeneo_measurements_manage_settings:
+    type: action
+    label: pim_measure.acl.manage_settings
+    group_name: oro_config_system

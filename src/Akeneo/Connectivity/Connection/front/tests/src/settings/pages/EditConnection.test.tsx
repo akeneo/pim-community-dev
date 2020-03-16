@@ -1,24 +1,37 @@
-import {act, waitForElement} from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import {createMemoryHistory} from 'history';
-import React from 'react';
-import {Route, Router} from 'react-router-dom';
 import {ConnectionsProvider} from '@src/settings/connections-context';
 import {EditConnection} from '@src/settings/pages/EditConnection';
-import {renderWithProviders} from '../../../test-utils';
 import {WrongCredentialsCombinationsProvider} from '@src/settings/wrong-credentials-combinations-context';
 import {UserContext} from '@src/shared/user';
-import {DashboardProvider} from '@src/audit/dashboard-context';
-import {Dashboard} from '@src/audit/pages/Dashboard';
+import {act, fireEvent, waitForElement} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import {createMemoryHistory} from 'history';
+import React, {PropsWithChildren} from 'react';
+import {Route, Router} from 'react-router-dom';
+import {renderWithProviders} from '../../../test-utils';
 
 jest.mock('@src/common/components/Select2');
+
+const UserContextProvider = ({children}: PropsWithChildren<{}>) => {
+    const userContext = {
+        get: (key: string) => {
+            if ('uiLocale' === key) {
+                return 'en_US';
+            }
+            if ('timezone' === key) {
+                return 'UTC';
+            }
+
+            return key;
+        },
+        set: () => undefined,
+    };
+    return <UserContext.Provider value={userContext}>{children}</UserContext.Provider>;
+};
 
 describe('testing EditConnection page', () => {
     beforeEach(() => {
         fetchMock.resetMocks();
-    });
 
-    it('creates a connection', async () => {
         fetchMock.mockResponseOnce(
             JSON.stringify({
                 ecommerce: {
@@ -58,32 +71,23 @@ describe('testing EditConnection page', () => {
                 {name: 'API Group', meta: {id: 4, default: false}},
             ])
         );
+    });
+
+    it('creates a connection', async () => {
         fetchMock.mockResponseOnce(JSON.stringify({}));
 
         const history = createMemoryHistory({initialEntries: ['/connections/ecommerce/edit']});
-        const userContext = {
-            get: (key: string) => {
-                if ('uiLocale' === key) {
-                    return 'en_US';
-                }
-                if ('timezone' === key) {
-                    return 'UTC';
-                }
 
-                return key;
-            },
-            set: () => undefined,
-        };
         const {getByText, getByLabelText} = renderWithProviders(
             <Router history={history}>
                 <Route path='/connections/:code/edit'>
-                    <UserContext.Provider value={userContext}>
+                    <UserContextProvider>
                         <WrongCredentialsCombinationsProvider>
                             <ConnectionsProvider>
                                 <EditConnection />
                             </ConnectionsProvider>
                         </WrongCredentialsCombinationsProvider>
-                    </UserContext.Provider>
+                    </UserContextProvider>
                 </Route>
             </Router>
         );
@@ -127,5 +131,44 @@ describe('testing EditConnection page', () => {
                 user_group_id: '4',
             }),
         });
+    });
+
+    it('displays form errors', async () => {
+        const history = createMemoryHistory({initialEntries: ['/connections/ecommerce/edit']});
+        const {getByLabelText, findByText} = renderWithProviders(
+            <Router history={history}>
+                <Route path='/connections/:code/edit'>
+                    <UserContextProvider>
+                        <WrongCredentialsCombinationsProvider>
+                            <ConnectionsProvider>
+                                <EditConnection />
+                            </ConnectionsProvider>
+                        </WrongCredentialsCombinationsProvider>
+                    </UserContextProvider>
+                </Route>
+            </Router>
+        );
+
+        await findByText('Franklin');
+
+        const labelInput = getByLabelText('akeneo_connectivity.connection.connection.label', {
+            exact: false,
+        }) as HTMLInputElement;
+
+        fireEvent.change(labelInput, {
+            target: {
+                value: '',
+            },
+        });
+
+        await findByText('akeneo_connectivity.connection.connection.constraint.label.required');
+
+        fireEvent.change(labelInput, {
+            target: {
+                value: 'T',
+            },
+        });
+
+        await findByText('akeneo_connectivity.connection.connection.constraint.label.too_short');
     });
 });

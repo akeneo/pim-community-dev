@@ -2,6 +2,7 @@ parameters:
     symfony.validator.recursive.class:                                     Symfony\Component\Validator\Validator\RecursiveValidator
 
     pim_catalog.validator.helper.attribute.class:                          Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper
+    pim_catalog.validator.helper.attribute_filter.class:                   Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator
     pim_catalog.validator.constraint.currency.class:                       Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\CurrencyValidator
     pim_catalog.validator.constraint.unique_value.class:                   Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValueValidator
     pim_catalog.validator.constraints.channel_validator.class:             Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ChannelValidator
@@ -65,6 +66,13 @@ services:
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.channel'
+
+    pim_catalog.validator.helper.attribute_filter:
+        class: '%pim_catalog.validator.helper.attribute_filter.class%'
+        public: false
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.validator.helper.attribute'
 
     pim_catalog.validator.unique_value_set:
         class: '%pim_catalog.validator.unique_value_set.class%'

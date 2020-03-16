@@ -91,10 +91,10 @@ SQL;
         $familyVariantId = $familyVariant->getId();
 
         $sql = <<<SQL
-INSERT INTO pim_catalog_product_model (id, code, family_variant_id, raw_values, created, updated, root, lvl, lft, rgt)
+INSERT INTO pim_catalog_product_model (id, code, family_variant_id, raw_values, created, updated)
 VALUES
-    (3000, 'pm1', $familyVariantId, '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (3001, 'pm2', $familyVariantId, '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW(), 0, 0, 0, 0)
+    (3000, 'pm1', $familyVariantId, '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW()),
+    (3001, 'pm2', $familyVariantId, '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW())
 SQL;
         $this->getConnection()->exec($sql);
 

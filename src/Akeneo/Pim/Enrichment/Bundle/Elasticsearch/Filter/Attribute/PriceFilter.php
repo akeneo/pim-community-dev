@@ -6,7 +6,7 @@ use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -44,19 +44,13 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
-    /**
-     * @param AttributeValidatorHelper    $attrValidatorHelper
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param array                       $supportedAttributeTypes
-     * @param array                       $supportedOperators
-     */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
+        ElasticsearchFilterValidator $filterValidator,
         CurrencyRepositoryInterface $currencyRepository,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
+        $this->filterValidator = $filterValidator;
         $this->currencyRepository = $currencyRepository;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators = $supportedOperators;

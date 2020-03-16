@@ -6,6 +6,9 @@ const unitConfig = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
+  coveragePathIgnorePatterns: [
+    'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/context/'
+  ],
   moduleNameMapper: {
     '^require-context$': `${__dirname}/../../../../frontend/webpack/require-context.js`,
     '^module-registry$': `${__dirname}/../../../../public/js/module-registry.js`,

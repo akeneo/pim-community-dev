@@ -45,6 +45,7 @@ services:
             - '@akeneo_elasticsearch.registry.clients'
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@database_connection'
+            - '@akeneo_measure.installer.measurement_installer'
             - '%env(APP_DATABASE_HOST)%'
             - '%env(APP_DATABASE_NAME)%'
             - '%env(APP_DATABASE_USER)%'

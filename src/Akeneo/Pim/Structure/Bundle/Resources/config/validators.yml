@@ -76,7 +76,7 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetricValidator'
         arguments:
             - '@property_accessor'
-            - '%akeneo_measure.measures_config%'
+            - '@akeneo_measure.provider.measurement_provider'
         tags:
             - { name: validator.constraint_validator, alias: pim_metric_validator }
 

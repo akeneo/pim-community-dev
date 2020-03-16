@@ -112,9 +112,9 @@ class Kernel extends BaseKernel
     private function loadPackagesConfigurationExceptSecurity(LoaderInterface $loader, string $confDir, string $environment): void
     {
         $files = array_merge(
-            glob($confDir . '/{packages}/*.yml', GLOB_BRACE),
-            glob($confDir . '/{packages}/' . $environment . '/*.yml', GLOB_BRACE),
-            glob($confDir . '/{packages}/' . $environment . '/**/*.yml', GLOB_BRACE)
+            glob($confDir . '/packages/*.yml'),
+            glob($confDir . '/packages/' . $environment . '/*.yml'),
+            glob($confDir . '/packages/' . $environment . '/**/*.yml')
         );
 
         $files = array_filter(

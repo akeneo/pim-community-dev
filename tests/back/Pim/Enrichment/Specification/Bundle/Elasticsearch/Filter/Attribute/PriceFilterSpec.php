@@ -12,14 +12,14 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 
 class PriceFilterSpec extends ObjectBehavior
 {
-    function let(AttributeValidatorHelper $attributeValidatorHelper, CurrencyRepositoryInterface $currencyRepository)
+    function let(ElasticsearchFilterValidator $filterValidator, CurrencyRepositoryInterface $currencyRepository)
     {
         $this->beConstructedWith(
-            $attributeValidatorHelper,
+            $filterValidator,
             $currencyRepository,
             ['pim_catalog_price_collection'],
             ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
@@ -70,7 +70,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_lower_than(
-        $attributeValidatorHelper,
+        $filterValidator,
         $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
@@ -79,8 +79,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -102,7 +102,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_lower_or_equal_than(
-        $attributeValidatorHelper,
+        $filterValidator,
         $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
@@ -111,8 +111,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -134,7 +134,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_equals(
-        $attributeValidatorHelper,
+        $filterValidator,
         $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
@@ -143,8 +143,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -166,7 +166,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_not_equal(
-        $attributeValidatorHelper,
+        $filterValidator,
         $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
@@ -175,8 +175,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(
             [
@@ -206,7 +206,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_greater_or_equal_than(
-        $attributeValidatorHelper,
+        $filterValidator,
         $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
@@ -215,8 +215,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -238,7 +238,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_greater_than(
-        $attributeValidatorHelper,
+        $filterValidator,
         $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
@@ -247,8 +247,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -270,15 +270,15 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_empty_on_all_currencies(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(
             [
@@ -295,7 +295,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_empty_for_currency(
-        $attributeValidatorHelper,
+        $filterValidator,
         $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
@@ -304,8 +304,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(
             [
@@ -327,15 +327,15 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_not_empty_on_at_least_one_currency(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -352,7 +352,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_not_empty_for_currency(
-        $attributeValidatorHelper,
+        $filterValidator,
         $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
@@ -362,8 +362,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -385,14 +385,14 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_the_value_is_not_an_array(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
         $price->getCode()->willReturn('a_price');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter()->shouldNotBeCalled();
 
@@ -410,14 +410,14 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_if_the_value_array_is_not_expected(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
         $price->getCode()->willReturn('a_price');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter()->shouldNotBeCalled();
 
@@ -458,7 +458,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_if_the_currency_is_not_supported(
-        $attributeValidatorHelper,
+        $filterValidator,
         $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
@@ -466,8 +466,8 @@ class PriceFilterSpec extends ObjectBehavior
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['USD']);
         $price->getCode()->willReturn('a_price');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter()->shouldNotBeCalled();
 
@@ -538,14 +538,14 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_no_currency_is_provided_for_operator_empty_for_currency(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
         $price->getCode()->willReturn('a_price');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter()->shouldNotBeCalled();
 
@@ -564,14 +564,14 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_no_currency_is_provided_for_operator_not_empty_for_currency(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
         $price->getCode()->willReturn('a_price');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter()->shouldNotBeCalled();
 
@@ -590,7 +590,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
-        $attributeValidatorHelper,
+        $filterValidator,
         $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
@@ -599,8 +599,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($price, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('a_price', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -616,7 +616,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_locale_validation(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
@@ -626,7 +626,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getAvailableLocaleCodes('fr_FR');
 
         $e = new \LogicException('Attribute "prices" expects a locale, none given.');
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->willThrow($e);
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->willThrow($e);
 
         $this->setQueryBuilder($sqb);
 
@@ -643,7 +643,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_scope_validation(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
@@ -652,7 +652,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
 
         $e = new \LogicException('Attribute "a_price" does not expect a scope, "ecommerce" given.');
-        $attributeValidatorHelper->validateLocale($price, 'en_US')->willThrow($e);
+        $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->willThrow($e);
 
         $this->setQueryBuilder($sqb);
 
