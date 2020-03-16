@@ -1,6 +1,6 @@
 Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition:
     constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Akeneo\Tool\Bundle\RuleEngineBundle\Validation\UniqueRuleDefinitionCode: ~
 
     properties:
         code:

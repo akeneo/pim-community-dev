@@ -45,7 +45,7 @@ class InMemoryRuleDefinitionRepository implements IdentifiableObjectRepositoryIn
 
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->ruleDefinitions->toArray();
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -65,7 +65,12 @@ class InMemoryRuleDefinitionRepository implements IdentifiableObjectRepositoryIn
 
     public function findAllOrderedByPriority()
     {
-        throw new NotImplementedException(__METHOD__);
+        $ruleDefinitions = $this->ruleDefinitions->toArray();
+        usort($ruleDefinitions, function (RuleDefinitionInterface $rule1, RuleDefinitionInterface $rule2): int {
+            return $rule2->getPriority() <=> $rule1->getPriority();
+        });
+
+        return $ruleDefinitions;
     }
 
     public function createDatagridQueryBuilder()

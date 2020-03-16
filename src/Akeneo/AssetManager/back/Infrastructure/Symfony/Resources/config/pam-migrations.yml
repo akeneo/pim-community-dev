@@ -30,7 +30,9 @@ services:
 
     Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\MigrateReferenceAttributeHavingOneValuePerChannel:
         arguments:
+            - '@doctrine.dbal.connection_factory'
             - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
         tags:
             - { name: console.command }
 

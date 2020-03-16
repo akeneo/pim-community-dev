@@ -1,0 +1,25 @@
+default:
+    suites:
+        rule_engine_acceptance:
+            paths:
+                - '%paths.base%/features'
+            contexts:
+                - test.locale.context
+                - test.channel.context
+                - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\DataFixturesContext
+                - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\UserContext
+                - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ExceptionContext
+                - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\EventSubscriberContext
+                - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ImportRuleContext
+                - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ExportRuleContext
+                - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ExecuteRuleContext
+            filters:
+                tags: '@acceptance-back'
+    extensions:
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                path: src/Kernel.php
+                class: Kernel
+                environment: test_fake
+                debug: false

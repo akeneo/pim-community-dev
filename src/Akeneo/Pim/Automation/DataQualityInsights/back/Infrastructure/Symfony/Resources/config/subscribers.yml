@@ -34,15 +34,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\ProductModel\InitializeVariantProductsEvaluationsSubscriber:
-        arguments:
-            $dataQualityInsightsFeature: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            $createProductsCriteriaEvaluations: '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations'
-            $logger: '@logger'
-            $getDescendantVariantProductIds: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetDescendantVariantProductIds'
-        tags:
-            - { name: kernel.event_subscriber }
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\RemoveEvaluationJobsAfterFreshInstallSubscriber:
         arguments:
             $db: '@database_connection'

@@ -45,9 +45,14 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\FileStorage',
         'Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException',
         'Akeneo\Tool\Component\FileStorage\Exception\FileTransferException',
+        'Webmozart\Assert\Assert',
 
         // TIP-960: Rule Engine should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+        'Akeneo\Pim\Structure\Component\AttributeTypes',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues',
 
         // TIP-961: Remove dependency to ProductRepositoryInterface
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
@@ -58,6 +63,12 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Value\DateValueInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface',

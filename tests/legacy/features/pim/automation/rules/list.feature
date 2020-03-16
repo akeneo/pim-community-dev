@@ -118,13 +118,30 @@ Feature: List all rules
             items:
               - 2014_collection
             include_children: true
+      concatenate_rule:
+        priority: 90
+        conditions:
+          - field: family
+            operator: IN
+            value:
+              - tees
+        actions:
+          - type: concatenate
+            from:
+              - field: sku
+              - field: release_date
+                scope: mobile
+            to:
+              field: description
+              scope: tablet
+              locale: en_US
       """
     And I am logged in as "Julia"
     And I am on the rules page
 
   Scenario: Successfully show rules
     Then the rows should be sorted ascending by code
-    And the grid should contain 3 elements
+    And the grid should contain 4 elements
     And I should be able to sort the rows by code
 
     And the row "copy_description" should contain the texts:
@@ -158,6 +175,11 @@ Feature: List all rules
       | Condition | If enabled equals false                                             |
       | Action    | Then 2014_collection and children is removed from categories        |
 
+    And the row "concatenate_rule" should contain the texts:
+      | column    | value                                                                                |
+      | Condition | If family in tees                                                                    |
+      | Action    | Then sku, release_date [ mobile ] are concatenated into description [ en \| tablet ] |
+
   Scenario: Successfully search rules
     When I search "description"
     Then the grid should contain 1 element
@@ -168,10 +190,10 @@ Feature: List all rules
     And I should see the text "Confirm deletion"
     And I should see the text "Are you sure you want to delete this rule?"
     And I confirm the deletion
-    And the grid should contain 2 elements
+    And the grid should contain 3 elements
 
   Scenario: Successfully delete a set of rules using bulk action
-    When I select rows copy_description and update_tees_collection and unclassify_2014_collection_tees
+    When I select rows copy_description and update_tees_collection and unclassify_2014_collection_tees and concatenate_rule
     And I press the "Delete" bottom button
     Then I should see the text "Confirm deletion"
     And I should see the text "Are you sure you want to delete the selected rules?"

@@ -1,0 +1,64 @@
+{
+    "id": 170,
+    "identifier": "camcorder_75025",
+    "family": "camcorders",
+    "categories": [],
+    "enabled": true,
+    "values": {
+        "name": {
+            "<all_channels>": {
+                "en_US": "75025"
+            }
+        },
+        "pim_brand": {
+            "<all_channels>": {
+                "<all_locales>": "Crown Bolt"
+            }
+        },
+        "sku": {
+            "<all_channels>": {
+                "<all_locales>": "SKU75025"
+            }
+        },
+        "processor": {
+            "<all_channels>": {
+                "<all_locales>": {"amount": 100, "unit": "MEGAHERTZ"}
+            }
+        },
+        "price": {
+            "<all_channels>": {
+                "<all_locales>": [{"currency": "EUR", "amount": 99}, {"currency": "USD", "amount": 90}]
+            }
+        },
+        "color": {
+            "<all_channels>": {
+                "<all_locales>": "color1"
+            }
+        },
+        "release_date": {
+            "<all_channels>": {
+                "<all_locales>": "2015-01-01"
+            }
+        },
+        "weight": {
+            "<all_channels>": {
+                "<all_locales>": 40
+            }
+        },
+        "description": {
+            "ecommerce": {
+                "en_US": "<p>this is the</p><p>&quot;description&quot;<br></p>"
+            }
+        },
+        "sub_description": {
+            "<all_channels>": {
+                "<all_locales>": "this\nis\nthe\nsub\ndescription"
+            }
+        },
+        "connectivity": {
+            "<all_channels>": {
+                "<all_locales>": ["wi_fi", "hdmi", "usb"]
+            }
+        }
+    }
+}

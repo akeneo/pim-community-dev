@@ -29,20 +29,9 @@ final class HasUpToDateEvaluationQuery implements HasUpToDateEvaluationQueryInte
 
     public function forProductId(ProductId $productId): bool
     {
-        $query = <<<SQL
-SELECT 1
-FROM pim_catalog_product AS product
-WHERE product.id = :product_id
-    AND EXISTS(
-        SELECT 1 FROM pimee_data_quality_insights_criteria_evaluation AS evaluation
-        WHERE evaluation.product_id = product.id 
-          AND evaluation.created_at >= product.updated
-    )
-SQL;
+        $upToDateProducts = $this->forProductIds([$productId]);
 
-        $stmt = $this->dbConnection->executeQuery($query, ['product_id' => $productId->toInt()], ['product_id' => \PDO::PARAM_INT]);
-
-        return (bool) $stmt->fetchColumn();
+        return !empty($upToDateProducts);
     }
 
     public function forProductIds(array $productIds): array
@@ -58,11 +47,16 @@ SQL;
         $query = <<<SQL
 SELECT product.id
 FROM pim_catalog_product AS product
+LEFT JOIN pim_catalog_product_model AS parent ON parent.id = product.product_model_id
+LEFT JOIN pim_catalog_product_model AS grand_parent ON grand_parent.id = parent.parent_id
 WHERE product.id IN (:product_ids)
     AND EXISTS(
         SELECT 1 FROM pimee_data_quality_insights_criteria_evaluation AS evaluation
         WHERE evaluation.product_id = product.id 
-          AND evaluation.created_at >= product.updated
+        AND evaluation.created_at >=
+            IF(grand_parent.updated > parent.updated AND grand_parent.updated > product.updated, grand_parent.updated, 
+                IF(parent.updated > product.updated, parent.updated, product.updated)
+            )
     )
 SQL;
 

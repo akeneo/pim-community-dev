@@ -42,7 +42,7 @@ unit-front:
 
 ### Acceptance tests
 .PHONY: acceptance-back
-acceptance-back: var/tests/behat reference-entity-acceptance-back asset-manager-acceptance-back
+acceptance-back: var/tests/behat reference-entity-acceptance-back asset-manager-acceptance-back rule-engine-acceptance-back
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 
 .PHONY: acceptance-front

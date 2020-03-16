@@ -25,6 +25,7 @@ pimee_catalog_rule:
             "set_value": Then %value% is set into %field%
             "add": Then %value% is added to %field%
             "remove": Then %value% is removed from %field%
+            "concatenate": Then %fields% are concatenated into %to_field%
         options:
             include_children: and children
     condition:

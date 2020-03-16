@@ -27,3 +27,5 @@ imports:
     - { resource: ../../../src/Akeneo/AssetManager/tests/back/Integration/Resources/config/behat/services.yml }
     - { resource: ../../../tests/back/AssetManager/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../../tests/back/AssetManager/Acceptance/Resources/config/pim/queries.yml }
+    # Rule Engine
+    - { resource: ../../../src/Akeneo/Pim/Automation/RuleEngine/tests/back/Acceptance/Resources/config/services.yml }

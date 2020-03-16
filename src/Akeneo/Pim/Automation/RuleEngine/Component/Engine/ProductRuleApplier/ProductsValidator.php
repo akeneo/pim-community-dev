@@ -66,7 +66,12 @@ class ProductsValidator
                 $this->objectDetacher->detach($product);
                 $reasons = [];
                 foreach ($violations as $violation) {
-                    $reasons[] = sprintf('%s : %s', $violation->getInvalidValue(), $violation->getMessage());
+                    $propertyPath = $violation->getPropertyPath();
+                    $reasons[] = sprintf(
+                        '%s%s',
+                        $propertyPath === '' ? '' : $propertyPath . ': ',
+                        $violation->getMessage()
+                    );
                 }
                 $this->eventDispatcher->dispatch(
                     RuleEvents::SKIP,

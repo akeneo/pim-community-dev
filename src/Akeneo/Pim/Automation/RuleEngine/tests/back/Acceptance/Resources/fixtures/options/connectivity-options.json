@@ -1,0 +1,29 @@
+{
+  "usb": {
+    "code": "usb",
+    "attribute": "connectivity",
+    "sort_order": 1,
+    "labels": {
+      "en_US": "USB",
+      "fr_FR": "USB"
+    }
+  },
+  "hdmi": {
+    "code": "hdmi",
+    "attribute": "connectivity",
+    "sort_order": 2,
+    "labels": {
+      "en_US": "HDMI",
+      "fr_FR": "HDMI"
+    }
+  },
+  "wi_fi": {
+    "code": "wi_fi",
+    "attribute": "connectivity",
+    "sort_order": 2,
+    "labels": {
+      "en_US": "Wireless",
+      "fr_FR": "Sans fil"
+    }
+  }
+}

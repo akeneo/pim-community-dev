@@ -10,6 +10,11 @@
                 '%field%': action.field|append_locale_and_scope_context(action.options.locale|default, action.options.scope|default)|highlight,
                 '%value%': action.items|present_rule_action_value(action.field)|append_include_children_context(action.field, action.include_children)|highlight,
             } %}
+        {% elseif action.type == "concatenate" %}
+            {% set parameters = {
+                '%fields%': action.from|map(f => f.field|append_locale_and_scope_context(f.locale|default, f.scope|default)|highlight)|join(', '),
+                '%to_field%': action.to.field|append_locale_and_scope_context(action.to.locale|default, action.to.scope|default)|highlight,
+            } %}
         {% else %}
             {% set parameters = {
                 '%field%': action.field|append_locale_and_scope_context(action.locale|default, action.scope|default)|highlight,

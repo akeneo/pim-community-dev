@@ -4,9 +4,9 @@ dependencies:
   version: 1.1.8
 - name: elasticsearch
   repository: https://kubernetes-charts.storage.googleapis.com
-  version: 1.32.0
+  version: 1.32.4
 - name: memcached
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 2.6.0
-digest: sha256:bea7cd9cc9d03695b1086e2142b395addbfa96a4a5fe5cdefda6d5d4aa515f2f
-generated: "2020-02-21T10:10:30.408072114+01:00"
+digest: sha256:8a5f259782ad15eb2bc91b9adcbfd67f7377feae9282d041cf8bd5c1c5080c3f
+generated: "2020-03-10T18:34:45.81086407+01:00"

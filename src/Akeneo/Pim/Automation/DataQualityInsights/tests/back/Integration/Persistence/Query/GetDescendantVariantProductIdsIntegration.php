@@ -236,6 +236,6 @@ class GetDescendantVariantProductIdsIntegration extends TestCase
 
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalSqlCatalog();
+        return $this->catalog->useTechnicalCatalog();
     }
 }

@@ -12,7 +12,7 @@
 namespace Akeneo\Pim\Permission\Bundle\Filter;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ProductEditDataFilter as BaseProductEditFilter;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 
 /**
@@ -25,7 +25,7 @@ class ProductEditDataFilter extends BaseProductEditFilter
     /**
      * {@inheritdoc}
      */
-    protected function isAllowedToClassify(ProductInterface $product)
+    protected function isAllowedToClassify(EntityWithValuesInterface $product): bool
     {
         $hasAcl = parent::isAllowedToClassify($product);
 
@@ -35,7 +35,7 @@ class ProductEditDataFilter extends BaseProductEditFilter
     /**
      * {@inheritdoc}
      */
-    protected function isAllowedToUpdateAssociations(ProductInterface $product)
+    protected function isAllowedToUpdateAssociations(EntityWithValuesInterface $product): bool
     {
         $hasAcl = parent::isAllowedToUpdateAssociations($product);
 
@@ -45,7 +45,7 @@ class ProductEditDataFilter extends BaseProductEditFilter
     /**
      * {@inheritdoc}
      */
-    protected function isAllowedToUpdateStatus(ProductInterface $product)
+    protected function isAllowedToUpdateStatus(EntityWithValuesInterface $product): bool
     {
         $hasAcl = parent::isAllowedToUpdateStatus($product);
 
