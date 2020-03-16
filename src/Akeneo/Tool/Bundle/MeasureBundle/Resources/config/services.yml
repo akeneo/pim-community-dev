@@ -54,6 +54,14 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_measure.validation.create_measurement_family.code_must_be_unique' }
 
+    akeneo_measurement.validation.create_measurement_family.count:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\CountValidator
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'
+            - '%akeneo_measurement.validation.measurement_family.families_max%'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_measurement.validation.create_measurement_family.count' }
+
     akeneo_measurement.validation.measurement_family.operation_count:
         class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationCountValidator
         arguments:

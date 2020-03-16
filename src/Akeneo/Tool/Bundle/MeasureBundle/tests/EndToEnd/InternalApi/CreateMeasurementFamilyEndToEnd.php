@@ -165,13 +165,13 @@ class CreateMeasurementFamilyEndToEnd extends ApiTestCase
                 Unit::create(
                     UnitCode::fromString('CUSTOM_UNIT_1_1'),
                     LabelCollection::fromArray(['en_US' => 'Custom unit 1_1', 'fr_FR' => 'Unité personalisée 1_1']),
-                    [Operation::create('mul', '0.000001')],
+                    [Operation::create('mul', '1')],
                     'mm²'
                 ),
                 Unit::create(
                     UnitCode::fromString('CUSTOM_UNIT_2_1'),
                     LabelCollection::fromArray(['en_US' => 'Custom unit 2_1', 'fr_FR' => 'Unité personalisée 2_1']),
-                    [Operation::create('mul', '0.0001')],
+                    [Operation::create('mul', '0.1')],
                     'cm²'
                 )
             ]

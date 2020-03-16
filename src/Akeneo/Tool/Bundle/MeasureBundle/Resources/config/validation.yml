@@ -43,12 +43,12 @@ Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasureme
 
 Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyCommand:
     group_sequence:
-        - SaveMeasurementFamilyCommand
+        - CreateMeasurementFamilyCommand
         - other_constraints
     properties:
         code:
             - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\Code: ~
-            - Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\CodeMustBeUnique: ~
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\CodeMustBeUnique: { groups: [other_constraints] }
         labels:
             - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
         units:
@@ -79,8 +79,8 @@ Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasu
                                         value:
                                             - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationValue: ~
     constraints:
-        - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\StandardUnitCodeShouldExist: ~
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\StandardUnitCodeShouldExist: ~
         - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\StandardUnitCodeCannotBeChanged: { groups: [other_constraints] }
         - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\StandardUnitCodeOperationShouldBeMultiplyByOne: { groups: [other_constraints] }
         - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnits: { groups: [other_constraints] }
-        - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\Count: { groups: [other_constraints] }
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\Count: { groups: [other_constraints] }
