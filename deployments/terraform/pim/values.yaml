@@ -144,10 +144,6 @@ pim:
       enabled: true
       pimCommand: "pim:volume:aggregate"
       schedule: "0 4 * * *"
-    send-expiration-notification:
-      enabled: true
-      pimCommand: "pim:asset:send-expiration-notification"
-      schedule: "0 1 * * *"
     project-recalculate:
       enabled: true
       pimCommand: "pimee:project:recalculate"
