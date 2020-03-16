@@ -45,7 +45,6 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
           break;
 
         case false:
-          notify(NotificationLevel.ERROR, __('measurements.create_family.flash.error'));
           setErrors(response.errors);
           break;
       }
