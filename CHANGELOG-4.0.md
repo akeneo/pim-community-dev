@@ -1,7 +1,5 @@
 # 4.0.x
 
-- MET-70: Add maintenance command to transform scopable asset manager attributes into non-scopable
-
 # 4.0.9 (2020-03-16)
 
 ## Improvements
@@ -10,6 +8,7 @@
 
 ## Bug fixes
 
+- MET-70: Add maintenance command to transform scopable asset manager attributes into non-scopable
 - PIM-9121: Check Asset exists before importing it in a Product
 - DAPI-900: Accept "ignored words" with any kind of letter from any language
 
