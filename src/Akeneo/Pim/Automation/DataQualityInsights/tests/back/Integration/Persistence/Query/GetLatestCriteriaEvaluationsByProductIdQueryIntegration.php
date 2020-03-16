@@ -232,7 +232,7 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
 
     private function getRepository(): CriterionEvaluationRepositoryInterface
     {
-        return $this->get(CriterionEvaluationRepository::class);
+        return $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
     }
 
     private function getQuery(): GetLatestCriteriaEvaluationsByProductIdQueryInterface

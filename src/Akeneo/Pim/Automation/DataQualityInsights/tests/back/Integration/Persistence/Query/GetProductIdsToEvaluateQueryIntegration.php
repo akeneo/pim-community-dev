@@ -42,7 +42,7 @@ class GetProductIdsToEvaluateQueryIntegration extends TestCase
 
         $this->db = $this->get('database_connection');
         $this->query = $this->get(GetProductIdsToEvaluateQuery::class);
-        $this->repository = $this->get(CriterionEvaluationRepository::class);
+        $this->repository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
     }
 
     public function test_it_returns_all_product_id_with_pending_criteria()

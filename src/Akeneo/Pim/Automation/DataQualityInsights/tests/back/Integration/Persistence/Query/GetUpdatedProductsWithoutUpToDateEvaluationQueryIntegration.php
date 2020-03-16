@@ -40,7 +40,7 @@ final class GetUpdatedProductsWithoutUpToDateEvaluationQueryIntegration extends 
 
         $this->db = $this->get('database_connection');
         $this->query = $this->get(GetUpdatedProductsWithoutUpToDateEvaluationQuery::class);
-        $this->criterionEvaluationRepository = $this->get(CriterionEvaluationRepository::class);
+        $this->criterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
     }
 
     protected function getConfiguration()

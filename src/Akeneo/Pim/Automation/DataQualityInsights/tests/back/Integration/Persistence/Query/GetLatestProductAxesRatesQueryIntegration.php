@@ -18,13 +18,13 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductAxisRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductAxesRatesQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository;
 use Akeneo\Test\Integration\TestCase;
 
 final class GetLatestProductAxesRatesQueryIntegration extends TestCase
@@ -112,8 +112,8 @@ final class GetLatestProductAxesRatesQueryIntegration extends TestCase
         $this->assertEquals(new AxisRateCollection(), $productAxesRates);
     }
 
-    private function getRepository(): ProductAxisRateRepository
+    private function getRepository(): ProductAxisRateRepositoryInterface
     {
-        return $this->get(ProductAxisRateRepository::class);
+        return $this->get('akeneo.pim.automation.data_quality_insights.repository.product_axis_rate');
     }
 }

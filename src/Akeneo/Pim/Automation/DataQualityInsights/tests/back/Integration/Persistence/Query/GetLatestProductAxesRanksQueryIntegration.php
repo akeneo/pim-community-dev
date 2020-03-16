@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRankColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRankCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductAxisRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -26,7 +27,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductAxesRanksQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository;
 use Akeneo\Test\Integration\TestCase;
 
 final class GetLatestProductAxesRanksQueryIntegration extends TestCase
@@ -134,8 +134,8 @@ final class GetLatestProductAxesRanksQueryIntegration extends TestCase
         $this->assertEqualsCanonicalizing($expectedRates, $productAxesRates);
     }
 
-    private function getRepository(): ProductAxisRateRepository
+    private function getRepository(): ProductAxisRateRepositoryInterface
     {
-        return $this->get(ProductAxisRateRepository::class);
+        return $this->get('akeneo.pim.automation.data_quality_insights.repository.product_axis_rate');
     }
 }
