@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\tests\EndToEnd\ExternalApi;
+namespace Akeneo\Tool\Bundle\MeasureBundle\tests\EndToEnd\InternalApi;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;

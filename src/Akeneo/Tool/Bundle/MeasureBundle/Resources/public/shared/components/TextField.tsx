@@ -39,7 +39,7 @@ const TextField = ({id, label, errors, propertyPath, required = false, flag, ...
         {flag && <Flag localeCode={flag} />}
       </div>
       <div className="AknFieldContainer-inputContainer">
-        <Input type="text" autoComplete="off" invalid={errors && errors.length > 0} {...props} />
+        <Input type="text" autoComplete="off" invalid={errors && errors.length > 0} id={id} {...props} />
       </div>
       {errors && <InputErrors errors={errors} />}
     </div>

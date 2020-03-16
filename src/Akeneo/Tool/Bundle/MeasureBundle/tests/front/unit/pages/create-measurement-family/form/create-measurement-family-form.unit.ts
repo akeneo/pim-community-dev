@@ -3,7 +3,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import {
   createFormState,
-  createMeasurementFamilyFromFormState
+  createMeasurementFamilyFromFormState,
 } from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
 
 describe('create-measurement-family-form', () => {
