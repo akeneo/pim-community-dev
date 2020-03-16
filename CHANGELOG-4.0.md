@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.9 (2020-03-16)
+
 ## Improvements
 
 - DAPI-910: Do not insert evaluation criteria on post_save_all event, rely on product updated_at date
