@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
-use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyHandler;
+use Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyCommand;
+use Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyHandler;
 use Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\JsonSchemaErrorsFormatter;
 use Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi\JsonSchema\MeasurementFamilyStructureValidator;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
@@ -32,19 +32,19 @@ class CreateMeasurementFamilyAction
     /** @var ViolationNormalizer */
     private $violationNormalizer;
 
-    /** @var SaveMeasurementFamilyHandler */
-    private $saveMeasurementFamilyHandler;
+    /** @var CreateMeasurementFamilyHandler */
+    private $createMeasurementFamilyHandler;
 
     public function __construct(
         MeasurementFamilyStructureValidator $measurementFamilyStructureValidator,
         ValidatorInterface $validator,
         ViolationNormalizer $violationNormalizer,
-        SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler
+        CreateMeasurementFamilyHandler $createMeasurementFamilyHandler
     ) {
         $this->measurementFamilyStructureValidator = $measurementFamilyStructureValidator;
         $this->validator = $validator;
         $this->violationNormalizer = $violationNormalizer;
-        $this->saveMeasurementFamilyHandler = $saveMeasurementFamilyHandler;
+        $this->createMeasurementFamilyHandler = $createMeasurementFamilyHandler;
     }
 
     public function __invoke(Request $request): Response
@@ -67,11 +67,11 @@ class CreateMeasurementFamilyAction
             );
         }
 
-        $saveMeasurementFamilyCommand = $this->createSaveMeasurementFamilyCommand($decodedRequest);
+        $createMeasurementFamilyCommand = $this->createCreateMeasurementFamilyCommand($decodedRequest);
 
         try {
-            $this->validateSaveMeasurementFamilyCommand($saveMeasurementFamilyCommand);
-            $this->handleSaveMeasurementFamilyCommand($saveMeasurementFamilyCommand);
+            $this->validateCreateMeasurementFamilyCommand($createMeasurementFamilyCommand);
+            $this->handleCreateMeasurementFamilyCommand($createMeasurementFamilyCommand);
         } catch (\InvalidArgumentException $ex) {
             return new JsonResponse(
                 [
@@ -106,21 +106,21 @@ class CreateMeasurementFamilyAction
         return $this->measurementFamilyStructureValidator->validate($decodedRequest);
     }
 
-    private function createSaveMeasurementFamilyCommand(
+    private function createCreateMeasurementFamilyCommand(
         array $normalizedMeasurementFamily
-    ): SaveMeasurementFamilyCommand {
-        $saveMeasurementFamilyCommand = new SaveMeasurementFamilyCommand();
-        $saveMeasurementFamilyCommand->code = $normalizedMeasurementFamily['code'];
-        $saveMeasurementFamilyCommand->standardUnitCode = $normalizedMeasurementFamily['standard_unit_code'];
-        $saveMeasurementFamilyCommand->labels = $normalizedMeasurementFamily['labels'];
-        $saveMeasurementFamilyCommand->units = $normalizedMeasurementFamily['units'];
+    ): CreateMeasurementFamilyCommand {
+        $createMeasurementFamilyCommand = new CreateMeasurementFamilyCommand();
+        $createMeasurementFamilyCommand->code = $normalizedMeasurementFamily['code'];
+        $createMeasurementFamilyCommand->standardUnitCode = $normalizedMeasurementFamily['standard_unit_code'];
+        $createMeasurementFamilyCommand->labels = $normalizedMeasurementFamily['labels'];
+        $createMeasurementFamilyCommand->units = $normalizedMeasurementFamily['units'];
 
-        return $saveMeasurementFamilyCommand;
+        return $createMeasurementFamilyCommand;
     }
 
-    private function validateSaveMeasurementFamilyCommand(SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand)
+    private function validateCreateMeasurementFamilyCommand(CreateMeasurementFamilyCommand $createMeasurementFamilyCommand)
     {
-        $violations = $this->validator->validate($saveMeasurementFamilyCommand);
+        $violations = $this->validator->validate($createMeasurementFamilyCommand);
 
         if (count($violations) > 0) {
             throw new ViolationHttpException(
@@ -130,8 +130,8 @@ class CreateMeasurementFamilyAction
         }
     }
 
-    private function handleSaveMeasurementFamilyCommand(SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand)
+    private function handleCreateMeasurementFamilyCommand(CreateMeasurementFamilyCommand $createMeasurementFamilyCommand)
     {
-        $this->saveMeasurementFamilyHandler->handle($saveMeasurementFamilyCommand);
+        $this->createMeasurementFamilyHandler->handle($createMeasurementFamilyCommand);
     }
 }

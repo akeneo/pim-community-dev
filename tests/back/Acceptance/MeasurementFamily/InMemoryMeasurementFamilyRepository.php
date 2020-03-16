@@ -43,7 +43,7 @@ class InMemoryMeasurementFamilyRepository implements MeasurementFamilyRepository
             throw new MeasurementFamilyNotFoundException();
         }
 
-        return $this->measurementFamilies[$measurementFamilyCode->normalize()];
+        return $measurementFamily;
     }
 
     private function loadMeasurementFamilies(): array
