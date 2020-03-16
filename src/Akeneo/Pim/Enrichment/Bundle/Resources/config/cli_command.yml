@@ -25,3 +25,10 @@ services:
             - '@database_connection'
         tags:
             - { name: 'console.command' }
+
+    akeneo.pim.enrichment.command.clean_completeness:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Command\CleanCompletenessForNonExistingProducts'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }

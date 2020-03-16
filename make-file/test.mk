@@ -58,7 +58,7 @@ integration-back: var/tests/phpunit connectivity-connection-integration-back
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php PIM_Integration_Test
 else
-	@echo Run integration test locally is too long, please use the target defined for your bounded context (ex: bounded-context-integration-back)
+	@echo "Run integration test locally is too long, please use the target defined for your bounded context (ex: bounded-context-integration-back)"
 endif
 
 ### Migration tests
