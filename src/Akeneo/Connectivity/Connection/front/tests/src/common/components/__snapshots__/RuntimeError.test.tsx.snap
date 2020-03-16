@@ -2,19 +2,19 @@
 
 exports[`RuntimeError should render 1`] = `
 <div
-  className="sc-iwsKbI HGNsN"
+  className="sc-cSHVUG gOZbYN"
 >
   <img
-    className="sc-gZMcBi covKlk"
+    className="sc-kAzzGY eFckty"
     src="test-file-stub"
   />
   <div
-    className="sc-htoDjs kzeAkQ"
+    className="sc-fjdhpX gihnjM"
   >
     akeneo_connectivity.connection.runtime_error.error_message
   </div>
   <div
-    className="sc-dnqmqq hvgqGZ"
+    className="sc-jzJRlG pxlsP"
   >
     akeneo_connectivity.connection.runtime_error.reload_helper
   </div>

@@ -20,7 +20,7 @@ exports[`Form should render 1`] = `
       </label>
     </div>
     <div
-      className="AknFieldContainer-inputContainer"
+      className="sc-gzVnrw urCaK AknFieldContainer-inputContainer"
     >
       <input
         className="AknTextField"
@@ -33,7 +33,7 @@ exports[`Form should render 1`] = `
       className="AknFieldContainer-footer"
     >
       <div
-        className="sc-bZQynM htCPZz"
+        className="sc-htoDjs bSSuRJ"
       >
         helper
       </div>
