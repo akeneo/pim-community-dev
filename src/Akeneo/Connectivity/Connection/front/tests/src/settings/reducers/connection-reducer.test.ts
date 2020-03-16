@@ -183,7 +183,7 @@ describe('Connections reducer', () => {
             label: 'Magento',
             flowType: FlowType.DATA_DESTINATION,
             image: 'a/b/c/magento.png',
-            auditable: false,
+            auditable: true,
             userRoleId: '2',
             userGroupId: '3',
         });
@@ -196,7 +196,7 @@ describe('Connections reducer', () => {
                 label: 'Magento',
                 flowType: FlowType.DATA_DESTINATION,
                 image: 'a/b/c/magento.png',
-                auditable: false,
+                auditable: true,
                 clientId: '',
                 secret: '',
                 username: '',

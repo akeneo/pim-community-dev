@@ -11,7 +11,7 @@ import {FlowTypeHelper} from './FlowTypeHelper';
 import {FlowTypeSelect} from './FlowTypeSelect';
 import {ImageUploader} from './ImageUploader';
 
-const isAuditableDisabled = (flowType: FlowType) => flowType === FlowType.OTHER;
+const isAuditForbidden = (flowType: FlowType) => flowType === FlowType.OTHER;
 
 interface Props {
     connection: Connection;
@@ -23,7 +23,7 @@ export const ConnectionEditForm = ({connection}: Props) => {
     const handleFlowTypeChange = (flowType: FlowType) => {
         setFieldValue('flowType', flowType);
 
-        if (isAuditableDisabled(flowType)) {
+        if (isAuditForbidden(flowType)) {
             setFieldValue('auditable', false);
         }
     };
@@ -68,7 +68,7 @@ export const ConnectionEditForm = ({connection}: Props) => {
 
                 <FormGroup
                     helper={
-                        isAuditableDisabled(values.flowType) && (
+                        isAuditForbidden(values.flowType) && (
                             <InlineHelper info>
                                 <AuditableHelper />
                             </InlineHelper>
@@ -79,7 +79,7 @@ export const ConnectionEditForm = ({connection}: Props) => {
                         name='auditable'
                         checked={values.auditable}
                         onChange={handleChange}
-                        disabled={isAuditableDisabled(values.flowType)}
+                        disabled={isAuditForbidden(values.flowType)}
                     >
                         <Translate id='akeneo_connectivity.connection.connection.auditable' />
                     </Checkbox>

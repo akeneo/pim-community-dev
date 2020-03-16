@@ -2,19 +2,19 @@
 
 exports[`PageError should render 1`] = `
 <div
-  className="sc-gqjmRU kGBCDq"
+  className="sc-iwsKbI ePPZGf"
 >
   <img
-    className="sc-VigVT KRUGa"
+    className="sc-gZMcBi czefaD"
     src="test-file-stub"
   />
   <div
-    className="sc-jTzLTM blxAcO"
+    className="sc-gqjmRU fFyMPn"
   >
     title
   </div>
   <div
-    className="sc-fjdhpX kasnXz"
+    className="sc-VigVT jnUfmZ"
   >
     content
   </div>

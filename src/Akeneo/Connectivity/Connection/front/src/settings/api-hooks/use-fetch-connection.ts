@@ -18,6 +18,7 @@ type ResultValue = {
     password: string;
     user_role_id: string;
     user_group_id: string | null;
+    auditable: boolean;
 };
 
 export const useFetchConnection = (code: string) => {
@@ -35,7 +36,7 @@ export const useFetchConnection = (code: string) => {
             clientId: result.value.client_id,
             userRoleId: result.value.user_role_id,
             userGroupId: result.value.user_group_id,
-            auditable: false,
+            auditable: result.value.auditable,
         };
 
         return ok(connection);

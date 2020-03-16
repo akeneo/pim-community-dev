@@ -32,7 +32,6 @@ describe('testing EditConnection page', () => {
     beforeEach(() => {
         fetchMock.resetMocks();
 
-    it('updates a connection', async () => {
         fetchMock.mockResponseOnce(
             JSON.stringify({
                 ecommerce: {
@@ -75,7 +74,7 @@ describe('testing EditConnection page', () => {
         );
     });
 
-    it('creates a connection', async () => {
+    it('updates a connection', async () => {
         fetchMock.mockResponseOnce(JSON.stringify({}));
 
         const history = createMemoryHistory({initialEntries: ['/connections/ecommerce/edit']});
