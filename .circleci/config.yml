@@ -205,7 +205,7 @@ jobs:
           name: Install database
           command: APP_ENV=behat make database
       - run:
-          name: Non critical Behat
+          name: End to end Behat tests
           command: make end-to-end-legacy SUITE=$TESTSUITE
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
