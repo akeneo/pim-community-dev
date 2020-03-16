@@ -2,6 +2,7 @@ define(
     [
     'jquery',
     'underscore',
+    'oro/translator',
     'backbone',
     'oro/mediator',
     'oro/messenger',
@@ -16,6 +17,7 @@ define(
     function (
         $,
         _,
+        __,
         Backbone,
         mediator,
         messenger,
@@ -161,7 +163,7 @@ define(
                                 messenger.notify(
                                     'error',
                                     (xhr.responseJSON && xhr.responseJSON.message) ?
-                                        xhr.responseJSON.message :
+                                        __(xhr.responseJSON.message) :
                                         $el.attr('data-error-message'));
                             }
                         });
